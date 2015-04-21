@@ -1,6 +1,6 @@
 # Geometry Zen Modeling Environment
 
-[![Build Status](https://travis-ci.org/geometryzen/geozenme.png?branch=master)](https://travis-ci.org/geometryzen/geozenme)
+[![Build Status](https://travis-ci.org/geometryzen/geozenme.svg?branch=master)](https://travis-ci.org/geometryzen/geozenme)
 
 This is the project for [GeoZenME](http://www.geozenme.org).
 
