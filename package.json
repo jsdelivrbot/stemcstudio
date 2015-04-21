@@ -2,15 +2,21 @@
   "name": "geozenme",
   "version": "1.0.0",
   "description": "Geometry Zen Modeling Environment",
-  "main": "index.js",
   "scripts": {
     "start": "lineman run",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "lineman spec-ci"
   },
   "author": "David Holmes",
   "devDependencies": {
+    "coffee-script": "^1.6.3",
+    "jasmine-given": "^2.6.2",
     "lineman": "^0.36.1",
     "lineman-angular": "^0.3.0",
-    "lineman-less": "^0.0.1"
+    "lineman-less": "^0.0.1",
+    "protractor": "^2.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/geometryzen/geozenme.git"
   }
 }
