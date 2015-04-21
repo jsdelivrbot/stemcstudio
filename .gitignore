@@ -1,0 +1,8 @@
+.DS_Store
+
+# Only include node_modules if the project is "deployed".
+# See http://www.mikealrogers.com/posts/nodemodules-in-git.html
+/node_modules
+
+# Ignore the generated files, which are only there for development.
+/generated
