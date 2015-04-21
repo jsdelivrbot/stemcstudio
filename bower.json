@@ -1,0 +1,22 @@
+{
+  "name": "geozenme",
+  "version": "0.0.0",
+  "homepage": "https://github.com/geometryzen/geozenme",
+  "authors": [
+    "David Holmes <david.geo.holmes@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.3.15",
+    "angular-resource": "~1.3.15",
+    "angular-route": "~1.3.15",
+    "underscore": "~1.8.3"
+  }
+}

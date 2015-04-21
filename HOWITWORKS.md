@@ -11,4 +11,4 @@ This file loads the boilerplate ./config/lineman module.
 Once the configuration has been loaded, `$lineman run` attempts to generate the site into ./generated.
 We must add ./app/pages/index.us (our first piece of source code) in order to get index.html as a generated file.
 
-We don't put a HOWITWORKS.ms in the ./app/pages folder because it would be converted into HOWITWORKS.html in the generated output.
+We don't put a HOWITWORKS.md in the ./app/pages folder because it would be converted into HOWITWORKS.html in the generated output.

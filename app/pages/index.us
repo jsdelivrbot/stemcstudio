@@ -2,17 +2,11 @@
 <html data-ng-app="app">
   <head>
     <base href="/"></base>
-    <title>GeoZenME</title>
+    <title>Geo Zen ME</title>
     <link rel="stylesheet" type="text/css" href="/css/app.css" media="all" />
   </head>
   <body>
-    <div>
-      <div>
-        <h1>Hello, GeoZenME</h1>
-        <div id="view" data-ng-view></div>
-      </div>
-    </div>
-
+    <div id="view" data-ng-view></div>
     <script type="text/javascript" src="/js/app.js"></script>
   </body>
 </html>

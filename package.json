@@ -4,10 +4,12 @@
   "description": "Geometry Zen Modeling Environment",
   "main": "index.js",
   "scripts": {
+    "start": "lineman run",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "David Holmes",
   "devDependencies": {
-    "lineman": "^0.36.1"
+    "lineman": "^0.36.1",
+    "lineman-angular": "^0.3.0"
   }
 }
