@@ -26,7 +26,7 @@ app.controller('EditorController', ['$scope', '$http', '$location', function($sc
 
   var editor = ace.edit('editor', workspace);
 
-  editor.setTheme('ace/theme/chrome');
+  editor.setTheme('ace/theme/textmate');
   editor.getSession().setMode('ace/mode/typescript');
   editor.getSession().setTabSize(2);
   editor.setShowInvisibles(true);
@@ -64,8 +64,9 @@ app.controller('EditorController', ['$scope', '$http', '$location', function($sc
       var outputFiles = event.data;
       outputFiles.forEach(function(file) {
         var text = file.text;
-        $scope.outpitFile = file;
+        $scope.outputFile = file;
         console.log(JSON.stringify(file));
+        update();
       });
     }
     catch(e) {
@@ -73,7 +74,80 @@ app.controller('EditorController', ['$scope', '$http', '$location', function($sc
     }
   });
 
-  // We must supply a (dummy) fileName for the editor in order for the TypeScript processing to work.
-  editor.changeFile('var scene = new THREE.Scene();\n', 'whatever.ts');
+  var source = "" +
+    "var camera, scene, renderer;\n" +
+    "var geometry, material, mesh;\n" +
+    "\n" +
+    "init();\n"+
+    "animate();\n"+
+    "\n"+
+    "function init() {\n" +
+    "scene = new THREE.Scene();\n" +
+    "var aspect = window.innerWidth / window.innerHeight;\n" +
+    "camera = new THREE.PerspectiveCamera(75, aspect, 1, 1000);\n" +
+    "camera.position.z = 500;\n" +
+    "scene.add(camera);\n" +
+    "\n" +
+    "geometry = new THREE.IcosahedronGeometry(200, 1);\n" +
+    "material = new THREE.MeshBasicMaterial({color: 0x000000, wireframe: true, wireframeLinewidth: 2});\n" +
+    "\n" +
+    "mesh = new THREE.Mesh(geometry, material);\n" +
+    "scene.add(mesh);\n" +
+    "\n" +
+    "renderer = new THREE.WebGLRenderer();\n" +
+    "renderer.setClearColorHex(0xffffff);\n" +
+    "renderer.setSize(window.innerWidth, window.innerHeight);\n" +
+    "\n" +
+    "document.body.style.margin = '0';\n" +
+    "document.body.style.overflow = 'hidden';\n" +
+    "document.body.appendChild(renderer.domElement);\n" +
+    "}\n" +
+    "\n" +
+    "function animate() {\n" +
+    "requestAnimationFrame(animate);\n" +
+    "\n" +
+    "mesh.rotation.x = Date.now() * 0.0005;\n"+
+    "mesh.rotation.y = Date.now() * 0.001;\n"+
+    "\n"+
+    "renderer.render(scene, camera);\n"+
+  "}\n";
 
+  // We must supply a (dummy) fileName for the editor in order for the TypeScript processing to work.
+  editor.changeFile(source, 'whatever.ts');
+  editor.focus();
+  editor.gotoLine(0,0);
+
+  var update = function () {
+
+    try {
+      var preview = document.getElementById('preview');
+      var editorElement = document.getElementById('editor');
+
+      while ( preview.children.length > 0 ) {
+        preview.removeChild( preview.firstChild );
+      }
+
+      var iframe = document.createElement( 'iframe' );
+      iframe.style.width = '100%';
+      iframe.style.height = '100%';
+      iframe.style.border = '0';
+      preview.appendChild( iframe );
+
+      var content = iframe.contentDocument || iframe.contentWindow.document;
+
+      var three = "<script src='http://gamingJS.com/Three.js'></script>\n";
+      var fixes = "<script src='http://gamingJS.com/ChromeFixes.js'></script>\n";
+
+      content.open();
+      content.write("<body></body>\n" + three + fixes + "<script>" + $scope.outputFile.text + "</script>" );
+      content.close();
+
+      content.body.style.margin = '0';
+
+      editorElement.style.display = 'none';
+    }
+    catch(e) {
+      console.log(e);
+    }
+  };
 }]);
