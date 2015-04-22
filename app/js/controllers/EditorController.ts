@@ -65,7 +65,7 @@ app.controller('EditorController', ['$scope', '$http', '$location', function($sc
       outputFiles.forEach(function(file) {
         var text = file.text;
         $scope.outputFile = file;
-        console.log(JSON.stringify(file));
+        // console.log(JSON.stringify(file));
         update();
       });
     }
@@ -75,8 +75,12 @@ app.controller('EditorController', ['$scope', '$http', '$location', function($sc
   });
 
   var source = "" +
-    "var camera, scene, renderer;\n" +
-    "var geometry, material, mesh;\n" +
+    "var camera: THREE.PerspectiveCamera;\n"+
+    "var scene: THREE.Scene;\n"+
+    "var renderer: THREE.WebGLRenderer;\n" +
+    "var geometry;\n"+
+    "var material;\n"+
+    "var mesh: THREE.Mesh;\n" +
     "\n" +
     "init();\n"+
     "animate();\n"+
@@ -95,7 +99,7 @@ app.controller('EditorController', ['$scope', '$http', '$location', function($sc
     "scene.add(mesh);\n" +
     "\n" +
     "renderer = new THREE.WebGLRenderer();\n" +
-    "renderer.setClearColorHex(0xffffff);\n" +
+    "renderer.setClearColorHex(0xffffff, 1.0);\n" +
     "renderer.setSize(window.innerWidth, window.innerHeight);\n" +
     "\n" +
     "document.body.style.margin = '0';\n" +
@@ -144,7 +148,7 @@ app.controller('EditorController', ['$scope', '$http', '$location', function($sc
 
       content.body.style.margin = '0';
 
-      editorElement.style.display = 'none';
+      // editorElement.style.display = 'none';
     }
     catch(e) {
       console.log(e);

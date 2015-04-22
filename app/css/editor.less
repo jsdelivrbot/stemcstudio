@@ -1,7 +1,5 @@
 @import "variables.less";
 
-@media screen
-{
   #editor
   { 
     position: absolute;
@@ -15,6 +13,14 @@
     right:    0px;
 
     margin:   0 auto;
+  }
+
+#editor {
+  background-color: rgba(255,255,255,0.0);
+}
+
+  #editor .ace_content {
+    background: rgba(255,255,255,0.75);
   }
 
   .ace_autocomplete
@@ -104,4 +110,3 @@
   {
       visibility:visible;
   }
-}
