@@ -1,0 +1,20 @@
+html(lang="en", data-ng-app="app")
+  head
+    base(href="/")
+    meta(charset="utf-8")
+    title #{marketing.name} - #{marketing.tagLine}
+    meta(http-equiv="X-UA-Compatible", content="IE=edge,chrome=1")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(name="apple-mobile-web-app-capable", content="yes")
+    meta(name="author", edit="David Geo Holmes")
+    meta(name="copyright", content="David Geo Holmes")
+    meta(name="keywords", content="education, computation, modeling, inquiry, TypeScript, JavaScript, CoffeeScript, Python, programming, free, online, physics, math, geometry, geometric, algebra, units, vectors, functions, webgl")
+    meta(name="description", content="")
+    link(rel="stylesheet", href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600")
+    link(rel="stylesheet", href=css, media="all")
+    link(rel="icon", type="image/png", href="/img/favicon-48x48.png")
+    script(src="https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML")
+    script(src="http://jsxgraph.uni-bayreuth.de/distrib/jsxgraphcore.js")
+  body
+    #view(data-ng-view)
+    script(src=js)
