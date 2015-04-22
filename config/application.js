@@ -21,7 +21,8 @@ module.exports = function(lineman) {
           {src: "bower_components/ace-builds/src-noconflict/worker-workspace.js",  dest: "generated/js/worker-workspace.js"},
           {src: "bower_components/ace-builds/src-noconflict/worker-javascript.js", dest: "generated/js/worker-javascript.js"},
           {src: "bower_components/ace-builds/src-noconflict/worker-typescript.js", dest: "generated/js/worker-typescript.js"},
-          {src: "node_modules/typescript/bin/lib.d.ts",                            dest: "generated/ts/lib.d.ts"}
+          {src: "node_modules/typescript/bin/lib.d.ts",                            dest: "generated/ts/lib.d.ts"},
+          {src: "typings/threejs/three.d.ts",                                      dest: "generated/ts/three.d.ts"}
         ]
       }
     }

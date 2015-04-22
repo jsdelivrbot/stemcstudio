@@ -1,3 +1,5 @@
+@import "variables.less";
+
 @media screen
 {
   #editor
@@ -13,5 +15,93 @@
     right:    0px;
 
     margin:   0 auto;
+  }
+
+  .ace_autocomplete
+  {
+      height: 226px;
+      background: @white;
+      overflow: hidden;
+      border:1px solid @grayLight;
+  }
+
+  .ace_autocomplete ul
+  {
+      width:400px;
+      margin:0;
+      padding:2px;
+  }
+
+  .ace_autocomplete li:hover
+  {
+  }
+
+  .ace_autocomplete li
+  {
+      padding:1px;
+      line-height:1.2em;
+      height:1.2em;
+      overflow:hidden;
+  }
+
+  .ace_autocomplete_selected
+  {
+     background: @grayLightest;
+  }
+
+  .ace_autocomplete_selected .label-name
+  {
+      font-weight:bold;
+  }
+
+  // The label-kind class defined the common style for all auto-completion labels.
+  .label-kind
+  {
+      background: @grayLight;
+      color: @white;
+      padding:0px 3px;
+      margin-right:3px;
+  }
+
+  .label-kind-class
+  {
+    background: @azureRadiance;
+  }
+
+  .label-kind-interface
+  {
+      background: @purpleHeart;
+  }
+
+  .label-kind-method
+  {
+      background: @blueDark;
+  }
+
+  .label-kind-function
+  {
+      background: @gray;
+  }
+
+  .label-kind-property
+  {
+      background: @green;
+  }
+
+  .label-kind-method
+  {
+      background: @blueDark;
+  }
+
+  .label-type
+  {
+      padding-left:10px;
+      color:blue;
+      visibility:hidden;
+  }
+
+  .ace_autocomplete_selected .label-type
+  {
+      visibility:visible;
   }
 }

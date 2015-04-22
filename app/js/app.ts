@@ -1,5 +1,5 @@
 /// <reference path="../../typings/angularjs/angular.d.ts" />
-var app = angular.module("app", ["ngResource", "ngRoute"]);
+var app = angular.module('app', ['ngResource', 'ngRoute']);
 
 app.run(function($rootScope) {
 
