@@ -6,6 +6,7 @@ The `$lineman run` command loads lineman.js then Lineman goes onto load applicat
 
 application.js
 --------------
+Notice that in the concat_sourcemap we order the files such that the AngularJS 'app' module gets defined first.
 
 files.js
 --------

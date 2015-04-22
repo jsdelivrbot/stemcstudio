@@ -37,28 +37,3 @@ To run the end-to-end tests:
 3. Make sure you have chrome installed.
 4. `lineman run` from 1 terminal window
 5. `lineman grunt spec-e2e` from another terminal window
-
-# Defining your apps angular.module in CoffeeScript
-
-If you are using Coffeescript to define the angular.module for your app, you will need to swap the concat order in `config/application.js` such that coffeescript files are included _before_ javascript. (If you are using JavaScript for defining the angular.module the default concat order is fine).
-
-Add the following `concat_sourcemap` block to `config/application.js` if you want to define your app module in coffeescript:
-
-```javascript
-module.exports = function(lineman) {
-  return {
-
-    concat_sourcemap: {
-      js: {
-        src: [
-          "<%= files.js.vendor %>",
-          "<%= files.coffee.generated %>",
-          "<%= files.js.app %>",
-          "<%= files.ngtemplates.dest %>"
-        ]
-      }
-    }
-
-  };
-};
-```
