@@ -6,13 +6,13 @@ module.exports = function(lineman) {
         "bower_components/angular/angular.js",
         "bower_components/angular-resource/angular-resource.js",
         "bower_components/angular-route/angular-route.js",
-        "bower_components/ace-builds/src-min-noconflict/ace.js",
-        "bower_components/ace-builds/src-min-noconflict/theme-chrome.js",
-        "bower_components/ace-builds/src-min-noconflict/theme-eclipse.js",
-        "bower_components/ace-builds/src-min-noconflict/theme-monokai.js",
-        "bower_components/ace-builds/src-min-noconflict/theme-textmate.js",
-        "bower_components/ace-builds/src-min-noconflict/theme-twilight.js",
-        "bower_components/ace-builds/src-min-noconflict/mode-typescript.js"
+        "manual/ace-builds/src-noconflict/ace.js",
+        "manual/ace-builds/src-noconflict/theme-chrome.js",
+        "manual/ace-builds/src-noconflict/theme-eclipse.js",
+        "manual/ace-builds/src-noconflict/theme-monokai.js",
+        "manual/ace-builds/src-noconflict/theme-textmate.js",
+        "manual/ace-builds/src-noconflict/theme-twilight.js",
+        "manual/ace-builds/src-noconflict/mode-typescript.js"
       ],
       app: [
         "app/js/app.js",
