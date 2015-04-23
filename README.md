@@ -1,8 +1,11 @@
-# Geometry Zen Modeling Environment
+# Geometry Zen Modeling
+
+Learning 21st Century Mathematics through programming.
 
 [![Build Status](https://travis-ci.org/geometryzen/geozen.svg?branch=master)](https://travis-ci.org/geometryzen/geozen)
 
-This is the project for [GeoZenME](http://www.geozen.org).
+An introductory version of [Geometry Zen](http://www.geometryzen.org).
+This version uses TypeScript exclusively as the modeling language and saves models to local storage.
 
 # Features
 
@@ -15,7 +18,7 @@ This is the project for [GeoZenME](http://www.geozen.org).
 # Instructions
 
 1. `git clone https://github.com/geometryzen/geozen.git`
-2. `cd geozenme`
+2. `cd geozen`
 3. `sudo npm install -g lineman`
 4. `npm install`
 5. `lineman run`

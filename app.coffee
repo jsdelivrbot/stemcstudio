@@ -45,7 +45,7 @@ app.all '*', (req, res, next) ->
   res.header 'Access-Control-Allow-Headers', 'Content-Type'
   next()
 
-# Forward geozenme.herokuapp.com to www.geozenme.org
+# Forward herokuapp requests to canonical URL.
 # Notice that we use HTTP status 301 Moved Permanently (best for SEO purposes).
 app.get "/*", (req, res, next) ->
     if req.headers.host.match /^geozen.herokuapp.com/
