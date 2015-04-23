@@ -99,7 +99,7 @@ app.controller('EditorController', ['$scope', '$http', '$location', function($sc
     "scene.add(mesh);\n" +
     "\n" +
     "renderer = new THREE.WebGLRenderer();\n" +
-    "renderer.setClearColorHex(0xffffff, 1.0);\n" +
+    "renderer.setClearColor(0xffffff, 1.0);\n" +
     "renderer.setSize(window.innerWidth, window.innerHeight);\n" +
     "\n" +
     "document.body.style.margin = '0';\n" +
@@ -139,11 +139,10 @@ app.controller('EditorController', ['$scope', '$http', '$location', function($sc
 
       var content = iframe.contentDocument || iframe.contentWindow.document;
 
-      var three = "<script src='http://gamingJS.com/Three.js'></script>\n";
-      var fixes = "<script src='http://gamingJS.com/ChromeFixes.js'></script>\n";
+      var three = "<script src='" + DOMAIN + "/js/" + "three.min.js'></script>\n";
 
       content.open();
-      content.write("<body></body>\n" + three + fixes + "<script>" + $scope.outputFile.text + "</script>" );
+      content.write("<body></body>\n" + three + "<script>" + $scope.outputFile.text + "</script>" );
       content.close();
 
       content.body.style.margin = '0';
