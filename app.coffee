@@ -48,8 +48,8 @@ app.all '*', (req, res, next) ->
 # Forward geozenme.herokuapp.com to www.geozenme.org
 # Notice that we use HTTP status 301 Moved Permanently (best for SEO purposes).
 app.get "/*", (req, res, next) ->
-    if req.headers.host.match /^geozenme.herokuapp.com/
-      res.redirect "http://www.geozenme.org#{req.url}", 301
+    if req.headers.host.match /^geozen.herokuapp.com/
+      res.redirect "http://www.geozen.org#{req.url}", 301
     else
       next()
 

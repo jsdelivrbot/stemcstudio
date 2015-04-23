@@ -1,5 +1,5 @@
 {
-  "name": "geozenme",
+  "name": "geozen",
   "version": "1.0.0",
   "description": "Geometry Zen Modeling Environment",
   "scripts": {
@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/geometryzen/geozenme.git"
+    "url": "https://github.com/geometryzen/geozen.git"
   },
   "dependencies": {
     "express": "3.3.4",

@@ -144,8 +144,6 @@ app.controller('EditorController', ['$scope', '$http', '$location', function($sc
       content.close();
 
       content.body.style.margin = '0';
-
-      // editorElement.style.display = 'none';
     }
     catch(e) {
       console.log(e);

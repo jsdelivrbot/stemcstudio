@@ -1,8 +1,8 @@
 # Geometry Zen Modeling Environment
 
-[![Build Status](https://travis-ci.org/geometryzen/geozenme.svg?branch=master)](https://travis-ci.org/geometryzen/geozenme)
+[![Build Status](https://travis-ci.org/geometryzen/geozen.svg?branch=master)](https://travis-ci.org/geometryzen/geozen)
 
-This is the project for [GeoZenME](http://www.geozenme.org).
+This is the project for [GeoZenME](http://www.geozen.org).
 
 # Features
 
@@ -14,7 +14,7 @@ This is the project for [GeoZenME](http://www.geozenme.org).
 
 # Instructions
 
-1. `git clone https://github.com/geometryzen/geozenme.git`
+1. `git clone https://github.com/geometryzen/geozen.git`
 2. `cd geozenme`
 3. `sudo npm install -g lineman`
 4. `npm install`

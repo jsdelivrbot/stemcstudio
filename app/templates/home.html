@@ -1,6 +1,6 @@
 <div ng-controller='PreviewController' id='preview'></div>
 <div ng-controller='EditorController' id='editor' ng-show="isCodeVisible"></div>
 <div id="toolbar">
+  <button class="button" title="Menu" style="font-weight: bold;" ng-show="isCodeVisible">☰</button>
   <button class='button' ng-click="toggleMode()">{{toggleText}}</button>
-  <button class="button" title="Show project menu" style="font-weight: bold;">☰</button>
 </div>
