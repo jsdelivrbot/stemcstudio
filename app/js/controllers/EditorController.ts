@@ -78,42 +78,40 @@ app.controller('EditorController', ['$scope', '$http', '$location', function($sc
     "var camera: THREE.PerspectiveCamera;\n"+
     "var scene: THREE.Scene;\n"+
     "var renderer: THREE.WebGLRenderer;\n" +
-    "var geometry;\n"+
-    "var material;\n"+
     "var mesh: THREE.Mesh;\n" +
     "\n" +
     "init();\n"+
     "animate();\n"+
     "\n"+
     "function init() {\n" +
-    "scene = new THREE.Scene();\n" +
-    "var aspect = window.innerWidth / window.innerHeight;\n" +
-    "camera = new THREE.PerspectiveCamera(75, aspect, 1, 1000);\n" +
-    "camera.position.z = 500;\n" +
-    "scene.add(camera);\n" +
+    "  scene = new THREE.Scene();\n" +
+    "  var aspect = window.innerWidth / window.innerHeight;\n" +
+    "  camera = new THREE.PerspectiveCamera(75, aspect, 1, 1000);\n" +
+    "  camera.position.z = 500;\n" +
+    "  scene.add(camera);\n" +
     "\n" +
-    "geometry = new THREE.IcosahedronGeometry(200, 1);\n" +
-    "material = new THREE.MeshBasicMaterial({color: 0x000000, wireframe: true, wireframeLinewidth: 2});\n" +
+    "  var geometry = new THREE.IcosahedronGeometry(200, 1);\n" +
+    "  var material = new THREE.MeshBasicMaterial({color: 0x000000, wireframe: true, wireframeLinewidth: 2});\n" +
     "\n" +
-    "mesh = new THREE.Mesh(geometry, material);\n" +
-    "scene.add(mesh);\n" +
+    "  mesh = new THREE.Mesh(geometry, material);\n" +
+    "  scene.add(mesh);\n" +
     "\n" +
-    "renderer = new THREE.WebGLRenderer();\n" +
-    "renderer.setClearColor(0xffffff, 1.0);\n" +
-    "renderer.setSize(window.innerWidth, window.innerHeight);\n" +
+    "  renderer = new THREE.WebGLRenderer();\n" +
+    "  renderer.setClearColor(0xffffff, 1.0);\n" +
+    "  renderer.setSize(window.innerWidth, window.innerHeight);\n" +
     "\n" +
-    "document.body.style.margin = '0';\n" +
-    "document.body.style.overflow = 'hidden';\n" +
-    "document.body.appendChild(renderer.domElement);\n" +
+    "  document.body.style.margin = '0';\n" +
+    "  document.body.style.overflow = 'hidden';\n" +
+    "  document.body.appendChild(renderer.domElement);\n" +
     "}\n" +
     "\n" +
     "function animate() {\n" +
-    "requestAnimationFrame(animate);\n" +
+    "  requestAnimationFrame(animate);\n" +
     "\n" +
-    "mesh.rotation.x = Date.now() * 0.0005;\n"+
-    "mesh.rotation.y = Date.now() * 0.001;\n"+
+    "  mesh.rotation.x = Date.now() * 0.0005;\n"+
+    "  mesh.rotation.y = Date.now() * 0.001;\n"+
     "\n"+
-    "renderer.render(scene, camera);\n"+
+    "  renderer.render(scene, camera);\n"+
   "}\n";
 
   // We must supply a (dummy) fileName for the editor in order for the TypeScript processing to work.
