@@ -5,7 +5,7 @@
   <button class='button' title="" ng-click='toggleMode()'>{{toggleText}}</button>
   <button class='button' title="" ng-click='toggleMenu()' ng-show='isEditMode'>☰</button>
 </div>
-<ul id='menu' class='menu' ng-show='isMenuVisible'>
+<ul id='menu' class='menu' ng-show='isMenuVisible &amp;&amp; isEditMode'>
   <li><button class='button' ng-click='doNew()'>New</button></li>
   <li><button class='button' ng-click='doOpen()'>Open</button></li>
   <li><button class='button' ng-click='doSave()'>Save</button></li>
@@ -18,16 +18,14 @@
 </ul>
 <dialog id="new-dialog" ng-controller='NewController'>
   <input type='text' ng-model='name' placeholder="Enter name" autofocus/>
-  <select>
-    <option>Empty Project</option>
-  </select>
+  <select ng-model='template' ng-options='template.fileName for template in templates track by template.fileName'></select>
   <div>
     <button class='button' ng-click='doOK()'>OK</button>
     <button class='button' ng-click='doCancel()'>Cancel</button>
   </div>
 </dialog>
 <dialog id="open-dialog" ng-controller='OpenController'>
-  <p ng-repeat='document in documents'>
+  <p ng-repeat='document in documents track by document.fileName'>
     <a href='#' ng-click='doOpen(document.fileName)'>{{document.fileName}}</a>
     <a href='#' ng-click='doDelete(document.fileName)' class='delete'>[delete]</a>
   </p>

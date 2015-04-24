@@ -4,6 +4,7 @@
 /// <reference path="../INewParameters.ts" />
 /// <reference path="../IOpenParameters.ts" />
 /// <reference path="../ICopyParameters.ts" />
+/// <reference path="../ICodeInfo.ts" />
 var app = angular.module('app');
 
 var FWD_SLASH = '/';
@@ -16,26 +17,6 @@ var TEXT_VIEW_SUSPEND = "Suspend View";
 
 var STORAGE_KEY = 'geometryzen';
 
-// Define the interface for scope for type-safety.
-// It should only contain the API required for the view.
-interface IHomeScope extends angular.IScope {
-  isEditMode: boolean;
-  toggleText: string;
-  toggleMode: () => void;
-  isViewVisible: boolean;
-  resumeText: string;
-  toggleView: () => void;
-  isMenuVisible: boolean;
-  toggleMenu: () => void;
-  doNew: () => void;
-  doOpen: () => void;
-  doSave: () => void;
-  doCopy: () => void;
-  doShare: () => void;
-  doHelp: () => void;
-  documents: ILocalDocument[];
-}
-
 interface IOutputFile {
   name: string;
   writeByteOrderMark: boolean;
@@ -43,25 +24,20 @@ interface IOutputFile {
   sourceMapEntries: any[];
 }
 
-interface ILocalDocument {
-  fileName: string;
-  autoupdate: boolean;
-  /**
-   * 
-   */
-  code: string;
-}
-
 app.controller('HomeController', ['$scope', '$http', '$location', function(scope: IHomeScope, http: angular.IHttpService, location: angular.ILocationService) {
 
   // We'll store the transpiled code here.
   var outputFile: IOutputFile;
 
-  var EMPTY_DOCUMENT = function(): ILocalDocument {
+  var EMPTY_DOCUMENT = function(): ICodeInfo {
     return {fileName: "", autoupdate: true, code: ""};
   }
 
-  var templates: ILocalDocument[] = [];
+  scope.templates = [
+    {fileName:"Zero",autoupdate:true,code:"var x = 1;\n"},
+    {fileName:"One",autoupdate:true,code:"var x = 1;\n"},
+    {fileName:"Two",autoupdate:true,code:"var x = 2;\n"}
+  ];
 
   scope.documents = localStorage[STORAGE_KEY] !== undefined ? JSON.parse(localStorage[STORAGE_KEY]) : [EMPTY_DOCUMENT()];
 
@@ -69,25 +45,18 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
     localStorage[STORAGE_KEY] = JSON.stringify(scope.documents);
   };
 
-  var createProject = function(name, template_name) {
-    var code = templates.reduce(function(code, template) {
-      if (template.fileName === template_name) {
-        return template.code;
-      }
-      return code;
-    }, undefined);
-
-    create(code, name);
+  var createProject = function(name: string, template: ICodeInfo) {
+    createDocument(template, name);
 
     changeProject(name);
   };
   
-  var create = function(code, title: string) {
+  var createDocument = function(template: ICodeInfo, title: string) {
 
     if (!title) title = nextUntitled();
     if (scope.documents.length == 0 || scope.documents[0].fileName !== title) {
       // Add a new document to the beginning of the array of documents.
-      var newDocument: ILocalDocument = {fileName: title, filetype: 'text/plain', autoupdate: true, code: code};
+      var newDocument: ICodeInfo = {fileName: title, filetype: 'text/plain', autoupdate: template.autoupdate, code: template.code};
       scope.documents.unshift(newDocument);
     }
 
@@ -162,7 +131,12 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
   var setView = function(isViewVisible) {
     scope.isViewVisible = isViewVisible;
     scope.resumeText = isViewVisible ? TEXT_VIEW_SUSPEND : TEXT_VIEW_RESUME;
-    update();
+    try {
+      update();
+    }
+    catch(e) {
+      console.log(e);
+    }
   }
 
   var handleChange = function(event) {
@@ -197,8 +171,7 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
     dialog.addEventListener('close', function() {
       if (dialog.returnValue.length > 0) {
         var response: INewParameters = JSON.parse(dialog.returnValue);
-        console.log("name: " + response.name);
-        createProject(response.name, response.templateName);
+        createProject(response.name, response.template);
       }
     });
     dialog.showModal();
@@ -211,7 +184,6 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
     dialog.addEventListener('close', function() {
       if (dialog.returnValue.length > 0) {
         var response: IOpenParameters = JSON.parse(dialog.returnValue);
-        console.log("fileName: " + response.fileName);
         if (response.byeBye) {
           deleteProject(response.fileName);
         }
@@ -378,28 +350,28 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
 
     try {
       var preview = document.getElementById('preview');
-      var editorElement = document.getElementById('editor');
 
-      while ( preview.children.length > 0 ) {
-        preview.removeChild( preview.firstChild );
+      while (preview.children.length > 0) {
+        preview.removeChild(preview.firstChild);
       }
 
-      if (scope.isViewVisible) {
-        var iframe = document.createElement( 'iframe' );
+      if (scope.isViewVisible && outputFile) {
+        var iframe = document.createElement('iframe');
         iframe.style.width = '100%';
         iframe.style.height = '100%';
         iframe.style.border = '0';
-        preview.appendChild( iframe );
+        preview.appendChild(iframe);
 
         var content = iframe.contentDocument || iframe.contentWindow.document;
 
         var three = "<script src='" + DOMAIN + "/js/" + "three.min.js'></script>\n";
 
         content.open();
-        content.write("<body></body>\n" + three + "<script>" + outputFile.text + "</script>" );
+        content.write("<html><head>" + three + "</head><body><script>try{" + outputFile.text + "}catch(e){console.log(e);}</script></body></html>" );
         content.close();
 
-        content.body.style.margin = '0';
+        // FIXME: Do this in CSS so as not to have issue with async.
+        // content.body.style.margin = '0';
       }
     }
     catch(e) {
