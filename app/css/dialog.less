@@ -1,0 +1,19 @@
+dialog {
+  font-family: Avenir, sans-serif;
+  width: 25%;
+  text-align: center;
+  border-radius: 6px;
+  border: 1px solid rgba(0,0,0,0.3);
+  box-shadow: 0 3px 7px rgba(0,0,0,0.3);
+}
+
+//dialog div { display: flex; justify-content: space-between; }
+
+dialog::backdrop {
+  position:   fixed;
+  top:        0;
+  left:       0;
+  right:      0;
+  bottom:     0;
+  background: rgba(0,0,0,0.6);
+}

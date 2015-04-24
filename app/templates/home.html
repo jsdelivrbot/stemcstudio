@@ -1,6 +1,44 @@
-<div ng-controller='PreviewController' id='preview'></div>
-<div ng-controller='EditorController' id='editor' ng-show="isCodeVisible"></div>
-<div id="toolbar">
-  <button class="button" title="Menu" style="font-weight: bold;" ng-show="isCodeVisible">☰</button>
-  <button class='button' ng-click="toggleMode()">{{toggleText}}</button>
+<div id='preview'></div>
+<div id='editor' ng-show='isEditMode'></div>
+<div id='toolbar'>
+  <button class='button' title="" ng-click='toggleView()' ng-show='isEditMode'>{{resumeText}}</button>
+  <button class='button' title="" ng-click='toggleMode()'>{{toggleText}}</button>
+  <button class='button' title="" ng-click='toggleMenu()' ng-show='isEditMode'>☰</button>
 </div>
+<ul id='menu' class='menu' ng-show='isMenuVisible'>
+  <li><button class='button' ng-click='doNew()'>New</button></li>
+  <li><button class='button' ng-click='doOpen()'>Open</button></li>
+  <li><button class='button' ng-click='doSave()'>Save</button></li>
+  <li><button class='button' ng-click='doCopy()'>Copy</button></li>
+  <!--
+  <li ng-click='doShare()'>Share</li>
+  <li><a download='index.html'>Download</a></li>
+  <li ng-click='doHelp()'>Help</li>
+  -->
+</ul>
+<dialog id="new-dialog" ng-controller='NewController'>
+  <input type='text' ng-model='name' placeholder="Enter name" autofocus/>
+  <select>
+    <option>Empty Project</option>
+  </select>
+  <div>
+    <button class='button' ng-click='doOK()'>OK</button>
+    <button class='button' ng-click='doCancel()'>Cancel</button>
+  </div>
+</dialog>
+<dialog id="open-dialog" ng-controller='OpenController'>
+  <p ng-repeat='document in documents'>
+    <a href='#' ng-click='doOpen(document.fileName)'>{{document.fileName}}</a>
+    <a href='#' ng-click='doDelete(document.fileName)' class='delete'>[delete]</a>
+  </p>
+  <div>
+    <button class='button' ng-click='doCancel()'>Close</button>
+  </div>
+</dialog>
+<dialog id="copy-dialog" ng-controller='CopyController'>
+  <input type='text' ng-model='name' placeholder="Enter name" autofocus/>
+  <div>
+    <button class='button' ng-click='doOK()'>OK</button>
+    <button class='button' ng-click='doCancel()'>Cancel</button>
+  </div>
+</dialog>
