@@ -1,6 +1,6 @@
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../../../typings/deuce/deuce.d.ts" />
-/// <reference path="../../../bower_components/davinci-mathscript/dist/davinci-mathscript.d.ts" />
+/// <reference path="../../../typings/davinci-mathscript/davinci-mathscript.d.ts" />
 /// <reference path="../HTMLDialogElement.ts" />
 /// <reference path="../INewParameters.ts" />
 /// <reference path="../IOpenParameters.ts" />
