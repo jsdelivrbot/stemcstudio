@@ -74,6 +74,101 @@ var CODE_TEMPLATE_THREEJS = "" +
   "  renderer.render(scene, camera);\n"+
 "}\n";
 
+var CODE_TEMPLATE_VISUAL = "" +
+  "/**\n"+
+  " * The unit vector in the x-direction.\n"+
+  " */\n"+
+  "var e1 = blade.vectorE3(1, 0, 0);\n"+
+  "/**\n"+
+  " * The unit vector in the y-direction.\n"+
+  " */\n"+
+  "var e2 = blade.vectorE3(0, 1, 0);\n"+
+  "/**\n"+
+  " * The unit vector in the z-direction.\n"+
+  " */\n"+
+  "var e3 = blade.vectorE3(0, 0, 1);\n"+
+  "/**\n"+
+  " * Computes the exponential function for a bivector argument.\n"+
+  " * @param x The argument to the exponential function, a bivector is expected.\n"+
+  " */\n"+
+  "function exp(x: blade.Euclidean3): blade.Euclidean3 {\n"+
+  "    // Really? norm yields a Euclidean3?\n"+
+  "    // We now have to extract the scalar component to calculate cos, sin.\n"+
+  "    // Of course, we could have universal functions instead.\n"+
+  "    var angle = x.norm().w;\n"+
+  "    /**\n"+
+  "     * A unit bivector representing the generator of the rotation.\n"+
+  "     */\n"+
+  "    var B = x / angle;\n"+
+  "    return Math.cos(angle) + B * Math.sin(angle);\n"+
+  "}\n"+
+  "\n"+
+  "console.log(\"visual.VERSION: \" + visual.VERSION + \"\\n\");\n"+
+  "\n"+
+  "var viz = new visual.Visual(window);\n"+
+  //"\n"+
+  //var title = new createjs.Text("Visualizing Geometric Algebra with WebGL", "24px Helvetica", "white");
+  //title.x = 100; title.y = 60;
+  //viz.stage.addChild(title);
+  //var help = new createjs.Text("Hit Esc key to exit. Mouse to Rotate, Zoom, and Pan.", "20px Helvetica", "white");
+  //help.x = 140; help.y = 100;
+  //viz.stage.addChild(help);
+  "\n"+
+  "var box1 = new visual.Box({height: 0.02, color: 0x00FF00});\n"+
+  "box1.pos = -2 * e2 / 5;\n"+
+  "viz.scene.add(box1);\n"+
+  "\n"+
+  "var arrow = new visual.Arrow({color: 0xFFFF00});\n"+
+  "viz.scene.add(arrow);\n"+
+  "\n"+
+  "var box2 = new visual.Box({width:0.2, height:0.4, depth:0.6, color:0xFF0000, opacity:0.25});\n"+
+  "viz.scene.add(box2);\n"+
+  "box2.position.set(0.6,-0.6,0.6);\n"+
+  "\n"+
+  "var vortex = new visual.Vortex({radius:0.8,radiusCone:0.07,color:0x00FFFF});\n"+
+  "viz.scene.add(vortex);\n"+
+  "\n"+
+  "var box3 = new visual.Box({width:2, height:2, depth:0.02, color:0x0000FF, opacity:0.25, transparent:true});\n"+
+  "viz.scene.add(box3);\n"+
+  "\n"+
+  "var ball = new visual.Sphere({radius:0.2, widthSegments: 20, heightSegments: 16, color:0x0000FF});\n"+
+  "viz.scene.add(ball);\n"+
+  "\n"+
+  "/**\n"+
+  " * The frequency of the rotation.\n"+
+  " */\n"+
+  "var frequency = 1/10;\n"+
+  "/**\n"+
+  " * The angular velocity, represented as a bivector.\n"+
+  " */\n"+
+  "var omega = 2 * Math.PI * frequency * e3 ^ e1;\n"+
+  "\n"+
+  "function setUp() {\n"+
+  "  viz.setUp();\n"+
+  "  viz.camera.position.set(2, 2, 2);\n"+
+  "}\n"+
+  "\n"+
+  "/**\n"+
+  " * Called repeatedly by the animation runner.\n"+
+  " */\n"+
+  "function tick(time: number) {\n"+
+  "    var theta = omega * time;\n"+
+  "    var R = exp(-theta/2);\n"+
+  "    ball.pos = R * e3 * ~R;\n"+
+  "    arrow.attitude = R;\n"+
+  "    box2.attitude = R;\n"+
+  "    box3.attitude = R;\n"+
+  "    vortex.attitude = R;\n"+
+  "    viz.update();\n"+
+  "}\n"+
+  "\n"+
+  "function terminate(time: number) { return false; }\n"+
+  "\n"+
+  "function tearDown(e: Error) { viz.tearDown(); }\n"+
+  "\n"+
+  "eight.animationRunner(tick, terminate, setUp, tearDown, window).start();\n";
+
+
 app.controller('HomeController', ['$scope', '$http', '$location', function(scope: IHomeScope, http: angular.IHttpService, location: angular.ILocationService) {
 
   // We'll store the transpiled code here.
@@ -81,7 +176,8 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
 
   scope.templates = [
     {fileName: "Blank",    autoupdate: false, code: CODE_TEMPLATE_BLANK},
-    {fileName: "three.js", autoupdate: true,  code: CODE_TEMPLATE_THREEJS}
+    {fileName: "three.js", autoupdate: true,  code: CODE_TEMPLATE_THREEJS},
+    {fileName: "visual", autoupdate: true,  code: CODE_TEMPLATE_VISUAL}
   ];
 
   scope.documents = localStorage[STORAGE_KEY] !== undefined ? JSON.parse(localStorage[STORAGE_KEY]) : [];
@@ -277,7 +373,7 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
 
   var workspace = ace.workspace();
 
-  var fileNames = ['lib.d.ts', 'blade.d.ts', 'three.d.ts'];
+  var fileNames = ['lib.d.ts', 'blade.d.ts', 'eight.d.ts', 'three.d.ts', 'visual.d.ts'];
 
   var readFile = function(fileName, callback) {
     var url = DOMAIN + "/ts/" + fileName;
@@ -383,13 +479,15 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
 
         var content = iframe.contentDocument || iframe.contentWindow.document;
 
-        var blade = "<script src='" + DOMAIN + "/js/" + "blade.min.js'></script>\n";
-        var maths = "<script src='" + DOMAIN + "/js/" + "maths.min.js'></script>\n";
-        var three = "<script src='" + DOMAIN + "/js/" + "three.min.js'></script>\n";
-        var scripts = [blade, maths, three].join("");
+        var blade   = "<script src='" + DOMAIN + "/js/" + "blade.min.js'></script>\n";
+        var eight   = "<script src='" + DOMAIN + "/js/" + "eight.min.js'></script>\n";
+        var maths   = "<script src='" + DOMAIN + "/js/" + "maths.min.js'></script>\n";
+        var three   = "<script src='" + DOMAIN + "/js/" + "three.min.js'></script>\n";
+        var visual  = "<script src='" + DOMAIN + "/js/" + "visual.min.js'></script>\n";
+        var scripts = [blade, eight, maths, three, visual].join("");
 
         content.open();
-        content.write("<html><head>" + scripts + "</head><body><script>try{" + Ms.transpile(outputFile.text) + "}catch(e){console.log(e);}</script></body></html>" );
+        content.write("<html><head>" + scripts + "</head><body style='margin: 0;'><script>try {\n" + Ms.transpile(outputFile.text) + "\n} catch(e){console.log(e);}</script></body></html>" );
         content.close();
 
         // FIXME: Do this in CSS so as not to have issue with async.
