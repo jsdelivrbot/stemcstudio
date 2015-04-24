@@ -1,5 +1,6 @@
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../../../typings/deuce/deuce.d.ts" />
+/// <reference path="../../../bower_components/davinci-mathscript/dist/davinci-mathscript.d.ts" />
 /// <reference path="../HTMLDialogElement.ts" />
 /// <reference path="../INewParameters.ts" />
 /// <reference path="../IOpenParameters.ts" />
@@ -167,10 +168,10 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
   };
 
   var setCode = function(code: string) {
-    editor.getSession().removeListener('change', handleChange);
+//    editor.getSession().removeListener('change', handleChange);
     editor.setValue(code, -1);
 //  editor.getSession().setUndoManager(new UndoManager());
-    editor.getSession().on('change', handleChange);
+//    editor.getSession().on('change', handleChange);
     update();
   }
 
@@ -184,12 +185,13 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
       console.log(e);
     }
   }
-
+  /*
   var handleChange = function(event) {
+    console.log("The times are a changin...");
     save();
     // resetUpdateTimer();
   }
-
+  */
   scope.$watch('isViewVisible', function(newVal: boolean, oldVal, scope) {
     save();
   });
@@ -218,6 +220,8 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
       if (dialog.returnValue.length > 0) {
         var response: INewParameters = JSON.parse(dialog.returnValue);
         createProject(response.name, response.template);
+        editor.focus();
+        editor.gotoLine(0, 0);
       }
     });
     dialog.showModal();
@@ -273,7 +277,7 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
 
   var workspace = ace.workspace();
 
-  var fileNames = ['lib.d.ts', 'three.d.ts'];
+  var fileNames = ['lib.d.ts', 'blade.d.ts', 'three.d.ts'];
 
   var readFile = function(fileName, callback) {
     var url = DOMAIN + "/ts/" + fileName;
@@ -324,6 +328,8 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
   });
 
   editor.getSession().on('change', function(event) {
+      // console.log("editor session change: " + JSON.stringify(event));
+      save();
   });
 
   editor.getSession().on('outputFiles', function(event) {
@@ -377,10 +383,13 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
 
         var content = iframe.contentDocument || iframe.contentWindow.document;
 
+        var blade = "<script src='" + DOMAIN + "/js/" + "blade.min.js'></script>\n";
+        var maths = "<script src='" + DOMAIN + "/js/" + "maths.min.js'></script>\n";
         var three = "<script src='" + DOMAIN + "/js/" + "three.min.js'></script>\n";
+        var scripts = [blade, maths, three].join("");
 
         content.open();
-        content.write("<html><head>" + three + "</head><body><script>try{" + outputFile.text + "}catch(e){console.log(e);}</script></body></html>" );
+        content.write("<html><head>" + scripts + "</head><body><script>try{" + Ms.transpile(outputFile.text) + "}catch(e){console.log(e);}</script></body></html>" );
         content.close();
 
         // FIXME: Do this in CSS so as not to have issue with async.

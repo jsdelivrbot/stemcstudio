@@ -6,6 +6,7 @@ module.exports = function(lineman) {
         "bower_components/angular/angular.js",
         "bower_components/angular-resource/angular-resource.js",
         "bower_components/angular-route/angular-route.js",
+        "bower_components/davinci-mathscript/dist/davinci-mathscript.js",
         "manual/ace-builds/src-noconflict/ace.js",
         "manual/ace-builds/src-noconflict/theme-chrome.js",
         "manual/ace-builds/src-noconflict/theme-eclipse.js",
