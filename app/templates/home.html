@@ -5,9 +5,9 @@
   <button class='button' title="" ng-click='toggleMode()'>{{toggleText}}</button>
   <button class='button' title="" ng-click='toggleMenu()' ng-show='isEditMode'>☰</button>
 </div>
-<ul id='menu' class='menu' ng-show='isMenuVisible &amp;&amp; isEditMode'>
+<ul id='menu' class='menu' ng-show='isMenuVisible &amp;&amp; isEditMode' ng-controller='MenuController'>
   <li><button class='button' ng-click='doNew()'>New</button></li>
-  <li><button class='button' ng-click='doOpen()'>Open</button></li>
+  <li><button class='button' ng-click='doOpen()' ng-show='isOpenEnabled()'>Open</button></li>
   <li><button class='button' ng-click='doSave()'>Save</button></li>
   <li><button class='button' ng-click='doCopy()'>Copy</button></li>
   <!--

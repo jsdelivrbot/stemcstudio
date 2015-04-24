@@ -5,6 +5,7 @@
 /// <reference path="../IOpenParameters.ts" />
 /// <reference path="../ICopyParameters.ts" />
 /// <reference path="../ICodeInfo.ts" />
+/// <reference path="../IHomeScope.ts" />
 var app = angular.module('app');
 
 var FWD_SLASH = '/';
@@ -24,43 +25,87 @@ interface IOutputFile {
   sourceMapEntries: any[];
 }
 
+var CODE_TEMPLATE_BLANK = "";
+
+var CODE_TEMPLATE_THREEJS = "" +
+  "var scene: THREE.Scene;\n"+
+  "var camera: THREE.PerspectiveCamera;\n"+
+  "var renderer: THREE.WebGLRenderer;\n" +
+  "var mesh: THREE.Mesh;\n" +
+  "\n" +
+  "init();\n"+
+  "animate();\n"+
+  "\n"+
+  "/**\n"+
+  " * Initializes the scene.\n"+
+  " */\n"+
+  "function init() {\n" +
+  "  scene = new THREE.Scene();\n" +
+  "  var aspect = window.innerWidth / window.innerHeight;\n" +
+  "  camera = new THREE.PerspectiveCamera(75, aspect, 1, 1000);\n" +
+  "  camera.position.z = 200;\n" +
+  "  scene.add(camera);\n" +
+  "\n" +
+  "  var geometry = new THREE.BoxGeometry(100, 100, 100);\n" +
+  "  var material = new THREE.MeshNormalMaterial();\n" +
+  "\n" +
+  "  mesh = new THREE.Mesh(geometry, material);\n" +
+  "  scene.add(mesh);\n" +
+  "\n" +
+  "  renderer = new THREE.WebGLRenderer();\n" +
+  "  renderer.setClearColor(0xFFFFFF, 1.0);\n" +
+  "  renderer.setSize(window.innerWidth, window.innerHeight);\n" +
+  "\n" +
+  "  document.body.style.margin = '0';\n" +
+  "  document.body.style.overflow = 'hidden';\n" +
+  "  document.body.appendChild(renderer.domElement);\n" +
+  "}\n" +
+  "\n" +
+  "/**\n"+
+  " * Animates the scene.\n"+
+  " */\n"+
+  "function animate() {\n" +
+  "  requestAnimationFrame(animate);\n" +
+  "\n" +
+  "  mesh.rotation.x = Date.now() * 0.0005;\n"+
+  "  mesh.rotation.y = Date.now() * 0.001;\n"+
+  "\n"+
+  "  renderer.render(scene, camera);\n"+
+"}\n";
+
 app.controller('HomeController', ['$scope', '$http', '$location', function(scope: IHomeScope, http: angular.IHttpService, location: angular.ILocationService) {
 
   // We'll store the transpiled code here.
   var outputFile: IOutputFile;
 
-  var EMPTY_DOCUMENT = function(): ICodeInfo {
-    return {fileName: "", autoupdate: true, code: ""};
-  }
-
   scope.templates = [
-    {fileName:"Zero",autoupdate:true,code:"var x = 1;\n"},
-    {fileName:"One",autoupdate:true,code:"var x = 1;\n"},
-    {fileName:"Two",autoupdate:true,code:"var x = 2;\n"}
+    {fileName: "Blank",    autoupdate: false, code: CODE_TEMPLATE_BLANK},
+    {fileName: "three.js", autoupdate: true,  code: CODE_TEMPLATE_THREEJS}
   ];
 
-  scope.documents = localStorage[STORAGE_KEY] !== undefined ? JSON.parse(localStorage[STORAGE_KEY]) : [EMPTY_DOCUMENT()];
+  scope.documents = localStorage[STORAGE_KEY] !== undefined ? JSON.parse(localStorage[STORAGE_KEY]) : [];
 
   var syncStore = function() {
     localStorage[STORAGE_KEY] = JSON.stringify(scope.documents);
   };
 
   var createProject = function(name: string, template: ICodeInfo) {
-    createDocument(template, name);
-
-    changeProject(name);
+    var document = createDocument(template, name);
+    syncStore();
+    changeProject(document.fileName);
   };
   
-  var createDocument = function(template: ICodeInfo, title: string) {
+  var createDocument = function(template: ICodeInfo, name?: string): ICodeInfo {
 
-    if (!title) title = nextUntitled();
-    if (scope.documents.length == 0 || scope.documents[0].fileName !== title) {
-      // Add a new document to the beginning of the array of documents.
-      var newDocument: ICodeInfo = {fileName: title, filetype: 'text/plain', autoupdate: template.autoupdate, code: template.code};
-      scope.documents.unshift(newDocument);
+    if (!name) {
+      name = nextUntitled();
     }
-
-    syncStore();
+    // FIXME: We're assuming that the name of the thing does not already exist.
+    // FIXME: We must keep it unique.
+    // Add a new document to the beginning of the array of documents.
+    var document: ICodeInfo = {fileName: name, autoupdate: template.autoupdate, code: template.code};
+    scope.documents.unshift(document);
+    return document;
   };
 
   var changeProject = function(fileName: string) {
@@ -81,6 +126,7 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
 
     new_documents.unshift(found);
     scope.documents = new_documents;
+    setView(false);
     setCode(scope.documents[0].code);
     setView(scope.documents[0].autoupdate)
   };
@@ -207,6 +253,7 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
     dialog.addEventListener('close', function() {
       if (dialog.returnValue.length > 0) {
         var response: ICopyParameters = JSON.parse(dialog.returnValue);
+        createProject(response.name, scope.documents[0]);
       }
     });
     dialog.showModal();
@@ -293,56 +340,22 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
     }
   });
 
-  var source = "" +
-    "var camera: THREE.PerspectiveCamera;\n"+
-    "var scene: THREE.Scene;\n"+
-    "var renderer: THREE.WebGLRenderer;\n" +
-    "var mesh: THREE.Mesh;\n" +
-    "\n" +
-    "init();\n"+
-    "animate();\n"+
-    "\n"+
-    "function init() {\n" +
-    "  scene = new THREE.Scene();\n" +
-    "  var aspect = window.innerWidth / window.innerHeight;\n" +
-    "  camera = new THREE.PerspectiveCamera(75, aspect, 1, 1000);\n" +
-    "  camera.position.z = 500;\n" +
-    "  scene.add(camera);\n" +
-    "\n" +
-    "  var geometry = new THREE.IcosahedronGeometry(200, 1);\n" +
-    "  var material = new THREE.MeshBasicMaterial({color: 0x000000, wireframe: true, wireframeLinewidth: 2});\n" +
-    "\n" +
-    "  mesh = new THREE.Mesh(geometry, material);\n" +
-    "  scene.add(mesh);\n" +
-    "\n" +
-    "  renderer = new THREE.WebGLRenderer();\n" +
-    "  renderer.setClearColor(0xffffff, 1.0);\n" +
-    "  renderer.setSize(window.innerWidth, window.innerHeight);\n" +
-    "\n" +
-    "  document.body.style.margin = '0';\n" +
-    "  document.body.style.overflow = 'hidden';\n" +
-    "  document.body.appendChild(renderer.domElement);\n" +
-    "}\n" +
-    "\n" +
-    "function animate() {\n" +
-    "  requestAnimationFrame(animate);\n" +
-    "\n" +
-    "  mesh.rotation.x = Date.now() * 0.0005;\n"+
-    "  mesh.rotation.y = Date.now() * 0.001;\n"+
-    "\n"+
-    "  renderer.render(scene, camera);\n"+
-  "}\n";
-
   // We must supply a (dummy) fileName for the editor in order for the TypeScript processing to work.
-  editor.changeFile(source, 'whatever.ts');
+  editor.changeFile("", 'main.ts');
   editor.focus();
   editor.gotoLine(0,0);
 
   setView(true);
 
   function save() {
-    scope.documents[0].code = editor.getValue();
-    scope.documents[0].autoupdate = scope.isViewVisible;
+    if (scope.documents.length === 0) {
+        createDocument({fileName:nextUntitled(), autoupdate: scope.isViewVisible, code: editor.getValue()});
+    }
+    else {
+      // TODO: This might be called updateDocument()
+      scope.documents[0].code = editor.getValue();
+      scope.documents[0].autoupdate = scope.isViewVisible;
+    }
     syncStore();
   }
 
