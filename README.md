@@ -1,9 +1,10 @@
-# Geometry Zen Modeling
+# Geometry Doodle
 
-Learning 21st Century Mathematics through programming.
+Geometry Modeling in Code.
 
-[![Build Status](https://travis-ci.org/geometryzen/geozen.svg?branch=master)](https://travis-ci.org/geometryzen/geozen)
+[![Build Status](https://travis-ci.org/geometryzen/geodoodle.svg?branch=master)](https://travis-ci.org/geometryzen/geodoodle)
 
+Web Site: [Geometry Doodle](http://www.geodoodle.com).
 An introductory version of [Geometry Zen](http://www.geometryzen.org).
 This version uses TypeScript exclusively as the modeling language and saves models to local storage.
 
@@ -17,8 +18,8 @@ This version uses TypeScript exclusively as the modeling language and saves mode
 
 # Instructions
 
-1. `git clone https://github.com/geometryzen/geozen.git`
-2. `cd geozen`
+1. `git clone https://github.com/geometryzen/geodoodle.git`
+2. `cd geodoodle`
 3. `sudo npm install -g lineman`
 4. `npm install`
 5. `lineman run`

@@ -1,7 +1,7 @@
 {
-  "name": "geozen",
+  "name": "geodoodle",
   "version": "1.0.0",
-  "description": "Geometry Zen Modeling Environment",
+  "description": "Geometry Modeling in Code",
   "scripts": {
     "start": "lineman run",
     "test": "lineman spec-ci"
@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/geometryzen/geozen.git"
+    "url": "https://github.com/geometryzen/geodoodle.git"
   },
   "dependencies": {
     "express": "3.3.4",
