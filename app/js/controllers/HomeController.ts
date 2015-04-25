@@ -27,10 +27,20 @@ interface IOutputFile {
 }
 
 var HTML_TEMPLATE_BASIC = "" +
+  "<!DOCTYPE html>\n" +
   "<html>\n" +
   "  <head>\n" +
+  "    <!-- SCRIPTS-WILL-GO-HERE -->\n" +
   "  </head>\n" +
-  "  <body>\n" +
+  "  <body style='margin: 0;'>\n" +
+  "    <script type='text/javascript'>\n" +
+  "      try {\n" +
+  "      <!-- CODE-WILL-GO-HERE -->\n" +
+  "      }\n" +
+  "      catch(e) {\n" +
+  "        console.log(e);\n" +
+  "      }\n" +
+  "    </script>\n" +
   "  </body>\n" +
   "</html>\n";
 
@@ -438,11 +448,6 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
     console.log("Received syntaxErrors event");
   });
 
-  codeEditor.getSession().on('change', function(event) {
-      // console.log("codeEditor session change: " + JSON.stringify(event));
-      save();
-  });
-
   codeEditor.getSession().on('outputFiles', function(event) {
     try {
       var outputFiles: IOutputFile[] = event.data;
@@ -473,12 +478,22 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
     codeEditor.changeFile(scope.documents[0].code, 'app.ts');
   }
   else {
-    htmlEditor.changeFile(HTML_TEMPLATE_BASIC, 'app.html');
-    codeEditor.changeFile("", 'app.ts');
+    htmlEditor.changeFile(HTML_TEMPLATE_BASIC,  'app.html');
+    codeEditor.changeFile(CODE_TEMPLATE_VISUAL, 'app.ts');
   }
   setEditMode(true);
   setViewMode(true);
   scope.showCode();
+
+  codeEditor.getSession().on('change', function(event) {
+      // console.log("codeEditor session change: " + JSON.stringify(event));
+      save();
+  });
+
+  htmlEditor.getSession().on('change', function(event) {
+      // console.log("codeEditor session change: " + JSON.stringify(event));
+      save();
+  });
 
   function save() {
     if (scope.documents.length === 0) {
@@ -518,8 +533,13 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
         var visual  = "<script src='" + DOMAIN + "/js/" + "visual.min.js'></script>\n";
         var scripts = [blade, eight, maths, three, visual].join("");
 
+        var html = scope.documents[0].html;
+        html = html.replace(/<!-- SCRIPTS-WILL-GO-HERE -->/, scripts);
+        html = html.replace(/<!-- CODE-WILL-GO-HERE -->/, Ms.transpile(outputFile.text));
+
         content.open();
-        content.write("<html><head>" + scripts + "</head><body style='margin: 0;'><script>try {\n" + Ms.transpile(outputFile.text) + "\n} catch(e){console.log(e);}</script></body></html>" );
+        content.write(html);
+        // content.write("<html><head>" + scripts + "</head><body style='margin: 0;'><script>try {\n" + Ms.transpile(outputFile.text) + "\n} catch(e){console.log(e);}</script></body></html>" );
         content.close();
       }
     }
