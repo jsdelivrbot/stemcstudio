@@ -48,8 +48,7 @@ app.all '*', (req, res, next) ->
 # Notice that we use HTTP status 301 Moved Permanently (best for SEO purposes).
 app.get "/*", (req, res, next) ->
     if req.headers.host.match /^geodoodle.herokuapp.com/
-      # res.redirect "http://www.geodoodle.com#{req.url}", 301
-      next()
+      res.redirect "http://www.geodoodle.com#{req.url}", 301
     else
       next()
 
