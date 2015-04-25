@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "homepage": "https://github.com/geometryzen/geodoodle",
   "authors": [
-    "David Holmes <david.geo.holmes@gmail.com>"
+    "David Holmes <david.geo.holmes@gmail.com>",
+    "Geometry Zen <geometryzen@gmail.com>"
   ],
   "license": "MIT",
   "ignore": [

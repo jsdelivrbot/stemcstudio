@@ -1,0 +1,239 @@
+<!doctype html>
+
+<html>
+  <head>
+    <title>Lactate</title>
+    <meta charset = 'utf-8'/>
+    <link href='polymerase.png' rel='icon'/>
+    <link href='style.css' rel='stylesheet'/>
+    <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Rokkitt' rel='stylesheet' type='text/css'>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+  </head>
+  <body>
+    <div id='container'>
+      <hgroup>
+        <h1>Lactate</h1>
+      </hgroup>
+
+      <p class='headline'>A simple yet featureful static file server for Node.js</p>
+
+      <ul class='feature_list'>
+        <li data-name='overview' class='selected'><a href='/#overview'>overview</a>
+        <li data-name='features'><a href='/#features'>features</a>
+        <li data-name='comparison'><a href='/#comparison'>comparison</a>
+        <li data-name='installation'><a href='/#installation'>installation</a>
+        <li data-name='usage'><a href='/#usage'>usage</a>
+        <li data-name='caveats'><a href='/#caveats'>caveats</a>
+      </ul>
+
+      <section id='overview'>
+        <h2 data-name='overview' class='section_title'>
+          <a href='#overview'>Overview</a>
+        </h2>
+        <p>
+        Lactate is a static file handler for node. It integrates with basic node HTTP server, Express, and theoretically any framework on top of Node that adheres to the <em>req > res</em> pattern. It was designed with performance in-mind, and outperforms most other solutions out of the box. Lactate uses streams wherever possible, gzips when it can, handles client-side expiration, caches files in memory, and watches files for updates. To learn more about Lactate's features, see the <a href='#features'>features</a> section.
+        </p>
+        <h3>Why</h3>
+        <p>
+        Lactate began its existence in a pet project whose requirements were not met by the available options. After much research it was decided that your author would feel more comfortable knowing precisely what's under the hood. If that is your interest, go for it. Otherwise, <a href='https://github.com/Weltschmerz/Lactate/issues'>notify Weltschmerz</a> of any feature requests or issues and he will rapidly fix any overthought to save himself further embarrassment.</p>
+        <p>
+        If the name Lactate strikes your curiosity, I have only to say that it is symbolic for the act of distributing resources. <a href='http://i.imgur.com/wTp8o.jpg'>These guys</a> like resources.
+        </p>
+      </section>
+
+      <section id='features'>
+        <h2 data-name='features'class='section_title'>
+          <a href='#features'>Features</a>
+        </h2>
+        <ul>
+          <li>In-memory caching with options for <em>expiration</em>, <em>max items</em> and <em>max size</em>
+          <li>Client-side caching using <em>Last-Modified</em> and <em>Cache-Control</em> response headers
+          <li>Human-readable <em>max-age</em> settings, e.g. <em>one day</em> or <em>ten years</em>
+          <li>Automatic gzipping
+          <li>Automatic CSS / JS minification
+          <li>Asset bundling (combining and minifying scripts / styles)
+          <li>Custom 404 pages and functions
+          <li>Custom response headers
+          <li>Connect middleware export
+          <li>Drop-in replacement for <em>Express.static</em>
+          <li>Default error pages for <em>Not Found</em>, <em>Forbidden</em> and <em>Internal Error</em> responses
+          <li>on(<em>status</em>) response code listeners
+          <li>Colored <a href='http://i.imgur.com/Gpztu.png'>log output</a>
+          <li>Global executable with full options, using <em>cluster</em> for utilization of all CPU cores
+        </ul>
+      </section>
+
+      <section id='comparison'>
+        <h2 data-name='comparison' class='section_title'>
+          <a href='#comparison'>Comparison</a>
+        </h2>
+        <h3>Features</h4>
+        <p>A brief comparison of Lactate's features to those of popular solutions.</h3>
+        <table>
+          <tbody>
+            <tr>
+              <th>Module</th>
+              <th>Hits fs per request</th>
+              <th>Streams</th>
+              <th>Client caching</th>
+              <th>In-memory caching</th>
+              <th>Watch files</th>
+              <th>Gzip</th>
+              <th>Minify</th>
+            </tr>
+            <tr>
+              <td class='name'><a href='https://github.com/Weltschmerz/Lactate/blob/master/lib/lactate.js'>Lactate</a></td>
+              <td class='no'><span>no</span><em>1</em></td>
+              <td class='yes'>yes</td>
+              <td class='yes'>yes</td>
+              <td class='yes'>yes</td>
+              <td class='yes'>yes</td>
+              <td class='yes'><span>yes</span><em>2</em></td>
+              <td class='yes'>yes</td>
+            </tr>
+            <tr>
+              <td class='name'><a href='https://github.com/cloudhead/node-static/blob/master/lib/node-static.js'>node-static</a></td>
+              <td class='yes'>yes</td>
+              <td class='no'><span>no</span><em>3</em></td>
+              <td class='yes'>yes</td>
+              <td class='yes'><span>yes</span><em>4</em></td>
+              <td class='no'>no</td>
+              <td class='no'>no</td>
+              <td class='no'>no</td>
+            </tr>
+            <tr>
+              <td class='name'><a href='https://github.com/visionmedia/send/blob/master/lib/send.js'>connect</a></td>
+              <td class='yes'>yes</td>
+              <td class='yes'>yes</td>
+              <td class='yes'>yes</td>
+              <td class='no'><span>no</span><em>5</em></td>
+              <td class='no'>no</td>
+              <td class='no'>no</td>
+              <td class='no'>no</td>
+            </tr>
+            <tr>
+              <td class='name'><a href='https://github.com/jesusabdullah/node-ecstatic/blob/master/lib/ecstatic.js'>ecstatic</a></td>
+              <td class='yes'>yes</td>
+              <td class='yes'>yes</td>
+              <td class='yes'>yes</td>
+              <td class='no'>no</td>
+              <td class='no'>no</td>
+              <td class='no'>no</td>
+              <td class='no'>no</td>
+            </tr>
+          </tbody>
+        </table>
+        <H3>Notes</h3>
+        <ol>
+          <li><i>Hits fs per request</i> means that the filesystem will be hit for each new client requesting a file. All of the solutions comprehend client-side caching, so multiple requests from the same client would not usually cause another hit. If you have <em>n(<i>unique client requests</i>)</em>, that means <em>n(<i>filesystem hits</i>)</em>, usually in the form of <em>fs.stat()</em> or <em>fs.exists()</em>, unless you are using Lactate.
+          <li>Of the tested modules, Lactate is the only one that comprehends <em>gzip</em> response encoding, despite widespread support.
+          <li>Though <em>node-static</em> uses <em>fs.createReadStream()</em>, it does not actually write any data until the file is fully read. It <a href='https://github.com/cloudhead/node-static/blob/master/lib/node-static.js#L243-268'>behaves</a> identically to callback-oriented design.
+          <li>node-static caches files in-memory so that they don't need to be fully read for every request; however, each request <a href='https://github.com/cloudhead/node-static/blob/master/lib/node-static.js#L88'>will call</a> <em>fs.stat()</em>. It does this to compare mtimes, to determine whether to send a <em>304 Not Modified</em> response. Lactate <a href='https://github.com/Weltschmerz/Lactate/blob/master/lib/lactate.js#L152-159'>avoids</a> this issue by watching files for modifications, and updating the in-memory cache. If a file exists in Lactate's cache, it is fresh.
+          <li><em>connect</em> et al do not cache because they assume that you will use a separate caching layer such as Varnish. As such, connect does not concern itself with anything beyond streaming files. This means minimal complexity, which might be just fine for you. See the section on <a href='#caveats'>caveats</a> for details.
+          <li>Note that <em>connect</em> is analogous to <em>Express.static</em>
+        </ol>
+        <h3>Performance</h3>
+        <p>Despite its features, Lactate does not suffer a performance hit. In fact it is faster than popular solutions. The following plot was generated using the <em>R</em> statistical programming environment. It represents three runs of <em>Apache Bench</em>. 
+        <em class='code'>ab -n 10000 -c 100 http://localhost:8080/jquery.min.js</em>
+        <img src='rps_plot.png'/>
+        <h3>Notes</h3>
+        <ol>
+          <li>Latest version of each module as of <em>Thu Oct 25 15:26:04 CDT 2012</em>
+          <li>Requested file is <em>jquery.min.js</em>
+          <li>File size is <em>~96kb</em>
+          <li>Node version is <em>v0.8.10</em>
+          <li><em>ab</em> is run with <em>10,000</em> requests, <em>100</em> concurrent
+          <li>These tests utilize one CPU core of an Intel core i5 sandy bridge @ 2.3ghz
+          <li>The disparity between connect and node-static exists because connect does not cache files. This behavior is problematic for benchmarking, but in practice you might use a more highly-performing caching layer between connect et al and the client. The point here is that if you are expecting performance out of a pure-Node static file server, <em>connect</em> AKA <em>Express.static</em> is not a good idea.
+        </ol>
+      </section>
+
+      <section id='installation'>
+        <h2 data-name='installation' class='section_title'>
+          <a href='#installation'>Installation</a>
+        </h2>
+        <p>
+          Lactate is published via NPM under the name <em>lactate</em>.
+        </p>
+        <p>
+        For help installing Node, see the <a href='https://github.com/joyent/node/wiki/Installation'>Installation Guide</a> on the Node wiki. For more information about using NPM, see <a href='https://npmjs.org/'>npmjs.org</a>
+        </p>
+        <h3>Local NPM install</h3>
+        <em class='code'>npm install lactate</em>
+        <p>This will place Lactate in your <em>node_modules</em> directory for programmatic access. You can now <em>require('lactate')</em> from within any node program.
+        <h3>Global NPM install</h3>
+        <em class='code'>sudo npm install -g lactate</em>
+        <p>
+        Installing Lactate globally will provide you with the <em>lactate</em> command, which will run a clustered Lactate server in the current working directory, utilizing all CPU cores with the <em>cluster</em> module. Try <em>lactate --help</em> for a list of the available options.
+        </p>
+        <script src="https://gist.github.com/3954951.js?file=gistfile1.txt"></script>
+      </section>
+
+      <section id='usage'>
+        <h2 data-name='usage'class='section_title'>
+          <a href='#usage'>Usage</a>
+        </h2>
+        <p>Lactate may be used with plain node HTTP server, or with Express as a drop-in replacement for Express.static, or anything that looks like Express. There are also <a href='https://github.com/Weltschmerz/Lactate/commit/681566b944fe482dadeffed05bc76d9dc9bf11a5'>adaptors</a> for <em>node-static</em> API. Simply, there's no wrong way to Lactate a file.
+        </p>
+        <p>
+        See the <a href='https://github.com/Weltschmerz/Lactate'>Github page</a> for more documentation.
+        </p>
+        <h3>Creating a Lactate server</h3>
+        <script src="https://gist.github.com/3954858.js?file=server.js"></script>
+        <h3>Creating a directory handler</h3>
+        <script src="https://gist.github.com/3954916.js?file=server.js"></script>
+        <h3>Using directory middleware</h3>
+        <script src="https://gist.github.com/3954926.js?file=server.js"></script>
+        <h3>Integrating with Express</h3>
+        <script src="https://gist.github.com/3954982.js?file=server.js"></script>
+        <h3>Using Express.static API</h3>
+        <script src="https://gist.github.com/3955129.js?file=server.js"></script>
+        <h3>Using node-static API</h3>
+        <script src="https://gist.github.com/3955035.js?file=server.js"></script>
+        <h3>Serving individual files</h3>
+        <script src="https://gist.github.com/3955076.js?file=server.js"></script>
+        <h3>Setting options</h3>
+        <script src="https://gist.github.com/3955107.js?file=server.js"></script>
+        <h3>Bundling assets</h3>
+        <script src="https://gist.github.com/3955162.js?file=server.js"></script>
+        <h3>Using custom 404 pages</h3>
+        <script src="https://gist.github.com/3955677.js?file=server.js"></script>
+        <h3>Using custom response headers</h3>
+        <script src="https://gist.github.com/3955694.js?file=server.js"></script>
+        <h3>Setting cache options</h3>
+        <p>
+        Lactate's in-memory cache has the following limitations:
+        </p>
+        <ol>
+          <li><em>max size</em> the maximum size in megabytes to store in-memory. Adding items always works; old items will be pruned instead.
+          <li><em>max keys</em> the maximum number of file paths to keep track of.
+          <li><em>expirationa</em> duration in seconds to keep a file in memory. When a file is touched, the clock is reset.
+          <li><em>segmentation threshold</em> this option refers to file size in <em>kb</em>. After this threshold is reached, Lactate will use a separate strategy for serving the cached file; relying on multiple writes wrapped in <em>process.nextTick()</em> instead of a single call to <em>.write()</em>. This is a safeguard against slow clients and large files. Behavior can be found <a href='https://github.com/Weltschmerz/Lactate/blob/master/lib/lactate.js#L221-245'>here</a>
+        </ol>
+        </p>
+        <script src="https://gist.github.com/3955285.js?file=server.js"></script>
+      </section>
+
+      <section id='caveats'>
+        <h2 data-name='caveats' class='section_title'>
+          <a href='#caveats'>Caveats</a>
+        </h2>
+        <p>In no particular order, caveats:</p>
+        <ol>
+          <li>Lactate delivers reasonably fast performance with cached files. With caching disabled, Lactate can be slower than some modules without caching ability. Assuming that you have a caching mechanism such as Varnish, which is the assumption that connect makes by default, you shouldn't suffer much from disabled caching using either Lactate or connect. The point here is that you have nothing to lose, but something to gain, as all of Lactate's extra abilities are disable-able.
+          <li>Minification is achieved with child processes piped to either YUICompressor or Uglifyjs. It's quite slow and consumptive, so it would be advisable to pre-bundle your styles and scripts using <em>dir.bundle(type, name, callback)</em>. Another option is to enable <em>minify</em>. This will automatically minify scripts and styles as they are requested. With caching enabled, this means only the first request will take ages, as subsequent requests will simply access the already minified script or style. Minification and gzipping are not mutually exclusive; you may use either or both. Of course, you needn't use Lactate at all for minification or bundling.
+          <li>Lactate comprehends gzip, but doesn't care for deflate compression. This is because of gzip's widespread and long history of support. Pretty much anything will accept gzip encoding. There is no risk to enabling <em>gzip</em> option; it will only gzip with appropriate <em>accept-encoding</em> request headers. Lactate does not re-gzip; it stores the fully mangled files in its cache.
+        </ol>
+      </section>
+
+    </div>
+
+    <div id='forkme'>
+      <a href='https://github.com/Weltschmerz/Lactate'>Fork me on GitHub</a>
+    </div>
+
+    <script src='waypoints/waypoints.min.js'></script>
+    <script src='script.js'></script>
+  </body>
+</html>
