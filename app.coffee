@@ -44,14 +44,6 @@ app.all '*', (req, res, next) ->
   res.header 'Access-Control-Allow-Headers', 'Content-Type'
   next()
 
-# Forward herokuapp requests to canonical URL.
-# Notice that we use HTTP status 301 Moved Permanently (best for SEO purposes).
-app.get "/*", (req, res, next) ->
-    if req.headers.host.match /^davincidoodle.herokuapp.com/
-      res.redirect "davincidoodle.com#{req.url}", 301
-    else
-      next()
-
 app.get "/*", (req, res, next) ->
   res.render "index",
     css: "/css/app.css?version=#{npm.version}"
