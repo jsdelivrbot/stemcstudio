@@ -6,8 +6,7 @@ nconf = require "nconf"
 https = require "https"
 qs = require "querystring"
 
-marketing = require "./marketing.json"
-npm       = require "./package.json"
+npm = require "./package.json"
 
 require "./configure"
 
@@ -58,5 +57,4 @@ app.get "/*", (req, res, next) ->
   res.render "index",
     css: "/css/app.css?version=#{npm.version}"
     js:  "/js/app.js?version=#{npm.version}"
-    marketing: marketing
     npm: npm

@@ -5,7 +5,7 @@
 #/node_modules
 
 # bower_components don't need to be included.
-#bower_components
+/bower_components
 
 # Ignore the generated files, which are only there for development.
 /generated
