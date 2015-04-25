@@ -3,6 +3,7 @@
 # Only include node_modules if the project is "deployed".
 # See http://www.mikealrogers.com/posts/nodemodules-in-git.html
 #/node_modules
+/node_modules/protractor
 
 # bower_components don't need to be included.
 /bower_components
