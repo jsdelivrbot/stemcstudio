@@ -11,13 +11,13 @@ var app = angular.module('app');
 
 var FWD_SLASH = '/';
 
-var TEXT_CODE_HIDE = "Hide Code";
-var TEXT_CODE_SHOW = "Show Code";
+var TEXT_CODE_HIDE = "VIEW";
+var TEXT_CODE_SHOW = "EDIT";
 
-var TEXT_VIEW_RESUME = "Resume View";
-var TEXT_VIEW_SUSPEND = "Suspend View";
+var TEXT_VIEW_RESUME = "Resume";
+var TEXT_VIEW_SUSPEND = "Suspend";
 
-var STORAGE_KEY = 'geometryzen';
+var STORAGE_KEY = 'geodoodle';
 
 interface IOutputFile {
   name: string;
@@ -25,6 +25,14 @@ interface IOutputFile {
   text: string;
   sourceMapEntries: any[];
 }
+
+var HTML_TEMPLATE_BASIC = "" +
+  "<html>\n" +
+  "  <head>\n" +
+  "  </head>\n" +
+  "  <body>\n" +
+  "  </body>\n" +
+  "</html>\n";
 
 var CODE_TEMPLATE_BLANK = "";
 
@@ -173,11 +181,13 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
 
   // We'll store the transpiled code here.
   var outputFile: IOutputFile;
+  scope.isShowingHTML = false;
+  scope.isShowingCode = true;
 
   scope.templates = [
-    {fileName: "Blank",    autoupdate: false, code: CODE_TEMPLATE_BLANK},
-    {fileName: "three.js", autoupdate: true,  code: CODE_TEMPLATE_THREEJS},
-    {fileName: "visual", autoupdate: true,  code: CODE_TEMPLATE_VISUAL}
+    {fileName: "Blank",    autoupdate: false, html: HTML_TEMPLATE_BASIC, code: CODE_TEMPLATE_BLANK},
+    {fileName: "three.js", autoupdate: true,  html: HTML_TEMPLATE_BASIC, code: CODE_TEMPLATE_THREEJS},
+    {fileName: "visual",   autoupdate: true,  html: HTML_TEMPLATE_BASIC, code: CODE_TEMPLATE_VISUAL}
   ];
 
   scope.documents = localStorage[STORAGE_KEY] !== undefined ? JSON.parse(localStorage[STORAGE_KEY]) : [];
@@ -200,7 +210,7 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
     // FIXME: We're assuming that the name of the thing does not already exist.
     // FIXME: We must keep it unique.
     // Add a new document to the beginning of the array of documents.
-    var document: ICodeInfo = {fileName: name, autoupdate: template.autoupdate, code: template.code};
+    var document: ICodeInfo = {fileName: name, autoupdate: template.autoupdate, html: template.html, code: template.code};
     scope.documents.unshift(document);
     return document;
   };
@@ -223,9 +233,9 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
 
     new_documents.unshift(found);
     scope.documents = new_documents;
-    setView(false);
-    setCode(scope.documents[0].code);
-    setView(scope.documents[0].autoupdate)
+    setViewMode(false);
+    setCode(scope.documents[0].html, scope.documents[0].code);
+    setViewMode(scope.documents[0].autoupdate)
   };
 
   var deleteProject = function(fileName) {
@@ -263,15 +273,13 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
     return 'Untitled ' + (nums.length == 0 ? 1 : nums[nums.length-1] + 1);
   };
 
-  var setCode = function(code: string) {
-//    editor.getSession().removeListener('change', handleChange);
-    editor.setValue(code, -1);
-//  editor.getSession().setUndoManager(new UndoManager());
-//    editor.getSession().on('change', handleChange);
+  var setCode = function(html: string, code: string) {
+    htmlEditor.setValue(html, -1);
+    codeEditor.setValue(code, -1);
     update();
   }
 
-  var setView = function(isViewVisible) {
+  var setViewMode = function(isViewVisible: boolean) {
     scope.isViewVisible = isViewVisible;
     scope.resumeText = isViewVisible ? TEXT_VIEW_SUSPEND : TEXT_VIEW_RESUME;
     try {
@@ -281,26 +289,24 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
       console.log(e);
     }
   }
-  /*
-  var handleChange = function(event) {
-    console.log("The times are a changin...");
-    save();
-    // resetUpdateTimer();
-  }
-  */
+
   scope.$watch('isViewVisible', function(newVal: boolean, oldVal, scope) {
     save();
   });
 
-  scope.isEditMode = true;
-  scope.toggleText = TEXT_CODE_HIDE;
+  function setEditMode(editMode: boolean) {
+    scope.isEditMode = editMode;
+    scope.toggleText = editMode ? TEXT_CODE_HIDE : TEXT_CODE_SHOW;
+    setViewMode(!editMode);
+  }
 
   scope.toggleMode = function() {
-    scope.isEditMode = !scope.isEditMode;
-    scope.toggleText = scope.isEditMode ? TEXT_CODE_HIDE : TEXT_CODE_SHOW;
+    setEditMode(!scope.isEditMode);
   };
 
-  scope.toggleView = function() {setView(!scope.isViewVisible);};
+  scope.toggleView = function() {
+    setViewMode(!scope.isViewVisible);
+  };
 
   scope.isMenuVisible = false;
 
@@ -308,6 +314,19 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
     scope.isMenuVisible = !scope.isMenuVisible;
   };
 
+  scope.showHTML = function() {
+    scope.isShowingHTML = true;
+    scope.isShowingCode = false;
+    htmlEditor.focus();
+    htmlEditor.gotoLine(0, 0);
+  }
+
+  scope.showCode = function() {
+    scope.isShowingHTML = false;
+    scope.isShowingCode = true;
+    codeEditor.focus();
+    codeEditor.gotoLine(0, 0);
+  }
   scope.doNew = function() {
     scope.isMenuVisible = false;
     var d: any = document.getElementById('new-dialog');
@@ -316,8 +335,7 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
       if (dialog.returnValue.length > 0) {
         var response: INewParameters = JSON.parse(dialog.returnValue);
         createProject(response.name, response.template);
-        editor.focus();
-        editor.gotoLine(0, 0);
+        scope.showCode();
       }
     });
     dialog.showModal();
@@ -335,6 +353,7 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
         }
         else {
           changeProject(response.fileName);
+          scope.showCode();
         }
       }
     });
@@ -354,6 +373,7 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
       if (dialog.returnValue.length > 0) {
         var response: ICopyParameters = JSON.parse(dialog.returnValue);
         createProject(response.name, scope.documents[0]);
+        scope.showCode();
       }
     });
     dialog.showModal();
@@ -386,20 +406,15 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
       })
   }
 
-  var editor = ace.edit('editor', workspace);
+  var codeEditor = ace.edit('code-editor', workspace);
 
-  editor.setTheme('ace/theme/textmate');
-  editor.getSession().setMode('ace/mode/typescript');
-  editor.getSession().setTabSize(2);
-  editor.setShowInvisibles(true);
-  editor.setFontSize('18px');
-  editor.setShowPrintMargin(false);
-  editor.setDisplayIndentGuides(false);
-
-  // var UndoManager = require("ace/undomanager").UndoManager;
-  // var EmacsManager = require("ace/keyboard/emacs").handler;
-  // var CommandManager = editor.getKeyboardHandler();
-  // editor.setKeyboardHandler(CommandManager);
+  codeEditor.setTheme('ace/theme/textmate');
+  codeEditor.getSession().setMode('ace/mode/typescript');
+  codeEditor.getSession().setTabSize(2);
+  codeEditor.setShowInvisibles(true);
+  codeEditor.setFontSize('18px');
+  codeEditor.setShowPrintMargin(false);
+  codeEditor.setDisplayIndentGuides(false);
 
   fileNames.forEach(function(fileName) {
     readFile(fileName, function(err, content) {
@@ -414,21 +429,21 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
     });
   });
 
-  editor.getSession().on('initAfter', function(event) {
+  codeEditor.getSession().on('initAfter', function(event) {
     // Not sure when we need to know that the worker has started?
   });
 
-  editor.getSession().on('syntaxErrors', function(event) {
+  codeEditor.getSession().on('syntaxErrors', function(event) {
     // I'm not seeing any events by this name!
     console.log("Received syntaxErrors event");
   });
 
-  editor.getSession().on('change', function(event) {
-      // console.log("editor session change: " + JSON.stringify(event));
+  codeEditor.getSession().on('change', function(event) {
+      // console.log("codeEditor session change: " + JSON.stringify(event));
       save();
   });
 
-  editor.getSession().on('outputFiles', function(event) {
+  codeEditor.getSession().on('outputFiles', function(event) {
     try {
       var outputFiles: IOutputFile[] = event.data;
       outputFiles.forEach(function(file) {
@@ -442,20 +457,37 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
     }
   });
 
-  // We must supply a (dummy) fileName for the editor in order for the TypeScript processing to work.
-  editor.changeFile("", 'main.ts');
-  editor.focus();
-  editor.gotoLine(0,0);
+  var htmlEditor = ace.edit('html-editor', workspace);
 
-  setView(true);
+  htmlEditor.setTheme('ace/theme/textmate');
+  htmlEditor.getSession().setMode('ace/mode/html');
+  htmlEditor.getSession().setTabSize(2);
+  htmlEditor.setShowInvisibles(true);
+  htmlEditor.setFontSize('18px');
+  htmlEditor.setShowPrintMargin(false);
+  htmlEditor.setDisplayIndentGuides(false);
+
+  // Now that we have both editors created, configure the scope.
+  if (scope.documents.length > 0) {
+    htmlEditor.changeFile(scope.documents[0].html, 'app.html');
+    codeEditor.changeFile(scope.documents[0].code, 'app.ts');
+  }
+  else {
+    htmlEditor.changeFile(HTML_TEMPLATE_BASIC, 'app.html');
+    codeEditor.changeFile("", 'app.ts');
+  }
+  setEditMode(true);
+  setViewMode(true);
+  scope.showCode();
 
   function save() {
     if (scope.documents.length === 0) {
-        createDocument({fileName:nextUntitled(), autoupdate: scope.isViewVisible, code: editor.getValue()});
+        createDocument({fileName:nextUntitled(), autoupdate: scope.isViewVisible, html: htmlEditor.getValue(), code: codeEditor.getValue()});
     }
     else {
       // TODO: This might be called updateDocument()
-      scope.documents[0].code = editor.getValue();
+      scope.documents[0].html = htmlEditor.getValue();
+      scope.documents[0].code = codeEditor.getValue();
       scope.documents[0].autoupdate = scope.isViewVisible;
     }
     syncStore();
@@ -489,9 +521,6 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
         content.open();
         content.write("<html><head>" + scripts + "</head><body style='margin: 0;'><script>try {\n" + Ms.transpile(outputFile.text) + "\n} catch(e){console.log(e);}</script></body></html>" );
         content.close();
-
-        // FIXME: Do this in CSS so as not to have issue with async.
-        // content.body.style.margin = '0';
       }
     }
     catch(e) {

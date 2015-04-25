@@ -13,6 +13,7 @@ module.exports = function(lineman) {
         "manual/ace-builds/src-noconflict/theme-monokai.js",
         "manual/ace-builds/src-noconflict/theme-textmate.js",
         "manual/ace-builds/src-noconflict/theme-twilight.js",
+        "manual/ace-builds/src-noconflict/mode-html.js",
         "manual/ace-builds/src-noconflict/mode-typescript.js"
       ],
       app: [

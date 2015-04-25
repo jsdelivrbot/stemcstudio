@@ -1,10 +1,17 @@
 <div id='preview'></div>
-<div id='editor' ng-show='isEditMode'></div>
+<!-- -->
+<div id='html-editor' ng-show='isEditMode &amp;&amp; isShowingHTML'></div>
+<!-- -->
+<div id='code-editor' ng-show='isEditMode &amp;&amp; isShowingCode'></div>
+<!-- -->
 <div id='toolbar'>
+  <button class='button' title="" ng-click='showHTML()' ng-show='isEditMode'>HTML</button>
+  <button class='button' title="" ng-click='showCode()' ng-show='isEditMode'>Code</button>
   <button class='button' title="" ng-click='toggleView()' ng-show='isEditMode'>{{resumeText}}</button>
   <button class='button' title="" ng-click='toggleMode()'>{{toggleText}}</button>
   <button class='button' title="" ng-click='toggleMenu()' ng-show='isEditMode'>☰</button>
 </div>
+<!-- -->
 <ul id='menu' class='menu' ng-show='isMenuVisible &amp;&amp; isEditMode' ng-controller='MenuController'>
   <li><button class='button' ng-click='doNew()'>New</button></li>
   <li><button class='button' ng-click='doOpen()' ng-show='isOpenEnabled()'>Open</button></li>
@@ -16,6 +23,7 @@
   <li ng-click='doHelp()'>Help</li>
   -->
 </ul>
+<!-- -->
 <dialog id="new-dialog" ng-controller='NewController'>
   <input type='text' ng-model='name' placeholder="Enter name" autofocus/>
   <select ng-model='template' ng-options='template.fileName for template in templates track by template.fileName'></select>
@@ -24,6 +32,7 @@
     <button class='button' ng-click='doCancel()'>Cancel</button>
   </div>
 </dialog>
+<!-- -->
 <dialog id="open-dialog" ng-controller='OpenController'>
   <p ng-repeat='document in documents track by document.fileName'>
     <a href='#' ng-click='doOpen(document.fileName)'>{{document.fileName}}</a>
@@ -33,6 +42,7 @@
     <button class='button' ng-click='doCancel()'>Close</button>
   </div>
 </dialog>
+<!-- -->
 <dialog id="copy-dialog" ng-controller='CopyController'>
   <input type='text' ng-model='name' placeholder="Enter name" autofocus/>
   <div>
