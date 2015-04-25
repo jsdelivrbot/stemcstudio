@@ -19,6 +19,7 @@ module.exports = function(lineman) {
       dev: {
         files: [
           {src: "manual/ace-builds/src-min-noconflict/worker-workspace.js",  dest: "generated/js/worker-workspace.js"},
+          {src: "manual/ace-builds/src-min-noconflict/worker-html.js",       dest: "generated/js/worker-html.js"},
           {src: "manual/ace-builds/src-min-noconflict/worker-javascript.js", dest: "generated/js/worker-javascript.js"},
           {src: "manual/ace-builds/src-min-noconflict/worker-typescript.js", dest: "generated/js/worker-typescript.js"},
       
@@ -38,6 +39,7 @@ module.exports = function(lineman) {
       dist: {
         files: [
           {src: "manual/ace-builds/src-min-noconflict/worker-workspace.js",  dest: "dist/js/worker-workspace.js"},
+          {src: "manual/ace-builds/src-min-noconflict/worker-html.js",       dest: "dist/js/worker-html.js"},
           {src: "manual/ace-builds/src-min-noconflict/worker-javascript.js", dest: "dist/js/worker-javascript.js"},
           {src: "manual/ace-builds/src-min-noconflict/worker-typescript.js", dest: "dist/js/worker-typescript.js"},
       
