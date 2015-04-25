@@ -1,6 +1,6 @@
 {
-  "name": "geodoodle",
-  "version": "1.0.1",
+  "name": "davincidoodle",
+  "version": "1.0.0",
   "description": "Geometry Modeling in Code",
   "scripts": {
     "start": "lineman run",
@@ -20,7 +20,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/geometryzen/geodoodle.git"
+    "url": "https://github.com/geometryzen/davincidoodle.git"
   },
   "dependencies": {
     "express": "3.3.4",

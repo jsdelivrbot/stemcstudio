@@ -17,7 +17,7 @@ var TEXT_CODE_SHOW = "EDIT";
 var TEXT_VIEW_RESUME = "Resume";
 var TEXT_VIEW_SUSPEND = "Suspend";
 
-var STORAGE_KEY = 'geodoodle';
+var STORAGE_KEY = 'davincidoodle';
 
 interface IOutputFile {
   name: string;

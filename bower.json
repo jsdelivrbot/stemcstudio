@@ -1,7 +1,7 @@
 {
-  "name": "geodoodle",
-  "version": "1.0.1",
-  "homepage": "https://github.com/geometryzen/geodoodle",
+  "name": "davincidoodle",
+  "version": "1.0.0",
+  "homepage": "https://github.com/geometryzen/davincidoodle",
   "authors": [
     "David Holmes <david.geo.holmes@gmail.com>",
     "Geometry Zen <geometryzen@gmail.com>"
