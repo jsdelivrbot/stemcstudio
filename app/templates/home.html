@@ -17,11 +17,7 @@
   <li><button class='button' ng-click='doOpen()' ng-show='isOpenEnabled()'>Open</button></li>
   <li><button class='button' ng-click='doSave()'>Save</button></li>
   <li><button class='button' ng-click='doCopy()'>Copy</button></li>
-  <!--
-  <li ng-click='doShare()'>Share</li>
-  <li><a download='index.html'>Download</a></li>
-  <li ng-click='doHelp()'>Help</li>
-  -->
+  <!--li><button class='button' ng-click='doShare()'>Share</button></li-->
 </ul>
 <!-- -->
 <dialog id="new-dialog" ng-controller='NewController'>
@@ -48,5 +44,15 @@
   <div>
     <button class='button' ng-click='doOK()'>OK</button>
     <button class='button' ng-click='doCancel()'>Cancel</button>
+  </div>
+</dialog>
+<!-- -->
+<dialog id="share-dialog" ng-controller='ShareController'>
+  <input type='text'
+         value='{{shareURL()}}'
+         readonly='readonly'
+         onClick="this.setSelectionRange(0,this.value.length)"/>
+  <div>
+    <button class='button' ng-click='doClose()'>Close</button>
   </div>
 </dialog>

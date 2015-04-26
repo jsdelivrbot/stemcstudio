@@ -4,7 +4,7 @@ Geometry Modeling in Code.
 
 [![Build Status](https://travis-ci.org/geometryzen/davincidoodle.svg?branch=master)](https://travis-ci.org/geometryzen/davincidoodle)
 
-Web Site: [DaVinci Doodle](http://www.davincidoodle.com).
+Web Site: [DaVinci Doodle](davincidoodle.com).
 An introductory version of [Geometry Zen](http://www.geometryzen.org).
 This version uses TypeScript exclusively as the modeling language and saves models to local storage.
 

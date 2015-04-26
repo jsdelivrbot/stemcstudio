@@ -187,7 +187,7 @@ var CODE_TEMPLATE_VISUAL = "" +
   "eight.animationRunner(tick, terminate, setUp, tearDown, window).start();\n";
 
 
-app.controller('HomeController', ['$scope', '$http', '$location', function(scope: IHomeScope, http: angular.IHttpService, location: angular.ILocationService) {
+app.controller('HomeController', ['$scope', '$http', '$location','$routeParams', 'mathscript', function(scope: IHomeScope, http: angular.IHttpService, location: angular.ILocationService, routeParams, mathscript) {
 
   // We'll store the transpiled code here.
   var outputFile: IOutputFile;
@@ -389,8 +389,16 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
     dialog.showModal();
   };
 
+  scope.shareURL = function() {
+    // We're using Hashbang Mode.
+    return DOMAIN + '/#!/gists/';
+  }
+
   scope.doShare = function() {
     scope.isMenuVisible = false;
+    var d: any = document.getElementById('share-dialog');
+    var dialog: HTMLDialogElement = d;
+    dialog.showModal();
   };
 
   scope.doHelp = function() {
@@ -535,11 +543,10 @@ app.controller('HomeController', ['$scope', '$http', '$location', function(scope
 
         var html = scope.documents[0].html;
         html = html.replace(/<!-- SCRIPTS-WILL-GO-HERE -->/, scripts);
-        html = html.replace(/<!-- CODE-WILL-GO-HERE -->/, Ms.transpile(outputFile.text));
+        html = html.replace(/<!-- CODE-WILL-GO-HERE -->/, mathscript.transpile(outputFile.text));
 
         content.open();
         content.write(html);
-        // content.write("<html><head>" + scripts + "</head><body style='margin: 0;'><script>try {\n" + Ms.transpile(outputFile.text) + "\n} catch(e){console.log(e);}</script></body></html>" );
         content.close();
       }
     }

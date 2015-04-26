@@ -1,10 +1,13 @@
+/// <reference path="../../typings/angularjs/angular.d.ts" />
 var app = angular.module('app');
 
-app.config(function($routeProvider, $locationProvider) {
+app.config(['$routeProvider', '$locationProvider', function(routeProvider, locationProvider: angular.ILocationProvider) {
 
-  $locationProvider.html5Mode({enabled: true});
+  // Hashbang Mode is actually the AngularJS default mode. Explicit is better than implicit...
+  locationProvider.html5Mode(false).hashPrefix('!');
 
-  $routeProvider.when('/', {templateUrl: 'home.html', controller: 'HomeController'});
+  routeProvider.when('/', {templateUrl: 'home.html', controller: 'HomeController'});
+  routeProvider.when('/shares/:share', {templateUrl: 'home.html', controller: 'HomeController'});
 
-  $routeProvider.otherwise({redirectTo: '/'});
-});
+  routeProvider.otherwise({redirectTo: '/'});
+}]);

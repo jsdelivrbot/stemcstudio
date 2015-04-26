@@ -29,4 +29,6 @@ interface IHomeScope extends angular.IScope {
 
   documents: ICodeInfo[];
   templates: ICodeInfo[];
+
+  shareURL: () => string;
 }
