@@ -30,12 +30,12 @@ var HTML_TEMPLATE_BASIC = "" +
   "<!DOCTYPE html>\n" +
   "<html>\n" +
   "  <head>\n" +
-  "    <!-- SCRIPTS-WILL-GO-HERE -->\n" +
+  "    <!-- SCRIPTS-MARKER -->\n" +
   "  </head>\n" +
   "  <body style='margin: 0;'>\n" +
   "    <script type='text/javascript'>\n" +
   "      try {\n" +
-  "      <!-- CODE-WILL-GO-HERE -->\n" +
+  "      <!-- CODE-MARKER -->\n" +
   "      }\n" +
   "      catch(e) {\n" +
   "        console.log(e);\n" +
@@ -542,8 +542,8 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
         var scripts = [blade, eight, maths, three, visual].join("");
 
         var html = scope.documents[0].html;
-        html = html.replace(/<!-- SCRIPTS-WILL-GO-HERE -->/, scripts);
-        html = html.replace(/<!-- CODE-WILL-GO-HERE -->/, mathscript.transpile(outputFile.text));
+        html = html.replace(/<!-- SCRIPTS-MARKER -->/, scripts);
+        html = html.replace(/<!-- CODE-MARKER -->/, mathscript.transpile(outputFile.text));
 
         content.open();
         content.write(html);
