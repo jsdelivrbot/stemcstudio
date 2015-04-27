@@ -47,9 +47,9 @@ var HTML_TEMPLATE_BASIC = "" +
 var CODE_TEMPLATE_BLANK = "";
 
 var CODE_TEMPLATE_THREEJS = "" +
-  "var scene: THREE.Scene;\n"+
+  "var scene = new THREE.Scene();\n"+
   "var camera: THREE.PerspectiveCamera;\n"+
-  "var renderer: THREE.WebGLRenderer;\n" +
+  "var renderer = new THREE.WebGLRenderer();\n" +
   "var mesh: THREE.Mesh;\n" +
   "\n" +
   "init();\n"+
@@ -59,7 +59,6 @@ var CODE_TEMPLATE_THREEJS = "" +
   " * Initializes the scene.\n"+
   " */\n"+
   "function init() {\n" +
-  "  scene = new THREE.Scene();\n" +
   "  var aspect = window.innerWidth / window.innerHeight;\n" +
   "  camera = new THREE.PerspectiveCamera(75, aspect, 1, 1000);\n" +
   "  camera.position.z = 200;\n" +
@@ -71,7 +70,6 @@ var CODE_TEMPLATE_THREEJS = "" +
   "  mesh = new THREE.Mesh(geometry, material);\n" +
   "  scene.add(mesh);\n" +
   "\n" +
-  "  renderer = new THREE.WebGLRenderer();\n" +
   "  renderer.setClearColor(0xFFFFFF, 1.0);\n" +
   "  renderer.setSize(window.innerWidth, window.innerHeight);\n" +
   "\n" +
@@ -120,8 +118,6 @@ var CODE_TEMPLATE_VISUAL = "" +
   "    var B = x / angle;\n"+
   "    return Math.cos(angle) + B * Math.sin(angle);\n"+
   "}\n"+
-  "\n"+
-  "console.log(\"visual.VERSION: \" + visual.VERSION + \"\\n\");\n"+
   "\n"+
   "var viz = new visual.Visual(window);\n"+
   //"\n"+
