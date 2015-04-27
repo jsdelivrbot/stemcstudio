@@ -33,7 +33,13 @@ module.exports = function(lineman) {
           {src: "bower_components/davinci-eight/dist/davinci-eight.d.ts",    dest: "generated/ts/eight.d.ts"},
           {src: "bower_components/davinci-visual/dist/davinci-visual.d.ts",    dest: "generated/ts/visual.d.ts"},
           {src: "node_modules/typescript/bin/lib.d.ts",                      dest: "generated/ts/lib.d.ts"},
-          {src: "typings/threejs/three.d.ts",                                dest: "generated/ts/three.d.ts"}
+          {src: "typings/threejs/three.d.ts",                                dest: "generated/ts/three.d.ts"},
+
+          {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot",   dest: "generated/fonts/glyphicons-halflings-regular.eot"},
+          {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.svg",   dest: "generated/fonts/glyphicons-halflings-regular.svg"},
+          {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf",   dest: "generated/fonts/glyphicons-halflings-regular.ttf"},
+          {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff",  dest: "generated/fonts/glyphicons-halflings-regular.woff"},
+          {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff2", dest: "generated/fonts/glyphicons-halflings-regular.woff2"}
         ]
       },
       dist: {
@@ -53,7 +59,13 @@ module.exports = function(lineman) {
           {src: "bower_components/davinci-eight/dist/davinci-eight.d.ts",    dest: "dist/ts/eight.d.ts"},
           {src: "bower_components/davinci-visual/dist/davinci-visual.d.ts",    dest: "dist/ts/visual.d.ts"},
           {src: "node_modules/typescript/bin/lib.d.ts",                      dest: "dist/ts/lib.d.ts"},
-          {src: "typings/threejs/three.d.ts",                                dest: "dist/ts/three.d.ts"}
+          {src: "typings/threejs/three.d.ts",                                dest: "dist/ts/three.d.ts"},
+
+          {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot",   dest: "dist/fonts/glyphicons-halflings-regular.eot"},
+          {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.svg",   dest: "dist/fonts/glyphicons-halflings-regular.svg"},
+          {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf",   dest: "dist/fonts/glyphicons-halflings-regular.ttf"},
+          {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff",  dest: "dist/fonts/glyphicons-halflings-regular.woff"},
+          {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff2", dest: "dist/fonts/glyphicons-halflings-regular.woff2"}
         ]
       }
     }

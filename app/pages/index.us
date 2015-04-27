@@ -4,6 +4,7 @@
     <base href="/"></base>
     <title>davincidoodle</title>
     <link rel="stylesheet" type="text/css" href="/css/app.css" media="all" />
+    <!--link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"-->
   </head>
   <body>
     <div id="view" data-ng-view></div>

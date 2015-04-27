@@ -1,6 +1,6 @@
 {
   "name": "davincidoodle",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Geometry Modeling in Code",
   "scripts": {
     "start": "lineman run",

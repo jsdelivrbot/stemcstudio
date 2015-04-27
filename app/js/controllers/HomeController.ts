@@ -11,8 +11,8 @@ var app = angular.module('app');
 
 var FWD_SLASH = '/';
 
-var TEXT_CODE_HIDE = "VIEW";
-var TEXT_CODE_SHOW = "EDIT";
+var TEXT_CODE_HIDE = "View";
+var TEXT_CODE_SHOW = "Edit";
 
 var TEXT_VIEW_RESUME = "Resume";
 var TEXT_VIEW_SUSPEND = "Suspend";
@@ -314,12 +314,6 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     setViewMode(!scope.isViewVisible);
   };
 
-  scope.isMenuVisible = false;
-
-  scope.toggleMenu = function() {
-    scope.isMenuVisible = !scope.isMenuVisible;
-  };
-
   scope.showHTML = function() {
     scope.isShowingHTML = true;
     scope.isShowingCode = false;
@@ -334,7 +328,7 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     codeEditor.gotoLine(0, 0);
   }
   scope.doNew = function() {
-    scope.isMenuVisible = false;
+
     var d: any = document.getElementById('new-dialog');
     var dialog: HTMLDialogElement = d;
     dialog.addEventListener('close', function() {
@@ -348,7 +342,6 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
   };
 
   scope.doOpen = function() {
-    scope.isMenuVisible = false;
     var d: any = document.getElementById('open-dialog');
     var dialog: HTMLDialogElement = d;
     dialog.addEventListener('close', function() {
@@ -367,12 +360,10 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
   };
 
   scope.doSave = function() {
-    scope.isMenuVisible = false;
     save();
   };
 
   scope.doCopy = function() {
-    scope.isMenuVisible = false;
     var d: any = document.getElementById('copy-dialog');
     var dialog: HTMLDialogElement = d;
     dialog.addEventListener('close', function() {
@@ -391,14 +382,12 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
   }
 
   scope.doShare = function() {
-    scope.isMenuVisible = false;
     var d: any = document.getElementById('share-dialog');
     var dialog: HTMLDialogElement = d;
     dialog.showModal();
   };
 
   scope.doHelp = function() {
-    scope.isMenuVisible = false;
   };
 
   var DOMAIN = location.protocol() + ':'+ FWD_SLASH + FWD_SLASH + location.host() + ":" + location.port();

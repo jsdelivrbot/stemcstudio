@@ -4,44 +4,92 @@
 <!-- -->
 <div id='code-editor' ng-show='isEditMode &amp;&amp; isShowingCode'></div>
 <!-- -->
-<nav id='toolbar' class='navbar'>
-  <button class='btn' title="" ng-click='showHTML()' ng-show='isEditMode'>HTML</button>
-  <button class='btn' title="" ng-click='showCode()' ng-show='isEditMode'>Code</button>
-  <button class='btn' title="" ng-click='toggleView()' ng-show='isEditMode'>{{resumeText}}</button>
-  <button class='btn' title="" ng-click='toggleMode()'>{{toggleText}}</button>
-  <button class='btn' title="" ng-click='toggleMenu()' ng-show='isEditMode'>☰</button>
+<nav id='toolbar' class='navbar navbar-inverse'>
+  <div class='container-fluid'>
+    <div class='navbar-header'>
+      <a class='navbar-brand' href='#' ng-click='toggleMode()'>
+        <span class="glyphicon glyphicon-film" aria-hidden="true" ng-show='isEditMode'></span>
+        <span class="glyphicon glyphicon-edit" aria-hidden="true" ng-hide='isEditMode'></span>
+        {{documents[0].fileName}}
+      </a>
+    </div>
+    <div class='collapse navbar-collapse' ng-show='isEditMode'>
+      <ul class='nav navbar-nav'>
+        <li ng-show='isEditMode'>
+          <a href='#' ng-click='showHTML()'>HTML</a>
+        </li>
+        <li ng-show='isEditMode'>
+          <a href='#' ng-click='showCode()'>Code</a>
+        </li>
+        <li ng-show='isEditMode'>
+          <a href='#' ng-click='toggleView()'>
+            <span class="glyphicon glyphicon-stop" aria-hidden="true" ng-show='isViewVisible'></span>
+            <span class="glyphicon glyphicon-play" aria-hidden="true" ng-hide='isViewVisible'></span>
+          </a>
+        </li>
+        <li class='dropdown' ng-show='isEditMode'>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+            <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true" ng-show='isEditMode'></span>
+          </a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#" ng-click='doNew()'>New</a></li>
+            <li><a href="#" ng-click='doOpen()'>Open</a></li>
+            <!--li><a href="#" ng-click='doSave()'>Save</a></li-->
+            <li><a href="#" ng-click='doCopy()'>Copy</a></li>
+            <!--
+            <li class="divider"></li>
+            <li><a href="#">Share</a></li>
+            -->
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
 </nav>
 <!-- -->
-<ul id='menu' class='menu' ng-show='isMenuVisible &amp;&amp; isEditMode' ng-controller='MenuController'>
-  <li><button class='btn' ng-click='doNew()'>New</button></li>
-  <li><button class='btn' ng-click='doOpen()' ng-show='isOpenEnabled()'>Open</button></li>
-  <li><button class='btn' ng-click='doSave()'>Save</button></li>
-  <li><button class='btn' ng-click='doCopy()'>Copy</button></li>
-  <!--li><button class='btn' ng-click='doShare()'>Share</button></li-->
-</ul>
-<!-- -->
 <dialog id="new-dialog" ng-controller='NewController'>
-  <input type='text' ng-model='name' placeholder="Enter name" autofocus/>
-  <select ng-model='template' ng-options='template.fileName for template in templates track by template.fileName'></select>
-  <div>
-    <button class='btn' ng-click='doOK()'>OK</button>
+  <div class='modal-header'>
+      <button type="button" class="close" data-dismiss="modal" aria-hidden='true' ng-click='doCancel()'>&times;</button>
+    <h3>New Doodle</h3>
+  </div>
+  <div class='modal-body'>
+    <label class='text-muted'>Name:</label>
+    <input type='text' ng-model='name' placeholder="Enter name" autofocus/>
+    <label class='text-muted'>Template:</label>
+    <select ng-model='template' ng-options='template.fileName for template in templates track by template.fileName'></select>
+  </div>
+  <div class='modal-footer'>
+    <button class='btn btn-primary' ng-click='doOK()'>OK</button>
     <button class='btn' ng-click='doCancel()'>Cancel</button>
   </div>
 </dialog>
 <!-- -->
 <dialog id="open-dialog" ng-controller='OpenController'>
-  <p ng-repeat='document in documents track by document.fileName'>
-    <a href='#' ng-click='doOpen(document.fileName)'>{{document.fileName}}</a>
-    <a href='#' ng-click='doDelete(document.fileName)' class='delete'>[delete]</a>
-  </p>
-  <div>
+  <div class='modal-header'>
+      <button type="button" class="close" data-dismiss="modal" aria-hidden='true' ng-click='doCancel()'>&times;</button>
+    <h3>Open Doodle</h3>
+  </div>
+  <div class='modal-body'>
+    <p ng-repeat='document in documents track by document.fileName'>
+      <a href='#' ng-click='doOpen(document.fileName)'>{{document.fileName}}</a>
+      <a href='#' ng-click='doDelete(document.fileName)' class='delete'>[delete]</a>
+    </p>
+  </div>
+  <div class='modal-footer'>
     <button class='btn' ng-click='doCancel()'>Close</button>
   </div>
 </dialog>
 <!-- -->
 <dialog id="copy-dialog" ng-controller='CopyController'>
-  <input type='text' ng-model='name' placeholder="Enter name" autofocus/>
-  <div>
+  <div class='modal-header'>
+      <button type="button" class="close" data-dismiss="modal" aria-hidden='true' ng-click='doCancel()'>&times;</button>
+    <h3>Copy Doodle</h3>
+  </div>
+  <div class='modal-body'>
+    <label class='text-muted'>Name:</label>
+    <input type='text' ng-model='name' placeholder="Enter name" autofocus/>
+  </div>
+  <div class='modal-footer'>
     <button class='btn' ng-click='doOK()'>OK</button>
     <button class='btn' ng-click='doCancel()'>Cancel</button>
   </div>

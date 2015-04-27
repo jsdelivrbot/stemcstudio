@@ -1,6 +1,6 @@
 /// <reference path="../../typings/angularjs/angular.d.ts" />
 /// <reference path="AppScope.ts" />
-var app = angular.module('app', ['ngResource', 'ngRoute', 'ui.bootstrap', 'davinci.mathscript', 'underscore']);
+var app = angular.module('app', ['ngResource', 'ngRoute', 'davinci.mathscript', 'underscore']);
 
 app.run(['$rootScope', function(rootScope: AppScope) {
 

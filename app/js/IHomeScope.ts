@@ -17,9 +17,6 @@ interface IHomeScope extends angular.IScope {
   resumeText: string;
   toggleView: () => void;
 
-  isMenuVisible: boolean;
-  toggleMenu: () => void;
-
   doNew: () => void;
   doOpen: () => void;
   doSave: () => void;
