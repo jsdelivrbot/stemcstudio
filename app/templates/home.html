@@ -4,28 +4,28 @@
 <!-- -->
 <div id='code-editor' ng-show='isEditMode &amp;&amp; isShowingCode'></div>
 <!-- -->
-<div id='toolbar'>
-  <button class='button' title="" ng-click='showHTML()' ng-show='isEditMode'>HTML</button>
-  <button class='button' title="" ng-click='showCode()' ng-show='isEditMode'>Code</button>
-  <button class='button' title="" ng-click='toggleView()' ng-show='isEditMode'>{{resumeText}}</button>
-  <button class='button' title="" ng-click='toggleMode()'>{{toggleText}}</button>
-  <button class='button' title="" ng-click='toggleMenu()' ng-show='isEditMode'>☰</button>
-</div>
+<nav id='toolbar' class='navbar'>
+  <button class='btn' title="" ng-click='showHTML()' ng-show='isEditMode'>HTML</button>
+  <button class='btn' title="" ng-click='showCode()' ng-show='isEditMode'>Code</button>
+  <button class='btn' title="" ng-click='toggleView()' ng-show='isEditMode'>{{resumeText}}</button>
+  <button class='btn' title="" ng-click='toggleMode()'>{{toggleText}}</button>
+  <button class='btn' title="" ng-click='toggleMenu()' ng-show='isEditMode'>☰</button>
+</nav>
 <!-- -->
 <ul id='menu' class='menu' ng-show='isMenuVisible &amp;&amp; isEditMode' ng-controller='MenuController'>
-  <li><button class='button' ng-click='doNew()'>New</button></li>
-  <li><button class='button' ng-click='doOpen()' ng-show='isOpenEnabled()'>Open</button></li>
-  <li><button class='button' ng-click='doSave()'>Save</button></li>
-  <li><button class='button' ng-click='doCopy()'>Copy</button></li>
-  <!--li><button class='button' ng-click='doShare()'>Share</button></li-->
+  <li><button class='btn' ng-click='doNew()'>New</button></li>
+  <li><button class='btn' ng-click='doOpen()' ng-show='isOpenEnabled()'>Open</button></li>
+  <li><button class='btn' ng-click='doSave()'>Save</button></li>
+  <li><button class='btn' ng-click='doCopy()'>Copy</button></li>
+  <!--li><button class='btn' ng-click='doShare()'>Share</button></li-->
 </ul>
 <!-- -->
 <dialog id="new-dialog" ng-controller='NewController'>
   <input type='text' ng-model='name' placeholder="Enter name" autofocus/>
   <select ng-model='template' ng-options='template.fileName for template in templates track by template.fileName'></select>
   <div>
-    <button class='button' ng-click='doOK()'>OK</button>
-    <button class='button' ng-click='doCancel()'>Cancel</button>
+    <button class='btn' ng-click='doOK()'>OK</button>
+    <button class='btn' ng-click='doCancel()'>Cancel</button>
   </div>
 </dialog>
 <!-- -->
@@ -35,15 +35,15 @@
     <a href='#' ng-click='doDelete(document.fileName)' class='delete'>[delete]</a>
   </p>
   <div>
-    <button class='button' ng-click='doCancel()'>Close</button>
+    <button class='btn' ng-click='doCancel()'>Close</button>
   </div>
 </dialog>
 <!-- -->
 <dialog id="copy-dialog" ng-controller='CopyController'>
   <input type='text' ng-model='name' placeholder="Enter name" autofocus/>
   <div>
-    <button class='button' ng-click='doOK()'>OK</button>
-    <button class='button' ng-click='doCancel()'>Cancel</button>
+    <button class='btn' ng-click='doOK()'>OK</button>
+    <button class='btn' ng-click='doCancel()'>Cancel</button>
   </div>
 </dialog>
 <!-- -->
@@ -53,6 +53,6 @@
          readonly='readonly'
          onClick="this.setSelectionRange(0,this.value.length)"/>
   <div>
-    <button class='button' ng-click='doClose()'>Close</button>
+    <button class='btn' ng-click='doClose()'>Close</button>
   </div>
 </dialog>

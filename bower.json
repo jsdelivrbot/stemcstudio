@@ -1,6 +1,6 @@
 {
   "name": "davincidoodle",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "homepage": "https://github.com/geometryzen/davincidoodle",
   "authors": [
     "David Holmes <david.geo.holmes@gmail.com>",
@@ -25,6 +25,8 @@
     "davinci-blade": "~0.9.35",
     "davinci-mathscript": "~0.9.12",
     "davinci-visual": "~0.0.52",
-    "davinci-eight": "~0.9.15"
+    "davinci-eight": "~0.9.15",
+    "angular-bootstrap": "~0.12.1",
+    "bootstrap": "~3.3.4"
   }
 }
