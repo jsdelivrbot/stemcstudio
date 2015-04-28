@@ -1,9 +1,9 @@
 {
   "name": "davincidoodle",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Geometry Modeling in Code",
   "scripts": {
-    "start": "lineman run",
+    "start": "NODE_ENV=local nodemon web.js",
     "test": "lineman spec-ci"
   },
   "author": "David Holmes",

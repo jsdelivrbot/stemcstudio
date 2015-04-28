@@ -5,8 +5,10 @@
 /// <reference path="../INewParameters.ts" />
 /// <reference path="../IOpenParameters.ts" />
 /// <reference path="../ICopyParameters.ts" />
+/// <reference path="../typings/IDownloadParameters.ts" />
 /// <reference path="../ICodeInfo.ts" />
 /// <reference path="../IHomeScope.ts" />
+/// <reference path="../typings/cookie.ts" />
 var app = angular.module('app');
 
 var FWD_SLASH = '/';
@@ -183,7 +185,15 @@ var CODE_TEMPLATE_VISUAL = "" +
   "eight.animationRunner(tick, terminate, setUp, tearDown, window).start();\n";
 
 
-app.controller('HomeController', ['$scope', '$http', '$location','$routeParams', 'mathscript', function(scope: IHomeScope, http: angular.IHttpService, location: angular.ILocationService, routeParams, mathscript) {
+app.controller('HomeController', ['$scope', '$http', '$location','$routeParams', 'mathscript', 'GitHub', 'GitHubAuthManager', 'cookie', function(scope: IHomeScope, http: angular.IHttpService, location: angular.ILocationService, routeParams, mathscript, github, authManager, cookie: ICookieService) {
+
+    var GITHUB_TOKEN_COOKIE_NAME = 'github-token';
+
+    authManager.handleLoginCallback(function(err, token) {
+      if (err) {
+        scope.alert(err.message);
+      }
+    });
 
   // We'll store the transpiled code here.
   var outputFile: IOutputFile;
@@ -297,7 +307,7 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
   }
 
   scope.$watch('isViewVisible', function(newVal: boolean, oldVal, scope) {
-    save();
+    saveLocal();
   });
 
   function setEditMode(editMode: boolean) {
@@ -359,8 +369,90 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     dialog.showModal();
   };
 
+  scope.doDownload = function() {
+    var token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
+    github.getGists(token, function(err, gists: IGist[]) {
+      if (!err) {
+        scope.gists = gists;
+        var d: any = document.getElementById('download-dialog');
+        var dialog: HTMLDialogElement = d;
+        dialog.addEventListener('close', function() {
+          if (dialog.returnValue.length > 0) {
+            var response: IDownloadParameters = JSON.parse(dialog.returnValue);
+            github.getGist(token, response.gistId, function(err, gist) {
+              if (!err) {
+                var html = gist.files['index.html'].content;
+                var code = gist.files['script.ts'].content;
+                var codeInfo: ICodeInfo = {
+                  fileName: gist.description,
+                  autoupdate: false,
+                  html: gist.files['index.html'].content,
+                  code: gist.files['script.ts'].content
+                };
+                scope.documents.unshift(codeInfo);
+                setViewMode(false);
+                setCode(scope.documents[0].html, scope.documents[0].code);
+                setViewMode(scope.documents[0].autoupdate)
+              }
+              else {
+                scope.alert("Error attempting to download Gist");
+              }
+            });
+          }
+        });
+        dialog.showModal();
+      }
+      else {
+          scope.alert("Error attempting to download Gists");
+      }
+    });
+  };
+
   scope.doSave = function() {
-    save();
+    var token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
+    if (token) {
+      if (scope.documents[0].gistId) {
+        var data: any = {};
+        data.description = scope.documents[0].fileName;
+        data.public = true;
+        data.files = {};
+        data.files['doodle.json'] = {content: "{}\n"};
+        data.files['index.html'] = { content: scope.documents[0].html };
+        data.files['script.ts'] = { content: scope.documents[0].code };
+        github.patchGist(token, scope.documents[0].gistId, data, function(err, response, status, headers, config) {
+            if (err) {
+                alert("status: " + JSON.stringify(status));
+                alert("err: " + JSON.stringify(err));
+                alert("response: "+ JSON.stringify(response));
+            }
+            else {
+                scope.documents[0].gistId = response.id;
+            }
+        });
+      }
+      else {
+        var data: any = {};
+        data.description = scope.documents[0].fileName;
+        data.public = true;
+        data.files = {};
+        data.files['doodle.json'] = {content: "{}\n"};
+        data.files['index.html'] = { content: scope.documents[0].html };
+        data.files['script.ts'] = { content: scope.documents[0].code };
+        github.postGist(token, data, function(err, response, status, headers, config) {
+            if (err) {
+                alert("status: " + JSON.stringify(status));
+                alert("err: " + JSON.stringify(err));
+                alert("response: "+ JSON.stringify(response));
+            }
+            else {
+                scope.documents[0].gistId = response.id;
+            }
+        });
+      }
+    }
+    else {
+        scope.alert("You must be logged in.");
+    }
   };
 
   scope.doCopy = function() {
@@ -480,15 +572,15 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
 
   codeEditor.getSession().on('change', function(event) {
       // console.log("codeEditor session change: " + JSON.stringify(event));
-      save();
+      saveLocal();
   });
 
   htmlEditor.getSession().on('change', function(event) {
       // console.log("codeEditor session change: " + JSON.stringify(event));
-      save();
+      saveLocal();
   });
 
-  function save() {
+  function saveLocal() {
     if (scope.documents.length === 0) {
         createDocument({fileName:nextUntitled(), autoupdate: scope.isViewVisible, html: htmlEditor.getValue(), code: codeEditor.getValue()});
     }

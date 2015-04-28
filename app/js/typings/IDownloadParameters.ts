@@ -1,0 +1,3 @@
+interface IDownloadParameters {
+    gistId: string;
+}

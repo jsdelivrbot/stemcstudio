@@ -1,5 +1,9 @@
 interface ICodeInfo {
   /**
+   * The GitHub Gist identifier.
+   */
+  gistId?: string;
+  /**
    * 
    */
   fileName: string;
