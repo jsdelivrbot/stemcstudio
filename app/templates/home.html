@@ -47,24 +47,28 @@
   </div>
 </nav>
 <!-- -->
-<dialog id="new-dialog" ng-controller='NewController'>
+<dialog id="new-dialog" ng-controller='NewController' class='modal-dialog'>
   <div class='modal-header'>
       <button type="button" class="close" data-dismiss="modal" aria-hidden='true' ng-click='doCancel()'>&times;</button>
-    <h3>New Doodle</h3>
+    <h3>Create a New Doodle</h3>
   </div>
-  <div class='modal-body'>
-    <label class='text-muted'>Name:</label>
-    <input type='text' ng-model='name' placeholder="Enter name" autofocus/>
-    <label class='text-muted'>Template:</label>
-    <select ng-model='template' ng-options='template.fileName for template in templates track by template.fileName'></select>
-  </div>
-  <div class='modal-footer'>
-    <button class='btn btn-primary' ng-click='doOK()'>OK</button>
-    <button class='btn' ng-click='doCancel()'>Cancel</button>
-  </div>
+  <form>
+    <fieldset>
+      <div class='modal-body'>
+        <label class='text-muted'>Doodle name:</label>
+        <input type='text' ng-model='name' placeholder="Enter name" autofocus/>
+        <label class='text-muted'>Template:</label>
+        <select ng-model='template' ng-options='template.fileName for template in templates track by template.fileName'></select>
+      </div>
+      <div class='modal-footer'>
+        <button class='btn' ng-click='doCancel()'>Close</button>
+        <button class='btn btn-primary' ng-click='doOK()'>Create doodle</button>
+      </div>
+    </fieldset>
+  </form>
 </dialog>
 <!-- -->
-<dialog id="open-dialog" ng-controller='OpenController'>
+<dialog id="open-dialog" ng-controller='OpenController' class='modal-dialog'>
   <div class='modal-header'>
       <button type="button" class="close" data-dismiss="modal" aria-hidden='true' ng-click='doCancel()'>&times;</button>
     <h3>Open Doodle</h3>
@@ -80,18 +84,18 @@
   </div>
 </dialog>
 <!-- -->
-<dialog id="copy-dialog" ng-controller='CopyController'>
+<dialog id="copy-dialog" ng-controller='CopyController' class='modal-dialog'>
   <div class='modal-header'>
       <button type="button" class="close" data-dismiss="modal" aria-hidden='true' ng-click='doCancel()'>&times;</button>
-    <h3>Copy Doodle</h3>
+    <h3>Copy a Doodle</h3>
   </div>
   <div class='modal-body'>
     <label class='text-muted'>Name:</label>
     <input type='text' ng-model='name' placeholder="Enter name" autofocus/>
   </div>
   <div class='modal-footer'>
-    <button class='btn' ng-click='doOK()'>OK</button>
-    <button class='btn' ng-click='doCancel()'>Cancel</button>
+    <button class='btn' ng-click='doCancel()'>Close</button>
+    <button class='btn btn-primary' ng-click='doOK()'>Copy doodle</button>
   </div>
 </dialog>
 <!-- -->
