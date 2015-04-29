@@ -1,7 +1,7 @@
-/// <reference path="../../typings/angularjs/angular.d.ts" />
+/// <reference path="../../../typings/angularjs/angular.d.ts" />
 /// <reference path="AppScope.ts" />
-/// <reference path="ICodeInfo.ts" />
-/// <reference path="typings/IGist.ts" />
+/// <reference path="IDoodle.ts" />
+/// <reference path="IGist.ts" />
 
 // Define the interface for scope for type-safety.
 // It should only contain the API required for the view.
@@ -21,15 +21,16 @@ interface IHomeScope extends AppScope {
 
   doNew: () => void;
   doOpen: () => void;
-  doSave: () => void;
   doCopy: () => void;
+  doProperties(): void;
   doShare: () => void;
   doHelp: () => void;
 
   doDownload(): void;
+  doUpload(): void;
 
-  documents: ICodeInfo[];
-  templates: ICodeInfo[];
+  doodles: IDoodle[];
+  templates: IDoodle[];
   gists: IGist[];
 
   shareURL: () => string;

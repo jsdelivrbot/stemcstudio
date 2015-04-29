@@ -5,10 +5,13 @@
 /// <reference path="../INewParameters.ts" />
 /// <reference path="../IOpenParameters.ts" />
 /// <reference path="../ICopyParameters.ts" />
+/// <reference path="../typings/IDoodleParameters.ts" />
 /// <reference path="../typings/IDownloadParameters.ts" />
-/// <reference path="../ICodeInfo.ts" />
-/// <reference path="../IHomeScope.ts" />
+/// <reference path="../typings/IDoodle.ts" />
+/// <reference path="../typings/IDoodleConfig.ts" />
+/// <reference path="../typings/IHomeScope.ts" />
 /// <reference path="../typings/cookie.ts" />
+/// <reference path="../typings/UuidService.ts" />
 var app = angular.module('app');
 
 var FWD_SLASH = '/';
@@ -185,7 +188,7 @@ var CODE_TEMPLATE_VISUAL = "" +
   "eight.animationRunner(tick, terminate, setUp, tearDown, window).start();\n";
 
 
-app.controller('HomeController', ['$scope', '$http', '$location','$routeParams', 'mathscript', 'GitHub', 'GitHubAuthManager', 'cookie', function(scope: IHomeScope, http: angular.IHttpService, location: angular.ILocationService, routeParams, mathscript, github, authManager, cookie: ICookieService) {
+app.controller('HomeController', ['$scope', '$http', '$location','$routeParams', 'mathscript', 'GitHub', 'GitHubAuthManager', 'cookie', 'uuid4', function(scope: IHomeScope, http: angular.IHttpService, location: angular.ILocationService, routeParams, mathscript, github, authManager, cookie: ICookieService, uuid4: UuidService) {
 
     var GITHUB_TOKEN_COOKIE_NAME = 'github-token';
 
@@ -201,85 +204,92 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
   scope.isShowingCode = true;
 
   scope.templates = [
-    {fileName: "Blank",    autoupdate: false, html: HTML_TEMPLATE_BASIC, code: CODE_TEMPLATE_BLANK},
-    {fileName: "three.js", autoupdate: true,  html: HTML_TEMPLATE_BASIC, code: CODE_TEMPLATE_THREEJS},
-    {fileName: "visual",   autoupdate: true,  html: HTML_TEMPLATE_BASIC, code: CODE_TEMPLATE_VISUAL}
+    {uuid: "", description: "Blank",    autoupdate: false, html: HTML_TEMPLATE_BASIC, code: CODE_TEMPLATE_BLANK,   dependencies: []},
+    {uuid: "", description: "three.js", autoupdate: true,  html: HTML_TEMPLATE_BASIC, code: CODE_TEMPLATE_THREEJS, dependencies: []},
+    {uuid: "", description: "visual",   autoupdate: true,  html: HTML_TEMPLATE_BASIC, code: CODE_TEMPLATE_VISUAL,  dependencies: []}
   ];
 
-  scope.documents = localStorage[STORAGE_KEY] !== undefined ? JSON.parse(localStorage[STORAGE_KEY]) : [];
+  scope.doodles = localStorage[STORAGE_KEY] !== undefined ? JSON.parse(localStorage[STORAGE_KEY]) : [];
 
   var syncStore = function() {
-    localStorage[STORAGE_KEY] = JSON.stringify(scope.documents);
+    localStorage[STORAGE_KEY] = JSON.stringify(scope.doodles);
   };
 
-  var createProject = function(name: string, template: ICodeInfo) {
-    var document = createDocument(template, name);
+  var createProject = function(description: string, template: IDoodle) {
+    var document = createDocument(template, description);
     syncStore();
-    changeProject(document.fileName);
+    changeProject(document.uuid);
   };
   
-  var createDocument = function(template: ICodeInfo, name?: string): ICodeInfo {
+  var createDocument = function(template: IDoodle, description?: string): IDoodle {
 
-    if (!name) {
-      name = nextUntitled();
+    if (!description) {
+      description = nextUntitled();
     }
-    // FIXME: We're assuming that the name of the thing does not already exist.
+    // FIXME: We're assuming that the description of the doodle does not already exist.
     // FIXME: We must keep it unique.
-    // Add a new document to the beginning of the array of documents.
-    var document: ICodeInfo = {fileName: name, autoupdate: template.autoupdate, html: template.html, code: template.code};
-    scope.documents.unshift(document);
+    // Add a new document to the beginning of the array of doodles.
+    var document: IDoodle = {
+      uuid: uuid4.generate(),
+      description: description,
+      autoupdate: template.autoupdate,
+      html: template.html,
+      code: template.code,
+      dependencies: []
+    };
+    scope.doodles.unshift(document);
     return document;
   };
 
-  var changeProject = function(fileName: string) {
-    var new_documents = [];
+  var changeProject = function(uuid: string) {
+    var doodles: IDoodle[] = [];
 
     var i = 0, found;
-    while (i < scope.documents.length) {
-      if (scope.documents[i].fileName == fileName) {
-        found = scope.documents[i];
+    while (i < scope.doodles.length) {
+      if (scope.doodles[i].uuid === uuid) {
+        found = scope.doodles[i];
       }
       else {
-        new_documents.push(scope.documents[i]);
+        doodles.push(scope.doodles[i]);
       }
       i++;
     }
 
     if ( ! found ) return;
 
-    new_documents.unshift(found);
-    scope.documents = new_documents;
+    doodles.unshift(found);
+    scope.doodles = doodles;
     setViewMode(false);
-    setCode(scope.documents[0].html, scope.documents[0].code);
-    setViewMode(scope.documents[0].autoupdate)
+    setCode(scope.doodles[0].html, scope.doodles[0].code);
+    setViewMode(scope.doodles[0].autoupdate)
   };
 
-  var deleteProject = function(fileName) {
-    var new_documents = [];
+  var deleteDoodle = function(uuid: string) {
+    var doodles: IDoodle[] = [];
 
     var i = 0, found;
-    while (i < scope.documents.length) {
-      if (scope.documents[i].fileName == fileName) {
-        found = scope.documents[i];
+    while (i < scope.doodles.length) {
+      if (scope.doodles[i].uuid === uuid) {
+        found = scope.doodles[i];
       }
       else {
-        new_documents.push(scope.documents[i]);
+        doodles.push(scope.doodles[i]);
       }
       i++;
     }
 
     if ( ! found ) return;
 
-    scope.documents = new_documents;
+    scope.doodles = doodles;
     syncStore();
   };
 
   var nextUntitled = function() {
-    var nums = scope.documents.filter(function(doc) {
-        return typeof doc.fileName.match(/Untitled/) !== 'null';
+    var nums = scope.doodles.filter(function(doodle: IDoodle) {
+        return typeof doodle.description.match(/Untitled/) !== 'null';
       }).
-      map(function(doc) {
-        return parseInt(doc.fileName.replace(/Untitled\s*/, ''), 10);
+      map(function(doodle: IDoodle) {
+        return parseInt(doodle.description.replace(/Untitled\s*/, ''), 10);
       }).
       filter(function (num) {
         return !isNaN(num);
@@ -337,14 +347,14 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     codeEditor.focus();
     codeEditor.gotoLine(0, 0);
   }
-  scope.doNew = function() {
 
+  scope.doNew = function() {
     var d: any = document.getElementById('new-dialog');
     var dialog: HTMLDialogElement = d;
     dialog.addEventListener('close', function() {
       if (dialog.returnValue.length > 0) {
         var response: INewParameters = JSON.parse(dialog.returnValue);
-        createProject(response.name, response.template);
+        createProject(response.description, response.template);
         scope.showCode();
       }
     });
@@ -358,12 +368,38 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
       if (dialog.returnValue.length > 0) {
         var response: IOpenParameters = JSON.parse(dialog.returnValue);
         if (response.byeBye) {
-          deleteProject(response.fileName);
+          deleteDoodle(response.uuid);
         }
         else {
-          changeProject(response.fileName);
+          changeProject(response.uuid);
           scope.showCode();
         }
+      }
+    });
+    dialog.showModal();
+  };
+
+  scope.doCopy = function() {
+    var d: any = document.getElementById('copy-dialog');
+    var dialog: HTMLDialogElement = d;
+    dialog.addEventListener('close', function() {
+      if (dialog.returnValue.length > 0) {
+        var response: ICopyParameters = JSON.parse(dialog.returnValue);
+        createProject(response.description, scope.doodles[0]);
+        scope.showCode();
+      }
+    });
+    dialog.showModal();
+  };
+
+  scope.doProperties = function() {
+    var d: any = document.getElementById('doodle-dialog');
+    var dialog: HTMLDialogElement = d;
+    dialog.addEventListener('close', function() {
+      if (dialog.returnValue.length > 0) {
+        var response: IDoodleParameters = JSON.parse(dialog.returnValue);
+        createProject(response.description, scope.doodles[0]);
+        scope.showCode();
       }
     });
     dialog.showModal();
@@ -381,18 +417,23 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
             var response: IDownloadParameters = JSON.parse(dialog.returnValue);
             github.getGist(token, response.gistId, function(err, gist) {
               if (!err) {
+                var config: IDoodleConfig = JSON.parse(gist.files['doodle.json'].content);
                 var html = gist.files['index.html'].content;
                 var code = gist.files['script.ts'].content;
-                var codeInfo: ICodeInfo = {
-                  fileName: gist.description,
+                var codeInfo: IDoodle = {
+                  gistId: response.gistId,
+                  uuid: config.uuid,
+                  description: gist.description,
                   autoupdate: false,
                   html: gist.files['index.html'].content,
-                  code: gist.files['script.ts'].content
+                  code: gist.files['script.ts'].content,
+                  dependencies: []
                 };
-                scope.documents.unshift(codeInfo);
+                deleteDoodle(config.uuid);
+                scope.doodles.unshift(codeInfo);
                 setViewMode(false);
-                setCode(scope.documents[0].html, scope.documents[0].code);
-                setViewMode(scope.documents[0].autoupdate)
+                setCode(scope.doodles[0].html, scope.doodles[0].code);
+                setViewMode(scope.doodles[0].autoupdate)
               }
               else {
                 scope.alert("Error attempting to download Gist");
@@ -408,36 +449,44 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     });
   };
 
-  scope.doSave = function() {
+  /**
+   * Maps the doodle to the format required for GitHub.
+   */
+  function configuration(doodle: IDoodle): IDoodleConfig {
+    return {
+      uuid: doodle.uuid
+    };
+  }
+
+  function doodleToGist(doodle: IDoodle): IGist {
+    var gist: IGist = {
+      description: scope.doodles[0].description,
+      public: true,
+      files: {}
+    };
+    gist.files['doodle.json'] = {content: JSON.stringify(configuration(scope.doodles[0]))};
+    gist.files['index.html'] = { content: scope.doodles[0].html };
+    gist.files['script.ts'] = { content: scope.doodles[0].code };
+    return gist;
+  }
+
+  scope.doUpload = function() {
     var token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
     if (token) {
-      if (scope.documents[0].gistId) {
-        var data: any = {};
-        data.description = scope.documents[0].fileName;
-        data.public = true;
-        data.files = {};
-        data.files['doodle.json'] = {content: "{}\n"};
-        data.files['index.html'] = { content: scope.documents[0].html };
-        data.files['script.ts'] = { content: scope.documents[0].code };
-        github.patchGist(token, scope.documents[0].gistId, data, function(err, response, status, headers, config) {
+      var data = doodleToGist(scope.doodles[0]);
+      if (scope.doodles[0].gistId) {
+        github.patchGist(token, scope.doodles[0].gistId, data, function(err, response, status, headers, config) {
             if (err) {
                 alert("status: " + JSON.stringify(status));
                 alert("err: " + JSON.stringify(err));
                 alert("response: "+ JSON.stringify(response));
             }
             else {
-                scope.documents[0].gistId = response.id;
+                scope.doodles[0].gistId = response.id;
             }
         });
       }
       else {
-        var data: any = {};
-        data.description = scope.documents[0].fileName;
-        data.public = true;
-        data.files = {};
-        data.files['doodle.json'] = {content: "{}\n"};
-        data.files['index.html'] = { content: scope.documents[0].html };
-        data.files['script.ts'] = { content: scope.documents[0].code };
         github.postGist(token, data, function(err, response, status, headers, config) {
             if (err) {
                 alert("status: " + JSON.stringify(status));
@@ -445,7 +494,7 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
                 alert("response: "+ JSON.stringify(response));
             }
             else {
-                scope.documents[0].gistId = response.id;
+                scope.doodles[0].gistId = response.id;
             }
         });
       }
@@ -453,19 +502,6 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     else {
         scope.alert("You must be logged in.");
     }
-  };
-
-  scope.doCopy = function() {
-    var d: any = document.getElementById('copy-dialog');
-    var dialog: HTMLDialogElement = d;
-    dialog.addEventListener('close', function() {
-      if (dialog.returnValue.length > 0) {
-        var response: ICopyParameters = JSON.parse(dialog.returnValue);
-        createProject(response.name, scope.documents[0]);
-        scope.showCode();
-      }
-    });
-    dialog.showModal();
   };
 
   scope.shareURL = function() {
@@ -558,9 +594,9 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
   htmlEditor.setDisplayIndentGuides(false);
 
   // Now that we have both editors created, configure the scope.
-  if (scope.documents.length > 0) {
-    htmlEditor.changeFile(scope.documents[0].html, 'app.html');
-    codeEditor.changeFile(scope.documents[0].code, 'app.ts');
+  if (scope.doodles.length > 0) {
+    htmlEditor.changeFile(scope.doodles[0].html, 'app.html');
+    codeEditor.changeFile(scope.doodles[0].code, 'app.ts');
   }
   else {
     htmlEditor.changeFile(HTML_TEMPLATE_BASIC,  'app.html');
@@ -581,14 +617,20 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
   });
 
   function saveLocal() {
-    if (scope.documents.length === 0) {
-        createDocument({fileName:nextUntitled(), autoupdate: scope.isViewVisible, html: htmlEditor.getValue(), code: codeEditor.getValue()});
+    if (scope.doodles.length === 0) {
+        createDocument({
+          uuid: uuid4.generate(),
+          description:nextUntitled(),
+          autoupdate: scope.isViewVisible,
+          html: htmlEditor.getValue(),
+          code: codeEditor.getValue(),
+          dependencies: []});
     }
     else {
       // TODO: This might be called updateDocument()
-      scope.documents[0].html = htmlEditor.getValue();
-      scope.documents[0].code = codeEditor.getValue();
-      scope.documents[0].autoupdate = scope.isViewVisible;
+      scope.doodles[0].html = htmlEditor.getValue();
+      scope.doodles[0].code = codeEditor.getValue();
+      scope.doodles[0].autoupdate = scope.isViewVisible;
     }
     syncStore();
   }
@@ -618,7 +660,7 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
         var visual  = "<script src='" + DOMAIN + "/js/" + "visual.min.js'></script>\n";
         var scripts = [blade, eight, maths, three, visual].join("");
 
-        var html = scope.documents[0].html;
+        var html = scope.doodles[0].html;
         html = html.replace(/<!-- SCRIPTS-MARKER -->/, scripts);
         html = html.replace(/<!-- CODE-MARKER -->/, mathscript.transpile(outputFile.text));
 

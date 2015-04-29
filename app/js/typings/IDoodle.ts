@@ -1,4 +1,8 @@
-interface ICodeInfo {
+interface IDoodle {
+  /**
+   * Every doodle gets a UUID to determine uniqueness.
+   */
+   uuid: string;
   /**
    * The GitHub Gist identifier.
    */
@@ -6,7 +10,7 @@ interface ICodeInfo {
   /**
    * 
    */
-  fileName: string;
+  description: string;
   /**
    * 
    */
@@ -19,4 +23,8 @@ interface ICodeInfo {
    * 
    */
   code: string;
+  /**
+   * 
+   */
+  dependencies: IDependency[];
 }

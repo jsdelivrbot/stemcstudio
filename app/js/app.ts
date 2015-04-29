@@ -1,7 +1,7 @@
 /// <reference path="../../typings/angularjs/angular.d.ts" />
-/// <reference path="AppScope.ts" />
+/// <reference path="typings/AppScope.ts" />
 /// <reference path="typings/cookie.ts" />
-var app = angular.module('app', ['ngResource', 'ngRoute', 'davinci.mathscript', 'underscore']);
+var app = angular.module('app', ['ngResource', 'ngRoute', 'davinci.mathscript', 'underscore', 'uuid4']);
 
 app.run(['$rootScope', '$window', 'cookie', function(rootScope: AppScope, $window: Window, cookie: ICookieService) {
 

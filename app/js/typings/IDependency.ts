@@ -1,0 +1,3 @@
+interface IDependency {
+  name: string;
+}

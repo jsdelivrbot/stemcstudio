@@ -8,9 +8,9 @@
   <div class='container-fluid'>
     <div class='navbar-header'>
       <a class='navbar-brand' href='#' ng-click='toggleMode()'>
-        <span class="glyphicon glyphicon-film" aria-hidden="true" ng-show='isEditMode'></span>
-        <span class="glyphicon glyphicon-edit" aria-hidden="true" ng-hide='isEditMode'></span>
-        {{documents[0].fileName}}
+        <!--span class="glyphicon glyphicon-film" aria-hidden="true" ng-show='isEditMode'></span-->
+        <!--span class="glyphicon glyphicon-edit" aria-hidden="true" ng-hide='isEditMode'></span-->
+        {{doodles[0].description}}
       </a>
     </div>
     <div class='collapse navbar-collapse' ng-show='isEditMode'>
@@ -32,17 +32,19 @@
             <span class="glyphicon glyphicon-hdd" aria-hidden='true'></span>
           </a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="#" ng-click='doNew()'>New</a></li>
             <li>
-              <a href="#" ng-click='doOpen()'>
-                <span class="glyphicon glyphicon-open" aria-hidden='true'></span>
-                Open
-              </a>
+              <a href="#" ng-click='doNew()'>New</a>
             </li>
-            <li><a href="#" ng-click='doCopy()'>Copy</a></li>
-            <!--
-            <li><a href="#">Share</a></li>
-            -->
+            <li>
+              <a href="#" ng-click='doOpen()'>Open</a>
+            </li>
+            <li>
+              <a href="#" ng-click='doCopy()'>Copy</a>
+            </li>
+            <li class='divider'></li>
+            <li>
+              <a href="#" ng-click='doProperties()'>Properties</a>
+            </li>
           </ul>
         </li>
         <li class='dropdown' ng-show='isEditMode'>
@@ -64,7 +66,7 @@
               </a>
             </li>
             <li>
-              <a href="#" ng-click='doSave()' ng-show='isLoggedIn()'>
+              <a href="#" ng-click='doUpload()' ng-show='isLoggedIn()'>
                 <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
                 Upload
               </a>
@@ -91,10 +93,9 @@
   <form>
     <fieldset>
       <div class='modal-body'>
-        <label class='text-muted'>Doodle name:</label>
-        <input type='text' ng-model='name' placeholder="Enter name" autofocus/>
+        <input type='text' ng-model='description' placeholder="Enter description" autofocus/>
         <label class='text-muted'>Template:</label>
-        <select ng-model='template' ng-options='template.fileName for template in templates track by template.fileName'></select>
+        <select ng-model='template' ng-options='template.description for template in templates track by template.uuid'></select>
       </div>
       <div class='modal-footer'>
         <button class='btn' ng-click='doCancel()'>Close</button>
@@ -110,9 +111,9 @@
     <h3>Open Doodle</h3>
   </div>
   <div class='modal-body'>
-    <p ng-repeat='document in documents track by document.fileName'>
-      <a href='#' ng-click='doOpen(document.fileName)'>{{document.fileName}}</a>
-      <a href='#' ng-click='doDelete(document.fileName)' class='delete'>[delete]</a>
+    <p ng-repeat='doodle in doodles track by doodle.uuid'>
+      <a href='#' ng-click='doOpen(doodle.uuid)'>{{doodle.description}}</a>
+      <!--a href='#' ng-click='doDelete(doodle.uuid)' class='delete'>[delete]</a-->
     </p>
   </div>
   <div class='modal-footer'>
@@ -123,11 +124,10 @@
 <dialog id="copy-dialog" ng-controller='CopyController' class='modal-dialog'>
   <div class='modal-header'>
       <button type="button" class="close" data-dismiss="modal" aria-hidden='true' ng-click='doCancel()'>&times;</button>
-    <h3>Copy a Doodle</h3>
+    <h3>Copy Doodle</h3>
   </div>
   <div class='modal-body'>
-    <label class='text-muted'>Name:</label>
-    <input type='text' ng-model='name' placeholder="Enter name" autofocus/>
+    <input type='text' ng-model='description' placeholder="Enter description" autofocus/>
   </div>
   <div class='modal-footer'>
     <button class='btn' ng-click='doCancel()'>Close</button>
@@ -154,6 +154,18 @@
     <p ng-repeat='gist in gists track by gist.id'>
       <a href='#' ng-click='doDownload(gist.id)'>{{gist.description}}</a>
     </p>
+  </div>
+  <div class='modal-footer'>
+    <button class='btn' ng-click='doCancel()'>Close</button>
+  </div>
+</dialog>
+<!-- -->
+<dialog id="doodle-dialog" ng-controller='DoodleController' class='modal-dialog'>
+  <div class='modal-header'>
+      <button type="button" class="close" data-dismiss="modal" aria-hidden='true' ng-click='doCancel()'>&times;</button>
+    <h3>Doodle</h3>
+  </div>
+  <div class='modal-body'>
   </div>
   <div class='modal-footer'>
     <button class='btn' ng-click='doCancel()'>Close</button>

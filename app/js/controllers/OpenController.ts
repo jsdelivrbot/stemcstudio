@@ -5,8 +5,8 @@ var app = angular.module('app');
 
 interface IOpenScope extends angular.IScope {
   doCancel: () => void;
-  doOpen: (fileName: string) => void;
-  doDelete: (fileName: string) => void;
+  doOpen: (uuid: string) => void;
+  doDelete: (uuid: string) => void;
 }
 
 app.controller('OpenController', ['$scope', function(scope: IOpenScope) {
@@ -14,13 +14,13 @@ app.controller('OpenController', ['$scope', function(scope: IOpenScope) {
   var d: any = document.getElementById('open-dialog');
   var dialog: HTMLDialogElement = d;
 
-  scope.doOpen = function(fileName: string) {
-    var response: IOpenParameters = {fileName: fileName, byeBye: false};
+  scope.doOpen = function(uuid: string) {
+    var response: IOpenParameters = {uuid: uuid, byeBye: false};
     dialog.close(JSON.stringify(response));
   }
 
-  scope.doDelete = function(fileName: string) {
-    var response: IOpenParameters = {fileName: fileName, byeBye: true};
+  scope.doDelete = function(uuid: string) {
+    var response: IOpenParameters = {uuid: uuid, byeBye: true};
     dialog.close(JSON.stringify(response));
   }
 

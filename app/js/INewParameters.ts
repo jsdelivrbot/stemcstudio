@@ -1,4 +1,4 @@
 interface INewParameters {
-  name: string;
-  template: ICodeInfo;
+  description: string;
+  template: IDoodle;
 }

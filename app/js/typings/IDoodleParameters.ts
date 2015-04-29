@@ -1,0 +1,3 @@
+interface IDoodleParameters {
+  description: string;
+}

@@ -1,6 +1,6 @@
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../HTMLDialogElement.ts" />
-/// <reference path="../IHomeScope.ts" />
+/// <reference path="../typings/IHomeScope.ts" />
 var app = angular.module('app');
 
 interface IShareScope extends IHomeScope {

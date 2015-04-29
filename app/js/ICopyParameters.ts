@@ -1,3 +1,3 @@
 interface ICopyParameters {
-    name: string;
+  description: string;
 }

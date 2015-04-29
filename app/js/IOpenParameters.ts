@@ -1,4 +1,4 @@
 interface IOpenParameters {
-    fileName: string;
+    uuid: string;
     byeBye: boolean;
 }
