@@ -1,6 +1,7 @@
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../../../typings/deuce/deuce.d.ts" />
 /// <reference path="../../../typings/davinci-mathscript/davinci-mathscript.d.ts" />
+/// <reference path="../../../typings/google-analytics/ga.d.ts" />
 /// <reference path="../HTMLDialogElement.ts" />
 /// <reference path="../INewParameters.ts" />
 /// <reference path="../IOpenParameters.ts" />
@@ -188,7 +189,10 @@ var CODE_TEMPLATE_VISUAL = "" +
   "eight.animationRunner(tick, terminate, setUp, tearDown, window).start();\n";
 
 
-app.controller('HomeController', ['$scope', '$http', '$location','$routeParams', 'mathscript', 'GitHub', 'GitHubAuthManager', 'cookie', 'uuid4', function(scope: IHomeScope, http: angular.IHttpService, location: angular.ILocationService, routeParams, mathscript, github, authManager, cookie: ICookieService, uuid4: UuidService) {
+app.controller('HomeController', ['$scope', '$http', '$location','$routeParams', 'mathscript', 'GitHub', 'GitHubAuthManager', 'cookie', 'uuid4', 'ga', function(scope: IHomeScope, http: angular.IHttpService, location: angular.ILocationService, routeParams, mathscript, github, authManager, cookie: ICookieService, uuid4: UuidService, ga: UniversalAnalytics.ga) {
+
+    ga('create', 'UA-41504069-2', 'auto');
+    ga('send', 'pageview');
 
     var GITHUB_TOKEN_COOKIE_NAME = 'github-token';
 
@@ -317,12 +321,7 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
   var setViewMode = function(isViewVisible: boolean) {
     scope.isViewVisible = isViewVisible;
     scope.resumeText = isViewVisible ? TEXT_VIEW_SUSPEND : TEXT_VIEW_RESUME;
-    try {
-      update();
-    }
-    catch(e) {
-      console.log(e);
-    }
+    update();
   }
 
   scope.$watch('isViewVisible', function(newVal: boolean, oldVal, scope) {
@@ -335,29 +334,34 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     setViewMode(!editMode);
   }
 
-  scope.toggleMode = function() {
+  scope.toggleMode = function(label?: string, value?: number) {
+    ga('send', 'event', 'doodle', 'toggleMode', label, value);
     setEditMode(!scope.isEditMode);
   };
 
-  scope.toggleView = function() {
+  scope.toggleView = function(label?: string, value?: number) {
+    ga('send', 'event', 'doodle', 'toggleView', label, value);
     setViewMode(!scope.isViewVisible);
   };
 
-  scope.showHTML = function() {
+  scope.showHTML = function(label?: string, value?: number) {
+    ga('send', 'event', 'doodle', 'showHTML', label, value);
     scope.isShowingHTML = true;
     scope.isShowingCode = false;
     htmlEditor.focus();
     htmlEditor.gotoLine(0, 0);
   }
 
-  scope.showCode = function() {
+  scope.showCode = function(label?: string, value?: number) {
+    ga('send', 'event', 'doodle', 'showCode', label, value);
     scope.isShowingHTML = false;
     scope.isShowingCode = true;
     codeEditor.focus();
     codeEditor.gotoLine(0, 0);
   }
 
-  scope.doNew = function() {
+  scope.doNew = function(label?: string, value?: number) {
+    ga('send', 'event', 'doodle', 'new', label, value);
     var d: any = document.getElementById('new-dialog');
     var dialog: HTMLDialogElement = d;
     dialog.addEventListener('close', function() {
@@ -370,7 +374,8 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     dialog.showModal();
   };
 
-  scope.doOpen = function() {
+  scope.doOpen = function(label?: string, value?: number) {
+    ga('send', 'event', 'doodle', 'open', label, value);
     var d: any = document.getElementById('open-dialog');
     var dialog: HTMLDialogElement = d;
     dialog.addEventListener('close', function() {
@@ -388,7 +393,8 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     dialog.showModal();
   };
 
-  scope.doCopy = function() {
+  scope.doCopy = function(label?: string, value?: number) {
+    ga('send', 'event', 'doodle', 'copy', label, value);
     var d: any = document.getElementById('copy-dialog');
     var dialog: HTMLDialogElement = d;
     dialog.addEventListener('close', function() {
@@ -401,7 +407,8 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     dialog.showModal();
   };
 
-  scope.doProperties = function() {
+  scope.doProperties = function(label?: string, value?: number) {
+    ga('send', 'event', 'doodle', 'properties', label, value);
     var d: any = document.getElementById('doodle-dialog');
     var dialog: HTMLDialogElement = d;
     scope.dependencies = scope.doodles[0].dependencies;
@@ -415,7 +422,8 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     dialog.showModal();
   };
 
-  scope.doDownload = function() {
+  scope.doDownload = function(label?: string, value?: number) {
+    ga('send', 'event', 'doodle', 'download', label, value);
     var token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
     github.getGists(token, function(err, gists: IGist[]) {
       if (!err) {
@@ -450,6 +458,9 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
               }
             });
           }
+          else {
+
+          }
         });
         dialog.showModal();
       }
@@ -481,7 +492,8 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     return gist;
   }
 
-  scope.doUpload = function() {
+  scope.doUpload = function(label?: string, value?: number) {
+    ga('send', 'event', 'doodle', 'upload', label, value);
     var token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
     if (token) {
       var data = doodleToGist(scope.doodles[0]);
@@ -581,17 +593,12 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
   });
 
   codeEditor.getSession().on('outputFiles', function(event) {
-    try {
-      var outputFiles: IOutputFile[] = event.data;
-      outputFiles.forEach(function(file) {
-        var text = file.text;
-        outputFile = file;
-        update();
-      });
-    }
-    catch(e) {
-      console.log(e);
-    }
+    var outputFiles: IOutputFile[] = event.data;
+    outputFiles.forEach(function(file) {
+      var text = file.text;
+      outputFile = file;
+      update();
+    });
   });
 
   var htmlEditor = ace.edit('html-editor', workspace);
