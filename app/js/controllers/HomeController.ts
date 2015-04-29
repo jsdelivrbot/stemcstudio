@@ -209,6 +209,15 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     {uuid: "", description: "visual",   autoupdate: true,  html: HTML_TEMPLATE_BASIC, code: CODE_TEMPLATE_VISUAL,  dependencies: []}
   ];
 
+  scope.options = [
+    {name: 'angular', version: '1.4.0',  js: 'angular.min.js', dts: 'angular.d.ts'},
+    {name: 'blade',   version: '0.9.35', js: 'blade.min.js',   dts: 'blade.d.ts'},
+    {name: 'eight',   version: '0.9.15', js: 'eight.min.js',   dts: 'eight.d.ts'},
+    {name: 'maths',   version: '0.9.12', js: 'maths.min.js',   dts: 'maths.d.ts'},
+    {name: 'three',   version: '0.0.71', js: 'three.min.js',   dts: 'three.d.ts'},
+    {name: 'visual',  version: '0.0.52', js: 'visual.min.js',  dts: 'visual.d.ts'}
+  ];
+
   scope.doodles = localStorage[STORAGE_KEY] !== undefined ? JSON.parse(localStorage[STORAGE_KEY]) : [];
 
   var syncStore = function() {
@@ -395,10 +404,11 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
   scope.doProperties = function() {
     var d: any = document.getElementById('doodle-dialog');
     var dialog: HTMLDialogElement = d;
+    scope.dependencies = scope.doodles[0].dependencies;
     dialog.addEventListener('close', function() {
       if (dialog.returnValue.length > 0) {
         var response: IDoodleParameters = JSON.parse(dialog.returnValue);
-        createProject(response.description, scope.doodles[0]);
+        scope.doodles[0].dependencies = response.dependencies;
         scope.showCode();
       }
     });
@@ -427,7 +437,7 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
                   autoupdate: false,
                   html: gist.files['index.html'].content,
                   code: gist.files['script.ts'].content,
-                  dependencies: []
+                  dependencies: config.dependencies
                 };
                 deleteDoodle(config.uuid);
                 scope.doodles.unshift(codeInfo);
@@ -454,7 +464,8 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
    */
   function configuration(doodle: IDoodle): IDoodleConfig {
     return {
-      uuid: doodle.uuid
+      uuid: doodle.uuid,
+      dependencies: doodle.dependencies
     };
   }
 
@@ -524,7 +535,7 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
 
   var workspace = ace.workspace();
 
-  var fileNames = ['lib.d.ts', 'blade.d.ts', 'eight.d.ts', 'three.d.ts', 'visual.d.ts'];
+  var fileNames = ['lib.d.ts', 'angular.d.ts', 'blade.d.ts', 'eight.d.ts', 'three.d.ts', 'visual.d.ts'];
 
   var readFile = function(fileName, callback) {
     var url = DOMAIN + "/ts/" + fileName;
@@ -653,12 +664,13 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
 
         var content = iframe.contentDocument || iframe.contentWindow.document;
 
-        var blade   = "<script src='" + DOMAIN + "/js/" + "blade.min.js'></script>\n";
-        var eight   = "<script src='" + DOMAIN + "/js/" + "eight.min.js'></script>\n";
-        var maths   = "<script src='" + DOMAIN + "/js/" + "maths.min.js'></script>\n";
-        var three   = "<script src='" + DOMAIN + "/js/" + "three.min.js'></script>\n";
-        var visual  = "<script src='" + DOMAIN + "/js/" + "visual.min.js'></script>\n";
-        var scripts = [blade, eight, maths, three, visual].join("");
+        var options = scope.options.filter(function(option: IOption, index: number, array: IOption[]) {
+          return scope.doodles[0].dependencies.indexOf(option.name) > -1;
+        });
+
+        var scripts: string = options.map(function(option: IOption) {
+          return "<script src='" + DOMAIN + "/js/" + option.js + "'></script>\n";
+        }).join("");
 
         var html = scope.doodles[0].html;
         html = html.replace(/<!-- SCRIPTS-MARKER -->/, scripts);

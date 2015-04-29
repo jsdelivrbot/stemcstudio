@@ -3,4 +3,5 @@
  */
 interface IDoodleConfig {
   uuid: string;
+  dependencies: string[];
 }

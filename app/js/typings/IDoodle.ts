@@ -2,7 +2,7 @@ interface IDoodle {
   /**
    * Every doodle gets a UUID to determine uniqueness.
    */
-   uuid: string;
+  uuid: string;
   /**
    * The GitHub Gist identifier.
    */
@@ -26,5 +26,5 @@ interface IDoodle {
   /**
    * 
    */
-  dependencies: IDependency[];
+  dependencies: string[];
 }

@@ -31,7 +31,11 @@ interface IHomeScope extends AppScope {
 
   doodles: IDoodle[];
   templates: IDoodle[];
+  options: IOption[];
   gists: IGist[];
+
+  // This is only here to pass parameters into the dialog.
+  dependencies: string[];
 
   shareURL: () => string;
 }
