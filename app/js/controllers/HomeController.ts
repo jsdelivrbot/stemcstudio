@@ -204,15 +204,15 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
       }
     });
 
-  // We'll store the transpiled code here.
+  // We'll keep the transpiled code here.
   var outputFile: IOutputFile;
   scope.isShowingHTML = false;
   scope.isShowingCode = true;
 
   scope.templates = [
-    {uuid: "", description: "Blank",    autoupdate: false, html: HTML_TEMPLATE_BASIC, code: CODE_TEMPLATE_BLANK,   dependencies: []},
-    {uuid: "", description: "three.js", autoupdate: true,  html: HTML_TEMPLATE_BASIC, code: CODE_TEMPLATE_THREEJS, dependencies: []},
-    {uuid: "", description: "visual",   autoupdate: true,  html: HTML_TEMPLATE_BASIC, code: CODE_TEMPLATE_VISUAL,  dependencies: []}
+    {uuid: "1", description: "Blank",    autoupdate: false, html: HTML_TEMPLATE_BASIC, code: CODE_TEMPLATE_BLANK,   dependencies: ['maths']},
+    {uuid: "2", description: "three.js", autoupdate: true,  html: HTML_TEMPLATE_BASIC, code: CODE_TEMPLATE_THREEJS, dependencies: ['maths','three']},
+    {uuid: "3", description: "visual",   autoupdate: true,  html: HTML_TEMPLATE_BASIC, code: CODE_TEMPLATE_VISUAL,  dependencies: ['blade','eight','maths','three','visual']}
   ];
 
   scope.options = [
@@ -224,39 +224,37 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     {name: 'visual',  version: '0.0.52', js: 'visual.min.js',  dts: 'visual.d.ts'}
   ];
 
-  scope.doodles = localStorage[STORAGE_KEY] !== undefined ? JSON.parse(localStorage[STORAGE_KEY]) : [];
+  function loadModel() {
+    scope.doodles = localStorage[STORAGE_KEY] !== undefined ? JSON.parse(localStorage[STORAGE_KEY]) : [];
+  }
 
-  var syncStore = function() {
+  function updateStorage() {
     localStorage[STORAGE_KEY] = JSON.stringify(scope.doodles);
-  };
+  }
 
-  var createProject = function(description: string, template: IDoodle) {
-    var document = createDocument(template, description);
-    syncStore();
-    changeProject(document.uuid);
-  };
-  
-  var createDocument = function(template: IDoodle, description?: string): IDoodle {
+  function updateView() {
+    setViewMode(false);
+    htmlEditor.setValue(scope.doodles[0].html, -1);
+    codeEditor.setValue(scope.doodles[0].code, -1);
+    setViewMode(scope.doodles[0].autoupdate)
+  }
 
+  var createDoodle = function(template: IDoodle, description?: string) {
     if (!description) {
       description = nextUntitled();
     }
-    // FIXME: We're assuming that the description of the doodle does not already exist.
-    // FIXME: We must keep it unique.
-    // Add a new document to the beginning of the array of doodles.
-    var document: IDoodle = {
+    var doodle: IDoodle = {
       uuid: uuid4.generate(),
       description: description,
       autoupdate: template.autoupdate,
       html: template.html,
       code: template.code,
-      dependencies: []
+      dependencies: template.dependencies
     };
-    scope.doodles.unshift(document);
-    return document;
+    scope.doodles.unshift(doodle);
   };
 
-  var changeProject = function(uuid: string) {
+  function activeDoodle(uuid: string) {
     var doodles: IDoodle[] = [];
 
     var i = 0, found;
@@ -269,15 +267,10 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
       }
       i++;
     }
-
     if ( ! found ) return;
-
     doodles.unshift(found);
     scope.doodles = doodles;
-    setViewMode(false);
-    setCode(scope.doodles[0].html, scope.doodles[0].code);
-    setViewMode(scope.doodles[0].autoupdate)
-  };
+  }
 
   var deleteDoodle = function(uuid: string) {
     var doodles: IDoodle[] = [];
@@ -296,7 +289,6 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     if ( ! found ) return;
 
     scope.doodles = doodles;
-    syncStore();
   };
 
   var nextUntitled = function() {
@@ -314,20 +306,15 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     return 'Untitled ' + (nums.length == 0 ? 1 : nums[nums.length-1] + 1);
   };
 
-  var setCode = function(html: string, code: string) {
-    htmlEditor.setValue(html, -1);
-    codeEditor.setValue(code, -1);
-    update();
-  }
-
   var setViewMode = function(isViewVisible: boolean) {
     scope.isViewVisible = isViewVisible;
     scope.resumeText = isViewVisible ? TEXT_VIEW_SUSPEND : TEXT_VIEW_RESUME;
-    update();
+    updatePreview();
   }
 
   scope.$watch('isViewVisible', function(newVal: boolean, oldVal, scope) {
-    saveLocal();
+    scope.doodles[0].autoupdate = scope.isViewVisible;
+    updateStorage();
   });
 
   function setEditMode(editMode: boolean) {
@@ -373,7 +360,10 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     dialog.addEventListener('close', function() {
       if (dialog.returnValue.length > 0) {
         var response: INewParameters = JSON.parse(dialog.returnValue);
-        createProject(response.description, response.template);
+        createDoodle(response.template, response.description);
+        updateStorage();
+        updateView();
+        updatePreview();
         showCode();
       }
     });
@@ -391,9 +381,12 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
           deleteDoodle(response.uuid);
         }
         else {
-          changeProject(response.uuid);
-          showCode();
+          activeDoodle(response.uuid);
         }
+        updateStorage();
+        updateView();
+        updatePreview();
+        showCode();
       }
     });
     dialog.showModal();
@@ -406,7 +399,10 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     dialog.addEventListener('close', function() {
       if (dialog.returnValue.length > 0) {
         var response: ICopyParameters = JSON.parse(dialog.returnValue);
-        createProject(response.description, scope.doodles[0]);
+        createDoodle(scope.doodles[0], response.description);
+        updateStorage();
+        updateView();
+        updatePreview();
         showCode();
       }
     });
@@ -422,11 +418,39 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
       if (dialog.returnValue.length > 0) {
         var response: IDoodleParameters = JSON.parse(dialog.returnValue);
         scope.doodles[0].dependencies = response.dependencies;
-        showCode();
+        updateStorage();
+        updateView();
       }
     });
     dialog.showModal();
   };
+
+  function downloadGist(token: string, gistId: string) {
+    github.getGist(token, gistId, function(err, gist) {
+      if (!err) {
+        var config: IDoodleConfig = JSON.parse(gist.files['doodle.json'].content);
+        var html = gist.files['index.html'].content;
+        var code = gist.files['script.ts'].content;
+        var codeInfo: IDoodle = {
+          gistId: gistId,
+          uuid: config.uuid,
+          description: gist.description,
+          autoupdate: false,
+          html: gist.files['index.html'].content,
+          code: gist.files['script.ts'].content,
+          dependencies: config.dependencies
+        };
+        deleteDoodle(config.uuid);
+        scope.doodles.unshift(codeInfo);
+        updateStorage();
+        updateView();
+        updatePreview();
+      }
+      else {
+        scope.alert("Error attempting to download Gist");
+      }
+    });
+  }
 
   scope.doDownload = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'download', label, value);
@@ -439,30 +463,7 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
         dialog.addEventListener('close', function() {
           if (dialog.returnValue.length > 0) {
             var response: IDownloadParameters = JSON.parse(dialog.returnValue);
-            github.getGist(token, response.gistId, function(err, gist) {
-              if (!err) {
-                var config: IDoodleConfig = JSON.parse(gist.files['doodle.json'].content);
-                var html = gist.files['index.html'].content;
-                var code = gist.files['script.ts'].content;
-                var codeInfo: IDoodle = {
-                  gistId: response.gistId,
-                  uuid: config.uuid,
-                  description: gist.description,
-                  autoupdate: false,
-                  html: gist.files['index.html'].content,
-                  code: gist.files['script.ts'].content,
-                  dependencies: config.dependencies
-                };
-                deleteDoodle(config.uuid);
-                scope.doodles.unshift(codeInfo);
-                setViewMode(false);
-                setCode(scope.doodles[0].html, scope.doodles[0].code);
-                setViewMode(scope.doodles[0].autoupdate)
-              }
-              else {
-                scope.alert("Error attempting to download Gist");
-              }
-            });
+            downloadGist(token, response.gistId);
           }
           else {
 
@@ -603,7 +604,7 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     outputFiles.forEach(function(file) {
       var text = file.text;
       outputFile = file;
-      update();
+      updatePreview();
     });
   });
 
@@ -616,50 +617,20 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
   htmlEditor.setFontSize('18px');
   htmlEditor.setShowPrintMargin(false);
   htmlEditor.setDisplayIndentGuides(false);
-
-  // Now that we have both editors created, configure the scope.
-  if (scope.doodles.length > 0) {
-    htmlEditor.changeFile(scope.doodles[0].html, 'app.html');
-    codeEditor.changeFile(scope.doodles[0].code, 'app.ts');
-  }
-  else {
-    htmlEditor.changeFile(HTML_TEMPLATE_BASIC,  'app.html');
-    codeEditor.changeFile(CODE_TEMPLATE_VISUAL, 'app.ts');
-  }
-  setEditMode(true);
-  setViewMode(true);
-  showCode();
-
+  
   codeEditor.getSession().on('change', function(event) {
-      // console.log("codeEditor session change: " + JSON.stringify(event));
-      saveLocal();
+    console.log("codeEditor session change: " + JSON.stringify(event));
+    scope.doodles[0].code = codeEditor.getValue();
+    updateStorage();
   });
 
   htmlEditor.getSession().on('change', function(event) {
-      // console.log("codeEditor session change: " + JSON.stringify(event));
-      saveLocal();
+    console.log("htmlEditor session change: " + JSON.stringify(event));
+    scope.doodles[0].html = htmlEditor.getValue();
+    updateStorage();
   });
 
-  function saveLocal() {
-    if (scope.doodles.length === 0) {
-        createDocument({
-          uuid: uuid4.generate(),
-          description:nextUntitled(),
-          autoupdate: scope.isViewVisible,
-          html: htmlEditor.getValue(),
-          code: codeEditor.getValue(),
-          dependencies: []});
-    }
-    else {
-      // TODO: This might be called updateDocument()
-      scope.doodles[0].html = htmlEditor.getValue();
-      scope.doodles[0].code = codeEditor.getValue();
-      scope.doodles[0].autoupdate = scope.isViewVisible;
-    }
-    syncStore();
-  }
-
-  function update() {
+  function updatePreview() {
 
     try {
       var preview = document.getElementById('preview');
@@ -698,4 +669,25 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
       console.log(e);
     }
   };
+  
+  function init() {
+    loadModel();
+    if (scope.doodles.length === 0) {
+      createDoodle(scope.templates[2]);
+      updateStorage();
+      updateView();
+      updatePreview();
+    }
+    htmlEditor.changeFile(scope.doodles[0].html, 'app.html');
+    codeEditor.changeFile(scope.doodles[0].code, 'app.ts');
+    setEditMode(true);
+    setViewMode(true);
+    showCode();
+    if (routeParams.gistId) {
+      var token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
+      downloadGist(token, routeParams.gistId);
+    }
+  }
+
+  init();
 }]);
