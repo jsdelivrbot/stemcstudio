@@ -584,7 +584,6 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
           workspace.ensureScript(fileName, content.replace(/\r\n?/g, '\n'), true);
         }
         else {
-          console.log("#{err}");
         }
       }
     });
@@ -596,7 +595,6 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
 
   codeEditor.getSession().on('syntaxErrors', function(event) {
     // I'm not seeing any events by this name!
-    console.log("Received syntaxErrors event");
   });
 
   codeEditor.getSession().on('outputFiles', function(event) {
@@ -619,13 +617,11 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
   htmlEditor.setDisplayIndentGuides(false);
   
   codeEditor.getSession().on('change', function(event) {
-    console.log("codeEditor session change: " + JSON.stringify(event));
     scope.doodles[0].code = codeEditor.getValue();
     updateStorage();
   });
 
   htmlEditor.getSession().on('change', function(event) {
-    console.log("htmlEditor session change: " + JSON.stringify(event));
     scope.doodles[0].html = htmlEditor.getValue();
     updateStorage();
   });
@@ -666,7 +662,6 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
       }
     }
     catch(e) {
-      console.log(e);
     }
   };
   
