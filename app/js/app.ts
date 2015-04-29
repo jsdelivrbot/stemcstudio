@@ -34,7 +34,7 @@ app.run(['$rootScope', '$window', 'cookie', 'ga', function(rootScope: AppScope, 
   };
 
   rootScope.logout = function(label?: string, value?: number) {
-    ga('send', 'event', 'GitHub', 'login', label, value);
+    ga('send', 'event', 'GitHub', 'logout', label, value);
     cookie.removeItem(GITHUB_TOKEN_COOKIE_NAME);
     cookie.removeItem(GITHUB_LOGIN_COOKIE_NAME);
   };

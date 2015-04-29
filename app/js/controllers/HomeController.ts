@@ -189,9 +189,11 @@ var CODE_TEMPLATE_VISUAL = "" +
   "eight.animationRunner(tick, terminate, setUp, tearDown, window).start();\n";
 
 
-app.controller('HomeController', ['$scope', '$http', '$location','$routeParams', 'mathscript', 'GitHub', 'GitHubAuthManager', 'cookie', 'uuid4', 'ga', function(scope: IHomeScope, http: angular.IHttpService, location: angular.ILocationService, routeParams, mathscript, github, authManager, cookie: ICookieService, uuid4: UuidService, ga: UniversalAnalytics.ga) {
+app.controller('HomeController', ['$scope', '$http', '$location','$routeParams', '$window', 'mathscript', 'GitHub', 'GitHubAuthManager', 'cookie', 'uuid4', 'ga', function(scope: IHomeScope, http: angular.IHttpService, location: angular.ILocationService, routeParams, $window, mathscript, github, authManager, cookie: ICookieService, uuid4: UuidService, ga: UniversalAnalytics.ga) {
 
-    ga('create', 'UA-41504069-2', 'auto');
+    // Do not create new trackers in this (single page) app.
+    ga('create', 'UA-41504069-2', 'auto');  // Creates a tracker.
+//  ga('create', 'UA-41504069-2', {'cookieDomain': 'none'});  // localhost.
     ga('send', 'pageview');
 
     var GITHUB_TOKEN_COOKIE_NAME = 'github-token';
@@ -354,6 +356,10 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
 
   scope.showCode = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'showCode', label, value);
+    showCode();
+  }
+
+  function showCode() {
     scope.isShowingHTML = false;
     scope.isShowingCode = true;
     codeEditor.focus();
@@ -368,7 +374,7 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
       if (dialog.returnValue.length > 0) {
         var response: INewParameters = JSON.parse(dialog.returnValue);
         createProject(response.description, response.template);
-        scope.showCode();
+        showCode();
       }
     });
     dialog.showModal();
@@ -386,7 +392,7 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
         }
         else {
           changeProject(response.uuid);
-          scope.showCode();
+          showCode();
         }
       }
     });
@@ -401,7 +407,7 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
       if (dialog.returnValue.length > 0) {
         var response: ICopyParameters = JSON.parse(dialog.returnValue);
         createProject(response.description, scope.doodles[0]);
-        scope.showCode();
+        showCode();
       }
     });
     dialog.showModal();
@@ -416,7 +422,7 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
       if (dialog.returnValue.length > 0) {
         var response: IDoodleParameters = JSON.parse(dialog.returnValue);
         scope.doodles[0].dependencies = response.dependencies;
-        scope.showCode();
+        showCode();
       }
     });
     dialog.showModal();
@@ -622,7 +628,7 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
   }
   setEditMode(true);
   setViewMode(true);
-  scope.showCode();
+  showCode();
 
   codeEditor.getSession().on('change', function(event) {
       // console.log("codeEditor session change: " + JSON.stringify(event));
