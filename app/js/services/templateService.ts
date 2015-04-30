@@ -79,7 +79,7 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
     "    $scope.name = \"World\";\n" +
     "  }]);\n" +
     "\n" +
-    "})(angular.module('doodle', []));";
+    "})(angular.module('doodle', []));\n";
 
   var CODE_TEMPLATE_BASIC = "";
 
