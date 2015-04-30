@@ -54,6 +54,7 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
   scope.options = [
     {name: 'angular',  version: '1.4.0',  js: 'angular.min.js',           dts: 'angular.d.ts'},
     {name: 'blade',    version: '0.9.35', js: 'blade.min.js',             dts: 'blade.d.ts'},
+    {name: 'd3',       version: '3.5.5',  js: 'd3@3-5-5.min.js',          dts: 'd3@3-5-5.d.ts'},
     {name: 'eight',    version: '0.9.15', js: 'eight.min.js',             dts: 'eight.d.ts'},
     {name: 'jsxgraph', version: '0.99.3', js: 'jsxgraph-0-99-3.min.js',   dts: 'jsxgraph-0-99-3.d.ts'},
     {name: 'maths',    version: '0.9.12', js: 'maths.min.js',             dts: 'maths.d.ts'},
@@ -440,7 +441,7 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
 
   var workspace = ace.workspace();
 
-  var fileNames = ['lib.d.ts', 'angular.d.ts', 'blade.d.ts', 'eight.d.ts', 'jsxgraph-0-99-3.d.ts', 'three.d.ts', 'visual.d.ts'];
+  var fileNames = ['lib.d.ts', 'angular.d.ts', 'blade.d.ts', 'd3@3-5-5.d.ts', 'eight.d.ts', 'jsxgraph-0-99-3.d.ts', 'three.d.ts', 'visual.d.ts'];
 
   var readFile = function(fileName, callback) {
     var url = DOMAIN + "/ts/" + fileName;

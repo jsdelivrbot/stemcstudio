@@ -221,6 +221,8 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
 
   var CODE_TEMPLATE_JSXGRAPH = "var graph = JXG.JSXGraph;\n";
 
+  var CODE_TEMPLATE_D3 = "var x = d3;\n";
+
   return [
     {
       uuid: uuid.generate(),
@@ -253,6 +255,14 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
       html: HTML_TEMPLATE_BASIC,
       code: CODE_TEMPLATE_JSXGRAPH,
       dependencies: ['jsxgraph', 'maths']
+    },
+    {
+      uuid: uuid.generate(),
+      description: "d3 — Data Driven Documents",
+      autoupdate: true,
+      html: HTML_TEMPLATE_BASIC,
+      code: CODE_TEMPLATE_D3,
+      dependencies: ['d3', 'maths']
     },
     {
       uuid: uuid.generate(),
