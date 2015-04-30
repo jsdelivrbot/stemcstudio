@@ -17,6 +17,9 @@ var app = angular.module('app');
 
 var FWD_SLASH = '/';
 
+var WAIT_NO_MORE = 0;
+var WAIT_FOR_MORE_KEYSTROKES = 1500;
+
 var TEXT_CODE_HIDE = "View";
 var TEXT_CODE_SHOW = "Edit";
 
@@ -233,7 +236,6 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
   }
 
   function updateView() {
-    setViewMode(false);
     htmlEditor.setValue(scope.doodles[0].html, -1);
     codeEditor.setValue(scope.doodles[0].code, -1);
     setViewMode(scope.doodles[0].autoupdate)
@@ -292,27 +294,35 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
   };
 
   var nextUntitled = function() {
-    var nums = scope.doodles.filter(function(doodle: IDoodle) {
+    // We assume that a doodle with a lower index will have a higher Untitled number.
+    // To reduce sorting, sort as a descending sequence and use the resulting first
+    // element as the highest number used so far. Add one to that.
+    function compareNumbers(a: number, b: number) {
+        return b - a;
+    }
+    var nums: number[] = scope.doodles.filter(function(doodle: IDoodle) {
         return typeof doodle.description.match(/Untitled/) !== 'null';
-      }).
-      map(function(doodle: IDoodle) {
-        return parseInt(doodle.description.replace(/Untitled\s*/, ''), 10);
-      }).
-      filter(function (num) {
+    }).
+        map(function(doodle: IDoodle) {
+        return parseInt(doodle.description.replace('Untitled ', '').trim(), 10);
+    }).
+        filter(function(num) {
         return !isNaN(num);
-      }).
-      sort();
+    });
 
-    return 'Untitled ' + (nums.length == 0 ? 1 : nums[nums.length-1] + 1);
+    nums.sort(compareNumbers);
+
+    return 'Untitled ' + (nums.length === 0 ? 1 : nums[0] + 1);
   };
 
   var setViewMode = function(isViewVisible: boolean) {
     scope.isViewVisible = isViewVisible;
     scope.resumeText = isViewVisible ? TEXT_VIEW_SUSPEND : TEXT_VIEW_RESUME;
-    updatePreview();
   }
 
   scope.$watch('isViewVisible', function(newVal: boolean, oldVal, scope) {
+    // We can get a race condition if we use the state of the model to determine
+    // whether to rebuild the preview.
     scope.doodles[0].autoupdate = scope.isViewVisible;
     updateStorage();
   });
@@ -320,17 +330,37 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
   function setEditMode(editMode: boolean) {
     scope.isEditMode = editMode;
     scope.toggleText = editMode ? TEXT_CODE_HIDE : TEXT_CODE_SHOW;
-    setViewMode(!editMode);
   }
 
   scope.toggleMode = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'toggleMode', label, value);
     setEditMode(!scope.isEditMode);
+    if (!scope.isEditMode) {
+      // We're not editing so the view had better be running.
+      if (!scope.isViewVisible) {
+        setViewMode(true);
+        updatePreview(WAIT_NO_MORE);
+      }
+      else {
+        // The view is already running, don't restart it with an updatePreview.
+      }
+    }
+    else {
+      // If we are returning to editing we probably don't want the view running.
+      if (scope.isViewVisible) {
+        setViewMode(false);
+        updatePreview(WAIT_NO_MORE);
+      }
+      else {
+        // The view is not running, no need to do a pointless cleanup.
+      }
+    }
   };
 
   scope.toggleView = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'toggleView', label, value);
     setViewMode(!scope.isViewVisible);
+    updatePreview(WAIT_NO_MORE);
   };
 
   scope.showHTML = function(label?: string, value?: number) {
@@ -357,16 +387,18 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     ga('send', 'event', 'doodle', 'new', label, value);
     var d: any = document.getElementById('new-dialog');
     var dialog: HTMLDialogElement = d;
-    dialog.addEventListener('close', function() {
+    var closeHandler = function() {
+      dialog.removeEventListener('close', closeHandler);
       if (dialog.returnValue.length > 0) {
         var response: INewParameters = JSON.parse(dialog.returnValue);
         createDoodle(response.template, response.description);
         updateStorage();
         updateView();
-        updatePreview();
+        updatePreview(WAIT_NO_MORE);
         showCode();
       }
-    });
+    };
+    dialog.addEventListener('close', closeHandler);
     dialog.showModal();
   };
 
@@ -374,7 +406,8 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     ga('send', 'event', 'doodle', 'open', label, value);
     var d: any = document.getElementById('open-dialog');
     var dialog: HTMLDialogElement = d;
-    dialog.addEventListener('close', function() {
+    var closeHandler = function() {
+      dialog.removeEventListener('close', closeHandler);
       if (dialog.returnValue.length > 0) {
         var response: IOpenParameters = JSON.parse(dialog.returnValue);
         if (response.byeBye) {
@@ -385,10 +418,11 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
         }
         updateStorage();
         updateView();
-        updatePreview();
+        updatePreview(WAIT_NO_MORE);
         showCode();
       }
-    });
+    };
+    dialog.addEventListener('close', closeHandler);
     dialog.showModal();
   };
 
@@ -396,16 +430,18 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     ga('send', 'event', 'doodle', 'copy', label, value);
     var d: any = document.getElementById('copy-dialog');
     var dialog: HTMLDialogElement = d;
-    dialog.addEventListener('close', function() {
+    var closeHandler = function() {
+      dialog.removeEventListener('close', closeHandler);
       if (dialog.returnValue.length > 0) {
         var response: ICopyParameters = JSON.parse(dialog.returnValue);
         createDoodle(scope.doodles[0], response.description);
         updateStorage();
         updateView();
-        updatePreview();
+        updatePreview(WAIT_NO_MORE);
         showCode();
       }
-    });
+    };
+    dialog.addEventListener('close', closeHandler);
     dialog.showModal();
   };
 
@@ -414,14 +450,16 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     var d: any = document.getElementById('doodle-dialog');
     var dialog: HTMLDialogElement = d;
     scope.dependencies = scope.doodles[0].dependencies;
-    dialog.addEventListener('close', function() {
+    var closeHandler = function() {
+      dialog.removeEventListener('close', closeHandler);
       if (dialog.returnValue.length > 0) {
         var response: IDoodleParameters = JSON.parse(dialog.returnValue);
         scope.doodles[0].dependencies = response.dependencies;
         updateStorage();
         updateView();
       }
-    });
+    };
+    dialog.addEventListener('close', closeHandler);
     dialog.showModal();
   };
 
@@ -444,7 +482,7 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
         scope.doodles.unshift(codeInfo);
         updateStorage();
         updateView();
-        updatePreview();
+        updatePreview(WAIT_NO_MORE);
       }
       else {
         scope.alert("Error attempting to download Gist");
@@ -460,7 +498,8 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
         scope.gists = gists;
         var d: any = document.getElementById('download-dialog');
         var dialog: HTMLDialogElement = d;
-        dialog.addEventListener('close', function() {
+        var closeHandler = function() {
+          dialog.removeEventListener('close', closeHandler);
           if (dialog.returnValue.length > 0) {
             var response: IDownloadParameters = JSON.parse(dialog.returnValue);
             downloadGist(token, response.gistId);
@@ -468,7 +507,8 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
           else {
 
           }
-        });
+        };
+        dialog.addEventListener('close', closeHandler);
         dialog.showModal();
       }
       else {
@@ -540,8 +580,18 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
   }
 
   scope.doShare = function() {
+    function returnValueHandler(value: string) {
+
+    }
     var d: any = document.getElementById('share-dialog');
     var dialog: HTMLDialogElement = d;
+    var closeHandler = function() {
+      dialog.removeEventListener('close', closeHandler);
+      if (dialog.returnValue.length > 0) {
+        returnValueHandler(dialog.returnValue);
+      }
+    };
+    dialog.addEventListener('close', closeHandler);
     dialog.showModal();
   };
 
@@ -599,10 +649,9 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
 
   codeEditor.getSession().on('outputFiles', function(event) {
     var outputFiles: IOutputFile[] = event.data;
-    outputFiles.forEach(function(file) {
-      var text = file.text;
+    outputFiles.forEach(function(file: IOutputFile) {
       outputFile = file;
-      updatePreview();
+      updatePreview(WAIT_NO_MORE);
     });
   });
 
@@ -619,18 +668,31 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
   codeEditor.getSession().on('change', function(event) {
     scope.doodles[0].code = codeEditor.getValue();
     updateStorage();
+    // Don't trigger a change to the preview, that happens
+    // when the compiler emits a file.
   });
 
   htmlEditor.getSession().on('change', function(event) {
     scope.doodles[0].html = htmlEditor.getValue();
     updateStorage();
+    updatePreview(WAIT_FOR_MORE_KEYSTROKES);
   });
 
-  function updatePreview() {
+  var interval;
+  function updatePreview(timeToWaitMillis: number) {
+    if (interval) {
+      clearTimeout(interval);
+    }
+    interval = setTimeout(
+      function() {rebuildPreview(); interval = undefined; },
+      1.5 * 1000
+    );
+  }
 
+  function rebuildPreview() {
     try {
+      // Kill any existing frames.
       var preview = document.getElementById('preview');
-
       while (preview.children.length > 0) {
         preview.removeChild(preview.firstChild);
       }
@@ -671,7 +733,6 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
       createDoodle(scope.templates[2]);
       updateStorage();
       updateView();
-      updatePreview();
     }
     htmlEditor.changeFile(scope.doodles[0].html, 'app.html');
     codeEditor.changeFile(scope.doodles[0].code, 'app.ts');
@@ -680,7 +741,11 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     showCode();
     if (routeParams.gistId) {
       var token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
+      // This is an asynchronous call!
       downloadGist(token, routeParams.gistId);
+    }
+    else {
+      updatePreview(WAIT_NO_MORE);
     }
   }
 
