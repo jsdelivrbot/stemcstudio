@@ -1,6 +1,6 @@
 {
   "name": "davincidoodle",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "description": "Geometry Modeling in Code",
   "scripts": {
     "start": "NODE_ENV=local nodemon web.js",

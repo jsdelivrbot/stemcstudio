@@ -192,7 +192,7 @@ var CODE_TEMPLATE_VISUAL = "" +
   "eight.animationRunner(tick, terminate, setUp, tearDown, window).start();\n";
 
 
-app.controller('HomeController', ['$scope', '$http', '$location','$routeParams', '$window', 'mathscript', 'GitHub', 'GitHubAuthManager', 'cookie', 'uuid4', 'ga', function(scope: IHomeScope, http: angular.IHttpService, location: angular.ILocationService, routeParams, $window, mathscript, github, authManager, cookie: ICookieService, uuid4: UuidService, ga: UniversalAnalytics.ga) {
+app.controller('HomeController', ['$scope', '$http', '$location','$routeParams', '$timeout', '$window', 'mathscript', 'GitHub', 'GitHubAuthManager', 'cookie', 'uuid4', 'ga', function(scope: IHomeScope, http: angular.IHttpService, location: angular.ILocationService, routeParams, $timeout: angular.ITimeoutService, $window, mathscript, github, authManager, cookie: ICookieService, uuid4: UuidService, ga: UniversalAnalytics.ga) {
 
     // Do not create new trackers in this (single page) app.
     ga('create', 'UA-41504069-2', 'auto');  // Creates a tracker.
@@ -348,8 +348,10 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     else {
       // If we are returning to editing we probably don't want the view running.
       if (scope.isViewVisible) {
-        setViewMode(false);
-        updatePreview(WAIT_NO_MORE);
+        // However, we'll let the user make that determination.
+        // It's surprising when the mode change cascades for no good reason.
+        // setViewMode(false);
+        // updatePreview(WAIT_NO_MORE);
       }
       else {
         // The view is not running, no need to do a pointless cleanup.
@@ -678,15 +680,10 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     updatePreview(WAIT_FOR_MORE_KEYSTROKES);
   });
 
-  var interval;
-  function updatePreview(timeToWaitMillis: number) {
-    if (interval) {
-      clearTimeout(interval);
-    }
-    interval = setTimeout(
-      function() {rebuildPreview(); interval = undefined; },
-      1.5 * 1000
-    );
+  var rebuildPromise: angular.IPromise<void>;
+  function updatePreview(delay: number) {
+    if (rebuildPromise) {$timeout.cancel(rebuildPromise);}
+    rebuildPromise = $timeout(function() {rebuildPreview(); rebuildPromise = undefined; }, delay);
   }
 
   function rebuildPreview() {
