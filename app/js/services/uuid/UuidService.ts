@@ -47,7 +47,7 @@
       return (0 | Math.random() * (1 << 30)) + (0 | Math.random() * (1 << 48 - 30)) * (1 << 30);
     };
 
-    var paddedString =  function(string, length, z) {
+    var paddedString =  function(string, length, z?) {
       string = String(string);
       z = (!z) ? '0' : z;
       var i = length - string.length;

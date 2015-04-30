@@ -2,7 +2,7 @@
 /// <reference path="../../typings/google-analytics/ga.d.ts" />
 /// <reference path="typings/AppScope.ts" />
 /// <reference path="typings/cookie.ts" />
-var app = angular.module('app', ['ngResource', 'ngRoute', 'davinci.mathscript', 'underscore', 'uuid4', 'google-analytics']);
+var app = angular.module('app', ['ngResource', 'ngRoute', 'davincidoodle', 'davinci.mathscript', 'underscore', 'uuid4', 'google-analytics']);
 
 app.run(['$rootScope', '$window', 'cookie', 'ga', function(rootScope: AppScope, $window: Window, cookie: ICookieService, ga: UniversalAnalytics.ga) {
 

@@ -1,3 +1,0 @@
-interface UuidService {
-  generate(): string;
-}
