@@ -52,14 +52,54 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
   scope.templates = templates;
 
   scope.options = [
-    {name: 'angular',  version: '1.4.0',  js: 'angular.min.js',           dts: 'angular.d.ts'},
-    {name: 'blade',    version: '0.9.35', js: 'blade.min.js',             dts: 'blade.d.ts'},
-    {name: 'd3',       version: '3.5.5',  js: 'd3@3-5-5.min.js',          dts: 'd3@3-5-5.d.ts'},
-    {name: 'eight',    version: '0.9.15', js: 'eight.min.js',             dts: 'eight.d.ts'},
-    {name: 'jsxgraph', version: '0.99.3', js: 'jsxgraph-0-99-3.min.js',   dts: 'jsxgraph-0-99-3.d.ts'},
-    {name: 'maths',    version: '0.9.12', js: 'maths.min.js',             dts: 'maths.d.ts'},
-    {name: 'three',    version: '0.0.71', js: 'three.min.js',             dts: 'three.d.ts'},
-    {name: 'visual',   version: '0.0.52', js: 'visual.min.js',            dts: 'visual.d.ts'}
+    {
+      name: 'angular',
+      version: '1.4.0-rc.1',
+      js: 'angular@1.4.0-rc.1.min.js',
+      dts: 'angular@1.4.0-rc.1.d.ts'
+    },
+    {
+      name: 'blade',
+      version: '0.9.35',
+      js: 'blade@0.9.35.min.js',
+      dts: 'blade@0.9.35.d.ts'
+    },
+    {
+      name: 'd3',
+      version: '3.5.5',
+      js: 'd3@3.5.5.min.js',
+      dts: 'd3@3.5.5.d.ts'
+    },
+    {
+      name: 'eight',
+      version: '0.9.15',
+      js: 'eight@0.9.15.min.js',
+      dts: 'eight@0.9.15.d.ts'
+    },
+    {
+      name: 'jsxgraph',
+      version: '0.99.3',
+      js: 'jsxgraph@0.99.3.min.js',
+      dts: 'jsxgraph@0.99.3.d.ts'
+    },
+    {
+      name: 'maths',
+      version: '0.9.12',
+      js: 'maths.min.js',
+      dts: 'maths.d.ts'
+    },
+    {
+      name: 'three',
+      version: '0.71.0',
+      js: 'three@0.71.0.min.js',
+      dts: 'three@0.71.0.d.ts'
+    },
+    {
+      name: 'visual',
+      version: '0.0.52',
+      js: 'visual@0.0.52.min.js',
+      dts: 'visual@0.0.52.d.ts'
+    }
   ];
 
   function loadModel() {
@@ -441,7 +481,7 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
 
   var workspace = ace.workspace();
 
-  var fileNames = ['lib.d.ts', 'angular.d.ts', 'blade.d.ts', 'd3@3-5-5.d.ts', 'eight.d.ts', 'jsxgraph-0-99-3.d.ts', 'three.d.ts', 'visual.d.ts'];
+  var fileNames = ['lib.d.ts', 'angular@1.4.0-rc.1.d.ts', 'blade@0.9.35.d.ts', 'd3@3.5.5.d.ts', 'eight@0.9.15.d.ts', 'jsxgraph@0.99.3.d.ts', 'three@0.71.0.d.ts', 'visual@0.0.52.d.ts'];
 
   var readFile = function(fileName, callback) {
     var url = DOMAIN + "/ts/" + fileName;
