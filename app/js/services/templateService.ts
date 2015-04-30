@@ -27,6 +27,8 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
     "  </body>\n" +
     "</html>\n";
 
+  var CODE_TEMPLATE_BASIC = "";
+
   var HTML_TEMPLATE_ANGULAR = "" +
     "<!doctype html>\n" +
     "<html ng-app='doodle'>\n" +
@@ -80,8 +82,6 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
     "  }]);\n" +
     "\n" +
     "})(angular.module('doodle', []));\n";
-
-  var CODE_TEMPLATE_BASIC = "";
 
   var CODE_TEMPLATE_THREEJS = "" +
     "var scene = new THREE.Scene();\n"+
@@ -219,6 +219,8 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
     "\n"+
     "eight.animationRunner(tick, terminate, setUp, tearDown, window).start();\n";
 
+  var CODE_TEMPLATE_JSXGRAPH = "var graph = JXG.JSXGraph;\n";
+
   return [
     {
       uuid: uuid.generate(),
@@ -243,16 +245,22 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
       html: HTML_TEMPLATE_BASIC,
       code: CODE_TEMPLATE_VISUAL,
       dependencies: ['blade','eight','maths','three','visual']
-    }
-    /*
+    },
     {
       uuid: uuid.generate(),
-      description: "Basic — Nothing to see here", 
+      description: "JSXGraph — Dynamic Mathematics with JavaScript",
+      autoupdate: true,
+      html: HTML_TEMPLATE_BASIC,
+      code: CODE_TEMPLATE_JSXGRAPH,
+      dependencies: ['jsxgraph', 'maths']
+    },
+    {
+      uuid: uuid.generate(),
+      description: "Basic", 
       autoupdate: false,
       html: HTML_TEMPLATE_BASIC,
       code: CODE_TEMPLATE_BASIC,
       dependencies: ['maths']
     }
-    */
   ];
 }]);

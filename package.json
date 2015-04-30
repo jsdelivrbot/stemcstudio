@@ -1,7 +1,7 @@
 {
   "name": "davincidoodle",
-  "version": "1.0.22",
-  "description": "Geometry Modeling in Code",
+  "version": "1.0.23",
+  "description": "Computational Learning Environment",
   "scripts": {
     "start": "NODE_ENV=local nodemon web.js",
     "test": "lineman spec-ci"

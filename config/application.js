@@ -29,13 +29,15 @@ module.exports = function(lineman) {
           {src: "bower_components/davinci-mathscript/dist/davinci-mathscript.min.js",  dest: "generated/js/maths.min.js"},
           {src: "bower_components/angular/angular.min.js",                   dest: "generated/js/angular.min.js"},
           {src: "bower_components/threejs/build/three.min.js",               dest: "generated/js/three.min.js"},
-      
+          {src: "museum/jsxgraph/jsxgraph-0-99-3.min.js",                    dest: "generated/js/jsxgraph-0-99-3.min.js"},
+
           {src: "bower_components/davinci-blade/dist/davinci-blade.d.ts",    dest: "generated/ts/blade.d.ts"},
           {src: "bower_components/davinci-eight/dist/davinci-eight.d.ts",    dest: "generated/ts/eight.d.ts"},
           {src: "bower_components/davinci-visual/dist/davinci-visual.d.ts",  dest: "generated/ts/visual.d.ts"},
           {src: "node_modules/typescript/bin/lib.d.ts",                      dest: "generated/ts/lib.d.ts"},
           {src: "typings/angularjs/angular.d.ts",                            dest: "generated/ts/angular.d.ts"},
           {src: "typings/threejs/three.d.ts",                                dest: "generated/ts/three.d.ts"},
+          {src: "museum/jsxgraph/jsxgraph-0-99-3.d.ts",                      dest: "generated/ts/jsxgraph-0-99-3.d.ts"},
 
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot",   dest: "generated/fonts/glyphicons-halflings-regular.eot"},
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.svg",   dest: "generated/fonts/glyphicons-halflings-regular.svg"},
@@ -57,13 +59,15 @@ module.exports = function(lineman) {
           {src: "bower_components/davinci-mathscript/dist/davinci-mathscript.min.js",  dest: "dist/js/maths.min.js"},
           {src: "bower_components/angular/angular.min.js",                   dest: "dist/js/angular.min.js"},
           {src: "bower_components/threejs/build/three.min.js",               dest: "dist/js/three.min.js"},
-      
+          {src: "museum/jsxgraph/jsxgraph-0-99-3.min.js",                    dest: "dist/js/jsxgraph-0-99-3.min.js"},
+
           {src: "bower_components/davinci-blade/dist/davinci-blade.d.ts",    dest: "dist/ts/blade.d.ts"},
           {src: "bower_components/davinci-eight/dist/davinci-eight.d.ts",    dest: "dist/ts/eight.d.ts"},
           {src: "bower_components/davinci-visual/dist/davinci-visual.d.ts",  dest: "dist/ts/visual.d.ts"},
           {src: "node_modules/typescript/bin/lib.d.ts",                      dest: "dist/ts/lib.d.ts"},
           {src: "typings/angularjs/angular.d.ts",                            dest: "dist/ts/angular.d.ts"},
           {src: "typings/threejs/three.d.ts",                                dest: "dist/ts/three.d.ts"},
+          {src: "museum/jsxgraph/jsxgraph-0-99-3.d.ts",                      dest: "dist/ts/jsxgraph-0-99-3.d.ts"},
 
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot",   dest: "dist/fonts/glyphicons-halflings-regular.eot"},
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.svg",   dest: "dist/fonts/glyphicons-halflings-regular.svg"},
