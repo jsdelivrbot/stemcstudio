@@ -85,12 +85,6 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
       dts: 'jsxgraph@0.99.3.d.ts'
     },
     {
-      name: 'maths',
-      version: '0.9.12',
-      js: 'maths.min.js',
-      dts: 'maths.d.ts'
-    },
-    {
       name: 'three',
       version: '0.71.0',
       js: 'three@0.71.0.min.js',
@@ -333,6 +327,7 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
     ga('send', 'event', 'doodle', 'copy', label, value);
     var d: any = document.getElementById('copy-dialog');
     var dialog: HTMLDialogElement = d;
+    scope.description = scope.doodles[0].description;
     var closeHandler = function() {
       dialog.removeEventListener('close', closeHandler);
       if (dialog.returnValue.length > 0) {
@@ -458,26 +453,39 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
     if (token) {
       var data = doodleToGist(scope.doodles[0]);
       if (scope.doodles[0].gistId) {
-        github.patchGist(token, scope.doodles[0].gistId, data, function(err, response, status, headers, config) {
+        github.patchGist(token, scope.doodles[0].gistId, data, function(err, response, status: number, headers, config) {
             if (err) {
+              if (status === 404) {
+                if (confirm("The Gist associated with your doodle no longer exists.\nWould you like me to disassociate your doodle so that you can create a new Gist?")) {
+                  scope.doodles[0].gistId = undefined;
+                  updateStorage();
+                }
+              }
+              else {
+                // If the status is 404 then the Gist no longer exists on GitHub.
+                // We might as well set the gistId to undefined and let the user try to POST.
                 alert("status: " + JSON.stringify(status));
                 alert("err: " + JSON.stringify(err));
                 alert("response: "+ JSON.stringify(response));
+              }
             }
             else {
-                scope.doodles[0].gistId = response.id;
+              // No changes when we patch, I don't think.
+              alert("Your doodle was successfully uploaded, patching the existing Gist.");
             }
         });
       }
       else {
-        github.postGist(token, data, function(err, response, status, headers, config) {
+        github.postGist(token, data, function(err, response, status: number, headers, config) {
             if (err) {
                 alert("status: " + JSON.stringify(status));
                 alert("err: " + JSON.stringify(err));
                 alert("response: "+ JSON.stringify(response));
             }
             else {
-                scope.doodles[0].gistId = response.id;
+              scope.doodles[0].gistId = response.id;
+              updateStorage();
+              alert("Your doodle was successfully uploaded and associated with a new Gist.");
             }
         });
       }
@@ -593,12 +601,15 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
           return scope.doodles[0].dependencies.indexOf(option.name) > -1;
         });
 
-        var scripts: string = options.map(function(option: IOption) {
-          return "<script src='" + DOMAIN + "/js/" + option.js + "'></script>\n";
-        }).join("");
+        var chosenFileNames: string[] = options.map(function(option: IOption) {return option.js;});
+        // TODO: We will later want to make operator overloading configurable for speed.
+        var scriptFileNames: string[] = chosenFileNames.concat('maths.min.js');
+        var scriptTags = scriptFileNames.map(function(fileName: string) {
+          return "<script src='" + DOMAIN + "/js/" + fileName + "'></script>\n";
+        });
 
         var html = scope.doodles[0].html;
-        html = html.replace(/<!-- SCRIPTS-MARKER -->/, scripts);
+        html = html.replace(/<!-- SCRIPTS-MARKER -->/, scriptTags.join(""));
         html = html.replace(/<!-- CODE-MARKER -->/, mathscript.transpile(outputFile.text));
 
         content.open();
