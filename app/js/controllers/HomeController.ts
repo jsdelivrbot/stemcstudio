@@ -11,6 +11,7 @@
 /// <reference path="../typings/IDoodle.ts" />
 /// <reference path="../typings/IDoodleConfig.ts" />
 /// <reference path="../typings/IHomeScope.ts" />
+/// <reference path="../typings/IOption.ts" />
 /// <reference path="../typings/IOutputFile.ts" />
 /// <reference path="../typings/cookie.ts" />
 /// <reference path="../services/uuid/IUuidService.ts" />
@@ -102,6 +103,11 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     }
   ];
 
+  /**
+   * Keep track of the dependencies that are loaded in the workspace.
+   */
+  var olds: string[] = [];
+
   function loadModel() {
     scope.doodles = localStorage[STORAGE_KEY] !== undefined ? JSON.parse(localStorage[STORAGE_KEY]) : [];
   }
@@ -111,6 +117,7 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
   }
 
   function updateView() {
+    updateWorkspace();
     htmlEditor.setValue(scope.doodles[0].html, -1);
     codeEditor.setValue(scope.doodles[0].code, -1);
     setViewMode(scope.doodles[0].autoupdate)
@@ -481,19 +488,6 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
 
   var workspace = ace.workspace();
 
-  var fileNames = ['lib.d.ts', 'angular@1.4.0-rc.1.d.ts', 'blade@0.9.35.d.ts', 'd3@3.5.5.d.ts', 'eight@0.9.15.d.ts', 'jsxgraph@0.99.3.d.ts', 'three@0.71.0.d.ts', 'visual@0.0.52.d.ts'];
-
-  var readFile = function(fileName, callback) {
-    var url = DOMAIN + "/ts/" + fileName;
-    http.get(url)
-      .success(function(data, status, headers, config) {
-        callback(null, data)
-      })
-      .error(function(data, status, headers, config) {
-        callback(new Error("Unable to wrangle #{fileName}."));
-      })
-  }
-
   var codeEditor = ace.edit('code-editor', workspace);
 
   codeEditor.setTheme('ace/theme/textmate');
@@ -503,18 +497,6 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
   codeEditor.setFontSize('18px');
   codeEditor.setShowPrintMargin(false);
   codeEditor.setDisplayIndentGuides(false);
-
-  fileNames.forEach(function(fileName) {
-    readFile(fileName, function(err, content) {
-      if (!err) {
-        if (workspace) {
-          workspace.ensureScript(fileName, content.replace(/\r\n?/g, '\n'), true);
-        }
-        else {
-        }
-      }
-    });
-  });
 
   codeEditor.getSession().on('initAfter', function(event) {
     // Not sure when we need to know that the worker has started?
@@ -598,16 +580,95 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     catch(e) {
     }
   };
+
+  /**
+   * Update the scripts that the workspace uses to type-check the code.
+   * This involves comparing the dependencies of the doodle to the
+   * units that are already loaded. We compute those that must be added
+   * and those that must be removed from the workspace in order to minimize
+   * network traffic and to ensure that the doodle defines the correct dependencies.
+   */
+  function updateWorkspace() {
+    // console.log("olds: " + JSON.stringify(olds));
+    // Load the wokspace with the appropriate TypeScript definitions.
+    // Quick Hack to eliminate maths which is only needed at runtime.
+    var news: string[] = scope.doodles[0].dependencies;
+    // console.log("news: " + JSON.stringify(news));
+
+    var adds: string[] = news.filter(function(dep) { return olds.indexOf(dep)<0; }).filter(function(name) { return (name !== 'maths');});
+    // console.log("adds: " + JSON.stringify(adds));
+
+    var rmvs: string[] = olds.filter(function(dep) { return news.indexOf(dep)<0; });
+    // The following is not essential, as `lib` is not an option, it's always there.
+    // However, we do it to be explicit.
+    if (rmvs.indexOf('lib')>=0) {
+      rmvs.splice(rmvs.indexOf('lib'),1);
+    }
+    // console.log("rmvs: " + JSON.stringify(rmvs));
+
+    var rmvOpts: IOption[] = scope.options.filter(function(option) { return rmvs.indexOf(option.name)>=0; });
+    // console.log("rmvOpts: " + JSON.stringify(rmvOpts));
+
+    var rmvUnits: { name: string; fileName: string }[] = rmvOpts.map(function(option) { return {name: option.name, fileName: option.dts }; });
+    // console.log("rmvUnits: " + JSON.stringify(rmvUnits.map(function(unit) { return unit.fileName;})));
+
+    var addOpts: IOption[] = scope.options.filter(function(option) { return adds.indexOf(option.name)>=0; });
+    // console.log("addOpts: " + JSON.stringify(addOpts));
+
+    // TODO: Optimize so that we don't keep loading `lib`.
+    var addUnits: { name: string; fileName: string }[] = addOpts.map(function(option) { return {name: option.name, fileName: option.dts }; })
+    if (olds.indexOf('lib') < 0) {
+      addUnits = addUnits.concat({name: 'lib', fileName: 'lib.d.ts'});
+    }
+    // console.log("addUnits: " + JSON.stringify(addUnits.map(function(unit) { return unit.fileName;})));
+
+    var readFile = function(fileName, callback) {
+      var url = DOMAIN + "/ts/" + fileName;
+      http.get(url)
+        .success(function(data, status, headers, config) {
+          callback(null, data)
+        })
+        .error(function(data, status, headers, config) {
+          callback(new Error("Unable to wrangle #{fileName}."));
+        })
+    }
+
+    rmvUnits.forEach(function(rmvUnit){
+      workspace.removeScript(rmvUnit.fileName);
+      olds.splice(olds.indexOf(rmvUnit.name),1);
+    });
+
+    addUnits.forEach(function(addUnit) {
+      readFile(addUnit.fileName, function(err, content) {
+        if (!err) {
+          if (workspace) {
+            workspace.ensureScript(addUnit.fileName, content.replace(/\r\n?/g, '\n'), true);
+            olds.unshift(addUnit.name);
+          }
+          else {
+          }
+        }
+      });
+    });
+  }
   
   function init() {
+    // Load the doodles
     loadModel();
+    
     if (scope.doodles.length === 0) {
       createDoodle(scope.templates[2]);
-      updateStorage();
-      updateView();
     }
+    // We are now guaranteed that there is a current doodle i.e. scope.doodles[0]
+
+    // We need to make sure that the files have names (for the TypeScript compiler).
     htmlEditor.changeFile(scope.doodles[0].html, 'app.html');
     codeEditor.changeFile(scope.doodles[0].code, 'app.ts');
+
+    // Now that things have settled down...
+    updateStorage();
+    updateView();
+
     setEditMode(true);
     setViewMode(true);
     showCode();
