@@ -16,6 +16,12 @@ app.controller('DoodleController', ['$scope', function(scope: IDoodleScope) {
   var d: any = document.getElementById('doodle-dialog');
   var dialog: HTMLDialogElement = d;
 
+  /**
+   * This method changes the scope.dependencies array.
+   * It is therefore essential that this array is a copy
+   * of the dependencies of the doodle in order for the
+   * Cancel processing to work correctly.
+   */
   scope.toggleDependency = function(name: string) {
     var idx = scope.dependencies.indexOf(name);
     if (idx > -1) {

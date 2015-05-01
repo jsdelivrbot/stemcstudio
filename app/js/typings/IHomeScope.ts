@@ -43,6 +43,7 @@ interface IHomeScope extends AppScope {
   gists: IGist[];
 
   // This is only here to pass parameters into the dialog.
+  description: string;
   dependencies: string[];
 
   shareURL: () => string;

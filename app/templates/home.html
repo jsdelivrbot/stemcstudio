@@ -98,8 +98,8 @@
         <select ng-model='template' ng-options='template.description for template in templates track by template.uuid'></select>
       </div>
       <div class='modal-footer'>
-        <button class='btn' ng-click='doCancel()'>Close</button>
         <button class='btn btn-primary' ng-click='doOK()'>Create doodle</button>
+        <button class='btn' ng-click='doCancel()'>Cancel</button>
       </div>
     </fieldset>
   </form>
@@ -117,7 +117,7 @@
     </p>
   </div>
   <div class='modal-footer'>
-    <button class='btn' ng-click='doCancel()'>Close</button>
+    <button class='btn' ng-click='doCancel()'>Cancel</button>
   </div>
 </dialog>
 <!-- -->
@@ -130,8 +130,8 @@
     <input type='text' ng-model='description' placeholder="Enter description" autofocus/>
   </div>
   <div class='modal-footer'>
-    <button class='btn' ng-click='doCancel()'>Close</button>
     <button class='btn btn-primary' ng-click='doOK()'>Copy doodle</button>
+    <button class='btn' ng-click='doCancel()'>Cancel</button>
   </div>
 </dialog>
 <!-- -->
@@ -166,12 +166,14 @@
     <h3>Doodle</h3>
   </div>
   <div class='modal-body'>
+    <input type='text' ng-model='description' placeholder="Enter description" autofocus/>
     <h4>Dependencies</h4>
     <label ng-repeat='option in options track by option.name' class='checkbox-inline'>
       <input type='checkbox' ng-checked='dependencies.indexOf(option.name) > -1' ng-click='toggleDependency(option.name)'>{{option.name}}</input>
     </label>
   </div>
   <div class='modal-footer'>
-    <button class='btn' ng-click='doCancel()'>Close</button>
+    <button class='btn btn-primary' ng-click='doOK()'>OK</button>
+    <button class='btn' ng-click='doCancel()'>Cancel</button>
   </div>
 </dialog>

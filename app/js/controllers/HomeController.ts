@@ -333,12 +333,20 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     ga('send', 'event', 'doodle', 'properties', label, value);
     var d: any = document.getElementById('doodle-dialog');
     var dialog: HTMLDialogElement = d;
-    scope.dependencies = scope.doodles[0].dependencies;
+    // It's wierd that we can get the `returnValue` but not set the initial value.
+    // JavaScript strings are immutable so changing scope.description does not affect the original.
+    // Make a copy of the doodle's dependencies so that Cancel works correctly.
+    scope.description = scope.doodles[0].description;
+    scope.dependencies = scope.doodles[0].dependencies.map(function(x: string) {return x;});
     var closeHandler = function() {
       dialog.removeEventListener('close', closeHandler);
       if (dialog.returnValue.length > 0) {
         var response: IDoodleParameters = JSON.parse(dialog.returnValue);
+        scope.doodles[0].description = response.description;
         scope.doodles[0].dependencies = response.dependencies;
+        // TODO: It would be nice to determine if there have been any changes,
+        // and then only requre updates accordingly. Perhaps we can ensure that
+        // the doodle is in a canonical format or have a doodle class?
         updateStorage();
         updateView();
       }
@@ -589,14 +597,11 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
    * network traffic and to ensure that the doodle defines the correct dependencies.
    */
   function updateWorkspace() {
-    // console.log("olds: " + JSON.stringify(olds));
     // Load the wokspace with the appropriate TypeScript definitions.
     // Quick Hack to eliminate maths which is only needed at runtime.
     var news: string[] = scope.doodles[0].dependencies;
-    // console.log("news: " + JSON.stringify(news));
 
     var adds: string[] = news.filter(function(dep) { return olds.indexOf(dep)<0; }).filter(function(name) { return (name !== 'maths');});
-    // console.log("adds: " + JSON.stringify(adds));
 
     var rmvs: string[] = olds.filter(function(dep) { return news.indexOf(dep)<0; });
     // The following is not essential, as `lib` is not an option, it's always there.
@@ -604,23 +609,18 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     if (rmvs.indexOf('lib')>=0) {
       rmvs.splice(rmvs.indexOf('lib'),1);
     }
-    // console.log("rmvs: " + JSON.stringify(rmvs));
 
     var rmvOpts: IOption[] = scope.options.filter(function(option) { return rmvs.indexOf(option.name)>=0; });
-    // console.log("rmvOpts: " + JSON.stringify(rmvOpts));
 
     var rmvUnits: { name: string; fileName: string }[] = rmvOpts.map(function(option) { return {name: option.name, fileName: option.dts }; });
-    // console.log("rmvUnits: " + JSON.stringify(rmvUnits.map(function(unit) { return unit.fileName;})));
 
     var addOpts: IOption[] = scope.options.filter(function(option) { return adds.indexOf(option.name)>=0; });
-    // console.log("addOpts: " + JSON.stringify(addOpts));
 
     // TODO: Optimize so that we don't keep loading `lib`.
     var addUnits: { name: string; fileName: string }[] = addOpts.map(function(option) { return {name: option.name, fileName: option.dts }; })
     if (olds.indexOf('lib') < 0) {
       addUnits = addUnits.concat({name: 'lib', fileName: 'lib.d.ts'});
     }
-    // console.log("addUnits: " + JSON.stringify(addUnits.map(function(unit) { return unit.fileName;})));
 
     var readFile = function(fileName, callback) {
       var url = DOMAIN + "/ts/" + fileName;
