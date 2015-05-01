@@ -1,6 +1,6 @@
 {
   "name": "davincidoodle",
-  "version": "1.0.28",
+  "version": "1.0.29",
   "description": "Computational Learning Environment",
   "scripts": {
     "start": "NODE_ENV=local nodemon web.js",

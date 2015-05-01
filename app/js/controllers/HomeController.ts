@@ -15,9 +15,7 @@
 /// <reference path="../typings/IOutputFile.ts" />
 /// <reference path="../typings/cookie.ts" />
 /// <reference path="../services/uuid/IUuidService.ts" />
-var app = angular.module('app');
-
-app.controller('HomeController', ['$scope', '$http', '$location','$routeParams', '$timeout', '$window', 'mathscript', 'GitHub', 'GitHubAuthManager', 'cookie', 'templates', 'uuid4', 'ga', function(scope: IHomeScope, http: angular.IHttpService, location: angular.ILocationService, routeParams, $timeout: angular.ITimeoutService, $window, mathscript, github, authManager, cookie: ICookieService, templates: IDoodle[], uuid4: IUuidService, ga: UniversalAnalytics.ga) {
+angular.module('app').controller('HomeController', ['$scope', '$http', '$location','$routeParams', '$timeout', '$window', 'mathscript', 'GitHub', 'GitHubAuthManager', 'cookie', 'templates', 'uuid4', 'ga', function(scope: IHomeScope, http: angular.IHttpService, location: angular.ILocationService, routeParams, $timeout: angular.ITimeoutService, $window, mathscript, github, authManager, cookie: ICookieService, templates: IDoodle[], uuid4: IUuidService, ga: UniversalAnalytics.ga) {
 
   var FWD_SLASH = '/';
 
@@ -31,10 +29,15 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
   var TEXT_VIEW_RESUME = "Resume";
   var TEXT_VIEW_SUSPEND = "Suspend";
 
+  var FILENAME_META = 'doodle.json';
+  var FILENAME_HTML = 'index.html';
+  var FILENAME_CODE = 'script.ts';
+  var FILENAME_LESS = 'style.less';
+
   var STORAGE_KEY = 'davincidoodle';
 
-    // Do not create new trackers in this (single page) app.
-    ga('create', 'UA-41504069-2', 'auto');  // Creates a tracker.
+    // Reminder: Do not create multiple trackers in this (single page) app.
+    ga('create', 'UA-41504069-2', 'auto');
     ga('send', 'pageview');
 
     var GITHUB_TOKEN_COOKIE_NAME = 'github-token';
@@ -47,8 +50,6 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
 
   // We'll keep the transpiled code here.
   var outputFile: IOutputFile;
-  scope.isShowingHTML = false;
-  scope.isShowingCode = true;
 
   scope.templates = templates;
 
@@ -120,7 +121,9 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     updateWorkspace();
     htmlEditor.setValue(scope.doodles[0].html, -1);
     codeEditor.setValue(scope.doodles[0].code, -1);
-    setViewMode(scope.doodles[0].autoupdate)
+    setEditMode(scope.doodles[0].isCodeVisible);
+    setViewMode(scope.doodles[0].isViewVisible);
+    setFocusEditor(scope.doodles[0].focusEditor);
   }
 
   var createDoodle = function(template: IDoodle, description?: string) {
@@ -130,7 +133,9 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     var doodle: IDoodle = {
       uuid: uuid4.generate(),
       description: description,
-      autoupdate: template.autoupdate,
+      isCodeVisible: template.isCodeVisible,
+      isViewVisible: template.isViewVisible,
+      focusEditor: template.focusEditor,
       html: template.html,
       code: template.code,
       dependencies: template.dependencies
@@ -203,9 +208,7 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
   }
 
   scope.$watch('isViewVisible', function(newVal: boolean, oldVal, scope) {
-    // We can get a race condition if we use the state of the model to determine
-    // whether to rebuild the preview.
-    scope.doodles[0].autoupdate = scope.isViewVisible;
+    scope.doodles[0].isViewVisible = scope.isViewVisible;
     updateStorage();
   });
 
@@ -213,6 +216,11 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     scope.isEditMode = editMode;
     scope.toggleText = editMode ? TEXT_CODE_HIDE : TEXT_CODE_SHOW;
   }
+
+  scope.$watch('isEditMode', function(newVal: boolean, oldVal, scope) {
+    scope.doodles[0].isCodeVisible = scope.isEditMode;
+    updateStorage();
+  });
 
   scope.toggleMode = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'toggleMode', label, value);
@@ -249,22 +257,35 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
 
   scope.showHTML = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'showHTML', label, value);
-    scope.isShowingHTML = true;
-    scope.isShowingCode = false;
-    htmlEditor.focus();
-    htmlEditor.gotoLine(0, 0);
+    setFocusEditor(FILENAME_HTML);
   }
 
   scope.showCode = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'showCode', label, value);
-    showCode();
+    setFocusEditor(FILENAME_CODE);
   }
 
-  function showCode() {
-    scope.isShowingHTML = false;
-    scope.isShowingCode = true;
-    codeEditor.focus();
-    codeEditor.gotoLine(0, 0);
+  function setFocusEditor(fileName: string) {
+
+    if (fileName === FILENAME_CODE) {
+      scope.isShowingHTML = false;
+      scope.isShowingCode = true;
+      codeEditor.focus();
+      codeEditor.gotoLine(0, 0);
+      scope.doodles[0].focusEditor = fileName;
+      updateStorage();
+    }
+    else if (fileName === FILENAME_HTML) {
+      scope.isShowingHTML = true;
+      scope.isShowingCode = false;
+      htmlEditor.focus();
+      htmlEditor.gotoLine(0, 0);
+      scope.doodles[0].focusEditor = fileName;
+      updateStorage();
+    }
+    else {
+      setFocusEditor(FILENAME_CODE);
+    }
   }
 
   scope.doNew = function(label?: string, value?: number) {
@@ -279,7 +300,6 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
         updateStorage();
         updateView();
         updatePreview(WAIT_NO_MORE);
-        showCode();
       }
     };
     dialog.addEventListener('close', closeHandler);
@@ -303,7 +323,6 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
         updateStorage();
         updateView();
         updatePreview(WAIT_NO_MORE);
-        showCode();
       }
     };
     dialog.addEventListener('close', closeHandler);
@@ -322,7 +341,6 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
         updateStorage();
         updateView();
         updatePreview(WAIT_NO_MORE);
-        showCode();
       }
     };
     dialog.addEventListener('close', closeHandler);
@@ -358,16 +376,19 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
   function downloadGist(token: string, gistId: string) {
     github.getGist(token, gistId, function(err, gist) {
       if (!err) {
-        var config: IDoodleConfig = JSON.parse(gist.files['doodle.json'].content);
-        var html = gist.files['index.html'].content;
-        var code = gist.files['script.ts'].content;
+        var config: IDoodleConfig = JSON.parse(gist.files[FILENAME_META].content);
+        var html = gist.files[FILENAME_HTML].content;
+        var code = gist.files[FILENAME_CODE].content;
         var codeInfo: IDoodle = {
           gistId: gistId,
           uuid: config.uuid,
           description: gist.description,
-          autoupdate: false,
-          html: gist.files['index.html'].content,
-          code: gist.files['script.ts'].content,
+          // TODO: Should we persist the UI state in the Gist?
+          isCodeVisible: true,
+          isViewVisible: false,
+          focusEditor: FILENAME_CODE,
+          html: gist.files[FILENAME_HTML].content,
+          code: gist.files[FILENAME_CODE].content,
           dependencies: config.dependencies
         };
         deleteDoodle(config.uuid);
@@ -425,9 +446,9 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
       public: true,
       files: {}
     };
-    gist.files['doodle.json'] = {content: JSON.stringify(configuration(scope.doodles[0]))};
-    gist.files['index.html'] = { content: scope.doodles[0].html };
-    gist.files['script.ts'] = { content: scope.doodles[0].code };
+    gist.files[FILENAME_META] = {content: JSON.stringify(configuration(scope.doodles[0]))};
+    gist.files[FILENAME_HTML] = { content: scope.doodles[0].html };
+    gist.files[FILENAME_CODE] = { content: scope.doodles[0].code };
     return gist;
   }
 
@@ -662,16 +683,14 @@ app.controller('HomeController', ['$scope', '$http', '$location','$routeParams',
     // We are now guaranteed that there is a current doodle i.e. scope.doodles[0]
 
     // We need to make sure that the files have names (for the TypeScript compiler).
-    htmlEditor.changeFile(scope.doodles[0].html, 'app.html');
-    codeEditor.changeFile(scope.doodles[0].code, 'app.ts');
+    // FIXME: These names aren't the same as those used in GitHub
+    htmlEditor.changeFile(scope.doodles[0].html, FILENAME_HTML);
+    codeEditor.changeFile(scope.doodles[0].code, FILENAME_CODE);
 
     // Now that things have settled down...
     updateStorage();
     updateView();
 
-    setEditMode(true);
-    setViewMode(true);
-    showCode();
     if (routeParams.gistId) {
       var token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
       // This is an asynchronous call!

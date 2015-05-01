@@ -227,7 +227,9 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
     {
       uuid: uuid.generate(),
       description: "AngularJS — Superheroic JavaScript MVW Framework",
-      autoupdate: true,
+      isCodeVisible: true,
+      isViewVisible: true,
+      focusEditor: undefined,
       html: HTML_TEMPLATE_ANGULAR,
       code: CODE_TEMPLATE_ANGULAR,
       dependencies: ['angular', 'maths']
@@ -235,7 +237,9 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
     {
       uuid: uuid.generate(),
       description: "three.js — JavaScript 3D Library for WebGL",
-      autoupdate: true,
+      isCodeVisible: true,
+      isViewVisible: true,
+      focusEditor: undefined,
       html: HTML_TEMPLATE_BASIC,
       code: CODE_TEMPLATE_THREEJS,
       dependencies: ['maths','three']
@@ -243,7 +247,9 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
     {
       uuid: uuid.generate(),
       description: "blade — Geometric Algebra Library",
-      autoupdate: true,
+      isCodeVisible: true,
+      isViewVisible: true,
+      focusEditor: undefined,
       html: HTML_TEMPLATE_BASIC,
       code: CODE_TEMPLATE_VISUAL,
       dependencies: ['blade','eight','maths','three','visual']
@@ -251,7 +257,9 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
     {
       uuid: uuid.generate(),
       description: "JSXGraph — Dynamic Mathematics with JavaScript",
-      autoupdate: true,
+      isCodeVisible: true,
+      isViewVisible: true,
+      focusEditor: undefined,
       html: HTML_TEMPLATE_BASIC,
       code: CODE_TEMPLATE_JSXGRAPH,
       dependencies: ['jsxgraph', 'maths']
@@ -259,15 +267,19 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
     {
       uuid: uuid.generate(),
       description: "d3 — Data Driven Documents",
-      autoupdate: true,
+      isCodeVisible: true,
+      isViewVisible: true,
+      focusEditor: undefined,
       html: HTML_TEMPLATE_BASIC,
       code: CODE_TEMPLATE_D3,
       dependencies: ['d3', 'maths']
     },
     {
       uuid: uuid.generate(),
-      description: "Basic", 
-      autoupdate: false,
+      description: "Basic",
+      isCodeVisible: true,
+      isViewVisible: false,
+      focusEditor: undefined,
       html: HTML_TEMPLATE_BASIC,
       code: CODE_TEMPLATE_BASIC,
       dependencies: ['maths']

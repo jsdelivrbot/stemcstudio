@@ -12,9 +12,17 @@ interface IDoodle {
    */
   description: string;
   /**
-   * 
+   * The `isCodeVisible` property determines whether the code is visible.
    */
-  autoupdate: boolean;
+  isCodeVisible: boolean;
+  /**
+   * The `isViewVisible` property determines whether the view is visible.
+   */
+  isViewVisible: boolean;
+  /**
+   * The `focusEditor` property contains the fileName of the editor which has focus.
+   */
+  focusEditor: string;
   /**
    * 
    */
