@@ -229,18 +229,6 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
         // The view is already running, don't restart it with an updatePreview.
       }
     }
-    else {
-      // If we are returning to editing we probably don't want the view running.
-      if (scope.isViewVisible) {
-        // However, we'll let the user make that determination.
-        // It's surprising when the mode change cascades for no good reason.
-        // setViewMode(false);
-        // updatePreview(WAIT_NO_MORE);
-      }
-      else {
-        // The view is not running, no need to do a pointless cleanup.
-      }
-    }
   };
 
   scope.toggleView = function(label?: string, value?: number) {
@@ -695,12 +683,15 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
 
     // We need to make sure that the files have names (for the TypeScript compiler).
     // FIXME: These names aren't the same as those used in GitHub
+    scope.doodles[0].isCodeVisible = true;
+//  scope.doodles[0].isViewVisible = false;
     htmlEditor.changeFile(scope.doodles[0].html, FILENAME_HTML);
     codeEditor.changeFile(scope.doodles[0].code, FILENAME_CODE);
 
     // Now that things have settled down...
     updateStorage();
     updateView();
+
 
     if (routeParams.gistId) {
       var token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
