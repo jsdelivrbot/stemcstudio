@@ -28,43 +28,40 @@
           </a>
         </li>
         <li ng-show='isEditMode'>
-          <a href='#' ng-click='toggleView()'>
+          <a href='#' ng-click='toggleView()' ng-show='isViewVisible'>
             <span class="glyphicon glyphicon-stop" aria-hidden="true" ng-show='isViewVisible'></span>
+            Stop
+          </a>
+          <a href='#' ng-click='toggleView()' ng-hide='isViewVisible'>
             <span class="glyphicon glyphicon-play" aria-hidden="true" ng-hide='isViewVisible'></span>
+            Play
           </a>
         </li>
         <li class='dropdown' ng-show='isEditMode'>
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
             <span class="glyphicon glyphicon-hdd" aria-hidden='true'></span>
+            <span class='caret'></span>
           </a>
           <ul class="dropdown-menu" role="menu">
-            <li>
-              <a href="#" ng-click='doNew()'>New</a>
-            </li>
-            <li>
-              <a href="#" ng-click='doOpen()'>Open</a>
-            </li>
-            <li>
-              <a href="#" ng-click='doCopy()'>Copy</a>
-            </li>
+            <li><a href="#" ng-click='doNew()'>New</a></li>
+            <li><a href="#" ng-click='doOpen()'>Open</a></li>
+            <li><a href="#" ng-click='doCopy()'>Copy</a></li>
             <li class='divider'></li>
-            <li>
-              <a href="#" ng-click='doProperties()'>Properties</a>
-            </li>
+            <li><a href="#" ng-click='doProperties()'>Properties</a></li>
           </ul>
         </li>
         <li class='dropdown' ng-show='isEditMode'>
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+          <a ng-click='login()' ng-hide='isLoggedIn()' href="#" role="button" aria-expanded="false">
             <span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
+            Log In
+          </a>
+          <a ng-show='isLoggedIn()' href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+            <span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>
+            <span class='caret' ng-show='isLoggedIn()'></span>
             {{userLogin()}}
           </a>
           <ul class="dropdown-menu" role="menu">
-            <li>
-              <a href="#" ng-click='login()'  ng-hide='isLoggedIn()'>
-                <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
-                Log in
-              </a>
-            </li>
             <li>
               <a href="#" ng-click='doDownload()' ng-show='isLoggedIn()'>
                 <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
