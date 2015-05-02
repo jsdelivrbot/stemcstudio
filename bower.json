@@ -1,6 +1,6 @@
 {
   "name": "davincidoodle",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Computational Learning Environment",
   "homepage": "https://github.com/geometryzen/davincidoodle",
   "authors": [
@@ -25,7 +25,7 @@
     "threejs": "*",
     "davinci-blade": "~1.0.1",
     "davinci-mathscript": "~0.9.12",
-    "davinci-visual": "~1.1.0",
+    "davinci-visual": "~1.1.1",
     "davinci-eight": "~0.9.15",
     "angular-bootstrap": "~0.12.1",
     "bootstrap": "~3.3.4",
