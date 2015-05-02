@@ -222,7 +222,128 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
 
   var CODE_TEMPLATE_D3 = "var x = d3;\n";
 
+  var HTML_TEMPLATE_ANGULAR_THREE = "" +
+    "<!doctype html>\n" +
+    "<html ng-app='doodle'>\n" +
+    "  <head>\n" +
+    "    <meta charset='utf-8'/>\n" +
+    "    <!-- SCRIPTS-MARKER -->\n" +
+    "    <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>\n" +
+    "  </head>\n" +
+    "  <body style='margin: 0;'>\n" +
+    "    <div class='container'>\n" +
+    "      <div class='page-header'>\n" +
+    "        <h1><a href='#'>AngularJS and three.js</a></h1>\n" +
+    "      </div>\n" +
+    "      <div ng-controller='MySectionController'>\n" +
+    "        <h3>Euler Angles</h3>\n" +
+    "        <canvas id='canvasID' style='width:100px; height:400px;'></canvas>\n" +
+    "        <div>\n" +
+    "          <label>x</label>\n"+
+    "          <input ng-model='rotation.x' type='text' placeholder=\"x axis rotation angle (radians)\"/>\n" +
+    "          <label>y</label>\n"+
+    "          <input ng-model='rotation.y' type='text' placeholder=\"y axis rotation angle (radians)\"/>\n" +
+    "          <label>z</label>\n"+
+    "          <input ng-model='rotation.z' type='text' placeholder=\"z axis rotation angle (radians)\"/>\n" +
+    "        </div>\n" +
+    "        <hr/>\n" +
+    "        <ul>\n" +
+    "          <li>\n" +
+    "            <a href='https://angularjs.org' target='_blank'>AngularJS Home Page</a>\n" +
+    "          </li>\n" +
+    "          <li>\n" +
+    "            <a href='http://threejs.org' target='_blank'>three.js Home Page</a>\n" +
+    "          </li>\n" +
+    "        </ul>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "    <script type='text/javascript'>\n" +
+    "      try {\n" +
+    "      <!-- CODE-MARKER -->\n" +
+    "      }\n" +
+    "      catch(e) {\n" +
+    "        console.log(e);\n" +
+    "      }\n" +
+    "    </script>\n" +
+    "  </body>\n" +
+    "</html>\n";
+
+  var CODE_TEMPLATE_ANGULAR_THREE = "" +
+    "/**\n" +
+    " * This is the scope for MySectionController.\n" +
+    " */\n" +
+    "interface IMySectionScope extends angular.IScope {\n" +
+    "  /**\n" +
+    "   * The `rotation` property.\n" +
+    "   */\n" +
+    "  rotation: THREE.Euler;\n" +
+    "}\n" +
+    "\n" +
+    "(function (app: angular.IModule) {\n" +
+    "  'use-strict';\n" +
+    "\n" +
+    "  app.controller('MySectionController', ['$scope', function MySectionController($scope: IMySectionScope) {\n" +
+    "\n" +
+    "    $scope.rotation = new THREE.Euler();\n" +
+    "    $scope.rotation.x = 0.5;\n" +
+    "    $scope.rotation.y = 0.8;\n" +
+    "    $scope.rotation.z = Math.PI / 2;\n" +
+    "\n" +
+    "    var scene = new THREE.Scene();\n"+
+    "    var camera: THREE.PerspectiveCamera;\n" +
+    "    var canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById('canvasID')\n" +
+    "    var renderer = new THREE.WebGLRenderer({ canvas: canvas });\n" +
+    "    var mesh: THREE.Mesh;\n" +
+    "\n" +
+    "    init();\n"+
+    "    animate();\n"+
+    "\n"+
+    "    /**\n"+
+    "     * Initializes the scene.\n"+
+    "     */\n"+
+    "    function init() {\n" +
+    "      var aspect = 600 / 400;\n" +
+    "      camera = new THREE.PerspectiveCamera(75, aspect, 1, 1000);\n" +
+    "      camera.position.z = 200;\n" +
+    "      scene.add(camera);\n" +
+    "\n" +
+    "      var geometry = new THREE.BoxGeometry(100, 100, 100);\n" +
+    "      var material = new THREE.MeshNormalMaterial();\n" +
+    "\n" +
+    "      mesh = new THREE.Mesh(geometry, material);\n" +
+    "      scene.add(mesh);\n" +
+    "\n" +
+    "      renderer.setClearColor(0xCCCCCC, 1.0);\n" +
+    "      renderer.setSize(600, 400);\n" +
+    "}\n" +
+    "\n" +
+    "    /**\n"+
+    "     * Animates the scene.\n"+
+    "     */\n"+
+    "    function animate() {\n" +
+    "      requestAnimationFrame(animate);\n" +
+    "\n" +
+    "      mesh.rotation.x = $scope.rotation.x;\n"+
+    "      mesh.rotation.y = $scope.rotation.y;\n"+
+    "      mesh.rotation.z = $scope.rotation.z;\n"+
+    "\n"+
+    "      renderer.render(scene, camera);\n"+
+    "    }\n" +
+    "  }]);\n" +
+    "})(angular.module('doodle', []));\n";
+
   return [
+    {
+      uuid: uuid.generate(),
+      description: "AngularJS and three.js",
+      isCodeVisible: true,
+      isViewVisible: true,
+      focusEditor: undefined,
+      lastKnownJs: undefined,
+      html: HTML_TEMPLATE_ANGULAR_THREE,
+      code: CODE_TEMPLATE_ANGULAR_THREE,
+      dependencies: ['angular', 'three']
+    },
     {
       uuid: uuid.generate(),
       description: "AngularJS — Superheroic JavaScript MVW Framework",
@@ -232,7 +353,7 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
       lastKnownJs: undefined,
       html: HTML_TEMPLATE_ANGULAR,
       code: CODE_TEMPLATE_ANGULAR,
-      dependencies: ['angular', 'maths']
+      dependencies: ['angular']
     },
     {
       uuid: uuid.generate(),
@@ -243,7 +364,7 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
       lastKnownJs: undefined,
       html: HTML_TEMPLATE_BASIC,
       code: CODE_TEMPLATE_THREEJS,
-      dependencies: ['maths','three']
+      dependencies: ['three']
     },
     {
       uuid: uuid.generate(),
@@ -254,7 +375,7 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
       lastKnownJs: undefined,
       html: HTML_TEMPLATE_BASIC,
       code: CODE_TEMPLATE_VISUAL,
-      dependencies: ['blade','eight','maths','three','visual']
+      dependencies: ['blade','eight','three','visual']
     },
     {
       uuid: uuid.generate(),
@@ -265,7 +386,7 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
       lastKnownJs: undefined,
       html: HTML_TEMPLATE_BASIC,
       code: CODE_TEMPLATE_JSXGRAPH,
-      dependencies: ['jsxgraph', 'maths']
+      dependencies: ['jsxgraph']
     },
     {
       uuid: uuid.generate(),
@@ -276,7 +397,7 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
       lastKnownJs: undefined,
       html: HTML_TEMPLATE_BASIC,
       code: CODE_TEMPLATE_D3,
-      dependencies: ['d3', 'maths']
+      dependencies: ['d3']
     },
     {
       uuid: uuid.generate(),
@@ -287,7 +408,7 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
       lastKnownJs: undefined,
       html: HTML_TEMPLATE_BASIC,
       code: CODE_TEMPLATE_BASIC,
-      dependencies: ['maths']
+      dependencies: []
     }
   ];
 }]);

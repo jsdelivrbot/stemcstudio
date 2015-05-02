@@ -2735,19 +2735,47 @@ declare module THREE {
         static yellowgreen: number;
     }
 
+    /**
+     * Euler angles describe a rotation transformation by rotating an object on its various axes in
+     * specified amounts per axis, and a specified axis order.
+     */
     export class Euler {
+        /**
+         * @param x the angle of the x axis in radians.
+         * @param order A string representing the order that the rotations are applied, defaults to 'XYZ' (must be upper case).
+         */
         constructor(x?: number, y?: number, z?: number, order?: string);
-
+        /**
+         * Rotation angle around x axis in radians.
+         */
         x: number;
+        /**
+         * Rotation angle around y axis in radians.
+         */
         y: number;
+        /**
+         * Rotation angle around z axis in radians.
+         */
         z: number;
+        /**
+         * Order of axes, defaults to 'XYZ' (must be upper case).
+         */
         order: string;
 
         set(x: number, y: number, z: number, order?: string): Euler;
+        /**
+         * Copies value of euler to this Euler.
+         */
         copy(euler: Euler): Euler;
         setFromRotationMatrix(m: Matrix4, order?: string, update?: boolean): Euler;
         setFromQuaternion(q:Quaternion, order?: string, update?: boolean): Euler;
         setFromVector3( v: Vector3, order?: string ): Euler;
+        /**
+         * Updates the euler angle with a new order.
+         * WARNING: this discards revolution information.
+         * Returns this Euler.
+         * @param newOrder The new order.
+         */
         reorder(newOrder: string): Euler;
         equals(euler: Euler): boolean;
         fromArray(xyzo: any[]): Euler;

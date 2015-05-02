@@ -88,6 +88,13 @@ module.exports = function(lineman) {
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff2", dest: "dist/fonts/glyphicons-halflings-regular.woff2"}
         ]
       }
+    },
+
+    watch: {
+      museum: {
+        files: ["museum/**/*.d.ts"],
+        tasks: ["copy:dev"]
+      }
     }
 
   };

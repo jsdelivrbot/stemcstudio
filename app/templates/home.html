@@ -7,10 +7,17 @@
 <nav id='toolbar' class='navbar navbar-inverse'>
   <div class='container-fluid'>
     <div class='navbar-header'>
-      <a class='navbar-brand' href='#' ng-click='toggleMode()'>
-        <!--span class="glyphicon glyphicon-film" aria-hidden="true" ng-show='isEditMode'></span-->
-        <!--span class="glyphicon glyphicon-edit" aria-hidden="true" ng-hide='isEditMode'></span-->
+      <a class='navbar-brand' href='#' ng-click='doProperties()' ng-show='isEditMode'>
         {{doodles[0].description}}
+        <!--span class="glyphicon glyphicon-cog" aria-hidden="true" ng-show='isEditMode'></span-->
+      </a>
+      <a class='navbar-brand' href='#' ng-click='toggleMode()' ng-show='isEditMode'>
+        <span class="glyphicon glyphicon-cog" aria-hidden="true" ng-show='isEditMode'></span>
+        View
+      </a>
+      <a class='navbar-brand' href='#' ng-click='toggleMode()' ng-hide='isEditMode'>
+        <span class="glyphicon glyphicon-edit" aria-hidden="true" ng-hide='isEditMode'></span>
+        Edit
       </a>
     </div>
     <div class='collapse navbar-collapse' ng-show='isEditMode'>
