@@ -62,9 +62,9 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
     },
     {
       name: 'blade',
-      version: '0.9.36',
-      js: 'blade@0.9.36.min.js',
-      dts: 'blade@0.9.36.d.ts'
+      version: '1.0.1',
+      js: 'blade@1.0.1.min.js',
+      dts: 'blade@1.0.1.d.ts'
     },
     {
       name: 'd3',
@@ -92,9 +92,9 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
     },
     {
       name: 'visual',
-      version: '0.0.52',
-      js: 'visual@0.0.52.min.js',
-      dts: 'visual@0.0.52.d.ts'
+      version: '1.1.0',
+      js: 'visual@1.1.0.min.js',
+      dts: 'visual@1.1.0.d.ts'
     }
   ];
 

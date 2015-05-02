@@ -152,7 +152,7 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
     "     * A unit bivector representing the generator of the rotation.\n"+
     "     */\n"+
     "    var B = x / angle;\n"+
-    "    return Math.cos(angle) + B * Math.sin(angle);\n"+
+    "    return Math.cos(angle.w) + B * Math.sin(angle.w);\n"+
     "}\n"+
     "\n"+
     "var viz = new visual.Visual(window);\n"+
