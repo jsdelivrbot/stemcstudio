@@ -98,6 +98,33 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
     }
   ];
 
+  // Temporary to ensure correct Gist deserialization.
+  function depArray(deps: {[key:string]:string}): string[] {
+    var ds: string[] = [];
+    for (var prop in deps) {
+      ds.push(prop);
+    }
+    return ds;
+  }
+
+  // Temporary to ensure correct Gist serialization.
+  function depObject(names: string[]): {[key:string]:string} {
+    function version(name: string): string {
+      var matching = scope.options.filter(function(option) { return option.name === name;});
+      if (matching.length > 0) {
+        return matching[0].version;
+      }
+      else {
+        return undefined;
+      }
+    }
+    var obj: { [key: string]: string } = {};
+    names.forEach(function(name: string) {
+      obj[name] = version(name);
+    });
+    return obj;
+  }
+
   /**
    * Keep track of the dependencies that are loaded in the workspace.
    */
@@ -363,6 +390,7 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
         var config: IDoodleConfig = JSON.parse(gist.files[FILENAME_META].content);
         var html = gist.files[FILENAME_HTML].content;
         var code = gist.files[FILENAME_CODE].content;
+
         var codeInfo: IDoodle = {
           gistId: gistId,
           uuid: config.uuid,
@@ -374,7 +402,7 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
           lastKnownJs: undefined,
           html: gist.files[FILENAME_HTML].content,
           code: gist.files[FILENAME_CODE].content,
-          dependencies: config.dependencies
+          dependencies: depArray(config.dependencies)
         };
         deleteDoodle(config.uuid);
         scope.doodles.unshift(codeInfo);
@@ -419,14 +447,10 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
    * Maps the doodle to the format required for GitHub.
    */
   function configuration(doodle: IDoodle): IDoodleConfig {
-//    var choices = scope.options.filter(function(option) { return doodle.dependencies.indexOf(option.name) >= 0;});
-//    var dependencies = {};
-//    choices.forEach(function(choice) {
-//        dependencies[choice.name] = choice.version;
-//    });
     return {
       uuid: doodle.uuid,
-      dependencies: doodle.dependencies
+      description: doodle.description,
+      dependencies: depObject(doodle.dependencies)
     };
   }
 
@@ -436,7 +460,7 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
       public: true,
       files: {}
     };
-    gist.files[FILENAME_META] = {content: JSON.stringify(configuration(scope.doodles[0]))};
+    gist.files[FILENAME_META] = {content: JSON.stringify(configuration(scope.doodles[0]), null, 2)};
     gist.files[FILENAME_HTML] = {content: scope.doodles[0].html};
     gist.files[FILENAME_CODE] = {content: scope.doodles[0].code};
     return gist;
