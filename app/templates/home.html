@@ -16,10 +16,16 @@
     <div class='collapse navbar-collapse' ng-show='isEditMode'>
       <ul class='nav navbar-nav'>
         <li ng-show='isEditMode'>
-          <a href='#' ng-click='showHTML()'>HTML</a>
+          <a href='#' ng-click='showHTML()'>
+            <span class="glyphicon glyphicon-ok" aria-hidden="true" ng-show='isShowingHTML'></span>
+            HTML
+          </a>
         </li>
         <li ng-show='isEditMode'>
-          <a href='#' ng-click='showCode()'>Code</a>
+          <a href='#' ng-click='showCode()'>
+            <span class="glyphicon glyphicon-ok" aria-hidden="true" ng-show='isShowingCode'></span>
+            Code
+          </a>
         </li>
         <li ng-show='isEditMode'>
           <a href='#' ng-click='toggleView()'>

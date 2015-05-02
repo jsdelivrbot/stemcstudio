@@ -24,6 +24,10 @@ interface IDoodle {
    */
   focusEditor: string;
   /**
+   * The last known generated JavaScript file. This is cached to improve startup.
+   */
+  lastKnownJs: string;
+  /**
    * 
    */
   html: string;

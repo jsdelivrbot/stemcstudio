@@ -27,6 +27,7 @@ module.exports = function(lineman) {
 
           {src: "museum/angular/angular@1.4.0-rc.1.min.js",                  dest: "generated/js/angular@1.4.0-rc.1.min.js"},
           {src: "museum/blade/blade@0.9.35.min.js",                          dest: "generated/js/blade@0.9.35.min.js"},
+          {src: "museum/blade/blade@0.9.36.min.js",                          dest: "generated/js/blade@0.9.36.min.js"},
           {src: "museum/d3/d3@3.5.5.min.js",                                 dest: "generated/js/d3@3.5.5.min.js"},
           {src: "museum/eight/eight@0.9.15.min.js",                          dest: "generated/js/eight@0.9.15.min.js"},
           {src: "museum/jsxgraph/jsxgraph@0.99.3.min.js",                    dest: "generated/js/jsxgraph@0.99.3.min.js"},
@@ -37,6 +38,7 @@ module.exports = function(lineman) {
 
           {src: "museum/angular/angular@1.4.0-rc.1.d.ts",                    dest: "generated/ts/angular@1.4.0-rc.1.d.ts"},
           {src: "museum/blade/blade@0.9.35.d.ts",                            dest: "generated/ts/blade@0.9.35.d.ts"},
+          {src: "museum/blade/blade@0.9.36.d.ts",                            dest: "generated/ts/blade@0.9.36.d.ts"},
           {src: "museum/d3/d3@3.5.5.d.ts",                                   dest: "generated/ts/d3@3.5.5.d.ts"},
           {src: "museum/eight/eight@0.9.15.d.ts",                            dest: "generated/ts/eight@0.9.15.d.ts"},
           {src: "museum/jsxgraph/jsxgraph@0.99.3.d.ts",                      dest: "generated/ts/jsxgraph@0.99.3.d.ts"},
@@ -61,6 +63,7 @@ module.exports = function(lineman) {
 
           {src: "museum/angular/angular@1.4.0-rc.1.min.js",                  dest: "dist/js/angular@1.4.0-rc.1.min.js"},
           {src: "museum/blade/blade@0.9.35.min.js",                          dest: "dist/js/blade@0.9.35.min.js"},
+          {src: "museum/blade/blade@0.9.36.min.js",                          dest: "dist/js/blade@0.9.36.min.js"},
           {src: "museum/d3/d3@3.5.5.min.js",                                 dest: "dist/js/d3@3.5.5.min.js"},
           {src: "museum/eight/eight@0.9.15.min.js",                          dest: "dist/js/eight@0.9.15.min.js"},
           {src: "museum/jsxgraph/jsxgraph@0.99.3.min.js",                    dest: "dist/js/jsxgraph@0.99.3.min.js"},
@@ -71,6 +74,7 @@ module.exports = function(lineman) {
 
           {src: "museum/angular/angular@1.4.0-rc.1.d.ts",                    dest: "dist/ts/angular@1.4.0-rc.1.d.ts"},
           {src: "museum/blade/blade@0.9.35.d.ts",                            dest: "dist/ts/blade@0.9.35.d.ts"},
+          {src: "museum/blade/blade@0.9.36.d.ts",                            dest: "dist/ts/blade@0.9.36.d.ts"},
           {src: "museum/d3/d3@3.5.5.d.ts",                                   dest: "dist/ts/d3@3.5.5.d.ts"},
           {src: "museum/eight/eight@0.9.15.d.ts",                            dest: "dist/ts/eight@0.9.15.d.ts"},
           {src: "museum/jsxgraph/jsxgraph@0.99.3.d.ts",                      dest: "dist/ts/jsxgraph@0.99.3.d.ts"},

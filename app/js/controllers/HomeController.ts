@@ -49,7 +49,7 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
     });
 
   // We'll keep the transpiled code here.
-  var outputFile: IOutputFile;
+  // var outputFile: IOutputFile;
 
   scope.templates = templates;
 
@@ -62,9 +62,9 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
     },
     {
       name: 'blade',
-      version: '0.9.35',
-      js: 'blade@0.9.35.min.js',
-      dts: 'blade@0.9.35.d.ts'
+      version: '0.9.36',
+      js: 'blade@0.9.36.min.js',
+      dts: 'blade@0.9.36.d.ts'
     },
     {
       name: 'd3',
@@ -130,6 +130,7 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
       isCodeVisible: template.isCodeVisible,
       isViewVisible: template.isViewVisible,
       focusEditor: template.focusEditor,
+      lastKnownJs: template.lastKnownJs,
       html: template.html,
       code: template.code,
       dependencies: template.dependencies
@@ -338,7 +339,7 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
     // JavaScript strings are immutable so changing scope.description does not affect the original.
     // Make a copy of the doodle's dependencies so that Cancel works correctly.
     scope.description = scope.doodles[0].description;
-    scope.dependencies = scope.doodles[0].dependencies.map(function(x: string) {return x;});
+    scope.dependencies = scope.doodles[0].dependencies;
     var closeHandler = function() {
       dialog.removeEventListener('close', closeHandler);
       if (dialog.returnValue.length > 0) {
@@ -370,6 +371,7 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
           isCodeVisible: true,
           isViewVisible: false,
           focusEditor: FILENAME_CODE,
+          lastKnownJs: undefined,
           html: gist.files[FILENAME_HTML].content,
           code: gist.files[FILENAME_CODE].content,
           dependencies: config.dependencies
@@ -417,6 +419,11 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
    * Maps the doodle to the format required for GitHub.
    */
   function configuration(doodle: IDoodle): IDoodleConfig {
+//    var choices = scope.options.filter(function(option) { return doodle.dependencies.indexOf(option.name) >= 0;});
+//    var dependencies = {};
+//    choices.forEach(function(choice) {
+//        dependencies[choice.name] = choice.version;
+//    });
     return {
       uuid: doodle.uuid,
       dependencies: doodle.dependencies
@@ -430,8 +437,8 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
       files: {}
     };
     gist.files[FILENAME_META] = {content: JSON.stringify(configuration(scope.doodles[0]))};
-    gist.files[FILENAME_HTML] = { content: scope.doodles[0].html };
-    gist.files[FILENAME_CODE] = { content: scope.doodles[0].code };
+    gist.files[FILENAME_HTML] = {content: scope.doodles[0].html};
+    gist.files[FILENAME_CODE] = {content: scope.doodles[0].code};
     return gist;
   }
 
@@ -459,7 +466,7 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
             }
             else {
               // No changes when we patch, I don't think.
-              alert("Your doodle was successfully uploaded, patching the existing Gist.");
+              alert("Your doodle was successfully uploaded and patched the existing Gist.");
             }
         });
       }
@@ -533,9 +540,12 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
 
   codeEditor.getSession().on('outputFiles', function(event) {
     var outputFiles: IOutputFile[] = event.data;
-    outputFiles.forEach(function(file: IOutputFile) {
-      outputFile = file;
-      updatePreview(WAIT_FOR_MORE_CODE_KEYSTROKES);
+    outputFiles.forEach(function(outputFile: IOutputFile) {
+      if (scope.doodles[0].lastKnownJs !== outputFile.text) {
+        scope.doodles[0].lastKnownJs = outputFile.text;
+        updateStorage();
+        updatePreview(WAIT_FOR_MORE_CODE_KEYSTROKES);
+      }
     });
   });
 
@@ -576,7 +586,7 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
         preview.removeChild(preview.firstChild);
       }
 
-      if (scope.isViewVisible && outputFile) {
+      if (scope.isViewVisible && scope.doodles[0].lastKnownJs) {
         var iframe = document.createElement('iframe');
         iframe.style.width = '100%';
         iframe.style.height = '100%';
@@ -598,7 +608,7 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
 
         var html = scope.doodles[0].html;
         html = html.replace(/<!-- SCRIPTS-MARKER -->/, scriptTags.join(""));
-        html = html.replace(/<!-- CODE-MARKER -->/, mathscript.transpile(outputFile.text));
+        html = html.replace(/<!-- CODE-MARKER -->/, mathscript.transpile(scope.doodles[0].lastKnownJs));
 
         content.open();
         content.write(html);
@@ -642,13 +652,13 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
       addUnits = addUnits.concat({name: 'lib', fileName: 'lib.d.ts'});
     }
 
-    var readFile = function(fileName, callback) {
+    var readFile = function(fileName: string, callback: (err, data?) => void) {
       var url = DOMAIN + "/ts/" + fileName;
       http.get(url)
-        .success(function(data, status, headers, config) {
+        .success(function(data, status: number, headers, config) {
           callback(null, data)
         })
-        .error(function(data, status, headers, config) {
+        .error(function(data, status: number, headers, config) {
           callback(new Error("Unable to wrangle #{fileName}."));
         })
     }
@@ -679,12 +689,14 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
     if (scope.doodles.length === 0) {
       createDoodle(scope.templates[2]);
     }
-    // We are now guaranteed that there is a current doodle i.e. scope.doodles[0]
+    // We are now guaranteed that there is a current doodle i.e. scope.doodles[0] exists.
 
-    // We need to make sure that the files have names (for the TypeScript compiler).
-    // FIXME: These names aren't the same as those used in GitHub
+    // Following a browser refresh, show the code so that it refreshes correctly (bug).
+    // This also side-steps the issue of the time it takes to restart the preview.
+    // Ideally we remove this line and use the cached `lastKnownJs` to provide the preview.
     scope.doodles[0].isCodeVisible = true;
 //  scope.doodles[0].isViewVisible = false;
+    // We need to make sure that the files have names (for the TypeScript compiler).
     htmlEditor.changeFile(scope.doodles[0].html, FILENAME_HTML);
     codeEditor.changeFile(scope.doodles[0].code, FILENAME_CODE);
 

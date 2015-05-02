@@ -145,10 +145,9 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
     " * @param x The argument to the exponential function, a bivector is expected.\n"+
     " */\n"+
     "function exp(x: blade.Euclidean3): blade.Euclidean3 {\n"+
-    "    // Really? norm yields a Euclidean3?\n"+
     "    // We now have to extract the scalar component to calculate cos, sin.\n"+
     "    // Of course, we could have universal functions instead.\n"+
-    "    var angle = x.norm().w;\n"+
+    "    var angle = x.norm();\n"+
     "    /**\n"+
     "     * A unit bivector representing the generator of the rotation.\n"+
     "     */\n"+
@@ -230,6 +229,7 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
       isCodeVisible: true,
       isViewVisible: true,
       focusEditor: undefined,
+      lastKnownJs: undefined,
       html: HTML_TEMPLATE_ANGULAR,
       code: CODE_TEMPLATE_ANGULAR,
       dependencies: ['angular', 'maths']
@@ -240,6 +240,7 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
       isCodeVisible: true,
       isViewVisible: true,
       focusEditor: undefined,
+      lastKnownJs: undefined,
       html: HTML_TEMPLATE_BASIC,
       code: CODE_TEMPLATE_THREEJS,
       dependencies: ['maths','three']
@@ -250,6 +251,7 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
       isCodeVisible: true,
       isViewVisible: true,
       focusEditor: undefined,
+      lastKnownJs: undefined,
       html: HTML_TEMPLATE_BASIC,
       code: CODE_TEMPLATE_VISUAL,
       dependencies: ['blade','eight','maths','three','visual']
@@ -260,6 +262,7 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
       isCodeVisible: true,
       isViewVisible: true,
       focusEditor: undefined,
+      lastKnownJs: undefined,
       html: HTML_TEMPLATE_BASIC,
       code: CODE_TEMPLATE_JSXGRAPH,
       dependencies: ['jsxgraph', 'maths']
@@ -270,6 +273,7 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
       isCodeVisible: true,
       isViewVisible: true,
       focusEditor: undefined,
+      lastKnownJs: undefined,
       html: HTML_TEMPLATE_BASIC,
       code: CODE_TEMPLATE_D3,
       dependencies: ['d3', 'maths']
@@ -280,6 +284,7 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
       isCodeVisible: true,
       isViewVisible: false,
       focusEditor: undefined,
+      lastKnownJs: undefined,
       html: HTML_TEMPLATE_BASIC,
       code: CODE_TEMPLATE_BASIC,
       dependencies: ['maths']
