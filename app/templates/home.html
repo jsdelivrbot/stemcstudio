@@ -95,7 +95,7 @@
   </div>
 </nav>
 <!-- -->
-<dialog id="new-dialog" ng-controller='NewController' class='modal-dialog'>
+<dialog id="new-dialog" ng-controller='NewController' class='modal-dialog' style='display: none;'>
   <div class='modal-header'>
       <button type="button" class="close" data-dismiss="modal" aria-hidden='true' ng-click='doCancel()'>&times;</button>
     <h3>Create a New Doodle</h3>
@@ -115,7 +115,7 @@
   </form>
 </dialog>
 <!-- -->
-<dialog id="open-dialog" ng-controller='OpenController' class='modal-dialog'>
+<dialog id="open-dialog" ng-controller='OpenController' class='modal-dialog' style='display: none;'>
   <div class='modal-header'>
       <button type="button" class="close" data-dismiss="modal" aria-hidden='true' ng-click='doCancel()'>&times;</button>
     <h3>Open Doodle</h3>
@@ -131,7 +131,7 @@
   </div>
 </dialog>
 <!-- -->
-<dialog id="copy-dialog" ng-controller='CopyController' class='modal-dialog'>
+<dialog id="copy-dialog" ng-controller='CopyController' class='modal-dialog' style='display: none;'>
   <div class='modal-header'>
       <button type="button" class="close" data-dismiss="modal" aria-hidden='true' ng-click='doCancel()'>&times;</button>
     <h3>Copy Doodle</h3>
@@ -145,7 +145,7 @@
   </div>
 </dialog>
 <!-- -->
-<dialog id="share-dialog" ng-controller='ShareController'>
+<dialog id="share-dialog" ng-controller='ShareController' style='display: none;'>
   <input type='text'
          value='{{shareURL()}}'
          readonly='readonly'
@@ -155,7 +155,7 @@
   </div>
 </dialog>
 <!-- -->
-<dialog id="download-dialog" ng-controller='DownloadController' class='modal-dialog'>
+<dialog id="download-dialog" ng-controller='DownloadController' class='modal-dialog' style='display: none;'>
   <div class='modal-header'>
       <button type="button" class="close" data-dismiss="modal" aria-hidden='true' ng-click='doCancel()'>&times;</button>
     <h3>Download Doodle</h3>
@@ -170,7 +170,7 @@
   </div>
 </dialog>
 <!-- -->
-<dialog id="doodle-dialog" ng-controller='DoodleController' class='modal-dialog'>
+<dialog id="doodle-dialog" ng-controller='DoodleController' class='modal-dialog' style='display: none;'>
   <div class='modal-header'>
       <button type="button" class="close" data-dismiss="modal" aria-hidden='true' ng-click='doCancel()'>&times;</button>
     <h3>Doodle</h3>

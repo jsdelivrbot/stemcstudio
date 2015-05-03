@@ -1,6 +1,6 @@
 {
   "name": "davincidoodle",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "Computational Learning Environment",
   "homepage": "https://github.com/geometryzen/davincidoodle",
   "authors": [
@@ -29,10 +29,7 @@
     "davinci-eight": "~1.0.0",
     "angular-bootstrap": "~0.12.1",
     "bootstrap": "~3.3.4",
-    "angular-uuid4": "~0.3.0"
-  },
-  "resolutions": {
-    "angular": "1.4.0-rc.1",
-    "davinci-blade": "~1.0.1"
+    "angular-uuid4": "~0.3.0",
+    "dialog-polyfill": "~0.3.0"
   }
 }

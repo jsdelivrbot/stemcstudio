@@ -14,7 +14,8 @@
 /// <reference path="../typings/IOption.ts" />
 /// <reference path="../typings/IOutputFile.ts" />
 /// <reference path="../typings/cookie.ts" />
-/// <reference path="../services/uuid/IUuidService.ts" />
+/// <reference path="../typings/cookie.ts" />
+/// <reference path="../../../bower_components/dialog-polyfill/dialog-polyfill.d.ts" />
 angular.module('app').controller('HomeController', ['$scope', '$http', '$location','$routeParams', '$timeout', '$window', 'mathscript', 'GitHub', 'GitHubAuthManager', 'cookie', 'templates', 'uuid4', 'ga', function(scope: IHomeScope, http: angular.IHttpService, location: angular.ILocationService, routeParams, $timeout: angular.ITimeoutService, $window, mathscript, github, authManager, cookie: ICookieService, templates: IDoodle[], uuid4: IUuidService, ga: UniversalAnalytics.ga) {
 
   var FWD_SLASH = '/';
@@ -123,6 +124,23 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
       obj[name] = version(name);
     });
     return obj;
+  }
+
+  function showModalDialog(dialog: HTMLDialogElement, closeHandler: () => void) {
+      if (!dialog.show) {
+        // Registering the dialog shims the methods show, showModal and close.
+        dialogPolyfill.registerDialog(dialog);
+      }
+      dialog.addEventListener('close', closeHandler);
+      // Firefox compatibility.
+      dialog.style.display = '';
+      dialog.showModal();
+  }
+
+  function hideModalDialog(dialog: HTMLDialogElement, closeHandler: () => void) {
+      // Firefox compatibility.
+      dialog.style.display = 'none';
+      dialog.removeEventListener('close', closeHandler);
   }
 
   /**
@@ -300,10 +318,9 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
 
   scope.doNew = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'new', label, value);
-    var d: any = document.getElementById('new-dialog');
-    var dialog: HTMLDialogElement = d;
+    var dialog = <HTMLDialogElement>document.getElementById('new-dialog');
     var closeHandler = function() {
-      dialog.removeEventListener('close', closeHandler);
+      hideModalDialog(dialog, closeHandler);
       if (dialog.returnValue.length > 0) {
         var response: INewParameters = JSON.parse(dialog.returnValue);
         createDoodle(response.template, response.description);
@@ -312,16 +329,14 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
         updatePreview(WAIT_NO_MORE);
       }
     };
-    dialog.addEventListener('close', closeHandler);
-    dialog.showModal();
+    showModalDialog(dialog, closeHandler);
   };
 
   scope.doOpen = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'open', label, value);
-    var d: any = document.getElementById('open-dialog');
-    var dialog: HTMLDialogElement = d;
+    var dialog = <HTMLDialogElement>document.getElementById('open-dialog');
     var closeHandler = function() {
-      dialog.removeEventListener('close', closeHandler);
+      hideModalDialog(dialog, closeHandler);
       if (dialog.returnValue.length > 0) {
         var response: IOpenParameters = JSON.parse(dialog.returnValue);
         if (response.byeBye) {
@@ -335,17 +350,15 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
         updatePreview(WAIT_NO_MORE);
       }
     };
-    dialog.addEventListener('close', closeHandler);
-    dialog.showModal();
+    showModalDialog(dialog, closeHandler);
   };
 
   scope.doCopy = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'copy', label, value);
-    var d: any = document.getElementById('copy-dialog');
-    var dialog: HTMLDialogElement = d;
+    var dialog = <HTMLDialogElement>document.getElementById('copy-dialog');
     scope.description = scope.doodles[0].description;
     var closeHandler = function() {
-      dialog.removeEventListener('close', closeHandler);
+      hideModalDialog(dialog, closeHandler);
       if (dialog.returnValue.length > 0) {
         var response: ICopyParameters = JSON.parse(dialog.returnValue);
         createDoodle(scope.doodles[0], response.description);
@@ -354,21 +367,19 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
         updatePreview(WAIT_NO_MORE);
       }
     };
-    dialog.addEventListener('close', closeHandler);
-    dialog.showModal();
+    showModalDialog(dialog, closeHandler);
   };
 
   scope.doProperties = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'properties', label, value);
-    var d: any = document.getElementById('doodle-dialog');
-    var dialog: HTMLDialogElement = d;
+    var dialog = <HTMLDialogElement>document.getElementById('doodle-dialog');
     // It's wierd that we can get the `returnValue` but not set the initial value.
     // JavaScript strings are immutable so changing scope.description does not affect the original.
     // Make a copy of the doodle's dependencies so that Cancel works correctly.
     scope.description = scope.doodles[0].description;
     scope.dependencies = scope.doodles[0].dependencies;
     var closeHandler = function() {
-      dialog.removeEventListener('close', closeHandler);
+      hideModalDialog(dialog, closeHandler);
       if (dialog.returnValue.length > 0) {
         var response: IDoodleParameters = JSON.parse(dialog.returnValue);
         scope.doodles[0].description = response.description;
@@ -380,8 +391,7 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
         updateView();
       }
     };
-    dialog.addEventListener('close', closeHandler);
-    dialog.showModal();
+    showModalDialog(dialog, closeHandler);
   };
 
   function downloadGist(token: string, gistId: string) {
@@ -422,10 +432,9 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
     github.getGists(token, function(err, gists: IGist[]) {
       if (!err) {
         scope.gists = gists;
-        var d: any = document.getElementById('download-dialog');
-        var dialog: HTMLDialogElement = d;
+        var dialog = <HTMLDialogElement>document.getElementById('download-dialog');
         var closeHandler = function() {
-          dialog.removeEventListener('close', closeHandler);
+          hideModalDialog(dialog, closeHandler);
           if (dialog.returnValue.length > 0) {
             var response: IDownloadParameters = JSON.parse(dialog.returnValue);
             downloadGist(token, response.gistId);
@@ -434,8 +443,7 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
 
           }
         };
-        dialog.addEventListener('close', closeHandler);
-        dialog.showModal();
+        showModalDialog(dialog, closeHandler);
       }
       else {
           scope.alert("Error attempting to download Gists");
@@ -523,16 +531,14 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
     function returnValueHandler(value: string) {
 
     }
-    var d: any = document.getElementById('share-dialog');
-    var dialog: HTMLDialogElement = d;
+    var dialog = <HTMLDialogElement>document.getElementById('share-dialog');
     var closeHandler = function() {
-      dialog.removeEventListener('close', closeHandler);
+      hideModalDialog(dialog, closeHandler);
       if (dialog.returnValue.length > 0) {
         returnValueHandler(dialog.returnValue);
       }
     };
-    dialog.addEventListener('close', closeHandler);
-    dialog.showModal();
+    showModalDialog(dialog, closeHandler);
   };
 
   scope.doHelp = function() {
