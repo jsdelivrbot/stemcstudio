@@ -74,9 +74,9 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
     },
     {
       name: 'eight',
-      version: '0.9.15',
-      js: 'eight@0.9.15.min.js',
-      dts: 'eight@0.9.15.d.ts'
+      version: '1.0.0',
+      js: 'eight@1.0.0.min.js',
+      dts: 'eight@1.0.0.d.ts'
     },
     {
       name: 'jsxgraph',
@@ -92,9 +92,9 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
     },
     {
       name: 'visual',
-      version: '1.2.0',
-      js: 'visual@1.2.0.min.js',
-      dts: 'visual@1.2.0.d.ts'
+      version: '1.4.1',
+      js: 'visual@1.4.1.min.js',
+      dts: 'visual@1.4.1.d.ts'
     }
   ];
 

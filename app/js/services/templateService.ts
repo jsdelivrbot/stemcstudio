@@ -155,7 +155,7 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
     "    return Math.cos(angle.w) + B * Math.sin(angle.w);\n"+
     "}\n"+
     "\n"+
-    "var viz = new visual.Visual(window);\n"+
+    "var viz = new visual.WebGLCanvas(window);\n"+
     //"\n"+
     //var title = new createjs.Text("Visualizing Geometric Algebra with WebGL", "24px Helvetica", "white");
     //title.x = 100; title.y = 60;
@@ -381,7 +381,7 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
 
   var CODE_TEMPLATE_ANGULAR_VISUAL = "" +
     "interface IMyScope extends angular.IScope {\n" +
-    "  canvas: visual.Visual;\n" +
+    "  canvas: visual.WebGLCanvas;\n" +
     "  box: visual.Box;\n" +
     "}\n" +
     "\n" +
@@ -389,10 +389,15 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
     "\n" +
     "  app.controller('my-controller', ['$window', '$scope', function MyController($window: Window, $scope: IMyScope) {\n" +
     "\n"+
-    "    $scope.canvas = new visual.Visual($window, 'canvasId');\n" +
+    "    $scope.canvas = new visual.WebGLCanvas($window, 'canvasId');\n" +
     "    $scope.box = new visual.Box();\n" +
     "    $scope.canvas.scene.add($scope.box);\n" +
-    "    $scope.canvas.setSize(600, 400);\n" +
+    "    $scope.canvas.width = 600;\n" +
+    "    $scope.canvas.height = 400;\n" +
+    "\n" +
+    "    var pointLight = new THREE.PointLight(0xFFFFFF);\n"+
+    "    pointLight.position.set(0, -10, 0);\n"+
+    "    $scope.canvas.scene.add(pointLight);\n"+
     "\n" +
     "    animate();\n"+
     "\n" +
@@ -449,6 +454,7 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
       code: CODE_TEMPLATE_THREEJS,
       dependencies: ['three']
     },
+    /*
     {
       uuid: uuid.generate(),
       description: "blade — Geometric Algebra Library",
@@ -460,6 +466,7 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
       code: CODE_TEMPLATE_VISUAL,
       dependencies: ['blade','eight','three','visual']
     },
+    */
     {
       uuid: uuid.generate(),
       description: "JSXGraph — Dynamic Mathematics with JavaScript",
