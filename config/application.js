@@ -37,6 +37,7 @@ module.exports = function(lineman) {
           {src: "museum/visual/visual@1.0.0.min.js",                         dest: "generated/js/visual@1.0.0.min.js"},
           {src: "museum/visual/visual@1.1.0.min.js",                         dest: "generated/js/visual@1.1.0.min.js"},
           {src: "museum/visual/visual@1.1.1.min.js",                         dest: "generated/js/visual@1.1.1.min.js"},
+          {src: "museum/visual/visual@1.2.0.min.js",                         dest: "generated/js/visual@1.2.0.min.js"},
 
           {src: "node_modules/typescript/bin/lib.d.ts",                      dest: "generated/ts/lib.d.ts"},
 
@@ -52,6 +53,7 @@ module.exports = function(lineman) {
           {src: "museum/visual/visual@1.0.0.d.ts",                           dest: "generated/ts/visual@1.0.0.d.ts"},
           {src: "museum/visual/visual@1.1.0.d.ts",                           dest: "generated/ts/visual@1.1.0.d.ts"},
           {src: "museum/visual/visual@1.1.1.d.ts",                           dest: "generated/ts/visual@1.1.1.d.ts"},
+          {src: "museum/visual/visual@1.2.0.d.ts",                           dest: "generated/ts/visual@1.2.0.d.ts"},
 
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot",   dest: "generated/fonts/glyphicons-halflings-regular.eot"},
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.svg",   dest: "generated/fonts/glyphicons-halflings-regular.svg"},
@@ -81,6 +83,7 @@ module.exports = function(lineman) {
           {src: "museum/visual/visual@1.0.0.min.js",                         dest: "dist/js/visual@1.0.0.min.js"},
           {src: "museum/visual/visual@1.1.0.min.js",                         dest: "dist/js/visual@1.1.0.min.js"},
           {src: "museum/visual/visual@1.1.1.min.js",                         dest: "dist/js/visual@1.1.1.min.js"},
+          {src: "museum/visual/visual@1.2.0.min.js",                         dest: "dist/js/visual@1.2.0.min.js"},
 
           {src: "node_modules/typescript/bin/lib.d.ts",                      dest: "dist/ts/lib.d.ts"},
 
@@ -96,6 +99,7 @@ module.exports = function(lineman) {
           {src: "museum/visual/visual@1.0.0.d.ts",                           dest: "dist/ts/visual@1.0.0.d.ts"},
           {src: "museum/visual/visual@1.1.0.d.ts",                           dest: "dist/ts/visual@1.1.0.d.ts"},
           {src: "museum/visual/visual@1.1.1.d.ts",                           dest: "dist/ts/visual@1.1.1.d.ts"},
+          {src: "museum/visual/visual@1.2.0.d.ts",                           dest: "dist/ts/visual@1.2.0.d.ts"},
 
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot",   dest: "dist/fonts/glyphicons-halflings-regular.eot"},
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.svg",   dest: "dist/fonts/glyphicons-halflings-regular.svg"},

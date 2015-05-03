@@ -332,7 +332,90 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
     "  }]);\n" +
     "})(angular.module('doodle', []));\n";
 
+  var HTML_TEMPLATE_ANGULAR_VISUAL = "" +
+    "<!doctype html>\n" +
+    "<html ng-app='doodle'>\n" +
+    "  <head>\n" +
+    "    <meta charset='utf-8'/>\n" +
+    "    <!-- SCRIPTS-MARKER -->\n" +
+    "    <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>\n" +
+    "  </head>\n" +
+    "  <body style='margin: 0;'>\n" +
+    "    <div class='container'>\n" +
+    "      <div class='page-header'>\n" +
+    "        <h1>AngularJS, three.js, and visual</h1>\n" +
+    "      </div>\n" +
+    "      <div ng-controller='my-controller'>\n" +
+    "        <h3>Euler rotations</h3>\n" +
+    "        <p>Bacon ipsum dolor amet sausage meatball.</p>" +
+    "        <canvas id='canvasId' style='width:100px; height:400px;'></canvas>\n" +
+    "        <div>\n" +
+    "          <label>x</label>\n"+
+    "          <input ng-model='box.rotation.x' type='text' placeholder=\"x axis rotation angle (radians)\"/>\n" +
+    "          <label>y</label>\n"+
+    "          <input ng-model='box.rotation.y' type='text' placeholder=\"y axis rotation angle (radians)\"/>\n" +
+    "          <label>z</label>\n"+
+    "          <input ng-model='box.rotation.z' type='text' placeholder=\"z axis rotation angle (radians)\"/>\n" +
+    "        </div>\n" +
+    "        <hr/>\n" +
+    "        <ul>\n" +
+    "          <li>\n" +
+    "            <a href='https://angularjs.org' target='_blank'>AngularJS Home Page</a>\n" +
+    "          </li>\n" +
+    "          <li>\n" +
+    "            <a href='http://threejs.org' target='_blank'>three.js Home Page</a>\n" +
+    "          </li>\n" +
+    "        </ul>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "    <script type='text/javascript'>\n" +
+    "      try {\n" +
+    "      <!-- CODE-MARKER -->\n" +
+    "      }\n" +
+    "      catch(e) {\n" +
+    "        console.log(e);\n" +
+    "      }\n" +
+    "    </script>\n" +
+    "  </body>\n" +
+    "</html>\n";
+
+  var CODE_TEMPLATE_ANGULAR_VISUAL = "" +
+    "interface IMyScope extends angular.IScope {\n" +
+    "  canvas: visual.Visual;\n" +
+    "  box: visual.Box;\n" +
+    "}\n" +
+    "\n" +
+    "(function (app: angular.IModule) {\n" +
+    "\n" +
+    "  app.controller('my-controller', ['$window', '$scope', function MyController($window: Window, $scope: IMyScope) {\n" +
+    "\n"+
+    "    $scope.canvas = new visual.Visual($window, 'canvasId');\n" +
+    "    $scope.box = new visual.Box();\n" +
+    "    $scope.canvas.scene.add($scope.box);\n" +
+    "    $scope.canvas.setSize(600, 400);\n" +
+    "\n" +
+    "    animate();\n"+
+    "\n" +
+    "    function animate() {\n" +
+    "      requestAnimationFrame(animate);\n" +
+    "      $scope.canvas.update();\n"+
+    "    }\n" +
+    "\n" +
+    "  }]);\n" +
+    "})(angular.module('doodle', []));\n";
+
   return [
+    {
+      uuid: uuid.generate(),
+      description: "AngularJS, three.js, and visual",
+      isCodeVisible: true,
+      isViewVisible: true,
+      focusEditor: undefined,
+      lastKnownJs: undefined,
+      html: HTML_TEMPLATE_ANGULAR_VISUAL,
+      code: CODE_TEMPLATE_ANGULAR_VISUAL,
+      dependencies: ['angular', 'three', 'visual']
+    },
     {
       uuid: uuid.generate(),
       description: "AngularJS and three.js",

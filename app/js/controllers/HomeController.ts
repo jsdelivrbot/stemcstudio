@@ -92,9 +92,9 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
     },
     {
       name: 'visual',
-      version: '1.1.1',
-      js: 'visual@1.1.1.min.js',
-      dts: 'visual@1.1.1.d.ts'
+      version: '1.2.0',
+      js: 'visual@1.2.0.min.js',
+      dts: 'visual@1.2.0.d.ts'
     }
   ];
 
@@ -711,7 +711,8 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
     loadModel();
     
     if (scope.doodles.length === 0) {
-      createDoodle(scope.templates[2]);
+      // If there is no document, construct one based upon the first template.
+      createDoodle(scope.templates[0], "My DaVinci Doodle");
     }
     // We are now guaranteed that there is a current doodle i.e. scope.doodles[0] exists.
 
