@@ -1515,15 +1515,23 @@ declare module THREE {
     /**
      * Affects objects using {@link MeshLambertMaterial} or {@link MeshPhongMaterial}.
      *
-     * @example
+     * example
+     *
      * var light = new THREE.PointLight( 0xff0000, 1, 100 );
      * light.position.set( 50, 50, 50 );
      * scene.add( light );
      */
     export class PointLight extends Light {
-        constructor(hex?: number, intensity?: number, distance?: number);
+        /**
+         * Creates a light at a specific position in the scene. The light shines in all directions (roughly similar to a light bulb).
+         * @param color
+         * @param intensity
+         * @param distance
+         * @param decay
+         */
+        constructor(color?: number, intensity?: number, distance?: number, decay? number);
 
-        /*
+        /**
          * Light's intensity.
          * Default - 1.0.
          */
@@ -1535,6 +1543,14 @@ declare module THREE {
          */
         distance: number;
 
+        /**
+         * Determines how the light fades in intensity with distance. For physically correct lights, should be 2.
+         */
+        decay: number;
+
+        /**
+         * Makes a clone of this PointLight.
+         */
         clone(): PointLight;
     }
 

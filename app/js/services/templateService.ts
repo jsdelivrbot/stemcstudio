@@ -454,7 +454,6 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
       code: CODE_TEMPLATE_THREEJS,
       dependencies: ['three']
     },
-    /*
     {
       uuid: uuid.generate(),
       description: "blade — Geometric Algebra Library",
@@ -466,7 +465,6 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
       code: CODE_TEMPLATE_VISUAL,
       dependencies: ['blade','eight','three','visual']
     },
-    */
     {
       uuid: uuid.generate(),
       description: "JSXGraph — Dynamic Mathematics with JavaScript",

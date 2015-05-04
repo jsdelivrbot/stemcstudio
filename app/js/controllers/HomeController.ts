@@ -93,9 +93,9 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
     },
     {
       name: 'visual',
-      version: '1.4.1',
-      js: 'visual@1.4.1.min.js',
-      dts: 'visual@1.4.1.d.ts'
+      version: '1.5.0',
+      js: 'visual@1.5.0.min.js',
+      dts: 'visual@1.5.0.d.ts'
     }
   ];
 
