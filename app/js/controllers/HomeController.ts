@@ -530,7 +530,18 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
             }
             else {
               // No changes when we patch, I don't think.
-              alert("Your doodle was successfully uploaded and patched the existing Gist.");
+                BootstrapDialog.show({
+                  type: BootstrapDialog.TYPE_SUCCESS,
+                  title: $("<h3>Upload complete</h3>"),
+                  message: "Your doodle was successfully uploaded and patched the existing Gist.",
+                  buttons: [{
+                    label: "Close",
+                    cssClass: 'btn btn-primary',
+                    action: function(dialog) {
+                      dialog.close();
+                    }
+                  }]
+                });
             }
         });
       }
@@ -544,13 +555,27 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
             else {
               scope.doodles[0].gistId = response.id;
               updateStorage();
-              alert("Your doodle was successfully uploaded and associated with a new Gist.");
+              BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_SUCCESS,
+                title: $("<h3>Upload complete</h3>"),
+                message: "Your doodle was successfully uploaded and associated with a new Gist.",
+                  buttons: [{
+                    label: "Close",
+                    cssClass: 'btn btn-primary',
+                    action: function(dialog) {
+                      dialog.close();
+                    }
+                  }]
+              });
             }
         });
       }
     }
     else {
-        scope.alert("You must be logged in.");
+        BootstrapDialog.alert({
+          type: BootstrapDialog.TYPE_INFO,
+          message: "You must be logged in."
+        });
     }
   };
 
