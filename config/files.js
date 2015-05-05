@@ -10,6 +10,7 @@ module.exports = function(lineman) {
         "bower_components/angular-route/angular-route.js",
         "bower_components/bootstrap/dist/js/bootstrap.js",
         "bower_components/dialog-polyfill/dialog-polyfill.js",
+        "bower_components/bootstrap3-dialog/dist/js/bootstrap-dialog.js",
 
         "bower_components/davinci-mathscript/dist/davinci-mathscript.js",
 
@@ -35,6 +36,7 @@ module.exports = function(lineman) {
         options: {
           paths: [
             "bower_components/bootstrap/less/normalize.less",
+            "bower_components/bootstrap3-dialog/dist/less/bootstrap-dialog.less",
             "bower_components/dialog-polyfill/dialog-polyfill.css",
             "app/css/**/*.less"
           ]

@@ -31,6 +31,7 @@ interface IHomeScope extends AppScope {
   doOpen: () => void;
   doCopy: () => void;
   doProperties(): void;
+  doAbout(): void;
   doShare: () => void;
   doHelp: () => void;
 

@@ -1,4 +1,5 @@
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
+/// <reference path="../../../typings/bootstrap-dialog/bootstrap-dialog.d.ts" />
 /// <reference path="../../../typings/deuce/deuce.d.ts" />
 /// <reference path="../../../typings/davinci-mathscript/davinci-mathscript.d.ts" />
 /// <reference path="../../../typings/google-analytics/ga.d.ts" />
@@ -37,17 +38,30 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
 
   var STORAGE_KEY = 'davincidoodle';
 
-    // Reminder: Do not create multiple trackers in this (single page) app.
-    ga('create', 'UA-41504069-2', 'auto');
-    ga('send', 'pageview');
+  var WELCOME_NEWBIE_BLURB = "" +
+  "Welcome to Davinci Doodle!"
 
-    var GITHUB_TOKEN_COOKIE_NAME = 'github-token';
+  var ELEVATOR_SPEECH_DOODLE = "" +
+  "DaVinci Doodle is a tool for learning modern mathematics through " +
+  "interactive programming using cutting-edge software development technologies."
 
-    authManager.handleLoginCallback(function(err, token) {
-      if (err) {
-        scope.alert(err.message);
-      }
-    });
+  var CAVEAT_NOTICE = "" +
+  "Davinci Doodle (Beta) is best experienced in a Google Chrome browser."
+
+  var COPYRIGHT_NOTICE = "" +
+  "Copyright (c) 2015 David DOT Geo DOT Holmes AT gmail DOT com"
+
+  // Reminder: Do not create multiple trackers in this (single page) app.
+  ga('create', 'UA-41504069-2', 'auto');
+  ga('send', 'pageview');
+
+  var GITHUB_TOKEN_COOKIE_NAME = 'github-token';
+
+  authManager.handleLoginCallback(function(err, token) {
+    if (err) {
+      scope.alert(err.message);
+    }
+  });
 
   // We'll keep the transpiled code here.
   // var outputFile: IOutputFile;
@@ -388,6 +402,30 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
     showModalDialog(dialog, closeHandler);
   };
 
+  scope.doAbout = function(label?: string, value?: number) {
+    ga('send', 'event', 'doodle', 'about', label, value);
+    showAboutDialog([], []);
+  }
+
+  function showAboutDialog(prologs: string[], epilogs: string[]) {
+    function p(text: string) {return "<p>" + text + "</p>" };
+    var blurbs = [ELEVATOR_SPEECH_DOODLE, CAVEAT_NOTICE, COPYRIGHT_NOTICE];
+    prologs.forEach(function(prolog) {blurbs.unshift(prolog)});
+    epilogs.forEach(function(epilog) {blurbs.push(epilog)});
+    var messageText = blurbs.map(p).join("");
+    BootstrapDialog.show({
+      title: $("<h3>DaVinci Doodle (Beta)</h3>"),
+      message: $(messageText),
+      buttons: [{
+        label: "Close",
+        cssClass: 'btn btn-primary',
+        action: function(dialog) {
+          dialog.close();
+        }
+      }]
+    });
+  }
+
   function downloadGist(token: string, gistId: string) {
     github.getGist(token, gistId, function(err, gist) {
       if (!err) {
@@ -707,12 +745,21 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
   }
   
   function init() {
+
     // Load the doodles
     loadModel();
+
+    /**
+     * Our best guess as to whether this user has been here.
+     */
+    var newbie: boolean = (scope.doodles.length === 0);
     
     if (scope.doodles.length === 0) {
       // If there is no document, construct one based upon the first template.
       createDoodle(scope.templates[0], "My DaVinci Doodle");
+    }
+    else {
+
     }
     // We are now guaranteed that there is a current doodle i.e. scope.doodles[0] exists.
 
@@ -729,7 +776,6 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
     updateStorage();
     updateView();
 
-
     if (routeParams.gistId) {
       var token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
       // This is an asynchronous call!
@@ -737,6 +783,10 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
     }
     else {
       updatePreview(WAIT_NO_MORE);
+    }
+
+    if (newbie) {
+      showAboutDialog([WELCOME_NEWBIE_BLURB],[]);
     }
   }
 
