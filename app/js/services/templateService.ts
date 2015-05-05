@@ -27,7 +27,9 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
     "  </body>\n" +
     "</html>\n";
 
-  var CODE_TEMPLATE_BASIC = "";
+  var CODE_TEMPLATE_BASIC = "" +
+    "// Enter your TypeScript code here\n" +
+    "// It will be combined with the HTML at the <!-- CODE-MARKER --> comment.\n";
 
   var HTML_TEMPLATE_ANGULAR = "" +
     "<!doctype html>\n" +
@@ -409,7 +411,169 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
     "  }]);\n" +
     "})(angular.module('doodle', []));\n";
 
+  var HTML_TEMPLATE_ANGULAR_BLADE_VISUAL = "" +
+    "<!doctype html>\n" +
+    "<html ng-app='doodle'>\n" +
+    "  <head>\n" +
+    "    <meta charset='utf-8'/>\n" +
+    "    <!-- SCRIPTS-MARKER -->\n" +
+    "    <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>\n" +
+    "  </head>\n" +
+    "  <body style='margin: 0;'>\n" +
+    "    <div class='container'>\n" +
+    "      <div class='page-header'>\n" +
+    "        <h1>AngularJS, blade, three.js, and visual</h1>\n" +
+    "      </div>\n" +
+    "      <div ng-controller='my-controller'>\n" +
+    "        <h3>Spinors and Rotations</h3>\n" +
+    "        <p>An example using the <em>blade</em> module to perform <b>Geometric Algebra</b> mathematics, the <em>visual</em> module to simplify the <b>simulation</b> code, <em>three.js</em> for <b>WebGL</b> rendering, and <em>AngularJS</em> for the Model-View-Whatever <b>User Interface</b>.</p>\n" +
+    "        <p>The HTML / TypeScript code editor provides integrated type-checking, content-assist and documentation.</p>\n"+
+    "        <p>Save your work locally and upload/download to your personal GitHub account.</p>\n"+
+    "        <p>Share your doodles and complete assignments using GitHub forks.</p>\n"+
+    "        <canvas id='canvasId' style='width:100px; height:400px;'></canvas>\n" +
+    "        <div>\n" +
+    "          <h1>time: {{runner.time}}</h1>\n"+
+    "          <button ng-click='clickedOne()'>{{runner.isRunning ? 'Stop' : 'Start'}}</button>\n"+
+    "          <button ng-click='clickedTwo()' ng-show='runner.isPaused'>{{runner.isPaused ? 'Reset' : 'Lap'}}</button>\n"+
+    "        </div>\n" +
+    "        <hr/>\n" +
+    "        <ul>\n" +
+    "          <li>\n" +
+    "            <a href='https://angularjs.org' target='_blank'>AngularJS Home Page</a>\n" +
+    "          </li>\n" +
+    "          <li>\n" +
+    "            <a href='http://threejs.org' target='_blank'>three.js Home Page</a>\n" +
+    "          </li>\n" +
+    "        </ul>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "    <script type='text/javascript'>\n" +
+    "      try {\n" +
+    "      <!-- CODE-MARKER -->\n" +
+    "      }\n" +
+    "      catch(e) {\n" +
+    "        console.log(e);\n" +
+    "      }\n" +
+    "    </script>\n" +
+    "  </body>\n" +
+    "</html>\n";
+
+  var CODE_TEMPLATE_ANGULAR_BLADE_VISUAL = "" +
+    "interface IMyScope extends angular.IScope {\n" +
+    "  canvas: visual.WebGLCanvas;\n" +
+    "  box: visual.Box;\n" +
+    "  /**\n"+
+    "   * The `runner` property runs the sumulation.\n"+
+    "   */\n"+
+    "  runner: visual.IStopwatch;\n" +
+    "  /**\n"+
+    "   * Invoked when the user clicks the left hand button (start, stop).\n"+
+    "   */\n"+
+    "  clickedOne(): void;\n" +
+    "  /**\n"+
+    "   * Invoked when the user clicks the right hand button (reset, lap).\n"+
+    "   */\n"+
+    "  clickedTwo(): void;\n" +
+    "}\n" +
+    "\n" +
+    "(function (app: angular.IModule) {\n" +
+    "\n" +
+    "  app.controller('my-controller', ['$window', '$scope', function MyController($window: Window, $scope: IMyScope) {\n" +
+    "\n"+
+    "    var e1 = visual.vectorE3(1,0,0);\n" +
+    "    var e2 = visual.vectorE3(0,1,0);\n" +
+    "    var e3 = visual.vectorE3(0,0,1);\n" +
+    "\n"+
+    "    function exp(x: blade.Euclidean3): blade.Euclidean3 {\n"+
+    "      // We now have to extract the scalar component to calculate cos, sin.\n" +
+    "      // Of course, we could have universal functions instead.\n" +
+    "      var angle = x.norm();\n" +
+    "      /**\n" +
+    "       * A unit bivector representing the generator of the rotation.\n" +
+    "       */\n" +
+    "      var B = x / angle;\n" +
+    "      return Math.cos(angle.w) + B * Math.sin(angle.w);\n" +
+    "    }\n" +
+    "\n"+
+    "    $scope.canvas = new visual.WebGLCanvas($window, 'canvasId');\n" +
+    "    $scope.box = new visual.Box();\n" +
+    "    $scope.canvas.scene.add($scope.box);\n" +
+    "    $scope.canvas.width = 600;\n" +
+    "    $scope.canvas.height = 400;\n" +
+    "\n" +
+    "    var pointLight = new THREE.PointLight(0xFFFFFF);\n"+
+    "    pointLight.position.set(0, -10, 0);\n"+
+    "    $scope.canvas.scene.add(pointLight);\n"+
+    "\n" +
+    "    var frequency = 2/10;\n"+
+    "    var omega = 2 * Math.PI * frequency * e3 ^ e2;\n"+
+    "    var spin = 2 * Math.PI * frequency * e1 ^ e2;\n"+
+    "\n" +
+    "    function setUp() {\n"+
+    "    }\n"+
+    "\n" +
+    "    function tick(time: number) {\n"+
+    "      $scope.$apply(function() {\n"+
+    "        draw(time);\n"+
+    "      });\n"+
+    "    }\n"+
+    "\n" +
+    "    function draw(time: number) {\n"+
+    "      var theta = omega * time;\n"+
+    "      var R = exp(-theta/2);\n"+
+    "      var S = exp(-spin*time/2)\n"+
+    "      $scope.box.pos = R * e3 * ~R;\n"+
+    "      $scope.box.attitude = S;\n"+
+    "      $scope.canvas.update();\n"+
+    "    }\n"+
+    "\n" +
+    "    function terminate(time: number) { return false; }\n"+
+    "\n" +
+    "    function tearDown(e: Error) {\n"+
+    "      $scope.$apply(function() {\n"+
+    "        if (e) {\n"+
+    "          console.log(e);\n"+
+    "        }\n"+
+    "      });\n"+
+    "    }\n"+
+    "\n" +
+    "    $scope.runner = visual.animationRunner(tick, terminate, setUp, tearDown, $window);\n"+
+    "    draw($scope.runner.time);\n"+
+    "\n" +
+    "    $scope.clickedOne = function() {\n"+
+    "      if ($scope.runner.isRunning) {\n"+
+    "        $scope.runner.stop();\n"+
+    "      }\n"+
+    "      else {\n"+
+    "        $scope.runner.start();\n"+
+    "      }\n"+
+    "    }\n"+
+    "\n" +
+    "    $scope.clickedTwo = function() {\n"+
+    "      if ($scope.runner.isPaused) {\n"+
+    "        $scope.runner.reset();\n"+
+    "        draw($scope.runner.time);\n"+
+    "      }\n"+
+    "      else if ($scope.runner.isRunning) {\n"+
+    "        $scope.runner.lap();\n"+
+    "      }\n"+
+    "    }\n"+
+    "\n" +
+    "  }]);\n" +
+    "})(angular.module('doodle', []));\n";
+
   return [
+    {
+      uuid: uuid.generate(),
+      description: "AngularJS, blade, three.js, and visual",
+      isCodeVisible: true,
+      isViewVisible: true,
+      focusEditor: undefined,
+      lastKnownJs: undefined,
+      html: HTML_TEMPLATE_ANGULAR_BLADE_VISUAL,
+      code: CODE_TEMPLATE_ANGULAR_BLADE_VISUAL,
+      dependencies: ['angular', 'blade', 'three', 'visual']
+    },
     {
       uuid: uuid.generate(),
       description: "AngularJS, three.js, and visual",
@@ -454,6 +618,7 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
       code: CODE_TEMPLATE_THREEJS,
       dependencies: ['three']
     },
+    /*
     {
       uuid: uuid.generate(),
       description: "blade — Geometric Algebra Library",
@@ -465,6 +630,7 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
       code: CODE_TEMPLATE_VISUAL,
       dependencies: ['blade','eight','three','visual']
     },
+    */
     {
       uuid: uuid.generate(),
       description: "JSXGraph — Dynamic Mathematics with JavaScript",

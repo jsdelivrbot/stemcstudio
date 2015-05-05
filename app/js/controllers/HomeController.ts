@@ -73,12 +73,14 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
       js: 'd3@3.5.5.min.js',
       dts: 'd3@3.5.5.d.ts'
     },
+    /* eight is unavailable till further notice.
     {
       name: 'eight',
       version: '1.0.0',
       js: 'eight@1.0.0.min.js',
       dts: 'eight@1.0.0.d.ts'
     },
+    */
     {
       name: 'jsxgraph',
       version: '0.99.3',
