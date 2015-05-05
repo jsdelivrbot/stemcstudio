@@ -112,7 +112,7 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
     "  renderer.setClearColor(0xFFFFFF, 1.0);\n" +
     "  renderer.setSize(window.innerWidth, window.innerHeight);\n" +
     "\n" +
-    "  document.body.style.margin = '0';\n" +
+    "  document.body.style.margin = '0px';\n" +
     "  document.body.style.overflow = 'hidden';\n" +
     "  document.body.appendChild(renderer.domElement);\n" +
     "}\n" +
@@ -432,7 +432,7 @@ angular.module('davincidoodle', []).factory('templates', ['$http', 'uuid4', func
     "        <p>Share your doodles and complete assignments using GitHub forks.</p>\n"+
     "        <canvas id='canvasId' style='width:100px; height:400px;'></canvas>\n" +
     "        <div>\n" +
-    "          <h1>time: {{runner.time}}</h1>\n"+
+    "          <h1>time: {{runner.time | number:2}}</h1>\n"+
     "          <button ng-click='clickedOne()'>{{runner.isRunning ? 'Stop' : 'Start'}}</button>\n"+
     "          <button ng-click='clickedTwo()' ng-show='runner.isPaused'>{{runner.isPaused ? 'Reset' : 'Lap'}}</button>\n"+
     "        </div>\n" +

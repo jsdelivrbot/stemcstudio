@@ -25,6 +25,22 @@ module.exports = function(lineman) {
 
           {src: "bower_components/davinci-mathscript/dist/davinci-mathscript.min.js",  dest: "generated/js/maths.min.js"},
 
+          {src: "typings/angularjs/angular.d.ts",                            dest: "generated/ts/angular.d.ts"},
+          {src: "bower_components/angular/angular.js",                       dest: "generated/js/angular.js"},
+          {src: "bower_components/angular/angular.min.js",                   dest: "generated/js/angular.min.js"},
+
+          {src: "bower_components/davinci-blade/dist/davinci-blade.d.ts",    dest: "generated/ts/davinci-blade.d.ts"},
+          {src: "bower_components/davinci-blade/dist/davinci-blade.js",      dest: "generated/js/davinci-blade.js"},
+          {src: "bower_components/davinci-blade/dist/davinci-blade.min.js",  dest: "generated/js/davinci-blade.min.js"},
+       
+          {src: "bower_components/davinci-visual/dist/davinci-visual.d.ts",  dest: "generated/ts/davinci-visual.d.ts"},
+          {src: "bower_components/davinci-visual/dist/davinci-visual.js",    dest: "generated/js/davinci-visual.js"},
+          {src: "bower_components/davinci-visual/dist/davinci-visual.min.js",dest: "generated/js/davinci-visual.min.js"},
+
+          {src: "typings/threejs/three.d.ts",                                dest: "generated/ts/three.d.ts"},
+          {src: "bower_components/threejs/build/three.js",                   dest: "generated/js/three.js"},
+          {src: "bower_components/threejs/build/three.min.js",               dest: "generated/js/three.min.js"},
+
           {src: "museum/angular/angular@1.4.0-rc.1.min.js",                  dest: "generated/js/angular@1.4.0-rc.1.min.js"},
           {src: "museum/blade/blade@0.9.35.min.js",                          dest: "generated/js/blade@0.9.35.min.js"},
           {src: "museum/blade/blade@0.9.36.min.js",                          dest: "generated/js/blade@0.9.36.min.js"},
@@ -34,7 +50,10 @@ module.exports = function(lineman) {
           {src: "museum/eight/eight@1.0.0.min.js",                           dest: "generated/js/eight@1.0.0.min.js"},
           {src: "museum/eight/eight@1.0.0.js",                               dest: "generated/js/eight@1.0.0.js"},
           {src: "museum/jsxgraph/jsxgraph@0.99.3.min.js",                    dest: "generated/js/jsxgraph@0.99.3.min.js"},
+
+          {src: "museum/three/three@0.71.0.js",                              dest: "generated/ts/three@0.71.0.js"},
           {src: "museum/three/three@0.71.0.min.js",                          dest: "generated/js/three@0.71.0.min.js"},
+
           {src: "museum/visual/visual@0.0.52.min.js",                        dest: "generated/js/visual@0.0.52.min.js"},
           {src: "museum/visual/visual@1.0.0.min.js",                         dest: "generated/js/visual@1.0.0.min.js"},
           {src: "museum/visual/visual@1.1.0.min.js",                         dest: "generated/js/visual@1.1.0.min.js"},
@@ -44,6 +63,7 @@ module.exports = function(lineman) {
           {src: "museum/visual/visual@1.4.0.min.js",                         dest: "generated/js/visual@1.4.0.min.js"},
           {src: "museum/visual/visual@1.4.1.min.js",                         dest: "generated/js/visual@1.4.1.min.js"},
           {src: "museum/visual/visual@1.5.0.min.js",                         dest: "generated/js/visual@1.5.0.min.js"},
+          {src: "museum/visual/visual@1.6.0.min.js",                         dest: "generated/js/visual@1.6.0.min.js"},
 
           {src: "node_modules/typescript/bin/lib.d.ts",                      dest: "generated/ts/lib.d.ts"},
 
@@ -56,6 +76,7 @@ module.exports = function(lineman) {
           {src: "museum/eight/eight@1.0.0.d.ts",                             dest: "generated/ts/eight@1.0.0.d.ts"},
           {src: "museum/jsxgraph/jsxgraph@0.99.3.d.ts",                      dest: "generated/ts/jsxgraph@0.99.3.d.ts"},
           {src: "museum/three/three@0.71.0.d.ts",                            dest: "generated/ts/three@0.71.0.d.ts"},
+          {src: "museum/visual/davinci-visual.d.ts",                         dest: "generated/ts/davinci-visual.d.ts"},
           {src: "museum/visual/visual@0.0.52.d.ts",                          dest: "generated/ts/visual@0.0.52.d.ts"},
           {src: "museum/visual/visual@1.0.0.d.ts",                           dest: "generated/ts/visual@1.0.0.d.ts"},
           {src: "museum/visual/visual@1.1.0.d.ts",                           dest: "generated/ts/visual@1.1.0.d.ts"},
@@ -65,6 +86,7 @@ module.exports = function(lineman) {
           {src: "museum/visual/visual@1.4.0.d.ts",                           dest: "generated/ts/visual@1.4.0.d.ts"},
           {src: "museum/visual/visual@1.4.1.d.ts",                           dest: "generated/ts/visual@1.4.1.d.ts"},
           {src: "museum/visual/visual@1.5.0.d.ts",                           dest: "generated/ts/visual@1.5.0.d.ts"},
+          {src: "museum/visual/visual@1.6.0.d.ts",                           dest: "generated/ts/visual@1.6.0.d.ts"},
 
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot",   dest: "generated/fonts/glyphicons-halflings-regular.eot"},
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.svg",   dest: "generated/fonts/glyphicons-halflings-regular.svg"},
@@ -82,6 +104,22 @@ module.exports = function(lineman) {
 
           {src: "bower_components/davinci-mathscript/dist/davinci-mathscript.min.js",  dest: "dist/js/maths.min.js"},
 
+          {src: "typings/angularjs/angular.d.ts",                            dest: "dist/ts/angular.d.ts"},
+          {src: "bower_components/angular/angular.js",                       dest: "dist/js/angular.js"},
+          {src: "bower_components/angular/angular.min.js",                   dest: "dist/js/angular.min.js"},
+
+          {src: "bower_components/davinci-blade/dist/davinci-blade.d.ts",    dest: "dist/ts/davinci-blade.d.ts"},
+          {src: "bower_components/davinci-blade/dist/davinci-blade.js",      dest: "dist/js/davinci-blade.js"},
+          {src: "bower_components/davinci-blade/dist/davinci-blade.min.js",  dest: "dist/js/davinci-blade.min.js"},
+       
+          {src: "bower_components/davinci-visual/dist/davinci-visual.d.ts",  dest: "dist/ts/davinci-visual.d.ts"},
+          {src: "bower_components/davinci-visual/dist/davinci-visual.js",    dest: "dist/js/davinci-visual.js"},
+          {src: "bower_components/davinci-visual/dist/davinci-visual.min.js",dest: "dist/js/davinci-visual.min.js"},
+
+          {src: "typings/threejs/three.d.ts",                                dest: "dist/ts/three.d.ts"},
+          {src: "bower_components/threejs/build/three.js",                   dest: "dist/js/three.js"},
+          {src: "bower_components/threejs/build/three.min.js",               dest: "dist/js/three.min.js"},
+
           {src: "museum/angular/angular@1.4.0-rc.1.min.js",                  dest: "dist/js/angular@1.4.0-rc.1.min.js"},
           {src: "museum/blade/blade@0.9.35.min.js",                          dest: "dist/js/blade@0.9.35.min.js"},
           {src: "museum/blade/blade@0.9.36.min.js",                          dest: "dist/js/blade@0.9.36.min.js"},
@@ -90,7 +128,10 @@ module.exports = function(lineman) {
           {src: "museum/eight/eight@0.9.15.min.js",                          dest: "dist/js/eight@0.9.15.min.js"},
           {src: "museum/eight/eight@1.0.0.min.js",                           dest: "dist/js/eight@1.0.0.min.js"},
           {src: "museum/jsxgraph/jsxgraph@0.99.3.min.js",                    dest: "dist/js/jsxgraph@0.99.3.min.js"},
+
+          {src: "museum/three/three@0.71.0.js",                              dest: "dist/js/three@0.71.0.js"},
           {src: "museum/three/three@0.71.0.min.js",                          dest: "dist/js/three@0.71.0.min.js"},
+
           {src: "museum/visual/visual@0.0.52.min.js",                        dest: "dist/js/visual@0.0.52.min.js"},
           {src: "museum/visual/visual@1.0.0.min.js",                         dest: "dist/js/visual@1.0.0.min.js"},
           {src: "museum/visual/visual@1.1.0.min.js",                         dest: "dist/js/visual@1.1.0.min.js"},
@@ -100,6 +141,7 @@ module.exports = function(lineman) {
           {src: "museum/visual/visual@1.4.0.min.js",                         dest: "dist/js/visual@1.4.0.min.js"},
           {src: "museum/visual/visual@1.4.1.min.js",                         dest: "dist/js/visual@1.4.1.min.js"},
           {src: "museum/visual/visual@1.5.0.min.js",                         dest: "dist/js/visual@1.5.0.min.js"},
+          {src: "museum/visual/visual@1.6.0.min.js",                         dest: "dist/js/visual@1.6.0.min.js"},
 
           {src: "node_modules/typescript/bin/lib.d.ts",                      dest: "dist/ts/lib.d.ts"},
 
@@ -121,6 +163,7 @@ module.exports = function(lineman) {
           {src: "museum/visual/visual@1.4.0.d.ts",                           dest: "dist/ts/visual@1.4.0.d.ts"},
           {src: "museum/visual/visual@1.4.1.d.ts",                           dest: "dist/ts/visual@1.4.1.d.ts"},
           {src: "museum/visual/visual@1.5.0.d.ts",                           dest: "dist/ts/visual@1.5.0.d.ts"},
+          {src: "museum/visual/visual@1.6.0.d.ts",                           dest: "dist/ts/visual@1.6.0.d.ts"},
 
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot",   dest: "dist/fonts/glyphicons-halflings-regular.eot"},
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.svg",   dest: "dist/fonts/glyphicons-halflings-regular.svg"},

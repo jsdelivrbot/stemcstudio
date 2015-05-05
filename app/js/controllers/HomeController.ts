@@ -57,15 +57,15 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
   scope.options = [
     {
       name: 'angular',
-      version: '1.4.0-rc.1',
-      js: 'angular@1.4.0-rc.1.min.js',
-      dts: 'angular@1.4.0-rc.1.d.ts'
+      version: 'latest',
+      js: 'angular.min.js',
+      dts: 'angular.d.ts'
     },
     {
       name: 'blade',
-      version: '1.0.1',
-      js: 'blade@1.0.1.min.js',
-      dts: 'blade@1.0.1.d.ts'
+      version: 'latest',
+      js: 'davinci-blade.min.js',
+      dts: 'davinci-blade.d.ts'
     },
     {
       name: 'd3',
@@ -73,14 +73,6 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
       js: 'd3@3.5.5.min.js',
       dts: 'd3@3.5.5.d.ts'
     },
-    /* eight is unavailable till further notice.
-    {
-      name: 'eight',
-      version: '1.0.0',
-      js: 'eight@1.0.0.min.js',
-      dts: 'eight@1.0.0.d.ts'
-    },
-    */
     {
       name: 'jsxgraph',
       version: '0.99.3',
@@ -89,15 +81,15 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
     },
     {
       name: 'three',
-      version: '0.71.0',
-      js: 'three@0.71.0.min.js',
-      dts: 'three@0.71.0.d.ts'
+      version: 'latest',
+      js: 'three.min.js',
+      dts: 'three.d.ts'
     },
     {
       name: 'visual',
-      version: '1.5.0',
-      js: 'visual@1.5.0.min.js',
-      dts: 'visual@1.5.0.d.ts'
+      version: 'latest',
+      js: 'davinci-visual.min.js',
+      dts: 'davinci-visual.d.ts'
     }
   ];
 
