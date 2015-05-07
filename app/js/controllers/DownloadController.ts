@@ -1,14 +1,13 @@
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../HTMLDialogElement.ts" />
 /// <reference path="../typings/IDownloadParameters.ts" />
-var app = angular.module('app');
 
 interface IDownloadScope extends angular.IScope {
   doCancel: () => void;
   doDownload: (gistId: string) => void;
 }
 
-app.controller('DownloadController', ['$scope', function(scope: IDownloadScope) {
+angular.module('app').controller('DownloadController', ['$scope', function(scope: IDownloadScope) {
   
   var d: any = document.getElementById('download-dialog');
   var dialog: HTMLDialogElement = d;

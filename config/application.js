@@ -28,6 +28,7 @@ module.exports = function(lineman) {
           {src: "typings/angularjs/angular.d.ts",                            dest: "generated/ts/angular.d.ts"},
           {src: "bower_components/angular/angular.js",                       dest: "generated/js/angular.js"},
           {src: "bower_components/angular/angular.min.js",                   dest: "generated/js/angular.min.js"},
+          {src: "bower_components/angular/angular.min.js.map",               dest: "generated/js/angular.min.js.map"},
 
           {src: "bower_components/davinci-blade/dist/davinci-blade.d.ts",    dest: "generated/ts/davinci-blade.d.ts"},
           {src: "bower_components/davinci-blade/dist/davinci-blade.js",      dest: "generated/js/davinci-blade.js"},
@@ -107,6 +108,7 @@ module.exports = function(lineman) {
           {src: "typings/angularjs/angular.d.ts",                            dest: "dist/ts/angular.d.ts"},
           {src: "bower_components/angular/angular.js",                       dest: "dist/js/angular.js"},
           {src: "bower_components/angular/angular.min.js",                   dest: "dist/js/angular.min.js"},
+          {src: "bower_components/angular/angular.min.js.map",               dest: "dist/js/angular.min.js.map"},
 
           {src: "bower_components/davinci-blade/dist/davinci-blade.d.ts",    dest: "dist/ts/davinci-blade.d.ts"},
           {src: "bower_components/davinci-blade/dist/davinci-blade.js",      dest: "dist/js/davinci-blade.js"},

@@ -1,6 +1,7 @@
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../HTMLDialogElement.ts" />
 /// <reference path="../IOpenParameters.ts" />
+
 interface IOpenScope extends angular.IScope {
   doCancel: () => void;
   doOpen: (uuid: string) => void;

@@ -1,4 +1,5 @@
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
+/// <reference path="../../../typings/angular-ui-router/angular-ui-router.d.ts" />
 /// <reference path="../../../typings/bootstrap-dialog/bootstrap-dialog.d.ts" />
 /// <reference path="../../../typings/deuce/deuce.d.ts" />
 /// <reference path="../../../typings/davinci-mathscript/davinci-mathscript.d.ts" />
@@ -14,10 +15,41 @@
 /// <reference path="../typings/IHomeScope.ts" />
 /// <reference path="../typings/IOption.ts" />
 /// <reference path="../typings/IOutputFile.ts" />
-/// <reference path="../typings/cookie.ts" />
-/// <reference path="../typings/cookie.ts" />
+/// <reference path="../services/cookie/cookie.ts" />
 /// <reference path="../../../bower_components/dialog-polyfill/dialog-polyfill.d.ts" />
-angular.module('app').controller('HomeController', ['$scope', '$http', '$location','$routeParams', '$timeout', '$window', 'mathscript', 'GitHub', 'GitHubAuthManager', 'cookie', 'templates', 'uuid4', 'ga', function(scope: IHomeScope, http: angular.IHttpService, location: angular.ILocationService, routeParams, $timeout: angular.ITimeoutService, $window, mathscript, github, authManager, cookie: ICookieService, templates: IDoodle[], uuid4: IUuidService, ga: UniversalAnalytics.ga) {
+angular.module('app')
+.controller('HomeController',
+[
+  '$scope',
+  '$state',
+  '$http',
+  '$location',
+  '$timeout',
+  '$window',
+  '$modal',
+  'mathscript',
+  'GitHub',
+  'GitHubAuthManager',
+  'cookie',
+  'templates',
+  'uuid4',
+  'ga',
+function(
+  scope: IHomeScope,
+  $state: angular.ui.IStateService,
+  http: angular.IHttpService,
+  $location: angular.ILocationService,
+  $timeout: angular.ITimeoutService,
+  $window,
+  $modal,
+  mathscript,
+  github,
+  authManager: IGitHubAuthManager,
+  cookie: ICookieService,
+  templates: IDoodle[],
+  uuid4: IUuidService,
+  ga: UniversalAnalytics.ga
+) {
 
   var FWD_SLASH = '/';
 
@@ -57,9 +89,26 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
 
   var GITHUB_TOKEN_COOKIE_NAME = 'github-token';
 
-  authManager.handleLoginCallback(function(err, token) {
+  authManager.handleGitHubLoginCallback(function(err, token) {
     if (err) {
       scope.alert(err.message);
+    }
+    else {
+      // The token has already been saved as a cookie and the user information obtained.
+      // But now the URL has /?code={{token}}.
+      console.log("token: " + token);
+      // Seems like we are getting into undocumented API territory
+      // in order to remove the code parameter?
+      // In any case html5
+      /*
+      var location: any = $location;
+      if (location.$$search.code) {
+        delete location.$$search.code;
+        location.$$compose();
+      }
+      */
+      // Or we can try...
+      // $location.search( 'code', null );
     }
   });
 
@@ -157,7 +206,7 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
   var olds: string[] = [];
 
   function loadModel() {
-    scope.doodles = localStorage[STORAGE_KEY] !== undefined ? JSON.parse(localStorage[STORAGE_KEY]) : [];
+    scope.doodles = $window.localStorage[STORAGE_KEY] !== undefined ? JSON.parse($window.localStorage[STORAGE_KEY]) : [];
   }
 
   function updateStorage() {
@@ -363,6 +412,10 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
 
   scope.doCopy = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'copy', label, value);
+    showCopyDialog();
+  };
+
+  function showCopyDialog() {
     var dialog = <HTMLDialogElement>document.getElementById('copy-dialog');
     scope.description = scope.doodles[0].description;
     var closeHandler = function() {
@@ -376,7 +429,7 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
       }
     };
     showModalDialog(dialog, closeHandler);
-  };
+  }
 
   scope.doProperties = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'properties', label, value);
@@ -404,7 +457,11 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
 
   scope.doAbout = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'about', label, value);
-    showAboutDialog([], []);
+    showAbout([], []);
+  }
+
+  function showAbout(prologs: string[], epilogs: string[]) {
+    $state.transitionTo('about');
   }
 
   function showAboutDialog(prologs: string[], epilogs: string[]) {
@@ -529,19 +586,18 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
               }
             }
             else {
-              // No changes when we patch, I don't think.
-                BootstrapDialog.show({
-                  type: BootstrapDialog.TYPE_SUCCESS,
-                  title: $("<h3>Upload complete</h3>"),
-                  message: "Your doodle was successfully uploaded and patched the existing Gist.",
-                  buttons: [{
-                    label: "Close",
-                    cssClass: 'btn btn-primary',
-                    action: function(dialog) {
-                      dialog.close();
-                    }
-                  }]
-                });
+              BootstrapDialog.show({
+                type: BootstrapDialog.TYPE_SUCCESS,
+                title: $("<h3>Upload complete</h3>"),
+                message: "Your doodle was successfully uploaded and patched the existing Gist.",
+                buttons: [{
+                  label: "Close",
+                  cssClass: 'btn btn-primary',
+                  action: function(dialog) {
+                    dialog.close();
+                  }
+                }]
+              });
             }
         });
       }
@@ -601,7 +657,7 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
   scope.doHelp = function() {
   };
 
-  var DOMAIN = location.protocol() + ':'+ FWD_SLASH + FWD_SLASH + location.host() + ":" + location.port();
+  var DOMAIN = $location.protocol() + ':'+ FWD_SLASH + FWD_SLASH + $location.host() + ":" + $location.port();
 
   ace.config.set('workerPath', '/js')
 
@@ -801,14 +857,14 @@ angular.module('app').controller('HomeController', ['$scope', '$http', '$locatio
     updateStorage();
     updateView();
 
-    if (routeParams.gistId) {
-      var token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
+//    if (routeParams.gistId) {
+//      var token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
       // This is an asynchronous call!
-      downloadGist(token, routeParams.gistId);
-    }
-    else {
+//      downloadGist(token, routeParams.gistId);
+//    }
+//    else {
       updatePreview(WAIT_NO_MORE);
-    }
+//    }
 
     if (newbie) {
       showAboutDialog([WELCOME_NEWBIE_BLURB],[]);

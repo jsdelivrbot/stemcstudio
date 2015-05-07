@@ -2,7 +2,6 @@
 /// <reference path="../HTMLDialogElement.ts" />
 /// <reference path="../INewParameters.ts" />
 /// <reference path="../typings/IHomeScope.ts" />
-var app = angular.module('app');
 
 interface INewScope extends IHomeScope {
   description: string;
@@ -11,7 +10,7 @@ interface INewScope extends IHomeScope {
   doCancel: () => void;
 }
 
-app.controller('NewController', ['$scope', function(scope: INewScope) {
+angular.module('app').controller('NewController', ['$scope', function(scope: INewScope) {
   
   var d: any = document.getElementById('new-dialog');
   var dialog: HTMLDialogElement = d;

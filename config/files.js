@@ -6,9 +6,17 @@ module.exports = function(lineman) {
         "bower_components/underscore/underscore.js",
 
         "bower_components/angular/angular.js",
-        "bower_components/angular-resource/angular-resource.js",
-        "bower_components/angular-route/angular-route.js",
+        "bower_components/angular-animate/angular-animate.js",
+        "bower_components/angular-bootstrap/ui-bootstrap-tpls.js",
+        "bower_components/angular-bootstrap/ui-bootstrap.js",
+
+        "bower_components/angular-ui-router/release/angular-ui-router.js",
+
+        "bower_components/angular-sanitize/angular-sanitize.js",
+        "bower_components/angular-translate/angular-translate.js",
         "bower_components/bootstrap/dist/js/bootstrap.js",
+
+        // TODO: No dialogs.
         "bower_components/dialog-polyfill/dialog-polyfill.js",
         "bower_components/bootstrap3-dialog/dist/js/bootstrap-dialog.js",
 
@@ -38,6 +46,7 @@ module.exports = function(lineman) {
             "bower_components/bootstrap/less/normalize.less",
             "bower_components/bootstrap3-dialog/dist/less/bootstrap-dialog.less",
             "bower_components/dialog-polyfill/dialog-polyfill.css",
+            "bower_components/angular-dialog-service/dialogs.min.css",
             "app/css/**/*.less"
           ]
         }

@@ -1,7 +1,5 @@
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
-var mod = angular.module('google-analytics', [])
-
-mod.factory('ga', ['$window', function($window: any) {
+angular.module('google-analytics', []).factory('ga', ['$window', function($window: any) {
   // https://github.com/panrafal/angular-ga/blob/master/ga.js
   var ga = function() {
     if (angular.isArray(arguments[0])) {

@@ -1,7 +1,6 @@
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../HTMLDialogElement.ts" />
 /// <reference path="../ICopyParameters.ts" />
-var app = angular.module('app');
 
 interface ICopyScope extends angular.IScope {
   description: string;
@@ -9,7 +8,7 @@ interface ICopyScope extends angular.IScope {
   doCancel: () => void;
 }
 
-app.controller('CopyController', ['$scope', function(scope: ICopyScope) {
+angular.module('app').controller('CopyController', ['$scope', function(scope: ICopyScope) {
   
   var d: any = document.getElementById('copy-dialog');
   var dialog: HTMLDialogElement = d;

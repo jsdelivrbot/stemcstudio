@@ -4,40 +4,70 @@
 //
 // This file was created manually in order to support the bootstrap-dialog library.
 //
-declare module BootstrapDialog {
-
-    export var TYPE_DEFAULT: string;
-    export var TYPE_INFO: string;
-    export var TYPE_PRIMARY: string;
-    export var TYPE_SUCCESS: string;
-    export var TYPE_WARNING: string;
-    export var TYPE_DANGER: string;
-
-    export interface BootstrapDialog {
-      close(): BootstrapDialog
-    }
-
-    /**
-     * Creates an alert.
-     * FIXME: Why do title and message have to be strings?
-     */
-    export function alert(options: {
-      type?: string;
-      title?: string;
-      message: string;
-    }): BootstrapDialog;
-
-    /**
-     * The `show` method is a shortcut for `new BootstrapDialog(options).open()`.
-     */
-    export function show(options: {
-      type?: string;
-      title: string | JQuery;
-      message: string | JQuery;
-      buttons?: {
-        label: string;
-        cssClass: string;
-        action: (dialog: BootstrapDialog) => void
-      }[]
-    }): BootstrapDialog;
+interface IBootstrapDialog {
+  realize(): IBootstrapDialog;
+  open(): IBootstrapDialog;
+  close(): IBootstrapDialog;
+  getModal(): JQuery;
+  getModalDialog(): JQuery;
+  getModalContent(): JQuery;
+  getModalHeader(): JQuery;
+  getModalBody(): JQuery;
+  getModalFooter(): JQuery;
+  enableButtons(enable: boolean): void;
+  setClosable(closable: boolean): void;
 }
+
+// This us the factory, it needs new
+interface DialogFactory {
+  new (options: {
+    type?: string;
+    title: string | JQuery;
+    message: string | JQuery;
+    buttons?: {
+      label: string;
+      cssClass?: string;
+      action?: (dialog: IBootstrapDialog) => void
+    }[];
+    size?: string;
+  }): IBootstrapDialog;
+
+  TYPE_DEFAULT: string;
+  TYPE_INFO: string;
+  TYPE_PRIMARY: string;
+  TYPE_SUCCESS: string;
+  TYPE_WARNING: string;
+  TYPE_DANGER: string;
+
+  SIZE_NORMAL: string;
+  SIZE_SMALL: string;
+  SIZE_WIDE: string;
+  SIZE_LARGE: string;
+
+  /**
+   * Creates an alert.
+   * FIXME: Why do title and message have to be strings?
+   */
+  alert(options: {
+    type?: string;
+    title?: string;
+    message: string;
+  }): IBootstrapDialog;
+
+  /**
+   * The `show` method is a shortcut for `new IBootstrapDialog(options).open()`.
+   */
+  show(options: {
+    type?: string;
+    title?: string | JQuery;
+    message: string | JQuery;
+    buttons?: {
+      label: string;
+      cssClass?: string;
+      action?: (dialog: IBootstrapDialog) => void
+    }[];
+    size?: string;
+  }): IBootstrapDialog;
+}
+
+declare var BootstrapDialog: DialogFactory;

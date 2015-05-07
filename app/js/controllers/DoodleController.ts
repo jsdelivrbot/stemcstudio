@@ -1,7 +1,6 @@
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../HTMLDialogElement.ts" />
 /// <reference path="../typings/IDoodleParameters.ts" />
-var app = angular.module('app');
 
 interface IDoodleScope extends angular.IScope {
   description: string;
@@ -11,7 +10,7 @@ interface IDoodleScope extends angular.IScope {
   doCancel: () => void;
 }
 
-app.controller('DoodleController', ['$scope', function(scope: IDoodleScope) {
+angular.module('app').controller('DoodleController', ['$scope', function(scope: IDoodleScope) {
   
   var d: any = document.getElementById('doodle-dialog');
   var dialog: HTMLDialogElement = d;

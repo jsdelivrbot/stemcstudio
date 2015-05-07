@@ -84,7 +84,13 @@ app.get '/authenticate/:code', (req, res) ->
     if (err)
       res.json(err)
     else
-    res.json(if token then "token": token else "error": "bad_code");
+      res.json(if token then "token": token else "error": "bad_code");
+
+app.get "/github_callback", (req, res, next) ->
+  # Set a cookie to communicate the GitHub Client ID back to the client.
+  res.cookie('davincidoodle-github-application-client-id', nconf.get("GITHUB_APPLICATION_CLIENT_ID"))
+  res.render "github_callback",
+    npm: npm
 
 app.get "/*", (req, res, next) ->
   # Set a cookie to communicate the GitHub Client ID back to the client.

@@ -1,49 +1,102 @@
 /// <reference path="../../typings/angularjs/angular.d.ts" />
+/// <reference path="../../typings/angular-ui-router/angular-ui-router.d.ts" />
 /// <reference path="../../typings/google-analytics/ga.d.ts" />
 /// <reference path="typings/AppScope.ts" />
-/// <reference path="typings/cookie.ts" />
-var app = angular.module('app', ['ngResource', 'ngRoute', 'davincidoodle', 'davinci.mathscript', 'jQuery', 'underscore', 'uuid4', 'google-analytics']);
-
-app.run(['$rootScope', '$window', 'cookie', 'ga', function(rootScope: AppScope, $window: Window, cookie: ICookieService, ga: UniversalAnalytics.ga) {
+/// <reference path="services/cookie/cookie.ts" />
+angular.module('app',
+[
+  'ui.router',
+  'ngAnimate',
+  'davincidoodle',
+  'davinci.mathscript',
+  'ui.bootstrap',
+  'ui.bootstrap.modal',
+  'pascalprecht.translate',
+  'jQuery',
+  'underscore',
+  'uuid4',
+  'google-analytics'
+])
+.run([
+  '$rootScope',
+  '$state',
+  '$stateParams',
+  '$window',
+  'cookie',
+  'uuid4',
+  'ga',
+  function(
+    $rootScope: AppScope,
+    $state: angular.ui.IStateService,
+    $stateParams: angular.ui.IStateParams,
+    $window: Window,
+    cookie: ICookieService,
+    uuid4: IUuidService,
+    ga: UniversalAnalytics.ga
+  ) {
 
   // The name of this cookie must correspond with the cookie sent back from the server.
   var GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME = 'davincidoodle-github-application-client-id';
   var GITHUB_TOKEN_COOKIE_NAME = 'github-token';
   var GITHUB_LOGIN_COOKIE_NAME = 'github-login';
+  var GITHUB_GET_LOGIN_OAUTH_AUTHORIZE = "https://github.com/login/oauth/authorize";
+
+  // It's very handy to add references to $state and $stateParams to the $rootScope
+  // so that you can access them from any scope (HTML template) within the application.
+  // For example,
+  // <li ng-class="{ active: $state.includes('contacts.list') }"> will set the <li>
+  // to active whenever 'contacts.list' or one of its decendents is active.
+  $rootScope.$state = $state;
+  $rootScope.$stateParams = $stateParams;
+
+  // If we don't specify where to go we'll get a blank screen!
+  console.log("app.run()");
+  //$state.transitionTo('home');
 
   // The server drops this cookie so that we can make the GitHub autorization request.
-  rootScope.clientId = function() {
+  $rootScope.clientId = function() {
     return cookie.getItem(GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME);
   };
 
-  rootScope.log = function(thing) {
+  $rootScope.log = function(thing) {
     console.log(thing);
   };
 
-  rootScope.alert = function(thing) {
+  $rootScope.alert = function(thing) {
     alert(thing);
   };
 
-  rootScope.login = function(label?: string, value?: number) {
+  $rootScope.login = function(label?: string, value?: number) {
     ga('send', 'event', 'GitHub', 'login', label, value);
     // This is the beginning of the Web Application Flow for GitHub OAuth2.
-    // TODO: The API now allows us to specify an unguessable random string called 'state'.
+    // The API now allows us to specify an unguessable random string called 'state'.
     // This 'state' string is used to protect against cross-site request forgery attacks.
     var clientId = cookie.getItem(GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME)
-    $window.location.href = "https://github.com/login/oauth/authorize?client_id=" + clientId + "&amp;scope=repo,user,gist"
+
+    var state = uuid4.generate();
+    var githubURL = GITHUB_GET_LOGIN_OAUTH_AUTHORIZE +
+    "?client_id=" + clientId +
+    "&amp;scope=user,gist" +
+    "&amp;state=" + state;
+
+    var github: IGitHubItem = {oauth: {pending: state}};
+
+    $window.localStorage.setItem('davincidoodle.github', JSON.stringify(github));
+
+    $window.location.href = githubURL;
   };
 
-  rootScope.logout = function(label?: string, value?: number) {
+  $rootScope.logout = function(label?: string, value?: number) {
     ga('send', 'event', 'GitHub', 'logout', label, value);
     cookie.removeItem(GITHUB_TOKEN_COOKIE_NAME);
     cookie.removeItem(GITHUB_LOGIN_COOKIE_NAME);
   };
 
-  rootScope.isLoggedIn = function() {
+  $rootScope.isLoggedIn = function() {
     return cookie.hasItem(GITHUB_TOKEN_COOKIE_NAME);
   };
 
-  rootScope.userLogin = function() {
+  $rootScope.userLogin = function() {
     return cookie.getItem(GITHUB_LOGIN_COOKIE_NAME);
   };
 

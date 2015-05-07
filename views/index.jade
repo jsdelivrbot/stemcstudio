@@ -1,3 +1,9 @@
+//-
+//- Specifying the doctype is essential because
+//- we want to generate       <div data-ui-view></div>,
+//- and we don't want to generate <div data-ui-view="data-ui-view">.
+//-
+doctype html
 html(lang="en", data-ng-app="app")
   head
     base(href="/")
@@ -12,7 +18,6 @@ html(lang="en", data-ng-app="app")
     meta(name="description", content="")
     link(rel="stylesheet", href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600")
     link(rel="stylesheet", href=css, media="all")
-    link(rel="icon", type="image/png", href="/img/favicon-48x48.png")
   body
-    #view(data-ng-view)
+    div(data-ui-view)
     script(src=js)
