@@ -1,5 +1,4 @@
-# Maybe should be a service, not a factory?
-angular.module("app").factory('GitHub', ['$http', ($http) ->
+angular.module('app').factory('GitHub', ['$http', ($http) ->
 
   GITHUB_PROTOCOL = 'https'
   GITHUB_DOMAIN = 'api.github.com'

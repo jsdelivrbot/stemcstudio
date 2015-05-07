@@ -3,6 +3,7 @@
 /// <reference path="../../../typings/google-analytics/ga.d.ts" />
 /// <reference path="../typings/AppScope.ts" />
 /// <reference path="../services/cookie/cookie.ts" />
+/// <reference path="../services/gham/IGitHubItem.ts" />
 
 module doodle.login {
   export interface LoginScope extends angular.IScope {
@@ -19,13 +20,15 @@ module doodle.login {
     'cookie',
     'uuid4',
     'ga',
+    'githubKey',
     function(
       $scope: doodle.login.LoginScope,
       $state: angular.ui.IStateService,
       $window: angular.IWindowService,
       cookie: ICookieService,
       uuid4: IUuidService,
-      ga: UniversalAnalytics.ga
+      ga: UniversalAnalytics.ga,
+      githubKey: string
     ) {
 
       // The name of this cookie must correspond with the cookie sent back from the server.
@@ -49,7 +52,7 @@ module doodle.login {
 
         var github: IGitHubItem = {oauth: {pending: state}};
 
-        $window.localStorage.setItem('davincidoodle.github', JSON.stringify(github));
+        $window.localStorage.setItem(githubKey, JSON.stringify(github));
 
         $window.location.href = githubURL;
       };

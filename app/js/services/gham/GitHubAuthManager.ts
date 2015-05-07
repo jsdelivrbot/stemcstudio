@@ -9,12 +9,14 @@ angular.module('app').service('GitHubAuthManager', [
   '$window',
   'cookie',
   'GitHub',
+  'githubKey',
   function(
     $http: angular.IHttpService,
     $location: angular.ILocationService,
     $window: angular.IWindowService,
     cookie: ICookieService,
-    github
+    github,
+    githubKey: string
   ) {
 
     var GATEKEEPER_DOMAIN = "" + ($location.protocol()) + "://" + ($location.host()) + ":" + ($location.port());
@@ -22,9 +24,10 @@ angular.module('app').service('GitHubAuthManager', [
     var GITHUB_LOGIN_COOKIE_NAME = 'github-login';
 
     var handleGitHubLoginCallback = function(done) {
-      var ghItem = <IGitHubItem>JSON.parse($window.localStorage.getItem("davincidoodle.github"));
+      var ghItem = <IGitHubItem>JSON.parse($window.localStorage.getItem(githubKey));
       console.log(JSON.stringify({ghItem: ghItem}));
       if (ghItem) {
+        $window.localStorage.removeItem(githubKey);
         var code = ghItem.oauth.code;
         $http.get("" + GATEKEEPER_DOMAIN + "/authenticate/" + code)
         .success(function(data:{token:string}, status, headers, config) {

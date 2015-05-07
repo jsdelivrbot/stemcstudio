@@ -13,8 +13,7 @@ Syntaxes:
 * cookies.removeItem(name[, path])
 * cookies.hasItem(name)
 ###
-# Maybe should be a service, not a factory?
-angular.module("app").factory('cookie', [() ->
+angular.module('app').factory('cookie', [() ->
 
   getItem: (name) ->
     escapedName = escape(name).replace(/[\-\.\+\*]/g, "\\$&")

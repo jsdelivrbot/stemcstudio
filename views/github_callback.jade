@@ -3,7 +3,7 @@ html
   head
     script(type='text/javascript').
 
-      var KEY = "davincidoodle.github";
+      var GITHUB_KEY = "io.mathdoodle.github";
 
       var codeMatch = window.location.href.match(/^.*?code=([a-z0-9]*)/);
       var uuidMatch = window.location.href.match(/^.*?state=([a-z0-9\-]*)/);
@@ -11,7 +11,7 @@ html
       if (codeMatch) {
         var code = codeMatch[1];
 
-        var github = JSON.parse(window.localStorage.getItem(KEY));
+        var github = JSON.parse(window.localStorage.getItem(GITHUB_KEY));
 
         github.oauth.code = codeMatch[1];
 
@@ -22,7 +22,7 @@ html
           github.oauth.state = undefined;
         }
 
-        window.localStorage.setItem(KEY, JSON.stringify(github));
+        window.localStorage.setItem(GITHUB_KEY, JSON.stringify(github));
 
         window.location.href = "/";
       }

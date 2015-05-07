@@ -3,11 +3,12 @@
 /// <reference path="../../typings/google-analytics/ga.d.ts" />
 /// <reference path="typings/AppScope.ts" />
 /// <reference path="services/cookie/cookie.ts" />
+/// <reference path="services/gham/IGitHubItem.ts" />
+/// <reference path="services/uuid/IUuidService.ts" />
 angular.module('app',
 [
   'ui.router',
   'ngAnimate',
-  'davincidoodle',
   'davinci.mathscript',
   'ui.bootstrap',
   'ui.bootstrap.modal',
@@ -25,6 +26,7 @@ angular.module('app',
   'cookie',
   'uuid4',
   'ga',
+  'githubKey',
   function(
     $rootScope: AppScope,
     $state: angular.ui.IStateService,
@@ -32,7 +34,8 @@ angular.module('app',
     $window: Window,
     cookie: ICookieService,
     uuid4: IUuidService,
-    ga: UniversalAnalytics.ga
+    ga: UniversalAnalytics.ga,
+    githubKey: string
   ) {
 
   // The name of this cookie must correspond with the cookie sent back from the server.
@@ -50,7 +53,6 @@ angular.module('app',
   $rootScope.$stateParams = $stateParams;
 
   // If we don't specify where to go we'll get a blank screen!
-  console.log("app.run()");
   //$state.transitionTo('home');
 
   // The server drops this cookie so that we can make the GitHub autorization request.
@@ -73,16 +75,16 @@ angular.module('app',
     // This 'state' string is used to protect against cross-site request forgery attacks.
     var clientId = cookie.getItem(GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME)
 
-    var state = uuid4.generate();
+    var pending = uuid4.generate();
     var githubURL = GITHUB_GET_LOGIN_OAUTH_AUTHORIZE +
     "?client_id=" + clientId +
     "&amp;scope=user,gist" +
-    "&amp;state=" + state;
+    "&amp;state=" + pending;
 
-    var github: IGitHubItem = {oauth: {pending: state}};
-
-    $window.localStorage.setItem('davincidoodle.github', JSON.stringify(github));
-
+    // We effectively reset the GitHub property.
+    var github: IGitHubItem = {oauth: {pending: pending}};
+    $window.localStorage.setItem(githubKey, JSON.stringify(github));
+    // Begin the GET request to GitHub.
     $window.location.href = githubURL;
   };
 

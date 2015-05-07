@@ -16,16 +16,17 @@ module doodle.login {
     '$scope',
     '$state',
     '$window',
+    'githubKey',
     function(
       $scope: doodle.login.SecureScope,
       $state: angular.ui.IStateService,
-      $window: angular.IWindowService
+      $window: angular.IWindowService,
+      githubKey: string
     ) {
-
-      var github = <IGitHubItem>JSON.parse($window.localStorage.getItem("davincidoodle.github"));
-      $scope.sessionCode = github.oauth.code;
-      $scope.pending = github.oauth.pending;
-      $scope.state = github.oauth.state;
+      var ghItem = <IGitHubItem>JSON.parse($window.localStorage.getItem(githubKey));
+      $scope.sessionCode = ghItem.oauth.code;
+      $scope.pending = ghItem.oauth.pending;
+      $scope.state = ghItem.oauth.state;
     }
   ]);
 

@@ -43,7 +43,7 @@ _utf8_encode = (string) ->
       utftext += String.fromCharCode((c & 63) | 128)
   return utftext
 
-angular.module("app").factory 'Base64', ['$window', ($window) ->
+angular.module('app').factory 'Base64', ['$window', ($window) ->
 
   decode: (input) ->
 

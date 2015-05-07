@@ -34,6 +34,7 @@ angular.module('app')
   'templates',
   'uuid4',
   'ga',
+  'doodlesKey',
 function(
   scope: IHomeScope,
   $state: angular.ui.IStateService,
@@ -48,7 +49,8 @@ function(
   cookie: ICookieService,
   templates: IDoodle[],
   uuid4: IUuidService,
-  ga: UniversalAnalytics.ga
+  ga: UniversalAnalytics.ga,
+  doodlesKey: string
 ) {
 
   var FWD_SLASH = '/';
@@ -67,8 +69,6 @@ function(
   var FILENAME_HTML = 'index.html';
   var FILENAME_CODE = 'script.ts';
   var FILENAME_LESS = 'style.less';
-
-  var STORAGE_KEY = 'davincidoodle';
 
   var WELCOME_NEWBIE_BLURB = "" +
   "Welcome to Davinci Doodle!"
@@ -206,11 +206,11 @@ function(
   var olds: string[] = [];
 
   function loadModel() {
-    scope.doodles = $window.localStorage[STORAGE_KEY] !== undefined ? JSON.parse($window.localStorage[STORAGE_KEY]) : [];
+    scope.doodles = $window.localStorage[doodlesKey] !== undefined ? JSON.parse($window.localStorage[doodlesKey]) : [];
   }
 
   function updateStorage() {
-    localStorage[STORAGE_KEY] = JSON.stringify(scope.doodles);
+    localStorage[doodlesKey] = JSON.stringify(scope.doodles);
   }
 
   function updateView() {
@@ -457,13 +457,13 @@ function(
 
   scope.doAbout = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'about', label, value);
-    showAbout([], []);
+    showAboutDialog([], []);
   }
 
-  function showAbout(prologs: string[], epilogs: string[]) {
+  function showAboutDialog(prologs: string[], epilogs: string[]) {
     $state.transitionTo('about');
   }
-
+  /*
   function showAboutDialog(prologs: string[], epilogs: string[]) {
     function p(text: string) {return "<p>" + text + "</p>" };
     var blurbs = [ELEVATOR_SPEECH_DOODLE, CAVEAT_NOTICE, COPYRIGHT_NOTICE];
@@ -482,7 +482,7 @@ function(
       }]
     });
   }
-
+  */
   function downloadGist(token: string, gistId: string) {
     github.getGist(token, gistId, function(err, gist) {
       if (!err) {
