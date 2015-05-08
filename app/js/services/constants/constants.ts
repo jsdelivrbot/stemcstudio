@@ -9,5 +9,8 @@
   // githubKey stores the key of the item in local storage for maintaining GitHub OAuth data.
   // Remark: This value is duplicated in views/github_callback.jade
   angular.module('app').constant('githubKey',  makeKey('github'));
+  // io.mathdoodle.doodles is the local storage key for doodles.
   angular.module('app').constant('doodlesKey', makeKey('doodles'));
+  // io.mathdoodle.config is the local storage key for configuration.
+  angular.module('app').constant('configKey',  makeKey('config'));
 })();

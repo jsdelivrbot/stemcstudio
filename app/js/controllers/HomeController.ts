@@ -172,7 +172,7 @@ angular.module('app').controller('home-controller', [
     codeEditor.setValue(doodles.current().code, -1);
     setEditMode(doodles.current().isCodeVisible);
     setViewMode(doodles.current().isViewVisible);
-    setFocusEditor(doodles.current().focusEditor);
+    setCurrentEditor(doodles.current().focusEditor);
   }
 
   var setViewMode = function(isViewVisible: boolean) {
@@ -218,34 +218,33 @@ angular.module('app').controller('home-controller', [
 
   scope.showHTML = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'showHTML', label, value);
-    setFocusEditor(FILENAME_HTML);
+    setCurrentEditor(FILENAME_HTML);
   }
 
   scope.showCode = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'showCode', label, value);
-    setFocusEditor(FILENAME_CODE);
+    setCurrentEditor(FILENAME_CODE);
   }
 
-  function setFocusEditor(fileName: string) {
-
+  function setCurrentEditor(fileName: string) {
+    // We don't set the focus or go to a line because that would
+    // activate the keyboard on a mobile device. The user will
+    // want to set the insertion point anyway which will trigger
+    // keyboard activation at the right time.
     if (fileName === FILENAME_CODE) {
       scope.isShowingHTML = false;
       scope.isShowingCode = true;
-      codeEditor.focus();
-      codeEditor.gotoLine(0, 0);
       doodles.current().focusEditor = fileName;
       doodles.updateStorage();
     }
     else if (fileName === FILENAME_HTML) {
       scope.isShowingHTML = true;
       scope.isShowingCode = false;
-      htmlEditor.focus();
-      htmlEditor.gotoLine(0, 0);
       doodles.current().focusEditor = fileName;
       doodles.updateStorage();
     }
     else {
-      setFocusEditor(FILENAME_CODE);
+      setCurrentEditor(FILENAME_CODE);
     }
   }
 
@@ -500,11 +499,12 @@ angular.module('app').controller('home-controller', [
 
   var codeEditor = ace.edit('code-editor', workspace);
 
+  // TODO: Persistent editor configuration.
   codeEditor.setTheme('ace/theme/textmate');
   codeEditor.getSession().setMode('ace/mode/typescript');
   codeEditor.getSession().setTabSize(2);
-  codeEditor.setShowInvisibles(true);
-  codeEditor.setFontSize('18px');
+  codeEditor.setShowInvisibles(false);
+  codeEditor.setFontSize('16px');
   codeEditor.setShowPrintMargin(false);
   codeEditor.setDisplayIndentGuides(false);
 
@@ -532,8 +532,8 @@ angular.module('app').controller('home-controller', [
   htmlEditor.setTheme('ace/theme/textmate');
   htmlEditor.getSession().setMode('ace/mode/html');
   htmlEditor.getSession().setTabSize(2);
-  htmlEditor.setShowInvisibles(true);
-  htmlEditor.setFontSize('18px');
+  htmlEditor.setShowInvisibles(false);
+  htmlEditor.setFontSize('16px');
   htmlEditor.setShowPrintMargin(false);
   htmlEditor.setDisplayIndentGuides(false);
   
