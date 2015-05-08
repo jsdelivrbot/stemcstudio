@@ -1,16 +1,41 @@
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
 /// <reference path="IDoodleManager.ts" />
 /// <reference path="IDoodle.ts" />
+/// <reference path="../uuid/IUuidService.ts" />
 
 angular.module('app').factory('doodles', [
   '$window',
+  'uuid4',
   'doodlesKey',
   function(
     $window: angular.IWindowService,
+    uuid4: IUuidService,
     doodlesKey: string
   ) {
 
   var _doodles: IDoodle[] = $window.localStorage[doodlesKey] !== undefined ? JSON.parse($window.localStorage[doodlesKey]) : [];
+  
+  var nextUntitled = function() {
+    // We assume that a doodle with a lower index will have a higher Untitled number.
+    // To reduce sorting, sort as a descending sequence and use the resulting first
+    // element as the highest number used so far. Add one to that.
+    function compareNumbers(a: number, b: number) {
+        return b - a;
+    }
+    var nums: number[] = _doodles.filter(function(doodle: IDoodle) {
+        return typeof doodle.description.match(/Untitled/) !== 'null';
+    }).
+        map(function(doodle: IDoodle) {
+        return parseInt(doodle.description.replace('Untitled ', '').trim(), 10);
+    }).
+        filter(function(num) {
+        return !isNaN(num);
+    });
+
+    nums.sort(compareNumbers);
+
+    return 'Untitled ' + (nums.length === 0 ? 1 : nums[0] + 1);
+  };
 
   var that: IDoodleManager = {
 
@@ -33,6 +58,24 @@ angular.module('app').factory('doodles', [
         else {
           return undefined;
         }
+      },
+
+      createDoodle: function(template: IDoodle, description?: string) {
+        if (!description) {
+          description = nextUntitled();
+        }
+        var doodle: IDoodle = {
+          uuid: uuid4.generate(),
+          description: description,
+          isCodeVisible: template.isCodeVisible,
+          isViewVisible: template.isViewVisible,
+          focusEditor: template.focusEditor,
+          lastKnownJs: template.lastKnownJs,
+          html: template.html,
+          code: template.code,
+          dependencies: template.dependencies
+        };
+        _doodles.unshift(doodle);
       },
 
       activeDoodle: function(uuid: string) {

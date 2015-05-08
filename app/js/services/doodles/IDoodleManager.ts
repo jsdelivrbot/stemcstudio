@@ -7,4 +7,5 @@ interface IDoodleManager {
   activeDoodle(uuid: string): void;
   deleteDoodle(uuid: string): void;
   updateStorage(): void;
+  createDoodle(template: IDoodle, description?: string);
 }

@@ -15,6 +15,11 @@ angular.module('app')
         templateUrl: 'home.html',
         controller: 'home-controller'
       })
+      .state('new',  {
+        url: '/new',
+        templateUrl: 'new.html',
+        controller: 'new-controller'
+      })
       .state('properties', {
         url: '/properties',
         templateUrl: function($stateParams: angular.ui.IStateParams) {

@@ -170,7 +170,7 @@ angular.module('app')
    */
   var olds: string[] = [];
 
-  function updateView() {
+  scope.updateView = function() {
     updateWorkspace();
     htmlEditor.setValue(doodles.current().html, -1);
     codeEditor.setValue(doodles.current().code, -1);
@@ -178,46 +178,6 @@ angular.module('app')
     setViewMode(doodles.current().isViewVisible);
     setFocusEditor(doodles.current().focusEditor);
   }
-
-  var createDoodle = function(template: IDoodle, description?: string) {
-    if (!description) {
-      description = nextUntitled();
-    }
-    var doodle: IDoodle = {
-      uuid: uuid4.generate(),
-      description: description,
-      isCodeVisible: template.isCodeVisible,
-      isViewVisible: template.isViewVisible,
-      focusEditor: template.focusEditor,
-      lastKnownJs: template.lastKnownJs,
-      html: template.html,
-      code: template.code,
-      dependencies: template.dependencies
-    };
-    doodles.unshift(doodle);
-  };
-
-  var nextUntitled = function() {
-    // We assume that a doodle with a lower index will have a higher Untitled number.
-    // To reduce sorting, sort as a descending sequence and use the resulting first
-    // element as the highest number used so far. Add one to that.
-    function compareNumbers(a: number, b: number) {
-        return b - a;
-    }
-    var nums: number[] = doodles.filter(function(doodle: IDoodle) {
-        return typeof doodle.description.match(/Untitled/) !== 'null';
-    }).
-        map(function(doodle: IDoodle) {
-        return parseInt(doodle.description.replace('Untitled ', '').trim(), 10);
-    }).
-        filter(function(num) {
-        return !isNaN(num);
-    });
-
-    nums.sort(compareNumbers);
-
-    return 'Untitled ' + (nums.length === 0 ? 1 : nums[0] + 1);
-  };
 
   var setViewMode = function(isViewVisible: boolean) {
     scope.isViewVisible = isViewVisible;
@@ -246,7 +206,7 @@ angular.module('app')
       // We're not editing so the view had better be running.
       if (!scope.isViewVisible) {
         setViewMode(true);
-        updatePreview(WAIT_NO_MORE);
+        scope.updatePreview(WAIT_NO_MORE);
       }
       else {
         // The view is already running, don't restart it with an updatePreview.
@@ -257,7 +217,7 @@ angular.module('app')
   scope.toggleView = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'toggleView', label, value);
     setViewMode(!scope.isViewVisible);
-    updatePreview(WAIT_NO_MORE);
+    scope.updatePreview(WAIT_NO_MORE);
   };
 
   scope.showHTML = function(label?: string, value?: number) {
@@ -295,19 +255,12 @@ angular.module('app')
 
   scope.doNew = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'new', label, value);
-    var dialog = <HTMLDialogElement>document.getElementById('new-dialog');
-    var closeHandler = function() {
-      hideModalDialog(dialog, closeHandler);
-      if (dialog.returnValue.length > 0) {
-        var response: INewParameters = JSON.parse(dialog.returnValue);
-        createDoodle(response.template, response.description);
-        doodles.updateStorage();
-        updateView();
-        updatePreview(WAIT_NO_MORE);
-      }
-    };
-    showModalDialog(dialog, closeHandler);
+    showNewView();
   };
+
+  function showNewView() {
+    $state.go('new');
+  }
 
   scope.doOpen = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'open', label, value);
@@ -323,8 +276,8 @@ angular.module('app')
           doodles.activeDoodle(response.uuid);
         }
         doodles.updateStorage();
-        updateView();
-        updatePreview(WAIT_NO_MORE);
+        scope.updateView();
+        scope.updatePreview(WAIT_NO_MORE);
       }
     };
     showModalDialog(dialog, closeHandler);
@@ -342,10 +295,10 @@ angular.module('app')
       hideModalDialog(dialog, closeHandler);
       if (dialog.returnValue.length > 0) {
         var response: ICopyParameters = JSON.parse(dialog.returnValue);
-        createDoodle(doodles.current(), response.description);
+        doodles.createDoodle(doodles.current(), response.description);
         doodles.updateStorage();
-        updateView();
-        updatePreview(WAIT_NO_MORE);
+        scope.updateView();
+        scope.updatePreview(WAIT_NO_MORE);
       }
     };
     showModalDialog(dialog, closeHandler);
@@ -354,28 +307,6 @@ angular.module('app')
   scope.doProperties = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'properties', label, value);
     showPropertiesView();
-    /*
-    var dialog = <HTMLDialogElement>document.getElementById('doodle-dialog');
-    // It's wierd that we can get the `returnValue` but not set the initial value.
-    // JavaScript strings are immutable so changing scope.description does not affect the original.
-    // Make a copy of the doodle's dependencies so that Cancel works correctly.
-    scope.description = doodles.current().description;
-    scope.dependencies = doodles.current().dependencies;
-    var closeHandler = function() {
-      hideModalDialog(dialog, closeHandler);
-      if (dialog.returnValue.length > 0) {
-        var response: IDoodleParameters = JSON.parse(dialog.returnValue);
-        doodles.current().description = response.description;
-        doodles.current().dependencies = response.dependencies;
-        // TODO: It would be nice to determine if there have been any changes,
-        // and then only requre updates accordingly. Perhaps we can ensure that
-        // the doodle is in a canonical format or have a doodle class?
-        updateStorage();
-        updateView();
-      }
-    };
-    showModalDialog(dialog, closeHandler);
-    */
   };
 
   function showPropertiesView() {
@@ -434,8 +365,8 @@ angular.module('app')
         doodles.deleteDoodle(config.uuid);
         doodles.unshift(codeInfo);
         doodles.updateStorage();
-        updateView();
-        updatePreview(WAIT_NO_MORE);
+        scope.updateView();
+        scope.updatePreview(WAIT_NO_MORE);
       }
       else {
         scope.alert("Error attempting to download Gist");
@@ -615,7 +546,7 @@ angular.module('app')
       if (doodles.current().lastKnownJs !== outputFile.text) {
         doodles.current().lastKnownJs = outputFile.text;
         doodles.updateStorage();
-        updatePreview(WAIT_FOR_MORE_CODE_KEYSTROKES);
+        scope.updatePreview(WAIT_FOR_MORE_CODE_KEYSTROKES);
       }
     });
   });
@@ -640,11 +571,11 @@ angular.module('app')
   htmlEditor.getSession().on('change', function(event) {
     doodles.current().html = htmlEditor.getValue();
     doodles.updateStorage();
-    updatePreview(WAIT_FOR_MORE_HTML_KEYSTROKES);
+    scope.updatePreview(WAIT_FOR_MORE_HTML_KEYSTROKES);
   });
 
   var rebuildPromise: angular.IPromise<void>;
-  function updatePreview(delay: number) {
+  scope.updatePreview = function(delay: number) {
     if (rebuildPromise) {$timeout.cancel(rebuildPromise);}
     rebuildPromise = $timeout(function() {rebuildPreview(); rebuildPromise = undefined; }, delay);
   }
@@ -765,7 +696,7 @@ angular.module('app')
     
     if (doodles.length === 0) {
       // If there is no document, construct one based upon the first template.
-      createDoodle(scope.templates[0], "My DaVinci Doodle");
+      doodles.createDoodle(scope.templates[0], "My DaVinci Doodle");
     }
     else {
 
@@ -783,7 +714,7 @@ angular.module('app')
 
     // Now that things have settled down...
     doodles.updateStorage();
-    updateView();
+    scope.updateView();
 
 //    if (routeParams.gistId) {
 //      var token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
@@ -791,7 +722,7 @@ angular.module('app')
 //      downloadGist(token, routeParams.gistId);
 //    }
 //    else {
-      updatePreview(WAIT_NO_MORE);
+      scope.updatePreview(WAIT_NO_MORE);
 //    }
 
     if (newbie) {

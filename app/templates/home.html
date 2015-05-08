@@ -96,26 +96,6 @@
   </div>
 </nav>
 <!-- -->
-<dialog id="new-dialog" ng-controller='NewController' class='modal-dialog' style='display: none;'>
-  <div class='modal-header'>
-      <button type="button" class="close" data-dismiss="modal" aria-hidden='true' ng-click='doCancel()'>&times;</button>
-    <h3>Create a New Doodle</h3>
-  </div>
-  <form>
-    <fieldset>
-      <div class='modal-body'>
-        <input type='text' ng-model='description' placeholder="Enter description" autofocus/>
-        <label class='text-muted'>Template:</label>
-        <select ng-model='template' ng-options='template.description for template in templates track by template.uuid'></select>
-      </div>
-      <div class='modal-footer'>
-        <button class='btn btn-primary' ng-click='doOK()'>Create doodle</button>
-        <button class='btn' ng-click='doCancel()'>Cancel</button>
-      </div>
-    </fieldset>
-  </form>
-</dialog>
-<!-- -->
 <dialog id="open-dialog" ng-controller='OpenController' class='modal-dialog' style='display: none;'>
   <div class='modal-header'>
       <button type="button" class="close" data-dismiss="modal" aria-hidden='true' ng-click='doCancel()'>&times;</button>

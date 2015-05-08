@@ -49,4 +49,7 @@ interface IHomeScope extends AppScope {
   dependencies: string[];
 
   shareURL: () => string;
+
+  updateView(): void;
+  updatePreview(delay: number): void;
 }

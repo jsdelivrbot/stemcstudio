@@ -1,32 +1,41 @@
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
-/// <reference path="../HTMLDialogElement.ts" />
-/// <reference path="../INewParameters.ts" />
+/// <reference path="../../../typings/angular-ui-router/angular-ui-router.d.ts" />
+/// <reference path="../services/doodles/IDoodle.ts" />
+/// <reference path="../services/doodles/IDoodleManager.ts" />
 /// <reference path="../typings/IHomeScope.ts" />
 
 interface INewScope extends IHomeScope {
   description: string;
   template: IDoodle;
+  templates: IDoodle[];
   doOK: () => void;
   doCancel: () => void;
 }
 
-angular.module('app').controller('NewController', ['$scope', function(scope: INewScope) {
-  
-  var d: any = document.getElementById('new-dialog');
-  var dialog: HTMLDialogElement = d;
+angular.module('app').controller('new-controller', [
+  '$scope',
+  '$state',
+  'doodles',
+  'templates',
+  function(
+    $scope: INewScope,
+    $state: angular.ui.IStateService,
+    doodles: IDoodleManager,
+    templates: IDoodle[]
+  ) {
 
-  // Note: This happens when the controller initializes, not when the dialog is shown.
-  scope.description = "";
-  scope.template = scope.templates[0];
+  $scope.description = "";
+  $scope.template = templates[0];
+  $scope.templates = templates;
 
-  scope.doOK = function() {
-    var response: INewParameters = {description: scope.description, template: scope.template};
-    var returnValue: string = JSON.stringify(response);
-    dialog.close(returnValue);
+  $scope.doOK = function() {
+    doodles.createDoodle($scope.template, $scope.description);
+    doodles.updateStorage();
+    $state.transitionTo('home');
   };
 
-  scope.doCancel = function() {
-    dialog.close("");
+  $scope.doCancel = function() {
+    $state.transitionTo('home');
   };
 
 }]);
