@@ -16,6 +16,7 @@ interface IDoodleScope extends angular.IScope {
   doCancel: () => void;
 }
 
+// FIXME: Doing this as a state is causing the home-controller to reload.
 angular.module('app').controller('properties-controller', [
   '$scope',
   '$state',
