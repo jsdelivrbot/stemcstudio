@@ -36,7 +36,7 @@ angular.module('app').factory('doodles', [
       },
 
       activeDoodle: function(uuid: string) {
-        var temp: IDoodle[] = [];
+        var doodles: IDoodle[] = [];
 
         var i = 0, found;
         while (i < _doodles.length) {
@@ -44,13 +44,13 @@ angular.module('app').factory('doodles', [
             found = _doodles[i];
           }
           else {
-            temp.push(_doodles[i]);
+            doodles.push(_doodles[i]);
           }
           i++;
         }
         if ( ! found ) return;
-        temp.unshift(found);
-        _doodles = temp;
+        doodles.unshift(found);
+        _doodles = doodles;
       },
 
       deleteDoodle: function(uuid: string) {

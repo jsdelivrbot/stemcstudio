@@ -41,7 +41,7 @@ interface IHomeScope extends AppScope {
 
 //doodles: IDoodleManager;
   templates: IDoodle[];
-  options: IOption[];
+//options: IOption[];
   gists: IGist[];
 
   // This is only here to pass parameters into the dialog.

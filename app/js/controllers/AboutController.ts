@@ -3,7 +3,7 @@
 
 module doodle.about {
   export interface AboutScope extends angular.IScope {
-    doOK(): void;
+    doClose(): void;
   }
 }
 
@@ -16,7 +16,7 @@ module doodle.about {
       $scope: doodle.about.AboutScope,
       $state: angular.ui.IStateService
     ) {
-      $scope.doOK = function() {
+      $scope.doClose = function() {
         $state.transitionTo('home');
       }
     }

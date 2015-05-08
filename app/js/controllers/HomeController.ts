@@ -13,7 +13,7 @@
 /// <reference path="../typings/IDownloadParameters.ts" />
 /// <reference path="../typings/IDoodleConfig.ts" />
 /// <reference path="../typings/IHomeScope.ts" />
-/// <reference path="../typings/IOption.ts" />
+/// <reference path="../services/options/IOption.ts" />
 /// <reference path="../typings/IOutputFile.ts" />
 /// <reference path="../services/cookie/cookie.ts" />
 /// <reference path="../../../bower_components/dialog-polyfill/dialog-polyfill.d.ts" />
@@ -36,6 +36,7 @@ angular.module('app')
   'ga',
   'doodlesKey',
   'doodles',
+  'options',
   function(
     scope: IHomeScope,
     $state: angular.ui.IStateService,
@@ -52,7 +53,8 @@ angular.module('app')
     uuid4: IUuidService,
     ga: UniversalAnalytics.ga,
     doodlesKey: string,
-    doodles: IDoodleManager
+    doodles: IDoodleManager,
+    options: IOptionManager
   ) {
 
   var FWD_SLASH = '/';
@@ -119,45 +121,6 @@ angular.module('app')
 
   scope.templates = templates;
 
-  scope.options = [
-    {
-      name: 'angular',
-      version: 'latest',
-      js: 'angular.min.js',
-      dts: 'angular.d.ts'
-    },
-    {
-      name: 'blade',
-      version: 'latest',
-      js: 'davinci-blade.min.js',
-      dts: 'davinci-blade.d.ts'
-    },
-    {
-      name: 'd3',
-      version: '3.5.5',
-      js: 'd3@3.5.5.min.js',
-      dts: 'd3@3.5.5.d.ts'
-    },
-    {
-      name: 'jsxgraph',
-      version: '0.99.3',
-      js: 'jsxgraph@0.99.3.min.js',
-      dts: 'jsxgraph@0.99.3.d.ts'
-    },
-    {
-      name: 'three',
-      version: 'latest',
-      js: 'three.min.js',
-      dts: 'three.d.ts'
-    },
-    {
-      name: 'visual',
-      version: 'latest',
-      js: 'davinci-visual.min.js',
-      dts: 'davinci-visual.d.ts'
-    }
-  ];
-
   // Temporary to ensure correct Gist deserialization.
   function depArray(deps: {[key:string]:string}): string[] {
     var ds: string[] = [];
@@ -170,7 +133,7 @@ angular.module('app')
   // Temporary to ensure correct Gist serialization.
   function depObject(names: string[]): {[key:string]:string} {
     function version(name: string): string {
-      var matching = scope.options.filter(function(option) { return option.name === name;});
+      var matching = options.filter(function(option) { return option.name === name;});
       if (matching.length > 0) {
         return matching[0].version;
       }
@@ -703,7 +666,7 @@ angular.module('app')
 
         var content = iframe.contentDocument || iframe.contentWindow.document;
 
-        var options = scope.options.filter(function(option: IOption, index: number, array: IOption[]) {
+        var options = options.filter(function(option: IOption, index: number, array: IOption[]) {
           return doodles.current().dependencies.indexOf(option.name) > -1;
         });
 
@@ -748,11 +711,11 @@ angular.module('app')
       rmvs.splice(rmvs.indexOf('lib'),1);
     }
 
-    var rmvOpts: IOption[] = scope.options.filter(function(option) { return rmvs.indexOf(option.name)>=0; });
+    var rmvOpts: IOption[] = options.filter(function(option) { return rmvs.indexOf(option.name)>=0; });
 
     var rmvUnits: { name: string; fileName: string }[] = rmvOpts.map(function(option) { return {name: option.name, fileName: option.dts }; });
 
-    var addOpts: IOption[] = scope.options.filter(function(option) { return adds.indexOf(option.name)>=0; });
+    var addOpts: IOption[] = options.filter(function(option) { return adds.indexOf(option.name)>=0; });
 
     // TODO: Optimize so that we don't keep loading `lib`.
     var addUnits: { name: string; fileName: string }[] = addOpts.map(function(option) { return {name: option.name, fileName: option.dts }; })

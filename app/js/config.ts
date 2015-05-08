@@ -6,7 +6,8 @@ angular.module('app')
     '$urlRouterProvider',
     function(
       $stateProvider: angular.ui.IStateProvider,
-      $urlRouterProvider: angular.ui.IUrlRouterProvider) {
+      $urlRouterProvider: angular.ui.IUrlRouterProvider
+    ) {
 
     $stateProvider
       .state('home',  {
