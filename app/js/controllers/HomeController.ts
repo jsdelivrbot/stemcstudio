@@ -666,11 +666,11 @@ angular.module('app')
 
         var content = iframe.contentDocument || iframe.contentWindow.document;
 
-        var options = options.filter(function(option: IOption, index: number, array: IOption[]) {
+        var selOpts = options.filter(function(option: IOption, index: number, array: IOption[]) {
           return doodles.current().dependencies.indexOf(option.name) > -1;
         });
 
-        var chosenFileNames: string[] = options.map(function(option: IOption) {return option.js;});
+        var chosenFileNames: string[] = selOpts.map(function(option: IOption) {return option.js;});
         // TODO: We will later want to make operator overloading configurable for speed.
         var scriptFileNames: string[] = chosenFileNames.concat('maths.min.js');
         var scriptTags = scriptFileNames.map(function(fileName: string) {
