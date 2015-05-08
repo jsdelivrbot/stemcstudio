@@ -1,25 +1,39 @@
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
-/// <reference path="../HTMLDialogElement.ts" />
-/// <reference path="../ICopyParameters.ts" />
+/// <reference path="../../../typings/angular-ui-router/angular-ui-router.d.ts" />
+/// <reference path="../services/doodles/IDoodle.ts" />
+/// <reference path="../services/doodles/IDoodleManager.ts" />
+/// <reference path="BodyController.ts" />
 
-interface ICopyScope extends angular.IScope {
-  description: string;
-  doOK: () => void;
-  doCancel: () => void;
+module mathdoodle {
+  export interface ICopyScope extends mathdoodle.IBodyScope {
+    description: string;
+    template: IDoodle;
+    doOK: () => void;
+    doCancel: () => void;
+  }
 }
 
-angular.module('app').controller('CopyController', ['$scope', function(scope: ICopyScope) {
-  
-  var d: any = document.getElementById('copy-dialog');
-  var dialog: HTMLDialogElement = d;
+angular.module('app').controller('copy-controller', [
+  '$scope',
+  '$state',
+  'doodles',
+  function(
+    $scope: mathdoodle.ICopyScope,
+    $state: angular.ui.IStateService,
+    doodles: IDoodleManager
+  ) {
 
-  scope.doOK = function() {
-    var response: ICopyParameters = {description: scope.description};
-    dialog.close(JSON.stringify(response));
+  $scope.description = doodles.suggestName();
+  $scope.template = doodles.current();
+
+  $scope.doOK = function() {
+    doodles.createDoodle($scope.template, $scope.description);
+    doodles.updateStorage();
+    $state.go('home');
   };
 
-  scope.doCancel = function() {
-    dialog.close("");
+  $scope.doCancel = function() {
+    $state.go('home');
   };
 
 }]);

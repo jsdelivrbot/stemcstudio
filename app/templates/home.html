@@ -93,20 +93,6 @@
   </div>
 </nav>
 <!-- -->
-<dialog id="copy-dialog" ng-controller='CopyController' class='modal-dialog' style='display: none;'>
-  <div class='modal-header'>
-      <button type="button" class="close" data-dismiss="modal" aria-hidden='true' ng-click='doCancel()'>&times;</button>
-    <h3>Copy Doodle</h3>
-  </div>
-  <div class='modal-body'>
-    <input type='text' ng-model='description' placeholder="Enter description" autofocus/>
-  </div>
-  <div class='modal-footer'>
-    <button class='btn btn-primary' ng-click='doOK()'>Copy doodle</button>
-    <button class='btn' ng-click='doCancel()'>Cancel</button>
-  </div>
-</dialog>
-<!-- -->
 <dialog id="share-dialog" ng-controller='ShareController' style='display: none;'>
   <input type='text'
          value='{{shareURL()}}'

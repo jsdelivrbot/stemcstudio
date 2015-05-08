@@ -8,4 +8,5 @@ interface IDoodleManager {
   deleteDoodle(uuid: string): void;
   updateStorage(): void;
   createDoodle(template: IDoodle, description?: string);
+  suggestName(): string;
 }

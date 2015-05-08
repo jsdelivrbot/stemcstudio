@@ -24,7 +24,7 @@ angular.module('app').controller('new-controller', [
     templates: IDoodle[]
   ) {
 
-  $scope.description = "";
+  $scope.description = doodles.suggestName();
   $scope.template = templates[0];
   $scope.templates = templates;
 

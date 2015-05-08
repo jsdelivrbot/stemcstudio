@@ -25,6 +25,11 @@ angular.module('app')
         templateUrl: 'open.html',
         controller: 'open-controller'
       })
+      .state('copy',  {
+        url: '/copy',
+        templateUrl: 'copy.html',
+        controller: 'copy-controller'
+      })
       .state('properties', {
         url: '/properties',
         templateUrl: function($stateParams: angular.ui.IStateParams) {

@@ -15,7 +15,8 @@ angular.module('app').factory('doodles', [
 
   var _doodles: IDoodle[] = $window.localStorage[doodlesKey] !== undefined ? JSON.parse($window.localStorage[doodlesKey]) : [];
   
-  var nextUntitled = function() {
+  var suggestName = function(): string {
+    var UNTITLED = "Doodle";
     // We assume that a doodle with a lower index will have a higher Untitled number.
     // To reduce sorting, sort as a descending sequence and use the resulting first
     // element as the highest number used so far. Add one to that.
@@ -23,10 +24,10 @@ angular.module('app').factory('doodles', [
         return b - a;
     }
     var nums: number[] = _doodles.filter(function(doodle: IDoodle) {
-        return typeof doodle.description.match(/Untitled/) !== 'null';
+        return typeof doodle.description.match(new RegExp(UNTITLED)) !== 'null';
     }).
         map(function(doodle: IDoodle) {
-        return parseInt(doodle.description.replace('Untitled ', '').trim(), 10);
+        return parseInt(doodle.description.replace(UNTITLED + ' ', '').trim(), 10);
     }).
         filter(function(num) {
         return !isNaN(num);
@@ -34,7 +35,7 @@ angular.module('app').factory('doodles', [
 
     nums.sort(compareNumbers);
 
-    return 'Untitled ' + (nums.length === 0 ? 1 : nums[0] + 1);
+    return UNTITLED + ' ' + (nums.length === 0 ? 1 : nums[0] + 1);
   };
 
   var that: IDoodleManager = {
@@ -62,7 +63,7 @@ angular.module('app').factory('doodles', [
 
       createDoodle: function(template: IDoodle, description?: string) {
         if (!description) {
-          description = nextUntitled();
+          description = suggestName();
         }
         var doodle: IDoodle = {
           uuid: uuid4.generate(),
@@ -114,6 +115,8 @@ angular.module('app').factory('doodles', [
 
         _doodles = doodles;
       },
+
+      suggestName: suggestName,
 
       updateStorage: function() {
         $window.localStorage[doodlesKey] = JSON.stringify(_doodles);

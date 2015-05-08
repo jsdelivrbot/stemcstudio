@@ -1,3 +1,0 @@
-interface ICopyParameters {
-  description: string;
-}

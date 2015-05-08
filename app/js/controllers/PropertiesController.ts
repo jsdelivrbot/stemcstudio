@@ -5,9 +5,6 @@
 /// <reference path="../services/options/IOption.ts" />
 /// <reference path="../services/options/IOptionManager.ts" />
 
-/// <reference path="../HTMLDialogElement.ts" />
-/// <reference path="../typings/IDoodleParameters.ts" />
-
 interface IDoodleScope extends angular.IScope {
   zombie: IDoodle;
   options: IOption[];

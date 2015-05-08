@@ -6,8 +6,6 @@
 /// <reference path="../../../typings/google-analytics/ga.d.ts" />
 /// <reference path="../services/doodles/IDoodle.ts" />
 /// <reference path="../HTMLDialogElement.ts" />
-/// <reference path="../ICopyParameters.ts" />
-/// <reference path="../typings/IDoodleParameters.ts" />
 /// <reference path="../typings/IDownloadParameters.ts" />
 /// <reference path="../typings/IDoodleConfig.ts" />
 /// <reference path="../typings/IHomeScope.ts" />
@@ -257,34 +255,13 @@ angular.module('app').controller('home-controller', [
 
   scope.doCopy = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'copy', label, value);
-    showCopyDialog();
+    $state.go('copy');
   };
-
-  function showCopyDialog() {
-    var dialog = <HTMLDialogElement>document.getElementById('copy-dialog');
-    scope.description = doodles.current().description;
-    var closeHandler = function() {
-      hideModalDialog(dialog, closeHandler);
-      if (dialog.returnValue.length > 0) {
-        var response: ICopyParameters = JSON.parse(dialog.returnValue);
-        doodles.createDoodle(doodles.current(), response.description);
-        doodles.updateStorage();
-        scope.updateView();
-        scope.updatePreview(WAIT_NO_MORE);
-      }
-    };
-    showModalDialog(dialog, closeHandler);
-  }
 
   scope.doProperties = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'properties', label, value);
-    showPropertiesView();
-  };
-
-  function showPropertiesView() {
     $state.go('properties', {doodle: doodles.current()});
-    // TODO: updateStorage() and updateView();
-  }
+  };
 
   scope.doAbout = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'about', label, value);
@@ -294,26 +271,7 @@ angular.module('app').controller('home-controller', [
   function showAboutDialog(prologs: string[], epilogs: string[]) {
     $state.transitionTo('about');
   }
-  /*
-  function showAboutDialog(prologs: string[], epilogs: string[]) {
-    function p(text: string) {return "<p>" + text + "</p>" };
-    var blurbs = [ELEVATOR_SPEECH_DOODLE, CAVEAT_NOTICE, COPYRIGHT_NOTICE];
-    prologs.forEach(function(prolog) {blurbs.unshift(prolog)});
-    epilogs.forEach(function(epilog) {blurbs.push(epilog)});
-    var messageText = blurbs.map(p).join("");
-    BootstrapDialog.show({
-      title: $("<h3>DaVinci Doodle (Beta)</h3>"),
-      message: $(messageText),
-      buttons: [{
-        label: "Close",
-        cssClass: 'btn btn-primary',
-        action: function(dialog) {
-          dialog.close();
-        }
-      }]
-    });
-  }
-  */
+
   function downloadGist(token: string, gistId: string) {
     github.getGist(token, gistId, function(err, gist) {
       if (!err) {
