@@ -3,9 +3,10 @@
 /// <reference path="../services/doodles/IDoodle.ts" />
 /// <reference path="../services/doodles/IDoodleManager.ts" />
 
-module doodle.body {
-  export interface BodyScope extends angular.IScope {
+module mathdoodle {
+  export interface IBodyScope extends angular.IScope {
     currentDoodle(): IDoodle;
+    doodles(): IDoodle[];
   }
 }
 
@@ -16,7 +17,7 @@ module doodle.body {
     '$state',
     'doodles',
     function(
-      $scope: doodle.body.BodyScope,
+      $scope: mathdoodle.IBodyScope,
       $state: angular.ui.IStateService,
       doodles: IDoodleManager
     ) {
@@ -25,6 +26,9 @@ module doodle.body {
         return doodles.current();
       };
 
+      $scope.doodles = function() {
+          return doodles.filter(function() { return true; });
+      };
     }
   ]);
 

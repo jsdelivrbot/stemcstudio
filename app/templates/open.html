@@ -1,0 +1,15 @@
+<div class='modal-content'>
+  <div class='modal-header'>
+      <button type="button" class="close" data-dismiss="modal" aria-hidden='true' ng-click='doClose()'>&times;</button>
+    <h3>Open Doodle</h3>
+  </div>
+  <div class='modal-body'>
+    <p ng-repeat='doodle in doodles() track by doodle.uuid'>
+      <a href='#' ng-click='doDelete(doodle.uuid)' class='delete'>&times;</a>
+      <a href='#' ng-click='doOpen(doodle.uuid)'>{{doodle.description}}</a>
+    </p>
+  </div>
+  <div class='modal-footer'>
+    <button class='btn' ng-click='doClose()'>Close</button>
+  </div>
+</div>

@@ -20,6 +20,11 @@ angular.module('app')
         templateUrl: 'new.html',
         controller: 'new-controller'
       })
+      .state('open',  {
+        url: '/open',
+        templateUrl: 'open.html',
+        controller: 'open-controller'
+      })
       .state('properties', {
         url: '/properties',
         templateUrl: function($stateParams: angular.ui.IStateParams) {

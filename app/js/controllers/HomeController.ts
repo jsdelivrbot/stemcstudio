@@ -6,8 +6,6 @@
 /// <reference path="../../../typings/google-analytics/ga.d.ts" />
 /// <reference path="../services/doodles/IDoodle.ts" />
 /// <reference path="../HTMLDialogElement.ts" />
-/// <reference path="../INewParameters.ts" />
-/// <reference path="../IOpenParameters.ts" />
 /// <reference path="../ICopyParameters.ts" />
 /// <reference path="../typings/IDoodleParameters.ts" />
 /// <reference path="../typings/IDownloadParameters.ts" />
@@ -17,9 +15,7 @@
 /// <reference path="../typings/IOutputFile.ts" />
 /// <reference path="../services/cookie/cookie.ts" />
 /// <reference path="../../../bower_components/dialog-polyfill/dialog-polyfill.d.ts" />
-angular.module('app')
-.controller('home-controller',
-[
+angular.module('app').controller('home-controller', [
   '$scope',
   '$state',
   '$http',
@@ -255,32 +251,12 @@ angular.module('app')
 
   scope.doNew = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'new', label, value);
-    showNewView();
-  };
-
-  function showNewView() {
     $state.go('new');
-  }
+  };
 
   scope.doOpen = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'open', label, value);
-    var dialog = <HTMLDialogElement>document.getElementById('open-dialog');
-    var closeHandler = function() {
-      hideModalDialog(dialog, closeHandler);
-      if (dialog.returnValue.length > 0) {
-        var response: IOpenParameters = JSON.parse(dialog.returnValue);
-        if (response.byeBye) {
-          doodles.deleteDoodle(response.uuid);
-        }
-        else {
-          doodles.activeDoodle(response.uuid);
-        }
-        doodles.updateStorage();
-        scope.updateView();
-        scope.updatePreview(WAIT_NO_MORE);
-      }
-    };
-    showModalDialog(dialog, closeHandler);
+    $state.go('open');
   };
 
   scope.doCopy = function(label?: string, value?: number) {

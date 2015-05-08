@@ -78,7 +78,7 @@ angular.module('app').factory('doodles', [
         _doodles.unshift(doodle);
       },
 
-      activeDoodle: function(uuid: string) {
+      makeCurrent: function(uuid: string) {
         var doodles: IDoodle[] = [];
 
         var i = 0, found;

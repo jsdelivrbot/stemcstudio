@@ -4,7 +4,7 @@ interface IDoodleManager {
   length: number;
   filter(callback: (doodle: IDoodle, index: number, array: IDoodle[]) => boolean): IDoodle[];
   current(): IDoodle;
-  activeDoodle(uuid: string): void;
+  makeCurrent(uuid: string): void;
   deleteDoodle(uuid: string): void;
   updateStorage(): void;
   createDoodle(template: IDoodle, description?: string);
