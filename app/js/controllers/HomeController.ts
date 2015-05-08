@@ -198,15 +198,9 @@ angular.module('app').controller('home-controller', [
   scope.toggleMode = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'toggleMode', label, value);
     setEditMode(!scope.isEditMode);
-    if (!scope.isEditMode) {
-      // We're not editing so the view had better be running.
-      if (!scope.isViewVisible) {
-        setViewMode(true);
-        scope.updatePreview(WAIT_NO_MORE);
-      }
-      else {
-        // The view is already running, don't restart it with an updatePreview.
-      }
+    if (scope.isEditMode === scope.isViewVisible) {
+      setViewMode(!scope.isViewVisible);
+      scope.updatePreview(WAIT_NO_MORE);
     }
   };
 
@@ -231,15 +225,18 @@ angular.module('app').controller('home-controller', [
     // activate the keyboard on a mobile device. The user will
     // want to set the insertion point anyway which will trigger
     // keyboard activation at the right time.
+    // Notice that we call `resize` on the editor to force a repaint.
     if (fileName === FILENAME_CODE) {
       scope.isShowingHTML = false;
       scope.isShowingCode = true;
+      htmlEditor.resize(true);
       doodles.current().focusEditor = fileName;
       doodles.updateStorage();
     }
     else if (fileName === FILENAME_HTML) {
       scope.isShowingHTML = true;
       scope.isShowingCode = false;
+      codeEditor.resize(true);
       doodles.current().focusEditor = fileName;
       doodles.updateStorage();
     }
