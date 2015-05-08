@@ -9,12 +9,17 @@ module doodle.about {
 
 (function(module) {
 
-  module.controller('AboutController', ['$scope', '$state', function($scope: doodle.about.AboutScope, $state: angular.ui.IStateService) {
-
-    $scope.doOK = function() {
-      $state.transitionTo('home');
+  module.controller('about-controller', [
+    '$scope',
+    '$state',
+    function(
+      $scope: doodle.about.AboutScope,
+      $state: angular.ui.IStateService
+    ) {
+      $scope.doOK = function() {
+        $state.transitionTo('home');
+      }
     }
-
-}]);
+  ]);
 
 })(angular.module('app'));

@@ -4,13 +4,13 @@
 /// <reference path="../../../typings/deuce/deuce.d.ts" />
 /// <reference path="../../../typings/davinci-mathscript/davinci-mathscript.d.ts" />
 /// <reference path="../../../typings/google-analytics/ga.d.ts" />
+/// <reference path="../services/doodles/IDoodle.ts" />
 /// <reference path="../HTMLDialogElement.ts" />
 /// <reference path="../INewParameters.ts" />
 /// <reference path="../IOpenParameters.ts" />
 /// <reference path="../ICopyParameters.ts" />
 /// <reference path="../typings/IDoodleParameters.ts" />
 /// <reference path="../typings/IDownloadParameters.ts" />
-/// <reference path="../typings/IDoodle.ts" />
 /// <reference path="../typings/IDoodleConfig.ts" />
 /// <reference path="../typings/IHomeScope.ts" />
 /// <reference path="../typings/IOption.ts" />
@@ -18,7 +18,7 @@
 /// <reference path="../services/cookie/cookie.ts" />
 /// <reference path="../../../bower_components/dialog-polyfill/dialog-polyfill.d.ts" />
 angular.module('app')
-.controller('HomeController',
+.controller('home-controller',
 [
   '$scope',
   '$state',
@@ -35,23 +35,25 @@ angular.module('app')
   'uuid4',
   'ga',
   'doodlesKey',
-function(
-  scope: IHomeScope,
-  $state: angular.ui.IStateService,
-  http: angular.IHttpService,
-  $location: angular.ILocationService,
-  $timeout: angular.ITimeoutService,
-  $window,
-  $modal,
-  mathscript,
-  github,
-  authManager: IGitHubAuthManager,
-  cookie: ICookieService,
-  templates: IDoodle[],
-  uuid4: IUuidService,
-  ga: UniversalAnalytics.ga,
-  doodlesKey: string
-) {
+  'doodles',
+  function(
+    scope: IHomeScope,
+    $state: angular.ui.IStateService,
+    http: angular.IHttpService,
+    $location: angular.ILocationService,
+    $timeout: angular.ITimeoutService,
+    $window,
+    $modal,
+    mathscript,
+    github,
+    authManager: IGitHubAuthManager,
+    cookie: ICookieService,
+    templates: IDoodle[],
+    uuid4: IUuidService,
+    ga: UniversalAnalytics.ga,
+    doodlesKey: string,
+    doodles: IDoodleManager
+  ) {
 
   var FWD_SLASH = '/';
 
@@ -205,21 +207,13 @@ function(
    */
   var olds: string[] = [];
 
-  function loadModel() {
-    scope.doodles = $window.localStorage[doodlesKey] !== undefined ? JSON.parse($window.localStorage[doodlesKey]) : [];
-  }
-
-  function updateStorage() {
-    localStorage[doodlesKey] = JSON.stringify(scope.doodles);
-  }
-
   function updateView() {
     updateWorkspace();
-    htmlEditor.setValue(scope.doodles[0].html, -1);
-    codeEditor.setValue(scope.doodles[0].code, -1);
-    setEditMode(scope.doodles[0].isCodeVisible);
-    setViewMode(scope.doodles[0].isViewVisible);
-    setFocusEditor(scope.doodles[0].focusEditor);
+    htmlEditor.setValue(doodles.current().html, -1);
+    codeEditor.setValue(doodles.current().code, -1);
+    setEditMode(doodles.current().isCodeVisible);
+    setViewMode(doodles.current().isViewVisible);
+    setFocusEditor(doodles.current().focusEditor);
   }
 
   var createDoodle = function(template: IDoodle, description?: string) {
@@ -237,44 +231,7 @@ function(
       code: template.code,
       dependencies: template.dependencies
     };
-    scope.doodles.unshift(doodle);
-  };
-
-  function activeDoodle(uuid: string) {
-    var doodles: IDoodle[] = [];
-
-    var i = 0, found;
-    while (i < scope.doodles.length) {
-      if (scope.doodles[i].uuid === uuid) {
-        found = scope.doodles[i];
-      }
-      else {
-        doodles.push(scope.doodles[i]);
-      }
-      i++;
-    }
-    if ( ! found ) return;
-    doodles.unshift(found);
-    scope.doodles = doodles;
-  }
-
-  var deleteDoodle = function(uuid: string) {
-    var doodles: IDoodle[] = [];
-
-    var i = 0, found;
-    while (i < scope.doodles.length) {
-      if (scope.doodles[i].uuid === uuid) {
-        found = scope.doodles[i];
-      }
-      else {
-        doodles.push(scope.doodles[i]);
-      }
-      i++;
-    }
-
-    if ( ! found ) return;
-
-    scope.doodles = doodles;
+    doodles.unshift(doodle);
   };
 
   var nextUntitled = function() {
@@ -284,7 +241,7 @@ function(
     function compareNumbers(a: number, b: number) {
         return b - a;
     }
-    var nums: number[] = scope.doodles.filter(function(doodle: IDoodle) {
+    var nums: number[] = doodles.filter(function(doodle: IDoodle) {
         return typeof doodle.description.match(/Untitled/) !== 'null';
     }).
         map(function(doodle: IDoodle) {
@@ -305,8 +262,8 @@ function(
   }
 
   scope.$watch('isViewVisible', function(newVal: boolean, oldVal, scope) {
-    scope.doodles[0].isViewVisible = scope.isViewVisible;
-    updateStorage();
+    doodles.current().isViewVisible = scope.isViewVisible;
+    doodles.updateStorage();
   });
 
   function setEditMode(editMode: boolean) {
@@ -315,8 +272,8 @@ function(
   }
 
   scope.$watch('isEditMode', function(newVal: boolean, oldVal, scope) {
-    scope.doodles[0].isCodeVisible = scope.isEditMode;
-    updateStorage();
+    doodles.current().isCodeVisible = scope.isEditMode;
+    doodles.updateStorage();
   });
 
   scope.toggleMode = function(label?: string, value?: number) {
@@ -357,16 +314,16 @@ function(
       scope.isShowingCode = true;
       codeEditor.focus();
       codeEditor.gotoLine(0, 0);
-      scope.doodles[0].focusEditor = fileName;
-      updateStorage();
+      doodles.current().focusEditor = fileName;
+      doodles.updateStorage();
     }
     else if (fileName === FILENAME_HTML) {
       scope.isShowingHTML = true;
       scope.isShowingCode = false;
       htmlEditor.focus();
       htmlEditor.gotoLine(0, 0);
-      scope.doodles[0].focusEditor = fileName;
-      updateStorage();
+      doodles.current().focusEditor = fileName;
+      doodles.updateStorage();
     }
     else {
       setFocusEditor(FILENAME_CODE);
@@ -381,7 +338,7 @@ function(
       if (dialog.returnValue.length > 0) {
         var response: INewParameters = JSON.parse(dialog.returnValue);
         createDoodle(response.template, response.description);
-        updateStorage();
+        doodles.updateStorage();
         updateView();
         updatePreview(WAIT_NO_MORE);
       }
@@ -397,12 +354,12 @@ function(
       if (dialog.returnValue.length > 0) {
         var response: IOpenParameters = JSON.parse(dialog.returnValue);
         if (response.byeBye) {
-          deleteDoodle(response.uuid);
+          doodles.deleteDoodle(response.uuid);
         }
         else {
-          activeDoodle(response.uuid);
+          doodles.activeDoodle(response.uuid);
         }
-        updateStorage();
+        doodles.updateStorage();
         updateView();
         updatePreview(WAIT_NO_MORE);
       }
@@ -417,13 +374,13 @@ function(
 
   function showCopyDialog() {
     var dialog = <HTMLDialogElement>document.getElementById('copy-dialog');
-    scope.description = scope.doodles[0].description;
+    scope.description = doodles.current().description;
     var closeHandler = function() {
       hideModalDialog(dialog, closeHandler);
       if (dialog.returnValue.length > 0) {
         var response: ICopyParameters = JSON.parse(dialog.returnValue);
-        createDoodle(scope.doodles[0], response.description);
-        updateStorage();
+        createDoodle(doodles.current(), response.description);
+        doodles.updateStorage();
         updateView();
         updatePreview(WAIT_NO_MORE);
       }
@@ -433,18 +390,20 @@ function(
 
   scope.doProperties = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'properties', label, value);
+    showPropertiesView();
+    /*
     var dialog = <HTMLDialogElement>document.getElementById('doodle-dialog');
     // It's wierd that we can get the `returnValue` but not set the initial value.
     // JavaScript strings are immutable so changing scope.description does not affect the original.
     // Make a copy of the doodle's dependencies so that Cancel works correctly.
-    scope.description = scope.doodles[0].description;
-    scope.dependencies = scope.doodles[0].dependencies;
+    scope.description = doodles.current().description;
+    scope.dependencies = doodles.current().dependencies;
     var closeHandler = function() {
       hideModalDialog(dialog, closeHandler);
       if (dialog.returnValue.length > 0) {
         var response: IDoodleParameters = JSON.parse(dialog.returnValue);
-        scope.doodles[0].description = response.description;
-        scope.doodles[0].dependencies = response.dependencies;
+        doodles.current().description = response.description;
+        doodles.current().dependencies = response.dependencies;
         // TODO: It would be nice to determine if there have been any changes,
         // and then only requre updates accordingly. Perhaps we can ensure that
         // the doodle is in a canonical format or have a doodle class?
@@ -453,7 +412,13 @@ function(
       }
     };
     showModalDialog(dialog, closeHandler);
+    */
   };
+
+  function showPropertiesView() {
+    $state.go('properties', {doodle: doodles.current()});
+    // TODO: updateStorage() and updateView();
+  }
 
   scope.doAbout = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'about', label, value);
@@ -503,9 +468,9 @@ function(
           code: gist.files[FILENAME_CODE].content,
           dependencies: depArray(config.dependencies)
         };
-        deleteDoodle(config.uuid);
-        scope.doodles.unshift(codeInfo);
-        updateStorage();
+        doodles.deleteDoodle(config.uuid);
+        doodles.unshift(codeInfo);
+        doodles.updateStorage();
         updateView();
         updatePreview(WAIT_NO_MORE);
       }
@@ -553,13 +518,13 @@ function(
 
   function doodleToGist(doodle: IDoodle): IGist {
     var gist: IGist = {
-      description: scope.doodles[0].description,
+      description: doodles.current().description,
       public: true,
       files: {}
     };
-    gist.files[FILENAME_META] = {content: JSON.stringify(configuration(scope.doodles[0]), null, 2)};
-    gist.files[FILENAME_HTML] = {content: scope.doodles[0].html};
-    gist.files[FILENAME_CODE] = {content: scope.doodles[0].code};
+    gist.files[FILENAME_META] = {content: JSON.stringify(configuration(doodles.current()), null, 2)};
+    gist.files[FILENAME_HTML] = {content: doodles.current().html};
+    gist.files[FILENAME_CODE] = {content: doodles.current().code};
     return gist;
   }
 
@@ -567,14 +532,14 @@ function(
     ga('send', 'event', 'doodle', 'upload', label, value);
     var token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
     if (token) {
-      var data = doodleToGist(scope.doodles[0]);
-      if (scope.doodles[0].gistId) {
-        github.patchGist(token, scope.doodles[0].gistId, data, function(err, response, status: number, headers, config) {
+      var data = doodleToGist(doodles.current());
+      if (doodles.current().gistId) {
+        github.patchGist(token, doodles.current().gistId, data, function(err, response, status: number, headers, config) {
             if (err) {
               if (status === 404) {
                 if (confirm("The Gist associated with your doodle no longer exists.\nWould you like me to disassociate your doodle so that you can create a new Gist?")) {
-                  scope.doodles[0].gistId = undefined;
-                  updateStorage();
+                  doodles.current().gistId = undefined;
+                  doodles.updateStorage();
                 }
               }
               else {
@@ -609,8 +574,8 @@ function(
                 alert("response: "+ JSON.stringify(response));
             }
             else {
-              scope.doodles[0].gistId = response.id;
-              updateStorage();
+              doodles.current().gistId = response.id;
+              doodles.updateStorage();
               BootstrapDialog.show({
                 type: BootstrapDialog.TYPE_SUCCESS,
                 title: $("<h3>Upload complete</h3>"),
@@ -684,9 +649,9 @@ function(
   codeEditor.getSession().on('outputFiles', function(event) {
     var outputFiles: IOutputFile[] = event.data;
     outputFiles.forEach(function(outputFile: IOutputFile) {
-      if (scope.doodles[0].lastKnownJs !== outputFile.text) {
-        scope.doodles[0].lastKnownJs = outputFile.text;
-        updateStorage();
+      if (doodles.current().lastKnownJs !== outputFile.text) {
+        doodles.current().lastKnownJs = outputFile.text;
+        doodles.updateStorage();
         updatePreview(WAIT_FOR_MORE_CODE_KEYSTROKES);
       }
     });
@@ -703,15 +668,15 @@ function(
   htmlEditor.setDisplayIndentGuides(false);
   
   codeEditor.getSession().on('change', function(event) {
-    scope.doodles[0].code = codeEditor.getValue();
-    updateStorage();
+    doodles.current().code = codeEditor.getValue();
+    doodles.updateStorage();
     // Don't trigger a change to the preview, that happens
     // when the compiler emits a file.
   });
 
   htmlEditor.getSession().on('change', function(event) {
-    scope.doodles[0].html = htmlEditor.getValue();
-    updateStorage();
+    doodles.current().html = htmlEditor.getValue();
+    doodles.updateStorage();
     updatePreview(WAIT_FOR_MORE_HTML_KEYSTROKES);
   });
 
@@ -729,7 +694,7 @@ function(
         preview.removeChild(preview.firstChild);
       }
 
-      if (scope.isViewVisible && scope.doodles[0].lastKnownJs) {
+      if (scope.isViewVisible && doodles.current().lastKnownJs) {
         var iframe = document.createElement('iframe');
         iframe.style.width = '100%';
         iframe.style.height = '100%';
@@ -739,7 +704,7 @@ function(
         var content = iframe.contentDocument || iframe.contentWindow.document;
 
         var options = scope.options.filter(function(option: IOption, index: number, array: IOption[]) {
-          return scope.doodles[0].dependencies.indexOf(option.name) > -1;
+          return doodles.current().dependencies.indexOf(option.name) > -1;
         });
 
         var chosenFileNames: string[] = options.map(function(option: IOption) {return option.js;});
@@ -749,9 +714,9 @@ function(
           return "<script src='" + DOMAIN + "/js/" + fileName + "'></script>\n";
         });
 
-        var html = scope.doodles[0].html;
+        var html = doodles.current().html;
         html = html.replace(/<!-- SCRIPTS-MARKER -->/, scriptTags.join(""));
-        html = html.replace(/<!-- CODE-MARKER -->/, mathscript.transpile(scope.doodles[0].lastKnownJs));
+        html = html.replace(/<!-- CODE-MARKER -->/, mathscript.transpile(doodles.current().lastKnownJs));
 
         content.open();
         content.write(html);
@@ -772,7 +737,7 @@ function(
   function updateWorkspace() {
     // Load the wokspace with the appropriate TypeScript definitions.
     // Quick Hack to eliminate maths which is only needed at runtime.
-    var news: string[] = scope.doodles[0].dependencies;
+    var news: string[] = doodles.current().dependencies;
 
     var adds: string[] = news.filter(function(dep) { return olds.indexOf(dep)<0; }).filter(function(name) { return (name !== 'maths');});
 
@@ -827,34 +792,34 @@ function(
   
   function init() {
 
-    // Load the doodles
-    loadModel();
+    // Since the doodles are available as a service, do we need them to be bound to the scope?
+    // scope.doodles = doodles;
 
     /**
      * Our best guess as to whether this user has been here.
      */
-    var newbie: boolean = (scope.doodles.length === 0);
+    var newbie: boolean = (doodles.length === 0);
     
-    if (scope.doodles.length === 0) {
+    if (doodles.length === 0) {
       // If there is no document, construct one based upon the first template.
       createDoodle(scope.templates[0], "My DaVinci Doodle");
     }
     else {
 
     }
-    // We are now guaranteed that there is a current doodle i.e. scope.doodles[0] exists.
+    // We are now guaranteed that there is a current doodle i.e. doodles.current() exists.
 
     // Following a browser refresh, show the code so that it refreshes correctly (bug).
     // This also side-steps the issue of the time it takes to restart the preview.
     // Ideally we remove this line and use the cached `lastKnownJs` to provide the preview.
-    scope.doodles[0].isCodeVisible = true;
-//  scope.doodles[0].isViewVisible = false;
+    doodles.current().isCodeVisible = true;
+//  doodles.current().isViewVisible = false;
     // We need to make sure that the files have names (for the TypeScript compiler).
-    htmlEditor.changeFile(scope.doodles[0].html, FILENAME_HTML);
-    codeEditor.changeFile(scope.doodles[0].code, FILENAME_CODE);
+    htmlEditor.changeFile(doodles.current().html, FILENAME_HTML);
+    codeEditor.changeFile(doodles.current().code, FILENAME_CODE);
 
     // Now that things have settled down...
-    updateStorage();
+    doodles.updateStorage();
     updateView();
 
 //    if (routeParams.gistId) {

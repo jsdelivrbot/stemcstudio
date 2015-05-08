@@ -25,7 +25,6 @@ angular.module('app').service('GitHubAuthManager', [
 
     var handleGitHubLoginCallback = function(done) {
       var ghItem = <IGitHubItem>JSON.parse($window.localStorage.getItem(githubKey));
-      console.log(JSON.stringify({ghItem: ghItem}));
       if (ghItem) {
         $window.localStorage.removeItem(githubKey);
         var code = ghItem.oauth.code;

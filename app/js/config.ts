@@ -9,25 +9,25 @@ angular.module('app')
       $urlRouterProvider: angular.ui.IUrlRouterProvider) {
 
     $stateProvider
-      .state('login', {
-        url: '/login',
-        templateUrl: 'login.html',
-        controller: 'LoginController'
-      })
-      .state('secure', {
-        url: '/secure',
-        templateUrl: 'secure.html',
-        controller: 'SecureController'
-      })
       .state('home',  {
         url: '/home',
         templateUrl: 'home.html',
-        controller: 'HomeController'
+        controller: 'home-controller'
+      })
+      .state('properties', {
+        url: '/properties',
+        templateUrl: function($stateParams: angular.ui.IStateParams) {
+          return 'properties.html';
+        },
+        controllerProvider: function(
+          $stateParams: angular.ui.IStateParams) {
+          return 'properties-controller';
+        }
       })
       .state('about', {
         url: '/about',
         templateUrl: 'about.html',
-        controller: 'AboutController'
+        controller: 'about-controller'
       });
 
     $urlRouterProvider.otherwise('/home');

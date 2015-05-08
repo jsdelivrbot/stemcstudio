@@ -1,6 +1,7 @@
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
 /// <reference path="AppScope.ts" />
-/// <reference path="IDoodle.ts" />
+/// <reference path="../services/doodles/IDoodle.ts" />
+/// <reference path="../services/doodles/IDoodleManager.ts" />
 /// <reference path="IGist.ts" />
 
 // Define the interface for scope for type-safety.
@@ -38,7 +39,7 @@ interface IHomeScope extends AppScope {
   doDownload(): void;
   doUpload(): void;
 
-  doodles: IDoodle[];
+//doodles: IDoodleManager;
   templates: IDoodle[];
   options: IOption[];
   gists: IGist[];

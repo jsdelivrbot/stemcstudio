@@ -1,5 +1,5 @@
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
-/// <reference path="../typings/IDoodle.ts" />
+/// <reference path="../services/doodles/IDoodle.ts" />
 /// <reference path="../services/uuid/IUuidService.ts" />
 /**
  * The `templates` service provides starting point doodles.

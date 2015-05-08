@@ -6,7 +6,7 @@
 doctype html
 html(lang="en", data-ng-app='app')
   head
-    base(href="/")
+    base(href='/')
     meta(charset="utf-8")
     title #{npm.name}
     meta(http-equiv="X-UA-Compatible", content="IE=edge,chrome=1")
@@ -18,6 +18,6 @@ html(lang="en", data-ng-app='app')
     meta(name="description", content="")
     link(rel="stylesheet", href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600")
     link(rel="stylesheet", href=css, media="all")
-  body
+  body(ng-controller='body-controller')
     div(data-ui-view)
     script(src=js)

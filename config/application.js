@@ -181,7 +181,16 @@ module.exports = function(lineman) {
         files: ["museum/**/*.d.ts"],
         tasks: ["copy:dev"]
       }
+    },
+    
+    typescript: {
+      compile: {
+        src: 'app/js/**/*.ts',
+        dest: 'generated/js/app.ts.js',
+        options: {
+          target: 'es5'
+        }
+      }
     }
-
   };
 };

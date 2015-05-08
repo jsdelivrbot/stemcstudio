@@ -1,4 +1,6 @@
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
+/// <reference path="../../../typings/angular-ui-router/angular-ui-router.d.ts" />
+
 /// <reference path="../HTMLDialogElement.ts" />
 /// <reference path="../typings/IDoodleParameters.ts" />
 
@@ -10,11 +12,15 @@ interface IDoodleScope extends angular.IScope {
   doCancel: () => void;
 }
 
-angular.module('app').controller('DoodleController', ['$scope', function(scope: IDoodleScope) {
-  
-  var d: any = document.getElementById('doodle-dialog');
-  var dialog: HTMLDialogElement = d;
-
+angular.module('app').controller('properties-controller', [
+  '$scope',
+  '$state',
+  '$stateParams',
+  function(
+    scope: IDoodleScope,
+    $state: angular.ui.IStateService,
+    $stateParams: angular.ui.IStateParams
+  ) {
   /**
    * This method changes the scope.dependencies array.
    * It is therefore essential that this array is a copy
@@ -36,11 +42,11 @@ angular.module('app').controller('DoodleController', ['$scope', function(scope: 
       description: scope.description,
       dependencies: scope.dependencies
     };
-    dialog.close(JSON.stringify(response));
+    $state.transitionTo('home');
   };
 
   scope.doCancel = function() {
-    dialog.close("");
+    $state.transitionTo('home');
   };
 
 }]);
