@@ -1,12 +1,11 @@
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../../../typings/angular-ui-router/angular-ui-router.d.ts" />
-/// <reference path="../services/doodles/IDoodle.ts" />
-/// <reference path="../services/doodles/IDoodleManager.ts" />
+/// <reference path="../services/doodles/doodles.ts" />
 /// <reference path="../services/options/IOption.ts" />
 /// <reference path="../services/options/IOptionManager.ts" />
 
 interface IDoodleScope extends angular.IScope {
-  zombie: IDoodle;
+  zombie: mathdoodle.IDoodle;
   options: IOption[];
   toggleDependency(name:string);
   doOK: () => void;
@@ -24,7 +23,7 @@ angular.module('app').controller('properties-controller', [
     scope: IDoodleScope,
     $state: angular.ui.IStateService,
     $stateParams: angular.ui.IStateParams,
-    doodles: IDoodleManager,
+    doodles: mathdoodle.IDoodleManager,
     options: IOptionManager
   ) {
   scope.zombie = JSON.parse(JSON.stringify(doodles.current()));

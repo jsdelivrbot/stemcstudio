@@ -1,5 +1,5 @@
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
-/// <reference path="../services/doodles/IDoodle.ts" />
+/// <reference path="../services/doodles/doodles.ts" />
 /// <reference path="../services/uuid/IUuidService.ts" />
 /**
  * The `templates` service provides starting point doodles.
@@ -7,7 +7,7 @@
  * Instead of being a fixed set of templates, we want to make the templates extensible.
  * We expect that this will happen through HTTP, hence the inclusion of $http.
  */
-angular.module('app').factory('templates', ['$http', 'uuid4', function($http: angular.IHttpService, uuid: IUuidService): IDoodle[] {
+angular.module('app').factory('templates', ['$http', 'uuid4', function($http: angular.IHttpService, uuid: IUuidService): mathdoodle.IDoodle[] {
 
   var HTML_TEMPLATE_BASIC = "" +
     "<!DOCTYPE html>\n" +

@@ -1,13 +1,12 @@
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../../../typings/angular-ui-router/angular-ui-router.d.ts" />
-/// <reference path="../services/doodles/IDoodle.ts" />
-/// <reference path="../services/doodles/IDoodleManager.ts" />
+/// <reference path="../services/doodles/doodles.ts" />
 /// <reference path="../app.ts" />
 module mathdoodle {
   export interface INewScope extends mathdoodle.IAppScope {
     description: string;
-    template: IDoodle;
-    templates: IDoodle[];
+    template: mathdoodle.IDoodle;
+    templates: mathdoodle.IDoodle[];
     doOK: () => void;
     doCancel: () => void;
   }
@@ -21,8 +20,8 @@ angular.module('app').controller('new-controller', [
   function(
     $scope: mathdoodle.INewScope,
     $state: angular.ui.IStateService,
-    doodles: IDoodleManager,
-    templates: IDoodle[]
+    doodles: mathdoodle.IDoodleManager,
+    templates: mathdoodle.IDoodle[]
   ) {
 
   $scope.description = doodles.suggestName();

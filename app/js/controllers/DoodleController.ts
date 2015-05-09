@@ -1,8 +1,7 @@
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../../../typings/angular-ui-router/angular-ui-router.d.ts" />
 /// <reference path="../services/cookie/cookie.ts" />
-/// <reference path="../services/doodles/IDoodle.ts" />
-/// <reference path="../services/doodles/IDoodleManager.ts" />
+/// <reference path="../services/doodles/doodles.ts" />
 /// <reference path="../services/gist/IGist.ts" />
 /// <reference path="../app.ts" />
 
@@ -27,7 +26,7 @@ module mathdoodle {
     function(
       $scope: mathdoodle.IDoodleScope,
       $state: angular.ui.IStateService,
-      doodles: IDoodleManager,
+      doodles: mathdoodle.IDoodleManager,
       github,
       cookie: ICookieService,
       GITHUB_TOKEN_COOKIE_NAME: string

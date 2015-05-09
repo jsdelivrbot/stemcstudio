@@ -5,13 +5,13 @@
 /// <reference path="../../../typings/davinci-mathscript/davinci-mathscript.d.ts" />
 /// <reference path="../../../typings/google-analytics/ga.d.ts" />
 /// <reference path="../controllers/DoodleController.ts" />
-/// <reference path="../services/doodles/IDoodle.ts" />
+/// <reference path="../services/doodles/doodles.ts" />
 /// <reference path="../HTMLDialogElement.ts" />
 /// <reference path="../services/cookie/cookie.ts" />
 /// <reference path="../services/gham/IGitHubAuthManager.ts" />
 /// <reference path="../services/options/IOption.ts" />
 /// <reference path="../services/options/IOptionManager.ts" />
-/// <reference path="../services/gist/IDoodleConfig.ts" />
+/// <reference path="../services/cloud/cloud.ts" />
 /// <reference path="../services/gist/IGist.ts" />
 /// <reference path="../typings/IOutputFile.ts" />
 /// <reference path="../../../bower_components/dialog-polyfill/dialog-polyfill.d.ts" />
@@ -87,11 +87,11 @@ angular.module('app').controller('home-controller', [
     github,
     authManager: IGitHubAuthManager,
     cookie: ICookieService,
-    templates: IDoodle[],
+    templates: mathdoodle.IDoodle[],
     uuid4: IUuidService,
     ga: UniversalAnalytics.ga,
     doodlesKey: string,
-    doodles: IDoodleManager,
+    doodles: mathdoodle.IDoodleManager,
     options: IOptionManager
   ) {
 
@@ -319,11 +319,11 @@ angular.module('app').controller('home-controller', [
   function downloadGist(token: string, gistId: string) {
     github.getGist(token, gistId, function(err, gist) {
       if (!err) {
-        var config: IDoodleConfig = JSON.parse(gist.files[FILENAME_META].content);
+        var config: mathdoodle.IDoodleConfig = JSON.parse(gist.files[FILENAME_META].content);
         var html = gist.files[FILENAME_HTML].content;
         var code = gist.files[FILENAME_CODE].content;
 
-        var codeInfo: IDoodle = {
+        var codeInfo: mathdoodle.IDoodle = {
           gistId: gistId,
           uuid: config.uuid,
           description: gist.description,
@@ -351,7 +351,7 @@ angular.module('app').controller('home-controller', [
   /**
    * Maps the doodle to the format required for GitHub.
    */
-  function configuration(doodle: IDoodle): IDoodleConfig {
+  function configuration(doodle: mathdoodle.IDoodle): mathdoodle.IDoodleConfig {
     return {
       uuid: doodle.uuid,
       description: doodle.description,
@@ -359,7 +359,7 @@ angular.module('app').controller('home-controller', [
     };
   }
 
-  function doodleToGist(doodle: IDoodle): IGist {
+  function doodleToGist(doodle: mathdoodle.IDoodle): IGist {
     var gist: IGist = {
       description: doodles.current().description,
       public: true,

@@ -1,7 +1,6 @@
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../../../typings/angular-ui-router/angular-ui-router.d.ts" />
-/// <reference path="../services/doodles/IDoodle.ts" />
-/// <reference path="../services/doodles/IDoodleManager.ts" />
+/// <reference path="../services/doodles/doodles.ts" />
 /// <reference path="../controllers/DoodleController.ts" />
 
 module mathdoodle {
@@ -20,7 +19,7 @@ angular.module('app').controller('copy-controller', [
   function(
     $scope: mathdoodle.ICopyScope,
     $state: angular.ui.IStateService,
-    doodles: IDoodleManager
+    doodles: mathdoodle.IDoodleManager
   ) {
 
   $scope.description = doodles.suggestName();

@@ -1,7 +1,61 @@
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
-/// <reference path="IDoodleManager.ts" />
-/// <reference path="IDoodle.ts" />
-/// <reference path="../uuid/IUuidService.ts" />
+/// <reference path="../../services/uuid/IUuidService.ts" />
+
+module mathdoodle {
+  export interface IDoodle {
+    /**
+     * Every doodle gets a UUID to determine uniqueness.
+     */
+    uuid: string;
+    /**
+     * The GitHub Gist identifier.
+     */
+    gistId?: string;
+    /**
+     * 
+     */
+    description: string;
+    /**
+     * The `isCodeVisible` property determines whether the code is visible.
+     */
+    isCodeVisible: boolean;
+    /**
+     * The `isViewVisible` property determines whether the view is visible.
+     */
+    isViewVisible: boolean;
+    /**
+     * The `focusEditor` property contains the fileName of the editor which has focus.
+     */
+    focusEditor: string;
+    /**
+     * The last known generated JavaScript file. This is cached to improve startup.
+     */
+    lastKnownJs: string;
+    /**
+     * 
+     */
+    html: string;
+    /**
+     * 
+     */
+    code: string;
+    /**
+     * 
+     */
+    dependencies: string[];
+  }
+  export interface IDoodleManager {
+    unshift(doodle: mathdoodle.IDoodle): void;
+    length: number;
+    filter(callback: (doodle: mathdoodle.IDoodle, index: number, array: mathdoodle.IDoodle[]) => boolean): mathdoodle.IDoodle[];
+    current(): mathdoodle.IDoodle;
+    makeCurrent(uuid: string): void;
+    deleteDoodle(uuid: string): void;
+    updateStorage(): void;
+    createDoodle(template: mathdoodle.IDoodle, description?: string);
+    suggestName(): string;
+  }  
+}
 
 angular.module('app').factory('doodles', [
   '$window',
@@ -13,7 +67,7 @@ angular.module('app').factory('doodles', [
     doodlesKey: string
   ) {
 
-  var _doodles: IDoodle[] = $window.localStorage[doodlesKey] !== undefined ? JSON.parse($window.localStorage[doodlesKey]) : [];
+  var _doodles: mathdoodle.IDoodle[] = $window.localStorage[doodlesKey] !== undefined ? JSON.parse($window.localStorage[doodlesKey]) : [];
   
   var suggestName = function(): string {
     var UNTITLED = "Doodle";
@@ -23,10 +77,10 @@ angular.module('app').factory('doodles', [
     function compareNumbers(a: number, b: number) {
         return b - a;
     }
-    var nums: number[] = _doodles.filter(function(doodle: IDoodle) {
+    var nums: number[] = _doodles.filter(function(doodle: mathdoodle.IDoodle) {
         return typeof doodle.description.match(new RegExp(UNTITLED)) !== 'null';
     }).
-        map(function(doodle: IDoodle) {
+        map(function(doodle: mathdoodle.IDoodle) {
         return parseInt(doodle.description.replace(UNTITLED + ' ', '').trim(), 10);
     }).
         filter(function(num) {
@@ -38,9 +92,9 @@ angular.module('app').factory('doodles', [
     return UNTITLED + ' ' + (nums.length === 0 ? 1 : nums[0] + 1);
   };
 
-  var that: IDoodleManager = {
+  var that: mathdoodle.IDoodleManager = {
 
-      unshift: function(doodle: IDoodle) {
+      unshift: function(doodle: mathdoodle.IDoodle) {
           return _doodles.unshift(doodle);
       },
 
@@ -48,7 +102,7 @@ angular.module('app').factory('doodles', [
           return _doodles.length;
       },
 
-      filter: function(callback: (doodle: IDoodle, index: number, array: IDoodle[]) => boolean) {
+      filter: function(callback: (doodle: mathdoodle.IDoodle, index: number, array: mathdoodle.IDoodle[]) => boolean) {
           return _doodles.filter(callback);
       },
 
@@ -61,11 +115,11 @@ angular.module('app').factory('doodles', [
         }
       },
 
-      createDoodle: function(template: IDoodle, description?: string) {
+      createDoodle: function(template: mathdoodle.IDoodle, description?: string) {
         if (!description) {
           description = suggestName();
         }
-        var doodle: IDoodle = {
+        var doodle: mathdoodle.IDoodle = {
           uuid: uuid4.generate(),
           description: description,
           isCodeVisible: template.isCodeVisible,
@@ -80,7 +134,7 @@ angular.module('app').factory('doodles', [
       },
 
       makeCurrent: function(uuid: string) {
-        var doodles: IDoodle[] = [];
+        var doodles: mathdoodle.IDoodle[] = [];
 
         var i = 0, found;
         while (i < _doodles.length) {
@@ -98,7 +152,7 @@ angular.module('app').factory('doodles', [
       },
 
       deleteDoodle: function(uuid: string) {
-        var doodles: IDoodle[] = [];
+        var doodles: mathdoodle.IDoodle[] = [];
 
         var i = 0, found;
         while (i < _doodles.length) {
