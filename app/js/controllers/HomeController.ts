@@ -490,6 +490,7 @@ angular.module('app').controller('home-controller', [
   var workspace = ace.workspace();
 
   var codeEditor = ace.edit('code-editor', workspace);
+  codeEditor.resize(true);
 
   // TODO: Persistent editor configuration.
   codeEditor.setTheme('ace/theme/textmate');
@@ -527,6 +528,7 @@ angular.module('app').controller('home-controller', [
   });
 
   var htmlEditor = ace.edit('html-editor', workspace);
+  htmlEditor.resize(true);
 
   htmlEditor.setTheme('ace/theme/textmate');
   htmlEditor.getSession().setMode('ace/mode/html');
@@ -543,6 +545,7 @@ angular.module('app').controller('home-controller', [
   });
 
   var lessEditor = ace.edit('less-editor', workspace);
+  lessEditor.resize(true);
 
   lessEditor.setTheme('ace/theme/textmate');
   lessEditor.getSession().setMode('ace/mode/less');
@@ -704,8 +707,11 @@ angular.module('app').controller('home-controller', [
 //  doodles.current().isViewVisible = false;
     // We need to make sure that the files have names (for the TypeScript compiler).
     htmlEditor.changeFile(doodles.current().html, FILENAME_HTML);
+    htmlEditor.resize(true);
     codeEditor.changeFile(doodles.current().code, FILENAME_CODE);
+    codeEditor.resize(true);
     lessEditor.changeFile(doodles.current().less, FILENAME_LESS);
+    lessEditor.resize(true);
 
     // Now that things have settled down...
     doodles.updateStorage();

@@ -33,7 +33,7 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "// It will be combined with the HTML at the <!-- CODE-MARKER --> comment.\n";
 
   var LESS_TEMPLATE_BASIC = "" +
-    "// Enter your Less code here\n" +
+    "// Enter your CSS style here\n" +
     "// It will be combined with the HTML at the <!-- STYLE-MARKER --> comment.\n";
 
   var HTML_TEMPLATE_ANGULAR = "" +
@@ -41,9 +41,9 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "<html ng-app='doodle'>\n" +
     "  <head>\n" +
     "    <meta charset='utf-8'/>\n" +
+    "    <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>\n" +
     "    <!-- STYLE-MARKER -->\n" +
     "    <!-- SCRIPTS-MARKER -->\n" +
-    "    <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>\n" +
     "  </head>\n" +
     "  <body style='margin: 0;'>\n" +
     "    <div class='container'>\n" +
@@ -235,9 +235,9 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "<html ng-app='doodle'>\n" +
     "  <head>\n" +
     "    <meta charset='utf-8'/>\n" +
+    "    <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>\n" +
     "    <!-- STYLE-MARKER -->\n" +
     "    <!-- SCRIPTS-MARKER -->\n" +
-    "    <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>\n" +
     "  </head>\n" +
     "  <body style='margin: 0;'>\n" +
     "    <div class='container'>\n" +
@@ -346,9 +346,9 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "<html ng-app='doodle'>\n" +
     "  <head>\n" +
     "    <meta charset='utf-8'/>\n" +
+    "    <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>\n" +
     "    <!-- STYLE-MARKER -->\n" +
     "    <!-- SCRIPTS-MARKER -->\n" +
-    "    <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>\n" +
     "  </head>\n" +
     "  <body style='margin: 0;'>\n" +
     "    <div class='container'>\n" +
@@ -424,9 +424,9 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "<html ng-app='doodle'>\n" +
     "  <head>\n" +
     "    <meta charset='utf-8'/>\n" +
+    "    <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>\n" +
     "    <!-- STYLE-MARKER -->\n" +
     "    <!-- SCRIPTS-MARKER -->\n" +
-    "    <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>\n" +
     "  </head>\n" +
     "  <body style='margin: 0;'>\n" +
     "    <div class='container'>\n" +
