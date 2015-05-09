@@ -18,11 +18,13 @@ angular.module('app').factory('cloud',[
   'FILENAME_META',
   'FILENAME_HTML',
   'FILENAME_CODE',
+  'FILENAME_LESS',
   function(
     github,
     FILENAME_META,
     FILENAME_HTML,
-    FILENAME_CODE
+    FILENAME_CODE,
+    FILENAME_LESS
   ): mathdoodle.ICloud {
 
   // Temporary to ensure correct Gist deserialization.
@@ -39,8 +41,6 @@ angular.module('app').factory('cloud',[
       github.getGist(token, gistId, function(err, gist) {
         if (!err) {
           var metaInfo: mathdoodle.IDoodleConfig = JSON.parse(gist.files[FILENAME_META].content);
-          var html = gist.files[FILENAME_HTML].content;
-          var code = gist.files[FILENAME_CODE].content;
 
           var doodle: mathdoodle.IDoodle = {
             gistId: gistId,
@@ -52,6 +52,7 @@ angular.module('app').factory('cloud',[
             lastKnownJs: undefined,
             html: gist.files[FILENAME_HTML].content,
             code: gist.files[FILENAME_CODE].content,
+            less: gist.files[FILENAME_LESS].content,
             dependencies: depArray(metaInfo.dependencies)
           };
           callback(undefined, doodle);

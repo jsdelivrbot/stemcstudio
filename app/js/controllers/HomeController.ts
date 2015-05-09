@@ -5,6 +5,7 @@
 /// <reference path="../../../typings/davinci-mathscript/davinci-mathscript.d.ts" />
 /// <reference path="../../../typings/google-analytics/ga.d.ts" />
 /// <reference path="../controllers/DoodleController.ts" />
+/// <reference path="../directives/deuce.ts" />
 /// <reference path="../services/doodles/doodles.ts" />
 /// <reference path="../HTMLDialogElement.ts" />
 /// <reference path="../services/cookie/cookie.ts" />
@@ -26,8 +27,15 @@ module mathdoodle {
      * @param value Values must be non-negative. Useful to pass counts.
      */
     showCode: (label?: string, value?: number) => void;
+    /**
+     * @param label Used by Universal Analytics to categorize events.
+     * @param value Values must be non-negative. Useful to pass counts.
+     */
+    showLess: (label?: string, value?: number) => void;
+
     isShowingHTML: boolean;
     isShowingCode: boolean;
+    isShowingLess: boolean;
 
     isEditMode: boolean;
     toggleText: string;
@@ -80,6 +88,10 @@ angular.module('app').controller('home-controller', [
   'doodlesKey',
   'doodles',
   'options',
+  'FILENAME_META',
+  'FILENAME_HTML',
+  'FILENAME_CODE',
+  'FILENAME_LESS',
   function(
     scope: mathdoodle.IHomeScope,
     $state: angular.ui.IStateService,
@@ -97,7 +109,11 @@ angular.module('app').controller('home-controller', [
     ga: UniversalAnalytics.ga,
     doodlesKey: string,
     doodles: mathdoodle.IDoodleManager,
-    options: IOptionManager
+    options: IOptionManager,
+    FILENAME_META: string,
+    FILENAME_HTML: string,
+    FILENAME_CODE: string,
+    FILENAME_LESS: string
   ) {
 
   var FWD_SLASH = '/';
@@ -105,17 +121,13 @@ angular.module('app').controller('home-controller', [
   var WAIT_NO_MORE = 0;
   var WAIT_FOR_MORE_HTML_KEYSTROKES = 350;
   var WAIT_FOR_MORE_CODE_KEYSTROKES = 1500;
+  var WAIT_FOR_MORE_LESS_KEYSTROKES = 350;
 
   var TEXT_CODE_HIDE = "View";
   var TEXT_CODE_SHOW = "Edit";
 
   var TEXT_VIEW_RESUME = "Resume";
   var TEXT_VIEW_SUSPEND = "Suspend";
-
-  var FILENAME_META = 'doodle.json';
-  var FILENAME_HTML = 'index.html';
-  var FILENAME_CODE = 'script.ts';
-  var FILENAME_LESS = 'style.less';
 
   var WELCOME_NEWBIE_BLURB = "" +
   "Welcome to Davinci Doodle!"
@@ -200,6 +212,7 @@ angular.module('app').controller('home-controller', [
     updateWorkspace();
     htmlEditor.setValue(doodles.current().html, -1);
     codeEditor.setValue(doodles.current().code, -1);
+    lessEditor.setValue(doodles.current().less, -1);
     setEditMode(doodles.current().isCodeVisible);
     setViewMode(doodles.current().isViewVisible);
     setCurrentEditor(doodles.current().focusEditor);
@@ -250,6 +263,11 @@ angular.module('app').controller('home-controller', [
     setCurrentEditor(FILENAME_CODE);
   }
 
+  scope.showLess = function(label?: string, value?: number) {
+    ga('send', 'event', 'doodle', 'showLess', label, value);
+    setCurrentEditor(FILENAME_LESS);
+  }
+
   function setCurrentEditor(fileName: string) {
     // We don't set the focus or go to a line because that would
     // activate the keyboard on a mobile device. The user will
@@ -259,6 +277,7 @@ angular.module('app').controller('home-controller', [
     if (fileName === FILENAME_CODE) {
       scope.isShowingHTML = false;
       scope.isShowingCode = true;
+      scope.isShowingLess = false;
       htmlEditor.resize(true);
       doodles.current().focusEditor = fileName;
       doodles.updateStorage();
@@ -266,7 +285,16 @@ angular.module('app').controller('home-controller', [
     else if (fileName === FILENAME_HTML) {
       scope.isShowingHTML = true;
       scope.isShowingCode = false;
+      scope.isShowingLess = false;
       codeEditor.resize(true);
+      doodles.current().focusEditor = fileName;
+      doodles.updateStorage();
+    }
+    else if (fileName === FILENAME_LESS) {
+      scope.isShowingHTML = false;
+      scope.isShowingCode = false;
+      scope.isShowingLess = true;
+      lessEditor.resize(true);
       doodles.current().focusEditor = fileName;
       doodles.updateStorage();
     }
@@ -322,6 +350,7 @@ angular.module('app').controller('home-controller', [
           lastKnownJs: undefined,
           html: gist.files[FILENAME_HTML].content,
           code: gist.files[FILENAME_CODE].content,
+          less: gist.files[FILENAME_LESS].content,
           dependencies: depArray(config.dependencies)
         };
         doodles.deleteDoodle(config.uuid);
@@ -356,6 +385,7 @@ angular.module('app').controller('home-controller', [
     gist.files[FILENAME_META] = {content: JSON.stringify(configuration(doodles.current()), null, 2)};
     gist.files[FILENAME_HTML] = {content: doodles.current().html};
     gist.files[FILENAME_CODE] = {content: doodles.current().code};
+    gist.files[FILENAME_LESS] = {content: doodles.current().less};
     return gist;
   }
 
@@ -489,6 +519,13 @@ angular.module('app').controller('home-controller', [
     });
   });
 
+  codeEditor.getSession().on('change', function(event) {
+    doodles.current().code = codeEditor.getValue();
+    doodles.updateStorage();
+    // Don't trigger a change to the preview, that happens
+    // when the compiler emits a file.
+  });
+
   var htmlEditor = ace.edit('html-editor', workspace);
 
   htmlEditor.setTheme('ace/theme/textmate');
@@ -498,18 +535,27 @@ angular.module('app').controller('home-controller', [
   htmlEditor.setFontSize('16px');
   htmlEditor.setShowPrintMargin(false);
   htmlEditor.setDisplayIndentGuides(false);
-  
-  codeEditor.getSession().on('change', function(event) {
-    doodles.current().code = codeEditor.getValue();
-    doodles.updateStorage();
-    // Don't trigger a change to the preview, that happens
-    // when the compiler emits a file.
-  });
 
   htmlEditor.getSession().on('change', function(event) {
     doodles.current().html = htmlEditor.getValue();
     doodles.updateStorage();
     scope.updatePreview(WAIT_FOR_MORE_HTML_KEYSTROKES);
+  });
+
+  var lessEditor = ace.edit('less-editor', workspace);
+
+  lessEditor.setTheme('ace/theme/textmate');
+  lessEditor.getSession().setMode('ace/mode/less');
+  lessEditor.getSession().setTabSize(2);
+  lessEditor.setShowInvisibles(false);
+  lessEditor.setFontSize('16px');
+  lessEditor.setShowPrintMargin(false);
+  lessEditor.setDisplayIndentGuides(false);
+
+  lessEditor.getSession().on('change', function(event) {
+    doodles.current().less = lessEditor.getValue();
+    doodles.updateStorage();
+    scope.updatePreview(WAIT_FOR_MORE_LESS_KEYSTROKES);
   });
 
   var rebuildPromise: angular.IPromise<void>;
@@ -548,6 +594,7 @@ angular.module('app').controller('home-controller', [
 
         var html = doodles.current().html;
         html = html.replace(/<!-- SCRIPTS-MARKER -->/, scriptTags.join(""));
+        html = html.replace(/<!-- STYLE-MARKER -->/, ['<style type="text/css">', doodles.current().less,'</style>'].join(""));
         html = html.replace(/<!-- CODE-MARKER -->/, mathscript.transpile(doodles.current().lastKnownJs));
 
         content.open();
@@ -649,6 +696,7 @@ angular.module('app').controller('home-controller', [
     // We need to make sure that the files have names (for the TypeScript compiler).
     htmlEditor.changeFile(doodles.current().html, FILENAME_HTML);
     codeEditor.changeFile(doodles.current().code, FILENAME_CODE);
+    lessEditor.changeFile(doodles.current().less, FILENAME_LESS);
 
     // Now that things have settled down...
     doodles.updateStorage();

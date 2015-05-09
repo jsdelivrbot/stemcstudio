@@ -22,6 +22,7 @@ module.exports = function(lineman) {
           {src: "manual/ace-builds/src-min-noconflict/worker-html.js",       dest: "generated/js/worker-html.js"},
           {src: "manual/ace-builds/src-min-noconflict/worker-javascript.js", dest: "generated/js/worker-javascript.js"},
           {src: "manual/ace-builds/src-min-noconflict/worker-typescript.js", dest: "generated/js/worker-typescript.js"},
+          {src: "manual/ace-builds/src-min-noconflict/worker-css.js",        dest: "generated/js/worker-css.js"},
 
           {src: "bower_components/davinci-mathscript/dist/davinci-mathscript.min.js",  dest: "generated/js/maths.min.js"},
 
@@ -102,6 +103,7 @@ module.exports = function(lineman) {
           {src: "manual/ace-builds/src-min-noconflict/worker-html.js",       dest: "dist/js/worker-html.js"},
           {src: "manual/ace-builds/src-min-noconflict/worker-javascript.js", dest: "dist/js/worker-javascript.js"},
           {src: "manual/ace-builds/src-min-noconflict/worker-typescript.js", dest: "dist/js/worker-typescript.js"},
+          {src: "manual/ace-builds/src-min-noconflict/worker-css.js",        dest: "dist/js/worker-css.js"},
 
           {src: "bower_components/davinci-mathscript/dist/davinci-mathscript.min.js",  dest: "dist/js/maths.min.js"},
 

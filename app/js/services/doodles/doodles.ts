@@ -42,6 +42,10 @@ module mathdoodle {
     /**
      * 
      */
+    less: string;
+    /**
+     * 
+     */
     dependencies: string[];
   }
   export interface IDoodleManager {
@@ -128,6 +132,7 @@ angular.module('app').factory('doodles', [
           lastKnownJs: template.lastKnownJs,
           html: template.html,
           code: template.code,
+          less: template.less,
           dependencies: template.dependencies
         };
         _doodles.unshift(doodle);

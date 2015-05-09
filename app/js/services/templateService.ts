@@ -13,6 +13,7 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "<!DOCTYPE html>\n" +
     "<html>\n" +
     "  <head>\n" +
+    "    <!-- STYLE-MARKER -->\n" +
     "    <!-- SCRIPTS-MARKER -->\n" +
     "  </head>\n" +
     "  <body style='margin: 0;'>\n" +
@@ -31,11 +32,16 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "// Enter your TypeScript code here\n" +
     "// It will be combined with the HTML at the <!-- CODE-MARKER --> comment.\n";
 
+  var LESS_TEMPLATE_BASIC = "" +
+    "// Enter your Less code here\n" +
+    "// It will be combined with the HTML at the <!-- STYLE-MARKER --> comment.\n";
+
   var HTML_TEMPLATE_ANGULAR = "" +
     "<!doctype html>\n" +
     "<html ng-app='doodle'>\n" +
     "  <head>\n" +
     "    <meta charset='utf-8'/>\n" +
+    "    <!-- STYLE-MARKER -->\n" +
     "    <!-- SCRIPTS-MARKER -->\n" +
     "    <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>\n" +
     "  </head>\n" +
@@ -229,6 +235,7 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "<html ng-app='doodle'>\n" +
     "  <head>\n" +
     "    <meta charset='utf-8'/>\n" +
+    "    <!-- STYLE-MARKER -->\n" +
     "    <!-- SCRIPTS-MARKER -->\n" +
     "    <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>\n" +
     "  </head>\n" +
@@ -339,6 +346,7 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "<html ng-app='doodle'>\n" +
     "  <head>\n" +
     "    <meta charset='utf-8'/>\n" +
+    "    <!-- STYLE-MARKER -->\n" +
     "    <!-- SCRIPTS-MARKER -->\n" +
     "    <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>\n" +
     "  </head>\n" +
@@ -416,6 +424,7 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "<html ng-app='doodle'>\n" +
     "  <head>\n" +
     "    <meta charset='utf-8'/>\n" +
+    "    <!-- STYLE-MARKER -->\n" +
     "    <!-- SCRIPTS-MARKER -->\n" +
     "    <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>\n" +
     "  </head>\n" +
@@ -572,6 +581,7 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
       lastKnownJs: undefined,
       html: HTML_TEMPLATE_ANGULAR_BLADE_VISUAL,
       code: CODE_TEMPLATE_ANGULAR_BLADE_VISUAL,
+      less: LESS_TEMPLATE_BASIC,
       dependencies: ['angular', 'blade', 'three', 'visual']
     },
     {
@@ -583,6 +593,7 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
       lastKnownJs: undefined,
       html: HTML_TEMPLATE_ANGULAR_VISUAL,
       code: CODE_TEMPLATE_ANGULAR_VISUAL,
+      less: LESS_TEMPLATE_BASIC,
       dependencies: ['angular', 'three', 'visual']
     },
     {
@@ -594,6 +605,7 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
       lastKnownJs: undefined,
       html: HTML_TEMPLATE_ANGULAR_THREE,
       code: CODE_TEMPLATE_ANGULAR_THREE,
+      less: LESS_TEMPLATE_BASIC,
       dependencies: ['angular', 'three']
     },
     {
@@ -605,6 +617,7 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
       lastKnownJs: undefined,
       html: HTML_TEMPLATE_ANGULAR,
       code: CODE_TEMPLATE_ANGULAR,
+      less: LESS_TEMPLATE_BASIC,
       dependencies: ['angular']
     },
     {
@@ -616,6 +629,7 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
       lastKnownJs: undefined,
       html: HTML_TEMPLATE_BASIC,
       code: CODE_TEMPLATE_THREEJS,
+      less: LESS_TEMPLATE_BASIC,
       dependencies: ['three']
     },
     /*
@@ -628,6 +642,7 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
       lastKnownJs: undefined,
       html: HTML_TEMPLATE_BASIC,
       code: CODE_TEMPLATE_VISUAL,
+      less: LESS_TEMPLATE_BASIC,
       dependencies: ['blade','eight','three','visual']
     },
     */
@@ -640,6 +655,7 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
       lastKnownJs: undefined,
       html: HTML_TEMPLATE_BASIC,
       code: CODE_TEMPLATE_JSXGRAPH,
+      less: LESS_TEMPLATE_BASIC,
       dependencies: ['jsxgraph']
     },
     {
@@ -651,6 +667,7 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
       lastKnownJs: undefined,
       html: HTML_TEMPLATE_BASIC,
       code: CODE_TEMPLATE_D3,
+      less: LESS_TEMPLATE_BASIC,
       dependencies: ['d3']
     },
     {
@@ -662,6 +679,7 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
       lastKnownJs: undefined,
       html: HTML_TEMPLATE_BASIC,
       code: CODE_TEMPLATE_BASIC,
+      less: LESS_TEMPLATE_BASIC,
       dependencies: []
     }
   ];

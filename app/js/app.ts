@@ -21,16 +21,17 @@ module mathdoodle {
 
 angular.module('app',
 [
-  'ui.router',
-  'ngAnimate',
   'davinci.mathscript',
+  'deuce',
+  'google-analytics',
+  'jQuery',
+  'ngAnimate',
+  'pascalprecht.translate',
   'ui.bootstrap',
   'ui.bootstrap.modal',
-  'pascalprecht.translate',
-  'jQuery',
+  'ui.router',
   'underscore',
-  'uuid4',
-  'google-analytics'
+  'uuid4'
 ])
 .run([
   '$rootScope',
