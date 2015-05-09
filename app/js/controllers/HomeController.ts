@@ -686,6 +686,15 @@ angular.module('app').controller('home-controller', [
     else {
 
     }
+    if (typeof doodles.current().html !== 'string') {
+        doodles.current().html = "";
+    }
+    if (typeof doodles.current().code !== 'string') {
+        doodles.current().code = "";
+    }
+    if (typeof doodles.current().less !== 'string') {
+        doodles.current().less = "";
+    }
     // We are now guaranteed that there is a current doodle i.e. doodles.current() exists.
 
     // Following a browser refresh, show the code so that it refreshes correctly (bug).
