@@ -245,6 +245,13 @@ angular.module('app').controller('home-controller', [
       setViewMode(!scope.isViewVisible);
       scope.updatePreview(WAIT_NO_MORE);
     }
+    // This does not seem sufficient to force the editors to repaint when...
+    // (Mobile Keyboard or Developer Tools visible), followed by
+    // View, followed by
+    // Edit.
+    htmlEditor.resize(true);
+    codeEditor.resize(true);
+    lessEditor.resize(true);
   };
 
   scope.toggleView = function(label?: string, value?: number) {

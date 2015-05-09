@@ -50,9 +50,9 @@ angular.module('app').factory('cloud',[
             isViewVisible: false,
             focusEditor: FILENAME_CODE,
             lastKnownJs: undefined,
-            html: gist.files[FILENAME_HTML].content,
-            code: gist.files[FILENAME_CODE].content,
-            less: gist.files[FILENAME_LESS].content,
+            html: gist.files[FILENAME_HTML] ? gist.files[FILENAME_HTML].content : "",
+            code: gist.files[FILENAME_CODE] ? gist.files[FILENAME_CODE].content : "",
+            less: gist.files[FILENAME_LESS] ? gist.files[FILENAME_LESS].content : "",
             dependencies: depArray(metaInfo.dependencies)
           };
           callback(undefined, doodle);
