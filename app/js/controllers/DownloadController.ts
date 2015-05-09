@@ -1,5 +1,6 @@
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../../../typings/angular-ui-router/angular-ui-router.d.ts" />
+/// <reference path="../../../typings/google-analytics/ga.d.ts" />
 /// <reference path="../services/doodles/doodles.ts" />
 /// <reference path="../services/cloud/cloud.ts" />
 /// <reference path="../services/gist/IGist.ts" />
@@ -19,6 +20,7 @@ angular.module('app').controller('download-controller', [
   'cloud',
   'doodles',
   'cookie',
+  'ga',
   'GITHUB_TOKEN_COOKIE_NAME',
   function(
     $scope: mathdoodle.IDownloadScope,
@@ -26,6 +28,7 @@ angular.module('app').controller('download-controller', [
     cloud: mathdoodle.ICloud,
     doodles: mathdoodle.IDoodleManager,
     cookie: ICookieService,
+    ga: UniversalAnalytics.ga,
     GITHUB_TOKEN_COOKIE_NAME: string
   ) {
 

@@ -1,5 +1,6 @@
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../../../typings/angular-ui-router/angular-ui-router.d.ts" />
+/// <reference path="../../../typings/google-analytics/ga.d.ts" />
 /// <reference path="../services/cookie/cookie.ts" />
 /// <reference path="../services/doodles/doodles.ts" />
 /// <reference path="../services/gist/IGist.ts" />
@@ -20,6 +21,7 @@ module mathdoodle {
     '$scope',
     '$state',
     'doodles',
+    'ga',
     'GitHub',
     'cookie',
     'GITHUB_TOKEN_COOKIE_NAME',
@@ -27,6 +29,7 @@ module mathdoodle {
       $scope: mathdoodle.IDoodleScope,
       $state: angular.ui.IStateService,
       doodles: mathdoodle.IDoodleManager,
+      ga: UniversalAnalytics.ga,
       github,
       cookie: ICookieService,
       GITHUB_TOKEN_COOKIE_NAME: string

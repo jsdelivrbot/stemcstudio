@@ -16,5 +16,8 @@
   angular.module('app').constant('FILENAME_META', 'doodle.json');
   angular.module('app').constant('FILENAME_HTML', 'index.html');
   angular.module('app').constant('FILENAME_CODE', 'script.ts');
+  // We can change the global namespace used by Google's Universal Analytics.
+  // All access should be through the service wrapper.
+  angular.module('app').constant('NAMESPACE_GOOGLE_ANALYTICS', 'googleAnalytics');
   angular.module('app').constant('GITHUB_TOKEN_COOKIE_NAME', 'github-token');
 })();

@@ -13,7 +13,6 @@
 /// <reference path="../services/options/IOptionManager.ts" />
 /// <reference path="../services/cloud/cloud.ts" />
 /// <reference path="../services/gist/IGist.ts" />
-/// <reference path="../typings/IOutputFile.ts" />
 /// <reference path="../../../bower_components/dialog-polyfill/dialog-polyfill.d.ts" />
 module mathdoodle {
   export interface IHomeScope extends mathdoodle.IDoodleScope {
@@ -54,6 +53,12 @@ module mathdoodle {
 
     updateView(): void;
     updatePreview(delay: number): void;
+  }
+  export interface IOutputFile {
+    name: string;
+    writeByteOrderMark: boolean;
+    text: string;
+    sourceMapEntries: any[];
   }
 }
 
@@ -131,26 +136,9 @@ angular.module('app').controller('home-controller', [
 
   var GITHUB_TOKEN_COOKIE_NAME = 'github-token';
 
-  authManager.handleGitHubLoginCallback(function(err, token) {
+  authManager.handleGitHubLoginCallback(function(err, token: string) {
     if (err) {
       scope.alert(err.message);
-    }
-    else {
-      // The token has already been saved as a cookie and the user information obtained.
-      // But now the URL has /?code={{token}}.
-      console.log("token: " + token);
-      // Seems like we are getting into undocumented API territory
-      // in order to remove the code parameter?
-      // In any case html5
-      /*
-      var location: any = $location;
-      if (location.$$search.code) {
-        delete location.$$search.code;
-        location.$$compose();
-      }
-      */
-      // Or we can try...
-      // $location.search( 'code', null );
     }
   });
 
@@ -491,8 +479,8 @@ angular.module('app').controller('home-controller', [
   });
 
   codeEditor.getSession().on('outputFiles', function(event) {
-    var outputFiles: IOutputFile[] = event.data;
-    outputFiles.forEach(function(outputFile: IOutputFile) {
+    var outputFiles: mathdoodle.IOutputFile[] = event.data;
+    outputFiles.forEach(function(outputFile: mathdoodle.IOutputFile) {
       if (doodles.current().lastKnownJs !== outputFile.text) {
         doodles.current().lastKnownJs = outputFile.text;
         doodles.updateStorage();
