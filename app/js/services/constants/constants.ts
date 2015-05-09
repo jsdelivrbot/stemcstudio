@@ -13,4 +13,8 @@
   angular.module('app').constant('doodlesKey', makeKey('doodles'));
   // io.mathdoodle.config is the local storage key for configuration.
   angular.module('app').constant('configKey',  makeKey('config'));
+  angular.module('app').constant('FILENAME_META', 'doodle.json');
+  angular.module('app').constant('FILENAME_HTML', 'index.html');
+  angular.module('app').constant('FILENAME_CODE', 'script.ts');
+  angular.module('app').constant('GITHUB_TOKEN_COOKIE_NAME', 'github-token');
 })();

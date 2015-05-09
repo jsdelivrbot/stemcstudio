@@ -68,7 +68,7 @@
           </a>
           <ul class="dropdown-menu" role="menu">
             <li>
-              <a href="#" ng-click='doDownload()' ng-show='isLoggedIn()'>
+              <a href="#" ng-click='clickDownload()' ng-show='isLoggedIn()'>
                 <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
                 Download
               </a>
@@ -92,28 +92,3 @@
     </div>
   </div>
 </nav>
-<!-- -->
-<dialog id="share-dialog" ng-controller='ShareController' style='display: none;'>
-  <input type='text'
-         value='{{shareURL()}}'
-         readonly='readonly'
-         onClick="this.setSelectionRange(0,this.value.length)"/>
-  <div>
-    <button class='btn' ng-click='doClose()'>Close</button>
-  </div>
-</dialog>
-<!-- -->
-<dialog id="download-dialog" ng-controller='DownloadController' class='modal-dialog' style='display: none;'>
-  <div class='modal-header'>
-      <button type="button" class="close" data-dismiss="modal" aria-hidden='true' ng-click='doCancel()'>&times;</button>
-    <h3>Download Doodle</h3>
-  </div>
-  <div class='modal-body'>
-    <p ng-repeat='gist in gists track by gist.id'>
-      <a href='#' ng-click='doDownload(gist.id)'>{{gist.description}}</a>
-    </p>
-  </div>
-  <div class='modal-footer'>
-    <button class='btn' ng-click='doCancel()'>Close</button>
-  </div>
-</dialog>

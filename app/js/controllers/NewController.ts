@@ -2,14 +2,15 @@
 /// <reference path="../../../typings/angular-ui-router/angular-ui-router.d.ts" />
 /// <reference path="../services/doodles/IDoodle.ts" />
 /// <reference path="../services/doodles/IDoodleManager.ts" />
-/// <reference path="../typings/IHomeScope.ts" />
-
-interface INewScope extends IHomeScope {
-  description: string;
-  template: IDoodle;
-  templates: IDoodle[];
-  doOK: () => void;
-  doCancel: () => void;
+/// <reference path="../app.ts" />
+module mathdoodle {
+  export interface INewScope extends mathdoodle.IAppScope {
+    description: string;
+    template: IDoodle;
+    templates: IDoodle[];
+    doOK: () => void;
+    doCancel: () => void;
+  }
 }
 
 angular.module('app').controller('new-controller', [
@@ -18,7 +19,7 @@ angular.module('app').controller('new-controller', [
   'doodles',
   'templates',
   function(
-    $scope: INewScope,
+    $scope: mathdoodle.INewScope,
     $state: angular.ui.IStateService,
     doodles: IDoodleManager,
     templates: IDoodle[]

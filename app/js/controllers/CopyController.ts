@@ -2,10 +2,10 @@
 /// <reference path="../../../typings/angular-ui-router/angular-ui-router.d.ts" />
 /// <reference path="../services/doodles/IDoodle.ts" />
 /// <reference path="../services/doodles/IDoodleManager.ts" />
-/// <reference path="BodyController.ts" />
+/// <reference path="../controllers/DoodleController.ts" />
 
 module mathdoodle {
-  export interface ICopyScope extends mathdoodle.IBodyScope {
+  export interface ICopyScope extends mathdoodle.IDoodleScope {
     description: string;
     template: IDoodle;
     doOK: () => void;

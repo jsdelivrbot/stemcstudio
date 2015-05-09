@@ -40,6 +40,11 @@ angular.module('app')
           return 'properties-controller';
         }
       })
+      .state('download',  {
+        url: '/download',
+        templateUrl: 'download.html',
+        controller: 'download-controller'
+      })
       .state('about', {
         url: '/about',
         templateUrl: 'about.html',

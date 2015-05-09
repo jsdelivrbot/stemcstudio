@@ -1,7 +1,7 @@
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../../../typings/angular-ui-router/angular-ui-router.d.ts" />
 /// <reference path="../../../typings/google-analytics/ga.d.ts" />
-/// <reference path="../typings/AppScope.ts" />
+/// <reference path="../app.ts" />
 /// <reference path="../services/cookie/cookie.ts" />
 /// <reference path="../services/gham/IGitHubItem.ts" />
 

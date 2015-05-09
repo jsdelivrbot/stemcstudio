@@ -1,10 +1,24 @@
 /// <reference path="../../typings/angularjs/angular.d.ts" />
 /// <reference path="../../typings/angular-ui-router/angular-ui-router.d.ts" />
 /// <reference path="../../typings/google-analytics/ga.d.ts" />
-/// <reference path="typings/AppScope.ts" />
 /// <reference path="services/cookie/cookie.ts" />
 /// <reference path="services/gham/IGitHubItem.ts" />
 /// <reference path="services/uuid/IUuidService.ts" />
+module mathdoodle {
+  export interface IAppScope extends angular.IRootScopeService {
+    $state: angular.ui.IStateService;
+    $stateParams: angular.ui.IStateParams;
+    log: (thing) => void;
+    alert: (thing) => void;
+
+    clientId: () => string;
+    isLoggedIn(): boolean;
+    login(): void;
+    logout(): void;
+    userLogin(): string;
+  }
+}
+
 angular.module('app',
 [
   'ui.router',
@@ -28,7 +42,7 @@ angular.module('app',
   'ga',
   'githubKey',
   function(
-    $rootScope: AppScope,
+    $rootScope: mathdoodle.IAppScope,
     $state: angular.ui.IStateService,
     $stateParams: angular.ui.IStateParams,
     $window: Window,

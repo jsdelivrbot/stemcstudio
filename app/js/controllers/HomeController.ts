@@ -4,15 +4,59 @@
 /// <reference path="../../../typings/deuce/deuce.d.ts" />
 /// <reference path="../../../typings/davinci-mathscript/davinci-mathscript.d.ts" />
 /// <reference path="../../../typings/google-analytics/ga.d.ts" />
+/// <reference path="../controllers/DoodleController.ts" />
 /// <reference path="../services/doodles/IDoodle.ts" />
 /// <reference path="../HTMLDialogElement.ts" />
-/// <reference path="../typings/IDownloadParameters.ts" />
-/// <reference path="../typings/IDoodleConfig.ts" />
-/// <reference path="../typings/IHomeScope.ts" />
-/// <reference path="../services/options/IOption.ts" />
-/// <reference path="../typings/IOutputFile.ts" />
 /// <reference path="../services/cookie/cookie.ts" />
+/// <reference path="../services/gham/IGitHubAuthManager.ts" />
+/// <reference path="../services/options/IOption.ts" />
+/// <reference path="../services/options/IOptionManager.ts" />
+/// <reference path="../services/gist/IDoodleConfig.ts" />
+/// <reference path="../services/gist/IGist.ts" />
+/// <reference path="../typings/IOutputFile.ts" />
 /// <reference path="../../../bower_components/dialog-polyfill/dialog-polyfill.d.ts" />
+module mathdoodle {
+  export interface IHomeScope extends mathdoodle.IDoodleScope {
+    /**
+     * @param label Used by Universal Analytics to categorize events.
+     * @param value Values must be non-negative. Useful to pass counts.
+     */
+    showHTML: (label?: string, value?: number) => void;
+    /**
+     * @param label Used by Universal Analytics to categorize events.
+     * @param value Values must be non-negative. Useful to pass counts.
+     */
+    showCode: (label?: string, value?: number) => void;
+    isShowingHTML: boolean;
+    isShowingCode: boolean;
+
+    isEditMode: boolean;
+    toggleText: string;
+    toggleMode: () => void;
+
+    isViewVisible: boolean;
+    resumeText: string;
+    toggleView: () => void;
+
+    doNew: () => void;
+    doOpen: () => void;
+    doCopy: () => void;
+    doProperties(): void;
+    doAbout(): void;
+    doShare: () => void;
+    doHelp: () => void;
+
+    doUpload(): void;
+
+    templates: IDoodle[];
+
+    shareURL: () => string;
+
+    updateView(): void;
+    updatePreview(delay: number): void;
+  }
+}
+
 angular.module('app').controller('home-controller', [
   '$scope',
   '$state',
@@ -32,7 +76,7 @@ angular.module('app').controller('home-controller', [
   'doodles',
   'options',
   function(
-    scope: IHomeScope,
+    scope: mathdoodle.IHomeScope,
     $state: angular.ui.IStateService,
     http: angular.IHttpService,
     $location: angular.ILocationService,
@@ -269,7 +313,7 @@ angular.module('app').controller('home-controller', [
   }
 
   function showAboutDialog(prologs: string[], epilogs: string[]) {
-    $state.transitionTo('about');
+    $state.go('about');
   }
 
   function downloadGist(token: string, gistId: string) {
@@ -303,31 +347,6 @@ angular.module('app').controller('home-controller', [
       }
     });
   }
-
-  scope.doDownload = function(label?: string, value?: number) {
-    ga('send', 'event', 'doodle', 'download', label, value);
-    var token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
-    github.getGists(token, function(err, gists: IGist[]) {
-      if (!err) {
-        scope.gists = gists;
-        var dialog = <HTMLDialogElement>document.getElementById('download-dialog');
-        var closeHandler = function() {
-          hideModalDialog(dialog, closeHandler);
-          if (dialog.returnValue.length > 0) {
-            var response: IDownloadParameters = JSON.parse(dialog.returnValue);
-            downloadGist(token, response.gistId);
-          }
-          else {
-
-          }
-        };
-        showModalDialog(dialog, closeHandler);
-      }
-      else {
-          scope.alert("Error attempting to download Gists");
-      }
-    });
-  };
 
   /**
    * Maps the doodle to the format required for GitHub.
