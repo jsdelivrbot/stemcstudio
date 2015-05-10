@@ -102,7 +102,7 @@ angular.module('app').controller('home-controller', [
     http: angular.IHttpService,
     $location: angular.ILocationService,
     $timeout: angular.ITimeoutService,
-    $window,
+    $window: angular.IWindowService,
     $modal,
     mathscript,
     github,
@@ -561,7 +561,7 @@ angular.module('app').controller('home-controller', [
     scope.updatePreview(WAIT_FOR_MORE_HTML_KEYSTROKES);
   });
 
-  var lessEditor = ace.edit('less-editor', workspace);
+  var lessEditor = ace.edit($window.document.getElementById('less-editor'), workspace);
   lessEditor.resize(true);
   lessEditor.getSession().setMode('ace/mode/less');
 
