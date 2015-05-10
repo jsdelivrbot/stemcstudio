@@ -8,12 +8,14 @@
 /// <reference path="../directives/deuce.ts" />
 /// <reference path="../services/doodles/doodles.ts" />
 /// <reference path="../HTMLDialogElement.ts" />
+/// <reference path="../services/cloud/cloud.ts" />
 /// <reference path="../services/cookie/cookie.ts" />
 /// <reference path="../services/gham/IGitHubAuthManager.ts" />
+/// <reference path="../services/gist/IGist.ts" />
+/// <reference path="../services/github/GitHub.ts" />
 /// <reference path="../services/options/IOption.ts" />
 /// <reference path="../services/options/IOptionManager.ts" />
-/// <reference path="../services/cloud/cloud.ts" />
-/// <reference path="../services/gist/IGist.ts" />
+/// <reference path="../services/settings/settings.ts" />
 /// <reference path="../../../bower_components/dialog-polyfill/dialog-polyfill.d.ts" />
 module mathdoodle {
   export interface IHomeScope extends mathdoodle.IDoodleScope {
@@ -61,6 +63,7 @@ module mathdoodle {
 
     updateView(): void;
     updatePreview(delay: number): void;
+    previewIFrame: HTMLIFrameElement;
   }
   export interface IOutputFile {
     name: string;
@@ -92,6 +95,7 @@ angular.module('app').controller('home-controller', [
   'FILENAME_HTML',
   'FILENAME_CODE',
   'FILENAME_LESS',
+  'settings',
   function(
     scope: mathdoodle.IHomeScope,
     $state: angular.ui.IStateService,
@@ -113,7 +117,8 @@ angular.module('app').controller('home-controller', [
     FILENAME_META: string,
     FILENAME_HTML: string,
     FILENAME_CODE: string,
-    FILENAME_LESS: string
+    FILENAME_LESS: string,
+    settings: mathdoodle.ISettingsService
   ) {
 
   var FWD_SLASH = '/';
@@ -241,9 +246,15 @@ angular.module('app').controller('home-controller', [
   scope.toggleMode = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'toggleMode', label, value);
     setEditMode(!scope.isEditMode);
-    if (scope.isEditMode === scope.isViewVisible) {
-      setViewMode(!scope.isViewVisible);
+    // Ensure the preview is running when going away from editing.
+    if (!scope.isEditMode) {
+      setViewMode(true);
       scope.updatePreview(WAIT_NO_MORE);
+    }
+    else {
+      if (scope.isViewVisible) {
+        scope.updatePreview(WAIT_NO_MORE);
+      }
     }
     // This does not seem sufficient to force the editors to repaint when...
     // (Mobile Keyboard or Developer Tools visible), followed by
@@ -498,15 +509,14 @@ angular.module('app').controller('home-controller', [
 
   var codeEditor = ace.edit('code-editor', workspace);
   codeEditor.resize(true);
-
-  // TODO: Persistent editor configuration.
-  codeEditor.setTheme('ace/theme/textmate');
   codeEditor.getSession().setMode('ace/mode/typescript');
-  codeEditor.getSession().setTabSize(2);
-  codeEditor.setShowInvisibles(false);
-  codeEditor.setFontSize('16px');
-  codeEditor.setShowPrintMargin(false);
-  codeEditor.setDisplayIndentGuides(false);
+
+  codeEditor.setTheme(settings.theme);
+  codeEditor.getSession().setTabSize(settings.indent);
+  codeEditor.setShowInvisibles(settings.showInvisibles);
+  codeEditor.setFontSize(settings.fontSize);
+  codeEditor.setShowPrintMargin(settings.showPrintMargin);
+  codeEditor.setDisplayIndentGuides(settings.displayIndentGuides);
 
   codeEditor.getSession().on('initAfter', function(event) {
     // Not sure when we need to know that the worker has started?
@@ -536,14 +546,14 @@ angular.module('app').controller('home-controller', [
 
   var htmlEditor = ace.edit('html-editor', workspace);
   htmlEditor.resize(true);
-
-  htmlEditor.setTheme('ace/theme/textmate');
   htmlEditor.getSession().setMode('ace/mode/html');
-  htmlEditor.getSession().setTabSize(2);
-  htmlEditor.setShowInvisibles(false);
-  htmlEditor.setFontSize('16px');
-  htmlEditor.setShowPrintMargin(false);
-  htmlEditor.setDisplayIndentGuides(false);
+
+  htmlEditor.setTheme(settings.theme);
+  htmlEditor.getSession().setTabSize(settings.indent);
+  htmlEditor.setShowInvisibles(settings.showInvisibles);
+  htmlEditor.setFontSize(settings.fontSize);
+  htmlEditor.setShowPrintMargin(settings.showPrintMargin);
+  htmlEditor.setDisplayIndentGuides(settings.displayIndentGuides);
 
   htmlEditor.getSession().on('change', function(event) {
     doodles.current().html = htmlEditor.getValue();
@@ -553,14 +563,14 @@ angular.module('app').controller('home-controller', [
 
   var lessEditor = ace.edit('less-editor', workspace);
   lessEditor.resize(true);
-
-  lessEditor.setTheme('ace/theme/textmate');
   lessEditor.getSession().setMode('ace/mode/less');
-  lessEditor.getSession().setTabSize(2);
-  lessEditor.setShowInvisibles(false);
-  lessEditor.setFontSize('16px');
-  lessEditor.setShowPrintMargin(false);
-  lessEditor.setDisplayIndentGuides(false);
+
+  lessEditor.setTheme(settings.theme);
+  lessEditor.getSession().setTabSize(settings.indent);
+  lessEditor.setShowInvisibles(settings.showInvisibles);
+  lessEditor.setFontSize(settings.fontSize);
+  lessEditor.setShowPrintMargin(settings.showPrintMargin);
+  lessEditor.setDisplayIndentGuides(settings.displayIndentGuides);
 
   lessEditor.getSession().on('change', function(event) {
     doodles.current().less = lessEditor.getValue();
@@ -577,19 +587,22 @@ angular.module('app').controller('home-controller', [
   function rebuildPreview() {
     try {
       // Kill any existing frames.
+      scope.previewIFrame = undefined;
       var preview = document.getElementById('preview');
       while (preview.children.length > 0) {
         preview.removeChild(preview.firstChild);
       }
 
+      var toolbar = document.getElementById('toolbar');
       if (scope.isViewVisible && doodles.current().lastKnownJs) {
-        var iframe = document.createElement('iframe');
-        iframe.style.width = '100%';
-        iframe.style.height = '100%';
-        iframe.style.border = '0';
-        preview.appendChild(iframe);
+        scope.previewIFrame = document.createElement('iframe');
+        scope.previewIFrame.style.width = '100%';
+        scope.previewIFrame.style.height = '100%';
+        scope.previewIFrame.style.border = '0';
 
-        var content = iframe.contentDocument || iframe.contentWindow.document;
+        preview.appendChild(scope.previewIFrame);
+
+        var content = scope.previewIFrame.contentDocument || scope.previewIFrame.contentWindow.document;
 
         var selOpts = options.filter(function(option: IOption, index: number, array: IOption[]) {
           return doodles.current().dependencies.indexOf(option.name) > -1;
