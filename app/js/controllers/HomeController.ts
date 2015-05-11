@@ -561,7 +561,7 @@ angular.module('app').controller('home-controller', [
     scope.updatePreview(WAIT_FOR_MORE_HTML_KEYSTROKES);
   });
 
-  var lessEditor = deuce.edit($window.document.getElementById('less-editor'), workspace);
+  var lessEditor = ace.edit($window.document.getElementById('less-editor'), workspace);
   lessEditor.resize(true);
   lessEditor.getSession().setMode('ace/mode/less');
 
