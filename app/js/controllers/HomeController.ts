@@ -507,7 +507,7 @@ angular.module('app').controller('home-controller', [
 
   var workspace = ace.workspace();
 
-  var codeEditor = ace.edit('code-editor', workspace);
+  var codeEditor = ace.edit($window.document.getElementById('code-editor'), workspace);
   codeEditor.resize(true);
   codeEditor.getSession().setMode('ace/mode/typescript');
 
@@ -544,7 +544,7 @@ angular.module('app').controller('home-controller', [
     // when the compiler emits a file.
   });
 
-  var htmlEditor = ace.edit('html-editor', workspace);
+  var htmlEditor = ace.edit($window.document.getElementById('html-editor'), workspace);
   htmlEditor.resize(true);
   htmlEditor.getSession().setMode('ace/mode/html');
 
@@ -561,7 +561,7 @@ angular.module('app').controller('home-controller', [
     scope.updatePreview(WAIT_FOR_MORE_HTML_KEYSTROKES);
   });
 
-  var lessEditor = ace.edit($window.document.getElementById('less-editor'), workspace);
+  var lessEditor = deuce.edit($window.document.getElementById('less-editor'), workspace);
   lessEditor.resize(true);
   lessEditor.getSession().setMode('ace/mode/less');
 

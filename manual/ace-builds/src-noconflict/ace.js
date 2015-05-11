@@ -10761,6 +10761,16 @@ var EditSession = (function (_super) {
             return this.$wrapData[row].length + 1;
         }
     };
+
+    EditSession.prototype.getRowWrapIndent = function (screenRow) {
+        if (this.$useWrapMode) {
+            var pos = this.screenToDocumentPosition(screenRow, Number.MAX_VALUE);
+            var splits = this.$wrapData[pos.row];
+            return splits.length && splits[0] < pos.column ? splits.indent : 0;
+        } else {
+            return 0;
+        }
+    };
     EditSession.prototype.getScreenLastRowColumn = function (screenRow) {
         var pos = this.screenToDocumentPosition(screenRow, Number.MAX_VALUE);
         return this.documentToScreenColumn(pos.row, pos.column);
@@ -15498,7 +15508,7 @@ var Marker = (function () {
                 else
                     this.drawMultiLineMarker(html, range, marker.clazz, config);
             } else {
-                this.drawSingleLineMarker(html, range, marker.clazz + " ace_start", config);
+                this.drawSingleLineMarker(html, range, marker.clazz + " ace_start ace_br15", config);
             }
         }
         this.element.innerHTML = html.join("");
@@ -15508,19 +15518,26 @@ var Marker = (function () {
         return (row - layerConfig.firstRowScreen) * layerConfig.lineHeight;
     };
     Marker.prototype.drawTextMarker = function (stringBuilder, range, clazz, layerConfig, extraStyle) {
-        var row = range.start.row;
+        function getBorderClass(tl, tr, br, bl) {
+            return (tl ? 1 : 0) | (tr ? 2 : 0) | (br ? 4 : 0) | (bl ? 8 : 0);
+        }
 
-        var lineRange = new rng.Range(row, range.start.column, row, this.session.getScreenLastRowColumn(row));
-        this.drawSingleLineMarker(stringBuilder, lineRange, clazz + " ace_start", layerConfig, 1, extraStyle);
-        row = range.end.row;
-        lineRange = new rng.Range(row, 0, row, range.end.column);
-        this.drawSingleLineMarker(stringBuilder, lineRange, clazz, layerConfig, 0, extraStyle);
-
-        for (row = range.start.row + 1; row < range.end.row; row++) {
-            lineRange.start.row = row;
-            lineRange.end.row = row;
-            lineRange.end.column = this.session.getScreenLastRowColumn(row);
-            this.drawSingleLineMarker(stringBuilder, lineRange, clazz, layerConfig, 1, extraStyle);
+        var session = this.session;
+        var start = range.start.row;
+        var end = range.end.row;
+        var row = start;
+        var prev = 0;
+        var curr = 0;
+        var next = session.getScreenLastRowColumn(row);
+        var lineRange = new rng.Range(row, range.start.column, row, curr);
+        for (; row <= end; row++) {
+            lineRange.start.row = lineRange.end.row = row;
+            lineRange.start.column = row == start ? range.start.column : session.getRowWrapIndent(row);
+            lineRange.end.column = next;
+            prev = curr;
+            curr = next;
+            next = row + 1 < end ? session.getScreenLastRowColumn(row + 1) : row == end ? 0 : range.end.column;
+            this.drawSingleLineMarker(stringBuilder, lineRange, clazz + (row == start ? " ace_start" : "") + " ace_br" + getBorderClass(row == start || row == start + 1 && range.start.column, prev < curr, curr > next, row == end), layerConfig, row == end ? 0 : 1, extraStyle);
         }
     };
     Marker.prototype.drawMultiLineMarker = function (stringBuilder, range, clazz, config, extraStyle) {
@@ -15528,19 +15545,23 @@ var Marker = (function () {
         var height = config.lineHeight;
         var top = this.$getTop(range.start.row, config);
         var left = padding + range.start.column * config.characterWidth;
+
         extraStyle = extraStyle || "";
 
-        stringBuilder.push("<div class='", clazz, " ace_start' style='", "height:", height, "px;", "right:0;", "top:", top, "px;", "left:", left, "px;", extraStyle, "'></div>");
+        stringBuilder.push("<div class='", clazz, " ace_br1 ace_start' style='", "height:", height, "px;", "right:0;", "top:", top, "px;", "left:", left, "px;", extraStyle, "'></div>");
         top = this.$getTop(range.end.row, config);
         var width = range.end.column * config.characterWidth;
 
-        stringBuilder.push("<div class='", clazz, "' style='", "height:", height, "px;", "width:", width, "px;", "top:", top, "px;", "left:", padding, "px;", extraStyle, "'></div>");
+        stringBuilder.push("<div class='", clazz, " ace_br12' style='", "height:", height, "px;", "width:", width, "px;", "top:", top, "px;", "left:", padding, "px;", extraStyle, "'></div>");
         height = (range.end.row - range.start.row - 1) * config.lineHeight;
-        if (height < 0)
+        if (height < 0) {
             return;
+        }
         top = this.$getTop(range.start.row + 1, config);
 
-        stringBuilder.push("<div class='", clazz, "' style='", "height:", height, "px;", "right:0;", "top:", top, "px;", "left:", padding, "px;", extraStyle, "'></div>");
+        var radiusClass = (range.start.column ? 1 : 0) | (range.end.column ? 0 : 8);
+
+        stringBuilder.push("<div class='", clazz, (radiusClass ? " ace_br" + radiusClass : ""), "' style='", "height:", height, "px;", "right:0;", "top:", top, "px;", "left:", padding, "px;", extraStyle, "'></div>");
     };
     Marker.prototype.drawSingleLineMarker = function (stringBuilder, range, clazz, config, extraLength, extraStyle) {
         var height = config.lineHeight;
@@ -15555,8 +15576,9 @@ var Marker = (function () {
     Marker.prototype.drawFullLineMarker = function (stringBuilder, range, clazz, config, extraStyle) {
         var top = this.$getTop(range.start.row, config);
         var height = config.lineHeight;
-        if (range.start.row != range.end.row)
+        if (range.start.row != range.end.row) {
             height += this.$getTop(range.end.row, config) - top;
+        }
 
         stringBuilder.push("<div class='", clazz, "' style='", "height:", height, "px;", "top:", top, "px;", "left:0;right:0;", extraStyle || "", "'></div>");
     };
@@ -16586,9 +16608,7 @@ var eve = require("./lib/event_emitter");
 var editorCss = ".ace_editor {\
 position: relative;\
 overflow: hidden;\
-font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;\
-font-size: 12px;\
-line-height: normal;\
+font: 12px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;\
 direction: ltr;\
 }\
 .ace_scroller {\
@@ -16601,17 +16621,14 @@ background-color: inherit;\
 -moz-user-select: none;\
 -webkit-user-select: none;\
 user-select: none;\
+cursor: text;\
 }\
 .ace_content {\
 position: absolute;\
 -moz-box-sizing: border-box;\
 -webkit-box-sizing: border-box;\
 box-sizing: border-box;\
-cursor: text;\
 min-width: 100%;\
-}\
-.ace_dragging, .ace_dragging * {\
-cursor: move !important;\
 }\
 .ace_dragging .ace_scroller:before{\
 position: absolute;\
@@ -16731,6 +16748,7 @@ text-indent: 0;\
 z-index: 1;\
 position: absolute;\
 overflow: hidden;\
+word-wrap: normal;\
 white-space: pre;\
 height: 100%;\
 width: 100%;\
@@ -16767,17 +16785,14 @@ border-left: 2px solid\
 border-left-width: 1px;\
 }\
 .ace_overwrite-cursors .ace_cursor {\
-border-left-width: 0px;\
+border-left-width: 0;\
 border-bottom: 1px solid;\
 }\
 .ace_hidden-cursors .ace_cursor {\
 opacity: 0.2;\
 }\
 .ace_smooth-blinking .ace_cursor {\
--moz-transition: opacity 0.18s;\
 -webkit-transition: opacity 0.18s;\
--o-transition: opacity 0.18s;\
--ms-transition: opacity 0.18s;\
 transition: opacity 0.18s;\
 }\
 .ace_editor.ace_multiselect .ace_cursor {\
@@ -16821,8 +16836,6 @@ background-repeat: no-repeat, repeat-x;\
 background-position: center center, top left;\
 color: transparent;\
 border: 1px solid black;\
--moz-border-radius: 2px;\
--webkit-border-radius: 2px;\
 border-radius: 2px;\
 cursor: pointer;\
 pointer-events: auto;\
@@ -16842,7 +16855,6 @@ border: 1px solid gray;\
 border-radius: 1px;\
 box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);\
 color: black;\
-display: block;\
 max-width: 100%;\
 padding: 3px 4px;\
 position: fixed;\
@@ -16889,15 +16901,11 @@ background-image: url(\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAGCA
 .ace_fold-widget:hover {\
 border: 1px solid rgba(0, 0, 0, 0.3);\
 background-color: rgba(255, 255, 255, 0.2);\
--moz-box-shadow: 0 1px 1px rgba(255, 255, 255, 0.7);\
--webkit-box-shadow: 0 1px 1px rgba(255, 255, 255, 0.7);\
 box-shadow: 0 1px 1px rgba(255, 255, 255, 0.7);\
 }\
 .ace_fold-widget:active {\
 border: 1px solid rgba(0, 0, 0, 0.4);\
 background-color: rgba(0, 0, 0, 0.05);\
--moz-box-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);\
--webkit-box-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);\
 box-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);\
 }\
 .ace_dark .ace_fold-widget {\
@@ -16914,8 +16922,6 @@ box-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);\
 background-color: rgba(255, 255, 255, 0.1);\
 }\
 .ace_dark .ace_fold-widget:active {\
--moz-box-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);\
--webkit-box-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);\
 box-shadow: 0 1px 1px rgba(255, 255, 255, 0.2);\
 }\
 .ace_fold-widget.ace_invalid {\
@@ -16923,18 +16929,12 @@ background-color: #FFB4B4;\
 border-color: #DE5555;\
 }\
 .ace_fade-fold-widgets .ace_fold-widget {\
--moz-transition: opacity 0.4s ease 0.05s;\
 -webkit-transition: opacity 0.4s ease 0.05s;\
--o-transition: opacity 0.4s ease 0.05s;\
--ms-transition: opacity 0.4s ease 0.05s;\
 transition: opacity 0.4s ease 0.05s;\
 opacity: 0;\
 }\
 .ace_fade-fold-widgets:hover .ace_fold-widget {\
--moz-transition: opacity 0.05s ease 0.05s;\
 -webkit-transition: opacity 0.05s ease 0.05s;\
--o-transition: opacity 0.05s ease 0.05s;\
--ms-transition: opacity 0.05s ease 0.05s;\
 transition: opacity 0.05s ease 0.05s;\
 opacity:1;\
 }\
@@ -16960,6 +16960,21 @@ background-color: rgba(255, 255, 0,0.2);\
 position: absolute;\
 z-index: 8;\
 }\
+.ace_br1 {border-top-left-radius    : 3px;}\
+.ace_br2 {border-top-right-radius   : 3px;}\
+.ace_br3 {border-top-left-radius    : 3px; border-top-right-radius:    3px;}\
+.ace_br4 {border-bottom-right-radius: 3px;}\
+.ace_br5 {border-top-left-radius    : 3px; border-bottom-right-radius: 3px;}\
+.ace_br6 {border-top-right-radius   : 3px; border-bottom-right-radius: 3px;}\
+.ace_br7 {border-top-left-radius    : 3px; border-top-right-radius:    3px; border-bottom-right-radius: 3px;}\
+.ace_br8 {border-bottom-left-radius : 3px;}\
+.ace_br9 {border-top-left-radius    : 3px; border-bottom-left-radius:  3px;}\
+.ace_br10{border-top-right-radius   : 3px; border-bottom-left-radius:  3px;}\
+.ace_br11{border-top-left-radius    : 3px; border-top-right-radius:    3px; border-bottom-left-radius:  3px;}\
+.ace_br12{border-bottom-right-radius: 3px; border-bottom-left-radius:  3px;}\
+.ace_br13{border-top-left-radius    : 3px; border-bottom-right-radius: 3px; border-bottom-left-radius:  3px;}\
+.ace_br14{border-top-right-radius   : 3px; border-bottom-right-radius: 3px; border-bottom-left-radius:  3px;}\
+.ace_br15{border-top-left-radius    : 3px; border-top-right-radius:    3px; border-bottom-right-radius: 3px; border-bottom-left-radius: 3px;}\
 ";
 
 dom.importCssString(editorCss, "ace_editor");
@@ -17338,8 +17353,8 @@ var VirtualRenderer = (function (_super) {
     VirtualRenderer.prototype.getShowPrintMargin = function () {
         return this.getOption("showPrintMargin");
     };
-    VirtualRenderer.prototype.setPrintMarginColumn = function (showPrintMargin) {
-        this.setOption("printMarginColumn", showPrintMargin);
+    VirtualRenderer.prototype.setPrintMarginColumn = function (printMarginColumn) {
+        this.setOption("printMarginColumn", printMarginColumn);
     };
     VirtualRenderer.prototype.getPrintMarginColumn = function () {
         return this.getOption("printMarginColumn");
@@ -17481,7 +17496,7 @@ var VirtualRenderer = (function (_super) {
         this.setOption("hScrollBarAlwaysVisible", alwaysVisible);
     };
     VirtualRenderer.prototype.getVScrollBarAlwaysVisible = function () {
-        return this.$hScrollBarAlwaysVisible;
+        return this.$vScrollBarAlwaysVisible;
     };
     VirtualRenderer.prototype.setVScrollBarAlwaysVisible = function (alwaysVisible) {
         this.setOption("vScrollBarAlwaysVisible", alwaysVisible);
@@ -19657,7 +19672,6 @@ background: rgb(181, 213, 255);\
 }\
 .ace-tm.ace_multiselect .ace_selection.ace_start {\
 box-shadow: 0 0 3px 0px white;\
-border-radius: 2px;\
 }\
 .ace-tm .ace_marker-layer .ace_step {\
 background: rgb(252, 255, 0);\
