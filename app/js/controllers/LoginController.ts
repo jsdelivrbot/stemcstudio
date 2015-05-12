@@ -32,7 +32,7 @@ module doodle.login {
     ) {
 
       // The name of this cookie must correspond with the cookie sent back from the server.
-      var GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME = 'davincidoodle-github-application-client-id';
+      var GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME = 'mathdoodle-github-application-client-id';
       var GITHUB_TOKEN_COOKIE_NAME = 'github-token';
       var GITHUB_LOGIN_COOKIE_NAME = 'github-login';
       var GITHUB_GET_LOGIN_OAUTH_AUTHORIZE = "https://github.com/login/oauth/authorize";

@@ -1,6 +1,6 @@
 {
-  "name": "davincidoodle",
-  "version": "1.19.1",
+  "name": "mathdoodle",
+  "version": "1.0.0",
   "description": "Computational Learning Environment",
   "scripts": {
     "start": "NODE_ENV=local nodemon web.js",
@@ -21,7 +21,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/geometryzen/davincidoodle.git"
+    "url": "https://github.com/geometryzen/mathdoodle.git"
   },
   "dependencies": {
     "express": "3.3.4",

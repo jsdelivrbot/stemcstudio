@@ -3,6 +3,7 @@
 /// <reference path="../../../typings/bootstrap-dialog/bootstrap-dialog.d.ts" />
 /// <reference path="../../../typings/deuce/deuce.d.ts" />
 /// <reference path="../../../typings/davinci-mathscript/davinci-mathscript.d.ts" />
+/// <reference path="../../../typings/dialog-polyfill/dialog-polyfill.d.ts" />
 /// <reference path="../../../typings/google-analytics/ga.d.ts" />
 /// <reference path="../controllers/DoodleController.ts" />
 /// <reference path="../directives/deuce.ts" />
@@ -16,7 +17,6 @@
 /// <reference path="../services/options/IOption.ts" />
 /// <reference path="../services/options/IOptionManager.ts" />
 /// <reference path="../services/settings/settings.ts" />
-/// <reference path="../../../bower_components/dialog-polyfill/dialog-polyfill.d.ts" />
 module mathdoodle {
   export interface IHomeScope extends mathdoodle.IDoodleScope {
     /**
@@ -138,7 +138,7 @@ angular.module('app').controller('home-controller', [
   "Welcome to Davinci Doodle!"
 
   var ELEVATOR_SPEECH_DOODLE = "" +
-  "DaVinci Doodle is a tool for learning modern mathematics through " +
+  "Math Doodle is a tool for learning modern mathematics through " +
   "interactive programming using cutting-edge software development technologies."
 
   var CAVEAT_NOTICE = "" +
@@ -148,7 +148,7 @@ angular.module('app').controller('home-controller', [
   "Copyright (c) 2015 David DOT Geo DOT Holmes AT gmail DOT com"
 
   // Reminder: Do not create multiple trackers in this (single page) app.
-  ga('create', 'UA-41504069-2', 'auto');
+  ga('create', 'UA-41504069-3', 'auto');
   ga('send', 'pageview');
 
   var GITHUB_TOKEN_COOKIE_NAME = 'github-token';
@@ -704,7 +704,7 @@ angular.module('app').controller('home-controller', [
     
     if (doodles.length === 0) {
       // If there is no document, construct one based upon the first template.
-      doodles.createDoodle(scope.templates[0], "My DaVinci Doodle");
+      doodles.createDoodle(scope.templates[0], "My Math Doodle");
     }
     else {
 

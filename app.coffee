@@ -70,11 +70,11 @@ authenticate = (code, cb) ->
   req.end()
   req.on 'error', (e) -> cb(e.message)
 
-# Forward davincidoodle.herokuapp.com to www.davincidoodle.com
+# Forward mathdoodle.herokuapp.com to www.mathdoodle.io
 # Notice that we use HTTP status 301 Moved Permanently (best for SEO purposes).
 app.get "/*", (req, res, next) ->
-    if req.headers.host.match(/^davincidoodle.herokuapp.com/)
-      res.redirect("http://www.davincidoodle.com#{req.url}", 301)
+    if req.headers.host.match(/^mathdoodle.herokuapp.com/)
+      res.redirect("http://www.mathdoodle.io#{req.url}", 301)
     else
       next()
 
@@ -88,13 +88,13 @@ app.get '/authenticate/:code', (req, res) ->
 
 app.get "/github_callback", (req, res, next) ->
   # Set a cookie to communicate the GitHub Client ID back to the client.
-  res.cookie('davincidoodle-github-application-client-id', nconf.get("GITHUB_APPLICATION_CLIENT_ID"))
+  res.cookie('mathdoodle-github-application-client-id', nconf.get("GITHUB_APPLICATION_CLIENT_ID"))
   res.render "github_callback",
     npm: npm
 
 app.get "/*", (req, res, next) ->
   # Set a cookie to communicate the GitHub Client ID back to the client.
-  res.cookie('davincidoodle-github-application-client-id', nconf.get("GITHUB_APPLICATION_CLIENT_ID"))
+  res.cookie('mathdoodle-github-application-client-id', nconf.get("GITHUB_APPLICATION_CLIENT_ID"))
   res.render "index",
     css: "/css/app.css?version=#{npm.version}"
     js:  "/js/app.js?version=#{npm.version}"
