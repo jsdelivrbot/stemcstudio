@@ -1454,18 +1454,21 @@ function stopEvent(e) {
 exports.stopEvent = stopEvent;
 
 function stopPropagation(e) {
-    if (e.stopPropagation)
+    if (e.stopPropagation) {
         e.stopPropagation();
-    else
+    } else {
         e.cancelBubble = true;
+    }
 }
 exports.stopPropagation = stopPropagation;
 
 function preventDefault(e) {
-    if (e.preventDefault)
+    var RETURN_VALUE_DEPRECATED = 'returnValue';
+    if (e.preventDefault) {
         e.preventDefault();
-    else
-        e.returnValue = false;
+    } else if (e[RETURN_VALUE_DEPRECATED]) {
+        e[RETURN_VALUE_DEPRECATED] = false;
+    }
 }
 exports.preventDefault = preventDefault;
 function getButton(e) {
@@ -1480,41 +1483,41 @@ function getButton(e) {
     }
 }
 exports.getButton = getButton;
-
-function capture(el, eventHandler, releaseCaptureHandler) {
+function capture(unused, acquireCaptureHandler, releaseCaptureHandler) {
     var element = document;
-    function onMouseUp(e) {
-        eventHandler && eventHandler(e);
+
+    function releaseMouse(e) {
+        acquireCaptureHandler && acquireCaptureHandler(e);
+
         releaseCaptureHandler && releaseCaptureHandler(e);
 
-        exports.removeListener(element, "mousemove", eventHandler, true);
-        exports.removeListener(element, "mouseup", onMouseUp, true);
-        exports.removeListener(element, "dragstart", onMouseUp, true);
+        exports.removeListener(element, "mousemove", acquireCaptureHandler, true);
+        exports.removeListener(element, "mouseup", releaseMouse, true);
+        exports.removeListener(element, "dragstart", releaseMouse, true);
     }
 
-    exports.addListener(element, "mousemove", eventHandler, true);
-    exports.addListener(element, "mouseup", onMouseUp, true);
-    exports.addListener(element, "dragstart", onMouseUp, true);
+    exports.addListener(element, "mousemove", acquireCaptureHandler, true);
+    exports.addListener(element, "mouseup", releaseMouse, true);
+    exports.addListener(element, "dragstart", releaseMouse, true);
 
-    return onMouseUp;
+    return releaseMouse;
 }
 exports.capture = capture;
-
-function addMouseWheelListener(el, callback) {
-    if ("onmousewheel" in el) {
-        exports.addListener(el, "mousewheel", function (e) {
+function addMouseWheelListener(element, callback) {
+    if ("onmousewheel" in element) {
+        exports.addListener(element, "mousewheel", function (e) {
             var factor = 8;
-            if (e.wheelDeltaX !== undefined) {
-                e.wheelX = -e.wheelDeltaX / factor;
-                e.wheelY = -e.wheelDeltaY / factor;
+            if (e['wheelDeltaX'] !== undefined) {
+                e['wheelX'] = -e['wheelDeltaX'] / factor;
+                e['wheelY'] = -e['wheelDeltaY'] / factor;
             } else {
-                e.wheelX = 0;
-                e.wheelY = -e.wheelDelta / factor;
+                e['wheelX'] = 0;
+                e['wheelY'] = -e.wheelDelta / factor;
             }
             callback(e);
         });
-    } else if ("onwheel" in el) {
-        exports.addListener(el, "wheel", function (e) {
+    } else if ("onwheel" in element) {
+        exports.addListener(element, "wheel", function (e) {
             var factor = 0.35;
             switch (e.deltaMode) {
                 case e.DOM_DELTA_PIXEL:
@@ -1527,11 +1530,10 @@ function addMouseWheelListener(el, callback) {
                     e.wheelY = (e.deltaY || 0) * 5;
                     break;
             }
-
             callback(e);
         });
     } else {
-        exports.addListener(el, "DOMMouseScroll", function (e) {
+        exports.addListener(element, "DOMMouseScroll", function (e) {
             if (e.axis && e.axis == e.HORIZONTAL_AXIS) {
                 e.wheelX = (e.detail || 0) * 5;
                 e.wheelY = 0;
@@ -1579,8 +1581,7 @@ function addMultiMouseDownListener(el, timeouts, eventHandler, callbackName) {
                 startY = e.clientY;
             }
         }
-
-        e._clicks = clicks;
+        e['_clicks'] = clicks;
 
         eventHandler[callbackName]("mousedown", e);
 
@@ -1686,6 +1687,11 @@ function normalizeCommandKeys(callback, e, keyCode) {
 }
 
 var pressedKeys = null;
+
+function resetPressedKeys(e) {
+    pressedKeys = Object.create(null);
+}
+
 var ts = 0;
 function addCommandKeyListener(el, callback) {
     if (useragent.isOldGecko || (useragent.isOpera && !("KeyboardEvent" in window))) {
@@ -1706,23 +1712,20 @@ function addCommandKeyListener(el, callback) {
             return result;
         });
 
-        exports.addListener(el, "keypress", function (e) {
+        exports.addListener(el, 'keypress', function (e) {
             if (lastDefaultPrevented && (e.ctrlKey || e.altKey || e.shiftKey || e.metaKey)) {
                 exports.stopEvent(e);
                 lastDefaultPrevented = null;
             }
         });
 
-        exports.addListener(el, "keyup", function (e) {
+        exports.addListener(el, 'keyup', function (e) {
             pressedKeys[e.keyCode] = null;
         });
 
         if (!pressedKeys) {
             pressedKeys = Object.create(null);
-            var windowAlias = window;
-            exports.addListener(windowAlias, "focus", function (e) {
-                pressedKeys = Object.create(null);
-            });
+            exports.addListener(window, 'focus', resetPressedKeys);
         }
     }
 }
@@ -1746,14 +1749,14 @@ if (window.postMessage && !useragent.isOldIE) {
 
 var nextFrameCandidate = window.requestAnimationFrame || window['mozRequestAnimationFrame'] || window['webkitRequestAnimationFrame'] || window.msRequestAnimationFrame || window['oRequestAnimationFrame'];
 
-if (nextFrameCandidate)
+if (nextFrameCandidate) {
     nextFrameCandidate = nextFrameCandidate.bind(window);
-else
+} else {
     nextFrameCandidate = function (callback) {
         setTimeout(callback, 17);
     };
-
-exports.nextFrame = nextFrameCandidate;
+}
+exports.requestAnimationFrame = nextFrameCandidate;
 });
 
 define("ace/keyboard/hash_handler",["require","exports","module","ace/lib/keys","ace/lib/useragent"], function(require, exports, module) {
@@ -4213,7 +4216,7 @@ var net = require("./lib/net");
 var eve = require('./lib/event_emitter');
 
 var global = (function () {
-    return this;
+    return this || typeof window !== 'undefined' && window;
 })();
 
 var options = {
@@ -5896,10 +5899,12 @@ var Selection = (function (_super) {
         } else {
             rowEnd = rowStart;
         }
-        if (excludeLastChar === true)
+
+        if (excludeLastChar) {
             return new rng.Range(rowStart, 0, rowEnd, this.session.getLine(rowEnd).length);
-        else
+        } else {
             return new rng.Range(rowStart, 0, rowEnd + 1, 0);
+        }
     };
     Selection.prototype.selectLine = function () {
         this.setSelectionRange(this.getLineRange());
@@ -7962,8 +7967,9 @@ var BackgroundTokenizer = (function (_super) {
         return this.lines[row] || this.$tokenizeRow(row);
     };
     BackgroundTokenizer.prototype.getState = function (row) {
-        if (this.currentLine == row)
+        if (this.currentLine == row) {
             this.$tokenizeRow(row);
+        }
         return this.states[row] || "start";
     };
 
@@ -12266,248 +12272,6 @@ exports.commands = [{
 
 });
 
-define("ace/mouse/default_handlers",["require","exports","module","ace/lib/dom","ace/lib/event","ace/lib/useragent"], function(require, exports, module) {
-"use strict";
-
-var dom = require("../lib/dom");
-var event = require("../lib/event");
-var useragent = require("../lib/useragent");
-
-var DRAG_OFFSET = 0; // pixels
-
-function DefaultHandlers(mouseHandler) {
-    mouseHandler.$clickSelection = null;
-
-    var editor = mouseHandler.editor;
-    editor.setDefaultHandler("mousedown", this.onMouseDown.bind(mouseHandler));
-    editor.setDefaultHandler("dblclick", this.onDoubleClick.bind(mouseHandler));
-    editor.setDefaultHandler("tripleclick", this.onTripleClick.bind(mouseHandler));
-    editor.setDefaultHandler("quadclick", this.onQuadClick.bind(mouseHandler));
-    editor.setDefaultHandler("mousewheel", this.onMouseWheel.bind(mouseHandler));
-
-    var exports = ["select", "startSelect", "selectEnd", "selectAllEnd", "selectByWordsEnd",
-        "selectByLinesEnd", "dragWait", "dragWaitEnd", "focusWait"];
-
-    exports.forEach(function(x) {
-        mouseHandler[x] = this[x];
-    }, this);
-
-    mouseHandler.selectByLines = this.extendSelectionBy.bind(mouseHandler, "getLineRange");
-    mouseHandler.selectByWords = this.extendSelectionBy.bind(mouseHandler, "getWordRange");
-}
-
-(function() {
-
-    this.onMouseDown = function(ev) {
-        var inSelection = ev.inSelection();
-        var pos = ev.getDocumentPosition();
-        this.mousedownEvent = ev;
-        var editor = this.editor;
-
-        var button = ev.getButton();
-        if (button !== 0) {
-            var selectionRange = editor.getSelectionRange();
-            var selectionEmpty = selectionRange.isEmpty();
-
-            if (selectionEmpty)
-                editor.selection.moveToPosition(pos);
-            editor.textInput.onContextMenu(ev.domEvent);
-            return; // stopping event here breaks contextmenu on ff mac
-        }
-
-        this.mousedownEvent.time = Date.now();
-        if (inSelection && !editor.isFocused()) {
-            editor.focus();
-            if (this.$focusTimout && !this.$clickSelection && !editor.inMultiSelectMode) {
-                this.setState("focusWait");
-                this.captureMouse(ev);
-                return;
-            }
-        }
-
-        this.captureMouse(ev);
-        this.startSelect(pos, ev.domEvent._clicks > 1);
-        return ev.preventDefault();
-    };
-
-    this.startSelect = function(pos, waitForClickSelection) {
-        pos = pos || this.editor.renderer.screenToTextCoordinates(this.x, this.y);
-        var editor = this.editor;
-        
-        if (this.mousedownEvent.getShiftKey())
-            editor.selection.selectToPosition(pos);
-        else if (!waitForClickSelection)
-            editor.selection.moveToPosition(pos);
-        if (!waitForClickSelection)
-            this.select();
-        if (editor.renderer.scroller.setCapture) {
-            editor.renderer.scroller.setCapture();
-        }
-        editor.setStyle("ace_selecting");
-        this.setState("select");
-    };
-
-    this.select = function() {
-        var anchor, editor = this.editor;
-        var cursor = editor.renderer.screenToTextCoordinates(this.x, this.y);
-
-        if (this.$clickSelection) {
-            var cmp = this.$clickSelection.comparePoint(cursor);
-
-            if (cmp == -1) {
-                anchor = this.$clickSelection.end;
-            } else if (cmp == 1) {
-                anchor = this.$clickSelection.start;
-            } else {
-                var orientedRange = calcRangeOrientation(this.$clickSelection, cursor);
-                cursor = orientedRange.cursor;
-                anchor = orientedRange.anchor;
-            }
-            editor.selection.setSelectionAnchor(anchor.row, anchor.column);
-        }
-        editor.selection.selectToPosition(cursor);
-
-        editor.renderer.scrollCursorIntoView();
-    };
-
-    this.extendSelectionBy = function(unitName) {
-        var anchor, editor = this.editor;
-        var cursor = editor.renderer.screenToTextCoordinates(this.x, this.y);
-        var range = editor.selection[unitName](cursor.row, cursor.column);
-
-        if (this.$clickSelection) {
-            var cmpStart = this.$clickSelection.comparePoint(range.start);
-            var cmpEnd = this.$clickSelection.comparePoint(range.end);
-
-            if (cmpStart == -1 && cmpEnd <= 0) {
-                anchor = this.$clickSelection.end;
-                if (range.end.row != cursor.row || range.end.column != cursor.column)
-                    cursor = range.start;
-            } else if (cmpEnd == 1 && cmpStart >= 0) {
-                anchor = this.$clickSelection.start;
-                if (range.start.row != cursor.row || range.start.column != cursor.column)
-                    cursor = range.end;
-            } else if (cmpStart == -1 && cmpEnd == 1) {
-                cursor = range.end;
-                anchor = range.start;
-            } else {
-                var orientedRange = calcRangeOrientation(this.$clickSelection, cursor);
-                cursor = orientedRange.cursor;
-                anchor = orientedRange.anchor;
-            }
-            editor.selection.setSelectionAnchor(anchor.row, anchor.column);
-        }
-        editor.selection.selectToPosition(cursor);
-
-        editor.renderer.scrollCursorIntoView();
-    };
-
-    this.selectEnd =
-    this.selectAllEnd =
-    this.selectByWordsEnd =
-    this.selectByLinesEnd = function() {
-        this.$clickSelection = null;
-        this.editor.unsetStyle("ace_selecting");
-        if (this.editor.renderer.scroller.releaseCapture) {
-            this.editor.renderer.scroller.releaseCapture();
-        }
-    };
-
-    this.focusWait = function() {
-        var distance = calcDistance(this.mousedownEvent.x, this.mousedownEvent.y, this.x, this.y);
-        var time = Date.now();
-
-        if (distance > DRAG_OFFSET || time - this.mousedownEvent.time > this.$focusTimout)
-            this.startSelect(this.mousedownEvent.getDocumentPosition());
-    };
-
-    this.onDoubleClick = function(ev) {
-        var pos = ev.getDocumentPosition();
-        var editor = this.editor;
-        var session = editor.session;
-
-        var range = session.getBracketRange(pos);
-        if (range) {
-            if (range.isEmpty()) {
-                range.start.column--;
-                range.end.column++;
-            }
-            this.setState("select");
-        } else {
-            range = editor.selection.getWordRange(pos.row, pos.column);
-            this.setState("selectByWords");
-        }
-        this.$clickSelection = range;
-        this.select();
-    };
-
-    this.onTripleClick = function(ev) {
-        var pos = ev.getDocumentPosition();
-        var editor = this.editor;
-
-        this.setState("selectByLines");
-        var range = editor.getSelectionRange();
-        if (range.isMultiLine() && range.contains(pos.row, pos.column)) {
-            this.$clickSelection = editor.selection.getLineRange(range.start.row);
-            this.$clickSelection.end = editor.selection.getLineRange(range.end.row).end;
-        } else {
-            this.$clickSelection = editor.selection.getLineRange(pos.row);
-        }
-        this.select();
-    };
-
-    this.onQuadClick = function(ev) {
-        var editor = this.editor;
-
-        editor.selectAll();
-        this.$clickSelection = editor.getSelectionRange();
-        this.setState("selectAll");
-    };
-
-    this.onMouseWheel = function(ev) {
-        if (ev.getAccelKey())
-            return;
-        if (ev.getShiftKey() && ev.wheelY && !ev.wheelX) {
-            ev.wheelX = ev.wheelY;
-            ev.wheelY = 0;
-        }
-
-        var t = ev.domEvent.timeStamp;
-        var dt = t - (this.$lastScrollTime||0);
-        
-        var editor = this.editor;
-        var isScrolable = editor.renderer.isScrollableBy(ev.wheelX * ev.speed, ev.wheelY * ev.speed);
-        if (isScrolable || dt < 200) {
-            this.$lastScrollTime = t;
-            editor.renderer.scrollBy(ev.wheelX * ev.speed, ev.wheelY * ev.speed);
-            return ev.stop();
-        }
-    };
-
-}).call(DefaultHandlers.prototype);
-
-exports.DefaultHandlers = DefaultHandlers;
-
-function calcDistance(ax, ay, bx, by) {
-    return Math.sqrt(Math.pow(bx - ax, 2) + Math.pow(by - ay, 2));
-}
-
-function calcRangeOrientation(range, cursor) {
-    if (range.start.row == range.end.row)
-        var cmp = 2 * cursor.column - range.start.column - range.end.column;
-    else if (range.start.row == range.end.row - 1 && !range.start.column && !range.end.column)
-        var cmp = cursor.column - 4;
-    else
-        var cmp = 2 * cursor.row - range.start.row - range.end.row;
-
-    if (cmp < 0)
-        return {cursor: range.start, anchor: range.end};
-    else
-        return {cursor: range.end, anchor: range.start};
-}
-
-});
-
 define("ace/mouse/default_gutter_handler",["require","exports","module","ace/lib/dom","ace/lib/oop","ace/lib/event","ace/tooltip"], function(require, exports, module) {
 "use strict";
 var dom = require("../lib/dom");
@@ -13043,7 +12807,7 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-define("ace/editor",["require","exports","module","ace/lib/fixoldbrowsers","ace/lib/oop","ace/lib/dom","ace/lib/lang","ace/lib/useragent","ace/keyboard/textinput","ace/keyboard/keybinding","ace/edit_session","ace/search","ace/range","ace/lib/event_emitter","ace/commands/command_manager","ace/commands/default_commands","ace/config","ace/token_iterator","ace/editor_protocol","ace/lib/event","ace/mouse/default_handlers","ace/mouse/default_gutter_handler","ace/mouse/dragdrop_handler"], function(require, exports, module) {
+define("ace/editor",["require","exports","module","ace/lib/fixoldbrowsers","ace/lib/oop","ace/lib/dom","ace/lib/lang","ace/lib/useragent","ace/keyboard/textinput","ace/keyboard/keybinding","ace/edit_session","ace/search","ace/range","ace/lib/event_emitter","ace/commands/command_manager","ace/commands/default_commands","ace/config","ace/token_iterator","ace/editor_protocol","ace/lib/event","ace/mouse/default_gutter_handler","ace/mouse/dragdrop_handler"], function(require, exports, module) {
 "no use strict";
 require("./lib/fixoldbrowsers");
 
@@ -13064,7 +12828,6 @@ var tkm = require("./token_iterator");
 var protocol = require('./editor_protocol');
 
 var event = require("./lib/event");
-var DefaultHandlers = require("./mouse/default_handlers").DefaultHandlers;
 var DefaultGutterHandler = require("./mouse/default_gutter_handler").GutterHandler;
 var DragdropHandler = require("./mouse/dragdrop_handler").DragdropHandler;
 var Editor = (function (_super) {
@@ -13374,13 +13137,13 @@ var Editor = (function (_super) {
     Editor.prototype.setValue = function (val, cursorPos) {
         this.session.doc.setValue(val);
 
-        if (!cursorPos)
+        if (!cursorPos) {
             this.selectAll();
-        else if (cursorPos == 1)
+        } else if (cursorPos == 1) {
             this.navigateFileEnd();
-        else if (cursorPos == -1)
+        } else if (cursorPos == -1) {
             this.navigateFileStart();
-
+        }
         return val;
     };
     Editor.prototype.getValue = function () {
@@ -14906,11 +14669,23 @@ var FoldHandler = (function () {
 
 var MouseHandler = (function () {
     function MouseHandler(editor) {
-        this.releaseMouse = null;
+        this.$scrollSpeed = 2;
+        this.$dragDelay = 0;
+        this.$dragEnabled = true;
+        this.$focusTimout = 0;
+        this.$tooltpFollowsMouse = true;
+        this.$clickSelection = null;
         var _self = this;
         this.editor = editor;
+        editor.setDefaultHandler('mousedown', makeMouseDownHandler(editor, this));
+        editor.setDefaultHandler('mousewheel', makeMouseWheelHandler(editor, this));
+        editor.setDefaultHandler("dblclick", makeDoubleClickHandler(editor, this));
+        editor.setDefaultHandler("tripleclick", makeTripleClickHandler(editor, this));
+        editor.setDefaultHandler("quadclick", makeQuadClickHandler(editor, this));
 
-        new DefaultHandlers(this);
+        this.selectByLines = makeExtendSelectionBy(editor, this, "getLineRange");
+        this.selectByWords = makeExtendSelectionBy(editor, this, "getWordRange");
+
         new DefaultGutterHandler(this);
         new DragdropHandler(this);
 
@@ -14933,7 +14708,7 @@ var MouseHandler = (function () {
                 event.addListener(editor.renderer.scrollBarH.element, "mousemove", onMouseDown);
             }
         }
-        event.addMouseWheelListener(editor.container, this.onMouseWheel.bind(this, "mousewheel"));
+        event.addMouseWheelListener(editor.container, this.emitEditorMouseWheelEvent.bind(this, "mousewheel"));
 
         var gutterEl = editor.renderer.$gutter;
         event.addListener(gutterEl, "mousedown", this.onMouseEvent.bind(this, "guttermousedown"));
@@ -14969,23 +14744,27 @@ var MouseHandler = (function () {
 
     MouseHandler.prototype.onMouseMove = function (name, e) {
         var listeners = this.editor._eventRegistry && this.editor._eventRegistry.mousemove;
-        if (!listeners || !listeners.length)
+        if (!listeners || !listeners.length) {
             return;
+        }
 
         this.editor._emit(name, new EditorMouseEvent(e, this.editor));
     };
 
-    MouseHandler.prototype.onMouseWheel = function (name, e) {
+    MouseHandler.prototype.emitEditorMouseWheelEvent = function (name, e) {
         var mouseEvent = new EditorMouseEvent(e, this.editor);
-        mouseEvent['speed'] = this.$scrollSpeed * 2;
-        mouseEvent['wheelX'] = e.wheelX;
-        mouseEvent['wheelY'] = e.wheelY;
-
+        mouseEvent.speed = this.$scrollSpeed * 2;
+        mouseEvent.wheelX = e['wheelX'];
+        mouseEvent.wheelY = e['wheelY'];
         this.editor._emit(name, mouseEvent);
     };
 
     MouseHandler.prototype.setState = function (state) {
         this.state = state;
+    };
+
+    MouseHandler.prototype.textCoordinates = function () {
+        return this.editor.renderer.screenToTextCoordinates(this.x, this.y);
     };
 
     MouseHandler.prototype.captureMouse = function (ev, mouseMoveHandler) {
@@ -14994,41 +14773,48 @@ var MouseHandler = (function () {
 
         this.isMousePressed = true;
         var renderer = this.editor.renderer;
-        if (renderer.$keepTextAreaAtCursor)
+        if (renderer.$keepTextAreaAtCursor) {
             renderer.$keepTextAreaAtCursor = null;
+        }
 
-        var self = this;
-        var onMouseMove = function (e) {
-            if (!e)
-                return;
-            if (useragent.isWebKit && !e.which && self.releaseMouse)
-                return self.releaseMouse();
+        var onMouseMove = (function (editor, mouseHandler) {
+            return function (mouseEvent) {
+                if (!mouseEvent)
+                    return;
+                if (useragent.isWebKit && !mouseEvent.which && mouseHandler.releaseMouse) {
+                    return mouseHandler.releaseMouse(undefined);
+                }
 
-            self.x = e.clientX;
-            self.y = e.clientY;
-            mouseMoveHandler && mouseMoveHandler(e);
-            self.mouseEvent = new EditorMouseEvent(e, self.editor);
-            self.$mouseMoved = true;
-        };
+                mouseHandler.x = mouseEvent.clientX;
+                mouseHandler.y = mouseEvent.clientY;
+                mouseMoveHandler && mouseMoveHandler(mouseEvent);
+                mouseHandler.mouseEvent = new EditorMouseEvent(mouseEvent, editor);
+                mouseHandler.$mouseMoved = true;
+            };
+        })(this.editor, this);
 
-        var onCaptureEnd = function (e) {
-            clearInterval(timerId);
-            onCaptureInterval();
-            self[self.state + "End"] && self[self.state + "End"](e);
-            self.state = "";
-            if (renderer.$keepTextAreaAtCursor == null) {
-                renderer.$keepTextAreaAtCursor = true;
-                renderer.$moveTextAreaToCursor();
-            }
-            self.isMousePressed = false;
-            self.$onCaptureMouseMove = self.releaseMouse = null;
-            e && self.onMouseEvent("mouseup", e);
-        };
+        var onCaptureEnd = (function (mouseHandler) {
+            return function (e) {
+                clearInterval(timerId);
+                onCaptureInterval();
+                mouseHandler[mouseHandler.state + "End"] && mouseHandler[mouseHandler.state + "End"](e);
+                mouseHandler.state = "";
+                if (renderer.$keepTextAreaAtCursor == null) {
+                    renderer.$keepTextAreaAtCursor = true;
+                    renderer.$moveTextAreaToCursor();
+                }
+                mouseHandler.isMousePressed = false;
+                mouseHandler.$onCaptureMouseMove = mouseHandler.releaseMouse = null;
+                e && mouseHandler.onMouseEvent("mouseup", e);
+            };
+        })(this);
 
-        var onCaptureInterval = function () {
-            self[self.state] && self[self.state]();
-            self.$mouseMoved = false;
-        };
+        var onCaptureInterval = (function (mouseHandler) {
+            return function () {
+                mouseHandler[mouseHandler.state] && mouseHandler[mouseHandler.state]();
+                mouseHandler.$mouseMoved = false;
+            };
+        })(this);
 
         if (useragent.isOldIE && ev.domEvent.type == "dblclick") {
             return setTimeout(function () {
@@ -15036,21 +14822,95 @@ var MouseHandler = (function () {
             });
         }
 
-        self.$onCaptureMouseMove = onMouseMove;
-        self.releaseMouse = event.capture(this.editor.container, onMouseMove, onCaptureEnd);
+        this.$onCaptureMouseMove = onMouseMove;
+        this.releaseMouse = event.capture(this.editor.container, onMouseMove, onCaptureEnd);
         var timerId = setInterval(onCaptureInterval, 20);
     };
 
     MouseHandler.prototype.cancelContextMenu = function () {
         var stop = function (e) {
-            if (e && e.domEvent && e.domEvent.type != "contextmenu")
+            if (e && e.domEvent && e.domEvent.type != "contextmenu") {
                 return;
+            }
             this.editor.off("nativecontextmenu", stop);
-            if (e && e.domEvent)
+            if (e && e.domEvent) {
                 event.stopEvent(e.domEvent);
+            }
         }.bind(this);
         setTimeout(stop, 10);
         this.editor.on("nativecontextmenu", stop);
+    };
+
+    MouseHandler.prototype.select = function () {
+        var anchor;
+        var cursor = this.editor.renderer.screenToTextCoordinates(this.x, this.y);
+
+        if (this.$clickSelection) {
+            var cmp = this.$clickSelection.comparePoint(cursor);
+
+            if (cmp == -1) {
+                anchor = this.$clickSelection.end;
+            } else if (cmp == 1) {
+                anchor = this.$clickSelection.start;
+            } else {
+                var orientedRange = calcRangeOrientation(this.$clickSelection, cursor);
+                cursor = orientedRange.cursor;
+                anchor = orientedRange.anchor;
+            }
+            this.editor.selection.setSelectionAnchor(anchor.row, anchor.column);
+        }
+        this.editor.selection.selectToPosition(cursor);
+
+        this.editor.renderer.scrollCursorIntoView();
+    };
+
+    MouseHandler.prototype.selectByLinesEnd = function () {
+        this.$clickSelection = null;
+        this.editor.unsetStyle("ace_selecting");
+        if (this.editor.renderer.scroller.releaseCapture) {
+            this.editor.renderer.scroller.releaseCapture();
+        }
+    };
+
+    MouseHandler.prototype.startSelect = function (pos, waitForClickSelection) {
+        pos = pos || this.editor.renderer.screenToTextCoordinates(this.x, this.y);
+        var editor = this.editor;
+        if (this.mousedownEvent.getShiftKey()) {
+            editor.selection.selectToPosition(pos);
+        } else if (!waitForClickSelection) {
+            editor.selection.moveToPosition(pos);
+        }
+
+        if (!waitForClickSelection) {
+            this.select();
+        }
+
+        if (this.editor.renderer.scroller.setCapture) {
+            this.editor.renderer.scroller.setCapture();
+        }
+        editor.setStyle("ace_selecting");
+        this.setState("select");
+    };
+
+    MouseHandler.prototype.selectEnd = function () {
+        this.selectByLinesEnd();
+    };
+
+    MouseHandler.prototype.selectAllEnd = function () {
+        this.selectByLinesEnd();
+    };
+
+    MouseHandler.prototype.selectByWordsEnd = function () {
+        this.selectByLinesEnd();
+    };
+
+    MouseHandler.prototype.focusWait = function () {
+        var distance = calcDistance(this.mousedownEvent.x, this.mousedownEvent.y, this.x, this.y);
+        var time = Date.now();
+
+        if (distance > DRAG_OFFSET || time - this.mousedownEvent.time > this.$focusTimout) {
+            this.startSelect(this.mousedownEvent.getDocumentPosition());
+        }
     };
     return MouseHandler;
 })();
@@ -15132,6 +14992,162 @@ var EditorMouseEvent = (function () {
     };
     return EditorMouseEvent;
 })();
+
+var DRAG_OFFSET = 0;
+
+function makeMouseDownHandler(editor, mouseHandler) {
+    return function (ev) {
+        var inSelection = ev.inSelection();
+        var pos = ev.getDocumentPosition();
+        mouseHandler.mousedownEvent = ev;
+
+        var button = ev.getButton();
+        if (button !== 0) {
+            var selectionRange = editor.getSelectionRange();
+            var selectionEmpty = selectionRange.isEmpty();
+
+            if (selectionEmpty)
+                editor.selection.moveToPosition(pos);
+            editor.textInput.onContextMenu(ev.domEvent);
+            return;
+        }
+
+        mouseHandler.mousedownEvent.time = Date.now();
+        if (inSelection && !editor.isFocused()) {
+            editor.focus();
+            if (mouseHandler.$focusTimout && !mouseHandler.$clickSelection && !editor.inMultiSelectMode) {
+                mouseHandler.setState("focusWait");
+                mouseHandler.captureMouse(ev);
+                return;
+            }
+        }
+
+        mouseHandler.captureMouse(ev);
+        mouseHandler.startSelect(pos, ev.domEvent['_clicks'] > 1);
+        return ev.preventDefault();
+    };
+}
+
+function makeMouseWheelHandler(editor, mouseHandler) {
+    return function (ev) {
+        if (ev.getAccelKey()) {
+            return;
+        }
+        if (ev.getShiftKey() && ev.wheelY && !ev.wheelX) {
+            ev.wheelX = ev.wheelY;
+            ev.wheelY = 0;
+        }
+
+        var t = ev.domEvent.timeStamp;
+        var dt = t - (mouseHandler.$lastScrollTime || 0);
+
+        var isScrolable = editor.renderer.isScrollableBy(ev.wheelX * ev.speed, ev.wheelY * ev.speed);
+        if (isScrolable || dt < 200) {
+            mouseHandler.$lastScrollTime = t;
+            editor.renderer.scrollBy(ev.wheelX * ev.speed, ev.wheelY * ev.speed);
+            return ev.stop();
+        }
+    };
+}
+
+function makeDoubleClickHandler(editor, mouseHandler) {
+    return function (editorMouseEvent) {
+        var pos = editorMouseEvent.getDocumentPosition();
+        var session = editor.session;
+
+        var range = session.getBracketRange(pos);
+        if (range) {
+            if (range.isEmpty()) {
+                range.start.column--;
+                range.end.column++;
+            }
+            mouseHandler.setState("select");
+        } else {
+            range = editor.selection.getWordRange(pos.row, pos.column);
+            mouseHandler.setState("selectByWords");
+        }
+        mouseHandler.$clickSelection = range;
+        mouseHandler.select();
+    };
+}
+
+function makeTripleClickHandler(editor, mouseHandler) {
+    return function (editorMouseEvent) {
+        var pos = editorMouseEvent.getDocumentPosition();
+
+        mouseHandler.setState("selectByLines");
+        var range = editor.getSelectionRange();
+        if (range.isMultiLine() && range.contains(pos.row, pos.column)) {
+            mouseHandler.$clickSelection = editor.selection.getLineRange(range.start.row);
+            mouseHandler.$clickSelection.end = editor.selection.getLineRange(range.end.row).end;
+        } else {
+            mouseHandler.$clickSelection = editor.selection.getLineRange(pos.row);
+        }
+        mouseHandler.select();
+    };
+}
+
+function makeQuadClickHandler(editor, mouseHandler) {
+    return function (editorMouseEvent) {
+        editor.selectAll();
+        mouseHandler.$clickSelection = editor.getSelectionRange();
+        mouseHandler.setState("selectAll");
+    };
+}
+
+function makeExtendSelectionBy(editor, mouseHandler, unitName) {
+    return function () {
+        var anchor;
+        var cursor = mouseHandler.textCoordinates();
+        var range = editor.selection[unitName](cursor.row, cursor.column);
+
+        if (mouseHandler.$clickSelection) {
+            var cmpStart = mouseHandler.$clickSelection.comparePoint(range.start);
+            var cmpEnd = mouseHandler.$clickSelection.comparePoint(range.end);
+
+            if (cmpStart == -1 && cmpEnd <= 0) {
+                anchor = mouseHandler.$clickSelection.end;
+                if (range.end.row != cursor.row || range.end.column != cursor.column)
+                    cursor = range.start;
+            } else if (cmpEnd == 1 && cmpStart >= 0) {
+                anchor = mouseHandler.$clickSelection.start;
+                if (range.start.row != cursor.row || range.start.column != cursor.column)
+                    cursor = range.end;
+            } else if (cmpStart == -1 && cmpEnd == 1) {
+                cursor = range.end;
+                anchor = range.start;
+            } else {
+                var orientedRange = calcRangeOrientation(mouseHandler.$clickSelection, cursor);
+                cursor = orientedRange.cursor;
+                anchor = orientedRange.anchor;
+            }
+            editor.selection.setSelectionAnchor(anchor.row, anchor.column);
+        }
+        editor.selection.selectToPosition(cursor);
+
+        editor.renderer.scrollCursorIntoView();
+    };
+}
+
+function calcDistance(ax, ay, bx, by) {
+    return Math.sqrt(Math.pow(bx - ax, 2) + Math.pow(by - ay, 2));
+}
+
+function calcRangeOrientation(range, cursor) {
+    if (range.start.row == range.end.row) {
+        var cmp = 2 * cursor.column - range.start.column - range.end.column;
+    } else if (range.start.row == range.end.row - 1 && !range.start.column && !range.end.column) {
+        var cmp = cursor.column - 4;
+    } else {
+        var cmp = 2 * cursor.row - range.start.row - range.end.row;
+    }
+
+    if (cmp < 0) {
+        return { cursor: range.start, anchor: range.end };
+    } else {
+        return { cursor: range.end, anchor: range.start };
+    }
+}
 });
 
 define("ace/undomanager",["require","exports","module"], function(require, exports, module) {
@@ -16413,25 +16429,25 @@ define("ace/renderloop",["require","exports","module","ace/lib/event"], function
 "no use strict";
 var event = require("./lib/event");
 var RenderLoop = (function () {
-    function RenderLoop(onRender, win) {
+    function RenderLoop(onRender, $window) {
         this.pending = false;
         this.changes = 0;
         this.onRender = onRender;
-        this.window = win || window;
+        this.$window = $window || window;
     }
     RenderLoop.prototype.schedule = function (change) {
         this.changes = this.changes | change;
         if (!this.pending && this.changes) {
             this.pending = true;
             var _self = this;
-            event.nextFrame(function () {
+            event.requestAnimationFrame(function () {
                 _self.pending = false;
                 var changes;
                 while (changes = _self.changes) {
                     _self.changes = 0;
                     _self.onRender(changes);
                 }
-            }, this.window);
+            }, this.$window);
         }
     };
     return RenderLoop;

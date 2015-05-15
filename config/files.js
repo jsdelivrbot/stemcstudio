@@ -26,6 +26,7 @@ module.exports = function(lineman) {
 
         "manual/ace-builds/src-noconflict/theme-chrome.js",
         "manual/ace-builds/src-noconflict/theme-eclipse.js",
+        "manual/ace-builds/src-noconflict/theme-iplastic.js",
         "manual/ace-builds/src-noconflict/theme-monokai.js",
         "manual/ace-builds/src-noconflict/theme-textmate.js",
         "manual/ace-builds/src-noconflict/theme-twilight.js",
