@@ -1,0 +1,3 @@
+[submodule "submodules/deuce"]
+	path = submodules/deuce
+	url = ../deuce
