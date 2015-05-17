@@ -18,7 +18,7 @@ module.exports = function(lineman) {
     copy: {
       dev: {
         files: [
-          {src: "appcache.mf",  dest: "generated/appcache.mf"},
+          {src: "appcache.mf", dest: "generated/appcache.mf"},
 
           {src: "submodules/deuce/build/src-noconflict/worker-workspace.js",  dest: "generated/js/worker-workspace.js"},
           {src: "submodules/deuce/build/src-noconflict/worker-html.js",       dest: "generated/js/worker-html.js"},
@@ -101,7 +101,7 @@ module.exports = function(lineman) {
       },
       dist: {
         files: [
-          {src: "appcache.mf",  dest: "dist/appcache.mf"},
+          {src: "appcache.mf", dest: "dist/appcache.mf"},
 
           {src: "submodules/deuce/build/src-min-noconflict/worker-workspace.js",  dest: "dist/js/worker-workspace.js"},
           {src: "submodules/deuce/build/src-min-noconflict/worker-html.js",       dest: "dist/js/worker-html.js"},

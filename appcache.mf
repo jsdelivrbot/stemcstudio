@@ -1,14 +1,14 @@
 CACHE MANIFEST
-# 2015-05-17:1.0.2
+# 2015-05-17:1.0.3
 
 # Explicitly cached entries
 index.html
 
-css/app.css?version=1.0.2
+css/app.css?version=1.0.3
 css/app.css.map
 css/app.less.css
 
-js/app.js?version=1.0.2
+js/app.js?version=1.0.3
 js/app.js.map
 
 fonts/glyphicons-halflings-regular.eot
@@ -28,9 +28,17 @@ NETWORK:
 
 # Additional resources to cache
 CACHE:
+js/angular.min.js
+js/davinci-blade.min.js
+js/davinci-visual.min.js
 js/three.min.js
+
 js/worker-html.js
 js/worker-typescript.js
 js/worker-workspace.js
+
+ts/angular.d.ts
+ts/davinci-blade.d.ts
+ts/davinci-visual.d.ts
 ts/lib.d.ts
 ts/three.d.ts
