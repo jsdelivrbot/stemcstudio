@@ -1,14 +1,14 @@
 CACHE MANIFEST
-# 2015-05-17:1.0.3
+# 2015-05-17:1.0.5
 
 # Explicitly cached entries
 index.html
 
-css/app.css?version=1.0.3
+css/app.css?version=1.0.5
 css/app.css.map
 css/app.less.css
 
-js/app.js?version=1.0.3
+js/app.js?version=1.0.5
 js/app.js.map
 
 fonts/glyphicons-halflings-regular.eot
@@ -29,16 +29,28 @@ NETWORK:
 # Additional resources to cache
 CACHE:
 js/angular.min.js
+js/d3@3.5.5.min.js
 js/davinci-blade.min.js
 js/davinci-visual.min.js
+js/jsxgraph@0.99.3.min.js
+js/maths.min.js
 js/three.min.js
 
+js/worker-css.js
 js/worker-html.js
+js/worker-javascript.js
 js/worker-typescript.js
 js/worker-workspace.js
 
 ts/angular.d.ts
+ts/d3@3.5.5.d.ts
 ts/davinci-blade.d.ts
 ts/davinci-visual.d.ts
+ts/jsxgraph@0.99.3.d.ts
 ts/lib.d.ts
 ts/three.d.ts
+
+http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600
+http://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css
+http://fonts.gstatic.com/s/opensans/v13/cJZKeOuBrn4kERxqtaUH3VtXRa8TVwTICgirnJhmVJw.woff2
+http://www.google-analytics.com/analytics.js
