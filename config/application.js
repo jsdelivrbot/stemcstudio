@@ -18,11 +18,13 @@ module.exports = function(lineman) {
     copy: {
       dev: {
         files: [
-          {src: "manual/ace-builds/src-min-noconflict/worker-workspace.js",  dest: "generated/js/worker-workspace.js"},
-          {src: "manual/ace-builds/src-min-noconflict/worker-html.js",       dest: "generated/js/worker-html.js"},
-          {src: "manual/ace-builds/src-min-noconflict/worker-javascript.js", dest: "generated/js/worker-javascript.js"},
-          {src: "manual/ace-builds/src-min-noconflict/worker-typescript.js", dest: "generated/js/worker-typescript.js"},
-          {src: "manual/ace-builds/src-min-noconflict/worker-css.js",        dest: "generated/js/worker-css.js"},
+          {src: "appcache.mf",  dest: "generated/appcache.mf"},
+
+          {src: "submodules/deuce/build/src-noconflict/worker-workspace.js",  dest: "generated/js/worker-workspace.js"},
+          {src: "submodules/deuce/build/src-noconflict/worker-html.js",       dest: "generated/js/worker-html.js"},
+          {src: "submodules/deuce/build/src-noconflict/worker-javascript.js", dest: "generated/js/worker-javascript.js"},
+          {src: "submodules/deuce/build/src-noconflict/worker-typescript.js", dest: "generated/js/worker-typescript.js"},
+          {src: "submodules/deuce/build/src-noconflict/worker-css.js",        dest: "generated/js/worker-css.js"},
 
           {src: "bower_components/davinci-mathscript/dist/davinci-mathscript.min.js",  dest: "generated/js/maths.min.js"},
 
@@ -99,11 +101,13 @@ module.exports = function(lineman) {
       },
       dist: {
         files: [
-          {src: "manual/ace-builds/src-min-noconflict/worker-workspace.js",  dest: "dist/js/worker-workspace.js"},
-          {src: "manual/ace-builds/src-min-noconflict/worker-html.js",       dest: "dist/js/worker-html.js"},
-          {src: "manual/ace-builds/src-min-noconflict/worker-javascript.js", dest: "dist/js/worker-javascript.js"},
-          {src: "manual/ace-builds/src-min-noconflict/worker-typescript.js", dest: "dist/js/worker-typescript.js"},
-          {src: "manual/ace-builds/src-min-noconflict/worker-css.js",        dest: "dist/js/worker-css.js"},
+          {src: "appcache.mf",  dest: "dist/appcache.mf"},
+
+          {src: "submodules/deuce/build/src-min-noconflict/worker-workspace.js",  dest: "dist/js/worker-workspace.js"},
+          {src: "submodules/deuce/build/src-min-noconflict/worker-html.js",       dest: "dist/js/worker-html.js"},
+          {src: "submodules/deuce/build/src-min-noconflict/worker-javascript.js", dest: "dist/js/worker-javascript.js"},
+          {src: "submodules/deuce/build/src-min-noconflict/worker-typescript.js", dest: "dist/js/worker-typescript.js"},
+          {src: "submodules/deuce/build/src-min-noconflict/worker-css.js",        dest: "dist/js/worker-css.js"},
 
           {src: "bower_components/davinci-mathscript/dist/davinci-mathscript.min.js",  dest: "dist/js/maths.min.js"},
 
@@ -180,8 +184,8 @@ module.exports = function(lineman) {
 
     watch: {
       museum: {
-        files: ["museum/**/*.d.ts"],
-        tasks: ["copy:dev"]
+        files: ['museum/**/*.d.ts','appcache.mf'],
+        tasks: ['copy:dev']
       }
     },
     

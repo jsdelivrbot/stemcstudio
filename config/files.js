@@ -22,22 +22,22 @@ module.exports = function(lineman) {
 
         "bower_components/davinci-mathscript/dist/davinci-mathscript.js",
 
-        "manual/ace-builds/src-noconflict/ace.js",
+        "submodules/deuce/build/src-noconflict/ace.js",
 
-        "manual/ace-builds/src-noconflict/theme-chrome.js",
-        "manual/ace-builds/src-noconflict/theme-eclipse.js",
-        "manual/ace-builds/src-noconflict/theme-iplastic.js",
-        "manual/ace-builds/src-noconflict/theme-monokai.js",
-        "manual/ace-builds/src-noconflict/theme-textmate.js",
-        "manual/ace-builds/src-noconflict/theme-twilight.js",
+        "submodules/deuce/build/src-noconflict/theme-chrome.js",
+        "submodules/deuce/build/src-noconflict/theme-eclipse.js",
+        "submodules/deuce/build/src-noconflict/theme-iplastic.js",
+        "submodules/deuce/build/src-noconflict/theme-monokai.js",
+        "submodules/deuce/build/src-noconflict/theme-textmate.js",
+        "submodules/deuce/build/src-noconflict/theme-twilight.js",
 
-        "manual/ace-builds/src-noconflict/mode-coffee.js",
-        "manual/ace-builds/src-noconflict/mode-css.js",
-        "manual/ace-builds/src-noconflict/mode-html.js",
-        "manual/ace-builds/src-noconflict/mode-less.js",
-        "manual/ace-builds/src-noconflict/mode-python.js",
-        "manual/ace-builds/src-noconflict/mode-javascript.js",
-        "manual/ace-builds/src-noconflict/mode-typescript.js"
+        "submodules/deuce/build/src-noconflict/mode-coffee.js",
+        "submodules/deuce/build/src-noconflict/mode-css.js",
+        "submodules/deuce/build/src-noconflict/mode-html.js",
+        "submodules/deuce/build/src-noconflict/mode-less.js",
+        "submodules/deuce/build/src-noconflict/mode-python.js",
+        "submodules/deuce/build/src-noconflict/mode-javascript.js",
+        "submodules/deuce/build/src-noconflict/mode-typescript.js"
       ],
       app: [
         "app/js/app.js",

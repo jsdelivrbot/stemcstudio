@@ -1,0 +1,36 @@
+CACHE MANIFEST
+# 2015-05-17:1.0.2
+
+# Explicitly cached entries
+index.html
+
+css/app.css?version=1.0.2
+css/app.css.map
+css/app.less.css
+
+js/app.js?version=1.0.2
+js/app.js.map
+
+fonts/glyphicons-halflings-regular.eot
+fonts/glyphicons-halflings-regular.svg
+fonts/glyphicons-halflings-regular.ttf
+fonts/glyphicons-halflings-regular.woff
+fonts/glyphicons-halflings-regular.woff2
+
+
+# offline.html will be displayed if the user is offline
+FALLBACK:
+/ /offline.html
+
+# All other resources (e.g. sites) require the user to be online. 
+NETWORK:
+*
+
+# Additional resources to cache
+CACHE:
+js/three.min.js
+js/worker-html.js
+js/worker-typescript.js
+js/worker-workspace.js
+ts/lib.d.ts
+ts/three.d.ts
