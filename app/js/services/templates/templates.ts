@@ -1,6 +1,6 @@
-/// <reference path="../../../typings/angularjs/angular.d.ts" />
-/// <reference path="../services/doodles/doodles.ts" />
-/// <reference path="../services/uuid/IUuidService.ts" />
+/// <reference path="../../../../typings/angularjs/angular.d.ts" />
+/// <reference path="../../services/doodles/doodles.ts" />
+/// <reference path="../../services/uuid/IUuidService.ts" />
 /**
  * The `templates` service provides starting point doodles.
  * A template is essentially a doodle that is copied.
@@ -226,7 +226,69 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "\n"+
     "eight.animationRunner(tick, terminate, setUp, tearDown, window).start();\n";
 
-  var CODE_TEMPLATE_JSXGRAPH = "var graph = JXG.JSXGraph;\n";
+  var HTML_TEMPLATE_JSXGRAPH = "" +
+    "<!DOCTYPE html>\n" +
+    "<html>\n" +
+    "  <head>\n" +
+    "    <!--link rel='stylesheet' type='text/css' href='http://jsxgraph.uni-bayreuth.de/distrib/jsxgraph.css'/-->\n" +
+    "    <!-- STYLE-MARKER -->\n" +
+    "    <!-- SCRIPTS-MARKER -->\n" +
+    "  </head>\n" +
+    "  <body style='margin: 0;'>\n" +
+    "    <div id='box' class='jxgbox' style='width:500px; height:500px'></div>\n" +
+    "    <ul>\n" +
+    "      <li>\n" +
+    "        <a href='http://jsxgraph.uni-bayreuth.de' target='_blank' class='JXGtext'>JSXGraph Home Page</a>\n" +
+    "      </li>\n" +
+    "    </ul>\n" +
+    "    <script type='text/javascript'>\n" +
+    "      try {\n" +
+    "      <!-- CODE-MARKER -->\n" +
+    "      }\n" +
+    "      catch(e) {\n" +
+    "        console.log(e);\n" +
+    "      }\n" +
+    "    </script>\n" +
+    "  </body>\n" +
+    "</html>\n";
+
+  var CODE_TEMPLATE_JSXGRAPH = "" +
+    "var graph = JXG.JSXGraph;\n" +
+    "var brd = JXG.JSXGraph.initBoard('box',{boundingbox:[-5,5,5,-5], keepaspectratio:true, axis:true});\n";
+
+  var LESS_TEMPLATE_JSXGRAPH = "" +
+    ".jxgbox {\n" +
+    "  position: relative;\n" +
+    "  overflow: hidden;\n" +
+    "  background-color: #ffffff;\n" +
+    "  border-style: solid;\n" +
+    "  border-width: 1px;\n" +
+    "  border-color: #356AA0;\n" +
+    "  border-radius: 6px;\n" +
+    "  -webkit-border-radius: 6px;\n" +
+    "  -ms-touch-action: none;\n" +
+    "}\n" +
+    "\n" +
+    ".JXGtext {\n" +
+    "  background-color: transparent;\n" +
+    "  font-family: Arial, Helvetica, Geneva, sans-serif;\n" +
+    "  padding: 0;\n" +
+    "  margin: 0;\n" +
+    "}\n" +
+    "\n" +
+    ".JXGinfobox {\n" +
+    "  border-style: none;\n" +
+    "  border-width: 1px;\n" +
+    "  border-color: black;\n" +
+    "}\n" +
+    "\n" +
+    ".JXGimage {\n" +
+    "  opacity: 1.0;\n" +
+    "}\n";
+  "\n" +
+  ".JXGimageHighlight {\n" +
+  "  opacity: 0.6;\n" +
+  "}\n";
 
   var CODE_TEMPLATE_D3 = "var x = d3;\n";
 
@@ -653,9 +715,9 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
       isViewVisible: true,
       focusEditor: undefined,
       lastKnownJs: undefined,
-      html: HTML_TEMPLATE_BASIC,
+      html: HTML_TEMPLATE_JSXGRAPH,
       code: CODE_TEMPLATE_JSXGRAPH,
-      less: LESS_TEMPLATE_BASIC,
+      less: LESS_TEMPLATE_JSXGRAPH,
       dependencies: ['jsxgraph']
     },
     {

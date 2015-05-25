@@ -335,9 +335,45 @@ declare module JXG {
          * @param x
          */
         cosh(x: number): number;
+        /**
+         * Computes the product of the two matrices mat1*mat2.
+         * @param mat1 Two dimensional array of numbers.
+         * @param mat2 Two dimensional array of numbers.
+         * @returns Two dimensional Array of numbers containing result.
+         */
+        matMatMult(mat1: number[][], mat2: number[][]): number[][];
+        /**
+         * Multiplies a vector vec to a matrix mat: mat * vec. The matrix is interpreted by this function as an array of rows.
+         * Please note: This function does not check if the dimensions match.
+         * @param mat Two dimensional array of numbers. The inner arrays describe the columns, the outer ones the matrix' rows.
+         * @param vec Array of numbers.
+         * @returns Array of numbers containing the result.
+         */
+        matVecMult(mat: number[][], vec: number[]): number[];
+        /**
+         * Transposes a matrix given as a two dimensional array.
+         * @param M The matrix to be transposed.
+         * @returns The transpose of M.
+         */
+        transpose(M: number[][]): number[][];
+        /**
+         * The JXG.Math.Numerics namespace holds numerical algorithms, constants, and variables.
+         */
+        Numerics: Numerics;
     }
     /**
-     *
+     * Math Namespace
      */
     var Math: Math;
+
+    export interface Numerics {
+      /**
+       * Solves a system of linear equations given by A and b using the Gauss-Jordan-elimination.
+       * The algorithm runs in-place. I.e. the entries of A and b are changed.
+       * @param A Square matrix represented by an array of rows, containing the coefficients of the linear equation system.
+       * @param b A vector containing the linear equation system's right hand side.
+       * @returns A vector that solves the linear equation system.
+       */
+      Gauss(A: number[][], b: number[]): number[];
+    }
 }
