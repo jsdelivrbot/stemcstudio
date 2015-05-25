@@ -296,7 +296,9 @@ angular.module('app').controller('home-controller', [
       scope.isShowingHTML = false;
       scope.isShowingCode = true;
       scope.isShowingLess = false;
-      htmlEditor.resize(true);
+      codeEditor.resize(true);
+      codeEditor.gotoLine(0, 0, true);
+      codeEditor.focus();
       doodles.current().focusEditor = fileName;
       doodles.updateStorage();
     }
@@ -304,7 +306,9 @@ angular.module('app').controller('home-controller', [
       scope.isShowingHTML = true;
       scope.isShowingCode = false;
       scope.isShowingLess = false;
-      codeEditor.resize(true);
+      htmlEditor.resize(true);
+      htmlEditor.gotoLine(0, 0, true);
+      htmlEditor.focus();
       doodles.current().focusEditor = fileName;
       doodles.updateStorage();
     }
@@ -313,6 +317,8 @@ angular.module('app').controller('home-controller', [
       scope.isShowingCode = false;
       scope.isShowingLess = true;
       lessEditor.resize(true);
+      lessEditor.gotoLine(0, 0, true);
+      lessEditor.focus();
       doodles.current().focusEditor = fileName;
       doodles.updateStorage();
     }
