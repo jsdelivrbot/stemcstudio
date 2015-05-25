@@ -290,6 +290,96 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
   "  opacity: 0.6;\n" +
   "}\n";
 
+  var HTML_TEMPLATE_JSXGRAPH_DEMO = "" +
+    "<!DOCTYPE html>\n" +
+    "<html>\n" +
+    "  <head>\n" +
+    "    <!-- STYLE-MARKER -->\n" +
+    "    <!-- SCRIPTS-MARKER -->\n" +
+    "  </head>\n" +
+    "  <body style='margin: 0;'>\n" +
+    "    <div id='box' class='jxgbox' style='width:500px; height:500px'></div>\n" +
+    "    <ul>\n" +
+    "      <li>\n" +
+    "        <a href='http://jsxgraph.uni-bayreuth.de' target='_blank' class='JXGtext'>JSXGraph Home Page</a>\n" +
+    "      </li>\n" +
+    "    </ul>\n" +
+    "    <script type='text/javascript'>\n" +
+    "      try {\n" +
+    "      <!-- CODE-MARKER -->\n" +
+    "      }\n" +
+    "      catch(e) {\n" +
+    "        console.log(e);\n" +
+    "      }\n" +
+    "    </script>\n" +
+    "  </body>\n" +
+    "</html>\n";
+
+  var CODE_TEMPLATE_JSXGRAPH_DEMO = "" +
+    "var graph = JXG.JSXGraph;\n" +
+    "var brd = JXG.JSXGraph.initBoard('box',{boundingbox:[-5,5,5,-5], keepaspectratio:true, axis:true});\n" +
+    "var i;\n" +
+    "var p: JXG.Point[] = [];\n" +
+    "var angle: number;\n" +
+    "var co: number;\n" +
+    "var si: number;\n" +
+    "/**\n" +
+    " * Parameter affecting the spread of the points around the circle.\n" +
+    " */\n" +
+    "var delta = 0.8;\n" +
+    "\n" +
+    "// Random points are constructed which lie roughly on a circle\n" +
+    "// of radius 4 having the origin as center.\n" +
+    "// delta*0.5 is the maximal distance in x- and y- direction of the random\n" +
+    "// points from the circle line.\n" +
+    "brd.suspendUpdate();\n" +
+    "for (i=0;i<10;i++) {\n" +
+    "  angle = Math.random()*2*Math.PI;\n" +
+    "\n" +
+    "  co = 4*Math.cos(angle)+delta*(Math.random()-0.5);\n" +
+    "  si = 4*Math.sin(angle)+delta*(Math.random()-0.5);\n" +
+    "  p.push(brd.create('point',[co, si], {withLabel:false}));\n" +
+    "}\n" +
+    "brd.unsuspendUpdate();\n" +
+    "\n" +
+    "// Having constructed the points, we can fit a circle\n" + 
+    "// through the point set, consisting of n points.\n" +
+    "// The (n times 3) matrix consists of\n" +
+    "//   x_1, y_1, 1\n" +
+    "//   x_2, y_2, 1\n" +
+    "//\n" +
+    "//   x_n, y_n, 1\n" +
+    "// where x_i, y_i is the position of point p_i\n" +
+    "// The vector y of length n consists of\n" +
+    "//    x_i*x_i+y_i*y_i\n" +
+    "// for i=1,...n\n" +
+    "var M: number[][] = [];\n" +
+    "var y: number[] = [];\n" +
+    "var n = p.length;\n" +
+    "\n" +
+    "for (i=0;i<n;i++) {\n" +
+    "  M.push([p[i].X(), p[i].Y(), 1.0]);\n" +
+    "  y.push(p[i].X()*p[i].X() + p[i].Y()*p[i].Y());\n" +
+    "}\n" +
+    "\n" +
+    "// Now, the general linear least-square fitting problem\n" +
+    "//    min_z || M*z - y||_2^2\n" +
+    "// is solved by solving the system of linear equations\n" +
+    "//    (M^T*M) * z = (M^T*y)\n" +
+    "// with Gauss elimination.\n" +
+    "var MT = JXG.Math.transpose(M);\n" +
+    "var B = JXG.Math.matMatMult(MT, M);\n" +
+    "var c = JXG.Math.matVecMult(MT, y);\n" +
+    "var z = JXG.Math.Numerics.Gauss(B, c);\n" +
+    "\n" +
+    "// Finally, we can read from the solution vector z the coordinates [xm, ym] of the center\n" +
+    "// and the radius r and draw the circle.\n" +
+    "var xm = z[0]*0.5;\n" +
+    "var ym = z[1]*0.5;\n" +
+    "var r = Math.sqrt(z[2]+xm*xm+ym*ym);\n" +
+    "\n" +
+    "brd.create('circle',[ [xm,ym], r]);\n";
+
   var CODE_TEMPLATE_D3 = "var x = d3;\n";
 
   var HTML_TEMPLATE_ANGULAR_THREE = "" +
@@ -710,7 +800,19 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     */
     {
       uuid: uuid.generate(),
-      description: "JSXGraph — Dynamic Mathematics with JavaScript",
+      description: "JSXGraph — Dynamic Mathematics with JavaScript (Demo)",
+      isCodeVisible: true,
+      isViewVisible: true,
+      focusEditor: undefined,
+      lastKnownJs: undefined,
+      html: HTML_TEMPLATE_JSXGRAPH_DEMO,
+      code: CODE_TEMPLATE_JSXGRAPH_DEMO,
+      less: LESS_TEMPLATE_JSXGRAPH,
+      dependencies: ['jsxgraph']
+    },
+    {
+      uuid: uuid.generate(),
+      description: "JSXGraph — Dynamic Mathematics with JavaScript (Basic)",
       isCodeVisible: true,
       isViewVisible: true,
       focusEditor: undefined,
