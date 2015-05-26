@@ -726,6 +726,18 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
   return [
     {
       uuid: uuid.generate(),
+      description: "Basic",
+      isCodeVisible: true,
+      isViewVisible: false,
+      focusEditor: undefined,
+      lastKnownJs: undefined,
+      html: HTML_TEMPLATE_BASIC,
+      code: CODE_TEMPLATE_BASIC,
+      less: LESS_TEMPLATE_BASIC,
+      dependencies: []
+    },
+    {
+      uuid: uuid.generate(),
       description: "AngularJS, blade, three.js, and visual",
       isCodeVisible: true,
       isViewVisible: true,
@@ -833,18 +845,6 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
       code: CODE_TEMPLATE_D3,
       less: LESS_TEMPLATE_BASIC,
       dependencies: ['d3']
-    },
-    {
-      uuid: uuid.generate(),
-      description: "Basic",
-      isCodeVisible: true,
-      isViewVisible: false,
-      focusEditor: undefined,
-      lastKnownJs: undefined,
-      html: HTML_TEMPLATE_BASIC,
-      code: CODE_TEMPLATE_BASIC,
-      less: LESS_TEMPLATE_BASIC,
-      dependencies: []
     }
   ];
 }]);

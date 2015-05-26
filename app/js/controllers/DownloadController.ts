@@ -4,10 +4,10 @@
 /// <reference path="../services/doodles/doodles.ts" />
 /// <reference path="../services/cloud/cloud.ts" />
 /// <reference path="../services/gist/IGist.ts" />
-/// <reference path="../controllers/DoodleController.ts" />
+/// <reference path="../controllers/BodyController.ts" />
 /// <reference path="../app.ts" />
 module mathdoodle {
-  export interface IDownloadScope extends mathdoodle.IDoodleScope {
+  export interface IDownloadScope extends mathdoodle.IBodyScope {
     doCancel: () => void;
     clickDownloadGist: (gistId: string) => void;
   }
@@ -41,18 +41,18 @@ angular.module('app').controller('download-controller', [
         doodles.deleteDoodle(doodle.uuid);
         doodles.unshift(doodle);
         doodles.updateStorage();
-        $state.go('home');
+        $state.go('doodle');
       }
       else {
         $scope.alert("Error attempting to download Gist");
-        $state.go('home');
+        $state.go('doodle');
       }
     });
     // FIXME: Should be in a handler with progress (generally).
   }
 
   $scope.doCancel = function() {
-    $state.go('home');
+    $state.go('doodle');
   };
 
 }]);

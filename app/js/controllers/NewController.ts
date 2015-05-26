@@ -31,11 +31,11 @@ angular.module('app').controller('new-controller', [
   $scope.doOK = function() {
     doodles.createDoodle($scope.template, $scope.description);
     doodles.updateStorage();
-    $state.transitionTo('home');
+    $state.transitionTo('doodle');
   };
 
   $scope.doCancel = function() {
-    $state.transitionTo('home');
+    $state.transitionTo('doodle');
   };
 
 }]);

@@ -31,7 +31,7 @@ module doodle.about {
       }
 
       $scope.doClose = function() {
-        $state.transitionTo('home');
+        $state.transitionTo('doodle');
       }
 
     }

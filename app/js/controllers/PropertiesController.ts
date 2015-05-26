@@ -4,7 +4,7 @@
 /// <reference path="../services/options/IOption.ts" />
 /// <reference path="../services/options/IOptionManager.ts" />
 
-interface IDoodleScope extends angular.IScope {
+interface IBodyScope extends angular.IScope {
   zombie: mathdoodle.IDoodle;
   options: IOption[];
   toggleDependency(name:string);
@@ -12,7 +12,7 @@ interface IDoodleScope extends angular.IScope {
   doCancel: () => void;
 }
 
-// FIXME: Doing this as a state is causing the home-controller to reload.
+// FIXME: Doing this as a state is causing the doodle-controller to reload.
 angular.module('app').controller('properties-controller', [
   '$scope',
   '$state',
@@ -20,7 +20,7 @@ angular.module('app').controller('properties-controller', [
   'doodles',
   'options',
   function(
-    scope: IDoodleScope,
+    scope: IBodyScope,
     $state: angular.ui.IStateService,
     $stateParams: angular.ui.IStateParams,
     doodles: mathdoodle.IDoodleManager,
@@ -47,11 +47,11 @@ angular.module('app').controller('properties-controller', [
   scope.doOK = function() {
     doodles.current().description = scope.zombie.description;
     doodles.current().dependencies = scope.zombie.dependencies;
-    $state.transitionTo('home');
+    $state.transitionTo('doodle');
   };
 
   scope.doCancel = function() {
-    $state.transitionTo('home');
+    $state.transitionTo('doodle');
   };
 
 }]);

@@ -1,102 +1,105 @@
-<div id='preview'></div>
-<!-- -->
-<div id='html-editor' ng-show='isEditMode &amp;&amp; isShowingHTML'></div>
-<!-- -->
-<div id='code-editor' ng-show='isEditMode &amp;&amp; isShowingCode'></div>
-<!-- -->
-<div data-deuce-editor-ignore id='less-editor' ng-show='isEditMode &amp;&amp; isShowingLess'></div>
-<!-- -->
-<nav id='toolbar' class='navbar navbar-inverse'>
-  <div class='container-fluid'>
+<header class='navbar navbar-static-top navbar-inverse md-docs-nav'>
+  <div class='container'>
     <div class='navbar-header'>
-      <a class='navbar-brand' href='#' ng-click='toggleMode()' ng-show='isEditMode'>
-        <span class="glyphicon glyphicon-cog" aria-hidden="true" ng-show='isEditMode'></span>
-        View
-      </a>
-      <a class='navbar-brand' href='#' ng-click='toggleMode()' ng-hide='isEditMode'>
-        <span class="glyphicon glyphicon-edit" aria-hidden="true" ng-hide='isEditMode'></span>
-        Edit
-      </a>
+      <button type='button' class='navbar-toggle collapsed' data-toggle='collapse' data-target='#navbar-header-collapse'>
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class='navbar-brand' href='#'>MathDoodle</a>
     </div>
-    <div class='ignore-collapse ignore-navbar-collapse' ng-show='isEditMode'>
-      <ul class='nav navbar-nav'>
-        <li ng-show='isEditMode'>
-          <a href='#' ng-click='showHTML()'>
-            <span class="glyphicon glyphicon-ok" aria-hidden="true" ng-show='isShowingHTML'></span>
-            HTML
-          </a>
-        </li>
-        <li ng-show='isEditMode'>
-          <a href='#' ng-click='showCode()'>
-            <span class="glyphicon glyphicon-ok" aria-hidden="true" ng-show='isShowingCode'></span>
-            Code
-          </a>
-        </li>
-        <li ng-show='isEditMode'>
-          <a href='#' ng-click='showLess()'>
-            <span class="glyphicon glyphicon-ok" aria-hidden="true" ng-show='isShowingLess'></span>
-            CSS
-          </a>
-        </li>
-        <li ng-show='isEditMode'>
-          <a href='#' ng-click='toggleView()' ng-show='isViewVisible'>
-            <span class="glyphicon glyphicon-stop" aria-hidden="true" ng-show='isViewVisible'></span>
-            Stop
-          </a>
-          <a href='#' ng-click='toggleView()' ng-hide='isViewVisible'>
-            <span class="glyphicon glyphicon-play" aria-hidden="true" ng-hide='isViewVisible'></span>
-            Play
-          </a>
-        </li>
-        <li class='dropdown' ng-show='isEditMode'>
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-            <span class="glyphicon glyphicon-hdd" aria-hidden='true'></span>
-            <span class='caret'></span>
-          </a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#" ng-click='doNew()'>New</a></li>
-            <li><a href="#" ng-click='doOpen()'>Open</a></li>
-            <li><a href="#" ng-click='doCopy()'>Copy</a></li>
-            <li class='divider'></li>
-            <li><a href="#" ng-click='doProperties()'>Properties</a></li>
-            <li class='divider'></li>
-            <li><a href="#" ng-click='doAbout()'>About</a></li>
-          </ul>
-        </li>
-        <li class='dropdown' ng-show='isEditMode'>
-          <a ng-click='login()' ng-hide='isLoggedIn()' href="#" role="button" aria-expanded="false">
-            <span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>
-            <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>
-            Log In
-          </a>
-          <a ng-show='isLoggedIn()' href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-            <span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>
-            <span class='caret' ng-show='isLoggedIn()'></span>
-            <span ng-show='false'>{{userLogin()}}</span>
-          </a>
-          <ul class="dropdown-menu" role="menu">
-            <li>
-              <a href="#" ng-click='clickDownload()' ng-show='isLoggedIn()'>
-                <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
-                Download
-              </a>
-            </li>
-            <li>
-              <a href="#" ng-click='doUpload()' ng-show='isLoggedIn()'>
-                <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span>
-                Upload
-              </a>
-            </li>
-            <li class='divider' ng-show='isLoggedIn()'></li>
-            <li>
-              <a href="#" ng-click='logout()' ng-show='isLoggedIn()'>
-                <span class="glyphicon glyphicon-log-out" aria-hidden="true" ng-show='isEditMode'></span>
-                <span>Log out {{userLogin()}}</span>
-              </a>
-            </li>
-          </ul>
-        </li>
-      </ul>
+    <div class='collapse navbar-collapse' id='navbar-header-collapse'>
+      <button type="button" class="btn btn-primary navbar-btn" ng-click='goDoodle()'>Doodle Now!</button>
     </div>
   </div>
-</nav>
+</header>
+
+<div class='md-docs-header'>
+  <div class='container'>
+    <h1>MathDoodle</h1>
+    <p>
+      Learning Mathematics and Geometric Physics through Computational Modeling.
+    </p>
+  </div>
+</div>
+
+<div class='container md-docs-container'>
+  <div class='row'>
+    <div class='col-md-9' role='main'>
+      <div class='md-docs-section'>
+        <h1 id='overview' class='page-header'>
+          Overview
+        </h1>
+        <p class='lead'>
+          The principle behind MathDoodle is to provide a learning environment in which the student can verify personal understanding and conceptual models by constructing a working software model. It is hoped that working with a computer, sometimes in collaboration with others, will provide a non-threatening environment, clarify understanding, challenge mastery, and motivate further exploration.
+        </p>
+      </div>
+      <div class='md-docs-section'>
+        <h1 id='features' class='page-header'>
+          Features and Benefits
+        </h1>
+        <p class='lead'>
+          MathDoodle is unique among browser editing environments by being optimized for learning Mathematics and Geometry.
+        </p>
+        <p>
+          <dl>
+            <dt>Code Editor and Preview in your browser</dt>
+            <dd>
+              No setup or installation required. Just use a compatible browser such as Chrome, Firefox or IE9.
+            </dd>
+            <dt>JavaScript, HTML, CSS</dt>
+            <dd>
+              Use the tools that are the bread-and-butter of a contemporary software developer.
+              The modeling-development environment is general purpose and allows external libraries to be used and services to be called over the internet.
+            </dd>
+            <dt>TypeScript Language</dt>
+            <dd>
+              TypeScript is JavaScript with otional type information and features taken from future JavaScript releases.
+              Using TypeScript provides intelligent checking and context-sensitive help allowing the student to spend more time focussing on the task in hand instead of trying to find errors or lookup documentation.
+            </dd>
+            <dt>Local Caching</dt>
+            <dd>
+              Allows you to work even in situations with limited internet connectivity.
+              Your work is automatically saved locally in the browser and can be uploaded when connectivity becomes available.
+            </dd>
+            <dt>Cloud Sharing</dt>
+            <dd>
+              Students and educators can store their work permanently in their personal and free GitHub account. Educators may use GitHub as a means to create and distribute assignments, while students may use GitHub to provide a permanent record of their work and as a means for sharing.
+            </dd>
+            <dt>Operator Overloading</dt>
+            <dd>
+              MathDoodle supports a rich set of mathematical operators for performing multivector analysis.
+              In addition to the usual arithmetic operators, there is support for inner and outer products, as well as left and right contraction.
+            </dd>
+            <dt>Geometric Algebra</dt>
+            <dd>
+              MathDoodle supports libraries for perfoming Geometric Algebra computations in 2D and 3D Euclidean geometries.
+              <footer>
+                J. Lasenby, A.N. Lasenby and C.J.L. Doran, <cite title="A unified mathematical language for physics and engineering in the 21st century"><b>A unified mathematical language for physics and engineering in the 21st century</b>, Phil. Trans. R. Soc. Lond. A <strong>358</strong>, 21-39 (2000)</cite>
+              </footer>
+            </dd>
+            <dt>Units of Measure</dt>
+            <dd>
+              MathDoodle incorporates a library that combines geometric quantities with units to create measures.
+              Students can explore dimensional analysis and the S.I. system of units.
+            </dd>
+          </dl>
+        </p>
+      </div>
+      <div class='md-docs-section'>
+        <h1 id='workshops' class='page-header'>
+          Workshops
+        </h1>
+        <p class='lead'>
+        Workshops are available for both students and educators and may be customized according to your needs.
+        </p>
+        <address>
+          <strong>David Geo Holmes</strong><br/>
+          david DOT geo DOT holmes AT gmail.com<br/>
+          (919) 880-8589<br/>
+        </address>
+      </div>
+    </div>
+  </div>
+</div>

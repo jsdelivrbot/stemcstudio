@@ -11,9 +11,14 @@ angular.module('app')
 
     $stateProvider
       .state('home',  {
-        url: '/home',
+        url: '/',
         templateUrl: 'home.html',
         controller: 'home-controller'
+      })
+      .state('doodle',  {
+        url: '/doodle',
+        templateUrl: 'doodle.html',
+        controller: 'doodle-controller'
       })
       .state('new',  {
         url: '/new',
@@ -40,6 +45,11 @@ angular.module('app')
           return 'properties-controller';
         }
       })
+      .state('gists',  {
+        url: '/gists/{gistId}',
+        templateUrl: 'doodle.html',
+        controller: 'doodle-controller'
+      })
       .state('download',  {
         url: '/download',
         templateUrl: 'download.html',
@@ -51,5 +61,5 @@ angular.module('app')
         controller: 'about-controller'
       });
 
-    $urlRouterProvider.otherwise('/home');
+    $urlRouterProvider.otherwise('/');
 }]);

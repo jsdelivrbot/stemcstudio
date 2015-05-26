@@ -375,5 +375,16 @@ declare module JXG {
        * @returns A vector that solves the linear equation system.
        */
       Gauss(A: number[][], b: number[]): number[];
+      /**
+       * Solve initial value problems numerically using Runge-Kutta-methods.
+       * See http://en.wikipedia.org/wiki/Runge-Kutta_methods for more information on the algorithm.
+       * @param butcher
+       * @param x0
+       * @param I
+       * @param N
+       * @param f
+       * @return An array of vectors describing the solution of the ode on the given interval I.
+       */
+      rungeKutta(butcher, x0: number[], I: number[], N: number, f): number[][];
     }
 }
