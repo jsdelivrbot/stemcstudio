@@ -1,14 +1,14 @@
 CACHE MANIFEST
-# 2015-05-26:1.4.0
+# 2015-05-26:1.4.1
 
 # Explicitly cached entries
 index.html
 
-css/app.css?version=1.4.0
+css/app.css?version=1.4.1
 css/app.css.map
 css/app.less.css
 
-js/app.js?version=1.4.0
+js/app.js?version=1.4.1
 js/app.js.map
 
 fonts/glyphicons-halflings-regular.eot
@@ -46,7 +46,7 @@ ts/angular.d.ts
 ts/d3@3.5.5.d.ts
 ts/davinci-blade.d.ts
 ts/davinci-visual.d.ts
-ts/jsxgraph@0.99.3.d.ts?version=1.4.0
+ts/jsxgraph@0.99.3.d.ts
 ts/lib.d.ts
 ts/three.d.ts
 
