@@ -402,9 +402,24 @@ angular.module('app').controller('doodle-controller', [
       files: {}
     };
     gist.files[FILENAME_META] = {content: JSON.stringify(configuration(doodles.current()), null, 2)};
-    gist.files[FILENAME_HTML] = {content: doodles.current().html};
-    gist.files[FILENAME_CODE] = {content: doodles.current().code};
-    gist.files[FILENAME_LESS] = {content: doodles.current().less};
+    if (doodles.current().html.length > 0) {
+      gist.files[FILENAME_HTML] = {content: doodles.current().html};
+    }
+    else {
+      gist.files[FILENAME_HTML] = {content: '<!DOCTYPE html>\n'};
+    }
+    if (doodles.current().code.length > 0) {
+      gist.files[FILENAME_CODE] = {content: doodles.current().code};
+    }
+    else {
+      gist.files[FILENAME_CODE] = {content: '//\n'};
+    }
+    if (doodles.current().less.length > 0) {
+      gist.files[FILENAME_LESS] = {content: doodles.current().less};
+    }
+    else {
+      gist.files[FILENAME_LESS] = {content: '//\n'};
+    }
     return gist;
   }
 
@@ -451,7 +466,7 @@ angular.module('app').controller('doodle-controller', [
             if (err) {
                 alert("status: " + JSON.stringify(status));
                 alert("err: " + JSON.stringify(err));
-                alert("response: "+ JSON.stringify(response));
+                alert("post response: "+ JSON.stringify(response));
             }
             else {
               doodles.current().gistId = response.id;

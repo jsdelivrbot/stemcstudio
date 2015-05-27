@@ -1,6 +1,6 @@
 {
   "name": "mathdoodle",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "Learning Mathematics and Geometric Physics through Computational Modeling",
   "scripts": {
     "start": "NODE_ENV=local nodemon web.js",
