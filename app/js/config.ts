@@ -20,6 +20,11 @@ angular.module('app')
         templateUrl: 'doodle.html',
         controller: 'doodle-controller'
       })
+      .state('doodles',  {
+        url: '/doodles/{doodleId}',
+        templateUrl: 'doodle.html',
+        controller: 'doodle-controller'
+      })
       .state('new',  {
         url: '/new',
         templateUrl: 'new.html',
@@ -44,11 +49,6 @@ angular.module('app')
           $stateParams: angular.ui.IStateParams) {
           return 'properties-controller';
         }
-      })
-      .state('gists',  {
-        url: '/gists/{gistId}',
-        templateUrl: 'doodle.html',
-        controller: 'doodle-controller'
       })
       .state('download',  {
         url: '/download',

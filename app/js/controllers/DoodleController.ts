@@ -757,10 +757,10 @@ angular.module('app').controller('doodle-controller', [
     doodles.updateStorage();
     scope.updateView();
 
-    if ($stateParams['gistId']) {
+    if ($stateParams['doodleId']) {
       var token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
       // This is an asynchronous call!
-      downloadGist(token, $stateParams['gistId']);
+      downloadGist(token, $stateParams['doodleId']);
     }
     else {
       scope.updatePreview(WAIT_NO_MORE);
