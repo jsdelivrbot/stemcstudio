@@ -11,6 +11,8 @@
     </div>
     <div class='collapse navbar-collapse' id='navbar-header-collapse'>
       <button type="button" class="btn btn-primary navbar-btn" ng-click='goDoodle()'>Doodle Now!</button>
+      <button type="button" class="btn btn-default navbar-btn" ng-click='logout()' ng-show='isLoggedIn()'>Log out {{userLogin()}}</button>
+      <button type="button" class="btn btn-default navbar-btn" ng-click='login()' ng-hide='isLoggedIn()'>Log In</button>
     </div>
   </div>
 </header>

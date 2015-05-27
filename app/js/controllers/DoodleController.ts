@@ -142,19 +142,6 @@ angular.module('app').controller('doodle-controller', [
   var TEXT_VIEW_RESUME = "Resume";
   var TEXT_VIEW_SUSPEND = "Suspend";
 
-  var WELCOME_NEWBIE_BLURB = "" +
-  "Welcome to Davinci Doodle!"
-
-  var ELEVATOR_SPEECH_DOODLE = "" +
-  "Math Doodle is a tool for learning modern mathematics through " +
-  "interactive programming using cutting-edge software development technologies."
-
-  var CAVEAT_NOTICE = "" +
-  "Davinci Doodle (Beta) is best experienced in a Google Chrome browser."
-
-  var COPYRIGHT_NOTICE = "" +
-  "Copyright (c) 2015 David DOT Geo DOT Holmes AT gmail DOT com"
-
   // Reminder: Do not create multiple trackers in this (single page) app.
   ga('create', 'UA-41504069-3', 'auto');
   ga('send', 'pageview');
@@ -762,10 +749,6 @@ angular.module('app').controller('doodle-controller', [
     }
     else {
       scope.updatePreview(WAIT_NO_MORE);
-    }
-
-    if (newbie) {
-      showAboutDialog([WELCOME_NEWBIE_BLURB],[]);
     }
   }
 
