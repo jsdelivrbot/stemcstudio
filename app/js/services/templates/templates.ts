@@ -36,6 +36,70 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "// Enter your CSS style here\n" +
     "// It will be combined with the HTML at the <!-- STYLE-MARKER --> comment.\n";
 
+  var HTML_TEMPLATE_CANVAS = "" +
+    "<!doctype html>\n" +
+    "<html>\n" +
+    "  <head>\n" +
+    "    <title>Vector graphics with canvas</title>\n" +
+    "    <!-- STYLE-MARKER -->\n" +
+    "    <!-- SCRIPTS-MARKER -->\n" +
+    "  </head>\n" +
+    "  <body style='margin: 0;'>\n" +
+    "    <hr/>\n" +
+    "    <ul>\n" +
+    "      <li>\n" +
+    "        <a href='https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API' target='_blank'>Canvas API</a>\n" +
+    "      </li>\n" +
+    "    </ul>\n" +
+    "    <script type='text/javascript'>\n" +
+    "      try {\n" +
+    "      <!-- CODE-MARKER -->\n" +
+    "      }\n" +
+    "      catch(e) {\n" +
+    "        console.log(e);\n" +
+    "      }\n" +
+    "    </script>\n" +
+    "  </body>\n" +
+    "</html>\n";
+
+  var CODE_TEMPLATE_CANVAS = "" +
+    "window.onload = load;\n" +
+    "\n" +
+    "/**\n" +
+    " * The handler function to be called at the end of the document loading process.\n" +
+    " * @param ev The `load` event.\n" +
+    " */\n" +
+    "function load(ev: Event) {\n" +
+    "\n" +
+    "  var canvas: HTMLCanvasElement = document.createElement('canvas');\n" +
+    "\n" +
+    "  canvas.id = 'doodle1';\n" +
+    "  canvas.width = 1000;\n" +
+    "  canvas.height = 1000;\n" +
+    "\n" +
+    "  document.body.appendChild(canvas);\n" +
+    "\n" +
+    "  var context: CanvasRenderingContext2D = canvas.getContext('2d');\n"+
+    "\n" +
+    "  // The width and height properties are the modeling dimensions.\n" +
+    "  // The CSS style determines the physical size in pixels.\n" +
+    "  console.log('canvas.width : ' + canvas.width);\n" +
+    "  console.log('canvas.height: ' + canvas.height);\n" +
+    "\n" +
+    "  context.fillStyle = 'orange';\n" +
+    "  context.fillRect(0, 0, 500, 500);\n" +
+    "}\n";
+
+  var LESS_TEMPLATE_CANVAS = "" +
+  "#doodle1 {\n" +
+  "  position: absolute;\n" +
+  "  background-color: #cccccc;\n" +
+  "  width: 400px;\n" +
+  "  height: 400px;\n" +
+  "  top: 150px;\n" +
+  "  left: 400px;\n" +
+  "}\n";
+
   var HTML_TEMPLATE_ANGULAR = "" +
     "<!doctype html>\n" +
     "<html ng-app='doodle'>\n" +
@@ -726,14 +790,14 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
   return [
     {
       uuid: uuid.generate(),
-      description: "Basic",
+      description: "Vector Graphics with HTML5 Canvas API",
       isCodeVisible: true,
-      isViewVisible: false,
+      isViewVisible: true,
       focusEditor: undefined,
       lastKnownJs: undefined,
-      html: HTML_TEMPLATE_BASIC,
-      code: CODE_TEMPLATE_BASIC,
-      less: LESS_TEMPLATE_BASIC,
+      html: HTML_TEMPLATE_CANVAS,
+      code: CODE_TEMPLATE_CANVAS,
+      less: LESS_TEMPLATE_CANVAS,
       dependencies: []
     },
     {
