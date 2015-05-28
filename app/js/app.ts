@@ -30,7 +30,7 @@ angular.module('app',
   'pascalprecht.translate',
   'ui.bootstrap',
   'ui.bootstrap.modal',
-  'ui.router',
+  'ui.router', // <= We're using Angular UI Router
   'underscore',
   'uuid4'
 ])
