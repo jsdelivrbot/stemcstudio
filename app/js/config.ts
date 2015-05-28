@@ -4,9 +4,11 @@ angular.module('app')
   .config([
     '$stateProvider',
     '$urlRouterProvider',
+    'STATE_GISTS',
     function(
       $stateProvider: angular.ui.IStateProvider,
-      $urlRouterProvider: angular.ui.IUrlRouterProvider
+      $urlRouterProvider: angular.ui.IUrlRouterProvider,
+      STATE_GISTS: string
     ) {
 
     $stateProvider
@@ -20,8 +22,8 @@ angular.module('app')
         templateUrl: 'doodle.html',
         controller: 'doodle-controller'
       })
-      .state('doodles',  {
-        url: '/doodles/{doodleId}',
+      .state(STATE_GISTS,  {
+        url: '/' + STATE_GISTS + '/{gistId}',
         templateUrl: 'doodle.html',
         controller: 'doodle-controller'
       })

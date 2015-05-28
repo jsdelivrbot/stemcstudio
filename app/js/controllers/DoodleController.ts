@@ -6,7 +6,6 @@
 /// <reference path="../../../typings/dialog-polyfill/dialog-polyfill.d.ts" />
 /// <reference path="../../../typings/google-analytics/ga.d.ts" />
 /// <reference path="../controllers/BodyController.ts" />
-/// <reference path="../directives/deuce.ts" />
 /// <reference path="../services/doodles/doodles.ts" />
 /// <reference path="../HTMLDialogElement.ts" />
 /// <reference path="../services/cloud/cloud.ts" />
@@ -51,7 +50,6 @@ module mathdoodle {
     doOpen: () => void;
     doCopy: () => void;
     doProperties(): void;
-    doAbout(): void;
     doShare: () => void;
     doHelp: () => void;
 
@@ -87,6 +85,7 @@ angular.module('app').controller('doodle-controller', [
   'mathscript',
   'GitHub',
   'GitHubAuthManager',
+  'cloud',
   'cookie',
   'templates',
   'uuid4',
@@ -98,6 +97,7 @@ angular.module('app').controller('doodle-controller', [
   'FILENAME_HTML',
   'FILENAME_CODE',
   'FILENAME_LESS',
+  'STATE_GISTS',
   'settings',
   function(
     scope: mathdoodle.IHomeScope,
@@ -111,6 +111,7 @@ angular.module('app').controller('doodle-controller', [
     mathscript,
     github,
     authManager: IGitHubAuthManager,
+    cloud: mathdoodle.ICloud,
     cookie: ICookieService,
     templates: mathdoodle.IDoodle[],
     uuid4: IUuidService,
@@ -122,6 +123,7 @@ angular.module('app').controller('doodle-controller', [
     FILENAME_HTML: string,
     FILENAME_CODE: string,
     FILENAME_LESS: string,
+    STATE_GISTS: string,
     settings: mathdoodle.ISettingsService
   ) {
 
@@ -342,48 +344,6 @@ angular.module('app').controller('doodle-controller', [
     $state.go('properties', {doodle: doodles.current()});
   };
 
-  scope.doAbout = function(label?: string, value?: number) {
-    ga('send', 'event', 'doodle', 'about', label, value);
-    showAboutDialog([], []);
-  }
-
-  function showAboutDialog(prologs: string[], epilogs: string[]) {
-    $state.go('about');
-  }
-
-  function downloadGist(token: string, gistId: string) {
-    github.getGist(token, gistId, function(err, gist) {
-      if (!err) {
-        var config: mathdoodle.IDoodleConfig = JSON.parse(gist.files[FILENAME_META].content);
-        var html = gist.files[FILENAME_HTML].content;
-        var code = gist.files[FILENAME_CODE].content;
-
-        var codeInfo: mathdoodle.IDoodle = {
-          gistId: gistId,
-          uuid: config.uuid,
-          description: gist.description,
-          // TODO: Should we persist the UI state in the Gist?
-          isCodeVisible: true,
-          isViewVisible: false,
-          focusEditor: FILENAME_CODE,
-          lastKnownJs: undefined,
-          html: gist.files[FILENAME_HTML].content,
-          code: gist.files[FILENAME_CODE].content,
-          less: gist.files[FILENAME_LESS].content,
-          dependencies: depArray(config.dependencies)
-        };
-        doodles.deleteDoodle(config.uuid);
-        doodles.unshift(codeInfo);
-        doodles.updateStorage();
-        scope.updateView();
-        scope.updatePreview(WAIT_NO_MORE);
-      }
-      else {
-        scope.alert("Error attempting to download Gist");
-      }
-    });
-  }
-
   /**
    * Maps the doodle to the format required for GitHub.
    */
@@ -454,6 +414,7 @@ angular.module('app').controller('doodle-controller', [
                   label: "Close",
                   cssClass: 'btn btn-primary',
                   action: function(dialog) {
+                    $state.go(STATE_GISTS, {gistId: doodles.current().gistId});
                     dialog.close();
                   }
                 }]
@@ -479,6 +440,7 @@ angular.module('app').controller('doodle-controller', [
                     label: "Close",
                     cssClass: 'btn btn-primary',
                     action: function(dialog) {
+                      $state.go(STATE_GISTS, {gistId: doodles.current().gistId});
                       dialog.close();
                     }
                   }]
@@ -757,10 +719,21 @@ angular.module('app').controller('doodle-controller', [
     doodles.updateStorage();
     scope.updateView();
 
-    if ($stateParams['doodleId']) {
+    var gistId: string = $stateParams['gistId'];
+    if (gistId && doodles.current().gistId !== gistId) {
       var token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
-      // This is an asynchronous call!
-      downloadGist(token, $stateParams['doodleId']);
+      cloud.downloadGist(token, gistId, function(err, doodle: mathdoodle.IDoodle) {
+        if (!err) {
+          doodles.deleteDoodle(doodle.uuid);
+          doodles.unshift(doodle);
+          doodles.updateStorage();
+          scope.updateView();
+          scope.updatePreview(WAIT_NO_MORE);
+        }
+        else {
+          scope.alert("Error attempting to download Gist");
+        }
+      });
     }
     else {
       scope.updatePreview(WAIT_NO_MORE);

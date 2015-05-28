@@ -9,7 +9,6 @@
 module mathdoodle {
   export interface IDownloadScope extends mathdoodle.IBodyScope {
     doCancel: () => void;
-    clickDownloadGist: (gistId: string) => void;
   }
 }
 
@@ -22,6 +21,7 @@ angular.module('app').controller('download-controller', [
   'cookie',
   'ga',
   'GITHUB_TOKEN_COOKIE_NAME',
+  'STATE_DOODLE',
   function(
     $scope: mathdoodle.IDownloadScope,
     $state: angular.ui.IStateService,
@@ -29,30 +29,13 @@ angular.module('app').controller('download-controller', [
     doodles: mathdoodle.IDoodleManager,
     cookie: ICookieService,
     ga: UniversalAnalytics.ga,
-    GITHUB_TOKEN_COOKIE_NAME: string
+    GITHUB_TOKEN_COOKIE_NAME: string,
+    STATE_DOODLE
   ) {
 
-  $scope.clickDownloadGist = function(gistId: string) {
-    ga('send', 'event', 'cloud', 'downloadGist');
-    // TODO: Google Analytics
-    var token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
-    cloud.downloadGist(token, gistId, function(err, doodle: mathdoodle.IDoodle) {
-      if (!err) {
-        doodles.deleteDoodle(doodle.uuid);
-        doodles.unshift(doodle);
-        doodles.updateStorage();
-        $state.go('doodle');
-      }
-      else {
-        $scope.alert("Error attempting to download Gist");
-        $state.go('doodle');
-      }
-    });
-    // FIXME: Should be in a handler with progress (generally).
+    $scope.doCancel = function() {
+      $state.go(STATE_DOODLE);
+    };
+
   }
-
-  $scope.doCancel = function() {
-    $state.go('doodle');
-  };
-
-}]);
+]);

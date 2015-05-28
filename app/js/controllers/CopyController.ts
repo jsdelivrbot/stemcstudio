@@ -16,10 +16,14 @@ angular.module('app').controller('copy-controller', [
   '$scope',
   '$state',
   'doodles',
+  'STATE_DOODLE',
+  'STATE_GISTS',
   function(
     $scope: mathdoodle.ICopyScope,
     $state: angular.ui.IStateService,
-    doodles: mathdoodle.IDoodleManager
+    doodles: mathdoodle.IDoodleManager,
+    STATE_DOODLE: string,
+    STATE_GISTS: string
   ) {
 
   $scope.description = doodles.suggestName();
@@ -28,11 +32,16 @@ angular.module('app').controller('copy-controller', [
   $scope.doOK = function() {
     doodles.createDoodle($scope.template, $scope.description);
     doodles.updateStorage();
-    $state.go('doodle');
+    $state.go(STATE_DOODLE);
   };
 
   $scope.doCancel = function() {
-    $state.go('doodle');
+    if (doodles.current().gistId) {
+      $state.go(STATE_GISTS, {gistId: doodles.current().gistId});
+    }
+    else {
+      $state.go(STATE_DOODLE);
+    }
   };
 
 }]);

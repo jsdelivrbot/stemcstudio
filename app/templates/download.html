@@ -5,7 +5,7 @@
   </div>
   <div class='modal-body'>
     <p ng-repeat='gist in gists track by gist.id'>
-      <a role='button' ng-click='clickDownloadGist(gist.id)'>{{gist.description}}</a>
+      <a ui-sref='gists({gistId: gist.id})'>{{gist.description}}</a>
     </p>
   </div>
   <div class='modal-footer'>

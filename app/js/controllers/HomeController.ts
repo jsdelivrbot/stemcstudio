@@ -15,11 +15,13 @@ angular.module('app').controller('home-controller', [
   '$state',
   '$window',
   'GitHubAuthManager',
+  'STATE_DOODLE',
   function(
     $scope: mathdoodle.IHomeScope,
     $state: angular.ui.IStateService,
     $window: angular.IWindowService,
-    authManager: IGitHubAuthManager
+    authManager: IGitHubAuthManager,
+    STATE_DOODLE
   ) {
 
   // Ensure that scrollbars are disabled.
@@ -33,6 +35,6 @@ angular.module('app').controller('home-controller', [
   });
 
   $scope.goDoodle = function() {
-    $state.go('doodle');
+    $state.go(STATE_DOODLE);
   }
 }]);

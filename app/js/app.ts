@@ -22,7 +22,6 @@ module mathdoodle {
 angular.module('app',
 [
   'davinci.mathscript',
-  'deuce',
   'google-analytics',
   'jQuery',
   'ngAnimate',

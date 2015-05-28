@@ -19,12 +19,16 @@ angular.module('app').controller('properties-controller', [
   '$stateParams',
   'doodles',
   'options',
+  'STATE_DOODLE',
+  'STATE_GISTS',
   function(
     scope: IBodyScope,
     $state: angular.ui.IStateService,
     $stateParams: angular.ui.IStateParams,
     doodles: mathdoodle.IDoodleManager,
-    options: IOptionManager
+    options: IOptionManager,
+    STATE_DOODLE: string,
+    STATE_GISTS: string
   ) {
   scope.zombie = JSON.parse(JSON.stringify(doodles.current()));
   scope.options = options.filter(function() { return true; });
@@ -47,11 +51,25 @@ angular.module('app').controller('properties-controller', [
   scope.doOK = function() {
     doodles.current().description = scope.zombie.description;
     doodles.current().dependencies = scope.zombie.dependencies;
-    $state.transitionTo('doodle');
+    if (doodles.current().gistId) {
+      $state.go(STATE_GISTS, {gistId: doodles.current().gistId});
+    }
+    else {
+      $state.go(STATE_DOODLE);
+    }
   };
 
   scope.doCancel = function() {
-    $state.transitionTo('doodle');
+    // TODO: It would seem that we should be able to simply go to the doodle state
+    // and then let that state take care of setting the correct doodle.
+    // FIXME: In other words, this abstraction leaks!
+    // Even better, properties should be a child state?
+    if (doodles.current().gistId) {
+      $state.go(STATE_GISTS, {gistId: doodles.current().gistId});
+    }
+    else {
+      $state.go(STATE_DOODLE);
+    }
   };
 
 }]);
