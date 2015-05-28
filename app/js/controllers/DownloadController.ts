@@ -22,6 +22,7 @@ angular.module('app').controller('download-controller', [
   'ga',
   'GITHUB_TOKEN_COOKIE_NAME',
   'STATE_DOODLE',
+  'STATE_GISTS',
   function(
     $scope: mathdoodle.IDownloadScope,
     $state: angular.ui.IStateService,
@@ -30,11 +31,17 @@ angular.module('app').controller('download-controller', [
     cookie: ICookieService,
     ga: UniversalAnalytics.ga,
     GITHUB_TOKEN_COOKIE_NAME: string,
-    STATE_DOODLE
+    STATE_DOODLE: string,
+    STATE_GISTS: string
   ) {
 
     $scope.doCancel = function() {
-      $state.go(STATE_DOODLE);
+      if (doodles.current().gistId) {
+        $state.go(STATE_GISTS, {gistId: doodles.current().gistId});
+      }
+      else {
+        $state.go(STATE_DOODLE);
+      }
     };
 
   }
