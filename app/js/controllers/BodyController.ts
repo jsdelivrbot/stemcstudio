@@ -22,6 +22,7 @@ module mathdoodle {
     '$state',
     'doodles',
     'ga',
+    'tw',
     'GitHub',
     'cookie',
     'GITHUB_TOKEN_COOKIE_NAME',

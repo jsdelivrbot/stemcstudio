@@ -7,6 +7,7 @@
 module mathdoodle {
   export interface IHomeScope extends mathdoodle.IBodyScope {
     goDoodle(): void;
+    twitterShareText: string;
   }
 }
 
@@ -26,13 +27,15 @@ angular.module('app').controller('home-controller', [
 
   // Ensure that scrollbars are disabled.
   // This is so that we don't get double scrollbars when using the editor.
-  $window.document.body.style.overflow = 'auto'
+  $window.document.body.style.overflow = 'auto';
 
   authManager.handleGitHubLoginCallback(function(err, token: string) {
     if (err) {
       $scope.alert(err.message);
     }
   });
+
+  $scope.twitterShareText = "mathdoodle.io Learning Mathematics and Geometric Physics through Computational Modeling";
 
   $scope.goDoodle = function() {
     $state.go(STATE_DOODLE);

@@ -23,6 +23,7 @@ angular.module('app',
 [
   'davinci.mathscript',
   'google-analytics',
+  'twitter-widgets',
   'jQuery',
   'ngAnimate',
   'ngMdIcons',
