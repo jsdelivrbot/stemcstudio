@@ -35,7 +35,7 @@ angular.module('app').controller('home-controller', [
     }
   });
 
-  $scope.twitterShareText = "mathdoodle.io Learning Mathematics and Geometric Physics through Computational Modeling";
+  $scope.twitterShareText = "MathDoodle · Learning Mathematics and Geometric Physics through Computational Modeling.";
 
   $scope.goDoodle = function() {
     $state.go(STATE_DOODLE);
