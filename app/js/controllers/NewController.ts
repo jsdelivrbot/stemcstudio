@@ -18,14 +18,12 @@ angular.module('app').controller('new-controller', [
   'doodles',
   'templates',
   'STATE_DOODLE',
-  'STATE_GISTS',
   function(
     $scope: mathdoodle.INewScope,
     $state: angular.ui.IStateService,
     doodles: mathdoodle.IDoodleManager,
     templates: mathdoodle.IDoodle[],
-    STATE_DOODLE: string,
-    STATE_GISTS: string
+    STATE_DOODLE: string
   ) {
 
   $scope.description = doodles.suggestName();
@@ -39,12 +37,7 @@ angular.module('app').controller('new-controller', [
   };
 
   $scope.doCancel = function() {
-    if (doodles.current().gistId) {
-      $state.go(STATE_GISTS, {gistId: doodles.current().gistId});
-    }
-    else {
-      $state.go(STATE_DOODLE);
-    }
+    $state.go(STATE_DOODLE);
   };
 
 }]);

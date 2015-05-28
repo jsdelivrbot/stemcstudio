@@ -43,7 +43,6 @@ module mathdoodle {
     toggleMode: () => void;
 
     isViewVisible: boolean;
-    resumeText: string;
     toggleView: () => void;
 
     doNew: () => void;
@@ -126,6 +125,8 @@ angular.module('app').controller('doodle-controller', [
     STATE_GISTS: string,
     settings: mathdoodle.ISettingsService
   ) {
+  // Not sure how best to do this. I don't want loading to trigger processing until ready.
+  var cascade = false;
 
   // Ensure that scrollbars are disabled.
   // This is so that we don't get double scrollbars when using the editor.
@@ -140,9 +141,6 @@ angular.module('app').controller('doodle-controller', [
 
   var TEXT_CODE_HIDE = "View";
   var TEXT_CODE_SHOW = "Edit";
-
-  var TEXT_VIEW_RESUME = "Resume";
-  var TEXT_VIEW_SUSPEND = "Suspend";
 
   // Reminder: Do not create multiple trackers in this (single page) app.
   ga('create', 'UA-41504069-3', 'auto');
@@ -215,6 +213,7 @@ angular.module('app').controller('doodle-controller', [
     htmlEditor.setValue(doodles.current().html, -1);
     codeEditor.setValue(doodles.current().code, -1);
     lessEditor.setValue(doodles.current().less, -1);
+    // Bit of a smell here. Should we be updating the scope?
     setEditMode(doodles.current().isCodeVisible);
     setViewMode(doodles.current().isViewVisible);
     setCurrentEditor(doodles.current().focusEditor);
@@ -222,7 +221,6 @@ angular.module('app').controller('doodle-controller', [
 
   var setViewMode = function(isViewVisible: boolean) {
     scope.isViewVisible = isViewVisible;
-    scope.resumeText = isViewVisible ? TEXT_VIEW_SUSPEND : TEXT_VIEW_RESUME;
   }
 
   scope.$watch('isViewVisible', function(newVal: boolean, oldVal, scope) {
@@ -456,6 +454,7 @@ angular.module('app').controller('doodle-controller', [
         });
     }
   };
+
   scope.goHome = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'goHome', label, value);
     $state.go('home');
@@ -512,9 +511,11 @@ angular.module('app').controller('doodle-controller', [
     var outputFiles: mathdoodle.IOutputFile[] = event.data;
     outputFiles.forEach(function(outputFile: mathdoodle.IOutputFile) {
       if (doodles.current().lastKnownJs !== outputFile.text) {
-        doodles.current().lastKnownJs = outputFile.text;
-        doodles.updateStorage();
-        scope.updatePreview(WAIT_FOR_MORE_CODE_KEYSTROKES);
+        if (cascade) {
+          doodles.current().lastKnownJs = outputFile.text;
+          doodles.updateStorage();
+          scope.updatePreview(WAIT_FOR_MORE_CODE_KEYSTROKES);
+        }
       }
     });
   });
@@ -538,9 +539,11 @@ angular.module('app').controller('doodle-controller', [
   htmlEditor.setDisplayIndentGuides(settings.displayIndentGuides);
 
   htmlEditor.getSession().on('change', function(event) {
-    doodles.current().html = htmlEditor.getValue();
-    doodles.updateStorage();
-    scope.updatePreview(WAIT_FOR_MORE_HTML_KEYSTROKES);
+    if (cascade) {
+      doodles.current().html = htmlEditor.getValue();
+      doodles.updateStorage();
+      scope.updatePreview(WAIT_FOR_MORE_HTML_KEYSTROKES);
+    }
   });
 
   var lessEditor = ace.edit($window.document.getElementById('less-editor'), workspace);
@@ -555,9 +558,11 @@ angular.module('app').controller('doodle-controller', [
   lessEditor.setDisplayIndentGuides(settings.displayIndentGuides);
 
   lessEditor.getSession().on('change', function(event) {
-    doodles.current().less = lessEditor.getValue();
-    doodles.updateStorage();
-    scope.updatePreview(WAIT_FOR_MORE_LESS_KEYSTROKES);
+    if (cascade) {
+      doodles.current().less = lessEditor.getValue();
+      doodles.updateStorage();
+      scope.updatePreview(WAIT_FOR_MORE_LESS_KEYSTROKES);
+    }
   });
 
   var rebuildPromise: angular.IPromise<void>;
@@ -575,7 +580,6 @@ angular.module('app').controller('doodle-controller', [
         preview.removeChild(preview.firstChild);
       }
 
-      var toolbar = document.getElementById('toolbar');
       if (scope.isViewVisible && doodles.current().lastKnownJs) {
         scope.previewIFrame = document.createElement('iframe');
         scope.previewIFrame.style.width = '100%';
@@ -675,15 +679,6 @@ angular.module('app').controller('doodle-controller', [
   }
   
   function init() {
-
-    // Since the doodles are available as a service, do we need them to be bound to the scope?
-    // scope.doodles = doodles;
-
-    /**
-     * Our best guess as to whether this user has been here.
-     */
-    var newbie: boolean = (doodles.length === 0);
-    
     if (doodles.length === 0) {
       // If there is no document, construct one based upon the first template.
       doodles.createDoodle(scope.templates[0], "My Math Doodle");
@@ -706,7 +701,7 @@ angular.module('app').controller('doodle-controller', [
     // This also side-steps the issue of the time it takes to restart the preview.
     // Ideally we remove this line and use the cached `lastKnownJs` to provide the preview.
     doodles.current().isCodeVisible = true;
-//  doodles.current().isViewVisible = false;
+    //  doodles.current().isViewVisible = false;
     // We need to make sure that the files have names (for the TypeScript compiler).
     htmlEditor.changeFile(doodles.current().html, FILENAME_HTML);
     htmlEditor.resize(true);
@@ -717,26 +712,40 @@ angular.module('app').controller('doodle-controller', [
 
     // Now that things have settled down...
     doodles.updateStorage();
-    scope.updateView();
 
     var gistId: string = $stateParams['gistId'];
-    if (gistId && doodles.current().gistId !== gistId) {
-      var token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
-      cloud.downloadGist(token, gistId, function(err, doodle: mathdoodle.IDoodle) {
-        if (!err) {
-          doodles.deleteDoodle(doodle.uuid);
-          doodles.unshift(doodle);
-          doodles.updateStorage();
-          scope.updateView();
-          scope.updatePreview(WAIT_NO_MORE);
-        }
-        else {
-          scope.alert("Error attempting to download Gist");
-        }
-      });
+    if (gistId) {
+      if (doodles.current().gistId !== gistId) {
+        var token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
+        cloud.downloadGist(token, gistId, function(err, doodle: mathdoodle.IDoodle) {
+          if (!err) {
+            doodles.deleteDoodle(doodle.uuid);
+            doodles.unshift(doodle);
+            doodles.updateStorage();
+            scope.updateView();
+          }
+          else {
+            scope.alert("Error attempting to download Gist");
+          }
+            cascade = true;
+            scope.updatePreview(WAIT_NO_MORE);
+        });
+      }
+      else {
+        scope.updateView();
+        cascade = true;
+        scope.updatePreview(WAIT_NO_MORE);
+      }
     }
     else {
-      scope.updatePreview(WAIT_NO_MORE);
+      if (doodles.current().gistId) {
+        $state.go(STATE_GISTS, { gistId: doodles.current().gistId });
+      }
+      else {
+        scope.updateView();
+        cascade = true;
+        scope.updatePreview(WAIT_NO_MORE);
+      }
     }
   }
 

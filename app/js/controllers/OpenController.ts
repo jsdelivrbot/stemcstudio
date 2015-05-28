@@ -16,23 +16,16 @@ angular.module('app').controller('open-controller', [
   '$state',
   'doodles',
   'STATE_DOODLE',
-  'STATE_GISTS',
   function(
     $scope: mathdoodle.IOpenScope,
     $state: angular.ui.IStateService,
     doodles: mathdoodle.IDoodleManager,
-    STATE_DOODLE: string,
-    STATE_GISTS: string
+    STATE_DOODLE: string
   ) {
 
   $scope.doOpen = function(uuid: string) {
     doodles.makeCurrent(uuid);
-    if (doodles.current().gistId) {
-      $state.go(STATE_GISTS, {gistId: doodles.current().gistId});
-    }
-    else {
-      $state.go(STATE_DOODLE);
-    }
+    $state.go(STATE_DOODLE);
   }
 
   $scope.doDelete = function(uuid: string) {
@@ -40,12 +33,7 @@ angular.module('app').controller('open-controller', [
   }
 
   $scope.doClose = function() {
-    if (doodles.current() && doodles.current().gistId) {
-      $state.go(STATE_GISTS, {gistId: doodles.current().gistId});
-    }
-    else {
-      $state.go(STATE_DOODLE);
-    }
+    $state.go(STATE_DOODLE);
   };
 
 }]);

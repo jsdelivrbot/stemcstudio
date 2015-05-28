@@ -21,7 +21,7 @@ angular.module('app').controller('home-controller', [
     $state: angular.ui.IStateService,
     $window: angular.IWindowService,
     authManager: IGitHubAuthManager,
-    STATE_DOODLE
+    STATE_DOODLE: string
   ) {
 
   // Ensure that scrollbars are disabled.
