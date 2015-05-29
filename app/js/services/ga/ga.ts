@@ -6,7 +6,6 @@ angular.module('google-analytics', []).factory('ga', [
     $window: angular.IWindowService,
     NAMESPACE_GOOGLE_ANALYTICS
   ) {
-  console.log('Loading: ' + NAMESPACE_GOOGLE_ANALYTICS);
 
   (
     function(

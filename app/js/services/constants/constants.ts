@@ -27,6 +27,7 @@
   // We can change the global namespace used by Google's Universal Analytics.
   // All access should be through the service wrapper.
   angular.module('app').constant('NAMESPACE_GOOGLE_ANALYTICS', 'googleAnalytics');
+  // This twitter widget namespace is a symbolic constant. It cannot be changed.
   angular.module('app').constant('NAMESPACE_TWITTER_WIDGETS', 'twttr');
   angular.module('app').constant('GITHUB_TOKEN_COOKIE_NAME', 'github-token');
 

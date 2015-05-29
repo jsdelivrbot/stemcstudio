@@ -22,7 +22,7 @@ module mathdoodle {
     '$state',
     'doodles',
     'ga',
-    'tw',
+    '$twitter',
     'GitHub',
     'cookie',
     'GITHUB_TOKEN_COOKIE_NAME',
@@ -31,6 +31,7 @@ module mathdoodle {
       $state: angular.ui.IStateService,
       doodles: mathdoodle.IDoodleManager,
       ga: UniversalAnalytics.ga,
+      $twitter,
       github,
       cookie: ICookieService,
       GITHUB_TOKEN_COOKIE_NAME: string
