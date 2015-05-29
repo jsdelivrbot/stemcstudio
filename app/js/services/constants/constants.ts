@@ -36,7 +36,7 @@
 
   // The following entries must be synchronized with appcache.mf:
   // The TypeScript d.ts library provides the type checking of global JavaScript types.
-  angular.module('app').constant('FILENAME_TYPESCRIPT_CURRENT_LIB_DTS', 'lib@1.4.1.d.ts');
+  angular.module('app').constant('FILENAME_TYPESCRIPT_CURRENT_LIB_DTS', 'lib@1.4.1.1.d.ts');
   // The MathScript js library provides operator overloading at runtime.
   angular.module('app').constant('FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS', 'mathscript@1.0.1.min.js');
 })();

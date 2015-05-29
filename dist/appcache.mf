@@ -1,15 +1,15 @@
 CACHE MANIFEST
-# 20
+# 2015-05-29:1.10.4
 
 # Explicitly cached entries
 index.html
 
-css/app.css
-css/app.css.map
-css/app.less.css
+css/app.css?version=1.10.4
+css/app.css.map?version=1.10.4
+css/app.less.css?version=1.10.4
 
-js/app.js
-js/app.js.map
+js/app.js?version=1.10.4
+js/app.js.map?version=1.10.4
 
 fonts/glyphicons-halflings-regular.eot
 fonts/glyphicons-halflings-regular.svg
@@ -47,7 +47,7 @@ ts/d3@3.5.5.d.ts
 ts/davinci-blade.d.ts
 ts/davinci-visual.d.ts
 ts/jsxgraph@0.99.3.d.ts
-ts/lib@1.4.1.d.ts
+ts/lib@1.4.1.1.d.ts
 ts/three.d.ts
 
 http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600

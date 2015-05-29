@@ -6286,10 +6286,31 @@ interface CanvasRenderingContext2D {
     lineJoin: string;
     shadowOffsetX: number;
     lineWidth: number;
+    /**
+     * The `canvas` property is a read-only back-reference to the HTMLCanvasElement.
+     * Might be null if it is not associated with a <canvas> element.
+     */
     canvas: HTMLCanvasElement;
     strokeStyle: any;
     globalAlpha: number;
     shadowOffsetY: number;
+    /**
+     * The `fillStyle` property of the Canvas 2D API specifies the color or style to use inside shapes.
+     * The default is #000 (black).
+     *
+     * Syntax
+     *   ctx.fillStyle = color;
+     *   ctx.fillStyle = gradient;
+     *   ctx.fillStyle = pattern;
+     *
+     * Options
+     *   color
+     *     A string parsed as a CSS <color> value.
+     *   gradient
+     *     A CanvasGradient object (a linear or radial gradient).
+     *   pattern
+     *     A CanvasPattern object (a repetitive image).
+     */
     fillStyle: any;
     shadowBlur: number;
     textAlign: string;
@@ -6297,6 +6318,26 @@ interface CanvasRenderingContext2D {
     restore(): void;
     setTransform(m11: number, m12: number, m21: number, m22: number, dx: number, dy: number): void;
     save(): void;
+    /**
+     * The `arc` method adds an arc to the path which is centered at (x, y) position
+     * with radius r starting at startAngle and ending at endAngle going in the given
+     * direction by anticlockwise (defaulting to clockwise).
+     *
+     * Parameters
+     * x
+     *   The x axis coordinate for the arc center.
+     * y
+     *   The y axis coordinate for the arc center.
+     * radius
+     *   The radius of the arc.
+     * startAngle
+     *   The starting point, measured from the x axis, from which it will be drawn, expressed in radians.
+     * endAngle
+     *   The end of the arcs' angle, expressed in radians.
+     * anticlockwise
+     *   An optional boolean which, if true, draws the arc anticlockwise (counter-clockwise),
+     *   otherwise in a clockwise direction.
+     */
     arc(x: number, y: number, radius: number, startAngle: number, endAngle: number, anticlockwise?: boolean): void;
     measureText(text: string): TextMetrics;
     isPointInPath(x: number, y: number, fillRule?: string): boolean;
@@ -6307,25 +6348,84 @@ interface CanvasRenderingContext2D {
     translate(x: number, y: number): void;
     scale(x: number, y: number): void;
     createRadialGradient(x0: number, y0: number, r0: number, x1: number, y1: number, r1: number): CanvasGradient;
+    /**
+     * The `lineTo` method connects the last point in the sub-path to the x, y coordinates with a
+     * straight line (but does not actually draw it).
+     * @param x The x axis coordinate for the end of the line.
+     * @param y The y axis coordinate for the end of the line.
+     */
     lineTo(x: number, y: number): void;
     getLineDash(): number[];
+    /**
+     * The `fill` method fills the current path with the current fill style using
+     * the non-zero or even-odd winding rule.
+     *
+     * Parameters
+     *   fillRule
+     *     The algorithm by which to determine if a point is inside a path or outside a path.
+     *     Possible values:
+     *       'nonzero': The non-zero winding rule, which is the default rule.
+     *       'evenodd': The even-odd winding rule.
+     */
     fill(fillRule?: string): void;
     createImageData(imageDataOrSw: any, sh?: number): ImageData;
     createPattern(image: HTMLElement, repetition: string): CanvasPattern;
+    /**
+     * The `closePath` method causes the point of the pen to move back to the start of
+     * the current sub-path. It tries to add a straight line (but does not actually draw it)
+     * from the current point to the start. If the shape has already been closed or has only
+     * one point, this function does nothing.
+     */
     closePath(): void;
     rect(x: number, y: number, w: number, h: number): void;
     clip(fillRule?: string): void;
     clearRect(x: number, y: number, w: number, h: number): void;
+    /**
+     * The `moveTo` method moves the starting point of a new sub-path to the (x, y) coordinates.
+     * @param The x coordinate of the point.
+     * @param The y coordinate of the point.
+     */
     moveTo(x: number, y: number): void;
     getImageData(sx: number, sy: number, sw: number, sh: number): ImageData;
-    fillRect(x: number, y: number, w: number, h: number): void;
+    /**
+     * The `fillRect` method draws a filled rectangle at (x, y) position whose size is determined by width and height.
+     */
+    fillRect(x: number, y: number, width: number, height: number): void;
+    /**
+     * The `bezierCurveTo` method adds a cubic Bézier curve to the path. It requires three points.
+     * The first two points are control points and the third one is the end point.
+     * The starting point is the last point in the current path, which can be changed using moveTo()
+     * before creating the Bézier curve.
+     *
+     * Parameters
+     *  cp1x
+     *    The x coordinate of the first control point.
+     *  cp1y
+     *    The y coordinate of the first control point.
+     *  cp2x
+     *    The x coordinate of the second control point.
+     *  cp2y
+     *    The y coordinate of the second control point.
+     *  x
+     *    The x coordinate of the end point.
+     *  y
+     *    The y coordinate of the end point.
+     */
     bezierCurveTo(cp1x: number, cp1y: number, cp2x: number, cp2y: number, x: number, y: number): void;
     drawImage(image: HTMLElement, offsetX: number, offsetY: number, width?: number, height?: number, canvasOffsetX?: number, canvasOffsetY?: number, canvasImageWidth?: number, canvasImageHeight?: number): void;
     transform(m11: number, m12: number, m21: number, m22: number, dx: number, dy: number): void;
+    /**
+     * The `stroke` method strokes the current path with the current stroke style using the
+     * non-zero winding rule.
+     */
     stroke(): void;
     strokeRect(x: number, y: number, w: number, h: number): void;
     setLineDash(segments: number[]): void;
     strokeText(text: string, x: number, y: number, maxWidth?: number): void;
+    /**
+     * The `beginPath` method starts a new path by emptying the list of sub-paths.
+     * Call this method when you want to create a new path.
+     */
     beginPath(): void;
     arcTo(x1: number, y1: number, x2: number, y2: number, radius: number): void;
     createLinearGradient(x0: number, y0: number, x1: number, y1: number): CanvasGradient;
