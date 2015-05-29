@@ -1,6 +1,6 @@
 {
   "name": "mathdoodle",
-  "version": "1.10.2",
+  "version": "1.10.3",
   "description": "Computational Learning Environment",
   "homepage": "https://github.com/geometryzen/mathdoodle",
   "authors": [
@@ -22,7 +22,7 @@
     "jquery": "~2.1.4",
     "threejs": "*",
     "davinci-blade": "~1.0.1",
-    "davinci-mathscript": "~1.0.0",
+    "davinci-mathscript": "~1.0.1",
     "davinci-visual": "~1.6.0",
     "davinci-eight": "~1.0.0",
     "angular-bootstrap": "~0.12.1",

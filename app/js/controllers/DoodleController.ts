@@ -96,6 +96,8 @@ angular.module('app').controller('doodle-controller', [
   'FILENAME_HTML',
   'FILENAME_CODE',
   'FILENAME_LESS',
+  'FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS',
+  'FILENAME_TYPESCRIPT_CURRENT_LIB_DTS',
   'STATE_GISTS',
   'settings',
   function(
@@ -122,6 +124,8 @@ angular.module('app').controller('doodle-controller', [
     FILENAME_HTML: string,
     FILENAME_CODE: string,
     FILENAME_LESS: string,
+    FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS: string,
+    FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
     STATE_GISTS: string,
     settings: mathdoodle.ISettingsService
   ) {
@@ -510,7 +514,7 @@ angular.module('app').controller('doodle-controller', [
   codeEditor.getSession().on('outputFiles', function(event) {
     var outputFiles: mathdoodle.IOutputFile[] = event.data;
     outputFiles.forEach(function(outputFile: mathdoodle.IOutputFile) {
-      if (doodles.current().lastKnownJs !== outputFile.text) {
+      if (doodles.current() && doodles.current().lastKnownJs !== outputFile.text) {
         if (cascade) {
           doodles.current().lastKnownJs = outputFile.text;
           doodles.updateStorage();
@@ -521,10 +525,12 @@ angular.module('app').controller('doodle-controller', [
   });
 
   codeEditor.getSession().on('change', function(event) {
-    doodles.current().code = codeEditor.getValue();
-    doodles.updateStorage();
-    // Don't trigger a change to the preview, that happens
-    // when the compiler emits a file.
+    if (cascade && doodles.current()) {
+      doodles.current().code = codeEditor.getValue();
+      doodles.updateStorage();
+      // Don't trigger a change to the preview, that happens
+      // when the compiler emits a file.
+    }
   });
 
   var htmlEditor = ace.edit($window.document.getElementById('html-editor'), workspace);
@@ -539,7 +545,7 @@ angular.module('app').controller('doodle-controller', [
   htmlEditor.setDisplayIndentGuides(settings.displayIndentGuides);
 
   htmlEditor.getSession().on('change', function(event) {
-    if (cascade) {
+    if (cascade && doodles.current()) {
       doodles.current().html = htmlEditor.getValue();
       doodles.updateStorage();
       scope.updatePreview(WAIT_FOR_MORE_HTML_KEYSTROKES);
@@ -558,7 +564,7 @@ angular.module('app').controller('doodle-controller', [
   lessEditor.setDisplayIndentGuides(settings.displayIndentGuides);
 
   lessEditor.getSession().on('change', function(event) {
-    if (cascade) {
+    if (cascade && doodles.current()) {
       doodles.current().less = lessEditor.getValue();
       doodles.updateStorage();
       scope.updatePreview(WAIT_FOR_MORE_LESS_KEYSTROKES);
@@ -580,7 +586,7 @@ angular.module('app').controller('doodle-controller', [
         preview.removeChild(preview.firstChild);
       }
 
-      if (scope.isViewVisible && doodles.current().lastKnownJs) {
+      if (scope.isViewVisible && doodles.current() && doodles.current().lastKnownJs) {
         scope.previewIFrame = document.createElement('iframe');
         scope.previewIFrame.style.width = '100%';
         scope.previewIFrame.style.height = '100%';
@@ -596,7 +602,7 @@ angular.module('app').controller('doodle-controller', [
 
         var chosenFileNames: string[] = selOpts.map(function(option: IOption) {return option.js;});
         // TODO: We will later want to make operator overloading configurable for speed.
-        var scriptFileNames: string[] = chosenFileNames.concat('maths.min.js');
+        var scriptFileNames: string[] = chosenFileNames.concat(FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS);
         var scriptTags = scriptFileNames.map(function(fileName: string) {
           return "<script src='" + DOMAIN + "/js/" + fileName + "'></script>\n";
         });
@@ -624,12 +630,12 @@ angular.module('app').controller('doodle-controller', [
    */
   function updateWorkspace() {
     // Load the wokspace with the appropriate TypeScript definitions.
-    // Quick Hack to eliminate maths which is only needed at runtime.
     var news: string[] = doodles.current().dependencies;
 
-    var adds: string[] = news.filter(function(dep) { return olds.indexOf(dep)<0; }).filter(function(name) { return (name !== 'maths');});
-
+    // Determine what we need to add and remove from the workspace.
+    var adds: string[] = news.filter(function(dep) { return olds.indexOf(dep)<0; });
     var rmvs: string[] = olds.filter(function(dep) { return news.indexOf(dep)<0; });
+
     // The following is not essential, as `lib` is not an option, it's always there.
     // However, we do it to be explicit.
     if (rmvs.indexOf('lib')>=0) {
@@ -645,7 +651,7 @@ angular.module('app').controller('doodle-controller', [
     // TODO: Optimize so that we don't keep loading `lib`.
     var addUnits: { name: string; fileName: string }[] = addOpts.map(function(option) { return {name: option.name, fileName: option.dts }; })
     if (olds.indexOf('lib') < 0) {
-      addUnits = addUnits.concat({name: 'lib', fileName: 'lib.d.ts'});
+      addUnits = addUnits.concat({name: 'lib', fileName: FILENAME_TYPESCRIPT_CURRENT_LIB_DTS});
     }
 
     var readFile = function(fileName: string, callback: (err, data?) => void) {
@@ -661,7 +667,7 @@ angular.module('app').controller('doodle-controller', [
 
     rmvUnits.forEach(function(rmvUnit){
       workspace.removeScript(rmvUnit.fileName);
-      olds.splice(olds.indexOf(rmvUnit.name),1);
+      olds.splice(olds.indexOf(rmvUnit.name), 1);
     });
 
     addUnits.forEach(function(addUnit) {
