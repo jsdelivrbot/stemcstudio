@@ -58,7 +58,7 @@ module.exports = function(lineman) {
           {src: "museum/eight/eight@1.0.0.d.ts",                             dest: "generated/ts/eight@1.0.0.d.ts"},
           {src: "museum/jsxgraph/jsxgraph@0.99.3.d.ts",                      dest: "generated/ts/jsxgraph@0.99.3.d.ts"},
           {src: "museum/three/three@0.71.0.d.ts",                            dest: "generated/ts/three@0.71.0.d.ts"},
-          {src: "museum/typescript/lib@1.4.1.1.d.ts",                        dest: "generated/ts/lib@1.4.1.1.d.ts"},
+          {src: "museum/typescript/lib@1.4.1.2.d.ts",                        dest: "generated/ts/lib@1.4.1.2.d.ts"},
           {src: "museum/visual/davinci-visual.d.ts",                         dest: "generated/ts/davinci-visual.d.ts"},
           {src: "museum/visual/visual@1.6.0.d.ts",                           dest: "generated/ts/visual@1.6.0.d.ts"},
 
@@ -111,7 +111,7 @@ module.exports = function(lineman) {
           {src: "museum/eight/eight@1.0.0.d.ts",                             dest: "dist/ts/eight@1.0.0.d.ts"},
           {src: "museum/jsxgraph/jsxgraph@0.99.3.d.ts",                      dest: "dist/ts/jsxgraph@0.99.3.d.ts"},
           {src: "museum/three/three@0.71.0.d.ts",                            dest: "dist/ts/three@0.71.0.d.ts"},
-          {src: "museum/typescript/lib@1.4.1.1.d.ts",                        dest: "dist/ts/lib@1.4.1.1.d.ts"},
+          {src: "museum/typescript/lib@1.4.1.2.d.ts",                        dest: "dist/ts/lib@1.4.1.2.d.ts"},
           {src: "museum/visual/visual@1.6.0.d.ts",                           dest: "dist/ts/visual@1.6.0.d.ts"},
 
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot",   dest: "dist/fonts/glyphicons-halflings-regular.eot"},

@@ -6291,6 +6291,23 @@ interface CanvasRenderingContext2D {
      * Might be null if it is not associated with a <canvas> element.
      */
     canvas: HTMLCanvasElement;
+    /**
+     * The `strokeStyle` property specifies the color or style to use for the lines around shapes.
+     * The default is #000 (black).
+     *
+     * Syntax
+     *   ctx.strokeStyle = color;
+     *   ctx.strokeStyle = gradient;
+     *   ctx.strokeStyle = pattern;
+     *
+     * Options
+     *   color
+     *     A string parsed as a CSS <color> value.
+     *   gradient
+     *     A CanvasGradient object (a linear or radial gradient).
+     *   pattern
+     *     A CanvasPattern object (a repetitive image).
+     */
     strokeStyle: any;
     globalAlpha: number;
     shadowOffsetY: number;
@@ -6419,7 +6436,11 @@ interface CanvasRenderingContext2D {
      * non-zero winding rule.
      */
     stroke(): void;
-    strokeRect(x: number, y: number, w: number, h: number): void;
+    /**
+     * The `strokeRect` method paints a rectangle which has a starting point at (x, y) and
+     * has a width and an height onto the canvas, using the current stroke style.
+     */
+    strokeRect(x: number, y: number, width: number, height: number): void;
     setLineDash(segments: number[]): void;
     strokeText(text: string, x: number, y: number, maxWidth?: number): void;
     /**
