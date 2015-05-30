@@ -48,7 +48,7 @@ module.exports = function(lineman) {
           {src: "museum/d3/d3@3.5.5.min.js",                                 dest: "generated/js/d3@3.5.5.min.js"},
           {src: "museum/eight/eight@1.0.0.min.js",                           dest: "generated/js/eight@1.0.0.min.js"},
           {src: "museum/jsxgraph/jsxgraph@0.99.3.min.js",                    dest: "generated/js/jsxgraph@0.99.3.min.js"},
-          {src: "museum/mathscript/mathscript@1.0.1.min.js",                 dest: "generated/js/mathscript@1.0.1.min.js"},
+          {src: "museum/mathscript/mathscript@1.0.2.min.js",                 dest: "generated/js/mathscript@1.0.2.min.js"},
           {src: "museum/three/three@0.71.0.min.js",                          dest: "generated/js/three@0.71.0.min.js"},
           {src: "museum/visual/visual@1.6.0.min.js",                         dest: "generated/js/visual@1.6.0.min.js"},
 
@@ -101,7 +101,7 @@ module.exports = function(lineman) {
           {src: "museum/d3/d3@3.5.5.min.js",                                 dest: "dist/js/d3@3.5.5.min.js"},
           {src: "museum/eight/eight@1.0.0.min.js",                           dest: "dist/js/eight@1.0.0.min.js"},
           {src: "museum/jsxgraph/jsxgraph@0.99.3.min.js",                    dest: "dist/js/jsxgraph@0.99.3.min.js"},
-          {src: "museum/mathscript/mathscript@1.0.1.min.js",                 dest: "dist/js/mathscript@1.0.1.min.js"},
+          {src: "museum/mathscript/mathscript@1.0.2.min.js",                 dest: "dist/js/mathscript@1.0.2.min.js"},
           {src: "museum/three/three@0.71.0.min.js",                          dest: "dist/js/three@0.71.0.min.js"},
           {src: "museum/visual/visual@1.6.0.min.js",                         dest: "dist/js/visual@1.6.0.min.js"},
 
