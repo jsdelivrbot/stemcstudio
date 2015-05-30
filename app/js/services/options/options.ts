@@ -14,8 +14,8 @@ angular.module('app').factory('options', [
     {
       name: 'angular',
       version: 'latest',
-      js: 'angular.min.js',
-      dts: 'angular.d.ts'
+      js: 'angular@1.4.0.min.js',
+      dts: 'angular@1.4.0.d.ts'
     },
     {
       name: 'blade',

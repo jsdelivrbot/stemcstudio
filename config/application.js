@@ -26,11 +26,6 @@ module.exports = function(lineman) {
           {src: "submodules/deuce/build/src-noconflict/worker-typescript.js", dest: "generated/js/worker-typescript.js"},
           {src: "submodules/deuce/build/src-noconflict/worker-css.js",        dest: "generated/js/worker-css.js"},
 
-          {src: "typings/angularjs/angular.d.ts",                            dest: "generated/ts/angular.d.ts"},
-          {src: "bower_components/angular/angular.js",                       dest: "generated/js/angular.js"},
-          {src: "bower_components/angular/angular.min.js",                   dest: "generated/js/angular.min.js"},
-          {src: "bower_components/angular/angular.min.js.map",               dest: "generated/js/angular.min.js.map"},
-
           {src: "bower_components/davinci-blade/dist/davinci-blade.d.ts",    dest: "generated/ts/davinci-blade.d.ts"},
           {src: "bower_components/davinci-blade/dist/davinci-blade.js",      dest: "generated/js/davinci-blade.js"},
           {src: "bower_components/davinci-blade/dist/davinci-blade.min.js",  dest: "generated/js/davinci-blade.min.js"},
@@ -43,16 +38,19 @@ module.exports = function(lineman) {
           {src: "bower_components/threejs/build/three.js",                   dest: "generated/js/three.js"},
           {src: "bower_components/threejs/build/three.min.js",               dest: "generated/js/three.min.js"},
 
-          {src: "museum/angular/angular@1.4.0-rc.1.min.js",                  dest: "generated/js/angular@1.4.0-rc.1.min.js"},
+          {src: "museum/angular/angular@1.4.0.d.ts",                         dest: "generated/ts/angular@1.4.0.d.ts"},
+          {src: "museum/angular/angular@1.4.0.js",                           dest: "generated/js/angular@1.4.0.js"},
+          {src: "museum/angular/angular@1.4.0.min.js",                       dest: "generated/js/angular@1.4.0.min.js"},
+          {src: "museum/angular/angular@1.4.0.min.js.map",                   dest: "generated/js/angular@1.4.0.min.js.map"},
+
           {src: "museum/blade/blade@1.0.1.min.js",                           dest: "generated/js/blade@1.0.1.min.js"},
           {src: "museum/d3/d3@3.5.5.min.js",                                 dest: "generated/js/d3@3.5.5.min.js"},
           {src: "museum/eight/eight@1.0.0.min.js",                           dest: "generated/js/eight@1.0.0.min.js"},
           {src: "museum/jsxgraph/jsxgraph@0.99.3.min.js",                    dest: "generated/js/jsxgraph@0.99.3.min.js"},
-          {src: "museum/mathscript/mathscript@1.0.2.min.js",                 dest: "generated/js/mathscript@1.0.2.min.js"},
+          {src: "museum/mathscript/mathscript@1.0.4.min.js",                 dest: "generated/js/mathscript@1.0.4.min.js"},
           {src: "museum/three/three@0.71.0.min.js",                          dest: "generated/js/three@0.71.0.min.js"},
           {src: "museum/visual/visual@1.6.0.min.js",                         dest: "generated/js/visual@1.6.0.min.js"},
 
-          {src: "museum/angular/angular@1.4.0-rc.1.d.ts",                    dest: "generated/ts/angular@1.4.0-rc.1.d.ts"},
           {src: "museum/blade/blade@1.0.1.d.ts",                             dest: "generated/ts/blade@1.0.1.d.ts"},
           {src: "museum/d3/d3@3.5.5.d.ts",                                   dest: "generated/ts/d3@3.5.5.d.ts"},
           {src: "museum/eight/eight@1.0.0.d.ts",                             dest: "generated/ts/eight@1.0.0.d.ts"},
@@ -79,11 +77,6 @@ module.exports = function(lineman) {
           {src: "submodules/deuce/build/src-min-noconflict/worker-typescript.js", dest: "dist/js/worker-typescript.js"},
           {src: "submodules/deuce/build/src-min-noconflict/worker-css.js",        dest: "dist/js/worker-css.js"},
 
-          {src: "typings/angularjs/angular.d.ts",                            dest: "dist/ts/angular.d.ts"},
-          {src: "bower_components/angular/angular.js",                       dest: "dist/js/angular.js"},
-          {src: "bower_components/angular/angular.min.js",                   dest: "dist/js/angular.min.js"},
-          {src: "bower_components/angular/angular.min.js.map",               dest: "dist/js/angular.min.js.map"},
-
           {src: "bower_components/davinci-blade/dist/davinci-blade.d.ts",    dest: "dist/ts/davinci-blade.d.ts"},
           {src: "bower_components/davinci-blade/dist/davinci-blade.js",      dest: "dist/js/davinci-blade.js"},
           {src: "bower_components/davinci-blade/dist/davinci-blade.min.js",  dest: "dist/js/davinci-blade.min.js"},
@@ -96,16 +89,19 @@ module.exports = function(lineman) {
           {src: "bower_components/threejs/build/three.js",                   dest: "dist/js/three.js"},
           {src: "bower_components/threejs/build/three.min.js",               dest: "dist/js/three.min.js"},
 
-          {src: "museum/angular/angular@1.4.0-rc.1.min.js",                  dest: "dist/js/angular@1.4.0-rc.1.min.js"},
+          {src: "museum/angular/angular@1.4.0.d.ts",                         dest: "dist/ts/angular@1.4.0.d.ts"},
+          {src: "museum/angular/angular@1.4.0.js",                           dest: "dist/js/angular@1.4.0.js"},
+          {src: "museum/angular/angular@1.4.0.min.js",                       dest: "dist/js/angular@1.4.0.min.js"},
+          {src: "museum/angular/angular@1.4.0.min.js.map",                   dest: "dist/js/angular@1.4.0.min.js.map"},
+
           {src: "museum/blade/blade@1.0.1.min.js",                           dest: "dist/js/blade@1.0.1.min.js"},
           {src: "museum/d3/d3@3.5.5.min.js",                                 dest: "dist/js/d3@3.5.5.min.js"},
           {src: "museum/eight/eight@1.0.0.min.js",                           dest: "dist/js/eight@1.0.0.min.js"},
           {src: "museum/jsxgraph/jsxgraph@0.99.3.min.js",                    dest: "dist/js/jsxgraph@0.99.3.min.js"},
-          {src: "museum/mathscript/mathscript@1.0.2.min.js",                 dest: "dist/js/mathscript@1.0.2.min.js"},
+          {src: "museum/mathscript/mathscript@1.0.4.min.js",                 dest: "dist/js/mathscript@1.0.4.min.js"},
           {src: "museum/three/three@0.71.0.min.js",                          dest: "dist/js/three@0.71.0.min.js"},
           {src: "museum/visual/visual@1.6.0.min.js",                         dest: "dist/js/visual@1.6.0.min.js"},
 
-          {src: "museum/angular/angular@1.4.0-rc.1.d.ts",                    dest: "dist/ts/angular@1.4.0-rc.1.d.ts"},
           {src: "museum/blade/blade@1.0.1.d.ts",                             dest: "dist/ts/blade@1.0.1.d.ts"},
           {src: "museum/d3/d3@3.5.5.d.ts",                                   dest: "dist/ts/d3@3.5.5.d.ts"},
           {src: "museum/eight/eight@1.0.0.d.ts",                             dest: "dist/ts/eight@1.0.0.d.ts"},
