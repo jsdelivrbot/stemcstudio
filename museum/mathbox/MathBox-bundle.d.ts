@@ -3,9 +3,18 @@
 // Definitions by: David Holmes <http://github.com/mathdoodle>
 
 /**
- *
+ * Functional constructor for MathBox.
  */
-declare var mathBox: (options) => MathBox.IMathBox;
+declare var mathBox: (options: {
+    cameraControls: boolean;
+    cursor: boolean;
+    controlClass;
+    elementResize: boolean;
+    fullscreen: boolean;
+    screenshot: boolean;
+    stats: boolean;
+    scale: number;
+}) => MathBox.IMathBox;
 
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -44,11 +53,11 @@ declare module MathBox {
     /**
      *
      */
-    curve(options: {}): IStage;
+    curve(options: {n:number, domain: number[], data?: number[][], color?: number, lineWidth: number}): IStage;
     /**
      *
      */
-    grid(options: {axis: number[], color: number, lineWidth: number, offset?: number[]}): IStage;
+    grid(options: {axis: number[], color: number, lineWidth?: number, offset?: number[]}): IStage;
     /**
      *
      */
@@ -56,7 +65,7 @@ declare module MathBox {
     /**
      *
      */
-    surface(options): IStage;
+    surface(options: {shaded: boolean, domain: [][],n: number[], expression: (x: number, y: number) => number[], color?: number, opacity: number}): IStage;
     /**
      *
      */
