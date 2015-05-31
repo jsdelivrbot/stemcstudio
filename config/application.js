@@ -67,6 +67,9 @@ module.exports = function(lineman) {
           {src: "museum/mathbox/MathBox.glsl.html",                          dest: "generated/shaders/MathBox.glsl.html"},
           {src: "museum/mathbox/snippets.glsl.html",                         dest: "generated/shaders/snippets.glsl.html"},
 
+          {src: "museum/threebox/ThreeBox@1.0.0.min.js",                     dest: "generated/js/ThreeBox@1.0.0.min.js"},
+          {src: "museum/threebox/ThreeBox@1.0.0.d.ts",                       dest: "generated/ts/ThreeBox@1.0.0.d.ts"},
+
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot",   dest: "generated/fonts/glyphicons-halflings-regular.eot"},
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.svg",   dest: "generated/fonts/glyphicons-halflings-regular.svg"},
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf",   dest: "generated/fonts/glyphicons-halflings-regular.ttf"},
@@ -123,6 +126,9 @@ module.exports = function(lineman) {
           {src: "museum/mathbox/MathBox-bundle.js",                          dest: "dist/js/MathBox-bundle.js"},
           {src: "museum/mathbox/MathBox.glsl.html",                          dest: "dist/shaders/MathBox.glsl.html"},
           {src: "museum/mathbox/snippets.glsl.html",                         dest: "dist/shaders/snippets.glsl.html"},
+
+          {src: "museum/threebox/ThreeBox@1.0.0.min.js",                     dest: "dist/js/ThreeBox@1.0.0.min.js"},
+          {src: "museum/threebox/ThreeBox@1.0.0.d.ts",                       dest: "dist/ts/ThreeBox@1.0.0.d.ts"},
 
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot",   dest: "dist/fonts/glyphicons-halflings-regular.eot"},
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.svg",   dest: "dist/fonts/glyphicons-halflings-regular.svg"},

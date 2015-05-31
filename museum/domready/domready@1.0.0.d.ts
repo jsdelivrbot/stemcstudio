@@ -8,7 +8,7 @@
 declare var DomReady: domready.IDomReady;
 
 ///////////////////////////////////////////////////////////////////////////////
-// ng module (angular.js)
+//
 ///////////////////////////////////////////////////////////////////////////////
 declare module domready {
 
@@ -23,7 +23,7 @@ declare module domready {
      * Syntax:
      *
      *   DomReady.ready(function() {
-     *     // This code will be invoked when the DOM is ready.
+     *     // This code will be executed when the DOM has been loaded.
      *   });
      */
     ready(callback: () => void, args?): void;

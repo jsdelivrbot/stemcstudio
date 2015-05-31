@@ -42,6 +42,12 @@ angular.module('app').factory('options', [
       dts: 'jsxgraph@0.99.3.d.ts'
     },
     {
+      name: 'ThreeBox',
+      version: 'latest',
+      js: 'ThreeBox@1.0.0.min.js',
+      dts: 'ThreeBox@1.0.0.d.ts'
+    },
+    {
       name: 'three',
       version: 'latest',
       js: 'three.min.js',

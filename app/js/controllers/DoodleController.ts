@@ -603,12 +603,14 @@ angular.module('app').controller('doodle-controller', [
         var chosenFileNames: string[] = selOpts.map(function(option: IOption) {return option.js;});
         // TODO: We will later want to make operator overloading configurable for speed.
         var scriptFileNames: string[] = chosenFileNames.concat(FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS);
+        // TOOD: Don't fix the location of the JavaScript here.
         var scriptTags = scriptFileNames.map(function(fileName: string) {
           return "<script src='" + DOMAIN + "/js/" + fileName + "'></script>\n";
         });
 
         var html = doodles.current().html;
         html = html.replace(/<!-- SCRIPTS-MARKER -->/, scriptTags.join(""));
+        // TODO: be more explicit! The wrapper should be in the HTML.
         html = html.replace(/<!-- STYLE-MARKER -->/, ['<style type="text/css">', doodles.current().less,'</style>'].join(""));
         html = html.replace(/<!-- CODE-MARKER -->/, mathscript.transpile(doodles.current().lastKnownJs));
 
