@@ -117,6 +117,13 @@ module.exports = function(lineman) {
           {src: "museum/typescript/lib@1.4.1.2.d.ts",                        dest: "dist/ts/lib@1.4.1.2.d.ts"},
           {src: "museum/visual/visual@1.6.0.d.ts",                           dest: "dist/ts/visual@1.6.0.d.ts"},
 
+          {src: "museum/domready/domready@1.0.0.js",                         dest: "dist/js/domready@1.0.0.js"},
+          {src: "museum/domready/domready@1.0.0.d.ts",                       dest: "dist/ts/domready@1.0.0.d.ts"},
+
+          {src: "museum/mathbox/MathBox-bundle.js",                          dest: "dist/js/MathBox-bundle.js"},
+          {src: "museum/mathbox/MathBox.glsl.html",                          dest: "dist/shaders/MathBox.glsl.html"},
+          {src: "museum/mathbox/snippets.glsl.html",                         dest: "dist/shaders/snippets.glsl.html"},
+
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot",   dest: "dist/fonts/glyphicons-halflings-regular.eot"},
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.svg",   dest: "dist/fonts/glyphicons-halflings-regular.svg"},
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf",   dest: "dist/fonts/glyphicons-halflings-regular.ttf"},
