@@ -32,7 +32,7 @@ angular.module('app').factory('options', [
     {
       name: 'domready',
       version: 'latest',
-      js: 'domready@1.0.0.min.js',
+      js: 'domready@1.0.0.js',
       dts: 'domready@1.0.0.d.ts'
     },
     {
@@ -40,6 +40,12 @@ angular.module('app').factory('options', [
       version: '0.99.3',
       js: 'jsxgraph@0.99.3.min.js',
       dts: 'jsxgraph@0.99.3.d.ts'
+    },
+    {
+      name: 'MathBox-bundle',
+      version: 'latest',
+      js: 'MathBox-bundle.js',
+      dts: 'MathBox-bundle.d.ts'
     },
     {
       name: 'ThreeBox',

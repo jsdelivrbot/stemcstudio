@@ -64,8 +64,10 @@ module.exports = function(lineman) {
           {src: "museum/domready/domready@1.0.0.d.ts",                       dest: "generated/ts/domready@1.0.0.d.ts"},
 
           {src: "museum/mathbox/MathBox-bundle.js",                          dest: "generated/js/MathBox-bundle.js"},
+          {src: "museum/mathbox/MathBox-bundle.d.ts",                        dest: "generated/ts/MathBox-bundle.d.ts"},
           {src: "museum/mathbox/MathBox.glsl.html",                          dest: "generated/shaders/MathBox.glsl.html"},
           {src: "museum/mathbox/snippets.glsl.html",                         dest: "generated/shaders/snippets.glsl.html"},
+          {src: "museum/mathbox/MathBox.d.ts",                               dest: "generated/ts/MathBox.d.ts"},
 
           {src: "museum/threebox/ThreeBox@1.0.0.min.js",                     dest: "generated/js/ThreeBox@1.0.0.min.js"},
           {src: "museum/threebox/ThreeBox@1.0.0.d.ts",                       dest: "generated/ts/ThreeBox@1.0.0.d.ts"},
@@ -124,8 +126,10 @@ module.exports = function(lineman) {
           {src: "museum/domready/domready@1.0.0.d.ts",                       dest: "dist/ts/domready@1.0.0.d.ts"},
 
           {src: "museum/mathbox/MathBox-bundle.js",                          dest: "dist/js/MathBox-bundle.js"},
+          {src: "museum/mathbox/MathBox-bundle.d.ts",                        dest: "dist/ts/MathBox-bundle.d.ts"},
           {src: "museum/mathbox/MathBox.glsl.html",                          dest: "dist/shaders/MathBox.glsl.html"},
           {src: "museum/mathbox/snippets.glsl.html",                         dest: "dist/shaders/snippets.glsl.html"},
+          {src: "museum/mathbox/MathBox.d.ts",                               dest: "dist/ts/MathBox.d.ts"},
 
           {src: "museum/threebox/ThreeBox@1.0.0.min.js",                     dest: "dist/js/ThreeBox@1.0.0.min.js"},
           {src: "museum/threebox/ThreeBox@1.0.0.d.ts",                       dest: "dist/ts/ThreeBox@1.0.0.d.ts"},
