@@ -30,6 +30,12 @@ angular.module('app').factory('options', [
       dts: 'd3@3.5.5.d.ts'
     },
     {
+      name: 'domready',
+      version: 'latest',
+      js: 'domready@1.0.0.min.js',
+      dts: 'domready@1.0.0.d.ts'
+    },
+    {
       name: 'jsxgraph',
       version: '0.99.3',
       js: 'jsxgraph@0.99.3.min.js',

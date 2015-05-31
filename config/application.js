@@ -60,6 +60,13 @@ module.exports = function(lineman) {
           {src: "museum/visual/davinci-visual.d.ts",                         dest: "generated/ts/davinci-visual.d.ts"},
           {src: "museum/visual/visual@1.6.0.d.ts",                           dest: "generated/ts/visual@1.6.0.d.ts"},
 
+          {src: "museum/domready/domready@1.0.0.js",                         dest: "generated/js/domready@1.0.0.js"},
+          {src: "museum/domready/domready@1.0.0.d.ts",                       dest: "generated/ts/domready@1.0.0.d.ts"},
+
+          {src: "museum/mathbox/MathBox-bundle.js",                          dest: "generated/js/MathBox-bundle.js"},
+          {src: "museum/mathbox/MathBox.glsl.html",                          dest: "generated/shaders/MathBox.glsl.html"},
+          {src: "museum/mathbox/snippets.glsl.html",                         dest: "generated/shaders/snippets.glsl.html"},
+
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot",   dest: "generated/fonts/glyphicons-halflings-regular.eot"},
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.svg",   dest: "generated/fonts/glyphicons-halflings-regular.svg"},
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf",   dest: "generated/fonts/glyphicons-halflings-regular.ttf"},
