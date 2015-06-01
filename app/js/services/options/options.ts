@@ -41,17 +41,49 @@ angular.module('app').factory('options', [
       js: 'jsxgraph@0.99.3.min.js',
       dts: 'jsxgraph@0.99.3.d.ts'
     },
+    /*
     {
-      name: 'MathBox-bundle',
+      name: 'tquery',
+      version: 'latest',
+      js: 'tquery@1.0.0.js',
+      dts: 'tquery@1.0.0.d.ts'
+    },
+    {
+      name: 'microajax',
+      version: 'latest',
+      js: 'microajax.js',
+      dts: 'microajax.d.ts'
+    },
+    {
+      name: 'microevent',
+      version: 'latest',
+      js: 'microevent.js',
+      dts: 'microevent.d.ts'
+    },
+    {
+      name: 'screenshot',
+      version: 'latest',
+      js: 'THREEx.screenshot.js',
+      dts: 'THREEx.screenshot.d.ts'
+    },
+    {
+      name: 'ThreeBox-core',
+      version: 'latest',
+      js: 'ThreeBox-core@1.0.0.js',
+      dts: 'ThreeBox-core@1.0.0.d.ts'
+    },
+    {
+      name: 'ThreeRTT-core',
+      version: 'latest',
+      js: 'ThreeRTT-core.js',
+      dts: 'ThreeRTT-core.d.ts'
+    },
+    */
+    {
+      name: 'MathBox',
       version: 'latest',
       js: 'MathBox-bundle.js',
       dts: 'MathBox-bundle.d.ts'
-    },
-    {
-      name: 'ThreeBox',
-      version: 'latest',
-      js: 'ThreeBox@1.0.0.min.js',
-      dts: 'ThreeBox@1.0.0.d.ts'
     },
     {
       name: 'three',

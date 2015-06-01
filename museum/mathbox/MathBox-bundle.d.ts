@@ -65,15 +65,29 @@ declare module MathBox {
     /**
      *
      */
-    surface(options: {shaded: boolean, domain: [][],n: number[], expression: (x: number, y: number) => number[], color?: number, opacity: number}): IStage;
+    surface(options: {shaded?: boolean, domain?: [][], n?: number[], expression?: (x: number, y: number) => number[], color?: number, opacity?: number}): IStage;
     /**
      *
      */
     transition(duration : number): IStage;
     /**
+     * Adds a Vector primitive into the scene.
      *
+     * Parameters:
+     *   n
+     *     Number of vectors. Default is 1.
+     *   data
+     *     Array of alternating start and end points, each an array of 2 or 3 elements. Default is null.
+     *   expression
+     *     Live expression for start/end points. Default is function returning 0.
+     *   line
+     *     Whether to draw vector lines. Default is true.
+     *   arrow
+     *     Whether to draw arrow heads. Default is true.
+     *   size
+     *     Size of the arrowhead relative to the stage. Default is 0.07.
      */
-    vector(options: {n: number, data: number[][]}): IStage;
+    vector(options: {n?: number, data?: number[][], expression?: (i, end) => number[], line?: boolean, arrow?: boolean, size?: number}): IStage;
     /**
      *
      */

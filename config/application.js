@@ -63,17 +63,42 @@ module.exports = function(lineman) {
           {src: "museum/domready/domready@1.0.0.js",                         dest: "generated/js/domready@1.0.0.js"},
           {src: "museum/domready/domready@1.0.0.d.ts",                       dest: "generated/ts/domready@1.0.0.d.ts"},
 
-          {src: "museum/mathbox/MathBox-bundle.js",                          dest: "generated/js/MathBox-bundle.js"},
+          // Using bundle is a stop-gap until the enginering is resolved.
           {src: "museum/mathbox/MathBox-bundle.d.ts",                        dest: "generated/ts/MathBox-bundle.d.ts"},
+          {src: "museum/mathbox/MathBox-bundle.js",                          dest: "generated/js/MathBox-bundle.js"},
+          {src: "museum/mathbox/MathBox-bundle.min.js",                      dest: "generated/js/MathBox-bundle.min.js"},
+
+          {src: "museum/mathbox/MathBox-core.d.ts",                          dest: "generated/ts/MathBox-core.d.ts"},
+          {src: "museum/mathbox/MathBox-core.js",                            dest: "generated/js/MathBox-core.js"},
+          {src: "museum/mathbox/MathBox-core.min.js",                        dest: "generated/js/MathBox-core.min.js"},
           {src: "museum/mathbox/MathBox.glsl.html",                          dest: "generated/shaders/MathBox.glsl.html"},
           {src: "museum/mathbox/snippets.glsl.html",                         dest: "generated/shaders/snippets.glsl.html"},
-          {src: "museum/mathbox/MathBox.d.ts",                               dest: "generated/ts/MathBox.d.ts"},
 
-          {src: "museum/threebox/ThreeBox@1.0.0.min.js",                     dest: "generated/js/ThreeBox@1.0.0.min.js"},
-          {src: "museum/threebox/ThreeBox@1.0.0.d.ts",                       dest: "generated/ts/ThreeBox@1.0.0.d.ts"},
+          {src: "museum/microajax/microajax.d.ts",                           dest: "generated/ts/microajax.d.ts"},
+          {src: "museum/microajax/microajax.js",                             dest: "generated/js/microajax.js"},
 
-          {src: "museum/underscore/underscore@1.8.3.min.js",                 dest: "generated/js/underscore@1.8.3.min.js"},
+          {src: "museum/microevent/microevent.d.ts",                         dest: "generated/ts/microevent.d.ts"},
+          {src: "museum/microevent/microevent.js",                           dest: "generated/js/microevent.js"},
+
+          {src: "museum/threebox/ThreeBox-core@1.0.0.d.ts",                  dest: "generated/ts/ThreeBox-core@1.0.0.d.ts"},
+          {src: "museum/threebox/ThreeBox-core@1.0.0.js",                    dest: "generated/js/ThreeBox-core@1.0.0.js"},
+          {src: "museum/threebox/ThreeBox-core@1.0.0.min.js",                dest: "generated/js/ThreeBox-core@1.0.0.min.js"},
+
+          {src: "museum/threeRTT/ThreeRTT-core.d.ts",                        dest: "generated/ts/ThreeRTT-core.d.ts"},
+          {src: "museum/threeRTT/ThreeRTT-core.js",                          dest: "generated/js/ThreeRTT-core.js"},
+          {src: "museum/threeRTT/ThreeRTT-core.min.js",                      dest: "generated/js/ThreeRTT-core.min.js"},
+          {src: "museum/threeRTT/ThreeRTT.glsl.html",                        dest: "generated/shaders/ThreeRTT.glsl.html"},
+
+          {src: "museum/threex/THREEx.screenshot.d.ts",                      dest: "generated/ts/THREEx.screenshot.d.ts"},
+          {src: "museum/threex/THREEx.screenshot.js",                        dest: "generated/js/THREEx.screenshot.js"},
+
+          {src: "museum/tquery/tquery@1.0.0.d.ts",                           dest: "generated/ts/tquery@1.0.0.d.ts"},
+          {src: "museum/tquery/tquery@1.0.0.js",                             dest: "generated/js/tquery@1.0.0.js"},
+          {src: "museum/tquery/tquery@1.0.0.min.js",                         dest: "generated/js/tquery@1.0.0.min.js"},
+
           {src: "museum/underscore/underscore@1.8.3.d.ts",                   dest: "generated/ts/underscore@1.8.3.d.ts"},
+          {src: "museum/underscore/underscore@1.8.3.js",                     dest: "generated/js/underscore@1.8.3.js"},
+          {src: "museum/underscore/underscore@1.8.3.min.js",                 dest: "generated/js/underscore@1.8.3.min.js"},
 
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot",   dest: "generated/fonts/glyphicons-halflings-regular.eot"},
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.svg",   dest: "generated/fonts/glyphicons-halflings-regular.svg"},
@@ -128,17 +153,39 @@ module.exports = function(lineman) {
           {src: "museum/domready/domready@1.0.0.js",                         dest: "dist/js/domready@1.0.0.js"},
           {src: "museum/domready/domready@1.0.0.d.ts",                       dest: "dist/ts/domready@1.0.0.d.ts"},
 
-          {src: "museum/mathbox/MathBox-bundle.js",                          dest: "dist/js/MathBox-bundle.js"},
           {src: "museum/mathbox/MathBox-bundle.d.ts",                        dest: "dist/ts/MathBox-bundle.d.ts"},
+          {src: "museum/mathbox/MathBox-bundle.js",                          dest: "dist/js/MathBox-bundle.js"},
+          {src: "museum/mathbox/MathBox-bundle.min.js",                      dest: "dist/js/MathBox-bundle.min.js"},
+
+          {src: "museum/mathbox/MathBox-core.d.ts",                          dest: "dist/ts/MathBox-core.d.ts"},
+          {src: "museum/mathbox/MathBox-core.js",                            dest: "dist/js/MathBox-core.js"},
+          {src: "museum/mathbox/MathBox-core.min.js",                        dest: "dist/js/MathBox-core.min.js"},
+
           {src: "museum/mathbox/MathBox.glsl.html",                          dest: "dist/shaders/MathBox.glsl.html"},
           {src: "museum/mathbox/snippets.glsl.html",                         dest: "dist/shaders/snippets.glsl.html"},
-          {src: "museum/mathbox/MathBox.d.ts",                               dest: "dist/ts/MathBox.d.ts"},
 
-          {src: "museum/threebox/ThreeBox@1.0.0.min.js",                     dest: "dist/js/ThreeBox@1.0.0.min.js"},
-          {src: "museum/threebox/ThreeBox@1.0.0.d.ts",                       dest: "dist/ts/ThreeBox@1.0.0.d.ts"},
+          {src: "museum/microajax/microajax.d.ts",                           dest: "dist/ts/microajax.d.ts"},
+          {src: "museum/microajax/microajax.js",                             dest: "dist/js/microajax.js"},
 
-          {src: "museum/underscore/underscore@1.8.3.min.js",                 dest: "dist/js/underscore@1.8.3.min.js"},
+          {src: "museum/microevent/microevent.d.ts",                         dest: "dist/ts/microevent.d.ts"},
+          {src: "museum/microevent/microevent.js",                           dest: "dist/js/microevent.js"},
+
+          {src: "museum/threebox/ThreeBox-core@1.0.0.d.ts",                  dest: "dist/ts/ThreeBox-core@1.0.0.d.ts"},
+          {src: "museum/threebox/ThreeBox-core@1.0.0.js",                    dest: "dist/js/ThreeBox-core@1.0.0.js"},
+          {src: "museum/threebox/ThreeBox-core@1.0.0.min.js",                dest: "dist/js/ThreeBox-core@1.0.0.min.js"},
+
+          {src: "museum/threeRTT/ThreeRTT-core.d.ts",                        dest: "dist/ts/ThreeRTT-core.d.ts"},
+          {src: "museum/threeRTT/ThreeRTT-core.js",                          dest: "dist/js/ThreeRTT-core.js"},
+          {src: "museum/threeRTT/ThreeRTT-core.min.js",                      dest: "dist/js/ThreeRTT-core.min.js"},
+          {src: "museum/threeRTT/ThreeRTT.glsl.html",                        dest: "dist/shaders/ThreeRTT.glsl.html"},
+
+          {src: "museum/tquery/tquery@1.0.0.d.ts",                           dest: "dist/ts/tquery@1.0.0.d.ts"},
+          {src: "museum/tquery/tquery@1.0.0.js",                             dest: "dist/js/tquery@1.0.0.js"},
+          {src: "museum/tquery/tquery@1.0.0.min.js",                         dest: "dist/js/tquery@1.0.0.min.js"},
+
           {src: "museum/underscore/underscore@1.8.3.d.ts",                   dest: "dist/ts/underscore@1.8.3.d.ts"},
+          {src: "museum/underscore/underscore@1.8.3.js",                     dest: "dist/js/underscore@1.8.3.js"},
+          {src: "museum/underscore/underscore@1.8.3.min.js",                 dest: "dist/js/underscore@1.8.3.min.js"},
 
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot",   dest: "dist/fonts/glyphicons-halflings-regular.eot"},
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.svg",   dest: "dist/fonts/glyphicons-halflings-regular.svg"},
