@@ -25,7 +25,7 @@ declare var mathBox: (options: {
 declare module MathBox {
 
   class Director {
-    constructor(mathbox: IStage, script) {
+    constructor(mathbox: IStage, script: {}[][][]) {
     }
     forward(): void;
     back(): void;
@@ -41,7 +41,7 @@ declare module MathBox {
     /**
      *
      */
-    animate(selector, options: {orbit?: number, phi?: number, offset?: number[]}, animate: {delay?: number, duration: number}): void;
+    animate(selector: string, options: {orbit?: number, phi?: number, offset?: number[]}, animate: {delay?: number, duration: number}): void;
     /**
      *
      */
@@ -53,7 +53,7 @@ declare module MathBox {
     /**
      *
      */
-    curve(options: {n:number, domain: number[], data?: number[][], color?: number, lineWidth: number}): IStage;
+    curve(options: {n:number, domain?: number[], data?: number[][], color?: number, lineWidth: number}): IStage;
     /**
      *
      */
@@ -61,7 +61,7 @@ declare module MathBox {
     /**
      *
      */
-    set(selector, options): IStage;
+    set(selector: string, options): IStage;
     /**
      *
      */

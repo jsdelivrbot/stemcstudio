@@ -3,9 +3,18 @@
 // Definitions by: David Holmes <http://github.com/mathdoodle>
 
 /**
- *
+ * Functional constructor for MathBox.
  */
-declare var mathBox: (options) => MathBox.IMathBox;
+declare var mathBox: (options: {
+    cameraControls: boolean;
+    cursor: boolean;
+    controlClass;
+    elementResize: boolean;
+    fullscreen: boolean;
+    screenshot: boolean;
+    stats: boolean;
+    scale: number;
+}) => MathBox.IMathBox;
 
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -16,7 +25,7 @@ declare var mathBox: (options) => MathBox.IMathBox;
 declare module MathBox {
 
   class Director {
-    constructor(mathbox: IStage, script) {
+    constructor(mathbox: IStage, script: {}[][][]) {
     }
     forward(): void;
     back(): void;
@@ -32,7 +41,7 @@ declare module MathBox {
     /**
      *
      */
-    animate(selector, options: {orbit?: number, phi?: number, offset?: number[]}, animate: {delay?: number, duration: number}): void;
+    animate(selector: string, options: {orbit?: number, phi?: number, offset?: number[]}, animate: {delay?: number, duration: number}): void;
     /**
      *
      */
@@ -44,19 +53,19 @@ declare module MathBox {
     /**
      *
      */
-    curve(options: {}): IStage;
+    curve(options: {n:number, domain?: number[], data?: number[][], color?: number, lineWidth: number}): IStage;
     /**
      *
      */
-    grid(options: {axis: number[], color: number, lineWidth: number, offset?: number[]}): IStage;
+    grid(options: {axis: number[], color: number, lineWidth?: number, offset?: number[]}): IStage;
     /**
      *
      */
-    set(selector, options): IStage;
+    set(selector: string, options): IStage;
     /**
      *
      */
-    surface(options): IStage;
+    surface(options: {shaded: boolean, domain: [][],n: number[], expression: (x: number, y: number) => number[], color?: number, opacity: number}): IStage;
     /**
      *
      */

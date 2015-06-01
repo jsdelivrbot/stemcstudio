@@ -72,6 +72,9 @@ module.exports = function(lineman) {
           {src: "museum/threebox/ThreeBox@1.0.0.min.js",                     dest: "generated/js/ThreeBox@1.0.0.min.js"},
           {src: "museum/threebox/ThreeBox@1.0.0.d.ts",                       dest: "generated/ts/ThreeBox@1.0.0.d.ts"},
 
+          {src: "museum/underscore/underscore@1.8.3.min.js",                 dest: "generated/js/underscore@1.8.3.min.js"},
+          {src: "museum/underscore/underscore@1.8.3.d.ts",                   dest: "generated/ts/underscore@1.8.3.d.ts"},
+
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot",   dest: "generated/fonts/glyphicons-halflings-regular.eot"},
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.svg",   dest: "generated/fonts/glyphicons-halflings-regular.svg"},
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf",   dest: "generated/fonts/glyphicons-halflings-regular.ttf"},
@@ -133,6 +136,9 @@ module.exports = function(lineman) {
 
           {src: "museum/threebox/ThreeBox@1.0.0.min.js",                     dest: "dist/js/ThreeBox@1.0.0.min.js"},
           {src: "museum/threebox/ThreeBox@1.0.0.d.ts",                       dest: "dist/ts/ThreeBox@1.0.0.d.ts"},
+
+          {src: "museum/underscore/underscore@1.8.3.min.js",                 dest: "dist/js/underscore@1.8.3.min.js"},
+          {src: "museum/underscore/underscore@1.8.3.d.ts",                   dest: "dist/ts/underscore@1.8.3.d.ts"},
 
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot",   dest: "dist/fonts/glyphicons-halflings-regular.eot"},
           {src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.svg",   dest: "dist/fonts/glyphicons-halflings-regular.svg"},

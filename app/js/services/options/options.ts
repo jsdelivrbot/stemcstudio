@@ -60,6 +60,12 @@ angular.module('app').factory('options', [
       dts: 'three.d.ts'
     },
     {
+      name: 'underscore',
+      version: 'latest',
+      js: 'underscore@1.8.3.min.js',
+      dts: 'underscore@1.8.3.d.ts'
+    },
+    {
       name: 'visual',
       version: 'latest',
       js: 'davinci-visual.min.js',
