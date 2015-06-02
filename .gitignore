@@ -10,5 +10,3 @@
 
 # Ignore the generated files, which are only there for development.
 /generated
-
-submodules/
