@@ -29,7 +29,7 @@ angular.module('app').controller('properties-controller', [
     STATE_DOODLE: string
   ) {
   scope.zombie = JSON.parse(JSON.stringify(doodles.current()));
-  scope.options = options.filter(function() { return true; });
+  scope.options = options.filter(function(option: IOption) { return option.visible; });
   /**
    * This method changes the scope.dependencies array.
    * It is therefore essential that this array is a copy
@@ -48,7 +48,8 @@ angular.module('app').controller('properties-controller', [
 
   scope.doOK = function() {
     doodles.current().description = scope.zombie.description;
-    doodles.current().dependencies = scope.zombie.dependencies;
+    // Perform some clanup.
+    doodles.current().dependencies = scope.zombie.dependencies.filter(function(name) {return options.filter(function(option){return option.visible && option.name === name}).length > 0});
     $state.go(STATE_DOODLE);
   };
 

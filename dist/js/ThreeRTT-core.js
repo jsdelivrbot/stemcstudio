@@ -18,8 +18,7 @@ ThreeRTT.getShader = function (id) {
   return elem && elem.innerText || id;
 };
 
-// Simple loop helper
-_.loop = function (n, callback) {
+ThreeRTT.loop = function (n, callback) {
   for (var i = 0; i < n; ++i) callback(i);
 };
 
@@ -167,10 +166,10 @@ ThreeRTT.Stage.prototype = {
 
   // Render virtual render target.
   render: function () {
-	  this.target.clear();
+    this.target.clear();
 
     _.each(this.passes, function (n, i) {
-      _.loop(n, function (j) {
+      ThreeRTT.loop(n, function (j) {
         this.target.render(this.scenes[i], this.camera);
       }.bind(this));
     }.bind(this));
@@ -382,7 +381,7 @@ ThreeRTT.RenderTarget.prototype = {
 
     // Allocate/Refresh real render targets
     var targets = this.targets = [];
-    _.loop(n, function (i) {
+    ThreeRTT.loop(n, function (i) {
 
       targets.push(new THREE.WebGLRenderTarget(
         this.width,
@@ -403,7 +402,7 @@ ThreeRTT.RenderTarget.prototype = {
 
     // Keep virtual targets around if possible.
     if (n > virtuals.length) {
-      _.loop(n - virtuals.length, function () {
+      ThreeRTT.loop(n - virtuals.length, function () {
         virtuals.push(original.clone());
       }.bind(this));
     }
@@ -438,7 +437,7 @@ ThreeRTT.RenderTarget.prototype = {
     this.index = index = (index + 1) % n;
 
     // Point virtual render targets to last rendered frame(s) in order.
-    _.loop(v, function (i) {
+    ThreeRTT.loop(v, function (i) {
       var dst = virtuals[i],
           src = targets[(v - i + index) % n];
 
@@ -496,7 +495,7 @@ ThreeRTT.RenderTarget.prototype = {
     if (n) {
       // Expose frame history as array of textures.
       var textures = [];
-      _.loop(n + 1, function (j) {
+      ThreeRTT.loop(n + 1, function (j) {
         textures.push(this.read(-j));
       }.bind(this));
       return {

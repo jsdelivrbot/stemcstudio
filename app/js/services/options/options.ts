@@ -14,94 +14,162 @@ angular.module('app').factory('options', [
     {
       name: 'angular',
       version: 'latest',
+      visible: true,
       js: 'angular@1.4.0.min.js',
-      dts: 'angular@1.4.0.d.ts'
+      dts: 'angular@1.4.0.d.ts',
+      dependencies: {
+
+      }
     },
     {
       name: 'blade',
       version: 'latest',
+      visible: true,
       js: 'davinci-blade.min.js',
-      dts: 'davinci-blade.d.ts'
+      dts: 'davinci-blade.d.ts',
+      dependencies: {
+
+      }
     },
     {
       name: 'd3',
       version: '3.5.5',
+      visible: true,
       js: 'd3@3.5.5.min.js',
-      dts: 'd3@3.5.5.d.ts'
+      dts: 'd3@3.5.5.d.ts',
+      dependencies: {
+
+      }
     },
     {
-      name: 'domready',
+      name: 'DomReady',
       version: 'latest',
+      visible: true,
       js: 'domready@1.0.0.js',
-      dts: 'domready@1.0.0.d.ts'
+      dts: 'domready@1.0.0.d.ts',
+      dependencies: {
+
+      }
     },
     {
       name: 'jsxgraph',
       version: '0.99.3',
+      visible: true,
       js: 'jsxgraph@0.99.3.min.js',
-      dts: 'jsxgraph@0.99.3.d.ts'
-    },
-    /*
-    {
-      name: 'tquery',
-      version: 'latest',
-      js: 'tquery@1.0.0.js',
-      dts: 'tquery@1.0.0.d.ts'
+      dts: 'jsxgraph@0.99.3.d.ts',
+      dependencies: {
+
+      }
     },
     {
-      name: 'microajax',
+      name: 'THREE',
       version: 'latest',
-      js: 'microajax.js',
-      dts: 'microajax.d.ts'
-    },
-    {
-      name: 'microevent',
-      version: 'latest',
-      js: 'microevent.js',
-      dts: 'microevent.d.ts'
-    },
-    {
-      name: 'screenshot',
-      version: 'latest',
-      js: 'THREEx.screenshot.js',
-      dts: 'THREEx.screenshot.d.ts'
-    },
-    {
-      name: 'ThreeBox-core',
-      version: 'latest',
-      js: 'ThreeBox-core@1.0.0.js',
-      dts: 'ThreeBox-core@1.0.0.d.ts'
-    },
-    {
-      name: 'ThreeRTT-core',
-      version: 'latest',
-      js: 'ThreeRTT-core.js',
-      dts: 'ThreeRTT-core.d.ts'
-    },
-    */
-    {
-      name: 'MathBox',
-      version: 'latest',
-      js: 'MathBox-bundle.js',
-      dts: 'MathBox-bundle.d.ts'
-    },
-    {
-      name: 'three',
-      version: 'latest',
+      visible: true,
       js: 'three.min.js',
-      dts: 'three.d.ts'
+      dts: 'three.d.ts',
+      dependencies: {
+
+      }
+    },
+    {
+      name: 'tQuery',
+      version: 'latest',
+      visible: true,
+      js: 'tquery.min.js',
+      dts: 'tquery.d.ts',
+      dependencies: {
+        'THREE': '*'
+      }
+    },
+    {
+      name: 'microAjax',
+      version: 'latest',
+      visible: false,
+      js: 'microajax.js',
+      dts: 'microajax.d.ts',
+      dependencies: {}
+    },
+    {
+      name: 'MicroEvent',
+      version: 'latest',
+      visible: false,
+      js: 'microevent.js',
+      dts: 'microevent.d.ts',
+      dependencies: {}
+    },
+    {
+      name: 'THREEx.screenshot',
+      version: 'latest',
+      visible: false,
+      js: 'THREEx.screenshot.js',
+      dts: 'THREEx.screenshot.d.ts',
+      dependencies: {
+        'THREE': '*'
+      }
+    },
+    {
+      name: 'ThreeBox',
+      version: 'latest',
+      visible: false,
+      js: 'ThreeBox-core.js',
+      dts: 'ThreeBox-core.d.ts',
+      dependencies: {
+        'microAjax': 'latest',
+        'MicroEvent': '*',
+        'THREE': '*',
+        'THREEx.screenshot': '*',
+        'tQuery': '*',
+        'underscore': '1.8.3'
+      }
     },
     {
       name: 'underscore',
       version: 'latest',
+      visible: true,
       js: 'underscore@1.8.3.min.js',
-      dts: 'underscore@1.8.3.d.ts'
+      dts: 'underscore@1.8.3.d.ts',
+      dependencies: {}
+    },
+    {
+      name: 'ThreeRTT',
+      version: 'latest',
+      visible: false,
+      js: 'ThreeRTT-core.js',
+      dts: 'ThreeRTT-core.d.ts',
+      dependencies: {
+        'THREE': '*'
+      }
+    },
+    {
+      name: 'ShaderGraph',
+      version: 'latest',
+      visible: false,
+      js: 'ShaderGraph-core.js',
+      dts: 'ShaderGraph-core.d.ts',
+      dependencies: {}
+    },
+    {
+      name: 'MathBox',
+      version: 'latest',
+      visible: true,
+      js: 'MathBox-core.js',
+      dts: 'MathBox-core.d.ts',
+      dependencies: {
+        'ShaderGraph': '*',
+        'ThreeBox': '*',
+        'ThreeRTT': '*',
+        'THREE': '*'
+      }
     },
     {
       name: 'visual',
       version: 'latest',
+      visible: false,
       js: 'davinci-visual.min.js',
-      dts: 'davinci-visual.d.ts'
+      dts: 'davinci-visual.d.ts',
+      dependencies: {
+        'THREE': '*'
+      }
     }
   ];
 

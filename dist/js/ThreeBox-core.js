@@ -12,8 +12,8 @@ var π = Math.PI,
     if (!window[i]) throw "Error: ThreeBox requires " + deps[i];
   }
 })({
-  'THREE': 'Three.js',
-  'tQuery': 'tQuery.js (bundle)'//,
+  'THREE':  "Three.js",
+  'tQuery': "tQuery.js (bundle)"
 });
 
 // Namespace.

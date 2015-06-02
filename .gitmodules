@@ -1,0 +1,6 @@
+[submodule "submodules/deuce"]
+	path = submodules/deuce
+	url = git@github.com:geometryzen/deuce.git
+[submodule "submodules/MathBox.js"]
+	path = submodules/MathBox.js
+	url = git@github.com:geometryzen/MathBox.js.git

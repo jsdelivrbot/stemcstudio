@@ -16,6 +16,7 @@
 /// <reference path="../services/options/IOption.ts" />
 /// <reference path="../services/options/IOptionManager.ts" />
 /// <reference path="../services/settings/settings.ts" />
+/// <reference path="../compsci/compsci.ts" />
 module mathdoodle {
   export interface IHomeScope extends mathdoodle.IBodyScope {
     /**
@@ -577,6 +578,37 @@ angular.module('app').controller('doodle-controller', [
     rebuildPromise = $timeout(function() {rebuildPreview(); rebuildPromise = undefined; }, delay);
   }
 
+  function namesToOptions(names: string[]): IOption[] {
+    return options.filter(function(option) { return names.indexOf(option.name)>=0; });
+  }
+
+  function optionsToNames(options: IOption[]): string[] {
+      return options.map(function(option: IOption) {return option.name});
+  }
+
+  /**
+   * Compute the closure of the options.
+   */
+  function closure(options: IOption[]): IOption[] {
+    var nameSet = new compsci.StringSet();
+    options.forEach(function(option) {
+      nameSet.add(option.name);
+    });
+    var done = false;
+    while(!done) {
+      var size = nameSet.size();
+
+      namesToOptions(nameSet.toArray()).forEach(function(option: IOption) {
+        for (var name in option.dependencies) {
+          nameSet.add(name);
+        }
+      });
+
+      done = size === nameSet.size();
+    }
+    return namesToOptions(nameSet.toArray());
+  }
+
   function rebuildPreview() {
     try {
       // Kill any existing frames.
@@ -596,11 +628,13 @@ angular.module('app').controller('doodle-controller', [
 
         var content = scope.previewIFrame.contentDocument || scope.previewIFrame.contentWindow.document;
 
-        var selOpts = options.filter(function(option: IOption, index: number, array: IOption[]) {
+        var selOpts: IOption[] = options.filter(function(option: IOption, index: number, array: IOption[]) {
           return doodles.current().dependencies.indexOf(option.name) > -1;
         });
 
-        var chosenFileNames: string[] = selOpts.map(function(option: IOption) {return option.js;});
+        var closureOpts: IOption[] = closure(selOpts);
+
+        var chosenFileNames: string[] = closureOpts.map(function(option: IOption) {return option.js;});
         // TODO: We will later want to make operator overloading configurable for speed.
         var scriptFileNames: string[] = chosenFileNames.concat(FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS);
         // TOOD: Don't fix the location of the JavaScript here.
@@ -632,7 +666,7 @@ angular.module('app').controller('doodle-controller', [
    */
   function updateWorkspace() {
     // Load the wokspace with the appropriate TypeScript definitions.
-    var news: string[] = doodles.current().dependencies;
+    var news: string[] = optionsToNames(closure(namesToOptions(doodles.current().dependencies)));
 
     // Determine what we need to add and remove from the workspace.
     var adds: string[] = news.filter(function(dep) { return olds.indexOf(dep)<0; });
@@ -644,11 +678,11 @@ angular.module('app').controller('doodle-controller', [
       rmvs.splice(rmvs.indexOf('lib'),1);
     }
 
-    var rmvOpts: IOption[] = options.filter(function(option) { return rmvs.indexOf(option.name)>=0; });
+    var rmvOpts: IOption[] = namesToOptions(rmvs);
 
     var rmvUnits: { name: string; fileName: string }[] = rmvOpts.map(function(option) { return {name: option.name, fileName: option.dts }; });
 
-    var addOpts: IOption[] = options.filter(function(option) { return adds.indexOf(option.name)>=0; });
+    var addOpts: IOption[] = namesToOptions(adds);
 
     // TODO: Optimize so that we don't keep loading `lib`.
     var addUnits: { name: string; fileName: string }[] = addOpts.map(function(option) { return {name: option.name, fileName: option.dts }; })
