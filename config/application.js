@@ -20,11 +20,11 @@ module.exports = function(lineman) {
         files: [
           {src: "appcache.mf", dest: "generated/appcache.mf"},
 
-          {src: "submodules/deuce/build/src-noconflict/worker-workspace.js",  dest: "generated/js/worker-workspace.js"},
-          {src: "submodules/deuce/build/src-noconflict/worker-html.js",       dest: "generated/js/worker-html.js"},
-          {src: "submodules/deuce/build/src-noconflict/worker-javascript.js", dest: "generated/js/worker-javascript.js"},
-          {src: "submodules/deuce/build/src-noconflict/worker-typescript.js", dest: "generated/js/worker-typescript.js"},
-          {src: "submodules/deuce/build/src-noconflict/worker-css.js",        dest: "generated/js/worker-css.js"},
+          {src: "bower_components/davinci-deuce/build/src-noconflict/worker-workspace.js",  dest: "generated/js/worker-workspace.js"},
+          {src: "bower_components/davinci-deuce/build/src-noconflict/worker-html.js",       dest: "generated/js/worker-html.js"},
+          {src: "bower_components/davinci-deuce/build/src-noconflict/worker-javascript.js", dest: "generated/js/worker-javascript.js"},
+          {src: "bower_components/davinci-deuce/build/src-noconflict/worker-typescript.js", dest: "generated/js/worker-typescript.js"},
+          {src: "bower_components/davinci-deuce/build/src-noconflict/worker-css.js",        dest: "generated/js/worker-css.js"},
 
           {src: "bower_components/davinci-blade/dist/davinci-blade.d.ts",    dest: "generated/ts/davinci-blade.d.ts"},
           {src: "bower_components/davinci-blade/dist/davinci-blade.js",      dest: "generated/js/davinci-blade.js"},
@@ -63,11 +63,11 @@ module.exports = function(lineman) {
           {src: "museum/domready/domready@1.0.0.js",                         dest: "generated/js/domready@1.0.0.js"},
           {src: "museum/domready/domready@1.0.0.d.ts",                       dest: "generated/ts/domready@1.0.0.d.ts"},
 
-          {src: "museum/MathBox.js/MathBox-core.d.ts",                       dest: "generated/ts/MathBox-core.d.ts"},
-          {src: "submodules/MathBox.js/build/MathBox-core.js",               dest: "generated/js/MathBox-core.js"},
-          {src: "submodules/MathBox.js/build/MathBox-core.min.js",           dest: "generated/js/MathBox-core.min.js"},
-          {src: "submodules/MathBox.js/build/MathBox.glsl.html",             dest: "generated/shaders/MathBox.glsl.html"},
-          {src: "museum/MathBox.js/snippets.glsl.html",                      dest: "generated/shaders/snippets.glsl.html"},
+          {src: "museum/MathBox.js/MathBox-core.d.ts",                        dest: "generated/ts/MathBox-core.d.ts"},
+          {src: "bower_components/davinci-mathbox/build/MathBox-core.js",     dest: "generated/js/MathBox-core.js"},
+          {src: "bower_components/davinci-mathbox/build/MathBox-core.min.js", dest: "generated/js/MathBox-core.min.js"},
+          {src: "bower_components/davinci-mathbox/build/MathBox.glsl.html",   dest: "generated/shaders/MathBox.glsl.html"},
+          {src: "museum/MathBox.js/snippets.glsl.html",                       dest: "generated/shaders/snippets.glsl.html"},
 
           {src: "museum/microajax/microajax.d.ts",                           dest: "generated/ts/microajax.d.ts"},
           {src: "museum/microajax/microajax.js",                             dest: "generated/js/microajax.js"},
@@ -75,25 +75,25 @@ module.exports = function(lineman) {
           {src: "museum/microevent/microevent.d.ts",                         dest: "generated/ts/microevent.d.ts"},
           {src: "museum/microevent/microevent.js",                           dest: "generated/js/microevent.js"},
 
-          {src: "museum/ShaderGraph.js/ShaderGraph-core.d.ts",                               dest: "generated/ts/ShaderGraph-core.d.ts"},
-          {src: "submodules/MathBox.js/vendor/ShaderGraph.js/build/ShaderGraph-core.js",     dest: "generated/js/ShaderGraph-core.js"},
-          {src: "submodules/MathBox.js/vendor/ShaderGraph.js/build/ShaderGraph-core.min.js", dest: "generated/js/ShaderGraph-core.min.js"},
+          {src: "museum/ShaderGraph.js/ShaderGraph-core.d.ts",                        dest: "generated/ts/ShaderGraph-core.d.ts"},
+          {src: "bower_components/davinci-shadergraph/build/ShaderGraph-core.js",     dest: "generated/js/ShaderGraph-core.js"},
+          {src: "bower_components/davinci-shadergraph/build/ShaderGraph-core.min.js", dest: "generated/js/ShaderGraph-core.min.js"},
 
-          {src: "museum/ThreeBox.js/ThreeBox-core.d.ts",                               dest: "generated/ts/ThreeBox-core.d.ts"},
-          {src: "submodules/MathBox.js/vendor/ThreeBox.js/build/ThreeBox-core.js",     dest: "generated/js/ThreeBox-core.js"},
-          {src: "submodules/MathBox.js/vendor/ThreeBox.js/build/ThreeBox-core.min.js", dest: "generated/js/ThreeBox-core.min.js"},
+          {src: "museum/ThreeBox.js/ThreeBox-core.d.ts",                        dest: "generated/ts/ThreeBox-core.d.ts"},
+          {src: "bower_components/davinci-threebox/build/ThreeBox-core.js",     dest: "generated/js/ThreeBox-core.js"},
+          {src: "bower_components/davinci-threebox/build/ThreeBox-core.min.js", dest: "generated/js/ThreeBox-core.min.js"},
 
           {src: "museum/ThreeRTT.js/ThreeRTT-core.d.ts",                               dest: "generated/ts/ThreeRTT-core.d.ts"},
-          {src: "submodules/MathBox.js/vendor/ThreeRTT.js/build/ThreeRTT-core.js",     dest: "generated/js/ThreeRTT-core.js"},
-          {src: "submodules/MathBox.js/vendor/ThreeRTT.js/build/ThreeRTT-core.min.js", dest: "generated/js/ThreeRTT-core.min.js"},
-          {src: "submodules/MathBox.js/vendor/ThreeRTT.js/build/ThreeRTT.glsl.html",   dest: "generated/shaders/ThreeRTT.glsl.html"},
+          {src: "bower_components/davinci-threertt/build/ThreeRTT-core.js",     dest: "generated/js/ThreeRTT-core.js"},
+          {src: "bower_components/davinci-threertt/build/ThreeRTT-core.min.js", dest: "generated/js/ThreeRTT-core.min.js"},
+          {src: "bower_components/davinci-threertt/build/ThreeRTT.glsl.html",   dest: "generated/shaders/ThreeRTT.glsl.html"},
 
           {src: "museum/threex/THREEx.screenshot.d.ts",                      dest: "generated/ts/THREEx.screenshot.d.ts"},
           {src: "museum/threex/THREEx.screenshot.js",                        dest: "generated/js/THREEx.screenshot.js"},
 
           {src: "museum/tquery/tquery.d.ts",                                 dest: "generated/ts/tquery.d.ts"},
-          {src: "submodules/MathBox.js/vendor/tquery/build/tquery.js",       dest: "generated/js/tquery.js"},
-          {src: "submodules/MathBox.js/vendor/tquery/build/tquery.min.js",   dest: "generated/js/tquery.min.js"},
+          {src: "bower_components/davinci-tquery/build/tquery.js",           dest: "generated/js/tquery.js"},
+          {src: "bower_components/davinci-tquery/build/tquery.min.js",       dest: "generated/js/tquery.min.js"},
 
           {src: "museum/underscore/underscore@1.8.3.d.ts",                   dest: "generated/ts/underscore@1.8.3.d.ts"},
           {src: "museum/underscore/underscore@1.8.3.js",                     dest: "generated/js/underscore@1.8.3.js"},
@@ -110,11 +110,11 @@ module.exports = function(lineman) {
         files: [
           {src: "appcache.mf", dest: "dist/appcache.mf"},
 
-          {src: "submodules/deuce/build/src-min-noconflict/worker-workspace.js",  dest: "dist/js/worker-workspace.js"},
-          {src: "submodules/deuce/build/src-min-noconflict/worker-html.js",       dest: "dist/js/worker-html.js"},
-          {src: "submodules/deuce/build/src-min-noconflict/worker-javascript.js", dest: "dist/js/worker-javascript.js"},
-          {src: "submodules/deuce/build/src-min-noconflict/worker-typescript.js", dest: "dist/js/worker-typescript.js"},
-          {src: "submodules/deuce/build/src-min-noconflict/worker-css.js",        dest: "dist/js/worker-css.js"},
+          {src: "bower_components/davinci-deuce/build/src-min-noconflict/worker-workspace.js",  dest: "dist/js/worker-workspace.js"},
+          {src: "bower_components/davinci-deuce/build/src-min-noconflict/worker-html.js",       dest: "dist/js/worker-html.js"},
+          {src: "bower_components/davinci-deuce/build/src-min-noconflict/worker-javascript.js", dest: "dist/js/worker-javascript.js"},
+          {src: "bower_components/davinci-deuce/build/src-min-noconflict/worker-typescript.js", dest: "dist/js/worker-typescript.js"},
+          {src: "bower_components/davinci-deuce/build/src-min-noconflict/worker-css.js",        dest: "dist/js/worker-css.js"},
 
           {src: "bower_components/davinci-blade/dist/davinci-blade.d.ts",    dest: "dist/ts/davinci-blade.d.ts"},
           {src: "bower_components/davinci-blade/dist/davinci-blade.js",      dest: "dist/js/davinci-blade.js"},
@@ -153,9 +153,9 @@ module.exports = function(lineman) {
           {src: "museum/domready/domready@1.0.0.d.ts",                       dest: "dist/ts/domready@1.0.0.d.ts"},
 
           {src: "museum/MathBox.js/MathBox-core.d.ts",                       dest: "dist/ts/MathBox-core.d.ts"},
-          {src: "submodules/MathBox.js/build/MathBox-core.js",               dest: "dist/js/MathBox-core.js"},
-          {src: "submodules/MathBox.js/build/MathBox-core.min.js",           dest: "dist/js/MathBox-core.min.js"},
-          {src: "submodules/MathBox.js/build/MathBox.glsl.html",             dest: "dist/shaders/MathBox.glsl.html"},
+          {src: "bower_components/davinci-mathbox/build/MathBox-core.js",    dest: "dist/js/MathBox-core.js"},
+          {src: "bower_components/davinci-mathbox/build/MathBox-core.min.js",dest: "dist/js/MathBox-core.min.js"},
+          {src: "bower_components/davinci-mathbox/build/MathBox.glsl.html",  dest: "dist/shaders/MathBox.glsl.html"},
           {src: "museum/MathBox.js/snippets.glsl.html",                      dest: "dist/shaders/snippets.glsl.html"},
 
           {src: "museum/microajax/microajax.d.ts",                           dest: "dist/ts/microajax.d.ts"},
@@ -164,25 +164,25 @@ module.exports = function(lineman) {
           {src: "museum/microevent/microevent.d.ts",                         dest: "dist/ts/microevent.d.ts"},
           {src: "museum/microevent/microevent.js",                           dest: "dist/js/microevent.js"},
 
-          {src: "museum/ShaderGraph.js/ShaderGraph-core.d.ts",                               dest: "dist/ts/ShaderGraph-core.d.ts"},
-          {src: "submodules/MathBox.js/vendor/ShaderGraph.js/build/ShaderGraph-core.js",     dest: "dist/js/ShaderGraph-core.js"},
-          {src: "submodules/MathBox.js/vendor/ShaderGraph.js/build/ShaderGraph-core.min.js", dest: "dist/js/ShaderGraph-core.min.js"},
+          {src: "museum/ShaderGraph.js/ShaderGraph-core.d.ts",                        dest: "dist/ts/ShaderGraph-core.d.ts"},
+          {src: "bower_components/davinci-shadergraph/build/ShaderGraph-core.js",     dest: "dist/js/ShaderGraph-core.js"},
+          {src: "bower_components/davinci-shadergraph/build/ShaderGraph-core.min.js", dest: "dist/js/ShaderGraph-core.min.js"},
 
-          {src: "museum/ThreeBox.js/ThreeBox-core.d.ts",                               dest: "dist/ts/ThreeBox-core.d.ts"},
-          {src: "submodules/MathBox.js/vendor/ThreeBox.js/build/ThreeBox-core.js",     dest: "dist/js/ThreeBox-core.js"},
-          {src: "submodules/MathBox.js/vendor/ThreeBox.js/build/ThreeBox-core.min.js", dest: "dist/js/ThreeBox-core.min.js"},
+          {src: "museum/ThreeBox.js/ThreeBox-core.d.ts",                        dest: "dist/ts/ThreeBox-core.d.ts"},
+          {src: "bower_components/davinci-threebox/build/ThreeBox-core.js",     dest: "dist/js/ThreeBox-core.js"},
+          {src: "bower_components/davinci-threebox/build/ThreeBox-core.min.js", dest: "dist/js/ThreeBox-core.min.js"},
 
-          {src: "museum/ThreeRTT.js/ThreeRTT-core.d.ts",                               dest: "dist/ts/ThreeRTT-core.d.ts"},
-          {src: "submodules/MathBox.js/vendor/ThreeRTT.js/build/ThreeRTT-core.js",     dest: "dist/js/ThreeRTT-core.js"},
-          {src: "submodules/MathBox.js/vendor/ThreeRTT.js/build/ThreeRTT-core.min.js", dest: "dist/js/ThreeRTT-core.min.js"},
-          {src: "submodules/MathBox.js/vendor/ThreeRTT.js/build/ThreeRTT.glsl.html",   dest: "dist/shaders/ThreeRTT.glsl.html"},
+          {src: "museum/ThreeRTT.js/ThreeRTT-core.d.ts",                        dest: "dist/ts/ThreeRTT-core.d.ts"},
+          {src: "bower_components/davinci-threertt/build/ThreeRTT-core.js",     dest: "dist/js/ThreeRTT-core.js"},
+          {src: "bower_components/davinci-threertt/build/ThreeRTT-core.min.js", dest: "dist/js/ThreeRTT-core.min.js"},
+          {src: "bower_components/davinci-threertt/build/ThreeRTT.glsl.html",   dest: "dist/shaders/ThreeRTT.glsl.html"},
 
           {src: "museum/threex/THREEx.screenshot.d.ts",                      dest: "dist/ts/THREEx.screenshot.d.ts"},
           {src: "museum/threex/THREEx.screenshot.js",                        dest: "dist/js/THREEx.screenshot.js"},
 
           {src: "museum/tquery/tquery.d.ts",                                 dest: "dist/ts/tquery.d.ts"},
-          {src: "submodules/MathBox.js/vendor/tquery/build/tquery.js",       dest: "dist/js/tquery.js"},
-          {src: "submodules/MathBox.js/vendor/tquery/build/tquery.min.js",   dest: "dist/js/tquery.min.js"},
+          {src: "bower_components/davinci-tquery/build/tquery.js",           dest: "dist/js/tquery.js"},
+          {src: "bower_components/davinci-tquery/build/tquery.min.js",       dest: "dist/js/tquery.min.js"},
 
           {src: "museum/underscore/underscore@1.8.3.d.ts",                   dest: "dist/ts/underscore@1.8.3.d.ts"},
           {src: "museum/underscore/underscore@1.8.3.js",                     dest: "dist/js/underscore@1.8.3.js"},

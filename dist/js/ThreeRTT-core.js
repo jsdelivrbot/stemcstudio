@@ -29,7 +29,7 @@ ThreeRTT.getShader = function (id) {
 };
 // Check for a power of two.
 ThreeRTT.isPowerOfTwo = function (value) {
-	return (value & (value - 1)) === 0;
+  return (value & (value - 1)) === 0;
 };
 
 // Convert World/Stage into RenderTarget if necessary.
@@ -55,10 +55,10 @@ ThreeRTT.toTexture = function (rtt, i) {
 MicroEvent.prototype.on   = function () { MicroEvent.prototype.bind.apply(this, arguments);    return this; }
 MicroEvent.prototype.emit = function () { MicroEvent.prototype.trigger.apply(this, arguments); return this; }
 MicroEvent.mixin	= function(destObject){
-	var props	= ['bind', 'unbind', 'trigger', 'on', 'emit'];
-	for(var i = 0; i < props.length; i ++){
-		destObject.prototype[props[i]]	= MicroEvent.prototype[props[i]];
-	}
+  var props	= ['bind', 'unbind', 'trigger', 'on', 'emit'];
+  for(var i = 0; i < props.length; i ++){
+    destObject.prototype[props[i]] = MicroEvent.prototype[props[i]];
+  }
 }
 /**
  * Render-to-texture stage. Contains scene/camera/target + optional full screen quad.
