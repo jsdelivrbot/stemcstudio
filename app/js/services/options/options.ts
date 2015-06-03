@@ -23,10 +23,10 @@ angular.module('app').factory('options', [
     },
     {
       name: 'blade',
-      version: 'latest',
+      version: '1.1.1',
       visible: true,
-      js: 'davinci-blade.min.js',
-      dts: 'davinci-blade.d.ts',
+      js: 'davinci-blade@1.1.1/davinci-blade.min.js',
+      dts: 'davinci-blade@1.1.1/davinci-blade.d.ts',
       dependencies: {
 
       }

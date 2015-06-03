@@ -438,7 +438,7 @@ define('davinci-blade/core',["require", "exports"], function (require, exports) 
         /**
          * The version of the blade library.
          */
-        VERSION: '1.0.1'
+        VERSION: '1.1.1'
     };
     return blade;
 });
@@ -3204,6 +3204,15 @@ define('davinci-blade/Complex',["require", "exports"], function (require, export
         };
         Complex.prototype.arg = function () {
             return Math.atan2(this.y, this.x);
+        };
+        /**
+         * Computes the exponential of this complex number.
+         */
+        Complex.prototype.exp = function () {
+            var expX = Math.exp(this.x);
+            var x = expX * Math.cos(this.y);
+            var y = expX * Math.sin(this.y);
+            return new Complex(x, y);
         };
         Complex.prototype.toString = function () {
             return "Complex(" + this.x + ", " + this.y + ")";

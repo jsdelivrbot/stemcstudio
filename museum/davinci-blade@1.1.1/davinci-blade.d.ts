@@ -280,6 +280,10 @@ declare module blade {
         norm(): number;
         quad(): number;
         arg(): number;
+        /**
+         * Computes the exponential of this complex number.
+         */
+        exp(): Complex;
         toString(): string;
     }
 }

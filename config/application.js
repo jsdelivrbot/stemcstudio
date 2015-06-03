@@ -26,10 +26,6 @@ module.exports = function(lineman) {
           {src: "bower_components/davinci-deuce/build/src-noconflict/worker-typescript.js", dest: "generated/js/worker-typescript.js"},
           {src: "bower_components/davinci-deuce/build/src-noconflict/worker-css.js",        dest: "generated/js/worker-css.js"},
 
-          {src: "bower_components/davinci-blade/dist/davinci-blade.d.ts",    dest: "generated/ts/davinci-blade.d.ts"},
-          {src: "bower_components/davinci-blade/dist/davinci-blade.js",      dest: "generated/js/davinci-blade.js"},
-          {src: "bower_components/davinci-blade/dist/davinci-blade.min.js",  dest: "generated/js/davinci-blade.min.js"},
-       
           {src: "bower_components/davinci-visual/dist/davinci-visual.d.ts",  dest: "generated/ts/davinci-visual.d.ts"},
           {src: "bower_components/davinci-visual/dist/davinci-visual.js",    dest: "generated/js/davinci-visual.js"},
           {src: "bower_components/davinci-visual/dist/davinci-visual.min.js",dest: "generated/js/davinci-visual.min.js"},
@@ -43,7 +39,10 @@ module.exports = function(lineman) {
           {src: "museum/angular/angular@1.4.0.min.js",                       dest: "generated/js/angular@1.4.0.min.js"},
           {src: "museum/angular/angular@1.4.0.min.js.map",                   dest: "generated/js/angular@1.4.0.min.js.map"},
 
-          {src: "museum/blade/blade@1.0.1.min.js",                           dest: "generated/js/blade@1.0.1.min.js"},
+          {src: "museum/davinci-blade@1.1.1/davinci-blade.d.ts",             dest: "generated/ts/davinci-blade@1.1.1/davinci-blade.d.ts"},
+          {src: "museum/davinci-blade@1.1.1/davinci-blade.js",               dest: "generated/js/davinci-blade@1.1.1/davinci-blade.js"},
+          {src: "museum/davinci-blade@1.1.1/davinci-blade.min.js",           dest: "generated/js/davinci-blade@1.1.1/davinci-blade.min.js"},
+
           {src: "museum/d3/d3@3.5.5.min.js",                                 dest: "generated/js/d3@3.5.5.min.js"},
           {src: "museum/eight/eight@1.0.0.min.js",                           dest: "generated/js/eight@1.0.0.min.js"},
           {src: "museum/jsxgraph/jsxgraph@0.99.3.min.js",                    dest: "generated/js/jsxgraph@0.99.3.min.js"},
@@ -51,7 +50,6 @@ module.exports = function(lineman) {
           {src: "museum/three/three@0.71.0.min.js",                          dest: "generated/js/three@0.71.0.min.js"},
           {src: "museum/visual/visual@1.6.0.min.js",                         dest: "generated/js/visual@1.6.0.min.js"},
 
-          {src: "museum/blade/blade@1.0.1.d.ts",                             dest: "generated/ts/blade@1.0.1.d.ts"},
           {src: "museum/d3/d3@3.5.5.d.ts",                                   dest: "generated/ts/d3@3.5.5.d.ts"},
           {src: "museum/eight/eight@1.0.0.d.ts",                             dest: "generated/ts/eight@1.0.0.d.ts"},
           {src: "museum/jsxgraph/jsxgraph@0.99.3.d.ts",                      dest: "generated/ts/jsxgraph@0.99.3.d.ts"},
@@ -115,10 +113,6 @@ module.exports = function(lineman) {
           {src: "bower_components/davinci-deuce/build/src-min-noconflict/worker-javascript.js", dest: "dist/js/worker-javascript.js"},
           {src: "bower_components/davinci-deuce/build/src-min-noconflict/worker-typescript.js", dest: "dist/js/worker-typescript.js"},
           {src: "bower_components/davinci-deuce/build/src-min-noconflict/worker-css.js",        dest: "dist/js/worker-css.js"},
-
-          {src: "bower_components/davinci-blade/dist/davinci-blade.d.ts",    dest: "dist/ts/davinci-blade.d.ts"},
-          {src: "bower_components/davinci-blade/dist/davinci-blade.js",      dest: "dist/js/davinci-blade.js"},
-          {src: "bower_components/davinci-blade/dist/davinci-blade.min.js",  dest: "dist/js/davinci-blade.min.js"},
        
           {src: "bower_components/davinci-visual/dist/davinci-visual.d.ts",  dest: "dist/ts/davinci-visual.d.ts"},
           {src: "bower_components/davinci-visual/dist/davinci-visual.js",    dest: "dist/js/davinci-visual.js"},
@@ -133,7 +127,10 @@ module.exports = function(lineman) {
           {src: "museum/angular/angular@1.4.0.min.js",                       dest: "dist/js/angular@1.4.0.min.js"},
           {src: "museum/angular/angular@1.4.0.min.js.map",                   dest: "dist/js/angular@1.4.0.min.js.map"},
 
-          {src: "museum/blade/blade@1.0.1.min.js",                           dest: "dist/js/blade@1.0.1.min.js"},
+          {src: "museum/davinci-blade@1.1.1/davinci-blade.d.ts",             dest: "dist/ts/davinci-blade@1.1.1/davinci-blade.d.ts"},
+          {src: "museum/davinci-blade@1.1.1/davinci-blade.js",               dest: "dist/js/davinci-blade@1.1.1/davinci-blade.js"},
+          {src: "museum/davinci-blade@1.1.1/davinci-blade.min.js",           dest: "dist/js/davinci-blade@1.1.1/davinci-blade.min.js"},
+
           {src: "museum/d3/d3@3.5.5.min.js",                                 dest: "dist/js/d3@3.5.5.min.js"},
           {src: "museum/eight/eight@1.0.0.min.js",                           dest: "dist/js/eight@1.0.0.min.js"},
           {src: "museum/jsxgraph/jsxgraph@0.99.3.min.js",                    dest: "dist/js/jsxgraph@0.99.3.min.js"},
@@ -141,7 +138,6 @@ module.exports = function(lineman) {
           {src: "museum/three/three@0.71.0.min.js",                          dest: "dist/js/three@0.71.0.min.js"},
           {src: "museum/visual/visual@1.6.0.min.js",                         dest: "dist/js/visual@1.6.0.min.js"},
 
-          {src: "museum/blade/blade@1.0.1.d.ts",                             dest: "dist/ts/blade@1.0.1.d.ts"},
           {src: "museum/d3/d3@3.5.5.d.ts",                                   dest: "dist/ts/d3@3.5.5.d.ts"},
           {src: "museum/eight/eight@1.0.0.d.ts",                             dest: "dist/ts/eight@1.0.0.d.ts"},
           {src: "museum/jsxgraph/jsxgraph@0.99.3.d.ts",                      dest: "dist/ts/jsxgraph@0.99.3.d.ts"},
