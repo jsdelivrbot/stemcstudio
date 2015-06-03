@@ -13,6 +13,8 @@ angular.module('app').factory('options', [
   var _options: IOption[] = [
     {
       name: 'angular',
+      moniker: 'Angular JS',
+      description: '',
       version: 'latest',
       visible: true,
       js: 'angular@1.4.0.min.js',
@@ -22,7 +24,9 @@ angular.module('app').factory('options', [
       }
     },
     {
-      name: 'blade',
+      name: 'davinci-blade',
+      moniker: 'blade',
+      description: '',
       version: '1.1.1',
       visible: true,
       js: 'davinci-blade@1.1.1/davinci-blade.min.js',
@@ -33,6 +37,8 @@ angular.module('app').factory('options', [
     },
     {
       name: 'd3',
+      moniker: 'd3',
+      description: '',
       version: '3.5.5',
       visible: true,
       js: 'd3@3.5.5.min.js',
@@ -43,6 +49,8 @@ angular.module('app').factory('options', [
     },
     {
       name: 'DomReady',
+      moniker: 'DomReady',
+      description: '',
       version: 'latest',
       visible: true,
       js: 'domready@1.0.0.js',
@@ -53,6 +61,8 @@ angular.module('app').factory('options', [
     },
     {
       name: 'jsxgraph',
+      moniker: 'JSXGraph',
+      description: '',
       version: '0.99.3',
       visible: true,
       js: 'jsxgraph@0.99.3.min.js',
@@ -62,27 +72,33 @@ angular.module('app').factory('options', [
       }
     },
     {
-      name: 'THREE',
+      name: 'threejs',
+      moniker: 'three.js',
+      description: '',
       version: 'latest',
       visible: true,
-      js: 'three.min.js',
+      js: 'three.js',
       dts: 'three.d.ts',
       dependencies: {
 
       }
     },
     {
-      name: 'tQuery',
+      name: 'davinci-tquery',
+      moniker: 'tQuery',
+      description: '',
       version: 'latest',
       visible: true,
       js: 'tquery.min.js',
       dts: 'tquery.d.ts',
       dependencies: {
-        'THREE': '*'
+        'threejs': '*'
       }
     },
     {
       name: 'microAjax',
+      moniker: 'microAjax',
+      description: '',
       version: 'latest',
       visible: false,
       js: 'microajax.js',
@@ -91,6 +107,8 @@ angular.module('app').factory('options', [
     },
     {
       name: 'MicroEvent',
+      moniker: 'MicroEvent',
+      description: '',
       version: 'latest',
       visible: false,
       js: 'microevent.js',
@@ -99,16 +117,20 @@ angular.module('app').factory('options', [
     },
     {
       name: 'THREEx.screenshot',
+      moniker: 'THREEx.screenshot',
+      description: '',
       version: 'latest',
       visible: false,
       js: 'THREEx.screenshot.js',
       dts: 'THREEx.screenshot.d.ts',
       dependencies: {
-        'THREE': '*'
+        'threejs': '*'
       }
     },
     {
-      name: 'ThreeBox',
+      name: 'davinci-threebox',
+      moniker: 'ThreeBox.js',
+      description: '',
       version: 'latest',
       visible: false,
       js: 'ThreeBox-core.js',
@@ -116,14 +138,16 @@ angular.module('app').factory('options', [
       dependencies: {
         'microAjax': 'latest',
         'MicroEvent': '*',
-        'THREE': '*',
+        'threejs': '*',
         'THREEx.screenshot': '*',
-        'tQuery': '*',
+        'davinci-tquery': '*',
         'underscore': '1.8.3'
       }
     },
     {
       name: 'underscore',
+      moniker: 'underscore',
+      description: '',
       version: 'latest',
       visible: true,
       js: 'underscore@1.8.3.min.js',
@@ -131,17 +155,21 @@ angular.module('app').factory('options', [
       dependencies: {}
     },
     {
-      name: 'ThreeRTT',
+      name: 'davinci-threertt',
+      moniker: 'ThreeRTT.js',
+      description: '',
       version: 'latest',
       visible: false,
       js: 'ThreeRTT-core.js',
       dts: 'ThreeRTT-core.d.ts',
       dependencies: {
-        'THREE': '*'
+        'threejs': '*'
       }
     },
     {
-      name: 'ShaderGraph',
+      name: 'davinci-shadergraph',
+      moniker: 'ShaderGraph.js',
+      description: '',
       version: 'latest',
       visible: false,
       js: 'ShaderGraph-core.js',
@@ -149,26 +177,30 @@ angular.module('app').factory('options', [
       dependencies: {}
     },
     {
-      name: 'MathBox',
+      name: 'davinci-mathbox',
+      moniker: 'MathBox.js',
+      description: '',
       version: 'latest',
       visible: true,
       js: 'MathBox-core.js',
       dts: 'MathBox-core.d.ts',
       dependencies: {
-        'ShaderGraph': '*',
-        'ThreeBox': '*',
-        'ThreeRTT': '*',
-        'THREE': '*'
+        'davinci-shadergraph': '*',
+        'davinci-threebox': '*',
+        'davinci-threertt': '*',
+        'threejs': '*'
       }
     },
     {
-      name: 'visual',
+      name: 'davinci-visual',
+      moniker: 'visual',
+      description: '',
       version: 'latest',
       visible: false,
       js: 'davinci-visual.min.js',
       dts: 'davinci-visual.d.ts',
       dependencies: {
-        'THREE': '*'
+        'threejs': '*'
       }
     }
   ];

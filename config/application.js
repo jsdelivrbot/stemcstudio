@@ -31,8 +31,8 @@ module.exports = function(lineman) {
           {src: "bower_components/davinci-visual/dist/davinci-visual.min.js",dest: "generated/js/davinci-visual.min.js"},
 
           {src: "typings/threejs/three.d.ts",                                dest: "generated/ts/three.d.ts"},
-          {src: "bower_components/threejs/build/three.js",                   dest: "generated/js/three.js"},
-          {src: "bower_components/threejs/build/three.min.js",               dest: "generated/js/three.min.js"},
+          {src: "bower_components/davinci-threejs/build/three.js",           dest: "generated/js/three.js"},
+          {src: "bower_components/davinci-threejs/build/three.min.js",       dest: "generated/js/three.min.js"},
 
           {src: "museum/angular/angular@1.4.0.d.ts",                         dest: "generated/ts/angular@1.4.0.d.ts"},
           {src: "museum/angular/angular@1.4.0.js",                           dest: "generated/js/angular@1.4.0.js"},
@@ -119,8 +119,8 @@ module.exports = function(lineman) {
           {src: "bower_components/davinci-visual/dist/davinci-visual.min.js",dest: "dist/js/davinci-visual.min.js"},
 
           {src: "typings/threejs/three.d.ts",                                dest: "dist/ts/three.d.ts"},
-          {src: "bower_components/threejs/build/three.js",                   dest: "dist/js/three.js"},
-          {src: "bower_components/threejs/build/three.min.js",               dest: "dist/js/three.min.js"},
+          {src: "bower_components/davinci-threejs/build/three.js",           dest: "dist/js/three.js"},
+          {src: "bower_components/davinci-threejs/build/three.min.js",       dest: "dist/js/three.min.js"},
 
           {src: "museum/angular/angular@1.4.0.d.ts",                         dest: "dist/ts/angular@1.4.0.d.ts"},
           {src: "museum/angular/angular@1.4.0.js",                           dest: "dist/js/angular@1.4.0.js"},

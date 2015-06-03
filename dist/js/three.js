@@ -1633,11 +1633,18 @@ THREE.Vector2.prototype = {
  */
 
 THREE.Vector3 = function ( x, y, z ) {
-
-	this.x = x || 0;
-	this.y = y || 0;
-	this.z = z || 0;
-
+  this.x = x || 0;
+  this.y = y || 0;
+  this.z = z || 0;
+  if (isNaN(this.x)) {
+    throw new Error("x must not be NaN.");
+  }
+  if (isNaN(this.y)) {
+    throw new Error("y must not be NaN.");
+  }
+  if (isNaN(this.z)) {
+    throw new Error("z must not be NaN.");
+  }
 };
 
 THREE.Vector3.prototype = {
@@ -1925,9 +1932,9 @@ THREE.Vector3.prototype = {
 
 		// calculate quat * vector
 
-		var ix =  qw * x + qy * z - qz * y;
-		var iy =  qw * y + qz * x - qx * z;
-		var iz =  qw * z + qx * y - qy * x;
+		var ix =   qw * x + qy * z - qz * y;
+		var iy =   qw * y + qz * x - qx * z;
+		var iz =   qw * z + qx * y - qy * x;
 		var iw = - qx * x - qy * y - qz * z;
 
 		// calculate result * inverse quat
@@ -2470,7 +2477,11 @@ THREE.Vector3.prototype = {
 
 		return new THREE.Vector3( this.x, this.y, this.z );
 
-	}
+	},
+
+  toString: function () {
+    return "Vector3(" + this.x + ", " + this.y + ", " + this.z + ")";
+  }
 
 };
 
@@ -4384,7 +4395,7 @@ THREE.Matrix3.prototype = {
 
 			var msg = "Matrix3.getInverse(): can't invert matrix, determinant is 0";
 
-			if ( throwOnInvertible || false ) {
+			if ( throwOnInvertible || !throwOnInvertible ) {
 
 				throw new Error( msg );
 
@@ -5159,7 +5170,7 @@ THREE.Matrix4.prototype = {
 
 			var msg = "THREE.Matrix4.getInverse(): can't invert matrix, determinant is 0";
 
-			if ( throwOnInvertible || false ) {
+			if ( throwOnInvertible || !throwOnInvertible ) {
 
 				throw new Error( msg );
 
@@ -23002,8 +23013,17 @@ THREE.WebGLRenderer = function ( parameters ) {
 
 	function setupMatrices ( object, camera ) {
 
-		object._modelViewMatrix.multiplyMatrices( camera.matrixWorldInverse, object.matrixWorld );
-		object._normalMatrix.getNormalMatrix( object._modelViewMatrix );
+    object._modelViewMatrix.multiplyMatrices( camera.matrixWorldInverse, object.matrixWorld );
+    if (camera.matrixWorldInverse.determinant() === 0) {
+      throw new Error("camera.matrixWorldInverse is singular.");
+    }
+    if (object.matrixWorld.determinant() === 0) {
+      throw new Error("object.matrixWorld is singular.");
+    }
+    if (object._modelViewMatrix.determinant() === 0) {
+      throw new Error("object._modelViewMatrix is singular.");
+    }
+    object._normalMatrix.getNormalMatrix( object._modelViewMatrix );
 
 	}
 

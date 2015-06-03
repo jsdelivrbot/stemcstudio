@@ -3,19 +3,21 @@
  */
 
 // Math!
-var π = Math.PI,
-    τ = π * 2;
+var π = Math.PI;
+var τ = π * 2;
 
 // Check dependencies.
 (function (deps) {
   for (var i in deps) {
-    if (!window[i]) throw "Error: MathBox requires " + deps[i];
+    if (!window[i]) {
+      throw "Error: MathBox requires " + deps[i];
+    }
   }
 })({
   'THREE': 'Three.js',
   'tQuery': 'tQuery.js (bundle)',
   'ThreeBox': 'ThreeBox.js',
-  'ThreeRTT': 'ThreeRTT.js'//,
+  'ThreeRTT': 'ThreeRTT.js'
 });
 
 // Namespace.
@@ -23,7 +25,7 @@ window.MathBox = {};
 
 // Shortcut static call.
 window.mathBox = function (element, options) {
-  // Omit element (use body)
+  // Omit element (use body).
   if (element && !(element instanceof Node)) {
     options = element;
     element = null;
@@ -32,14 +34,13 @@ window.mathBox = function (element, options) {
   return tQuery.createWorld(options).mathBox(element, options);
 };
 
-// Fetch shader from <script> tag by id
+// Fetch shader from <script> tag by id.
 MathBox.getShader = function (id) {
   var elem = document.getElementById(id);
   return elem && elem.textContent || id;
 };
 
-// FIXME: Don't pollute other namespaces.
-Math.sign = function (x) {
+MathBox.signum = function (x) {
   return x > 0 ? 1 : x < 0 ? -1 : 0;
 };
 
@@ -87,7 +88,7 @@ MathBox.Attributes.prototype = {
     if (object === undefined || object === null) {
       return;
     }
-    else if (object.constructor == String) {
+    else if (object.constructor === String) {
       set(object, value);
     }
     else {
@@ -437,7 +438,6 @@ MathBox.Animator.Animation.prototype = {
 
       // Sanity type check.
       if (typeof from != typeof to) {
-        console.log(object, key)
         throw "Data type mismatch between from/to values in animator. "+ key +': '+ from + ' ('+ from.constructor +')' + ", " + to + "("+ to.constructor +")";
       }
 
@@ -473,21 +473,21 @@ MathBox.Animator.Animation.prototype = {
             })
             return out;
           }
-          if (to.constructor == THREE.Matrix4) {
-            out = new THREE.Matrix4()
+          if (to.constructor === THREE.Matrix4) {
+            out = new THREE.Matrix4();
             for (var i = 0; i < 16; ++i) {
               out.elements[i] = lerp(from.elements[i], to.elements[i]);
             }
             return out;
           }
-          if (to.constructor == THREE.Vector3) {
-            out = new THREE.Vector3()
+          if (to.constructor === THREE.Vector3) {
+            out = new THREE.Vector3();
             out.x = lerp(from.x, to.x);
             out.y = lerp(from.y, to.y);
             out.z = lerp(from.z, to.z);
             return out;
           }
-          if (to.constructor == THREE.Color) {
+          if (to.constructor === THREE.Color) {
             out = new THREE.Color()
             out.r = lerp(from.r, to.r);
             out.g = lerp(from.g, to.g);
@@ -1747,7 +1747,6 @@ MathBox.Director.prototype = {
       if (verb == 'remove') animate = options;
 
       if (rollback) {
-//        console.log('inverting', op);
         var inverse = this.invert(op);
         var args = [0, 0].concat(inverse);
         Array.prototype.splice.apply(rollback, args);
@@ -1998,7 +1997,7 @@ MathBox.Style.prototype = {
       var vector = new THREE.Vector3();
       return vector.set.apply(vector, v);
     }
-    if (v.constructor != THREE.Vector3) {
+    if (v.constructor !== THREE.Vector3) {
       return this.get('mathScale');
     }
     return v;
@@ -2270,7 +2269,7 @@ MathBox.Overlay.prototype = {
 
     // Transform into camera space
     v.copy(object.position);
-    camera.matrixWorldInverse.multiplyVector3(v);
+    v.applyProjection(camera.matrixWorldInverse);
 
     // Project to 2D and convert to pixels
     var x, y;
@@ -2285,14 +2284,14 @@ MathBox.Overlay.prototype = {
 
     // Add spacer
     if (object.distance) {
-      // Add tangent and project again
+      // Add tangent and project again.
       q.copy(object.tangent).multiplyScalar(epsilon);
-      q.addSelf(object.position);
-      camera.matrixWorldInverse.multiplyVector3(q);
+      q.add(object.position);
+      q.applyProjection(camera.matrixWorldInverse);
 
-      // Find difference and scale it
+      // Find difference and scale it.
       var sign = object.distance > 0 ? 1 : -1;
-      q.subSelf(v);
+      q.sub(v);
       q.z = 0;
       q.normalize().multiplyScalar(object.distance);
       x += Math.abs(q.y) * sign;
@@ -2648,7 +2647,9 @@ MathBox.Axis = function (options) {
 
   this.on('change', function (changed) {
     if (changed.size !== undefined) {
-      this.arrow && this.arrow.set('size', changed.size);
+      if (this.arrow) {
+        this.arrow.set('size', changed.size);
+      }
     }
   });
 };
@@ -2728,7 +2729,7 @@ MathBox.Axis.prototype = _.extend(new MathBox.Primitive(null), {
       p[axis] = min + x * inv;
 
       points[x].set.apply(points[x], p);
-      points[x].addSelf(add);
+      points[x].add(add);
     });
 
     // Show/hide line
@@ -2759,7 +2760,7 @@ MathBox.Axis.prototype = _.extend(new MathBox.Primitive(null), {
         // Tick points for ticks (2 each)
         var j = i*2;
         tickPoints[j].set.apply(tickPoints[j], p);
-        tickPoints[j].addSelf(add);
+        tickPoints[j].add(add);
         tickSigns[j] = 1;
 
         tickPoints[j+1].copy(tickPoints[j]);
@@ -3031,7 +3032,7 @@ MathBox.Vector.prototype = _.extend(new MathBox.Primitive(null), {
       expression: function () { return 0; },
       live: true,
       style: {},
-      size: .07//,
+      size: .07
     };
   },
 
@@ -3147,16 +3148,17 @@ MathBox.Vector.prototype = _.extend(new MathBox.Primitive(null), {
         last.copy(vertices[i-1]);
         viewport.to(current);
         viewport.to(last);
-        current.subSelf(last).multiplySelf(scale);
+        // FIXME: scale is a THREE.Vector3
+        current.sub(last)/*.multiplyScalar(scale)*/;
 
         var l = current.length();
-
         var clipped = Math.min(1, l * .5 / size);
         clipped = (1 - (1 - clipped) * (1 - clipped)) * size;
 
         // Foreshorten line
         var f = l - clipped;
-        current.normalize().multiplyScalar(f).divideSelf(scale).addSelf(last);
+        // FIXME: scale is a THREE.Vector3
+        current.normalize().multiplyScalar(f)/*.divideScalar(scale)*/.add(last);
 
         // Transform back
         viewport.from(current);
@@ -3360,8 +3362,8 @@ MathBox.Surface.prototype = _.extend(new MathBox.Primitive(null), {
 
           /* high quality */
           /*
-          tangents[0][o].sub(vertices[right + j * stride], vertices[left + j * stride]).multiplyScalar(epsilon).addSelf(v);
-          tangents[1][o].sub(vertices[i + down * stride], vertices[i + up * stride]).multiplyScalar(epsilon).addSelf(v);
+          tangents[0][o].subVectors(vertices[right + j * stride], vertices[left + j * stride]).multiplyScalar(epsilon).add(v);
+          tangents[1][o].subVectors(vertices[i + down * stride], vertices[i + up * stride]).multiplyScalar(epsilon).add(v);
           */
 
           /* low quality */
@@ -3410,11 +3412,12 @@ MathBox.BezierSurface = function (options) {
   this.matrixY = new THREE.Matrix4();
   this.matrixZ = new THREE.Matrix4();
 
-  this.coefficients = new THREE.Matrix4(
+  this.coefficients = new THREE.Matrix4();
+  this.coefficients.set(
     -1,  3, -3,  1,
      3, -6,  3,  0,
     -3,  3,  0,  0,
-     1,  0,  0,  0//,
+     1,  0,  0,  0
   );
   MathBox.Surface.call(this, options);
 };
@@ -3518,9 +3521,9 @@ MathBox.BezierSurface.prototype = _.extend(new MathBox.Surface(null), {
 
     // Apply bezier control weights for cubic polynomial
     var m0 = this.coefficients;
-    this.matrixX.multiplySelf(m0).transpose().multiplySelf(m0);
-    this.matrixY.multiplySelf(m0).transpose().multiplySelf(m0);
-    this.matrixZ.multiplySelf(m0).transpose().multiplySelf(m0);
+    this.matrixX.multiply(m0).transpose().multiply(m0);
+    this.matrixY.multiply(m0).transpose().multiply(m0);
+    this.matrixZ.multiply(m0).transpose().multiply(m0);
 
     var uniforms = {
       bezierSurfaceX: this.matrixX,
@@ -3668,13 +3671,13 @@ MathBox.Platonic.prototype = _.extend(new MathBox.Primitive(null), {
 
 MathBox.Primitive.types.platonic = MathBox.Platonic;
 MathBox.Renderable = function (options, style) {
-  // Allow inheritance constructor
+  // Allow inheritance constructor.
   if (options === null) return;
 
   // Unique renderable ID.
   this.id = ++MathBox.Renderable.id;
 
-  // Apply defaults
+  // Apply defaults.
   var defaults = this.defaults();
   if (options) {
     options = _.extend(defaults, options || {});
@@ -3911,7 +3914,7 @@ MathBox.Renderable.ArrowHead = function (from, to, options, style) {
   MathBox.Renderable.call(this, options, style);
 };
 
-MathBox.Renderable.ArrowHead.geometry = new THREE.CylinderGeometry(.33, 0, 1, 16, 1);
+MathBox.Renderable.ArrowHead.geometry = new THREE.CylinderGeometry(0.33, 0, 1, 16, 1);
 
 MathBox.Renderable.ArrowHead.prototype = _.extend(new MathBox.Renderable(null), {
 
@@ -3919,7 +3922,7 @@ MathBox.Renderable.ArrowHead.prototype = _.extend(new MathBox.Renderable(null), 
     return {
       offset: 0,
       absolute: true,
-      size: .1//,
+      size: 0.1
     };
   },
 
@@ -3952,16 +3955,17 @@ MathBox.Renderable.ArrowHead.prototype = _.extend(new MathBox.Renderable(null), 
     var options = this.get();
     var offset = options.offset;
 
-    // Calculate arrow in world space
+    // Calculate arrow in world space.
     var from = this._from.copy(this.from);
     var to = this._to.copy(this.to);
-    this.mathTransform.multiplyVector3(from);
-    this.mathTransform.multiplyVector3(to);
+    from.applyProjection(this.mathTransform);
+    to.applyProjection(this.mathTransform);
+
     viewport.to(from);
     viewport.to(to);
 
     // Calculate axis of arrowhead.
-    var diff = this.diff.sub(from, to);
+    var diff = this.diff.subVectors(from, to);
     if (diff.length() < .001) {
       this.object.visible = false;
       return;
@@ -3978,36 +3982,61 @@ MathBox.Renderable.ArrowHead.prototype = _.extend(new MathBox.Renderable(null), 
     this.normal.z = this.diff.x + .3;
     this.normal.normalize();
 
-    // Prepare binormal
-    var bi = this.bi.cross(this.normal, this.diff).normalize();
+    // Prepare binormal.
+    var bi = this.bi.crossVectors(this.normal, this.diff).normalize();
 
     // Renormalize axes.
-    var normal = this.normal.cross(this.bi, this.diff);
+    var normal = this.normal.crossVectors(this.bi, this.diff);
 
-    // Prepare object matrix to place arrowhead
+    // Prepare object matrix to place arrowhead.
     var size = options.size;
-    var matrix = new THREE.Matrix4(
+    var matrix = new THREE.Matrix4();
+    if (matrix.determinant() === 0) {
+      throw new Error("Matrix is singular!!!");
+    }
+    matrix.set(
       bi.x, diff.x, normal.x, to.x,
       bi.y, diff.y, normal.y, to.y,
       bi.z, diff.z, normal.z, to.z,
-      0, 0, 0, 1//,
-    )
-    .scale(new THREE.Vector3(size, size, size));
+      0, 0, 0, 1
+    );
+    if (matrix.determinant() === 0) {
+      throw new Error("Matrix is singular!!!");
+    }
+    if (isNaN(size)) {
+      throw new Error("size is NaN: " + size);
+    }
+    matrix.scale(new THREE.Vector3(size, size, size));
+    if (matrix.determinant() === 0) {
+      throw new Error("Matrix is singular!!!");
+    }
 
-    // Add arrowhead transform before object matrix
+    // Add arrowhead transform before object matrix.
     this.object.updateMatrix();
-    this.object.matrix.multiplySelf(matrix);
+    if (this.object.matrix.determinant() === 0) {
+      throw new Error("Matrix is singular!!!");
+    }
+    this.object.matrix.multiply(matrix);
+    if (this.object.matrix.determinant() === 0) {
+      throw new Error("Matrix is singular!!!");
+    }
 
-    // Move cone down so tip is at 0,0,0
+    // Move cone down so tip is at (0,0,0).
     matrix.identity().setPosition({ x: 0, y: 0.5 - offset, z: 0 });
-    this.object.matrix.multiplySelf(matrix);
+    if (matrix.determinant() === 0) {
+      throw new Error("Matrix is singular!!!");
+    }
+    this.object.matrix.multiply(matrix);
+    if (this.object.matrix.determinant() === 0) {
+      throw new Error("Matrix is singular!!!");
+    }
 
-    // Override object matrix
+    // Override object matrix.
     this.object.matrixAutoUpdate = false;
     this.object.matrixWorldNeedsUpdate = true;
 
     MathBox.Renderable.prototype.adjust.call(this, viewport);
-  },
+  }
 
 });
 
@@ -4180,13 +4209,13 @@ MathBox.Renderable.Labels.prototype = _.extend(new MathBox.Renderable(null), {
     // Update labels
     _.each(sprites, function (sprite, i) {
 
-      // Transform anchor point
+      // Transform anchor point.
       sprite.position.copy(points[i]);
       viewport.to(sprite.position);
-      stage.matrix.multiplyVector3(sprite.position);
+      sprite.position.applyProjection(stage.matrix);
       sprite.distance = options.distance;
 
-      // Set opacity
+      // Set opacity.
       sprite.opacity = opacity;
 
       // Set content
@@ -4236,7 +4265,7 @@ MathBox.Renderable.Labels.prototype = _.extend(new MathBox.Renderable(null), {
 });
 
 /**
- * Generic viewport base class
+ * Generic viewport base class.
  */
 MathBox.Viewport = function (options) {
   if (options === null) return;
@@ -4286,7 +4315,7 @@ MathBox.Viewport.prototype = {
   },
 
   validateRotation: function (v) {
-    if (v.constructor == Array) {
+    if (v.constructor === Array) {
       v = v.concat([0, 0, 0]);
       return v.slice(0, 3);
     }
@@ -4294,12 +4323,12 @@ MathBox.Viewport.prototype = {
   },
 
   validatePosition: function (v) {
-    if (v.constructor == Array) {
+    if (v.constructor === Array) {
       v = v.concat([0, 0, 0]);
       return v.slice(0, 3);
     }
     return this.get('position');
-  },
+  }
 
 };
 
@@ -4314,7 +4343,6 @@ MathBox.Viewport.make = function (options) {
            || MathBox.Viewport;
   return new klass(options);
 };
-
 MathBox.ViewportCartesian = function (options) {
   if (options === null) return;
 
@@ -4329,7 +4357,7 @@ MathBox.ViewportCartesian = function (options) {
   // Prepare uniforms
   _.extend(this._uniforms, {
     viewportTransform: this.transform,
-    viewportInverse: this.inverse//,
+    viewportInverse: this.inverse
   });
 };
 
@@ -4346,11 +4374,11 @@ MathBox.ViewportCartesian.prototype = _.extend(new MathBox.Viewport(null), {
   },
 
   to: function (vector) {
-    this.transform.multiplyVector3(vector);
+    vector.applyProjection(this.transform);
   },
 
   from: function (vector) {
-    this.inverse.multiplyVector3(vector);
+    vector.applyProjection(this.inverse);
   },
 
   axis: function (axis) {
@@ -4423,7 +4451,7 @@ MathBox.ViewportCartesian.prototype = _.extend(new MathBox.Viewport(null), {
     }
 
     return scale;
-  }//,
+  }
 
 });
 
@@ -4484,7 +4512,7 @@ MathBox.ViewportPolar.prototype = _.extend(new MathBox.ViewportCartesian(null), 
 
     // Polar power and fold
     vector.x *= fold;
-    vector.y = Math.sign(vector.y) * Math.pow(Math.abs(vector.y), power);
+    vector.y = MathBox.signum(vector.y) * Math.pow(Math.abs(vector.y), power);
 
     // Cartesian to polar
     if (alpha > 0.0001) {
@@ -4499,8 +4527,8 @@ MathBox.ViewportPolar.prototype = _.extend(new MathBox.ViewportCartesian(null), 
       vector.y = (Math.cos(x) * radius - focus) / aspect;
     }
 
-    // Apply viewport
-    this.transform.multiplyVector3(vector);
+    // Apply viewport.
+    vector.applyProjection(this.transform);
   },
 
   from: function (vector) {
@@ -4511,10 +4539,10 @@ MathBox.ViewportPolar.prototype = _.extend(new MathBox.ViewportCartesian(null), 
         power = this._uniforms.polarPower,
         helix = this._uniforms.polarHelix;
 
-    // Apply inverse viewport
-    this.inverse.multiplyVector3(vector);
+    // Apply inverse viewport.
+    vector.applyProjection(this.inverse);
 
-    // Polar to cartesian
+    // Polar to cartesian.
     if (alpha > 0.0001) {
       var x = vector.x,
           y = vector.y * aspect + focus;
@@ -4532,7 +4560,7 @@ MathBox.ViewportPolar.prototype = _.extend(new MathBox.ViewportCartesian(null), 
 
     // Inverse polar power and fold
     vector.x /= fold;
-    vector.y = Math.sign(vector.y) * Math.pow(Math.abs(vector.y), 1 / power);
+    vector.y = MathBox.signum(vector.y) * Math.pow(Math.abs(vector.y), 1 / power);
   },
 
   axis: function (axis) {
@@ -4653,7 +4681,7 @@ MathBox.ViewportProjective = function (options) {
   // Prepare uniforms
   _.extend(this._uniforms, {
     projectiveTransform: new THREE.Matrix4(),
-    projectiveInverse: new THREE.Matrix4(),
+    projectiveInverse: new THREE.Matrix4()
   });
 };
 
@@ -4674,19 +4702,19 @@ MathBox.ViewportProjective.prototype = _.extend(new MathBox.ViewportCartesian(nu
   },
 
   to: function (vector) {
-    // Apply projective transform
-    this._uniforms.projectiveTransform.multiplyVector3(vector);
+    // Apply projective transform.
+    vector.applyProjection(this._uniforms.projectiveTransform);
 
-    // Apply viewport
-    this.transform.multiplyVector3(vector);
+    // Apply viewport.
+    vector.applyProjection(this.transform);
   },
 
   from: function (vector) {
-    // Apply inverse viewport
-    this.inverse.multiplyVector3(vector);
+    // Apply inverse viewport.
+    vector.applyProjection(this.inverse);
 
-    // Apply inverse projective transform
-    this._uniforms.projectiveInverse.multiplyVector3(vector);
+    // Apply inverse projective transform.
+    vector.applyProjection(this._uniforms.projectiveInverse);
   },
 
   update: function (stage) {
@@ -4694,7 +4722,7 @@ MathBox.ViewportProjective.prototype = _.extend(new MathBox.ViewportCartesian(nu
     var m = this.get('projective');
     t.set.apply(t, m[0].concat(m[1], m[2], m[3]));
 
-    this._uniforms.projectiveInverse.getInverse(t);
+    this._uniforms.projectiveInverse.getInverse(t, true);
 
     MathBox.ViewportCartesian.prototype.update.call(this, stage);
   },
@@ -4781,8 +4809,8 @@ MathBox.ViewportSphere.prototype = _.extend(new MathBox.ViewportCartesian(null),
       vector.z = (Math.cos(x) * c - focus) / aspectX;
     }
 
-    // Apply viewport
-    this.transform.multiplyVector3(vector);
+    // Apply viewport.
+    vector.applyProjection(this.transform);
   },
 
   from: function (vector) {
@@ -4792,10 +4820,10 @@ MathBox.ViewportSphere.prototype = _.extend(new MathBox.ViewportCartesian(null),
         focus = this._uniforms.sphereFocus,
         alpha = this._uniforms.sphereAlpha;
 
-    // Apply inverse viewport
-    this.inverse.multiplyVector3(vector);
+    // Apply inverse viewport.
+    vector.applyProjection(this.inverse);
 
-    // Spherical coords to cartesian
+    // Spherical coords to cartesian.
     if (alpha > 0.0001) {
       var x = vector.x,
           y = vector.y / aspectY,
