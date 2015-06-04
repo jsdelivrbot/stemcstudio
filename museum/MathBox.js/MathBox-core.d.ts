@@ -6,14 +6,14 @@
  * Functional constructor for MathBox.
  */
 declare var mathBox: (options: {
-    cameraControls: boolean;
-    cursor: boolean;
-    controlClass;
-    elementResize: boolean;
-    fullscreen: boolean;
-    screenshot: boolean;
-    stats: boolean;
-    scale: number;
+    cameraControls?: boolean;
+    cursor?: boolean;
+    controlClass?;
+    elementResize?: boolean;
+    fullscreen?: boolean;
+    screenshot?: boolean;
+    stats?: boolean;
+    scale?: number;
 }) => MathBox.IMathBox;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -37,27 +37,40 @@ declare module MathBox {
     start(): IStage;
   }
 
+  interface IStyleOptions {
+    /**
+     * Color in hex. e.g. 0xRRGGBB
+     */
+    color: number;
+  }
+
+  interface IAxisOptions extends IStyleOptions {
+    /**
+     * 0 = X, 1 = Y, 2 = Z
+     */
+    axis: number;
+  }
+
   interface IStage {
     /**
      *
      */
     animate(selector: string, options: {orbit?: number, phi?: number, offset?: number[]}, animate: {delay?: number, duration?: number}): void;
     /**
-     * Adds an axis primitive to the scene.
+     * Adds an Axis primitive to the scene.
      *
-     * Parameters:
-     *   axis
-     *   offset
-     *   n
-     *   ticks
-     *   tickUnit
-     *   tickScale
-     *   arrow
-     *     Whether to include an arrow on the axis. Defaults to true.
-     *   size
-     *     Size of the arrow relative to the stage. Defaults to 0.07
+     * .axis({
+     *   axis: 0,           // 0 = X, 1 = Y, 2 = Z
+     *   offset: [0, 0, 0], // Shift axis position
+     *   n: 2,              // Number of points on axis line (set to higher for curved viewports)
+     *   ticks: 10,         // Approximate number of ticks on axis (ticks are spaced at sensible units).
+     *   tickUnit: 1,       // Base unit for ticks. Set to π e.g. to space ticks at multiples of π.
+     *   tickScale: 10,     // Integer denoting the base for recursive division. 2 = binary, 10 = decimal
+     *   arrow: true,       // Whether to include an arrow on the axis
+     *   size: .07,         // Size of the arrow relative to the stage.
+     * })
      */
-    axis(options: {id: string, axis: number, color: number, ticks: number, lineWidth: number, size?: number, labels?: boolean, distance?: number, arrow?: boolean, offset?: number[]}): IStage;
+    axis(options: IAxisOptions): IStage;
     /**
      *
      */
@@ -157,21 +170,25 @@ declare module MathBox {
     /**
      * Adds a Vector primitive to the scene.
      *
-     * Parameters:
-     *   n
-     *     Number of vectors. Default is 1.
-     *   data
-     *     Array of alternating start and end points, each an array of 2 or 3 elements. Default is null.
-     *   expression
-     *     Live expression for start/end points. Default is function returning 0.
-     *   line
-     *     Whether to draw vector lines. Default is true.
-     *   arrow
-     *     Whether to draw arrow heads. Default is true.
-     *   size
-     *     Size of the arrowhead relative to the stage. Default is 0.07.
+     * .vector({
+     *   n: 1,                              // Number of vectors
+     *   data: null,                        // Array of alternating start and end points,
+     *                                      // each an array of 2 or 3 elements
+     *   expression: function (i, end) {    // Live expression for start/end points.
+     *     return 0;                        // Return single value or array of 2/3 elements.
+     *   },
+     *   line: true,                        // Whether to draw vector lines
+     *   arrow: true,                       // Whether to draw arrowheads
+     *   size: .07,                         // Size of the arrowhead relative to the stage
+     * })
      */
-    vector(options: {n?: number, data?: number[][], expression?: (i, end) => number[], line?: boolean, arrow?: boolean, size?: number}): IStage;
+    vector(options: {
+      n?: number,
+      data?: number[][],
+      expression?: (i: number, end: number) => number[],
+      line?: boolean,
+      arrow?: boolean,
+      size?: number}): IStage;
     /**
      * Defines a specific mathematical coordinate frame.
      *

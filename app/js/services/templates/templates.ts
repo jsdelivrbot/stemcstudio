@@ -787,6 +787,62 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "  }]);\n" +
     "})(angular.module('doodle', []));\n";
 
+  var HTML_TEMPLATE_MATHBOX = "" +
+    "<!doctype html>\n" +
+    "<html>\n" +
+    "  <head>\n" +
+    "    <!-- STYLE-MARKER -->\n" +
+    "    <!-- SCRIPTS-MARKER -->\n" +
+    "  </head>\n" +
+    "  <body>\n" +
+    "        <hr/>\n" +
+    "        <ul>\n" +
+    "          <li>\n" +
+    "            <a href='https://github.com/geometryzen/davinci-mathbox' target='_blank'>MathBox Home Page</a>\n" +
+    "          </li>\n" +
+    "        </ul>\n" +
+    "    <script type='text/javascript'>\n" +
+    "      try {\n" +
+    "      <!-- CODE-MARKER -->\n" +
+    "      }\n" +
+    "      catch(e) {\n" +
+    "        console.log(e);\n" +
+    "      }\n" +
+    "    </script>\n" +
+    "  </body>\n" +
+    "</html>\n";
+
+  var CODE_TEMPLATE_MATHBOX = "" +
+    "DomReady.ready(function() {ThreeBox.preload(['../shaders/MathBox.glsl.html',], load);});\n" +
+    "\n" +
+    "function load() {\n" +
+    "  var mathbox = mathBox({stats: false}).start();\n" +
+    "\n" +
+    "  mathbox.viewport({type: 'cartesian'})\n" +
+    "  .camera({orbit: 15, phi: Math.PI, theta: .2})\n" +
+    "  .transition(300);\n" +
+    "\n" +
+    "  mathbox.surface({\n" +
+    "    mesh: false,\n" +
+    "    line: true,\n" +
+    "    shaded: true,\n" +
+    "    domain: [[-2.5, 1.5], [-Math.PI*1.5, Math.PI*1.5]],\n" +
+    "    n: [32, 64],\n" +
+    "    expression: surfaceFn,\n" +
+    "  });\n" +
+    "\n" +
+    "  mathbox.world().loop().hookPreRender(function () {\n" +
+    "    mathbox.set('camera', {phi: Date.now() * 0.0003});\n" +
+    "  });\n" +
+    "}\n" +
+"\n" +
+"function surfaceFn(x: number, y: number): number[] {\n" +
+"  var z = new blade.Complex(x, y).exp();\n" +
+"  return [z.x, z.y, x+y];\n" +
+"}\n";
+
+  var LESS_TEMPLATE_MATHBOX = "";
+
   return [
     {
       uuid: uuid.generate(),
@@ -810,7 +866,7 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
       html: HTML_TEMPLATE_ANGULAR_BLADE_VISUAL,
       code: CODE_TEMPLATE_ANGULAR_BLADE_VISUAL,
       less: LESS_TEMPLATE_BASIC,
-      dependencies: ['angular', 'blade', 'three', 'visual']
+      dependencies: ['angular', 'davinci-blade', 'davinci-threejs', 'davinci-visual']
     },
     {
       uuid: uuid.generate(),
@@ -822,7 +878,7 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
       html: HTML_TEMPLATE_ANGULAR_VISUAL,
       code: CODE_TEMPLATE_ANGULAR_VISUAL,
       less: LESS_TEMPLATE_BASIC,
-      dependencies: ['angular', 'three', 'visual']
+      dependencies: ['angular', 'davinci-threejs', 'davinci-visual']
     },
     {
       uuid: uuid.generate(),
@@ -834,7 +890,7 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
       html: HTML_TEMPLATE_ANGULAR_THREE,
       code: CODE_TEMPLATE_ANGULAR_THREE,
       less: LESS_TEMPLATE_BASIC,
-      dependencies: ['angular', 'three']
+      dependencies: ['angular', 'davinci-threejs']
     },
     {
       uuid: uuid.generate(),
@@ -858,7 +914,7 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
       html: HTML_TEMPLATE_BASIC,
       code: CODE_TEMPLATE_THREEJS,
       less: LESS_TEMPLATE_BASIC,
-      dependencies: ['three']
+      dependencies: ['davinci-threejs']
     },
     /*
     {
@@ -909,6 +965,18 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
       code: CODE_TEMPLATE_D3,
       less: LESS_TEMPLATE_BASIC,
       dependencies: ['d3']
+    },
+    {
+      uuid: uuid.generate(),
+      description: "MathBox (animation) — presentation quality math diagrams",
+      isCodeVisible: true,
+      isViewVisible: true,
+      focusEditor: undefined,
+      lastKnownJs: undefined,
+      html: HTML_TEMPLATE_MATHBOX,
+      code: CODE_TEMPLATE_MATHBOX,
+      less: LESS_TEMPLATE_MATHBOX,
+      dependencies: ['DomReady','davinci-mathbox','davinci-blade']
     }
   ];
 }]);

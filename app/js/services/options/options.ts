@@ -17,8 +17,9 @@ angular.module('app').factory('options', [
       description: '',
       version: 'latest',
       visible: true,
-      js: 'angular@1.4.0.min.js',
       dts: 'angular@1.4.0.d.ts',
+      js: 'angular@1.4.0.js',
+      minJs: 'angular@1.4.0.min.js',
       dependencies: {
 
       }
@@ -29,8 +30,9 @@ angular.module('app').factory('options', [
       description: '',
       version: '1.1.1',
       visible: true,
-      js: 'davinci-blade@1.1.1/davinci-blade.min.js',
       dts: 'davinci-blade@1.1.1/davinci-blade.d.ts',
+      js: 'davinci-blade@1.1.1/davinci-blade.js',
+      minJs: 'davinci-blade@1.1.1/davinci-blade.min.js',
       dependencies: {
 
       }
@@ -41,8 +43,9 @@ angular.module('app').factory('options', [
       description: '',
       version: '3.5.5',
       visible: true,
-      js: 'd3@3.5.5.min.js',
       dts: 'd3@3.5.5.d.ts',
+      js: 'd3@3.5.5.js',
+      minJs: 'd3@3.5.5.min.js',
       dependencies: {
 
       }
@@ -53,8 +56,9 @@ angular.module('app').factory('options', [
       description: '',
       version: 'latest',
       visible: true,
-      js: 'domready@1.0.0.js',
       dts: 'domready@1.0.0.d.ts',
+      js: 'domready@1.0.0.js',
+      minJs: 'domready@1.0.0.js',
       dependencies: {
 
       }
@@ -65,20 +69,22 @@ angular.module('app').factory('options', [
       description: '',
       version: '0.99.3',
       visible: true,
-      js: 'jsxgraph@0.99.3.min.js',
       dts: 'jsxgraph@0.99.3.d.ts',
+      js: 'jsxgraph@0.99.3.js',
+      minJs: 'jsxgraph@0.99.3.min.js',
       dependencies: {
 
       }
     },
     {
-      name: 'threejs',
+      name: 'davinci-threejs',
       moniker: 'three.js',
       description: '',
       version: 'latest',
       visible: true,
-      js: 'three.js',
       dts: 'three.d.ts',
+      js: 'three.js',
+      minJs: 'three.min.js',
       dependencies: {
 
       }
@@ -89,10 +95,11 @@ angular.module('app').factory('options', [
       description: '',
       version: 'latest',
       visible: true,
-      js: 'tquery.min.js',
       dts: 'tquery.d.ts',
+      js: 'tquery.js',
+      minJs: 'tquery.min.js',
       dependencies: {
-        'threejs': '*'
+        'davinci-threejs': '*'
       }
     },
     {
@@ -101,8 +108,9 @@ angular.module('app').factory('options', [
       description: '',
       version: 'latest',
       visible: false,
-      js: 'microajax.js',
       dts: 'microajax.d.ts',
+      js: 'microajax.js',
+      minJs: 'microajax.js',
       dependencies: {}
     },
     {
@@ -111,8 +119,9 @@ angular.module('app').factory('options', [
       description: '',
       version: 'latest',
       visible: false,
-      js: 'microevent.js',
       dts: 'microevent.d.ts',
+      js: 'microevent.js',
+      minJs: 'microevent.js',
       dependencies: {}
     },
     {
@@ -121,8 +130,9 @@ angular.module('app').factory('options', [
       description: '',
       version: 'latest',
       visible: false,
-      js: 'THREEx.screenshot.js',
       dts: 'THREEx.screenshot.d.ts',
+      js: 'THREEx.screenshot.js',
+      minJs: 'THREEx.screenshot.js',
       dependencies: {
         'threejs': '*'
       }
@@ -133,12 +143,13 @@ angular.module('app').factory('options', [
       description: '',
       version: 'latest',
       visible: false,
-      js: 'ThreeBox-core.js',
       dts: 'ThreeBox-core.d.ts',
+      js: 'ThreeBox-core.js',
+      minJs: 'ThreeBox-core.js',
       dependencies: {
         'microAjax': 'latest',
         'MicroEvent': '*',
-        'threejs': '*',
+        'davinci-threejs': '*',
         'THREEx.screenshot': '*',
         'davinci-tquery': '*',
         'underscore': '1.8.3'
@@ -150,8 +161,9 @@ angular.module('app').factory('options', [
       description: '',
       version: 'latest',
       visible: true,
-      js: 'underscore@1.8.3.min.js',
       dts: 'underscore@1.8.3.d.ts',
+      js: 'underscore@1.8.3.js',
+      minJs: 'underscore@1.8.3.min.js',
       dependencies: {}
     },
     {
@@ -160,10 +172,11 @@ angular.module('app').factory('options', [
       description: '',
       version: 'latest',
       visible: false,
-      js: 'ThreeRTT-core.js',
       dts: 'ThreeRTT-core.d.ts',
+      js: 'ThreeRTT-core.js',
+      minJs: 'ThreeRTT-core.min.js',
       dependencies: {
-        'threejs': '*'
+        'davinci-threejs': '*'
       }
     },
     {
@@ -172,8 +185,9 @@ angular.module('app').factory('options', [
       description: '',
       version: 'latest',
       visible: false,
-      js: 'ShaderGraph-core.js',
       dts: 'ShaderGraph-core.d.ts',
+      js: 'ShaderGraph-core.js',
+      minJs: 'ShaderGraph-core.min.js',
       dependencies: {}
     },
     {
@@ -182,13 +196,14 @@ angular.module('app').factory('options', [
       description: '',
       version: 'latest',
       visible: true,
-      js: 'MathBox-core.js',
       dts: 'MathBox-core.d.ts',
+      js: 'MathBox-core.js',
+      minJs: 'MathBox-core.min.js',
       dependencies: {
         'davinci-shadergraph': '*',
         'davinci-threebox': '*',
         'davinci-threertt': '*',
-        'threejs': '*'
+        'davinci-threejs': '*'
       }
     },
     {
@@ -196,11 +211,12 @@ angular.module('app').factory('options', [
       moniker: 'visual',
       description: '',
       version: 'latest',
-      visible: false,
-      js: 'davinci-visual.min.js',
+      visible: true,
       dts: 'davinci-visual.d.ts',
+      js: 'davinci-visual.js',
+      minJs: 'davinci-visual.min.js',
       dependencies: {
-        'threejs': '*'
+        'davinci-threejs': '*'
       }
     }
   ];

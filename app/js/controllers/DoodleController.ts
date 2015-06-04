@@ -634,7 +634,7 @@ angular.module('app').controller('doodle-controller', [
 
         var closureOpts: IOption[] = closure(selOpts);
 
-        var chosenFileNames: string[] = closureOpts.map(function(option: IOption) {return option.js;});
+        var chosenFileNames: string[] = closureOpts.map(function(option: IOption) {return option.minJs;});
         // TODO: We will later want to make operator overloading configurable for speed.
         var scriptFileNames: string[] = chosenFileNames.concat(FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS);
         // TOOD: Don't fix the location of the JavaScript here.

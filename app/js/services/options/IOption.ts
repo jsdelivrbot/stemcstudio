@@ -20,13 +20,17 @@ interface IOption {
    */
   visible: boolean;
   /**
-   *
+   * TypeScript definitions.
+   */
+  dts: string;
+  /**
+   * JavaScript.
    */
   js: string;
   /**
-   *
+   * JavaScript - minified.
    */
-  dts: string;
+  minJs: string;
   /**
    * The dependencies expressed as name => semantic version dependency map.
    */
