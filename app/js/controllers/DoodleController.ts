@@ -222,6 +222,7 @@ angular.module('app').controller('doodle-controller', [
     setEditMode(doodles.current().isCodeVisible);
     setViewMode(doodles.current().isViewVisible);
     setCurrentEditor(doodles.current().focusEditor);
+    $window.document.title = doodles.current().description;
   }
 
   var setViewMode = function(isViewVisible: boolean) {

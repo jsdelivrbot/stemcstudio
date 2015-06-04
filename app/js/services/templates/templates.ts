@@ -9,22 +9,22 @@
  */
 angular.module('app').factory('templates', ['$http', 'uuid4', function($http: angular.IHttpService, uuid: IUuidService): mathdoodle.IDoodle[] {
 
+  function newLine(s: string) {return s + "\n"}
+  function indent(s: string) {return "    " + s}
+
+  function lessMarker(): string {return ["<!-- STYLE-MARKER -->"].map(indent).map(newLine).join("");}
+  function scriptsMarker(): string {return ["<!-- SCRIPTS-MARKER -->"].map(indent).map(newLine).join("");}
+  function codeMarker(): string {return ["<script>", "<!-- CODE-MARKER -->", "</script>"].map(indent).map(newLine).join("");}
+
   var HTML_TEMPLATE_BASIC = "" +
-    "<!DOCTYPE html>\n" +
+    "<!doctype html>\n" +
     "<html>\n" +
     "  <head>\n" +
-    "    <!-- STYLE-MARKER -->\n" +
-    "    <!-- SCRIPTS-MARKER -->\n" +
+    lessMarker() +
+    scriptsMarker() +
     "  </head>\n" +
-    "  <body style='margin: 0;'>\n" +
-    "    <script type='text/javascript'>\n" +
-    "      try {\n" +
-    "      <!-- CODE-MARKER -->\n" +
-    "      }\n" +
-    "      catch(e) {\n" +
-    "        console.log(e);\n" +
-    "      }\n" +
-    "    </script>\n" +
+    "  <body>\n" +
+    codeMarker() +
     "  </body>\n" +
     "</html>\n";
 
@@ -41,24 +41,17 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "<html>\n" +
     "  <head>\n" +
     "    <title>Vector graphics with canvas</title>\n" +
-    "    <!-- STYLE-MARKER -->\n" +
-    "    <!-- SCRIPTS-MARKER -->\n" +
+    lessMarker() +
+    scriptsMarker() +
     "  </head>\n" +
-    "  <body style='margin: 0;'>\n" +
+    "  <body>\n" +
     "    <hr/>\n" +
     "    <ul>\n" +
     "      <li>\n" +
     "        <a href='https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API' target='_blank'>Canvas API</a>\n" +
     "      </li>\n" +
     "    </ul>\n" +
-    "    <script type='text/javascript'>\n" +
-    "      try {\n" +
-    "      <!-- CODE-MARKER -->\n" +
-    "      }\n" +
-    "      catch(e) {\n" +
-    "        console.log(e);\n" +
-    "      }\n" +
-    "    </script>\n" +
+    codeMarker() +
     "  </body>\n" +
     "</html>\n";
 
@@ -106,8 +99,8 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "  <head>\n" +
     "    <meta charset='utf-8'/>\n" +
     "    <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>\n" +
-    "    <!-- STYLE-MARKER -->\n" +
-    "    <!-- SCRIPTS-MARKER -->\n" +
+    lessMarker() +
+    scriptsMarker() +
     "  </head>\n" +
     "  <body style='margin: 0;'>\n" +
     "    <div class='container'>\n" +
@@ -124,14 +117,7 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "        <a href='https://angularjs.org' target='_blank'>AngularJS Home Page</a>\n" +
     "      </div>\n" +
     "    </div>\n" +
-    "    <script type='text/javascript'>\n" +
-    "      try {\n" +
-    "      <!-- CODE-MARKER -->\n" +
-    "      }\n" +
-    "      catch(e) {\n" +
-    "        console.log(e);\n" +
-    "      }\n" +
-    "    </script>\n" +
+    codeMarker() +
     "  </body>\n" +
     "</html>\n";
 
@@ -291,28 +277,21 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "eight.animationRunner(tick, terminate, setUp, tearDown, window).start();\n";
 
   var HTML_TEMPLATE_JSXGRAPH = "" +
-    "<!DOCTYPE html>\n" +
+    "<!doctype html>\n" +
     "<html>\n" +
     "  <head>\n" +
     "    <!--link rel='stylesheet' type='text/css' href='http://jsxgraph.uni-bayreuth.de/distrib/jsxgraph.css'/-->\n" +
-    "    <!-- STYLE-MARKER -->\n" +
-    "    <!-- SCRIPTS-MARKER -->\n" +
+    lessMarker() +
+    scriptsMarker() +
     "  </head>\n" +
-    "  <body style='margin: 0;'>\n" +
+    "  <body>\n" +
     "    <div id='box' class='jxgbox' style='width:500px; height:500px'></div>\n" +
     "    <ul>\n" +
     "      <li>\n" +
     "        <a href='http://jsxgraph.uni-bayreuth.de' target='_blank' class='JXGtext'>JSXGraph Home Page</a>\n" +
     "      </li>\n" +
     "    </ul>\n" +
-    "    <script type='text/javascript'>\n" +
-    "      try {\n" +
-    "      <!-- CODE-MARKER -->\n" +
-    "      }\n" +
-    "      catch(e) {\n" +
-    "        console.log(e);\n" +
-    "      }\n" +
-    "    </script>\n" +
+    codeMarker() +
     "  </body>\n" +
     "</html>\n";
 
@@ -355,27 +334,20 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
   "}\n";
 
   var HTML_TEMPLATE_JSXGRAPH_DEMO = "" +
-    "<!DOCTYPE html>\n" +
+    "<!doctype html>\n" +
     "<html>\n" +
     "  <head>\n" +
-    "    <!-- STYLE-MARKER -->\n" +
-    "    <!-- SCRIPTS-MARKER -->\n" +
+    lessMarker() +
+    scriptsMarker() +
     "  </head>\n" +
-    "  <body style='margin: 0;'>\n" +
+    "  <body>\n" +
     "    <div id='box' class='jxgbox' style='width:500px; height:500px'></div>\n" +
     "    <ul>\n" +
     "      <li>\n" +
     "        <a href='http://jsxgraph.uni-bayreuth.de' target='_blank' class='JXGtext'>JSXGraph Home Page</a>\n" +
     "      </li>\n" +
     "    </ul>\n" +
-    "    <script type='text/javascript'>\n" +
-    "      try {\n" +
-    "      <!-- CODE-MARKER -->\n" +
-    "      }\n" +
-    "      catch(e) {\n" +
-    "        console.log(e);\n" +
-    "      }\n" +
-    "    </script>\n" +
+    codeMarker() +
     "  </body>\n" +
     "</html>\n";
 
@@ -452,10 +424,10 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "  <head>\n" +
     "    <meta charset='utf-8'/>\n" +
     "    <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>\n" +
-    "    <!-- STYLE-MARKER -->\n" +
-    "    <!-- SCRIPTS-MARKER -->\n" +
+    lessMarker() +
+    scriptsMarker() +
     "  </head>\n" +
-    "  <body style='margin: 0;'>\n" +
+    "  <body>\n" +
     "    <div class='container'>\n" +
     "      <div class='page-header'>\n" +
     "        <h1><a href='#'>AngularJS and three.js</a></h1>\n" +
@@ -482,14 +454,7 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "        </ul>\n" +
     "      </div>\n" +
     "    </div>\n" +
-    "    <script type='text/javascript'>\n" +
-    "      try {\n" +
-    "      <!-- CODE-MARKER -->\n" +
-    "      }\n" +
-    "      catch(e) {\n" +
-    "        console.log(e);\n" +
-    "      }\n" +
-    "    </script>\n" +
+    codeMarker() +
     "  </body>\n" +
     "</html>\n";
 
@@ -563,10 +528,10 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "  <head>\n" +
     "    <meta charset='utf-8'/>\n" +
     "    <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>\n" +
-    "    <!-- STYLE-MARKER -->\n" +
-    "    <!-- SCRIPTS-MARKER -->\n" +
+    lessMarker() +
+    scriptsMarker() +
     "  </head>\n" +
-    "  <body style='margin: 0;'>\n" +
+    "  <body>\n" +
     "    <div class='container'>\n" +
     "      <div class='page-header'>\n" +
     "        <h1>AngularJS, three.js, and visual</h1>\n" +
@@ -594,14 +559,7 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "        </ul>\n" +
     "      </div>\n" +
     "    </div>\n" +
-    "    <script type='text/javascript'>\n" +
-    "      try {\n" +
-    "      <!-- CODE-MARKER -->\n" +
-    "      }\n" +
-    "      catch(e) {\n" +
-    "        console.log(e);\n" +
-    "      }\n" +
-    "    </script>\n" +
+    codeMarker() +
     "  </body>\n" +
     "</html>\n";
 
@@ -641,10 +599,10 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "  <head>\n" +
     "    <meta charset='utf-8'/>\n" +
     "    <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>\n" +
-    "    <!-- STYLE-MARKER -->\n" +
-    "    <!-- SCRIPTS-MARKER -->\n" +
+    lessMarker() +
+    scriptsMarker() +
     "  </head>\n" +
-    "  <body style='margin: 0;'>\n" +
+    "  <body>\n" +
     "    <div class='container'>\n" +
     "      <div class='page-header'>\n" +
     "        <h1>AngularJS, blade, three.js, and visual</h1>\n" +
@@ -672,14 +630,7 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "        </ul>\n" +
     "      </div>\n" +
     "    </div>\n" +
-    "    <script type='text/javascript'>\n" +
-    "      try {\n" +
-    "      <!-- CODE-MARKER -->\n" +
-    "      }\n" +
-    "      catch(e) {\n" +
-    "        console.log(e);\n" +
-    "      }\n" +
-    "    </script>\n" +
+    codeMarker() +
     "  </body>\n" +
     "</html>\n";
 
@@ -791,8 +742,8 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "<!doctype html>\n" +
     "<html>\n" +
     "  <head>\n" +
-    "    <!-- STYLE-MARKER -->\n" +
-    "    <!-- SCRIPTS-MARKER -->\n" +
+    lessMarker() +
+    scriptsMarker() +
     "  </head>\n" +
     "  <body>\n" +
     "        <hr/>\n" +
@@ -801,14 +752,7 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "            <a href='https://github.com/geometryzen/davinci-mathbox' target='_blank'>MathBox Home Page</a>\n" +
     "          </li>\n" +
     "        </ul>\n" +
-    "    <script type='text/javascript'>\n" +
-    "      try {\n" +
-    "      <!-- CODE-MARKER -->\n" +
-    "      }\n" +
-    "      catch(e) {\n" +
-    "        console.log(e);\n" +
-    "      }\n" +
-    "    </script>\n" +
+    codeMarker() +
     "  </body>\n" +
     "</html>\n";
 
@@ -916,20 +860,6 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
       less: LESS_TEMPLATE_BASIC,
       dependencies: ['davinci-threejs']
     },
-    /*
-    {
-      uuid: uuid.generate(),
-      description: "blade — Geometric Algebra Library",
-      isCodeVisible: true,
-      isViewVisible: true,
-      focusEditor: undefined,
-      lastKnownJs: undefined,
-      html: HTML_TEMPLATE_BASIC,
-      code: CODE_TEMPLATE_VISUAL,
-      less: LESS_TEMPLATE_BASIC,
-      dependencies: ['blade','eight','three','visual']
-    },
-    */
     {
       uuid: uuid.generate(),
       description: "JSXGraph — Dynamic Mathematics with JavaScript (Demo)",
@@ -977,6 +907,18 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
       code: CODE_TEMPLATE_MATHBOX,
       less: LESS_TEMPLATE_MATHBOX,
       dependencies: ['DomReady','davinci-mathbox','davinci-blade']
-    }
+    },
+    {
+      uuid: uuid.generate(),
+      description: "Minimal — Generic HTML, JavaScript and CSS project",
+      isCodeVisible: true,
+      isViewVisible: true,
+      focusEditor: undefined,
+      lastKnownJs: undefined,
+      html: HTML_TEMPLATE_BASIC,
+      code: CODE_TEMPLATE_BASIC,
+      less: LESS_TEMPLATE_BASIC,
+      dependencies: []
+    },
   ];
 }]);
