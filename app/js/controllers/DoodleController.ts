@@ -651,9 +651,11 @@ angular.module('app').controller('doodle-controller', [
 
         var html = doodles.current().html;
         html = html.replace(SCRIPTS_MARKER, scriptTags.join(""));
-        // TODO: be more explicit! The wrapper should be in the HTML.
         html = html.replace(STYLE_MARKER, [doodles.current().less].join(""));
         html = html.replace(CODE_MARKER, mathscript.transpile(doodles.current().lastKnownJs));
+        // For backwards compatibility...
+        html = html.replace('<!-- STYLE-MARKER -->', ['<style>', doodles.current().less, '</style>'].join(""));
+        html = html.replace('<!-- CODE-MARKER -->', mathscript.transpile(doodles.current().lastKnownJs));
 
         content.open();
         content.write(html);
