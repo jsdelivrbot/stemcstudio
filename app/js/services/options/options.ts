@@ -68,6 +68,19 @@ angular.module('app').factory('options', [
       }
     },
     {
+      name: 'gl-matrix',
+      moniker: 'gl-matrix',
+      description: "Matrix and Vector library for High Performance WebGL apps",
+      homepage: 'http://glmatrix.net',
+      version: '2.2.1',
+      visible: true,
+      dts: 'gl-matrix@2.2.1/gl-matrix.d.ts',
+      js: 'gl-matrix@2.2.1/gl-matrix.js',
+      minJs: 'gl-matrix@2.2.1/gl-matrix.min.js',
+      dependencies: {
+      }
+    },
+    {
       name: 'jsxgraph',
       moniker: 'JSXGraph',
       description: "2D Geometry, Plotting, and Visualization",

@@ -62,6 +62,10 @@ module.exports = function(lineman) {
           {src: "museum/domready/domready@1.0.0.js",                         dest: "generated/js/domready@1.0.0.js"},
           {src: "museum/domready/domready@1.0.0.d.ts",                       dest: "generated/ts/domready@1.0.0.d.ts"},
 
+          {src: "museum/gl-matrix@2.2.1/gl-matrix.d.ts",                     dest: "generated/ts/gl-matrix@2.2.1/gl-matrix.d.ts"},
+          {src: "museum/gl-matrix@2.2.1/gl-matrix.js",                       dest: "generated/js/gl-matrix@2.2.1/gl-matrix.js"},
+          {src: "museum/gl-matrix@2.2.1/gl-matrix.min.js",                   dest: "generated/js/gl-matrix@2.2.1/gl-matrix.min.js"},
+
           {src: "museum/MathBox.js/MathBox-core.d.ts",                        dest: "generated/ts/MathBox-core.d.ts"},
           {src: "bower_components/davinci-mathbox/build/MathBox-core.js",     dest: "generated/js/MathBox-core.js"},
           {src: "bower_components/davinci-mathbox/build/MathBox-core.min.js", dest: "generated/js/MathBox-core.min.js"},
@@ -149,6 +153,10 @@ module.exports = function(lineman) {
 
           {src: "museum/domready/domready@1.0.0.js",                         dest: "dist/js/domready@1.0.0.js"},
           {src: "museum/domready/domready@1.0.0.d.ts",                       dest: "dist/ts/domready@1.0.0.d.ts"},
+
+          {src: "museum/gl-matrix@2.2.1/gl-matrix.d.ts",                     dest: "dist/ts/gl-matrix@2.2.1/gl-matrix.d.ts"},
+          {src: "museum/gl-matrix@2.2.1/gl-matrix.js",                       dest: "dist/js/gl-matrix@2.2.1/gl-matrix.js"},
+          {src: "museum/gl-matrix@2.2.1/gl-matrix.min.js",                   dest: "dist/js/gl-matrix@2.2.1/gl-matrix.min.js"},
 
           {src: "museum/MathBox.js/MathBox-core.d.ts",                       dest: "dist/ts/MathBox-core.d.ts"},
           {src: "bower_components/davinci-mathbox/build/MathBox-core.js",    dest: "dist/js/MathBox-core.js"},

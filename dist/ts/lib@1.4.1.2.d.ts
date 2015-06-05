@@ -13185,12 +13185,18 @@ declare var WEBGL_compressed_texture_s3tc: {
     COMPRESSED_RGB_S3TC_DXT1_EXT: number;
 }
 
+/**
+ * Provides methods, properties, and constants that let you create fast 2D and 3D WebGL graphics.
+ */
 interface WebGLRenderingContext {
     drawingBufferWidth: number;
     drawingBufferHeight: number;
     canvas: HTMLCanvasElement;
     getUniformLocation(program: WebGLProgram, name: string): WebGLUniformLocation;
     bindTexture(target: number, texture: WebGLTexture): void;
+    /**
+     * Initializes the currently bound buffer in memory with array data.
+     */
     bufferData(target: number, data: ArrayBufferView, usage: number): void;
     bufferData(target: number, data: ArrayBuffer, usage: number): void;
     bufferData(target: number, size: number, usage: number): void;
@@ -13198,16 +13204,26 @@ interface WebGLRenderingContext {
     getUniform(program: WebGLProgram, location: WebGLUniformLocation): any;
     vertexAttrib3fv(indx: number, values: number[]): void;
     vertexAttrib3fv(indx: number, values: Float32Array): void;
+    /**
+     * Links an attached vertex shader and an attached fragment shader to a program so it can be used by the graphics processing unit (GPU).
+     */
     linkProgram(program: WebGLProgram): void;
     getSupportedExtensions(): string[];
     bufferSubData(target: number, offset: number, data: ArrayBuffer): void;
     bufferSubData(target: number, offset: number, data: ArrayBufferView): void;
+    /**
+     * Specifies the data formats and locations of attributes in a vertex attributes array.
+     */
     vertexAttribPointer(indx: number, size: number, type: number, normalized: boolean, stride: number, offset: number): void;
     polygonOffset(factor: number, units: number): void;
     blendColor(red: number, green: number, blue: number, alpha: number): void;
     createTexture(): WebGLTexture;
     hint(target: number, mode: number): void;
     getVertexAttrib(index: number, pname: number): any;
+    /**
+     * Turns on a vertex attribute at a specific index position in a vertex attribute array.
+     * @param index Index of the vertex attribute to enable.
+     */
     enableVertexAttribArray(index: number): void;
     depthRange(zNear: number, zFar: number): void;
     cullFace(mode: number): void;
@@ -13221,6 +13237,9 @@ interface WebGLRenderingContext {
     uniformMatrix2fv(location: WebGLUniformLocation, transpose: boolean, value: number[]): void;
     uniformMatrix2fv(location: WebGLUniformLocation, transpose: boolean, value: Float32Array): void;
     getExtension(name: string): any;
+    /**
+     * Creates an empty WebGLProgram object to which vector and fragment WebGLShader objects can be attached.
+     */
     createProgram(): WebGLProgram;
     deleteShader(shader: WebGLShader): void;
     getAttachedShaders(program: WebGLProgram): WebGLShader[];
@@ -13231,8 +13250,14 @@ interface WebGLRenderingContext {
     texImage2D(target: number, level: number, internalformat: number, format: number, type: number, canvas: HTMLCanvasElement): void;
     texImage2D(target: number, level: number, internalformat: number, format: number, type: number, video: HTMLVideoElement): void;
     texImage2D(target: number, level: number, internalformat: number, format: number, type: number, pixels: ImageData): void;
+    /**
+     * Creates and initializes a WebGLBuffer.
+     */
     createBuffer(): WebGLBuffer;
     deleteTexture(texture: WebGLTexture): void;
+    /**
+     * Set the program object to be used for rendering.
+     */
     useProgram(program: WebGLProgram): void;
     vertexAttrib2fv(indx: number, values: number[]): void;
     vertexAttrib2fv(indx: number, values: Float32Array): void;
@@ -13272,10 +13297,22 @@ interface WebGLRenderingContext {
     shaderSource(shader: WebGLShader, source: string): void;
     deleteRenderbuffer(renderbuffer: WebGLRenderbuffer): void;
     stencilMask(mask: number): void;
+    /**
+     * Associates a buffer with a buffer target and makes the buffer the current buffer.
+     */
     bindBuffer(target: number, buffer: WebGLBuffer): void;
+    /**
+     * Returns an index to the location in a program of a named attribute variable.
+     */
     getAttribLocation(program: WebGLProgram, name: string): number;
     uniform3i(location: WebGLUniformLocation, x: number, y: number, z: number): void;
     blendEquationSeparate(modeRGB: number, modeAlpha: number): void;
+    /**
+     * Sets all pixels in a specific buffer to the same value.
+     *
+     * Syntax:
+     *   gl.clear(gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT | gl.COLOR_BUFFER_BIT);
+     */
     clear(mask: number): void;
     blendFuncSeparate(srcRGB: number, dstRGB: number, srcAlpha: number, dstAlpha: number): void;
     stencilFuncSeparate(face: number, func: number, ref: number, mask: number): void;
@@ -13316,12 +13353,18 @@ interface WebGLRenderingContext {
     depthFunc(func: number): void;
     texParameterf(target: number, pname: number, param: number): void;
     vertexAttrib3f(indx: number, x: number, y: number, z: number): void;
+    /**
+     * Render geometric primitives from bound and enabled vertex data.
+     */
     drawArrays(mode: number, first: number, count: number): void;
     texParameteri(target: number, pname: number, param: number): void;
     vertexAttrib4f(indx: number, x: number, y: number, z: number, w: number): void;
     getShaderParameter(shader: WebGLShader, pname: number): any;
     clearDepth(depth: number): void;
     activeTexture(texture: number): void;
+    /**
+     * Defines what part of the canvas will be used in rendering results of the drawing buffer.
+     */
     viewport(x: number, y: number, width: number, height: number): void;
     detachShader(program: WebGLProgram, shader: WebGLShader): void;
     uniform1f(location: WebGLUniformLocation, x: number): void;
@@ -13332,8 +13375,14 @@ interface WebGLRenderingContext {
     uniform3fv(location: WebGLUniformLocation, v: number[]): void;
     uniform3fv(location: WebGLUniformLocation, v: Float32Array): void;
     stencilMaskSeparate(face: number, mask: number): void;
+    /**
+     * Attaches a WebGLShader object to a WebGLProgram object.
+     */
     attachShader(program: WebGLProgram, shader: WebGLShader): void;
     compileShader(shader: WebGLShader): void;
+    /**
+     * Specifies color values to use by the clear method to clear the color buffer.
+     */
     clearColor(red: number, green: number, blue: number, alpha: number): void;
     isShader(shader: WebGLShader): boolean;
     clearStencil(s: number): void;
@@ -13565,9 +13614,15 @@ interface WebGLRenderingContext {
     MEDIUM_INT: number;
     SHADER_TYPE: number;
     POLYGON_OFFSET_FILL: number;
+    /**
+     * The data store contents are repeatedly respecified, and used many times as the source for WebGL drawing commands.
+     */
     DYNAMIC_DRAW: number;
     TEXTURE4: number;
     STENCIL_BACK_PASS_DEPTH_FAIL: number;
+    /**
+     * The data store contents are specified once, and used occasionally as the source of a WebGL drawing command.
+     */
     STREAM_DRAW: number;
     MAX_CUBE_MAP_TEXTURE_SIZE: number;
     TEXTURE17: number;
@@ -13592,6 +13647,9 @@ interface WebGLRenderingContext {
     STENCIL_TEST: number;
     ONE: number;
     FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE: number;
+    /**
+     * The data store contents are modified once, and used many times as the source for WebGL drawing commands.
+     */
     STATIC_DRAW: number;
     GEQUAL: number;
     BOOL_VEC4: number;
