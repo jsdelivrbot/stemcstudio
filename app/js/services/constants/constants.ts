@@ -20,9 +20,9 @@
   angular.module('app').constant('FILENAME_LESS', 'style.less');
 
   // For backwards compatibility, don't change the values of these constants.
-  angular.module('app').constant('SCRIPTS-MARKER-COMMENT', '<!-- SCRIPTS-MARKER -->');
-  angular.module('app').constant('STYLE-MARKER-COMMENT',   '<!-- STYLE-MARKER -->');
-  angular.module('app').constant('CODE-MARKER-COMMENT',    '<!-- CODE-MARKER -->');
+  angular.module('app').constant('SCRIPTS_MARKER', '<!-- SCRIPTS-MARKER -->');
+  angular.module('app').constant('STYLE_MARKER',   '/* STYLE-MARKER */');
+  angular.module('app').constant('CODE_MARKER',    '// CODE-MARKER');
 
   // We can change the global namespace used by Google's Universal Analytics.
   // All access should be through the service wrapper.

@@ -7,20 +7,32 @@
  * Instead of being a fixed set of templates, we want to make the templates extensible.
  * We expect that this will happen through HTTP, hence the inclusion of $http.
  */
-angular.module('app').factory('templates', ['$http', 'uuid4', function($http: angular.IHttpService, uuid: IUuidService): mathdoodle.IDoodle[] {
+angular.module('app').factory('templates', [
+  '$http',
+  'uuid4',
+  'CODE_MARKER',
+  'STYLE_MARKER',
+  'SCRIPTS_MARKER',
+  function(
+    $http: angular.IHttpService,
+    uuid: IUuidService,
+    CODE_MARKER: string,
+    STYLE_MARKER: string,
+    SCRIPTS_MARKER: string
+  ): mathdoodle.IDoodle[] {
 
   function newLine(s: string) {return s + "\n"}
   function indent(s: string) {return "    " + s}
 
-  function lessMarker(): string {return ["<!-- STYLE-MARKER -->"].map(indent).map(newLine).join("");}
-  function scriptsMarker(): string {return ["<!-- SCRIPTS-MARKER -->"].map(indent).map(newLine).join("");}
-  function codeMarker(): string {return ["<script>", "<!-- CODE-MARKER -->", "</script>"].map(indent).map(newLine).join("");}
+  function styleMarker(): string {return ['<style>', STYLE_MARKER, '</style>'].map(indent).map(newLine).join("");}
+  function scriptsMarker(): string {return [SCRIPTS_MARKER].map(indent).map(newLine).join("");}
+  function codeMarker(): string {return ['<script>', CODE_MARKER, '</script>'].map(indent).map(newLine).join("");}
 
   var HTML_TEMPLATE_BASIC = "" +
     "<!doctype html>\n" +
     "<html>\n" +
     "  <head>\n" +
-    lessMarker() +
+    styleMarker() +
     scriptsMarker() +
     "  </head>\n" +
     "  <body>\n" +
@@ -28,20 +40,16 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "  </body>\n" +
     "</html>\n";
 
-  var CODE_TEMPLATE_BASIC = "" +
-    "// Enter your TypeScript code here\n" +
-    "// It will be combined with the HTML at the <!-- CODE-MARKER --> comment.\n";
+  var CODE_TEMPLATE_BASIC = "";
 
-  var LESS_TEMPLATE_BASIC = "" +
-    "// Enter your CSS style here\n" +
-    "// It will be combined with the HTML at the <!-- STYLE-MARKER --> comment.\n";
+  var LESS_TEMPLATE_BASIC = "";
 
   var HTML_TEMPLATE_CANVAS = "" +
     "<!doctype html>\n" +
     "<html>\n" +
     "  <head>\n" +
     "    <title>Vector graphics with canvas</title>\n" +
-    lessMarker() +
+    styleMarker() +
     scriptsMarker() +
     "  </head>\n" +
     "  <body>\n" +
@@ -56,13 +64,13 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "</html>\n";
 
   var CODE_TEMPLATE_CANVAS = "" +
-    "window.onload = load;\n" +
+    "DomReady.ready(load);\n" +
     "\n" +
     "/**\n" +
     " * The handler function to be called at the end of the document loading process.\n" +
     " * @param ev The `load` event.\n" +
     " */\n" +
-    "function load(ev: Event) {\n" +
+    "function load() {\n" +
     "\n" +
     "  var canvas: HTMLCanvasElement = document.createElement('canvas');\n" +
     "\n" +
@@ -99,7 +107,7 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "  <head>\n" +
     "    <meta charset='utf-8'/>\n" +
     "    <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>\n" +
-    lessMarker() +
+    styleMarker() +
     scriptsMarker() +
     "  </head>\n" +
     "  <body style='margin: 0;'>\n" +
@@ -184,6 +192,10 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "\n"+
     "  renderer.render(scene, camera);\n"+
   "}\n";
+
+  var LESS_TEMPLATE_THREEJS = "" +
+    "body { margin: 0; }\n" +
+    "canvas { width: 100%; height: 100% }\n";
 
   var CODE_TEMPLATE_VISUAL = "" +
     "/**\n"+
@@ -281,7 +293,7 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "<html>\n" +
     "  <head>\n" +
     "    <!--link rel='stylesheet' type='text/css' href='http://jsxgraph.uni-bayreuth.de/distrib/jsxgraph.css'/-->\n" +
-    lessMarker() +
+    styleMarker() +
     scriptsMarker() +
     "  </head>\n" +
     "  <body>\n" +
@@ -337,7 +349,7 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "<!doctype html>\n" +
     "<html>\n" +
     "  <head>\n" +
-    lessMarker() +
+    styleMarker() +
     scriptsMarker() +
     "  </head>\n" +
     "  <body>\n" +
@@ -424,7 +436,7 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "  <head>\n" +
     "    <meta charset='utf-8'/>\n" +
     "    <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>\n" +
-    lessMarker() +
+    styleMarker() +
     scriptsMarker() +
     "  </head>\n" +
     "  <body>\n" +
@@ -528,7 +540,7 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "  <head>\n" +
     "    <meta charset='utf-8'/>\n" +
     "    <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>\n" +
-    lessMarker() +
+    styleMarker() +
     scriptsMarker() +
     "  </head>\n" +
     "  <body>\n" +
@@ -599,7 +611,7 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "  <head>\n" +
     "    <meta charset='utf-8'/>\n" +
     "    <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>\n" +
-    lessMarker() +
+    styleMarker() +
     scriptsMarker() +
     "  </head>\n" +
     "  <body>\n" +
@@ -742,7 +754,7 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
     "<!doctype html>\n" +
     "<html>\n" +
     "  <head>\n" +
-    lessMarker() +
+    styleMarker() +
     scriptsMarker() +
     "  </head>\n" +
     "  <body>\n" +
@@ -798,7 +810,7 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
       html: HTML_TEMPLATE_CANVAS,
       code: CODE_TEMPLATE_CANVAS,
       less: LESS_TEMPLATE_CANVAS,
-      dependencies: []
+      dependencies: ['DomReady']
     },
     {
       uuid: uuid.generate(),
@@ -857,7 +869,7 @@ angular.module('app').factory('templates', ['$http', 'uuid4', function($http: an
       lastKnownJs: undefined,
       html: HTML_TEMPLATE_BASIC,
       code: CODE_TEMPLATE_THREEJS,
-      less: LESS_TEMPLATE_BASIC,
+      less: LESS_TEMPLATE_THREEJS,
       dependencies: ['davinci-threejs']
     },
     {

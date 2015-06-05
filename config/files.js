@@ -31,7 +31,9 @@ module.exports = function(lineman) {
 
         "bower_components/davinci-deuce/build/src-noconflict/mode-coffee.js",
         "bower_components/davinci-deuce/build/src-noconflict/mode-css.js",
+        "bower_components/davinci-deuce/build/src-noconflict/mode-glsl.js",
         "bower_components/davinci-deuce/build/src-noconflict/mode-html.js",
+        "bower_components/davinci-deuce/build/src-noconflict/mode-json.js",
         "bower_components/davinci-deuce/build/src-noconflict/mode-less.js",
         "bower_components/davinci-deuce/build/src-noconflict/mode-python.js",
         "bower_components/davinci-deuce/build/src-noconflict/mode-javascript.js",

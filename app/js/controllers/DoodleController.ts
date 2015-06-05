@@ -100,6 +100,9 @@ angular.module('app').controller('doodle-controller', [
   'FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS',
   'FILENAME_TYPESCRIPT_CURRENT_LIB_DTS',
   'STATE_GISTS',
+  'STYLE_MARKER',
+  'SCRIPTS_MARKER',
+  'CODE_MARKER',
   'settings',
   function(
     scope: mathdoodle.IHomeScope,
@@ -128,6 +131,9 @@ angular.module('app').controller('doodle-controller', [
     FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS: string,
     FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
     STATE_GISTS: string,
+    STYLE_MARKER: string,
+    SCRIPTS_MARKER: string,
+    CODE_MARKER: string,
     settings: mathdoodle.ISettingsService
   ) {
   // Not sure how best to do this. I don't want loading to trigger processing until ready.
@@ -644,10 +650,10 @@ angular.module('app').controller('doodle-controller', [
         });
 
         var html = doodles.current().html;
-        html = html.replace(/<!-- SCRIPTS-MARKER -->/, scriptTags.join(""));
+        html = html.replace(SCRIPTS_MARKER, scriptTags.join(""));
         // TODO: be more explicit! The wrapper should be in the HTML.
-        html = html.replace(/<!-- STYLE-MARKER -->/, ['<style type="text/css">', doodles.current().less,'</style>'].join(""));
-        html = html.replace(/<!-- CODE-MARKER -->/, mathscript.transpile(doodles.current().lastKnownJs));
+        html = html.replace(STYLE_MARKER, [doodles.current().less].join(""));
+        html = html.replace(CODE_MARKER, mathscript.transpile(doodles.current().lastKnownJs));
 
         content.open();
         content.write(html);
