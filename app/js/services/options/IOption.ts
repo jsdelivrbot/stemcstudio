@@ -12,6 +12,10 @@ interface IOption {
    */
   description: string;
   /**
+   *
+   */
+  homepage: string;
+  /**
    * The semantic version.
    */
   version: string;

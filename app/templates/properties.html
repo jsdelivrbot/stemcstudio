@@ -6,9 +6,20 @@
   <div class='modal-body'>
     <input type='text' ng-model='zombie.description' placeholder="Enter description" autofocus/>
     <h4>Dependencies</h4>
-    <label ng-repeat='option in options track by option.name' class='checkbox-inline'>
-      <input type='checkbox' ng-checked='zombie.dependencies.indexOf(option.name) > -1' ng-click='toggleDependency(option.name)'>{{option.moniker}}</input>
-    </label>
+    <table>
+      <tbody>
+        <tr ng-repeat='option in options track by option.name'>
+          <td>
+            <label class='checkbox-inline'>
+              <input type='checkbox' ng-checked='zombie.dependencies.indexOf(option.name) > -1' ng-click='toggleDependency(option.name)'>{{option.moniker}}</input>
+              </label>
+          </td>
+          <td>{{option.description}}</td>
+          <td>{{option.version}}</td>
+          <td><a href='{{option.homepage}}' target='blank'>{{option.homepage}}</a></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
   <div class="modal-footer" style="display: block;">
     <button class='btn btn-primary' ng-click='doOK()'>OK</button>
