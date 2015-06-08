@@ -137,13 +137,13 @@ declare module MathBox {
      */
     domain?: number[];
     /**
-     * Array of data points, each an array of 2 or 3 elements.
+     * Array of array of data points, each an array of 2 or 3 elements.
      */
-    data?: number[];
+    data?: number[][];
     /**
      * Live expression for data points.
      */
-    expression?: (x: number) => number;
+    expression?: (x: number) => number[];
     /**
      * Whether to draw points.
      */
