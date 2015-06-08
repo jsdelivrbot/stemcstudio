@@ -48,18 +48,87 @@ declare module MathBox {
     stats?: boolean;
     scale?: number;
   }
-
+  /**
+   * Script-based director.
+   *
+   * Applies operations to mathbox one by one by stepping forward.
+   * Can step backwards by automatically applying inverse operations.
+   */
   class Director {
-    constructor(mathbox: IStage, script: {}[][][]) {
+    /**
+     * Constructs a Director object using the specified stage and script.
+     * A script (slideshow) is an array of steps (slides).
+     * A step (slide) is an array of operations (transitions).
+     * An operation is an array of [verb, selector, options, animate]
+     */
+    constructor(stage: Stage, script?: {}[][][]) {
     }
-    forward(): void;
-    back(): void;
+    /**
+     * Get clock time for a give slide.
+     */
+    clock(stepIndex: number, reset: boolean): number;
+    /**
+     * Invert the given operation.
+     * verb     = op[0]
+     * selector = op[1]
+     * options  = op[2]
+     * animate  = op[3]
+     */
+    invert(op: any[]): any[];
+    /**
+     * Correct reversed delays by measuring total track length and adding the missing final / reversed initial delay.
+     * rollback is an array of operations (an array of arrays)
+     */
+    invertDelay(rollback: any[]): any;
+    /**
+     * Apply the given script step.
+     * step is an array of operations.
+     */
+    apply(step, rollback, instant: boolean, skipping: boolean);
+    /**
+     * Insert new script step after current step and execute.
+     * script may be an array of operations, or a single operation.
+     * The argument should probably be thought of as a step.
+     */
+    insert(script): Director;
+    /**
+     * Is at the given step.
+     */
+    is(stepIndex: number): boolean;
+    /**
+     * Go to the given step in the script.
+     * The step index wraps around.
+     * step(0) is before the first step.
+     * step(1) runs the first step.
+     * instant(aneous) completes the step without animating.
+     */
+    go(stepIndex: number, instant?: boolean): void;
+    /**
+     * Helper to detect rapid skipping, so existing animations can be sped up.
+     */
+    skipping(): boolean;
+    /**
+     * Go one step forward.
+     * instant(aneous) makes the transition immediate.
+     * delay in milliseconds delays the transition.
+     */
+    forward(instant?: boolean, delay?: number): void;
+    /**
+     * Go one step backward.
+     * instant(aneous) makes the transition immediate.
+     * delay in milliseconds delays the transition.
+     */
+    back(instant?: boolean, delay?: number): void;
+    /**
+     * Returns the stage that the director is working with.
+     */
+    stage(): Stage;
   }
 
   interface IMathBox {
     /**
      */
-    start(): IStage;
+    start(): Stage;
   }
 
   interface StyleOptions {
@@ -213,7 +282,11 @@ declare module MathBox {
     shaded?: boolean;
   }
 
-  interface IStage {
+  interface Stage {
+    /**
+     * Primitive insertion.
+     */
+    add(object, animate): void;
     /**
      *
      */
@@ -232,15 +305,15 @@ declare module MathBox {
      *   size: .07,         // Size of the arrow relative to the stage.
      * })
      */
-    axis(options: AxisOptions): IStage;
+    axis(options: AxisOptions): Stage;
     /**
      *
      */
-    bezier(): IStage;
+    bezier(): Stage;
     /**
      *
      */
-    bezierSurface(): IStage;
+    bezierSurface(): Stage;
     /**
      * Parameters:
      *   orbit
@@ -252,7 +325,7 @@ declare module MathBox {
      *   lookAt
      *     Point of focus in space. Default is [0, 0, 0].
      */
-    camera(options: {orbit?: number, phi?: number, theta?: number, lookAt?: number[]}): IStage;
+    camera(options: {orbit?: number, phi?: number, theta?: number, lookAt?: number[]}): Stage;
     /**
      * Adds a Curve primitive to the scene.
      *
@@ -270,7 +343,11 @@ declare module MathBox {
      *     Whether to draw lines. Default is true.
      *   lineWidth
      */
-    curve(options?: CurveOptions): IStage;
+    curve(options?: CurveOptions): Stage;
+    /**
+     * get (finalized) properties of a primitive.
+     */
+    get(selector: string): any;
     /**
      * Adds a Grid primitive to the scene.
      *
@@ -284,15 +361,23 @@ declare module MathBox {
      *   tickScale: [ 10, 10 ],  // Integer denoting the base for recursive division on each axis. 2 = binary, 10 = decimal
      * })
      */
-    grid(options?: GridOptions): IStage;
+    grid(options?: GridOptions): Stage;
+    /**
+     * Primitive removal.
+     */
+    remove(object, animate): void;
+    /**
+     * Select primitives by type or ID.
+     */
+    select(selector: string, includeDead): any[];
     /**
      *
      */
-    set(selector: string, options): IStage;
+    set(selector: string, options): Stage;
     /**
      * Set the speed multiplier.
      */
-    speed(multiplier: number): IStage;
+    speed(multiplier: number): Stage;
     /**
      * Get the speed multiplier.
      */
@@ -315,15 +400,19 @@ declare module MathBox {
      *   shaded: true,                          // Whether to shade the surface
      * })
      */
-    surface(options: SurfaceOptions): IStage;
+    surface(options: SurfaceOptions): Stage;
     /**
      * Set the transition duration.
      */
-    transition(duration: number): IStage;
+    transition(duration: number): Stage;
     /**
      * Get the transition duration.
      */
     transition(): number;
+    /**
+     * Update before render.
+     */
+    update(): void;
     /**
      * Adds a Vector primitive to the scene.
      *
@@ -345,7 +434,7 @@ declare module MathBox {
       expression?: (i: number, end: number) => number[],
       line?: boolean,
       arrow?: boolean,
-      size?: number}): IStage;
+      size?: number}): Stage;
     /**
      * Defines a specific mathematical coordinate frame.
      *
@@ -358,7 +447,7 @@ declare module MathBox {
      *     Scale in X, Y, Z
      *   projective
      */
-    viewport(options: {type: string, polar?: number, range?: number[][], scale?: number[], projective?: number[][]}): IStage;
+    viewport(options: {type: string, polar?: number, range?: number[][], scale?: number[], projective?: number[][]}): Stage;
     /**
      *
      */

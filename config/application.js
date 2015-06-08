@@ -67,11 +67,12 @@ module.exports = function(lineman) {
           {src: "museum/gl-matrix@2.2.1/gl-matrix.min.js",                   dest: "generated/js/gl-matrix@2.2.1/gl-matrix.min.js"},
 
           {src: "museum/MathBox.js/MathBox-core.d.ts",                        dest: "generated/ts/MathBox-core.d.ts"},
-          {src: "bower_components/davinci-mathbox/build/MathBox-core.js",     dest: "generated/js/MathBox-core.js"},
-          {src: "bower_components/davinci-mathbox/build/MathBox-core.min.js", dest: "generated/js/MathBox-core.min.js"},
+//        {src: "bower_components/davinci-mathbox/build/MathBox-core.js",     dest: "generated/js/MathBox-core.js"},
+//        {src: "bower_components/davinci-mathbox/build/MathBox-core.min.js", dest: "generated/js/MathBox-core.min.js"},
           {src: "bower_components/davinci-mathbox/build/MathBox.glsl.html",   dest: "generated/shaders/MathBox.glsl.html"},
           {src: "museum/MathBox.js/snippets.glsl.html",                       dest: "generated/shaders/snippets.glsl.html"},
-//        {src: "../davinci-mathbox/build/MathBox-core.js",                   dest: "generated/js/MathBox-core.js"},
+          {src: "../davinci-mathbox/build/MathBox-core.js",                   dest: "generated/js/MathBox-core.js"},
+          {src: "../davinci-mathbox/build/MathBox-core.min.js",               dest: "generated/js/MathBox-core.min.js"},
 
           {src: "museum/microajax/microajax.d.ts",                           dest: "generated/ts/microajax.d.ts"},
           {src: "museum/microajax/microajax.js",                             dest: "generated/js/microajax.js"},
