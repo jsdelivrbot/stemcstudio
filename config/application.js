@@ -31,9 +31,11 @@ module.exports = function(lineman) {
           {src: "bower_components/davinci-visual/dist/davinci-visual.js",    dest: "generated/js/davinci-visual.js"},
           {src: "bower_components/davinci-visual/dist/davinci-visual.min.js",dest: "generated/js/davinci-visual.min.js"},
 
-          {src: "typings/threejs/three.d.ts",                                dest: "generated/ts/three.d.ts"},
+          {src: "museum/three/three@0.71.0.d.ts",                            dest: "generated/ts/three.d.ts"},
           {src: "bower_components/davinci-threejs/build/three.js",           dest: "generated/js/three.js"},
           {src: "bower_components/davinci-threejs/build/three.min.js",       dest: "generated/js/three.min.js"},
+//        {src: "../davinci-threejs/build/three.js",                         dest: "generated/js/three.js"},
+//        {src: "../davinci-threejs/build/three.min.js",                     dest: "generated/js/three.min.js"},
 
           {src: "museum/angular/angular@1.4.0.d.ts",                         dest: "generated/ts/angular@1.4.0.d.ts"},
           {src: "museum/angular/angular@1.4.0.js",                           dest: "generated/js/angular@1.4.0.js"},
@@ -48,13 +50,11 @@ module.exports = function(lineman) {
           {src: "museum/eight/eight@1.0.0.min.js",                           dest: "generated/js/eight@1.0.0.min.js"},
           {src: "museum/jsxgraph/jsxgraph@0.99.3.min.js",                    dest: "generated/js/jsxgraph@0.99.3.min.js"},
           {src: "museum/mathscript/mathscript@1.0.4.min.js",                 dest: "generated/js/mathscript@1.0.4.min.js"},
-          {src: "museum/three/three@0.71.0.min.js",                          dest: "generated/js/three@0.71.0.min.js"},
           {src: "museum/visual/visual@1.6.0.min.js",                         dest: "generated/js/visual@1.6.0.min.js"},
 
           {src: "museum/d3/d3@3.5.5.d.ts",                                   dest: "generated/ts/d3@3.5.5.d.ts"},
           {src: "museum/eight/eight@1.0.0.d.ts",                             dest: "generated/ts/eight@1.0.0.d.ts"},
           {src: "museum/jsxgraph/jsxgraph@0.99.3.d.ts",                      dest: "generated/ts/jsxgraph@0.99.3.d.ts"},
-          {src: "museum/three/three@0.71.0.d.ts",                            dest: "generated/ts/three@0.71.0.d.ts"},
           {src: "museum/typescript/lib@1.4.1.2.d.ts",                        dest: "generated/ts/lib@1.4.1.2.d.ts"},
           {src: "museum/visual/davinci-visual.d.ts",                         dest: "generated/ts/davinci-visual.d.ts"},
           {src: "museum/visual/visual@1.6.0.d.ts",                           dest: "generated/ts/visual@1.6.0.d.ts"},
@@ -71,6 +71,7 @@ module.exports = function(lineman) {
           {src: "bower_components/davinci-mathbox/build/MathBox-core.min.js", dest: "generated/js/MathBox-core.min.js"},
           {src: "bower_components/davinci-mathbox/build/MathBox.glsl.html",   dest: "generated/shaders/MathBox.glsl.html"},
           {src: "museum/MathBox.js/snippets.glsl.html",                       dest: "generated/shaders/snippets.glsl.html"},
+//        {src: "../davinci-mathbox/build/MathBox-core.js",                   dest: "generated/js/MathBox-core.js"},
 
           {src: "museum/microajax/microajax.d.ts",                           dest: "generated/ts/microajax.d.ts"},
           {src: "museum/microajax/microajax.js",                             dest: "generated/js/microajax.js"},

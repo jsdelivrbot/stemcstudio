@@ -9193,11 +9193,9 @@ THREE.BufferGeometry.prototype = {
 
 		var facesCount = ( indices.length / 3 );
 
-		/*
-		console.log("Computing buffers in offsets of "+size+" -> indices:"+indices.length+" vertices:"+vertices.length);
-		console.log("Faces to process: "+(indices.length/3));
-		console.log("Reordering "+verticesCount+" vertices.");
-		*/
+		//console.log("Computing buffers in offsets of "+size+" -> indices:"+indices.length+" vertices:"+vertices.length);
+		//console.log("Faces to process: "+(indices.length/3));
+		//console.log("Reordering "+verticesCount+" vertices.");
 
 		var sortedIndices = new Uint16Array( indices.length ); //16-bit buffers
 		var indexPtr = 0;
@@ -9273,13 +9271,11 @@ THREE.BufferGeometry.prototype = {
 		this.offsets = offsets; // TODO: Deprecate
 		this.drawcalls = offsets;
 
-		/*
-		var orderTime = Date.now();
-		console.log("Reorder time: "+(orderTime-s)+"ms");
-		console.log("Duplicated "+duplicatedVertices+" vertices.");
-		console.log("Compute Buffers time: "+(Date.now()-s)+"ms");
-		console.log("Draw offsets: "+offsets.length);
-		*/
+		//var orderTime = Date.now();
+		//console.log("Reorder time: "+(orderTime-s)+"ms");
+		//console.log("Duplicated "+duplicatedVertices+" vertices.");
+		//console.log("Compute Buffers time: "+(Date.now()-s)+"ms");
+		//console.log("Draw offsets: "+offsets.length);
 
 		return offsets;
 
@@ -17842,7 +17838,7 @@ THREE.ShaderLib = {
 
 THREE.WebGLRenderer = function ( parameters ) {
 
-	console.log( 'THREE.WebGLRenderer', THREE.REVISION );
+	// console.log( 'THREE.WebGLRenderer', THREE.REVISION );
 
 	parameters = parameters || {};
 
@@ -20760,7 +20756,7 @@ THREE.WebGLRenderer = function ( parameters ) {
 
 			if ( attributes.uv >= 0 ) {
 
-				if ( object.geometry.faceVertexUvs[ 0 ] ) {
+				if ( geometryGroup.__webglUVBuffer && object.geometry.faceVertexUvs[ 0 ] ) {
 
 					_gl.bindBuffer( _gl.ARRAY_BUFFER, geometryGroup.__webglUVBuffer );
 
@@ -28303,7 +28299,6 @@ THREE.Path.prototype.getSpacedPoints = function ( divisions, closedPath ) {
 THREE.Path.prototype.getPoints = function( divisions, closedPath ) {
 
 	if (this.useSpacedPoints) {
-		console.log('tata');
 		return this.getSpacedPoints( divisions, closedPath );
 	}
 

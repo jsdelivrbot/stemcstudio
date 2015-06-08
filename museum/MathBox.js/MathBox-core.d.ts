@@ -125,6 +125,36 @@ declare module MathBox {
   }
 
   /**
+   * curve() options. 
+   */
+  interface CurveOptions extends StyleOptions {
+    /**
+     * Number of points. Default is 64.
+     */
+    n?: number;
+    /**
+     * Input domain. Default is [0, 1].
+     */
+    domain?: number[];
+    /**
+     * Array of data points, each an array of 2 or 3 elements.
+     */
+    data?: number[];
+    /**
+     * Live expression for data points.
+     */
+    expression?: (x: number) => number;
+    /**
+     * Whether to draw points.
+     */
+    points?: boolean;
+    /**
+     * Whether to draw wireframe lines.
+     */
+    line?: boolean;
+  }
+
+  /**
    * grid() options. 
    */
   interface GridOptions extends StyleOptions {
@@ -229,8 +259,6 @@ declare module MathBox {
      * Parameters:
      *   n
      *     Number of points. Default is 64.
-     *   color
-     *
      *   domain
      *     Input domain. Default is [0, 1]
      *   data
@@ -242,7 +270,7 @@ declare module MathBox {
      *     Whether to draw lines. Default is true.
      *   lineWidth
      */
-    curve(options: {n:number, domain?: number[], data?: number[][], color?: number, lineWidth?: number}): IStage;
+    curve(options?: CurveOptions): IStage;
     /**
      * Adds a Grid primitive to the scene.
      *
@@ -256,7 +284,7 @@ declare module MathBox {
      *   tickScale: [ 10, 10 ],  // Integer denoting the base for recursive division on each axis. 2 = binary, 10 = decimal
      * })
      */
-    grid(options: GridOptions): IStage;
+    grid(options?: GridOptions): IStage;
     /**
      *
      */

@@ -7,9 +7,14 @@ declare module GLM {
     interface IArray
     {
         /**
+          * The length of the array.
+          */
+        length: number;
+        /**
          * Must be indexable like an array
          */
         [index: number]: number;
+        
     } 
 }
 
