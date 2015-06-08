@@ -32,6 +32,10 @@ module mathdoodle {
      */
     lastKnownJs: string;
     /**
+     *
+     */
+    operatorOverloading: boolean;
+    /**
      * 
      */
     html: string;
@@ -130,6 +134,7 @@ angular.module('app').factory('doodles', [
           isViewVisible: template.isViewVisible,
           focusEditor: template.focusEditor,
           lastKnownJs: template.lastKnownJs,
+          operatorOverloading: template.operatorOverloading,
           html: template.html,
           code: template.code,
           less: template.less,

@@ -79,6 +79,9 @@ module.exports = function(lineman) {
           {src: "museum/microevent/microevent.d.ts",                         dest: "generated/ts/microevent.d.ts"},
           {src: "museum/microevent/microevent.js",                           dest: "generated/js/microevent.js"},
 
+          {src: "museum/requirejs/require.d.ts",                             dest: "generated/ts/require.d.ts"},
+          {src: "museum/requirejs/require.js",                               dest: "generated/js/require.js"},
+
           {src: "museum/ShaderGraph.js/ShaderGraph-core.d.ts",                        dest: "generated/ts/ShaderGraph-core.d.ts"},
           {src: "bower_components/davinci-shadergraph/build/ShaderGraph-core.js",     dest: "generated/js/ShaderGraph-core.js"},
           {src: "bower_components/davinci-shadergraph/build/ShaderGraph-core.min.js", dest: "generated/js/ShaderGraph-core.min.js"},
@@ -170,6 +173,9 @@ module.exports = function(lineman) {
 
           {src: "museum/microevent/microevent.d.ts",                         dest: "dist/ts/microevent.d.ts"},
           {src: "museum/microevent/microevent.js",                           dest: "dist/js/microevent.js"},
+
+          {src: "museum/requirejs/require.d.ts",                             dest: "dist/ts/require.d.ts"},
+          {src: "museum/requirejs/require.js",                               dest: "dist/js/require.js"},
 
           {src: "museum/ShaderGraph.js/ShaderGraph-core.d.ts",                        dest: "dist/ts/ShaderGraph-core.d.ts"},
           {src: "bower_components/davinci-shadergraph/build/ShaderGraph-core.js",     dest: "dist/js/ShaderGraph-core.js"},

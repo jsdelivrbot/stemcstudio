@@ -12,10 +12,24 @@ angular.module('app').factory('options', [
 
   var _options: IOption[] = [
     {
+      name: 'requirejs',
+      moniker: 'RequireJS',
+      description: "A file and module loader for JavaScript",
+      homepage: 'http://requirejs.org',
+      version: '2.1.18',
+      visible: true,
+      dts: 'require.d.ts',
+      js: 'require.js',
+      minJs: 'require.js',
+      dependencies: {
+
+      }
+    },
+    {
       name: 'angular',
       moniker: 'Angular JS',
       description: "HTML enhanced for Web Applications",
-      homepage: 'https://angularjs.org/',
+      homepage: 'https://angularjs.org',
       version: '1.4.0',
       visible: true,
       dts: 'angular@1.4.0.d.ts',

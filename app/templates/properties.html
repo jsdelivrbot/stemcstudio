@@ -4,7 +4,12 @@
     <h3>Doodle Properties</h3>
   </div>
   <div class='modal-body'>
+    <label>Description</label>
     <input type='text' ng-model='zombie.description' placeholder="Enter description" autofocus/>
+    <br/>
+    <label class='checkbox-inline'>
+      <input type='checkbox' ng-model='zombie.operatorOverloading'>Operator Overloading</input>
+    </label>
     <h4>Dependencies</h4>
     <table>
       <tbody>

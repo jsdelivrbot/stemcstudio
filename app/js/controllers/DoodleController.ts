@@ -361,7 +361,8 @@ angular.module('app').controller('doodle-controller', [
     return {
       uuid: doodle.uuid,
       description: doodle.description,
-      dependencies: depObject(doodle.dependencies)
+      dependencies: depObject(doodle.dependencies),
+      operatorOverloading: doodle.operatorOverloading
     };
   }
 
@@ -643,7 +644,8 @@ angular.module('app').controller('doodle-controller', [
 
         var chosenFileNames: string[] = closureOpts.map(function(option: IOption) {return option.minJs;});
         // TODO: We will later want to make operator overloading configurable for speed.
-        var scriptFileNames: string[] = chosenFileNames.concat(FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS);
+
+        var scriptFileNames: string[] = doodles.current().operatorOverloading ? chosenFileNames.concat(FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS) : chosenFileNames;
         // TOOD: Don't fix the location of the JavaScript here.
         var scriptTags = scriptFileNames.map(function(fileName: string) {
           return "<script src='" + DOMAIN + "/js/" + fileName + "'></script>\n";
@@ -652,7 +654,12 @@ angular.module('app').controller('doodle-controller', [
         var html = doodles.current().html;
         html = html.replace(SCRIPTS_MARKER, scriptTags.join(""));
         html = html.replace(STYLE_MARKER, [doodles.current().less].join(""));
-        html = html.replace(CODE_MARKER, mathscript.transpile(doodles.current().lastKnownJs));
+        if (doodles.current().operatorOverloading) {
+          html = html.replace(CODE_MARKER, mathscript.transpile(doodles.current().lastKnownJs));
+        }
+        else {
+          html = html.replace(CODE_MARKER, doodles.current().lastKnownJs);
+        }
         // For backwards compatibility...
         html = html.replace('<!-- STYLE-MARKER -->', ['<style>', doodles.current().less, '</style>'].join(""));
         html = html.replace('<!-- CODE-MARKER -->', mathscript.transpile(doodles.current().lastKnownJs));

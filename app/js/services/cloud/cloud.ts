@@ -8,6 +8,7 @@ module mathdoodle {
     uuid: string;
     description?: string;
     dependencies: {[key:string]:string};
+    operatorOverloading: boolean;
   }
   export interface ICloud {
     downloadGist(token: string, gistId: string, callback: (err, doodle?: IDoodle) => void);
@@ -50,6 +51,7 @@ angular.module('app').factory('cloud',[
             isViewVisible: false,
             focusEditor: FILENAME_CODE,
             lastKnownJs: undefined,
+            operatorOverloading: metaInfo.operatorOverloading,
             html: gist.files[FILENAME_HTML] ? gist.files[FILENAME_HTML].content : "",
             code: gist.files[FILENAME_CODE] ? gist.files[FILENAME_CODE].content : "",
             less: gist.files[FILENAME_LESS] ? gist.files[FILENAME_LESS].content : "",
