@@ -1,15 +1,15 @@
 CACHE MANIFEST
-# 2015-06-08:1.26.1
+# 2015-06-11:1.27.0
 
 # Explicitly cached entries
 index.html
 
-css/app.css?version=1.26.1
-css/app.css.map?version=1.26.1
-css/app.less.css?version=1.26.1
+css/app.css?version=1.27.0
+css/app.css.map?version=1.27.0
+css/app.less.css?version=1.27.0
 
-js/app.js?version=1.26.1
-js/app.js.map?version=1.26.1
+js/app.js?version=1.27.0
+js/app.js.map?version=1.27.0
 
 fonts/glyphicons-halflings-regular.eot
 fonts/glyphicons-halflings-regular.svg
@@ -31,7 +31,6 @@ CACHE:
 js/angular@1.4.0.min.js
 js/d3@3.5.5.min.js
 js/domready@1.0.0.js
-js/davinci-blade.min.js
 js/davinci-visual.min.js
 js/jsxgraph@0.99.3.min.js
 js/davinci-mathscript@1.0.6.min.js
@@ -47,7 +46,6 @@ js/worker-workspace.js
 ts/angular@1.4.0.d.ts
 ts/d3@3.5.5.d.ts
 ts/domready@1.0.0.d.ts
-ts/davinci-blade.d.ts
 ts/davinci-visual.d.ts
 ts/jsxgraph@0.99.3.d.ts
 ts/lib@1.4.1.2.d.ts

@@ -46,9 +46,9 @@ angular.module('app').factory('options', [
       homepage: 'https://github.com/geometryzen/davinci-blade',
       version: '1.1.1',
       visible: true,
-      dts: 'davinci-blade@1.1.1/davinci-blade.d.ts',
-      js: 'davinci-blade@1.1.1/davinci-blade.js',
-      minJs: 'davinci-blade@1.1.1/davinci-blade.min.js',
+      dts: 'davinci-blade/davinci-blade.d.ts',
+      js: 'davinci-blade/davinci-blade.js',
+      minJs: 'davinci-blade/davinci-blade.min.js',
       dependencies: {
 
       }
@@ -236,7 +236,7 @@ angular.module('app').factory('options', [
       moniker: 'MathBox.js',
       description: "Presentation quality math diagrams in WebGL",
       homepage: 'https://github.com/unconed/MathBox.js',
-      version: '1.0.14',
+      version: 'latest',
       visible: true,
       dts: 'MathBox-core.d.ts',
       js: 'MathBox-core.js',

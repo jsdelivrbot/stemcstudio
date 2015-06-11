@@ -293,7 +293,10 @@ angular.module('app').controller('doodle-controller', [
     setCurrentEditor(FILENAME_LESS);
   }
 
-  function setCurrentEditor(fileName: string) {
+  /**
+   * Set the current editor based upon fileName and return the appropriate editor object.
+   */
+  function setCurrentEditor(fileName: string): ace.Editor {
     // We don't set the focus or go to a line because that would
     // activate the keyboard on a mobile device. The user will
     // want to set the insertion point anyway which will trigger
@@ -304,33 +307,33 @@ angular.module('app').controller('doodle-controller', [
       scope.isShowingCode = true;
       scope.isShowingLess = false;
       codeEditor.resize(true);
-      codeEditor.gotoLine(0, 0, true);
       codeEditor.focus();
       doodles.current().focusEditor = fileName;
       doodles.updateStorage();
+      return codeEditor;
     }
     else if (fileName === FILENAME_HTML) {
       scope.isShowingHTML = true;
       scope.isShowingCode = false;
       scope.isShowingLess = false;
       htmlEditor.resize(true);
-      htmlEditor.gotoLine(0, 0, true);
       htmlEditor.focus();
       doodles.current().focusEditor = fileName;
       doodles.updateStorage();
+      return htmlEditor;
     }
     else if (fileName === FILENAME_LESS) {
       scope.isShowingHTML = false;
       scope.isShowingCode = false;
       scope.isShowingLess = true;
       lessEditor.resize(true);
-      lessEditor.gotoLine(0, 0, true);
       lessEditor.focus();
       doodles.current().focusEditor = fileName;
       doodles.updateStorage();
+      return lessEditor;
     }
     else {
-      setCurrentEditor(FILENAME_CODE);
+      return setCurrentEditor(FILENAME_CODE);
     }
   }
 
@@ -763,10 +766,16 @@ angular.module('app').controller('doodle-controller', [
     // We need to make sure that the files have names (for the TypeScript compiler).
     htmlEditor.changeFile(doodles.current().html, FILENAME_HTML);
     htmlEditor.resize(true);
+//    htmlEditor.gotoLine(0, 0);
+//    htmlEditor.focus();
     codeEditor.changeFile(doodles.current().code, FILENAME_CODE);
     codeEditor.resize(true);
+//    codeEditor.focus();
+//    codeEditor.gotoLine(0, 0);
     lessEditor.changeFile(doodles.current().less, FILENAME_LESS);
     lessEditor.resize(true);
+//    lessEditor.gotoLine(0, 0);
+//    lessEditor.focus();
 
     // Now that things have settled down...
     doodles.updateStorage();

@@ -5,8 +5,8 @@
 #/node_modules
 /node_modules/protractor
 
-# bower_components don't need to be included.
-/bower_components
+# vendor don't need to be included.
+/vendor
 
 # Ignore the generated files, which are only there for development.
 /generated
