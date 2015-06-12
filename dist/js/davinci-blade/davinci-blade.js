@@ -438,7 +438,7 @@ define('davinci-blade/core',["require", "exports"], function (require, exports) 
         /**
          * The version of the blade library.
          */
-        VERSION: '1.2.0'
+        VERSION: '1.3.0'
     };
     return blade;
 });
@@ -1157,11 +1157,16 @@ define('davinci-blade/Unit',["require", "exports", 'davinci-blade/Dimensions', '
                     return lhs.div(rhs);
                 }
                 else {
-                    return undefined;
+                    return lhs;
                 }
             }
             else {
-                return undefined;
+                if (rhs instanceof Unit) {
+                    return rhs.inverse();
+                }
+                else {
+                    return void 0;
+                }
             }
         };
         Unit.sqrt = function (uom) {
@@ -1226,16 +1231,50 @@ define('davinci-blade/Euclidean1',["require", "exports", 'davinci-blade/Unit'], 
             this.w = assertArgNumber('w', w);
             this.x = assertArgNumber('x', x);
             this.uom = assertArgUnitOrUndefined('uom', uom);
+            if (this.uom && this.uom.scale !== 1) {
+                var scale = this.uom.scale;
+                this.w *= scale;
+                this.x *= scale;
+                this.uom = new Unit(1, uom.dimensions, uom.labels);
+            }
         }
+        Euclidean1.prototype.coordinates = function () {
+            return [this.w, this.x];
+        };
         Euclidean1.prototype.add = function (rhs) {
             assertArgEuclidean1('rhs', rhs);
             return new Euclidean1(this.w + rhs.w, this.x + rhs.x, Unit.compatible(this.uom, rhs.uom));
+        };
+        Euclidean1.prototype.sub = function (rhs) {
+            assertArgEuclidean1('rhs', rhs);
+            return new Euclidean1(this.w - rhs.w, this.x - rhs.x, Unit.compatible(this.uom, rhs.uom));
+        };
+        Euclidean1.prototype.wedge = function (rhs) {
+            throw new Euclidean1Error('wedge');
+        };
+        Euclidean1.prototype.lshift = function (rhs) {
+            throw new Euclidean1Error('lshift');
+        };
+        Euclidean1.prototype.rshift = function (rhs) {
+            throw new Euclidean1Error('rshift');
+        };
+        Euclidean1.prototype.exp = function () {
+            throw new Euclidean1Error('exp');
         };
         Euclidean1.prototype.norm = function () {
             return new Euclidean1(Math.sqrt(this.w * this.w + this.x * this.x), 0, this.uom);
         };
         Euclidean1.prototype.quad = function () {
             return new Euclidean1(this.w * this.w + this.x * this.x, 0, Unit.mul(this.uom, this.uom));
+        };
+        Euclidean1.prototype.toExponential = function () {
+            return "Euclidean1";
+        };
+        Euclidean1.prototype.toFixed = function (digits) {
+            return "Euclidean1";
+        };
+        Euclidean1.prototype.toString = function () {
+            return "Euclidean1";
         };
         return Euclidean1;
     })();
@@ -1544,7 +1583,7 @@ define('davinci-blade/Euclidean2',["require", "exports", 'davinci-blade/Unit'], 
         }
         return +x;
     }
-    function stringFromCoordinates(coordinates, labels) {
+    function stringFromCoordinates(coordinates, numberToString, labels) {
         var i, _i, _ref;
         var str;
         var sb = [];
@@ -1564,7 +1603,7 @@ define('davinci-blade/Euclidean2',["require", "exports", 'davinci-blade/Unit'], 
                     sb.push(label);
                 }
                 else {
-                    sb.push(n.toString());
+                    sb.push(numberToString(n));
                     if (label !== "1") {
                         sb.push("*");
                         sb.push(label);
@@ -1640,6 +1679,14 @@ define('davinci-blade/Euclidean2',["require", "exports", 'davinci-blade/Unit'], 
             this.y = assertArgNumber('y', y);
             this.xy = assertArgNumber('xy', xy);
             this.uom = assertArgUnitOrUndefined('uom', uom);
+            if (this.uom && this.uom.scale !== 1) {
+                var scale = this.uom.scale;
+                this.w *= scale;
+                this.x *= scale;
+                this.y *= scale;
+                this.xy *= scale;
+                this.uom = new Unit(1, uom.dimensions, uom.labels);
+            }
         }
         Euclidean2.prototype.fromCartesian = function (w, x, y, xy, uom) {
             assertArgNumber('w', w);
@@ -1989,6 +2036,9 @@ define('davinci-blade/Euclidean2',["require", "exports", 'davinci-blade/Unit'], 
                     return new Euclidean2(0, 0, 0, 0, this.uom);
             }
         };
+        Euclidean2.prototype.exp = function () {
+            throw new Euclidean2Error('exp');
+        };
         Euclidean2.prototype.norm = function () {
             return new Euclidean2(Math.sqrt(this.w * this.w + this.x * this.x + this.y * this.y + this.xy * this.xy), 0, 0, 0, this.uom);
         };
@@ -1998,14 +2048,50 @@ define('davinci-blade/Euclidean2',["require", "exports", 'davinci-blade/Unit'], 
         Euclidean2.prototype.isNaN = function () {
             return isNaN(this.w) || isNaN(this.x) || isNaN(this.y) || isNaN(this.xy);
         };
+        Euclidean2.prototype.toStringCustom = function (coordToString, labels) {
+            var quantityString = stringFromCoordinates(this.coordinates(), coordToString, labels);
+            if (this.uom) {
+                var unitString = this.uom.toString().trim();
+                if (unitString) {
+                    return quantityString + ' ' + unitString;
+                }
+                else {
+                    return quantityString;
+                }
+            }
+            else {
+                return quantityString;
+            }
+        };
+        Euclidean2.prototype.toExponential = function () {
+            var coordToString = function (coord) {
+                return coord.toExponential();
+            };
+            return this.toStringCustom(coordToString, ["1", "e1", "e2", "e12"]);
+        };
+        Euclidean2.prototype.toFixed = function (digits) {
+            var coordToString = function (coord) {
+                return coord.toFixed(digits);
+            };
+            return this.toStringCustom(coordToString, ["1", "e1", "e2", "e12"]);
+        };
         Euclidean2.prototype.toString = function () {
-            return stringFromCoordinates([this.w, this.x, this.y, this.xy], ["1", "e1", "e2", "e12"]);
+            var coordToString = function (coord) {
+                return coord.toString();
+            };
+            return this.toStringCustom(coordToString, ["1", "e1", "e2", "e12"]);
         };
         Euclidean2.prototype.toStringIJK = function () {
-            return stringFromCoordinates(this.coordinates(), ["1", "i", "j", "I"]);
+            var coordToString = function (coord) {
+                return coord.toString();
+            };
+            return this.toStringCustom(coordToString, ["1", "i", "j", "I"]);
         };
         Euclidean2.prototype.toStringLATEX = function () {
-            return stringFromCoordinates(this.coordinates(), ["1", "e_{1}", "e_{2}", "e_{12}"]);
+            var coordToString = function (coord) {
+                return coord.toString();
+            };
+            return this.toStringCustom(coordToString, ["1", "e_{1}", "e_{2}", "e_{12}"]);
         };
         return Euclidean2;
     })();
@@ -2024,6 +2110,14 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/Unit'], 
         }
         else {
             throw new Euclidean3Error("Argument '" + name + "' must be a number");
+        }
+    }
+    function assertArgEuclidean3(name, arg) {
+        if (arg instanceof Euclidean3) {
+            return arg;
+        }
+        else {
+            throw new Euclidean3Error("Argument '" + arg + "' must be a Euclidean3");
         }
     }
     function assertArgUnitOrUndefined(name, uom) {
@@ -2667,6 +2761,18 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/Unit'], 
             this.zx = assertArgNumber('zx', zx);
             this.xyz = assertArgNumber('xyz', xyz);
             this.uom = assertArgUnitOrUndefined('uom', uom);
+            if (this.uom && this.uom.scale !== 1) {
+                var scale = this.uom.scale;
+                this.w *= scale;
+                this.x *= scale;
+                this.y *= scale;
+                this.z *= scale;
+                this.xy *= scale;
+                this.yz *= scale;
+                this.zx *= scale;
+                this.xyz *= scale;
+                this.uom = new Unit(1, uom.dimensions, uom.labels);
+            }
         }
         Euclidean3.fromCartesian = function (w, x, y, z, xy, yz, zx, xyz, uom) {
             assertArgNumber('w', w);
@@ -2790,12 +2896,8 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/Unit'], 
             return new Euclidean3(this.w * rhs, this.x * rhs, this.y * rhs, this.z * rhs, this.xy * rhs, this.yz * rhs, this.zx * rhs, this.xyz * rhs, this.uom);
         };
         Euclidean3.prototype.div = function (rhs) {
-            if (typeof rhs === 'number') {
-                return new Euclidean3(this.w / rhs, this.x / rhs, this.y / rhs, this.z / rhs, this.xy / rhs, this.yz / rhs, this.zx / rhs, this.xyz / rhs, this.uom);
-            }
-            else {
-                return divide(this.w, this.x, this.y, this.xy, this.z, -this.zx, this.yz, this.xyz, rhs.w, rhs.x, rhs.y, rhs.xy, rhs.z, -rhs.zx, rhs.yz, rhs.xyz, Unit.div(this.uom, rhs.uom), void 0);
-            }
+            assertArgEuclidean3('rhs', rhs);
+            return divide(this.w, this.x, this.y, this.xy, this.z, -this.zx, this.yz, this.xyz, rhs.w, rhs.x, rhs.y, rhs.xy, rhs.z, -rhs.zx, rhs.yz, rhs.xyz, Unit.div(this.uom, rhs.uom));
         };
         Euclidean3.prototype.__div__ = function (other) {
             if (other instanceof Euclidean3) {
@@ -2960,6 +3062,9 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/Unit'], 
         Euclidean3.prototype.length = function () {
             return Math.sqrt(this.w * this.w + this.x * this.x + this.y * this.y + this.z * this.z + this.xy * this.xy + this.yz * this.yz + this.zx * this.zx + this.xyz * this.xyz);
         };
+        Euclidean3.prototype.exp = function () {
+            throw new Euclidean3Error('exp');
+        };
         /**
          * Computes the magnitude of this Euclidean3. The magnitude is the square root of the quadrance.
          */
@@ -3074,7 +3179,16 @@ define('davinci-blade/Complex',["require", "exports", 'davinci-blade/Unit'], fun
             this.x = assertArgNumber('x', x);
             this.y = assertArgNumber('y', y);
             this.uom = assertArgUnitOrUndefined('uom', uom);
+            if (this.uom && this.uom.scale !== 1) {
+                var scale = this.uom.scale;
+                this.x *= scale;
+                this.y *= scale;
+                this.uom = new Unit(1, uom.dimensions, uom.labels);
+            }
         }
+        Complex.prototype.coordinates = function () {
+            return [this.x, this.y];
+        };
         Complex.prototype.add = function (rhs) {
             assertArgComplex('rhs', rhs);
             return new Complex(this.x + rhs.x, this.y + rhs.y, Unit.compatible(this.uom, rhs.uom));
@@ -3102,6 +3216,10 @@ define('davinci-blade/Complex',["require", "exports", 'davinci-blade/Unit'], fun
                 var x = other;
                 return new Complex(x + this.x, this.y, Unit.compatible(undefined, this.uom));
             }
+        };
+        Complex.prototype.sub = function (rhs) {
+            assertArgComplex('rhs', rhs);
+            return new Complex(this.x - rhs.x, this.y - rhs.y, Unit.compatible(this.uom, rhs.uom));
         };
         Complex.prototype.__sub__ = function (other) {
             if (other instanceof Complex) {
@@ -3159,6 +3277,15 @@ define('davinci-blade/Complex',["require", "exports", 'davinci-blade/Unit'], fun
                 return divide(new Complex(other, 0, undefined), this);
             }
         };
+        Complex.prototype.wedge = function (rhs) {
+            throw new ComplexError('wedge');
+        };
+        Complex.prototype.lshift = function (rhs) {
+            throw new ComplexError('lshift');
+        };
+        Complex.prototype.rshift = function (rhs) {
+            throw new ComplexError('rshift');
+        };
         Complex.prototype.norm = function () {
             return new Complex(Math.sqrt(this.x * this.x + this.y * this.y), 0, this.uom);
         };
@@ -3175,8 +3302,13 @@ define('davinci-blade/Complex',["require", "exports", 'davinci-blade/Unit'], fun
             var expX = Math.exp(this.x);
             var x = expX * Math.cos(this.y);
             var y = expX * Math.sin(this.y);
-            // TODO: Is this correct? If so, why is it so?
             return new Complex(x, y, this.uom);
+        };
+        Complex.prototype.toExponential = function () {
+            return "Complex(" + this.x.toExponential() + ", " + this.y.toExponential() + ")";
+        };
+        Complex.prototype.toFixed = function (digits) {
+            return "Complex(" + this.x.toFixed(digits) + ", " + this.y.toFixed(digits) + ")";
         };
         Complex.prototype.toString = function () {
             return "Complex(" + this.x + ", " + this.y + ")";
@@ -3256,6 +3388,20 @@ define('davinci-blade/Color',["require", "exports"], function (require, exports)
     return Color;
 });
 
+define('davinci-blade/e2ga/scalarE2',["require", "exports", 'davinci-blade/Euclidean2'], function (require, exports, Euclidean2) {
+    var scalarE2 = function (w, uom) {
+        return new Euclidean2(w, 0, 0, 0, uom);
+    };
+    return scalarE2;
+});
+
+define('davinci-blade/e2ga/vectorE2',["require", "exports", 'davinci-blade/Euclidean2'], function (require, exports, Euclidean2) {
+    var vectorE2 = function (x, y, uom) {
+        return new Euclidean2(0, x, y, 0, uom);
+    };
+    return vectorE2;
+});
+
 define('davinci-blade/e3ga/scalarE3',["require", "exports", 'davinci-blade/Euclidean3'], function (require, exports, Euclidean3) {
     var scalarE3 = function (w, uom) {
         return new Euclidean3(w, 0, 0, 0, 0, 0, 0, 0, uom);
@@ -3277,7 +3423,7 @@ define('davinci-blade/e3ga/bivectorE3',["require", "exports", 'davinci-blade/Euc
     return bivectorE3;
 });
 
-define('davinci-blade',["require", "exports", 'davinci-blade/core', 'davinci-blade/Euclidean1', 'davinci-blade/Euclidean2', 'davinci-blade/Euclidean3', 'davinci-blade/Rational', 'davinci-blade/Dimensions', 'davinci-blade/Unit', 'davinci-blade/Complex', 'davinci-blade/Color', 'davinci-blade/e3ga/scalarE3', 'davinci-blade/e3ga/vectorE3', 'davinci-blade/e3ga/bivectorE3'], function (require, exports, core, Euclidean1, Euclidean2, Euclidean3, Rational, Dimensions, Unit, Complex, Color, scalarE3, vectorE3, bivectorE3) {
+define('davinci-blade',["require", "exports", 'davinci-blade/core', 'davinci-blade/Euclidean1', 'davinci-blade/Euclidean2', 'davinci-blade/Euclidean3', 'davinci-blade/Rational', 'davinci-blade/Dimensions', 'davinci-blade/Unit', 'davinci-blade/Complex', 'davinci-blade/Color', 'davinci-blade/e2ga/scalarE2', 'davinci-blade/e2ga/vectorE2', 'davinci-blade/e3ga/scalarE3', 'davinci-blade/e3ga/vectorE3', 'davinci-blade/e3ga/bivectorE3'], function (require, exports, core, Euclidean1, Euclidean2, Euclidean3, Rational, Dimensions, Unit, Complex, Color, scalarE2, vectorE2, scalarE3, vectorE3, bivectorE3) {
     var UNIT_SYMBOLS = ["kg", "m", "s", "C", "K", "mol", "cd"];
     var R0 = Rational.ZERO;
     var R1 = Rational.ONE;
@@ -3326,6 +3472,71 @@ define('davinci-blade',["require", "exports", 'davinci-blade/core', 'davinci-bla
         Rational: Rational,
         Dimensions: Dimensions,
         Unit: Unit,
+        e2ga: {
+            e1: vectorE2(1, 0),
+            e2: vectorE2(0, 1),
+            units: {
+                ampere: scalarE2(1, UNIT_AMPERE),
+                candela: scalarE2(1, UNIT_CANDELA),
+                coulomb: scalarE2(1, UNIT_COULOMB),
+                farad: scalarE2(1, UNIT_FARAD),
+                foot: scalarE2(1, UNIT_FOOT),
+                henry: scalarE2(1, UNIT_HENRY),
+                hertz: scalarE2(1, UNIT_HERTZ),
+                inch: scalarE2(1, UNIT_INCH),
+                joule: scalarE2(1, UNIT_JOULE),
+                kelvin: scalarE2(1, UNIT_KELVIN),
+                kilogram: scalarE2(1, UNIT_KILOGRAM),
+                meter: scalarE2(1, UNIT_METER),
+                mile: scalarE2(1, UNIT_MILE),
+                mole: scalarE2(1, UNIT_MOLE),
+                newton: scalarE2(1, UNIT_NEWTON),
+                ohm: scalarE2(1, UNIT_OHM),
+                pascal: scalarE2(1, UNIT_PASCAL),
+                pound: scalarE2(1, UNIT_POUND),
+                second: scalarE2(1, UNIT_SECOND),
+                siemen: scalarE2(1, UNIT_SIEMEN),
+                tesla: scalarE2(1, UNIT_TESLA),
+                unity: scalarE2(1, UNIT_DIMLESS),
+                volt: scalarE2(1, UNIT_VOLT),
+                watt: scalarE2(1, UNIT_WATT),
+                weber: scalarE2(1, UNIT_WEBER),
+                yard: scalarE2(1, UNIT_YARD)
+            }
+        },
+        e3ga: {
+            e1: vectorE3(1, 0, 0),
+            e2: vectorE3(0, 1, 0),
+            e3: vectorE3(0, 0, 1),
+            units: {
+                ampere: scalarE3(1, UNIT_AMPERE),
+                candela: scalarE3(1, UNIT_CANDELA),
+                coulomb: scalarE3(1, UNIT_COULOMB),
+                farad: scalarE3(1, UNIT_FARAD),
+                foot: scalarE3(1, UNIT_FOOT),
+                henry: scalarE3(1, UNIT_HENRY),
+                hertz: scalarE3(1, UNIT_HERTZ),
+                inch: scalarE3(1, UNIT_INCH),
+                joule: scalarE3(1, UNIT_JOULE),
+                kelvin: scalarE3(1, UNIT_KELVIN),
+                kilogram: scalarE3(1, UNIT_KILOGRAM),
+                meter: scalarE3(1, UNIT_METER),
+                mile: scalarE3(1, UNIT_MILE),
+                mole: scalarE3(1, UNIT_MOLE),
+                newton: scalarE3(1, UNIT_NEWTON),
+                ohm: scalarE3(1, UNIT_OHM),
+                pascal: scalarE3(1, UNIT_PASCAL),
+                pound: scalarE3(1, UNIT_POUND),
+                second: scalarE3(1, UNIT_SECOND),
+                siemen: scalarE3(1, UNIT_SIEMEN),
+                tesla: scalarE3(1, UNIT_TESLA),
+                unity: scalarE3(1, UNIT_DIMLESS),
+                volt: scalarE3(1, UNIT_VOLT),
+                watt: scalarE3(1, UNIT_WATT),
+                weber: scalarE3(1, UNIT_WEBER),
+                yard: scalarE3(1, UNIT_YARD)
+            }
+        },
         units: {
             ampere: UNIT_AMPERE,
             candela: UNIT_CANDELA,

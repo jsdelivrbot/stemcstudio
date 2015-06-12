@@ -20,10 +20,10 @@ declare module blade {
     constructor(n: number, d: number);
     public numer : number;
     public denom : number;
-    public add(rhs: any): Rational;
-    public sub(rhs: any): Rational;
-    public mul(rhs: any): Rational;
-    public div(rhs: any): Rational;
+    public add(rhs: Rational): Rational;
+    public sub(rhs: Rational): Rational;
+    public mul(rhs: Rational): Rational;
+    public div(rhs: Rational): Rational;
     public isZero(): boolean;
     public negative(): Rational;
     public equals(other: any): boolean;
@@ -48,7 +48,7 @@ declare module blade {
     public compatible(rhs: Dimensions): Dimensions;
     public mul(rhs: Dimensions): Dimensions;
     public div(rhs: Dimensions): Dimensions;
-    public pow(exponent: any): Dimensions;
+    public pow(exponent: Rational): Dimensions;
     public dimensionless(): boolean;
     public isZero(): boolean;
     public negative(): Dimensions;
@@ -74,17 +74,26 @@ declare module blade {
 }
 
 declare module blade {
-  interface GeometricQuantity<T> extends Field<T> {
+  interface Measure<T> extends Field<T> {
+    coordinates(): number[];
+    uom?: Unit;
+    add(rhs: T): T;
+    sub(rhs: T): T;
+    mul(rhs: T): T;
+    div(rhs: T): T;
     wedge(rhs: T): T;
     lshift(rhs: T): T;
     rshift(rhs: T): T;
     norm(): T;
     quad(): T;
+    toExponential(): string;
+    toFixed(digits?: number): string;
+    toString(): string;
   }
 }
 
 declare module blade {
-  class Euclidean2 implements GeometricQuantity<Euclidean2> {
+  class Euclidean2 implements Measure<Euclidean2> {
     public w: number;
     public x: number;
     public y: number;
@@ -114,15 +123,13 @@ declare module blade {
     public quad(): Euclidean2;
     public isNaN(): boolean;
     /**
-     * The toFixed() method formats a number using fixed-point notation.
-     * Example
-     * var digits = 5;
-     * Euclidean3.toFixed(digits);
-     * Parameters
-     * digits
-     *   Optional. The number of digits to appear after the decimal point.
+     * The toExponential() method formats the number using exponential notation.
      */
-    public toFixed(digits?: number): string;
+    toExponential(): string;
+    /**
+     * The toFixed() method formats the number using fixed-point notation.
+     */
+    toFixed(digits?: number): string;
     public toString(): string;
     public toStringIJK(): string;
     public toStringLATEX(): string;
@@ -132,7 +139,7 @@ declare module blade {
   /**
    * A multivector with Cartesian coordinates in a 3D vector space with a Euclidean metric.
    */
-  class Euclidean3 implements GeometricQuantity<Euclidean3> {
+  class Euclidean3 implements Measure<Euclidean3> {
     /**
      * The `w` property is the grade zero (scalar) part of the Euclidean3 multivector.
      */
@@ -260,7 +267,7 @@ declare module blade {
     }
 }
 declare module blade {
-    class Complex {
+    class Complex implements Measure<Complex> {
         /**
          * The real part of the complex number.
          */
@@ -306,6 +313,75 @@ declare module blade {
 }
 declare module blade {
     var VERSION: string;
+    var e2ga:
+    {
+      e1: Euclidean2;
+      e2: Euclidean2;
+      units:
+      {
+        ampere: Euclidean2;
+        candela: Euclidean2;
+        coulomb: Euclidean2;
+        farad: Euclidean2;
+        foot: Euclidean2;
+        henry: Euclidean2;
+        hertz: Euclidean2;
+        inch: Euclidean2;
+        joule: Euclidean2;
+        kelvin: Euclidean2;
+        kilogram: Euclidean2;
+        meter: Euclidean2;
+        mile: Euclidean2;
+        mole: Euclidean2;
+        newton: Euclidean2;
+        ohm: Euclidean2;
+        pascal: Euclidean2;
+        pound: Euclidean2;
+        second: Euclidean2;
+        siemen: Euclidean2;
+        tesla: Euclidean2;
+        unity: Euclidean2;
+        volt: Euclidean2;
+        watt: Euclidean2;
+        weber: Euclidean2;
+        yard: Euclidean2;
+      };
+    };
+    var e3ga:
+    {
+      e1: Euclidean3;
+      e2: Euclidean3;
+      e3: Euclidean3;
+      units:
+      {
+        ampere: Euclidean3;
+        candela: Euclidean3;
+        coulomb: Euclidean3;
+        farad: Euclidean3;
+        foot: Euclidean3;
+        henry: Euclidean3;
+        hertz: Euclidean3;
+        inch: Euclidean3;
+        joule: Euclidean3;
+        kelvin: Euclidean3;
+        kilogram: Euclidean3;
+        meter: Euclidean3;
+        mile: Euclidean3;
+        mole: Euclidean3;
+        newton: Euclidean3;
+        ohm: Euclidean3;
+        pascal: Euclidean3;
+        pound: Euclidean3;
+        second: Euclidean3;
+        siemen: Euclidean3;
+        tesla: Euclidean3;
+        unity: Euclidean3;
+        volt: Euclidean3;
+        watt: Euclidean3;
+        weber: Euclidean3;
+        yard: Euclidean3;
+      };
+    };
     var units:
     {
         ampere: Unit;
