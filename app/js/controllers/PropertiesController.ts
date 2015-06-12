@@ -51,7 +51,6 @@ angular.module('app').controller('properties-controller', [
     // Perform some clanup, while we map dependencies.
     doodles.current().dependencies = scope.zombie.dependencies.filter(function(name) {return options.filter(function(option){return option.visible && option.name === name}).length > 0});
     doodles.current().operatorOverloading = scope.zombie.operatorOverloading;
-    doodles.current().lastKnownJs = undefined;
     $state.go(STATE_DOODLE);
   };
 

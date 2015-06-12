@@ -620,6 +620,25 @@ angular.module('app').controller('doodle-controller', [
     return namesToOptions(nameSet.toArray());
   }
 
+  /**
+   * Returns the JavaScript to be inserted into the HTML script element.
+   * This may involve further modifying the JavaScript emitted by the
+   * TypeScript compiler by, for example, introducing operator overloading. 
+   */
+  function currentJavaScript(): string {
+    if (doodles.current().lastKnownJs) {
+      if (doodles.current().operatorOverloading) {
+        return mathscript.transpile(doodles.current().lastKnownJs);
+      }
+      else {
+        return doodles.current().lastKnownJs;
+      }
+    }
+    else {
+      return "";
+    }
+  }
+
   function rebuildPreview() {
     try {
       // Kill any existing frames.
@@ -657,15 +676,10 @@ angular.module('app').controller('doodle-controller', [
         var html = doodles.current().html;
         html = html.replace(SCRIPTS_MARKER, scriptTags.join(""));
         html = html.replace(STYLE_MARKER, [doodles.current().less].join(""));
-        if (doodles.current().operatorOverloading) {
-          html = html.replace(CODE_MARKER, mathscript.transpile(doodles.current().lastKnownJs));
-        }
-        else {
-          html = html.replace(CODE_MARKER, doodles.current().lastKnownJs);
-        }
+        html = html.replace(CODE_MARKER, currentJavaScript());
         // For backwards compatibility...
         html = html.replace('<!-- STYLE-MARKER -->', ['<style>', doodles.current().less, '</style>'].join(""));
-        html = html.replace('<!-- CODE-MARKER -->', mathscript.transpile(doodles.current().lastKnownJs));
+        html = html.replace('<!-- CODE-MARKER -->', currentJavaScript());
 
         content.open();
         content.write(html);

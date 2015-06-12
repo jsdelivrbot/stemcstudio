@@ -1,12 +1,13 @@
 {
   "name": "mathdoodle",
-  "version": "1.28.0",
+  "version": "1.28.1",
   "description": "Learning Mathematics and Geometric Physics through Computational Modeling",
   "scripts": {
     "start": "NODE_ENV=local nodemon web.js",
     "test": "lineman spec-ci"
   },
   "author": "David Holmes",
+  "license": "MIT",
   "devDependencies": {
     "bootstrap": "^3.3.4",
     "coffee-script": "1.6.3",
