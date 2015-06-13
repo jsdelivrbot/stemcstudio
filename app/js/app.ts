@@ -17,6 +17,10 @@ module mathdoodle {
     login(): void;
     logout(): void;
     userLogin(): string;
+    /**
+     * The version of mathdoodle.
+     */
+    version: string;
   }
 }
 
@@ -44,6 +48,7 @@ angular.module('app',
   'uuid4',
   'ga',
   'githubKey',
+  'version',
   function(
     $rootScope: mathdoodle.IAppScope,
     $state: angular.ui.IStateService,
@@ -52,7 +57,8 @@ angular.module('app',
     cookie: ICookieService,
     uuid4: IUuidService,
     ga: UniversalAnalytics.ga,
-    githubKey: string
+    githubKey: string,
+    version: string
   ) {
 
   // The name of this cookie must correspond with the cookie sent back from the server.
@@ -65,6 +71,7 @@ angular.module('app',
   // so that you can access them from any scope (HTML template) within the application.
   $rootScope.$state = $state;
   $rootScope.$stateParams = $stateParams;
+  $rootScope.version = version;
 
   // Doing this twice is a hack for Firefox. It may not be required anymore.
   $window.applicationCache.addEventListener('updateready', function(e: Event) {
