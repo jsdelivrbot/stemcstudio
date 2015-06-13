@@ -1,15 +1,15 @@
 CACHE MANIFEST
-# 2015-06-12:1.28.1
+# 2015-06-12:1.28.3
 
 # Explicitly cached entries
 index.html
 
-css/app.css?version=1.28.1
-css/app.css.map?version=1.28.1
-css/app.less.css?version=1.28.1
+css/app.css?version=1.28.3
+css/app.css.map?version=1.28.3
+css/app.less.css?version=1.28.3
 
-js/app.js?version=1.28.1
-js/app.js.map?version=1.28.1
+js/app.js?version=1.28.3
+js/app.js.map?version=1.28.3
 
 fonts/glyphicons-halflings-regular.eot
 fonts/glyphicons-halflings-regular.svg

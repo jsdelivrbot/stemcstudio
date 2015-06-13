@@ -302,7 +302,6 @@ angular.module('app').factory('GitHub', [
           url: "" + GITHUB_PROTOCOL + "://" + GITHUB_DOMAIN + "/gists",
           headers: headers
         }).success(function(gists, status, headers, config) {
-          console.log;
           gists = _.map(gists, function(gist) {
             return new Gist(gist.id, gist.description, gist["public"], gist.files, gist.html_url);
           });

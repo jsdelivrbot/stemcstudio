@@ -84,8 +84,6 @@ angular.module('app').factory('templates', [
     "\n" +
     "  // The width and height properties are the modeling dimensions.\n" +
     "  // The CSS style determines the physical size in pixels.\n" +
-    "  console.log('canvas.width : ' + canvas.width);\n" +
-    "  console.log('canvas.height: ' + canvas.height);\n" +
     "\n" +
     "  context.fillStyle = 'orange';\n" +
     "  context.fillRect(0, 0, 500, 500);\n" +

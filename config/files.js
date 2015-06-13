@@ -20,7 +20,7 @@ module.exports = function(lineman) {
 
         "vendor/davinci-mathscript/dist/davinci-mathscript.js",
 
-        "vendor/davinci-deuce/build/src-noconflict/ace.js",
+        "../davinci-deuce/build/src-noconflict/ace.js",
 
         "vendor/davinci-deuce/build/src-noconflict/theme-chrome.js",
         "vendor/davinci-deuce/build/src-noconflict/theme-eclipse.js",

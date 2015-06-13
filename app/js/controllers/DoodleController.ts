@@ -61,7 +61,7 @@ module mathdoodle {
 
     shareURL: () => string;
 
-    updateView(): void;
+    updateView(applyInProgress: boolean): void;
     updatePreview(delay: number): void;
     previewIFrame: HTMLIFrameElement;
   }
@@ -219,15 +219,19 @@ angular.module('app').controller('doodle-controller', [
    */
   var olds: string[] = [];
 
-  scope.updateView = function() {
+  scope.updateView = function(applyInProgress: boolean) {
     updateWorkspace();
+    // What does a cursorPos of -1 mean?
     htmlEditor.setValue(doodles.current().html, -1);
+    htmlEditor.clearSelection();
     codeEditor.setValue(doodles.current().code, -1);
+    codeEditor.clearSelection();
     lessEditor.setValue(doodles.current().less, -1);
+    lessEditor.clearSelection();
     // Bit of a smell here. Should we be updating the scope?
     setEditMode(doodles.current().isCodeVisible);
     setViewMode(doodles.current().isViewVisible);
-    setCurrentEditor(doodles.current().focusEditor);
+    setCurrentEditor(doodles.current().focusEditor, applyInProgress);
     $window.document.title = doodles.current().description;
   }
 
@@ -280,60 +284,61 @@ angular.module('app').controller('doodle-controller', [
 
   scope.showHTML = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'showHTML', label, value);
-    setCurrentEditor(FILENAME_HTML);
+    setCurrentEditor(FILENAME_HTML, true);
   }
 
   scope.showCode = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'showCode', label, value);
-    setCurrentEditor(FILENAME_CODE);
+    setCurrentEditor(FILENAME_CODE, true);
   }
 
   scope.showLess = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'showLess', label, value);
-    setCurrentEditor(FILENAME_LESS);
+    setCurrentEditor(FILENAME_LESS, true);
   }
 
   /**
    * Set the current editor based upon fileName and return the appropriate editor object.
    */
-  function setCurrentEditor(fileName: string): ace.Editor {
+  function setCurrentEditor(fileName: string, applyInProgress: boolean): ace.Editor {
+
+    function focusEditor(editor: ace.Editor): void {
+      editor.focus();
+      editor.resize(true);
+      if (doodles.current().focusEditor !== fileName) {
+        doodles.current().focusEditor = fileName;
+        doodles.updateStorage();
+      }
+    }
+
     // We don't set the focus or go to a line because that would
     // activate the keyboard on a mobile device. The user will
     // want to set the insertion point anyway which will trigger
     // keyboard activation at the right time.
     // Notice that we call `resize` on the editor to force a repaint.
     if (fileName === FILENAME_CODE) {
-      scope.isShowingHTML = false;
       scope.isShowingCode = true;
+      scope.isShowingHTML = false;
       scope.isShowingLess = false;
-      codeEditor.resize(true);
-      codeEditor.focus();
-      doodles.current().focusEditor = fileName;
-      doodles.updateStorage();
+      focusEditor(codeEditor);
       return codeEditor;
     }
     else if (fileName === FILENAME_HTML) {
       scope.isShowingHTML = true;
+      focusEditor(htmlEditor);
       scope.isShowingCode = false;
       scope.isShowingLess = false;
-      htmlEditor.resize(true);
-      htmlEditor.focus();
-      doodles.current().focusEditor = fileName;
-      doodles.updateStorage();
       return htmlEditor;
     }
     else if (fileName === FILENAME_LESS) {
+      scope.isShowingLess = true;
+      focusEditor(lessEditor);
       scope.isShowingHTML = false;
       scope.isShowingCode = false;
-      scope.isShowingLess = true;
-      lessEditor.resize(true);
-      lessEditor.focus();
-      doodles.current().focusEditor = fileName;
-      doodles.updateStorage();
       return lessEditor;
     }
     else {
-      return setCurrentEditor(FILENAME_CODE);
+      return setCurrentEditor(FILENAME_CODE, applyInProgress);
     }
   }
 
@@ -778,18 +783,12 @@ angular.module('app').controller('doodle-controller', [
     doodles.current().isCodeVisible = true;
     //  doodles.current().isViewVisible = false;
     // We need to make sure that the files have names (for the TypeScript compiler).
-    htmlEditor.changeFile(doodles.current().html, FILENAME_HTML);
+    htmlEditor.changeFile(doodles.current().html, FILENAME_HTML, -1);
     htmlEditor.resize(true);
-//    htmlEditor.gotoLine(0, 0);
-//    htmlEditor.focus();
-    codeEditor.changeFile(doodles.current().code, FILENAME_CODE);
+    codeEditor.changeFile(doodles.current().code, FILENAME_CODE, -1);
     codeEditor.resize(true);
-//    codeEditor.focus();
-//    codeEditor.gotoLine(0, 0);
-    lessEditor.changeFile(doodles.current().less, FILENAME_LESS);
+    lessEditor.changeFile(doodles.current().less, FILENAME_LESS, -1);
     lessEditor.resize(true);
-//    lessEditor.gotoLine(0, 0);
-//    lessEditor.focus();
 
     // Now that things have settled down...
     doodles.updateStorage();
@@ -803,7 +802,7 @@ angular.module('app').controller('doodle-controller', [
             doodles.deleteDoodle(doodle.uuid);
             doodles.unshift(doodle);
             doodles.updateStorage();
-            scope.updateView();
+            scope.updateView(true);
           }
           else {
             scope.alert("Error attempting to download Gist");
@@ -813,7 +812,7 @@ angular.module('app').controller('doodle-controller', [
         });
       }
       else {
-        scope.updateView();
+        scope.updateView(true);
         cascade = true;
         scope.updatePreview(WAIT_NO_MORE);
       }
@@ -823,7 +822,7 @@ angular.module('app').controller('doodle-controller', [
         $state.go(STATE_GISTS, { gistId: doodles.current().gistId });
       }
       else {
-        scope.updateView();
+        scope.updateView(true);
         cascade = true;
         scope.updatePreview(WAIT_NO_MORE);
       }

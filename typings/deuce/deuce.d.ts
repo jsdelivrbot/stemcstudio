@@ -1,5 +1,5 @@
 //
-// Copyright (c) JBaron.  All rights reserved.
+// Copyright (c) David Holmes.  All rights reserved.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -179,6 +179,7 @@ declare module ace {
         resize(force: boolean);
         keyBinding;
         clearSelection();
+        selectAll();
         centerSelection();
         onTextInput: (text: string) => any;
         getSelectionRange(): string;
@@ -229,7 +230,10 @@ declare module ace {
         setAutoScrollEditorIntoView(enable: boolean);
         setOption(name: string, value: any);
         setOptions(options: any);
-        changeFile(content: string, fileName: string): void;
+        /**
+         * Changes the file contents and ensures that the workspace knows about the file.
+         */
+        changeFile(content: string, fileName: string, cursorPos: number): void;
     }
 
     interface Workspace {
