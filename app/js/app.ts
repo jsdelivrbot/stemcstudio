@@ -1,5 +1,6 @@
 /// <reference path="../../typings/angularjs/angular.d.ts" />
 /// <reference path="../../typings/angular-ui-router/angular-ui-router.d.ts" />
+/// <reference path="../../typings/bootstrap-dialog/bootstrap-dialog.d.ts" />
 /// <reference path="../../typings/google-analytics/ga.d.ts" />
 /// <reference path="services/cookie/cookie.ts" />
 /// <reference path="services/gham/IGitHubItem.ts" />
@@ -62,28 +63,76 @@ angular.module('app',
 
   // It's very handy to add references to $state and $stateParams to the $rootScope
   // so that you can access them from any scope (HTML template) within the application.
-  // For example,
-  // <li ng-class="{ active: $state.includes('contacts.list') }"> will set the <li>
-  // to active whenever 'contacts.list' or one of its decendents is active.
   $rootScope.$state = $state;
   $rootScope.$stateParams = $stateParams;
 
-  // Check if a new cache is available on page load.
-  /*
-  $window.addEventListener('load', function(e) {
-    $window.applicationCache.addEventListener('updateready', function(e) {
-      if ($window.applicationCache.status == $window.applicationCache.UPDATEREADY) {
-        // Browser downloaded a new app cache.
-        if (confirm('A new version of this site is available. Load it?')) {
-          $window.location.reload();
-        }
+  // Doing this twice is a hack for Firefox. It may not be required anymore.
+  $window.applicationCache.addEventListener('updateready', function(e: Event) {
+    $rootScope.$apply(function() {
+    });
+  }, false);
+  $window.onload = function() {
+    $window.applicationCache.addEventListener('updateready', function(e:Event) {
+      if ($window.applicationCache.status === $window.applicationCache.UPDATEREADY) {
+        BootstrapDialog.show({
+          type: BootstrapDialog.TYPE_SUCCESS,
+          title: $("<h3>Upload Ready</h3>"),
+          message: "A new version of mathdoodle is available. Would you like me to reload now?",
+          closable: false,
+          closeByBackdrop: false,
+          closeByKeyboard: false,
+          buttons: [
+          {
+            label: "Yes",
+            cssClass: 'btn btn-primary',
+            action: function(dialog) {
+              $window.location.reload();
+              dialog.close();
+            }
+          },
+          {
+            label: "No",
+            cssClass: 'btn',
+            action: function(dialog) {
+              dialog.close();
+            }
+          }
+          ]
+        });
       }
       else {
         // Manifest didn't changed. Nothing new to server.
       }
     }, false);
+  };
+  $window.applicationCache.addEventListener('checking', function(e: Event) {
+    $rootScope.$apply(function() {
+    });
   }, false);
-  */
+  $window.applicationCache.addEventListener('noupdate', function(e: Event) {
+    $rootScope.$apply(function() {
+    });
+  }, false);
+  $window.applicationCache.addEventListener('downloading', function(e: Event) {
+    $rootScope.$apply(function() {
+    });
+  }, false);
+  $window.applicationCache.addEventListener('progress', function(e: Event) {
+    $rootScope.$apply(function() {
+    });
+  }, false);
+  $window.applicationCache.addEventListener('cached', function(e: Event) {
+    $rootScope.$apply(function() {
+    });
+  }, false);
+  $window.applicationCache.addEventListener('obsolete', function(e: Event) {
+    $rootScope.$apply(function() {
+    });
+  }, false);
+  $window.applicationCache.addEventListener('error', function(e: Event) {
+    $rootScope.$apply(function() {
+    });
+  }, false);
 
   // If we don't specify where to go we'll get a blank screen!
   //$state.transitionTo('home');
