@@ -7,7 +7,7 @@
   }
 
   // 
-  angular.module('app').constant('version', '1.32.0');
+  angular.module('app').constant('version', '1.33.0');
   // githubKey stores the key of the item in local storage for maintaining GitHub OAuth data.
   // Remark: This value is duplicated in views/github_callback.jade
   angular.module('app').constant('githubKey',  makeKey('github'));

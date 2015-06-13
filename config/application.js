@@ -1,5 +1,9 @@
 module.exports = function(lineman) {
 
+  function davinciBlade(path) {
+    return '../davinci-blade/' + path;
+  }
+
   require("./plugins/typescript");
 
   return {
@@ -42,9 +46,9 @@ module.exports = function(lineman) {
           {src: "museum/angular/angular@1.4.0.min.js",                       dest: "generated/js/angular@1.4.0.min.js"},
           {src: "museum/angular/angular@1.4.0.min.js.map",                   dest: "generated/js/angular@1.4.0.min.js.map"},
 
-          {src: "../davinci-blade/dist/davinci-blade.d.ts",              dest: "generated/ts/davinci-blade/davinci-blade.d.ts"},
-          {src: "../davinci-blade/dist/davinci-blade.js",                dest: "generated/js/davinci-blade/davinci-blade.js"},
-          {src: "../davinci-blade/dist/davinci-blade.min.js",            dest: "generated/js/davinci-blade/davinci-blade.min.js"},
+          {src: davinciBlade("dist/davinci-blade.d.ts"),                     dest: "generated/ts/davinci-blade/davinci-blade.d.ts"},
+          {src: davinciBlade("dist/davinci-blade.js"),                       dest: "generated/js/davinci-blade/davinci-blade.js"},
+          {src: davinciBlade("dist/davinci-blade.min.js"),                   dest: "generated/js/davinci-blade/davinci-blade.min.js"},
 
           {src: "vendor/davinci-mathscript/dist/davinci-mathscript.min.js", dest: "generated/js/davinci-mathscript@1.0.6.min.js"},
 
@@ -139,9 +143,9 @@ module.exports = function(lineman) {
           {src: "museum/angular/angular@1.4.0.min.js",                       dest: "dist/js/angular@1.4.0.min.js"},
           {src: "museum/angular/angular@1.4.0.min.js.map",                   dest: "dist/js/angular@1.4.0.min.js.map"},
 
-          {src: "vendor/davinci-blade/dist/davinci-blade.d.ts",              dest: "dist/ts/davinci-blade/davinci-blade.d.ts"},
-          {src: "vendor/davinci-blade/dist/davinci-blade.js",                dest: "dist/js/davinci-blade/davinci-blade.js"},
-          {src: "vendor/davinci-blade/dist/davinci-blade.min.js",            dest: "dist/js/davinci-blade/davinci-blade.min.js"},
+          {src: davinciBlade("dist/davinci-blade.d.ts"),                    dest: "dist/ts/davinci-blade/davinci-blade.d.ts"},
+          {src: davinciBlade("dist/davinci-blade.js"),                      dest: "dist/js/davinci-blade/davinci-blade.js"},
+          {src: davinciBlade("dist/davinci-blade.min.js"),                  dest: "dist/js/davinci-blade/davinci-blade.min.js"},
 
           {src: "vendor/davinci-mathscript/dist/davinci-mathscript.min.js", dest: "dist/js/davinci-mathscript@1.0.6.min.js"},
 

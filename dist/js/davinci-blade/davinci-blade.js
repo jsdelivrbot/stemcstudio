@@ -434,13 +434,52 @@ var requirejs, require, define;
 define("../vendor/almond/almond", function(){});
 
 define('davinci-blade/core',["require", "exports"], function (require, exports) {
-    var blade = {
-        /**
-         * The version of the blade library.
-         */
-        VERSION: '1.3.0'
+    /**
+     * Determines whether a property name is callable on an object.
+     */
+    function isCallableMethod(x, name) {
+        return (x !== null) && (typeof x === 'object') && (typeof x[name] === 'function');
+    }
+    function makeUnaryUniversalFunction(methodName, primitiveFunction) {
+        return function (x) {
+            if (isCallableMethod(x, methodName)) {
+                return x[methodName]();
+            }
+            else if (typeof x === 'number') {
+                var something = x;
+                var n = something;
+                var thing = primitiveFunction(n);
+                return thing;
+            }
+            else {
+                throw new TypeError("x must support " + methodName + "(x)");
+            }
+        };
+    }
+    function cosh(x) {
+        return (Math.exp(x) + Math.exp(-x)) / 2;
+    }
+    function sinh(x) {
+        return (Math.exp(x) - Math.exp(-x)) / 2;
+    }
+    var core = {
+        VERSION: '1.4.0',
+        cos: makeUnaryUniversalFunction('cos', Math.cos),
+        cosh: makeUnaryUniversalFunction('cosh', cosh),
+        exp: makeUnaryUniversalFunction('exp', Math.exp),
+        norm: makeUnaryUniversalFunction('norm', function (x) {
+            return Math.abs(x);
+        }),
+        quad: makeUnaryUniversalFunction('quad', function (x) {
+            return x * x;
+        }),
+        sin: makeUnaryUniversalFunction('sin', Math.sin),
+        sinh: makeUnaryUniversalFunction('sinh', sinh),
+        unit: makeUnaryUniversalFunction('unit', function (x) {
+            return x / Math.abs(x);
+        })
     };
-    return blade;
+    return core;
 });
 
 define('davinci-blade/Rational',["require", "exports", 'davinci-blade/Unit'], function (require, exports, Unit) {
@@ -1119,6 +1158,11 @@ define('davinci-blade/Unit',["require", "exports", 'davinci-blade/Dimensions', '
                 throw new Error("isUnity argument must be a Unit or undefined.");
             }
         };
+        Unit.assertDimensionless = function (uom) {
+            if (!Unit.isUnity(uom)) {
+                throw new UnitError("uom must be dimensionless.");
+            }
+        };
         Unit.compatible = function (lhs, rhs) {
             if (lhs instanceof Unit) {
                 if (rhs instanceof Unit) {
@@ -1266,6 +1310,9 @@ define('davinci-blade/Euclidean1',["require", "exports", 'davinci-blade/Unit'], 
         };
         Euclidean1.prototype.quad = function () {
             return new Euclidean1(this.w * this.w + this.x * this.x, 0, Unit.mul(this.uom, this.uom));
+        };
+        Euclidean1.prototype.unit = function () {
+            throw new Euclidean1Error('unit');
         };
         Euclidean1.prototype.toExponential = function () {
             return "Euclidean1";
@@ -2037,13 +2084,20 @@ define('davinci-blade/Euclidean2',["require", "exports", 'davinci-blade/Unit'], 
             }
         };
         Euclidean2.prototype.exp = function () {
-            throw new Euclidean2Error('exp');
+            Unit.assertDimensionless(this.uom);
+            var expW = Math.exp(this.w);
+            var cosXY = Math.cos(this.xy);
+            var sinXY = Math.sin(this.xy);
+            return new Euclidean2(expW * cosXY, 0, 0, expW * sinXY, this.uom);
         };
         Euclidean2.prototype.norm = function () {
             return new Euclidean2(Math.sqrt(this.w * this.w + this.x * this.x + this.y * this.y + this.xy * this.xy), 0, 0, 0, this.uom);
         };
         Euclidean2.prototype.quad = function () {
             return new Euclidean2(this.w * this.w + this.x * this.x + this.y * this.y + this.xy * this.xy, 0, 0, 0, Unit.mul(this.uom, this.uom));
+        };
+        Euclidean2.prototype.unit = function () {
+            throw new Euclidean2Error('unit');
         };
         Euclidean2.prototype.isNaN = function () {
             return isNaN(this.w) || isNaN(this.x) || isNaN(this.y) || isNaN(this.xy);
@@ -3077,6 +3131,9 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/Unit'], 
         Euclidean3.prototype.quad = function () {
             return new Euclidean3(this.w * this.w + this.x * this.x + this.y * this.y + this.z * this.z + this.xy * this.xy + this.yz * this.yz + this.zx * this.zx + this.xyz * this.xyz, 0, 0, 0, 0, 0, 0, 0, Unit.mul(this.uom, this.uom));
         };
+        Euclidean3.prototype.unit = function () {
+            throw new Euclidean3Error('unit');
+        };
         Euclidean3.prototype.sqrt = function () {
             return new Euclidean3(Math.sqrt(this.w), 0, 0, 0, 0, 0, 0, 0, Unit.sqrt(this.uom));
         };
@@ -3168,6 +3225,9 @@ define('davinci-blade/Complex',["require", "exports", 'davinci-blade/Unit'], fun
         var x = (a.x * b.x + a.y * b.y) / q;
         var y = (a.y * b.x - a.x * b.y) / q;
         return new Complex(x, y, Unit.div(a.uom, b.uom));
+    }
+    function norm(x, y) {
+        return Math.sqrt(x * x + y * y);
     }
     var Complex = (function () {
         /**
@@ -3274,7 +3334,7 @@ define('davinci-blade/Complex',["require", "exports", 'davinci-blade/Unit'], fun
                 return divide(other, this);
             }
             else if (typeof other === 'number') {
-                return divide(new Complex(other, 0, undefined), this);
+                return divide(new Complex(other, 0), this);
             }
         };
         Complex.prototype.wedge = function (rhs) {
@@ -3286,32 +3346,58 @@ define('davinci-blade/Complex',["require", "exports", 'davinci-blade/Unit'], fun
         Complex.prototype.rshift = function (rhs) {
             throw new ComplexError('rshift');
         };
+        /**
+         * Computes the exponential of this complex number.
+         */
+        Complex.prototype.exp = function () {
+            Unit.assertDimensionless(this.uom);
+            var expX = Math.exp(this.x);
+            var x = expX * Math.cos(this.y);
+            var y = expX * Math.sin(this.y);
+            return new Complex(x, y);
+        };
         Complex.prototype.norm = function () {
             return new Complex(Math.sqrt(this.x * this.x + this.y * this.y), 0, this.uom);
         };
         Complex.prototype.quad = function () {
             return new Complex(this.x * this.x + this.y * this.y, 0, Unit.mul(this.uom, this.uom));
         };
+        Complex.prototype.unit = function () {
+            var divisor = norm(this.x, this.y);
+            return new Complex(this.x / divisor, this.y / divisor);
+        };
         Complex.prototype.arg = function () {
             return Math.atan2(this.y, this.x);
         };
-        /**
-         * Computes the exponential of this complex number.
-         */
-        Complex.prototype.exp = function () {
-            var expX = Math.exp(this.x);
-            var x = expX * Math.cos(this.y);
-            var y = expX * Math.sin(this.y);
-            return new Complex(x, y, this.uom);
+        Complex.prototype.toStringCustom = function (coordToString) {
+            var quantityString = "Complex(" + coordToString(this.x) + ", " + coordToString(this.y) + ")";
+            if (this.uom) {
+                var uomString = this.uom.toString().trim();
+                if (uomString) {
+                    return quantityString + ' ' + uomString;
+                }
+                else {
+                    return quantityString;
+                }
+            }
+            else {
+                return quantityString;
+            }
         };
         Complex.prototype.toExponential = function () {
-            return "Complex(" + this.x.toExponential() + ", " + this.y.toExponential() + ")";
+            return this.toStringCustom(function (coord) {
+                return coord.toExponential();
+            });
         };
         Complex.prototype.toFixed = function (digits) {
-            return "Complex(" + this.x.toFixed(digits) + ", " + this.y.toFixed(digits) + ")";
+            return this.toStringCustom(function (coord) {
+                return coord.toFixed(digits);
+            });
         };
         Complex.prototype.toString = function () {
-            return "Complex(" + this.x + ", " + this.y + ")";
+            return this.toStringCustom(function (coord) {
+                return coord.toString();
+            });
         };
         return Complex;
     })();
@@ -3461,6 +3547,16 @@ define('davinci-blade',["require", "exports", 'davinci-blade/core', 'davinci-bla
      */
     var blade = {
         'VERSION': core.VERSION,
+        universals: {
+            cos: core.cos,
+            cosh: core.cosh,
+            exp: core.exp,
+            norm: core.norm,
+            quad: core.quad,
+            sin: core.sin,
+            sinh: core.sinh,
+            unit: core.unit
+        },
         Color: Color,
         Complex: Complex,
         Euclidean1: Euclidean1,

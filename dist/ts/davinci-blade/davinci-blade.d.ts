@@ -84,8 +84,10 @@ declare module blade {
     wedge(rhs: T): T;
     lshift(rhs: T): T;
     rshift(rhs: T): T;
+    exp(): T;
     norm(): T;
     quad(): T;
+    unit(): T;
     toExponential(): string;
     toFixed(digits?: number): string;
     toString(): string;
@@ -98,9 +100,9 @@ declare module blade {
     public x: number;
     public y: number;
     public xy: number;
-    constructor(w: number, x: number, y: number, xy: number);
-    public fromCartesian(w: number, x: number, y: number, xy: number): Euclidean2;
-    public fromPolar(w: number, r: number, theta: number, s: number): Euclidean2;
+    constructor(w: number, x: number, y: number, xy: number, uom?: Unit);
+    public fromCartesian(w: number, x: number, y: number, xy: number, uom?: Unit): Euclidean2;
+    public fromPolar(w: number, r: number, theta: number, s: number, uom?: Unit): Euclidean2;
     public coordinates(): number[];
     public coordinate(index: number): number;
     static add(a: number[], b: number[]): number[];
@@ -119,6 +121,10 @@ declare module blade {
     static rshift(a: number[], b: number[]): number[];
     public rshift(rhs: Euclidean2): Euclidean2;
     public grade(index: number): Euclidean2;
+    /**
+     * Returns e (the base of natural logarithms) raised to the power of this Euclidean2.
+     */
+    public exp(): Euclidean2;
     public norm(): Euclidean2;
     public quad(): Euclidean2;
     public isNaN(): boolean;
@@ -301,18 +307,71 @@ declare module blade {
         __rmul__(other: any): Complex;
         __div__(other: any): Complex;
         __rdiv__(other: any): Complex;
+        arg(): number;
         norm(): number;
         quad(): number;
-        arg(): number;
+        /**
+         * Computes the unit magnitude complex number associated with this complex number.
+         */
+        unit(): Complex;
         /**
          * Computes the exponential of this complex number.
          */
         exp(): Complex;
+        /**
+         * The toExponential() method formats the number using exponential notation.
+         */
+        toExponential(): string;
+        /**
+         * The toFixed() method formats the number using fixed-point notation.
+         */
+        toFixed(digits?: number): string;
         toString(): string;
     }
 }
 declare module blade {
+    /**
+     * The version of the blade library.
+     */
     var VERSION: string;
+    /**
+     * Universal Mathematical Functions.
+     */
+    var universals:
+    {
+      /**
+       * Computes the cosine of the argument.
+       */
+      cos: <T>(x: T) => T,
+      /**
+       * Computes the hyperbolic cosine of the argument.
+       */
+      cosh: <T>(x: T) => T,
+      /**
+       * Computes the exponential of the argument.
+       */
+      exp: <T>(x: T) => T,
+      /**
+       * Computes the magnitude of the argument.
+       */
+      norm: <T>(x: T) => T,
+      /**
+       * Computes the quadrance of the argument. The quadrance is the square of the magnitude.
+       */
+      quad: <T>(x: T) => T,
+      /**
+       * Computes the sine of the argument.
+       */
+      sin: <T>(x: T) => T,
+      /**
+       * Computes the hyperbolic sine of the argument.
+       */
+      sinh: <T>(x: T) => T,
+      /**
+       * Computes the unit magnitude quantity of the argument.
+       */
+      unit: <T>(x: T) => T
+    },
     var e2ga:
     {
       e1: Euclidean2;
