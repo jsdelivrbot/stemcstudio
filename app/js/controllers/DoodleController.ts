@@ -61,7 +61,7 @@ module mathdoodle {
 
     shareURL: () => string;
 
-    updateView(applyInProgress: boolean): void;
+    updateView(): void;
     updatePreview(delay: number): void;
     previewIFrame: HTMLIFrameElement;
   }
@@ -219,19 +219,21 @@ angular.module('app').controller('doodle-controller', [
    */
   var olds: string[] = [];
 
-  scope.updateView = function(applyInProgress: boolean) {
+  scope.updateView = function() {
     updateWorkspace();
-    // What does a cursorPos of -1 mean?
     htmlEditor.setValue(doodles.current().html, -1);
-    htmlEditor.clearSelection();
+    htmlEditor.resize(true);
+    htmlEditor.gotoLine(0, 0);
     codeEditor.setValue(doodles.current().code, -1);
-    codeEditor.clearSelection();
+    codeEditor.resize(true);
+    codeEditor.gotoLine(0, 0);
     lessEditor.setValue(doodles.current().less, -1);
-    lessEditor.clearSelection();
+    lessEditor.resize(true);
+    lessEditor.gotoLine(0, 0);
     // Bit of a smell here. Should we be updating the scope?
     setEditMode(doodles.current().isCodeVisible);
     setViewMode(doodles.current().isViewVisible);
-    setCurrentEditor(doodles.current().focusEditor, applyInProgress);
+    setCurrentEditor(doodles.current().focusEditor);
     $window.document.title = doodles.current().description;
   }
 
@@ -239,7 +241,7 @@ angular.module('app').controller('doodle-controller', [
     scope.isViewVisible = isViewVisible;
   }
 
-  scope.$watch('isViewVisible', function(newVal: boolean, oldVal, scope) {
+  scope.$watch('isViewVisible', function(newVal: boolean, oldVal, unused: angular.IScope) {
     doodles.current().isViewVisible = scope.isViewVisible;
     doodles.updateStorage();
   });
@@ -249,7 +251,7 @@ angular.module('app').controller('doodle-controller', [
     scope.toggleText = editMode ? TEXT_CODE_HIDE : TEXT_CODE_SHOW;
   }
 
-  scope.$watch('isEditMode', function(newVal: boolean, oldVal, scope) {
+  scope.$watch('isEditMode', function(newVal: boolean, oldVal, unused: angular.IScope) {
     doodles.current().isCodeVisible = scope.isEditMode;
     doodles.updateStorage();
   });
@@ -267,10 +269,6 @@ angular.module('app').controller('doodle-controller', [
         scope.updatePreview(WAIT_NO_MORE);
       }
     }
-    // This does not seem sufficient to force the editors to repaint when...
-    // (Mobile Keyboard or Developer Tools visible), followed by
-    // View, followed by
-    // Edit.
     htmlEditor.resize(true);
     codeEditor.resize(true);
     lessEditor.resize(true);
@@ -284,23 +282,23 @@ angular.module('app').controller('doodle-controller', [
 
   scope.showHTML = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'showHTML', label, value);
-    setCurrentEditor(FILENAME_HTML, true);
+    setCurrentEditor(FILENAME_HTML);
   }
 
   scope.showCode = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'showCode', label, value);
-    setCurrentEditor(FILENAME_CODE, true);
+    setCurrentEditor(FILENAME_CODE);
   }
 
   scope.showLess = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'showLess', label, value);
-    setCurrentEditor(FILENAME_LESS, true);
+    setCurrentEditor(FILENAME_LESS);
   }
 
   /**
    * Set the current editor based upon fileName and return the appropriate editor object.
    */
-  function setCurrentEditor(fileName: string, applyInProgress: boolean): ace.Editor {
+  function setCurrentEditor(fileName: string): void {
 
     function focusEditor(editor: ace.Editor): void {
       editor.focus();
@@ -316,29 +314,27 @@ angular.module('app').controller('doodle-controller', [
     // want to set the insertion point anyway which will trigger
     // keyboard activation at the right time.
     // Notice that we call `resize` on the editor to force a repaint.
+    // We use $timeout to de-conflict the AngularJS digest loop and the repaint.
     if (fileName === FILENAME_CODE) {
       scope.isShowingCode = true;
       scope.isShowingHTML = false;
       scope.isShowingLess = false;
-      focusEditor(codeEditor);
-      return codeEditor;
+      $timeout(function() {focusEditor(codeEditor)}, 100);
     }
     else if (fileName === FILENAME_HTML) {
       scope.isShowingHTML = true;
-      focusEditor(htmlEditor);
       scope.isShowingCode = false;
       scope.isShowingLess = false;
-      return htmlEditor;
+      $timeout(function() {focusEditor(htmlEditor)}, 100);
     }
     else if (fileName === FILENAME_LESS) {
       scope.isShowingLess = true;
-      focusEditor(lessEditor);
       scope.isShowingHTML = false;
       scope.isShowingCode = false;
-      return lessEditor;
+      $timeout(function() {focusEditor(lessEditor)}, 100);
     }
     else {
-      return setCurrentEditor(FILENAME_CODE, applyInProgress);
+      return setCurrentEditor(FILENAME_CODE);
     }
   }
 
@@ -802,7 +798,7 @@ angular.module('app').controller('doodle-controller', [
             doodles.deleteDoodle(doodle.uuid);
             doodles.unshift(doodle);
             doodles.updateStorage();
-            scope.updateView(true);
+            scope.updateView();
           }
           else {
             scope.alert("Error attempting to download Gist");
@@ -812,7 +808,7 @@ angular.module('app').controller('doodle-controller', [
         });
       }
       else {
-        scope.updateView(true);
+        scope.updateView();
         cascade = true;
         scope.updatePreview(WAIT_NO_MORE);
       }
@@ -822,7 +818,7 @@ angular.module('app').controller('doodle-controller', [
         $state.go(STATE_GISTS, { gistId: doodles.current().gistId });
       }
       else {
-        scope.updateView(true);
+        scope.updateView();
         cascade = true;
         scope.updatePreview(WAIT_NO_MORE);
       }
