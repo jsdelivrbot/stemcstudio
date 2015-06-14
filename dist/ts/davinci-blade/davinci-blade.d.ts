@@ -308,16 +308,32 @@ declare module blade {
         __div__(other: any): Complex;
         __rdiv__(other: any): Complex;
         arg(): number;
-        norm(): number;
-        quad(): number;
         /**
-         * Computes the unit magnitude complex number associated with this complex number.
+         * Computes the cosine of this complex number.
          */
-        unit(): Complex;
+        cos(): Complex;
+        /**
+         * Computes the hyperbolic cosine of this complex number.
+         */
+        cosh(): Complex;
         /**
          * Computes the exponential of this complex number.
          */
         exp(): Complex;
+        norm(): number;
+        quad(): number;
+        /**
+         * Computes the sine of this complex number.
+         */
+        sin(): Complex;
+        /**
+         * Computes the hyperbolic sine of this complex number.
+         */
+        sinh(): Complex;
+        /**
+         * Computes the unit magnitude complex number associated with this complex number.
+         */
+        unit(): Complex;
         /**
          * The toExponential() method formats the number using exponential notation.
          */
