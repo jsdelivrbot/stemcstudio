@@ -239,6 +239,10 @@ declare module MathBox {
     tickScale?: number[];
   }
 
+  interface PlatonicOptions extends StyleOptions {
+    type?: string;
+  }
+
   interface SurfaceOptions extends StyleOptions {
     /**
      * Number of points in each direction.
@@ -292,7 +296,7 @@ declare module MathBox {
      */
     animate(selector: string, options: {orbit?: number, phi?: number, offset?: number[]}, animate: {delay?: number, duration?: number}): void;
     /**
-     * Adds an Axis primitive to the scene.
+     * Adds an Axis primitive.
      *
      * .axis({
      *   axis: 0,           // 0 = X, 1 = Y, 2 = Z
@@ -327,7 +331,7 @@ declare module MathBox {
      */
     camera(options: {orbit?: number, phi?: number, theta?: number, lookAt?: number[]}): Stage;
     /**
-     * Adds a Curve primitive to the scene.
+     * Adds a Curve primitive.
      *
      * Parameters:
      *   n
@@ -349,7 +353,7 @@ declare module MathBox {
      */
     get(selector: string): any;
     /**
-     * Adds a Grid primitive to the scene.
+     * Adds a Grid primitive.
      *
      * .grid({
      *   axis: [ 0, 1 ],         // Primary and secondary grid axis (0 = X, 1 = Y, 2 = Z)
@@ -362,6 +366,10 @@ declare module MathBox {
      * })
      */
     grid(options?: GridOptions): Stage;
+    /**
+     * Adds a Platonic Solid primitive.
+     */
+    platonic(options?: PlatonicOptions): Stage;
     /**
      * Primitive removal.
      */
@@ -383,7 +391,7 @@ declare module MathBox {
      */
     speed(): number;
     /**
-     * Adds a Surface primitive to the scene.
+     * Adds a Surface primitive.
      *
      * .surface({
      *   n: [ 64, 64 ],                         // Number of points in each direction
@@ -402,6 +410,14 @@ declare module MathBox {
      */
     surface(options: SurfaceOptions): Stage;
     /**
+     *
+     */
+    start(): Stage;
+    /**
+     *
+     */
+    stop(): Stage;
+    /**
      * Set the transition duration.
      */
     transition(duration: number): Stage;
@@ -414,7 +430,7 @@ declare module MathBox {
      */
     update(): void;
     /**
-     * Adds a Vector primitive to the scene.
+     * Adds a Vector primitive.
      *
      * .vector({
      *   n: 1,                              // Number of vectors
@@ -451,10 +467,10 @@ declare module MathBox {
     /**
      *
      */
-    world(): IWorld;
+    world(): World;
   }
 
-  interface IWorld {
+  interface World {
     /**
      *
      */

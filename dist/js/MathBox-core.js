@@ -3649,7 +3649,7 @@ MathBox.Platonic.prototype = _.extend(new MathBox.Primitive(null), {
     var geometry;
     switch (type) {
       case 'cube':
-        geometry = new THREE.CubeGeometry(2, 2, 2, 1, 1, 1);
+        geometry = new THREE.BoxGeometry(2, 2, 2, 1, 1, 1);
         break;
     }
 

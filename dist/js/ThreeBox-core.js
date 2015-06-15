@@ -527,8 +527,6 @@ ThreeBox.preload.html = function (file, name, callback) {
       div.innerHTML = res;
       document.body.appendChild(div);
     }
-
-    console.log('Loaded HTML ', file);
     callback();
   });
 };
@@ -537,8 +535,6 @@ ThreeBox.preload.image = function (file, name, callback) {
   THREE.ImageUtils.loadTexture(file, null, function (texture) {
     var ret = {};
     ret[name] = texture;
-
-    console.log('Loaded texture ', file);
     callback(ret);
   });
 };
@@ -552,8 +548,6 @@ ThreeBox.preload.audio = function (file, name, callback) {
   request.onload = function () {
     var ret = {};
     ret[name] = request.response;
-
-    console.log('Loaded audio ', file);
     callback(ret);
   };
 

@@ -4,6 +4,18 @@ module.exports = function(lineman) {
     return '../davinci-blade/' + path;
   }
 
+  function davinciMathBox(path) {
+    return '../davinci-mathbox/' + path;
+  }
+
+  function davinciSlideShow(path) {
+    return '../davinci-slideshow/' + path;
+  }
+
+  function davinciThreeBox(path) {
+    return '../davinci-threebox/' + path;
+  }
+
   require("./plugins/typescript");
 
   return {
@@ -71,13 +83,11 @@ module.exports = function(lineman) {
           {src: "museum/gl-matrix@2.2.1/gl-matrix.js",                       dest: "generated/js/gl-matrix@2.2.1/gl-matrix.js"},
           {src: "museum/gl-matrix@2.2.1/gl-matrix.min.js",                   dest: "generated/js/gl-matrix@2.2.1/gl-matrix.min.js"},
 
-          {src: "museum/MathBox.js/MathBox-core.d.ts",                        dest: "generated/ts/MathBox-core.d.ts"},
-//        {src: "vendor/davinci-mathbox/build/MathBox-core.js",     dest: "generated/js/MathBox-core.js"},
-//        {src: "vendor/davinci-mathbox/build/MathBox-core.min.js", dest: "generated/js/MathBox-core.min.js"},
-          {src: "vendor/davinci-mathbox/build/MathBox.glsl.html",   dest: "generated/shaders/MathBox.glsl.html"},
-          {src: "museum/MathBox.js/snippets.glsl.html",                       dest: "generated/shaders/snippets.glsl.html"},
-          {src: "../davinci-mathbox/build/MathBox-core.js",                   dest: "generated/js/MathBox-core.js"},
-          {src: "../davinci-mathbox/build/MathBox-core.min.js",               dest: "generated/js/MathBox-core.min.js"},
+          {src: "museum/MathBox.js/MathBox-core.d.ts",                       dest: "generated/ts/MathBox-core.d.ts"},
+          {src: "museum/MathBox.js/snippets.glsl.html",                      dest: "generated/shaders/snippets.glsl.html"},
+          {src: davinciMathBox("build/MathBox.glsl.html"),                   dest: "generated/shaders/MathBox.glsl.html"},
+          {src: davinciMathBox("build/MathBox-core.js"),                     dest: "generated/js/MathBox-core.js"},
+          {src: davinciMathBox("build/MathBox-core.min.js"),                 dest: "generated/js/MathBox-core.min.js"},
 
           {src: "museum/microajax/microajax.d.ts",                           dest: "generated/ts/microajax.d.ts"},
           {src: "museum/microajax/microajax.js",                             dest: "generated/js/microajax.js"},
@@ -88,25 +98,29 @@ module.exports = function(lineman) {
           {src: "museum/requirejs/require.d.ts",                             dest: "generated/ts/require.d.ts"},
           {src: "museum/requirejs/require.js",                               dest: "generated/js/require.js"},
 
-          {src: "museum/ShaderGraph.js/ShaderGraph-core.d.ts",                        dest: "generated/ts/ShaderGraph-core.d.ts"},
-          {src: "vendor/davinci-shadergraph/build/ShaderGraph-core.js",     dest: "generated/js/ShaderGraph-core.js"},
-          {src: "vendor/davinci-shadergraph/build/ShaderGraph-core.min.js", dest: "generated/js/ShaderGraph-core.min.js"},
+          {src: "museum/ShaderGraph.js/ShaderGraph-core.d.ts",               dest: "generated/ts/ShaderGraph-core.d.ts"},
+          {src: "vendor/davinci-shadergraph/build/ShaderGraph-core.js",      dest: "generated/js/ShaderGraph-core.js"},
+          {src: "vendor/davinci-shadergraph/build/ShaderGraph-core.min.js",  dest: "generated/js/ShaderGraph-core.min.js"},
 
-          {src: "museum/ThreeBox.js/ThreeBox-core.d.ts",                        dest: "generated/ts/ThreeBox-core.d.ts"},
-          {src: "vendor/davinci-threebox/build/ThreeBox-core.js",     dest: "generated/js/ThreeBox-core.js"},
-          {src: "vendor/davinci-threebox/build/ThreeBox-core.min.js", dest: "generated/js/ThreeBox-core.min.js"},
+          {src: davinciSlideShow("dist/davinci-slideshow.d.ts"),             dest: "generated/ts/davinci-slideshow/davinci-slideshow.d.ts"},
+          {src: davinciSlideShow("dist/davinci-slideshow.js"),               dest: "generated/js/davinci-slideshow/davinci-slideshow.js"},
+          {src: davinciSlideShow("dist/davinci-slideshow.min.js"),           dest: "generated/js/davinci-slideshow/davinci-slideshow.min.js"},
 
-          {src: "museum/ThreeRTT.js/ThreeRTT-core.d.ts",                               dest: "generated/ts/ThreeRTT-core.d.ts"},
-          {src: "vendor/davinci-threertt/build/ThreeRTT-core.js",     dest: "generated/js/ThreeRTT-core.js"},
-          {src: "vendor/davinci-threertt/build/ThreeRTT-core.min.js", dest: "generated/js/ThreeRTT-core.min.js"},
-          {src: "vendor/davinci-threertt/build/ThreeRTT.glsl.html",   dest: "generated/shaders/ThreeRTT.glsl.html"},
+          {src: "museum/ThreeBox.js/ThreeBox-core.d.ts",                     dest: "generated/ts/ThreeBox-core.d.ts"},
+          {src: davinciThreeBox("build/ThreeBox-core.js"),                   dest: "generated/js/ThreeBox-core.js"},
+          {src: davinciThreeBox("build/ThreeBox-core.min.js"),               dest: "generated/js/ThreeBox-core.min.js"},
+
+          {src: "museum/ThreeRTT.js/ThreeRTT-core.d.ts",                     dest: "generated/ts/ThreeRTT-core.d.ts"},
+          {src: "vendor/davinci-threertt/build/ThreeRTT-core.js",            dest: "generated/js/ThreeRTT-core.js"},
+          {src: "vendor/davinci-threertt/build/ThreeRTT-core.min.js",        dest: "generated/js/ThreeRTT-core.min.js"},
+          {src: "vendor/davinci-threertt/build/ThreeRTT.glsl.html",          dest: "generated/shaders/ThreeRTT.glsl.html"},
 
           {src: "museum/threex/THREEx.screenshot.d.ts",                      dest: "generated/ts/THREEx.screenshot.d.ts"},
           {src: "museum/threex/THREEx.screenshot.js",                        dest: "generated/js/THREEx.screenshot.js"},
 
           {src: "museum/tquery/tquery.d.ts",                                 dest: "generated/ts/tquery.d.ts"},
-          {src: "vendor/davinci-tquery/build/tquery.js",           dest: "generated/js/tquery.js"},
-          {src: "vendor/davinci-tquery/build/tquery.min.js",       dest: "generated/js/tquery.min.js"},
+          {src: "vendor/davinci-tquery/build/tquery.js",                     dest: "generated/js/tquery.js"},
+          {src: "vendor/davinci-tquery/build/tquery.min.js",                 dest: "generated/js/tquery.min.js"},
 
           {src: "museum/underscore/underscore@1.8.3.d.ts",                   dest: "generated/ts/underscore@1.8.3.d.ts"},
           {src: "museum/underscore/underscore@1.8.3.js",                     dest: "generated/js/underscore@1.8.3.js"},
@@ -170,10 +184,10 @@ module.exports = function(lineman) {
           {src: "museum/gl-matrix@2.2.1/gl-matrix.min.js",                   dest: "dist/js/gl-matrix@2.2.1/gl-matrix.min.js"},
 
           {src: "museum/MathBox.js/MathBox-core.d.ts",                       dest: "dist/ts/MathBox-core.d.ts"},
-          {src: "vendor/davinci-mathbox/build/MathBox-core.js",    dest: "dist/js/MathBox-core.js"},
-          {src: "vendor/davinci-mathbox/build/MathBox-core.min.js",dest: "dist/js/MathBox-core.min.js"},
-          {src: "vendor/davinci-mathbox/build/MathBox.glsl.html",  dest: "dist/shaders/MathBox.glsl.html"},
           {src: "museum/MathBox.js/snippets.glsl.html",                      dest: "dist/shaders/snippets.glsl.html"},
+          {src: davinciMathBox("build/MathBox-core.js"),                     dest: "dist/js/MathBox-core.js"},
+          {src: davinciMathBox("build/MathBox-core.min.js"),                 dest: "dist/js/MathBox-core.min.js"},
+          {src: davinciMathBox("build/MathBox.glsl.html"),                   dest: "dist/shaders/MathBox.glsl.html"},
 
           {src: "museum/microajax/microajax.d.ts",                           dest: "dist/ts/microajax.d.ts"},
           {src: "museum/microajax/microajax.js",                             dest: "dist/js/microajax.js"},
@@ -189,8 +203,8 @@ module.exports = function(lineman) {
           {src: "vendor/davinci-shadergraph/build/ShaderGraph-core.min.js", dest: "dist/js/ShaderGraph-core.min.js"},
 
           {src: "museum/ThreeBox.js/ThreeBox-core.d.ts",                        dest: "dist/ts/ThreeBox-core.d.ts"},
-          {src: "vendor/davinci-threebox/build/ThreeBox-core.js",     dest: "dist/js/ThreeBox-core.js"},
-          {src: "vendor/davinci-threebox/build/ThreeBox-core.min.js", dest: "dist/js/ThreeBox-core.min.js"},
+          {src: davinciThreeBox("build/ThreeBox-core.js"),                      dest: "dist/js/ThreeBox-core.js"},
+          {src: davinciThreeBox("build/ThreeBox-core.min.js"),                  dest: "dist/js/ThreeBox-core.min.js"},
 
           {src: "museum/ThreeRTT.js/ThreeRTT-core.d.ts",                        dest: "dist/ts/ThreeRTT-core.d.ts"},
           {src: "vendor/davinci-threertt/build/ThreeRTT-core.js",     dest: "dist/js/ThreeRTT-core.js"},

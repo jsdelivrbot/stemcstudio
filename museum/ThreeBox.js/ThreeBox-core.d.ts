@@ -30,11 +30,11 @@ declare module threebox {
      * Syntax:
      *
      *   ThreeBox.preload([
-     *   ], function() {
+     *   ], function(assets) {
      *     // This code will be executed when the files have been loaded.
      *   });
      */
-    preload(files: string[], callback: () => void): void;
+    preload(files: string[], callback: (assets?: {[name:string]: any}) => void): void;
     /**
      *
      */
