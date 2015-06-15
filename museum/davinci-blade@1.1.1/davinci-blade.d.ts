@@ -167,6 +167,10 @@ declare module blade {
          */
         xyz: number;
         /**
+         *
+         */
+        uom: Unit;
+        /**
          * Constructs a Euclidean3 from its coordinates.
          * @constructor
          * @param {number} w The scalar part of the multivector.

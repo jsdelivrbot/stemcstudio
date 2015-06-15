@@ -36,15 +36,35 @@ declare module blade {
 
 declare module blade {
   class Dimensions {
-    public L: any;
-    public T: any;
-    public Q: any;
-    public temperature: any;
-    public amount: any;
-    public intensity: any;
-    private _mass;
-    constructor(theMass: any, L: any, T: any, Q: any, temperature: any, amount: any, intensity: any);
+    /**
+     * The `M` dimension value records the exponent of the mass unit.
+     */
     public M : Rational;
+    /**
+     * The `L` dimension value records the exponent of the length unit.
+     */
+    public L: Rational;
+    /**
+     * The `T` dimension value records the exponent of the time unit.
+     */
+    public T: Rational;
+    /**
+     * The `Q` dimension value records the exponent of the charge unit.
+     */
+    public Q: Rational;
+    /**
+     * The `temperature` dimension value records the exponent of the temperature unit.
+     */
+    public temperature: Rational;
+    /**
+     * The `amount` dimension value records the exponent of the amount unit.
+     */
+    public amount: Rational;
+    /**
+     * The `intensity` dimension value records the exponent of the intensity unit.
+     */
+    public intensity: Rational;
+    constructor(theMass: Rational, L: Rational, T: Rational, Q: Rational, temperature: Rational, amount: Rational, intensity: Rational);
     public compatible(rhs: Dimensions): Dimensions;
     public mul(rhs: Dimensions): Dimensions;
     public div(rhs: Dimensions): Dimensions;
@@ -58,17 +78,30 @@ declare module blade {
 
 declare module blade {
   class Unit implements Field<Unit> {
+    /**
+     * The `scale` property (usually 1) is a multiplier of the unit dimensions and choice of units.
+     */
     public scale: number;
+    /**
+     * The `dimensions` property holds a vector of rational numbers representing mass, length, time, charge, temperature, amount and intensity.
+     */
     public dimensions: Dimensions;
     public labels: string[];
     constructor(scale: number, dimensions: Dimensions, labels: string[]);
+    /**
+     * Returns the argument unit if it is compatible with the target unit, otherwise returns undefined.
+     */
     public compatible(rhs: Unit): Unit;
     public add(rhs: Unit): Unit;
     public sub(rhs: Unit): Unit;
-    public mul(rhs: any): Unit;
-    public div(rhs: any): Unit;
-    public pow(rhs: number): Unit;
+    public mul(rhs: Unit): Unit;
+    public div(rhs: Unit): Unit;
+    public pow(exponent: Rational): Unit;
     public inverse(): Unit;
+    /**
+     * Returns true if this unit of measure is dimensionless and has unity scale.
+     */
+    public isUnity(): boolean;
     public toString(): string;
   }
 }
@@ -76,11 +109,15 @@ declare module blade {
 declare module blade {
   interface Measure<T> extends Field<T> {
     coordinates(): number[];
-    uom?: Unit;
+    /**
+     * The optional `uom` property is the unit of measure. A measure without a uom is equivalent to be a (dimensionless) quantity.
+     */
+    uom: Unit;
     add(rhs: T): T;
     sub(rhs: T): T;
     mul(rhs: T): T;
     div(rhs: T): T;
+    pow(exponent: T): T;
     wedge(rhs: T): T;
     lshift(rhs: T): T;
     rshift(rhs: T): T;
@@ -100,6 +137,10 @@ declare module blade {
     public x: number;
     public y: number;
     public xy: number;
+    /**
+     * The optional `uom` property is the unit of measure. A measure without a uom is equivalent to be a (dimensionless) quantity.
+     */
+    public uom: Unit;
     constructor(w: number, x: number, y: number, xy: number, uom?: Unit);
     public fromCartesian(w: number, x: number, y: number, xy: number, uom?: Unit): Euclidean2;
     public fromPolar(w: number, r: number, theta: number, s: number, uom?: Unit): Euclidean2;
@@ -181,7 +222,7 @@ declare module blade {
     /**
      * The optional `uom` property is the unit of measure. A measure without a uom is equivalent to be a (dimensionless) quantity.
      */
-    uom?: Unit;
+    uom: Unit;
     /**
      * Constructs a Euclidean3 from its coordinates.
      * @constructor
@@ -283,9 +324,9 @@ declare module blade {
          */
         y: number;
         /**
-         * The optional unit of measure.
+         * The optional `uom` property is the unit of measure. A measure without a uom is equivalent to be a (dimensionless) quantity.
          */
-        uom?: Unit;
+        uom: Unit;
         /**
          * Constructs a complex number z = (x, y) or z = x + i * y.
          * @param x The real part of the complex number.

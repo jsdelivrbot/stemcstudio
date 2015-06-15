@@ -28,7 +28,8 @@
  *   stats: true,
  * }
  */
-declare var mathBox: (options: MathBox.MathBoxOptions) => MathBox.IMathBox;
+// FIXME: It would be better for the options to come after the element?
+declare var mathBox: (element: HTMLElement, options: MathBox.MathBoxOptions) => MathBox.IMathBox;
 
 ///////////////////////////////////////////////////////////////////////////////
 //

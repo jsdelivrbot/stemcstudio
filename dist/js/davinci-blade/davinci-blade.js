@@ -463,7 +463,7 @@ define('davinci-blade/core',["require", "exports"], function (require, exports) 
         return (Math.exp(x) - Math.exp(-x)) / 2;
     }
     var core = {
-        VERSION: '1.5.0',
+        VERSION: '1.6.0',
         cos: makeUnaryUniversalFunction('cos', Math.cos),
         cosh: makeUnaryUniversalFunction('cosh', cosh),
         exp: makeUnaryUniversalFunction('exp', Math.exp),
@@ -1135,12 +1135,15 @@ define('davinci-blade/Unit',["require", "exports", 'davinci-blade/Dimensions', '
                 return;
             }
         };
-        Unit.prototype.pow = function (q) {
-            assertArgRational('q', q);
-            return new Unit(Math.pow(this.scale, q.numer / q.denom), this.dimensions.pow(q), this.labels);
+        Unit.prototype.pow = function (exponent) {
+            assertArgRational('exponent', exponent);
+            return new Unit(Math.pow(this.scale, exponent.numer / exponent.denom), this.dimensions.pow(exponent), this.labels);
         };
         Unit.prototype.inverse = function () {
             return new Unit(1 / this.scale, this.dimensions.negative(), this.labels);
+        };
+        Unit.prototype.isUnity = function () {
+            return this.dimensions.dimensionless() && (this.scale === 1);
         };
         Unit.prototype.norm = function () {
             return new Unit(Math.abs(this.scale), this.dimensions, this.labels);
@@ -1156,7 +1159,7 @@ define('davinci-blade/Unit',["require", "exports", 'davinci-blade/Dimensions', '
                 return true;
             }
             else if (uom instanceof Unit) {
-                return uom.dimensions.dimensionless();
+                return uom.isUnity();
             }
             else {
                 throw new Error("isUnity argument must be a Unit or undefined.");
@@ -1297,6 +1300,12 @@ define('davinci-blade/Euclidean1',["require", "exports", 'davinci-blade/Unit'], 
             assertArgEuclidean1('rhs', rhs);
             return new Euclidean1(this.w - rhs.w, this.x - rhs.x, Unit.compatible(this.uom, rhs.uom));
         };
+        Euclidean1.prototype.mul = function (rhs) {
+            throw new Euclidean1Error('mul');
+        };
+        Euclidean1.prototype.div = function (rhs) {
+            throw new Euclidean1Error('div');
+        };
         Euclidean1.prototype.wedge = function (rhs) {
             throw new Euclidean1Error('wedge');
         };
@@ -1305,6 +1314,9 @@ define('davinci-blade/Euclidean1',["require", "exports", 'davinci-blade/Unit'], 
         };
         Euclidean1.prototype.rshift = function (rhs) {
             throw new Euclidean1Error('rshift');
+        };
+        Euclidean1.prototype.pow = function (exponent) {
+            throw new Euclidean1Error('pow');
         };
         Euclidean1.prototype.cos = function () {
             throw new Euclidean1Error('cos');
@@ -1329,6 +1341,9 @@ define('davinci-blade/Euclidean1',["require", "exports", 'davinci-blade/Unit'], 
         };
         Euclidean1.prototype.unit = function () {
             throw new Euclidean1Error('unit');
+        };
+        Euclidean1.prototype.scalar = function () {
+            return this.w;
         };
         Euclidean1.prototype.toExponential = function () {
             return "Euclidean1";
@@ -2074,6 +2089,9 @@ define('davinci-blade/Euclidean2',["require", "exports", 'davinci-blade/Unit'], 
                 return new Euclidean2(other, 0, 0, 0, undefined).splat(this);
             }
         };
+        Euclidean2.prototype.pow = function (exponent) {
+            throw new Euclidean2Error('pow');
+        };
         Euclidean2.prototype.__pos__ = function () {
             return this;
         };
@@ -2126,6 +2144,9 @@ define('davinci-blade/Euclidean2',["require", "exports", 'davinci-blade/Unit'], 
         };
         Euclidean2.prototype.unit = function () {
             throw new Euclidean2Error('unit');
+        };
+        Euclidean2.prototype.scalar = function () {
+            return this.w;
         };
         Euclidean2.prototype.isNaN = function () {
             return isNaN(this.w) || isNaN(this.x) || isNaN(this.y) || isNaN(this.xy);
@@ -3097,6 +3118,9 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/Unit'], 
                 return new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, undefined).rshift(this);
             }
         };
+        Euclidean3.prototype.pow = function (exponent) {
+            throw new Euclidean3Error('pow');
+        };
         Euclidean3.prototype.__pos__ = function () {
             return this;
         };
@@ -3173,6 +3197,9 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/Unit'], 
         };
         Euclidean3.prototype.unit = function () {
             throw new Euclidean3Error('unit');
+        };
+        Euclidean3.prototype.scalar = function () {
+            return this.w;
         };
         Euclidean3.prototype.sqrt = function () {
             return new Euclidean3(Math.sqrt(this.w), 0, 0, 0, 0, 0, 0, 0, Unit.sqrt(this.uom));
@@ -3263,6 +3290,13 @@ define('davinci-blade/Complex',["require", "exports", 'davinci-blade/Unit', 'dav
             throw new ComplexError("Argument '" + uom + "' must be a Unit or undefined");
         }
     }
+    function multiply(a, b) {
+        assertArgComplex('a', a);
+        assertArgComplex('b', b);
+        var x = a.x * b.x - a.y * b.y;
+        var y = a.x * b.y + a.y * b.x;
+        return new Complex(x, y, Unit.mul(a.uom, b.uom));
+    }
     function divide(a, b) {
         assertArgComplex('a', a);
         assertArgComplex('b', b);
@@ -3346,10 +3380,13 @@ define('davinci-blade/Complex',["require", "exports", 'davinci-blade/Unit', 'dav
                 return new Complex(x - this.x, -this.y, Unit.compatible(undefined, this.uom));
             }
         };
+        Complex.prototype.mul = function (rhs) {
+            assertArgComplex('rhs', rhs);
+            return multiply(this, rhs);
+        };
         Complex.prototype.__mul__ = function (other) {
             if (other instanceof Complex) {
-                var rhs = other;
-                return new Complex(this.x * rhs.x - this.y * rhs.y, this.x * rhs.y + this.y * rhs.x, Unit.mul(this.uom, rhs.uom));
+                return multiply(this, other);
             }
             else if (typeof other === 'number') {
                 var x = other;
@@ -3358,13 +3395,16 @@ define('davinci-blade/Complex',["require", "exports", 'davinci-blade/Unit', 'dav
         };
         Complex.prototype.__rmul__ = function (other) {
             if (other instanceof Complex) {
-                var lhs = other;
-                return new Complex(lhs.x * this.x - lhs.y * this.y, lhs.x * this.y + lhs.y * this.x, Unit.mul(lhs.uom, this.uom));
+                return multiply(other, this);
             }
             else if (typeof other === 'number') {
                 var x = other;
                 return new Complex(x * this.x, x * this.y, this.uom);
             }
+        };
+        Complex.prototype.div = function (rhs) {
+            assertArgComplex('rhs', rhs);
+            return divide(this, rhs);
         };
         Complex.prototype.__div__ = function (other) {
             if (other instanceof Complex) {
@@ -3390,6 +3430,9 @@ define('davinci-blade/Complex',["require", "exports", 'davinci-blade/Unit', 'dav
         };
         Complex.prototype.rshift = function (rhs) {
             throw new ComplexError('rshift');
+        };
+        Complex.prototype.pow = function (exponent) {
+            throw new ComplexError('pow');
         };
         Complex.prototype.cos = function () {
             Unit.assertDimensionless(this.uom);
@@ -3437,6 +3480,9 @@ define('davinci-blade/Complex',["require", "exports", 'davinci-blade/Unit', 'dav
             var y = this.y;
             var divisor = norm(x, y);
             return new Complex(x / divisor, y / divisor);
+        };
+        Complex.prototype.scalar = function () {
+            return this.x;
         };
         Complex.prototype.arg = function () {
             return Math.atan2(this.y, this.x);
