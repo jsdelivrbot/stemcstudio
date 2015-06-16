@@ -25,11 +25,11 @@
  *   // Enable screenshot taking with 'p'
  *   screenshot: true,
  *   // Show FPS stats in the corner
- *   stats: true,
+ *   stats: false,
  * }
  */
 // FIXME: It would be better for the options to come after the element?
-declare var mathBox: (element: HTMLElement, options: MathBox.MathBoxOptions) => MathBox.IMathBox;
+declare var mathBox: (elementOrOptions: any, options?: MathBox.MathBoxOptions) => MathBox.IMathBox;
 
 ///////////////////////////////////////////////////////////////////////////////
 //

@@ -544,7 +544,7 @@ MathBox.Stage = function (options, world, overlay) {
   // Prepare overlay
   this.overlay = overlay;
   world && world.on('resize', function (width, height) {
-    this.overlay.size(width, height);
+    this.overlay && this.overlay.size(width, height);
     this.width = width;
     this.height = height;
   }.bind(this));
@@ -644,7 +644,7 @@ MathBox.Stage.prototype = _.extend(MathBox.Stage.prototype, {
     if (object instanceof THREE.Object3D) {
       if (object instanceof MathBox.Sprite) {
         // Add to 2D overlay
-        return this.overlay.add(object);
+        return this.overlay ? this.overlay.add(object) : undefined;
       }
       else {
         // Add to three.js scene tree
@@ -677,7 +677,7 @@ MathBox.Stage.prototype = _.extend(MathBox.Stage.prototype, {
     if (object instanceof THREE.Object3D) {
       if (object instanceof MathBox.Sprite) {
         // Remove from 2D overlay
-        return this.overlay.remove(object);
+        return this.overlay ? this.overlay.remove(object) : undefined;
       }
       else {
         // Remove from three.js scene tree
@@ -1467,11 +1467,13 @@ tQuery.World.registerInstance('mathBox', function (element, options) {
   // Create overlay for labels / annotations
   var overlay = new MathBox.Overlay();
   element.appendChild(overlay.domElement);
+  // Use the same style as the canvas.
   overlay.domElement.style.position = 'absolute';
-  overlay.domElement.style.left = 0;
-  overlay.domElement.style.top = 0;
-  overlay.domElement.style.right = 0;
-  overlay.domElement.style.bottom = 0;
+  overlay.domElement.style.display = 'block';
+//  overlay.domElement.style.left = 0;
+//  overlay.domElement.style.top = 0;
+//  overlay.domElement.style.right = 0;
+//  overlay.domElement.style.bottom = 0;
 
   // Create mathbox stage
   var mathbox = new MathBox.Stage(options, this, overlay);
@@ -2195,7 +2197,7 @@ MathBox.Overlay.prototype = {
       this._measure(sprite, camera);
     }.bind(this));
 
-    // Iterate over individual objects for measurement
+    // Iterate over individual objects for visualization?
     _.each(this.sprites, function (sprite) {
       this._vis(sprite, camera);
     }.bind(this));
