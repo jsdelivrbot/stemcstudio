@@ -58,6 +58,9 @@ module.exports = function(lineman) {
           {src: "museum/angular/angular@1.4.0.min.js",                       dest: "generated/js/angular@1.4.0.min.js"},
           {src: "museum/angular/angular@1.4.0.min.js.map",                   dest: "generated/js/angular@1.4.0.min.js.map"},
 
+          {src: "museum/async/async.d.ts",                                   dest: "generated/ts/async.ts"},
+          {src: "museum/async/async.js",                                     dest: "generated/js/async.js"},
+
           {src: davinciBlade("dist/davinci-blade.d.ts"),                     dest: "generated/ts/davinci-blade/davinci-blade.d.ts"},
           {src: davinciBlade("dist/davinci-blade.js"),                       dest: "generated/js/davinci-blade/davinci-blade.js"},
           {src: davinciBlade("dist/davinci-blade.min.js"),                   dest: "generated/js/davinci-blade/davinci-blade.min.js"},
@@ -156,6 +159,9 @@ module.exports = function(lineman) {
           {src: "museum/angular/angular@1.4.0.js",                           dest: "dist/js/angular@1.4.0.js"},
           {src: "museum/angular/angular@1.4.0.min.js",                       dest: "dist/js/angular@1.4.0.min.js"},
           {src: "museum/angular/angular@1.4.0.min.js.map",                   dest: "dist/js/angular@1.4.0.min.js.map"},
+
+          {src: "museum/async/async.d.ts",                                   dest: "dist/ts/async.ts"},
+          {src: "museum/async/async.js",                                     dest: "dist/js/async.js"},
 
           {src: davinciBlade("dist/davinci-blade.d.ts"),                    dest: "dist/ts/davinci-blade/davinci-blade.d.ts"},
           {src: davinciBlade("dist/davinci-blade.js"),                      dest: "dist/js/davinci-blade/davinci-blade.js"},

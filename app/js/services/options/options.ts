@@ -40,6 +40,18 @@ angular.module('app').factory('options', [
       }
     },
     {
+      name: 'async',
+      moniker: 'async',
+      description: "Async utilities for node and the browser",
+      homepage: 'https://github.com/caolan/async',
+      version: '1.2.1',
+      visible: true,
+      dts: 'async.ts',
+      js: 'async.js',
+      minJs: 'async.js',
+      dependencies: {}
+    },
+    {
       name: 'davinci-blade',
       moniker: 'blade',
       description: "Geometric Algebra Library",
@@ -142,7 +154,7 @@ angular.module('app').factory('options', [
       description: "",
       homepage: '',
       version: 'latest',
-      visible: false,
+      visible: true,
       dts: 'microajax.d.ts',
       js: 'microajax.js',
       minJs: 'microajax.js',

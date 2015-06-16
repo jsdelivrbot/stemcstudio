@@ -1,6 +1,6 @@
 {
   "name": "mathdoodle",
-  "version": "1.38.0",
+  "version": "1.39.0",
   "description": "Learning Mathematics and Geometric Physics through Computational Modeling",
   "homepage": "https://github.com/geometryzen/mathdoodle",
   "authors": [
@@ -24,6 +24,7 @@
   ],
   "dependencies": {
     "angular": "~1.4.0",
+    "async": "~1.2.1",
     "underscore": "~1.8.3",
     "normalize-css": "~3.0.3",
     "jquery": "~2.1.4",
