@@ -463,7 +463,7 @@ define('davinci-blade/core',["require", "exports"], function (require, exports) 
         return (Math.exp(x) - Math.exp(-x)) / 2;
     }
     var core = {
-        VERSION: '1.6.0',
+        VERSION: '1.7.0',
         cos: makeUnaryUniversalFunction('cos', Math.cos),
         cosh: makeUnaryUniversalFunction('cosh', cosh),
         exp: makeUnaryUniversalFunction('exp', Math.exp),
@@ -475,6 +475,7 @@ define('davinci-blade/core',["require", "exports"], function (require, exports) 
         }),
         sin: makeUnaryUniversalFunction('sin', Math.sin),
         sinh: makeUnaryUniversalFunction('sinh', sinh),
+        sqrt: makeUnaryUniversalFunction('sqrt', Math.sqrt),
         unit: makeUnaryUniversalFunction('unit', function (x) {
             return x / Math.abs(x);
         }),
@@ -888,6 +889,14 @@ define('davinci-blade/Unit',["require", "exports", 'davinci-blade/Dimensions', '
             throw new UnitError("Argument '" + arg + "' must be a Unit");
         }
     }
+    function assertArgUnitOrUndefined(name, arg) {
+        if (typeof arg === 'undefined') {
+            return arg;
+        }
+        else {
+            return assertArgUnit(name, arg);
+        }
+    }
     var dumbString = function (scale, dimensions, labels) {
         assertArgNumber('scale', scale);
         assertArgDimensions('dimensions', dimensions);
@@ -1171,16 +1180,33 @@ define('davinci-blade/Unit',["require", "exports", 'davinci-blade/Dimensions', '
             }
         };
         Unit.compatible = function (lhs, rhs) {
-            if (lhs instanceof Unit) {
-                if (rhs instanceof Unit) {
+            assertArgUnitOrUndefined('lhs', lhs);
+            assertArgUnitOrUndefined('rhs', rhs);
+            if (lhs) {
+                if (rhs) {
                     return lhs.compatible(rhs);
                 }
                 else {
-                    return undefined;
+                    if (lhs.isUnity()) {
+                        return void 0;
+                    }
+                    else {
+                        throw new UnitError(lhs + " is incompatible with 1");
+                    }
                 }
             }
             else {
-                return undefined;
+                if (rhs) {
+                    if (rhs.isUnity()) {
+                        return void 0;
+                    }
+                    else {
+                        throw new UnitError("1 is incompatible with " + rhs);
+                    }
+                }
+                else {
+                    return void 0;
+                }
             }
         };
         Unit.mul = function (lhs, rhs) {
@@ -1192,14 +1218,14 @@ define('davinci-blade/Unit',["require", "exports", 'davinci-blade/Dimensions', '
                     return lhs;
                 }
                 else {
-                    return undefined;
+                    return void 0;
                 }
             }
             else if (Unit.isUnity(lhs)) {
                 return rhs;
             }
             else {
-                return undefined;
+                return void 0;
             }
         };
         Unit.div = function (lhs, rhs) {
@@ -1221,16 +1247,17 @@ define('davinci-blade/Unit',["require", "exports", 'davinci-blade/Dimensions', '
             }
         };
         Unit.sqrt = function (uom) {
-            if (typeof uom === 'undefined') {
-                if (uom instanceof Unit) {
+            if (typeof uom !== 'undefined') {
+                assertArgUnit('uom', uom);
+                if (!uom.isUnity()) {
                     return new Unit(Math.sqrt(uom.scale), uom.dimensions.sqrt(), uom.labels);
                 }
                 else {
-                    throw new Error("uom must be a Unit.");
+                    return void 0;
                 }
             }
             else {
-                return undefined;
+                return void 0;
             }
         };
         return Unit;
@@ -2201,7 +2228,16 @@ define('davinci-blade/Euclidean2',["require", "exports", 'davinci-blade/Unit'], 
     return Euclidean2;
 });
 
-define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/Unit'], function (require, exports, Unit) {
+define('davinci-blade/NotImplementedError',["require", "exports"], function (require, exports) {
+    function NotImplementedError(message) {
+        this.name = 'NotImplementedError';
+        this.message = (message || "");
+    }
+    NotImplementedError.prototype = new Error();
+    return NotImplementedError;
+});
+
+define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/NotImplementedError', 'davinci-blade/Unit'], function (require, exports, NotImplementedError, Unit) {
     function Euclidean3Error(message) {
         this.name = 'Euclidean3Error';
         this.message = (message || "");
@@ -2966,18 +3002,13 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/Unit'], 
             }
         };
         Euclidean3.prototype.mul = function (rhs) {
-            if (typeof rhs === 'number') {
-                return this.scalarMultiply(rhs);
-            }
-            else {
-                var coord = function (x, n) {
-                    return x[n];
-                };
-                var pack = function (w, x, y, z, xy, yz, zx, xyz, uom) {
-                    return Euclidean3.fromCartesian(w, x, y, z, xy, yz, zx, xyz, uom);
-                };
-                return compute(mulE3, this.coordinates(), rhs.coordinates(), coord, pack, Unit.mul(this.uom, rhs.uom));
-            }
+            var coord = function (x, n) {
+                return x[n];
+            };
+            var pack = function (w, x, y, z, xy, yz, zx, xyz, uom) {
+                return Euclidean3.fromCartesian(w, x, y, z, xy, yz, zx, xyz, uom);
+            };
+            return compute(mulE3, this.coordinates(), rhs.coordinates(), coord, pack, Unit.mul(this.uom, rhs.uom));
         };
         Euclidean3.prototype.__mul__ = function (other) {
             if (other instanceof Euclidean3) {
@@ -3169,13 +3200,15 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/Unit'], 
             return Math.sqrt(this.w * this.w + this.x * this.x + this.y * this.y + this.z * this.z + this.xy * this.xy + this.yz * this.yz + this.zx * this.zx + this.xyz * this.xyz);
         };
         Euclidean3.prototype.cos = function () {
-            throw new Euclidean3Error('cos');
+            Unit.assertDimensionless(this.uom);
+            var cosW = Math.cos(this.w);
+            return new Euclidean3(cosW, 0, 0, 0, 0, 0, 0, 0, undefined);
         };
         Euclidean3.prototype.cosh = function () {
-            throw new Euclidean3Error('cosh');
+            throw new NotImplementedError('cosh(Euclidean3)');
         };
         Euclidean3.prototype.exp = function () {
-            throw new Euclidean3Error('exp');
+            throw new NotImplementedError('exp(Euclidean3)');
         };
         /**
          * Computes the magnitude of this Euclidean3. The magnitude is the square root of the quadrance.
@@ -3196,7 +3229,7 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/Unit'], 
             throw new Euclidean3Error('sinh');
         };
         Euclidean3.prototype.unit = function () {
-            throw new Euclidean3Error('unit');
+            return this.div(this.norm());
         };
         Euclidean3.prototype.scalar = function () {
             return this.w;
@@ -3673,6 +3706,7 @@ define('davinci-blade',["require", "exports", 'davinci-blade/core', 'davinci-bla
             quad: core.quad,
             sin: core.sin,
             sinh: core.sinh,
+            sqrt: core.sqrt,
             unit: core.unit
         },
         Color: Color,

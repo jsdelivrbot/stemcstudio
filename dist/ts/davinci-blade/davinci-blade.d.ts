@@ -117,14 +117,17 @@ declare module blade {
     sub(rhs: T): T;
     mul(rhs: T): T;
     div(rhs: T): T;
-    pow(exponent: T): T;
     wedge(rhs: T): T;
     lshift(rhs: T): T;
     rshift(rhs: T): T;
+    pow(exponent: T): T;
+    cos(): T;
+    cosh(): T;
     exp(): T;
     norm(): T;
     quad(): T;
     unit(): T;
+    scalar(): number;
     toExponential(): string;
     toFixed(digits?: number): string;
     toString(): string;
@@ -169,6 +172,7 @@ declare module blade {
     public norm(): Euclidean2;
     public quad(): Euclidean2;
     public isNaN(): boolean;
+    public scalar(): number;
     /**
      * The toExponential() method formats the number using exponential notation.
      */
@@ -236,8 +240,8 @@ declare module blade {
      * @param {number} xyz The pseudoscalar part of the multivector.
      * @param uom The optional unit of measure.
      */
-    constructor(w: number, x: number, y: number, z: number, xy: number, yz: number, zx: number, xyz: number, uom: Unit);
-    static fromCartesian(w: number, x: number, y: number, z: number, xy: number, yz: number, zx: number, xyz: number): Euclidean3;
+    constructor(w: number, x: number, y: number, z: number, xy: number, yz: number, zx: number, xyz: number, uom?: Unit);
+    static fromCartesian(w: number, x: number, y: number, z: number, xy: number, yz: number, zx: number, xyz: number, uom?: Unit): Euclidean3;
     coordinates(): number[];
     coordinate(index: number): number;
     add(rhs: Euclidean3): Euclidean3;
@@ -246,11 +250,11 @@ declare module blade {
     sub(rhs: Euclidean3): Euclidean3;
     __sub__(other: any): Euclidean3;
     __rsub__(other: any): Euclidean3;
-    mul(rhs: any): Euclidean3;
+    mul(rhs: Euclidean3): Euclidean3;
     __mul__(other: any): any;
     __rmul__(other: any): any;
     scalarMultiply(rhs: number): Euclidean3;
-    div(rhs: any): Euclidean3;
+    div(rhs: Euclidean3): Euclidean3;
     __div__(other: any): Euclidean3;
     __rdiv__(other: any): Euclidean3;
     splat(rhs: Euclidean3): Euclidean3;
@@ -276,6 +280,10 @@ declare module blade {
     cross(vector: Euclidean3): Euclidean3;
     length(): number;
     /**
+     * Computes the cosine of this multivector.
+     */
+    cos(): Euclidean3;
+    /**
      * Computes the magnitude of this Euclidean3. The magnitude is the square root of the quadrance.
      */
     norm(): Euclidean3;
@@ -283,7 +291,18 @@ declare module blade {
      * Computes the quadrance of this Euclidean3. The quadrance is the square of the magnitude.
      */
     quad(): Euclidean3;
+    /**
+     * Returns the square root of the number.
+     */
     sqrt(): Euclidean3;
+    /**
+     * Returns the normalized value of this number.
+     */
+    unit(): Euclidean3;
+    /**
+     * Returns the scalar part of this multivector as a number.
+     */
+    scalar(): number;
     /**
      * The toExponential() method formats the number using exponential notation.
      */
@@ -424,6 +443,10 @@ declare module blade {
        * Computes the hyperbolic sine of the argument.
        */
       sinh: <T>(x: T) => T,
+      /**
+       * Returns the square root of a number.
+       */
+      sqrt: <T>(x: T) => T,
       /**
        * Computes the unit magnitude quantity of the argument.
        */

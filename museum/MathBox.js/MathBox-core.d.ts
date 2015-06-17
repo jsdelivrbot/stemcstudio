@@ -132,7 +132,11 @@ declare module MathBox {
     start(): Stage;
   }
 
-  interface StyleOptions {
+  interface CommonOptions {
+    id?: string
+  }
+
+  interface StyleOptions extends CommonOptions {
     /**
      * Color in hex.
      */
@@ -213,7 +217,7 @@ declare module MathBox {
     /**
      * Live expression for data points.
      */
-    expression?: (x: number) => number[];
+    expression?: (x: number, index: number) => number[];
     /**
      * Whether to draw points.
      */
@@ -286,6 +290,16 @@ declare module MathBox {
      */
     shaded?: boolean;
   }
+
+  interface VectorOptions extends StyleOptions {
+    n?: number,
+    data?: number[][],
+    expression?: (i: number, end: number) => number[],
+    line?: boolean,
+    arrow?: boolean,
+    size?: number
+  }
+
 
   interface Stage {
     /**
@@ -445,13 +459,7 @@ declare module MathBox {
      *   size: .07,                         // Size of the arrowhead relative to the stage
      * })
      */
-    vector(options: {
-      n?: number,
-      data?: number[][],
-      expression?: (i: number, end: number) => number[],
-      line?: boolean,
-      arrow?: boolean,
-      size?: number}): Stage;
+    vector(options: VectorOptions): Stage;
     /**
      * Defines a specific mathematical coordinate frame.
      *
