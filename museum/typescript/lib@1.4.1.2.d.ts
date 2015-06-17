@@ -13273,6 +13273,21 @@ interface WebGLRenderingContext {
     getVertexAttribOffset(index: number, pname: number): number;
     disableVertexAttribArray(index: number): void;
     blendFunc(sfactor: number, dfactor: number): void;
+    /**
+     * Renders geometric primitives indexed by element array data.
+     * Parameters
+     *   [in] mode: number Specifies the kind of primitives to render.
+     *     gl.POINTS
+     *     gl.LINES
+     *     gl.LINE_STRIP
+     *     gl.LINE_LOOP
+     *     gl.TRIANGLES
+     *     gl.TRIANGLE_STRIP
+     *     gl.TRIANGLE_FAN
+     *   [in] count: number The number of elements to render.
+     *   [in] type: number The type of elements in the element array buffer. Must be a gl.UNSIGNED_SHORT.
+     *   [in] offset: number Offset into the element array buffer. Must be a valid multiple of the size of the type.
+     */
     drawElements(mode: number, count: number, type: number, offset: number): void;
     isFramebuffer(framebuffer: WebGLFramebuffer): boolean;
     uniform3iv(location: WebGLUniformLocation, v: number[]): void;
