@@ -174,6 +174,8 @@ angular.module('app',
     var github: IGitHubItem = {oauth: {pending: pending}};
     $window.localStorage.setItem(githubKey, JSON.stringify(github));
     // Begin the GET request to GitHub.
+    // Changing the browser URL appears to take you away from the app,
+    // but the login redirects back to the server.
     $window.location.href = githubURL;
   };
 

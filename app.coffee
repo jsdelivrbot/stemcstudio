@@ -47,6 +47,9 @@ app.all '*', (req, res, next) ->
 
 authenticate = (code, cb) ->
 
+  # This is step two in the GitHub Web Application Flow and occurs
+  # after GitHub redirects back to the site (assuming user accepts request).
+  # The following step exchanges the temporary code for an access token.
   # POST https://github.com/login/oauth/access_token
   data = qs.stringify
     client_id: nconf.get("GITHUB_APPLICATION_CLIENT_ID"),

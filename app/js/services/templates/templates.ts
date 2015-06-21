@@ -44,6 +44,87 @@ angular.module('app').factory('templates', [
 
   var LESS_TEMPLATE_BASIC = "";
 
+  var HTML_TEMPLATE_CALCULATION = "" +
+    "<!doctype html>\n" +
+    "<html>\n" +
+    "  <head>\n" +
+    styleMarker() +
+    scriptsMarker() +
+    "  </head>\n" +
+    "  <body>\n" +
+    "    <pre id='info'></pre>\n" +
+    codeMarker() +
+    "  </body>\n" +
+    "</html>\n";
+
+  var CODE_TEMPLATE_CALCULATION = [
+    "// Create shortcuts for some values.",
+    "var e1 = blade.e3ga.e1;",
+    "var e2 = blade.e3ga.e2;",
+    "var e3 = blade.e3ga.e3;",
+    "var meter = blade.scalarE3(1, blade.units.meter);",
+    "var newton = blade.scalarE3(1, blade.units.newton);",
+    "var kilogram = blade.scalarE3(1, blade.units.kilogram);",
+    "var second = blade.scalarE3(1, blade.units.second);",
+    "",
+    "// Wait for the DOM to be loaded.",
+    "DomReady.ready(function() {",
+    "  try {",
+    "    calculate();",
+    "  }",
+    "  catch(e) {",
+    "    function colorize(arg: any, color: string) {",
+    "      return \"<span style='color:\"+color+\"'>\" + arg + \"</span>\";",
+    "    }",
+    "    println(colorize(e.message, 'red'));",
+    "  }",
+    "});",
+    "",
+    "/**",
+    " * Performs the calculation.",
+    " */",
+    "function calculate() {",
+    "  var a = -9.81 * e3 * newton / kilogram;",
+    "  var m = 70 * kilogram;",
+    "  var F = m * a;",
+    "",
+    "  printvar('a', a);",
+    "  printvar('m', m);",
+    "  printvar('F = m * a', F.toFixed(2));",
+    "}",
+    "",
+    "/**",
+    " * Print the HTML string without a line ending.",
+    " */",
+    "function print(html: string): void {",
+    "  var element = document.getElementById('info');",
+    "  element.innerHTML = element.innerHTML + html;",
+    "}",
+    "",
+    "/**",
+    " * Print the HTML string and go to the next line.",
+    " */",
+    "function println(html: string): void {",
+    "  print(html + '\\n');",
+    "}",
+    "",
+    "/**",
+    " * Print the value of a variable.",
+    " */",
+    "function printvar(name: string, value): void {",
+    "  println('<b>' + name + '</b> => ' + value);",
+    "}",
+    ""
+  ].join('\n');
+
+  var LESS_TEMPLATE_CALCULATION = "" +
+  "#info {\n" +
+  "  position: absolute;\n" +
+  "  left: 40%;\n" +
+  "  top: 200px;\n" +
+  "  font-size: 26px;\n" +
+  "}\n";
+
   var HTML_TEMPLATE_CANVAS = "" +
     "<!doctype html>\n" +
     "<html>\n" +
@@ -800,7 +881,59 @@ angular.module('app').factory('templates', [
   return [
     {
       uuid: uuid.generate(),
-      description: "Vector Graphics with HTML5 Canvas API",
+      description: "Blade — Geometric Algebra and Unit of Measure calculations",
+      isCodeVisible: true,
+      isViewVisible: true,
+      focusEditor: undefined,
+      lastKnownJs: undefined,
+      operatorOverloading: true,
+      html: HTML_TEMPLATE_CALCULATION,
+      code: CODE_TEMPLATE_CALCULATION,
+      less: LESS_TEMPLATE_CALCULATION,
+      dependencies: ['DomReady', 'davinci-blade']
+    },
+    {
+      uuid: uuid.generate(),
+      description: "MathBox — Mathematical Diagrams",
+      isCodeVisible: true,
+      isViewVisible: true,
+      focusEditor: undefined,
+      lastKnownJs: undefined,
+      operatorOverloading: true,
+      html: HTML_TEMPLATE_MATHBOX,
+      code: CODE_TEMPLATE_MATHBOX,
+      less: LESS_TEMPLATE_MATHBOX,
+      dependencies: ['DomReady','davinci-mathbox','davinci-blade']
+    },
+    {
+      uuid: uuid.generate(),
+      description: "JSXGraph — 2D Library for Geometry",
+      isCodeVisible: true,
+      isViewVisible: true,
+      focusEditor: undefined,
+      lastKnownJs: undefined,
+      operatorOverloading: true,
+      html: HTML_TEMPLATE_JSXGRAPH_DEMO,
+      code: CODE_TEMPLATE_JSXGRAPH_DEMO,
+      less: LESS_TEMPLATE_JSXGRAPH,
+      dependencies: ['jsxgraph']
+    },
+    {
+      uuid: uuid.generate(),
+      description: "ThreeJS — 3D Library for WebGL Graphics",
+      isCodeVisible: true,
+      isViewVisible: true,
+      focusEditor: undefined,
+      lastKnownJs: undefined,
+      operatorOverloading: true,
+      html: HTML_TEMPLATE_BASIC,
+      code: CODE_TEMPLATE_THREEJS,
+      less: LESS_TEMPLATE_THREEJS,
+      dependencies: ['davinci-threejs']
+    },
+    {
+      uuid: uuid.generate(),
+      description: "Canvas — 2D Vector Graphics with HTML5 Canvas API",
       isCodeVisible: true,
       isViewVisible: true,
       focusEditor: undefined,
@@ -810,6 +943,19 @@ angular.module('app').factory('templates', [
       code: CODE_TEMPLATE_CANVAS,
       less: LESS_TEMPLATE_CANVAS,
       dependencies: ['DomReady']
+    },
+    {
+      uuid: uuid.generate(),
+      description: "AngularJS — HTML enhanced for Web Applications",
+      isCodeVisible: true,
+      isViewVisible: true,
+      focusEditor: undefined,
+      lastKnownJs: undefined,
+      operatorOverloading: true,
+      html: HTML_TEMPLATE_ANGULAR,
+      code: CODE_TEMPLATE_ANGULAR,
+      less: LESS_TEMPLATE_BASIC,
+      dependencies: ['angular']
     },
     {
       uuid: uuid.generate(),
@@ -823,7 +969,8 @@ angular.module('app').factory('templates', [
       code: CODE_TEMPLATE_ANGULAR_BLADE_VISUAL,
       less: LESS_TEMPLATE_BASIC,
       dependencies: ['angular', 'davinci-blade', 'davinci-threejs', 'davinci-visual']
-    },
+    }
+    /*
     {
       uuid: uuid.generate(),
       description: "AngularJS, three.js, and visual",
@@ -852,58 +999,6 @@ angular.module('app').factory('templates', [
     },
     {
       uuid: uuid.generate(),
-      description: "AngularJS — Superheroic JavaScript MVW Framework",
-      isCodeVisible: true,
-      isViewVisible: true,
-      focusEditor: undefined,
-      lastKnownJs: undefined,
-      operatorOverloading: true,
-      html: HTML_TEMPLATE_ANGULAR,
-      code: CODE_TEMPLATE_ANGULAR,
-      less: LESS_TEMPLATE_BASIC,
-      dependencies: ['angular']
-    },
-    {
-      uuid: uuid.generate(),
-      description: "three.js — JavaScript 3D Library for WebGL",
-      isCodeVisible: true,
-      isViewVisible: true,
-      focusEditor: undefined,
-      lastKnownJs: undefined,
-      operatorOverloading: true,
-      html: HTML_TEMPLATE_BASIC,
-      code: CODE_TEMPLATE_THREEJS,
-      less: LESS_TEMPLATE_THREEJS,
-      dependencies: ['davinci-threejs']
-    },
-    {
-      uuid: uuid.generate(),
-      description: "JSXGraph — Dynamic Mathematics with JavaScript (Demo)",
-      isCodeVisible: true,
-      isViewVisible: true,
-      focusEditor: undefined,
-      lastKnownJs: undefined,
-      operatorOverloading: true,
-      html: HTML_TEMPLATE_JSXGRAPH_DEMO,
-      code: CODE_TEMPLATE_JSXGRAPH_DEMO,
-      less: LESS_TEMPLATE_JSXGRAPH,
-      dependencies: ['jsxgraph']
-    },
-    {
-      uuid: uuid.generate(),
-      description: "JSXGraph — Dynamic Mathematics with JavaScript (Basic)",
-      isCodeVisible: true,
-      isViewVisible: true,
-      focusEditor: undefined,
-      lastKnownJs: undefined,
-      operatorOverloading: true,
-      html: HTML_TEMPLATE_JSXGRAPH,
-      code: CODE_TEMPLATE_JSXGRAPH,
-      less: LESS_TEMPLATE_JSXGRAPH,
-      dependencies: ['jsxgraph']
-    },
-    {
-      uuid: uuid.generate(),
       description: "d3 — Data Driven Documents",
       isCodeVisible: true,
       isViewVisible: true,
@@ -914,32 +1009,7 @@ angular.module('app').factory('templates', [
       code: CODE_TEMPLATE_D3,
       less: LESS_TEMPLATE_BASIC,
       dependencies: ['d3']
-    },
-    {
-      uuid: uuid.generate(),
-      description: "MathBox (animation) — presentation quality math diagrams",
-      isCodeVisible: true,
-      isViewVisible: true,
-      focusEditor: undefined,
-      lastKnownJs: undefined,
-      operatorOverloading: true,
-      html: HTML_TEMPLATE_MATHBOX,
-      code: CODE_TEMPLATE_MATHBOX,
-      less: LESS_TEMPLATE_MATHBOX,
-      dependencies: ['DomReady','davinci-mathbox','davinci-blade']
-    },
-    {
-      uuid: uuid.generate(),
-      description: "Minimal — Generic HTML, JavaScript and CSS project",
-      isCodeVisible: true,
-      isViewVisible: true,
-      focusEditor: undefined,
-      lastKnownJs: undefined,
-      operatorOverloading: true,
-      html: HTML_TEMPLATE_BASIC,
-      code: CODE_TEMPLATE_BASIC,
-      less: LESS_TEMPLATE_BASIC,
-      dependencies: []
-    },
+    }
+    */
   ];
 }]);
