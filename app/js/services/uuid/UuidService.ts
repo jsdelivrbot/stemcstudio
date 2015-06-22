@@ -5,7 +5,7 @@
   // Based on: https://github.com/pnegri/uuid-js
   angular.module('uuid4', []).factory('uuid4', function () {
 
-    var maxFromBits = function(bits) {
+    var maxFromBits = function(bits: number): number {
       return Math.pow(2, bits);
     };
 
@@ -87,7 +87,7 @@
 
       // addition by Ka-Jan to test for validity
       // Based on: http://stackoverflow.com/questions/7905929/how-to-test-valid-uuid-guid
-      validate: function (uuid) {
+      validate: function (uuid: string) {
         var testPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
         return testPattern.test(uuid);
       }
