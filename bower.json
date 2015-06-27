@@ -1,6 +1,6 @@
 {
   "name": "mathdoodle",
-  "version": "1.41.2",
+  "version": "1.42.0",
   "description": "Learning Mathematics and Geometric Physics through Computational Modeling",
   "homepage": "https://github.com/geometryzen/mathdoodle",
   "authors": [
@@ -23,14 +23,14 @@
     "views"
   ],
   "dependencies": {
-    "angular": "~1.4.0",
+    "angular": "~1.4.1",
     "async": "~1.2.1",
     "underscore": "~1.8.3",
     "normalize-css": "~3.0.3",
     "jquery": "~2.1.4",
-    "davinci-blade": "~1.7.0",
+    "davinci-blade": "~1.7.1",
     "davinci-deuce": "~1.0.3",
-    "davinci-eight": "~1.0.0",
+    "davinci-eight": "~2.0.0",
     "davinci-mathbox": "~1.0.15",
     "davinci-mathscript": "~1.0.7",
     "davinci-shadergraph": "~1.0.0",
@@ -52,8 +52,7 @@
     "requirejs": "~2.1.18"
   },
   "resolutions": {
-    "angular": "~1.4.0",
-    "davinci-blade": "~1.7.0",
-    "gl-matrix": "~2.3.1"
+    "angular": "~1.4.1",
+    "davinci-blade": "~1.7.1"
   }
 }

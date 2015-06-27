@@ -126,6 +126,8 @@ declare module blade {
     exp(): T;
     norm(): T;
     quad(): T;
+    sin(): T;
+    sinh(): T;
     unit(): T;
     scalar(): number;
     toExponential(): string;
@@ -154,8 +156,8 @@ declare module blade {
     static sub(a: number[], b: number[]): number[];
     public sub(rhs: Euclidean2): Euclidean2;
     static mul(a: number[], b: number[]): number[];
-    public mul(rhs: any): Euclidean2;
-    public div(rhs: any): Euclidean2;
+    public mul(rhs: Euclidean2): Euclidean2;
+    public div(rhs: Euclidean2): Euclidean2;
     static splat(a: number[], b: number[]): number[];
     public splat(rhs: Euclidean2): Euclidean2;
     static wedge(a: number[], b: number[]): number[];
@@ -165,12 +167,18 @@ declare module blade {
     static rshift(a: number[], b: number[]): number[];
     public rshift(rhs: Euclidean2): Euclidean2;
     public grade(index: number): Euclidean2;
+    public pow(exponent: Euclidean2): Euclidean2;
+    public cos(): Euclidean2;
+    public cosh(): Euclidean2;
     /**
      * Returns e (the base of natural logarithms) raised to the power of this Euclidean2.
      */
     public exp(): Euclidean2;
     public norm(): Euclidean2;
     public quad(): Euclidean2;
+    public sin(): Euclidean2;
+    public sinh(): Euclidean2;
+    public unit(): Euclidean2;
     public isNaN(): boolean;
     public scalar(): number;
     /**
@@ -279,10 +287,13 @@ declare module blade {
     dot(vector: Euclidean3): number;
     cross(vector: Euclidean3): Euclidean3;
     length(): number;
+    pow(exponent: Euclidean3): Euclidean3;
     /**
      * Computes the cosine of this multivector.
      */
     cos(): Euclidean3;
+    cosh(): Euclidean3;
+    exp(): Euclidean3;
     /**
      * Computes the magnitude of this Euclidean3. The magnitude is the square root of the quadrance.
      */
@@ -291,6 +302,8 @@ declare module blade {
      * Computes the quadrance of this Euclidean3. The quadrance is the square of the magnitude.
      */
     quad(): Euclidean3;
+    sin(): Euclidean3;
+    sinh(): Euclidean3;
     /**
      * Returns the square root of the number.
      */
@@ -353,6 +366,15 @@ declare module blade {
          * @param uom The optional unit of measure.
          */
         constructor(x: number, y: number, uom?: Unit);
+        coordinates(): number[];
+        add(rhs: Complex): Complex;
+        sub(rhs: Complex): Complex;
+        mul(rhs: Complex): Complex;
+        div(rhs: Complex): Complex;
+        wedge(rhs: Complex): Complex;
+        lshift(rhs: Complex): Complex;
+        rshift(rhs: Complex): Complex;
+        pow(exponent: Complex): Complex;
         /**
          * __add__ supports operator +(Complex, any)
          */
@@ -380,8 +402,8 @@ declare module blade {
          * Computes the exponential of this complex number.
          */
         exp(): Complex;
-        norm(): number;
-        quad(): number;
+        norm(): Complex;
+        quad(): Complex;
         /**
          * Computes the sine of this complex number.
          */
@@ -394,6 +416,7 @@ declare module blade {
          * Computes the unit magnitude complex number associated with this complex number.
          */
         unit(): Complex;
+        scalar(): number;
         /**
          * The toExponential() method formats the number using exponential notation.
          */
@@ -418,40 +441,40 @@ declare module blade {
       /**
        * Computes the cosine of the argument.
        */
-      cos: <T>(x: T) => T,
+      cos: <T>(x: T) => T;
       /**
        * Computes the hyperbolic cosine of the argument.
        */
-      cosh: <T>(x: T) => T,
+      cosh: <T>(x: T) => T;
       /**
        * Computes the exponential of the argument.
        */
-      exp: <T>(x: T) => T,
+      exp: <T>(x: T) => T;
       /**
        * Computes the magnitude of the argument.
        */
-      norm: <T>(x: T) => T,
+      norm: <T>(x: T) => T;
       /**
        * Computes the quadrance of the argument. The quadrance is the square of the magnitude.
        */
-      quad: <T>(x: T) => T,
+      quad: <T>(x: T) => T;
       /**
        * Computes the sine of the argument.
        */
-      sin: <T>(x: T) => T,
+      sin: <T>(x: T) => T;
       /**
        * Computes the hyperbolic sine of the argument.
        */
-      sinh: <T>(x: T) => T,
+      sinh: <T>(x: T) => T;
       /**
        * Returns the square root of a number.
        */
-      sqrt: <T>(x: T) => T,
+      sqrt: <T>(x: T) => T;
       /**
        * Computes the unit magnitude quantity of the argument.
        */
-      unit: <T>(x: T) => T
-    },
+      unit: <T>(x: T) => T;
+    };
     var e2ga:
     {
       e1: Euclidean2;
@@ -558,6 +581,8 @@ declare module blade {
 declare module blade {
     /**
      * Returns a Euclidean 3-dimensional number representing a scalar.
+     * @param w The scalar value.
+     * @param uom The optional unit of measure.
      */
     function scalarE3(w: number, uom?: Unit): Euclidean3;
     /**
@@ -573,6 +598,7 @@ declare module blade {
      * @param xy The bivector component in the xy-plane.
      * @param yz The bivector component in the yz-plane.
      * @param zx The bivector component in the zx-plane.
+     * @param uom The optional unit of measure.
      */
-    function bivectorE3(xy: number, yz: number, zx: number, uom? Unit): Euclidean3;
+    function bivectorE3(xy: number, yz: number, zx: number, uom?: Unit): Euclidean3;
 }
