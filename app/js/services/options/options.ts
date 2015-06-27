@@ -66,6 +66,34 @@ angular.module('app').factory('options', [
       }
     },
     {
+      name: 'gl-matrix',
+      moniker: 'gl-matrix',
+      description: "Matrix and Vector library for High Performance WebGL apps",
+      homepage: 'http://glmatrix.net',
+      version: '2.2.1',
+      visible: true,
+      dts: 'gl-matrix@2.2.1/gl-matrix.d.ts',
+      js: 'gl-matrix@2.2.1/gl-matrix.js',
+      minJs: 'gl-matrix@2.2.1/gl-matrix.min.js',
+      dependencies: {
+      }
+    },
+    {
+      name: 'davinci-eight',
+      moniker: 'eight',
+      description: "WebGL Library",
+      homepage: 'https://github.com/geometryzen/davinci-eight',
+      version: 'latest',
+      visible: true,
+      dts: 'davinci-eight/davinci-eight.d.ts',
+      js: 'davinci-eight/davinci-eight.js',
+      minJs: 'davinci-eight/davinci-eight.js',
+      dependencies: {
+        'davinci-blade': '*',
+        'gl-matrix': '*'
+      }
+    },
+    {
       name: 'd3',
       moniker: 'd3',
       description: "Data-Driven Documents",
@@ -91,19 +119,6 @@ angular.module('app').factory('options', [
       minJs: 'domready@1.0.0.js',
       dependencies: {
 
-      }
-    },
-    {
-      name: 'gl-matrix',
-      moniker: 'gl-matrix',
-      description: "Matrix and Vector library for High Performance WebGL apps",
-      homepage: 'http://glmatrix.net',
-      version: '2.2.1',
-      visible: true,
-      dts: 'gl-matrix@2.2.1/gl-matrix.d.ts',
-      js: 'gl-matrix@2.2.1/gl-matrix.js',
-      minJs: 'gl-matrix@2.2.1/gl-matrix.min.js',
-      dependencies: {
       }
     },
     {

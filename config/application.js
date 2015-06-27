@@ -4,6 +4,10 @@ module.exports = function(lineman) {
     return '../davinci-blade/' + path;
   }
 
+  function davinciEight(path) {
+    return '../davinci-eight/' + path;
+  }
+
   function davinciMathBox(path) {
     return '../davinci-mathbox/' + path;
   }
@@ -73,15 +77,17 @@ module.exports = function(lineman) {
           {src: davinciBlade("dist/davinci-blade.js"),                       dest: "generated/js/davinci-blade/davinci-blade.js"},
           {src: davinciBlade("dist/davinci-blade.min.js"),                   dest: "generated/js/davinci-blade/davinci-blade.min.js"},
 
+          {src: davinciEight("dist/davinci-eight.d.ts"),                     dest: "generated/ts/davinci-eight/davinci-eight.d.ts"},
+          {src: davinciEight("dist/davinci-eight.js"),                       dest: "generated/js/davinci-eight/davinci-eight.js"},
+          {src: davinciEight("dist/davinci-eight.min.js"),                   dest: "generated/js/davinci-eight/davinci-eight.min.js"},
+
           {src: "vendor/davinci-mathscript/dist/davinci-mathscript.min.js", dest: "generated/js/davinci-mathscript@1.0.6.min.js"},
 
           {src: "museum/d3/d3@3.5.5.min.js",                                 dest: "generated/js/d3@3.5.5.min.js"},
-          {src: "museum/eight/eight@1.0.0.min.js",                           dest: "generated/js/eight@1.0.0.min.js"},
           {src: "museum/jsxgraph/jsxgraph@0.99.3.min.js",                    dest: "generated/js/jsxgraph@0.99.3.min.js"},
           {src: "museum/visual/visual@1.6.0.min.js",                         dest: "generated/js/visual@1.6.0.min.js"},
 
           {src: "museum/d3/d3@3.5.5.d.ts",                                   dest: "generated/ts/d3@3.5.5.d.ts"},
-          {src: "museum/eight/eight@1.0.0.d.ts",                             dest: "generated/ts/eight@1.0.0.d.ts"},
           {src: "museum/jsxgraph/jsxgraph@0.99.3.d.ts",                      dest: "generated/ts/jsxgraph@0.99.3.d.ts"},
           {src: "museum/typescript/lib@1.4.1.3.d.ts",                        dest: dev("ts/lib@1.4.1.3.d.ts")},
           {src: "museum/visual/davinci-visual.d.ts",                         dest: "generated/ts/davinci-visual.d.ts"},
@@ -175,16 +181,18 @@ module.exports = function(lineman) {
           {src: davinciBlade("dist/davinci-blade.js"),                      dest: "dist/js/davinci-blade/davinci-blade.js"},
           {src: davinciBlade("dist/davinci-blade.min.js"),                  dest: "dist/js/davinci-blade/davinci-blade.min.js"},
 
+          {src: davinciEight("dist/davinci-eight.d.ts"),                    dest: "dist/ts/davinci-eight/davinci-eight.d.ts"},
+          {src: davinciEight("dist/davinci-eight.js"),                      dest: "dist/js/davinci-eight/davinci-eight.js"},
+          {src: davinciEight("dist/davinci-eight.min.js"),                  dest: "dist/js/davinci-eight/davinci-eight.min.js"},
+
           {src: "vendor/davinci-mathscript/dist/davinci-mathscript.min.js", dest: "dist/js/davinci-mathscript@1.0.6.min.js"},
 
           {src: "museum/d3/d3@3.5.5.min.js",                                 dest: "dist/js/d3@3.5.5.min.js"},
-          {src: "museum/eight/eight@1.0.0.min.js",                           dest: "dist/js/eight@1.0.0.min.js"},
           {src: "museum/jsxgraph/jsxgraph@0.99.3.min.js",                    dest: "dist/js/jsxgraph@0.99.3.min.js"},
           {src: "museum/three/three@0.71.0.min.js",                          dest: "dist/js/three@0.71.0.min.js"},
           {src: "museum/visual/visual@1.6.0.min.js",                         dest: "dist/js/visual@1.6.0.min.js"},
 
           {src: "museum/d3/d3@3.5.5.d.ts",                                   dest: "dist/ts/d3@3.5.5.d.ts"},
-          {src: "museum/eight/eight@1.0.0.d.ts",                             dest: "dist/ts/eight@1.0.0.d.ts"},
           {src: "museum/jsxgraph/jsxgraph@0.99.3.d.ts",                      dest: "dist/ts/jsxgraph@0.99.3.d.ts"},
           {src: "museum/three/three@0.71.0.d.ts",                            dest: "dist/ts/three@0.71.0.d.ts"},
           {src: "museum/typescript/lib@1.4.1.3.d.ts",                        dest: prod("ts/lib@1.4.1.3.d.ts")},
