@@ -435,7 +435,7 @@ define("../vendor/almond/almond", function(){});
 
 define('davinci-eight/core',["require", "exports"], function (require, exports) {
     var eight = {
-        VERSION: '2.0.0'
+        VERSION: '2.1.0'
     };
     return eight;
 });
@@ -2592,6 +2592,78 @@ define('davinci-eight/renderers/webGLRenderer',["require", "exports"], function 
     return renderer;
 });
 
+define('davinci-eight/objects/VertexAttribArray',["require", "exports"], function (require, exports) {
+    /// <reference path="../geometries/Geometry.d.ts" />
+    function computeUsage(geometry, context) {
+        return geometry.dynamic() ? context.DYNAMIC_DRAW : context.STATIC_DRAW;
+    }
+    function existsLocation(location) {
+        return location >= 0;
+    }
+    // TODO: Maybe this should be called simply AttributeArray?
+    var VertexAttribArray = (function () {
+        function VertexAttribArray(name, size, normalized, stride, offset) {
+            this.name = name;
+            this.size = size;
+            this.normalized = normalized;
+            this.stride = stride;
+            this.offset = offset;
+        }
+        VertexAttribArray.prototype.contextFree = function (context) {
+            if (this.buffer) {
+                context.deleteBuffer(this.buffer);
+                this.contextLoss();
+            }
+        };
+        VertexAttribArray.prototype.contextGain = function (context, program) {
+            this.location = context.getAttribLocation(program, this.name);
+            if (existsLocation(this.location)) {
+                this.buffer = context.createBuffer();
+            }
+        };
+        VertexAttribArray.prototype.contextLoss = function () {
+            this.location = void 0;
+            this.buffer = void 0;
+        };
+        // Not really bind so much as describing
+        VertexAttribArray.prototype.bind = function (context) {
+            if (existsLocation(this.location)) {
+                // TODO: We could assert that we have a buffer.
+                context.bindBuffer(context.ARRAY_BUFFER, this.buffer);
+                // 6.14 Fixed point support.
+                // The WebGL API does not support the GL_FIXED data type.
+                // Consequently, we hard-code the FLOAT constant.
+                context.vertexAttribPointer(this.location, this.size, context.FLOAT, this.normalized, this.stride, this.offset);
+            }
+        };
+        VertexAttribArray.prototype.bufferData = function (context, geometry) {
+            if (existsLocation(this.location)) {
+                var data = geometry.getVertexAttribArrayData(this.name);
+                if (data) {
+                    context.bindBuffer(context.ARRAY_BUFFER, this.buffer);
+                    context.bufferData(context.ARRAY_BUFFER, data, computeUsage(geometry, context));
+                }
+                else {
+                    // We expect this to be detected by the mesh long before we get here.
+                    throw new Error("Geometry implementation does not support the attribute " + this.name);
+                }
+            }
+        };
+        VertexAttribArray.prototype.enable = function (context) {
+            if (existsLocation(this.location)) {
+                context.enableVertexAttribArray(this.location);
+            }
+        };
+        VertexAttribArray.prototype.disable = function (context) {
+            if (existsLocation(this.location)) {
+                context.disableVertexAttribArray(this.location);
+            }
+        };
+        return VertexAttribArray;
+    })();
+    return VertexAttribArray;
+});
+
 define('davinci-eight/objects/ElementArray',["require", "exports"], function (require, exports) {
     function computeUsage(geometry, context) {
         return geometry.dynamic() ? context.DYNAMIC_DRAW : context.STATIC_DRAW;
@@ -2629,7 +2701,7 @@ define('davinci-eight/objects/ElementArray',["require", "exports"], function (re
     return ElementArray;
 });
 
-define('davinci-eight/objects/mesh',["require", "exports", 'davinci-eight/core/object3D', 'gl-matrix', 'davinci-eight/objects/ElementArray'], function (require, exports, object3D, glMatrix, ElementArray) {
+define('davinci-eight/objects/mesh',["require", "exports", './VertexAttribArray', 'davinci-eight/core/object3D', 'gl-matrix', 'davinci-eight/objects/ElementArray'], function (require, exports, VertexAttribArray, object3D, glMatrix, ElementArray) {
     var UniformMatrix4fv = (function () {
         function UniformMatrix4fv(name) {
             this.name = name;
@@ -2643,9 +2715,25 @@ define('davinci-eight/objects/mesh',["require", "exports", 'davinci-eight/core/o
         return UniformMatrix4fv;
     })();
     var mesh = function (geometry, material) {
+        function vertexAttrib(name) {
+            var attributes = geometry.getAttributes();
+            var candidates = attributes.filter(function (attribute) { return attribute.name === name; });
+            if (candidates.length === 1) {
+                var candidate = candidates[0];
+                var size = candidate.size;
+                var normalized = candidate.normalized;
+                var stride = candidate.stride;
+                var offset = candidate.offset;
+                return new VertexAttribArray(name, size, normalized, stride, offset);
+            }
+            else {
+                throw new Error("The geometry does not support the attribute " + name);
+            }
+        }
         var base = object3D();
         var contextGainId;
         var elements = new ElementArray();
+        var vertexAttributes = material.attributes.map(vertexAttrib);
         var MVMatrix = new UniformMatrix4fv('uMVMatrix');
         var uNormalMatrix;
         var PMatrix = new UniformMatrix4fv('uPMatrix');
@@ -2655,7 +2743,9 @@ define('davinci-eight/objects/mesh',["require", "exports", 'davinci-eight/core/o
         function updateGeometry(context, time) {
             // Make sure to update the geometry first so that the material gets the correct data.
             geometry.update(time, material.attributes);
-            material.update(context, time, geometry);
+            vertexAttributes.forEach(function (vertexAttribute) {
+                vertexAttribute.bufferData(context, geometry);
+            });
             elements.bufferData(context, geometry);
         }
         var publicAPI = {
@@ -2667,12 +2757,18 @@ define('davinci-eight/objects/mesh',["require", "exports", 'davinci-eight/core/o
             },
             contextFree: function (context) {
                 material.contextFree(context);
+                vertexAttributes.forEach(function (vertexAttribute) {
+                    vertexAttribute.contextFree(context);
+                });
                 elements.contextFree(context);
             },
             contextGain: function (context, contextId) {
                 if (contextGainId !== contextId) {
                     contextGainId = contextId;
                     material.contextGain(context, contextId);
+                    vertexAttributes.forEach(function (vertexAttribute) {
+                        vertexAttribute.contextGain(context, material.program);
+                    });
                     elements.contextGain(context);
                     if (!geometry.dynamic()) {
                         updateGeometry(context, 0);
@@ -2686,6 +2782,9 @@ define('davinci-eight/objects/mesh',["require", "exports", 'davinci-eight/core/o
             },
             contextLoss: function () {
                 material.contextLoss();
+                vertexAttributes.forEach(function (vertexAttribute) {
+                    vertexAttribute.contextLoss();
+                });
                 elements.contextLoss();
             },
             hasContext: function () {
@@ -2714,11 +2813,17 @@ define('davinci-eight/objects/mesh',["require", "exports", 'davinci-eight/core/o
                         glMatrix.mat3.normalFromMat4(normalMatrix, matrix);
                         context.uniformMatrix3fv(uNormalMatrix, false, normalMatrix);
                     }
-                    material.enableVertexAttributes(context);
-                    material.bindVertexAttributes(context);
+                    vertexAttributes.forEach(function (vertexAttribute) {
+                        vertexAttribute.enable(context);
+                    });
+                    vertexAttributes.forEach(function (vertexAttribute) {
+                        vertexAttribute.bind(context);
+                    });
                     geometry.draw(context);
                     elements.bind(context);
-                    material.disableVertexAttributes(context);
+                    vertexAttributes.forEach(function (vertexAttribute) {
+                        vertexAttribute.disable(context);
+                    });
                 }
             },
             get position() { return base.position; },
@@ -2924,9 +3029,9 @@ define('davinci-eight/geometries/boxGeometry',["require", "exports", 'davinci-ei
             dynamic: function () { return false; },
             getAttributes: function () {
                 return [
-                    { name: 'aVertexPosition', size: 3 },
-                    { name: 'aVertexColor', size: 3 },
-                    { name: 'aVertexNormal', size: 3 }
+                    { name: 'aVertexPosition', size: 3, normalized: false, stride: 0, offset: 0 },
+                    { name: 'aVertexColor', size: 3, normalized: false, stride: 0, offset: 0 },
+                    { name: 'aVertexNormal', size: 3, normalized: false, stride: 0, offset: 0 }
                 ];
             },
             getElements: function () {
@@ -3040,8 +3145,8 @@ define('davinci-eight/geometries/CurveGeometry',["require", "exports"], function
         };
         CurveGeometry.prototype.getAttributes = function () {
             return [
-                { name: 'aVertexPosition', size: 3 },
-                { name: 'aVertexColor', size: 3 }
+                { name: 'aVertexPosition', size: 3, normalized: false, stride: 0, offset: 0 },
+                { name: 'aVertexColor', size: 3, normalized: false, stride: 0, offset: 0 }
             ];
         };
         CurveGeometry.prototype.getElements = function () {
@@ -3107,8 +3212,8 @@ define('davinci-eight/geometries/LatticeGeometry',["require", "exports"], functi
         };
         LatticeGeometry.prototype.getAttributes = function () {
             return [
-                { name: 'aVertexPosition', size: 3 },
-                { name: 'aVertexColor', size: 3 }
+                { name: 'aVertexPosition', size: 3, normalized: false, stride: 0, offset: 0 },
+                { name: 'aVertexColor', size: 3, normalized: false, stride: 0, offset: 0 }
             ];
         };
         LatticeGeometry.prototype.getElements = function () {
@@ -3173,8 +3278,8 @@ define('davinci-eight/geometries/RGBGeometry',["require", "exports"], function (
         };
         RGBGeometry.prototype.getAttributes = function () {
             return [
-                { name: 'aVertexPosition', size: 3 },
-                { name: 'aVertexColor', size: 3 }
+                { name: 'aVertexPosition', size: 3, normalized: false, stride: 0, offset: 0 },
+                { name: 'aVertexColor', size: 3, normalized: false, stride: 0, offset: 0 }
             ];
         };
         RGBGeometry.prototype.getElements = function () {
@@ -3340,134 +3445,2154 @@ define('davinci-eight/geometries/prismGeometry',["require", "exports", 'davinci-
     return prismGeometry;
 });
 
-define('davinci-eight/objects/VertexAttribArray',["require", "exports"], function (require, exports) {
-    /// <reference path="../geometries/Geometry.d.ts" />
-    function computeUsage(geometry, context) {
-        return geometry.dynamic() ? context.DYNAMIC_DRAW : context.STATIC_DRAW;
-    }
-    function existsLocation(location) {
-        return location >= 0;
-    }
-    // TODO: Maybe this should be called simply AttributeArray?
-    var VertexAttribArray = (function () {
-        function VertexAttribArray(name, size) {
-            this.name = name;
-            this.size = size;
-        }
-        VertexAttribArray.prototype.contextFree = function (context) {
-            if (this.buffer) {
-                context.deleteBuffer(this.buffer);
-                this.contextLoss();
-            }
-        };
-        VertexAttribArray.prototype.contextGain = function (context, program) {
-            this.location = context.getAttribLocation(program, this.name);
-            if (existsLocation(this.location)) {
-                this.buffer = context.createBuffer();
-            }
-        };
-        VertexAttribArray.prototype.contextLoss = function () {
-            this.location = void 0;
-            this.buffer = void 0;
-        };
-        // Not really bind so much as describing
-        VertexAttribArray.prototype.bind = function (context) {
-            if (existsLocation(this.location)) {
-                // TODO: We could assert that we have a buffer.
-                context.bindBuffer(context.ARRAY_BUFFER, this.buffer);
-                context.vertexAttribPointer(this.location, this.size, context.FLOAT, false, 0, 0);
-            }
-        };
-        VertexAttribArray.prototype.bufferData = function (context, geometry) {
-            if (existsLocation(this.location)) {
-                var data = geometry.getVertexAttribArrayData(this.name);
-                if (data) {
-                    context.bindBuffer(context.ARRAY_BUFFER, this.buffer);
-                    context.bufferData(context.ARRAY_BUFFER, data, computeUsage(geometry, context));
-                }
-                else {
-                    throw new Error("Geometry implementation does not support the attribute " + this.name);
-                }
-            }
-        };
-        VertexAttribArray.prototype.enable = function (context) {
-            if (existsLocation(this.location)) {
-                context.enableVertexAttribArray(this.location);
-            }
-        };
-        VertexAttribArray.prototype.disable = function (context) {
-            if (existsLocation(this.location)) {
-                context.disableVertexAttribArray(this.location);
-            }
-        };
-        return VertexAttribArray;
-    })();
-    return VertexAttribArray;
+define('davinci-eight/glsl/literals',["require", "exports"], function (require, exports) {
+    var literals = [
+        // current
+        'precision',
+        'highp',
+        'mediump',
+        'lowp',
+        'attribute',
+        'const',
+        'uniform',
+        'varying',
+        'break',
+        'continue',
+        'do',
+        'for',
+        'while',
+        'if',
+        'else',
+        'in',
+        'out',
+        'inout',
+        'float',
+        'int',
+        'void',
+        'bool',
+        'true',
+        'false',
+        'discard',
+        'return',
+        'mat2',
+        'mat3',
+        'mat4',
+        'vec2',
+        'vec3',
+        'vec4',
+        'ivec2',
+        'ivec3',
+        'ivec4',
+        'bvec2',
+        'bvec3',
+        'bvec4',
+        'sampler1D',
+        'sampler2D',
+        'sampler3D',
+        'samplerCube',
+        'sampler1DShadow',
+        'sampler2DShadow',
+        'struct',
+        'asm',
+        'class',
+        'union',
+        'enum',
+        'typedef',
+        'template',
+        'this',
+        'packed',
+        'goto',
+        'switch',
+        'default',
+        'inline',
+        'noinline',
+        'volatile',
+        'public',
+        'static',
+        'extern',
+        'external',
+        'interface',
+        'long',
+        'short',
+        'double',
+        'half',
+        'fixed',
+        'unsigned',
+        'input',
+        'output',
+        'hvec2',
+        'hvec3',
+        'hvec4',
+        'dvec2',
+        'dvec3',
+        'dvec4',
+        'fvec2',
+        'fvec3',
+        'fvec4',
+        'sampler2DRect',
+        'sampler3DRect',
+        'sampler2DRectShadow',
+        'sizeof',
+        'cast',
+        'namespace',
+        'using'
+    ];
+    return literals;
 });
 
-define('davinci-eight/materials/rawShaderMaterial',["require", "exports", '../objects/VertexAttribArray'], function (require, exports, VertexAttribArray) {
-    var material = function (attributes, vertexShader, fragmentShader) {
+define('davinci-eight/glsl/operators',["require", "exports"], function (require, exports) {
+    var operators = [
+        '<<=',
+        '>>=',
+        '++',
+        '--',
+        '<<',
+        '>>',
+        '<=',
+        '>=',
+        '==',
+        '!=',
+        '&&',
+        '||',
+        '+=',
+        '-=',
+        '*=',
+        '/=',
+        '%=',
+        '&=',
+        '^^',
+        '^=',
+        '|=',
+        '(',
+        ')',
+        '[',
+        ']',
+        '.',
+        '!',
+        '~',
+        '*',
+        '/',
+        '%',
+        '+',
+        '-',
+        '<',
+        '>',
+        '&',
+        '^',
+        '|',
+        '?',
+        ':',
+        '=',
+        ',',
+        ';',
+        '{',
+        '}'
+    ];
+    return operators;
+});
+
+define('davinci-eight/glsl/builtins',["require", "exports"], function (require, exports) {
+    var builtins = [
+        'gl_Position',
+        'gl_PointSize',
+        'gl_ClipVertex',
+        'gl_FragCoord',
+        'gl_FrontFacing',
+        'gl_FragColor',
+        'gl_FragData',
+        'gl_FragDepth',
+        'gl_Color',
+        'gl_SecondaryColor',
+        'gl_Normal',
+        'gl_Vertex',
+        'gl_MultiTexCoord0',
+        'gl_MultiTexCoord1',
+        'gl_MultiTexCoord2',
+        'gl_MultiTexCoord3',
+        'gl_MultiTexCoord4',
+        'gl_MultiTexCoord5',
+        'gl_MultiTexCoord6',
+        'gl_MultiTexCoord7',
+        'gl_FogCoord',
+        'gl_MaxLights',
+        'gl_MaxClipPlanes',
+        'gl_MaxTextureUnits',
+        'gl_MaxTextureCoords',
+        'gl_MaxVertexAttribs',
+        'gl_MaxVertexUniformComponents',
+        'gl_MaxVaryingFloats',
+        'gl_MaxVertexTextureImageUnits',
+        'gl_MaxCombinedTextureImageUnits',
+        'gl_MaxTextureImageUnits',
+        'gl_MaxFragmentUniformComponents',
+        'gl_MaxDrawBuffers',
+        'gl_ModelViewMatrix',
+        'gl_ProjectionMatrix',
+        'gl_ModelViewProjectionMatrix',
+        'gl_TextureMatrix',
+        'gl_NormalMatrix',
+        'gl_ModelViewMatrixInverse',
+        'gl_ProjectionMatrixInverse',
+        'gl_ModelViewProjectionMatrixInverse',
+        'gl_TextureMatrixInverse',
+        'gl_ModelViewMatrixTranspose',
+        'gl_ProjectionMatrixTranspose',
+        'gl_ModelViewProjectionMatrixTranspose',
+        'gl_TextureMatrixTranspose',
+        'gl_ModelViewMatrixInverseTranspose',
+        'gl_ProjectionMatrixInverseTranspose',
+        'gl_ModelViewProjectionMatrixInverseTranspose',
+        'gl_TextureMatrixInverseTranspose',
+        'gl_NormalScale',
+        'gl_DepthRangeParameters',
+        'gl_DepthRange',
+        'gl_ClipPlane',
+        'gl_PointParameters',
+        'gl_Point',
+        'gl_MaterialParameters',
+        'gl_FrontMaterial',
+        'gl_BackMaterial',
+        'gl_LightSourceParameters',
+        'gl_LightSource',
+        'gl_LightModelParameters',
+        'gl_LightModel',
+        'gl_LightModelProducts',
+        'gl_FrontLightModelProduct',
+        'gl_BackLightModelProduct',
+        'gl_LightProducts',
+        'gl_FrontLightProduct',
+        'gl_BackLightProduct',
+        'gl_FogParameters',
+        'gl_Fog',
+        'gl_TextureEnvColor',
+        'gl_EyePlaneS',
+        'gl_EyePlaneT',
+        'gl_EyePlaneR',
+        'gl_EyePlaneQ',
+        'gl_ObjectPlaneS',
+        'gl_ObjectPlaneT',
+        'gl_ObjectPlaneR',
+        'gl_ObjectPlaneQ',
+        'gl_FrontColor',
+        'gl_BackColor',
+        'gl_FrontSecondaryColor',
+        'gl_BackSecondaryColor',
+        'gl_TexCoord',
+        'gl_FogFragCoord',
+        'gl_Color',
+        'gl_SecondaryColor',
+        'gl_TexCoord',
+        'gl_FogFragCoord',
+        'gl_PointCoord',
+        'radians',
+        'degrees',
+        'sin',
+        'cos',
+        'tan',
+        'asin',
+        'acos',
+        'atan',
+        'pow',
+        'exp',
+        'log',
+        'exp2',
+        'log2',
+        'sqrt',
+        'inversesqrt',
+        'abs',
+        'sign',
+        'floor',
+        'ceil',
+        'fract',
+        'mod',
+        'min',
+        'max',
+        'clamp',
+        'mix',
+        'step',
+        'smoothstep',
+        'length',
+        'distance',
+        'dot',
+        'cross',
+        'normalize',
+        'faceforward',
+        'reflect',
+        'refract',
+        'matrixCompMult',
+        'lessThan',
+        'lessThanEqual',
+        'greaterThan',
+        'greaterThanEqual',
+        'equal',
+        'notEqual',
+        'any',
+        'all',
+        'not',
+        'texture2D',
+        'texture2DProj',
+        'texture2DLod',
+        'texture2DProjLod',
+        'textureCube',
+        'textureCubeLod',
+        'dFdx',
+        'dFdy'
+    ];
+    return builtins;
+});
+
+define('davinci-eight/glsl/tokenize',["require", "exports", './literals', './operators', './builtins'], function (require, exports, literals, operators, builtins) {
+    var NORMAL = 999; // <-- never emitted
+    var TOKEN = 9999; // <-- never emitted
+    // These things are called mode(s) and correspond to the following map.
+    var BLOCK_COMMENT = 0;
+    var LINE_COMMENT = 1;
+    var PREPROCESSOR = 2;
+    var OPERATOR = 3;
+    var INTEGER = 4;
+    var FLOAT = 5;
+    var IDENT = 6;
+    var BUILTIN = 7;
+    var KEYWORD = 8;
+    var WHITESPACE = 9;
+    var EOF = 10;
+    var HEX = 11;
+    var map = [
+        'block-comment',
+        'line-comment',
+        'preprocessor',
+        'operator',
+        'integer',
+        'float',
+        'ident',
+        'builtin',
+        'keyword',
+        'whitespace',
+        'eof',
+        'integer'
+    ];
+    function tokenize() {
+        function token(data) {
+            if (data.length) {
+                tokens.push({
+                    type: map[mode],
+                    data: data,
+                    position: start,
+                    line: line,
+                    column: col
+                });
+            }
+        }
+        function write(chunk) {
+            i = 0;
+            input += chunk;
+            len = input.length;
+            var last;
+            while (c = input[i], i < len) {
+                last = i;
+                switch (mode) {
+                    case BLOCK_COMMENT:
+                        i = block_comment();
+                        break;
+                    case LINE_COMMENT:
+                        i = line_comment();
+                        break;
+                    case PREPROCESSOR:
+                        i = preprocessor();
+                        break;
+                    case OPERATOR:
+                        i = operator();
+                        break;
+                    case INTEGER:
+                        i = integer();
+                        break;
+                    case HEX:
+                        i = hex();
+                        break;
+                    case FLOAT:
+                        i = decimal();
+                        break;
+                    case TOKEN:
+                        i = readtoken();
+                        break;
+                    case WHITESPACE:
+                        i = whitespace();
+                        break;
+                    case NORMAL:
+                        i = normal();
+                        break;
+                }
+                if (last !== i) {
+                    switch (input[last]) {
+                        case '\n':
+                            col = 0;
+                            ++line;
+                            break;
+                        default:
+                            ++col;
+                            break;
+                    }
+                }
+            }
+            total += i;
+            input = input.slice(i);
+            return tokens;
+        }
+        function end(chunk) {
+            if (content.length) {
+                token(content.join(''));
+            }
+            mode = EOF;
+            token('(eof)');
+            return tokens;
+        }
+        function normal() {
+            content = content.length ? [] : content;
+            if (last === '/' && c === '*') {
+                start = total + i - 1;
+                mode = BLOCK_COMMENT;
+                last = c;
+                return i + 1;
+            }
+            if (last === '/' && c === '/') {
+                start = total + i - 1;
+                mode = LINE_COMMENT;
+                last = c;
+                return i + 1;
+            }
+            if (c === '#') {
+                mode = PREPROCESSOR;
+                start = total + i;
+                return i;
+            }
+            if (/\s/.test(c)) {
+                mode = WHITESPACE;
+                start = total + i;
+                return i;
+            }
+            isnum = /\d/.test(c);
+            isoperator = /[^\w_]/.test(c);
+            start = total + i;
+            mode = isnum ? INTEGER : isoperator ? OPERATOR : TOKEN;
+            return i;
+        }
+        function whitespace() {
+            if (/[^\s]/g.test(c)) {
+                token(content.join(''));
+                mode = NORMAL;
+                return i;
+            }
+            content.push(c);
+            last = c;
+            return i + 1;
+        }
+        function preprocessor() {
+            if (c === '\n' && last !== '\\') {
+                token(content.join(''));
+                mode = NORMAL;
+                return i;
+            }
+            content.push(c);
+            last = c;
+            return i + 1;
+        }
+        function line_comment() {
+            return preprocessor();
+        }
+        function block_comment() {
+            if (c === '/' && last === '*') {
+                content.push(c);
+                token(content.join(''));
+                mode = NORMAL;
+                return i + 1;
+            }
+            content.push(c);
+            last = c;
+            return i + 1;
+        }
+        function operator() {
+            if (last === '.' && /\d/.test(c)) {
+                mode = FLOAT;
+                return i;
+            }
+            if (last === '/' && c === '*') {
+                mode = BLOCK_COMMENT;
+                return i;
+            }
+            if (last === '/' && c === '/') {
+                mode = LINE_COMMENT;
+                return i;
+            }
+            if (c === '.' && content.length) {
+                while (determine_operator(content)) {
+                }
+                mode = FLOAT;
+                return i;
+            }
+            if (c === ';' || c === ')' || c === '(') {
+                if (content.length) {
+                    while (determine_operator(content)) {
+                    }
+                }
+                token(c);
+                mode = NORMAL;
+                return i + 1;
+            }
+            var is_composite_operator = content.length === 2 && c !== '=';
+            if (/[\w_\d\s]/.test(c) || is_composite_operator) {
+                while (determine_operator(content)) {
+                }
+                mode = NORMAL;
+                return i;
+            }
+            content.push(c);
+            last = c;
+            return i + 1;
+        }
+        function determine_operator(buf) {
+            var j = 0, idx, res;
+            do {
+                idx = operators.indexOf(buf.slice(0, buf.length + j).join(''));
+                res = operators[idx];
+                if (idx === -1) {
+                    if (j-- + buf.length > 0) {
+                        continue;
+                    }
+                    res = buf.slice(0, 1).join('');
+                }
+                token(res);
+                start += res.length;
+                content = content.slice(res.length);
+                return content.length;
+            } while (1);
+        }
+        function hex() {
+            if (/[^a-fA-F0-9]/.test(c)) {
+                token(content.join(''));
+                mode = NORMAL;
+                return i;
+            }
+            content.push(c);
+            last = c;
+            return i + 1;
+        }
+        function integer() {
+            if (c === '.') {
+                content.push(c);
+                mode = FLOAT;
+                last = c;
+                return i + 1;
+            }
+            if (/[eE]/.test(c)) {
+                content.push(c);
+                mode = FLOAT;
+                last = c;
+                return i + 1;
+            }
+            if (c === 'x' && content.length === 1 && content[0] === '0') {
+                mode = HEX;
+                content.push(c);
+                last = c;
+                return i + 1;
+            }
+            if (/[^\d]/.test(c)) {
+                token(content.join(''));
+                mode = NORMAL;
+                return i;
+            }
+            content.push(c);
+            last = c;
+            return i + 1;
+        }
+        function decimal() {
+            if (c === 'f') {
+                content.push(c);
+                last = c;
+                i += 1;
+            }
+            if (/[eE]/.test(c)) {
+                content.push(c);
+                last = c;
+                return i + 1;
+            }
+            if (/[^\d]/.test(c)) {
+                token(content.join(''));
+                mode = NORMAL;
+                return i;
+            }
+            content.push(c);
+            last = c;
+            return i + 1;
+        }
+        function readtoken() {
+            if (/[^\d\w_]/.test(c)) {
+                var contentstr = content.join('');
+                if (literals.indexOf(contentstr) > -1) {
+                    mode = KEYWORD;
+                }
+                else if (builtins.indexOf(contentstr) > -1) {
+                    mode = BUILTIN;
+                }
+                else {
+                    mode = IDENT;
+                }
+                token(content.join(''));
+                mode = NORMAL;
+                return i;
+            }
+            content.push(c);
+            last = c;
+            return i + 1;
+        }
+        var i = 0;
+        var total = 0;
+        var mode = NORMAL;
+        var c;
+        var last;
+        var content = [];
+        var tokens = [];
+        var token_idx = 0;
+        var token_offs = 0;
+        var line = 1;
+        var col = 0;
+        var start = 0;
+        var isnum = false;
+        var isoperator = false;
+        var input = '';
+        var len;
+        return function (data) {
+            tokens = [];
+            if (data !== null) {
+                return write(data);
+            }
+            return end();
+        };
+    }
+    return tokenize;
+});
+
+define('davinci-eight/glsl/tokenizeString',["require", "exports", './tokenize'], function (require, exports, tokenize) {
+    function tokenizeString(str) {
+        var generator = tokenize();
+        var tokens = [];
+        tokens = tokens.concat(generator(str));
+        tokens = tokens.concat(generator(null));
+        return tokens;
+    }
+    return tokenizeString;
+});
+
+//
+// See javascript.crockford.com/tdop/tdop.html
+//
+// We assume that the source text has been transformed into an array of tokens.
+//
+/// <reference path='./Symbol.d.ts'/>
+/// <reference path='./Token.d.ts'/>
+define('davinci-eight/glsl/expr',["require", "exports"], function (require, exports) {
+    var state;
+    /**
+     * The current token.
+     */
+    var token;
+    var tokens;
+    var idx;
+    function fail(message) {
+        return function () { return state.unexpected(message); };
+    }
+    /**
+     * The prototype for all other symbols. Its method will usually be overridden.
+     */
+    var original_symbol = {
+        nud: function () {
+            return this.children && this.children.length ? this : fail('unexpected')();
+        },
+        led: fail('missing operator')
+    };
+    var symbol_table = {};
+    var itself = function () {
+        return this;
+    };
+    /**
+     * A function that makes symbols and looks them up in a cache.
+     * @param id Identifier
+     * @param bp Binding Power. Optional. Defaults to zero.
+     */
+    function symbol(id, bp) {
+        var sym = symbol_table[id];
+        bp = bp || 0;
+        if (sym) {
+            if (bp > sym.lbp) {
+                sym.lbp = bp;
+            }
+        }
+        else {
+            sym = Object.create(original_symbol);
+            sym.id = id;
+            sym.lbp = bp;
+            symbol_table[id] = sym;
+        }
+        return sym;
+    }
+    function infix(id, bp, led) {
+        var sym = symbol(id, bp);
+        sym.led = led || function (left) {
+            this.children = [left, expression(bp)];
+            this.type = 'binary';
+            return this;
+        };
+    }
+    function infixr(id, bp, led) {
+        var sym = symbol(id, bp);
+        sym.led = led || function (left) {
+            this.children = [left, expression(bp - 1)];
+            this.type = 'binary';
+            return this;
+        };
+        return sym;
+    }
+    function prefix(id, nud) {
+        var sym = symbol(id);
+        sym.nud = nud || function () {
+            this.children = [expression(70)];
+            this.type = 'unary';
+            return this;
+        };
+        return sym;
+    }
+    function suffix(id) {
+        var sym = symbol(id, 150);
+        sym.led = function (left) {
+            this.children = [left];
+            this.type = 'suffix';
+            return this;
+        };
+    }
+    function assignment(id) {
+        return infixr(id, 10, function (left) {
+            this.children = [left, expression(9)];
+            this.assignment = true;
+            this.type = 'assign';
+            return this;
+        });
+    }
+    // parentheses included to avoid collisions with user-defined tokens.
+    symbol('(ident)').nud = itself;
+    symbol('(keyword)').nud = itself;
+    symbol('(builtin)').nud = itself;
+    symbol('(literal)').nud = itself;
+    symbol('(end)'); // Indicates the end of the token stream.
+    symbol(':');
+    symbol(';');
+    symbol(',');
+    symbol(')');
+    symbol(']');
+    symbol('}');
+    infixr('&&', 30);
+    infixr('||', 30);
+    infix('|', 43);
+    infix('^', 44);
+    infix('&', 45);
+    infix('==', 46);
+    infix('!=', 46);
+    infix('<', 47);
+    infix('<=', 47);
+    infix('>', 47);
+    infix('>=', 47);
+    infix('>>', 48);
+    infix('<<', 48);
+    infix('+', 50);
+    infix('-', 50);
+    infix('*', 60);
+    infix('/', 60);
+    infix('%', 60);
+    infix('?', 20, function (left) {
+        this.children = [left, expression(0), (advance(':'), expression(0))]; // original.
+        //this.children = [];
+        //this.children.push(left);
+        //this.children.push(expression(0));
+        //advance(':');
+        //this.children.push(expression(0));
+        this.type = 'ternary';
+        return this;
+    });
+    infix('.', 80, function (left) {
+        token.type = 'literal';
+        state.fake(token);
+        this.children = [left, token];
+        advance();
+        return this;
+    });
+    infix('[', 80, function (left) {
+        this.children = [left, expression(0)];
+        this.type = 'binary';
+        advance(']');
+        return this;
+    });
+    infix('(', 80, function (left) {
+        this.children = [left];
+        this.type = 'call';
+        if (token.data !== ')') {
+            while (1) {
+                this.children.push(expression(0));
+                if (token.data !== ',') {
+                    break;
+                }
+                advance(',');
+            }
+        }
+        advance(')');
+        return this;
+    });
+    prefix('-');
+    prefix('+');
+    prefix('!');
+    prefix('~');
+    prefix('defined');
+    prefix('(', function () {
+        this.type = 'group';
+        this.children = [expression(0)];
+        advance(')');
+        return this;
+    });
+    prefix('++');
+    prefix('--');
+    suffix('++');
+    suffix('--');
+    assignment('=');
+    assignment('+=');
+    assignment('-=');
+    assignment('*=');
+    assignment('/=');
+    assignment('%=');
+    assignment('&=');
+    assignment('|=');
+    assignment('^=');
+    assignment('>>=');
+    assignment('<<=');
+    function expr(incoming_state, incoming_tokens) {
+        function emit(node) {
+            state.unshift(node, false);
+            for (var i = 0, len = node.children.length; i < len; ++i) {
+                emit(node.children[i]);
+            }
+            state.shift();
+        }
+        state = incoming_state;
+        tokens = incoming_tokens;
+        idx = 0;
+        var result;
+        if (!tokens.length) {
+            return;
+        }
+        advance();
+        result = expression(0);
+        result.parent = state[0];
+        emit(result);
+        if (idx < tokens.length) {
+            throw new Error('did not use all tokens');
+        }
+        result.parent.children = [result];
+    }
+    /**
+     * The heart of top-down precedence parsing (Pratt).
+     * @param rbp Right Binding Power.
+     */
+    function expression(rbp) {
+        var left;
+        var t = token;
+        advance();
+        left = t.nud();
+        while (rbp < token.lbp) {
+            t = token;
+            advance();
+            left = t.led(left);
+        }
+        return left;
+    }
+    /**
+     * Make a new token from the next simple object in the array and assign to the token variable
+     */
+    function advance(id) {
+        var next;
+        var value;
+        var type;
+        /**
+         * Symbol obtained from the symbol lookup table.
+         */
+        var output;
+        if (id && token.data !== id) {
+            return state.unexpected('expected `' + id + '`, got `' + token.data + '`');
+        }
+        if (idx >= tokens.length) {
+            token = symbol_table['(end)'];
+            return;
+        }
+        next = tokens[idx++];
+        value = next.data;
+        type = next.type;
+        if (type === 'ident') {
+            output = state.scope.find(value) || state.create_node();
+            type = output.type;
+        }
+        else if (type === 'builtin') {
+            output = symbol_table['(builtin)'];
+        }
+        else if (type === 'keyword') {
+            output = symbol_table['(keyword)'];
+        }
+        else if (type === 'operator') {
+            output = symbol_table[value];
+            if (!output) {
+                return state.unexpected('unknown operator `' + value + '`');
+            }
+        }
+        else if (type === 'float' || type === 'integer') {
+            type = 'literal';
+            output = symbol_table['(literal)'];
+        }
+        else {
+            return state.unexpected('unexpected token.');
+        }
+        if (output) {
+            if (!output.nud) {
+                output.nud = itself;
+            }
+            if (!output.children) {
+                output.children = [];
+            }
+        }
+        // FIXME: This should be assigning to token?
+        output = Object.create(output);
+        output.token = next;
+        output.type = type;
+        if (!output.data) {
+            output.data = value;
+        }
+        // I don't think the assignment is required.
+        // It also may be effing up the type safety.
+        return token = output;
+    }
+    return expr;
+});
+
+define('davinci-eight/glsl/Scope',["require", "exports"], function (require, exports) {
+    var Scope = (function () {
+        function Scope(state) {
+            this.state = state;
+            this.scopes = [];
+            this.current = null;
+        }
+        Scope.prototype.enter = function (s) {
+            this.scopes.push(this.current = this.state[0].scope = s || {});
+        };
+        Scope.prototype.exit = function () {
+            this.scopes.pop();
+            this.current = this.scopes[this.scopes.length - 1];
+        };
+        Scope.prototype.define = function (str) {
+            this.current[str] = this.state[0];
+        };
+        Scope.prototype.find = function (name, fail) {
+            for (var i = this.scopes.length - 1; i > -1; --i) {
+                if (this.scopes[i].hasOwnProperty(name)) {
+                    return this.scopes[i][name];
+                }
+            }
+            return null;
+        };
+        return Scope;
+    })();
+    return Scope;
+});
+
+define('davinci-eight/glsl/parser',["require", "exports", './expr', './Scope'], function (require, exports, full_parse_expr, Scope) {
+    // singleton!
+    var Advance = {};
+    var DEBUG = false;
+    var IDENT = 0;
+    var STMT = 1;
+    var STMTLIST = 2;
+    var STRUCT = 3;
+    var FUNCTION = 4;
+    var FUNCTIONARGS = 5;
+    var DECL = 6;
+    var DECLLIST = 7;
+    var FORLOOP = 8;
+    var WHILELOOP = 9;
+    var IF = 10;
+    var EXPR = 11;
+    var PRECISION = 12;
+    var COMMENT = 13;
+    var PREPROCESSOR = 14;
+    var KEYWORD = 15;
+    var KEYWORD_OR_IDENT = 16;
+    var RETURN = 17;
+    var BREAK = 18;
+    var CONTINUE = 19;
+    var DISCARD = 20;
+    var DOWHILELOOP = 21;
+    var PLACEHOLDER = 22;
+    var QUANTIFIER = 23;
+    var DECL_ALLOW_ASSIGN = 0x1;
+    var DECL_ALLOW_COMMA = 0x2;
+    var DECL_REQUIRE_NAME = 0x4;
+    var DECL_ALLOW_INVARIANT = 0x8;
+    var DECL_ALLOW_STORAGE = 0x10;
+    var DECL_NO_INOUT = 0x20;
+    var DECL_ALLOW_STRUCT = 0x40;
+    var DECL_STATEMENT = 0xFF;
+    var DECL_FUNCTION = DECL_STATEMENT & ~(DECL_ALLOW_ASSIGN | DECL_ALLOW_COMMA | DECL_NO_INOUT | DECL_ALLOW_INVARIANT | DECL_REQUIRE_NAME);
+    var DECL_STRUCT = DECL_STATEMENT & ~(DECL_ALLOW_ASSIGN | DECL_ALLOW_INVARIANT | DECL_ALLOW_STORAGE | DECL_ALLOW_STRUCT);
+    var QUALIFIERS = ['const', 'attribute', 'uniform', 'varying'];
+    var NO_ASSIGN_ALLOWED = false;
+    var NO_COMMA_ALLOWED = false;
+    // map of tokens to stmt types
+    var token_map = {
+        'block-comment': COMMENT,
+        'line-comment': COMMENT,
+        'preprocessor': PREPROCESSOR
+    };
+    // map of stmt types to human
+    var stmt_type = [
+        'ident',
+        'stmt',
+        'stmtlist',
+        'struct',
+        'function',
+        'functionargs',
+        'decl',
+        'decllist',
+        'forloop',
+        'whileloop',
+        'if',
+        'expr',
+        'precision',
+        'comment',
+        'preprocessor',
+        'keyword',
+        'keyword_or_ident',
+        'return',
+        'break',
+        'continue',
+        'discard',
+        'do-while',
+        'placeholder',
+        'quantifier'
+    ];
+    function parser() {
+        function reader(data) {
+            if (data === null) {
+                return end(), program;
+            }
+            nodes = [];
+            write(data);
+            return nodes;
+        }
+        function write(input) {
+            if (input.type === 'whitespace' || input.type === 'line-comment' || input.type === 'block-comment') {
+                whitespace.push(input);
+                return;
+            }
+            tokens.push(input);
+            token = token || tokens[0];
+            if (token && whitespace.length) {
+                token.preceding = token.preceding || [];
+                token.preceding = token.preceding.concat(whitespace);
+                whitespace = [];
+            }
+            while (take()) {
+                switch (state[0].mode) {
+                    case STMT:
+                        parse_stmt();
+                        break;
+                    case STMTLIST:
+                        parse_stmtlist();
+                        break;
+                    case DECL:
+                        parse_decl();
+                        break;
+                    case DECLLIST:
+                        parse_decllist();
+                        break;
+                    case EXPR:
+                        parse_expr();
+                        break;
+                    case STRUCT:
+                        parse_struct(true, true);
+                        break;
+                    case PRECISION:
+                        parse_precision();
+                        break;
+                    case IDENT:
+                        parse_ident();
+                        break;
+                    case KEYWORD:
+                        parse_keyword();
+                        break;
+                    case KEYWORD_OR_IDENT:
+                        parse_keyword_or_ident();
+                        break;
+                    case FUNCTION:
+                        parse_function();
+                        break;
+                    case FUNCTIONARGS:
+                        parse_function_args();
+                        break;
+                    case FORLOOP:
+                        parse_forloop();
+                        break;
+                    case WHILELOOP:
+                        parse_whileloop();
+                        break;
+                    case DOWHILELOOP:
+                        parse_dowhileloop();
+                        break;
+                    case RETURN:
+                        parse_return();
+                        break;
+                    case IF:
+                        parse_if();
+                        break;
+                    case QUANTIFIER:
+                        parse_quantifier();
+                        break;
+                }
+            }
+        }
+        // stream functions ---------------------------------------------
+        function end(tokens) {
+            if (arguments.length) {
+                write(tokens);
+            }
+            if (state.length > 1) {
+                unexpected('unexpected EOF');
+                return;
+            }
+            complete = true;
+        }
+        function take() {
+            if (errored || !state.length) {
+                return false;
+            }
+            return (token = tokens[0]);
+        }
+        // ----- state manipulation --------
+        function special_fake(x) {
+            state.unshift(x);
+            state.shift();
+        }
+        function special_unshift(_node, add_child) {
+            _node.parent = state[0];
+            var ret = [].unshift.call(this, _node);
+            add_child = add_child === undefined ? true : add_child;
+            if (DEBUG) {
+                var pad = '';
+                for (var i = 0, len = this.length - 1; i < len; ++i) {
+                    pad += ' |';
+                }
+                console.log(pad, '\\' + _node.type, _node.token.data);
+            }
+            if (add_child && node !== _node) {
+                node.children.push(_node);
+            }
+            node = _node;
+            return ret;
+        }
+        function special_shift() {
+            var _node = [].shift.call(this), okay = check[this.length], emit = false;
+            if (DEBUG) {
+                var pad = '';
+                for (var i = 0, len = this.length; i < len; ++i) {
+                    pad += ' |';
+                }
+                console.log(pad, '/' + _node.type);
+            }
+            if (check.length) {
+                if (typeof check[0] === 'function') {
+                    emit = check[0](_node);
+                }
+                else if (okay !== undefined) {
+                    emit = okay.test ? okay.test(_node.type) : okay === _node.type;
+                }
+            }
+            else {
+                emit = true;
+            }
+            if (emit && !errored) {
+                nodes.push(_node);
+            }
+            node = _node.parent;
+            return _node;
+        }
+        // parse states ---------------
+        function parse_stmtlist() {
+            function normal_mode() {
+                if (token.data === state[0].expecting) {
+                    return state.scope.exit(), state.shift();
+                }
+                switch (token.type) {
+                    case 'preprocessor':
+                        state.fake(adhoc());
+                        tokens.shift();
+                        return;
+                    default:
+                        state.unshift(stmt());
+                        return;
+                }
+            }
+            // determine the type of the statement
+            // and then start parsing
+            return stative(function () { state.scope.enter(); return Advance; }, normal_mode)();
+        }
+        function parse_stmt() {
+            if (state[0].brace) {
+                if (token.data !== '}') {
+                    return unexpected('expected `}`, got ' + token.data);
+                }
+                state[0].brace = false;
+                return tokens.shift(), state.shift();
+            }
+            switch (token.type) {
+                case 'eof': return got_eof();
+                case 'keyword':
+                    switch (token.data) {
+                        case 'for': return state.unshift(forstmt());
+                        case 'if': return state.unshift(ifstmt());
+                        case 'while': return state.unshift(whilestmt());
+                        case 'do': return state.unshift(dowhilestmt());
+                        case 'break': return state.fake(mknode(BREAK, token)), tokens.shift();
+                        case 'continue': return state.fake(mknode(CONTINUE, token)), tokens.shift();
+                        case 'discard': return state.fake(mknode(DISCARD, token)), tokens.shift();
+                        case 'return': return state.unshift(returnstmt());
+                        case 'precision': return state.unshift(precision());
+                    }
+                    return state.unshift(decl(DECL_STATEMENT));
+                case 'ident':
+                    var lookup;
+                    if (lookup = state.scope.find(token.data)) {
+                        if (lookup.parent.type === 'struct') {
+                            // this is strictly untrue, you could have an
+                            // expr that starts with a struct constructor.
+                            //      ... sigh
+                            return state.unshift(decl(DECL_STATEMENT));
+                        }
+                        return state.unshift(expr(';'));
+                    }
+                case 'operator':
+                    if (token.data === '{') {
+                        state[0].brace = true;
+                        var n = stmtlist(); // FIXME
+                        n.expecting = '}';
+                        return tokens.shift(), state.unshift(n);
+                    }
+                    if (token.data === ';') {
+                        return tokens.shift(), state.shift();
+                    }
+                default: return state.unshift(expr(';'));
+            }
+        }
+        function got_eof() {
+            if (ended) {
+                errored = true;
+            }
+            ended = true;
+            return state.shift();
+        }
+        function parse_decl() {
+            function invariant_or_not() {
+                if (token.data === 'invariant') {
+                    if (stmt.flags & DECL_ALLOW_INVARIANT) {
+                        state.unshift(keyword());
+                        return Advance;
+                    }
+                    else {
+                        return unexpected('`invariant` is not allowed here');
+                    }
+                }
+                else {
+                    state.fake(mknode(PLACEHOLDER, { data: '', position: token.position }));
+                    return Advance;
+                }
+            }
+            function storage_or_not() {
+                if (is_storage(token)) {
+                    if (stmt.flags & DECL_ALLOW_STORAGE) {
+                        state.unshift(keyword());
+                        return Advance;
+                    }
+                    else {
+                        return unexpected('storage is not allowed here');
+                    }
+                }
+                else {
+                    state.fake(mknode(PLACEHOLDER, { data: '', position: token.position }));
+                    return Advance;
+                }
+            }
+            function parameter_or_not() {
+                if (is_parameter(token)) {
+                    if (!(stmt.flags & DECL_NO_INOUT)) {
+                        state.unshift(keyword());
+                        return Advance;
+                    }
+                    else {
+                        return unexpected('parameter is not allowed here');
+                    }
+                }
+                else {
+                    state.fake(mknode(PLACEHOLDER, { data: '', position: token.position }));
+                    return Advance;
+                }
+            }
+            function precision_or_not() {
+                if (is_precision(token)) {
+                    state.unshift(keyword());
+                    return Advance;
+                }
+                else {
+                    state.fake(mknode(PLACEHOLDER, { data: '', position: token.position }));
+                    return Advance;
+                }
+            }
+            function struct_or_type() {
+                if (token.data === 'struct') {
+                    if (!(stmt.flags & DECL_ALLOW_STRUCT)) {
+                        return unexpected('cannot nest structs');
+                    }
+                    state.unshift(struct());
+                    return Advance;
+                }
+                if (token.type === 'keyword') {
+                    state.unshift(keyword());
+                    return Advance;
+                }
+                var lookup = state.scope.find(token.data);
+                if (lookup) {
+                    state.fake(Object.create(lookup));
+                    tokens.shift();
+                    return Advance;
+                }
+                return unexpected('expected user defined type, struct or keyword, got ' + token.data);
+            }
+            function maybe_name() {
+                if (token.data === ',' && !(stmt.flags & DECL_ALLOW_COMMA)) {
+                    return state.shift();
+                }
+                if (token.data === '[') {
+                    // oh lord.
+                    state.unshift(quantifier());
+                    return;
+                }
+                if (token.data === ')') {
+                    return state.shift();
+                }
+                if (token.data === ';') {
+                    return stmt.stage + 3;
+                }
+                if (token.type !== 'ident' && token.type !== 'builtin') {
+                    return unexpected('expected identifier, got ' + token.data);
+                }
+                stmt.collected_name = tokens.shift();
+                return Advance;
+            }
+            function maybe_lparen() {
+                if (token.data === '(') {
+                    tokens.unshift(stmt.collected_name);
+                    delete stmt.collected_name;
+                    state.unshift(fn());
+                    return stmt.stage + 2;
+                }
+                return Advance;
+            }
+            function is_decllist() {
+                tokens.unshift(stmt.collected_name);
+                delete stmt.collected_name;
+                state.unshift(decllist());
+                return Advance;
+            }
+            function done() {
+                return state.shift();
+            }
+            var stmt = state[0];
+            return stative(invariant_or_not, storage_or_not, parameter_or_not, precision_or_not, struct_or_type, maybe_name, maybe_lparen, is_decllist, done)();
+        }
+        function parse_decllist() {
+            // grab ident
+            if (token.type === 'ident') {
+                var name = token.data;
+                state.unshift(ident());
+                state.scope.define(name);
+                return;
+            }
+            if (token.type === 'operator') {
+                if (token.data === ',') {
+                    // multi-decl!
+                    if (!(state[1].flags & DECL_ALLOW_COMMA)) {
+                        return state.shift();
+                    }
+                    return tokens.shift();
+                }
+                else if (token.data === '=') {
+                    if (!(state[1].flags & DECL_ALLOW_ASSIGN)) {
+                        return unexpected('`=` is not allowed here.');
+                    }
+                    tokens.shift();
+                    state.unshift(expr(',', ';'));
+                    return;
+                }
+                else if (token.data === '[') {
+                    state.unshift(quantifier());
+                    return;
+                }
+            }
+            return state.shift();
+        }
+        function parse_keyword_or_ident() {
+            if (token.type === 'keyword') {
+                state[0].type = 'keyword';
+                state[0].mode = KEYWORD;
+                return;
+            }
+            if (token.type === 'ident') {
+                state[0].type = 'ident';
+                state[0].mode = IDENT;
+                return;
+            }
+            return unexpected('expected keyword or user-defined name, got ' + token.data);
+        }
+        function parse_keyword() {
+            if (token.type !== 'keyword') {
+                return unexpected('expected keyword, got ' + token.data);
+            }
+            return state.shift(), tokens.shift();
+        }
+        function parse_ident() {
+            if (token.type !== 'ident') {
+                return unexpected('expected user-defined name, got ' + token.data);
+            }
+            state[0].data = token.data;
+            return state.shift(), tokens.shift();
+        }
+        function parse_expr() {
+            function parseexpr(tokens) {
+                try {
+                    full_parse_expr(state, tokens);
+                }
+                catch (err) {
+                    errored = true;
+                    throw err;
+                }
+                return state.shift();
+            }
+            var expecting = state[0].expecting;
+            state[0].tokens = state[0].tokens || [];
+            if (state[0].parenlevel === undefined) {
+                state[0].parenlevel = 0;
+                state[0].bracelevel = 0;
+            }
+            if (state[0].parenlevel < 1 && expecting.indexOf(token.data) > -1) {
+                return parseexpr(state[0].tokens);
+            }
+            if (token.data === '(') {
+                ++state[0].parenlevel;
+            }
+            else if (token.data === ')') {
+                --state[0].parenlevel;
+            }
+            switch (token.data) {
+                case '{':
+                    ++state[0].bracelevel;
+                    break;
+                case '}':
+                    --state[0].bracelevel;
+                    break;
+                case '(':
+                    ++state[0].parenlevel;
+                    break;
+                case ')':
+                    --state[0].parenlevel;
+                    break;
+            }
+            if (state[0].parenlevel < 0) {
+                return unexpected('unexpected `)`');
+            }
+            if (state[0].bracelevel < 0) {
+                return unexpected('unexpected `}`');
+            }
+            state[0].tokens.push(tokens.shift());
+            return;
+        }
+        // node types ---------------
+        function n(type) {
+            // this is a function factory that suffices for most kinds of expressions and statements
+            return function () {
+                return mknode(type, token);
+            };
+        }
+        function adhoc() {
+            return mknode(token_map[token.type], token, node);
+        }
+        function decl(flags) {
+            var _ = mknode(DECL, token, node); // FIXME
+            _.flags = flags;
+            return _;
+        }
+        function struct(allow_assign, allow_comma) {
+            var _ = mknode(STRUCT, token, node); // FIXME
+            _.allow_assign = allow_assign === undefined ? true : allow_assign;
+            _.allow_comma = allow_comma === undefined ? true : allow_comma;
+            return _;
+        }
+        function expr(arg0, arg1) {
+            var n = mknode(EXPR, token, node); // FIXME
+            n.expecting = [].slice.call(arguments);
+            return n;
+        }
+        function keyword(default_value) {
+            var t = token;
+            if (default_value) {
+                t = { 'type': '(implied)', data: '(default)', position: t.position };
+            }
+            return mknode(KEYWORD, t, node);
+        }
+        // utils ----------------------------
+        // FIXME: This should return the Error and let the site throw it.
+        function unexpected(str) {
+            errored = true;
+            throw new Error((str || 'unexpected ' + state) +
+                ' at line ' + state[0].token.line);
+        }
+        function assert(type, data) {
+            return 1,
+                assert_null_string_or_array(type, token.type) &&
+                    assert_null_string_or_array(data, token.data);
+        }
+        function assert_null_string_or_array(x, y) {
+            switch (typeof x) {
+                case 'string':
+                    if (y !== x) {
+                        unexpected('expected `' + x + '`, got ' + y + '\n' + token.data);
+                    }
+                    return !errored;
+                case 'object':
+                    if (x && x.indexOf(y) === -1) {
+                        unexpected('expected one of `' + x.join('`, `') + '`, got ' + y);
+                    }
+                    return !errored;
+            }
+            return true;
+        }
+        // stative ----------------------------
+        function stative(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, argA, argB) {
+            var steps = [].slice.call(arguments), step, result;
+            return function () {
+                var current = state[0];
+                // FIXME
+                //current.stage || (current.stage = 0)
+                if (!current.stage) {
+                    current.stage = 0;
+                }
+                step = steps[current.stage];
+                if (!step) {
+                    return unexpected('parser in undefined state!');
+                }
+                result = step();
+                if (result === Advance) {
+                    return ++current.stage;
+                }
+                if (result === undefined) {
+                    return;
+                }
+                current.stage = result;
+            };
+        }
+        function advance(op, t) {
+            t = t || 'operator';
+            return function () {
+                if (!assert(t, op)) {
+                    return;
+                }
+                var last = tokens.shift(), children = state[0].children, last_node = children[children.length - 1];
+                if (last_node && last_node.token && last.preceding) {
+                    last_node.token.succeeding = last_node.token.succeeding || [];
+                    last_node.token.succeeding = last_node.token.succeeding.concat(last.preceding);
+                }
+                return Advance;
+            };
+        }
+        function advance_expr(until) {
+            return function () {
+                state.unshift(expr(until));
+                return Advance;
+            };
+        }
+        function advance_ident(declare) {
+            return declare ? function () {
+                var name = token.data;
+                return assert('ident') && (state.unshift(ident()), state.scope.define(name), Advance);
+            } : function () {
+                if (!assert('ident')) {
+                    return;
+                }
+                var s = Object.create(state.scope.find(token.data));
+                s.token = token;
+                return (tokens.shift(), Advance);
+            };
+        }
+        function advance_stmtlist() {
+            return function () {
+                var n = stmtlist(); // FIXME
+                n.expecting = '}';
+                return state.unshift(n), Advance;
+            };
+        }
+        function maybe_stmtlist(skip) {
+            return function () {
+                var current = state[0].stage;
+                if (token.data !== '{') {
+                    return state.unshift(stmt()), current + skip;
+                }
+                return tokens.shift(), Advance;
+            };
+        }
+        function popstmt() {
+            return function () { return state.shift(), state.shift(); };
+        }
+        function setup_stative_parsers() {
+            // could also be
+            // struct { } decllist
+            parse_struct =
+                stative(advance('struct', 'keyword'), function () {
+                    if (token.data === '{') {
+                        state.fake(mknode(IDENT, { data: '', position: token.position, type: 'ident' }));
+                        return Advance;
+                    }
+                    return advance_ident(true)();
+                }, function () { state.scope.enter(); return Advance; }, advance('{'), function () {
+                    if (token.type === 'preprocessor') {
+                        state.fake(adhoc());
+                        tokens.shift();
+                        return;
+                    }
+                    if (token.data === '}') {
+                        state.scope.exit();
+                        tokens.shift();
+                        return state.shift();
+                    }
+                    if (token.data === ';') {
+                        tokens.shift();
+                        return;
+                    }
+                    state.unshift(decl(DECL_STRUCT));
+                });
+            parse_precision =
+                stative(function () { return tokens.shift(), Advance; }, function () {
+                    return assert('keyword', ['lowp', 'mediump', 'highp']) && (state.unshift(keyword()), Advance);
+                }, function () { return (state.unshift(keyword()), Advance); }, function () { return state.shift(); });
+            parse_quantifier =
+                stative(advance('['), advance_expr(']'), advance(']'), function () { return state.shift(); });
+            parse_forloop =
+                stative(advance('for', 'keyword'), advance('('), function () {
+                    var lookup;
+                    if (token.type === 'ident') {
+                        if (!(lookup = state.scope.find(token.data))) {
+                            lookup = state.create_node();
+                        }
+                        if (lookup.parent.type === 'struct') {
+                            return state.unshift(decl(DECL_STATEMENT)), Advance;
+                        }
+                    }
+                    else if (token.type === 'builtin' || token.type === 'keyword') {
+                        return state.unshift(decl(DECL_STATEMENT)), Advance;
+                    }
+                    return advance_expr(';')();
+                }, advance(';'), advance_expr(';'), advance(';'), advance_expr(')'), advance(')'), maybe_stmtlist(3), advance_stmtlist(), advance('}'), popstmt());
+            parse_if =
+                stative(advance('if', 'keyword'), advance('('), advance_expr(')'), advance(')'), maybe_stmtlist(3), advance_stmtlist(), advance('}'), function () {
+                    if (token.data === 'else') {
+                        return tokens.shift(), state.unshift(stmt()), Advance;
+                    }
+                    return popstmt()();
+                }, popstmt());
+            parse_return =
+                stative(advance('return', 'keyword'), function () {
+                    if (token.data === ';') {
+                        return Advance;
+                    }
+                    return state.unshift(expr(';')), Advance;
+                }, function () { tokens.shift(), popstmt()(); });
+            parse_whileloop =
+                stative(advance('while', 'keyword'), advance('('), advance_expr(')'), advance(')'), maybe_stmtlist(3), advance_stmtlist(), advance('}'), popstmt());
+            parse_dowhileloop =
+                stative(advance('do', 'keyword'), maybe_stmtlist(3), advance_stmtlist(), advance('}'), advance('while', 'keyword'), advance('('), advance_expr(')'), advance(')'), popstmt());
+            parse_function =
+                stative(function () {
+                    for (var i = 1, len = state.length; i < len; ++i) {
+                        if (state[i].mode === FUNCTION) {
+                            return unexpected('function definition is not allowed within another function');
+                        }
+                    }
+                    return Advance;
+                }, function () {
+                    if (!assert('ident')) {
+                        return;
+                    }
+                    var name = token.data;
+                    var lookup = state.scope.find(name);
+                    state.unshift(ident());
+                    state.scope.define(name);
+                    state.scope.enter(lookup ? lookup.scope : null);
+                    return Advance;
+                }, advance('('), function () { return state.unshift(fnargs()), Advance; }, advance(')'), function () {
+                    // forward decl
+                    if (token.data === ';') {
+                        return state.scope.exit(), state.shift(), state.shift();
+                    }
+                    return Advance;
+                }, advance('{'), advance_stmtlist(), advance('}'), function () { state.scope.exit(); return Advance; }, function () { return state.shift(), state.shift(), state.shift(); });
+            parse_function_args =
+                stative(function () {
+                    if (token.data === 'void') {
+                        state.fake(keyword());
+                        tokens.shift();
+                        return Advance;
+                    }
+                    if (token.data === ')') {
+                        state.shift();
+                        return;
+                    }
+                    if (token.data === 'struct') {
+                        state.unshift(struct(NO_ASSIGN_ALLOWED, NO_COMMA_ALLOWED));
+                        return Advance;
+                    }
+                    state.unshift(decl(DECL_FUNCTION));
+                    return Advance;
+                }, function () {
+                    if (token.data === ',') {
+                        tokens.shift();
+                        return 0;
+                    }
+                    if (token.data === ')') {
+                        state.shift();
+                        return;
+                    }
+                    unexpected('expected one of `,` or `)`, got ' + token.data);
+                });
+        }
+        /// END OF INNER FUNCTIONS
+        var stmtlist = n(STMTLIST), stmt = n(STMT), decllist = n(DECLLIST), precision = n(PRECISION), ident = n(IDENT), keyword_or_ident = n(KEYWORD_OR_IDENT), fn = n(FUNCTION), fnargs = n(FUNCTIONARGS), forstmt = n(FORLOOP), ifstmt = n(IF), whilestmt = n(WHILELOOP), returnstmt = n(RETURN), dowhilestmt = n(DOWHILELOOP), quantifier = n(QUANTIFIER);
+        var parse_struct, parse_precision, parse_quantifier, parse_forloop, parse_if, parse_return, parse_whileloop, parse_dowhileloop, parse_function, parse_function_args;
+        var check = arguments.length ? [].slice.call(arguments) : [];
+        var complete = false;
+        var ended = false;
+        var depth = 0;
+        var state = []; // FIXME
+        var nodes = [];
+        var tokens = [];
+        var whitespace = [];
+        var errored = false;
+        var program;
+        var token;
+        var node;
+        // setup state
+        state.shift = special_shift;
+        state.unshift = special_unshift;
+        state.fake = special_fake;
+        state.unexpected = unexpected;
+        state.scope = new Scope(state); // FIXME The only place where we create a Scope?
+        state.create_node = function () {
+            var n = mknode(IDENT, token); // FIXME
+            n.parent = reader['program']; // FIXME
+            return n;
+        };
+        setup_stative_parsers();
+        // setup root node
+        node = stmtlist();
+        node.expecting = '(eof)';
+        node.mode = STMTLIST;
+        node.token = { type: '(program)', data: '(program)' };
+        program = node;
+        reader['program'] = program; // FIXME
+        reader['scope'] = function (scope) {
+            if (arguments.length === 1) {
+                state.scope = scope;
+            }
+            return state.scope;
+        };
+        state.unshift(node);
+        return reader;
+    }
+    function mknode(mode, sourcetoken, unused) {
+        return {
+            mode: mode,
+            token: sourcetoken,
+            children: [],
+            type: stmt_type[mode],
+            id: (Math.random() * 0xFFFFFFFF).toString(16)
+        };
+    }
+    function is_storage(token) {
+        return token.data === 'const' ||
+            token.data === 'attribute' ||
+            token.data === 'uniform' ||
+            token.data === 'varying';
+    }
+    function is_parameter(token) {
+        return token.data === 'in' ||
+            token.data === 'inout' ||
+            token.data === 'out';
+    }
+    function is_precision(token) {
+        return token.data === 'highp' ||
+            token.data === 'mediump' ||
+            token.data === 'lowp';
+    }
+    return parser;
+});
+
+define('davinci-eight/glsl/parse',["require", "exports", '../glsl/tokenizeString', '../glsl/parser'], function (require, exports, tokenizeString, parser) {
+    function parse(code) {
+        var tokens = tokenizeString(code);
+        var reader = parser();
+        for (var i = 0; i < tokens.length; i++) {
+            reader(tokens[i]);
+        }
+        var ast = reader(null);
+        return ast;
+    }
+    return parse;
+});
+
+define('davinci-eight/glsl/DefaultNodeEventHandler',["require", "exports"], function (require, exports) {
+    /// <reference path='NodeEventHandler.d.ts'/>
+    var DefaultNodeEventHandler = (function () {
+        function DefaultNodeEventHandler() {
+        }
+        DefaultNodeEventHandler.prototype.beginStatementList = function () {
+        };
+        DefaultNodeEventHandler.prototype.endStatementList = function () {
+        };
+        DefaultNodeEventHandler.prototype.beginStatement = function () {
+        };
+        DefaultNodeEventHandler.prototype.endStatement = function () {
+        };
+        DefaultNodeEventHandler.prototype.beginDeclaration = function () {
+        };
+        DefaultNodeEventHandler.prototype.endDeclaration = function () {
+        };
+        DefaultNodeEventHandler.prototype.declaration = function (kind, modifiers, type, names) {
+        };
+        DefaultNodeEventHandler.prototype.beginDeclarationList = function () {
+        };
+        DefaultNodeEventHandler.prototype.endDeclarationList = function () {
+        };
+        DefaultNodeEventHandler.prototype.beginFunction = function () {
+        };
+        DefaultNodeEventHandler.prototype.endFunction = function () {
+        };
+        DefaultNodeEventHandler.prototype.beginFunctionArgs = function () {
+        };
+        DefaultNodeEventHandler.prototype.endFunctionArgs = function () {
+        };
+        DefaultNodeEventHandler.prototype.beginExpression = function () {
+        };
+        DefaultNodeEventHandler.prototype.endExpression = function () {
+        };
+        DefaultNodeEventHandler.prototype.beginAssign = function () {
+        };
+        DefaultNodeEventHandler.prototype.endAssign = function () {
+        };
+        DefaultNodeEventHandler.prototype.identifier = function (name) {
+        };
+        DefaultNodeEventHandler.prototype.keyword = function (word) {
+        };
+        DefaultNodeEventHandler.prototype.builtin = function (name) {
+        };
+        return DefaultNodeEventHandler;
+    })();
+    return DefaultNodeEventHandler;
+});
+
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+define('davinci-eight/glsl/NodeWalker',["require", "exports", './DefaultNodeEventHandler'], function (require, exports, DefaultNodeEventHandler) {
+    var DeclarationBuilder = (function (_super) {
+        __extends(DeclarationBuilder, _super);
+        function DeclarationBuilder(next) {
+            _super.call(this);
+            this.modifiers = [];
+            this.names = [];
+            this.next = next;
+        }
+        DeclarationBuilder.prototype.beginDeclaration = function () {
+            this.kind = void 0;
+            this.type = void 0;
+            this.modifiers = [];
+            this.names = [];
+        };
+        DeclarationBuilder.prototype.endDeclaration = function () {
+            if (this.kind) {
+                this.next.declaration(this.kind, this.modifiers, this.type, this.names);
+            }
+            else {
+            }
+        };
+        DeclarationBuilder.prototype.identifier = function (name) {
+            this.names.push(name);
+        };
+        DeclarationBuilder.prototype.keyword = function (word) {
+            switch (word) {
+                case 'attribute':
+                case 'uniform':
+                case 'varying':
+                    {
+                        this.kind = word;
+                    }
+                    break;
+                case 'float':
+                case 'mat3':
+                case 'mat4':
+                case 'vec3':
+                case 'vec4':
+                case 'void':
+                    {
+                        this.type = word;
+                    }
+                    break;
+                case 'highp':
+                    {
+                        this.modifiers.push(word);
+                    }
+                    break;
+                default: {
+                    throw new Error("keyword: " + word);
+                }
+            }
+        };
+        return DeclarationBuilder;
+    })(DefaultNodeEventHandler);
+    var NodeWalker = (function () {
+        function NodeWalker() {
+        }
+        NodeWalker.prototype.walk = function (node, handler) {
+            var walker = this;
+            switch (node.type) {
+                case 'ident':
+                    {
+                        handler.identifier(node.token.data);
+                    }
+                    break;
+                case 'stmt':
+                    {
+                        handler.beginStatement();
+                        node.children.forEach(function (child) {
+                            walker.walk(child, handler);
+                        });
+                        handler.endStatement();
+                    }
+                    break;
+                case 'stmtlist':
+                    {
+                        handler.beginStatementList();
+                        node.children.forEach(function (child) {
+                            walker.walk(child, handler);
+                        });
+                        handler.endStatementList();
+                    }
+                    break;
+                case 'function':
+                    {
+                        handler.beginFunction();
+                        node.children.forEach(function (child) {
+                            walker.walk(child, handler);
+                        });
+                        handler.endFunction();
+                    }
+                    break;
+                case 'functionargs':
+                    {
+                        handler.beginFunctionArgs();
+                        node.children.forEach(function (child) {
+                            walker.walk(child, handler);
+                        });
+                        handler.endFunctionArgs();
+                    }
+                    break;
+                case 'decl':
+                    {
+                        var builder = new DeclarationBuilder(handler);
+                        builder.beginDeclaration();
+                        node.children.forEach(function (child) {
+                            walker.walk(child, builder);
+                        });
+                        builder.endDeclaration();
+                    }
+                    break;
+                case 'decllist':
+                    {
+                        handler.beginDeclarationList();
+                        node.children.forEach(function (child) {
+                            walker.walk(child, handler);
+                        });
+                        handler.endDeclarationList();
+                    }
+                    break;
+                case 'expr':
+                    {
+                        handler.beginExpression();
+                        node.children.forEach(function (child) {
+                            walker.walk(child, handler);
+                        });
+                        handler.endExpression();
+                    }
+                    break;
+                case 'keyword':
+                    {
+                        handler.keyword(node.token.data);
+                    }
+                    break;
+                case 'placeholder':
+                    {
+                    }
+                    break;
+                case 'assign':
+                    {
+                        handler.beginAssign();
+                        node.children.forEach(function (child) {
+                            walker.walk(child, handler);
+                        });
+                        handler.endAssign();
+                    }
+                    break;
+                case 'builtin':
+                    {
+                        handler.builtin(node.token.data);
+                    }
+                    break;
+                case 'binary':
+                    {
+                    }
+                    break;
+                case 'call':
+                    {
+                    }
+                    break;
+                default: {
+                    throw new Error("type: " + node.type);
+                }
+            }
+        };
+        return NodeWalker;
+    })();
+    return NodeWalker;
+});
+
+define('davinci-eight/glsl/Declaration',["require", "exports"], function (require, exports) {
+    var Declaration = (function () {
+        function Declaration(kind, modifiers, type, name) {
+            this.kind = kind;
+            this.modifiers = modifiers;
+            this.type = type;
+            this.name = name;
+        }
+        return Declaration;
+    })();
+    return Declaration;
+});
+
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+define('davinci-eight/glsl/ProgramArgs',["require", "exports", './DefaultNodeEventHandler', './Declaration'], function (require, exports, DefaultNodeEventHandler, Declaration) {
+    var ProgramArgs = (function (_super) {
+        __extends(ProgramArgs, _super);
+        function ProgramArgs() {
+            _super.call(this);
+            this.attributes = [];
+            this.uniforms = [];
+            this.varyings = [];
+        }
+        ProgramArgs.prototype.declaration = function (kind, modifiers, type, names) {
+            var targets = {};
+            targets['attribute'] = this.attributes;
+            targets['uniform'] = this.uniforms;
+            targets['varying'] = this.varyings;
+            var target = targets[kind];
+            if (target) {
+                names.forEach(function (name) {
+                    target.push(new Declaration(kind, modifiers, type, name));
+                });
+            }
+            else {
+                throw new Error("Unexpected declaration kind: " + kind);
+            }
+        };
+        return ProgramArgs;
+    })(DefaultNodeEventHandler);
+    return ProgramArgs;
+});
+
+define('davinci-eight/materials/rawShaderMaterial',["require", "exports", '../glsl/parse', '../glsl/NodeWalker', '../glsl/ProgramArgs'], function (require, exports, parse, NodeWalker, ProgramArgs) {
+    var material = function (vertexShader, fragmentShader) {
         var program;
         var programId;
         var contextGainId;
-        var vertexAttributes = attributes.map(function (attribute) { return new VertexAttribArray(attribute.name, attribute.size); });
-        function contextLoss() {
-            program = void 0;
-            programId = void 0;
+        var attributes = [];
+        try {
+            var program_1 = parse(vertexShader);
+            var walker = new NodeWalker();
+            var args = new ProgramArgs();
+            walker.walk(program_1, args);
+            // TODO: Material should retain/expose all information about shaders, not just name.
+            // However, hide the introspection technology API.
+            attributes = args.attributes.map(function (attribute) { return attribute.name; });
+        }
+        catch (e) {
+            console.log(e);
+        }
+        try {
+            var fragTree = parse(fragmentShader);
+        }
+        catch (e) {
+            console.log(e);
         }
         var publicAPI = {
             get attributes() {
-                return vertexAttributes.map(function (vertexAttribute) { return vertexAttribute.name; });
+                return attributes;
             },
             contextFree: function (context) {
                 if (program) {
                     context.deleteProgram(program);
-                    contextLoss();
+                    program = void 0;
+                    programId = void 0;
+                    contextGainId = void 0;
                 }
-                vertexAttributes.forEach(function (vertexAttribute) {
-                    vertexAttribute.contextFree(context);
-                });
             },
             contextGain: function (context, contextId) {
                 if (contextGainId !== contextId) {
                     program = makeProgram(context, vertexShader, fragmentShader);
                     programId = uuid4().generate();
                     contextGainId = contextId;
-                    vertexAttributes.forEach(function (vertexAttribute) {
-                        vertexAttribute.contextGain(context, program);
-                    });
                 }
             },
             contextLoss: function () {
-                vertexAttributes.forEach(function (vertexAttribute) {
-                    vertexAttribute.contextLoss();
-                });
+                program = void 0;
+                programId = void 0;
+                contextGainId = void 0;
             },
             hasContext: function () {
                 return !!program;
             },
-            enableVertexAttributes: function (context) {
-                vertexAttributes.forEach(function (vertexAttribute) {
-                    vertexAttribute.enable(context);
-                });
-            },
-            disableVertexAttributes: function (context) {
-                vertexAttributes.forEach(function (vertexAttribute) {
-                    vertexAttribute.disable(context);
-                });
-            },
-            bindVertexAttributes: function (context) {
-                vertexAttributes.forEach(function (vertexAttribute) {
-                    vertexAttribute.bind(context);
-                });
-            },
             get program() { return program; },
-            get programId() { return programId; },
-            update: function (context, time, geometry) {
-                vertexAttributes.forEach(function (vertexAttribute) {
-                    vertexAttribute.bufferData(context, geometry);
-                });
-            }
+            get programId() { return programId; }
         };
         return publicAPI;
     };
@@ -3570,167 +5695,6 @@ define('davinci-eight/materials/rawShaderMaterial',["require", "exports", '../ob
     return material;
 });
 
-define('davinci-eight/materials/RawShaderMaterial',["require", "exports", '../objects/VertexAttribArray'], function (require, exports, VertexAttribArray) {
-    var RawShaderMaterial = (function () {
-        function RawShaderMaterial(attributes, vertexShader, fragmentShader) {
-            this.attributes = [];
-            this.vertexAttributes = attributes.map(function (attribute) { return new VertexAttribArray(attribute.name, attribute.size); });
-            this.vertexShader = vertexShader;
-            this.fragmentShader = fragmentShader;
-            this.attributes = this.vertexAttributes.map(function (vertexAttribute) { return vertexAttribute.name; });
-        }
-        RawShaderMaterial.prototype.enableVertexAttributes = function (context) {
-            this.vertexAttributes.forEach(function (vertexAttribute) {
-                vertexAttribute.enable(context);
-            });
-        };
-        RawShaderMaterial.prototype.disableVertexAttributes = function (context) {
-            this.vertexAttributes.forEach(function (vertexAttribute) {
-                vertexAttribute.disable(context);
-            });
-        };
-        RawShaderMaterial.prototype.bindVertexAttributes = function (context) {
-            this.vertexAttributes.forEach(function (vertexAttribute) {
-                vertexAttribute.bind(context);
-            });
-        };
-        RawShaderMaterial.prototype.update = function (context, time, geometry) {
-            this.vertexAttributes.forEach(function (vertexAttribute) {
-                vertexAttribute.bufferData(context, geometry);
-            });
-        };
-        RawShaderMaterial.prototype.contextFree = function (context) {
-            if (this.program) {
-                context.deleteProgram(this.program);
-                this.contextLoss();
-            }
-            this.vertexAttributes.forEach(function (vertexAttribute) {
-                vertexAttribute.contextFree(context);
-            });
-        };
-        RawShaderMaterial.prototype.contextGain = function (context, contextId) {
-            if (this.contextGainId !== contextId) {
-                this.program = makeProgram(context, this.vertexShader, this.fragmentShader);
-                this.programId = uuid4().generate();
-                this.contextGainId = contextId;
-                var program = this.program;
-                this.vertexAttributes.forEach(function (vertexAttribute) {
-                    vertexAttribute.contextGain(context, program);
-                });
-            }
-        };
-        RawShaderMaterial.prototype.contextLoss = function () {
-            this.vertexAttributes.forEach(function (vertexAttribute) {
-                vertexAttribute.contextLoss();
-            });
-            this.program = void 0;
-            this.programId = void 0;
-            this.contextGainId = void 0;
-        };
-        RawShaderMaterial.prototype.hasContext = function () {
-            return !!this.program;
-        };
-        return RawShaderMaterial;
-    })();
-    /**
-     * Creates a WebGLProgram with compiled and linked shaders.
-     */
-    function makeProgram(gl, vertexShader, fragmentShader) {
-        // TODO: Proper cleanup if we throw an error at any point.
-        var vs = gl.createShader(gl.VERTEX_SHADER);
-        gl.shaderSource(vs, vertexShader);
-        gl.compileShader(vs);
-        if (!gl.getShaderParameter(vs, gl.COMPILE_STATUS)) {
-            throw new Error(gl.getShaderInfoLog(vs));
-        }
-        var fs = gl.createShader(gl.FRAGMENT_SHADER);
-        gl.shaderSource(fs, fragmentShader);
-        gl.compileShader(fs);
-        if (!gl.getShaderParameter(fs, gl.COMPILE_STATUS)) {
-            throw new Error(gl.getShaderInfoLog(fs));
-        }
-        var program = gl.createProgram();
-        gl.attachShader(program, vs);
-        gl.attachShader(program, fs);
-        gl.linkProgram(program);
-        if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-            throw new Error(gl.getProgramInfoLog(program));
-        }
-        return program;
-    }
-    function uuid4() {
-        var maxFromBits = function (bits) {
-            return Math.pow(2, bits);
-        };
-        var limitUI04 = maxFromBits(4);
-        var limitUI06 = maxFromBits(6);
-        var limitUI08 = maxFromBits(8);
-        var limitUI12 = maxFromBits(12);
-        var limitUI14 = maxFromBits(14);
-        var limitUI16 = maxFromBits(16);
-        var limitUI32 = maxFromBits(32);
-        var limitUI40 = maxFromBits(40);
-        var limitUI48 = maxFromBits(48);
-        var getRandomInt = function (min, max) {
-            return Math.floor(Math.random() * (max - min + 1)) + min;
-        };
-        var randomUI06 = function () {
-            return getRandomInt(0, limitUI06 - 1);
-        };
-        var randomUI08 = function () {
-            return getRandomInt(0, limitUI08 - 1);
-        };
-        var randomUI12 = function () {
-            return getRandomInt(0, limitUI12 - 1);
-        };
-        var randomUI16 = function () {
-            return getRandomInt(0, limitUI16 - 1);
-        };
-        var randomUI32 = function () {
-            return getRandomInt(0, limitUI32 - 1);
-        };
-        var randomUI48 = function () {
-            return (0 | Math.random() * (1 << 30)) + (0 | Math.random() * (1 << 48 - 30)) * (1 << 30);
-        };
-        var paddedString = function (str, length, z) {
-            str = String(str);
-            z = (!z) ? '0' : z;
-            var i = length - str.length;
-            for (; i > 0; i >>>= 1, z += z) {
-                if (i & 1) {
-                    str = z + str;
-                }
-            }
-            return str;
-        };
-        var fromParts = function (timeLow, timeMid, timeHiAndVersion, clockSeqHiAndReserved, clockSeqLow, node) {
-            var hex = paddedString(timeLow.toString(16), 8) +
-                '-' +
-                paddedString(timeMid.toString(16), 4) +
-                '-' +
-                paddedString(timeHiAndVersion.toString(16), 4) +
-                '-' +
-                paddedString(clockSeqHiAndReserved.toString(16), 2) +
-                paddedString(clockSeqLow.toString(16), 2) +
-                '-' +
-                paddedString(node.toString(16), 12);
-            return hex;
-        };
-        return {
-            generate: function () {
-                return fromParts(randomUI32(), randomUI16(), 0x4000 | randomUI12(), 0x80 | randomUI06(), randomUI08(), randomUI48());
-            },
-            // addition by Ka-Jan to test for validity
-            // Based on: http://stackoverflow.com/questions/7905929/how-to-test-valid-uuid-guid
-            validate: function (uuid) {
-                var testPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-                return testPattern.test(uuid);
-            }
-        };
-    }
-    return RawShaderMaterial;
-});
-
 define('davinci-eight/materials/meshBasicMaterial',["require", "exports", 'davinci-eight/materials/material'], function (require, exports, material) {
     var meshBasicMaterial = function (spec) {
         var publicAPI = material(spec);
@@ -3748,7 +5712,7 @@ define('davinci-eight/materials/meshNormalMaterial',["require", "exports", 'davi
 });
 
 /// <reference path="../vendor/davinci-blade/dist/davinci-blade.d.ts" />
-define('davinci-eight',["require", "exports", 'davinci-eight/core', 'davinci-eight/materials/material', 'davinci-eight/core/object3D', 'davinci-eight/cameras/perspectiveCamera', 'davinci-eight/scenes/scene', 'davinci-eight/renderers/webGLRenderer', 'davinci-eight/objects/mesh', 'davinci-eight/utils/webGLContextMonitor', 'davinci-eight/utils/workbench3D', 'davinci-eight/utils/windowAnimationRunner', 'davinci-eight/geometries/boxGeometry', 'davinci-eight/geometries/CurveGeometry', 'davinci-eight/geometries/LatticeGeometry', 'davinci-eight/geometries/RGBGeometry', 'davinci-eight/geometries/prismGeometry', 'davinci-eight/materials/rawShaderMaterial', 'davinci-eight/materials/RawShaderMaterial', 'davinci-eight/materials/meshBasicMaterial', 'davinci-eight/materials/meshNormalMaterial', 'davinci-eight/objects/VertexAttribArray'], function (require, exports, core, material, object3D, perspectiveCamera, scene, webGLRenderer, mesh, webGLContextMonitor, workbench3D, windowAnimationRunner, boxGeometry, CurveGeometry, LatticeGeometry, RGBGeometry, prismGeometry, rawShaderMaterial, RawShaderMaterial, meshBasicMaterial, meshNormalMaterial, VertexAttribArray) {
+define('davinci-eight',["require", "exports", 'davinci-eight/core', 'davinci-eight/materials/material', 'davinci-eight/core/object3D', 'davinci-eight/cameras/perspectiveCamera', 'davinci-eight/scenes/scene', 'davinci-eight/renderers/webGLRenderer', 'davinci-eight/objects/mesh', 'davinci-eight/utils/webGLContextMonitor', 'davinci-eight/utils/workbench3D', 'davinci-eight/utils/windowAnimationRunner', 'davinci-eight/geometries/boxGeometry', 'davinci-eight/geometries/CurveGeometry', 'davinci-eight/geometries/LatticeGeometry', 'davinci-eight/geometries/RGBGeometry', 'davinci-eight/geometries/prismGeometry', 'davinci-eight/materials/rawShaderMaterial', 'davinci-eight/materials/meshBasicMaterial', 'davinci-eight/materials/meshNormalMaterial', 'davinci-eight/objects/VertexAttribArray'], function (require, exports, core, material, object3D, perspectiveCamera, scene, webGLRenderer, mesh, webGLContextMonitor, workbench3D, windowAnimationRunner, boxGeometry, CurveGeometry, LatticeGeometry, RGBGeometry, prismGeometry, rawShaderMaterial, meshBasicMaterial, meshNormalMaterial, VertexAttribArray) {
     var eight = {
         'VERSION': core.VERSION,
         perspective: perspectiveCamera,
@@ -3773,8 +5737,7 @@ define('davinci-eight',["require", "exports", 'davinci-eight/core', 'davinci-eig
         VertexAttribArray: VertexAttribArray,
         get rawShaderMaterial() {
             return rawShaderMaterial;
-        },
-        RawShaderMaterial: RawShaderMaterial
+        }
     };
     return eight;
 });
