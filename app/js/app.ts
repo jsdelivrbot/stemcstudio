@@ -83,14 +83,14 @@ angular.module('app',
       if ($window.applicationCache.status === $window.applicationCache.UPDATEREADY) {
         BootstrapDialog.show({
           type: BootstrapDialog.TYPE_SUCCESS,
-          title: $("<h3>Upload Ready</h3>"),
-          message: "A new version of mathdoodle is available. Would you like me to reload now?",
+          title: $("<h3>Update Ready</h3>"),
+          message: "A new version of mathdoodle is available. Would you like to use it now?",
           closable: false,
           closeByBackdrop: false,
           closeByKeyboard: false,
           buttons: [
           {
-            label: "Yes",
+            label: "Yes, Now",
             cssClass: 'btn btn-primary',
             action: function(dialog) {
               $window.location.reload();
@@ -98,7 +98,7 @@ angular.module('app',
             }
           },
           {
-            label: "No",
+            label: "No, Later",
             cssClass: 'btn',
             action: function(dialog) {
               dialog.close();
