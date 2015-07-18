@@ -2951,6 +2951,13 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/NotImple
                     throw new Euclidean3Error("index must be in the range [0..7]");
             }
         };
+        /**
+         * Computes the sum of this Euclidean3 and another considered to be the rhs of the binary addition, `+`, operator.
+         * This method does not change this Euclidean3.
+         * @method add
+         * @param rhs {Euclidean3}
+         * @return {Euclidean3} This Euclidean3 plus rhs.
+         */
         Euclidean3.prototype.add = function (rhs) {
             var coord = function (x, n) {
                 return x[n];
@@ -2976,6 +2983,13 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/NotImple
                 return new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, undefined).add(this);
             }
         };
+        /**
+         * Computes the difference of this Euclidean3 and another considered to be the rhs of the binary subtraction, `-`, operator.
+         * This method does not change this Euclidean3.
+         * @method sub
+         * @param rhs {Euclidean3}
+         * @return {Euclidean3} This Euclidean3 minus rhs.
+         */
         Euclidean3.prototype.sub = function (rhs) {
             var coord = function (x, n) {
                 return x[n];

@@ -7,16 +7,14 @@
 //
 declare module EIGHT
 {
-  class Drawable {
-    drawGroupName: string;
-    useProgram(context: WebGLRenderingContext);
-    draw(context: WebGLRenderingContext, time: number);
-  }
+  /**
+   *
+   */
   class RenderingContextUser {
     /**
      * Notify the target that it is no longer required, and request to free, dispose, or delete any WebGL resources acquired and owned by the target.
      */
-    contextFree(context: WebGLRenderingContext): void;
+    contextFree(): void;
     /**
      * Notification of a new WebGLRenderingContext.
      * @param context The WebGLRenderingContext.
@@ -33,6 +31,11 @@ declare module EIGHT
      */
     hasContext(): boolean;
   }
+  class Drawable extends RenderingContextUser {
+    drawGroupName: string;
+    useProgram();
+    draw(view: VertexUniformProvider);
+  }
   class World extends RenderingContextUser
   {
     drawGroups: {[drawGroupName:string]: Drawable[]},
@@ -41,85 +44,28 @@ declare module EIGHT
      */
     add(drawable: Drawable): void;
   }
-  class Euclidean3 {
-      public w: number;
-      public x: number;
-      public y: number;
-      public z: number;
-      public xy: number;
-      public yz: number;
-      public zx: number;
-      public xyz: number;
-      constructor(w: number, x: number, y: number, z: number, xy: number, yz: number, zx: number, xyz: number);
-      static fromCartesian(w: number, x: number, y: number, z: number, xy: number, yz: number, zx: number, xyz: number): Euclidean3;
-      static fromObject(self?: {
-          w?: number;
-          x?: number;
-          y?: number;
-          z?: number;
-          xy?: number;
-          yz?: number;
-          zx?: number;
-          xyz?: number;
-      }): Euclidean3;
-      public coordinates(): number[];
-      public coordinate(index: number): number;
-      /**
-       * Returns the sum of the target and the argument.
-       */
-      public add(rhs: Euclidean3): Euclidean3;
-      /**
-       * Returns the difference of the target and the argument.
-       */ 
-      public sub(rhs: Euclidean3): Euclidean3;
-      /**
-       * Returns the product of the target and the argument.
-       */
-      public mul(rhs: any): Euclidean3;
-      /**
-       * Returns the quotient of the target and the argument.
-       */
-      public div(rhs: any): Euclidean3;
-      /**
-       * Returns the outer product of the the target and the argument. 
-       */
-      public wedge(rhs: Euclidean3): Euclidean3;
-      /**
-       * Returns the left contraction of the target and the argument.
-       */
-      public lshift(rhs: Euclidean3): Euclidean3;
-      /**
-       * Returns the right contraction of the target and the argument.
-       */
-      public rshift(rhs: Euclidean3): Euclidean3;
-      /**
-       * Returns the part of the target with the specified grade.
-       */
-      public grade(index: number): Euclidean3;
-      /**
-       * Return the dot product of the target with the argument.
-       */
-      public dot(vector: Euclidean3): number;
-      /**
-       * Returns the cross product of the target with the argument. 
-       */
-      public cross(vector: Euclidean3): Euclidean3;
-      /**
-       * Returns the number of components in the Euclidean3.
-       */
-      public length(): number;
-      /**
-       * Returns the norm of the Euclidean3. For a vector, this would be the magnitude.
-       */
-      public norm(): Euclidean3;
-      /**
-       * Returns the quadrance of the Euclidean3. The norm is the square root of the quadrance.
-       */
-      public quad(): Euclidean3;
-      public sqrt(): Euclidean3;
-      public toString(): string;
-      public toStringIJK(): string;
-      public toStringLATEX(): string;
+  /**
+   * Manages the lifecycle of an attribute used in a vertex shader.
+   */
+  class ShaderAttributeVariable {
+    constructor(name: string, size: number, normalized?: boolean, stride?: number, offset?: number) {
+    }
+    contextFree();
+    contextGain(context: WebGLRenderingContext, program: WebGLProgram);
+    contextLoss();
+    enable();
+    disable();
+    bind();
+    bufferData(data: VertexAttributeProvider);
+  }
+  class ShaderUniformVariable {
+    constructor(name: string, type: string);
+    contextFree();
+    contextGain(context: WebGLRenderingContext, program: WebGLProgram);
+    contextLoss();
+    vec3(v: Vector3);
+    mat3(transpose: boolean, matrix: Float32Array);
+    mat4(transpose: boolean, matrix: Float32Array);
   }
   class Matrix3 {
     public elements: number[];
@@ -135,44 +81,98 @@ declare module EIGHT
     translate(position: { x: number, y: number, z: number }): void;
     rotate(rotation: { yz: number, zx: number, xy: number, w: number }): void;
   }
-  class Quaternion {
+  interface Spinor3Coords {
+    yz: number;
+    zx: number;
+    xy: number;
+    w: number;
+  }
+  class Spinor3 implements Spinor3Coords {
+    public yz: number;
+    public zx: number;
+    public xy: number;
+    public w: number;
+    constructor(spinor?: { yz: number, zx: number, xy: number, w: number });
+    clone(): Spinor3;
+    toString(): string;
+  }
+  interface Cartesian3 {
+    x: number;
+    y: number;
+    z: number;
+  }
+  class Vector3 implements Cartesian3 {
     public x: number;
     public y: number;
     public z: number;
-    public w: number;
-    constructor(x: number, y: number, z: number, w: number);
+    public static e1: Vector3;
+    public static e2: Vector3;
+    public static e3: Vector3;
+    constructor(vector?: { x: number, y: number, z: number });
+    multiplyScalar(s: number): Vector3;
+    clone(): Vector3;
+    normalize(): Vector3;
   }
-class Vector3 {
-  public x: number;
-  public y: number;
-  public z: number;
-  constructor(x: number, y: number, z: number);
-  multiplyScalar(s: number): Vector3;
-}  /**
+  /**
    *
    */
   interface UniformMetaInfo {
-    [property: string]: {
-      name: string;
-      type: string;
-    }
+    name: string;
+    type: string;
   }
-  interface VertexUniformProvider {
-    getUniformMatrix3(name: string): { transpose: boolean; matrix3: Float32Array };
-    getUniformMatrix4(name: string): { transpose: boolean; matrix4: Float32Array };
+  interface UniformMetaInfos {
+    [property: string]: UniformMetaInfo
   }
   /**
-   * A transformation from the 3D world to the view cube.
+   * Provides the runtime and design time data required to use a uniform in a vertex shader.
    */
-  class Camera extends Drawable implements VertexUniformProvider {
-    public projectionMatrix: Matrix4;
-    constructor();
+  class VertexUniformProvider {
+    getUniformVector3(name: string): Vector3;
     getUniformMatrix3(name: string): { transpose: boolean; matrix3: Float32Array };
     getUniformMatrix4(name: string): { transpose: boolean; matrix4: Float32Array };
-    static getUniformMetaInfo(): UniformMetaInfo;
+    getUniformMetaInfos(): UniformMetaInfos;
   }
-  class PerspectiveCamera extends Camera implements VertexUniformProvider {
-    constructor(fov: number, aspect: number, near: number, far: number);
+  /**
+   *
+   */
+  class AmbientLight extends VertexUniformProvider {
+    constructor(color: Color);
+  }
+  /**
+   *
+   */
+  class ChainedVertexUniformProvider extends VertexUniformProvider {
+    constructor(one: VertexUniformProvider, two: VertexUniformProvider);
+  }
+  /**
+   *
+   */
+  class View extends VertexUniformProvider {
+    eye: Cartesian3;
+    look: Cartesian3;
+    up: Cartesian3;
+  }
+  /**
+   * A transformation from the 3D world to the canonical view volume.
+   * The canonical view volume is the cube that extends from -1 to +1
+   * in all cartesian directions. 
+   */
+  class LinearPerspectiveCamera extends View {
+    fov: number;
+    aspect: number;
+    near: number;
+    far: number;
+  }
+  interface AttributeMetaInfo {
+    name: string,
+    type: string,
+    size: number,
+    normalized: boolean,
+    stride: number,
+    offset: number
+  }
+  interface AttributeMetaInfos {
+    [property: string]: AttributeMetaInfo;
   }
   /**
    * A Geometry is the generator of calls to drawArrays or drawElements.
@@ -181,13 +181,18 @@ class Vector3 {
   {
     draw(context: WebGLRenderingContext): void;
     /**
+     * Determines how the thing will be drawn.
+     * 0 <=> POINTS, 1 <=> LINES, 2 <=> TRIANGLES
+     */
+    drawMode: number;
+    /**
      * Determines whether this Geometry changes. If so, update may be called repeatedly.
      */
-    dynamic(): boolean;
+    dynamics(): boolean;
     /**
      * Declares the vertex shader attributes the geometry can supply and information required for binding.
      */
-    getAttributeMetaInfos(): {property: string, name: string, type: string, size: number, normalized: boolean, stride: number, offset: number}[];
+    getAttributeMetaInfos(): AttributeMetaInfos;
     /**
      * Determines whether this Geometry uses WebGL's drawElements() for rendering.
      */
@@ -202,9 +207,9 @@ class Vector3 {
      */
     getVertexAttributeData(name: string): Float32Array;
     /**
-     * Notifies the geometry that it should update its array buffers.
+     * Notifies the mesh that it should update its array buffers.
      */
-    update(time: number, attributes: {modifiers: string[], type: string, name: string}[]): void;
+    update(attributes: ShaderVariableDecl[]): void;
   }
   class Face3 {
     constructor(a: number, b: number, c: number);
@@ -240,20 +245,39 @@ class Vector3 {
     constructor();
     computeBoundingSphere(): void;
   }
+  class Color
+  {
+    public red: number;
+    public green: number;
+    public blue: number;
+    public alpha: number;
+    constructor(red: number, green: number, blue: number, alpha?: number);
+  }
+  class GeometryAdapter extends VertexAttributeProvider
+  {
+    public color: Color;
+    constructor(geometry: Geometry, options? {drawMode?: number});
+  }
   class CurveGeometry extends VertexAttributeProvider {
     constructor(
       n: number,
       generator: (i: number, time: number) => {x: number; y: number; z: number});
   }
-  class LatticeGeometry extends VertexAttributeProvider {
+  class LatticeVertexAttributeProvider extends VertexAttributeProvider {
     constructor(
       I: number,
       J: number,
       K: number,
       generator: (i: number, j: number, k: number, time: number) => { x: number; y: number; z: number });
   }
-  class BoxGeometry extends VertexAttributeProvider {
-    constructor(width: number, height: number, depth: number);
+  class BoxGeometry extends Geometry {
+    constructor(
+      width: number,
+      height: number,
+      depth: number,
+      widthSegments?:number,
+      heightSegments?:number,
+      depthSegments?:number);
   }
   class CylinderGeometry extends Geometry {
     constructor(
@@ -272,35 +296,24 @@ class Vector3 {
   /**
    * A vertex shader and a fragment shader combined into a program.
    */
-  class Material extends RenderingContextUser
+  class ShaderProgram extends RenderingContextUser
   {
     attributes: {modifiers: string[], type: string, name: string}[];
     uniforms: {modifiers: string[], type: string, name: string}[];
     varyings: {modifiers: string[], type: string, name: string}[];
     program: WebGLProgram;
     programId: string;
-  }
-  interface ShaderMaterial extends Material {
     vertexShader: string;
     fragmentShader: string;
   }
-  interface SmartMaterial extends Material {
-  }
   /**
-   * The combination of a geometry and a material.
+   * The combination of a geometry, model and a shaderProgram.
    */
-  class FactoredDrawable<G, M extends Material> extends Drawable
+  class DrawableModel<G, M extends VertexUniformProvider, P extends ShaderProgram> extends Drawable
   {
-    geometry: G;
-    material: M;
-    /**
-     * The attitude of the mesh expressed as a rotor.
-     */
-    attitude: Euclidean3;
-    /**
-     * The position of the mesh relative to the origin. 
-     */
-    position: Euclidean3;
+    mesh: G;
+    model: M
+    shaderProgram: P;
   }
   interface RenderingContextMonitor
   {
@@ -320,7 +333,7 @@ class Vector3 {
     contextFree(): void;
     contextGain(gl: WebGLRenderingContext, contextGainId: string): void;
     contextLoss(): void;
-    render(world: World, ambientUniforms: VertexUniformProvider): void;
+    render(world: World, views: VertexUniformProvider[]): void;
     clearColor(red: number, green: number, blue: number, alpha: number): void;
     setSize(width: number, height: number): void;
   }
@@ -355,84 +368,80 @@ class Vector3 {
    * Constructs and returns a World.
    */
   function world(): World;
+  function view(): View;
   /**
-   *
-   */
-  class Scene extends World {
-  }
-  /**
-   * Constructs and returns a Linear Perspective projection camera.
+   * Constructs and returns a LinearPerspectiveCamera.
    */
   function perspective(
     /**
      * The field of view angle in the y-direction, measured in radians.
      */
-    fov: number, aspect: number, near: number, far: number): Camera;
+    fov?: number,
+    aspect?: number,
+    near?: number,
+    far?: number): LinearPerspectiveCamera;
   /**
    * Constructs and returns a WebGL renderer.
    * @param parameters Optional parameters for modifying the WebGL context.
    */
   function renderer(parameters?: RendererParameters): Renderer;
   /**
-   * Constructs a Material from the specified shader codes.
+   * Constructs a ShaderProgram from the specified shader codes.
    */
-  function pointsMaterial(): Material;
+  function pointsProgram(): ShaderProgram;
   /**
-   * Constructs a ShaderMaterial from the specified shader codes.
+   * Constructs a ShaderProgram from the specified vertex and fragment shader codes.
    */
-  function shaderMaterial(): ShaderMaterial;
+  function shaderProgram(vertexShader: string, fragmentShader: string): ShaderProgram;
   /**
-   * Constructs a Material by introspecting a Geometry.
+   * Constructs a ShaderProgram by introspecting a Geometry.
    */
-  function smartMaterial(geometry: VertexAttributeProvider, uniforms: UniformMetaInfo): SmartMaterial;
+  function smartProgram(attributes: AttributeMetaInfos, uniformsList: UniformMetaInfos[]): ShaderProgram;
   /**
-   * Constructs a mesh from the specified geometry and material.
-   * The uniformCallback must be supplied if the vertex shader has uniform variables.
+   * Constructs a Drawable from the specified attribute provider and program.
    * @param geometry
-   * @param material
-   * @param uniformCallback
+   * @param shaderProgram
    */
-  function mesh<G extends VertexAttributeProvider, M extends Material>(geometry: G, material: M, meshUniforms?: VertexUniformProvider): FactoredDrawable<G, M>;
-  class Mesh<G extends Geometry, M extends Material> extends FactoredDrawable<G,M> {
-    constructor(geometry: G, material: M);
-    setRotationFromQuaternion(q: Quaternion): void;
-    static getUniformMetaInfo(): UniformMetaInfo;
-  }
-  class MeshBasicMaterial extends Material {
-  }
-  class MeshNormalMaterial extends Material {
+  function drawableModel<G extends VertexAttributeProvider, M extends VertexUniformProvider, P extends ShaderProgram>(geometry: G, model: M, shaderProgram: P): DrawableModel<G, M, P>;
+  /**
+   *
+   */
+  class Model extends VertexUniformProvider {
+    public position: Cartesian3;
+    public attitude: Spinor3Coords;
+    constructor();
   }
   /**
-   * Constructs and returns a box geometry.
+   * Constructs and returns a box mesh.
    */
   function box(): VertexAttributeProvider;
   /**
    *
    */
-  interface CuboidGeometry extends VertexAttributeProvider {
+  interface CuboidVertexAttributeProvider extends VertexAttributeProvider {
     /**
      * The axis corresponding to e1.
      */
-    a: blade.Euclidean3;
+    a: Vector3;
     /**
      * The axis corresponding to e2.
      */
-    b: blade.Euclidean3;
+    b: Vector3;
     /**
      * The axis corresponding to e3.
      */
-    c: blade.Euclidean3;
+    c: Vector3;
     /**
      * The color of the cuboid.
      */
-    color: number[];
+    color: Color;
     /**
      * The cuboid should be rendered using a gray scale.
      */
     grayScale: boolean;
   }
   /**
-   * Constructs and returns a cuboid geometry.
+   * Constructs and returns a cuboid mesh.
    */
   function cuboid(spec?: {
     position?:{
@@ -440,12 +449,12 @@ class Vector3 {
     },
     color?:{
       name?:string,
-      value?:number[]
+      value?:Color
     }
     normal?:{
       name?:string
     }
-  }): CuboidGeometry;
+  }): CuboidVertexAttributeProvider;
   /**
    * A surface generated by the parametric equation:
    * a * cos(phi) * sin(theta) + b * cos(theta) + c * sin(phi) * sin(theta),
@@ -455,15 +464,15 @@ class Vector3 {
     /**
      * The axis corresponding to (theta, phi) = (PI/2,0).
      */
-    a: blade.Euclidean3;
+    a: Vector3;
     /**
      * The axis corresponding to theta = 0.
      */
-    b: blade.Euclidean3;
+    b: Vector3;
     /**
      * The axis corresponding to (theta, phi) = (PI/2,PI/2).
      */
-    c: blade.Euclidean3;
+    c: Vector3;
     /**
      * The number of segments in the theta parameter.
      */
@@ -539,37 +548,22 @@ class Vector3 {
       taper?: (u: number)=>number);
   }
   /**
-   * Constructs and returns an ellipsoid geometry.
+   * Constructs and returns an ellipsoid mesh.
    */
   function ellipsoid(): EllipsoidGeometry;
   /**
-   * Constructs and returns a prism geometry.
+   * Constructs and returns a prism mesh.
    */
   function prism(): VertexAttributeProvider;
+  /**
+   *
+   */
   class Curve() {
   }
   /**
-   * Returns a Euclidean 3-dimensional number representing a scalar.
-   */
-  function scalarE3(w: number): Euclidean3;
-  /**
-   * Returns a vector from its cartesian components.
-   * @param x The component of the vector in the x-axis direction.
-   * @param y The component of the vector in the y-axis direction.
-   * @param z The component of the vector in the z-axis direction.
-   */
-  function vectorE3(x: number, y: number, z: number): Euclidean3;
-  /**
-   * Returns a bivector from its cartesian components.
-   * @param xy The bivector component in the xy-plane.
-   * @param yz The bivector component in the yz-plane.
-   * @param zx The bivector component in the zx-plane.
-   */
-  function bivectorE3(xy: number, yz: number, zx: number): Euclidean3;
-  /**
    * Constructs and returns a new Workbench3D.
    */
-  function workbench(canvas: HTMLCanvasElement, renderer: Renderer, camera: Camera, window: Window): Workbench3D;
+  function workbench(canvas: HTMLCanvasElement, renderer: Renderer, view: View, window: Window): Workbench3D;
   /**
    * Constructs and returns a WindowAnimationRunner.
    */
