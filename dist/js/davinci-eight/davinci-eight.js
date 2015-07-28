@@ -455,7 +455,7 @@ define('davinci-eight/core/DrawMode',["require", "exports"], function (require, 
 
 define('davinci-eight/core',["require", "exports"], function (require, exports) {
     var core = {
-        VERSION: '2.34.0'
+        VERSION: '2.36.0'
     };
     return core;
 });
@@ -1151,8 +1151,10 @@ define('davinci-eight/core/Symbolic',["require", "exports"], function (require, 
         Symbolic.ATTRIBUTE_COLOR = 'color';
         Symbolic.ATTRIBUTE_NORMAL = 'normal';
         Symbolic.UNIFORM_AMBIENT_LIGHT = 'AmbientLight';
+        Symbolic.UNIFORM_DIRECTIONAL_LIGHT = 'DirectionalLight';
         Symbolic.UNIFORM_DIRECTIONAL_LIGHT_COLOR = 'directionalLightColor';
         Symbolic.UNIFORM_DIRECTIONAL_LIGHT_DIRECTION = 'directionalLightDirection';
+        Symbolic.UNIFORM_POINT_LIGHT = 'PointLight';
         Symbolic.UNIFORM_POINT_LIGHT_COLOR = 'pointLightColor';
         Symbolic.UNIFORM_POINT_LIGHT_POSITION = 'pointLightPosition';
         Symbolic.UNIFORM_PROJECTION_MATRIX = 'projectionMatrix';
@@ -2978,7 +2980,7 @@ define('davinci-eight/geometries/GeometryAdapter',["require", "exports", '../cor
             options.drawMode = typeof options.drawMode !== 'undefined' ? options.drawMode : DrawMode.TRIANGLES;
             options.elementsUsage = typeof options.elementsUsage !== 'undefined' ? options.elementsUsage : DataUsage.STREAM_DRAW;
             this.geometry = geometry;
-            this.color = new Color([1.0, 1.0, 1.0]);
+            //  this.color = new Color([1.0, 1.0, 1.0]);
             this.geometry.dynamic = false;
             this.$drawMode = options.drawMode;
             this.elementsUsage = options.elementsUsage;
@@ -3037,11 +3039,16 @@ define('davinci-eight/geometries/GeometryAdapter',["require", "exports", '../cor
                 case DEFAULT_VERTEX_ATTRIBUTE_POSITION_NAME: {
                     return { usage: DataUsage.DYNAMIC_DRAW, data: this.aVertexPositionArray };
                 }
-                case DEFAULT_VERTEX_ATTRIBUTE_COLOR_NAME: {
-                    return { usage: DataUsage.DYNAMIC_DRAW, data: this.aVertexColorArray };
-                }
+                //      case DEFAULT_VERTEX_ATTRIBUTE_COLOR_NAME: {
+                //        return {usage: DataUsage.DYNAMIC_DRAW, data: this.aVertexColorArray };
+                //      }
                 case DEFAULT_VERTEX_ATTRIBUTE_NORMAL_NAME: {
-                    return { usage: DataUsage.DYNAMIC_DRAW, data: this.aVertexNormalArray };
+                    if (this.$drawMode === DrawMode.TRIANGLES) {
+                        return { usage: DataUsage.DYNAMIC_DRAW, data: this.aVertexNormalArray };
+                    }
+                    else {
+                        return;
+                    }
                 }
                 default: {
                     return;
@@ -3058,16 +3065,18 @@ define('davinci-eight/geometries/GeometryAdapter',["require", "exports", '../cor
                 stride: 0,
                 offset: 0
             };
-            if (!this.grayScale) {
-                attribues[Symbolic.ATTRIBUTE_COLOR] = {
+            /*
+                if (!this.grayScale) {
+                  attribues[Symbolic.ATTRIBUTE_COLOR] = {
                     name: DEFAULT_VERTEX_ATTRIBUTE_COLOR_NAME,
                     glslType: 'vec4',
                     size: 4,
                     normalized: false,
                     stride: 0,
                     offset: 0
-                };
-            }
+                  };
+                }
+            */
             if (this.drawMode === DrawMode.TRIANGLES) {
                 attribues[Symbolic.ATTRIBUTE_NORMAL] = {
                     name: DEFAULT_VERTEX_ATTRIBUTE_NORMAL_NAME,
@@ -3082,23 +3091,29 @@ define('davinci-eight/geometries/GeometryAdapter',["require", "exports", '../cor
         };
         GeometryAdapter.prototype.update = function (attributes) {
             var vertices = [];
-            var colors = [];
+            //  let colors: number[] = [];
             var normals = [];
             var elements = [];
             var vertexList = this.geometry.vertices;
-            var color = this.color;
-            var colorFunction = this.colorFunction;
-            var colorMaker = function (vertexIndex, face, vertexList) {
-                if (color) {
-                    return color;
-                }
-                else if (colorFunction) {
-                    return colorFunction(vertexIndex, face, vertexList);
-                }
-                else {
-                    return defaultColorFunction(vertexIndex, face, vertexList);
-                }
-            };
+            /*
+            let color = this.color;
+            let colorFunction = this.colorFunction;
+            let colorMaker = function(vertexIndex: number, face: Face3, vertexList: Vector3[]): Color
+            {
+              if (color)
+              {
+                return color;
+              }
+              else if (colorFunction)
+              {
+                return colorFunction(vertexIndex, face, vertexList);
+              }
+              else
+              {
+                return defaultColorFunction(vertexIndex, face, vertexList);
+              }
+            }
+            */
             switch (this.drawMode) {
                 case DrawMode.POINTS:
                     {
@@ -3110,11 +3125,13 @@ define('davinci-eight/geometries/GeometryAdapter',["require", "exports", '../cor
                             vertices.push(vA.x);
                             vertices.push(vA.y);
                             vertices.push(vA.z);
-                            var colorA = color;
+                            /*
+                            var colorA: Color = color;
                             colors.push(colorA.red);
                             colors.push(colorA.green);
                             colors.push(colorA.blue);
                             colors.push(1.0);
+                            */
                         });
                     }
                     break;
@@ -3133,16 +3150,19 @@ define('davinci-eight/geometries/GeometryAdapter',["require", "exports", '../cor
                             vertices.push(vB.x);
                             vertices.push(vB.y);
                             vertices.push(vB.z);
-                            var colorA = color;
-                            var colorB = color;
+                            /*
+                            var colorA: Color = color;
+                            var colorB: Color = color;
                             colors.push(colorA.red);
                             colors.push(colorA.green);
                             colors.push(colorA.blue);
                             colors.push(1.0);
+                  
                             colors.push(colorB.red);
                             colors.push(colorB.green);
                             colors.push(colorB.blue);
                             colors.push(1.0);
+                            */
                         });
                     }
                     break;
@@ -3198,21 +3218,26 @@ define('davinci-eight/geometries/GeometryAdapter',["require", "exports", '../cor
                                 normals.push(normal.y);
                                 normals.push(normal.z);
                             }
-                            var colorA = colorMaker(face.a, face, vertexList);
-                            var colorB = colorMaker(face.b, face, vertexList);
-                            var colorC = colorMaker(face.c, face, vertexList);
+                            /*
+                            var colorA: Color = colorMaker(face.a, face, vertexList);
+                            var colorB: Color = colorMaker(face.b, face, vertexList);
+                            var colorC: Color = colorMaker(face.c, face, vertexList);
+                  
                             colors.push(colorA.red);
                             colors.push(colorA.green);
                             colors.push(colorA.blue);
                             colors.push(1.0);
+                  
                             colors.push(colorB.red);
                             colors.push(colorB.green);
                             colors.push(colorB.blue);
                             colors.push(1.0);
+                  
                             colors.push(colorC.red);
                             colors.push(colorC.green);
                             colors.push(colorC.blue);
                             colors.push(1.0);
+                            */
                         });
                     }
                     break;
@@ -3221,7 +3246,7 @@ define('davinci-eight/geometries/GeometryAdapter',["require", "exports", '../cor
             }
             this.elementArray = new Uint16Array(elements);
             this.aVertexPositionArray = new Float32Array(vertices);
-            this.aVertexColorArray = new Float32Array(colors);
+            //  this.aVertexColorArray = new Float32Array(colors);
             this.aVertexNormalArray = new Float32Array(normals);
         };
         GeometryAdapter.prototype.computeLines = function () {
@@ -3634,10 +3659,11 @@ var __extends = this.__extends || function (d, b) {
 define('davinci-eight/geometries/BoxGeometry',["require", "exports", '../core/Face3', '../geometries/Geometry', '../math/Vector2', '../math/Vector3'], function (require, exports, Face3, Geometry, Vector2, Vector3) {
     var BoxGeometry = (function (_super) {
         __extends(BoxGeometry, _super);
-        function BoxGeometry(width, height, depth, widthSegments, heightSegments, depthSegments) {
+        function BoxGeometry(width, height, depth, widthSegments, heightSegments, depthSegments, wireFrame) {
             if (widthSegments === void 0) { widthSegments = 1; }
             if (heightSegments === void 0) { heightSegments = 1; }
             if (depthSegments === void 0) { depthSegments = 1; }
+            if (wireFrame === void 0) { wireFrame = false; }
             _super.call(this);
             this.widthSegments = widthSegments || 1;
             this.heightSegments = heightSegments || 1;
@@ -3653,7 +3679,14 @@ define('davinci-eight/geometries/BoxGeometry',["require", "exports", '../core/Fa
             buildPlane('x', 'y', 1, -1, width, height, depth_half, 4); // pz
             buildPlane('x', 'y', -1, -1, width, height, -depth_half, 5); // nz
             function buildPlane(u, v, udir, vdir, width, height, depth, unused) {
-                var w, ix, iy, gridX = scope.widthSegments, gridY = scope.heightSegments, width_half = width / 2, height_half = height / 2, offset = scope.vertices.length;
+                var w;
+                var ix;
+                var iy;
+                var gridX = scope.widthSegments;
+                var gridY = scope.heightSegments;
+                width_half = width / 2;
+                height_half = height / 2;
+                var offset = scope.vertices.length;
                 if ((u === 'x' && v === 'y') || (u === 'y' && v === 'x')) {
                     w = 'z';
                 }
@@ -7405,12 +7438,31 @@ define('davinci-eight/mesh/arrowMesh',["require", "exports", '../geometries/Geom
     return arrowMesh;
 });
 
-define('davinci-eight/mesh/boxMesh',["require", "exports", '../geometries/GeometryAdapter', '../geometries/BoxGeometry', '../mesh/adapterOptions', '../mesh/checkMeshArgs'], function (require, exports, GeometryAdapter, BoxGeometry, adapterOptions, checkMeshArgs) {
+define('davinci-eight/mesh/boxMesh',["require", "exports", '../geometries/GeometryAdapter', '../geometries/BoxGeometry', '../mesh/adapterOptions'], function (require, exports, GeometryAdapter, BoxGeometry, adapterOptions) {
     function boxGeometry(options) {
-        return new BoxGeometry(1, 1, 1);
+        return new BoxGeometry(options.width, options.height, options.depth, options.widthSegments, options.heightSegments, options.depthSegments, options.wireFrame);
+    }
+    function checkBoxArgs(options) {
+        options = options || {};
+        var width = typeof options.width === 'undefined' ? 1 : options.width;
+        var height = typeof options.height === 'undefined' ? 1 : options.height;
+        var depth = typeof options.depth === 'undefined' ? 1 : options.depth;
+        var widthSegments = typeof options.widthSegments === 'undefined' ? 1 : options.widthSegments;
+        var heightSegments = typeof options.heightSegments === 'undefined' ? 1 : options.heightSegments;
+        var depthSegments = typeof options.depthSegments === 'undefined' ? 1 : options.depthSegments;
+        var wireFrame = typeof options.wireFrame === 'undefined' ? false : options.wireFrame;
+        return {
+            width: width,
+            height: height,
+            depth: depth,
+            widthSegments: widthSegments,
+            heightSegments: heightSegments,
+            depthSegments: depthSegments,
+            wireFrame: wireFrame
+        };
     }
     function boxMesh(options) {
-        var checkedOptions = checkMeshArgs(options);
+        var checkedOptions = checkBoxArgs(options);
         var base = new GeometryAdapter(boxGeometry(checkedOptions), adapterOptions(checkedOptions));
         var publicAPI = {
             draw: function (context) {
@@ -8041,9 +8093,6 @@ define('davinci-eight/uniforms/UniformColor',["require", "exports", '../core/Col
 });
 
 define('davinci-eight/uniforms/AmbientLight',["require", "exports", '../core/Color', '../core/Symbolic', '../uniforms/UniformColor', '../checks/expectArg'], function (require, exports, Color, Symbolic, UniformColor, expectArg) {
-    /**
-     * Default varaible name in GLSL follows naming conventions.
-     */
     var DEFAULT_UNIFORM_AMBIENT_LIGHT_NAME = 'u' + Symbolic.UNIFORM_AMBIENT_LIGHT;
     /**
      * Provides a uniform variable representing an ambient light.
@@ -8053,25 +8102,22 @@ define('davinci-eight/uniforms/AmbientLight',["require", "exports", '../core/Col
         /**
          * @class AmbientLight
          * @constructor
-         * @param name {string} The name of the uniform variable. Defaults to Symbolic.UNIFORM_AMBIENT_LIGHT.
+         * @param options {{color?: Color; name?: string}}
          */
-        function AmbientLight(name) {
-            if (name === void 0) { name = DEFAULT_UNIFORM_AMBIENT_LIGHT_NAME; }
-            // TODO: Need to have a test for valid variable names in GLSL...
-            expectArg('name', name).toBeString().toSatisfy(name.length > 0, "name must have at least one character");
-            this.$uColor = new UniformColor(name, Symbolic.UNIFORM_AMBIENT_LIGHT);
-            this.uColor.data = new Color([1.0, 1.0, 1.0]);
+        function AmbientLight(options) {
+            options = options || {};
+            options.color = options.color || new Color([1.0, 1.0, 1.0]);
+            options.name = options.name || DEFAULT_UNIFORM_AMBIENT_LIGHT_NAME;
+            expectArg('options.name', options.name).toBeString().toSatisfy(options.name.length > 0, "options.name must have at least one character");
+            this.uColor = new UniformColor(options.name, Symbolic.UNIFORM_AMBIENT_LIGHT);
+            this.uColor.data = options.color;
         }
-        Object.defineProperty(AmbientLight.prototype, "uColor", {
-            get: function () {
-                return this.$uColor;
-            },
-            enumerable: true,
-            configurable: true
-        });
         Object.defineProperty(AmbientLight.prototype, "color", {
+            get: function () {
+                return this.uColor;
+            },
             set: function (color) {
-                this.uColor.data = color;
+                throw new Error("color is readonly");
             },
             enumerable: true,
             configurable: true
@@ -8198,76 +8244,6 @@ define('davinci-eight/uniforms/MultiUniformProvider',["require", "exports", '../
     return MultiUniformProvider;
 });
 
-define('davinci-eight/uniforms/DirectionalLight',["require", "exports", '../core/Color', '../core/Symbolic', '../uniforms/UniformColor', '../uniforms/UniformVec3', '../uniforms/MultiUniformProvider'], function (require, exports, Color, Symbolic, UniformColor, UniformVec3, MultiUniformProvider) {
-    var UNIFORM_DIRECTIONAL_LIGHT_COLOR_NAME = Symbolic.UNIFORM_DIRECTIONAL_LIGHT_COLOR;
-    var UNIFORM_DIRECTIONAL_LIGHT_DIRECTION_NAME = Symbolic.UNIFORM_DIRECTIONAL_LIGHT_DIRECTION;
-    /**
-     * Provides a uniform variable representing a directional light.
-     * @class DirectionalLight
-     */
-    var DirectionalLight = (function () {
-        /**
-         * @class DirectionalLight
-         * @constructor
-         */
-        function DirectionalLight() {
-            this.$uColor = new UniformColor(UNIFORM_DIRECTIONAL_LIGHT_COLOR_NAME, Symbolic.UNIFORM_DIRECTIONAL_LIGHT_COLOR);
-            this.uDirection = new UniformVec3(UNIFORM_DIRECTIONAL_LIGHT_DIRECTION_NAME, Symbolic.UNIFORM_DIRECTIONAL_LIGHT_DIRECTION);
-            this.multi = new MultiUniformProvider([this.uColor, this.uDirection]);
-            // Maybe we should just be mutating here?
-            this.uColor.data = new Color([1.0, 1.0, 1.0]);
-        }
-        Object.defineProperty(DirectionalLight.prototype, "uColor", {
-            get: function () {
-                return this.$uColor;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(DirectionalLight.prototype, "color", {
-            set: function (color) {
-                this.uColor.data = color;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(DirectionalLight.prototype, "direction", {
-            set: function (value) {
-                // TODO: Carry through the reference?
-                this.uDirection.data = [value.x, value.y, value.z];
-            },
-            enumerable: true,
-            configurable: true
-        });
-        DirectionalLight.prototype.getUniformFloat = function (name) {
-            return this.multi.getUniformFloat(name);
-        };
-        DirectionalLight.prototype.getUniformMatrix2 = function (name) {
-            return this.multi.getUniformMatrix2(name);
-        };
-        DirectionalLight.prototype.getUniformMatrix3 = function (name) {
-            return this.multi.getUniformMatrix3(name);
-        };
-        DirectionalLight.prototype.getUniformMatrix4 = function (name) {
-            return this.multi.getUniformMatrix4(name);
-        };
-        DirectionalLight.prototype.getUniformVector2 = function (name) {
-            return this.multi.getUniformVector2(name);
-        };
-        DirectionalLight.prototype.getUniformVector3 = function (name) {
-            return this.multi.getUniformVector3(name);
-        };
-        DirectionalLight.prototype.getUniformVector4 = function (name) {
-            return this.multi.getUniformVector4(name);
-        };
-        DirectionalLight.prototype.getUniformMetaInfos = function () {
-            return this.multi.getUniformMetaInfos();
-        };
-        return DirectionalLight;
-    })();
-    return DirectionalLight;
-});
-
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -8326,9 +8302,73 @@ define('davinci-eight/uniforms/UniformVector3',["require", "exports", '../math/V
     return UniformVector3;
 });
 
+define('davinci-eight/uniforms/DirectionalLight',["require", "exports", '../core/Color', '../uniforms/MultiUniformProvider', '../core/Symbolic', '../uniforms/UniformColor', '../uniforms/UniformVector3', '../math/Vector3'], function (require, exports, Color, MultiUniformProvider, Symbolic, UniformColor, UniformVector3, Vector3) {
+    var DEFAULT_UNIFORM_DIRECTIONAL_LIGHT_NAME = 'u' + Symbolic.UNIFORM_DIRECTIONAL_LIGHT;
+    /**
+     * Provides a uniform variable representing a directional light.
+     * @class DirectionalLight
+     */
+    var DirectionalLight = (function () {
+        /**
+         * @class DirectionalLight
+         * @constructor
+         */
+        function DirectionalLight(options) {
+            options = options || {};
+            options.color = options.color || new Color([1.0, 1.0, 1.0]);
+            options.direction = options.direction || new Vector3([0.0, 0.0, -1.0]);
+            options.name = options.name || DEFAULT_UNIFORM_DIRECTIONAL_LIGHT_NAME;
+            this.uColor = new UniformColor(options.name + 'Color', Symbolic.UNIFORM_DIRECTIONAL_LIGHT_COLOR);
+            this.uDirection = new UniformVector3(options.name + 'Direction', Symbolic.UNIFORM_DIRECTIONAL_LIGHT_DIRECTION);
+            this.multi = new MultiUniformProvider([this.uColor, this.uDirection]);
+            this.uColor.data = options.color;
+            this.uDirection.data = options.direction;
+        }
+        Object.defineProperty(DirectionalLight.prototype, "color", {
+            get: function () {
+                return this.uColor;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(DirectionalLight.prototype, "direction", {
+            get: function () {
+                return this.uDirection;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        DirectionalLight.prototype.getUniformFloat = function (name) {
+            return this.multi.getUniformFloat(name);
+        };
+        DirectionalLight.prototype.getUniformMatrix2 = function (name) {
+            return this.multi.getUniformMatrix2(name);
+        };
+        DirectionalLight.prototype.getUniformMatrix3 = function (name) {
+            return this.multi.getUniformMatrix3(name);
+        };
+        DirectionalLight.prototype.getUniformMatrix4 = function (name) {
+            return this.multi.getUniformMatrix4(name);
+        };
+        DirectionalLight.prototype.getUniformVector2 = function (name) {
+            return this.multi.getUniformVector2(name);
+        };
+        DirectionalLight.prototype.getUniformVector3 = function (name) {
+            return this.multi.getUniformVector3(name);
+        };
+        DirectionalLight.prototype.getUniformVector4 = function (name) {
+            return this.multi.getUniformVector4(name);
+        };
+        DirectionalLight.prototype.getUniformMetaInfos = function () {
+            return this.multi.getUniformMetaInfos();
+        };
+        return DirectionalLight;
+    })();
+    return DirectionalLight;
+});
+
 define('davinci-eight/uniforms/PointLight',["require", "exports", '../core/Color', '../math/Vector3', '../core/Symbolic', '../uniforms/UniformColor', '../uniforms/UniformVector3', '../uniforms/MultiUniformProvider'], function (require, exports, Color, Vector3, Symbolic, UniformColor, UniformVector3, MultiUniformProvider) {
-    var UNIFORM_POINT_LIGHT_COLOR_NAME = Symbolic.UNIFORM_POINT_LIGHT_COLOR;
-    var UNIFORM_POINT_LIGHT_POSITION_NAME = Symbolic.UNIFORM_POINT_LIGHT_POSITION;
+    var DEFAULT_UNIFORM_POINT_LIGHT_NAME = 'u' + Symbolic.UNIFORM_POINT_LIGHT;
     /**
      * Provides a uniform variable representing a point light.
      * @class PointLight
@@ -8338,12 +8378,16 @@ define('davinci-eight/uniforms/PointLight',["require", "exports", '../core/Color
          * @class PointLight
          * @constructor
          */
-        function PointLight() {
-            this.uColor = new UniformColor(UNIFORM_POINT_LIGHT_COLOR_NAME, Symbolic.UNIFORM_POINT_LIGHT_COLOR);
-            this.uPosition = new UniformVector3(UNIFORM_POINT_LIGHT_POSITION_NAME, Symbolic.UNIFORM_POINT_LIGHT_POSITION);
+        function PointLight(options) {
+            options = options || {};
+            options.color = options.color || new Color([1.0, 1.0, 1.0]);
+            options.position = options.position || new Vector3([0.0, 0.0, 0.0]);
+            options.name = options.name || DEFAULT_UNIFORM_POINT_LIGHT_NAME;
+            this.uColor = new UniformColor(options.name + 'Color', Symbolic.UNIFORM_POINT_LIGHT_COLOR);
+            this.uPosition = new UniformVector3(options.name + 'Position', Symbolic.UNIFORM_POINT_LIGHT_POSITION);
             this.multi = new MultiUniformProvider([this.uColor, this.uPosition]);
-            this.uColor.data = new Color([1.0, 1.0, 1.0]);
-            this.uPosition.data = new Vector3([0.0, 0.0, 0.0]);
+            this.uColor.data = options.color;
+            this.uPosition.data = options.position;
         }
         Object.defineProperty(PointLight.prototype, "color", {
             get: function () {
