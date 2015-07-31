@@ -80,7 +80,7 @@ angular.module('app').factory('options', [
     },
     {
       name: 'davinci-eight',
-      moniker: 'eight',
+      moniker: 'd8',
       description: "WebGL Library",
       homepage: 'https://github.com/geometryzen/davinci-eight',
       version: 'latest',
@@ -137,8 +137,8 @@ angular.module('app').factory('options', [
     },
     {
       name: 'davinci-threejs',
-      moniker: 'three.js',
-      description: "3D WebGL Library",
+      moniker: 'THREE',
+      description: "WebGL Library",
       homepage: 'http://threejs.org/',
       version: '0.71.4',
       visible: true,
