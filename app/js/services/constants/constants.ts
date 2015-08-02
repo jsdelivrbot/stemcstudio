@@ -2,11 +2,11 @@
 (function() {
 
   function makeKey(name: string): string {
-    var DOMAIN = ['mathdoodle','io'];
+    var DOMAIN = ['mathdoodle', 'io'];
     return DOMAIN.reverse().concat(name).join('.');
   }
 
-  angular.module('app').constant('version', '1.86.0');
+  angular.module('app').constant('version', '1.87.0');
   // githubKey stores the key of the item in local storage for maintaining GitHub OAuth data.
   // Remark: This value is duplicated in views/github_callback.jade
   angular.module('app').constant('githubKey',  makeKey('github'));
