@@ -3214,6 +3214,7 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/NotImple
             return Math.sqrt(this.w * this.w + this.x * this.x + this.y * this.y + this.z * this.z + this.xy * this.xy + this.yz * this.yz + this.zx * this.zx + this.xyz * this.xyz);
         };
         Euclidean3.prototype.cos = function () {
+            // TODO: Generalize to full multivector.
             Unit.assertDimensionless(this.uom);
             var cosW = Math.cos(this.w);
             return new Euclidean3(cosW, 0, 0, 0, 0, 0, 0, 0, undefined);
@@ -3237,7 +3238,10 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/NotImple
             return new Euclidean3(this.w * this.w + this.x * this.x + this.y * this.y + this.z * this.z + this.xy * this.xy + this.yz * this.yz + this.zx * this.zx + this.xyz * this.xyz, 0, 0, 0, 0, 0, 0, 0, Unit.mul(this.uom, this.uom));
         };
         Euclidean3.prototype.sin = function () {
-            throw new Euclidean3Error('sin');
+            // TODO: Generalize to full multivector.
+            Unit.assertDimensionless(this.uom);
+            var sinW = Math.sin(this.w);
+            return new Euclidean3(sinW, 0, 0, 0, 0, 0, 0, 0, undefined);
         };
         Euclidean3.prototype.sinh = function () {
             throw new Euclidean3Error('sinh');
