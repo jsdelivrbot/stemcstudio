@@ -6,7 +6,7 @@
     return DOMAIN.reverse().concat(name).join('.');
   }
 
-  angular.module('app').constant('version', '1.87.0');
+  angular.module('app').constant('version', '1.88.0');
   // githubKey stores the key of the item in local storage for maintaining GitHub OAuth data.
   // Remark: This value is duplicated in views/github_callback.jade
   angular.module('app').constant('githubKey',  makeKey('github'));
@@ -18,12 +18,14 @@
   angular.module('app').constant('FILENAME_META', 'doodle.json');
   angular.module('app').constant('FILENAME_HTML', 'index.html');
   angular.module('app').constant('FILENAME_CODE', 'script.ts');
+  angular.module('app').constant('FILENAME_LIBS', 'extras.ts');
   angular.module('app').constant('FILENAME_LESS', 'style.less');
 
   // For backwards compatibility, don't change the values of these constants.
   angular.module('app').constant('SCRIPTS_MARKER', '<!-- SCRIPTS-MARKER -->');
   angular.module('app').constant('STYLE_MARKER',   '/* STYLE-MARKER */');
   angular.module('app').constant('CODE_MARKER',    '// CODE-MARKER');
+  angular.module('app').constant('LIBS_MARKER',    '// LIBS-MARKER');
 
   // We can change the global namespace used by Google's Universal Analytics.
   // All access should be through the service wrapper.

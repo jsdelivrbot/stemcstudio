@@ -1,6 +1,7 @@
 <div id='preview'></div>
 <div id='html-editor' ng-show='isEditMode &amp;&amp; isShowingHTML'></div>
 <div id='code-editor' ng-show='isEditMode &amp;&amp; isShowingCode'></div>
+<div id='libs-editor' ng-show='isEditMode &amp;&amp; isShowingLibs'></div>
 <div id='less-editor' ng-show='isEditMode &amp;&amp; isShowingLess'></div>
 <nav id='toolbar' class='navbar navbar-inverse'>
   <div class='container-fluid'>
@@ -29,6 +30,12 @@
           <a role='button' ng-click='showCode()'>
             <span class="glyphicon glyphicon-ok" aria-hidden="true" ng-show='isShowingCode'></span>
             Code
+          </a>
+        </li>
+        <li ng-show='isEditMode'>
+          <a role='button' ng-click='showLibs()'>
+            <span class="glyphicon glyphicon-ok" aria-hidden="true" ng-show='isShowingLibs'></span>
+            Libs
           </a>
         </li>
         <li ng-show='isEditMode'>

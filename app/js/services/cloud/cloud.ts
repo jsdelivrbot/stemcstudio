@@ -19,13 +19,15 @@ angular.module('app').factory('cloud',[
   'FILENAME_META',
   'FILENAME_HTML',
   'FILENAME_CODE',
+  'FILENAME_LIBS',
   'FILENAME_LESS',
   function(
     github,
-    FILENAME_META,
-    FILENAME_HTML,
-    FILENAME_CODE,
-    FILENAME_LESS
+    FILENAME_META: string,
+    FILENAME_HTML: string,
+    FILENAME_CODE: string,
+    FILENAME_LIBS: string,
+    FILENAME_LESS: string
   ): mathdoodle.ICloud {
 
   // Temporary to ensure correct Gist deserialization.
@@ -50,10 +52,11 @@ angular.module('app').factory('cloud',[
             isCodeVisible: true,
             isViewVisible: false,
             focusEditor: FILENAME_CODE,
-            lastKnownJs: undefined,
+            lastKnownJs: {},
             operatorOverloading: metaInfo.operatorOverloading,
             html: gist.files[FILENAME_HTML] ? gist.files[FILENAME_HTML].content : "",
             code: gist.files[FILENAME_CODE] ? gist.files[FILENAME_CODE].content : "",
+            libs: gist.files[FILENAME_LIBS] ? gist.files[FILENAME_LIBS].content : "",
             less: gist.files[FILENAME_LESS] ? gist.files[FILENAME_LESS].content : "",
             dependencies: depArray(metaInfo.dependencies)
           };

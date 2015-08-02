@@ -33,10 +33,16 @@ module mathdoodle {
      * @param label Used by Universal Analytics to categorize events.
      * @param value Values must be non-negative. Useful to pass counts.
      */
+    showLibs: (label?: string, value?: number) => void;
+    /**
+     * @param label Used by Universal Analytics to categorize events.
+     * @param value Values must be non-negative. Useful to pass counts.
+     */
     showLess: (label?: string, value?: number) => void;
 
     isShowingHTML: boolean;
     isShowingCode: boolean;
+    isShowingLibs: boolean;
     isShowingLess: boolean;
 
     isEditMode: boolean;
@@ -96,6 +102,7 @@ angular.module('app').controller('doodle-controller', [
   'FILENAME_META',
   'FILENAME_HTML',
   'FILENAME_CODE',
+  'FILENAME_LIBS',
   'FILENAME_LESS',
   'FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS',
   'FILENAME_TYPESCRIPT_CURRENT_LIB_DTS',
@@ -103,6 +110,7 @@ angular.module('app').controller('doodle-controller', [
   'STYLE_MARKER',
   'SCRIPTS_MARKER',
   'CODE_MARKER',
+  'LIBS_MARKER',
   'settings',
   function(
     scope: mathdoodle.IHomeScope,
@@ -127,6 +135,7 @@ angular.module('app').controller('doodle-controller', [
     FILENAME_META: string,
     FILENAME_HTML: string,
     FILENAME_CODE: string,
+    FILENAME_LIBS: string,
     FILENAME_LESS: string,
     FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS: string,
     FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
@@ -134,6 +143,7 @@ angular.module('app').controller('doodle-controller', [
     STYLE_MARKER: string,
     SCRIPTS_MARKER: string,
     CODE_MARKER: string,
+    LIBS_MARKER: string,
     settings: mathdoodle.ISettingsService
   ) {
   // Not sure how best to do this. I don't want loading to trigger processing until ready.
@@ -227,6 +237,9 @@ angular.module('app').controller('doodle-controller', [
     codeEditor.setValue(doodles.current().code, -1);
     codeEditor.resize(true);
     codeEditor.gotoLine(0, 0);
+    libsEditor.setValue(doodles.current().libs, -1);
+    libsEditor.resize(true);
+    libsEditor.gotoLine(0, 0);
     lessEditor.setValue(doodles.current().less, -1);
     lessEditor.resize(true);
     lessEditor.gotoLine(0, 0);
@@ -271,6 +284,7 @@ angular.module('app').controller('doodle-controller', [
     }
     htmlEditor.resize(true);
     codeEditor.resize(true);
+    libsEditor.resize(true);
     lessEditor.resize(true);
   };
 
@@ -288,6 +302,11 @@ angular.module('app').controller('doodle-controller', [
   scope.showCode = function(label?: string, value?: number) {
     ga('send', 'event', 'doodle', 'showCode', label, value);
     setCurrentEditor(FILENAME_CODE);
+  }
+
+  scope.showLibs = function(label?: string, value?: number) {
+    ga('send', 'event', 'doodle', 'showLibs', label, value);
+    setCurrentEditor(FILENAME_LIBS);
   }
 
   scope.showLess = function(label?: string, value?: number) {
@@ -316,21 +335,31 @@ angular.module('app').controller('doodle-controller', [
     // Notice that we call `resize` on the editor to force a repaint.
     // We use $timeout to de-conflict the AngularJS digest loop and the repaint.
     if (fileName === FILENAME_CODE) {
-      scope.isShowingCode = true;
       scope.isShowingHTML = false;
+      scope.isShowingCode = true;
+      scope.isShowingLibs = false;
       scope.isShowingLess = false;
       $timeout(function() {focusEditor(codeEditor)}, 100);
+    }
+    else if (fileName === FILENAME_LIBS) {
+      scope.isShowingHTML = false;
+      scope.isShowingCode = false;
+      scope.isShowingLibs = true;
+      scope.isShowingLess = false;
+      $timeout(function() {focusEditor(libsEditor)}, 100);
     }
     else if (fileName === FILENAME_HTML) {
       scope.isShowingHTML = true;
       scope.isShowingCode = false;
+      scope.isShowingLibs = false;
       scope.isShowingLess = false;
       $timeout(function() {focusEditor(htmlEditor)}, 100);
     }
     else if (fileName === FILENAME_LESS) {
-      scope.isShowingLess = true;
       scope.isShowingHTML = false;
       scope.isShowingCode = false;
+      scope.isShowingLibs = false;
+      scope.isShowingLess = true;
       $timeout(function() {focusEditor(lessEditor)}, 100);
     }
     else {
@@ -388,6 +417,12 @@ angular.module('app').controller('doodle-controller', [
     }
     else {
       gist.files[FILENAME_CODE] = {content: '//\n'};
+    }
+    if (doodles.current().libs.length > 0) {
+      gist.files[FILENAME_LIBS] = {content: doodles.current().libs};
+    }
+    else {
+      gist.files[FILENAME_LIBS] = {content: '//\n'};
     }
     if (doodles.current().less.length > 0) {
       gist.files[FILENAME_LESS] = {content: doodles.current().less};
@@ -527,9 +562,9 @@ angular.module('app').controller('doodle-controller', [
   codeEditor.getSession().on('outputFiles', function(event) {
     var outputFiles: mathdoodle.IOutputFile[] = event.data;
     outputFiles.forEach(function(outputFile: mathdoodle.IOutputFile) {
-      if (doodles.current() && doodles.current().lastKnownJs !== outputFile.text) {
+      if (doodles.current() && doodles.current().lastKnownJs[FILENAME_CODE] !== outputFile.text) {
         if (cascade) {
-          doodles.current().lastKnownJs = outputFile.text;
+          doodles.current().lastKnownJs[FILENAME_CODE] = outputFile.text;
           doodles.updateStorage();
           scope.updatePreview(WAIT_FOR_MORE_CODE_KEYSTROKES);
         }
@@ -540,6 +575,47 @@ angular.module('app').controller('doodle-controller', [
   codeEditor.getSession().on('change', function(event) {
     if (cascade && doodles.current()) {
       doodles.current().code = codeEditor.getValue();
+      doodles.updateStorage();
+      // Don't trigger a change to the preview, that happens
+      // when the compiler emits a file.
+    }
+  });
+
+  var libsEditor = ace.edit($window.document.getElementById('libs-editor'), workspace);
+  libsEditor.resize(true);
+  libsEditor.getSession().setMode('ace/mode/typescript');
+
+  libsEditor.setTheme(settings.theme);
+  libsEditor.getSession().setTabSize(settings.indent);
+  libsEditor.setShowInvisibles(settings.showInvisibles);
+  libsEditor.setFontSize(settings.fontSize);
+  libsEditor.setShowPrintMargin(settings.showPrintMargin);
+  libsEditor.setDisplayIndentGuides(settings.displayIndentGuides);
+
+  libsEditor.getSession().on('initAfter', function(event) {
+    // Not sure when we need to know that the worker has started?
+  });
+
+  libsEditor.getSession().on('syntaxErrors', function(event) {
+    // I'm not seeing any events by this name!
+  });
+
+  libsEditor.getSession().on('outputFiles', function(event) {
+    var outputFiles: mathdoodle.IOutputFile[] = event.data;
+    outputFiles.forEach(function(outputFile: mathdoodle.IOutputFile) {
+      if (doodles.current() && doodles.current().lastKnownJs[FILENAME_LIBS] !== outputFile.text) {
+        if (cascade) {
+          doodles.current().lastKnownJs[FILENAME_LIBS] = outputFile.text;
+          doodles.updateStorage();
+          scope.updatePreview(WAIT_FOR_MORE_CODE_KEYSTROKES);
+        }
+      }
+    });
+  });
+
+  libsEditor.getSession().on('change', function(event) {
+    if (cascade && doodles.current()) {
+      doodles.current().libs = libsEditor.getValue();
       doodles.updateStorage();
       // Don't trigger a change to the preview, that happens
       // when the compiler emits a file.
@@ -626,13 +702,13 @@ angular.module('app').controller('doodle-controller', [
    * This may involve further modifying the JavaScript emitted by the
    * TypeScript compiler by, for example, introducing operator overloading. 
    */
-  function currentJavaScript(): string {
-    if (doodles.current().lastKnownJs) {
+  function currentJavaScript(fileName: string): string {
+    if (doodles.current().lastKnownJs[fileName]) {
       if (doodles.current().operatorOverloading) {
-        return mathscript.transpile(doodles.current().lastKnownJs);
+        return mathscript.transpile(doodles.current().lastKnownJs[fileName]);
       }
       else {
-        return doodles.current().lastKnownJs;
+        return doodles.current().lastKnownJs[fileName];
       }
     }
     else {
@@ -649,7 +725,7 @@ angular.module('app').controller('doodle-controller', [
         preview.removeChild(preview.firstChild);
       }
 
-      if (scope.isViewVisible && doodles.current() && doodles.current().lastKnownJs) {
+      if (scope.isViewVisible && doodles.current() && doodles.current().lastKnownJs[FILENAME_CODE] && doodles.current().lastKnownJs[FILENAME_LIBS]) {
         scope.previewIFrame = document.createElement('iframe');
         scope.previewIFrame.style.width = '100%';
         scope.previewIFrame.style.height = '100%';
@@ -677,10 +753,11 @@ angular.module('app').controller('doodle-controller', [
         var html = doodles.current().html;
         html = html.replace(SCRIPTS_MARKER, scriptTags.join(""));
         html = html.replace(STYLE_MARKER, [doodles.current().less].join(""));
-        html = html.replace(CODE_MARKER, currentJavaScript());
+        html = html.replace(LIBS_MARKER, currentJavaScript(FILENAME_LIBS));
+        html = html.replace(CODE_MARKER, currentJavaScript(FILENAME_CODE));
         // For backwards compatibility...
         html = html.replace('<!-- STYLE-MARKER -->', ['<style>', doodles.current().less, '</style>'].join(""));
-        html = html.replace('<!-- CODE-MARKER -->', currentJavaScript());
+        html = html.replace('<!-- CODE-MARKER -->', currentJavaScript(FILENAME_CODE));
 
         content.open();
         content.write(html);
@@ -768,6 +845,9 @@ angular.module('app').controller('doodle-controller', [
     if (typeof doodles.current().code !== 'string') {
         doodles.current().code = "";
     }
+    if (typeof doodles.current().libs !== 'string') {
+        doodles.current().libs = "";
+    }
     if (typeof doodles.current().less !== 'string') {
         doodles.current().less = "";
     }
@@ -783,6 +863,8 @@ angular.module('app').controller('doodle-controller', [
     htmlEditor.resize(true);
     codeEditor.changeFile(doodles.current().code, FILENAME_CODE, -1);
     codeEditor.resize(true);
+    libsEditor.changeFile(doodles.current().libs, FILENAME_LIBS, -1);
+    libsEditor.resize(true);
     lessEditor.changeFile(doodles.current().less, FILENAME_LESS, -1);
     lessEditor.resize(true);
 

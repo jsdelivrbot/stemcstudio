@@ -29,8 +29,9 @@ module mathdoodle {
     focusEditor: string;
     /**
      * The last known generated JavaScript file. This is cached to improve startup.
+     * This is a mapping from the fileName to the JavaScript text.
      */
-    lastKnownJs: string;
+    lastKnownJs: {[name:string]: string};
     /**
      *
      */
@@ -43,6 +44,10 @@ module mathdoodle {
      * 
      */
     code: string;
+    /**
+     * 
+     */
+    libs: string;
     /**
      * 
      */
@@ -137,6 +142,7 @@ angular.module('app').factory('doodles', [
           operatorOverloading: template.operatorOverloading,
           html: template.html,
           code: template.code,
+          libs: template.libs,
           less: template.less,
           dependencies: template.dependencies
         };

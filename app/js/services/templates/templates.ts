@@ -11,12 +11,14 @@ angular.module('app').factory('templates', [
   '$http',
   'uuid4',
   'CODE_MARKER',
+  'LIBS_MARKER',
   'STYLE_MARKER',
   'SCRIPTS_MARKER',
   function(
     $http: angular.IHttpService,
     uuid: IUuidService,
     CODE_MARKER: string,
+    LIBS_MARKER: string,
     STYLE_MARKER: string,
     SCRIPTS_MARKER: string
   ): mathdoodle.IDoodle[] {
@@ -27,6 +29,7 @@ angular.module('app').factory('templates', [
   function styleMarker(): string {return ['<style>', STYLE_MARKER, '</style>'].map(indent).map(newLine).join("");}
   function scriptsMarker(): string {return [SCRIPTS_MARKER].map(indent).map(newLine).join("");}
   function codeMarker(): string {return ['<script>', CODE_MARKER, '</script>'].map(indent).map(newLine).join("");}
+  function libsMarker(): string {return ['<script>', LIBS_MARKER, '</script>'].map(indent).map(newLine).join("");}
 
   var HTML_TEMPLATE_BASIC = "" +
     "<!doctype html>\n" +
@@ -36,6 +39,7 @@ angular.module('app').factory('templates', [
     scriptsMarker() +
     "  </head>\n" +
     "  <body>\n" +
+    libsMarker() +
     codeMarker() +
     "  </body>\n" +
     "</html>\n";
@@ -53,6 +57,7 @@ angular.module('app').factory('templates', [
     "  </head>\n" +
     "  <body>\n" +
     "    <pre id='info'></pre>\n" +
+    libsMarker() +
     codeMarker() +
     "  </body>\n" +
     "</html>\n";
@@ -117,6 +122,8 @@ angular.module('app').factory('templates', [
     ""
   ].join('\n');
 
+  var LIBS_TEMPLATE_CALCULATION = "//\n";
+
   var LESS_TEMPLATE_CALCULATION = "" +
   "#info {\n" +
   "  position: absolute;\n" +
@@ -140,6 +147,7 @@ angular.module('app').factory('templates', [
     "        <a href='https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API' target='_blank'>Canvas API</a>\n" +
     "      </li>\n" +
     "    </ul>\n" +
+    libsMarker() +
     codeMarker() +
     "  </body>\n" +
     "</html>\n";
@@ -169,6 +177,8 @@ angular.module('app').factory('templates', [
     "  context.fillStyle = 'orange';\n" +
     "  context.fillRect(0, 0, 500, 500);\n" +
     "}\n";
+
+  var LIBS_TEMPLATE_CANVAS = "//\n";
 
   var LESS_TEMPLATE_CANVAS = "" +
   "#doodle1 {\n" +
@@ -217,6 +227,7 @@ angular.module('app').factory('templates', [
     scriptsMarker() +
     "  </head>\n" +
     "  <body>\n" +
+    libsMarker() +
     codeMarker() +
     "    <canvas id='my-canvas'>\n" +
     "      Your browser does not support the canvas element.\n" +
@@ -225,27 +236,20 @@ angular.module('app').factory('templates', [
     "</html>\n";
 
   var CODE_TEMPLATE_EIGHT = "" +
-    "DomReady.ready(function() {\n" +
-    "  try {\n" +
-    "    main();\n" +
-    "  }\n" +
-    "  catch(e) {\n" +
-    "    console.error(e);\n" +
-    "  }\n" +
-    "});\n" +
-    "\n" +
-    "var e1 = blade.e3ga.e1;\n" +
-    "var e2 = blade.e3ga.e2;\n" +
-    "var e3 = blade.e3ga.e3;\n" +
-    "\n" +
     "/**\n" +
     " * The angle of tilt of the precessing vector.\n" +
     " */\n" +
     "var tiltAngle = 45 * Math.PI / 180;\n" +
     "var S = Math.cos(tiltAngle / 2) - (e2 ^ e1) * Math.sin(tiltAngle / 2);\n" +
     "var B = e3 ^ e1;\n" +
-    "var T = 4;\n" +
-    "var f = 1 / T;\n" +
+    "/**\n" +
+    " * The period of the motions in the animation.\n" +
+    " */\n" +
+    "var T = 4 * second;\n" +
+    "/**\n" +
+    " * The frequency of the motions in the animation.\n" +
+    " */\n" +
+    "var f = (1 / T);\n" +
     "var omega = 2 * Math.PI * f;\n" +
     "\n" +
     "function main() {\n" +
@@ -288,20 +292,52 @@ angular.module('app').factory('templates', [
     "  scene.add(vortex);\n" +
     "\n" +
     "  EIGHT.animation((time: number) => {\n" +
-    "    var theta = omega * time;\n" +
+    "    var theta = omega * (time * second);\n" +
     "    // simple harmonic motion\n" +
-    "    cube.model.position.copy(1.2 * Math.sin(theta) * e2);\n" +
+    "    cube.model.position.copy(1.2 * sin(theta) * e2);\n" +
     "\n" +
     "    // precession\n" +
-    "    var R = Math.cos(theta / 2) - B * Math.sin(theta / 2)\n" +
+    "    var R = cos(theta / 2) - B * sin(theta / 2)\n" +
     "    arrow.model.attitude.copy(R * S * ~R);\n" +
     "\n" +
     "    // orbit\n" +
-    "    sphere.model.position.copy(2 * Math.cos(theta) * e1 - Math.sin(theta) * (e3 - 0.5 * e2));\n" +
+    "    sphere.model.position.copy(2 * cos(theta) * e1 - sin(theta) * (e3 - 0.5 * e2));\n" +
     "\n" +
     "    renderer.render(scene, ambients);\n" +
     "  }).start();\n" +
     "}\n";
+
+  var LIBS_TEMPLATE_EIGHT = "" +
+    "DomReady.ready(function() {\n" +
+    "  try {\n" +
+    "    main();\n" +
+    "  }\n" +
+    "  catch(e) {\n" +
+    "    console.error(e);\n" +
+    "  }\n" +
+    "});\n" +
+    "\n" +
+    "var e1 = blade.e3ga.e1;\n" +
+    "var e2 = blade.e3ga.e2;\n" +
+    "var e3 = blade.e3ga.e3;\n" +
+    "\n" +
+    "/**\n" +
+    " * Returns the cosine of a number.\n" +
+    " */\n" +
+    "var cos = blade.universals.cos;\n" +
+    "/**\n" +
+    " * Returns e (the base of natural logarithms) raised to a power.\n" +
+    " */\n" +
+    "var exp = blade.universals.exp;\n" +
+    "/**\n" +
+    " * Returns the sine of a number.\n" +
+    " */\n" +
+    "var sin = blade.universals.sin;\n" +
+    "\n" +
+    "var kilogram = blade.e3ga.units.kilogram;\n" +
+    "var meter    = blade.e3ga.units.meter;\n" +
+    "var second   = blade.e3ga.units.second;\n" +
+    "var hertz    = blade.e3ga.units.hertz;\n";
 
   var LESS_TEMPLATE_EIGHT = "" +
     "body { margin: 0; }\n" +
@@ -331,6 +367,7 @@ angular.module('app').factory('templates', [
     "        <a href='https://angularjs.org' target='_blank'>AngularJS Home Page</a>\n" +
     "      </div>\n" +
     "    </div>\n" +
+    libsMarker() +
     codeMarker() +
     "  </body>\n" +
     "</html>\n";
@@ -354,6 +391,8 @@ angular.module('app').factory('templates', [
     "  }]);\n" +
     "\n" +
     "})(angular.module('doodle', []));\n";
+
+  var LIBS_TEMPLATE_ANGULAR = "//\n";
 
   var CODE_TEMPLATE_THREEJS = "" +
     "var scene = new THREE.Scene();\n"+
@@ -398,6 +437,8 @@ angular.module('app').factory('templates', [
     "\n"+
     "  renderer.render(scene, camera);\n"+
   "}\n";
+
+  var LIBS_TEMPLATE_THREEJS = "//\n";
 
   var LESS_TEMPLATE_THREEJS = "" +
     "body { margin: 0; }\n" +
@@ -509,6 +550,7 @@ angular.module('app').factory('templates', [
     "        <a href='http://jsxgraph.uni-bayreuth.de' target='_blank' class='JXGtext'>JSXGraph Home Page</a>\n" +
     "      </li>\n" +
     "    </ul>\n" +
+    libsMarker() +
     codeMarker() +
     "  </body>\n" +
     "</html>\n";
@@ -565,6 +607,7 @@ angular.module('app').factory('templates', [
     "        <a href='http://jsxgraph.uni-bayreuth.de' target='_blank' class='JXGtext'>JSXGraph Home Page</a>\n" +
     "      </li>\n" +
     "    </ul>\n" +
+    libsMarker() +
     codeMarker() +
     "  </body>\n" +
     "</html>\n";
@@ -634,6 +677,8 @@ angular.module('app').factory('templates', [
     "\n" +
     "brd.create('circle',[ [xm,ym], r]);\n";
 
+  var LIBS_TEMPLATE_JSXGRAPH_DEMO = "//\n";
+
   var CODE_TEMPLATE_D3 = "var x = d3;\n";
 
   var HTML_TEMPLATE_ANGULAR_THREE = "" +
@@ -672,6 +717,7 @@ angular.module('app').factory('templates', [
     "        </ul>\n" +
     "      </div>\n" +
     "    </div>\n" +
+    libsMarker() +
     codeMarker() +
     "  </body>\n" +
     "</html>\n";
@@ -777,6 +823,7 @@ angular.module('app').factory('templates', [
     "        </ul>\n" +
     "      </div>\n" +
     "    </div>\n" +
+    libsMarker() +
     codeMarker() +
     "  </body>\n" +
     "</html>\n";
@@ -848,6 +895,7 @@ angular.module('app').factory('templates', [
     "        </ul>\n" +
     "      </div>\n" +
     "    </div>\n" +
+    libsMarker() +
     codeMarker() +
     "  </body>\n" +
     "</html>\n";
@@ -956,6 +1004,8 @@ angular.module('app').factory('templates', [
     "  }]);\n" +
     "})(angular.module('doodle', []));\n";
 
+  var LIBS_TEMPLATE_ANGULAR_BLADE_VISUAL = "//\n";
+
   var HTML_TEMPLATE_MATHBOX = "" +
     "<!doctype html>\n" +
     "<html>\n" +
@@ -970,6 +1020,7 @@ angular.module('app').factory('templates', [
     "            <a href='https://github.com/geometryzen/davinci-mathbox' target='_blank'>MathBox Home Page</a>\n" +
     "          </li>\n" +
     "        </ul>\n" +
+    libsMarker() +
     codeMarker() +
     "  </body>\n" +
     "</html>\n";
@@ -1003,6 +1054,8 @@ angular.module('app').factory('templates', [
 "  return [z.x, z.y, x+y];\n" +
 "}\n";
 
+  var LIBS_TEMPLATE_MATHBOX = "//\n";
+
   var LESS_TEMPLATE_MATHBOX = "";
 
   return [
@@ -1012,10 +1065,11 @@ angular.module('app').factory('templates', [
       isCodeVisible: true,
       isViewVisible: true,
       focusEditor: undefined,
-      lastKnownJs: undefined,
+      lastKnownJs: {},
       operatorOverloading: true,
       html: HTML_TEMPLATE_EIGHT,
       code: CODE_TEMPLATE_EIGHT,
+      libs: LIBS_TEMPLATE_EIGHT,
       less: LESS_TEMPLATE_EIGHT,
       dependencies: ['DomReady', 'davinci-blade', 'davinci-eight']
     },
@@ -1025,10 +1079,11 @@ angular.module('app').factory('templates', [
       isCodeVisible: true,
       isViewVisible: true,
       focusEditor: undefined,
-      lastKnownJs: undefined,
+      lastKnownJs: {},
       operatorOverloading: true,
       html: HTML_TEMPLATE_CALCULATION,
       code: CODE_TEMPLATE_CALCULATION,
+      libs: LIBS_TEMPLATE_CALCULATION,
       less: LESS_TEMPLATE_CALCULATION,
       dependencies: ['DomReady', 'davinci-blade']
     },
@@ -1038,10 +1093,11 @@ angular.module('app').factory('templates', [
       isCodeVisible: true,
       isViewVisible: true,
       focusEditor: undefined,
-      lastKnownJs: undefined,
+      lastKnownJs: {},
       operatorOverloading: true,
       html: HTML_TEMPLATE_MATHBOX,
       code: CODE_TEMPLATE_MATHBOX,
+      libs: LIBS_TEMPLATE_MATHBOX,
       less: LESS_TEMPLATE_MATHBOX,
       dependencies: ['DomReady','davinci-mathbox','davinci-blade']
     },
@@ -1051,10 +1107,11 @@ angular.module('app').factory('templates', [
       isCodeVisible: true,
       isViewVisible: true,
       focusEditor: undefined,
-      lastKnownJs: undefined,
+      lastKnownJs: {},
       operatorOverloading: true,
       html: HTML_TEMPLATE_JSXGRAPH_DEMO,
       code: CODE_TEMPLATE_JSXGRAPH_DEMO,
+      libs: LIBS_TEMPLATE_JSXGRAPH_DEMO,
       less: LESS_TEMPLATE_JSXGRAPH,
       dependencies: ['jsxgraph']
     },
@@ -1064,10 +1121,11 @@ angular.module('app').factory('templates', [
       isCodeVisible: true,
       isViewVisible: true,
       focusEditor: undefined,
-      lastKnownJs: undefined,
+      lastKnownJs: {},
       operatorOverloading: true,
       html: HTML_TEMPLATE_BASIC,
       code: CODE_TEMPLATE_THREEJS,
+      libs: LIBS_TEMPLATE_THREEJS,
       less: LESS_TEMPLATE_THREEJS,
       dependencies: ['davinci-threejs']
     },
@@ -1077,10 +1135,11 @@ angular.module('app').factory('templates', [
       isCodeVisible: true,
       isViewVisible: true,
       focusEditor: undefined,
-      lastKnownJs: undefined,
+      lastKnownJs: {},
       operatorOverloading: true,
       html: HTML_TEMPLATE_CANVAS,
       code: CODE_TEMPLATE_CANVAS,
+      libs: LIBS_TEMPLATE_CANVAS,
       less: LESS_TEMPLATE_CANVAS,
       dependencies: ['DomReady']
     },
@@ -1090,10 +1149,11 @@ angular.module('app').factory('templates', [
       isCodeVisible: true,
       isViewVisible: true,
       focusEditor: undefined,
-      lastKnownJs: undefined,
+      lastKnownJs: {},
       operatorOverloading: true,
       html: HTML_TEMPLATE_ANGULAR,
       code: CODE_TEMPLATE_ANGULAR,
+      libs: LIBS_TEMPLATE_ANGULAR,
       less: LESS_TEMPLATE_BASIC,
       dependencies: ['angular']
     },
@@ -1103,10 +1163,11 @@ angular.module('app').factory('templates', [
       isCodeVisible: true,
       isViewVisible: true,
       focusEditor: undefined,
-      lastKnownJs: undefined,
+      lastKnownJs: {},
       operatorOverloading: true,
       html: HTML_TEMPLATE_ANGULAR_BLADE_VISUAL,
       code: CODE_TEMPLATE_ANGULAR_BLADE_VISUAL,
+      libs: LIBS_TEMPLATE_ANGULAR_BLADE_VISUAL,
       less: LESS_TEMPLATE_BASIC,
       dependencies: ['angular', 'davinci-blade', 'davinci-threejs', 'davinci-visual']
     }
@@ -1117,7 +1178,7 @@ angular.module('app').factory('templates', [
       isCodeVisible: true,
       isViewVisible: true,
       focusEditor: undefined,
-      lastKnownJs: undefined,
+      lastKnownJs: {},
       operatorOverloading: true,
       html: HTML_TEMPLATE_ANGULAR_VISUAL,
       code: CODE_TEMPLATE_ANGULAR_VISUAL,
@@ -1130,7 +1191,7 @@ angular.module('app').factory('templates', [
       isCodeVisible: true,
       isViewVisible: true,
       focusEditor: undefined,
-      lastKnownJs: undefined,
+      lastKnownJs: {},
       operatorOverloading: true,
       html: HTML_TEMPLATE_ANGULAR_THREE,
       code: CODE_TEMPLATE_ANGULAR_THREE,
@@ -1143,7 +1204,7 @@ angular.module('app').factory('templates', [
       isCodeVisible: true,
       isViewVisible: true,
       focusEditor: undefined,
-      lastKnownJs: undefined,
+      lastKnownJs: {},
       operatorOverloading: true,
       html: HTML_TEMPLATE_BASIC,
       code: CODE_TEMPLATE_D3,
