@@ -180,6 +180,133 @@ angular.module('app').factory('templates', [
   "  left: 400px;\n" +
   "}\n";
 
+  var HTML_TEMPLATE_EIGHT = "" +
+    "<!doctype html>\n" +
+    "<html>\n" +
+    "  <head>\n" +
+    styleMarker() +
+    "    <script id='vs' type='x-shader/x-vertex'>\n" +
+    "      attribute vec3 aVertexPosition;\n" +
+    "      attribute vec3 aVertexNormal;\n" +
+    "      uniform vec3 uColor;\n" +
+    "      uniform mat4 uModelMatrix;\n" +
+    "      uniform mat3 uNormalMatrix;\n" +
+    "      uniform mat4 uViewMatrix;\n" +
+    "      uniform mat4 uProjectionMatrix;\n" +
+    "      uniform vec3 uAmbientLight;\n" +
+    "      uniform vec3 uDirectionalLightColor;\n" +
+    "      uniform vec3 uDirectionalLightDirection;\n" +
+    "      varying highp vec4 vColor;\n" +
+    "      varying highp vec3 vLight;\n" +
+    "      void main(void) {\n" +
+    "        gl_Position = uProjectionMatrix * uViewMatrix * uModelMatrix * vec4(aVertexPosition, 1.0);\n" +
+    "        vColor = vec4(uColor, 1.0);\n"+
+    "        vec3 L = normalize(uDirectionalLightDirection);\n"+
+    "        vec3 N = normalize(uNormalMatrix * aVertexNormal);\n"+
+    "        float cosineFactor = max(dot(N,L), 0.0);\n"+
+    "        vLight = uAmbientLight + cosineFactor * uDirectionalLightColor;\n"+
+    "      }\n" +
+    "    </script>\n" +
+    "    <script id='fs' type='x-shader/x-fragment'>\n" +
+    "      varying highp vec4 vColor;\n" +
+    "      varying highp vec3 vLight;\n" +
+    "      void main(void) {\n" +
+    "        gl_FragColor = vec4(vColor.xyz * vLight, vColor.a);\n" +
+    "      }\n" +
+    "    </script>\n" +
+    scriptsMarker() +
+    "  </head>\n" +
+    "  <body>\n" +
+    codeMarker() +
+    "    <canvas id='my-canvas'>\n" +
+    "      Your browser does not support the canvas element.\n" +
+    "    </canvas>\n" +
+    "  </body>\n" +
+    "</html>\n";
+
+  var CODE_TEMPLATE_EIGHT = "" +
+    "DomReady.ready(function() {\n" +
+    "  try {\n" +
+    "    main();\n" +
+    "  }\n" +
+    "  catch(e) {\n" +
+    "    console.error(e);\n" +
+    "  }\n" +
+    "});\n" +
+    "\n" +
+    "var e1 = blade.e3ga.e1;\n" +
+    "var e2 = blade.e3ga.e2;\n" +
+    "var e3 = blade.e3ga.e3;\n" +
+    "\n" +
+    "/**\n" +
+    " * The angle of tilt of the precessing vector.\n" +
+    " */\n" +
+    "var tiltAngle = 45 * Math.PI / 180;\n" +
+    "var S = Math.cos(tiltAngle / 2) - (e2 ^ e1) * Math.sin(tiltAngle / 2);\n" +
+    "var B = e3 ^ e1;\n" +
+    "var T = 4;\n" +
+    "var f = 1 / T;\n" +
+    "var omega = 2 * Math.PI * f;\n" +
+    "\n" +
+    "function main() {\n" +
+    "\n" +
+    "  var scene = EIGHT.drawList();\n" +
+    "  var canvas = <HTMLCanvasElement>document.getElementById('my-canvas');\n" +
+    "  canvas.width = window.innerWidth;\n" +
+    "  canvas.height = window.innerHeight;\n" +
+    "  var renderer = EIGHT.webGLRenderer(canvas);\n" +
+    "  renderer.clearColor(0.2, 0.2, 0.2, 1.0);\n" +
+    "  var monitor = EIGHT.contextMonitor(canvas).addContextUser(renderer).start();\n" +
+    "\n" +
+    "  var perspective = EIGHT.perspective().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(e1 + 3.0 * e3);\n" +
+    "  var aLight = new EIGHT.AmbientLight({color: EIGHT.Color.fromRGB(0.3, 0.3, 0.3)});\n" +
+    "  var dLight = new EIGHT.DirectionalLight({color: EIGHT.Color.fromRGB(0.7, 0.7, 0.7), direction: new EIGHT.Vector3([2, 3, 5])});\n" +
+    "\n" +
+    "  var ambients = EIGHT.uniforms([perspective, aLight, dLight]);\n" +
+    "\n" +
+    "  var mesh = new EIGHT.BoxBuilder().setWidth(0.5).setHeight(0.5).setDepth(0.5).buildMesh();\n" +
+    "  var model = new EIGHT.Node();\n" +
+    "  var shaders = EIGHT.smartProgram(mesh.getAttribMeta(), [model.getUniformMeta(), ambients.getUniformMeta()]);\n" +
+    "  var cube = EIGHT.drawableModel(mesh, shaders, model);\n" +
+    "  //console.log(cube.shaders.vertexShader);\n" +
+    "  //console.log(cube.shaders.fragmentShader);\n" +
+    "  cube.model.color = EIGHT.Color.fromRGB(1, 1, 0);\n" +
+    "  scene.add(cube);\n" +
+    "\n" +
+    "  var arrowMesh = new EIGHT.ArrowBuilder().setAxis(e2).buildMesh();\n" +
+    "  var arrow = EIGHT.drawableModel(arrowMesh, EIGHT.shaderProgramFromScripts('vs', 'fs'), new EIGHT.Node())\n" +
+    "  arrow.model.color = EIGHT.Color.fromRGB(1, 0, 0);\n" +
+    "  arrow.model.position.copy(e1);\n" +
+    "  scene.add(arrow);\n" +
+    "\n" +
+    "  var sphere = EIGHT.sphere(ambients, {radius: 0.25});\n" +
+    "  sphere.model.color = EIGHT.Color.fromRGB(0.4, 0.4, 1.0);\n" +
+    "  scene.add(sphere);\n" +
+    "\n" +
+    "  var vortex = EIGHT.vortex(ambients);\n" +
+    "  vortex.model.color = EIGHT.Color.fromRGB(0.0, 1.0, 0.0);\n" +
+    "  scene.add(vortex);\n" +
+    "\n" +
+    "  EIGHT.animation((time: number) => {\n" +
+    "    var theta = omega * time;\n" +
+    "    // simple harmonic motion\n" +
+    "    cube.model.position.copy(1.2 * Math.sin(theta) * e2);\n" +
+    "\n" +
+    "    // precession\n" +
+    "    var R = Math.cos(theta / 2) - B * Math.sin(theta / 2)\n" +
+    "    arrow.model.attitude.copy(R * S * ~R);\n" +
+    "\n" +
+    "    // orbit\n" +
+    "    sphere.model.position.copy(2 * Math.cos(theta) * e1 - Math.sin(theta) * (e3 - 0.5 * e2));\n" +
+    "\n" +
+    "    renderer.render(scene, ambients);\n" +
+    "  }).start();\n" +
+    "}\n";
+
+  var LESS_TEMPLATE_EIGHT = "" +
+    "body { margin: 0; }\n" +
+    "canvas { width: 100%; height: 100% }\n";
+
   var HTML_TEMPLATE_ANGULAR = "" +
     "<!doctype html>\n" +
     "<html ng-app='doodle'>\n" +
@@ -879,6 +1006,19 @@ angular.module('app').factory('templates', [
   var LESS_TEMPLATE_MATHBOX = "";
 
   return [
+    {
+      uuid: uuid.generate(),
+      description: "EIGHT — Mathematical Computer Graphics using WebGL",
+      isCodeVisible: true,
+      isViewVisible: true,
+      focusEditor: undefined,
+      lastKnownJs: undefined,
+      operatorOverloading: true,
+      html: HTML_TEMPLATE_EIGHT,
+      code: CODE_TEMPLATE_EIGHT,
+      less: LESS_TEMPLATE_EIGHT,
+      dependencies: ['DomReady', 'davinci-blade', 'davinci-eight']
+    },
     {
       uuid: uuid.generate(),
       description: "Blade — Geometric Algebra and Unit of Measure calculations",
