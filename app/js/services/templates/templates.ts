@@ -240,7 +240,7 @@ angular.module('app').factory('templates', [
     " * The angle of tilt of the precessing vector.\n" +
     " */\n" +
     "var tiltAngle = 45 * Math.PI / 180;\n" +
-    "var S = Math.cos(tiltAngle / 2) - (e2 ^ e1) * Math.sin(tiltAngle / 2);\n" +
+    "var S = exp(-(e2 ^ e1) * tiltAngle / 2);\n" +
     "var B = e3 ^ e1;\n" +
     "/**\n" +
     " * The period of the motions in the animation.\n" +
@@ -297,7 +297,7 @@ angular.module('app').factory('templates', [
     "    cube.model.position.copy(1.2 * sin(theta) * e2);\n" +
     "\n" +
     "    // precession\n" +
-    "    var R = cos(theta / 2) - B * sin(theta / 2)\n" +
+    "    var R = exp(-B * theta / 2);\n" +
     "    arrow.model.attitude.copy(R * S * ~R);\n" +
     "\n" +
     "    // orbit\n" +
@@ -317,8 +317,17 @@ angular.module('app').factory('templates', [
     "  }\n" +
     "});\n" +
     "\n" +
+    "/**\n" +
+    " * Standard basis vector in the x-axis direction.\n" +
+    " */\n" +
     "var e1 = blade.e3ga.e1;\n" +
+    "/**\n" +
+    " * Standard basis vector in the y-axis direction.\n" +
+    " */\n" +
     "var e2 = blade.e3ga.e2;\n" +
+    "/**\n" +
+    " * Standard basis vector in the z-axis direction.\n" +
+    " */\n" +
     "var e3 = blade.e3ga.e3;\n" +
     "\n" +
     "/**\n" +
@@ -334,6 +343,9 @@ angular.module('app').factory('templates', [
     " */\n" +
     "var sin = blade.universals.sin;\n" +
     "\n" +
+    "/**\n" +
+    " * S.I. units of measure.\n" +
+    " */\n" +
     "var kilogram = blade.e3ga.units.kilogram;\n" +
     "var meter    = blade.e3ga.units.meter;\n" +
     "var second   = blade.e3ga.units.second;\n" +

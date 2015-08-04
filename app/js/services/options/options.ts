@@ -80,8 +80,8 @@ angular.module('app').factory('options', [
     },
     {
       name: 'davinci-eight',
-      moniker: 'd8',
-      description: "WebGL Library",
+      moniker: 'EIGHT',
+      description: "Mathematical Computer Graphics using WebGL",
       homepage: 'https://github.com/geometryzen/davinci-eight',
       version: 'latest',
       visible: true,

@@ -562,6 +562,10 @@ angular.module('app').controller('doodle-controller', [
   codeEditor.getSession().on('outputFiles', function(event) {
     var outputFiles: mathdoodle.IOutputFile[] = event.data;
     outputFiles.forEach(function(outputFile: mathdoodle.IOutputFile) {
+      // Lazy conversion from string value.
+      if (typeof doodles.current().lastKnownJs !== 'object') {
+        doodles.current().lastKnownJs = {};
+      }
       if (doodles.current() && doodles.current().lastKnownJs[FILENAME_CODE] !== outputFile.text) {
         if (cascade) {
           doodles.current().lastKnownJs[FILENAME_CODE] = outputFile.text;
@@ -603,6 +607,10 @@ angular.module('app').controller('doodle-controller', [
   libsEditor.getSession().on('outputFiles', function(event) {
     var outputFiles: mathdoodle.IOutputFile[] = event.data;
     outputFiles.forEach(function(outputFile: mathdoodle.IOutputFile) {
+      // Lazy conversion from legacy string value.
+      if (typeof doodles.current().lastKnownJs !== 'object') {
+        doodles.current().lastKnownJs = {};
+      }
       if (doodles.current() && doodles.current().lastKnownJs[FILENAME_LIBS] !== outputFile.text) {
         if (cascade) {
           doodles.current().lastKnownJs[FILENAME_LIBS] = outputFile.text;
@@ -703,12 +711,19 @@ angular.module('app').controller('doodle-controller', [
    * TypeScript compiler by, for example, introducing operator overloading. 
    */
   function currentJavaScript(fileName: string): string {
-    if (doodles.current().lastKnownJs[fileName]) {
+    var code = doodles.current().lastKnownJs[fileName];
+    if (code) {
       if (doodles.current().operatorOverloading) {
-        return mathscript.transpile(doodles.current().lastKnownJs[fileName]);
+        try {
+          return mathscript.transpile(code);
+        }
+        catch(e) {
+          console.error(e);
+          return code;
+        }
       }
       else {
-        return doodles.current().lastKnownJs[fileName];
+        return code;
       }
     }
     else {
@@ -725,7 +740,7 @@ angular.module('app').controller('doodle-controller', [
         preview.removeChild(preview.firstChild);
       }
 
-      if (scope.isViewVisible && doodles.current() && doodles.current().lastKnownJs[FILENAME_CODE] && doodles.current().lastKnownJs[FILENAME_LIBS]) {
+      if (scope.isViewVisible && doodles.current() && (typeof doodles.current().lastKnownJs[FILENAME_CODE] === 'string') && (typeof doodles.current().lastKnownJs[FILENAME_LIBS] === 'string')) {
         scope.previewIFrame = document.createElement('iframe');
         scope.previewIFrame.style.width = '100%';
         scope.previewIFrame.style.height = '100%';
@@ -763,8 +778,12 @@ angular.module('app').controller('doodle-controller', [
         content.write(html);
         content.close();
       }
+      else {
+        // Do nothing
+      }
     }
     catch(e) {
+      console.error(e);
     }
   };
 
