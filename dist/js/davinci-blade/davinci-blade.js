@@ -2237,7 +2237,12 @@ define('davinci-blade/NotImplementedError',["require", "exports"], function (req
     return NotImplementedError;
 });
 
-define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/NotImplementedError', 'davinci-blade/Unit'], function (require, exports, NotImplementedError, Unit) {
+define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/NotImplementedError', 'davinci-blade/Unit', 'davinci-blade/core'], function (require, exports, NotImplementedError, Unit, core) {
+    var cos = Math.cos;
+    var cosh = core.Math.cosh;
+    var exp = Math.exp;
+    var sin = Math.sin;
+    var sinh = core.Math.sinh;
     function Euclidean3Error(message) {
         this.name = 'Euclidean3Error';
         this.message = (message || "");
@@ -3216,14 +3221,20 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/NotImple
         Euclidean3.prototype.cos = function () {
             // TODO: Generalize to full multivector.
             Unit.assertDimensionless(this.uom);
-            var cosW = Math.cos(this.w);
+            var cosW = cos(this.w);
             return new Euclidean3(cosW, 0, 0, 0, 0, 0, 0, 0, undefined);
         };
         Euclidean3.prototype.cosh = function () {
             throw new NotImplementedError('cosh(Euclidean3)');
         };
         Euclidean3.prototype.exp = function () {
-            throw new NotImplementedError('exp(Euclidean3)');
+            Unit.assertDimensionless(this.uom);
+            var bivector = this.grade(2);
+            var a = bivector.norm();
+            var c = a.cos();
+            var s = a.sin();
+            var B = bivector.unit();
+            return c.add(B.mul(s));
         };
         /**
          * Computes the magnitude of this Euclidean3. The magnitude is the square root of the quadrance.
@@ -3239,8 +3250,8 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/NotImple
         };
         Euclidean3.prototype.sin = function () {
             // TODO: Generalize to full multivector.
-            Unit.assertDimensionless(this.uom);
-            var sinW = Math.sin(this.w);
+            //Unit.assertDimensionless(this.uom);
+            var sinW = sin(this.w);
             return new Euclidean3(sinW, 0, 0, 0, 0, 0, 0, 0, undefined);
         };
         Euclidean3.prototype.sinh = function () {
