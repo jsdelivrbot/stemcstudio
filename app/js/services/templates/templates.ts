@@ -271,14 +271,14 @@ angular.module('app').factory('templates', [
     "  var mesh = new EIGHT.BoxBuilder().setWidth(0.5).setHeight(0.5).setDepth(0.5).buildMesh();\n" +
     "  var model = new EIGHT.Node();\n" +
     "  var shaders = EIGHT.smartProgram(mesh.getAttribMeta(), [model.getUniformMeta(), ambients.getUniformMeta()]);\n" +
-    "  var cube = EIGHT.drawableModel(mesh, shaders, model);\n" +
+    "  var cube = EIGHT.primitive(mesh, shaders, model);\n" +
     "  //console.log(cube.shaders.vertexShader);\n" +
     "  //console.log(cube.shaders.fragmentShader);\n" +
     "  cube.model.color = EIGHT.Color.fromRGB(1, 1, 0);\n" +
     "  scene.add(cube);\n" +
     "\n" +
     "  var arrowMesh = new EIGHT.ArrowBuilder().setAxis(e2).buildMesh();\n" +
-    "  var arrow = EIGHT.drawableModel(arrowMesh, EIGHT.shaderProgramFromScripts('vs', 'fs'), new EIGHT.Node())\n" +
+    "  var arrow = EIGHT.primitive(arrowMesh, EIGHT.shaderProgramFromScripts('vs', 'fs'), new EIGHT.Node())\n" +
     "  arrow.model.color = EIGHT.Color.fromRGB(1, 0, 0);\n" +
     "  arrow.model.position.copy(e1);\n" +
     "  scene.add(arrow);\n" +
