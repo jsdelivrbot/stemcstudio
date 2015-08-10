@@ -2977,7 +2977,7 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/NotImple
                 return this.add(other);
             }
             else if (typeof other === 'number') {
-                return this.add(new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, undefined));
+                return this.add(new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, void 0));
             }
         };
         Euclidean3.prototype.__radd__ = function (other) {
@@ -2985,7 +2985,7 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/NotImple
                 return other.add(this);
             }
             else if (typeof other === 'number') {
-                return new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, undefined).add(this);
+                return new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, void 0).add(this);
             }
         };
         /**
@@ -3009,7 +3009,7 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/NotImple
                 return this.sub(other);
             }
             else if (typeof other === 'number') {
-                return this.sub(new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, undefined));
+                return this.sub(new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, void 0));
             }
         };
         Euclidean3.prototype.__rsub__ = function (other) {
@@ -3017,7 +3017,7 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/NotImple
                 return other.sub(this);
             }
             else if (typeof other === 'number') {
-                return new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, undefined).sub(this);
+                return new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, void 0).sub(this);
             }
         };
         Euclidean3.prototype.mul = function (rhs) {
@@ -3034,7 +3034,7 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/NotImple
                 return this.mul(other);
             }
             else if (typeof other === 'number') {
-                return this.mul(new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, undefined));
+                return this.mul(new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, void 0));
             }
         };
         Euclidean3.prototype.__rmul__ = function (other) {
@@ -3042,7 +3042,7 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/NotImple
                 return other.mul(this);
             }
             else if (typeof other === 'number') {
-                return new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, undefined).mul(this);
+                return new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, void 0).mul(this);
             }
         };
         Euclidean3.prototype.scalarMultiply = function (rhs) {
@@ -3057,7 +3057,7 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/NotImple
                 return this.div(other);
             }
             else if (typeof other === 'number') {
-                return this.div(new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, undefined));
+                return this.div(new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, void 0));
             }
         };
         Euclidean3.prototype.__rdiv__ = function (other) {
@@ -3065,7 +3065,7 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/NotImple
                 return other.div(this);
             }
             else if (typeof other === 'number') {
-                return new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, undefined).div(this);
+                return new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, void 0).div(this);
             }
         };
         Euclidean3.prototype.splat = function (rhs) {
@@ -3091,7 +3091,7 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/NotImple
                 return this.splat(other);
             }
             else if (typeof other === 'number') {
-                return this.splat(new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, undefined));
+                return this.splat(new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, void 0));
             }
         };
         Euclidean3.prototype.__rvbar__ = function (other) {
@@ -3099,7 +3099,7 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/NotImple
                 return other.splat(this);
             }
             else if (typeof other === 'number') {
-                return new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, undefined).splat(this);
+                return new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, void 0).splat(this);
             }
         };
         Euclidean3.prototype.__wedge__ = function (other) {
@@ -3107,7 +3107,7 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/NotImple
                 return this.wedge(other);
             }
             else if (typeof other === 'number') {
-                return this.wedge(new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, undefined));
+                return this.wedge(new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, void 0));
             }
         };
         Euclidean3.prototype.__rwedge__ = function (other) {
@@ -3115,7 +3115,7 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/NotImple
                 return other.wedge(this);
             }
             else if (typeof other === 'number') {
-                return new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, undefined).wedge(this);
+                return new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, void 0).wedge(this);
             }
         };
         Euclidean3.prototype.lshift = function (rhs) {
@@ -3132,7 +3132,7 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/NotImple
                 return this.lshift(other);
             }
             else if (typeof other === 'number') {
-                return this.lshift(new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, undefined));
+                return this.lshift(new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, void 0));
             }
         };
         Euclidean3.prototype.__rlshift__ = function (other) {
@@ -3140,7 +3140,7 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/NotImple
                 return other.lshift(this);
             }
             else if (typeof other === 'number') {
-                return new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, undefined).lshift(this);
+                return new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, void 0).lshift(this);
             }
         };
         Euclidean3.prototype.rshift = function (rhs) {
@@ -3157,7 +3157,7 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/NotImple
                 return this.rshift(other);
             }
             else if (typeof other === 'number') {
-                return this.rshift(new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, undefined));
+                return this.rshift(new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, void 0));
             }
         };
         Euclidean3.prototype.__rrshift__ = function (other) {
@@ -3165,7 +3165,7 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/NotImple
                 return other.rshift(this);
             }
             else if (typeof other === 'number') {
-                return new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, undefined).rshift(this);
+                return new Euclidean3(other, 0, 0, 0, 0, 0, 0, 0, void 0).rshift(this);
             }
         };
         Euclidean3.prototype.pow = function (exponent) {
@@ -3215,6 +3215,9 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/NotImple
             z = x1 * y2 - y1 * x2;
             return new Euclidean3(0, x, y, z, 0, 0, 0, 0, Unit.mul(this.uom, vector.uom));
         };
+        Euclidean3.prototype.isZero = function () {
+            return (this.w === 0) && (this.x === 0) && (this.y === 0) && (this.z === 0) && (this.yz === 0) && (this.zx === 0) && (this.xy === 0) && (this.xyz === 0);
+        };
         Euclidean3.prototype.length = function () {
             return Math.sqrt(this.w * this.w + this.x * this.x + this.y * this.y + this.z * this.z + this.xy * this.xy + this.yz * this.yz + this.zx * this.zx + this.xyz * this.xyz);
         };
@@ -3222,7 +3225,7 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/NotImple
             // TODO: Generalize to full multivector.
             Unit.assertDimensionless(this.uom);
             var cosW = cos(this.w);
-            return new Euclidean3(cosW, 0, 0, 0, 0, 0, 0, 0, undefined);
+            return new Euclidean3(cosW, 0, 0, 0, 0, 0, 0, 0, void 0);
         };
         Euclidean3.prototype.cosh = function () {
             throw new NotImplementedError('cosh(Euclidean3)');
@@ -3231,10 +3234,15 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/NotImple
             Unit.assertDimensionless(this.uom);
             var bivector = this.grade(2);
             var a = bivector.norm();
-            var c = a.cos();
-            var s = a.sin();
-            var B = bivector.unit();
-            return c.add(B.mul(s));
+            if (!a.isZero()) {
+                var c = a.cos();
+                var s = a.sin();
+                var B = bivector.unit();
+                return c.add(B.mul(s));
+            }
+            else {
+                return new Euclidean3(1, 0, 0, 0, 0, 0, 0, 0, this.uom);
+            }
         };
         /**
          * Computes the magnitude of this Euclidean3. The magnitude is the square root of the quadrance.
@@ -3250,9 +3258,9 @@ define('davinci-blade/Euclidean3',["require", "exports", 'davinci-blade/NotImple
         };
         Euclidean3.prototype.sin = function () {
             // TODO: Generalize to full multivector.
-            //Unit.assertDimensionless(this.uom);
+            Unit.assertDimensionless(this.uom);
             var sinW = sin(this.w);
-            return new Euclidean3(sinW, 0, 0, 0, 0, 0, 0, 0, undefined);
+            return new Euclidean3(sinW, 0, 0, 0, 0, 0, 0, 0, void 0);
         };
         Euclidean3.prototype.sinh = function () {
             throw new Euclidean3Error('sinh');
