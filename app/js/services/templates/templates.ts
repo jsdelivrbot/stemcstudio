@@ -254,11 +254,11 @@ angular.module('app').factory('templates', [
     "\n" +
     "function main() {\n" +
     "\n" +
-    "  var scene = EIGHT.drawList();\n" +
+    "  var scene = EIGHT.scene();\n" +
     "  var canvas = <HTMLCanvasElement>document.getElementById('my-canvas');\n" +
     "  canvas.width = window.innerWidth;\n" +
     "  canvas.height = window.innerHeight;\n" +
-    "  var renderer = EIGHT.webGLRenderer(canvas);\n" +
+    "  var renderer = EIGHT.renderer(canvas);\n" +
     "  renderer.clearColor(0.2, 0.2, 0.2, 1.0);\n" +
     "  var monitor = EIGHT.contextMonitor(canvas).addContextUser(renderer).start();\n" +
     "\n" +
@@ -283,18 +283,18 @@ angular.module('app').factory('templates', [
     "  // This gives us maximum flexibility.\n" +
     "  var arrowMesh = new EIGHT.ArrowBuilder().setAxis(e2).buildMesh();\n" +
     "  var arrow = EIGHT.primitive(arrowMesh, EIGHT.shaderProgramFromScripts('vs', 'fs'), new EIGHT.Node())\n" +
-    "  arrow.model.color = EIGHT.Color.fromRGB(1, 0, 0);\n" +
+    "  arrow.model.color = EIGHT.Color.fromRGB(1, 0, 1);\n" +
     "  arrow.model.position.copy(e1);\n" +
     "  scene.add(arrow);\n" +
     "\n" +
     "  // Quick! Just give me a sphere!!\n" +
     "  var sphere = EIGHT.sphere(ambients, {radius: 0.25});\n" +
-    "  sphere.model.color = EIGHT.Color.fromRGB(0.4, 0.4, 1.0);\n" +
+    "  sphere.model.color = EIGHT.Color.fromRGB(0.4, 0.4, 0.4);\n" +
     "  scene.add(sphere);\n" +
     "\n" +
     "  // A vortex could be used to visualize bivectors in Geometric Algebra.\n" +
     "  var vortex = EIGHT.vortex(ambients);\n" +
-    "  vortex.model.color = EIGHT.Color.fromRGB(0.0, 1.0, 0.0);\n" +
+    "  vortex.model.color = EIGHT.Color.fromRGB(0.0, 1.0, 1.0);\n" +
     "  scene.add(vortex);\n" +
     "\n" +
     "  EIGHT.animation((time: number) => {\n" +
