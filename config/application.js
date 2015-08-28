@@ -59,9 +59,12 @@ module.exports = function(lineman) {
           {src: "vendor/davinci-visual/dist/davinci-visual.js",    dest: "generated/js/davinci-visual.js"},
           {src: "vendor/davinci-visual/dist/davinci-visual.min.js",dest: "generated/js/davinci-visual.min.js"},
 
+          {src: "museum/stats/stats.d.ts",                                   dest: "generated/ts/stats.d.ts"},
+          {src: "vendor/stats.js/build/stats.min.js",                        dest: "generated/js/stats.min.js"},
+
           {src: "museum/three/three@0.71.0.d.ts",                            dest: "generated/ts/three.d.ts"},
-          {src: "vendor/davinci-threejs/build/three.js",           dest: "generated/js/three.js"},
-          {src: "vendor/davinci-threejs/build/three.min.js",       dest: "generated/js/three.min.js"},
+          {src: "vendor/davinci-threejs/build/three.js",                     dest: "generated/js/three.js"},
+          {src: "vendor/davinci-threejs/build/three.min.js",                 dest: "generated/js/three.min.js"},
 //        {src: "../davinci-threejs/build/three.js",                         dest: "generated/js/three.js"},
 //        {src: "../davinci-threejs/build/three.min.js",                     dest: "generated/js/three.min.js"},
 
@@ -164,6 +167,9 @@ module.exports = function(lineman) {
           {src: "vendor/davinci-visual/dist/davinci-visual.d.ts",  dest: "dist/ts/davinci-visual.d.ts"},
           {src: "vendor/davinci-visual/dist/davinci-visual.js",    dest: "dist/js/davinci-visual.js"},
           {src: "vendor/davinci-visual/dist/davinci-visual.min.js",dest: "dist/js/davinci-visual.min.js"},
+
+          {src: "museum/stats/stats.d.ts",                                   dest: "dist/ts/stats.d.ts"},
+          {src: "vendor/stats.js/build/stats.min.js",                        dest: "dist/js/stats.min.js"},
 
           {src: "typings/threejs/three.d.ts",                                dest: "dist/ts/three.d.ts"},
           {src: "vendor/davinci-threejs/build/three.js",           dest: "dist/js/three.js"},

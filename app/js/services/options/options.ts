@@ -136,6 +136,19 @@ angular.module('app').factory('options', [
       }
     },
     {
+      name: 'stats.js',
+      moniker: 'Stats',
+      description: "WebGL Performance Monitoring",
+      homepage: '',
+      version: 'latest',
+      visible: true,
+      dts: 'stats.d.ts',
+      js: 'stats.min.js',
+      minJs: 'stats.min.js',
+      dependencies: {
+      }
+    },
+    {
       name: 'davinci-threejs',
       moniker: 'THREE',
       description: "WebGL Library",

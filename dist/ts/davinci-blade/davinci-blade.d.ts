@@ -601,4 +601,10 @@ declare module blade {
      * @param uom The optional unit of measure.
      */
     function bivectorE3(xy: number, yz: number, zx: number, uom?: Unit): Euclidean3;
+    /**
+     * Returns a Euclidean 3-dimensional number representing a pseudoscalar.
+     * @param xyz The pseudoscalar value.
+     * @param uom The optional unit of measure.
+     */
+    function pseudoscalarE3(xyz: number, uom?: Unit): Euclidean3;
 }

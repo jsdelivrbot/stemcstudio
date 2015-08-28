@@ -297,7 +297,12 @@ angular.module('app').factory('templates', [
     "  vortex.model.color = EIGHT.Color.fromRGB(0.0, 1.0, 1.0);\n" +
     "  scene.add(vortex);\n" +
     "\n" +
+    "  var stats = new Stats();\n" +
+    "  stats.setMode(0);\n" +
+    "  document.body.appendChild(stats.domElement);\n" +
+    "\n" +
     "  EIGHT.animation((time: number) => {\n" +
+    "    stats.begin();\n" +
     "    var theta = omega * (time * second);\n" +
     "    // simple harmonic motion\n" +
     "    cube.model.position.copy(1.2 * sin(theta) * e2);\n" +
@@ -313,6 +318,7 @@ angular.module('app').factory('templates', [
     "    sphere.model.position.copy(2 * cos(theta) * e1 - sin(theta) * (e3 - 0.5 * e2));\n" +
     "\n" +
     "    renderer.render(scene, ambients);\n" +
+    "    stats.end();\n" +
     "  }).start();\n" +
     "}\n";
 
@@ -362,7 +368,8 @@ angular.module('app').factory('templates', [
 
   var LESS_TEMPLATE_EIGHT = "" +
     "body { margin: 0; }\n" +
-    "canvas { width: 100%; height: 100% }\n";
+    "canvas { width: 100%; height: 100% }\n" +
+    "#stats { position: absolute; top: 0; left: 0; }\n";
 
   var HTML_TEMPLATE_ANGULAR = "" +
     "<!doctype html>\n" +
@@ -421,6 +428,10 @@ angular.module('app').factory('templates', [
     "var renderer = new THREE.WebGLRenderer();\n" +
     "var mesh: THREE.Mesh;\n" +
     "\n" +
+    "var stats = new Stats();\n" +
+    "stats.setMode(0);\n" +
+    "document.body.appendChild(stats.domElement);\n" +
+    "\n" +
     "init();\n"+
     "animate();\n"+
     "\n"+
@@ -451,19 +462,22 @@ angular.module('app').factory('templates', [
     " * Animates the scene.\n"+
     " */\n"+
     "function animate() {\n" +
+    "  stats.begin();\n" +
     "  requestAnimationFrame(animate);\n" +
     "\n" +
-    "  mesh.rotation.x = Date.now() * 0.0005;\n"+
-    "  mesh.rotation.y = Date.now() * 0.001;\n"+
+    "  mesh.rotation.x = Date.now() * 0.0005;\n" +
+    "  mesh.rotation.y = Date.now() * 0.001;\n" +
     "\n"+
-    "  renderer.render(scene, camera);\n"+
+    "  renderer.render(scene, camera);\n" +
+    "  stats.end();\n" +
   "}\n";
 
   var LIBS_TEMPLATE_THREEJS = "//\n";
 
   var LESS_TEMPLATE_THREEJS = "" +
     "body { margin: 0; }\n" +
-    "canvas { width: 100%; height: 100% }\n";
+    "canvas { width: 100%; height: 100% }\n" +
+    "#stats { position: absolute; top: 0; left: 0; }\n";
 
   var CODE_TEMPLATE_VISUAL = "" +
     "/**\n"+
@@ -1092,7 +1106,7 @@ angular.module('app').factory('templates', [
       code: CODE_TEMPLATE_EIGHT,
       libs: LIBS_TEMPLATE_EIGHT,
       less: LESS_TEMPLATE_EIGHT,
-      dependencies: ['DomReady', 'davinci-blade', 'davinci-eight']
+      dependencies: ['DomReady', 'davinci-blade', 'davinci-eight', 'stats']
     },
     {
       uuid: uuid.generate(),
@@ -1148,7 +1162,7 @@ angular.module('app').factory('templates', [
       code: CODE_TEMPLATE_THREEJS,
       libs: LIBS_TEMPLATE_THREEJS,
       less: LESS_TEMPLATE_THREEJS,
-      dependencies: ['davinci-threejs']
+      dependencies: ['davinci-threejs', 'stats']
     },
     {
       uuid: uuid.generate(),
