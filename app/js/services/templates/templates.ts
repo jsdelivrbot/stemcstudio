@@ -1106,7 +1106,7 @@ angular.module('app').factory('templates', [
       code: CODE_TEMPLATE_EIGHT,
       libs: LIBS_TEMPLATE_EIGHT,
       less: LESS_TEMPLATE_EIGHT,
-      dependencies: ['DomReady', 'davinci-blade', 'davinci-eight', 'stats']
+      dependencies: ['DomReady', 'davinci-blade', 'davinci-eight', 'stats.js']
     },
     {
       uuid: uuid.generate(),
@@ -1162,7 +1162,7 @@ angular.module('app').factory('templates', [
       code: CODE_TEMPLATE_THREEJS,
       libs: LIBS_TEMPLATE_THREEJS,
       less: LESS_TEMPLATE_THREEJS,
-      dependencies: ['davinci-threejs', 'stats']
+      dependencies: ['davinci-threejs', 'stats.js']
     },
     {
       uuid: uuid.generate(),
