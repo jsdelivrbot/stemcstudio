@@ -268,21 +268,23 @@ angular.module('app').factory('templates', [
     "\n" +
     "  var ambients = EIGHT.uniforms([perspective, aLight, dLight]);\n" +
     "\n" +
+    "  var program = EIGHT.shaderProgramFromScripts('vs', 'fs');\n" +
+    "\n" +
     "  // Here we let the library try to build shaders to compliment our attribute and uniform variables.\n" +
     "  // We still get to choose the model and the mesh.\n" +
     "  var mesh = new EIGHT.BoxBuilder().setWidth(0.5).setHeight(0.5).setDepth(0.5).buildMesh();\n" +
     "  var model = new EIGHT.Node();\n" +
     "  var shaders = EIGHT.smartProgram(mesh.getAttribMeta(), [model.getUniformMeta(), ambients.getUniformMeta()]);\n" +
     "  var cube = EIGHT.primitive(mesh, shaders, model);\n" +
-    "  //console.log(cube.shaders.vertexShader);\n" +
-    "  //console.log(cube.shaders.fragmentShader);\n" +
+    "  //console.log(cube.program.vertexShader);\n" +
+    "  //console.log(cube.program.fragmentShader);\n" +
     "  cube.model.color = EIGHT.Color.fromRGB(1, 1, 0);\n" +
     "  scene.add(cube);\n" +
     "\n" +
     "  // Here we take control of the shaders, which are scripts in the HTML.\n" +
     "  // This gives us maximum flexibility.\n" +
     "  var arrowMesh = new EIGHT.ArrowBuilder().setAxis(e2).buildMesh();\n" +
-    "  var arrow = EIGHT.primitive(arrowMesh, EIGHT.shaderProgramFromScripts('vs', 'fs'), new EIGHT.Node())\n" +
+    "  var arrow = EIGHT.primitive(arrowMesh, program, new EIGHT.Node())\n" +
     "  arrow.model.color = EIGHT.Color.fromRGB(1, 0, 1);\n" +
     "  arrow.model.position.copy(e1);\n" +
     "  scene.add(arrow);\n" +
