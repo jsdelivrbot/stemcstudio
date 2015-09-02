@@ -260,7 +260,7 @@ angular.module('app').factory('templates', [
     "  canvas.height = window.innerHeight;\n" +
     "  var renderer = EIGHT.renderer(canvas);\n" +
     "  renderer.clearColor(0.2, 0.2, 0.2, 1.0);\n" +
-    "  var monitor = EIGHT.contextMonitor(canvas).addContextUser(renderer).start();\n" +
+    "  var monitor = EIGHT.contextMonitor(canvas).addContextUser(renderer).addContextUser(scene).start();\n" +
     "\n" +
     "  var perspective = EIGHT.perspective().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(e1 + 3.0 * e3);\n" +
     "  var aLight = new EIGHT.AmbientLight({color: EIGHT.Color.fromRGB(0.3, 0.3, 0.3)});\n" +
@@ -303,6 +303,8 @@ angular.module('app').factory('templates', [
     "  stats.setMode(0);\n" +
     "  document.body.appendChild(stats.domElement);\n" +
     "\n" +
+    "  scene.setUniforms(ambients.getUniformData());\n" +
+    "\n" +
     "  EIGHT.animation((time: number) => {\n" +
     "    stats.begin();\n" +
     "    var theta = omega * (time * second);\n" +
@@ -319,7 +321,7 @@ angular.module('app').factory('templates', [
     "    // orbit\n" +
     "    sphere.model.position.copy(2 * cos(theta) * e1 - sin(theta) * (e3 - 0.5 * e2));\n" +
     "\n" +
-    "    renderer.render(scene, ambients);\n" +
+    "    renderer.render(scene);\n" +
     "    stats.end();\n" +
     "  }).start();\n" +
     "}\n";
