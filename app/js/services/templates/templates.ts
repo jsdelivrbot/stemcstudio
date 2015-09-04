@@ -263,47 +263,42 @@ angular.module('app').factory('templates', [
     "  var monitor = EIGHT.contextMonitor(canvas).addContextUser(renderer).addContextUser(scene).start();\n" +
     "\n" +
     "  var perspective = EIGHT.perspective().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(e1 + 3.0 * e3);\n" +
-    "  var aLight = new EIGHT.AmbientLight({color: EIGHT.Color.fromRGB(0.3, 0.3, 0.3)});\n" +
-    "  var dLight = new EIGHT.DirectionalLight({color: EIGHT.Color.fromRGB(0.7, 0.7, 0.7), direction: 2 * e1 + 3 * e2 + 5 * e3});\n" +
-    "\n" +
-    "  var ambients = EIGHT.uniforms([perspective, aLight, dLight]);\n" +
+    "  var aLight = new EIGHT.Vector3([0.3, 0.3, 0.3]);\n" +
+    "  var dLightColor = new EIGHT.Vector3([0.7, 0.7, 0.7]);\n" +
+    "  var dLightDirection = new EIGHT.Vector3([2, 3, 5]);\n" +
     "\n" +
     "  var program = EIGHT.shaderProgramFromScripts('vs', 'fs');\n" +
     "\n" +
-    "  // Here we let the library try to build shaders to compliment our attribute and uniform variables.\n" +
-    "  // We still get to choose the model and the mesh.\n" +
-    "  var mesh = new EIGHT.BoxBuilder().setWidth(0.5).setHeight(0.5).setDepth(0.5).buildMesh();\n" +
+    "  var cubeMesh = new EIGHT.BoxBuilder().setWidth(0.5).setHeight(0.5).setDepth(0.5).buildMesh();\n" +
     "  var model = new EIGHT.Node();\n" +
-    "  var shaders = EIGHT.smartProgram(mesh.getAttribMeta(), [model.getUniformMeta(), ambients.getUniformMeta()]);\n" +
-    "  var cube = EIGHT.primitive(mesh, shaders, model);\n" +
-    "  //console.log(cube.program.vertexShader);\n" +
-    "  //console.log(cube.program.fragmentShader);\n" +
-    "  cube.model.color = EIGHT.Color.fromRGB(1, 1, 0);\n" +
+    "  var cube = EIGHT.primitive(cubeMesh, program, model);\n" +
+    "  cube.model.color.set(1, 1, 0);\n" +
     "  scene.add(cube);\n" +
     "\n" +
-    "  // Here we take control of the shaders, which are scripts in the HTML.\n" +
-    "  // This gives us maximum flexibility.\n" +
     "  var arrowMesh = new EIGHT.ArrowBuilder().setAxis(e2).buildMesh();\n" +
     "  var arrow = EIGHT.primitive(arrowMesh, program, new EIGHT.Node())\n" +
-    "  arrow.model.color = EIGHT.Color.fromRGB(1, 0, 1);\n" +
+    "  arrow.model.color.set(1, 0, 1);\n" +
     "  arrow.model.position.copy(e1);\n" +
     "  scene.add(arrow);\n" +
     "\n" +
-    "  // Quick! Just give me a sphere!!\n" +
-    "  var sphere = EIGHT.sphere(ambients, {radius: 0.25});\n" +
-    "  sphere.model.color = EIGHT.Color.fromRGB(0.4, 0.4, 0.4);\n" +
+    "  var sphereMesh = new EIGHT.SphereBuilder().setRadius(0.25).buildMesh();\n" +
+    "  var sphere = EIGHT.primitive(sphereMesh, program, new EIGHT.Node())\n" +
+    "  sphere.model.color.set(0.4, 0.4, 0.4);\n" +
     "  scene.add(sphere);\n" +
     "\n" +
-    "  // A vortex could be used to visualize bivectors in Geometric Algebra.\n" +
-    "  var vortex = EIGHT.vortex(ambients);\n" +
-    "  vortex.model.color = EIGHT.Color.fromRGB(0.0, 1.0, 1.0);\n" +
+    "  var vortexMesh = EIGHT.vortexMesh();\n" +
+    "  var vortex = EIGHT.primitive(vortexMesh, program, new EIGHT.Node())\n" +
+    "  vortex.model.color.set(0.0, 1.0, 1.0);\n" +
     "  scene.add(vortex);\n" +
     "\n" +
     "  var stats = new Stats();\n" +
     "  stats.setMode(0);\n" +
     "  document.body.appendChild(stats.domElement);\n" +
     "\n" +
-    "  scene.setUniforms(ambients.getUniformData());\n" +
+    "  perspective.accept(scene);\n" +
+    "  scene.uniformVector3('uAmbientLight', aLight);\n" +
+    "  scene.uniformVector3('uDirectionalLightColor', dLightColor);\n" +
+    "  scene.uniformVector3('uDirectionalLightDirection', dLightDirection);\n" +
     "\n" +
     "  EIGHT.animation((time: number) => {\n" +
     "    stats.begin();\n" +
