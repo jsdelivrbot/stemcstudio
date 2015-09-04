@@ -195,7 +195,7 @@ angular.module('app').factory('templates', [
     "<html>\n" +
     "  <head>\n" +
     styleMarker() +
-    "    <script id='vs' type='x-shader/x-vertex'>\n" +
+    "    <script id='vs-triangles' type='x-shader/x-vertex'>\n" +
     "      attribute vec3 aVertexPosition;\n" +
     "      attribute vec3 aVertexNormal;\n" +
     "      uniform vec3 uColor;\n" +
@@ -217,11 +217,49 @@ angular.module('app').factory('templates', [
     "        vLight = uAmbientLight + cosineFactor * uDirectionalLightColor;\n"+
     "      }\n" +
     "    </script>\n" +
-    "    <script id='fs' type='x-shader/x-fragment'>\n" +
+    "    <script id='fs-triangles' type='x-shader/x-fragment'>\n" +
     "      varying highp vec4 vColor;\n" +
     "      varying highp vec3 vLight;\n" +
     "      void main(void) {\n" +
     "        gl_FragColor = vec4(vColor.xyz * vLight, vColor.a);\n" +
+    "      }\n" +
+    "    </script>\n" +
+    "    <script id='vs-lines' type='x-shader/x-vertex'>\n" +
+    "      attribute vec3 aVertexPosition;\n" +
+    "      uniform vec3 uColor;\n" +
+    "      uniform mat4 uModelMatrix;\n" +
+    "      uniform mat4 uViewMatrix;\n" +
+    "      uniform mat4 uProjectionMatrix;\n" +
+    "      varying highp vec4 vColor;\n" +
+    "      void main(void) {\n" +
+    "        gl_Position = uProjectionMatrix * uViewMatrix * uModelMatrix * vec4(aVertexPosition, 1.0);\n" +
+    "        vColor = vec4(uColor, 1.0);\n"+
+    "      }\n" +
+    "    </script>\n" +
+    "    <script id='fs-lines' type='x-shader/x-fragment'>\n" +
+    "      varying highp vec4 vColor;\n" +
+    "      void main(void) {\n" +
+    "        gl_FragColor = vec4(vColor.xyz, vColor.a);\n" +
+    "      }\n" +
+    "    </script>\n" +
+    "    <script id='vs-points' type='x-shader/x-vertex'>\n" +
+    "      attribute vec3 aVertexPosition;\n" +
+    "      uniform vec3 uColor;\n" +
+    "      uniform mat4 uModelMatrix;\n" +
+    "      uniform mat4 uViewMatrix;\n" +
+    "      uniform mat4 uProjectionMatrix;\n" +
+    "      uniform float uPointSize;\n" +
+    "      varying highp vec4 vColor;\n" +
+    "      void main(void) {\n" +
+    "        gl_Position = uProjectionMatrix * uViewMatrix * uModelMatrix * vec4(aVertexPosition, 1.0);\n" +
+    "        gl_PointSize = uPointSize;\n"+
+    "        vColor = vec4(uColor, 1.0);\n"+
+    "      }\n" +
+    "    </script>\n" +
+    "    <script id='fs-points' type='x-shader/x-fragment'>\n" +
+    "      varying highp vec4 vColor;\n" +
+    "      void main(void) {\n" +
+    "        gl_FragColor = vec4(vColor.xyz, vColor.a);\n" +
     "      }\n" +
     "    </script>\n" +
     scriptsMarker() +
@@ -252,44 +290,72 @@ angular.module('app').factory('templates', [
     "var f = (1 / T);\n" +
     "var omega = 2 * Math.PI * f;\n" +
     "\n" +
+    "function surfaceFn(u: number, v: number): EIGHT.Cartesian3 {\n" +
+    "  var x = 3 * (u - 0.5);\n" +
+    "  var z = 3 * (v - 0.5);\n" +
+    "  var y = 0;\n" +
+    "  return x * e1 + y * e2 + z * e3;\n" +
+    "}\n" +
+    "\n" +
     "function main() {\n" +
     "\n" +
-    "  var scene = EIGHT.scene();\n" +
     "  var canvas = <HTMLCanvasElement>document.getElementById('my-canvas');\n" +
     "  canvas.width = window.innerWidth;\n" +
     "  canvas.height = window.innerHeight;\n" +
+    "\n" +
+    "  var monitor = EIGHT.contextMonitor(canvas);\n" +
+    "\n" +
+    "  var scene = EIGHT.scene();\n" +
+    "  monitor.addContextUser(scene);\n" +
+    "\n" +
     "  var renderer = EIGHT.renderer(canvas);\n" +
+    "  monitor.addContextUser(renderer);\n" +
+    "\n" +
     "  renderer.clearColor(0.2, 0.2, 0.2, 1.0);\n" +
-    "  var monitor = EIGHT.contextMonitor(canvas).addContextUser(renderer).addContextUser(scene).start();\n" +
     "\n" +
     "  var perspective = EIGHT.perspective().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(e1 + 3.0 * e3);\n" +
     "  var aLight = new EIGHT.Vector3([0.3, 0.3, 0.3]);\n" +
     "  var dLightColor = new EIGHT.Vector3([0.7, 0.7, 0.7]);\n" +
     "  var dLightDirection = new EIGHT.Vector3([2, 3, 5]);\n" +
     "\n" +
-    "  var program = EIGHT.shaderProgramFromScripts('vs', 'fs');\n" +
+    "  var programT = EIGHT.shaderProgramFromScripts('vs-triangles', 'fs-triangles');\n" +
+    "  var programL = EIGHT.shaderProgramFromScripts('vs-lines', 'fs-lines');\n" +
+    "  var programP = EIGHT.shaderProgramFromScripts('vs-points', 'fs-points');\n" +
+    "\n" +
+    "  var triangleGeo = new TriangleGeometry(0 * e1, e1, e2);\n" +
+    "  var triangleMesh = new EIGHT.GeometryAdapter(triangleGeo, {drawMode: EIGHT.DrawMode.LINES});\n" +
+    "  var triangle = EIGHT.primitive(triangleMesh, programL, new Model());\n" +
+    "  triangle.model.color.set(1, 1, 1);\n" +
+    "  scene.add(triangle);\n" +
+    "\n" +
+    "  var surfaceGeo = new EIGHT.SurfaceGeometry(surfaceFn, 32, 32);\n" +
+    "  var surfaceMesh = new EIGHT.GeometryAdapter(surfaceGeo, {drawMode: EIGHT.DrawMode.POINTS});\n" +
+    "  var surface = EIGHT.primitive(surfaceMesh, programP, new Model());\n" +
+    "  surface.model.color.set(0, 1, 0);\n" +
+    "  scene.add(surface);\n" +
     "\n" +
     "  var cubeMesh = new EIGHT.BoxBuilder().setWidth(0.5).setHeight(0.5).setDepth(0.5).buildMesh();\n" +
-    "  var model = new EIGHT.Node();\n" +
-    "  var cube = EIGHT.primitive(cubeMesh, program, model);\n" +
+    "  var cube = EIGHT.primitive(cubeMesh, programT, new EIGHT.Node());\n" +
     "  cube.model.color.set(1, 1, 0);\n" +
     "  scene.add(cube);\n" +
     "\n" +
     "  var arrowMesh = new EIGHT.ArrowBuilder().setAxis(e2).buildMesh();\n" +
-    "  var arrow = EIGHT.primitive(arrowMesh, program, new EIGHT.Node())\n" +
+    "  var arrow = EIGHT.primitive(arrowMesh, programT, new EIGHT.Node())\n" +
     "  arrow.model.color.set(1, 0, 1);\n" +
     "  arrow.model.position.copy(e1);\n" +
     "  scene.add(arrow);\n" +
     "\n" +
     "  var sphereMesh = new EIGHT.SphereBuilder().setRadius(0.25).buildMesh();\n" +
-    "  var sphere = EIGHT.primitive(sphereMesh, program, new EIGHT.Node())\n" +
+    "  var sphere = EIGHT.primitive(sphereMesh, programT, new EIGHT.Node())\n" +
     "  sphere.model.color.set(0.4, 0.4, 0.4);\n" +
     "  scene.add(sphere);\n" +
     "\n" +
     "  var vortexMesh = EIGHT.vortexMesh();\n" +
-    "  var vortex = EIGHT.primitive(vortexMesh, program, new EIGHT.Node())\n" +
+    "  var vortex = EIGHT.primitive(vortexMesh, programT, new EIGHT.Node())\n" +
     "  vortex.model.color.set(0.0, 1.0, 1.0);\n" +
     "  scene.add(vortex);\n" +
+    "\n" +
+    "  monitor.start();\n" +
     "\n" +
     "  var stats = new Stats();\n" +
     "  stats.setMode(0);\n" +
@@ -299,6 +365,7 @@ angular.module('app').factory('templates', [
     "  scene.uniformVector3('uAmbientLight', aLight);\n" +
     "  scene.uniformVector3('uDirectionalLightColor', dLightColor);\n" +
     "  scene.uniformVector3('uDirectionalLightDirection', dLightDirection);\n" +
+    "  scene.uniform1f('uPointSize', 2);\n" +
     "\n" +
     "  EIGHT.animation((time: number) => {\n" +
     "    stats.begin();\n" +
@@ -312,11 +379,18 @@ angular.module('app').factory('templates', [
     "\n" +
     "    // rotation generated by e3 wedge e2\n" +
     "    vortex.model.attitude.copy(exp(-(e3 ^ e2) * theta / 2));\n" +
+    "    surface.model.attitude.copy(exp(-(e1 ^ e2) * theta / 2));\n" +
+    "    triangle.model.attitude.copy(exp(-(e1 ^ e2) * theta / 2));\n" +
     "\n" +
     "    // orbit\n" +
     "    sphere.model.position.copy(2 * cos(theta) * e1 - sin(theta) * (e3 - 0.5 * e2));\n" +
     "\n" +
-    "    renderer.render(scene);\n" +
+    "    renderer.clear(renderer.COLOR_BUFFER_BIT | renderer.DEPTH_BUFFER_BIT);\n" +
+    "\n" +
+    "    scene.traverse(function(drawable: EIGHT.Drawable) {\n" +
+    "      drawable.accept(drawVisitor);\n" +
+    "    });\n" +
+    "\n" +
     "    stats.end();\n" +
     "  }).start();\n" +
     "}\n";
@@ -363,7 +437,62 @@ angular.module('app').factory('templates', [
     "var kilogram = blade.e3ga.units.kilogram;\n" +
     "var meter    = blade.e3ga.units.meter;\n" +
     "var second   = blade.e3ga.units.second;\n" +
-    "var hertz    = blade.e3ga.units.hertz;\n";
+    "var hertz    = blade.e3ga.units.hertz;\n" +
+    "\n" +
+    "class TriangleGeometry extends EIGHT.Geometry {\n" +
+    "  constructor(a: EIGHT.Cartesian3, b: EIGHT.Cartesian3, c: EIGHT.Cartesian3) {\n" +
+    "    super();\n" +
+    "    this.faces.push(new EIGHT.Face3(0, 1, 2));\n" +
+    "    this.vertices.push(a);\n" +
+    "    this.vertices.push(b);\n" +
+    "    this.vertices.push(c);\n" +
+    "    this.computeFaceNormals();\n" +
+    "  }\n" +
+    "}\n" +
+    "\n" +
+    "class Model implements EIGHT.UniformData {\n" +
+    "  public position: EIGHT.Vector3 = new EIGHT.Vector3();\n" +
+    "  public attitude: EIGHT.Spinor3 = new EIGHT.Spinor3();\n" +
+    "  public scale: EIGHT.Vector3 = new EIGHT.Vector3([1, 1, 1]);\n" +
+    "  public color: EIGHT.Vector3 = new EIGHT.Vector3([1, 1, 1]);\n" +
+    "  constructor() {\n" +
+    "    this.position.modified = true;\n" +
+    "    this.attitude.modified = true;\n" +
+    "    this.scale.modified = true;\n" +
+    "    this.color.modified = true;\n" +
+    "  }\n" +
+    "  accept(visitor: EIGHT.UniformDataVisitor) {\n" +
+    "    var S = EIGHT.Matrix4.identity();\n" +
+    "    S.scaling(this.scale);\n" +
+    "    var T = EIGHT.Matrix4.identity();\n" +
+    "    T.translation(this.position);\n" +
+    "    var R = EIGHT.Matrix4.identity();\n" +
+    "    R.rotation(this.attitude);\n" +
+    "    T.mul(R.mul(S));\n" +
+    "    visitor.uniformMatrix4('uModelMatrix', false, T);\n" +
+    "    visitor.uniformVector3('uColor', this.color);\n" +
+    "  }\n" +
+    "}\n" +
+    "\n" +
+    "class DrawVisitor implements EIGHT.DrawableVisitor {\n" +
+    "  constructor() {\n" +
+    "  }\n" +
+    "  primitive(mesh: EIGHT.AttribProvider, program: EIGHT.ShaderProgram, model: EIGHT.UniformData) {\n" +
+    "    if (mesh.dynamic) {\n" +
+    "      mesh.update();\n" +
+    "    }\n" +
+    "    program.use();\n" +
+    "    model.accept(program);\n" +
+    "    program.setAttributes(mesh.getAttribData());\n" +
+    "    mesh.draw();\n" +
+    "    for (var name in program.attributeLocations) {\n" +
+    "      program.attributeLocations[name].disable();\n" +
+    "    }\n" +
+    "  }\n" +
+    "}\n" +
+    "\n" +
+    "var drawVisitor = new DrawVisitor();\n" +
+    "\n";
 
   var LESS_TEMPLATE_EIGHT = "" +
     "body { margin: 0; }\n" +
