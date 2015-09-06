@@ -303,7 +303,7 @@ angular.module('app').factory('templates', [
     "  canvas.width = window.innerWidth;\n" +
     "  canvas.height = window.innerHeight;\n" +
     "\n" +
-    "  var monitor = EIGHT.webgl(canvas);\n" +
+    "  var monitor = EIGHT.webgl(canvas).start();\n" +
     "  var gl = monitor.context;\n" +
     "\n" +
     "  gl.clearColor(0.2, 0.2, 0.2, 1.0);\n" +
@@ -487,9 +487,6 @@ angular.module('app').factory('templates', [
     "      program.attributes[name].enable();\n" +
     "    }\n" +
     "    mesh.draw();\n" +
-    "    for (var name in program.attributes) {\n" +
-    "      program.attributes[name].disable();\n" +
-    "    }\n" +
     "  }\n" +
     "}\n" +
     "\n" +
