@@ -303,24 +303,24 @@ angular.module('app').factory('templates', [
     "  canvas.width = window.innerWidth;\n" +
     "  canvas.height = window.innerHeight;\n" +
     "\n" +
-    "  var monitor = EIGHT.contextMonitor(canvas);\n" +
+    "  var gl = EIGHT.webgl(canvas);\n" +
+    "\n" +
+    "  gl.clearColor(0.2, 0.2, 0.2, 1.0);\n" +
+    "  gl.clearDepth(1.0);\n" +
+    "  gl.enable(gl.DEPTH_TEST);\n" +
+    "  gl.depthFunc(gl.LEQUAL);\n" +
     "\n" +
     "  var scene = EIGHT.scene();\n" +
-    "  monitor.addContextUser(scene);\n" +
+    "  gl.addContextUser(scene);\n" +
     "\n" +
-    "  var renderer = EIGHT.renderer(canvas);\n" +
-    "  monitor.addContextUser(renderer);\n" +
-    "\n" +
-    "  renderer.clearColor(0.2, 0.2, 0.2, 1.0);\n" +
-    "\n" +
-    "  var perspective = EIGHT.perspective().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(e1 + 3.0 * e3);\n" +
+    "  var camera = EIGHT.perspective().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(e1 + 3.0 * e3);\n" +
     "  var aLight = new EIGHT.Vector3([0.3, 0.3, 0.3]);\n" +
     "  var dLightColor = new EIGHT.Vector3([0.7, 0.7, 0.7]);\n" +
     "  var dLightDirection = new EIGHT.Vector3([2, 3, 5]);\n" +
     "\n" +
-    "  var programT = EIGHT.shaderProgramFromScripts('vs-triangles', 'fs-triangles');\n" +
-    "  var programL = EIGHT.shaderProgramFromScripts('vs-lines', 'fs-lines');\n" +
-    "  var programP = EIGHT.shaderProgramFromScripts('vs-points', 'fs-points');\n" +
+    "  var programT = EIGHT.programFromScripts('vs-triangles', 'fs-triangles');\n" +
+    "  var programL = EIGHT.programFromScripts('vs-lines', 'fs-lines');\n" +
+    "  var programP = EIGHT.programFromScripts('vs-points', 'fs-points');\n" +
     "\n" +
     "  var triangleGeo = new TriangleGeometry(0 * e1, e1, e2);\n" +
     "  var triangleMesh = new EIGHT.GeometryAdapter(triangleGeo, {drawMode: EIGHT.DrawMode.LINES});\n" +
@@ -355,13 +355,11 @@ angular.module('app').factory('templates', [
     "  vortex.model.color.set(0.0, 1.0, 1.0);\n" +
     "  scene.add(vortex);\n" +
     "\n" +
-    "  monitor.start();\n" +
-    "\n" +
     "  var stats = new Stats();\n" +
     "  stats.setMode(0);\n" +
     "  document.body.appendChild(stats.domElement);\n" +
     "\n" +
-    "  perspective.accept(scene);\n" +
+    "  camera.accept(scene);\n" +
     "  scene.uniformVector3('uAmbientLight', aLight);\n" +
     "  scene.uniformVector3('uDirectionalLightColor', dLightColor);\n" +
     "  scene.uniformVector3('uDirectionalLightDirection', dLightDirection);\n" +
@@ -385,7 +383,7 @@ angular.module('app').factory('templates', [
     "    // orbit\n" +
     "    sphere.model.position.copy(2 * cos(theta) * e1 - sin(theta) * (e3 - 0.5 * e2));\n" +
     "\n" +
-    "    renderer.clear(renderer.COLOR_BUFFER_BIT | renderer.DEPTH_BUFFER_BIT);\n" +
+    "    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);\n" +
     "\n" +
     "    scene.traverse(function(drawable: EIGHT.Drawable) {\n" +
     "      drawable.accept(drawVisitor);\n" +
@@ -484,9 +482,12 @@ angular.module('app').factory('templates', [
     "    program.use();\n" +
     "    model.accept(program);\n" +
     "    program.setAttributes(mesh.getAttribData());\n" +
+    "    for (var name in program.attributes) {\n" +
+    "      program.attributes[name].enable();\n" +
+    "    }\n" +
     "    mesh.draw();\n" +
-    "    for (var name in program.attributeLocations) {\n" +
-    "      program.attributeLocations[name].disable();\n" +
+    "    for (var name in program.attributes) {\n" +
+    "      program.attributes[name].disable();\n" +
     "    }\n" +
     "  }\n" +
     "}\n" +
