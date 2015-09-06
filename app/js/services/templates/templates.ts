@@ -303,7 +303,8 @@ angular.module('app').factory('templates', [
     "  canvas.width = window.innerWidth;\n" +
     "  canvas.height = window.innerHeight;\n" +
     "\n" +
-    "  var gl = EIGHT.webgl(canvas);\n" +
+    "  var monitor = EIGHT.webgl(canvas);\n" +
+    "  var gl = monitor.context;\n" +
     "\n" +
     "  gl.clearColor(0.2, 0.2, 0.2, 1.0);\n" +
     "  gl.clearDepth(1.0);\n" +
@@ -311,7 +312,7 @@ angular.module('app').factory('templates', [
     "  gl.depthFunc(gl.LEQUAL);\n" +
     "\n" +
     "  var scene = EIGHT.scene();\n" +
-    "  gl.addContextUser(scene);\n" +
+    "  monitor.addContextUser(scene);\n" +
     "\n" +
     "  var camera = EIGHT.perspective().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(e1 + 3.0 * e3);\n" +
     "  var aLight = new EIGHT.Vector3([0.3, 0.3, 0.3]);\n" +
