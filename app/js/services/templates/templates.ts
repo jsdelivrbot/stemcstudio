@@ -1168,6 +1168,191 @@ angular.module('app').factory('templates', [
 
   var LIBS_TEMPLATE_ANGULAR_BLADE_VISUAL = "//\n";
 
+  var HTML_TEMPLATE_ANGULAR_BLADE_EIGHT = "" +
+    "<!doctype html>\n" +
+    "<html ng-app='doodle'>\n" +
+    "  <head>\n" +
+    "    <meta charset='utf-8'/>\n" +
+    "    <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>\n" +
+    styleMarker() +
+    "    <script id='vs-points' type='x-shader/x-vertex'>\n" +
+    "      attribute vec3 aVertexPosition;\n" +
+    "      uniform vec3 uColor;\n" +
+    "      uniform mat4 uModelMatrix;\n" +
+    "      uniform mat4 uViewMatrix;\n" +
+    "      uniform mat4 uProjectionMatrix;\n" +
+    "      uniform float uPointSize;\n" +
+    "      varying highp vec4 vColor;\n" +
+    "      void main(void) {\n" +
+    "        gl_Position = uProjectionMatrix * uViewMatrix * uModelMatrix * vec4(aVertexPosition, 1.0);\n" +
+    "        gl_PointSize = uPointSize;\n"+
+    "        vColor = vec4(uColor, 1.0);\n"+
+    "      }\n" +
+    "    </script>\n" +
+    "    <script id='fs-points' type='x-shader/x-fragment'>\n" +
+    "      varying highp vec4 vColor;\n" +
+    "      void main(void) {\n" +
+    "        gl_FragColor = vec4(vColor.xyz, vColor.a);\n" +
+    "      }\n" +
+    "    </script>\n" +
+    scriptsMarker() +
+    "  </head>\n" +
+    "  <body>\n" +
+    "    <div class='container'>\n" +
+    "      <div class='page-header'>\n" +
+    "        <h1>AngularJS, blade, and EIGHT</h1>\n" +
+    "      </div>\n" +
+    "      <div ng-controller='my-controller'>\n" +
+    "        <h3>Spinors and Rotations</h3>\n" +
+    "        <p>An example using the <em>blade</em> module to perform <b>Geometric Algebra</b> mathematics, <em>EIGHT</em> for <b>WebGL</b> rendering, and <em>AngularJS</em> for the Model-View-Whatever <b>User Interface</b>.</p>\n" +
+    "        <canvas id='canvasId' style='width:600px; height:400px;'></canvas>\n" +
+    "        <div>\n" +
+    "          <h1>time: {{runner.time | number:2}}</h1>\n"+
+    "          <button ng-click='clickedOne()'>{{runner.isRunning ? 'Stop' : 'Start'}}</button>\n"+
+    "          <button ng-click='clickedTwo()' ng-show='runner.isPaused'>{{runner.isPaused ? 'Reset' : 'Lap'}}</button>\n"+
+    "        </div>\n" +
+    "        <hr/>\n" +
+    "        <ul>\n" +
+    "          <li>\n" +
+    "            <a href='https://angularjs.org' target='_blank'>AngularJS Home Page</a>\n" +
+    "          </li>\n" +
+    "          <li>\n" +
+    "            <a href='http://github.com/geometryzen/davinci-eight' target='_blank'>EIGHT Home Page</a>\n" +
+    "          </li>\n" +
+    "        </ul>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    libsMarker() +
+    codeMarker() +
+    "  </body>\n" +
+    "</html>\n";
+
+  var CODE_TEMPLATE_ANGULAR_BLADE_EIGHT = "" +
+    "interface IMyScope extends angular.IScope {\n" +
+    "  /**\n"+
+    "   * The `runner` property runs the sumulation.\n"+
+    "   */\n"+
+    "  runner: EIGHT.WindowAnimationRunner;\n" +
+    "  /**\n"+
+    "   * Invoked when the user clicks the left hand button (start, stop).\n"+
+    "   */\n"+
+    "  clickedOne(): void;\n" +
+    "  /**\n"+
+    "   * Invoked when the user clicks the right hand button (reset, lap).\n"+
+    "   */\n"+
+    "  clickedTwo(): void;\n" +
+    "}\n" +
+    "\n" +
+    "(function (app: angular.IModule) {\n" +
+    "\n" +
+    "  app.controller('my-controller', ['$window', '$scope', function MyController($window: Window, $scope: IMyScope) {\n" +
+    "\n"+
+    "    var e1 = blade.vectorE3(1,0,0);\n" +
+    "    var e2 = blade.vectorE3(0,1,0);\n" +
+    "    var e3 = blade.vectorE3(0,0,1);\n" +
+    "    var exp = blade.universals.exp;\n" +
+    "    var T = 4;\n" +
+    "    var f = 1 / T;\n" +
+    "    var omega = 2 * Math.PI * f;\n" +
+    "\n"+
+    "    var canvas = <HTMLCanvasElement>$window.document.getElementById('canvasId');\n" +
+    "    canvas.width = 600;\n" +
+    "    canvas.height = 400;\n" +
+    "\n"+
+    "    var monitor = EIGHT.webgl(canvas);\n"+
+    "\n"+
+    "    var camera = EIGHT.perspective().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(3.0 * e3);\n"+
+    "\n"+
+    "    var program = EIGHT.programFromScripts('vs-points', 'fs-points');\n" +
+    "\n"+
+    "    var posBuffer = new EIGHT.VertexBuffer();\n"+
+    "\n"+
+    "    var model = new EIGHT.Node();\n"+
+    "\n"+
+    "    var A = -(e1 ^ e2) / 2;\n"+
+    "\n" +
+    "    function setUp() {\n"+
+    "\n"+
+    "      monitor.addContextUser(program);\n"+
+    "      monitor.addContextUser(posBuffer);\n"+
+    "\n"+
+    "      monitor.start();\n"+
+    "\n"+
+    "      var gl = monitor.context;\n"+
+    "      gl.clearColor(0.4 * Math.random(), 0.4 * Math.random(), 0.4 * Math.random(), 1.0);\n"+
+    "      gl.clearDepth(1.0);\n"+
+    "      gl.enable(gl.DEPTH_TEST);\n"+
+    "      gl.depthFunc(gl.LEQUAL);\n"+
+    "\n"+
+    "      var triangle = new Float32Array([0,0,0, 1,0,0, 0,1,0, 1,1,0]);\n"+
+    "      posBuffer.bind()\n"+
+    "      gl.bufferData(gl.ARRAY_BUFFER, triangle, gl.DYNAMIC_DRAW);\n"+
+    "\n"+
+    "      posBuffer.bind();\n"+
+    "      var posLocation = program.attributes['aVertexPosition'];\n"+
+    "      posLocation.vertexPointer(3);\n"+
+    "      posLocation.enable();\n"+
+    "\n"+
+    "      program.use();\n"+
+    "      program.uniforms['uPointSize'].uniform1f(2);\n"+
+    "      camera.accept(program);\n"+
+    "      model.color.set(Math.random(), Math.random(), Math.random());\n"+
+    "    }\n"+
+    "\n" +
+    "    function tick(time: number) {\n"+
+    "      $scope.$apply(function() {\n"+
+    "        animate(time);\n"+
+    "      });\n"+
+    "    }\n"+
+    "\n" +
+    "    function animate(time: number) {\n"+
+    "      var theta = omega * time;\n"+
+    "      model.attitude.copy(exp(A * theta));\n"+
+    "      model.accept(program);\n"+
+    "      var gl = monitor.context;\n"+
+    "      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);\n"+
+    "      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);\n"+
+    "    }\n"+
+    "\n" +
+    "    function terminate(time: number) { return false; }\n"+
+    "\n" +
+    "    function tearDown(e: Error) {\n"+
+    "\n" +
+    "      monitor.stop();\n"+
+    "      monitor.removeContextUser(program);\n"+
+    "      monitor.removeContextUser(posBuffer);\n"+
+    "      $scope.$apply(function() {\n"+
+    "        if (e) {\n"+
+    "          console.log(e);\n"+
+    "        }\n"+
+    "      });\n"+
+    "    }\n"+
+    "\n" +
+    "    $scope.runner = EIGHT.animation(tick, {terminate: terminate, setUp: setUp, tearDown: tearDown, window: $window});\n"+
+    "\n" +
+    "    $scope.clickedOne = function() {\n"+
+    "      if ($scope.runner.isRunning) {\n"+
+    "        $scope.runner.stop();\n"+
+    "      }\n"+
+    "      else {\n"+
+    "        $scope.runner.start();\n"+
+    "      }\n"+
+    "    }\n"+
+    "\n" +
+    "    $scope.clickedTwo = function() {\n"+
+    "      if ($scope.runner.isPaused) {\n"+
+    "        $scope.runner.reset();\n"+
+    "      }\n"+
+    "      else if ($scope.runner.isRunning) {\n"+
+    "        $scope.runner.lap();\n"+
+    "      }\n"+
+    "    }\n"+
+    "\n" +
+    "  }]);\n" +
+    "})(angular.module('doodle', []));\n";
+
+  var LIBS_TEMPLATE_ANGULAR_BLADE_EIGHT = "//\n";
+
   var HTML_TEMPLATE_MATHBOX = "" +
     "<!doctype html>\n" +
     "<html>\n" +
@@ -1332,6 +1517,20 @@ angular.module('app').factory('templates', [
       libs: LIBS_TEMPLATE_ANGULAR_BLADE_VISUAL,
       less: LESS_TEMPLATE_BASIC,
       dependencies: ['angular', 'davinci-blade', 'davinci-threejs', 'davinci-visual']
+    },
+    {
+      uuid: uuid.generate(),
+      description: "AngularJS, blade, EIGHT",
+      isCodeVisible: true,
+      isViewVisible: true,
+      focusEditor: undefined,
+      lastKnownJs: {},
+      operatorOverloading: true,
+      html: HTML_TEMPLATE_ANGULAR_BLADE_EIGHT,
+      code: CODE_TEMPLATE_ANGULAR_BLADE_EIGHT,
+      libs: LIBS_TEMPLATE_ANGULAR_BLADE_EIGHT,
+      less: LESS_TEMPLATE_BASIC,
+      dependencies: ['angular', 'davinci-blade', 'davinci-eight', 'stats.js']
     }
     /*
     {
