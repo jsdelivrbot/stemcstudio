@@ -319,40 +319,40 @@ angular.module('app').factory('templates', [
     "  var dLightColor = new EIGHT.Vector3([0.7, 0.7, 0.7]);\n" +
     "  var dLightDirection = new EIGHT.Vector3([2, 3, 5]);\n" +
     "\n" +
-    "  var programT = EIGHT.programFromScripts('vs-triangles', 'fs-triangles');\n" +
-    "  var programL = EIGHT.programFromScripts('vs-lines', 'fs-lines');\n" +
-    "  var programP = EIGHT.programFromScripts('vs-points', 'fs-points');\n" +
+    "  var programT = EIGHT.programFromScripts(monitor, 'vs-triangles', 'fs-triangles', document);\n" +
+    "  var programL = EIGHT.programFromScripts(monitor, 'vs-lines', 'fs-lines', document);\n" +
+    "  var programP = EIGHT.programFromScripts(monitor, 'vs-points', 'fs-points', document);\n" +
     "\n" +
     "  var triangleGeo = new TriangleGeometry(0 * e1, e1, e2);\n" +
-    "  var triangleMesh = new EIGHT.GeometryAdapter(triangleGeo, {drawMode: EIGHT.DrawMode.LINES});\n" +
+    "  var triangleMesh = new EIGHT.GeometryAdapter(monitor, triangleGeo, {drawMode: EIGHT.DrawMode.LINES});\n" +
     "  var triangle = EIGHT.primitive(triangleMesh, programL, new Model());\n" +
     "  triangle.model.color.set(1, 1, 1);\n" +
     "  scene.add(triangle);\n" +
     "\n" +
     "  var surfaceGeo = new EIGHT.SurfaceGeometry(surfaceFn, 32, 32);\n" +
-    "  var surfaceMesh = new EIGHT.GeometryAdapter(surfaceGeo, {drawMode: EIGHT.DrawMode.POINTS});\n" +
+    "  var surfaceMesh = new EIGHT.GeometryAdapter(monitor, surfaceGeo, {drawMode: EIGHT.DrawMode.POINTS});\n" +
     "  var surface = EIGHT.primitive(surfaceMesh, programP, new Model());\n" +
     "  surface.model.color.set(0, 1, 0);\n" +
     "  scene.add(surface);\n" +
     "\n" +
-    "  var cubeMesh = new EIGHT.BoxBuilder().setWidth(0.5).setHeight(0.5).setDepth(0.5).buildMesh();\n" +
-    "  var cube = EIGHT.primitive(cubeMesh, programT, new EIGHT.Node());\n" +
+    "  var cubeMesh = new EIGHT.BoxBuilder().setWidth(0.5).setHeight(0.5).setDepth(0.5).buildMesh(monitor);\n" +
+    "  var cube = EIGHT.primitive(cubeMesh, programT, new EIGHT.Model());\n" +
     "  cube.model.color.set(1, 1, 0);\n" +
     "  scene.add(cube);\n" +
     "\n" +
-    "  var arrowMesh = new EIGHT.ArrowBuilder().setAxis(e2).buildMesh();\n" +
-    "  var arrow = EIGHT.primitive(arrowMesh, programT, new EIGHT.Node())\n" +
+    "  var arrowMesh = new EIGHT.ArrowBuilder().setAxis(e2).buildMesh(monitor);\n" +
+    "  var arrow = EIGHT.primitive(arrowMesh, programT, new EIGHT.Model())\n" +
     "  arrow.model.color.set(1, 0, 1);\n" +
     "  arrow.model.position.copy(e1);\n" +
     "  scene.add(arrow);\n" +
     "\n" +
-    "  var sphereMesh = new EIGHT.SphereBuilder().setRadius(0.25).buildMesh();\n" +
-    "  var sphere = EIGHT.primitive(sphereMesh, programT, new EIGHT.Node())\n" +
+    "  var sphereMesh = new EIGHT.SphereBuilder().setRadius(0.25).buildMesh(monitor);\n" +
+    "  var sphere = EIGHT.primitive(sphereMesh, programT, new EIGHT.Model())\n" +
     "  sphere.model.color.set(0.4, 0.4, 0.4);\n" +
     "  scene.add(sphere);\n" +
     "\n" +
-    "  var vortexMesh = EIGHT.vortexMesh();\n" +
-    "  var vortex = EIGHT.primitive(vortexMesh, programT, new EIGHT.Node())\n" +
+    "  var vortexMesh = EIGHT.vortexMesh(monitor);\n" +
+    "  var vortex = EIGHT.primitive(vortexMesh, programT, new EIGHT.Model())\n" +
     "  vortex.model.color.set(0.0, 1.0, 1.0);\n" +
     "  scene.add(vortex);\n" +
     "\n" +
@@ -1266,18 +1266,17 @@ angular.module('app').factory('templates', [
     "\n"+
     "    var camera = EIGHT.perspective().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(3.0 * e3);\n"+
     "\n"+
-    "    var program = EIGHT.programFromScripts('vs-points', 'fs-points');\n" +
+    "    var program = EIGHT.programFromScripts(monitor, 'vs-points', 'fs-points', document);\n" +
     "\n"+
-    "    var posBuffer = new EIGHT.VertexBuffer();\n"+
+    "    var posBuffer = monitor.vertexBuffer();\n"+
     "\n"+
-    "    var model = new EIGHT.Node();\n"+
+    "    var model = new EIGHT.Model();\n"+
     "\n"+
     "    var R = -(e1 ^ e2) / 2;\n"+
     "\n" +
     "    function setUp() {\n"+
     "\n"+
     "      monitor.addContextUser(program);\n"+
-    "      monitor.addContextUser(posBuffer);\n"+
     "\n"+
     "      monitor.start();\n"+
     "\n"+
@@ -1288,10 +1287,10 @@ angular.module('app').factory('templates', [
     "      gl.depthFunc(gl.LEQUAL);\n"+
     "\n"+
     "      var triangle = new Float32Array([0,0,0, 1,0,0, 0,1,0, 1,1,0]);\n"+
-    "      posBuffer.bind()\n"+
+    "      posBuffer.bind(gl.ARRAY_BUFFER)\n"+
     "      gl.bufferData(gl.ARRAY_BUFFER, triangle, gl.DYNAMIC_DRAW);\n"+
     "\n"+
-    "      posBuffer.bind();\n"+
+    "      posBuffer.bind(gl.ARRAY_BUFFER);\n"+
     "      var posLocation = program.attributes['aVertexPosition'];\n"+
     "      posLocation.vertexPointer(3);\n"+
     "      posLocation.enable();\n"+
@@ -1323,7 +1322,6 @@ angular.module('app').factory('templates', [
     "\n" +
     "      monitor.stop();\n"+
     "      monitor.removeContextUser(program);\n"+
-    "      monitor.removeContextUser(posBuffer);\n"+
     "      $scope.$apply(function() {\n"+
     "        if (e) {\n"+
     "          console.log(e);\n"+
