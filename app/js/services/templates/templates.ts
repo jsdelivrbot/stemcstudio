@@ -441,7 +441,7 @@ angular.module('app').factory('templates', [
     "var second   = blade.e3ga.units.second;\n" +
     "var hertz    = blade.e3ga.units.hertz;\n" +
     "\n" +
-    "class TriangleGeometry extends EIGHT.Geometry {\n" +
+    "class TriangleGeometry extends EIGHT.Geometry3 {\n" +
     "  constructor(a: EIGHT.Cartesian3, b: EIGHT.Cartesian3, c: EIGHT.Cartesian3) {\n" +
     "    super();\n" +
     "    this.faces.push(new EIGHT.Face3(0, 1, 2));\n" +
