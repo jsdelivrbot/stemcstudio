@@ -1203,11 +1203,11 @@ angular.module('app').factory('templates', [
     "  <body>\n" +
     "    <div class='container'>\n" +
     "      <div class='page-header'>\n" +
-    "        <h1>AngularJS, blade, and EIGHT</h1>\n" +
+    "        <h1>AngularJS, blade, and eight.js</h1>\n" +
     "      </div>\n" +
     "      <div ng-controller='my-controller'>\n" +
     "        <h3>Spinors and Rotations</h3>\n" +
-    "        <p>An example using the <em>blade</em> module to perform <b>Geometric Algebra</b> mathematics, <em>EIGHT</em> for <b>WebGL</b> rendering, and <em>AngularJS</em> for the Model-View-Whatever <b>User Interface</b>.</p>\n" +
+    "        <p>An example using the <em>blade</em> module to perform <b>Geometric Algebra</b> mathematics, <em>eight.js</em> for <b>WebGL</b> rendering, and <em>AngularJS</em> for the Model-View-Whatever <b>User Interface</b>.</p>\n" +
     "        <canvas id='canvasId' style='width:600px; height:400px;'></canvas>\n" +
     "        <div>\n" +
     "          <h1>time: {{runner.time | number:2}}</h1>\n"+
@@ -1266,10 +1266,8 @@ angular.module('app').factory('templates', [
     "\n"+
     "    var camera = EIGHT.perspective().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(3.0 * e3);\n"+
     "\n"+
+    "    var mesh: EIGHT.Mesh;\n"+
     "    var program = EIGHT.programFromScripts(monitor, 'vs-points', 'fs-points', document);\n" +
-    "\n"+
-    "    var posBuffer = monitor.vertexBuffer();\n"+
-    "\n"+
     "    var model = new EIGHT.Model();\n"+
     "\n"+
     "    var R = -(e1 ^ e2) / 2;\n"+
@@ -1281,24 +1279,30 @@ angular.module('app').factory('templates', [
     "      monitor.start();\n"+
     "\n"+
     "      var gl = monitor.context;\n"+
-    "      gl.clearColor(0.4 * Math.random(), 0.4 * Math.random(), 0.4 * Math.random(), 1.0);\n"+
+    "      gl.clearColor(0.2, 0.2, 0.2, 1.0);\n"+
     "      gl.clearDepth(1.0);\n"+
     "      gl.enable(gl.DEPTH_TEST);\n"+
     "      gl.depthFunc(gl.LEQUAL);\n"+
     "\n"+
-    "      var triangle = new Float32Array([0,0,0, 1,0,0, 0,1,0, 1,1,0]);\n"+
-    "      posBuffer.bind(gl.ARRAY_BUFFER)\n"+
-    "      gl.bufferData(gl.ARRAY_BUFFER, triangle, gl.DYNAMIC_DRAW);\n"+
+    "      var vec0 = new EIGHT.Vector3([0.0,  0.0, 0.0]);\n"+
+    "      var vec1 = new EIGHT.Vector3([1.0, -0.2, 0.0]);\n"+
+    "      var vec2 = new EIGHT.Vector3([1.0, +0.2, 0.0]);\n"+
+    "      var face = new EIGHT.Face(vec0, vec1, vec2);\n"+
+    "      face.a.attributes['coords'] = new EIGHT.Vector2([0, 0]);\n"+
+    "      face.b.attributes['coords'] = new EIGHT.Vector2([1, 0]);\n"+
+    "      face.c.attributes['coords'] = new EIGHT.Vector2([0, 1]);\n"+
+    "      var faces = new Array<EIGHT.Face>();\n"+
+    "      faces.push(face);\n"+
+    "      var attribMap: {[name: string]:{name?:string;size: number}} = {};\n"+
+    "      attribMap['aVertexPosition'] = {size: 3};\n"+
+    "      attribMap['aVertexNormal'] = {size: 3};\n"+
+    "      attribMap['coords'] = {size: 2};\n"+
+    "      var elements = EIGHT.triangleElementsFromFaces(faces, attribMap);\n"+
     "\n"+
-    "      posBuffer.bind(gl.ARRAY_BUFFER);\n"+
-    "      var posLocation = program.attributes['aVertexPosition'];\n"+
-    "      posLocation.vertexPointer(3);\n"+
-    "      posLocation.enable();\n"+
+    "      mesh = monitor.createMesh(elements, gl.TRIANGLES);\n"+
     "\n"+
-    "      program.use();\n"+
-    "      program.uniforms['uPointSize'].uniform1f(2);\n"+
+    "      // program.uniforms['uPointSize'].uniform1f(2);\n"+
     "      camera.accept(program);\n"+
-    "      model.color.set(Math.random(), Math.random(), Math.random());\n"+
     "    }\n"+
     "\n" +
     "    function tick(time: number) {\n"+
@@ -1308,18 +1312,33 @@ angular.module('app').factory('templates', [
     "    }\n"+
     "\n" +
     "    function animate(time: number) {\n"+
+    "\n" +
     "      var theta = omega * time;\n"+
-    "      model.attitude.copy(R).multiplyScalar(theta).exp();\n"+
-    "      model.accept(program);\n"+
+    "\n" +
     "      var gl = monitor.context;\n"+
     "      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);\n"+
-    "      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);\n"+
+    "\n" +
+    "      mesh.bind(program);\n" +
+    "\n" +
+    "      // Setting uniforms through the UniformLocation sets the current program too!\n" +
+    "      program.use();\n" +
+    "\n" +
+    "      model.color.set(0.0, 1.0, 0.0);\n"+
+    "      for(var i = 0; i < 8; i++) {\n" +
+    "        model.attitude.copy(R).multiplyScalar(theta - i * 2 * Math.PI / 8).exp();\n"+
+    "        model.accept(program);\n"+
+    "        mesh.draw();\n"+
+    "        model.color.multiplyScalar(0.7);\n"+
+    "      }\n" +
+    "\n" +
+    "      mesh.unbind();\n" +
     "    }\n"+
     "\n" +
     "    function terminate(time: number) { return false; }\n"+
     "\n" +
     "    function tearDown(e: Error) {\n"+
     "\n" +
+    "      mesh.release();\n"+
     "      monitor.stop();\n"+
     "      monitor.removeContextUser(program);\n"+
     "      $scope.$apply(function() {\n"+
