@@ -1287,17 +1287,17 @@ angular.module('app').factory('templates', [
     "      var vec0 = new EIGHT.Vector3([0.0,  0.0, 0.0]);\n"+
     "      var vec1 = new EIGHT.Vector3([1.0, -0.2, 0.0]);\n"+
     "      var vec2 = new EIGHT.Vector3([1.0, +0.2, 0.0]);\n"+
-    "      var face = new EIGHT.Face(vec0, vec1, vec2);\n"+
-    "      face.a.attributes['coords'] = new EIGHT.Vector2([0, 0]);\n"+
-    "      face.b.attributes['coords'] = new EIGHT.Vector2([1, 0]);\n"+
-    "      face.c.attributes['coords'] = new EIGHT.Vector2([0, 1]);\n"+
-    "      var faces = new Array<EIGHT.Face>();\n"+
-    "      faces.push(face);\n"+
+    "      var s3 = new EIGHT.Simplex3(vec0, vec1, vec2);\n"+
+    "      s3.a.attributes['coords'] = new EIGHT.Vector2([0, 0]);\n"+
+    "      s3.b.attributes['coords'] = new EIGHT.Vector2([1, 0]);\n"+
+    "      s3.c.attributes['coords'] = new EIGHT.Vector2([0, 1]);\n"+
+    "      var s3s = new Array<EIGHT.Simplex3>();\n"+
+    "      s3s.push(s3);\n"+
     "      var attribMap: {[name: string]:{name?:string;size: number}} = {};\n"+
     "      attribMap['aVertexPosition'] = {size: 3};\n"+
     "      attribMap['aVertexNormal'] = {size: 3};\n"+
     "      attribMap['coords'] = {size: 2};\n"+
-    "      var elements = EIGHT.triangleElementsFromFaces(faces, attribMap);\n"+
+    "      var elements = EIGHT.triangleElementsFromSimplex3s(s3s, attribMap);\n"+
     "\n"+
     "      mesh = monitor.createMesh(elements, gl.TRIANGLES);\n"+
     "\n"+
