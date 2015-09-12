@@ -1288,16 +1288,17 @@ angular.module('app').factory('templates', [
     "      var vec1 = new EIGHT.Vector3([1.0, -0.2, 0.0]);\n"+
     "      var vec2 = new EIGHT.Vector3([1.0, +0.2, 0.0]);\n"+
     "      var face = new EIGHT.Simplex([vec0, vec1, vec2]);\n"+
+    "      EIGHT.computeFaceNormals(face);\n"+
     "      face.vertices[0].attributes['coords'] = new EIGHT.Vector2([0, 0]);\n"+
     "      face.vertices[1].attributes['coords'] = new EIGHT.Vector2([1, 0]);\n"+
     "      face.vertices[2].attributes['coords'] = new EIGHT.Vector2([0, 1]);\n"+
-    "      var faces = new Array<EIGHT.Simplex>();\n"+
+    "      var faces: EIGHT.Simplex[] = [];\n"+
     "      faces.push(face);\n"+
     "      var attribMap: {[name: string]:{name?:string;size: number}} = {};\n"+
     "      attribMap['aVertexPosition'] = {size: 3};\n"+
     "      attribMap['aVertexNormal'] = {size: 3};\n"+
     "      attribMap['coords'] = {size: 2};\n"+
-    "      var elements = EIGHT.trianglesFromSimplex3(faces, attribMap);\n"+
+    "      var elements = EIGHT.triangles(faces, attribMap);\n"+
     "\n"+
     "      mesh = monitor.createMesh(elements, gl.TRIANGLES);\n"+
     "\n"+
