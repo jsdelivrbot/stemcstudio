@@ -1287,11 +1287,12 @@ angular.module('app').factory('templates', [
     "      var vec0 = new EIGHT.Vector3([0.0,  0.0, 0.0]);\n"+
     "      var vec1 = new EIGHT.Vector3([1.0, -0.2, 0.0]);\n"+
     "      var vec2 = new EIGHT.Vector3([1.0, +0.2, 0.0]);\n"+
-    "      var attribMap: {[name: string]:{name?:string;size: number}} = {};\n"+
-    "      attribMap['aVertexPosition'] = {size: 3};\n"+
-    "      attribMap['aVertexNormal'] = {size: 3};\n"+
-    "      attribMap['coords'] = {size: 2};\n"+
-    "      var elements = EIGHT.triangles(EIGHT.triangle(vec0, vec1, vec2), attribMap);\n"+
+    "      // geometry may be manipulated in JavaScript\n"+
+    "      var geometry: EIGHT.Simplex[] = EIGHT.triangle(vec0, vec1, vec2);\n"+
+    "      var attribMap = EIGHT.checkGeometry(geometry);\n"+
+    "      console.log(JSON.stringify(attribMap, null, 2));\n"+
+    "      // elements are the data that is used by WebGL\n"+
+    "      var elements = EIGHT.triangles(geometry);\n"+
     "\n"+
     "      mesh = monitor.createMesh(elements, gl.TRIANGLES);\n"+
     "\n"+
@@ -1422,7 +1423,7 @@ angular.module('app').factory('templates', [
   return [
     {
       uuid: uuid.generate(),
-      description: "EIGHT — Mathematical Computer Graphics using WebGL",
+      description: "EIGHT + blade — Mathematical Computer Graphics using WebGL",
       isCodeVisible: true,
       isViewVisible: true,
       focusEditor: undefined,
@@ -1433,6 +1434,20 @@ angular.module('app').factory('templates', [
       libs: LIBS_TEMPLATE_EIGHT,
       less: LESS_TEMPLATE_EIGHT,
       dependencies: ['DomReady', 'davinci-blade', 'davinci-eight', 'stats.js']
+    },
+    {
+      uuid: uuid.generate(),
+      description: "EIGHT + blade + AngularJS — Mathematical Computer Graphics using WebGL",
+      isCodeVisible: true,
+      isViewVisible: true,
+      focusEditor: undefined,
+      lastKnownJs: {},
+      operatorOverloading: true,
+      html: HTML_TEMPLATE_ANGULAR_BLADE_EIGHT,
+      code: CODE_TEMPLATE_ANGULAR_BLADE_EIGHT,
+      libs: LIBS_TEMPLATE_ANGULAR_BLADE_EIGHT,
+      less: LESS_TEMPLATE_BASIC,
+      dependencies: ['angular', 'davinci-blade', 'davinci-eight', 'stats.js']
     },
     {
       uuid: uuid.generate(),
@@ -1517,50 +1532,9 @@ angular.module('app').factory('templates', [
       libs: LIBS_TEMPLATE_ANGULAR,
       less: LESS_TEMPLATE_BASIC,
       dependencies: ['angular']
-    },
-    {
-      uuid: uuid.generate(),
-      description: "AngularJS, blade, three.js, and visual",
-      isCodeVisible: true,
-      isViewVisible: true,
-      focusEditor: undefined,
-      lastKnownJs: {},
-      operatorOverloading: true,
-      html: HTML_TEMPLATE_ANGULAR_BLADE_VISUAL,
-      code: CODE_TEMPLATE_ANGULAR_BLADE_VISUAL,
-      libs: LIBS_TEMPLATE_ANGULAR_BLADE_VISUAL,
-      less: LESS_TEMPLATE_BASIC,
-      dependencies: ['angular', 'davinci-blade', 'davinci-threejs', 'davinci-visual']
-    },
-    {
-      uuid: uuid.generate(),
-      description: "AngularJS, blade, EIGHT",
-      isCodeVisible: true,
-      isViewVisible: true,
-      focusEditor: undefined,
-      lastKnownJs: {},
-      operatorOverloading: true,
-      html: HTML_TEMPLATE_ANGULAR_BLADE_EIGHT,
-      code: CODE_TEMPLATE_ANGULAR_BLADE_EIGHT,
-      libs: LIBS_TEMPLATE_ANGULAR_BLADE_EIGHT,
-      less: LESS_TEMPLATE_BASIC,
-      dependencies: ['angular', 'davinci-blade', 'davinci-eight', 'stats.js']
     }
     /*
-    {
-      uuid: uuid.generate(),
-      description: "AngularJS, three.js, and visual",
-      isCodeVisible: true,
-      isViewVisible: true,
-      focusEditor: undefined,
-      lastKnownJs: {},
-      operatorOverloading: true,
-      html: HTML_TEMPLATE_ANGULAR_VISUAL,
-      code: CODE_TEMPLATE_ANGULAR_VISUAL,
-      less: LESS_TEMPLATE_BASIC,
-      dependencies: ['angular', 'davinci-threejs', 'davinci-visual']
-    },
-    {
+     {
       uuid: uuid.generate(),
       description: "AngularJS and three.js",
       isCodeVisible: true,
