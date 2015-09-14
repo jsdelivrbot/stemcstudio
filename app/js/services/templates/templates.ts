@@ -196,23 +196,23 @@ angular.module('app').factory('templates', [
     "  <head>\n" +
     styleMarker() +
     "    <script id='vs-triangles' type='x-shader/x-vertex'>\n" +
-    "      attribute vec3 aVertexPosition;\n" +
-    "      attribute vec3 aVertexNormal;\n" +
+    "      attribute vec3 aPosition;\n" +
+    "      attribute vec3 aNormal;\n" +
     "      uniform vec3 uColor;\n" +
-    "      uniform mat4 uModelMatrix;\n" +
-    "      uniform mat3 uNormalMatrix;\n" +
-    "      uniform mat4 uViewMatrix;\n" +
-    "      uniform mat4 uProjectionMatrix;\n" +
+    "      uniform mat4 uModel;\n" +
+    "      uniform mat3 uNormal;\n" +
+    "      uniform mat4 uView;\n" +
+    "      uniform mat4 uProjection;\n" +
     "      uniform vec3 uAmbientLight;\n" +
     "      uniform vec3 uDirectionalLightColor;\n" +
     "      uniform vec3 uDirectionalLightDirection;\n" +
     "      varying highp vec4 vColor;\n" +
     "      varying highp vec3 vLight;\n" +
     "      void main(void) {\n" +
-    "        gl_Position = uProjectionMatrix * uViewMatrix * uModelMatrix * vec4(aVertexPosition, 1.0);\n" +
+    "        gl_Position = uProjection * uView * uModel * vec4(aPosition, 1.0);\n" +
     "        vColor = vec4(uColor, 1.0);\n"+
     "        vec3 L = normalize(uDirectionalLightDirection);\n"+
-    "        vec3 N = normalize(uNormalMatrix * aVertexNormal);\n"+
+    "        vec3 N = normalize(uNormal * aNormal);\n"+
     "        float cosineFactor = max(dot(N,L), 0.0);\n"+
     "        vLight = uAmbientLight + cosineFactor * uDirectionalLightColor;\n"+
     "      }\n" +
@@ -225,14 +225,14 @@ angular.module('app').factory('templates', [
     "      }\n" +
     "    </script>\n" +
     "    <script id='vs-lines' type='x-shader/x-vertex'>\n" +
-    "      attribute vec3 aVertexPosition;\n" +
+    "      attribute vec3 aPosition;\n" +
     "      uniform vec3 uColor;\n" +
-    "      uniform mat4 uModelMatrix;\n" +
-    "      uniform mat4 uViewMatrix;\n" +
-    "      uniform mat4 uProjectionMatrix;\n" +
+    "      uniform mat4 uModel;\n" +
+    "      uniform mat4 uView;\n" +
+    "      uniform mat4 uProjection;\n" +
     "      varying highp vec4 vColor;\n" +
     "      void main(void) {\n" +
-    "        gl_Position = uProjectionMatrix * uViewMatrix * uModelMatrix * vec4(aVertexPosition, 1.0);\n" +
+    "        gl_Position = uProjection * uView * uModel * vec4(aPosition, 1.0);\n" +
     "        vColor = vec4(uColor, 1.0);\n"+
     "      }\n" +
     "    </script>\n" +
@@ -243,15 +243,15 @@ angular.module('app').factory('templates', [
     "      }\n" +
     "    </script>\n" +
     "    <script id='vs-points' type='x-shader/x-vertex'>\n" +
-    "      attribute vec3 aVertexPosition;\n" +
+    "      attribute vec3 aPosition;\n" +
     "      uniform vec3 uColor;\n" +
-    "      uniform mat4 uModelMatrix;\n" +
-    "      uniform mat4 uViewMatrix;\n" +
-    "      uniform mat4 uProjectionMatrix;\n" +
+    "      uniform mat4 uModel;\n" +
+    "      uniform mat4 uView;\n" +
+    "      uniform mat4 uProjection;\n" +
     "      uniform float uPointSize;\n" +
     "      varying highp vec4 vColor;\n" +
     "      void main(void) {\n" +
-    "        gl_Position = uProjectionMatrix * uViewMatrix * uModelMatrix * vec4(aVertexPosition, 1.0);\n" +
+    "        gl_Position = uProjection * uView * uModel * vec4(aPosition, 1.0);\n" +
     "        gl_PointSize = uPointSize;\n"+
     "        vColor = vec4(uColor, 1.0);\n"+
     "      }\n" +
@@ -274,12 +274,6 @@ angular.module('app').factory('templates', [
     "</html>\n";
 
   var CODE_TEMPLATE_EIGHT = "" +
-    "/**\n" +
-    " * The angle of tilt of the precessing vector.\n" +
-    " */\n" +
-    "var tiltAngle = 45 * Math.PI / 180;\n" +
-    "var S = exp(-(e2 ^ e1) * tiltAngle / 2);\n" +
-    "var B = e3 ^ e1;\n" +
     "/**\n" +
     " * The period of the motions in the animation.\n" +
     " */\n" +
@@ -311,9 +305,6 @@ angular.module('app').factory('templates', [
     "  gl.enable(gl.DEPTH_TEST);\n" +
     "  gl.depthFunc(gl.LEQUAL);\n" +
     "\n" +
-    "  var scene = EIGHT.scene();\n" +
-    "  manager.addContextListener(scene);\n" +
-    "\n" +
     "  var camera = EIGHT.perspective().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(e1 + 3.0 * e3);\n" +
     "  var aLight = new EIGHT.Vector3([0.3, 0.3, 0.3]);\n" +
     "  var dLightColor = new EIGHT.Vector3([0.7, 0.7, 0.7]);\n" +
@@ -323,72 +314,64 @@ angular.module('app').factory('templates', [
     "  var programL = EIGHT.programFromScripts(manager, 'vs-lines', 'fs-lines', document);\n" +
     "  var programP = EIGHT.programFromScripts(manager, 'vs-points', 'fs-points', document);\n" +
     "\n" +
-    "  var triangleGeo = new TriangleGeometry(0 * e1, e1, e2);\n" +
-    "  var triangleMesh = new EIGHT.GeometryAdapter(manager, triangleGeo, {drawMode: EIGHT.DrawMode.LINES});\n" +
-    "  var triangle = EIGHT.primitive(triangleMesh, programL, new Model());\n" +
-    "  triangle.model.color.set(1, 1, 1);\n" +
-    "  scene.add(triangle);\n" +
-    "\n" +
-    "  var surfaceGeo = new EIGHT.SurfaceGeometry(surfaceFn, 32, 32);\n" +
-    "  var surfaceMesh = new EIGHT.GeometryAdapter(manager, surfaceGeo, {drawMode: EIGHT.DrawMode.POINTS});\n" +
-    "  var surface = EIGHT.primitive(surfaceMesh, programP, new Model());\n" +
-    "  surface.model.color.set(0, 1, 0);\n" +
-    "  scene.add(surface);\n" +
-    "\n" +
-    "  var cubeMesh = new EIGHT.BoxBuilder().setWidth(0.5).setHeight(0.5).setDepth(0.5).buildMesh(manager);\n" +
-    "  var cube = EIGHT.primitive(cubeMesh, programT, new EIGHT.Model());\n" +
-    "  cube.model.color.set(1, 1, 0);\n" +
-    "  scene.add(cube);\n" +
-    "\n" +
-    "  var arrowMesh = new EIGHT.ArrowBuilder().setAxis(e2).buildMesh(manager);\n" +
-    "  var arrow = EIGHT.primitive(arrowMesh, programT, new EIGHT.Model())\n" +
-    "  arrow.model.color.set(1, 0, 1);\n" +
-    "  arrow.model.position.copy(e1);\n" +
-    "  scene.add(arrow);\n" +
-    "\n" +
-    "  var sphereMesh = new EIGHT.SphereBuilder().setRadius(0.25).buildMesh(manager);\n" +
-    "  var sphere = EIGHT.primitive(sphereMesh, programT, new EIGHT.Model())\n" +
-    "  sphere.model.color.set(0.4, 0.4, 0.4);\n" +
-    "  scene.add(sphere);\n" +
-    "\n" +
-    "  var vortexMesh = EIGHT.vortexMesh(manager);\n" +
-    "  var vortex = EIGHT.primitive(vortexMesh, programT, new EIGHT.Model())\n" +
-    "  vortex.model.color.set(0.0, 1.0, 1.0);\n" +
-    "  scene.add(vortex);\n" +
-    "\n" +
     "  var stats = new Stats();\n" +
     "  stats.setMode(0);\n" +
     "  document.body.appendChild(stats.domElement);\n" +
     "\n" +
-    "  camera.accept(scene);\n" +
-    "  scene.uniformVector3('uAmbientLight', aLight);\n" +
-    "  scene.uniformVector3('uDirectionalLightColor', dLightColor);\n" +
-    "  scene.uniformVector3('uDirectionalLightDirection', dLightDirection);\n" +
-    "  scene.uniform1f('uPointSize', 2);\n" +
+    "  camera.accept(programT);\n" +
+    "  camera.accept(programL);\n" +
+    "  camera.accept(programP);\n" +
+    "  programT.uniformVector3('uAmbientLight', aLight);\n" +
+    "  programT.uniformVector3('uDirectionalLightColor', dLightColor);\n" +
+    "  programT.uniformVector3('uDirectionalLightDirection', dLightDirection);\n" +
+    "  programP.uniform1f('uPointSize', 2);\n" +
+    "\n" +
+    "  var geometry = EIGHT.cube(0.5);\n" +
+    "  var elements = EIGHT.toDrawElements(geometry);\n" +
+    "  var mesh = manager.createDrawElementsMesh(elements, gl.TRIANGLES);\n" +
+    "  var model = new EIGHT.Model();\n" +
+    "  model.color.set(0, 1, 0);\n" +
+    "\n" +
+    "  // PERFORMANCE HINT\n"+
+    "  // In order to avoid creating temporary objects and excessive garbage collection,\n" +
+    "  // perform blade computations outside of the animation loop and\n" +
+    "  // use EIGHT mutable components inside the animation loop.\n" +
+    "  /**\n" +
+    "   * The angle of tilt of the precessing vector.\n" +
+    "   */\n" +
+    "  var tiltAngle = 30 * Math.PI / 180;\n" +
+    "  var S = exp(-(e2 ^ e1) * tiltAngle / 2);\n" +
+    "  var B = e3 ^ e1;\n" +
+    "  var rotorL = EIGHT.rotor3();\n" +
+    "  var rotorR = EIGHT.rotor3();\n" +
     "\n" +
     "  EIGHT.animation((time: number) => {\n" +
     "    stats.begin();\n" +
     "    var theta = omega * time;\n" +
-    "    // simple harmonic motion\n" +
-    "    cube.model.position.copy(e2).multiplyScalar(1.2 * sin(theta));\n" +
+    "    // Simple Harmonic Motion.\n" +
+    "    // model.position.copy(e2).multiplyScalar(1.2 * sin(theta));\n" +
     "\n" +
-    "    // precession\n" +
-    "    var R = exp(-B * theta / 2);\n" +
-    "    arrow.model.attitude.copy(R * S * ~R);\n" +
+    "    // Precession demonstrates spinor multiplication.\n" +
+    "    // R = exp(-B * theta / 2)\n" +
+    "    // attitude = R * S * ~R\n" +
+    "    rotorL.copy(B).multiplyScalar(-theta / 2).exp();\n" +
+    "    rotorR.copy(rotorL).reverse();\n" +
+    "    model.attitude.copy(rotorL).multiply(S).multiply(rotorR);\n" +
     "\n" +
-    "    // rotation generated by e3 wedge e2\n" +
-    "    vortex.model.attitude.copy(e32).multiplyScalar(-theta / 2).exp();\n" +
-    "    surface.model.attitude.copy(e12).multiplyScalar(-theta / 2).exp();\n" +
-    "    triangle.model.attitude.copy(surface.model.attitude);\n" +
+    "    // Rotation generated by e3 ^ e2.\n" +
+    "    // model.attitude.wedgeVectors(e3, e2).multiplyScalar(-theta / 2).exp();\n" +
     "\n" +
     "    // orbit\n" +
-    "    sphere.model.position.copy(2 * cos(theta) * e1 - sin(theta) * (e3 - 0.5 * e2));\n" +
+    "    // position = R * e1 * ~R\n" +
+    "    // model.position.copy(e1).rotate(rotorL);\n" +
     "\n" +
     "    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);\n" +
     "\n" +
-    "    scene.traverse(function(drawable: EIGHT.Drawable) {\n" +
-    "      drawable.accept(drawVisitor);\n" +
-    "    });\n" +
+    "    programT.use();\n" +
+    "    model.accept(programT);\n" +
+    "    mesh.bind(programT);\n" +
+    "    mesh.draw();\n" +
+    "    mesh.unbind();\n" +
     "\n" +
     "    stats.end();\n" +
     "  }).start();\n" +
@@ -441,22 +424,16 @@ angular.module('app').factory('templates', [
     "var second   = blade.e3ga.units.second;\n" +
     "var hertz    = blade.e3ga.units.hertz;\n" +
     "\n" +
-    "class TriangleGeometry extends EIGHT.Geometry3 {\n" +
-    "  constructor(a: EIGHT.Cartesian3, b: EIGHT.Cartesian3, c: EIGHT.Cartesian3) {\n" +
-    "    super();\n" +
-    "    this.faces.push(new EIGHT.Face3(0, 1, 2));\n" +
-    "    this.vertices.push(a);\n" +
-    "    this.vertices.push(b);\n" +
-    "    this.vertices.push(c);\n" +
-    "    this.computeFaceNormals();\n" +
-    "  }\n" +
-    "}\n" +
-    "\n" +
     "class Model implements EIGHT.UniformData {\n" +
-    "  public position: EIGHT.Vector3 = new EIGHT.Vector3();\n" +
-    "  public attitude: EIGHT.Spinor3 = new EIGHT.Spinor3();\n" +
+    "  public position = new EIGHT.Vector3();\n" +
+    "  public attitude = EIGHT.rotor3();\n" +
     "  public scale: EIGHT.Vector3 = new EIGHT.Vector3([1, 1, 1]);\n" +
     "  public color: EIGHT.Vector3 = new EIGHT.Vector3([1, 1, 1]);\n" +
+    "  private M = EIGHT.Matrix4.identity();\n" +
+    "  private N = EIGHT.Matrix3.identity();\n" +
+    "  private R = EIGHT.Matrix4.identity();\n" +
+    "  private S = EIGHT.Matrix4.identity();\n" +
+    "  private T = EIGHT.Matrix4.identity();\n" +
     "  constructor() {\n" +
     "    this.position.modified = true;\n" +
     "    this.attitude.modified = true;\n" +
@@ -464,37 +441,28 @@ angular.module('app').factory('templates', [
     "    this.color.modified = true;\n" +
     "  }\n" +
     "  accept(visitor: EIGHT.UniformDataVisitor) {\n" +
-    "    var S = EIGHT.Matrix4.identity();\n" +
-    "    S.scaling(this.scale);\n" +
-    "    var T = EIGHT.Matrix4.identity();\n" +
-    "    T.translation(this.position);\n" +
-    "    var R = EIGHT.Matrix4.identity();\n" +
-    "    R.rotation(this.attitude);\n" +
-    "    T.mul(R.mul(S));\n" +
-    "    visitor.uniformMatrix4('uModelMatrix', false, T);\n" +
-    "    visitor.uniformVector3('uColor', this.color);\n" +
+    "    if (this.position.modified) {\n" +
+    "      this.T.translation(this.position);\n" +
+    "      this.position.modified = false;\n" +
+    "    }\n" +
+    "    if (this.attitude.modified) {\n" +
+    "        this.R.rotation(this.attitude);\n" +
+    "        this.attitude.modified = false;\n" +
+    "    }\n" +
+    "    if (this.scale.modified) {\n" +
+    "      this.S.scaling(this.scale);\n" +
+    "      this.scale.modified = false;\n" +
+    "    }\n" +
+    "    this.M.copy(this.T).multiply(this.R).multiply(this.S);\n" +
+    "\n" +
+    "    this.N.normalFromMatrix4(this.M)\n" +
+    "\n" +
+    "    visitor.uniformMatrix4(EIGHT.Symbolic.UNIFORM_MODEL_MATRIX, false, this.M);\n" +
+    "    visitor.uniformMatrix3(EIGHT.Symbolic.UNIFORM_NORMAL_MATRIX, false, this.N);\n" +
+    "    visitor.uniformVector3(EIGHT.Symbolic.UNIFORM_COLOR, this.color);\n" +
     "  }\n" +
     "}\n" +
-    "\n" +
-    "class DrawVisitor implements EIGHT.DrawableVisitor {\n" +
-    "  constructor() {\n" +
-    "  }\n" +
-    "  primitive(mesh: EIGHT.AttribProvider, program: EIGHT.Program, model: EIGHT.UniformData) {\n" +
-    "    if (mesh.dynamic) {\n" +
-    "      mesh.update();\n" +
-    "    }\n" +
-    "    program.use();\n" +
-    "    model.accept(program);\n" +
-    "    program.setAttributes(mesh.getAttribData());\n" +
-    "    for (var name in program.attributes) {\n" +
-    "      program.attributes[name].enable();\n" +
-    "    }\n" +
-    "    mesh.draw();\n" +
-    "  }\n" +
-    "}\n" +
-    "\n" +
-    "var drawVisitor = new DrawVisitor();\n" +
-    "\n";
+    "";
 
   var LESS_TEMPLATE_EIGHT = "" +
     "body { margin: 0; }\n" +
@@ -763,15 +731,15 @@ angular.module('app').factory('templates', [
     "    <link rel='stylesheet' href='//netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>\n" +
     styleMarker() +
     "    <script id='vs-points' type='x-shader/x-vertex'>\n" +
-    "      attribute vec3 aVertexPosition;\n" +
+    "      attribute vec3 aPosition;\n" +
     "      uniform vec3 uColor;\n" +
-    "      uniform mat4 uModelMatrix;\n" +
-    "      uniform mat4 uViewMatrix;\n" +
-    "      uniform mat4 uProjectionMatrix;\n" +
+    "      uniform mat4 uModel;\n" +
+    "      uniform mat4 uView;\n" +
+    "      uniform mat4 uProjection;\n" +
     "      uniform float uPointSize;\n" +
     "      varying highp vec4 vColor;\n" +
     "      void main(void) {\n" +
-    "        gl_Position = uProjectionMatrix * uViewMatrix * uModelMatrix * vec4(aVertexPosition, 1.0);\n" +
+    "        gl_Position = uProjection * uView * uModel * vec4(aPosition, 1.0);\n" +
     "        gl_PointSize = uPointSize;\n"+
     "        vColor = vec4(uColor, 1.0);\n"+
     "      }\n" +
@@ -881,7 +849,9 @@ angular.module('app').factory('templates', [
     "      var geometry: EIGHT.Simplex[] = EIGHT.triangle(vec0, vec1, vec2);\n"+
     "      var attribMap = EIGHT.checkGeometry(geometry);\n"+
     "      console.log(JSON.stringify(attribMap, null, 2));\n"+
-    "      var elements: EIGHT.DrawElements = EIGHT.toDrawElements(geometry);\n"+
+    "      // Map standard names in geometry to names used in vertex shader code.\n"+
+    "      attribMap[EIGHT.Symbolic.ATTRIBUTE_POSITION].name = 'aPosition';\n"+
+    "      var elements: EIGHT.DrawElements = EIGHT.toDrawElements(geometry, attribMap);\n"+
     "\n"+
     "      mesh = manager.createDrawElementsMesh(elements, gl.TRIANGLES);\n"+
     "\n"+
