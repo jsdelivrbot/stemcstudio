@@ -276,14 +276,22 @@ angular.module('app').factory('templates', [
   var CODE_TEMPLATE_EIGHT = "" +
     "/**\n" +
     " * The period of the motions in the animation.\n" +
+    " * Break the rules! It's better to use (sometimes) short variable names in math programs!!\n" +
+    " * Hint: Hover over a variable anywhere in the program to see the corresponding documentation.\n" +
     " */\n" +
-    "var T = 4;\n" +
+    "var T: blade.Euclidean3 = 4 * second;\n" +
     "/**\n" +
     " * The frequency of the motions in the animation.\n" +
     " */\n" +
     "var f = (1 / T);\n" +
-    "var omega = 2 * Math.PI * f;\n" +
+    "/**\n" +
+    " * The angular velocity, omega, corresponding to the frequency, f.\n" +
+    " */\n" +
+    "var omega = (2 * Math.PI * f);\n" +
     "\n" +
+    "/**\n" +
+    " * For a future example...\n" +
+    " */\n" +
     "function surfaceFn(u: number, v: number): EIGHT.Cartesian3 {\n" +
     "  var x = 3 * (u - 0.5);\n" +
     "  var z = 3 * (v - 0.5);\n" +
@@ -291,45 +299,157 @@ angular.module('app').factory('templates', [
     "  return x * e1 + y * e2 + z * e3;\n" +
     "}\n" +
     "\n" +
+    "/**\n" +
+    " * main() is called by the DomReady preamble in the Libs file, in case you were wondering!\n" +
+    " * This code illustrates the main ideas in using EIGHT and blade.\n" +
+    " * This code does not show how to perform robust resource management.\n" +
+    " * See the example template 'EIGHT + blade + AngularJS' for advanced resource management and tracking.\n" +
+    " */\n" +
     "function main() {\n" +
     "\n" +
+    "  // Let's take a look at the program 'parameters' in the Console. (Ctrl-Shift-J) on Linux.\n" +
+    "  console.log('period,    T    => ' + T);\n" +
+    "  console.log('frequency, f    => ' + f);\n" +
+    "  console.log('surfaceFn(1, 1) => ' + surfaceFn(1, 1));\n" +
+    "\n" +
+    "  // Cast to HTMLCanvasElement because getElementById has no clue what we are dealing with.\n" +
     "  var canvas = <HTMLCanvasElement>document.getElementById('my-canvas');\n" +
     "  canvas.width = window.innerWidth;\n" +
     "  canvas.height = window.innerHeight;\n" +
     "\n" +
-    "  var manager = EIGHT.webgl(canvas).start();\n" +
-    "  var gl = manager.context;\n" +
+    "  /**\n" +
+    "   * The manager takes care of WebGLBuffer(s) and other resources so that you don't have to.\n" +
+    "   * The manager also assists with context loss handling.\n" +
+    "   * This frees you to write great shader programs, geometry generators, and your own scene graph.\n" +
+    "   * But there are also utilities for smart programs, predefined geometries, and transformations to get you started or for demos.\n" +
+    "   * We start the manager now to initialize the WebGL context.\n" +
+    "   */\n" +
+    "  var manager: EIGHT.ContextManager = EIGHT.webgl(canvas).start();\n" +
+    "  /**\n" +
+    "   * The standard WebGL rendering context.\n" +
+    "   */\n" +
+    "  var gl: WebGLRenderingContext = manager.context;\n" +
     "\n" +
     "  gl.clearColor(0.2, 0.2, 0.2, 1.0);\n" +
     "  gl.clearDepth(1.0);\n" +
     "  gl.enable(gl.DEPTH_TEST);\n" +
     "  gl.depthFunc(gl.LEQUAL);\n" +
     "\n" +
-    "  var camera = EIGHT.perspective().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(e1 + 3.0 * e3);\n" +
-    "  var aLight = new EIGHT.Vector3([0.3, 0.3, 0.3]);\n" +
+    "  /**\n" +
+    "   * The camera is mutable and provides uniforms through the EIGHT.UniformData interface.\n" +
+    "   */\n" +
+    "  var camera = EIGHT.perspective().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(2.0 * e3);\n" +
+    "  /**\n" +
+    "   * Ambient Light.\n" +
+    "   */\n" +
+    "  var ambientLight = new EIGHT.Vector3([0.3, 0.3, 0.3]);\n" +
+    "  /**\n" +
+    "   * Directional Light Color.\n" +
+    "   */\n" +
     "  var dLightColor = new EIGHT.Vector3([0.7, 0.7, 0.7]);\n" +
+    "  /**\n" +
+    "   * Directional Light Directiion.\n" +
+    "   */\n" +
     "  var dLightDirection = new EIGHT.Vector3([2, 3, 5]);\n" +
     "\n" +
+    "  /**\n" +
+    "   * Program for rendering gl.TRIANGLES with moderately fancy lighting.\n" +
+    "   */\n" +
     "  var programT = EIGHT.programFromScripts(manager, 'vs-triangles', 'fs-triangles', document);\n" +
+    "  /**\n" +
+    "   * Program for rendering gl.LINES.\n" +
+    "   */\n" +
     "  var programL = EIGHT.programFromScripts(manager, 'vs-lines', 'fs-lines', document);\n" +
+    "  /**\n" +
+    "   * Program for rendering gl.POINTS.\n" +
+    "   */\n" +
     "  var programP = EIGHT.programFromScripts(manager, 'vs-points', 'fs-points', document);\n" +
+    "  /**\n" +
+    "   * Program used by the cube, TBD based on geometry dimensionality.\n" +
+    "   */\n" +
+    "  var programCube: EIGHT.Program;\n" +
     "\n" +
     "  var stats = new Stats();\n" +
     "  stats.setMode(0);\n" +
     "  document.body.appendChild(stats.domElement);\n" +
     "\n" +
+    "  // The camera accepts the Program in order to set uniforms for the visiting program.\n" +
     "  camera.accept(programT);\n" +
     "  camera.accept(programL);\n" +
     "  camera.accept(programP);\n" +
-    "  programT.uniformVector3('uAmbientLight', aLight);\n" +
+    "  // Uniforms may also be set directly and some standard names are symbolically defined.\n" +
+    "  // The names used here should match the names used in the program source code.\n" +
+    "  programT.uniformVector3(EIGHT.Symbolic.UNIFORM_AMBIENT_LIGHT, ambientLight);\n" +
     "  programT.uniformVector3('uDirectionalLightColor', dLightColor);\n" +
     "  programT.uniformVector3('uDirectionalLightDirection', dLightDirection);\n" +
-    "  programP.uniform1f('uPointSize', 2);\n" +
+    "  programP.uniform1f('uPointSize', 4);\n" +
     "\n" +
-    "  var geometry = EIGHT.cube(0.5);\n" +
-    "  var elements = EIGHT.toDrawElements(geometry);\n" +
-    "  var mesh = manager.createDrawElementsMesh(elements, gl.TRIANGLES);\n" +
-    "  var model = new EIGHT.Model();\n" +
+    "  /**\n" +
+    "   * The mesh for the cube.\n" +
+    "   * This is an object that hides the messy buffer management details.\n" +
+    "   */\n" +
+    "  var mesh: EIGHT.Mesh;\n" +
+    "  /**\n" +
+    "   * The model for the cube, which implements EIGHT.UniformData having the\n" +
+    "   * method accept(visitor: EIGHT.UniformDataVisitor)./\n" +
+    "   * Implement your own custom models to do e.g., articulated robots./\n" +
+    "   * See example in Libs file./\n" +
+    "   */\n" +
+    "  var model: EIGHT.Model;\n" +
+    "\n" +
+    "  // We start with the geometry for a unit cube at the origin...\n" +
+    "  // A geometry is considered to be an array of simplices.\n" +
+    "  var geometry: EIGHT.Simplex[] = EIGHT.cube();\n" +
+    "  // Subdivide the geometry (here twice) if you wish to get more detail.\n" +
+    "  // Hit 'Play' in mathdoodle.io to see the effect of, say, n = 0, 1, 2, 3.\n" +
+    "  geometry = EIGHT.Simplex.subdivide(geometry, 2);\n" +
+    "  // Apply the boundary operator once to make TRIANGLES => LINES,\n" +
+    "  // twice to make TRIANGLES => POINTS,\n" +
+    "  // three times to make TRIANGLES => an empty simplex with k = -1,)\n" +
+    "  // four times to make TRIANGLES => undefined.\n" +
+    "  // Try the values n = 0, 1, 2, 3, 4, 5. Look at the canvas and the Console.\n" +
+    "  geometry = EIGHT.Simplex.boundary(geometry, 1);\n" +
+    "  /**\n" +
+    "   * Summary information on the geometry such as dimensionality and sizes for attributes.\n" +
+    "   * This same data structure may be used to map geometry attribute names to program names.\n" +
+    "   */\n" +
+    "  var geoInfo = EIGHT.checkGeometry(geometry);\n" +
+    "  // Check that we still have a defined geometry after all that mucking about.\n" +
+    "  if (geoInfo) {\n" +
+    "    // Convert the geometry to DrawElements.\n" +
+    "    var elements: EIGHT.DrawElements = EIGHT.toDrawElements(geometry/*, geoInfo*/);\n" +
+    "    // Submit the DrawElements to the manager who will manage underlying WebGLBuffer(s) for you.\n" +
+    "    mesh = manager.createDrawElementsMesh(elements);\n" +
+    "    if (mesh) {\n" +
+    "      // Pick an appropriate program to use with the mesh based upon the dimensionality.\n" +
+    "      switch(elements.k) {\n" +
+    "        case EIGHT.Simplex.K_FOR_POINT: {\n" +
+    "          programCube = programP;\n" +
+    "        }\n" +
+    "        break;\n" +
+    "        case EIGHT.Simplex.K_FOR_LINE_SEGMENT: {\n" +
+    "          programCube = programL;\n" +
+    "        }\n" +
+    "        break;\n" +
+    "        case EIGHT.Simplex.K_FOR_TRIANGLE: {\n" +
+    "          programCube = programT;\n" +
+    "        }\n" +
+    "        break;\n" +
+    "        default: {\n" +
+    "          throw new Error('Unexpected dimensions for simplex: ' + elements.k);\n" +
+    "        }\n" +
+    "      }\n" +
+    "    }\n" +
+    "    else {\n" +
+    "      console.warn('Nothing to see because the geometry is empty. dimensions => ' + elements.k);\n" +
+    "    }\n" +
+    "  }\n" +
+    "  else {\n" +
+    "    console.warn('Nothing to see because the geometry is undefined.');\n" +
+    "  }\n" +
+    "  // Create the model anyway (not what we would do in the real world).\n" +
+    "  model = new EIGHT.Model();\n" +
+    "  // Green, like on the 'Matrix', would be a good color, Neo. Or maybe red or blue?\n" +
     "  model.color.set(0, 1, 0);\n" +
     "\n" +
     "  // PERFORMANCE HINT\n"+
@@ -340,6 +460,12 @@ angular.module('app').factory('templates', [
     "   * The angle of tilt of the precessing vector.\n" +
     "   */\n" +
     "  var tiltAngle = 30 * Math.PI / 180;\n" +
+    "  /**\n" +
+    "   * S, a spinor representing the default attitude of the cube.\n" +
+    "   */\n" +
+    "  // We're using blade, Geometric Algebra, and operator overloading here.\n" +
+    "  // We perform similar calculations inside the animation loop using BLADE mutable types.\n" +
+    "  // The global constants, e1, e2 and e3, are defined in the 'Libs' file.\n" +
     "  var S = exp(-(e2 ^ e1) * tiltAngle / 2);\n" +
     "  var B = e3 ^ e1;\n" +
     "  var rotorL = EIGHT.rotor3();\n" +
@@ -347,7 +473,11 @@ angular.module('app').factory('templates', [
     "\n" +
     "  EIGHT.animation((time: number) => {\n" +
     "    stats.begin();\n" +
-    "    var theta = omega * time;\n" +
+    "    // Use the scalar property, w, in order to keep things fast.\n" +
+    "    /**\n" +
+    "     * theta = omega * time, is the basic angle used in the animation.\n" +
+    "     */\n" +
+    "    var theta: number = omega.w * time;\n" +
     "    // Simple Harmonic Motion.\n" +
     "    // model.position.copy(e2).multiplyScalar(1.2 * sin(theta));\n" +
     "\n" +
@@ -367,11 +497,18 @@ angular.module('app').factory('templates', [
     "\n" +
     "    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);\n" +
     "\n" +
-    "    programT.use();\n" +
-    "    model.accept(programT);\n" +
-    "    mesh.bind(programT);\n" +
-    "    mesh.draw();\n" +
-    "    mesh.unbind();\n" +
+    "    if (mesh) {\n" +
+    "      // Make the appropriate WebGLProgram current.\n" +
+    "      programCube.use();\n" +
+    "      // The model sets uniforms on the program by accepting the program as a visitor.\n" +
+    "      model.accept(programCube);\n" +
+    "      // Bind the appropriate underlying buffers and enable attribute locations.\n" +
+    "      mesh.bind(programCube);\n" +
+    "      // Make the appropriate drawElements() or drawArrays() call.\n" +
+    "      mesh.draw();\n" +
+    "      // Unbind the buffers and disable attribute locations.\n" +
+    "      mesh.unbind();\n" +
+    "    }\n" +
     "\n" +
     "    stats.end();\n" +
     "  }).start();\n" +
@@ -847,11 +984,11 @@ angular.module('app').factory('templates', [
     "      var vec1 = new EIGHT.Vector3([1.0, -0.2, 0.0]);\n"+
     "      var vec2 = new EIGHT.Vector3([1.0, +0.2, 0.0]);\n"+
     "      var geometry: EIGHT.Simplex[] = EIGHT.triangle(vec0, vec1, vec2);\n"+
-    "      var attribMap = EIGHT.checkGeometry(geometry);\n"+
-    "      console.log(JSON.stringify(attribMap, null, 2));\n"+
+    "      var geomInfo = EIGHT.checkGeometry(geometry);\n"+
+    "      console.log(JSON.stringify(geomInfo, null, 2));\n"+
     "      // Map standard names in geometry to names used in vertex shader code.\n"+
-    "      attribMap[EIGHT.Symbolic.ATTRIBUTE_POSITION].name = 'aPosition';\n"+
-    "      var elements: EIGHT.DrawElements = EIGHT.toDrawElements(geometry, attribMap);\n"+
+    "      geomInfo.attributes[EIGHT.Symbolic.ATTRIBUTE_POSITION].name = 'aPosition';\n"+
+    "      var elements: EIGHT.DrawElements = EIGHT.toDrawElements(geometry, geomInfo);\n"+
     "\n"+
     "      mesh = manager.createDrawElementsMesh(elements, gl.TRIANGLES);\n"+
     "\n"+
