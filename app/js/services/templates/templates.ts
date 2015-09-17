@@ -318,13 +318,20 @@ angular.module('app').factory('templates', [
     "  canvas.height = window.innerHeight;\n" +
     "\n" +
     "  /**\n" +
+    "   * The user-defined canvas id (important in multi-canvas applications).\n" +
+    "   */\n" +
+    "  var canvasId = 42;\n" +
+    "\n" +
+    "  /**\n" +
     "   * The manager takes care of WebGLBuffer(s) and other resources so that you don't have to.\n" +
     "   * The manager also assists with context loss handling.\n" +
     "   * This frees you to write great shader programs, geometry generators, and your own scene graph.\n" +
     "   * But there are also utilities for smart programs, predefined geometries, and transformations to get you started or for demos.\n" +
     "   * We start the manager now to initialize the WebGL context.\n" +
     "   */\n" +
-    "  var manager: EIGHT.ContextManager = EIGHT.webgl(canvas).start();\n" +
+    "  var manager = EIGHT.webgl(canvas, canvasId);\n" +
+    "  manager.start();\n" +
+    "\n" +
     "  /**\n" +
     "   * The standard WebGL rendering context.\n" +
     "   */\n" +
@@ -355,19 +362,19 @@ angular.module('app').factory('templates', [
     "  /**\n" +
     "   * Program for rendering gl.TRIANGLES with moderately fancy lighting.\n" +
     "   */\n" +
-    "  var programT = EIGHT.programFromScripts(manager, 'vs-triangles', 'fs-triangles', document);\n" +
+    "  var programT = EIGHT.programFromScripts([manager], 'vs-triangles', 'fs-triangles', document);\n" +
     "  /**\n" +
     "   * Program for rendering gl.LINES.\n" +
     "   */\n" +
-    "  var programL = EIGHT.programFromScripts(manager, 'vs-lines', 'fs-lines', document);\n" +
+    "  var programL = EIGHT.programFromScripts([manager], 'vs-lines', 'fs-lines', document);\n" +
     "  /**\n" +
     "   * Program for rendering gl.POINTS.\n" +
     "   */\n" +
-    "  var programP = EIGHT.programFromScripts(manager, 'vs-points', 'fs-points', document);\n" +
+    "  var programP = EIGHT.programFromScripts([manager], 'vs-points', 'fs-points', document);\n" +
     "  /**\n" +
     "   * Program used by the cube, TBD based on geometry dimensionality.\n" +
     "   */\n" +
-    "  var programCube: EIGHT.Program;\n" +
+    "  var programCube: EIGHT.IProgram;\n" +
     "\n" +
     "  var stats = new Stats();\n" +
     "  stats.setMode(0);\n" +
@@ -388,7 +395,7 @@ angular.module('app').factory('templates', [
     "   * The mesh for the cube.\n" +
     "   * This is an object that hides the messy buffer management details.\n" +
     "   */\n" +
-    "  var mesh: EIGHT.Mesh;\n" +
+    "  var mesh: EIGHT.IMesh;\n" +
     "  /**\n" +
     "   * The model for the cube, which implements EIGHT.UniformData having the\n" +
     "   * method accept(visitor: EIGHT.UniformDataVisitor)./\n" +
@@ -499,7 +506,7 @@ angular.module('app').factory('templates', [
     "\n" +
     "    if (mesh) {\n" +
     "      // Make the appropriate WebGLProgram current.\n" +
-    "      programCube.use();\n" +
+    "      programCube.use(canvasId);\n" +
     "      // The model sets uniforms on the program by accepting the program as a visitor.\n" +
     "      model.accept(programCube);\n" +
     "      // Bind the appropriate underlying buffers and enable attribute locations.\n" +
@@ -959,8 +966,8 @@ angular.module('app').factory('templates', [
     "\n"+
     "    var camera = EIGHT.perspective().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(3.0 * e3);\n"+
     "\n"+
-    "    var mesh: EIGHT.Mesh;\n"+
-    "    var program: EIGHT.Program;\n" +
+    "    var mesh: EIGHT.IMesh;\n"+
+    "    var program: EIGHT.IProgram;\n" +
     "    var model = new EIGHT.Model();\n"+
     "\n"+
     "    var R = -(e1 ^ e2) / 2;\n"+
@@ -969,7 +976,7 @@ angular.module('app').factory('templates', [
     "      EIGHT.refChange('reset', 'setUp()');\n"+
     "      EIGHT.refChange('start', 'setUp()');\n"+
     "\n"+
-    "      manager = EIGHT.webgl(canvas);\n"+
+    "      manager = EIGHT.webgl(canvas, 0);\n"+
     "      manager.start();\n"+
     "\n"+
     "      var gl = manager.context;\n"+
@@ -978,7 +985,7 @@ angular.module('app').factory('templates', [
     "      gl.enable(gl.DEPTH_TEST);\n"+
     "      gl.depthFunc(gl.LEQUAL);\n"+
     "\n"+
-    "      program = EIGHT.programFromScripts(manager, 'vs-points', 'fs-points', document);\n" +
+    "      program = EIGHT.programFromScripts([manager], 'vs-points', 'fs-points', document);\n" +
     "\n"+
     "      var vec0 = new EIGHT.Vector3([0.0,  0.0, 0.0]);\n"+
     "      var vec1 = new EIGHT.Vector3([1.0, -0.2, 0.0]);\n"+
