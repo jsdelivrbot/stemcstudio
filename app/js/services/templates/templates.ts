@@ -329,13 +329,13 @@ angular.module('app').factory('templates', [
     "   * But there are also utilities for smart programs, predefined geometries, and transformations to get you started or for demos.\n" +
     "   * We start the manager now to initialize the WebGL context.\n" +
     "   */\n" +
-    "  var manager = EIGHT.webgl(canvas, canvasId);\n" +
-    "  manager.start();\n" +
+    "  var context = new EIGHT.WebGLRenderer(canvas, canvasId);\n" +
+    "  context.start();\n" +
     "\n" +
     "  /**\n" +
     "   * The standard WebGL rendering context.\n" +
     "   */\n" +
-    "  var gl: WebGLRenderingContext = manager.context;\n" +
+    "  var gl: WebGLRenderingContext = context.gl;\n" +
     "\n" +
     "  gl.clearColor(0.2, 0.2, 0.2, 1.0);\n" +
     "  gl.clearDepth(1.0);\n" +
@@ -362,15 +362,15 @@ angular.module('app').factory('templates', [
     "  /**\n" +
     "   * Program for rendering gl.TRIANGLES with moderately fancy lighting.\n" +
     "   */\n" +
-    "  var programT = EIGHT.programFromScripts([manager], 'vs-triangles', 'fs-triangles', document);\n" +
+    "  var programT = new EIGHT.HTMLScriptsMaterial([context], ['vs-triangles', 'fs-triangles'], document);\n" +
     "  /**\n" +
     "   * Program for rendering gl.LINES.\n" +
     "   */\n" +
-    "  var programL = EIGHT.programFromScripts([manager], 'vs-lines', 'fs-lines', document);\n" +
+    "  var programL = new EIGHT.HTMLScriptsMaterial([context], ['vs-lines', 'fs-lines'], document);\n" +
     "  /**\n" +
     "   * Program for rendering gl.POINTS.\n" +
     "   */\n" +
-    "  var programP = EIGHT.programFromScripts([manager], 'vs-points', 'fs-points', document);\n" +
+    "  var programP = new EIGHT.HTMLScriptsMaterial([context], ['vs-points', 'fs-points'], document);\n" +
     "  /**\n" +
     "   * Program used by the cube, TBD based on geometry dimensionality.\n" +
     "   */\n" +
@@ -406,27 +406,27 @@ angular.module('app').factory('templates', [
     "\n" +
     "  // We start with the geometry for a unit cube at the origin...\n" +
     "  // A geometry is considered to be an array of simplices.\n" +
-    "  var geometry: EIGHT.Simplex[] = EIGHT.cube();\n" +
+    "  var complex = new EIGHT.BoxComplex(1, 1, 1);\n" +
     "  // Subdivide the geometry (here twice) if you wish to get more detail.\n" +
     "  // Hit 'Play' in mathdoodle.io to see the effect of, say, n = 0, 1, 2, 3.\n" +
-    "  geometry = EIGHT.Simplex.subdivide(geometry, 2);\n" +
+    "  complex.subdivide(2);\n" +
     "  // Apply the boundary operator once to make TRIANGLES => LINES,\n" +
     "  // twice to make TRIANGLES => POINTS,\n" +
     "  // three times to make TRIANGLES => an empty simplex with k = -1,)\n" +
     "  // four times to make TRIANGLES => undefined.\n" +
     "  // Try the values n = 0, 1, 2, 3, 4, 5. Look at the canvas and the Console.\n" +
-    "  geometry = EIGHT.Simplex.boundary(geometry, 1);\n" +
+    "  complex.boundary(1);\n" +
     "  /**\n" +
     "   * Summary information on the geometry such as dimensionality and sizes for attributes.\n" +
     "   * This same data structure may be used to map geometry attribute names to program names.\n" +
     "   */\n" +
-    "  var geoInfo = EIGHT.checkGeometry(geometry);\n" +
+    "  var geoInfo = EIGHT.checkGeometry(complex.simplices);\n" +
     "  // Check that we still have a defined geometry after all that mucking about.\n" +
     "  if (geoInfo) {\n" +
     "    // Convert the geometry to DrawElements.\n" +
-    "    var elements: EIGHT.DrawElements = EIGHT.toDrawElements(geometry/*, geoInfo*/);\n" +
-    "    // Submit the DrawElements to the manager who will manage underlying WebGLBuffer(s) for you.\n" +
-    "    mesh = manager.createDrawElementsMesh(elements);\n" +
+    "    var elements: EIGHT.DrawElements = EIGHT.toDrawElements(complex.simplices, geoInfo);\n" +
+    "    // Submit the DrawElements to the context which will manage underlying WebGLBuffer(s) for you.\n" +
+    "    mesh = context.createDrawElementsMesh(elements);\n" +
     "    if (mesh) {\n" +
     "      // Pick an appropriate program to use with the mesh based upon the dimensionality.\n" +
     "      switch(elements.k) {\n" +
@@ -962,7 +962,7 @@ angular.module('app').factory('templates', [
     "    canvas.width = 600;\n" +
     "    canvas.height = 400;\n" +
     "\n"+
-    "    var manager: EIGHT.ContextManager;\n"+
+    "    var context: EIGHT.WebGLRenderer;\n"+
     "\n"+
     "    var camera = EIGHT.perspective().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(3.0 * e3);\n"+
     "\n"+
@@ -976,16 +976,16 @@ angular.module('app').factory('templates', [
     "      EIGHT.refChange('reset', 'setUp()');\n"+
     "      EIGHT.refChange('start', 'setUp()');\n"+
     "\n"+
-    "      manager = EIGHT.webgl(canvas, 0);\n"+
-    "      manager.start();\n"+
+    "      context = new EIGHT.WebGLRenderer(canvas, 0);\n"+
+    "      context.start();\n"+
     "\n"+
-    "      var gl = manager.context;\n"+
+    "      var gl = context.gl;\n"+
     "      gl.clearColor(0.2, 0.2, 0.2, 1.0);\n"+
     "      gl.clearDepth(1.0);\n"+
     "      gl.enable(gl.DEPTH_TEST);\n"+
     "      gl.depthFunc(gl.LEQUAL);\n"+
     "\n"+
-    "      program = EIGHT.programFromScripts([manager], 'vs-points', 'fs-points', document);\n" +
+    "      program = new EIGHT.HTMLScriptsMaterial([context], ['vs-points', 'fs-points'], document);\n" +
     "\n"+
     "      var vec0 = new EIGHT.Vector3([0.0,  0.0, 0.0]);\n"+
     "      var vec1 = new EIGHT.Vector3([1.0, -0.2, 0.0]);\n"+
@@ -997,7 +997,7 @@ angular.module('app').factory('templates', [
     "      geomInfo.attributes[EIGHT.Symbolic.ATTRIBUTE_POSITION].name = 'aPosition';\n"+
     "      var elements: EIGHT.DrawElements = EIGHT.toDrawElements(geometry, geomInfo);\n"+
     "\n"+
-    "      mesh = manager.createDrawElementsMesh(elements, gl.TRIANGLES);\n"+
+    "      mesh = context.createDrawElementsMesh(elements, gl.TRIANGLES);\n"+
     "\n"+
     "      camera.accept(program);\n"+
     "    }\n"+
@@ -1014,7 +1014,7 @@ angular.module('app').factory('templates', [
     "\n" +
     "      var theta = omega * time;\n"+
     "\n" +
-    "      var gl = manager.context;\n"+
+    "      var gl = context.gl;\n"+
     "      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);\n"+
     "\n" +
     "      mesh.bind(program);\n" +
@@ -1044,9 +1044,9 @@ angular.module('app').factory('templates', [
     "      program.release();\n"+
     "      program = void 0;\n"+
     "\n" +
-    "      manager.stop();\n"+
-    "      manager.release();\n"+
-    "      manager = void 0;\n"+
+    "      context.stop();\n"+
+    "      context.release();\n"+
+    "      context = void 0;\n"+
     "\n" +
     "      var outstanding = EIGHT.refChange('stop', 'tearDown()');\n"+
     "      //if (outstanding > 0) {\n" +
