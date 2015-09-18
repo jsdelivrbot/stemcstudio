@@ -345,7 +345,7 @@ angular.module('app').factory('templates', [
     "  /**\n" +
     "   * The camera is mutable and provides uniforms through the EIGHT.UniformData interface.\n" +
     "   */\n" +
-    "  var camera = EIGHT.perspective().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(2.0 * e3);\n" +
+    "  var camera = EIGHT.createPerspective().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(2.0 * e3);\n" +
     "  /**\n" +
     "   * Ambient Light.\n" +
     "   */\n" +
@@ -964,7 +964,7 @@ angular.module('app').factory('templates', [
     "\n"+
     "    var context: EIGHT.WebGLRenderer;\n"+
     "\n"+
-    "    var camera = EIGHT.perspective().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(3.0 * e3);\n"+
+    "    var camera = EIGHT.createPerspective().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(3.0 * e3);\n"+
     "\n"+
     "    var mesh: EIGHT.IMesh;\n"+
     "    var program: EIGHT.IProgram;\n" +
