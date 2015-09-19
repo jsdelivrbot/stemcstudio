@@ -330,17 +330,6 @@ angular.module('app').factory('templates', [
     "   * We start the manager now to initialize the WebGL context.\n" +
     "   */\n" +
     "  var context = new EIGHT.WebGLRenderer(canvas, canvasId);\n" +
-    "  context.start();\n" +
-    "\n" +
-    "  /**\n" +
-    "   * The standard WebGL rendering context.\n" +
-    "   */\n" +
-    "  var gl: WebGLRenderingContext = context.gl;\n" +
-    "\n" +
-    "  gl.clearColor(0.2, 0.2, 0.2, 1.0);\n" +
-    "  gl.clearDepth(1.0);\n" +
-    "  gl.enable(gl.DEPTH_TEST);\n" +
-    "  gl.depthFunc(gl.LEQUAL);\n" +
     "\n" +
     "  /**\n" +
     "   * The camera is mutable and provides uniforms through the EIGHT.UniformData interface.\n" +
@@ -360,21 +349,23 @@ angular.module('app').factory('templates', [
     "  var dLightDirection = new EIGHT.Vector3([2, 3, 5]);\n" +
     "\n" +
     "  /**\n" +
-    "   * Program for rendering gl.TRIANGLES with moderately fancy lighting.\n" +
+    "   * Program for rendering TRIANGLES with moderately fancy lighting.\n" +
     "   */\n" +
     "  var programT = new EIGHT.HTMLScriptsMaterial([context], ['vs-triangles', 'fs-triangles'], document);\n" +
     "  /**\n" +
-    "   * Program for rendering gl.LINES.\n" +
+    "   * Program for rendering LINES.\n" +
     "   */\n" +
     "  var programL = new EIGHT.HTMLScriptsMaterial([context], ['vs-lines', 'fs-lines'], document);\n" +
     "  /**\n" +
-    "   * Program for rendering gl.POINTS.\n" +
+    "   * Program for rendering POINTS.\n" +
     "   */\n" +
     "  var programP = new EIGHT.HTMLScriptsMaterial([context], ['vs-points', 'fs-points'], document);\n" +
     "  /**\n" +
     "   * Program used by the cube, TBD based on geometry dimensionality.\n" +
     "   */\n" +
     "  var programCube: EIGHT.IProgram;\n" +
+    "\n" +
+    "  context.start();\n" +
     "\n" +
     "  var stats = new Stats();\n" +
     "  stats.setMode(0);\n" +
@@ -420,11 +411,10 @@ angular.module('app').factory('templates', [
     "   * Summary information on the geometry such as dimensionality and sizes for attributes.\n" +
     "   * This same data structure may be used to map geometry attribute names to program names.\n" +
     "   */\n" +
-    "  var geoInfo = EIGHT.checkGeometry(complex.simplices);\n" +
     "  // Check that we still have a defined geometry after all that mucking about.\n" +
-    "  if (geoInfo) {\n" +
+    "  if (complex.meta) {\n" +
     "    // Convert the geometry to DrawElements.\n" +
-    "    var elements: EIGHT.DrawElements = EIGHT.toDrawElements(complex.simplices, geoInfo);\n" +
+    "    var elements: EIGHT.DrawElements = EIGHT.toDrawElements(complex.data, complex.meta);\n" +
     "    // Submit the DrawElements to the context which will manage underlying WebGLBuffer(s) for you.\n" +
     "    mesh = context.createDrawElementsMesh(elements);\n" +
     "    if (mesh) {\n" +
@@ -502,7 +492,7 @@ angular.module('app').factory('templates', [
     "    // position = R * e1 * ~R\n" +
     "    // model.position.copy(e1).rotate(rotorL);\n" +
     "\n" +
-    "    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);\n" +
+    "    context.prolog();\n" +
     "\n" +
     "    if (mesh) {\n" +
     "      // Make the appropriate WebGLProgram current.\n" +
@@ -976,14 +966,8 @@ angular.module('app').factory('templates', [
     "      EIGHT.refChange('reset', 'setUp()');\n"+
     "      EIGHT.refChange('start', 'setUp()');\n"+
     "\n"+
-    "      context = new EIGHT.WebGLRenderer(canvas, 0);\n"+
+    "      context = new EIGHT.WebGLRenderer(canvas);\n"+
     "      context.start();\n"+
-    "\n"+
-    "      var gl = context.gl;\n"+
-    "      gl.clearColor(0.2, 0.2, 0.2, 1.0);\n"+
-    "      gl.clearDepth(1.0);\n"+
-    "      gl.enable(gl.DEPTH_TEST);\n"+
-    "      gl.depthFunc(gl.LEQUAL);\n"+
     "\n"+
     "      program = new EIGHT.HTMLScriptsMaterial([context], ['vs-points', 'fs-points'], document);\n" +
     "\n"+
@@ -991,13 +975,13 @@ angular.module('app').factory('templates', [
     "      var vec1 = new EIGHT.Vector3([1.0, -0.2, 0.0]);\n"+
     "      var vec2 = new EIGHT.Vector3([1.0, +0.2, 0.0]);\n"+
     "      var geometry: EIGHT.Simplex[] = EIGHT.triangle(vec0, vec1, vec2);\n"+
-    "      var geomInfo = EIGHT.checkGeometry(geometry);\n"+
-    "      console.log(JSON.stringify(geomInfo, null, 2));\n"+
+    "      var meta = EIGHT.checkGeometry(geometry);\n"+
+    "      // console.log(JSON.stringify(meta, null, 2));\n"+
     "      // Map standard names in geometry to names used in vertex shader code.\n"+
-    "      geomInfo.attributes[EIGHT.Symbolic.ATTRIBUTE_POSITION].name = 'aPosition';\n"+
-    "      var elements: EIGHT.DrawElements = EIGHT.toDrawElements(geometry, geomInfo);\n"+
+    "      meta.attributes[EIGHT.Symbolic.ATTRIBUTE_POSITION].name = 'aPosition';\n"+
+    "      var elements: EIGHT.DrawElements = EIGHT.toDrawElements(geometry, meta);\n"+
     "\n"+
-    "      mesh = context.createDrawElementsMesh(elements, gl.TRIANGLES);\n"+
+    "      mesh = context.createDrawElementsMesh(elements);\n"+
     "\n"+
     "      camera.accept(program);\n"+
     "    }\n"+
@@ -1014,8 +998,7 @@ angular.module('app').factory('templates', [
     "\n" +
     "      var theta = omega * time;\n"+
     "\n" +
-    "      var gl = context.gl;\n"+
-    "      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);\n"+
+    "      context.prolog();\n"+
     "\n" +
     "      mesh.bind(program);\n" +
     "\n" +
