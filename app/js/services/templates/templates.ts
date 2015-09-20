@@ -371,10 +371,10 @@ angular.module('app').factory('templates', [
     "  stats.setMode(0);\n" +
     "  document.body.appendChild(stats.domElement);\n" +
     "\n" +
-    "  // The camera accepts the Program in order to set uniforms for the visiting program.\n" +
-    "  camera.accept(programT);\n" +
-    "  camera.accept(programL);\n" +
-    "  camera.accept(programP);\n" +
+    "  // The camera sets uniforms for the visiting program by canvas.\n" +
+    "  camera.setUniforms(programT, canvasId);\n" +
+    "  camera.setUniforms(programL, canvasId);\n" +
+    "  camera.setUniforms(programP, canvasId);\n" +
     "  // Uniforms may also be set directly and some standard names are symbolically defined.\n" +
     "  // The names used here should match the names used in the program source code.\n" +
     "  programT.uniformVector3(EIGHT.Symbolic.UNIFORM_AMBIENT_LIGHT, ambientLight);\n" +
@@ -383,20 +383,20 @@ angular.module('app').factory('templates', [
     "  programP.uniform1f('uPointSize', 4);\n" +
     "\n" +
     "  /**\n" +
-    "   * The mesh for the cube.\n" +
+    "   * The buffered geometry for the cube.\n" +
     "   * This is an object that hides the messy buffer management details.\n" +
     "   */\n" +
-    "  var mesh: EIGHT.IMesh;\n" +
+    "  var geobuff: EIGHT.IBufferGeometry;\n" +
     "  /**\n" +
     "   * The model for the cube, which implements EIGHT.UniformData having the\n" +
-    "   * method accept(visitor: EIGHT.UniformDataVisitor)./\n" +
+    "   * method `setUniforms(visitor: EIGHT.UniformDataVisitor, canvasId: number): void`./\n" +
     "   * Implement your own custom models to do e.g., articulated robots./\n" +
     "   * See example in Libs file./\n" +
     "   */\n" +
     "  var model: EIGHT.Model;\n" +
     "\n" +
-    "  // We start with the geometry for a unit cube at the origin...\n" +
-    "  // A geometry is considered to be an array of simplices.\n" +
+    "  // We start with the geometry (complex) for a unit cube at the origin...\n" +
+    "  // A complex is considered to be an array of simplices.\n" +
     "  var complex = new EIGHT.BoxComplex(1, 1, 1);\n" +
     "  // Subdivide the geometry (here twice) if you wish to get more detail.\n" +
     "  // Hit 'Play' in mathdoodle.io to see the effect of, say, n = 0, 1, 2, 3.\n" +
@@ -411,15 +411,15 @@ angular.module('app').factory('templates', [
     "   * Summary information on the geometry such as dimensionality and sizes for attributes.\n" +
     "   * This same data structure may be used to map geometry attribute names to program names.\n" +
     "   */\n" +
-    "  // Check that we still have a defined geometry after all that mucking about.\n" +
+    "  // Check that we still have a defined complex after all that mucking about.\n" +
     "  if (complex.meta) {\n" +
-    "    // Convert the geometry to DrawElements.\n" +
-    "    var elements: EIGHT.DrawElements = EIGHT.toDrawElements(complex.data, complex.meta);\n" +
-    "    // Submit the DrawElements to the context which will manage underlying WebGLBuffer(s) for you.\n" +
-    "    mesh = context.createDrawElementsMesh(elements);\n" +
-    "    if (mesh) {\n" +
+    "    // Convert the complex to a geometry.\n" +
+    "    var geometry: EIGHT.Geometry = complex.toGeometry();\n" +
+    "    // Submit the geometry data to the context which will manage underlying WebGLBuffer(s) for you.\n" +
+    "    geobuff = context.createBufferGeometry(geometry.data);\n" +
+    "    if (geobuff) {\n" +
     "      // Pick an appropriate program to use with the mesh based upon the dimensionality.\n" +
-    "      switch(elements.k) {\n" +
+    "      switch(geometry.meta.k) {\n" +
     "        case EIGHT.Simplex.K_FOR_POINT: {\n" +
     "          programCube = programP;\n" +
     "        }\n" +
@@ -433,12 +433,12 @@ angular.module('app').factory('templates', [
     "        }\n" +
     "        break;\n" +
     "        default: {\n" +
-    "          throw new Error('Unexpected dimensions for simplex: ' + elements.k);\n" +
+    "          throw new Error('Unexpected dimensions for simplex: ' + geometry.meta.k);\n" +
     "        }\n" +
     "      }\n" +
     "    }\n" +
     "    else {\n" +
-    "      console.warn('Nothing to see because the geometry is empty. dimensions => ' + elements.k);\n" +
+    "      console.warn('Nothing to see because the geometry is empty. dimensions => ' + geometry.meta.k);\n" +
     "    }\n" +
     "  }\n" +
     "  else {\n" +
@@ -494,17 +494,17 @@ angular.module('app').factory('templates', [
     "\n" +
     "    context.prolog();\n" +
     "\n" +
-    "    if (mesh) {\n" +
+    "    if (geobuff) {\n" +
     "      // Make the appropriate WebGLProgram current.\n" +
     "      programCube.use(canvasId);\n" +
-    "      // The model sets uniforms on the program by accepting the program as a visitor.\n" +
-    "      model.accept(programCube);\n" +
+    "      // The model sets uniforms on the program, for the specified canvas.\n" +
+    "      model.setUniforms(programCube, canvasId);\n" +
     "      // Bind the appropriate underlying buffers and enable attribute locations.\n" +
-    "      mesh.bind(programCube);\n" +
+    "      geobuff.bind(programCube);\n" +
     "      // Make the appropriate drawElements() or drawArrays() call.\n" +
-    "      mesh.draw();\n" +
+    "      geobuff.draw();\n" +
     "      // Unbind the buffers and disable attribute locations.\n" +
-    "      mesh.unbind();\n" +
+    "      geobuff.unbind();\n" +
     "    }\n" +
     "\n" +
     "    stats.end();\n" +
@@ -574,7 +574,8 @@ angular.module('app').factory('templates', [
     "    this.scale.modified = true;\n" +
     "    this.color.modified = true;\n" +
     "  }\n" +
-    "  accept(visitor: EIGHT.UniformDataVisitor) {\n" +
+    "  setUniforms(visitor: EIGHT.UniformDataVisitor, canvasId: number) {\n" +
+      "  // FIXME: canvasId will be used in uniform setting calls.\n" +
     "    if (this.position.modified) {\n" +
     "      this.T.translation(this.position);\n" +
     "      this.position.modified = false;\n" +
@@ -956,9 +957,9 @@ angular.module('app').factory('templates', [
     "\n"+
     "    var camera = EIGHT.createPerspective().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(3.0 * e3);\n"+
     "\n"+
-    "    var mesh: EIGHT.IMesh;\n"+
+    "    var geobuff: EIGHT.IBufferGeometry;\n"+
     "    var program: EIGHT.IProgram;\n" +
-    "    var model = new EIGHT.Model();\n"+
+    "    var control = new EIGHT.Model();\n"+
     "\n"+
     "    var R = -(e1 ^ e2) / 2;\n"+
     "\n" +
@@ -974,16 +975,16 @@ angular.module('app').factory('templates', [
     "      var vec0 = new EIGHT.Vector3([0.0,  0.0, 0.0]);\n"+
     "      var vec1 = new EIGHT.Vector3([1.0, -0.2, 0.0]);\n"+
     "      var vec2 = new EIGHT.Vector3([1.0, +0.2, 0.0]);\n"+
-    "      var geometry: EIGHT.Simplex[] = EIGHT.triangle(vec0, vec1, vec2);\n"+
-    "      var meta = EIGHT.checkGeometry(geometry);\n"+
+    "      var simplices = EIGHT.triangle(vec0, vec1, vec2);\n"+
+    "      var meta = EIGHT.toGeometryMeta(simplices);\n"+
     "      // console.log(JSON.stringify(meta, null, 2));\n"+
     "      // Map standard names in geometry to names used in vertex shader code.\n"+
     "      meta.attributes[EIGHT.Symbolic.ATTRIBUTE_POSITION].name = 'aPosition';\n"+
-    "      var elements: EIGHT.DrawElements = EIGHT.toDrawElements(geometry, meta);\n"+
+    "      var data = EIGHT.toGeometryData(simplices, meta);\n"+
     "\n"+
-    "      mesh = context.createDrawElementsMesh(elements);\n"+
+    "      geobuff = context.createBufferGeometry(data);\n"+
     "\n"+
-    "      camera.accept(program);\n"+
+    "      camera.setUniforms(program, context.canvasId);\n"+
     "    }\n"+
     "\n" +
     "    // If you wish to work with AngularJS scope variables,\n" +
@@ -1000,17 +1001,17 @@ angular.module('app').factory('templates', [
     "\n" +
     "      context.prolog();\n"+
     "\n" +
-    "      mesh.bind(program);\n" +
+    "      geobuff.bind(program);\n" +
     "\n" +
-    "      model.color.set(0.0, 1.0, 0.0);\n"+
+    "      control.color.set(0.0, 1.0, 0.0);\n"+
     "      for(var i = 0; i < 8; i++) {\n" +
-    "        model.attitude.copy(R).multiplyScalar(theta - i * 2 * Math.PI / 8).exp();\n"+
-    "        model.accept(program);\n"+
-    "        mesh.draw();\n"+
-    "        model.color.multiplyScalar(0.7);\n"+
+    "        control.attitude.copy(R).multiplyScalar(theta - i * 2 * Math.PI / 8).exp();\n"+
+    "        control.setUniforms(program, context.canvasId);\n"+
+    "        geobuff.draw();\n"+
+    "        control.color.multiplyScalar(0.7);\n"+
     "      }\n" +
     "\n" +
-    "      mesh.unbind();\n" +
+    "      geobuff.unbind();\n" +
     "    }\n"+
     "\n" +
     "    function terminate(time: number) { return false; }\n"+
@@ -1021,8 +1022,8 @@ angular.module('app').factory('templates', [
     "        console.warn(e);\n"+
     "      }\n"+
     "\n" +
-    "      mesh.release();\n"+
-    "      mesh = void 0;\n"+
+    "      geobuff.release();\n"+
+    "      geobuff = void 0;\n"+
     "\n" +
     "      program.release();\n"+
     "      program = void 0;\n"+
