@@ -28,6 +28,7 @@ module.exports = function(lineman) {
     return 'dist/' + path;
   }
 
+  // This is how typescript.coffee is invoked.
   require("./plugins/typescript");
 
   return {
@@ -83,6 +84,7 @@ module.exports = function(lineman) {
           {src: davinciEight("dist/davinci-eight.d.ts"),                     dest: "generated/ts/davinci-eight/davinci-eight.d.ts"},
           {src: davinciEight("dist/davinci-eight.js"),                       dest: "generated/js/davinci-eight/davinci-eight.js"},
           {src: davinciEight("dist/davinci-eight.min.js"),                   dest: "generated/js/davinci-eight/davinci-eight.min.js"},
+//        {src: davinciEight("documentation/**/*.*"),                        dest: "generated/js/davinci-eight/documentation"},
 
           {src: "vendor/davinci-mathscript/dist/davinci-mathscript.min.js", dest: "generated/js/davinci-mathscript@1.0.6.min.js"},
 

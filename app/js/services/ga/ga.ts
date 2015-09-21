@@ -33,6 +33,7 @@ angular.module('google-analytics', []).factory('ga', [
   '//www.google-analytics.com/analytics.js',
   NAMESPACE_GOOGLE_ANALYTICS);
 
+  // FIXME: Might be better here to get an interface. 
   var service = function() {
     if (angular.isArray(arguments[0])) {
       for(var i = 0; i < arguments.length; ++i) {
@@ -41,7 +42,8 @@ angular.module('google-analytics', []).factory('ga', [
       return;
     }
     if ($window[NAMESPACE_GOOGLE_ANALYTICS]) {
-      $window[NAMESPACE_GOOGLE_ANALYTICS].apply(this, arguments);
+      // TS2339: Property 'apply' does not exist on type 'Window'.
+      $window[NAMESPACE_GOOGLE_ANALYTICS]['apply'](this, arguments);
     }
   };
   return service;
