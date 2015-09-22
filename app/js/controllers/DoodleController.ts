@@ -111,6 +111,7 @@ angular.module('app').controller('doodle-controller', [
   'SCRIPTS_MARKER',
   'CODE_MARKER',
   'LIBS_MARKER',
+  'VENDOR_FOLDER_MARKER',
   'settings',
   function(
     scope: mathdoodle.IHomeScope,
@@ -144,6 +145,7 @@ angular.module('app').controller('doodle-controller', [
     SCRIPTS_MARKER: string,
     CODE_MARKER: string,
     LIBS_MARKER: string,
+    VENDOR_FOLDER_MARKER: string,
     settings: mathdoodle.ISettingsService
   ) {
   // Not sure how best to do this. I don't want loading to trigger processing until ready.
@@ -205,6 +207,32 @@ angular.module('app').controller('doodle-controller', [
       obj[name] = version(name);
     });
     return obj;
+  }
+
+  /**
+   * This will be a String method in ECMAScript 6.
+   * More robust implementations exist.
+   * This lightweight function is adapted from MDN.
+   */
+  function startsWith(sourceString: string, searchString: string, position: number = 0): boolean {
+    return sourceString.indexOf(searchString, position) === position
+  }
+
+  /**
+   * Computes the URL for a script tag by examining the `fileName`.
+   * Files that begin with the special VENDOR_FOLDER_MARKER constant
+   * are assumed to be located in the local `vendor` folder of the domain.
+   * Otherwise, the fileName is considered to be the URL of a remote server.
+   */
+  function scriptURL(domain: string, fileName: string): string {
+    if (startsWith(fileName, VENDOR_FOLDER_MARKER)) {
+      // fileName(s) should be defined as VENDOR_FOLDER_MARKER + '/package/**/*.js'
+      return domain + '/vendor' + fileName.substring(VENDOR_FOLDER_MARKER.length)
+    }
+    else {
+      // FIXME: While we migrate options, everything is still local.
+      return domain + '/js/' + fileName
+    }
   }
 
   function showModalDialog(dialog: HTMLDialogElement, closeHandler: () => void) {
@@ -534,6 +562,12 @@ angular.module('app').controller('doodle-controller', [
   scope.doHelp = function() {
   };
 
+  /**
+   * The domain on which we are running. e.g., `http://www.mathdoodle.io` or `localhost:8080`.
+   * We determine this dynamically in order to access files in known locations on our server.
+   * Current usage is for JavaScript files, TypeScript d.ts files, and paths to gists.
+   * TODO: JavaScript and TypeScript to come from external repos.
+   */
   var DOMAIN = $location.protocol() + ':'+ FWD_SLASH + FWD_SLASH + $location.host() + ":" + $location.port();
 
   ace.config.set('workerPath', '/js')
@@ -762,7 +796,8 @@ angular.module('app').controller('doodle-controller', [
         var scriptFileNames: string[] = doodles.current().operatorOverloading ? chosenFileNames.concat(FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS) : chosenFileNames;
         // TOOD: Don't fix the location of the JavaScript here.
         var scriptTags = scriptFileNames.map(function(fileName: string) {
-          return "<script src='" + DOMAIN + "/js/" + fileName + "'></script>\n";
+          // FIXME
+          return "<script src='" + scriptURL(DOMAIN, fileName) + "'></script>\n";
         });
 
         var html = doodles.current().html;
@@ -821,7 +856,7 @@ angular.module('app').controller('doodle-controller', [
     }
 
     var readFile = function(fileName: string, callback: (err, data?) => void) {
-      var url = DOMAIN + "/ts/" + fileName;
+      var url = scriptURL(DOMAIN, fileName)
       http.get(url)
         .success(function(data, status: number, headers, config) {
           callback(null, data)

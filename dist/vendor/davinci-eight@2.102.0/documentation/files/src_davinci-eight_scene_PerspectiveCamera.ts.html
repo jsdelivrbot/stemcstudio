@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src/davinci-eight/scene/PerspectiveCamera.ts - davinci-eight</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../../assets/logo.png" title="davinci-eight"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 2.102.0</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/AttribLocation.html">AttribLocation</a></li>
+                                <li><a href="../classes/AttribMetaInfo.html">AttribMetaInfo</a></li>
+                                <li><a href="../classes/BoxBuilder.html">BoxBuilder</a></li>
+                                <li><a href="../classes/BoxComplex.html">BoxComplex</a></li>
+                                <li><a href="../classes/BoxGeometry.html">BoxGeometry</a></li>
+                                <li><a href="../classes/BoxMesh.html">BoxMesh</a></li>
+                                <li><a href="../classes/Cartesian1.html">Cartesian1</a></li>
+                                <li><a href="../classes/Cartesian2.html">Cartesian2</a></li>
+                                <li><a href="../classes/Cartesian3.html">Cartesian3</a></li>
+                                <li><a href="../classes/Cartesian4.html">Cartesian4</a></li>
+                                <li><a href="../classes/Color.html">Color</a></li>
+                                <li><a href="../classes/Complex.html">Complex</a></li>
+                                <li><a href="../classes/ContextAttributesLogger.html">ContextAttributesLogger</a></li>
+                                <li><a href="../classes/ContextListener.html">ContextListener</a></li>
+                                <li><a href="../classes/ContextRenderer.html">ContextRenderer</a></li>
+                                <li><a href="../classes/createView.html">createView</a></li>
+                                <li><a href="../classes/CuboidMesh.html">CuboidMesh</a></li>
+                                <li><a href="../classes/CylinderArgs.html">CylinderArgs</a></li>
+                                <li><a href="../classes/DrawAttribute.html">DrawAttribute</a></li>
+                                <li><a href="../classes/EIGHTLogger.html">EIGHTLogger</a></li>
+                                <li><a href="../classes/ElementArray.html">ElementArray</a></li>
+                                <li><a href="../classes/ElementBuffer.html">ElementBuffer</a></li>
+                                <li><a href="../classes/EllipsoidMesh.html">EllipsoidMesh</a></li>
+                                <li><a href="../classes/Face3.html">Face3</a></li>
+                                <li><a href="../classes/Frustum.html">Frustum</a></li>
+                                <li><a href="../classes/Geometry.html">Geometry</a></li>
+                                <li><a href="../classes/GeometryMeta.html">GeometryMeta</a></li>
+                                <li><a href="../classes/HTMLScriptsMaterial.html">HTMLScriptsMaterial</a></li>
+                                <li><a href="../classes/IBufferGeometry.html">IBufferGeometry</a></li>
+                                <li><a href="../classes/IDrawable.html">IDrawable</a></li>
+                                <li><a href="../classes/IProgram.html">IProgram</a></li>
+                                <li><a href="../classes/IUnknown.html">IUnknown</a></li>
+                                <li><a href="../classes/KleinBottleGeometry.html">KleinBottleGeometry</a></li>
+                                <li><a href="../classes/Line3.html">Line3</a></li>
+                                <li><a href="../classes/LocalizableMessage.html">LocalizableMessage</a></li>
+                                <li><a href="../classes/Material.html">Material</a></li>
+                                <li><a href="../classes/Matrix4.html">Matrix4</a></li>
+                                <li><a href="../classes/Matrix&lt;M&gt;.html">Matrix&lt;M&gt;</a></li>
+                                <li><a href="../classes/Mesh.html">Mesh</a></li>
+                                <li><a href="../classes/MeshNormalMaterial.html">MeshNormalMaterial</a></li>
+                                <li><a href="../classes/Mutable.html">Mutable</a></li>
+                                <li><a href="../classes/Perspective.html">Perspective</a></li>
+                                <li><a href="../classes/PerspectiveCamera.html">PerspectiveCamera</a></li>
+                                <li><a href="../classes/Point3.html">Point3</a></li>
+                                <li><a href="../classes/RigidBody3.html">RigidBody3</a></li>
+                                <li><a href="../classes/Scene.html">Scene</a></li>
+                                <li><a href="../classes/ShaderVariableDecl.html">ShaderVariableDecl</a></li>
+                                <li><a href="../classes/Shareable.html">Shareable</a></li>
+                                <li><a href="../classes/Simplex.html">Simplex</a></li>
+                                <li><a href="../classes/SmartMaterial.html">SmartMaterial</a></li>
+                                <li><a href="../classes/SmartMaterialBuilder.html">SmartMaterialBuilder</a></li>
+                                <li><a href="../classes/Spinor3.html">Spinor3</a></li>
+                                <li><a href="../classes/Symbolic.html">Symbolic</a></li>
+                                <li><a href="../classes/UniformLocation.html">UniformLocation</a></li>
+                                <li><a href="../classes/Vector1.html">Vector1</a></li>
+                                <li><a href="../classes/Vector2.html">Vector2</a></li>
+                                <li><a href="../classes/Vector3.html">Vector3</a></li>
+                                <li><a href="../classes/Vector4.html">Vector4</a></li>
+                                <li><a href="../classes/VersionLogger.html">VersionLogger</a></li>
+                                <li><a href="../classes/View.html">View</a></li>
+                                <li><a href="../classes/WebGLClear.html">WebGLClear</a></li>
+                                <li><a href="../classes/WebGLClearColor.html">WebGLClearColor</a></li>
+                                <li><a href="../classes/WebGLEnable.html">WebGLEnable</a></li>
+                            </ul>
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/EIGHT.html">EIGHT</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: src/davinci-eight/scene/PerspectiveCamera.ts</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+import Cartesian3 = require(&#x27;../math/Cartesian3&#x27;)
+import ContextManager = require(&#x27;../core/ContextManager&#x27;)
+import ICamera = require(&#x27;../scene/ICamera&#x27;)
+import IProgram = require(&#x27;../core/IProgram&#x27;)
+import createPerspective = require(&#x27;../cameras/createPerspective&#x27;)
+import isDefined = require(&#x27;../checks/isDefined&#x27;)
+import readOnly = require(&#x27;../i18n/readOnly&#x27;)
+import mustBeCanvasId = require(&#x27;../checks/mustBeCanvasId&#x27;)
+import mustBeDefined = require(&#x27;../checks/mustBeDefined&#x27;)
+import mustBeNumber = require(&#x27;../checks/mustBeNumber&#x27;)
+import Perspective = require(&#x27;../cameras/Perspective&#x27;)
+import refChange = require(&#x27;../utils/refChange&#x27;)
+import UniformData = require(&#x27;../core/UniformData&#x27;)
+import UniformDataVisitor = require(&#x27;../core/UniformDataVisitor&#x27;)
+import uuid4 = require(&#x27;../utils/uuid4&#x27;)
+import Vector3 = require(&#x27;../math/Vector3&#x27;)
+
+/**
+ * Name used for reference count monitoring and logging.
+ */
+let CLASS_NAME = &#x27;PerspectiveCamera&#x27;
+
+/**
+ * @class PerspectiveCamera
+ */
+class PerspectiveCamera implements ICamera, Perspective, UniformData {
+  // FIXME: Gotta go
+  public position: Vector3 = new Vector3();
+  private _refCount = 1;
+  private _uuid: string = uuid4().generate();
+  public material: IProgram;
+  private inner: Perspective;
+  /**
+   * &lt;p&gt;
+   * 
+   * &lt;/p&gt;
+   * @class PerspectiveCamera
+   * @constructor
+   * @param [fov = 75 * Math.PI / 180] {number}
+   * @param [aspect=1] {number}
+   * @param [near=0.1] {number}
+   * @param [far=2000] {number}
+   * @example
+       var camera = new EIGHT.PerspectiveCamera()
+       camera.setAspect(canvas.clientWidth / canvas.clientHeight)
+       camera.setFov(3.0 * e3)
+   */
+  constructor(fov: number = 75 * Math.PI / 180, aspect: number = 1, near: number = 0.1, far: number = 2000) {
+    mustBeNumber(&#x27;fov&#x27;, fov)
+    mustBeNumber(&#x27;aspect&#x27;, aspect)
+    mustBeNumber(&#x27;near&#x27;, near)
+    mustBeNumber(&#x27;far&#x27;, far)
+    this.inner = createPerspective({fov: fov, aspect: aspect, near: near, far: far})
+    refChange(this._uuid, CLASS_NAME, +1)
+  }
+  addRef(): number {
+    this._refCount++
+    refChange(this._uuid, CLASS_NAME, +1)
+    return this._refCount
+  }
+  setUniforms(visitor: UniformDataVisitor, canvasId: number): void {
+    mustBeDefined(&#x27;visitor&#x27;, visitor)
+    mustBeCanvasId(&#x27;canvasId&#x27;, canvasId)
+    this.inner.setNear(this.near)
+    this.inner.setFar(this.far)
+    this.inner.setUniforms(visitor, canvasId)
+  }
+  contextFree(): void {
+  }
+  contextGain(manager: ContextManager): void {
+  }
+  contextLoss(): void {
+  }
+  draw(canvasId: number): void {
+    console.log(CLASS_NAME + &quot;.draw(&quot; + canvasId + &quot;)&quot;)
+    // Do nothing.
+  }
+  /**
+   * The aspect ratio (width / height) of the camera viewport.
+   * @property aspect
+   * @type {number}
+   * @readonly
+   */
+  get aspect(): number {
+    return this.inner.aspect
+  }
+  /**
+   * @method setAspect
+   * @param aspect {number}
+   * @return {PerspectiveCamera} &#x60;this&#x60; instance without incrementing the reference count.
+   * @chainable
+   */
+  setAspect(aspect: number): PerspectiveCamera {
+    this.inner.aspect = aspect
+    return this
+  }
+  /**
+   * The position of the camera.
+   * @property eye
+   * @type {Vector3}
+   * @readonly
+   */
+  get eye(): Vector3 {
+    return this.inner.eye
+  }
+  /**
+   * @method setEye
+   * @param eye {Cartesian3}
+   * @return {PerspectiveCamera} &#x60;this&#x60; instance without incrementing the reference count.
+   * @chainable
+   */
+  setEye(eye: Cartesian3): PerspectiveCamera {
+    this.inner.setEye(eye)
+    return this
+  }
+  /**
+   * The field of view is the (planar) angle (magnitude) in the camera horizontal plane that encloses object that can be seen.
+   * Measured in radians.
+   * @property fov
+   * @type {number}
+   * @readonly
+   */
+  // TODO: Field of view could be specified as an Aspect + Magnitude of a Spinor3!?
+  get fov(): number {
+    return this.inner.fov
+  }
+  set fov(unused: number) {
+    // FIXME: Need a custom Error class that can take the LocalizableMessage.
+    throw new Error(readOnly(&#x27;fov&#x27;).message)
+  }
+  /**
+   * @method setFov
+   * @param fov {number}
+   * @return {PerspectiveCamera} &#x60;this&#x60; instance without incrementing the reference count.
+   * @chainable
+   */
+  setFov(fov: number): PerspectiveCamera {
+    mustBeNumber(&#x27;fov&#x27;, fov)
+    this.inner.fov = fov
+    return this
+  }
+  get look() {
+    return this.inner.look
+  }
+  setLook(look: Cartesian3): PerspectiveCamera {
+    this.inner.setLook(look)
+    return this
+  }
+
+  /**
+   * The distance to the near plane.
+   * @property near
+   * @type {number}
+   * @readonly
+   */
+  get near(): number {
+    return this.inner.near
+  }
+  set near(unused) {
+    throw new Error(readOnly(&#x27;near&#x27;).message)
+  }
+  /**
+   * @method setNear
+   * @param near {number}
+   * @return {PerspectiveCamera} &lt;p&gt;&lt;code&gt;this&lt;/code&gt; instance, &lt;em&gt;without incrementing the reference count&lt;/em&gt;.&lt;/p&gt;
+   * @chainable
+   */
+  setNear(near: number): PerspectiveCamera {
+    this.inner.setNear(near)
+    return this
+  }
+  get far(): number {
+    return this.inner.far
+  }
+  set far(far: number) {
+    this.inner.far = far
+  }
+  setFar(far: number): PerspectiveCamera {
+    this.inner.setFar(far)
+    return this
+  }
+  get up(): Vector3 {
+    return this.inner.up
+  }
+  set up(unised) {
+    throw new Error(readOnly(&#x27;up&#x27;).message)
+  }
+  setUp(up: Cartesian3): PerspectiveCamera {
+    this.inner.setUp(up)
+    return this
+  }
+  release(): number {
+    this._refCount--
+    refChange(this._uuid, CLASS_NAME, -1)
+    if (this._refCount === 0) {
+      return 0
+    }
+    else {
+
+    }
+    return this._refCount
+  }
+}
+
+export = PerspectiveCamera
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

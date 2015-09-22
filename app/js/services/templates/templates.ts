@@ -9,6 +9,7 @@
  */
 angular.module('app').factory('templates', [
   '$http',
+  '$location',
   'uuid4',
   'CODE_MARKER',
   'LIBS_MARKER',
@@ -16,6 +17,7 @@ angular.module('app').factory('templates', [
   'SCRIPTS_MARKER',
   function(
     $http: angular.IHttpService,
+    $location: angular.ILocationService,
     uuid: IUuidService,
     CODE_MARKER: string,
     LIBS_MARKER: string,
@@ -30,6 +32,10 @@ angular.module('app').factory('templates', [
   function scriptsMarker(): string {return [SCRIPTS_MARKER].map(indent).map(newLine).join("");}
   function codeMarker(): string {return ['<script>', CODE_MARKER, '</script>'].map(indent).map(newLine).join("");}
   function libsMarker(): string {return ['<script>', LIBS_MARKER, '</script>'].map(indent).map(newLine).join("");}
+
+  // DOMAIN is used to define the URL for links to documentation.
+  let FWD_SLASH = '/';
+  let DOMAIN = $location.protocol() + ':'+ FWD_SLASH + FWD_SLASH + $location.host() + ":" + $location.port();
 
   var HTML_TEMPLATE_BASIC = "" +
     "<!doctype html>\n" +
@@ -904,10 +910,10 @@ angular.module('app').factory('templates', [
     "        <hr/>\n" +
     "        <ul>\n" +
     "          <li>\n" +
-    "            <a href='https://angularjs.org' target='_blank'>AngularJS Home Page</a>\n" +
+    "            <a href='http://github.com/geometryzen/davinci-eight' target='_blank'>davinci-eight Home Page</a>\n" +
     "          </li>\n" +
     "          <li>\n" +
-    "            <a href='http://github.com/geometryzen/davinci-eight' target='_blank'>EIGHT Home Page</a>\n" +
+    "            <a href='https://angularjs.org' target='_blank'>AngularJS Home Page</a>\n" +
     "          </li>\n" +
     "        </ul>\n" +
     "      </div>\n" +
@@ -1164,6 +1170,7 @@ angular.module('app').factory('templates', [
       less: LESS_TEMPLATE_CALCULATION,
       dependencies: ['DomReady', 'davinci-blade']
     },
+    /*
     {
       uuid: uuid.generate(),
       description: "MathBox — Mathematical Diagrams",
@@ -1178,6 +1185,7 @@ angular.module('app').factory('templates', [
       less: LESS_TEMPLATE_MATHBOX,
       dependencies: ['DomReady','davinci-mathbox','davinci-blade']
     },
+    */
     {
       uuid: uuid.generate(),
       description: "JSXGraph — 2D Library for Geometry",
@@ -1204,7 +1212,7 @@ angular.module('app').factory('templates', [
       code: CODE_TEMPLATE_THREEJS,
       libs: LIBS_TEMPLATE_THREEJS,
       less: LESS_TEMPLATE_THREEJS,
-      dependencies: ['davinci-threejs', 'stats.js']
+      dependencies: ['three.js', 'stats.js']
     },
     {
       uuid: uuid.generate(),

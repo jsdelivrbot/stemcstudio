@@ -6,7 +6,13 @@
     return DOMAIN.reverse().concat(name).join('.');
   }
 
-  angular.module('app').constant('version', '1.147.0');
+  let VENDOR_FOLDER_MARKER = '$VENDOR-FOLDER-MARKER'
+
+  function vendorPath(packageFolder: string, fileName: string): string {
+    return VENDOR_FOLDER_MARKER + '/' + packageFolder + '/' + fileName;
+  }
+
+  angular.module('app').constant('version', '1.148.0');
   // githubKey stores the key of the item in local storage for maintaining GitHub OAuth data.
   // Remark: This value is duplicated in views/github_callback.jade
   angular.module('app').constant('githubKey',  makeKey('github'));
@@ -20,6 +26,14 @@
   angular.module('app').constant('FILENAME_CODE', 'script.ts');
   angular.module('app').constant('FILENAME_LIBS', 'extras.ts');
   angular.module('app').constant('FILENAME_LESS', 'style.less');
+
+  // Special marker to indicate that JavaScript or TypeScript file is
+  // stored locally in the DOMAIN/vendor folder.
+  // This enables us to handle locally stored files in both development and production.
+  // This constant is used in the `options` service to construct file locations
+  // and the DoodleController to look up files.
+  // Ultimately we would like to be able to access modules through only a manifest.
+  angular.module('app').constant('VENDOR_FOLDER_MARKER', VENDOR_FOLDER_MARKER);
 
   // For backwards compatibility, don't change the values of these constants.
   angular.module('app').constant('SCRIPTS_MARKER', '<!-- SCRIPTS-MARKER -->');
@@ -39,7 +53,7 @@
 
   // The following entries must be synchronized with appcache.mf:
   // The TypeScript d.ts library provides the type checking of global JavaScript types.
-  angular.module('app').constant('FILENAME_TYPESCRIPT_CURRENT_LIB_DTS', 'lib@1.4.1.3.d.ts');
+  angular.module('app').constant('FILENAME_TYPESCRIPT_CURRENT_LIB_DTS', vendorPath('typescript@1.4.1.3', 'lib.d.ts'))
   // The MathScript js library provides operator overloading at runtime.
-  angular.module('app').constant('FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS', 'davinci-mathscript@1.0.6.min.js');
+  angular.module('app').constant('FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS', vendorPath('davinci-mathscript@1.0.8','dist/davinci-mathscript.min.js'))
 })();

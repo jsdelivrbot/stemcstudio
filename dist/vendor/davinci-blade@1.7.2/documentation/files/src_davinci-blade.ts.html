@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>src/davinci-blade.ts - davinci-blade</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../../assets/logo.png" title="davinci-blade"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 1.7.2</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/Dimensions.html">Dimensions</a></li>
+                                <li><a href="../classes/Euclidean1.html">Euclidean1</a></li>
+                                <li><a href="../classes/Euclidean2.html">Euclidean2</a></li>
+                                <li><a href="../classes/Euclidean3.html">Euclidean3</a></li>
+                                <li><a href="../classes/Rational.html">Rational</a></li>
+                                <li><a href="../classes/Unit.html">Unit</a></li>
+                            </ul>
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/blade.html">blade</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: src/davinci-blade.ts</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+import core = require(&#x27;davinci-blade/core&#x27;);
+import Euclidean1 = require(&#x27;davinci-blade/e1ga/Euclidean1&#x27;);
+import Euclidean2 = require(&#x27;davinci-blade/e2ga/Euclidean2&#x27;);
+import Euclidean3 = require(&#x27;davinci-blade/e3ga/Euclidean3&#x27;);
+import Rational = require(&#x27;davinci-blade/Rational&#x27;);
+import Dimensions = require(&#x27;davinci-blade/Dimensions&#x27;);
+import Unit = require(&#x27;davinci-blade/Unit&#x27;);
+import Complex = require(&#x27;davinci-blade/Complex&#x27;);
+import Color = require(&#x27;davinci-blade/Color&#x27;);
+
+import scalarE2   = require(&#x27;davinci-blade/e2ga/scalarE2&#x27;);
+import vectorE2   = require(&#x27;davinci-blade/e2ga/vectorE2&#x27;);
+import bivectorE2 = require(&#x27;davinci-blade/e2ga/bivectorE2&#x27;);
+
+import scalarE3   = require(&#x27;davinci-blade/e3ga/scalarE3&#x27;);
+import vectorE3   = require(&#x27;davinci-blade/e3ga/vectorE3&#x27;);
+import bivectorE3 = require(&#x27;davinci-blade/e3ga/bivectorE3&#x27;);
+import pseudoscalarE3 = require(&#x27;davinci-blade/e3ga/pseudoscalarE3&#x27;);
+
+var UNIT_SYMBOLS: string[] = [&quot;kg&quot;, &quot;m&quot;, &quot;s&quot;, &quot;C&quot;, &quot;K&quot;, &quot;mol&quot;, &quot;cd&quot;];
+
+var R0 = Rational.ZERO;
+var R1 = Rational.ONE;
+var N1 = Rational.MINUS_ONE;
+
+var UNIT_DIMLESS = new Unit(1, new Dimensions(R0, R0, R0, R0, R0, R0, R0), UNIT_SYMBOLS);
+
+var UNIT_KILOGRAM = new Unit(1, new Dimensions(R1, R0, R0, R0, R0, R0, R0), UNIT_SYMBOLS);
+
+var UNIT_METER = new Unit(1, new Dimensions(R0, R1, R0, R0, R0, R0, R0), UNIT_SYMBOLS);
+
+var UNIT_SECOND = new Unit(1, new Dimensions(R0, R0, R1, R0, R0, R0, R0), UNIT_SYMBOLS);
+
+var UNIT_AMPERE = new Unit(1, new Dimensions(R0, R0, N1, R1, R0, R0, R0), UNIT_SYMBOLS);
+
+var UNIT_KELVIN = new Unit(1, new Dimensions(R0, R0, R0, R0, R1, R0, R0), UNIT_SYMBOLS);
+
+var UNIT_MOLE = new Unit(1, new Dimensions(R0, R0, R0, R0, R0, R1, R0), UNIT_SYMBOLS);
+
+var UNIT_CANDELA = new Unit(1, new Dimensions(R0, R0, R0, R0, R0, R0, R1), UNIT_SYMBOLS);
+
+var UNIT_COULOMB = new Unit(1, new Dimensions(R0, R0, R0, R1, R0, R0, R0), UNIT_SYMBOLS);
+
+var UNIT_INCH    = new Unit(0.0254, new Dimensions(R0, R1, R0, R0, R0, R0, R0), UNIT_SYMBOLS);
+
+var UNIT_FOOT    = new Unit(0.3048, new Dimensions(R0, R1, R0, R0, R0, R0, R0), UNIT_SYMBOLS); 
+
+var UNIT_YARD    = new Unit(0.9144, new Dimensions(R0, R1, R0, R0, R0, R0, R0), UNIT_SYMBOLS);
+
+var UNIT_MILE    = new Unit(1609.344, new Dimensions(R0, R1, R0, R0, R0, R0, R0), UNIT_SYMBOLS);
+
+var UNIT_POUND   = new Unit(0.45359237, new Dimensions(R1, R0, R0, R0, R0, R0, R0), UNIT_SYMBOLS);
+
+var UNIT_NEWTON  = UNIT_METER.mul(UNIT_KILOGRAM).div(UNIT_SECOND.mul(UNIT_SECOND));
+
+var UNIT_JOULE   = UNIT_NEWTON.mul(UNIT_METER);
+
+var UNIT_WATT    = UNIT_JOULE.div(UNIT_SECOND);
+
+var UNIT_VOLT    = UNIT_JOULE.div(UNIT_COULOMB);
+
+var UNIT_WEBER   = UNIT_VOLT.mul(UNIT_SECOND);
+
+var UNIT_TESLA   = UNIT_WEBER.div(UNIT_METER.mul(UNIT_METER));
+
+var UNIT_OHM     = UNIT_VOLT.div(UNIT_AMPERE);
+
+var UNIT_SIEMEN  = UNIT_AMPERE.div(UNIT_VOLT);
+
+var UNIT_FARAD   = UNIT_COULOMB.div(UNIT_VOLT);
+
+var UNIT_HENRY   = UNIT_TESLA.mul(UNIT_METER.mul(UNIT_METER)).div(UNIT_AMPERE);
+
+var UNIT_HERTZ   = UNIT_DIMLESS.div(UNIT_SECOND);
+
+var UNIT_PASCAL  = UNIT_NEWTON.div(UNIT_METER.mul(UNIT_METER));
+
+/**
+ * Provides the blade module
+ *
+ * @module blade
+ */
+var blade = {
+    &#x27;VERSION&#x27;: core.VERSION,
+    universals:
+    {
+      cos:  core.cos,
+      cosh: core.cosh,
+      exp:  core.exp,
+      norm: core.norm,
+      quad: core.quad,
+      sin:  core.sin,
+      sinh: core.sinh,
+      sqrt: core.sqrt,
+      unit: core.unit
+    },
+    Color: Color,
+    Complex: Complex,
+    Euclidean1: Euclidean1,
+    Euclidean2: Euclidean2,
+    Euclidean3: Euclidean3,
+    scalarE3: scalarE3,
+    vectorE3: vectorE3,
+    bivectorE3: bivectorE3,
+    pseudoscalarE3: pseudoscalarE3,
+    Rational: Rational,
+    Dimensions: Dimensions,
+    Unit: Unit,
+    e2ga:
+    {
+      e1: vectorE2(1, 0),
+      e2: vectorE2(0, 1),
+      units: {
+        ampere: scalarE2(1, UNIT_AMPERE),
+        candela: scalarE2(1, UNIT_CANDELA),
+        coulomb: scalarE2(1, UNIT_COULOMB),
+        farad: scalarE2(1, UNIT_FARAD),
+        foot: scalarE2(1, UNIT_FOOT),
+        henry: scalarE2(1, UNIT_HENRY),
+        hertz: scalarE2(1, UNIT_HERTZ),
+        inch: scalarE2(1, UNIT_INCH),
+        joule: scalarE2(1, UNIT_JOULE),
+        kelvin: scalarE2(1, UNIT_KELVIN),
+        kilogram: scalarE2(1, UNIT_KILOGRAM),
+        meter: scalarE2(1, UNIT_METER),
+        mile: scalarE2(1, UNIT_MILE),
+        mole: scalarE2(1, UNIT_MOLE),
+        newton: scalarE2(1, UNIT_NEWTON),
+        ohm: scalarE2(1, UNIT_OHM),
+        pascal: scalarE2(1, UNIT_PASCAL),
+        pound: scalarE2(1, UNIT_POUND),
+        second: scalarE2(1, UNIT_SECOND),
+        siemen: scalarE2(1, UNIT_SIEMEN),
+        tesla: scalarE2(1, UNIT_TESLA),
+        unity: scalarE2(1, UNIT_DIMLESS),
+        volt: scalarE2(1, UNIT_VOLT),
+        watt: scalarE2(1, UNIT_WATT),
+        weber: scalarE2(1, UNIT_WEBER),
+        yard: scalarE2(1, UNIT_YARD)
+      }
+    },
+    e3ga:
+    {
+      e1: vectorE3(1, 0, 0),
+      e2: vectorE3(0, 1, 0),
+      e3: vectorE3(0, 0, 1),
+      units: {
+        ampere: scalarE3(1, UNIT_AMPERE),
+        candela: scalarE3(1, UNIT_CANDELA),
+        coulomb: scalarE3(1, UNIT_COULOMB),
+        farad: scalarE3(1, UNIT_FARAD),
+        foot: scalarE3(1, UNIT_FOOT),
+        henry: scalarE3(1, UNIT_HENRY),
+        hertz: scalarE3(1, UNIT_HERTZ),
+        inch: scalarE3(1, UNIT_INCH),
+        joule: scalarE3(1, UNIT_JOULE),
+        kelvin: scalarE3(1, UNIT_KELVIN),
+        kilogram: scalarE3(1, UNIT_KILOGRAM),
+        meter: scalarE3(1, UNIT_METER),
+        mile: scalarE3(1, UNIT_MILE),
+        mole: scalarE3(1, UNIT_MOLE),
+        newton: scalarE3(1, UNIT_NEWTON),
+        ohm: scalarE3(1, UNIT_OHM),
+        pascal: scalarE3(1, UNIT_PASCAL),
+        pound: scalarE3(1, UNIT_POUND),
+        second: scalarE3(1, UNIT_SECOND),
+        siemen: scalarE3(1, UNIT_SIEMEN),
+        tesla: scalarE3(1, UNIT_TESLA),
+        unity: scalarE3(1, UNIT_DIMLESS),
+        volt: scalarE3(1, UNIT_VOLT),
+        watt: scalarE3(1, UNIT_WATT),
+        weber: scalarE3(1, UNIT_WEBER),
+        yard: scalarE3(1, UNIT_YARD)
+      }
+    },
+    units:
+    {
+      ampere: UNIT_AMPERE,
+      candela: UNIT_CANDELA,
+      coulomb: UNIT_COULOMB,
+      farad: UNIT_FARAD,
+      foot: UNIT_FOOT,
+      henry: UNIT_HENRY,
+      hertz: UNIT_HERTZ,
+      inch: UNIT_INCH,
+      joule: UNIT_JOULE,
+      kelvin: UNIT_KELVIN,
+      kilogram: UNIT_KILOGRAM,
+      meter: UNIT_METER,
+      mile: UNIT_MILE,
+      mole: UNIT_MOLE,
+      newton: UNIT_NEWTON,
+      ohm: UNIT_OHM,
+      pascal: UNIT_PASCAL,
+      pound: UNIT_POUND,
+      second: UNIT_SECOND,
+      siemen: UNIT_SIEMEN,
+      tesla: UNIT_TESLA,
+      unity: UNIT_DIMLESS,
+      volt: UNIT_VOLT,
+      watt: UNIT_WATT,
+      weber: UNIT_WEBER,
+      yard: UNIT_YARD
+    }
+};
+export = blade;
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>
