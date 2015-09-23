@@ -2,7 +2,7 @@
     "project": {
         "name": "davinci-eight",
         "description": "WebGL library for mathematical physics using Geometric Algebra",
-        "version": "2.105.0",
+        "version": "2.106.0",
         "url": "",
         "logo": "../assets/logo.png"
     },
@@ -240,6 +240,15 @@
             "modules": {},
             "classes": {
                 "IMaterial": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/davinci-eight/core/IPrologCommand.ts": {
+            "name": "src/davinci-eight/core/IPrologCommand.ts",
+            "modules": {},
+            "classes": {
+                "IPrologCommand": 1
             },
             "fors": {},
             "namespaces": {}
@@ -1071,6 +1080,13 @@
             "classes": {},
             "fors": {},
             "namespaces": {}
+        },
+        "src/davinci-eight/core.ts": {
+            "name": "src/davinci-eight/core.ts",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
         }
     },
     "modules": {},
@@ -1131,7 +1147,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/davinci-eight/commands/ContextAttributesLogger.ts",
-            "line": 5,
+            "line": 7,
             "description": "<p>\nDisplays details about the WegGL version to the console.\n<p>",
             "extends": "Shareable",
             "implements": "IContextCommand"
@@ -1145,7 +1161,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/davinci-eight/commands/EIGHTLogger.ts",
-            "line": 15,
+            "line": 17,
             "description": "<p>\nInitializes <b>the</b> `type` property to 'EIGHTLogger'.\n</p>",
             "extends": "Shareable",
             "implements": "IContextCommand",
@@ -1160,7 +1176,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/davinci-eight/commands/VersionLogger.ts",
-            "line": 17,
+            "line": 19,
             "description": "<p>\nDisplays details about the WegGL version to the console.\n<p> \n<p>\nInitializes the <code>type</code> property to <code>'VersionLogger'</code> for reference count tracking.\n<p>",
             "extends": "Shareable",
             "implements": "IContextCommand",
@@ -1175,7 +1191,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/davinci-eight/commands/WebGLClear.ts",
-            "line": 15,
+            "line": 23,
             "description": "<p>\nclear(mask: number): void\n<p>",
             "extends": "Shareable",
             "implements": "IContextCommand",
@@ -1190,7 +1206,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/davinci-eight/commands/WebGLClearColor.ts",
-            "line": 21,
+            "line": 23,
             "description": "<p>\nclearColor(red: number, green: number, blue: number, alpha: number): void\n<p>",
             "extends": "Shareable",
             "implements": "ContextListener",
@@ -1205,7 +1221,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/davinci-eight/commands/WebGLEnable.ts",
-            "line": 18,
+            "line": 20,
             "description": "<p>\nenable(capability: number): void\n<p>",
             "extends": "Shareable",
             "implements": "ContextListener",
@@ -1388,6 +1404,19 @@
             "description": "<p>\nThe role of a IMaterial is to manage WebGLProgram(s) consisting of a vertex shader and fragment shader.\nThe Program must be able to provide introspection information that describes the program.\n</p>",
             "extends": "UniformDataVisitor",
             "beta": 1
+        },
+        "IPrologCommand": {
+            "name": "IPrologCommand",
+            "shortname": "IPrologCommand",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "src/davinci-eight/core/IPrologCommand.ts",
+            "line": 4,
+            "description": "The interface to be satisfied by commands run in the prolog phase of the animation loop.",
+            "extends": "IUnknown"
         },
         "IUnknown": {
             "name": "IUnknown",
@@ -2108,7 +2137,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/davinci-eight/renderers/ContextRenderer.ts",
-            "line": 6,
+            "line": 7,
             "description": "This interface is to be implemented by classes associated with a single context.\nThis does mean that the commands are not shared.",
             "extends": "IUnknown"
         },
@@ -2121,7 +2150,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/davinci-eight/scene/Canvas3D.ts",
-            "line": 38,
+            "line": 40,
             "is_constructor": 1,
             "params": [
                 {
@@ -2642,7 +2671,7 @@
         },
         {
             "file": "src/davinci-eight/commands/EIGHTLogger.ts",
-            "line": 25,
+            "line": 27,
             "description": "Logs the version, GitHub URL, and last modified date to the console.",
             "itemtype": "method",
             "name": "execute",
@@ -2656,7 +2685,7 @@
         },
         {
             "file": "src/davinci-eight/commands/EIGHTLogger.ts",
-            "line": 33,
+            "line": 35,
             "description": "Does nothing.",
             "access": "protected",
             "tagname": "",
@@ -2669,7 +2698,7 @@
         },
         {
             "file": "src/davinci-eight/commands/VersionLogger.ts",
-            "line": 24,
+            "line": 26,
             "description": "<p>\nLogs the WebGL <code>VERSION</code> parameter to the console.\n</p>",
             "itemtype": "method",
             "name": "execute",
@@ -2688,7 +2717,7 @@
         },
         {
             "file": "src/davinci-eight/commands/VersionLogger.ts",
-            "line": 35,
+            "line": 37,
             "itemtype": "method",
             "name": "destructor",
             "return": {
@@ -2701,7 +2730,27 @@
         },
         {
             "file": "src/davinci-eight/commands/WebGLClear.ts",
-            "line": 23,
+            "line": 17,
+            "description": "The mask used to specify which buffers to clear.",
+            "itemtype": "property",
+            "name": "mask",
+            "type": "{number}",
+            "class": "WebGLClear"
+        },
+        {
+            "file": "src/davinci-eight/commands/WebGLClear.ts",
+            "line": 31,
+            "itemtype": "method",
+            "name": "destructor",
+            "return": {
+                "description": "",
+                "type": "Void"
+            },
+            "class": "WebGLClear"
+        },
+        {
+            "file": "src/davinci-eight/commands/WebGLClear.ts",
+            "line": 38,
             "itemtype": "method",
             "name": "execute",
             "params": [
@@ -2719,18 +2768,16 @@
         },
         {
             "file": "src/davinci-eight/commands/WebGLClear.ts",
-            "line": 32,
-            "itemtype": "method",
-            "name": "destructor",
-            "return": {
-                "description": "",
-                "type": "Void"
-            },
+            "line": 46,
+            "itemtype": "property",
+            "name": "name",
+            "type": "{string}",
+            "readonly": "",
             "class": "WebGLClear"
         },
         {
             "file": "src/davinci-eight/commands/WebGLClearColor.ts",
-            "line": 32,
+            "line": 34,
             "itemtype": "method",
             "name": "contextFree",
             "params": [
@@ -2748,7 +2795,7 @@
         },
         {
             "file": "src/davinci-eight/commands/WebGLClearColor.ts",
-            "line": 40,
+            "line": 42,
             "itemtype": "method",
             "name": "contextGain",
             "params": [
@@ -2766,7 +2813,7 @@
         },
         {
             "file": "src/davinci-eight/commands/WebGLClearColor.ts",
-            "line": 48,
+            "line": 50,
             "itemtype": "method",
             "name": "contextLoss",
             "params": [
@@ -2784,7 +2831,7 @@
         },
         {
             "file": "src/davinci-eight/commands/WebGLClearColor.ts",
-            "line": 56,
+            "line": 58,
             "itemtype": "method",
             "name": "execute",
             "params": [
@@ -2802,7 +2849,7 @@
         },
         {
             "file": "src/davinci-eight/commands/WebGLClearColor.ts",
-            "line": 68,
+            "line": 70,
             "itemtype": "method",
             "name": "destructor",
             "return": {
@@ -2813,7 +2860,7 @@
         },
         {
             "file": "src/davinci-eight/commands/WebGLEnable.ts",
-            "line": 26,
+            "line": 28,
             "itemtype": "method",
             "name": "contextFree",
             "params": [
@@ -2831,7 +2878,7 @@
         },
         {
             "file": "src/davinci-eight/commands/WebGLEnable.ts",
-            "line": 34,
+            "line": 36,
             "itemtype": "method",
             "name": "contextGain",
             "params": [
@@ -2849,7 +2896,7 @@
         },
         {
             "file": "src/davinci-eight/commands/WebGLEnable.ts",
-            "line": 42,
+            "line": 44,
             "itemtype": "method",
             "name": "contextLoss",
             "params": [
@@ -2867,7 +2914,7 @@
         },
         {
             "file": "src/davinci-eight/commands/WebGLEnable.ts",
-            "line": 50,
+            "line": 52,
             "itemtype": "method",
             "name": "execute",
             "params": [
@@ -2885,7 +2932,7 @@
         },
         {
             "file": "src/davinci-eight/commands/WebGLEnable.ts",
-            "line": 59,
+            "line": 61,
             "itemtype": "method",
             "name": "destructor",
             "return": {
@@ -3066,7 +3113,7 @@
         },
         {
             "file": "src/davinci-eight/core/ContextManager.ts",
-            "line": 35,
+            "line": 29,
             "itemtype": "property",
             "name": "canvasElement",
             "type": "{HTMLCanvasElement}",
@@ -3285,6 +3332,34 @@
             ],
             "beta": 1,
             "class": "IMaterial"
+        },
+        {
+            "file": "src/davinci-eight/core/IPrologCommand.ts",
+            "line": 10,
+            "description": "<p>\nThe unique name of the command.\n</p>",
+            "itemtype": "property",
+            "name": "name",
+            "type": "{string}",
+            "readonly": "",
+            "class": "IPrologCommand"
+        },
+        {
+            "file": "src/davinci-eight/core/IPrologCommand.ts",
+            "line": 19,
+            "itemtype": "method",
+            "name": "execute",
+            "params": [
+                {
+                    "name": "manager",
+                    "description": "",
+                    "type": "ContextManager"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Void"
+            },
+            "class": "IPrologCommand"
         },
         {
             "file": "src/davinci-eight/core/ITexture.ts",
@@ -4737,7 +4812,26 @@
         },
         {
             "file": "src/davinci-eight/math/Vector3.ts",
-            "line": 281,
+            "line": 265,
+            "description": "Returns the result of `this` + `rhs` without modifying `this`.",
+            "itemtype": "method",
+            "name": "__add__",
+            "params": [
+                {
+                    "name": "rhs",
+                    "description": "",
+                    "type": "Vector3"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Vector3"
+            },
+            "class": "Vector3"
+        },
+        {
+            "file": "src/davinci-eight/math/Vector3.ts",
+            "line": 295,
             "itemtype": "method",
             "name": "copy\nCopy constructor.",
             "class": "Vector3"
@@ -4961,7 +5055,7 @@
         },
         {
             "file": "src/davinci-eight/renderers/ContextRenderer.ts",
-            "line": 14,
+            "line": 15,
             "description": "The (readonly) cached WebGL rendering context. The context may sometimes be undefined.",
             "itemtype": "property",
             "name": "gl",
@@ -4971,7 +5065,7 @@
         },
         {
             "file": "src/davinci-eight/renderers/ContextRenderer.ts",
-            "line": 21,
+            "line": 22,
             "itemtype": "property",
             "name": "canvasElement",
             "type": "{HTMLCanvasElement}",
@@ -4980,7 +5074,7 @@
         },
         {
             "file": "src/davinci-eight/renderers/ContextRenderer.ts",
-            "line": 27,
+            "line": 28,
             "description": "<p>\nDetermines whether the prolog commands are run automatically as part of the render method.\n</p>",
             "itemtype": "property",
             "name": "autoProlog",
@@ -4989,7 +5083,7 @@
         },
         {
             "file": "src/davinci-eight/renderers/ContextRenderer.ts",
-            "line": 35,
+            "line": 36,
             "description": "Executes the prolog commands.",
             "itemtype": "method",
             "name": "prolog",
@@ -5001,14 +5095,15 @@
         },
         {
             "file": "src/davinci-eight/renderers/ContextRenderer.ts",
-            "line": 41,
+            "line": 42,
+            "description": "Adds a command to the `prolog` that will be executed as part of the render() call, before drawing.",
             "itemtype": "method",
-            "name": "pushProlog",
+            "name": "addPrologCommand",
             "params": [
                 {
                     "name": "command",
                     "description": "",
-                    "type": "IContextCommand"
+                    "type": "IPrologCommand"
                 }
             ],
             "return": {
@@ -5019,38 +5114,14 @@
         },
         {
             "file": "src/davinci-eight/renderers/ContextRenderer.ts",
-            "line": 47,
+            "line": 49,
             "itemtype": "method",
-            "name": "pushStartUp",
+            "name": "addContextGainCommand",
             "params": [
                 {
                     "name": "command",
                     "description": "",
                     "type": "IContextCommand"
-                }
-            ],
-            "return": {
-                "description": "",
-                "type": "Void"
-            },
-            "class": "ContextRenderer"
-        },
-        {
-            "file": "src/davinci-eight/renderers/ContextRenderer.ts",
-            "line": 53,
-            "description": "Render the contents of the drawList.\nThis is a convenience method that calls clear and then traverses the DrawList calling draw on each Drawable.",
-            "itemtype": "method",
-            "name": "render",
-            "params": [
-                {
-                    "name": "drawList",
-                    "description": "A traversable list of things to be drawn.",
-                    "type": "IDrawList"
-                },
-                {
-                    "name": "ambients",
-                    "description": "",
-                    "type": "UniformData"
                 }
             ],
             "return": {
@@ -5073,7 +5144,7 @@
         },
         {
             "file": "src/davinci-eight/renderers/renderer.ts",
-            "line": 66,
+            "line": 67,
             "description": "We need to know the canvasId so that we can tell drawables where to draw.\nHowever, we don't need an don't want a canvas because we can only get that once the\ncanvas has loaded. I suppose a promise would be OK, but that's for another day.\n\nPart of the role of this class is to manage the commands that are executed at startup/prolog.",
             "class": "Canvas3D"
         },
@@ -5099,7 +5170,7 @@
         },
         {
             "file": "src/davinci-eight/scene/Canvas3D.ts",
-            "line": 53,
+            "line": 55,
             "itemtype": "method",
             "name": "destructor!~YUIDOC_LINE~!return",
             "type": "Void",
@@ -5109,7 +5180,7 @@
         },
         {
             "file": "src/davinci-eight/scene/Canvas3D.ts",
-            "line": 68,
+            "line": 70,
             "description": "<p>\nDetermines whether prolog commands are run automatically as part of the `render()` call.\n</p>",
             "itemtype": "property",
             "name": "autoProlog",
@@ -5119,7 +5190,7 @@
         },
         {
             "file": "src/davinci-eight/scene/Canvas3D.ts",
-            "line": 88,
+            "line": 90,
             "itemtype": "property",
             "name": "canvasId",
             "type": "{number}",
@@ -5153,7 +5224,7 @@
         },
         {
             "file": "src/davinci-eight/scene/Mesh.ts",
-            "line": 134,
+            "line": 124,
             "itemtype": "property",
             "name": "material\n\nProvides a reference counted reference to the material.",
             "class": "Mesh"
@@ -5632,13 +5703,13 @@
         },
         {
             "file": "src/davinci-eight/utils/contextProxy.ts",
-            "line": 420,
+            "line": 419,
             "description": "We must cache the canvas so that we can remove listeners when `stop() is called.\nOnly between `start()` and `stop()` is canvas defined.\nWe use a canvasBuilder so the other initialization can happen while we are waiting\nfor the DOM to load.",
             "class": ""
         },
         {
             "file": "src/davinci-eight/utils/contextProxy.ts",
-            "line": 456,
+            "line": 454,
             "class": ""
         },
         {
@@ -5657,6 +5728,11 @@
             "file": "src/davinci-eight/utils/workbench3D.ts",
             "line": 12,
             "description": "Creates and returns a workbench3D thing.\ncanvas: An HTML canvas element to be inserted.\nTODO: We should remove the camera as being too opinionated, replace with a callback providing",
+            "class": ""
+        },
+        {
+            "file": "src/davinci-eight/core.ts",
+            "line": 1,
             "class": ""
         }
     ],
@@ -5995,7 +6071,7 @@
         },
         {
             "message": "Missing item type\nWe need to know the canvasId so that we can tell drawables where to draw.\nHowever, we don't need an don't want a canvas because we can only get that once the\ncanvas has loaded. I suppose a promise would be OK, but that's for another day.\n\nPart of the role of this class is to manage the commands that are executed at startup/prolog.",
-            "line": " src/davinci-eight/renderers/renderer.ts:66"
+            "line": " src/davinci-eight/renderers/renderer.ts:67"
         },
         {
             "message": "Missing item type\nName used for reference count monitoring and logging.",
@@ -6099,11 +6175,11 @@
         },
         {
             "message": "Missing item type\nWe must cache the canvas so that we can remove listeners when `stop() is called.\nOnly between `start()` and `stop()` is canvas defined.\nWe use a canvasBuilder so the other initialization can happen while we are waiting\nfor the DOM to load.",
-            "line": " src/davinci-eight/utils/contextProxy.ts:420"
+            "line": " src/davinci-eight/utils/contextProxy.ts:419"
         },
         {
             "message": "Missing item type",
-            "line": " src/davinci-eight/utils/contextProxy.ts:456"
+            "line": " src/davinci-eight/utils/contextProxy.ts:454"
         },
         {
             "message": "Missing item type\nInitially used to give me a canvasId.\nUsing the big-enough space principle to avoid collisions.",
@@ -6116,6 +6192,10 @@
         {
             "message": "Missing item type\nCreates and returns a workbench3D thing.\ncanvas: An HTML canvas element to be inserted.\nTODO: We should remove the camera as being too opinionated, replace with a callback providing",
             "line": " src/davinci-eight/utils/workbench3D.ts:12"
+        },
+        {
+            "message": "Missing item type",
+            "line": " src/davinci-eight/core.ts:1"
         }
     ]
 }

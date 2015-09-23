@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/davinci-eight/math/Cartesian4.ts - davinci-eight</title>
+    <title>src/davinci-eight/core/IPrologCommand.ts - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -146,37 +146,37 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: src/davinci-eight/math/Cartesian4.ts</h1>
+<h1 class="file-heading">File: src/davinci-eight/core/IPrologCommand.ts</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
+import ContextManager = require(&#x27;../core/ContextManager&#x27;)
+import IUnknown = require(&#x27;../core/IUnknown&#x27;)
+
 /**
- * @class Cartesian4
+ * The interface to be satisfied by commands run in the prolog phase of the animation loop.
+ * @class IPrologCommand
+ * @extends IUnknown
  */
-interface Cartesian4 {
+interface IPrologCommand extends IUnknown {
   /**
-   * @property x
-   * @type number
+   * &lt;p&gt;
+   * The unique name of the command.
+   * &lt;/p&gt;
+   * @property name
+   * @type {string}
+   * @readOnly
    */
-  x: number;
+  name: string;
   /**
-   * @property y
-   * @type number
+   * @method execute
+   * @param manager {ContextManager}
+   * @return {void}
    */
-  y: number;
-  /**
-   * @property z
-   * @type number
-   */
-  z: number;
-  /**
-   * @property w
-   * @type number
-   */
-  w: number;
+  execute(manager: ContextManager): void;
 }
 
-export = Cartesian4;
+export = IPrologCommand;
     </pre>
 </div>
                     </div>

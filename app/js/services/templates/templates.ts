@@ -281,7 +281,8 @@ angular.module('app').factory('templates', [
 
   var CODE_TEMPLATE_EIGHTJS = "" +
     "var  scene = new EIGHT.Scene()\n" +
-    "var camera: EIGHT.PerspectiveCamera\n" +
+    "var cameraL: EIGHT.PerspectiveCamera\n" +
+    "var cameraR: EIGHT.PerspectiveCamera\n" +
     "var c3d = new EIGHT.Canvas3D()\n" +
     "var mesh: EIGHT.Mesh<EIGHT.Geometry, EIGHT.MeshNormalMaterial, EIGHT.Model>\n" +
     "\n" +
@@ -305,8 +306,10 @@ angular.module('app').factory('templates', [
     " */\n" +
     "function init() {\n" +
     "  var aspect = window.innerWidth / window.innerHeight\n" +
-    "  camera = new EIGHT.PerspectiveCamera(75 * Math.PI / 180, aspect, 1, 1000).setEye(e3 * 1.5 + e1 + e2)\n" +
-    "  scene.add(camera)\n" +
+    "  cameraL = new EIGHT.PerspectiveCamera(75 * Math.PI / 180, aspect, 1, 1000).setEye(e3 * 1.5 - e1 * 0.05 + e2)\n" +
+    "  scene.add(cameraL)\n" +
+    "  cameraR = new EIGHT.PerspectiveCamera(75 * Math.PI / 180, aspect, 1, 1000).setEye(e3 * 1.5 + e1 * 0.05 + e2)\n" +
+    "  scene.add(cameraR)\n" +
     "\n" +
     "  var complex = new EIGHT.CuboidComplex()\n" +
     "  complex.subdivide(0)\n" +
@@ -319,6 +322,7 @@ angular.module('app').factory('templates', [
     "  mesh.model.color.set(0, 1, 0)\n" +
     "\n" +
     "  c3d.setSize(window.innerWidth, window.innerHeight)\n" +
+    "  c3d.addContextListener(scene)\n" +
     "}\n" +
     "\n" +
     "/**\n" +
@@ -326,13 +330,21 @@ angular.module('app').factory('templates', [
     " */\n" +
     "function animate() {\n" +
     "  stats.begin()\n" +
+    "\n" +
     "  requestAnimationFrame(animate)\n" +
     "\n" +
     "  var theta = Date.now() * 0.001\n" +
     "\n" +
     "  mesh.model.attitude.wedgeVectors(e1, e2).multiplyScalar(-theta/2).exp()\n" +
     "\n" +
-    "  c3d.render(scene, camera)\n" +
+    "  c3d.prolog()\n" +
+    "\n" +
+    "  // mesh.model.color.set(1, 0, 0)\n" +
+    "  // scene.draw(cameraL, c3d.canvasId)\n" +
+    "\n" +
+    "  // mesh.model.color.set(0, 1, 1)\n" +
+    "  scene.draw(cameraR, c3d.canvasId)\n" +
+    "\n" +
     "  stats.end()\n" +
     "}\n";
 
