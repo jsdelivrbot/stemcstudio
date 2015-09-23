@@ -187,14 +187,161 @@ angular.module('app').factory('templates', [
   var LIBS_TEMPLATE_CANVAS = "//\n";
 
   var LESS_TEMPLATE_CANVAS = "" +
-  "#doodle1 {\n" +
-  "  position: absolute;\n" +
-  "  background-color: #cccccc;\n" +
-  "  width: 400px;\n" +
-  "  height: 400px;\n" +
-  "  top: 150px;\n" +
-  "  left: 400px;\n" +
-  "}\n";
+    "#doodle1 {\n" +
+    "  position: absolute;\n" +
+    "  background-color: #cccccc;\n" +
+    "  width: 400px;\n" +
+    "  height: 400px;\n" +
+    "  top: 150px;\n" +
+    "  left: 400px;\n" +
+    "}\n";
+
+  var HTML_TEMPLATE_EIGHTJS = "" +
+    "<!doctype html>\n" +
+    "<html>\n" +
+    "  <head>\n" +
+      styleMarker() +
+    "    <script i d='vs-triangles' type='x-sha der/x-vertex'>\n" +
+    "      attribute vec3 aPosition;\n" +
+    "      attribute vec3 aNormal;\n" +
+    "      uniform vec3 uColor;\n" +
+    "      uniform mat4 uModel;\n" +
+    "      uniform mat3 uNormal;\n" +
+    "      uniform mat4 uView;\n" +
+    "      uniform mat4 uProjection;\n" +
+    "      unifor m vec3 uAmbientLight;\n" +
+    "      uniform vec3 uDirectionalLightColor;\n" +
+    "      uniform vec3 uDirectionalLightDirection;\n" +
+    "      varying highp vec4 vColor;\n" +
+    "      varying highp vec3 vLight;\n" +
+    "      void main(void) {\n" +
+    "        gl_Position = uProjection * uView * uModel * vec4(aPosition, 1.0);\n" +
+    "        vColor = vec4(uColor, 1.0);\n"+
+    "        vec3 L = normalize(uDirectionalLightDirection);\n"+
+    "        vec3 N = normalize(uNormal * aNormal);\n"+
+    "        float cosineFactor = max(dot(N,L), 0.0);\n"+
+    "        vLight = uAmbientLight + cosineFactor * uDirectionalLightColor;\n"+
+    "      }\n" +
+    "    </script>\n" +
+    "    <script id='fs-triangles' type='x-shader/x-fragment'>\n" +
+    "      varying highp vec4 vColor;\n" +
+    "      varying highp vec3 vLight;\n" +
+    "      void main(void) {\n" +
+    "        gl_FragColor = vec4(vColor.xyz * vLight, vColor.a);\n" +
+    "      }\n" +
+    "    </script>\n" +
+    "    <script id='vs-lines' type='x-shader/x-vertex'>\n" +
+    "      attribute vec3 aPosition;\n" +
+    "      uniform vec3 uColor;\n" +
+    "      uniform mat4 uModel;\n" +
+    "      uniform mat4 uView;\n" +
+    "      un iform mat4 uProjection;\n" +
+    "      varying highp vec4 vC olor;\n" +
+    "      vo id main(void) {\n" +
+    "        gl_Position = uProjection * uView * uModel * vec4(aPosition, 1.0);\n" +
+    "        vColor = vec4(uColor, 1.0);\n"+
+    "      }\n" +
+    "    </script>\n" +
+    "    <script id='fs-lines' type='x-shader/x-fragment'>\n" +
+    "      varying highp vec4 vColor;\n" +
+    "       void main(void) {\n" +
+    "        gl_FragColor = vec4(vColor.xyz, vColor.a);\n" +
+    "      }\n" +
+    "    </script>\n" +
+    "    <script id='vs-points' type='x-shader/x-vertex'>\n" +
+    "      attribute vec3 aPosition;\n" +
+    "      uniform vec3 uColor;\n" +
+    "      uniform mat4 uModel;\n" +
+    "      uniform mat4 uView;\n" +
+    "      uniform mat4 uProjection;\n" +
+    "      uniform float uPointSize;\n" +
+    "      varying highp vec4 vColor;\n" +
+    "      void main(void) {\n" +
+    "        gl_Position = uProjection * uView * uModel * vec4(aPosition, 1.0);\n" +
+    "        gl_PointSize = uPointSize;\n"+
+    "        vColor = vec4(uColor, 1.0);\n"+
+    "      }\n" +
+    "    </script>\n" +
+    "    <script id='fs-points' type='x-shader/x-fragment'>\n" +
+    "      varying highp vec4 vColor;\n" +
+    "      void main(void) {\n" +
+    "        gl_FragColor = vec4(vColor.xyz, vColor.a);\n" +
+    "      }\n" +
+    "    </script>\n" +
+    scriptsMarker() +
+    "  </head>\n" +
+    "  <body>\n" +
+    libsMarker() +
+    codeMarker() +
+    "    <canvas id='my-canvas'>\n" +
+    "      Your browser does not support the canvas element.\n" +
+    "    </canvas>\n" +
+    "  </body>\n" +
+    "</html>\n";
+
+  var CODE_TEMPLATE_EIGHTJS = "" +
+    "var  scene = new EIGHT.Scene()\n" +
+    "var camera: EIGHT.PerspectiveCamera\n" +
+    "var c3d = new EIGHT.Canvas3D()\n" +
+    "var mesh: EIGHT.Mesh<EIGHT.Geometry, EIGHT.MeshNormalMaterial, EIGHT.Model>\n" +
+    "\n" +
+    "var e1 = EIGHT.Vector3.e1\n" +
+    "var e2 = EIGHT.Vector3.e2\n" +
+    "var e3 = EIGHT.Vector3.e3\n" +
+    "\n" +
+    "var stats = new Stats()\n" +
+    "stats.setMode(0)\n" +
+    "document.body.appendChild(stats.domElement)\n" +
+    "\n" +
+    "document.body.style.margin = '0px'\n" +
+    "document.body.style.overflow = 'hidden'\n" +
+    "document.body.appendChild(c3d.canvasElement)\n" +
+    "\n" +
+    "init()\n" +
+    "animate()\n" +
+    "\n" +
+    "/**\n" +
+    " * Initializes the scene.\n" +
+    " */\n" +
+    "function init() {\n" +
+    "  var aspect = window.innerWidth / window.innerHeight\n" +
+    "  camera = new EIGHT.PerspectiveCamera(75 * Math.PI / 180, aspect, 1, 1000).setEye(e3 * 1.5 + e1 + e2)\n" +
+    "  scene.add(camera)\n" +
+    "\n" +
+    "  var complex = new EIGHT.CuboidComplex()\n" +
+    "  complex.subdivide(0)\n" +
+    "  complex.boundary(1)\n" +
+    "  var geometry = complex.toGeometry()\n" +
+    "  var material = new EIGHT.MeshNormalMaterial()\n" +
+    "\n" +
+    "  mesh = new EIGHT.Mesh(geometry, material, new EIGHT.Model())\n" +
+    "  scene.add(mesh)\n" +
+    "  mesh.model.color.set(0, 1, 0)\n" +
+    "\n" +
+    "  c3d.setSize(window.innerWidth, window.innerHeight)\n" +
+    "}\n" +
+    "\n" +
+    "/**\n" +
+    " * Animates the scene.\n" +
+    " */\n" +
+    "function animate() {\n" +
+    "  stats.begin()\n" +
+    "  requestAnimationFrame(animate)\n" +
+    "\n" +
+    "  var theta = Date.now() * 0.001\n" +
+    "\n" +
+    "  mesh.model.attitude.wedgeVectors(e1, e2).multiplyScalar(-theta/2).exp()\n" +
+    "\n" +
+    "  c3d.render(scene, camera)\n" +
+    "  stats.end()\n" +
+    "}\n";
+
+  var LIBS_TEMPLATE_EIGHTJS = "\n";
+
+  var LESS_TEMPLATE_EIGHTJS = "" +
+      "body { margin: 0; }\n" +
+      "canvas { width: 100%; height: 100% }\n" +
+      "#stats { position: absolute; top: 0; left: 0; }\n";
 
   var HTML_TEMPLATE_EIGHT = "" +
     "<!doctype html>\n" +
@@ -335,7 +482,7 @@ angular.module('app').factory('templates', [
     "   * But there are also utilities for smart programs, predefined geometries, and transformations to get you started or for demos.\n" +
     "   * We start the manager now to initialize the WebGL context.\n" +
     "   */\n" +
-    "  var context = new EIGHT.WebGLRenderer();\n" +
+    "  var c3d = new EIGHT.Canvas3D();\n" +
     "\n" +
     "  /**\n" +
     "   * The camera is mutable and provides uniforms through the EIGHT.UniformData interface.\n" +
@@ -357,21 +504,21 @@ angular.module('app').factory('templates', [
     "  /**\n" +
     "   * Program for rendering TRIANGLES with moderately fancy lighting.\n" +
     "   */\n" +
-    "  var programT = new EIGHT.HTMLScriptsMaterial([context], ['vs-triangles', 'fs-triangles'], document);\n" +
+    "  var programT = new EIGHT.HTMLScriptsMaterial([c3d], ['vs-triangles', 'fs-triangles'], document);\n" +
     "  /**\n" +
     "   * Program for rendering LINES.\n" +
     "   */\n" +
-    "  var programL = new EIGHT.HTMLScriptsMaterial([context], ['vs-lines', 'fs-lines'], document);\n" +
+    "  var programL = new EIGHT.HTMLScriptsMaterial([c3d], ['vs-lines', 'fs-lines'], document);\n" +
     "  /**\n" +
     "   * Program for rendering POINTS.\n" +
     "   */\n" +
-    "  var programP = new EIGHT.HTMLScriptsMaterial([context], ['vs-points', 'fs-points'], document);\n" +
+    "  var programP = new EIGHT.HTMLScriptsMaterial([c3d], ['vs-points', 'fs-points'], document);\n" +
     "  /**\n" +
     "   * Program used by the cube, TBD based on geometry dimensionality.\n" +
     "   */\n" +
     "  var materialCube: EIGHT.IMaterial;\n" +
     "\n" +
-    "  context.start(canvas, canvasId);\n" +
+    "  c3d.start(canvas, canvasId);\n" +
     "\n" +
     "  var stats = new Stats();\n" +
     "  stats.setMode(0);\n" +
@@ -422,7 +569,7 @@ angular.module('app').factory('templates', [
     "    // Convert the complex to a geometry.\n" +
     "    var geometry: EIGHT.Geometry = complex.toGeometry();\n" +
     "    // Submit the geometry data to the context which will manage underlying WebGLBuffer(s) for you.\n" +
-    "    geobuff = context.createBufferGeometry(geometry.data);\n" +
+    "    geobuff = c3d.createBufferGeometry(geometry.data);\n" +
     "    if (geobuff) {\n" +
     "      // Pick an appropriate program to use with the mesh based upon the dimensionality.\n" +
     "      switch(geometry.meta.k) {\n" +
@@ -498,7 +645,7 @@ angular.module('app').factory('templates', [
     "    // position = R * e1 * ~R\n" +
     "    // model.position.copy(e1).rotate(rotorL);\n" +
     "\n" +
-    "    context.prolog();\n" +
+    "    c3d.prolog();\n" +
     "\n" +
     "    if (geobuff) {\n" +
     "      // Make the appropriate WebGLProgram current.\n" +
@@ -959,7 +1106,7 @@ angular.module('app').factory('templates', [
     "    canvas.width = 600;\n" +
     "    canvas.height = 400;\n" +
     "\n"+
-    "    var context: EIGHT.WebGLRenderer;\n"+
+    "    var c3d: EIGHT.Canvas3D;\n"+
     "\n"+
     "    var camera = new EIGHT.PerspectiveCamera().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(3.0 * e3);\n"+
     "\n"+
@@ -973,10 +1120,10 @@ angular.module('app').factory('templates', [
     "      EIGHT.refChange('reset', 'setUp()');\n"+
     "      EIGHT.refChange('start', 'setUp()');\n"+
     "\n"+
-    "      context = new EIGHT.WebGLRenderer();\n"+
-    "      context.start(canvas, 0);\n"+
+    "      c3d = new EIGHT.Canvas3D();\n"+
+    "      c3d.start(canvas, 0);\n"+
     "\n"+
-    "      material = new EIGHT.HTMLScriptsMaterial([context], ['vs-points', 'fs-points'], document);\n" +
+    "      material = new EIGHT.HTMLScriptsMaterial([c3d], ['vs-points', 'fs-points'], document);\n" +
     "\n"+
     "      var vec0 = new EIGHT.Vector3([0.0,  0.0, 0.0]);\n"+
     "      var vec1 = new EIGHT.Vector3([1.0, -0.2, 0.0]);\n"+
@@ -988,9 +1135,9 @@ angular.module('app').factory('templates', [
     "      meta.attributes[EIGHT.Symbolic.ATTRIBUTE_POSITION].name = 'aPosition';\n"+
     "      var data = EIGHT.toGeometryData(simplices, meta);\n"+
     "\n"+
-    "      geobuff = context.createBufferGeometry(data);\n"+
+    "      geobuff = c3d.createBufferGeometry(data);\n"+
     "\n"+
-    "      camera.setUniforms(material, context.canvasId);\n"+
+    "      camera.setUniforms(material, c3d.canvasId);\n"+
     "    }\n"+
     "\n" +
     "    // If you wish to work with AngularJS scope variables,\n" +
@@ -1005,14 +1152,14 @@ angular.module('app').factory('templates', [
     "\n" +
     "      var theta = omega * time;\n"+
     "\n" +
-    "      context.prolog();\n"+
+    "      c3d.prolog();\n"+
     "\n" +
     "      geobuff.bind(material);\n" +
     "\n" +
     "      control.color.set(0.0, 1.0, 0.0);\n"+
     "      for(var i = 0; i < 8; i++) {\n" +
     "        control.attitude.copy(R).multiplyScalar(theta - i * 2 * Math.PI / 8).exp();\n"+
-    "        control.setUniforms(material, context.canvasId);\n"+
+    "        control.setUniforms(material, c3d.canvasId);\n"+
     "        geobuff.draw();\n"+
     "        control.color.multiplyScalar(0.7);\n"+
     "      }\n" +
@@ -1034,9 +1181,9 @@ angular.module('app').factory('templates', [
     "      material.release();\n"+
     "      material = void 0;\n"+
     "\n" +
-    "      context.stop();\n"+
-    "      context.release();\n"+
-    "      context = void 0;\n"+
+    "      c3d.stop();\n"+
+    "      c3d.release();\n"+
+    "      c3d = void 0;\n"+
     "\n" +
     "      var outstanding = EIGHT.refChange('stop', 'tearDown()');\n"+
     "      //if (outstanding > 0) {\n" +
@@ -1128,6 +1275,20 @@ angular.module('app').factory('templates', [
   var LESS_TEMPLATE_MATHBOX = "";
 
   return [
+    {
+      uuid: uuid.generate(),
+      description: "EIGHT — Mathematical Computer Graphics using WebGL",
+      isCodeVisible: true,
+      isViewVisible: true,
+      focusEditor: undefined,
+      lastKnownJs: {},
+      operatorOverloading: true,
+      html: HTML_TEMPLATE_EIGHTJS,
+      code: CODE_TEMPLATE_EIGHTJS,
+      libs: LIBS_TEMPLATE_EIGHTJS,
+      less: LESS_TEMPLATE_EIGHTJS,
+      dependencies: ['DomReady', 'davinci-eight', 'stats.js']
+    },
     {
       uuid: uuid.generate(),
       description: "EIGHT + blade — Mathematical Computer Graphics using WebGL",

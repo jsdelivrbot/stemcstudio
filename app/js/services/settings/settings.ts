@@ -16,7 +16,7 @@ angular.module('app').factory('settings', [function (): mathdoodle.ISettingsServ
       theme: 'ace/theme/textmate',
       indent: 2,
       fontSize: '16px',
-      showInvisibles: true,
+      showInvisibles: false,
       showPrintMargin: false,
       displayIndentGuides: false
     };
