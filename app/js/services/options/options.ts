@@ -148,7 +148,7 @@ angular.module('app').factory('options', [
       visible: true,
       dts: eight('dist', 'davinci-eight.d.ts'),
       js: eight('dist', 'davinci-eight.js'),
-      minJs: eight('dist', 'davinci-eight.min.js'),
+      minJs: eight('dist', 'davinci-eight.js'), // Use the force, Luke.
       dependencies: {'davinci-blade': '*','gl-matrix': '*'}
     },
     {

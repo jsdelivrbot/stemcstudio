@@ -335,7 +335,7 @@ angular.module('app').factory('templates', [
     "   * But there are also utilities for smart programs, predefined geometries, and transformations to get you started or for demos.\n" +
     "   * We start the manager now to initialize the WebGL context.\n" +
     "   */\n" +
-    "  var context = new EIGHT.WebGLRenderer(canvas, canvasId);\n" +
+    "  var context = new EIGHT.WebGLRenderer();\n" +
     "\n" +
     "  /**\n" +
     "   * The camera is mutable and provides uniforms through the EIGHT.UniformData interface.\n" +
@@ -369,9 +369,9 @@ angular.module('app').factory('templates', [
     "  /**\n" +
     "   * Program used by the cube, TBD based on geometry dimensionality.\n" +
     "   */\n" +
-    "  var programCube: EIGHT.IProgram;\n" +
+    "  var materialCube: EIGHT.IMaterial;\n" +
     "\n" +
-    "  context.start();\n" +
+    "  context.start(canvas, canvasId);\n" +
     "\n" +
     "  var stats = new Stats();\n" +
     "  stats.setMode(0);\n" +
@@ -403,7 +403,7 @@ angular.module('app').factory('templates', [
     "\n" +
     "  // We start with the geometry (complex) for a unit cube at the origin...\n" +
     "  // A complex is considered to be an array of simplices.\n" +
-    "  var complex = new EIGHT.BoxComplex(1, 1, 1);\n" +
+    "  var complex = new EIGHT.CuboidComplex(1, 1, 1);\n" +
     "  // Subdivide the geometry (here twice) if you wish to get more detail.\n" +
     "  // Hit 'Play' in mathdoodle.io to see the effect of, say, n = 0, 1, 2, 3.\n" +
     "  complex.subdivide(2);\n" +
@@ -427,15 +427,15 @@ angular.module('app').factory('templates', [
     "      // Pick an appropriate program to use with the mesh based upon the dimensionality.\n" +
     "      switch(geometry.meta.k) {\n" +
     "        case EIGHT.Simplex.K_FOR_POINT: {\n" +
-    "          programCube = programP;\n" +
+    "          materialCube = programP;\n" +
     "        }\n" +
     "        break;\n" +
     "        case EIGHT.Simplex.K_FOR_LINE_SEGMENT: {\n" +
-    "          programCube = programL;\n" +
+    "          materialCube = programL;\n" +
     "        }\n" +
     "        break;\n" +
     "        case EIGHT.Simplex.K_FOR_TRIANGLE: {\n" +
-    "          programCube = programT;\n" +
+    "          materialCube = programT;\n" +
     "        }\n" +
     "        break;\n" +
     "        default: {\n" +
@@ -502,11 +502,11 @@ angular.module('app').factory('templates', [
     "\n" +
     "    if (geobuff) {\n" +
     "      // Make the appropriate WebGLProgram current.\n" +
-    "      programCube.use(canvasId);\n" +
+    "      materialCube.use(canvasId);\n" +
     "      // The model sets uniforms on the program, for the specified canvas.\n" +
-    "      model.setUniforms(programCube, canvasId);\n" +
+    "      model.setUniforms(materialCube, canvasId);\n" +
     "      // Bind the appropriate underlying buffers and enable attribute locations.\n" +
-    "      geobuff.bind(programCube);\n" +
+    "      geobuff.bind(materialCube);\n" +
     "      // Make the appropriate drawElements() or drawArrays() call.\n" +
     "      geobuff.draw();\n" +
     "      // Unbind the buffers and disable attribute locations.\n" +
@@ -683,7 +683,7 @@ angular.module('app').factory('templates', [
     "  camera.position.z = 200;\n" +
     "  scene.add(camera);\n" +
     "\n" +
-    "  var geometry = new THREE.BoxGeometry(100, 100, 100);\n" +
+    "  var geometry = new THREE.CuboidGeometry(100, 100, 100);\n" +
     "  var material = new THREE.MeshNormalMaterial();\n" +
     "\n" +
     "  mesh = new THREE.Mesh(geometry, material);\n" +
@@ -964,7 +964,7 @@ angular.module('app').factory('templates', [
     "    var camera = new EIGHT.PerspectiveCamera().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(3.0 * e3);\n"+
     "\n"+
     "    var geobuff: EIGHT.IBufferGeometry;\n"+
-    "    var program: EIGHT.IProgram;\n" +
+    "    var material: EIGHT.IMaterial;\n" +
     "    var control = new EIGHT.Model();\n"+
     "\n"+
     "    var R = -(e1 ^ e2) / 2;\n"+
@@ -973,10 +973,10 @@ angular.module('app').factory('templates', [
     "      EIGHT.refChange('reset', 'setUp()');\n"+
     "      EIGHT.refChange('start', 'setUp()');\n"+
     "\n"+
-    "      context = new EIGHT.WebGLRenderer(canvas);\n"+
-    "      context.start();\n"+
+    "      context = new EIGHT.WebGLRenderer();\n"+
+    "      context.start(canvas, 0);\n"+
     "\n"+
-    "      program = new EIGHT.HTMLScriptsMaterial([context], ['vs-points', 'fs-points'], document);\n" +
+    "      material = new EIGHT.HTMLScriptsMaterial([context], ['vs-points', 'fs-points'], document);\n" +
     "\n"+
     "      var vec0 = new EIGHT.Vector3([0.0,  0.0, 0.0]);\n"+
     "      var vec1 = new EIGHT.Vector3([1.0, -0.2, 0.0]);\n"+
@@ -990,7 +990,7 @@ angular.module('app').factory('templates', [
     "\n"+
     "      geobuff = context.createBufferGeometry(data);\n"+
     "\n"+
-    "      camera.setUniforms(program, context.canvasId);\n"+
+    "      camera.setUniforms(material, context.canvasId);\n"+
     "    }\n"+
     "\n" +
     "    // If you wish to work with AngularJS scope variables,\n" +
@@ -1007,12 +1007,12 @@ angular.module('app').factory('templates', [
     "\n" +
     "      context.prolog();\n"+
     "\n" +
-    "      geobuff.bind(program);\n" +
+    "      geobuff.bind(material);\n" +
     "\n" +
     "      control.color.set(0.0, 1.0, 0.0);\n"+
     "      for(var i = 0; i < 8; i++) {\n" +
     "        control.attitude.copy(R).multiplyScalar(theta - i * 2 * Math.PI / 8).exp();\n"+
-    "        control.setUniforms(program, context.canvasId);\n"+
+    "        control.setUniforms(material, context.canvasId);\n"+
     "        geobuff.draw();\n"+
     "        control.color.multiplyScalar(0.7);\n"+
     "      }\n" +
@@ -1031,8 +1031,8 @@ angular.module('app').factory('templates', [
     "      geobuff.release();\n"+
     "      geobuff = void 0;\n"+
     "\n" +
-    "      program.release();\n"+
-    "      program = void 0;\n"+
+    "      material.release();\n"+
+    "      material = void 0;\n"+
     "\n" +
     "      context.stop();\n"+
     "      context.release();\n"+

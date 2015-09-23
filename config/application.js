@@ -137,12 +137,10 @@ module.exports = function(lineman) {
         tasks: ['copy:dev']
       }
     },
-    // Just putting this in by way of example.
     removeTasks: {
-      common: ["webfonts:dev", "images:dev"],
+      common: [],
       dist: []
     },
-    // TODO: Find out what this does.
     // Proxy API requests to localhost:4567
     server: {
       apiProxy: {
