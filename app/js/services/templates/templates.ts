@@ -280,7 +280,7 @@ angular.module('app').factory('templates', [
     "</html>\n";
 
   var CODE_TEMPLATE_EIGHTJS = "" +
-    "var  scene = new EIGHT.Scene()\n" +
+    "var scene = new EIGHT.Scene()\n" +
     "var cameraL: EIGHT.PerspectiveCamera\n" +
     "var cameraR: EIGHT.PerspectiveCamera\n" +
     "var c3d = new EIGHT.Canvas3D()\n" +
