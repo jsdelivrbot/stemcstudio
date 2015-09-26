@@ -18,10 +18,7 @@ fi
 
 # 3. Bower
 if [ -e "bower.json" ]; then
-  echo Skipping Bower install
-  # bower install
-  #./node_modules/.bin/bower install
-  # exitWithMessageOnError "npm failed"
+  bower install
 fi
 
 # 4. Run Lineman
@@ -31,6 +28,5 @@ if [ -e "Gruntfile.js" ]; then
   lineman clean
   lineman build
   lineman run
-  # exitWithMessageOnError "lineman failed"
 fi
 

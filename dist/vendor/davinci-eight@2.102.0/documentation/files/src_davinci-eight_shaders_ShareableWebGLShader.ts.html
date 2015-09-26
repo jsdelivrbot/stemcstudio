@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/davinci-eight/core/Point3.ts - davinci-eight</title>
+    <title>src/davinci-eight/shaders/ShareableWebGLShader.ts - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -152,27 +152,44 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: src/davinci-eight/core/Point3.ts</h1>
+<h1 class="file-heading">File: src/davinci-eight/shaders/ShareableWebGLShader.ts</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/**
- * @class Point3
- */
-class Point3 {
-  public a: number;
+import IContextProvider = require(&#x27;../core/IContextProvider&#x27;);
+import ContextMonitor = require(&#x27;../core/ContextMonitor&#x27;);
+import IShader = require(&#x27;../shaders/IShader&#x27;);
+import Shareable = require(&#x27;../utils/Shareable&#x27;)
+
+class ShareableWebGLShader extends Shareable implements IShader {
+  private shader: WebGLShader;
   /**
-   * @class Point3
-   * @constructor
-   * @param a {number} The index of a vertex in some array.
+   * Construction on a single monitor says that this will only be used with one.
+   * But what if someone external calls monitor.addContextListener(shader)?
+   * Then the shader starts receiving events for that monitor.
+   * This means that this resource is inherantly multi-canvas.
+   * It also means that the argument in the constructor is bogus because it is not fixed.
+   * It&#x27;s just an initial list.
+   * But then we need IContextProvider to extend ContextMonitor so that this can unhook?
    */
-  constructor(a: number) {
-    this.a = a;
+  constructor(monitor: ContextMonitor) {
+    super(&#x27;WebGLShader&#x27;);
+    monitor.addContextListener(this);
+  }
+  destructor(): void {
+  }
+  contextFree(canvasId: number): void {
+
+  }
+  contextGain(manager: IContextProvider): void {
+    
+  }
+  contextLost(canvasId: number): void {
+    
   }
 }
 
-export = Point3;
-
+export = ShareableWebGLShader;
     </pre>
 </div>
                     </div>

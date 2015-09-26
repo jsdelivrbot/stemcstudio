@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Rational - davinci-eight</title>
+    <title>src/davinci-eight/programs/makeWebGLShader.ts - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -17,7 +17,7 @@
                 <h1><img src="../../assets/logo.png" title="davinci-eight"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.107.0</em>
+            <em>API Docs for: 2.110.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -51,8 +51,6 @@
                                 <li><a href="../classes/Complex.html">Complex</a></li>
                                 <li><a href="../classes/ContextAttributesLogger.html">ContextAttributesLogger</a></li>
                                 <li><a href="../classes/ContextController.html">ContextController</a></li>
-                                <li><a href="../classes/ContextListener.html">ContextListener</a></li>
-                                <li><a href="../classes/ContextManager.html">ContextManager</a></li>
                                 <li><a href="../classes/ContextRenderer.html">ContextRenderer</a></li>
                                 <li><a href="../classes/createView.html">createView</a></li>
                                 <li><a href="../classes/CuboidComplex.html">CuboidComplex</a></li>
@@ -75,6 +73,8 @@
                                 <li><a href="../classes/GeometryMeta.html">GeometryMeta</a></li>
                                 <li><a href="../classes/HTMLScriptsMaterial.html">HTMLScriptsMaterial</a></li>
                                 <li><a href="../classes/IBufferGeometry.html">IBufferGeometry</a></li>
+                                <li><a href="../classes/IContextConsumer.html">IContextConsumer</a></li>
+                                <li><a href="../classes/IContextProvider.html">IContextProvider</a></li>
                                 <li><a href="../classes/IDrawable.html">IDrawable</a></li>
                                 <li><a href="../classes/IDrawList.html">IDrawList</a></li>
                                 <li><a href="../classes/IMaterial.html">IMaterial</a></li>
@@ -92,7 +92,7 @@
                                 <li><a href="../classes/Perspective.html">Perspective</a></li>
                                 <li><a href="../classes/PerspectiveCamera.html">PerspectiveCamera</a></li>
                                 <li><a href="../classes/Point3.html">Point3</a></li>
-                                <li><a href="../classes/Rational.html">Rational</a></li>
+                                <li><a href="../classes/QQ.html">QQ</a></li>
                                 <li><a href="../classes/RigidBody3.html">RigidBody3</a></li>
                                 <li><a href="../classes/Scene.html">Scene</a></li>
                                 <li><a href="../classes/ShaderVariableDecl.html">ShaderVariableDecl</a></li>
@@ -152,116 +152,36 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>Rational Class</h1>
-<div class="box meta">
+<h1 class="file-heading">File: src/davinci-eight/programs/makeWebGLShader.ts</h1>
 
-        <div class="extends">
-            Extends Field
-        </div>
+<div class="file">
+    <pre class="code prettyprint linenums">
+/**
+ *
+ */
+function makeWebGLShader(gl: WebGLRenderingContext, source: string, type: number): WebGLShader {
+  var shader: WebGLShader = gl.createShader(type);
+  gl.shaderSource(shader, source);
+  gl.compileShader(shader);
+  let compiled = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
+  if (compiled) {
+    return shader;
+  }
+  else {
+    if (!gl.isContextLost()) {
+      let message = gl.getShaderInfoLog(shader);
+      gl.deleteShader(shader);
+      throw new Error(&quot;Error compiling shader: &quot; + message);
+    }
+    else {
+      throw new Error(&quot;Context lost while compiling shader&quot;);
+    }
+  }
+}
 
-        <div class="foundat">
-            Defined in: <a href="../files/src_davinci-eight_math_Rational.ts.html#l36"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Rational.ts:36</code></a>
-        </div>
+export = makeWebGLShader
 
-
-</div>
-
-
-<div class="box intro">
-    <p>The Rational class represents a rational number.</p>
-
-</div>
-
-    <div class="constructor">
-        <h2>Constructor</h2>
-<div id="method_Rational" class="method item">
-    <h3 class="name"><code>Rational</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>n</code>
-                </li>
-                <li class="arg">
-                        <code>d</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_math_Rational.ts.html#l36"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Rational.ts:36</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">n</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
-
-
-                    <div class="param-description">
-                        <p>The numerator.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">d</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
-
-
-                    <div class="param-description">
-                        <p>The denominator.</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-    </div>
-
-<div id="classdocs" class="tabview">
-    <ul class="api-class-tabs">
-        <li class="api-class-tab index"><a href="#index">Index</a></li>
-
-    </ul>
-
-    <div>
-        <div id="index" class="api-class-tabpanel index">
-            <h2 class="off-left">Item Index</h2>
-
-
-
-
-        </div>
-
-
-
-
-    </div>
+    </pre>
 </div>
                     </div>
                 </div>

@@ -54,6 +54,8 @@ angular.module('app').factory('templates', [
 
   var LESS_TEMPLATE_BASIC = "";
 
+  var LIBS_TEMPLATE_BASIC = "";
+
   var HTML_TEMPLATE_CALCULATION = "" +
     "<!doctype html>\n" +
     "<html>\n" +
@@ -312,7 +314,7 @@ angular.module('app').factory('templates', [
     "  scene.add(cameraR)\n" +
     "\n" +
     "  var complex = new EIGHT.CuboidComplex()\n" +
-    "  complex.subdivide(0)\n" +
+    "  complex.subdivide(2)\n" +
     "  complex.boundary(1)\n" +
     "  var geometry = complex.toGeometry()\n" +
     "  var material = new EIGHT.MeshNormalMaterial()\n" +
@@ -323,6 +325,7 @@ angular.module('app').factory('templates', [
     "\n" +
     "  c3d.setSize(window.innerWidth, window.innerHeight)\n" +
     "  c3d.addContextListener(scene)\n" +
+    "  c3d.synchronize(scene)\n" +
     "}\n" +
     "\n" +
     "/**\n" +
@@ -842,7 +845,7 @@ angular.module('app').factory('templates', [
     "  camera.position.z = 200;\n" +
     "  scene.add(camera);\n" +
     "\n" +
-    "  var geometry = new THREE.CuboidGeometry(100, 100, 100);\n" +
+    "  var geometry = new THREE.BoxGeometry(100, 100, 100);\n" +
     "  var material = new THREE.MeshNormalMaterial();\n" +
     "\n" +
     "  mesh = new THREE.Mesh(geometry, material);\n" +
@@ -1287,6 +1290,20 @@ angular.module('app').factory('templates', [
   var LESS_TEMPLATE_MATHBOX = "";
 
   return [
+    {
+        uuid: uuid.generate(),
+        description: "None",
+        isCodeVisible: true,
+        isViewVisible: true,
+        focusEditor: undefined,
+        lastKnownJs: {},
+        operatorOverloading: true,
+        html: HTML_TEMPLATE_BASIC,
+        code: CODE_TEMPLATE_BASIC,
+        libs: LIBS_TEMPLATE_BASIC,
+        less: LESS_TEMPLATE_BASIC,
+        dependencies: []
+    },
     {
       uuid: uuid.generate(),
       description: "EIGHT — Mathematical Computer Graphics using WebGL",

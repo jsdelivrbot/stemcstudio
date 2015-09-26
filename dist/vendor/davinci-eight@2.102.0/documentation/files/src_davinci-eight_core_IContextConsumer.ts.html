@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/davinci-eight/math/Complex.ts - davinci-eight</title>
+    <title>src/davinci-eight/core/IContextConsumer.ts - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -17,7 +17,7 @@
                 <h1><img src="../../assets/logo.png" title="davinci-eight"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.107.0</em>
+            <em>API Docs for: 2.110.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -51,8 +51,6 @@
                                 <li><a href="../classes/Complex.html">Complex</a></li>
                                 <li><a href="../classes/ContextAttributesLogger.html">ContextAttributesLogger</a></li>
                                 <li><a href="../classes/ContextController.html">ContextController</a></li>
-                                <li><a href="../classes/ContextListener.html">ContextListener</a></li>
-                                <li><a href="../classes/ContextManager.html">ContextManager</a></li>
                                 <li><a href="../classes/ContextRenderer.html">ContextRenderer</a></li>
                                 <li><a href="../classes/createView.html">createView</a></li>
                                 <li><a href="../classes/CuboidComplex.html">CuboidComplex</a></li>
@@ -75,6 +73,8 @@
                                 <li><a href="../classes/GeometryMeta.html">GeometryMeta</a></li>
                                 <li><a href="../classes/HTMLScriptsMaterial.html">HTMLScriptsMaterial</a></li>
                                 <li><a href="../classes/IBufferGeometry.html">IBufferGeometry</a></li>
+                                <li><a href="../classes/IContextConsumer.html">IContextConsumer</a></li>
+                                <li><a href="../classes/IContextProvider.html">IContextProvider</a></li>
                                 <li><a href="../classes/IDrawable.html">IDrawable</a></li>
                                 <li><a href="../classes/IDrawList.html">IDrawList</a></li>
                                 <li><a href="../classes/IMaterial.html">IMaterial</a></li>
@@ -92,7 +92,7 @@
                                 <li><a href="../classes/Perspective.html">Perspective</a></li>
                                 <li><a href="../classes/PerspectiveCamera.html">PerspectiveCamera</a></li>
                                 <li><a href="../classes/Point3.html">Point3</a></li>
-                                <li><a href="../classes/Rational.html">Rational</a></li>
+                                <li><a href="../classes/QQ.html">QQ</a></li>
                                 <li><a href="../classes/RigidBody3.html">RigidBody3</a></li>
                                 <li><a href="../classes/Scene.html">Scene</a></li>
                                 <li><a href="../classes/ShaderVariableDecl.html">ShaderVariableDecl</a></li>
@@ -152,331 +152,53 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: src/davinci-eight/math/Complex.ts</h1>
+<h1 class="file-heading">File: src/davinci-eight/core/IContextConsumer.ts</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-import ComplexError = require(&#x27;../math/ComplexError&#x27;);
-import Measure = require(&#x27;../math/Measure&#x27;);
-import Unit = require(&#x27;../math/Unit&#x27;);
-import mathcore = require(&#x27;../math/mathcore&#x27;);
-
-var cos  = Math.cos;
-var cosh = mathcore.Math.cosh;
-var exp  = Math.exp;
-var sin  = Math.sin;
-var sinh = mathcore.Math.sinh;
-
-function assertArgNumber(name: string, x: number): number {
-  if (typeof x === &#x27;number&#x27;) {
-    return x;
-  }
-  else {
-    throw new ComplexError(&quot;Argument &#x27;&quot; + name + &quot;&#x27; must be a number&quot;);
-  }
+import IContextProvider = require(&#x27;../core/IContextProvider&#x27;);
+/**
+ * This interface standardizes the concept of an implementation being dependent upon
+ * a WebGL rendering context. The notification methods for context gain, loss, and free
+ * allow the implementation to participate in the dynamic and volatile environment
+ * whereupon a browser may reset its WebGL rendering contexts.
+ * @class IContextConsumer
+ */
+interface IContextConsumer {
+  /**
+   * Called to request the dependent to free any WebGL resources acquired and owned.
+   * The dependent may assume that its cached context is still valid in order
+   * to properly dispose of any cached resources. In the case of shared objects, this
+   * method may be called multiple times for what is logically the same context. In such
+   * cases the dependent must be idempotent and respond only to the first request.
+   * @method contextFree
+   * @param canvasId {number} Determines the context for which resources are being freed.
+   */
+  // FIXME: Passing in the manager would allow some implementations to not cache the WebGL rendering context.  
+  contextFree(canvasId: number): void;
+  /**
+   * Called to inform the dependent of a new WebGL rendering context.
+   * The implementation should ignore the notification if it has already
+   * received the same context.
+   * @method contextGain
+   * @param manager {IContextProvider} If there&#x27;s something strange in your neighborhood.
+   */
+  contextGain(manager: IContextProvider): void;
+  /**
+   * Called to inform the dependent of a loss of WebGL rendering context.
+   * The dependent must assume that any cached context is invalid.
+   * The dependent must not try to use and cached context to free resources.
+   * The dependent should reset its state to that for which there is no context.
+   * @method contextLost
+   * @param canvasId {number} Determines the context for which resources are being lost.
+   *
+   * The canvasId is provided, rather than the manager, to remind implementors
+   * that resources have been lost and cannot be freed by the application.
+   */
+  contextLost(canvasId: number): void;
 }
 
-function assertArgComplex(name: string, arg: Complex): Complex {
-  if (arg instanceof Complex) {
-    return arg;
-  }
-  else {
-    throw new ComplexError(&quot;Argument &#x27;&quot; + arg + &quot;&#x27; must be a Complex&quot;);
-  }
-}
-
-function assertArgUnitOrUndefined(name: string, uom: Unit): Unit {
-  if (typeof uom === &#x27;undefined&#x27; || uom instanceof Unit) {
-    return uom;
-  }
-  else {
-    throw new ComplexError(&quot;Argument &#x27;&quot; + uom + &quot;&#x27; must be a Unit or undefined&quot;);
-  }
-}
-
-function multiply(a: Complex, b: Complex): Complex {
-  assertArgComplex(&#x27;a&#x27;, a);
-  assertArgComplex(&#x27;b&#x27;, b);
-  var x = a.x * b.x - a.y * b.y;
-  var y = a.x * b.y + a.y * b.x;
-  return new Complex(x, y, Unit.mul(a.uom, b.uom));
-}
-
-function divide(a: Complex, b: Complex): Complex {
-  assertArgComplex(&#x27;a&#x27;, a);
-  assertArgComplex(&#x27;b&#x27;, b);
-  var q = b.x * b.x + b.y * b.y;
-  var x = (a.x * b.x + a.y * b.y) / q;
-  var y = (a.y * b.x - a.x * b.y) / q;
-  return new Complex(x, y, Unit.div(a.uom, b.uom));
-}
-
-function norm(x: number, y: number): number {
-  return Math.sqrt(x * x + y * y);
-}
-
-class Complex implements Measure&lt;Complex&gt; {
-    /**
-     * The real part of the complex number.
-     */
-    public x: number;
-    /**
-     * The imaginary part of the complex number.
-     */
-    public y: number;
-    /**
-     * The optional unit of measure.
-     */
-    public uom: Unit;
-    /**
-     * Constructs a complex number z = (x, y).
-     * @param x The real part of the complex number.
-     * @param y The imaginary part of the complex number.
-     */
-    constructor(x: number, y: number, uom?: Unit) {
-      this.x = assertArgNumber(&#x27;x&#x27;, x);
-      this.y = assertArgNumber(&#x27;y&#x27;, y);
-      this.uom = assertArgUnitOrUndefined(&#x27;uom&#x27;, uom);
-      if (this.uom &amp;&amp; this.uom.scale !== 1) {
-        var scale: number = this.uom.scale;
-        this.x *= scale;
-        this.y *= scale;
-        this.uom = new Unit(1, uom.dimensions, uom.labels);
-      }
-    }
-
-    coordinates(): number[] {
-      return [this.x, this.y];
-    }
-
-    add(rhs: Complex): Complex {
-      assertArgComplex(&#x27;rhs&#x27;, rhs);
-      return new Complex(this.x + rhs.x, this.y + rhs.y, Unit.compatible(this.uom, rhs.uom));
-    }
-
-    /**
-     * __add__ supports operator +(Complex, any)
-     */
-    __add__(other: any): Complex {
-      if (other instanceof Complex) {
-        return this.add(other);
-      }
-      else if (typeof other === &#x27;number&#x27;) {
-        return new Complex(this.x + other, this.y, Unit.compatible(this.uom, undefined));
-      }
-    }
-
-    /**
-     * __radd__ supports operator +(any, Complex)
-     */
-    __radd__(other: any): Complex
-    {
-      if (other instanceof Complex)
-      {
-        var lhs: Complex = other;
-        return new Complex(other.x + this.x, other.y + this.y, Unit.compatible(lhs.uom, this.uom));
-      }
-      else if (typeof other === &#x27;number&#x27;)
-      {
-        var x: number = other;
-        return new Complex(x + this.x, this.y, Unit.compatible(undefined, this.uom));
-      }
-    }
-
-    sub(rhs: Complex): Complex {
-      assertArgComplex(&#x27;rhs&#x27;, rhs);
-      return new Complex(this.x - rhs.x, this.y - rhs.y, Unit.compatible(this.uom, rhs.uom));
-    }
-
-    __sub__(other: any): Complex
-    {
-      if (other instanceof Complex)
-      {
-        var rhs: Complex = other;
-        return new Complex(this.x - rhs.x, this.y - rhs.y, Unit.compatible(this.uom, rhs.uom));
-      }
-      else if (typeof other === &#x27;number&#x27;)
-      {
-        var x: number = other;
-        return new Complex(this.x - x, this.y, Unit.compatible(this.uom, undefined));
-      }
-    }
-
-    __rsub__(other: any): Complex
-    {
-      if (other instanceof Complex)
-      {
-        var lhs: Complex = other;
-        return new Complex(lhs.x - this.x, lhs.y - this.y, Unit.compatible(lhs.uom, this.uom));
-      }
-      else if (typeof other === &#x27;number&#x27;)
-      {
-        var x: number = other;
-        return new Complex(x - this.x, -this.y, Unit.compatible(undefined, this.uom));
-      }
-    }
-
-    mul(rhs: Complex): Complex {
-      assertArgComplex(&#x27;rhs&#x27;, rhs);
-      return multiply(this, rhs);
-    }
-
-    __mul__(other: any): Complex {
-      if (other instanceof Complex) {
-        return multiply(this, other);
-      }
-      else if (typeof other === &#x27;number&#x27;) {
-        var x: number = other;
-        return new Complex(this.x * x, this.y * x, this.uom);
-      }
-    }
-
-    __rmul__(other: any): Complex {
-      if (other instanceof Complex) {
-        return multiply(other, this);
-      }
-      else if (typeof other === &#x27;number&#x27;) {
-        var x: number = other;
-        return new Complex(x * this.x, x * this.y, this.uom);
-      }
-    }
-
-    div(rhs: Complex): Complex {
-      assertArgComplex(&#x27;rhs&#x27;, rhs);
-      return divide(this, rhs);
-    }
-
-    __div__(other: any): Complex {
-      if (other instanceof Complex) {
-        return divide(this, other);
-      }
-      else if (typeof other === &#x27;number&#x27;) {
-        return new Complex(this.x / other, this.y / other, this.uom);
-      }
-    }
-
-    __rdiv__(other: any): Complex {
-      if (other instanceof Complex) {
-        return divide(other, this);
-      }
-      else if (typeof other === &#x27;number&#x27;) {
-        return divide(new Complex(other, 0), this);
-      }
-    }
-
-    wedge(rhs: Complex): Complex {
-      // assertArgComplex(&#x27;rhs&#x27;, rhs);
-      throw new ComplexError(&#x27;wedge&#x27;);
-    }
-
-    lshift(rhs: Complex): Complex {
-      // assertArgComplex(&#x27;rhs&#x27;, rhs);
-      throw new ComplexError(&#x27;lshift&#x27;);
-    }
-
-    rshift(rhs: Complex): Complex {
-      // assertArgComplex(&#x27;rhs&#x27;, rhs);
-      throw new ComplexError(&#x27;rshift&#x27;);
-    }
-
-    pow(exponent: Complex): Complex {
-      // assertArgComplex(&#x27;rhs&#x27;, rhs);
-      throw new ComplexError(&#x27;pow&#x27;);
-    }
-
-    cos(): Complex {
-      Unit.assertDimensionless(this.uom);
-      var x = this.x;
-      var y = this.y;
-      return new Complex(cos(x) * cosh(y), - sin(x) * sinh(y));
-    }
-
-    cosh(): Complex {
-      Unit.assertDimensionless(this.uom);
-      var x = this.x;
-      var y = this.y;
-      return new Complex(cosh(x) * cos(y), sinh(x) * sin(y));
-    }
-
-    exp(): Complex {
-      Unit.assertDimensionless(this.uom);
-      var x = this.x;
-      var y = this.y;
-      var expX = Math.exp(x);
-      return new Complex(expX * cos(y), expX * sin(y));
-    }
-
-    norm(): Complex {
-      var x = this.x;
-      var y = this.y;
-      return new Complex(Math.sqrt(x * x + y * y), 0, this.uom);
-    }
-
-    quad(): Complex {
-      var x = this.x;
-      var y = this.y;
-      return new Complex(x * x + y * y, 0, Unit.mul(this.uom, this.uom));
-    }
-
-    sin(): Complex {
-      Unit.assertDimensionless(this.uom);
-      var x = this.x;
-      var y = this.y;
-      return new Complex(sin(x) * cosh(y), cos(x) * sinh(y));
-    }
-
-    sinh(): Complex {
-      Unit.assertDimensionless(this.uom);
-      var x = this.x;
-      var y = this.y;
-      return new Complex(sinh(x) * cos(y), cosh(x) * sin(y));
-    }
-
-    unit(): Complex {
-      var x = this.x;
-      var y = this.y;
-      var divisor = norm(x, y);
-      return new Complex(x / divisor, y / divisor);
-    }
-
-    scalar(): number {
-      return this.x;
-    }
-
-    arg(): number {
-      return Math.atan2(this.y, this.x);
-    }
-
-    toStringCustom(coordToString: (x: number) =&gt; string): string {
-      var quantityString = &quot;Complex(&quot; + coordToString(this.x) + &quot;, &quot; + coordToString(this.y) + &quot;)&quot;;
-      if (this.uom) {
-        var uomString = this.uom.toString().trim();
-        if (uomString) {
-          return quantityString + &#x27; &#x27; + uomString;
-        }
-        else {
-          return quantityString;
-        }
-      }
-      else {
-        return quantityString;
-      }
-    }
-
-    toExponential(): string {
-      return this.toStringCustom(function(coord: number) { return coord.toExponential();});
-    }
-
-    toFixed(digits?: number): string {
-      return this.toStringCustom(function(coord: number) { return coord.toFixed(digits);});
-    }
-
-    toString(): string {
-      return this.toStringCustom(function(coord: number) { return coord.toString();});
-    }
-}
-
-export = Complex;
+export = IContextConsumer;
 
     </pre>
 </div>
