@@ -282,15 +282,15 @@ angular.module('app').factory('templates', [
     "</html>\n";
 
   var CODE_TEMPLATE_EIGHTJS = "" +
-    "var scene = new EIGHT.Scene()\n" +
+    "var c3d = new EIGHT.Canvas3D()\n" +
+    "var scene = new EIGHT.Scene([c3d])\n" +
     "var cameraL: EIGHT.PerspectiveCamera\n" +
     "var cameraR: EIGHT.PerspectiveCamera\n" +
-    "var c3d = new EIGHT.Canvas3D()\n" +
-    "var mesh: EIGHT.Mesh<EIGHT.Geometry, EIGHT.MeshNormalMaterial, EIGHT.Model>\n" +
+    "var mesh: EIGHT.Mesh<EIGHT.Geometry, EIGHT.MeshNormalMaterial, EIGHT.Model3>\n" +
     "\n" +
-    "var e1 = EIGHT.Vector3.e1\n" +
-    "var e2 = EIGHT.Vector3.e2\n" +
-    "var e3 = EIGHT.Vector3.e3\n" +
+    "var e1 = EIGHT.Euclidean3.e1\n" +
+    "var e2 = EIGHT.Euclidean3.e2\n" +
+    "var e3 = EIGHT.Euclidean3.e3\n" +
     "\n" +
     "var stats = new Stats()\n" +
     "stats.setMode(0)\n" +
@@ -298,7 +298,7 @@ angular.module('app').factory('templates', [
     "\n" +
     "document.body.style.margin = '0px'\n" +
     "document.body.style.overflow = 'hidden'\n" +
-    "document.body.appendChild(c3d.canvasElement)\n" +
+    "document.body.appendChild(c3d.canvas)\n" +
     "\n" +
     "init()\n" +
     "animate()\n" +
@@ -313,19 +313,19 @@ angular.module('app').factory('templates', [
     "  cameraR = new EIGHT.PerspectiveCamera(75 * Math.PI / 180, aspect, 1, 1000).setEye(e3 * 1.5 + e1 * 0.05 + e2)\n" +
     "  scene.add(cameraR)\n" +
     "\n" +
-    "  var complex = new EIGHT.CuboidComplex()\n" +
-    "  complex.subdivide(2)\n" +
-    "  complex.boundary(1)\n" +
-    "  var geometry = complex.toGeometry()\n" +
+    "  var chain = new EIGHT.CuboidChain()\n" +
+    "  chain.subdivide(2)\n" +
+    "  chain.boundary(1)\n" +
+    "  var geometry = chain.toGeometry()\n" +
     "  var material = new EIGHT.MeshNormalMaterial()\n" +
     "\n" +
-    "  mesh = new EIGHT.Mesh(geometry, material, new EIGHT.Model())\n" +
+    "  mesh = new EIGHT.Mesh(geometry, material, new EIGHT.Model3())\n" +
     "  scene.add(mesh)\n" +
-    "  mesh.model.color.set(0, 1, 0)\n" +
+    "  mesh.model.colorRGB.set(0, 1, 0)\n" +
     "\n" +
-    "  c3d.setSize(window.innerWidth, window.innerHeight)\n" +
-    "  c3d.addContextListener(scene)\n" +
-    "  c3d.synchronize(scene)\n" +
+    "  c3d.canvas.width = window.innerWidth\n" +
+    "  c3d.canvas.height = window.innerHeight\n" +
+    "  c3d.gl.viewport(0, 0, window.innerWidth, window.innerHeight)\n" +
     "}\n" +
     "\n" +
     "/**\n" +
@@ -342,10 +342,10 @@ angular.module('app').factory('templates', [
     "\n" +
     "  c3d.prolog()\n" +
     "\n" +
-    "  // mesh.model.color.set(1, 0, 0)\n" +
+    "  // mesh.model.colorRGB.set(1, 0, 0)\n" +
     "  // scene.draw(cameraL, c3d.canvasId)\n" +
     "\n" +
-    "  // mesh.model.color.set(0, 1, 1)\n" +
+    "  // mesh.model.colorRGB.set(0, 1, 1)\n" +
     "  scene.draw(cameraR, c3d.canvasId)\n" +
     "\n" +
     "  stats.end()\n" +
@@ -545,10 +545,10 @@ angular.module('app').factory('templates', [
     "  camera.setUniforms(programP, canvasId);\n" +
     "  // Uniforms may also be set directly and some standard names are symbolically defined.\n" +
     "  // The names used here should match the names used in the program source code.\n" +
-    "  programT.uniformVector3(EIGHT.Symbolic.UNIFORM_AMBIENT_LIGHT, ambientLight);\n" +
-    "  programT.uniformVector3('uDirectionalLightColor', dLightColor);\n" +
-    "  programT.uniformVector3('uDirectionalLightDirection', dLightDirection);\n" +
-    "  programP.uniform1f('uPointSize', 4);\n" +
+    "  programT.uniformVector3(EIGHT.Symbolic.UNIFORM_AMBIENT_LIGHT, ambientLight, canvasId);\n" +
+    "  programT.uniformVector3('uDirectionalLightColor', dLightColor, canvasId);\n" +
+    "  programT.uniformVector3('uDirectionalLightDirection', dLightDirection, canvasId);\n" +
+    "  programP.uniform1f('uPointSize', 4, canvasId);\n" +
     "\n" +
     "  /**\n" +
     "   * The buffered geometry for the cube.\n" +
@@ -561,28 +561,28 @@ angular.module('app').factory('templates', [
     "   * Implement your own custom models to do e.g., articulated robots./\n" +
     "   * See example in Libs file./\n" +
     "   */\n" +
-    "  var model: EIGHT.Model;\n" +
+    "  var model: EIGHT.Model3\n" +
     "\n" +
-    "  // We start with the geometry (complex) for a unit cube at the origin...\n" +
-    "  // A complex is considered to be an array of simplices.\n" +
-    "  var complex = new EIGHT.CuboidComplex(1, 1, 1);\n" +
+    "  // We start with the geometry (chain) for a unit cube at the origin...\n" +
+    "  // A chain is considered to be an array of simplices.\n" +
+    "  var chain = new EIGHT.CuboidChain(1, 1, 1);\n" +
     "  // Subdivide the geometry (here twice) if you wish to get more detail.\n" +
     "  // Hit 'Play' in mathdoodle.io to see the effect of, say, n = 0, 1, 2, 3.\n" +
-    "  complex.subdivide(2);\n" +
+    "  chain.subdivide(2);\n" +
     "  // Apply the boundary operator once to make TRIANGLES => LINES,\n" +
     "  // twice to make TRIANGLES => POINTS,\n" +
     "  // three times to make TRIANGLES => an empty simplex with k = -1,)\n" +
     "  // four times to make TRIANGLES => undefined.\n" +
-    "  // Try the values n = 0, 1, 2, 3, 4, 5. Look at the canvas and the Console.\n" +
-    "  complex.boundary(1);\n" +
+    "  // Try the values n = 0, 1, 2, 3, 4. Look at the canvas and the Console.\n" +
+    "  chain.boundary(1);\n" +
     "  /**\n" +
     "   * Summary information on the geometry such as dimensionality and sizes for attributes.\n" +
     "   * This same data structure may be used to map geometry attribute names to program names.\n" +
     "   */\n" +
-    "  // Check that we still have a defined complex after all that mucking about.\n" +
-    "  if (complex.meta) {\n" +
-    "    // Convert the complex to a geometry.\n" +
-    "    var geometry: EIGHT.Geometry = complex.toGeometry();\n" +
+    "  // Check that we still have a defined chain after all that mucking about.\n" +
+    "  if (chain.meta) {\n" +
+    "    // Convert the chain to a geometry.\n" +
+    "    var geometry: EIGHT.Geometry = chain.toGeometry();\n" +
     "    // Submit the geometry data to the context which will manage underlying WebGLBuffer(s) for you.\n" +
     "    geobuff = c3d.createBufferGeometry(geometry.data);\n" +
     "    if (geobuff) {\n" +
@@ -613,9 +613,9 @@ angular.module('app').factory('templates', [
     "    console.warn('Nothing to see because the geometry is undefined.');\n" +
     "  }\n" +
     "  // Create the model anyway (not what we would do in the real world).\n" +
-    "  model = new EIGHT.Model();\n" +
+    "  model = new EIGHT.Model3();\n" +
     "  // Green, like on the 'Matrix', would be a good color, Neo. Or maybe red or blue?\n" +
-    "  model.color.set(0, 1, 0);\n" +
+    "  model.colorRGB.set(0, 1, 0);\n" +
     "\n" +
     "  // PERFORMANCE HINT\n"+
     "  // In order to avoid creating temporary objects and excessive garbage collection,\n" +
@@ -1127,7 +1127,7 @@ angular.module('app').factory('templates', [
     "\n"+
     "    var geobuff: EIGHT.IBufferGeometry;\n"+
     "    var material: EIGHT.IMaterial;\n" +
-    "    var control = new EIGHT.Model();\n"+
+    "    var model = new EIGHT.Model3();\n"+
     "\n"+
     "    var R = -(e1 ^ e2) / 2;\n"+
     "\n" +
@@ -1171,12 +1171,12 @@ angular.module('app').factory('templates', [
     "\n" +
     "      geobuff.bind(material);\n" +
     "\n" +
-    "      control.color.set(0.0, 1.0, 0.0);\n"+
+    "      model.colorRGB.set(0.0, 1.0, 0.0);\n"+
     "      for(var i = 0; i < 8; i++) {\n" +
-    "        control.attitude.copy(R).multiplyScalar(theta - i * 2 * Math.PI / 8).exp();\n"+
-    "        control.setUniforms(material, c3d.canvasId);\n"+
+    "        model.attitude.copy(R).multiplyScalar(theta - i * 2 * Math.PI / 8).exp();\n"+
+    "        model.setUniforms(material, c3d.canvasId);\n"+
     "        geobuff.draw();\n"+
-    "        control.color.multiplyScalar(0.7);\n"+
+    "        model.colorRGB.multiplyScalar(0.7);\n"+
     "      }\n" +
     "\n" +
     "      geobuff.unbind();\n" +
