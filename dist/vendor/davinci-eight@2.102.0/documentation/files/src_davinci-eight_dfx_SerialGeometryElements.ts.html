@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/davinci-eight/dfx/GeometryData.ts - davinci-eight</title>
+    <title>src/davinci-eight/dfx/SerialGeometryElements.ts - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -17,7 +17,7 @@
                 <h1><img src="../../assets/logo.png" title="davinci-eight"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.111.0</em>
+            <em>API Docs for: 2.112.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -47,18 +47,17 @@
                                 <li><a href="../classes/Cartesian2.html">Cartesian2</a></li>
                                 <li><a href="../classes/Cartesian3.html">Cartesian3</a></li>
                                 <li><a href="../classes/Cartesian4.html">Cartesian4</a></li>
-                                <li><a href="../classes/Chain.html">Chain</a></li>
                                 <li><a href="../classes/Color.html">Color</a></li>
+                                <li><a href="../classes/Complex.html">Complex</a></li>
                                 <li><a href="../classes/ContextAttributesLogger.html">ContextAttributesLogger</a></li>
                                 <li><a href="../classes/ContextController.html">ContextController</a></li>
                                 <li><a href="../classes/ContextRenderer.html">ContextRenderer</a></li>
                                 <li><a href="../classes/createView.html">createView</a></li>
-                                <li><a href="../classes/CuboidChain.html">CuboidChain</a></li>
                                 <li><a href="../classes/CuboidGeometry.html">CuboidGeometry</a></li>
                                 <li><a href="../classes/CuboidMesh.html">CuboidMesh</a></li>
+                                <li><a href="../classes/CuboidSerialGeometry.html">CuboidSerialGeometry</a></li>
                                 <li><a href="../classes/CylinderArgs.html">CylinderArgs</a></li>
                                 <li><a href="../classes/Dimensions.html">Dimensions</a></li>
-                                <li><a href="../classes/DrawAttribute.html">DrawAttribute</a></li>
                                 <li><a href="../classes/EIGHTLogger.html">EIGHTLogger</a></li>
                                 <li><a href="../classes/ElementArray.html">ElementArray</a></li>
                                 <li><a href="../classes/ElementBuffer.html">ElementBuffer</a></li>
@@ -92,9 +91,12 @@
                                 <li><a href="../classes/Perspective.html">Perspective</a></li>
                                 <li><a href="../classes/PerspectiveCamera.html">PerspectiveCamera</a></li>
                                 <li><a href="../classes/Point3.html">Point3</a></li>
-                                <li><a href="../classes/QQ.html">QQ</a></li>
+                                <li><a href="../classes/Rational.html">Rational</a></li>
                                 <li><a href="../classes/RigidBody3.html">RigidBody3</a></li>
                                 <li><a href="../classes/Scene.html">Scene</a></li>
+                                <li><a href="../classes/SerialGeometry.html">SerialGeometry</a></li>
+                                <li><a href="../classes/SerialGeometryAttribute.html">SerialGeometryAttribute</a></li>
+                                <li><a href="../classes/SerialGeometryElements.html">SerialGeometryElements</a></li>
                                 <li><a href="../classes/ShaderVariableDecl.html">ShaderVariableDecl</a></li>
                                 <li><a href="../classes/Shareable.html">Shareable</a></li>
                                 <li><a href="../classes/Simplex.html">Simplex</a></li>
@@ -152,24 +154,42 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: src/davinci-eight/dfx/GeometryData.ts</h1>
+<h1 class="file-heading">File: src/davinci-eight/dfx/SerialGeometryElements.ts</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 import expectArg = require(&#x27;../checks/expectArg&#x27;);
-import DrawAttribute = require(&#x27;../dfx/DrawAttribute&#x27;);
+import SerialGeometryAttribute = require(&#x27;../dfx/SerialGeometryAttribute&#x27;);
 import VectorN = require(&#x27;../math/VectorN&#x27;);
 
-class GeometryData {
+/**
+ * @class SerialGeometryElements
+ */
+class SerialGeometryElements {
   /**
    * 0 =&gt; POINTS, 1 =&gt; LINES, 2 =&gt; TRIANGLES
    */
    // TODO: Documentation and validation.
   public k: number;
+  /**
+   * @property indices
+   * @type {VectorN}
+   */
   public indices: VectorN&lt;number&gt;;
   // TODO: Looks like a DrawAttributeMap here (implementation only)
-  public attributes: {[name:string]: DrawAttribute} = {};
-  constructor(k: number, indices: VectorN&lt;number&gt;, attributes: { [name: string]: DrawAttribute }) {
+  /**
+   * @property attributes
+   * @type {{[name:string]: SerialGeometryAttribute}}
+   */
+  public attributes: {[name:string]: SerialGeometryAttribute} = {};
+  /**
+   * @class SerialGeometryElements
+   * @constructor
+   * @param k {number} &lt;p&gt;The dimensionality of the primitives.&lt;/p&gt;
+   * @param indices {VectorN} &lt;p&gt;A list of index into the attributes&lt;/p&gt;
+   * @param attributes {{[name:string]: SerialGeometryAttribute}}
+   */
+  constructor(k: number, indices: VectorN&lt;number&gt;, attributes: { [name: string]: SerialGeometryAttribute }) {
     expectArg(&#x27;indices&#x27;, indices).toBeObject().toSatisfy(indices instanceof VectorN, &quot;indices must be a VectorN&lt;number&gt;&quot;);
     expectArg(&#x27;attributes&#x27;, attributes).toBeObject();
     this.k = k;
@@ -178,7 +198,7 @@ class GeometryData {
   }
 }
 
-export = GeometryData;
+export = SerialGeometryElements;
 
     </pre>
 </div>

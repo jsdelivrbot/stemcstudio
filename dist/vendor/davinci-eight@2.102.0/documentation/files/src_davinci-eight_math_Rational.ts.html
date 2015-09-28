@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>QQ - davinci-eight</title>
+    <title>src/davinci-eight/math/Rational.ts - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -17,7 +17,7 @@
                 <h1><img src="../../assets/logo.png" title="davinci-eight"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.111.0</em>
+            <em>API Docs for: 2.112.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -47,18 +47,17 @@
                                 <li><a href="../classes/Cartesian2.html">Cartesian2</a></li>
                                 <li><a href="../classes/Cartesian3.html">Cartesian3</a></li>
                                 <li><a href="../classes/Cartesian4.html">Cartesian4</a></li>
-                                <li><a href="../classes/Chain.html">Chain</a></li>
                                 <li><a href="../classes/Color.html">Color</a></li>
+                                <li><a href="../classes/Complex.html">Complex</a></li>
                                 <li><a href="../classes/ContextAttributesLogger.html">ContextAttributesLogger</a></li>
                                 <li><a href="../classes/ContextController.html">ContextController</a></li>
                                 <li><a href="../classes/ContextRenderer.html">ContextRenderer</a></li>
                                 <li><a href="../classes/createView.html">createView</a></li>
-                                <li><a href="../classes/CuboidChain.html">CuboidChain</a></li>
                                 <li><a href="../classes/CuboidGeometry.html">CuboidGeometry</a></li>
                                 <li><a href="../classes/CuboidMesh.html">CuboidMesh</a></li>
+                                <li><a href="../classes/CuboidSerialGeometry.html">CuboidSerialGeometry</a></li>
                                 <li><a href="../classes/CylinderArgs.html">CylinderArgs</a></li>
                                 <li><a href="../classes/Dimensions.html">Dimensions</a></li>
-                                <li><a href="../classes/DrawAttribute.html">DrawAttribute</a></li>
                                 <li><a href="../classes/EIGHTLogger.html">EIGHTLogger</a></li>
                                 <li><a href="../classes/ElementArray.html">ElementArray</a></li>
                                 <li><a href="../classes/ElementBuffer.html">ElementBuffer</a></li>
@@ -92,9 +91,12 @@
                                 <li><a href="../classes/Perspective.html">Perspective</a></li>
                                 <li><a href="../classes/PerspectiveCamera.html">PerspectiveCamera</a></li>
                                 <li><a href="../classes/Point3.html">Point3</a></li>
-                                <li><a href="../classes/QQ.html">QQ</a></li>
+                                <li><a href="../classes/Rational.html">Rational</a></li>
                                 <li><a href="../classes/RigidBody3.html">RigidBody3</a></li>
                                 <li><a href="../classes/Scene.html">Scene</a></li>
+                                <li><a href="../classes/SerialGeometry.html">SerialGeometry</a></li>
+                                <li><a href="../classes/SerialGeometryAttribute.html">SerialGeometryAttribute</a></li>
+                                <li><a href="../classes/SerialGeometryElements.html">SerialGeometryElements</a></li>
                                 <li><a href="../classes/ShaderVariableDecl.html">ShaderVariableDecl</a></li>
                                 <li><a href="../classes/Shareable.html">Shareable</a></li>
                                 <li><a href="../classes/Simplex.html">Simplex</a></li>
@@ -152,116 +154,153 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>QQ Class</h1>
-<div class="box meta">
+<h1 class="file-heading">File: src/davinci-eight/math/Rational.ts</h1>
 
-        <div class="extends">
-            Extends Field
-        </div>
+<div class="file">
+    <pre class="code prettyprint linenums">
+import mustBeInteger = require(&#x27;../checks/mustBeInteger&#x27;)
 
-        <div class="foundat">
-            Defined in: <a href="../files/src_davinci-eight_math_QQ.ts.html#l36"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;QQ.ts:36</code></a>
-        </div>
+/**
+ * @class Rational
+ */
+class Rational {
+  /**
+   * @property _numer
+   * @type {number}
+   * @private
+   */
+  private _numer: number;
+  /**
+   * @property _denom
+   * @type {number}
+   * @private
+   */
+  private _denom: number;
 
+  /**
+   * The Rational class represents a rational number.
+   *
+   * @class Rational
+   * @constructor
+   * @param {number} n The numerator, an integer.
+   * @param {number} d The denominator, an integer.
+   */
+  constructor(n: number, d: number) {
+    mustBeInteger(&#x27;n&#x27;, n);
+    mustBeInteger(&#x27;d&#x27;, d);
+    var g: number;
 
-</div>
+    var gcd = function(a: number, b: number) {
+      mustBeInteger(&#x27;a&#x27;, a);
+      mustBeInteger(&#x27;b&#x27;, b);
+      var temp: number;
 
+      if (a &lt; 0) {
+          a = -a;
+      }
+      if (b &lt; 0) {
+          b = -b;
+      }
+      if (b &gt; a) {
+          temp = a;
+          a = b;
+          b = temp;
+      }
+      while (true) {
+          a %= b;
+          if (a === 0) {
+              return b;
+          }
+          b %= a;
+          if (b === 0) {
+              return a;
+          }
+      }
+    };
 
-<div class="box intro">
-    <p>The QQ class represents a rational number.</p>
+    if (d === 0) {
+      throw new Error(&quot;denominator must not be zero&quot;);
+    }
+    if (n === 0) {
+      g = 1;
+    }
+    else {
+      g = gcd(Math.abs(n), Math.abs(d));
+    }
+    if (d &lt; 0) {
+      n = -n;
+      d = -d;
+    }
+    this._numer = n / g;
+    this._denom = d / g;
+  }
+  /**
+   * @property numer
+   * @type {number}
+   * @readOnly
+   */
+  get numer(): number {
+    return this._numer;
+  }
+  /**
+   * @property denom
+   * @type {number}
+   * @readOnly
+   */
+  get denom(): number {
+    return this._denom;
+  }
 
-</div>
+  add(rhs: Rational): Rational {
+    return new Rational(this._numer * rhs._denom + this._denom * rhs._numer, this._denom * rhs._denom);
+  }
 
-    <div class="constructor">
-        <h2>Constructor</h2>
-<div id="method_QQ" class="method item">
-    <h3 class="name"><code>QQ</code></h3>
+  sub(rhs: Rational): Rational {
+    return new Rational(this._numer * rhs._denom - this._denom * rhs._numer, this._denom * rhs._denom);
+  }
 
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>n</code>
-                </li>
-                <li class="arg">
-                        <code>d</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
+  mul(rhs: Rational): Rational {
+    return new Rational(this._numer * rhs._numer, this._denom * rhs._denom);
+  }
 
+  // TODO: div testing
+  div(rhs: any): Rational {
+    if (typeof rhs === &#x27;number&#x27;) {
+        return new Rational(this._numer, this._denom * rhs);
+    }
+    else {
+        return new Rational(this._numer * rhs._denom, this._denom * rhs._numer);
+    }
+  }
 
+  isZero(): boolean {
+    return this._numer === 0;
+  }
 
+  negative(): Rational {
+    return new Rational(-this._numer, this._denom);
+  }
 
+  equals(other: any): boolean {
+    if (other instanceof Rational) {
+        return this._numer * other._denom === this._denom * other._numer;
+    }
+    else {
+        return false;
+    }
+  }
 
+  toString(): string {
+    return &quot;&quot; + this._numer + &quot;/&quot; + this._denom;
+  }
 
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_math_QQ.ts.html#l36"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;QQ.ts:36</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">n</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
-
-
-                    <div class="param-description">
-                        <p>The numerator.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">d</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
-
-
-                    <div class="param-description">
-                        <p>The denominator.</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-    </div>
-
-<div id="classdocs" class="tabview">
-    <ul class="api-class-tabs">
-        <li class="api-class-tab index"><a href="#index">Index</a></li>
-
-    </ul>
-
-    <div>
-        <div id="index" class="api-class-tabpanel index">
-            <h2 class="off-left">Item Index</h2>
-
-
-
-
-        </div>
-
-
-
-
-    </div>
+  static ONE: Rational = new Rational(1, 1);
+  static TWO: Rational = new Rational(2, 1);
+  static MINUS_ONE: Rational = new Rational(-1, 1);
+  static ZERO: Rational = new Rational(0, 1);
+}
+export = Rational;
+    </pre>
 </div>
                     </div>
                 </div>

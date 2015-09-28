@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>DrawAttribute - davinci-eight</title>
+    <title>src/davinci-eight/geometries/SerialGeometry.ts - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -17,7 +17,7 @@
                 <h1><img src="../../assets/logo.png" title="davinci-eight"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.111.0</em>
+            <em>API Docs for: 2.112.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -47,18 +47,17 @@
                                 <li><a href="../classes/Cartesian2.html">Cartesian2</a></li>
                                 <li><a href="../classes/Cartesian3.html">Cartesian3</a></li>
                                 <li><a href="../classes/Cartesian4.html">Cartesian4</a></li>
-                                <li><a href="../classes/Chain.html">Chain</a></li>
                                 <li><a href="../classes/Color.html">Color</a></li>
+                                <li><a href="../classes/Complex.html">Complex</a></li>
                                 <li><a href="../classes/ContextAttributesLogger.html">ContextAttributesLogger</a></li>
                                 <li><a href="../classes/ContextController.html">ContextController</a></li>
                                 <li><a href="../classes/ContextRenderer.html">ContextRenderer</a></li>
                                 <li><a href="../classes/createView.html">createView</a></li>
-                                <li><a href="../classes/CuboidChain.html">CuboidChain</a></li>
                                 <li><a href="../classes/CuboidGeometry.html">CuboidGeometry</a></li>
                                 <li><a href="../classes/CuboidMesh.html">CuboidMesh</a></li>
+                                <li><a href="../classes/CuboidSerialGeometry.html">CuboidSerialGeometry</a></li>
                                 <li><a href="../classes/CylinderArgs.html">CylinderArgs</a></li>
                                 <li><a href="../classes/Dimensions.html">Dimensions</a></li>
-                                <li><a href="../classes/DrawAttribute.html">DrawAttribute</a></li>
                                 <li><a href="../classes/EIGHTLogger.html">EIGHTLogger</a></li>
                                 <li><a href="../classes/ElementArray.html">ElementArray</a></li>
                                 <li><a href="../classes/ElementBuffer.html">ElementBuffer</a></li>
@@ -92,9 +91,12 @@
                                 <li><a href="../classes/Perspective.html">Perspective</a></li>
                                 <li><a href="../classes/PerspectiveCamera.html">PerspectiveCamera</a></li>
                                 <li><a href="../classes/Point3.html">Point3</a></li>
-                                <li><a href="../classes/QQ.html">QQ</a></li>
+                                <li><a href="../classes/Rational.html">Rational</a></li>
                                 <li><a href="../classes/RigidBody3.html">RigidBody3</a></li>
                                 <li><a href="../classes/Scene.html">Scene</a></li>
+                                <li><a href="../classes/SerialGeometry.html">SerialGeometry</a></li>
+                                <li><a href="../classes/SerialGeometryAttribute.html">SerialGeometryAttribute</a></li>
+                                <li><a href="../classes/SerialGeometryElements.html">SerialGeometryElements</a></li>
                                 <li><a href="../classes/ShaderVariableDecl.html">ShaderVariableDecl</a></li>
                                 <li><a href="../classes/Shareable.html">Shareable</a></li>
                                 <li><a href="../classes/Simplex.html">Simplex</a></li>
@@ -152,116 +154,50 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>DrawAttribute Class</h1>
-<div class="box meta">
+<h1 class="file-heading">File: src/davinci-eight/geometries/SerialGeometry.ts</h1>
 
+<div class="file">
+    <pre class="code prettyprint linenums">
+import SerialGeometryElements = require(&#x27;../dfx/SerialGeometryElements&#x27;);
+import GeometryMeta = require(&#x27;../dfx/GeometryMeta&#x27;);
 
-        <div class="foundat">
-            Defined in: <a href="../files/src_davinci-eight_dfx_DrawAttribute.ts.html#l54"><code>src&#x2F;davinci-eight&#x2F;dfx&#x2F;DrawAttribute.ts:54</code></a>
-        </div>
+/**
+ * &lt;p&gt;
+ * A geometry holds the elements or arrays sent to the GLSL pipeline.
+ * &lt;/p&gt;
+ * &lt;p&gt;
+ * These instructions are in a compact form suitable for populating WebGLBuffer(s).
+ * &lt;/p&gt;
+ *
+ * @class SerialGeometry
+ */
+class SerialGeometry {
+  /**
+   * @property data
+   * @type {SerialGeometry}
+   */
+  public data: SerialGeometryElements;
+  /**
+   * @property meta
+   * @type {GeometryMeta}
+   */
+  // FIXME: GeometryMeta vanishes in the API docs because it is an interface.
+  public meta: GeometryMeta;
+  /**
+   * @class SerialGeometry
+   * @constructor
+   * @param data {SerialGeometryElements} The instructions for drawing the geometry.
+   * @param meta {GeometryMeta} 
+   */
+  constructor(data: SerialGeometryElements, meta: GeometryMeta) {
+    this.data = data;
+    this.meta = meta;
+  }
+}
 
+export = SerialGeometry;
 
-</div>
-
-
-<div class="box intro">
-    <p>
-Holds all the values of a particular attribute.
-The size property describes how to break up the values.
-The length of the values should be an integer multiple of the size.
-</p>
-<p>var x = 3;</p>
-
-</div>
-
-    <div class="constructor">
-        <h2>Constructor</h2>
-<div id="method_DrawAttribute" class="method item">
-    <h3 class="name"><code>DrawAttribute</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>values</code>
-                </li>
-                <li class="arg">
-                        <code>size</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_dfx_DrawAttribute.ts.html#l54"><code>src&#x2F;davinci-eight&#x2F;dfx&#x2F;DrawAttribute.ts:54</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">values</code>
-                        <span class="type">VectorN<number></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">size</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-    </div>
-
-<div id="classdocs" class="tabview">
-    <ul class="api-class-tabs">
-        <li class="api-class-tab index"><a href="#index">Index</a></li>
-
-    </ul>
-
-    <div>
-        <div id="index" class="api-class-tabpanel index">
-            <h2 class="off-left">Item Index</h2>
-
-
-
-
-        </div>
-
-
-
-
-    </div>
+    </pre>
 </div>
                     </div>
                 </div>

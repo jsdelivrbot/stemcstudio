@@ -286,7 +286,7 @@ angular.module('app').factory('templates', [
     "var scene = new EIGHT.Scene([c3d])\n" +
     "var cameraL: EIGHT.PerspectiveCamera\n" +
     "var cameraR: EIGHT.PerspectiveCamera\n" +
-    "var mesh: EIGHT.Mesh<EIGHT.Geometry, EIGHT.MeshNormalMaterial, EIGHT.Model3>\n" +
+    "var mesh: EIGHT.Mesh<EIGHT.SerialGeometry, EIGHT.MeshNormalMaterial, EIGHT.Model3>\n" +
     "\n" +
     "var e1 = EIGHT.Euclidean3.e1\n" +
     "var e2 = EIGHT.Euclidean3.e2\n" +
@@ -313,10 +313,10 @@ angular.module('app').factory('templates', [
     "  cameraR = new EIGHT.PerspectiveCamera(75 * Math.PI / 180, aspect, 1, 1000).setEye(e3 * 1.5 + e1 * 0.05 + e2)\n" +
     "  scene.add(cameraR)\n" +
     "\n" +
-    "  var chain = new EIGHT.CuboidChain()\n" +
-    "  chain.subdivide(2)\n" +
-    "  chain.boundary(1)\n" +
-    "  var geometry = chain.toGeometry()\n" +
+    "  var cuboid = new EIGHT.CuboidGeometry()\n" +
+    "  cuboid.subdivide(2)\n" +
+    "  cuboid.boundary(1)\n" +
+    "  var geometry = cuboid.toSerialGeometry()\n" +
     "  var material = new EIGHT.MeshNormalMaterial()\n" +
     "\n" +
     "  mesh = new EIGHT.Mesh(geometry, material, new EIGHT.Model3())\n" +
@@ -563,28 +563,28 @@ angular.module('app').factory('templates', [
     "   */\n" +
     "  var model: EIGHT.Model3\n" +
     "\n" +
-    "  // We start with the geometry (chain) for a unit cube at the origin...\n" +
-    "  // A chain is considered to be an array of simplices.\n" +
-    "  var chain = new EIGHT.CuboidChain(1, 1, 1);\n" +
+    "  // We start with the geometry (geometry) for a unit cube at the origin...\n" +
+    "  // A geometry is considered to be an array of simplices.\n" +
+    "  var geometry = new EIGHT.CuboidGeometry(1, 1, 1);\n" +
     "  // Subdivide the geometry (here twice) if you wish to get more detail.\n" +
     "  // Hit 'Play' in mathdoodle.io to see the effect of, say, n = 0, 1, 2, 3.\n" +
-    "  chain.subdivide(2);\n" +
+    "  geometry.subdivide(2);\n" +
     "  // Apply the boundary operator once to make TRIANGLES => LINES,\n" +
     "  // twice to make TRIANGLES => POINTS,\n" +
     "  // three times to make TRIANGLES => an empty simplex with k = -1,)\n" +
     "  // four times to make TRIANGLES => undefined.\n" +
     "  // Try the values n = 0, 1, 2, 3, 4. Look at the canvas and the Console.\n" +
-    "  chain.boundary(1);\n" +
+    "  geometry.boundary(1);\n" +
     "  /**\n" +
     "   * Summary information on the geometry such as dimensionality and sizes for attributes.\n" +
     "   * This same data structure may be used to map geometry attribute names to program names.\n" +
     "   */\n" +
-    "  // Check that we still have a defined chain after all that mucking about.\n" +
-    "  if (chain.meta) {\n" +
-    "    // Convert the chain to a geometry.\n" +
-    "    var geometry: EIGHT.Geometry = chain.toGeometry();\n" +
+    "  // Check that we still have a defined geometry after all that mucking about.\n" +
+    "  if (geometry.meta) {\n" +
+    "    // Convert the geometry to a geometry.\n" +
+    "    var serial: EIGHT.SerialGeometry = geometry.toSerialGeometry();\n" +
     "    // Submit the geometry data to the context which will manage underlying WebGLBuffer(s) for you.\n" +
-    "    geobuff = c3d.createBufferGeometry(geometry.data);\n" +
+    "    geobuff = c3d.createBufferGeometry(serial.data);\n" +
     "    if (geobuff) {\n" +
     "      // Pick an appropriate program to use with the mesh based upon the dimensionality.\n" +
     "      switch(geometry.meta.k) {\n" +
@@ -1148,9 +1148,9 @@ angular.module('app').factory('templates', [
     "      // console.log(JSON.stringify(meta, null, 2));\n"+
     "      // Map standard names in geometry to names used in vertex shader code.\n"+
     "      meta.attributes[EIGHT.Symbolic.ATTRIBUTE_POSITION].name = 'aPosition';\n"+
-    "      var data = EIGHT.toGeometryData(simplices, meta);\n"+
+    "      var elements = EIGHT.toSerialGeometryElements(simplices, meta);\n"+
     "\n"+
-    "      geobuff = c3d.createBufferGeometry(data);\n"+
+    "      geobuff = c3d.createBufferGeometry(elements);\n"+
     "\n"+
     "      camera.setUniforms(material, c3d.canvasId);\n"+
     "    }\n"+

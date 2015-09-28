@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/davinci-eight/dfx/DrawAttribute.ts - davinci-eight</title>
+    <title>Complex - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -17,7 +17,7 @@
                 <h1><img src="../../assets/logo.png" title="davinci-eight"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.111.0</em>
+            <em>API Docs for: 2.112.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -47,18 +47,17 @@
                                 <li><a href="../classes/Cartesian2.html">Cartesian2</a></li>
                                 <li><a href="../classes/Cartesian3.html">Cartesian3</a></li>
                                 <li><a href="../classes/Cartesian4.html">Cartesian4</a></li>
-                                <li><a href="../classes/Chain.html">Chain</a></li>
                                 <li><a href="../classes/Color.html">Color</a></li>
+                                <li><a href="../classes/Complex.html">Complex</a></li>
                                 <li><a href="../classes/ContextAttributesLogger.html">ContextAttributesLogger</a></li>
                                 <li><a href="../classes/ContextController.html">ContextController</a></li>
                                 <li><a href="../classes/ContextRenderer.html">ContextRenderer</a></li>
                                 <li><a href="../classes/createView.html">createView</a></li>
-                                <li><a href="../classes/CuboidChain.html">CuboidChain</a></li>
                                 <li><a href="../classes/CuboidGeometry.html">CuboidGeometry</a></li>
                                 <li><a href="../classes/CuboidMesh.html">CuboidMesh</a></li>
+                                <li><a href="../classes/CuboidSerialGeometry.html">CuboidSerialGeometry</a></li>
                                 <li><a href="../classes/CylinderArgs.html">CylinderArgs</a></li>
                                 <li><a href="../classes/Dimensions.html">Dimensions</a></li>
-                                <li><a href="../classes/DrawAttribute.html">DrawAttribute</a></li>
                                 <li><a href="../classes/EIGHTLogger.html">EIGHTLogger</a></li>
                                 <li><a href="../classes/ElementArray.html">ElementArray</a></li>
                                 <li><a href="../classes/ElementBuffer.html">ElementBuffer</a></li>
@@ -92,9 +91,12 @@
                                 <li><a href="../classes/Perspective.html">Perspective</a></li>
                                 <li><a href="../classes/PerspectiveCamera.html">PerspectiveCamera</a></li>
                                 <li><a href="../classes/Point3.html">Point3</a></li>
-                                <li><a href="../classes/QQ.html">QQ</a></li>
+                                <li><a href="../classes/Rational.html">Rational</a></li>
                                 <li><a href="../classes/RigidBody3.html">RigidBody3</a></li>
                                 <li><a href="../classes/Scene.html">Scene</a></li>
+                                <li><a href="../classes/SerialGeometry.html">SerialGeometry</a></li>
+                                <li><a href="../classes/SerialGeometryAttribute.html">SerialGeometryAttribute</a></li>
+                                <li><a href="../classes/SerialGeometryElements.html">SerialGeometryElements</a></li>
                                 <li><a href="../classes/ShaderVariableDecl.html">ShaderVariableDecl</a></li>
                                 <li><a href="../classes/Shareable.html">Shareable</a></li>
                                 <li><a href="../classes/Simplex.html">Simplex</a></li>
@@ -152,76 +154,210 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: src/davinci-eight/dfx/DrawAttribute.ts</h1>
+<h1>Complex Class</h1>
+<div class="box meta">
 
-<div class="file">
-    <pre class="code prettyprint linenums">
-import expectArg = require(&#x27;../checks/expectArg&#x27;);
-import VectorN = require(&#x27;../math/VectorN&#x27;);
 
-function isVectorN(values: VectorN&lt;number&gt;): boolean {
-  return values instanceof VectorN;
-}
+        <div class="foundat">
+            Defined in: <a href="../files/src_davinci-eight_math_Complex.ts.html#l51"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Complex.ts:51</code></a>
+        </div>
 
-function checkValues(values: VectorN&lt;number&gt;): VectorN&lt;number&gt; {
-  if (!isVectorN(values)) {
-    throw new Error(&quot;values must be a VectorN&quot;);
-  }
-  return values;
-}
 
-function isExactMultipleOf(numer: number, denom: number): boolean {
-  return numer % denom === 0;
-}
+</div>
 
-function checkSize(size: number, values: VectorN&lt;number&gt;): number {
-  if (typeof size === &#x27;number&#x27;) {
-    if (!isExactMultipleOf(values.length, size)) {
-      throw new Error(&quot;values.length must be an exact multiple of size&quot;);
-    }
-  }
-  else {
-    throw new Error(&quot;size must be a number&quot;);
-  }
-  return size;
-}
 
-/**
- * &lt;p&gt;
- * Holds all the values of a particular attribute.
- * The size property describes how to break up the values.
- * The length of the values should be an integer multiple of the size.
- * &lt;/p&gt;
+<div class="box intro">
+    
+</div>
 
-  var x = 3;
+    <div class="constructor">
+        <h2>Constructor</h2>
+<div id="method_Complex" class="method item">
+    <h3 class="name"><code>Complex</code></h3>
 
- * @class DrawAttribute
- */
-class DrawAttribute {
-  /**
-   *
-   * The values of the attribute.
-   */
-  public values: VectorN&lt;number&gt;;
-  /**
-   * The chunking size of the attribute.
-   * This is distinct from the size in the &#x60;GeometryMeta&#x60;.
-   * The chunking size is invariant given the values and is used to describe the vertex attribute pointer.
-   */
-  public size: number;
-  /**
-   * @class DrawAttribute
-   * @constructor
-   * @param values {VectorN&lt;number&gt;}
-   * @param size {number}
-   */
-  constructor(values: VectorN&lt;number&gt;, size: number) {
-    this.values = checkValues(values);
-    this.size = checkSize(size, values);
-  }
-}
-export = DrawAttribute;
-    </pre>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>x</code>
+                </li>
+                <li class="arg">
+                        <code>y</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_math_Complex.ts.html#l51"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Complex.ts:51</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">x</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+                    <div class="param-description">
+                        <p>The real part of the complex number.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">y</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+                    <div class="param-description">
+                        <p>The imaginary part of the complex number.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+    </div>
+
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
+
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+
+                    <ul class="index-list properties">
+                            <li class="index-item property">
+                                <a href="#property_uom">uom</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_x">x</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_y">y</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+
+        </div>
+
+
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+
+<div id="property_uom" class="property item">
+    <h3 class="name"><code>uom</code></h3>
+    <span class="type"><a href="../classes/Unit.html" class="crosslink">Unit</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_math_Complex.ts.html#l45"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Complex.ts:45</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>The optional unit of measure.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_x" class="property item">
+    <h3 class="name"><code>x</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_math_Complex.ts.html#l33"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Complex.ts:33</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>The real part of the complex number.</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_y" class="property item">
+    <h3 class="name"><code>y</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_math_Complex.ts.html#l39"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Complex.ts:39</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>The imaginary part of the complex number.</p>
+
+    </div>
+
+
+
+</div>
+            </div>
+
+
+    </div>
 </div>
                     </div>
                 </div>
