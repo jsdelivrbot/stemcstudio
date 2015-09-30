@@ -562,6 +562,8 @@ angular.module('app').factory('templates', [
     "  // We start with the geometry (geometry) for a unit cube at the origin...\n" +
     "  // A geometry is considered to be an array of simplices.\n" +
     "  var geometry = new EIGHT.CuboidGeometry()\n" +
+    "  geometry.k = EIGHT.Simplex.K_FOR_TRIANGLE\n" +
+    "  geometry.calculate()\n" +
     "  // Subdivide the geometry (here twice) if you wish to get more detail.\n" +
     "  // Hit 'Play' in mathdoodle.io to see the effect of, say, n = 0, 1, 2, 3.\n" +
     "  geometry.subdivide(2);\n" +
@@ -570,7 +572,7 @@ angular.module('app').factory('templates', [
     "  // three times to make TRIANGLES => an empty simplex with k = -1,)\n" +
     "  // four times to make TRIANGLES => undefined.\n" +
     "  // Try the values n = 0, 1, 2, 3, 4. Look at the canvas and the Console.\n" +
-    "  geometry.boundary(1)\n" +
+    "  geometry.boundary(0)\n" +
     "  /**\n" +
     "   * Summary information on the geometry such as dimensionality and sizes for attributes.\n" +
     "   * This same data structure may be used to map geometry attribute names to program names.\n" +
@@ -629,8 +631,8 @@ angular.module('app').factory('templates', [
     "  // The global constants, e1, e2 and e3, are defined in the 'Libs' file.\n" +
     "  var S = exp(-(e2 ^ e1) * tiltAngle / 2)\n" +
     "  var B = e3 ^ e1\n" +
-    "  var rotorL = EIGHT.rotor3()\n" +
-    "  var rotorR = EIGHT.rotor3()\n" +
+    "  var rotorL = new EIGHT.Spinor3()\n" +
+    "  var rotorR = new EIGHT.Spinor3()\n" +
     "\n" +
     "  EIGHT.animation((time: number) => {\n" +
     "    stats.begin()\n" +
@@ -724,7 +726,7 @@ angular.module('app').factory('templates', [
     "\n" +
     "class Model implements EIGHT.UniformData {\n" +
     "  public position = new EIGHT.Vector3()\n" +
-    "  public attitude = EIGHT.rotor3()\n" +
+    "  public attitude = new EIGHT.Spinor3()\n" +
     "  public scale: EIGHT.Vector3 = new EIGHT.Vector3([1, 1, 1])\n" +
     "  public color: EIGHT.Vector3 = new EIGHT.Vector3([1, 1, 1])\n" +
     "  private M = EIGHT.Matrix4.identity()\n" +
@@ -756,9 +758,9 @@ angular.module('app').factory('templates', [
     "\n" +
     "    this.N.normalFromMatrix4(this.M)\n" +
     "\n" +
-    "    visitor.uniformMatrix4(EIGHT.Symbolic.UNIFORM_MODEL_MATRIX, false, this.M)\n" +
-    "    visitor.uniformMatrix3(EIGHT.Symbolic.UNIFORM_NORMAL_MATRIX, false, this.N)\n" +
-    "    visitor.uniformVector3(EIGHT.Symbolic.UNIFORM_COLOR, this.color)\n" +
+    "    visitor.uniformMatrix4(EIGHT.Symbolic.UNIFORM_MODEL_MATRIX, false, this.M, canvasId)\n" +
+    "    visitor.uniformMatrix3(EIGHT.Symbolic.UNIFORM_NORMAL_MATRIX, false, this.N, canvasId)\n" +
+    "    visitor.uniformVector3(EIGHT.Symbolic.UNIFORM_COLOR, this.color, canvasId)\n" +
     "  }\n" +
     "}\n" +
     "";
@@ -1340,7 +1342,7 @@ angular.module('app').factory('templates', [
       code: CODE_TEMPLATE_CALCULATION,
       libs: LIBS_TEMPLATE_CALCULATION,
       less: LESS_TEMPLATE_CALCULATION,
-      dependencies: ['DomReady', 'davinci-blade']
+      dependencies: ['DomReady', 'davinci-blade', 'davinci-eight']
     },
     /*
     {
