@@ -72,13 +72,18 @@ angular.module('app').factory('templates', [
 
   var CODE_TEMPLATE_CALCULATION = [
     "// Create shortcuts for some values.",
-    "var e1 = blade.e3ga.e1;",
-    "var e2 = blade.e3ga.e2;",
-    "var e3 = blade.e3ga.e3;",
-    "var meter = blade.scalarE3(1, blade.units.meter);",
-    "var newton = blade.scalarE3(1, blade.units.newton);",
-    "var kilogram = blade.scalarE3(1, blade.units.kilogram);",
-    "var second = blade.scalarE3(1, blade.units.second);",
+    "var e1 = EIGHT.Euclidean3.e1",
+    "var e2 = EIGHT.Euclidean3.e2",
+    "var e3 = EIGHT.Euclidean3.e3",
+    "var meter    = EIGHT.Euclidean3.meter",
+    "var kilogram = EIGHT.Euclidean3.kilogram",
+    "var second   = EIGHT.Euclidean3.second",
+    "var coulomb  = EIGHT.Euclidean3.coulomb",
+    "var ampere   = EIGHT.Euclidean3.ampere",
+    "var kelvin   = EIGHT.Euclidean3.kelvin",
+    "var mole     = EIGHT.Euclidean3.mole",
+    "var candela  = EIGHT.Euclidean3.candela",
+    "var newton   = meter * kilogram / (second * second)",
     "",
     "// Wait for the DOM to be loaded.",
     "DomReady.ready(function() {",
@@ -284,9 +289,8 @@ angular.module('app').factory('templates', [
   var CODE_TEMPLATE_EIGHTJS = "" +
     "var c3d = new EIGHT.Canvas3D()\n" +
     "var scene = new EIGHT.Scene([c3d])\n" +
-    "var cameraL: EIGHT.PerspectiveCamera\n" +
-    "var cameraR: EIGHT.PerspectiveCamera\n" +
-    "var mesh: EIGHT.Mesh<EIGHT.SerialGeometry, EIGHT.MeshNormalMaterial, EIGHT.Model3>\n" +
+    "var camera: EIGHT.PerspectiveCamera\n" +
+    "var cube: EIGHT.Drawable<EIGHT.GeometryElements, EIGHT.LineMaterial, EIGHT.Model3>\n" +
     "\n" +
     "var e1 = EIGHT.Euclidean3.e1\n" +
     "var e2 = EIGHT.Euclidean3.e2\n" +
@@ -308,20 +312,16 @@ angular.module('app').factory('templates', [
     " */\n" +
     "function init() {\n" +
     "  var aspect = window.innerWidth / window.innerHeight\n" +
-    "  cameraL = new EIGHT.PerspectiveCamera(75 * Math.PI / 180, aspect, 1, 1000).setEye(e3 * 1.5 - e1 * 0.05 + e2)\n" +
-    "  scene.add(cameraL)\n" +
-    "  cameraR = new EIGHT.PerspectiveCamera(75 * Math.PI / 180, aspect, 1, 1000).setEye(e3 * 1.5 + e1 * 0.05 + e2)\n" +
-    "  scene.add(cameraR)\n" +
+    "  camera = new EIGHT.PerspectiveCamera(75 * Math.PI / 180, aspect, 1, 1000).setEye(e3 * 2 + e1 * 0.05 + e2)\n" +
+    "  scene.add(camera)\n" +
     "\n" +
-    "  var cuboid = new EIGHT.CuboidGeometry()\n" +
-    "  cuboid.subdivide(2)\n" +
-    "  cuboid.boundary(1)\n" +
-    "  var geometry = cuboid.toSerialGeometry()\n" +
-    "  var material = new EIGHT.MeshNormalMaterial()\n" +
+    "  var geometry = new EIGHT.CuboidGeometry()\n" +
+    "  var elements = geometry.toElements()\n" +
+    "  var material = new EIGHT.LineMaterial()\n" +
     "\n" +
-    "  mesh = new EIGHT.Mesh(geometry, material, new EIGHT.Model3())\n" +
-    "  scene.add(mesh)\n" +
-    "  mesh.model.colorRGB.set(0, 1, 0)\n" +
+    "  cube = new EIGHT.Drawable(elements, material, new EIGHT.Model3())\n" +
+    "  scene.add(cube)\n" +
+    "  cube.model.colorRGB.set(0, 1, 0)\n" +
     "\n" +
     "  c3d.canvas.width = window.innerWidth\n" +
     "  c3d.canvas.height = window.innerHeight\n" +
@@ -338,15 +338,11 @@ angular.module('app').factory('templates', [
     "\n" +
     "  var theta = Date.now() * 0.001\n" +
     "\n" +
-    "  mesh.model.attitude.wedgeVectors(e1, e2).multiplyScalar(-theta/2).exp()\n" +
+    "  cube.model.attitude.spinor(e1, e3).scale(-theta/2).exp()\n" +
     "\n" +
     "  c3d.prolog()\n" +
     "\n" +
-    "  // mesh.model.colorRGB.set(1, 0, 0)\n" +
-    "  // scene.draw(cameraL, c3d.canvasId)\n" +
-    "\n" +
-    "  // mesh.model.colorRGB.set(0, 1, 1)\n" +
-    "  scene.draw(cameraR, c3d.canvasId)\n" +
+    "  scene.draw(camera, c3d.canvasId)\n" +
     "\n" +
     "  stats.end()\n" +
     "}\n";
@@ -447,24 +443,24 @@ angular.module('app').factory('templates', [
     " * Break the rules! It's better to use (sometimes) short variable names in math programs!!\n" +
     " * Hint: Hover over a variable anywhere in the program to see the corresponding documentation.\n" +
     " */\n" +
-    "var T: blade.Euclidean3 = 4 * second;\n" +
+    "var T: blade.Euclidean3 = 4 * second\n" +
     "/**\n" +
     " * The frequency of the motions in the animation.\n" +
     " */\n" +
-    "var f = (1 / T);\n" +
+    "var f = (1 / T)\n" +
     "/**\n" +
     " * The angular velocity, omega, corresponding to the frequency, f.\n" +
     " */\n" +
-    "var omega = (2 * Math.PI * f);\n" +
+    "var omega = (2 * Math.PI * f)\n" +
     "\n" +
     "/**\n" +
     " * For a future example...\n" +
     " */\n" +
     "function surfaceFn(u: number, v: number): EIGHT.Cartesian3 {\n" +
-    "  var x = 3 * (u - 0.5);\n" +
-    "  var z = 3 * (v - 0.5);\n" +
-    "  var y = 0;\n" +
-    "  return x * e1 + y * e2 + z * e3;\n" +
+    "  var x = 3 * (u - 0.5)\n" +
+    "  var z = 3 * (v - 0.5)\n" +
+    "  var y = 0\n" +
+    "  return x * e1 + y * e2 + z * e3\n" +
     "}\n" +
     "\n" +
     "/**\n" +
@@ -476,19 +472,19 @@ angular.module('app').factory('templates', [
     "function main() {\n" +
     "\n" +
     "  // Let's take a look at the program 'parameters' in the Console. (Ctrl-Shift-J) on Linux.\n" +
-    "  console.log('period,    T    => ' + T);\n" +
-    "  console.log('frequency, f    => ' + f);\n" +
-    "  console.log('surfaceFn(1, 1) => ' + surfaceFn(1, 1));\n" +
+    "  console.log('period,    T    => ' + T)\n" +
+    "  console.log('frequency, f    => ' + f)\n" +
+    "  console.log('surfaceFn(1, 1) => ' + surfaceFn(1, 1))\n" +
     "\n" +
     "  // Cast to HTMLCanvasElement because getElementById has no clue what we are dealing with.\n" +
-    "  var canvas = <HTMLCanvasElement>document.getElementById('my-canvas');\n" +
-    "  canvas.width = window.innerWidth;\n" +
-    "  canvas.height = window.innerHeight;\n" +
+    "  var canvas = <HTMLCanvasElement>document.getElementById('my-canvas')\n" +
+    "  canvas.width = window.innerWidth\n" +
+    "  canvas.height = window.innerHeight\n" +
     "\n" +
     "  /**\n" +
     "   * The user-defined canvas id (important in multi-canvas applications).\n" +
     "   */\n" +
-    "  var canvasId = 42;\n" +
+    "  var canvasId = 42\n" +
     "\n" +
     "  /**\n" +
     "   * The manager takes care of WebGLBuffer(s) and other resources so that you don't have to.\n" +
@@ -497,64 +493,64 @@ angular.module('app').factory('templates', [
     "   * But there are also utilities for smart programs, predefined geometries, and transformations to get you started or for demos.\n" +
     "   * We start the manager now to initialize the WebGL context.\n" +
     "   */\n" +
-    "  var c3d = new EIGHT.Canvas3D();\n" +
+    "  var c3d = new EIGHT.Canvas3D()\n" +
     "\n" +
     "  /**\n" +
     "   * The camera is mutable and provides uniforms through the EIGHT.UniformData interface.\n" +
     "   */\n" +
-    "  var camera = new EIGHT.PerspectiveCamera().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(2.0 * e3);\n" +
+    "  var camera = new EIGHT.PerspectiveCamera().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(2.0 * e3)\n" +
     "  /**\n" +
     "   * Ambient Light.\n" +
     "   */\n" +
-    "  var ambientLight = new EIGHT.Vector3([0.3, 0.3, 0.3]);\n" +
+    "  var ambientLight = new EIGHT.Vector3([0.3, 0.3, 0.3])\n" +
     "  /**\n" +
     "   * Directional Light Color.\n" +
     "   */\n" +
-    "  var dLightColor = new EIGHT.Vector3([0.7, 0.7, 0.7]);\n" +
+    "  var dLightColor = new EIGHT.Vector3([0.7, 0.7, 0.7])\n" +
     "  /**\n" +
     "   * Directional Light Directiion.\n" +
     "   */\n" +
-    "  var dLightDirection = new EIGHT.Vector3([2, 3, 5]);\n" +
+    "  var dLightDirection = new EIGHT.Vector3([2, 3, 5])\n" +
     "\n" +
     "  /**\n" +
     "   * Program for rendering TRIANGLES with moderately fancy lighting.\n" +
     "   */\n" +
-    "  var programT = new EIGHT.HTMLScriptsMaterial([c3d], ['vs-triangles', 'fs-triangles'], document);\n" +
+    "  var programT = new EIGHT.HTMLScriptsMaterial([c3d], ['vs-triangles', 'fs-triangles'], document)\n" +
     "  /**\n" +
     "   * Program for rendering LINES.\n" +
     "   */\n" +
-    "  var programL = new EIGHT.HTMLScriptsMaterial([c3d], ['vs-lines', 'fs-lines'], document);\n" +
+    "  var programL = new EIGHT.HTMLScriptsMaterial([c3d], ['vs-lines', 'fs-lines'], document)\n" +
     "  /**\n" +
     "   * Program for rendering POINTS.\n" +
     "   */\n" +
-    "  var programP = new EIGHT.HTMLScriptsMaterial([c3d], ['vs-points', 'fs-points'], document);\n" +
+    "  var programP = new EIGHT.HTMLScriptsMaterial([c3d], ['vs-points', 'fs-points'], document)\n" +
     "  /**\n" +
     "   * Program used by the cube, TBD based on geometry dimensionality.\n" +
     "   */\n" +
-    "  var materialCube: EIGHT.IMaterial;\n" +
+    "  var materialCube: EIGHT.IMaterial\n" +
     "\n" +
-    "  c3d.start(canvas, canvasId);\n" +
+    "  c3d.start(canvas, canvasId)\n" +
     "\n" +
-    "  var stats = new Stats();\n" +
-    "  stats.setMode(0);\n" +
-    "  document.body.appendChild(stats.domElement);\n" +
+    "  var stats = new Stats()\n" +
+    "  stats.setMode(0)\n" +
+    "  document.body.appendChild(stats.domElement)\n" +
     "\n" +
     "  // The camera sets uniforms for the visiting program by canvas.\n" +
-    "  camera.setUniforms(programT, canvasId);\n" +
-    "  camera.setUniforms(programL, canvasId);\n" +
-    "  camera.setUniforms(programP, canvasId);\n" +
+    "  camera.setUniforms(programT, canvasId)\n" +
+    "  camera.setUniforms(programL, canvasId)\n" +
+    "  camera.setUniforms(programP, canvasId)\n" +
     "  // Uniforms may also be set directly and some standard names are symbolically defined.\n" +
     "  // The names used here should match the names used in the program source code.\n" +
-    "  programT.uniformVector3(EIGHT.Symbolic.UNIFORM_AMBIENT_LIGHT, ambientLight, canvasId);\n" +
-    "  programT.uniformVector3('uDirectionalLightColor', dLightColor, canvasId);\n" +
-    "  programT.uniformVector3('uDirectionalLightDirection', dLightDirection, canvasId);\n" +
-    "  programP.uniform1f('uPointSize', 4, canvasId);\n" +
+    "  programT.uniformVector3(EIGHT.Symbolic.UNIFORM_AMBIENT_LIGHT, ambientLight, canvasId)\n" +
+    "  programT.uniformVector3('uDirectionalLightColor', dLightColor, canvasId)\n" +
+    "  programT.uniformVector3('uDirectionalLightDirection', dLightDirection, canvasId)\n" +
+    "  programP.uniform1f('uPointSize', 4, canvasId)\n" +
     "\n" +
     "  /**\n" +
     "   * The buffered geometry for the cube.\n" +
     "   * This is an object that hides the messy buffer management details.\n" +
     "   */\n" +
-    "  var geobuff: EIGHT.IBufferGeometry;\n" +
+    "  var geobuff: EIGHT.IBufferGeometry\n" +
     "  /**\n" +
     "   * The model for the cube, which implements EIGHT.UniformData having the\n" +
     "   * method `setUniforms(visitor: EIGHT.UniformDataVisitor, canvasId: number): void`./\n" +
@@ -565,7 +561,7 @@ angular.module('app').factory('templates', [
     "\n" +
     "  // We start with the geometry (geometry) for a unit cube at the origin...\n" +
     "  // A geometry is considered to be an array of simplices.\n" +
-    "  var geometry = new EIGHT.CuboidGeometry(1, 1, 1);\n" +
+    "  var geometry = new EIGHT.CuboidGeometry()\n" +
     "  // Subdivide the geometry (here twice) if you wish to get more detail.\n" +
     "  // Hit 'Play' in mathdoodle.io to see the effect of, say, n = 0, 1, 2, 3.\n" +
     "  geometry.subdivide(2);\n" +
@@ -574,48 +570,48 @@ angular.module('app').factory('templates', [
     "  // three times to make TRIANGLES => an empty simplex with k = -1,)\n" +
     "  // four times to make TRIANGLES => undefined.\n" +
     "  // Try the values n = 0, 1, 2, 3, 4. Look at the canvas and the Console.\n" +
-    "  geometry.boundary(1);\n" +
+    "  geometry.boundary(1)\n" +
     "  /**\n" +
     "   * Summary information on the geometry such as dimensionality and sizes for attributes.\n" +
     "   * This same data structure may be used to map geometry attribute names to program names.\n" +
     "   */\n" +
     "  // Check that we still have a defined geometry after all that mucking about.\n" +
     "  if (geometry.meta) {\n" +
-    "    // Convert the geometry to a geometry.\n" +
-    "    var serial: EIGHT.SerialGeometry = geometry.toSerialGeometry();\n" +
+    "    // Convert the geometry to drawing elements.\n" +
+    "    var elements: EIGHT.GeometryElements = geometry.toElements();\n" +
     "    // Submit the geometry data to the context which will manage underlying WebGLBuffer(s) for you.\n" +
-    "    geobuff = c3d.createBufferGeometry(serial.data);\n" +
+    "    geobuff = c3d.createBufferGeometry(elements.data)\n" +
     "    if (geobuff) {\n" +
     "      // Pick an appropriate program to use with the mesh based upon the dimensionality.\n" +
     "      switch(geometry.meta.k) {\n" +
     "        case EIGHT.Simplex.K_FOR_POINT: {\n" +
-    "          materialCube = programP;\n" +
+    "          materialCube = programP\n" +
     "        }\n" +
-    "        break;\n" +
+    "        break\n" +
     "        case EIGHT.Simplex.K_FOR_LINE_SEGMENT: {\n" +
-    "          materialCube = programL;\n" +
+    "          materialCube = programL\n" +
     "        }\n" +
-    "        break;\n" +
+    "        break\n" +
     "        case EIGHT.Simplex.K_FOR_TRIANGLE: {\n" +
-    "          materialCube = programT;\n" +
+    "          materialCube = programT\n" +
     "        }\n" +
-    "        break;\n" +
+    "        break\n" +
     "        default: {\n" +
-    "          throw new Error('Unexpected dimensions for simplex: ' + geometry.meta.k);\n" +
+    "          throw new Error('Unexpected dimensions for simplex: ' + geometry.meta.k)\n" +
     "        }\n" +
     "      }\n" +
     "    }\n" +
     "    else {\n" +
-    "      console.warn('Nothing to see because the geometry is empty. dimensions => ' + geometry.meta.k);\n" +
+    "      console.warn('Nothing to see because the geometry is empty. dimensions => ' + geometry.meta.k)\n" +
     "    }\n" +
     "  }\n" +
     "  else {\n" +
-    "    console.warn('Nothing to see because the geometry is undefined.');\n" +
+    "    console.warn('Nothing to see because the geometry is undefined.')\n" +
     "  }\n" +
     "  // Create the model anyway (not what we would do in the real world).\n" +
-    "  model = new EIGHT.Model3();\n" +
+    "  model = new EIGHT.Model3()\n" +
     "  // Green, like on the 'Matrix', would be a good color, Neo. Or maybe red or blue?\n" +
-    "  model.colorRGB.set(0, 1, 0);\n" +
+    "  model.colorRGB.set(0, 1, 0)\n" +
     "\n" +
     "  // PERFORMANCE HINT\n"+
     "  // In order to avoid creating temporary objects and excessive garbage collection,\n" +
@@ -624,145 +620,145 @@ angular.module('app').factory('templates', [
     "  /**\n" +
     "   * The angle of tilt of the precessing vector.\n" +
     "   */\n" +
-    "  var tiltAngle = 30 * Math.PI / 180;\n" +
+    "  var tiltAngle = 30 * Math.PI / 180\n" +
     "  /**\n" +
     "   * S, a spinor representing the default attitude of the cube.\n" +
     "   */\n" +
     "  // We're using blade, Geometric Algebra, and operator overloading here.\n" +
     "  // We perform similar calculations inside the animation loop using BLADE mutable types.\n" +
     "  // The global constants, e1, e2 and e3, are defined in the 'Libs' file.\n" +
-    "  var S = exp(-(e2 ^ e1) * tiltAngle / 2);\n" +
-    "  var B = e3 ^ e1;\n" +
-    "  var rotorL = EIGHT.rotor3();\n" +
-    "  var rotorR = EIGHT.rotor3();\n" +
+    "  var S = exp(-(e2 ^ e1) * tiltAngle / 2)\n" +
+    "  var B = e3 ^ e1\n" +
+    "  var rotorL = EIGHT.rotor3()\n" +
+    "  var rotorR = EIGHT.rotor3()\n" +
     "\n" +
     "  EIGHT.animation((time: number) => {\n" +
-    "    stats.begin();\n" +
+    "    stats.begin()\n" +
     "    // Use the scalar property, w, in order to keep things fast.\n" +
     "    /**\n" +
     "     * theta = omega * time, is the basic angle used in the animation.\n" +
     "     */\n" +
-    "    var theta: number = omega.w * time;\n" +
+    "    var theta: number = omega.w * time\n" +
     "    // Simple Harmonic Motion.\n" +
-    "    // model.position.copy(e2).multiplyScalar(1.2 * sin(theta));\n" +
+    "    // model.position.copy(e2).scale(1.2 * sin(theta))\n" +
     "\n" +
     "    // Precession demonstrates spinor multiplication.\n" +
     "    // R = exp(-B * theta / 2)\n" +
     "    // attitude = R * S * ~R\n" +
-    "    rotorL.copy(B).multiplyScalar(-theta / 2).exp();\n" +
-    "    rotorR.copy(rotorL).reverse();\n" +
-    "    model.attitude.copy(rotorL).multiply(S).multiply(rotorR);\n" +
+    "    rotorL.copy(B).scale(-theta / 2).exp()\n" +
+    "    rotorR.copy(rotorL).reverse()\n" +
+    "    model.attitude.copy(rotorL).multiply(S).multiply(rotorR)\n" +
     "\n" +
-    "    // Rotation generated by e3 ^ e2.\n" +
-    "    // model.attitude.wedgeVectors(e3, e2).multiplyScalar(-theta / 2).exp();\n" +
+    "    // Rotation generated by e1 ^ e3.\n" +
+    "    // model.attitude.spinor(e1, e3).scale(-theta / 2).exp()\n" +
     "\n" +
     "    // orbit\n" +
     "    // position = R * e1 * ~R\n" +
-    "    // model.position.copy(e1).rotate(rotorL);\n" +
+    "    // model.position.copy(e1).rotate(rotorL)\n" +
     "\n" +
-    "    c3d.prolog();\n" +
+    "    c3d.prolog()\n" +
     "\n" +
     "    if (geobuff) {\n" +
     "      // Make the appropriate WebGLProgram current.\n" +
-    "      materialCube.use(canvasId);\n" +
+    "      materialCube.use(canvasId)\n" +
     "      // The model sets uniforms on the program, for the specified canvas.\n" +
-    "      model.setUniforms(materialCube, canvasId);\n" +
+    "      model.setUniforms(materialCube, canvasId)\n" +
     "      // Bind the appropriate underlying buffers and enable attribute locations.\n" +
-    "      geobuff.bind(materialCube);\n" +
+    "      geobuff.bind(materialCube)\n" +
     "      // Make the appropriate drawElements() or drawArrays() call.\n" +
-    "      geobuff.draw();\n" +
+    "      geobuff.draw()\n" +
     "      // Unbind the buffers and disable attribute locations.\n" +
-    "      geobuff.unbind();\n" +
+    "      geobuff.unbind()\n" +
     "    }\n" +
     "\n" +
-    "    stats.end();\n" +
-    "  }).start();\n" +
+    "    stats.end()\n" +
+    "  }).start()\n" +
     "}\n";
 
   var LIBS_TEMPLATE_EIGHT = "" +
     "DomReady.ready(function() {\n" +
     "  try {\n" +
-    "    main();\n" +
+    "    main()\n" +
     "  }\n" +
     "  catch(e) {\n" +
-    "    console.error(e);\n" +
+    "    console.error(e)\n" +
     "  }\n" +
-    "});\n" +
+    "})\n" +
     "\n" +
     "/**\n" +
     " * Standard basis vector in the x-axis direction.\n" +
     " */\n" +
-    "var e1 = blade.e3ga.e1;\n" +
+    "var e1 = blade.e3ga.e1\n" +
     "/**\n" +
     " * Standard basis vector in the y-axis direction.\n" +
     " */\n" +
-    "var e2 = blade.e3ga.e2;\n" +
+    "var e2 = blade.e3ga.e2\n" +
     "/**\n" +
     " * Standard basis vector in the z-axis direction.\n" +
     " */\n" +
-    "var e3 = blade.e3ga.e3;\n" +
-    "var e12 = e1 * e2;\n" +
-    "var e23 = e2 * e3;\n" +
-    "var e32 = e3 * e2;\n" +
+    "var e3 = blade.e3ga.e3\n" +
+    "var e12 = e1 * e2\n" +
+    "var e23 = e2 * e3\n" +
+    "var e32 = e3 * e2\n" +
     "\n" +
     "/**\n" +
     " * Returns the cosine of a number.\n" +
     " */\n" +
-    "var cos = blade.universals.cos;\n" +
+    "var cos = blade.universals.cos\n" +
     "/**\n" +
     " * Returns e (the base of natural logarithms) raised to a power.\n" +
     " */\n" +
-    "var exp = blade.universals.exp;\n" +
+    "var exp = blade.universals.exp\n" +
     "/**\n" +
     " * Returns the sine of a number.\n" +
     " */\n" +
-    "var sin = blade.universals.sin;\n" +
+    "var sin = blade.universals.sin\n" +
     "\n" +
     "/**\n" +
     " * S.I. units of measure.\n" +
     " */\n" +
-    "var kilogram = blade.e3ga.units.kilogram;\n" +
-    "var meter    = blade.e3ga.units.meter;\n" +
-    "var second   = blade.e3ga.units.second;\n" +
-    "var hertz    = blade.e3ga.units.hertz;\n" +
+    "var kilogram = blade.e3ga.units.kilogram\n" +
+    "var meter    = blade.e3ga.units.meter\n" +
+    "var second   = blade.e3ga.units.second\n" +
+    "var hertz    = blade.e3ga.units.hertz\n" +
     "\n" +
     "class Model implements EIGHT.UniformData {\n" +
-    "  public position = new EIGHT.Vector3();\n" +
-    "  public attitude = EIGHT.rotor3();\n" +
-    "  public scale: EIGHT.Vector3 = new EIGHT.Vector3([1, 1, 1]);\n" +
-    "  public color: EIGHT.Vector3 = new EIGHT.Vector3([1, 1, 1]);\n" +
-    "  private M = EIGHT.Matrix4.identity();\n" +
-    "  private N = EIGHT.Matrix3.identity();\n" +
-    "  private R = EIGHT.Matrix4.identity();\n" +
-    "  private S = EIGHT.Matrix4.identity();\n" +
-    "  private T = EIGHT.Matrix4.identity();\n" +
+    "  public position = new EIGHT.Vector3()\n" +
+    "  public attitude = EIGHT.rotor3()\n" +
+    "  public scale: EIGHT.Vector3 = new EIGHT.Vector3([1, 1, 1])\n" +
+    "  public color: EIGHT.Vector3 = new EIGHT.Vector3([1, 1, 1])\n" +
+    "  private M = EIGHT.Matrix4.identity()\n" +
+    "  private N = EIGHT.Matrix3.identity()\n" +
+    "  private R = EIGHT.Matrix4.identity()\n" +
+    "  private S = EIGHT.Matrix4.identity()\n" +
+    "  private T = EIGHT.Matrix4.identity()\n" +
     "  constructor() {\n" +
-    "    this.position.modified = true;\n" +
-    "    this.attitude.modified = true;\n" +
-    "    this.scale.modified = true;\n" +
-    "    this.color.modified = true;\n" +
+    "    this.position.modified = true\n" +
+    "    this.attitude.modified = true\n" +
+    "    this.scale.modified = true\n" +
+    "    this.color.modified = true\n" +
     "  }\n" +
     "  setUniforms(visitor: EIGHT.UniformDataVisitor, canvasId: number) {\n" +
       "  // FIXME: canvasId will be used in uniform setting calls.\n" +
     "    if (this.position.modified) {\n" +
-    "      this.T.translation(this.position);\n" +
-    "      this.position.modified = false;\n" +
+    "      this.T.translation(this.position)\n" +
+    "      this.position.modified = false\n" +
     "    }\n" +
     "    if (this.attitude.modified) {\n" +
-    "        this.R.rotation(this.attitude);\n" +
-    "        this.attitude.modified = false;\n" +
+    "        this.R.rotation(this.attitude)\n" +
+    "        this.attitude.modified = false\n" +
     "    }\n" +
     "    if (this.scale.modified) {\n" +
-    "      this.S.scaling(this.scale);\n" +
-    "      this.scale.modified = false;\n" +
+    "      this.S.scaling(this.scale)\n" +
+    "      this.scale.modified = false\n" +
     "    }\n" +
-    "    this.M.copy(this.T).multiply(this.R).multiply(this.S);\n" +
+    "    this.M.copy(this.T).multiply(this.R).multiply(this.S)\n" +
     "\n" +
     "    this.N.normalFromMatrix4(this.M)\n" +
     "\n" +
-    "    visitor.uniformMatrix4(EIGHT.Symbolic.UNIFORM_MODEL_MATRIX, false, this.M);\n" +
-    "    visitor.uniformMatrix3(EIGHT.Symbolic.UNIFORM_NORMAL_MATRIX, false, this.N);\n" +
-    "    visitor.uniformVector3(EIGHT.Symbolic.UNIFORM_COLOR, this.color);\n" +
+    "    visitor.uniformMatrix4(EIGHT.Symbolic.UNIFORM_MODEL_MATRIX, false, this.M)\n" +
+    "    visitor.uniformMatrix3(EIGHT.Symbolic.UNIFORM_NORMAL_MATRIX, false, this.N)\n" +
+    "    visitor.uniformVector3(EIGHT.Symbolic.UNIFORM_COLOR, this.color)\n" +
     "  }\n" +
     "}\n" +
     "";
@@ -1090,15 +1086,15 @@ angular.module('app').factory('templates', [
     "  /**\n"+
     "   * The `runner` runs the animation.\n"+
     "   */\n"+
-    "  runner: EIGHT.WindowAnimationRunner;\n" +
+    "  runner: EIGHT.WindowAnimationRunner\n" +
     "  /**\n"+
     "   * Invoked when the user requests `start` or `stop`.\n"+
     "   */\n"+
-    "  handleStartOrStop(): void;\n" +
+    "  handleStartOrStop(): void\n" +
     "  /**\n"+
     "   * Invoked when the user requests `reset` or `lap`.\n"+
     "   */\n"+
-    "  handleResetOrLap(): void;\n" +
+    "  handleResetOrLap(): void\n" +
     "}\n" +
     "\n" +
     "(function (app: angular.IModule) {\n" +
@@ -1109,105 +1105,105 @@ angular.module('app').factory('templates', [
     "    // In order to avoid creating temporary objects and excessive garbage collection,\n"+
     "    // perform blade computations outside of the animation loop and\n"+
     "    // use EIGHT mutable components inside the animation loop.\n"+
-    "    var e1 = blade.vectorE3(1,0,0);\n" +
-    "    var e2 = blade.vectorE3(0,1,0);\n" +
-    "    var e3 = blade.vectorE3(0,0,1);\n" +
-    "    var exp = blade.universals.exp;\n" +
-    "    var T = 4;\n" +
-    "    var f = 1 / T;\n" +
-    "    var omega = 2 * Math.PI * f;\n" +
+    "    var e1 = blade.vectorE3(1,0,0)\n" +
+    "    var e2 = blade.vectorE3(0,1,0)\n" +
+    "    var e3 = blade.vectorE3(0,0,1)\n" +
+    "    var exp = blade.universals.exp\n" +
+    "    var T = 4\n" +
+    "    var f = 1 / T\n" +
+    "    var omega = 2 * Math.PI * f\n" +
     "\n"+
-    "    var canvas = <HTMLCanvasElement>$window.document.getElementById('canvasId');\n" +
-    "    canvas.width = 600;\n" +
-    "    canvas.height = 400;\n" +
+    "    var canvas = <HTMLCanvasElement>$window.document.getElementById('canvasId')\n" +
+    "    canvas.width = 600\n" +
+    "    canvas.height = 400\n" +
     "\n"+
-    "    var c3d: EIGHT.Canvas3D;\n"+
+    "    var c3d: EIGHT.Canvas3D\n"+
     "\n"+
-    "    var camera = new EIGHT.PerspectiveCamera().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(3.0 * e3);\n"+
+    "    var camera = new EIGHT.PerspectiveCamera().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(3.0 * e3)\n"+
     "\n"+
-    "    var geobuff: EIGHT.IBufferGeometry;\n"+
-    "    var material: EIGHT.IMaterial;\n" +
-    "    var model = new EIGHT.Model3();\n"+
+    "    var geobuff: EIGHT.IBufferGeometry\n"+
+    "    var material: EIGHT.IMaterial\n" +
+    "    var model = new EIGHT.Model3()\n"+
     "\n"+
-    "    var R = -(e1 ^ e2) / 2;\n"+
+    "    var R = -(e1 ^ e2) / 2\n"+
     "\n" +
     "    function setUp() {\n"+
-    "      EIGHT.refChange('reset', 'setUp()');\n"+
-    "      EIGHT.refChange('start', 'setUp()');\n"+
+    "      EIGHT.refChange('reset', 'setUp()')\n"+
+    "      EIGHT.refChange('start', 'setUp()')\n"+
     "\n"+
-    "      c3d = new EIGHT.Canvas3D();\n"+
-    "      c3d.start(canvas, 0);\n"+
+    "      c3d = new EIGHT.Canvas3D()\n"+
+    "      c3d.start(canvas, 0)\n"+
     "\n"+
-    "      material = new EIGHT.HTMLScriptsMaterial([c3d], ['vs-points', 'fs-points'], document);\n" +
+    "      material = new EIGHT.HTMLScriptsMaterial([c3d], ['vs-points', 'fs-points'], document)\n" +
     "\n"+
-    "      var vec0 = new EIGHT.Vector3([0.0,  0.0, 0.0]);\n"+
-    "      var vec1 = new EIGHT.Vector3([1.0, -0.2, 0.0]);\n"+
-    "      var vec2 = new EIGHT.Vector3([1.0, +0.2, 0.0]);\n"+
-    "      var simplices = EIGHT.triangle(vec0, vec1, vec2);\n"+
-    "      var meta = EIGHT.toGeometryMeta(simplices);\n"+
-    "      // console.log(JSON.stringify(meta, null, 2));\n"+
+    "      var vec0 = new EIGHT.Vector3([0.0,  0.0, 0.0])\n"+
+    "      var vec1 = new EIGHT.Vector3([1.0, -0.2, 0.0])\n"+
+    "      var vec2 = new EIGHT.Vector3([1.0, +0.2, 0.0])\n"+
+    "      var simplices = EIGHT.triangle(vec0, vec1, vec2)\n"+
+    "      var meta = EIGHT.toGeometryMeta(simplices)\n"+
+    "      // console.log(JSON.stringify(meta, null, 2))\n"+
     "      // Map standard names in geometry to names used in vertex shader code.\n"+
-    "      meta.attributes[EIGHT.Symbolic.ATTRIBUTE_POSITION].name = 'aPosition';\n"+
-    "      var elements = EIGHT.toSerialGeometryElements(simplices, meta);\n"+
+    "      meta.attributes[EIGHT.Symbolic.ATTRIBUTE_POSITION].name = 'aPosition'\n"+
+    "      var data = EIGHT.toGeometryData(simplices, meta)\n"+
     "\n"+
-    "      geobuff = c3d.createBufferGeometry(elements);\n"+
+    "      geobuff = c3d.createBufferGeometry(data)\n"+
     "\n"+
-    "      camera.setUniforms(material, c3d.canvasId);\n"+
+    "      camera.setUniforms(material, c3d.canvasId)\n"+
     "    }\n"+
     "\n" +
     "    // If you wish to work with AngularJS scope variables,\n" +
     "    // use tick rather than animate because tick is called from a non-AngularJS context.\n" +
     "    function tick(time: number) {\n"+
     "      $scope.$apply(function() {\n"+
-    "        animate(time);\n"+
+    "        animate(time)\n"+
     "      });\n"+
     "    }\n"+
     "\n" +
     "    function animate(time: number) {\n"+
     "\n" +
-    "      var theta = omega * time;\n"+
+    "      var theta = omega * time\n"+
     "\n" +
-    "      c3d.prolog();\n"+
+    "      c3d.prolog()\n"+
     "\n" +
-    "      geobuff.bind(material);\n" +
+    "      geobuff.bind(material)\n" +
     "\n" +
-    "      model.colorRGB.set(0.0, 1.0, 0.0);\n"+
+    "      model.colorRGB.set(0.0, 1.0, 0.0)\n"+
     "      for(var i = 0; i < 8; i++) {\n" +
-    "        model.attitude.copy(R).multiplyScalar(theta - i * 2 * Math.PI / 8).exp();\n"+
-    "        model.setUniforms(material, c3d.canvasId);\n"+
-    "        geobuff.draw();\n"+
-    "        model.colorRGB.multiplyScalar(0.7);\n"+
+    "        model.attitude.copy(R).scale(theta - i * 2 * Math.PI / 8).exp()\n"+
+    "        model.setUniforms(material, c3d.canvasId)\n"+
+    "        geobuff.draw()\n"+
+    "        model.colorRGB.scale(0.7)\n"+
     "      }\n" +
     "\n" +
-    "      geobuff.unbind();\n" +
+    "      geobuff.unbind()\n" +
     "    }\n"+
     "\n" +
-    "    function terminate(time: number) { return false; }\n"+
+    "    function terminate(time: number) { return false }\n"+
     "\n" +
     "    function tearDown(e: Error) {\n"+
     "      // Any exception thrown in the animation loop is reported here.\n" +
     "      if (e) {\n"+
-    "        console.warn(e);\n"+
+    "        console.warn(e)\n"+
     "      }\n"+
     "\n" +
-    "      geobuff.release();\n"+
-    "      geobuff = void 0;\n"+
+    "      geobuff.release()\n"+
+    "      geobuff = void 0\n"+
     "\n" +
-    "      material.release();\n"+
-    "      material = void 0;\n"+
+    "      material.release()\n"+
+    "      material = void 0\n"+
     "\n" +
-    "      c3d.stop();\n"+
-    "      c3d.release();\n"+
-    "      c3d = void 0;\n"+
+    "      c3d.stop()\n"+
+    "      c3d.release()\n"+
+    "      c3d = void 0\n"+
     "\n" +
-    "      var outstanding = EIGHT.refChange('stop', 'tearDown()');\n"+
+    "      var outstanding = EIGHT.refChange('stop', 'tearDown()')\n"+
     "      //if (outstanding > 0) {\n" +
-    "        EIGHT.refChange('dump', 'tearDown()');\n"+
+    "        EIGHT.refChange('dump', 'tearDown()')\n"+
     "      //}\n" +
-    "      EIGHT.refChange('reset', 'tearDown()');\n"+
+    "      EIGHT.refChange('reset', 'tearDown()')\n"+
     "\n" +
     "      $scope.$apply(function() {\n"+
-    "      });\n"+
+    "      })\n"+
     "    }\n"+
     "\n" +
     "    // Again, if you wish to work with AngularJS scope variables,\n" +
@@ -1216,24 +1212,24 @@ angular.module('app').factory('templates', [
     "\n" +
     "    $scope.handleStartOrStop = function() {\n"+
     "      if ($scope.runner.isRunning) {\n"+
-    "        $scope.runner.stop();\n"+
+    "        $scope.runner.stop()\n"+
     "      }\n"+
     "      else {\n"+
-    "        $scope.runner.start();\n"+
+    "        $scope.runner.start()\n"+
     "      }\n"+
     "    }\n"+
     "\n" +
     "    $scope.handleResetOrLap = function() {\n"+
     "      if ($scope.runner.isPaused) {\n"+
-    "        $scope.runner.reset();\n"+
+    "        $scope.runner.reset()\n"+
     "      }\n"+
     "      else if ($scope.runner.isRunning) {\n"+
-    "        $scope.runner.lap();\n"+
+    "        $scope.runner.lap()\n"+
     "      }\n"+
     "    }\n"+
     "\n" +
     "  }]);\n" +
-    "})(angular.module('doodle', []));\n";
+    "})(angular.module('doodle', []))\n";
 
   var LIBS_TEMPLATE_ANGULAR_BLADE_EIGHT = "//\n";
 
@@ -1290,20 +1286,6 @@ angular.module('app').factory('templates', [
   var LESS_TEMPLATE_MATHBOX = "";
 
   return [
-    {
-        uuid: uuid.generate(),
-        description: "None",
-        isCodeVisible: true,
-        isViewVisible: true,
-        focusEditor: undefined,
-        lastKnownJs: {},
-        operatorOverloading: true,
-        html: HTML_TEMPLATE_BASIC,
-        code: CODE_TEMPLATE_BASIC,
-        libs: LIBS_TEMPLATE_BASIC,
-        less: LESS_TEMPLATE_BASIC,
-        dependencies: []
-    },
     {
       uuid: uuid.generate(),
       description: "EIGHT — Mathematical Computer Graphics using WebGL",
@@ -1431,6 +1413,20 @@ angular.module('app').factory('templates', [
       libs: LIBS_TEMPLATE_ANGULAR,
       less: LESS_TEMPLATE_BASIC,
       dependencies: ['angular']
+    },
+    {
+        uuid: uuid.generate(),
+        description: "None",
+        isCodeVisible: true,
+        isViewVisible: true,
+        focusEditor: undefined,
+        lastKnownJs: {},
+        operatorOverloading: true,
+        html: HTML_TEMPLATE_BASIC,
+        code: CODE_TEMPLATE_BASIC,
+        libs: LIBS_TEMPLATE_BASIC,
+        less: LESS_TEMPLATE_BASIC,
+        dependencies: []
     }
     /*
     {

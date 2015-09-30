@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/davinci-eight/geometries/CuboidSerialGeometry.ts - davinci-eight</title>
+    <title>src/davinci-eight/scene/Drawable.ts - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -17,7 +17,7 @@
                 <h1><img src="../../assets/logo.png" title="davinci-eight"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.112.0</em>
+            <em>API Docs for: 2.113.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -40,6 +40,7 @@
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/AttribLocation.html">AttribLocation</a></li>
                                 <li><a href="../classes/AttribMetaInfo.html">AttribMetaInfo</a></li>
+                                <li><a href="../classes/BarnGeometry.html">BarnGeometry</a></li>
                                 <li><a href="../classes/BoxBuilder.html">BoxBuilder</a></li>
                                 <li><a href="../classes/BoxMesh.html">BoxMesh</a></li>
                                 <li><a href="../classes/Canvas3D.html">Canvas3D</a></li>
@@ -55,9 +56,9 @@
                                 <li><a href="../classes/createView.html">createView</a></li>
                                 <li><a href="../classes/CuboidGeometry.html">CuboidGeometry</a></li>
                                 <li><a href="../classes/CuboidMesh.html">CuboidMesh</a></li>
-                                <li><a href="../classes/CuboidSerialGeometry.html">CuboidSerialGeometry</a></li>
                                 <li><a href="../classes/CylinderArgs.html">CylinderArgs</a></li>
                                 <li><a href="../classes/Dimensions.html">Dimensions</a></li>
+                                <li><a href="../classes/Drawable.html">Drawable</a></li>
                                 <li><a href="../classes/EIGHTLogger.html">EIGHTLogger</a></li>
                                 <li><a href="../classes/ElementArray.html">ElementArray</a></li>
                                 <li><a href="../classes/ElementBuffer.html">ElementBuffer</a></li>
@@ -69,6 +70,9 @@
                                 <li><a href="../classes/Face3.html">Face3</a></li>
                                 <li><a href="../classes/Frustum.html">Frustum</a></li>
                                 <li><a href="../classes/Geometry.html">Geometry</a></li>
+                                <li><a href="../classes/GeometryAttribute.html">GeometryAttribute</a></li>
+                                <li><a href="../classes/GeometryData.html">GeometryData</a></li>
+                                <li><a href="../classes/GeometryElements.html">GeometryElements</a></li>
                                 <li><a href="../classes/GeometryMeta.html">GeometryMeta</a></li>
                                 <li><a href="../classes/HTMLScriptsMaterial.html">HTMLScriptsMaterial</a></li>
                                 <li><a href="../classes/IBufferGeometry.html">IBufferGeometry</a></li>
@@ -79,27 +83,28 @@
                                 <li><a href="../classes/IMaterial.html">IMaterial</a></li>
                                 <li><a href="../classes/IPrologCommand.html">IPrologCommand</a></li>
                                 <li><a href="../classes/IUnknown.html">IUnknown</a></li>
+                                <li><a href="../classes/IUnknownArray.html">IUnknownArray</a></li>
                                 <li><a href="../classes/KleinBottleGeometry.html">KleinBottleGeometry</a></li>
                                 <li><a href="../classes/Line3.html">Line3</a></li>
+                                <li><a href="../classes/LinearElement&lt;I, M, S&gt;.html">LinearElement&lt;I, M, S&gt;</a></li>
+                                <li><a href="../classes/LineMaterial.html">LineMaterial</a></li>
                                 <li><a href="../classes/LocalizableMessage.html">LocalizableMessage</a></li>
                                 <li><a href="../classes/Material.html">Material</a></li>
                                 <li><a href="../classes/Matrix4.html">Matrix4</a></li>
                                 <li><a href="../classes/Matrix&lt;M&gt;.html">Matrix&lt;M&gt;</a></li>
-                                <li><a href="../classes/Mesh.html">Mesh</a></li>
-                                <li><a href="../classes/MeshNormalMaterial.html">MeshNormalMaterial</a></li>
+                                <li><a href="../classes/MeshMaterial.html">MeshMaterial</a></li>
                                 <li><a href="../classes/Mutable.html">Mutable</a></li>
                                 <li><a href="../classes/Perspective.html">Perspective</a></li>
                                 <li><a href="../classes/PerspectiveCamera.html">PerspectiveCamera</a></li>
                                 <li><a href="../classes/Point3.html">Point3</a></li>
+                                <li><a href="../classes/PointMaterial.html">PointMaterial</a></li>
                                 <li><a href="../classes/Rational.html">Rational</a></li>
                                 <li><a href="../classes/RigidBody3.html">RigidBody3</a></li>
                                 <li><a href="../classes/Scene.html">Scene</a></li>
-                                <li><a href="../classes/SerialGeometry.html">SerialGeometry</a></li>
-                                <li><a href="../classes/SerialGeometryAttribute.html">SerialGeometryAttribute</a></li>
-                                <li><a href="../classes/SerialGeometryElements.html">SerialGeometryElements</a></li>
                                 <li><a href="../classes/ShaderVariableDecl.html">ShaderVariableDecl</a></li>
                                 <li><a href="../classes/Shareable.html">Shareable</a></li>
                                 <li><a href="../classes/Simplex.html">Simplex</a></li>
+                                <li><a href="../classes/Simplex1Geometry.html">Simplex1Geometry</a></li>
                                 <li><a href="../classes/SmartMaterial.html">SmartMaterial</a></li>
                                 <li><a href="../classes/SmartMaterialBuilder.html">SmartMaterialBuilder</a></li>
                                 <li><a href="../classes/Spinor3.html">Spinor3</a></li>
@@ -112,6 +117,8 @@
                                 <li><a href="../classes/Vector2.html">Vector2</a></li>
                                 <li><a href="../classes/Vector3.html">Vector3</a></li>
                                 <li><a href="../classes/Vector4.html">Vector4</a></li>
+                                <li><a href="../classes/VectorN.html">VectorN</a></li>
+                                <li><a href="../classes/VectorN&lt;T&gt;.html">VectorN&lt;T&gt;</a></li>
                                 <li><a href="../classes/VersionLogger.html">VersionLogger</a></li>
                                 <li><a href="../classes/View.html">View</a></li>
                                 <li><a href="../classes/WebGLClear.html">WebGLClear</a></li>
@@ -121,6 +128,8 @@
                             </ul>
                 
                             <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/EIGHT.html">EIGHT</a></li>
+                                <li><a href="../modules/geometries.html">geometries</a></li>
                             </ul>
                         </div>
                     </div>
@@ -154,72 +163,158 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: src/davinci-eight/geometries/CuboidSerialGeometry.ts</h1>
+<h1 class="file-heading">File: src/davinci-eight/scene/Drawable.ts</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-import CuboidGeometry = require(&#x27;../geometries/CuboidGeometry&#x27;)
-import SerialGeometry = require(&#x27;../geometries/SerialGeometry&#x27;)
-import toSerialGeometryElements = require(&#x27;../dfx/toSerialGeometryElements&#x27;)
+import toGeometryMeta = require(&#x27;../geometries/toGeometryMeta&#x27;)
+import IContextProvider = require(&#x27;../core/IContextProvider&#x27;)
+import ContextMonitor = require(&#x27;../core/ContextMonitor&#x27;)
+import core = require(&#x27;../core&#x27;);
+import GeometryData = require(&#x27;../geometries/GeometryData&#x27;)
+import GeometryElements = require(&#x27;../geometries/GeometryElements&#x27;)
+import GeometryMeta = require(&#x27;../geometries/GeometryMeta&#x27;)
+import IDrawable = require(&#x27;../core/IDrawable&#x27;)
+import IBufferGeometry = require(&#x27;../geometries/IBufferGeometry&#x27;)
+import isDefined = require(&#x27;../checks/isDefined&#x27;)
+import IMaterial = require(&#x27;../core/IMaterial&#x27;)
+import Material = require(&#x27;../materials/Material&#x27;)
+import mustBeDefined = require(&#x27;../checks/mustBeDefined&#x27;)
+import NumberIUnknownMap = require(&#x27;../utils/NumberIUnknownMap&#x27;)
+import refChange = require(&#x27;../utils/refChange&#x27;)
+import Shareable = require(&#x27;../utils/Shareable&#x27;)
+import Simplex = require(&#x27;../geometries/Simplex&#x27;)
+import toGeometryData = require(&#x27;../geometries/toGeometryData&#x27;)
+import UniformData = require(&#x27;../core/UniformData&#x27;)
+import uuid4 = require(&#x27;../utils/uuid4&#x27;)
 
 /**
- * @class CuboidSerialGeometry
+ * Name used for reference count monitoring and logging.
  */
-class CuboidSerialGeometry extends SerialGeometry {
+let LOGGING_NAME = &#x27;Drawable&#x27;
+
+function contextBuilder() {
+  return LOGGING_NAME
+}
+
+/**
+ * @class Drawable
+ * @implements IDrawable
+ */
+class Drawable&lt;G extends GeometryElements, M extends IMaterial, U extends UniformData&gt; extends Shareable implements IDrawable {
   /**
-   * @property x {number} The length of the side in the x-axis direction.
+   * @property geometry
+   * @type {G}
    */
-  public x: number;
+  public geometry: G;
   /**
-   * @property y {number} The length of the side in the y-axis direction.
+   * @property _material
+   * @type {M}
+   * @private
    */
-  public y: number;
+  public _material: M;
   /**
-   * @property z {number} The length of the side in the z-axis direction.
+   * @property name
+   * @type [string]
    */
-  public z: number;
+  public name: string;
   /**
-   * @property xSegments {number} The number of segments in the x-axis direction.
+   * FIXME This is a bad name because it is not just a collection of buffersByCanvasid.
+   * A map from canvas to IBufferGeometry.
+   * It&#x27;s a function that returns a mesh, given a canvasId a lokup
    */
-  public xSegments: number;
+  private buffersByCanvasid: NumberIUnknownMap&lt;IBufferGeometry&gt;;
   /**
-   * @property ySegments {number} The number of segments in the y-axis direction.
+   * @property model
+   * @type {U}
    */
-  public ySegments: number;
+  public model: U;
   /**
-   * @property zSegments {number} The number of segments in the z-axis direction.
+   * @property mode
+   * @type {number}
+   * @private
    */
-  public zSegments: number;
-  public lines: boolean;
+  private mode: number;
+  // FIXME: Do we insist on a ContextMonitor here.
+  // We can also assume that we are OK because of the Scene - but can&#x27;t assume that there is one?
   /**
-   * &lt;p&gt;
-   * A CuboidSerialGeometry represents the mathematical shape of a cuboid.
-   * &lt;p&gt;
-   * @class CuboidSerialGeometry
+   * @class Drawable
    * @constructor
-   * @param width {number} The length in the x-axis aspect.
-   * @param height {number} The length in the y-axis aspect.
-   * @param depth {number} The length in the z-axis aspect. 
+   * @param geometry {G}
+   * @param material {M}
+   * @param model {U}
    */
-  constructor(width: number = 1, height: number = 1, depth: number = 1) {
-    super(void 0, void 0)
-    this.x = width
-    this.y = height
-    this.z = depth
-    this.xSegments = 1
-    this.ySegments = 1
-    this.zSegments = 1
-    this.lines = true
-    this.calculate()
+  constructor(geometry: G, material: M, model: U) {
+    super(LOGGING_NAME)
+    this.geometry = geometry
+    this._material = material
+    this._material.addRef()
+
+    this.buffersByCanvasid = new NumberIUnknownMap&lt;IBufferGeometry&gt;()
+
+    this.model = model
   }
-  calculate(): void {
-    let complex = new CuboidGeometry(this.x, this.y, this.z, this.xSegments, this.ySegments, this.zSegments, this.lines)
-    this.data = toSerialGeometryElements(complex.data, complex.meta)
-    this.meta = complex.meta
+  protected destructor(): void {
+    this.geometry = void 0;
+    this.buffersByCanvasid.release()
+    this.buffersByCanvasid = void 0
+    this._material.release()
+    this._material = void 0
+    this.model = void 0;
+  }
+  draw(canvasId: number): void {
+    // We know we are going to need a &quot;good&quot; canvasId to perform the buffers lookup.
+    // So we may as well test that condition now.
+    if (isDefined(canvasId)) {
+      let material = this._material
+      let model = this.model
+      let buffers: IBufferGeometry = this.buffersByCanvasid.getWeakReference(canvasId)
+      if (isDefined(buffers)) {
+        material.use(canvasId)
+        model.setUniforms(material, canvasId)
+        buffers.bind(material/*, aNameToKeyName*/) // FIXME: Why not part of the API?
+        buffers.draw()
+        buffers.unbind()
+      }
+    }
+  }
+  contextFree(canvasId: number): void {
+    this._material.contextFree(canvasId)
+  }
+  contextGain(manager: IContextProvider): void {
+    // 1. Replace the existing buffer geometry if we have geometry. 
+    if (this.geometry) {
+      let data = this.geometry.data
+      let meta = this.geometry.meta
+
+      mustBeDefined(&#x27;geometry.data&#x27;, data, contextBuilder)
+      mustBeDefined(&#x27;geometry.meta&#x27;, meta, contextBuilder)
+
+      // FIXME: Why is the meta not being used?
+      this.buffersByCanvasid.putWeakReference(manager.canvasId, manager.createBufferGeometry(data))
+    }
+    else {
+      console.warn(LOGGING_NAME + &quot; contextGain method has no elements, canvasId =&gt; &quot; + manager.canvasId)
+    }
+    // 2. Delegate the context to the material.
+    this._material.contextGain(manager)
+  }
+  contextLost(canvasId: number): void {
+    this._material.contextLost(canvasId)
+  }
+  /**
+   * @property material
+   * @type {M}
+   *
+   * Provides a reference counted reference to the material.
+   */
+  get material(): M {
+    this._material.addRef()
+    return this._material
   }
 }
 
-export = CuboidSerialGeometry;
+export = Drawable
     </pre>
 </div>
                     </div>
