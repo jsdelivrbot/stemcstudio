@@ -290,7 +290,7 @@ angular.module('app').factory('templates', [
     "var c3d = new EIGHT.Canvas3D()\n" +
     "var scene = new EIGHT.Scene([c3d])\n" +
     "var camera: EIGHT.PerspectiveCamera\n" +
-    "var cube: EIGHT.Drawable<EIGHT.GeometryElements, EIGHT.LineMaterial, EIGHT.Model3>\n" +
+    "var cube: EIGHT.Drawable<EIGHT.GeometryElements, EIGHT.LineMaterial>\n" +
     "\n" +
     "var e1 = EIGHT.Euclidean3.e1\n" +
     "var e2 = EIGHT.Euclidean3.e2\n" +
@@ -313,15 +313,15 @@ angular.module('app').factory('templates', [
     "function init() {\n" +
     "  var aspect = window.innerWidth / window.innerHeight\n" +
     "  camera = new EIGHT.PerspectiveCamera(75 * Math.PI / 180, aspect, 1, 1000).setEye(e3 * 2 + e1 * 0.05 + e2)\n" +
-    "  scene.add(camera)\n" +
     "\n" +
     "  var geometry = new EIGHT.CuboidGeometry()\n" +
     "  var elements = geometry.toElements()\n" +
     "  var material = new EIGHT.LineMaterial()\n" +
     "\n" +
-    "  cube = new EIGHT.Drawable(elements, material, new EIGHT.Model3())\n" +
+    "  cube = new EIGHT.Drawable(elements, material)\n" +
     "  scene.add(cube)\n" +
-    "  cube.model.colorRGB.set(0, 1, 0)\n" +
+    "  cube.setFacet('model', new EIGHT.ModelFacet()).release()\n" +
+    "  cube.setFacet('color', new EIGHT.ColorFacet()).setRGB(0, 1, 0).release()\n" +
     "\n" +
     "  c3d.canvas.width = window.innerWidth\n" +
     "  c3d.canvas.height = window.innerHeight\n" +
@@ -338,11 +338,12 @@ angular.module('app').factory('templates', [
     "\n" +
     "  var theta = Date.now() * 0.001\n" +
     "\n" +
-    "  cube.model.attitude.spinor(e1, e3).scale(-theta/2).exp()\n" +
+    "  var model = <EIGHT.ModelFacet>cube.getFacet('model')\n" +
+    "  model.attitude.spinor(e1, e3).scale(-theta/2).exp()\n" +
     "\n" +
     "  c3d.prolog()\n" +
     "\n" +
-    "  scene.draw(camera, c3d.canvasId)\n" +
+    "  scene.draw([camera], c3d.canvasId)\n" +
     "\n" +
     "  stats.end()\n" +
     "}\n";
@@ -496,7 +497,7 @@ angular.module('app').factory('templates', [
     "  var c3d = new EIGHT.Canvas3D()\n" +
     "\n" +
     "  /**\n" +
-    "   * The camera is mutable and provides uniforms through the EIGHT.UniformData interface.\n" +
+    "   * The camera is mutable and provides uniforms through the EIGHT.IFacet interface.\n" +
     "   */\n" +
     "  var camera = new EIGHT.PerspectiveCamera().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(2.0 * e3)\n" +
     "  /**\n" +
@@ -552,12 +553,13 @@ angular.module('app').factory('templates', [
     "   */\n" +
     "  var geobuff: EIGHT.IBufferGeometry\n" +
     "  /**\n" +
-    "   * The model for the cube, which implements EIGHT.UniformData having the\n" +
-    "   * method `setUniforms(visitor: EIGHT.UniformDataVisitor, canvasId: number): void`./\n" +
+    "   * The model for the cube, which implements EIGHT.IFacet having the\n" +
+    "   * method `setUniforms(visitor: EIGHT.IFacetVisitor, canvasId: number): void`./\n" +
     "   * Implement your own custom models to do e.g., articulated robots./\n" +
     "   * See example in Libs file./\n" +
     "   */\n" +
-    "  var model: EIGHT.Model3\n" +
+    "  var model: EIGHT.ModelFacet\n" +
+    "  var color: EIGHT.ColorFacet\n" +
     "\n" +
     "  // We start with the geometry (geometry) for a unit cube at the origin...\n" +
     "  // A geometry is considered to be an array of simplices.\n" +
@@ -611,9 +613,9 @@ angular.module('app').factory('templates', [
     "    console.warn('Nothing to see because the geometry is undefined.')\n" +
     "  }\n" +
     "  // Create the model anyway (not what we would do in the real world).\n" +
-    "  model = new EIGHT.Model3()\n" +
+    "  model = new EIGHT.ModelFacet()\n" +
     "  // Green, like on the 'Matrix', would be a good color, Neo. Or maybe red or blue?\n" +
-    "  model.colorRGB.set(0, 1, 0)\n" +
+    "  color = new EIGHT.ColorFacet().setRGB(0, 1, 0)\n" +
     "\n" +
     "  // PERFORMANCE HINT\n"+
     "  // In order to avoid creating temporary objects and excessive garbage collection,\n" +
@@ -665,6 +667,7 @@ angular.module('app').factory('templates', [
     "      materialCube.use(canvasId)\n" +
     "      // The model sets uniforms on the program, for the specified canvas.\n" +
     "      model.setUniforms(materialCube, canvasId)\n" +
+    "      color.setUniforms(materialCube, canvasId)\n" +
     "      // Bind the appropriate underlying buffers and enable attribute locations.\n" +
     "      geobuff.bind(materialCube)\n" +
     "      // Make the appropriate drawElements() or drawArrays() call.\n" +
@@ -724,7 +727,7 @@ angular.module('app').factory('templates', [
     "var second   = blade.e3ga.units.second\n" +
     "var hertz    = blade.e3ga.units.hertz\n" +
     "\n" +
-    "class Model implements EIGHT.UniformData {\n" +
+    "class Model extends EIGHT.Shareable implements EIGHT.IFacet {\n" +
     "  public position = new EIGHT.Vector3()\n" +
     "  public attitude = new EIGHT.Spinor3()\n" +
     "  public scale: EIGHT.Vector3 = new EIGHT.Vector3([1, 1, 1])\n" +
@@ -735,13 +738,25 @@ angular.module('app').factory('templates', [
     "  private S = EIGHT.Matrix4.identity()\n" +
     "  private T = EIGHT.Matrix4.identity()\n" +
     "  constructor() {\n" +
+    "    super('Model')\n" +
     "    this.position.modified = true\n" +
     "    this.attitude.modified = true\n" +
     "    this.scale.modified = true\n" +
     "    this.color.modified = true\n" +
     "  }\n" +
-    "  setUniforms(visitor: EIGHT.UniformDataVisitor, canvasId: number) {\n" +
-      "  // FIXME: canvasId will be used in uniform setting calls.\n" +
+    "  destructor(): void {\n" +
+    "    this.position = void 0\n" +
+    "    this.attitude = void 0\n" +
+    "    this.scale    = void 0\n" +
+    "    this.color    = void 0\n" +
+    "    this.M        = void 0\n" +
+    "    this.N        = void 0\n" +
+    "    this.R        = void 0\n" +
+    "    this.S        = void 0\n" +
+    "    this.T        = void 0\n" +
+    "  }\n" +
+    "  setUniforms(visitor: EIGHT.IFacetVisitor, canvasId: number) {\n" +
+    "  // FIXME: canvasId will be used in uniform setting calls.\n" +
     "    if (this.position.modified) {\n" +
     "      this.T.translation(this.position)\n" +
     "      this.position.modified = false\n" +
@@ -1125,7 +1140,8 @@ angular.module('app').factory('templates', [
     "\n"+
     "    var geobuff: EIGHT.IBufferGeometry\n"+
     "    var material: EIGHT.IMaterial\n" +
-    "    var model = new EIGHT.Model3()\n"+
+    "    var model = new EIGHT.ModelFacet()\n"+
+    "    var color = new EIGHT.ColorFacet()\n"+
     "\n"+
     "    var R = -(e1 ^ e2) / 2\n"+
     "\n" +
@@ -1158,23 +1174,24 @@ angular.module('app').factory('templates', [
     "    function tick(time: number) {\n"+
     "      $scope.$apply(function() {\n"+
     "        animate(time)\n"+
-    "      });\n"+
-    "    }\n"+
+    "      })\n" +
+    "    }\n" +
     "\n" +
-    "    function animate(time: number) {\n"+
+    "    function animate(time: number) {\n" +
     "\n" +
-    "      var theta = omega * time\n"+
+    "      var theta = omega * time\n" +
     "\n" +
-    "      c3d.prolog()\n"+
+    "      c3d.prolog()\n" +
     "\n" +
     "      geobuff.bind(material)\n" +
     "\n" +
-    "      model.colorRGB.set(0.0, 1.0, 0.0)\n"+
+    "      color.setRGB(0.0, 1.0, 0.0)\n" +
     "      for(var i = 0; i < 8; i++) {\n" +
-    "        model.attitude.copy(R).scale(theta - i * 2 * Math.PI / 8).exp()\n"+
-    "        model.setUniforms(material, c3d.canvasId)\n"+
+    "        model.attitude.copy(R).scale(theta - i * 2 * Math.PI / 8).exp()\n" +
+    "        model.setUniforms(material, c3d.canvasId)\n" +
+    "        color.setUniforms(material, c3d.canvasId)\n" +
     "        geobuff.draw()\n"+
-    "        model.colorRGB.scale(0.7)\n"+
+    "        color.scale(0.7)\n"+
     "      }\n" +
     "\n" +
     "      geobuff.unbind()\n" +
