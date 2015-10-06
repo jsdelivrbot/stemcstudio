@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>ContextAttributesLogger - davinci-eight</title>
+    <title>src/davinci-eight/slideshow/IProperties.ts - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -177,251 +177,39 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>ContextAttributesLogger Class</h1>
-<div class="box meta">
-
-        <div class="extends">
-            Extends <a href="../classes/Shareable.html" class="crosslink">Shareable</a>
-        </div>
-
-        <div class="foundat">
-            Defined in: <a href="../files/src_davinci-eight_commands_ContextAttributesLogger.ts.html#l7"><code>src&#x2F;davinci-eight&#x2F;commands&#x2F;ContextAttributesLogger.ts:7</code></a>
-        </div>
-
-            Module: <a href="../modules/EIGHT.html">EIGHT</a>
-
-</div>
-
-
-<div class="box intro">
-    <p>
-Displays details about the WegGL version to the console.
-<p>
-</div>
-
-
-<div id="classdocs" class="tabview">
-    <ul class="api-class-tabs">
-        <li class="api-class-tab index"><a href="#index">Index</a></li>
-
-            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
-            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
-    </ul>
-
-    <div>
-        <div id="index" class="api-class-tabpanel index">
-            <h2 class="off-left">Item Index</h2>
-
-                <div class="index-section methods">
-                    <h3>Methods</h3>
-
-                    <ul class="index-list methods extends">
-                            <li class="index-item method inherited inherited">
-                                <a href="#method_addRef">addRef</a>
-
-                            </li>
-                            <li class="index-item method protected inherited">
-                                <a href="#method_destructor">destructor</a>
-
-                            </li>
-                            <li class="index-item method inherited inherited">
-                                <a href="#method_release">release</a>
-
-                            </li>
-                    </ul>
-                </div>
-
-                <div class="index-section properties">
-                    <h3>Properties</h3>
-
-                    <ul class="index-list properties extends">
-                            <li class="index-item property inherited">
-                                <a href="#property_uuid">uuid</a>
-
-                            </li>
-                    </ul>
-                </div>
-
-
-        </div>
-
-            <div id="methods" class="api-class-tabpanel">
-                <h2 class="off-left">Methods</h2>
-
-<div id="method_addRef" class="method item inherited">
-    <h3 class="name"><code>addRef</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-            <p>Inherited from
-            <a href="../classes/IUnknown.html#method_addRef">
-                IUnknown
-            </a>
-            but overwritten in
-        <a href="../files/src_davinci-eight_utils_Shareable.ts.html#l24"><code>src&#x2F;davinci-eight&#x2F;utils&#x2F;Shareable.ts:24</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>
-Notifies this instance that something is dereferencing it.
-</p>
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>:
-                    The new value of the reference count.
-            </div>
-        </div>
-
-
-</div>
-<div id="method_destructor" class="method item protected inherited">
-    <h3 class="name"><code>destructor</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type">Void</span>
-        </span>
-
-
-        <span class="flag protected">protected</span>
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/Shareable.html#method_destructor">Shareable</a>:
-        <a href="../files/src_davinci-eight_utils_Shareable.ts.html#l58"><code>src&#x2F;davinci-eight&#x2F;utils&#x2F;Shareable.ts:58</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>
-Outputs a warning to the console that this method should be implemented by the derived class.
-</p>
-<p>
-<em>This method should be implemented by derived classes.</em>
-</p>
-<p>
-<em>Not implementing this method in a derived class risks leaking resources allocated by the derived class.</em>
-</p>
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Void</span>:
-            </div>
-        </div>
-
-
-</div>
-<div id="method_release" class="method item inherited">
-    <h3 class="name"><code>release</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-            <p>Inherited from
-            <a href="../classes/IUnknown.html#method_release">
-                IUnknown
-            </a>
-            but overwritten in
-        <a href="../files/src_davinci-eight_utils_Shareable.ts.html#l37"><code>src&#x2F;davinci-eight&#x2F;utils&#x2F;Shareable.ts:37</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>
-Notifies this instance that something is dereferencing it.
-</p>
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>:
-                    The new value of the reference count.
-            </div>
-        </div>
-
-
-</div>
-            </div>
-
-            <div id="properties" class="api-class-tabpanel">
-                <h2 class="off-left">Properties</h2>
-
-<div id="property_uuid" class="property item inherited">
-    <h3 class="name"><code>uuid</code></h3>
-    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/Shareable.html#property_uuid">Shareable</a>:
-        <a href="../files/src_davinci-eight_utils_Shareable.ts.html#l77"><code>src&#x2F;davinci-eight&#x2F;utils&#x2F;Shareable.ts:77</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-
-</div>
-            </div>
-
-
-    </div>
+<h1 class="file-heading">File: src/davinci-eight/slideshow/IProperties.ts</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+import IUnknown = require(&#x27;../core/IUnknown&#x27;)
+
+/**
+ * @class IProperties
+ * @extends IUnknown
+ */
+interface IProperties extends IUnknown {
+  /**
+   * @property uuid
+   * @type {string}
+   * @readOnly
+   */
+  uuid: string;
+  /**
+   * @method getProperty
+   * @param name {String}
+   * @return {number[]}
+   */
+  getProperty(name: string): number[];
+  /**
+   * @method setProperty
+   * @param name {string}
+   * @param value {number[]}
+   */
+  setProperty(name: string, value: number[]): void;
+}
+
+export = IProperties
+    </pre>
 </div>
                     </div>
                 </div>
