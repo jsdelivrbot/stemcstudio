@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/davinci-eight/core/IFacetVisitor.ts - davinci-eight</title>
+    <title>src/davinci-eight/geometries/CylinderGeometry.ts - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -190,45 +190,164 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: src/davinci-eight/core/IFacetVisitor.ts</h1>
+<h1 class="file-heading">File: src/davinci-eight/geometries/CylinderGeometry.ts</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-import Matrix1 = require(&#x27;../math/Matrix1&#x27;);
-import Matrix2 = require(&#x27;../math/Matrix2&#x27;);
-import Matrix3 = require(&#x27;../math/Matrix3&#x27;);
-import Matrix4 = require(&#x27;../math/Matrix4&#x27;);
-import Vector1 = require(&#x27;../math/Vector1&#x27;);
+import Geometry = require(&#x27;../geometries/Geometry&#x27;);
+import Simplex = require(&#x27;../geometries/Simplex&#x27;);
+import Symbolic = require(&#x27;../core/Symbolic&#x27;);
 import Vector2 = require(&#x27;../math/Vector2&#x27;);
 import Vector3 = require(&#x27;../math/Vector3&#x27;);
-import Vector4 = require(&#x27;../math/Vector4&#x27;);
 
-/**
- * @class IFacetVisitor
- * @beta
- */
-interface IFacetVisitor {
-  /**
-   * @method uniform1f
-   * @param name {string}
-   * @param x {number}
-   * @param canvasId {number}
-   */
-  uniform1f(name: string, x: number, canvasId: number): void;
-  uniform2f(name: string, x: number, y: number, canvasId: number): void;
-  uniform3f(name: string, x: number, y: number, z: number, canvasId: number): void;
-  uniform4f(name: string, x: number, y: number, z: number, w: number, canvasId: number): void;
-  uniformMatrix1(name: string, transpose: boolean, matrix: Matrix1, canvasId: number): void;
-  uniformMatrix2(name: string, transpose: boolean, matrix: Matrix2, canvasId: number): void;
-  uniformMatrix3(name: string, transpose: boolean, matrix: Matrix3, canvasId: number): void;
-  uniformMatrix4(name: string, transpose: boolean, matrix: Matrix4, canvasId: number): void;
-  uniformVector1(name: string, vector: Vector1, canvasId: number): void;
-  uniformVector2(name: string, vector: Vector2, canvasId: number): void;
-  uniformVector3(name: string, vector: Vector3, canvasId: number): void;
-  uniformVector4(name: string, vector: Vector4, canvasId: number): void;
+function face(pt0: Vector3, pt1: Vector3, pt2: Vector3, normals: Vector3[], uvs: Vector2[]): Simplex {
+
+  var simplex = new Simplex(Simplex.K_FOR_TRIANGLE)
+  simplex.vertices[0].attributes[Symbolic.ATTRIBUTE_POSITION] = pt0
+  simplex.vertices[1].attributes[Symbolic.ATTRIBUTE_POSITION] = pt1
+  simplex.vertices[2].attributes[Symbolic.ATTRIBUTE_POSITION] = pt2
+
+  simplex.vertices[0].attributes[Symbolic.ATTRIBUTE_NORMAL] = normals[0]
+  simplex.vertices[1].attributes[Symbolic.ATTRIBUTE_NORMAL] = normals[1]
+  simplex.vertices[2].attributes[Symbolic.ATTRIBUTE_NORMAL] = normals[2]
+
+  simplex.vertices[0].attributes[Symbolic.ATTRIBUTE_TEXTURE_COORDS] = uvs[0]
+  simplex.vertices[1].attributes[Symbolic.ATTRIBUTE_TEXTURE_COORDS] = uvs[1]
+  simplex.vertices[2].attributes[Symbolic.ATTRIBUTE_TEXTURE_COORDS] = uvs[2]
+
+  return simplex
 }
 
-export = IFacetVisitor;
+/**
+ * @class CylinderGeometry
+ */
+class CylinderGeometry extends Geometry {
+  /**
+   * @class CylinderGeometry
+   * @constructor
+   * @param radiusTop [number = 1]
+   * @param radiusBottom [number = 1]
+   * @param height [number = 1]
+   * @param radialSegments [number = 16]
+   * @param heightSegments [number = 1]
+   * @param openEnded [boolean = false]
+   * @param thetaStart [number = 0]
+   * @param thetaLength [number = 2 * Math.PI]
+   */
+  constructor(
+    radiusTop: number = 1,
+    radiusBottom: number = 1,
+    height: number = 1,
+    radialSegments: number = 16,
+    heightSegments: number = 1,
+    openEnded: boolean = false,
+    thetaStart: number = 0,
+    thetaLength: number = 2 * Math.PI) {
+
+    radialSegments = Math.max(radialSegments, 3);
+    heightSegments = Math.max(heightSegments, 1);
+
+    super();
+
+    let heightHalf = height / 2;
+
+    var x: number;
+    var y: number;
+    var points: Vector3[] = [];
+    let vertices: number[][] = [];
+    let uvs: Vector2[][] = [];
+
+    for ( y = 0; y &lt;= heightSegments; y ++ ) {
+      let verticesRow: number[] = [];
+      let uvsRow: Vector2[] = [];
+      let v = y / heightSegments;
+      let radius = v * ( radiusBottom - radiusTop ) + radiusTop;
+      for ( x = 0; x &lt;= radialSegments; x ++ ) {
+        let u = x / radialSegments;
+        let vertex = new Vector3();
+        vertex.x = radius * Math.sin( u * thetaLength + thetaStart );
+        vertex.y = - v * height + heightHalf;
+        vertex.z = radius * Math.cos( u * thetaLength + thetaStart );
+        points.push( vertex );
+        verticesRow.push( points.length - 1 );
+        uvsRow.push(new Vector2([u, 1 - v]));
+      }
+      vertices.push( verticesRow );
+      uvs.push( uvsRow );
+    }
+
+    let tanTheta = ( radiusBottom - radiusTop ) / height;
+    var na: Vector3;
+    var nb: Vector3;
+    for ( x = 0; x &lt; radialSegments; x ++ ) {
+      if ( radiusTop !== 0 ) {
+        na = Vector3.copy(points[vertices[0][x]]);
+        nb = Vector3.copy(points[vertices[0][x + 1]]);
+      }
+      else {
+        na = Vector3.copy(points[vertices[1][x]]);
+        nb = Vector3.copy(points[vertices[1][x + 1]]);
+      }
+      na.setY( Math.sqrt( na.x * na.x + na.z * na.z ) * tanTheta ).normalize();
+      nb.setY( Math.sqrt( nb.x * nb.x + nb.z * nb.z ) * tanTheta ).normalize();
+      for ( y = 0; y &lt; heightSegments; y ++ ) {
+        let v1: number = vertices[ y ][ x ];
+        let v2: number = vertices[ y + 1 ][ x ];
+        let v3: number = vertices[ y + 1 ][ x + 1 ];
+        let v4: number = vertices[ y ][ x + 1 ];
+        let n1 = na.clone();
+        let n2 = na.clone();
+        let n3 = nb.clone();
+        let n4 = nb.clone();
+        let uv1 = uvs[ y ][ x ].clone();
+        let uv2 = uvs[ y + 1 ][ x ].clone();
+        let uv3 = uvs[ y + 1 ][ x + 1 ].clone();
+        let uv4 = uvs[ y ][ x + 1 ].clone();
+        this.data.push(face(points[v1], points[v2], points[v4], [n1, n2, n4], [uv1, uv2, uv4]))
+        this.data.push(face(points[v2], points[v3], points[v4], [n2.clone(), n3, n4.clone()], [uv2.clone(), uv3, uv4.clone()]))
+      }
+    }
+
+    // top cap
+    if (!openEnded &amp;&amp; radiusTop &gt; 0 ) {
+      points.push(Vector3.e2.clone().scale(heightHalf));
+      for ( x = 0; x &lt; radialSegments; x ++ ) {
+        let v1: number = vertices[0][x];
+        let v2: number = vertices[0][x + 1];
+        let v3: number = points.length - 1;
+        let n1: Vector3 = Vector3.e2.clone();
+        let n2: Vector3 = Vector3.e2.clone();
+        let n3: Vector3 = Vector3.e2.clone();
+        let uv1: Vector2 = uvs[ 0 ][x].clone();
+        let uv2: Vector2 = uvs[ 0 ][x + 1].clone();
+        let uv3: Vector2 = new Vector2([uv2.x, 0]);
+        this.data.push(face(points[v1], points[v2], points[v3], [n1, n2, n3], [uv1, uv2, uv3]))
+      }
+    }
+
+    // bottom cap
+    if (!openEnded &amp;&amp; radiusBottom &gt; 0) {
+      points.push(Vector3.e2.clone().scale(-heightHalf));
+      for ( x = 0; x &lt; radialSegments; x ++ ) {
+        let v1: number  = vertices[heightSegments][x + 1];
+        let v2: number = vertices[heightSegments][x];
+        let v3: number = points.length - 1;
+        let n1: Vector3 = Vector3.e2.clone().scale(-1);
+        let n2: Vector3 = Vector3.e2.clone().scale(-1);
+        let n3: Vector3 = Vector3.e2.clone().scale(-1);
+        let uv1: Vector2 = uvs[ heightSegments ][x + 1].clone();
+        let uv2: Vector2 = uvs[ heightSegments ][x].clone();
+        let uv3: Vector2 = new Vector2([uv2.x, 1]);
+        this.data.push(face(points[v1], points[v2], points[v3], [n1, n2, n3], [uv1, uv2, uv3]))
+      }
+    }
+//    this.computeFaceNormals();
+//    this.computeVertexNormals();
+  }
+}
+
+export = CylinderGeometry;
+
     </pre>
 </div>
                     </div>

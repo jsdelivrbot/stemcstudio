@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/davinci-eight/core/IFacetVisitor.ts - davinci-eight</title>
+    <title>CylinderGeometry - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -190,46 +190,197 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: src/davinci-eight/core/IFacetVisitor.ts</h1>
+<h1>CylinderGeometry Class</h1>
+<div class="box meta">
 
-<div class="file">
-    <pre class="code prettyprint linenums">
-import Matrix1 = require(&#x27;../math/Matrix1&#x27;);
-import Matrix2 = require(&#x27;../math/Matrix2&#x27;);
-import Matrix3 = require(&#x27;../math/Matrix3&#x27;);
-import Matrix4 = require(&#x27;../math/Matrix4&#x27;);
-import Vector1 = require(&#x27;../math/Vector1&#x27;);
-import Vector2 = require(&#x27;../math/Vector2&#x27;);
-import Vector3 = require(&#x27;../math/Vector3&#x27;);
-import Vector4 = require(&#x27;../math/Vector4&#x27;);
 
-/**
- * @class IFacetVisitor
- * @beta
- */
-interface IFacetVisitor {
-  /**
-   * @method uniform1f
-   * @param name {string}
-   * @param x {number}
-   * @param canvasId {number}
-   */
-  uniform1f(name: string, x: number, canvasId: number): void;
-  uniform2f(name: string, x: number, y: number, canvasId: number): void;
-  uniform3f(name: string, x: number, y: number, z: number, canvasId: number): void;
-  uniform4f(name: string, x: number, y: number, z: number, w: number, canvasId: number): void;
-  uniformMatrix1(name: string, transpose: boolean, matrix: Matrix1, canvasId: number): void;
-  uniformMatrix2(name: string, transpose: boolean, matrix: Matrix2, canvasId: number): void;
-  uniformMatrix3(name: string, transpose: boolean, matrix: Matrix3, canvasId: number): void;
-  uniformMatrix4(name: string, transpose: boolean, matrix: Matrix4, canvasId: number): void;
-  uniformVector1(name: string, vector: Vector1, canvasId: number): void;
-  uniformVector2(name: string, vector: Vector2, canvasId: number): void;
-  uniformVector3(name: string, vector: Vector3, canvasId: number): void;
-  uniformVector4(name: string, vector: Vector4, canvasId: number): void;
-}
+        <div class="foundat">
+            Defined in: <a href="../files/src_davinci-eight_geometries_CylinderGeometry.ts.html#l29"><code>src&#x2F;davinci-eight&#x2F;geometries&#x2F;CylinderGeometry.ts:29</code></a>
+        </div>
 
-export = IFacetVisitor;
-    </pre>
+            Module: <a href="../modules/EIGHT.html">EIGHT</a>
+
+</div>
+
+
+<div class="box intro">
+    
+</div>
+
+    <div class="constructor">
+        <h2>Constructor</h2>
+<div id="method_CylinderGeometry" class="method item">
+    <h3 class="name"><code>CylinderGeometry</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>radiusTop</code>
+                </li>
+                <li class="arg">
+                        <code>radiusBottom</code>
+                </li>
+                <li class="arg">
+                        <code>height</code>
+                </li>
+                <li class="arg">
+                        <code>radialSegments</code>
+                </li>
+                <li class="arg">
+                        <code>heightSegments</code>
+                </li>
+                <li class="arg">
+                        <code>openEnded</code>
+                </li>
+                <li class="arg">
+                        <code>thetaStart</code>
+                </li>
+                <li class="arg">
+                        <code>thetaLength</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_geometries_CylinderGeometry.ts.html#l29"><code>src&#x2F;davinci-eight&#x2F;geometries&#x2F;CylinderGeometry.ts:29</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">radiusTop</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+                    <div class="param-description">
+                        <p>[number = 1]</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">radiusBottom</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+                    <div class="param-description">
+                        <p>[number = 1]</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">height</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+                    <div class="param-description">
+                        <p>[number = 1]</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">radialSegments</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+                    <div class="param-description">
+                        <p>[number = 16]</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">heightSegments</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+                    <div class="param-description">
+                        <p>[number = 1]</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">openEnded</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+                    <div class="param-description">
+                        <p>[boolean = false]</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">thetaStart</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+                    <div class="param-description">
+                        <p>[number = 0]</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">thetaLength</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+
+
+                    <div class="param-description">
+                        <p>[number = 2 * Math.PI]</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+    </div>
+
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
+
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+
+
+
+        </div>
+
+
+
+
+    </div>
 </div>
                     </div>
                 </div>
