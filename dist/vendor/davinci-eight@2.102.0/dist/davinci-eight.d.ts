@@ -7,9 +7,6 @@
 //
 /**
  * WebGL library for mathematical physics using Geometric Algebra.
- * VERSION:  2.98.0
- * GITHUB:   https://github.com/geometryzen/davinci-eight
- * MODIFIED: 2015-09-18
  */
 declare module EIGHT {
 
@@ -670,11 +667,15 @@ class Spinor3 extends VectorN<number> implements Spinor3Coords, GeometricElement
   reverse(): Spinor3;
   reflect(n: Cartesian3): Spinor3;
   rotate(rotor: Spinor3Coords): Spinor3;
+  /**
+   * Sets this Spinor3 to the rotor corresponding to a rotation from vector a to vector b.
+   */
+  rotor(b: Cartesian3, a: Cartesian3): Spinor3;
   sub(rhs: Spinor3Coords): Spinor3;
   sum(a: Spinor3Coords, b: Spinor3Coords): Spinor3;
   toString(): string;
   /**
-   * Sets this Spinor3 to the outer product of the vectors a and b, a ^ b.
+   * Sets this Spinor3 to the geometric product of the vectors a and b, a * b.
    */
   spinor(a: Cartesian3, b: Cartesian3): Spinor3;
 }
@@ -906,11 +907,10 @@ class Geometry {
    * This same data structure may be used to map vertex attribute names to program names.
    */
   public meta: GeometryMeta;
-  public dynamic: boolean;
-  public verticesNeedUpdate: boolean;
-  public elementsNeedUpdate: boolean;
-  public uvsNeedUpdate: boolean;
-  constructor();
+  constructor(type?: string);
+  destructor(): void;
+  recalculate(): void;
+  isModified(): boolean;
   /**
    * Applies the boundary operation to the geometry.
    * Under the boundary operation, each k-simplex becomes several simplices of dimension k - 1.
@@ -1499,17 +1499,14 @@ class Canvas3D implements ContextController, IContextMonitor, ContextRenderer {
   stop(): void;
 }
 
-class ArrowGeometry extends RevolutionGeometry {
-  constructor(
-    scale?: number,
-    attitude?: Spinor3,
-    segments?: number,
-    length?: number,
-    radiusShaft?: number,
-    radiusCone?: number,
-    lengthCone?: number, 
-    axis?: Cartesian3
-    )
+class ArrowGeometry extends Geometry {
+  vector: Vector3;
+  constructor(type?: string)
+}
+
+class VortexGeometry extends Geometry {
+  generator: Spinor3;
+  constructor(type?: string)
 }
 
 /**
@@ -1520,8 +1517,7 @@ class BarnGeometry extends Geometry {
   b: Vector3;
   c: Vector3;
   k: number;
-  constructor();
-  calculate(): void;
+  constructor(type?: string);
 }
 
 /**
@@ -1532,8 +1528,7 @@ class CuboidGeometry extends Geometry {
   b: Vector3;
   c: Vector3;
   k: number;
-  constructor();
-  calculate(): void;
+  constructor(type?: string);
 }
 
 class CylinderGeometry extends Geometry {
@@ -1607,18 +1602,6 @@ class KleinBottleGeometry extends SurfaceGeometry {
 
 class MobiusStripGeometry extends SurfaceGeometry {
   constructor(uSegments: number, vSegments: number)
-}
-
-class VortexGeometry extends Geometry {
-  constructor(
-    radius?: number,
-    radiusCone?: number,
-    radiusShaft?: number,
-    lengthCone?: number,
-    lengthShaft?: number,
-    arrowSegments?: number,
-    radialSegments?: number
-  )
 }
 
 /**
