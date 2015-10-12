@@ -290,11 +290,13 @@ angular.module('app').factory('templates', [
     "var c3d = new EIGHT.Canvas3D()\n" +
     "var scene = new EIGHT.Scene([c3d])\n" +
     "var camera: EIGHT.PerspectiveCamera\n" +
-    "var cube: EIGHT.Drawable<EIGHT.GeometryElements, EIGHT.LineMaterial>\n" +
+    "var cube: EIGHT.Drawable<EIGHT.GeometryElements, EIGHT.MeshLambertMaterial>\n" +
     "\n" +
     "var e1 = EIGHT.Euclidean3.e1\n" +
     "var e2 = EIGHT.Euclidean3.e2\n" +
     "var e3 = EIGHT.Euclidean3.e3\n" +
+    "\n" +
+    "var dirLight = new EIGHT.DirectionalLight()\n" +
     "\n" +
     "var stats = new Stats()\n" +
     "stats.setMode(0)\n" +
@@ -316,7 +318,7 @@ angular.module('app').factory('templates', [
     "\n" +
     "  var geometry = new EIGHT.CuboidGeometry()\n" +
     "  var elements = geometry.toElements()\n" +
-    "  var material = new EIGHT.LineMaterial()\n" +
+    "  var material = new EIGHT.MeshLambertMaterial()\n" +
     "\n" +
     "  cube = new EIGHT.Drawable(elements, material)\n" +
     "  scene.add(cube)\n" +
@@ -343,7 +345,7 @@ angular.module('app').factory('templates', [
     "\n" +
     "  c3d.prolog()\n" +
     "\n" +
-    "  scene.draw([camera], c3d.canvasId)\n" +
+    "  scene.draw([camera, dirLight], c3d.canvasId)\n" +
     "\n" +
     "  stats.end()\n" +
     "}\n";
@@ -542,9 +544,9 @@ angular.module('app').factory('templates', [
     "  camera.setUniforms(programP, canvasId)\n" +
     "  // Uniforms may also be set directly and some standard names are symbolically defined.\n" +
     "  // The names used here should match the names used in the program source code.\n" +
-    "  programT.uniformVector3(EIGHT.Symbolic.UNIFORM_AMBIENT_LIGHT, ambientLight, canvasId)\n" +
-    "  programT.uniformVector3('uDirectionalLightColor', dLightColor, canvasId)\n" +
-    "  programT.uniformVector3('uDirectionalLightDirection', dLightDirection, canvasId)\n" +
+    "  programT.vector3(EIGHT.Symbolic.UNIFORM_AMBIENT_LIGHT, ambientLight.data, canvasId)\n" +
+    "  programT.vector3('uDirectionalLightColor', dLightColor.data, canvasId)\n" +
+    "  programT.vector3('uDirectionalLightDirection', dLightDirection.data, canvasId)\n" +
     "  programP.uniform1f('uPointSize', 4, canvasId)\n" +
     "\n" +
     "  /**\n" +
@@ -565,7 +567,6 @@ angular.module('app').factory('templates', [
     "  // A geometry is considered to be an array of simplices.\n" +
     "  var geometry = new EIGHT.CuboidGeometry()\n" +
     "  geometry.k = EIGHT.Simplex.K_FOR_TRIANGLE\n" +
-    "  geometry.calculate()\n" +
     "  // Subdivide the geometry (here twice) if you wish to get more detail.\n" +
     "  // Hit 'Play' in mathdoodle.io to see the effect of, say, n = 0, 1, 2, 3.\n" +
     "  geometry.subdivide(2);\n" +
