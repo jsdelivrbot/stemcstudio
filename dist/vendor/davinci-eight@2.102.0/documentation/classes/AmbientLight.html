@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/davinci-eight/geometries/GeometryElements.ts - davinci-eight</title>
+    <title>AmbientLight - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -198,50 +198,375 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: src/davinci-eight/geometries/GeometryElements.ts</h1>
+<h1>AmbientLight Class</h1>
+<div class="box meta">
 
-<div class="file">
-    <pre class="code prettyprint linenums">
-import GeometryData = require(&#x27;../geometries/GeometryData&#x27;);
-import GeometryMeta = require(&#x27;../geometries/GeometryMeta&#x27;);
+        <div class="extends">
+            Extends <a href="../classes/Shareable.html" class="crosslink">Shareable</a>
+        </div>
 
-/**
- * &lt;p&gt;
- * A geometry holds the elements or arrays sent to the GLSL pipeline.
- * &lt;/p&gt;
- * &lt;p&gt;
- * These instructions are in a compact form suitable for populating WebGLBuffer(s).
- * &lt;/p&gt;
- *
- * @class GeometryElements
- */
-class GeometryElements {
-  /**
-   * @property data
-   * @type {GeometryElements}
-   */
-  public data: GeometryData;
-  /**
-   * @property meta
-   * @type {GeometryMeta}
-   */
-  // FIXME: GeometryMeta vanishes in the API docs because it is an interface.
-  public meta: GeometryMeta;
-  /**
-   * @class GeometryElements
-   * @constructor
-   * @param data {GeometryData} The instructions for drawing the geometry.
-   * @param meta {GeometryMeta} 
-   */
-  constructor(data: GeometryData, meta: GeometryMeta) {
-    this.data = data;
-    this.meta = meta;
-  }
-}
+        <div class="foundat">
+            Defined in: <a href="../files/src_davinci-eight_uniforms_AmbientLight.ts.html#l25"><code>src&#x2F;davinci-eight&#x2F;uniforms&#x2F;AmbientLight.ts:25</code></a>
+        </div>
 
-export = GeometryElements;
+            Module: <a href="../modules/EIGHT.html">EIGHT</a>
 
-    </pre>
+</div>
+
+
+<div class="box intro">
+    <p>Constructs a white light in the -e3 direction.</p>
+
+</div>
+
+    <div class="constructor">
+        <h2>Constructor</h2>
+<div id="method_AmbientLight" class="method item">
+    <h3 class="name"><code>AmbientLight</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_uniforms_AmbientLight.ts.html#l25"><code>src&#x2F;davinci-eight&#x2F;uniforms&#x2F;AmbientLight.ts:25</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+
+</div>
+    </div>
+
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
+
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods extends">
+                            <li class="index-item method inherited inherited">
+                                <a href="#method_addRef">addRef</a>
+
+                            </li>
+                            <li class="index-item method protected inherited">
+                                <a href="#method_destructor">destructor</a>
+
+                            </li>
+                            <li class="index-item method inherited inherited">
+                                <a href="#method_release">release</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_setUniforms">setUniforms</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+
+                    <ul class="index-list properties extends">
+                            <li class="index-item property">
+                                <a href="#property_color">color</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_uuid">uuid</a>
+
+                            </li>
+                    </ul>
+                </div>
+
+
+        </div>
+
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+<div id="method_addRef" class="method item inherited">
+    <h3 class="name"><code>addRef</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+            <p>Inherited from
+            <a href="../classes/IUnknown.html#method_addRef">
+                IUnknown
+            </a>
+            but overwritten in
+        <a href="../files/src_davinci-eight_utils_Shareable.ts.html#l24"><code>src&#x2F;davinci-eight&#x2F;utils&#x2F;Shareable.ts:24</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>
+Notifies this instance that something is dereferencing it.
+</p>
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>:
+                    The new value of the reference count.
+            </div>
+        </div>
+
+
+</div>
+<div id="method_destructor" class="method item protected">
+    <h3 class="name"><code>destructor</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+        <span class="flag protected">protected</span>
+
+
+
+
+
+    <div class="meta">
+            <p>Inherited from
+            <a href="../classes/Shareable.html#method_destructor">
+                Shareable
+            </a>
+            but overwritten in
+        <a href="../files/src_davinci-eight_uniforms_AmbientLight.ts.html#l34"><code>src&#x2F;davinci-eight&#x2F;uniforms&#x2F;AmbientLight.ts:34</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+
+</div>
+<div id="method_release" class="method item inherited">
+    <h3 class="name"><code>release</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+            <p>Inherited from
+            <a href="../classes/IUnknown.html#method_release">
+                IUnknown
+            </a>
+            but overwritten in
+        <a href="../files/src_davinci-eight_utils_Shareable.ts.html#l37"><code>src&#x2F;davinci-eight&#x2F;utils&#x2F;Shareable.ts:37</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>
+Notifies this instance that something is dereferencing it.
+</p>
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>:
+                    The new value of the reference count.
+            </div>
+        </div>
+
+
+</div>
+<div id="method_setUniforms" class="method item">
+    <h3 class="name"><code>setUniforms</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>visitor</code>
+                </li>
+                <li class="arg">
+                        <code>canvasId</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Void</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_uniforms_AmbientLight.ts.html#l42"><code>src&#x2F;davinci-eight&#x2F;uniforms&#x2F;AmbientLight.ts:42</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">visitor</code>
+                        <span class="type"><a href="../classes/IFacetVisitor.html" class="crosslink">IFacetVisitor</a></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">canvasId</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Void</span>:
+            </div>
+        </div>
+
+
+</div>
+            </div>
+
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+
+<div id="property_color" class="property item">
+    <h3 class="name"><code>color</code></h3>
+    <span class="type"><a href="../classes/Color.html" class="crosslink">Color</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_uniforms_AmbientLight.ts.html#l20"><code>src&#x2F;davinci-eight&#x2F;uniforms&#x2F;AmbientLight.ts:20</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+<div id="property_uuid" class="property item inherited">
+    <h3 class="name"><code>uuid</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Shareable.html#property_uuid">Shareable</a>:
+        <a href="../files/src_davinci-eight_utils_Shareable.ts.html#l77"><code>src&#x2F;davinci-eight&#x2F;utils&#x2F;Shareable.ts:77</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+            </div>
+
+
+    </div>
 </div>
                     </div>
                 </div>
