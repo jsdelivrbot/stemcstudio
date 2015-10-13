@@ -288,14 +288,18 @@ angular.module('app').factory('templates', [
 
   var CODE_TEMPLATE_EIGHTJS = "" +
     "var c3d = new EIGHT.Canvas3D()\n" +
+    "c3d.commands.pushWeakRef(new EIGHT.WebGLEnable('DEPTH_TEST'))\n" +
+    "c3d.commands.pushWeakRef(new EIGHT.WebGLClearColor(0.2, 0.2, 0.2, 1.0))\n" +
+    "\n" +
     "var scene = new EIGHT.Scene([c3d])\n" +
     "var camera: EIGHT.PerspectiveCamera\n" +
-    "var cube: EIGHT.Drawable<EIGHT.GeometryElements, EIGHT.MeshLambertMaterial>\n" +
+    "var cube: EIGHT.Drawable<EIGHT.GeometryElements, EIGHT.MeshMaterial>\n" +
     "\n" +
     "var e1 = EIGHT.Euclidean3.e1\n" +
     "var e2 = EIGHT.Euclidean3.e2\n" +
     "var e3 = EIGHT.Euclidean3.e3\n" +
     "\n" +
+    "var ambLight = new EIGHT.AmbientLight()\n" +
     "var dirLight = new EIGHT.DirectionalLight()\n" +
     "\n" +
     "var stats = new Stats()\n" +
@@ -318,7 +322,7 @@ angular.module('app').factory('templates', [
     "\n" +
     "  var geometry = new EIGHT.CuboidGeometry()\n" +
     "  var elements = geometry.toElements()\n" +
-    "  var material = new EIGHT.MeshLambertMaterial()\n" +
+    "  var material = new EIGHT.MeshMaterial()\n" +
     "\n" +
     "  cube = new EIGHT.Drawable(elements, material)\n" +
     "  scene.add(cube)\n" +
@@ -338,14 +342,16 @@ angular.module('app').factory('templates', [
     "\n" +
     "  requestAnimationFrame(animate)\n" +
     "\n" +
+    "  var gl = c3d.gl\n" +
+    "\n" +
+    "  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)\n" +
+    "\n" +
     "  var theta = Date.now() * 0.001\n" +
     "\n" +
     "  var model = <EIGHT.ModelFacet>cube.getFacet('model')\n" +
     "  model.attitude.spinor(e1, e3).scale(-theta/2).exp()\n" +
     "\n" +
-    "  c3d.prolog()\n" +
-    "\n" +
-    "  scene.draw([camera, dirLight], c3d.canvasId)\n" +
+    "  scene.draw([camera, ambLight, dirLight], c3d.canvasId)\n" +
     "\n" +
     "  stats.end()\n" +
     "}\n";
@@ -497,6 +503,8 @@ angular.module('app').factory('templates', [
     "   * We start the manager now to initialize the WebGL context.\n" +
     "   */\n" +
     "  var c3d = new EIGHT.Canvas3D()\n" +
+    "  c3d.commands.pushWeakRef(new EIGHT.WebGLEnable('DEPTH_TEST'))\n" +
+    "  c3d.commands.pushWeakRef(new EIGHT.WebGLClearColor(0.2, 0.2, 0.2, 1.0))\n" +
     "\n" +
     "  /**\n" +
     "   * The camera is mutable and provides uniforms through the EIGHT.IFacet interface.\n" +
@@ -661,7 +669,9 @@ angular.module('app').factory('templates', [
     "    // position = R * e1 * ~R\n" +
     "    // model.position.copy(e1).rotate(rotorL)\n" +
     "\n" +
-    "    c3d.prolog()\n" +
+    "    var gl = c3d.gl\n" +
+    "\n" +
+    "    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)\n" +
     "\n" +
     "    if (geobuff) {\n" +
     "      // Make the appropriate WebGLProgram current.\n" +
@@ -1136,8 +1146,8 @@ angular.module('app').factory('templates', [
     "    canvas.height = 400\n" +
     "\n"+
     "    var c3d: EIGHT.Canvas3D\n"+
-    "\n"+
-    "    var camera = new EIGHT.PerspectiveCamera().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(3.0 * e3)\n"+
+    "\n" +
+    "    var camera = new EIGHT.PerspectiveCamera().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(3.0 * e3)\n" +
     "\n"+
     "    var geobuff: EIGHT.IBufferGeometry\n"+
     "    var material: EIGHT.IMaterial\n" +
@@ -1151,6 +1161,8 @@ angular.module('app').factory('templates', [
     "      EIGHT.refChange('start', 'setUp()')\n"+
     "\n"+
     "      c3d = new EIGHT.Canvas3D()\n"+
+    "      c3d.commands.pushWeakRef(new EIGHT.WebGLEnable('DEPTH_TEST'))\n" +
+    "      c3d.commands.pushWeakRef(new EIGHT.WebGLClearColor(0.2, 0.2, 0.2, 1.0))\n" +
     "      c3d.start(canvas, 0)\n"+
     "\n"+
     "      material = new EIGHT.HTMLScriptsMaterial([c3d], ['vs-points', 'fs-points'], document)\n" +
@@ -1182,7 +1194,6 @@ angular.module('app').factory('templates', [
     "\n" +
     "      var theta = omega * time\n" +
     "\n" +
-    "      c3d.prolog()\n" +
     "\n" +
     "      geobuff.bind(material)\n" +
     "\n" +
