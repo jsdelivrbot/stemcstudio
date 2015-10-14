@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>IExchange - davinci-eight</title>
+    <title>src/davinci-eight/slideshow/Slide.ts - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -17,7 +17,7 @@
                 <h1><img src="../../assets/logo.png" title="davinci-eight"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.128.0</em>
+            <em>API Docs for: 2.129.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -40,7 +40,6 @@
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/AbstractMatrix.html">AbstractMatrix</a></li>
                                 <li><a href="../classes/AmbientLight.html">AmbientLight</a></li>
-                                <li><a href="../classes/AnimatedMirror.html">AnimatedMirror</a></li>
                                 <li><a href="../classes/ArrowGeometry.html">ArrowGeometry</a></li>
                                 <li><a href="../classes/AttribLocation.html">AttribLocation</a></li>
                                 <li><a href="../classes/AttribMetaInfo.html">AttribMetaInfo</a></li>
@@ -65,6 +64,7 @@
                                 <li><a href="../classes/CylinderGeometry.html">CylinderGeometry</a></li>
                                 <li><a href="../classes/Dimensions.html">Dimensions</a></li>
                                 <li><a href="../classes/DirectionalLight.html">DirectionalLight</a></li>
+                                <li><a href="../classes/Director.html">Director</a></li>
                                 <li><a href="../classes/DodecahedronGeometry.html">DodecahedronGeometry</a></li>
                                 <li><a href="../classes/Drawable.html">Drawable</a></li>
                                 <li><a href="../classes/EIGHTLogger.html">EIGHTLogger</a></li>
@@ -84,7 +84,7 @@
                                 <li><a href="../classes/GeometryMeta.html">GeometryMeta</a></li>
                                 <li><a href="../classes/HTMLScriptsMaterial.html">HTMLScriptsMaterial</a></li>
                                 <li><a href="../classes/IAnimation.html">IAnimation</a></li>
-                                <li><a href="../classes/IAnimationClock.html">IAnimationClock</a></li>
+                                <li><a href="../classes/IAnimationTarget.html">IAnimationTarget</a></li>
                                 <li><a href="../classes/IBufferGeometry.html">IBufferGeometry</a></li>
                                 <li><a href="../classes/IContextConsumer.html">IContextConsumer</a></li>
                                 <li><a href="../classes/IContextMonitor.html">IContextMonitor</a></li>
@@ -93,14 +93,11 @@
                                 <li><a href="../classes/IcosahedronGeometry.html">IcosahedronGeometry</a></li>
                                 <li><a href="../classes/IDrawable.html">IDrawable</a></li>
                                 <li><a href="../classes/IDrawList.html">IDrawList</a></li>
-                                <li><a href="../classes/IExchange.html">IExchange</a></li>
                                 <li><a href="../classes/IFacet
                 extends IUnknown.html">IFacet
                 extends IUnknown</a></li>
                                 <li><a href="../classes/IFacetVisitor.html">IFacetVisitor</a></li>
                                 <li><a href="../classes/IMaterial.html">IMaterial</a></li>
-                                <li><a href="../classes/IProperties.html">IProperties</a></li>
-                                <li><a href="../classes/ISlide.html">ISlide</a></li>
                                 <li><a href="../classes/IUnknown.html">IUnknown</a></li>
                                 <li><a href="../classes/IUnknownArray.html">IUnknownArray</a></li>
                                 <li><a href="../classes/IUnknownArray&lt;T extends IUnknown&gt;.html">IUnknownArray&lt;T extends IUnknown&gt;</a></li>
@@ -199,43 +196,223 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>IExchange Class</h1>
-<div class="box meta">
+<h1 class="file-heading">File: src/davinci-eight/slideshow/Slide.ts</h1>
 
+<div class="file">
+    <pre class="code prettyprint linenums">
+import IAnimation = require(&#x27;../slideshow/IAnimation&#x27;)
+import IAnimationTarget = require(&#x27;../slideshow/IAnimationTarget&#x27;)
+import ISlideHost = require(&#x27;../slideshow/ISlideHost&#x27;)
+import ISlideCommand = require(&#x27;../slideshow/ISlideCommand&#x27;)
+import IUnknown = require(&#x27;../core/IUnknown&#x27;)
+import IUnknownArray = require(&#x27;../utils/IUnknownArray&#x27;)
+import mustBeNumber = require(&#x27;../checks/mustBeNumber&#x27;)
+import Shareable = require(&#x27;../utils/Shareable&#x27;)
+import StringIUnknownMap = require(&#x27;../utils/StringIUnknownMap&#x27;)
+import WaitAnimation = require(&#x27;../slideshow/animations/WaitAnimation&#x27;)
 
-        <div class="foundat">
-            Defined in: <a href="../files/src_davinci-eight_slideshow_IExchange.ts.html#l1"><code>src&#x2F;davinci-eight&#x2F;slideshow&#x2F;IExchange.ts:1</code></a>
-        </div>
+class Slide extends Shareable {
+  public prolog: IUnknownArray&lt;ISlideCommand&gt;;
+  public epilog: IUnknownArray&lt;ISlideCommand&gt;;
+  /**
+   * The objects that we are going to manipulate.
+   */
+  private targets: IUnknownArray&lt;IAnimationTarget&gt;;
+  /**
+   * The companions to each target that maintain animation state.
+   */
+  private mirrors: StringIUnknownMap&lt;Mirror&gt;;
+  /**
+   * The time standard for this Slide.
+   */
+  private now = 0;
 
-            Module: <a href="../modules/EIGHT.html">EIGHT</a>
+  constructor() {
+    super(&#x27;Slide&#x27;)
+    this.prolog = new IUnknownArray&lt;ISlideCommand&gt;([], &#x27;Slide.prolog&#x27;)
+    this.epilog = new IUnknownArray&lt;ISlideCommand&gt;([], &#x27;Slide.epilog&#x27;)
+    this.targets = new IUnknownArray&lt;IAnimationTarget&gt;([], &#x27;Slide.targets&#x27;)
+    this.mirrors = new StringIUnknownMap&lt;Mirror&gt;(&#x27;Slide.mirrors&#x27;)
+  }
+  protected destructor(): void {
+    this.prolog.release()
+    this.prolog = void 0
+    this.epilog.release()
+    this.epilog = void 0
+    this.targets.release()
+    this.targets = void 0
+    this.mirrors.release()
+    this.mirrors = void 0
 
-</div>
+    super.destructor()
+  }
+  private ensureTarget(target: IAnimationTarget) {
+    if (this.targets.indexOf(target) &lt; 0) {
+      this.targets.push(target)
+    }
+  }
+  private ensureMirror(target: IAnimationTarget) {
+    if (!this.mirrors.exists(target.uuid)) {
+      this.mirrors.putWeakRef(target.uuid, new Mirror())
+    }
+  }
+  animate(target: IAnimationTarget, propName: string, animation: IAnimation, delay: number = 0, sustain: number = 0) {
 
+    this.ensureTarget(target)
+    this.ensureMirror(target)
 
-<div class="box intro">
-    
-</div>
+    var mirror = this.mirrors.getWeakRef(target.uuid)
 
+    mirror.ensureAnimationLane(propName)
 
-<div id="classdocs" class="tabview">
-    <ul class="api-class-tabs">
-        <li class="api-class-tab index"><a href="#index">Index</a></li>
+    if (delay) {
+      mirror.animationLanes.getWeakRef(propName).pushWeakRef(new WaitAnimation(delay))
+    }
 
-    </ul>
+    mirror.animationLanes.getWeakRef(propName).push(animation)
 
-    <div>
-        <div id="index" class="api-class-tabpanel index">
-            <h2 class="off-left">Item Index</h2>
+    if (sustain) {
+      mirror.animationLanes.getWeakRef(propName).pushWeakRef(new WaitAnimation(sustain))
+    }
+  }
 
+  /**
+   * Update all currently running animations.
+   * Essentially calls &#x60;apply&#x60; on each IAnimation in the queues of active objects.
+   * @method advance
+   * @param interval {number} Advances the static Slide.now property.
+   */
+  advance(interval: number): void {
+    this.now += interval
 
+    for (var i = 0; i &lt; this.targets.length; i++) {
+      var target = this.targets.getWeakRef(i)
+      /**
+       * &#x60;offset&#x60; is variable used to keep things running on schedule.
+       * If an animation finishes before the interval, it reports the
+       * duration &#x60;extra&#x60; that brings the tome to &#x60;now&#x60;. Subsequent animations
+       * get a head start by considering their start time to be now - offset.
+       */
+      var offset = 0
+      var mirror = this.mirrors.getWeakRef(target.uuid)
+      var names = mirror.animationLanes.keys;
+      for (var j = 0; j &lt; names.length; j++) {
+        var propName = names[j]
+        var animationLane = mirror.animationLanes.getWeakRef(propName)
+        offset = animationLane.apply(target, propName, this.now, offset)
+      }
+    }
+  }
+  onEnter(host: ISlideHost): void {
+    this.prolog.forEach(function(command) {
+      command.redo(host)
+    })
+  }
+  onExit(host: ISlideHost): void {
+    this.epilog.forEach(function(command) {
+      command.redo(host)
+    })
+  }
+  undo(host: ISlideHost): void {
+    for (var i = 0; i &lt; this.targets.length; i++) {
+      var target = this.targets.getWeakRef(i)
+      var mirror = this.mirrors.getWeakRef(target.uuid)
+      var names = mirror.animationLanes.keys;
+      for (var j = 0; j &lt; names.length; j++) {
+        var propName = names[j]
+        var animationLane = mirror.animationLanes.getWeakRef(propName)
+        animationLane.undo(target, propName)
+      }
+    }
+  }
+}
 
+export = Slide
 
-        </div>
+class AnimationLane extends Shareable {
+  private completed: IUnknownArray&lt;IAnimation&gt;;
+  private remaining: IUnknownArray&lt;IAnimation&gt;;
+  constructor() {
+    super(&#x27;AnimationLane&#x27;)
+    this.completed = new IUnknownArray&lt;IAnimation&gt;([], &#x27;AnimationLane.remaining&#x27;)
+    this.remaining = new IUnknownArray&lt;IAnimation&gt;([], &#x27;AnimationLane.remaining&#x27;)
+  }
+  protected destructor(): void {
+    this.completed.release()
+    this.completed = void 0
+    this.remaining.release()
+    this.remaining = void 0
+    super.destructor()
+  }
+  push(animation: IAnimation): number {
+    return this.remaining.push(animation)
+  }
+  pushWeakRef(animation: IAnimation): number {
+    return this.remaining.pushWeakRef(animation)
+  }
+  apply(target: IAnimationTarget, propName: string, now: number, offset: number): number {
+    var done = false;
+    while(!done) {
+      if (this.remaining.length &gt; 0) {
+        var animation = this.remaining.getWeakRef(0)
+        animation.apply(target, propName, now, offset)
+        if (animation.done(target, propName)) {
+          offset = animation.extra(now)
+          this.completed.push(this.remaining.shift())
+        }
+        else {
+          done = true;
+        }
+      }
+      else {
+        done = true;
+      }
+    }
+    return offset;
+  }
+  undo(target: IAnimationTarget, propName: string): void {
+    while(this.completed.length &gt; 0) {
+      this.remaining.unshift(this.completed.pop())
+    }
+    for (var i = this.remaining.length - 1; i &gt;= 0; i--) {
+      var animation = this.remaining.getWeakRef(i)
+      animation.undo(target, propName)
+    }
+  }
+}
 
+/**
+ * The companion to a target: IAnimationTarget containing animation state.
+ */
+class Mirror extends Shareable {
+  /**
+   * A map from property name to a list of properties of the property value.
+   * It should be possible to animate many properties of a target at once.
+   * However, a given property should only be animated in one way at a given time.
+   * For these reasons, we structure the data as map from property name to a queue of animations.
+   */
+  public animationLanes: StringIUnknownMap&lt;AnimationLane&gt;;
+  constructor() {
+    super(&#x27;Mirror&#x27;)
+    this.animationLanes = new StringIUnknownMap&lt;AnimationLane&gt;(&#x27;Mirror.animationLanes&#x27;)
+  }
 
+  protected destructor(): void {
+    this.animationLanes.release()
+    this.animationLanes = void 0
+    super.destructor()
+  }
+  /**
+   * TODO: Maybe call this ensureAnimationLane or ensureLane
+   */
+  ensureAnimationLane(key: string): void {
+    if (!this.animationLanes.exists(key)) {
+      this.animationLanes.putWeakRef(key, new AnimationLane())
+    }
+  }
+}
 
-
-    </div>
+    </pre>
 </div>
                     </div>
                 </div>

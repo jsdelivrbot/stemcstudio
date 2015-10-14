@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/davinci-eight/slideshow/Animator.ts - davinci-eight</title>
+    <title>IAnimationTarget - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -17,7 +17,7 @@
                 <h1><img src="../../assets/logo.png" title="davinci-eight"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.128.0</em>
+            <em>API Docs for: 2.129.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -40,7 +40,6 @@
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/AbstractMatrix.html">AbstractMatrix</a></li>
                                 <li><a href="../classes/AmbientLight.html">AmbientLight</a></li>
-                                <li><a href="../classes/AnimatedMirror.html">AnimatedMirror</a></li>
                                 <li><a href="../classes/ArrowGeometry.html">ArrowGeometry</a></li>
                                 <li><a href="../classes/AttribLocation.html">AttribLocation</a></li>
                                 <li><a href="../classes/AttribMetaInfo.html">AttribMetaInfo</a></li>
@@ -65,6 +64,7 @@
                                 <li><a href="../classes/CylinderGeometry.html">CylinderGeometry</a></li>
                                 <li><a href="../classes/Dimensions.html">Dimensions</a></li>
                                 <li><a href="../classes/DirectionalLight.html">DirectionalLight</a></li>
+                                <li><a href="../classes/Director.html">Director</a></li>
                                 <li><a href="../classes/DodecahedronGeometry.html">DodecahedronGeometry</a></li>
                                 <li><a href="../classes/Drawable.html">Drawable</a></li>
                                 <li><a href="../classes/EIGHTLogger.html">EIGHTLogger</a></li>
@@ -84,7 +84,7 @@
                                 <li><a href="../classes/GeometryMeta.html">GeometryMeta</a></li>
                                 <li><a href="../classes/HTMLScriptsMaterial.html">HTMLScriptsMaterial</a></li>
                                 <li><a href="../classes/IAnimation.html">IAnimation</a></li>
-                                <li><a href="../classes/IAnimationClock.html">IAnimationClock</a></li>
+                                <li><a href="../classes/IAnimationTarget.html">IAnimationTarget</a></li>
                                 <li><a href="../classes/IBufferGeometry.html">IBufferGeometry</a></li>
                                 <li><a href="../classes/IContextConsumer.html">IContextConsumer</a></li>
                                 <li><a href="../classes/IContextMonitor.html">IContextMonitor</a></li>
@@ -93,14 +93,11 @@
                                 <li><a href="../classes/IcosahedronGeometry.html">IcosahedronGeometry</a></li>
                                 <li><a href="../classes/IDrawable.html">IDrawable</a></li>
                                 <li><a href="../classes/IDrawList.html">IDrawList</a></li>
-                                <li><a href="../classes/IExchange.html">IExchange</a></li>
                                 <li><a href="../classes/IFacet
                 extends IUnknown.html">IFacet
                 extends IUnknown</a></li>
                                 <li><a href="../classes/IFacetVisitor.html">IFacetVisitor</a></li>
                                 <li><a href="../classes/IMaterial.html">IMaterial</a></li>
-                                <li><a href="../classes/IProperties.html">IProperties</a></li>
-                                <li><a href="../classes/ISlide.html">ISlide</a></li>
                                 <li><a href="../classes/IUnknown.html">IUnknown</a></li>
                                 <li><a href="../classes/IUnknownArray.html">IUnknownArray</a></li>
                                 <li><a href="../classes/IUnknownArray&lt;T extends IUnknown&gt;.html">IUnknownArray&lt;T extends IUnknown&gt;</a></li>
@@ -199,365 +196,329 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: src/davinci-eight/slideshow/Animator.ts</h1>
+<h1>IAnimationTarget Class</h1>
+<div class="box meta">
 
-<div class="file">
-    <pre class="code prettyprint linenums">
-import Delay = require(&#x27;../slideshow/animations/Delay&#x27;)
-import IAnimation = require(&#x27;../slideshow/IAnimation&#x27;)
-import IAnimationClock = require(&#x27;../slideshow/IAnimationClock&#x27;)
-import IProperties = require(&#x27;../slideshow/IProperties&#x27;)
-import IExchange = require(&#x27;../slideshow/IExchange&#x27;)
-import IAnimateOptions = require(&#x27;../slideshow/IAnimateOptions&#x27;)
-import mustBeNumber = require(&#x27;../checks/mustBeNumber&#x27;)
-import Shareable = require(&#x27;../utils/Shareable&#x27;)
-import StringIUnknownMap = require(&#x27;../utils/StringIUnknownMap&#x27;)
-import IUnknown = require(&#x27;../core/IUnknown&#x27;)
-import IUnknownArray = require(&#x27;../utils/IUnknownArray&#x27;)
+        <div class="extends">
+            Extends <a href="../classes/IUnknown.html" class="crosslink">IUnknown</a>
+        </div>
 
-class Clock implements IAnimationClock {
-  public now: number = 1;
-  constructor() {
+        <div class="foundat">
+            Defined in: <a href="../files/src_davinci-eight_slideshow_IAnimationTarget.ts.html#l3"><code>src&#x2F;davinci-eight&#x2F;slideshow&#x2F;IAnimationTarget.ts:3</code></a>
+        </div>
 
-  }
-  update(speed: number): void {
-    this.now += speed;
-  }
-}
+            Module: <a href="../modules/EIGHT.html">EIGHT</a>
 
-class Animator extends Shareable {
-  private drivers: IUnknownArray&lt;IProperties&gt;;
-  private mirrors: StringIUnknownMap&lt;AnimatedMirror&gt;;
-  private _clock = new Clock();
-  constructor() {
-    super(&#x27;Animator&#x27;)
+</div>
 
-    this.drivers = new IUnknownArray&lt;IProperties&gt;([], &#x27;Animator&#x27;)
-    this.mirrors = new StringIUnknownMap&lt;AnimatedMirror&gt;(&#x27;Animator&#x27;)
-  }
-  protected destructor(): void {
-    this.drivers.release()
-    this.drivers = void 0
-    this.mirrors.release()
-    this.mirrors = void 0
 
-    super.destructor()
-  }
-  get clock(): IAnimationClock {
-    return this._clock
-  }
-  /**
-   * Attach animator to an object.
-   */
-  attach(object: IProperties) {
+<div class="box intro">
+    
+</div>
 
-    if (!this.mirrors.exists(object.uuid)) {
-      var mirror = new AnimatedMirror();
-      this.mirrors.put(object.uuid, mirror);
-      mirror.release();
-    }
-    else {
-      // Do nothing, object is already known.
-    }
 
-    // FIXME: This seems crude.
-    // Override set method to abort running animations.
-    /*
-    var set = object.set;
-    object.set = function (data: IExchange, ignore: boolean) {
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
 
-      if (!ignore) {
-        // Argument parsing
-        if (object === undefined || object === null) {
-          return;
-        }
-        else {
-          // Stop all animations on the given keys
-          animator.stop(this, data);
-        }
-      }
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
+    </ul>
 
-      // Pass through to Animated
-      set.call(this, data);
-    }
-    */
-    // Prepare animation queue.
-  }
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
 
-  /**
-   * Hurry all animations on an object by speeding by a factor.
-   */
-  hurry(object: IProperties, attributes?: IExchange, factor: number = 4) {
-    // Reduce
-    var mirror = this.mirrors.get(object.uuid)
-    if (mirror) {
-      var queues = mirror.queuesXYZ
-      try {
-        var keys: string[] = attributes ? Object.keys(attributes) : queues.keys
-        keys.forEach(function(key) {
-          var queue = queues.get(key)
-          queue.forEach(function(animation) {
-            animation.hurry(factor)
-          })
-          queue.release()
-        })
-      }
-      finally {
-        queues.release()
-      }
-      mirror.release()
-    }
-  }
+                <div class="index-section methods">
+                    <h3>Methods</h3>
 
-  /**
-   * Stop all animations on an object.
-   * @method stop
-   * @param object {Animated}
-   * @param attributes {IExchange}
-   */
-  stop(object: IProperties, attributes: IExchange) {
-    var animator = this
+                    <ul class="index-list methods extends">
+                            <li class="index-item method inherited">
+                                <a href="#method_addRef">addRef</a>
 
-    var mirror = this.mirrors.get(object.uuid)
-    if (mirror) {
-      var queues = mirror.queuesXYZ
-      var keys = attributes ? Object.keys(attributes) : queues.keys
-      keys.forEach(function(key) {
-        var queue = queues.get(key)
-        while(queue) {
-          animator.dequeue(object, key, true)
-          queue.release()
-          queue = queues.get(key)
-        }
-      })
-      queues.release()
-      mirror.release()
-    }
-  }
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getProperty">getProperty</a>
 
-  /**
-   * Animate a set of attributes on an object.
-   * @method animate
-   * @param object {Animated} The object to be animated
-   * @param animation {[name: string]:IAnimation} The animations to be applied by property name.
-   * @param options [IAnimateOptions] determine how the attributes will be animated.
-   */
-  animate(object: IProperties, animations: { [name: string]: IAnimation }, options: IAnimateOptions = {}) {
-    var animator = this
-    var clock = this.clock
+                            </li>
+                            <li class="index-item method inherited">
+                                <a href="#method_release">release</a>
 
-    // Ensure that the object has been initialized by having a queue and animations count.
-    this.attach(object)
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_setProperty">setProperty</a>
 
-    var mirror = this.mirrors.get(object.uuid)
-    try {
-      var queues = mirror.queuesXYZ
-      try {
-        Object.keys(animations).forEach(function(key: string) {
+                            </li>
+                    </ul>
+                </div>
 
-          // If necessary, init queue for the current key.
-          if (!queues.exists(key)) {
-            let emptyArray = new IUnknownArray&lt;IAnimation&gt;([],&#x27;Animator.animate()&#x27;)
-            queues.put(key, emptyArray)
-            emptyArray.release()
-          }
+                <div class="index-section properties">
+                    <h3>Properties</h3>
 
-          var queue = queues.get(key)
-          try {
-            // Queue delay
-            if (options.delay) {
-              let delay = new Delay(clock, object, key, options.delay)
-              queue.push(delay)
-              delay.release()
+                    <ul class="index-list properties extends">
+                            <li class="index-item property">
+                                <a href="#property_uuid">uuid</a>
 
-              if (mirror.animations++ === 0) {
-                animator.drivers.push(object);
-              }
-            }
-            // Queue new animation
-            queue.push(animations[key])
+                            </li>
+                    </ul>
+                </div>
 
-            // Queue hold
-            if (options.hold) {
-              let hold = new Delay(clock, object, key, options.hold);
-              queue.push(hold)
-              hold.release()
 
-              if (mirror.animations++ === 0) {
-                animator.drivers.push(object);
-              }
-            }
+        </div>
 
-            // Keep track of animating objects
-            if (mirror.animations++ === 0) {
-              animator.drivers.push(object);
-            }
-          }
-          finally {
-            queue.release()
-          }
-        })
-      }
-      finally {
-        queues.release()
-      }
-    }
-    finally {
-      mirror.release()
-    }
-  }
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
 
-  /**
-   * Remove current animation on an object attribute.
-   */
-  dequeue(object: IProperties, key: string, apply: boolean = false) {
+<div id="method_addRef" class="method item inherited">
+    <h3 class="name"><code>addRef</code></h3>
 
-    var mirror = this.mirrors.get(object.uuid)
-    try {
-      var queues = mirror.queuesXYZ
-      try {
-        var queue = queues.get(key)
-        if (queue) {
-          try {
-            // Remove from front of queue.
-            var animation = queue.shift()
-            try {
-              if (queue.length == 0) {
-                  queues.remove(key)
-              }
+        <span class="paren">()</span>
 
-              // Apply animation instantly
-              if (apply) {
-                animation.skip();
-              }
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+        </span>
 
-              // Keep track of animating objects
-              if (--mirror.animations === 0) {
-                this.drivers.splice(this.drivers.indexOf(object), 1).release()
-              }
-            }
-            finally {
-              animation.release()
-            }
-          }
-          finally {
-            queue.release()
-          }
-        }
-      }
-      finally {
-        queues.release()
-      }
-    }
-    finally {
-      mirror.release()
-    }
-  }
 
-  /**
-   * Update all currently running animations.
-   * Essentially calls &#x60;apply&#x60; on each IAnimation in the queues of active objects.
-   * @method update
-   * @param speed {number} Advances the static Animator.now property.
-   */
-  update(speed: number): void {
-    var animator = this
 
-    this._clock.update(speed)
 
-    // Make a shallow copy of the currently active Animated objects.
-    var active: IUnknownArray&lt;IProperties&gt; = this.drivers.slice()
-    try {
-      active.forEach(function(object: IProperties) {
 
-        // Used to make queued animations match up at sub-frame times.
-        var offset = 0
 
-        function advance(animations: IUnknownArray&lt;IAnimation&gt;, key: string) {
-          // The dequeue method of the animator could perform the
-          // final death &#x60;release&#x60; of the animations. We must make sure
-          // that we aren&#x27;t left holding a zombie.
-          animations.addRef()
-          try {
-            // Write out animated attribute.
-            var animation = animations.get(0);
-            try {
-              animation.apply(offset || 0);
 
-              // Remove completed animations.
-              if (animation.done()) {
-                offset = animation.extra();
-                animator.dequeue(object, key);
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/IUnknown.html#method_addRef">IUnknown</a>:
+        <a href="../files/src_davinci-eight_core_IUnknown.ts.html#l9"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;IUnknown.ts:9</code></a>
+        </p>
 
-                // Recurse into next animation.
-                if (animations.length &gt; 0) {
-                  advance.call(animator, animations, key);
-                }
-              }
-            }
-            finally {
-              animation.release()
-            }
-          }
-          finally {
-            animations.release()
-          }
-        }
 
-        var mirror = animator.mirrors.get(object.uuid)
-        try {
-          var queues = mirror.queuesXYZ
-          try {
-            queues.forEach(function(key, animations) {
-              advance(animations, key)
-            })
-          }
-          finally {
-            queues.release()
-          }
-        }
-        finally {
-          mirror.release()
-        }
-      })
-    }
-    finally {
-      active.release()
-    }
-  }
-}
 
-export = Animator
+    </div>
 
-// FIXME: Encapsulation make safer and less ref count issues.
-class AnimatedMirror extends Shareable {
-  private _queues: StringIUnknownMap&lt;IUnknownArray&lt;IAnimation&gt;&gt;;
-  public animations: number;
-  /**
-   * The super-symmetric partner of an IProperties adapter.
-   * This class keeps track of animation state.
-   * @class AnimatedMirror
-   * @constructor
-   */
-  constructor() {
-    super(&#x27;AnimatedMirror&#x27;)
-    this._queues = new StringIUnknownMap&lt;IUnknownArray&lt;IAnimation&gt;&gt;(&#x27;AnimatedMirror&#x27;)
-    this.animations = 0
-  }
-  protected destructor(): void {
-    this._queues.release()
-    this._queues = void 0
-    super.destructor()
-  }
-  // FIXME: Methinks this is leaking an animation.
-  // If we had pUnkOuter, would we know?
-  get queuesXYZ() {
-    this._queues.addRef()
-    return this._queues
-  }
-}
+    <div class="description">
+        <p>
+Increments the reference count of an IUnknown instance.
+</p>
+    </div>
 
-    </pre>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>:
+                    <p>
+The new reference count. This value is intended to be used only for test purposes.
+</p>
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getProperty" class="method item">
+    <h3 class="name"><code>getProperty</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>name</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number[]</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_slideshow_IAnimationTarget.ts.html#l14"><code>src&#x2F;davinci-eight&#x2F;slideshow&#x2F;IAnimationTarget.ts:14</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">name</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number[]</a></span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_release" class="method item inherited">
+    <h3 class="name"><code>release</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/IUnknown.html#method_release">IUnknown</a>:
+        <a href="../files/src_davinci-eight_core_IUnknown.ts.html#l20"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;IUnknown.ts:20</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>
+Decrements the reference count of an IUnknown instance.
+</p>
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>:
+                    <p>
+The new reference count. This value is intended to be used only for test purposes.
+</p>
+            </div>
+        </div>
+
+
+</div>
+<div id="method_setProperty" class="method item">
+    <h3 class="name"><code>setProperty</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>name</code>
+                </li>
+                <li class="arg">
+                        <code>value</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_slideshow_IAnimationTarget.ts.html#l20"><code>src&#x2F;davinci-eight&#x2F;slideshow&#x2F;IAnimationTarget.ts:20</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">name</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">value</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number[]</a></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+            </div>
+
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+
+<div id="property_uuid" class="property item">
+    <h3 class="name"><code>uuid</code></h3>
+    <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_slideshow_IAnimationTarget.ts.html#l8"><code>src&#x2F;davinci-eight&#x2F;slideshow&#x2F;IAnimationTarget.ts:8</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+            </div>
+
+
+    </div>
 </div>
                     </div>
                 </div>
