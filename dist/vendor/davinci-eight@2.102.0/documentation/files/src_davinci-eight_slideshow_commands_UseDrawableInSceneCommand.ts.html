@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>AttribLocation - davinci-eight</title>
+    <title>src/davinci-eight/slideshow/commands/UseDrawableInSceneCommand.ts - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -198,327 +198,48 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>AttribLocation Class</h1>
-<div class="box meta">
-
-
-        <div class="foundat">
-            Defined in: <a href="../files/src_davinci-eight_core_AttribLocation.ts.html#l21"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;AttribLocation.ts:21</code></a>
-        </div>
-
-            Module: <a href="../modules/EIGHT.html">EIGHT</a>
-
-</div>
-
-
-<div class="box intro">
-    <p>Convenience class that assists in the lifecycle management of an atrribute used in a vertex shader.
-In particular, this class manages buffer allocation, location caching, and data binding.</p>
-
-</div>
-
-    <div class="constructor">
-        <h2>Constructor</h2>
-<div id="method_AttribLocation" class="method item">
-    <h3 class="name"><code>AttribLocation</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>manager</code>
-                </li>
-                <li class="arg">
-                        <code>name</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_core_AttribLocation.ts.html#l21"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;AttribLocation.ts:21</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">manager</code>
-                        <span class="type"><a href="../classes/IContextProvider.html" class="crosslink">IContextProvider</a></span>
-
-
-                    <div class="param-description">
-                        <p>Unused. May be used later e.g. for mirroring.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">name</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                        <p>The name of the variable as it appears in the GLSL program.</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-    </div>
-
-<div id="classdocs" class="tabview">
-    <ul class="api-class-tabs">
-        <li class="api-class-tab index"><a href="#index">Index</a></li>
-
-            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
-    </ul>
-
-    <div>
-        <div id="index" class="api-class-tabpanel index">
-            <h2 class="off-left">Item Index</h2>
-
-                <div class="index-section methods">
-                    <h3>Methods</h3>
-
-                    <ul class="index-list methods">
-                            <li class="index-item method">
-                                <a href="#method_disable">disable</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_enable">enable</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_toString">toString</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_vertexPointer">vertexPointer</a>
-
-                            </li>
-                    </ul>
-                </div>
-
-
-
-        </div>
-
-            <div id="methods" class="api-class-tabpanel">
-                <h2 class="off-left">Methods</h2>
-
-<div id="method_disable" class="method item">
-    <h3 class="name"><code>disable</code></h3>
-
-        <span class="paren">()</span>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_core_AttribLocation.ts.html#l64"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;AttribLocation.ts:64</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-
-
-</div>
-<div id="method_enable" class="method item">
-    <h3 class="name"><code>enable</code></h3>
-
-        <span class="paren">()</span>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_core_AttribLocation.ts.html#l58"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;AttribLocation.ts:58</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-
-
-</div>
-<div id="method_toString" class="method item">
-    <h3 class="name"><code>toString</code></h3>
-
-        <span class="paren">()</span>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_core_AttribLocation.ts.html#l70"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;AttribLocation.ts:70</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-
-
-</div>
-<div id="method_vertexPointer" class="method item">
-    <h3 class="name"><code>vertexPointer</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>size</code>
-                </li>
-                <li class="arg">
-                        <code>normalized</code>
-                </li>
-                <li class="arg">
-                        <code>stride</code>
-                </li>
-                <li class="arg">
-                        <code>offset</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_core_AttribLocation.ts.html#l48"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;AttribLocation.ts:48</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">size</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
-
-
-                    <div class="param-description">
-                        <p>The number of components per attribute. Must be 1,2,3, or 4.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">normalized</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
-
-
-                    <div class="param-description">
-                        <p>Used for WebGL rendering context vertexAttribPointer method.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">stride</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
-
-
-                    <div class="param-description">
-                        <p>Used for WebGL rendering context vertexAttribPointer method.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">offset</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
-
-
-                    <div class="param-description">
-                        <p>Used for WebGL rendering context vertexAttribPointer method.</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-            </div>
-
-
-
-    </div>
+<h1 class="file-heading">File: src/davinci-eight/slideshow/commands/UseDrawableInSceneCommand.ts</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+import ISlide = require(&#x27;../../slideshow/ISlide&#x27;)
+import ISlideCommand = require(&#x27;../../slideshow/ISlideCommand&#x27;)
+import IDirector = require(&#x27;../../slideshow/IDirector&#x27;)
+import Shareable = require(&#x27;../../utils/Shareable&#x27;)
+
+class UseDrawableInSceneCommand extends Shareable implements ISlideCommand
+{
+  private drawableName: string;
+  private sceneName: string;
+  private confirm: boolean;
+  /**
+   * Enables us to restore the drawable in the event of undo.
+   */
+  private wasHere: boolean;
+  constructor(drawableName: string, sceneName: string, confirm: boolean)
+  {
+    super(&#x27;TestCommand&#x27;)
+    this.drawableName = drawableName
+    this.sceneName = sceneName
+    this.confirm = confirm
+  }
+  protected destructor(): void
+  {
+    super.destructor();
+  }
+  redo(slide: ISlide, director: IDirector): void
+  {
+    this.wasHere = director.isDrawableInScene(this.drawableName, this.sceneName)
+    director.useDrawableInScene(this.drawableName, this.sceneName, this.confirm)
+  }
+  undo(slide: ISlide, director: IDirector): void
+  {
+    director.useDrawableInScene(this.drawableName, this.sceneName, this.wasHere)
+  }
+}
+
+export = UseDrawableInSceneCommand
+    </pre>
 </div>
                     </div>
                 </div>

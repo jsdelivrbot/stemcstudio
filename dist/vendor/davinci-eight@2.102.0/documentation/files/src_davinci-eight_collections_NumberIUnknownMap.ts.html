@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>AttribLocation - davinci-eight</title>
+    <title>src/davinci-eight/collections/NumberIUnknownMap.ts - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -198,327 +198,91 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>AttribLocation Class</h1>
-<div class="box meta">
-
-
-        <div class="foundat">
-            Defined in: <a href="../files/src_davinci-eight_core_AttribLocation.ts.html#l21"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;AttribLocation.ts:21</code></a>
-        </div>
-
-            Module: <a href="../modules/EIGHT.html">EIGHT</a>
-
-</div>
-
-
-<div class="box intro">
-    <p>Convenience class that assists in the lifecycle management of an atrribute used in a vertex shader.
-In particular, this class manages buffer allocation, location caching, and data binding.</p>
-
-</div>
-
-    <div class="constructor">
-        <h2>Constructor</h2>
-<div id="method_AttribLocation" class="method item">
-    <h3 class="name"><code>AttribLocation</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>manager</code>
-                </li>
-                <li class="arg">
-                        <code>name</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_core_AttribLocation.ts.html#l21"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;AttribLocation.ts:21</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">manager</code>
-                        <span class="type"><a href="../classes/IContextProvider.html" class="crosslink">IContextProvider</a></span>
-
-
-                    <div class="param-description">
-                        <p>Unused. May be used later e.g. for mirroring.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">name</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String" class="crosslink external" target="_blank">String</a></span>
-
-
-                    <div class="param-description">
-                        <p>The name of the variable as it appears in the GLSL program.</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-    </div>
-
-<div id="classdocs" class="tabview">
-    <ul class="api-class-tabs">
-        <li class="api-class-tab index"><a href="#index">Index</a></li>
-
-            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
-    </ul>
-
-    <div>
-        <div id="index" class="api-class-tabpanel index">
-            <h2 class="off-left">Item Index</h2>
-
-                <div class="index-section methods">
-                    <h3>Methods</h3>
-
-                    <ul class="index-list methods">
-                            <li class="index-item method">
-                                <a href="#method_disable">disable</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_enable">enable</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_toString">toString</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_vertexPointer">vertexPointer</a>
-
-                            </li>
-                    </ul>
-                </div>
-
-
-
-        </div>
-
-            <div id="methods" class="api-class-tabpanel">
-                <h2 class="off-left">Methods</h2>
-
-<div id="method_disable" class="method item">
-    <h3 class="name"><code>disable</code></h3>
-
-        <span class="paren">()</span>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_core_AttribLocation.ts.html#l64"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;AttribLocation.ts:64</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-
-
-</div>
-<div id="method_enable" class="method item">
-    <h3 class="name"><code>enable</code></h3>
-
-        <span class="paren">()</span>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_core_AttribLocation.ts.html#l58"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;AttribLocation.ts:58</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-
-
-</div>
-<div id="method_toString" class="method item">
-    <h3 class="name"><code>toString</code></h3>
-
-        <span class="paren">()</span>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_core_AttribLocation.ts.html#l70"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;AttribLocation.ts:70</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-
-
-</div>
-<div id="method_vertexPointer" class="method item">
-    <h3 class="name"><code>vertexPointer</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>size</code>
-                </li>
-                <li class="arg">
-                        <code>normalized</code>
-                </li>
-                <li class="arg">
-                        <code>stride</code>
-                </li>
-                <li class="arg">
-                        <code>offset</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_core_AttribLocation.ts.html#l48"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;AttribLocation.ts:48</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">size</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
-
-
-                    <div class="param-description">
-                        <p>The number of components per attribute. Must be 1,2,3, or 4.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">normalized</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" class="crosslink external" target="_blank">Boolean</a></span>
-
-
-                    <div class="param-description">
-                        <p>Used for WebGL rendering context vertexAttribPointer method.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">stride</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
-
-
-                    <div class="param-description">
-                        <p>Used for WebGL rendering context vertexAttribPointer method.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">offset</code>
-                        <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
-
-
-                    <div class="param-description">
-                        <p>Used for WebGL rendering context vertexAttribPointer method.</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-            </div>
-
-
-
-    </div>
+<h1 class="file-heading">File: src/davinci-eight/collections/NumberIUnknownMap.ts</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+import IUnknown = require(&#x27;../core/IUnknown&#x27;)
+import Shareable = require(&#x27;../utils/Shareable&#x27;)
+
+// FIXME: Maybe use a dynamic flag implying JIT keys, otherwise recompute as we go along.
+
+let LOGGING_NAME = &#x27;NumberIUnknownMap&#x27;;
+
+/**
+ * @class NumberIUnknownMap&lt;V&gt;
+ */
+class NumberIUnknownMap&lt;V extends IUnknown&gt; extends Shareable implements IUnknown {
+  private _elements: { [key: number]: V } = {};
+  /**
+   * @class NumberIUnknownMap&lt;V&gt;
+   * @constructor
+   */
+  constructor() {
+    super(LOGGING_NAME)
+  }
+  protected destructor(): void {
+    let self = this;
+    this.forEach(function(key, value) {
+      if (value) {
+          value.release()
+        }
+      });
+      this._elements = void 0;
+  }
+  exists(key: number): boolean {
+    let element = this._elements[key];
+    return element ? true : false;
+  }
+  get(key: number): V {
+    let element = this.getWeakRef(key)
+    if (element) {
+      element.addRef()
+    }
+    return element;
+  }
+  // FIXME
+  /*private*/ getWeakRef(index: number): V {
+    return this._elements[index]
+  }
+  put(key: number, value: V): void {
+    if (value) {
+      value.addRef()
+    }
+    this.putWeakRef(key, value)
+  }
+  // FIXME
+  /*private*/ putWeakRef(key: number, value: V): void {
+    var elements = this._elements
+    var existing = elements[key]
+    if (existing) {
+      existing.release()
+    }
+    elements[key] = value
+  }
+  forEach(callback: (key: number, value: V) =&gt; void) {
+    let keys: number[] = this.keys;
+    var i: number;
+    let length: number = keys.length;
+    for (i = 0; i &lt; length; i++) {
+      let key: number = keys[i];
+      let value = this._elements[key];
+      callback(key, value);
+    }
+  }
+  get keys(): number[] {
+    // FIXME: cache? Maybe, clients may use this to iterate. forEach is too slow.
+    return Object.keys(this._elements).map(function(keyString){return parseFloat(keyString)});
+  }
+  remove(key: number): void {
+    // Strong or Weak doesn&#x27;t matter because the value is &#x60;undefined&#x60;.
+    this.put(key, void 0);
+    delete this._elements[key];
+  }
+}
+
+export = NumberIUnknownMap;
+    </pre>
 </div>
                     </div>
                 </div>
