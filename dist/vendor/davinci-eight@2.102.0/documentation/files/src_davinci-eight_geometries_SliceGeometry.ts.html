@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/davinci-eight/geometries/SphereGeometry.ts - davinci-eight</title>
+    <title>src/davinci-eight/geometries/SliceGeometry.ts - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -17,7 +17,7 @@
                 <h1><img src="../../assets/logo.png" title="davinci-eight"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.131.0</em>
+            <em>API Docs for: 2.132.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -43,6 +43,7 @@
                                 <li><a href="../classes/ArrowGeometry.html">ArrowGeometry</a></li>
                                 <li><a href="../classes/AttribLocation.html">AttribLocation</a></li>
                                 <li><a href="../classes/AttribMetaInfo.html">AttribMetaInfo</a></li>
+                                <li><a href="../classes/AxialGeometry.html">AxialGeometry</a></li>
                                 <li><a href="../classes/BarnGeometry.html">BarnGeometry</a></li>
                                 <li><a href="../classes/BoxBuilder.html">BoxBuilder</a></li>
                                 <li><a href="../classes/BoxMesh.html">BoxMesh</a></li>
@@ -55,6 +56,7 @@
                                 <li><a href="../classes/ColorFacet.html">ColorFacet</a></li>
                                 <li><a href="../classes/ColorRGB.html">ColorRGB</a></li>
                                 <li><a href="../classes/Complex.html">Complex</a></li>
+                                <li><a href="../classes/ConeGeometry.html">ConeGeometry</a></li>
                                 <li><a href="../classes/ContextAttributesLogger.html">ContextAttributesLogger</a></li>
                                 <li><a href="../classes/ContextController.html">ContextController</a></li>
                                 <li><a href="../classes/createView.html">createView</a></li>
@@ -108,7 +110,6 @@
                                 <li><a href="../classes/LineMaterial.html">LineMaterial</a></li>
                                 <li><a href="../classes/LocalizableMessage.html">LocalizableMessage</a></li>
                                 <li><a href="../classes/Material.html">Material</a></li>
-                                <li><a href="../classes/Matrix1.html">Matrix1</a></li>
                                 <li><a href="../classes/Matrix2.html">Matrix2</a></li>
                                 <li><a href="../classes/Matrix3.html">Matrix3</a></li>
                                 <li><a href="../classes/Matrix4.html">Matrix4</a></li>
@@ -117,6 +118,7 @@
                                 <li><a href="../classes/MeshMaterial.html">MeshMaterial</a></li>
                                 <li><a href="../classes/ModelFacet.html">ModelFacet</a></li>
                                 <li><a href="../classes/Mutable.html">Mutable</a></li>
+                                <li><a href="../classes/MutableNumber.html">MutableNumber</a></li>
                                 <li><a href="../classes/NumberIUnknownMap&lt;V&gt;.html">NumberIUnknownMap&lt;V&gt;</a></li>
                                 <li><a href="../classes/OcosahedronGeometry.html">OcosahedronGeometry</a></li>
                                 <li><a href="../classes/OctahedronGeometry.html">OctahedronGeometry</a></li>
@@ -134,9 +136,10 @@
                                 <li><a href="../classes/Shareable.html">Shareable</a></li>
                                 <li><a href="../classes/Simplex.html">Simplex</a></li>
                                 <li><a href="../classes/Simplex1Geometry.html">Simplex1Geometry</a></li>
+                                <li><a href="../classes/SliceGeometry.html">SliceGeometry</a></li>
                                 <li><a href="../classes/SmartMaterial.html">SmartMaterial</a></li>
                                 <li><a href="../classes/SmartMaterialBuilder.html">SmartMaterialBuilder</a></li>
-                                <li><a href="../classes/SphereGeometry.html">SphereGeometry</a></li>
+                                <li><a href="../classes/SphericalPolarGeometry.html">SphericalPolarGeometry</a></li>
                                 <li><a href="../classes/Spinor3.html">Spinor3</a></li>
                                 <li><a href="../classes/StringIUnknownMap.html">StringIUnknownMap</a></li>
                                 <li><a href="../classes/StringIUnknownMap&lt;V extends IUnknown&gt;.html">StringIUnknownMap&lt;V extends IUnknown&gt;</a></li>
@@ -146,7 +149,6 @@
                                 <li><a href="../classes/UniformLocation.html">UniformLocation</a></li>
                                 <li><a href="../classes/UniformMetaInfo.html">UniformMetaInfo</a></li>
                                 <li><a href="../classes/Unit.html">Unit</a></li>
-                                <li><a href="../classes/Vector1.html">Vector1</a></li>
                                 <li><a href="../classes/Vector2.html">Vector2</a></li>
                                 <li><a href="../classes/Vector3.html">Vector3</a></li>
                                 <li><a href="../classes/Vector3Uniform.html">Vector3Uniform</a></li>
@@ -200,169 +202,84 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: src/davinci-eight/geometries/SphereGeometry.ts</h1>
+<h1 class="file-heading">File: src/davinci-eight/geometries/SliceGeometry.ts</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
+import AxialGeometry = require(&#x27;../geometries/AxialGeometry&#x27;)
+import Cartesian3 = require(&#x27;../math/Cartesian3&#x27;)
 import Geometry = require(&#x27;../geometries/Geometry&#x27;)
-import Simplex = require(&#x27;../geometries/Simplex&#x27;);
-import Sphere = require(&#x27;../math/Sphere&#x27;)
-import Symbolic = require(&#x27;../core/Symbolic&#x27;)
-import Vector2 = require(&#x27;../math/Vector2&#x27;)
+import isDefined = require(&#x27;../checks/isDefined&#x27;)
+import mustBeNumber = require(&#x27;../checks/mustBeNumber&#x27;)
 import Vector3 = require(&#x27;../math/Vector3&#x27;)
 
-/**
- * @class SphereGeometry
- * @extends Geometry
- */
-class SphereGeometry extends Geometry {
-  /**
-   * Constructs a geometry consisting of triangular simplices based on spherical coordinates.
-   * @class SphereGeometry
-   * @constructor
-   * @param radius [number = 1]
-   * @param widthSegments [number = 16]
-   * @param heightSegments [number = 12]
-   * @param phiStart [number = 0]
-   * @param phiLength [number = 2 * Math.PI]
-   * @param thetaStart [number = 0]
-   * @param thetaLength [number = Math.PI]
-   */
-  constructor(
-    radius: number = 1,
-    widthSegments: number = 16,
-    heightSegments: number = 12,
-    phiStart: number = 0,
-    phiLength: number = 2 * Math.PI,
-    thetaStart: number = 0,
-    thetaLength: number = Math.PI) {
-    super();
-
-    var x: number;
-    var y: number;
-    var verticesRows: number[][] = [];
-    /**
-     * Temporary storage for the 2D uv coordinates
-     */
-    var uvs: Vector2[][] = []
-    /**
-     * Temporary storage for the 3D cartesian coordinates.
-     */
-    var points: Vector3[] = []
-
-    // This first loop pair generates the points.
-    for ( y = 0; y &lt;= heightSegments; y ++ )
-    {
-      var verticesRow: number[] = [];
-      var uvsRow: Vector2[] = [];
-
-      for ( x = 0; x &lt;= widthSegments; x ++ )
-      {
-        var u = x / widthSegments;
-        var v = y / heightSegments;
-
-        var point = new Vector3([0, 0, 0]);
-        point.x = - radius * Math.cos( phiStart + u * phiLength ) * Math.sin( thetaStart + v * thetaLength );
-        point.y = radius * Math.cos( thetaStart + v * thetaLength );
-        point.z = radius * Math.sin( phiStart + u * phiLength ) * Math.sin( thetaStart + v * thetaLength );
-
-        points.push( point );
-
-        verticesRow.push( points.length - 1 );
-        uvsRow.push(new Vector2([u, 1 - v]));
-
-      }
-      verticesRows.push( verticesRow );
-      uvs.push( uvsRow );
-    }
-
-    for ( y = 0; y &lt; heightSegments; y ++ )
-    {
-      for ( x = 0; x &lt; widthSegments; x ++ )
-      {
-        // Form a quadrilateral. v1 thtough v4 give the indices into the points array.
-        var v1: number = verticesRows[ y ][ x + 1 ];
-        var v2: number = verticesRows[ y ][ x ];
-        var v3: number = verticesRows[ y + 1 ][ x ];
-        var v4: number = verticesRows[ y + 1 ][ x + 1 ];
-
-        // The normal vectors for the sphere are simply the normalized position vectors.
-        var n1: Vector3 = Vector3.copy(points[v1]).normalize();
-        var n2: Vector3 = Vector3.copy(points[v2]).normalize();
-        var n3: Vector3 = Vector3.copy(points[v3]).normalize();
-        var n4: Vector3 = Vector3.copy(points[v4]).normalize();
-
-        // Grab the uv coordinates too.
-        var uv1: Vector2 = uvs[ y ][ x + 1 ].clone();
-        var uv2: Vector2 = uvs[ y ][ x ].clone();
-        var uv3: Vector2 = uvs[ y + 1 ][ x ].clone();
-        var uv4: Vector2 = uvs[ y + 1 ][ x + 1 ].clone();
-
-        // Special case the north and south poles by only creating one triangle.
-        if ( Math.abs(points[ v1 ].y ) === radius )
-        {
-          uv1.x = ( uv1.x + uv2.x ) / 2;
-          var simplex = new Simplex(Simplex.K_FOR_TRIANGLE)
-          simplex.vertices[0].attributes[Symbolic.ATTRIBUTE_POSITION] = points[v1]
-          simplex.vertices[0].attributes[Symbolic.ATTRIBUTE_NORMAL] = n1
-          simplex.vertices[0].attributes[Symbolic.ATTRIBUTE_TEXTURE_COORDS] = uv1
-          simplex.vertices[1].attributes[Symbolic.ATTRIBUTE_POSITION] = points[v3]
-          simplex.vertices[1].attributes[Symbolic.ATTRIBUTE_NORMAL] = n3
-          simplex.vertices[1].attributes[Symbolic.ATTRIBUTE_TEXTURE_COORDS] = uv3
-          simplex.vertices[2].attributes[Symbolic.ATTRIBUTE_POSITION] = points[v4]
-          simplex.vertices[2].attributes[Symbolic.ATTRIBUTE_NORMAL] = n4
-          simplex.vertices[2].attributes[Symbolic.ATTRIBUTE_TEXTURE_COORDS] = uv4
-          this.data.push(simplex)
-        }
-        else if ( Math.abs(points[ v3 ].y ) === radius )
-        {
-          uv3.x = ( uv3.x + uv4.x ) / 2;
-          var simplex = new Simplex(Simplex.K_FOR_TRIANGLE)
-          simplex.vertices[0].attributes[Symbolic.ATTRIBUTE_POSITION] = points[v1]
-          simplex.vertices[0].attributes[Symbolic.ATTRIBUTE_NORMAL] = n1
-          simplex.vertices[0].attributes[Symbolic.ATTRIBUTE_TEXTURE_COORDS] = uv1
-          simplex.vertices[1].attributes[Symbolic.ATTRIBUTE_POSITION] = points[v2]
-          simplex.vertices[1].attributes[Symbolic.ATTRIBUTE_NORMAL] = n2
-          simplex.vertices[1].attributes[Symbolic.ATTRIBUTE_TEXTURE_COORDS] = uv2
-          simplex.vertices[2].attributes[Symbolic.ATTRIBUTE_POSITION] = points[v3]
-          simplex.vertices[2].attributes[Symbolic.ATTRIBUTE_NORMAL] = n3
-          simplex.vertices[2].attributes[Symbolic.ATTRIBUTE_TEXTURE_COORDS] = uv3
-          this.data.push(simplex)
-        }
-        else
-        {
-          // The other patches create two triangles.
-          var simplex = new Simplex(Simplex.K_FOR_TRIANGLE)
-          simplex.vertices[0].attributes[Symbolic.ATTRIBUTE_POSITION] = points[v1]
-          simplex.vertices[0].attributes[Symbolic.ATTRIBUTE_NORMAL] = n1
-          simplex.vertices[0].attributes[Symbolic.ATTRIBUTE_TEXTURE_COORDS] = uv1
-          simplex.vertices[1].attributes[Symbolic.ATTRIBUTE_POSITION] = points[v2]
-          simplex.vertices[1].attributes[Symbolic.ATTRIBUTE_NORMAL] = n2
-          simplex.vertices[1].attributes[Symbolic.ATTRIBUTE_TEXTURE_COORDS] = uv2
-          simplex.vertices[2].attributes[Symbolic.ATTRIBUTE_POSITION] = points[v4]
-          simplex.vertices[2].attributes[Symbolic.ATTRIBUTE_NORMAL] = n4
-          simplex.vertices[2].attributes[Symbolic.ATTRIBUTE_TEXTURE_COORDS] = uv4
-          this.data.push(simplex)
-
-          var simplex = new Simplex(Simplex.K_FOR_TRIANGLE)
-          simplex.vertices[0].attributes[Symbolic.ATTRIBUTE_POSITION] = points[v2]
-          simplex.vertices[0].attributes[Symbolic.ATTRIBUTE_NORMAL] = n2.clone()
-          simplex.vertices[0].attributes[Symbolic.ATTRIBUTE_TEXTURE_COORDS] = uv2.clone()
-          simplex.vertices[1].attributes[Symbolic.ATTRIBUTE_POSITION] = points[v3]
-          simplex.vertices[1].attributes[Symbolic.ATTRIBUTE_NORMAL] = n3
-          simplex.vertices[1].attributes[Symbolic.ATTRIBUTE_TEXTURE_COORDS] = uv3
-          simplex.vertices[2].attributes[Symbolic.ATTRIBUTE_POSITION] = points[v4]
-          simplex.vertices[2].attributes[Symbolic.ATTRIBUTE_NORMAL] = n4.clone()
-          simplex.vertices[2].attributes[Symbolic.ATTRIBUTE_TEXTURE_COORDS] = uv4.clone()
-          this.data.push(simplex)
-        }
-      }
-    }
-  }
+function perpendicular(axis: Cartesian3) {
+  return Vector3.random().cross(axis).normalize()
 }
 
-export = SphereGeometry;
+/**
+ * @class SliceGeometry
+ * @extends AxialGeometry
+ */
+class SliceGeometry extends AxialGeometry {
+    /**
+     * &lt;p&gt;
+     * The angle of the slice, measured in radians.
+     * &lt;/p&gt;
+     * @property sliceAngle
+     * @type {number}
+     */
+    public sliceAngle: number = 2 * Math.PI;
+    /**
+     * &lt;p&gt;
+     * The (unit vector) direction of the start of the slice.
+     * &lt;/p&gt;
+     * @property sliceStart
+     * @type {Vector3}
+     */
+    public sliceStart: Vector3;
+    /**
+     * &lt;p&gt;
+     * Calls the base class constructor.
+     * &lt;/p&gt;
+     * &lt;p&gt;
+     * Provides the &lt;code&gt;axis&lt;/code&gt; to the &lt;code&gt;AxialGeometry&lt;/code&gt; base class.
+     * &lt;/p&gt;
+     * &lt;p&gt;
+     * Provides the &lt;code&gt;type&lt;/code&gt; to the &lt;code&gt;AxialGeometry&lt;/code&gt; base class.
+     * &lt;/p&gt;
+     * @class SliceGeometry
+     * @constructor
+     * @param type {string} Implementations must provide a type name used for reference count tracking.
+     * @param axis [Cartesian3 = Vector3.e3] The &lt;code&gt;axis&lt;/code&gt; property.
+     * @param sliceStart [Cartesian3] The &lt;code&gt;sliceStart&lt;/code&gt; property.
+     * @param sliceAngle [number = 2 * Math.PI] The &lt;code&gt;sliceAngle&lt;/code&gt; property.
+     */
+    constructor(type: string, axis: Cartesian3 = Vector3.e3, sliceStart?: Cartesian3, sliceAngle: number = 2 * Math.PI) {
+        super(type, axis)
+        if (isDefined(sliceStart)) {
+          // TODO: Verify that sliceStart is orthogonal to axis.
+          this.sliceStart = Vector3.copy(sliceStart).normalize()
+        }
+        else {
+          this.sliceStart = perpendicular(this.axis)
+        }
+        this.sliceAngle = mustBeNumber(&#x27;sliceAngle&#x27;, sliceAngle)
+    }
+    /**
+     * &lt;p&gt;
+     * Calls the base class destructor method.
+     * &lt;/p&gt;
+     * @method destructor
+     * @return {void}
+     * @protected
+     */
+    protected destructor(): void {
+        super.destructor()
+    }
+}
 
+export = SliceGeometry
     </pre>
 </div>
                     </div>

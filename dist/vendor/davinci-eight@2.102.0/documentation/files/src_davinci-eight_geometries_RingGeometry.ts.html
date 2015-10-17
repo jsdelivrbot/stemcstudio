@@ -17,7 +17,7 @@
                 <h1><img src="../../assets/logo.png" title="davinci-eight"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.131.0</em>
+            <em>API Docs for: 2.132.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -43,6 +43,7 @@
                                 <li><a href="../classes/ArrowGeometry.html">ArrowGeometry</a></li>
                                 <li><a href="../classes/AttribLocation.html">AttribLocation</a></li>
                                 <li><a href="../classes/AttribMetaInfo.html">AttribMetaInfo</a></li>
+                                <li><a href="../classes/AxialGeometry.html">AxialGeometry</a></li>
                                 <li><a href="../classes/BarnGeometry.html">BarnGeometry</a></li>
                                 <li><a href="../classes/BoxBuilder.html">BoxBuilder</a></li>
                                 <li><a href="../classes/BoxMesh.html">BoxMesh</a></li>
@@ -55,6 +56,7 @@
                                 <li><a href="../classes/ColorFacet.html">ColorFacet</a></li>
                                 <li><a href="../classes/ColorRGB.html">ColorRGB</a></li>
                                 <li><a href="../classes/Complex.html">Complex</a></li>
+                                <li><a href="../classes/ConeGeometry.html">ConeGeometry</a></li>
                                 <li><a href="../classes/ContextAttributesLogger.html">ContextAttributesLogger</a></li>
                                 <li><a href="../classes/ContextController.html">ContextController</a></li>
                                 <li><a href="../classes/createView.html">createView</a></li>
@@ -108,7 +110,6 @@
                                 <li><a href="../classes/LineMaterial.html">LineMaterial</a></li>
                                 <li><a href="../classes/LocalizableMessage.html">LocalizableMessage</a></li>
                                 <li><a href="../classes/Material.html">Material</a></li>
-                                <li><a href="../classes/Matrix1.html">Matrix1</a></li>
                                 <li><a href="../classes/Matrix2.html">Matrix2</a></li>
                                 <li><a href="../classes/Matrix3.html">Matrix3</a></li>
                                 <li><a href="../classes/Matrix4.html">Matrix4</a></li>
@@ -117,6 +118,7 @@
                                 <li><a href="../classes/MeshMaterial.html">MeshMaterial</a></li>
                                 <li><a href="../classes/ModelFacet.html">ModelFacet</a></li>
                                 <li><a href="../classes/Mutable.html">Mutable</a></li>
+                                <li><a href="../classes/MutableNumber.html">MutableNumber</a></li>
                                 <li><a href="../classes/NumberIUnknownMap&lt;V&gt;.html">NumberIUnknownMap&lt;V&gt;</a></li>
                                 <li><a href="../classes/OcosahedronGeometry.html">OcosahedronGeometry</a></li>
                                 <li><a href="../classes/OctahedronGeometry.html">OctahedronGeometry</a></li>
@@ -134,9 +136,10 @@
                                 <li><a href="../classes/Shareable.html">Shareable</a></li>
                                 <li><a href="../classes/Simplex.html">Simplex</a></li>
                                 <li><a href="../classes/Simplex1Geometry.html">Simplex1Geometry</a></li>
+                                <li><a href="../classes/SliceGeometry.html">SliceGeometry</a></li>
                                 <li><a href="../classes/SmartMaterial.html">SmartMaterial</a></li>
                                 <li><a href="../classes/SmartMaterialBuilder.html">SmartMaterialBuilder</a></li>
-                                <li><a href="../classes/SphereGeometry.html">SphereGeometry</a></li>
+                                <li><a href="../classes/SphericalPolarGeometry.html">SphericalPolarGeometry</a></li>
                                 <li><a href="../classes/Spinor3.html">Spinor3</a></li>
                                 <li><a href="../classes/StringIUnknownMap.html">StringIUnknownMap</a></li>
                                 <li><a href="../classes/StringIUnknownMap&lt;V extends IUnknown&gt;.html">StringIUnknownMap&lt;V extends IUnknown&gt;</a></li>
@@ -146,7 +149,6 @@
                                 <li><a href="../classes/UniformLocation.html">UniformLocation</a></li>
                                 <li><a href="../classes/UniformMetaInfo.html">UniformMetaInfo</a></li>
                                 <li><a href="../classes/Unit.html">Unit</a></li>
-                                <li><a href="../classes/Vector1.html">Vector1</a></li>
                                 <li><a href="../classes/Vector2.html">Vector2</a></li>
                                 <li><a href="../classes/Vector3.html">Vector3</a></li>
                                 <li><a href="../classes/Vector3Uniform.html">Vector3Uniform</a></li>
@@ -209,6 +211,7 @@ import Cartesian3 = require(&#x27;../math/Cartesian3&#x27;)
 import Geometry = require(&#x27;../geometries/Geometry&#x27;)
 import mustBeNumber = require(&#x27;../checks/mustBeNumber&#x27;)
 import Simplex = require(&#x27;../geometries/Simplex&#x27;)
+import SliceGeometry = require(&#x27;../geometries/SliceGeometry&#x27;)
 import Spinor3 = require(&#x27;../math/Spinor3&#x27;)
 import Spinor3Coords = require(&#x27;../math/Spinor3Coords&#x27;)
 import Symbolic = require(&#x27;../core/Symbolic&#x27;)
@@ -222,12 +225,12 @@ import Vector3 = require(&#x27;../math/Vector3&#x27;)
 /**
  * 
  */
-function computeVertices(a: number, b: number, n: Cartesian3, s: Cartesian3, angle: number, generator: Spinor3Coords, radialSegments: number, thetaSegments: number, vertices: Vector3[], uvs: Vector2[]) {
+function computeVertices(a: number, b: number, axis: Cartesian3, start: Cartesian3, angle: number, generator: Spinor3Coords, radialSegments: number, thetaSegments: number, vertices: Vector3[], uvs: Vector2[]) {
     /**
      * &#x60;t&#x60; is the vector perpendicular to s in the plane of the ring.
      * We could use the generator an PI / 4 to calculate this or the cross product as here.
      */
-    var t = Vector3.copy(n).cross(s)
+    var perp = Vector3.copy(axis).cross(start)
     /**
      * The distance of the vertex from the origin and center.
      */
@@ -235,13 +238,13 @@ function computeVertices(a: number, b: number, n: Cartesian3, s: Cartesian3, ang
     var radiusStep = (a - b) / radialSegments
 
     for (var i = 0; i &lt; radialSegments + 1; i++) {
-        var begin = Vector3.copy(s).scale(radius)
+        var begin = Vector3.copy(start).scale(radius)
         var arcPoints = arc3(begin, angle, generator, thetaSegments)
         for (var j = 0, jLength = arcPoints.length; j &lt; jLength; j++) {
             var arcPoint = arcPoints[j]
             vertices.push(arcPoint)
             // The coordinates vary between -a and +a, which we map to 0 and 1.
-            uvs.push(new Vector2([(arcPoint.dot(s) / a + 1) / 2, (arcPoint.dot(t) / a + 1) / 2]))
+            uvs.push(new Vector2([(arcPoint.dot(start) / a + 1) / 2, (arcPoint.dot(perp) / a + 1) / 2]))
         }
         radius += radiusStep;
     }
@@ -249,12 +252,13 @@ function computeVertices(a: number, b: number, n: Cartesian3, s: Cartesian3, ang
 
 /**
  * Our traversal will generate the following mapping into the vertices and uvs arrays.
+ * This is standard for two looping variables.
  */
 function vertexIndex(i: number, j: number, thetaSegments: number): number {
     return i * (thetaSegments + 1) + j
 }
 
-function makeTriangles(vertices: Vector3[], uvs: Vector2[], normal: Vector3, radialSegments: number, thetaSegments: number, data: Simplex[]) {
+function makeTriangles(vertices: Vector3[], uvs: Vector2[], axis: Vector3, radialSegments: number, thetaSegments: number, geometry: Geometry) {
     for (var i = 0; i &lt; radialSegments; i++) {
         // Our traversal has resulted in the following formula for the index
         // into the vertices or uvs array
@@ -275,37 +279,13 @@ function makeTriangles(vertices: Vector3[], uvs: Vector2[], normal: Vector3, rad
             var v1 = quadIndex + thetaSegments + 1  // Move outwards one segment.
             var v2 = quadIndex + thetaSegments + 2  // Then move one segment along the radius.
 
-            var simplex = new Simplex(Simplex.K_FOR_TRIANGLE)
-            simplex.vertices[0].attributes[Symbolic.ATTRIBUTE_POSITION] = vertices[v0]
-            simplex.vertices[0].attributes[Symbolic.ATTRIBUTE_NORMAL] = normal
-            simplex.vertices[0].attributes[Symbolic.ATTRIBUTE_TEXTURE_COORDS] = uvs[v0].clone()
-
-            simplex.vertices[1].attributes[Symbolic.ATTRIBUTE_POSITION] = vertices[v1]
-            simplex.vertices[1].attributes[Symbolic.ATTRIBUTE_NORMAL] = normal
-            simplex.vertices[1].attributes[Symbolic.ATTRIBUTE_TEXTURE_COORDS] = uvs[v1].clone()
-
-            simplex.vertices[2].attributes[Symbolic.ATTRIBUTE_POSITION] = vertices[v2]
-            simplex.vertices[2].attributes[Symbolic.ATTRIBUTE_NORMAL] = normal
-            simplex.vertices[2].attributes[Symbolic.ATTRIBUTE_TEXTURE_COORDS] = uvs[v2].clone()
-            data.push(simplex)
+            geometry.triangle([vertices[v0], vertices[v1], vertices[v2]], [axis, axis, axis], [uvs[v0].clone(), uvs[v1].clone(), uvs[v2].clone()])
 
             v0 = quadIndex // Start at the same corner
             v1 = quadIndex + thetaSegments + 2 // Move diagonally outwards and along radial
             v2 = quadIndex + 1  // Then move radially inwards
 
-            var simplex = new Simplex(Simplex.K_FOR_TRIANGLE)
-            simplex.vertices[0].attributes[Symbolic.ATTRIBUTE_POSITION] = vertices[v0]
-            simplex.vertices[0].attributes[Symbolic.ATTRIBUTE_NORMAL] = normal
-            simplex.vertices[0].attributes[Symbolic.ATTRIBUTE_TEXTURE_COORDS] = uvs[v0].clone()
-
-            simplex.vertices[1].attributes[Symbolic.ATTRIBUTE_POSITION] = vertices[v1]
-            simplex.vertices[1].attributes[Symbolic.ATTRIBUTE_NORMAL] = normal
-            simplex.vertices[1].attributes[Symbolic.ATTRIBUTE_TEXTURE_COORDS] = uvs[v1].clone()
-
-            simplex.vertices[2].attributes[Symbolic.ATTRIBUTE_POSITION] = vertices[v2]
-            simplex.vertices[2].attributes[Symbolic.ATTRIBUTE_NORMAL] = normal
-            simplex.vertices[2].attributes[Symbolic.ATTRIBUTE_TEXTURE_COORDS] = uvs[v2].clone()
-            data.push(simplex)
+            geometry.triangle([vertices[v0], vertices[v1], vertices[v2]], [axis, axis, axis], [uvs[v0].clone(), uvs[v1].clone(), uvs[v2].clone()])
         }
     }
 }
@@ -359,63 +339,40 @@ function makeEmpty(vertices: Vector3[], radialSegments: number, thetaSegments: n
 
 /**
  * @class RingGeometry
- * @extends Geometry
+ * @extends SliceGeometry
  */
-class RingGeometry extends Geometry {
-    /**
-     * The inner radius.
-     * @property innerRadius
-     * @type {number}
-     */
-    public innerRadius: number;
+class RingGeometry extends SliceGeometry {
     /**
      * The outer radius.
-     * @property outerRadius
+     * @property a
      * @type {number}
      */
-    public outerRadius: number;
+    public a: number;
     /**
-     * The axis of symmetry (unit vector) direction.
-     * @property normal
-     * @type {Vector3}
+     * The inner radius.
+     * @property b
+     * @type {number}
      */
-    public normal: Vector3;
+    public b: number;
     /**
-     * The direction (perpendicular to normal) of the start or the arc.
-     * @property start
-     * @type {Vector3}
-     */
-    public start: Vector3;
-    /**
-     * The angle subtended by the ring.
-     */
-    public angle: number;
-    /**
-     * The number of segments in the radial direction.
-     */
-    public radialSegments: number;
-    /**
-     * The number of segments in the angular direction.
-     */
-    public thetaSegments: number;
-    /**
+     * &lt;p&gt;
      * Creates an annulus with a single hole.
+     * &lt;/p&gt;
+     * &lt;p&gt;
+     * Sets the &lt;code&gt;sliceAngle&lt;/code&gt; property to &lt;code&gt;2 * Math.PI&lt;/p&gt;.
+     * &lt;/p&gt;
      * @class RingGeometry
      * @constructor
      * @param a [number = 1] The outer radius
      * @param b [number = 0] The inner radius
-     * @param e [Cartesian3 = Vector3.e3] The symmetry axis unit vector.
-     * @param 
+     * @param axis [Cartesian3] The &lt;code&gt;axis&lt;/code&gt; property.
+     * @param sliceStart [Cartesian3] The &lt;code&gt;sliceStart&lt;/code&gt; property.
+     * @param sliceAngle [number] The &lt;code&gt;sliceAngle&lt;/code&gt; property.
      */
-    constructor(innerRadius: number = 0, outerRadius: number = 1, normal: Cartesian3 = Vector3.e3, start: Cartesian3 = Vector3.e1, angle: number = 2 * Math.PI) {
-        super(&#x27;RingGeometry&#x27;)
-        this.innerRadius = innerRadius
-        this.outerRadius = outerRadius
-        this.normal = Vector3.copy(normal).normalize()
-        this.start = Vector3.copy(start).normalize()
-        this.angle = mustBeNumber(&#x27;angle&#x27;, angle)
-        this.radialSegments = 1
-        this.thetaSegments = 32
+    constructor(a: number = 1, b: number = 0, axis?: Cartesian3, sliceStart?: Cartesian3, sliceAngle?: number) {
+        super(&#x27;RingGeometry&#x27;, axis, sliceStart, sliceAngle)
+        this.a = a
+        this.b = b
     }
     /**
      * @method destructor
@@ -439,14 +396,14 @@ class RingGeometry extends Geometry {
     public regenerate(): void {
         this.data = []
 
-        var radialSegments = this.radialSegments
-        var thetaSegments = this.thetaSegments
-        var generator: Spinor3Coords = new Spinor3().dual(this.normal)
+        var radialSegments = this.flatSegments
+        var thetaSegments = this.curvedSegments
+        var generator: Spinor3Coords = new Spinor3().dual(this.axis)
 
         var vertices: Vector3[] = []
         var uvs: Vector2[] = []
 
-        computeVertices(this.outerRadius, this.innerRadius, this.normal, this.start, this.angle, generator, radialSegments, thetaSegments, vertices, uvs)
+        computeVertices(this.a, this.b, this.axis, this.sliceStart, this.sliceAngle, generator, radialSegments, thetaSegments, vertices, uvs)
         switch (this.k) {
             case Simplex.K_FOR_EMPTY: {
                 makeEmpty(vertices, radialSegments, thetaSegments, this.data)
@@ -461,7 +418,7 @@ class RingGeometry extends Geometry {
             }
                 break
             case Simplex.K_FOR_TRIANGLE: {
-                makeTriangles(vertices, uvs, this.normal, radialSegments, thetaSegments, this.data)
+                makeTriangles(vertices, uvs, this.axis, radialSegments, thetaSegments, this)
             }
                 break
             default: {
