@@ -574,7 +574,7 @@ angular.module('app').factory('templates', [
     "  // We start with the geometry (geometry) for a unit cube at the origin...\n" +
     "  // A geometry is considered to be an array of simplices.\n" +
     "  var geometry = new EIGHT.CuboidGeometry()\n" +
-    "  geometry.k = EIGHT.Simplex.K_FOR_TRIANGLE\n" +
+    "  geometry.k = EIGHT.Simplex.TRIANGLE\n" +
     "  // Subdivide the geometry (here twice) if you wish to get more detail.\n" +
     "  // Hit 'Play' in mathdoodle.io to see the effect of, say, n = 0, 1, 2, 3.\n" +
     "  geometry.subdivide(2);\n" +
@@ -593,19 +593,19 @@ angular.module('app').factory('templates', [
     "    // Convert the geometry to drawing elements.\n" +
     "    var elements: EIGHT.GeometryElements = geometry.toElements();\n" +
     "    // Submit the geometry data to the context which will manage underlying WebGLBuffer(s) for you.\n" +
-    "    geobuff = c3d.createBufferGeometry(elements.data)\n" +
+    "    geobuff = c3d.createBufferGeometry(elements)\n" +
     "    if (geobuff) {\n" +
     "      // Pick an appropriate program to use with the mesh based upon the dimensionality.\n" +
     "      switch(geometry.meta.k) {\n" +
-    "        case EIGHT.Simplex.K_FOR_POINT: {\n" +
+    "        case EIGHT.Simplex.POINT: {\n" +
     "          materialCube = programP\n" +
     "        }\n" +
     "        break\n" +
-    "        case EIGHT.Simplex.K_FOR_LINE_SEGMENT: {\n" +
+    "        case EIGHT.Simplex.LINE: {\n" +
     "          materialCube = programL\n" +
     "        }\n" +
     "        break\n" +
-    "        case EIGHT.Simplex.K_FOR_TRIANGLE: {\n" +
+    "        case EIGHT.Simplex.TRIANGLE: {\n" +
     "          materialCube = programT\n" +
     "        }\n" +
     "        break\n" +
