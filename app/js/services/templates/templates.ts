@@ -293,7 +293,7 @@ angular.module('app').factory('templates', [
     "\n" +
     "var scene = new EIGHT.Scene([c3d])\n" +
     "var camera: EIGHT.PerspectiveCamera\n" +
-    "var cube: EIGHT.Drawable<EIGHT.GeometryElements, EIGHT.MeshMaterial>\n" +
+    "var cube: EIGHT.Drawable<EIGHT.MeshMaterial>\n" +
     "\n" +
     "var e1 = EIGHT.Euclidean3.e1\n" +
     "var e2 = EIGHT.Euclidean3.e2\n" +
@@ -320,11 +320,11 @@ angular.module('app').factory('templates', [
     "  var aspect = window.innerWidth / window.innerHeight\n" +
     "  camera = new EIGHT.PerspectiveCamera(75 * Math.PI / 180, aspect, 1, 1000).setEye(e3 * 2 + e1 * 0.05 + e2)\n" +
     "\n" +
-    "  var geometry = new EIGHT.CuboidGeometry()\n" +
-    "  var elements = geometry.toElements()\n" +
+    "  var geometry = new EIGHT.CuboidSimplexGeometry()\n" +
+    "  var primitives = geometry.toPrimitives()\n" +
     "  var material = new EIGHT.MeshMaterial()\n" +
     "\n" +
-    "  cube = new EIGHT.Drawable(elements, material)\n" +
+    "  cube = new EIGHT.Drawable(primitives, material)\n" +
     "  scene.add(cube)\n" +
     "  cube.setFacet('model', new EIGHT.ModelFacet()).release()\n" +
     "  cube.setFacet('color', new EIGHT.ColorFacet()).setRGB(0, 1, 0).release()\n" +
@@ -573,7 +573,7 @@ angular.module('app').factory('templates', [
     "\n" +
     "  // We start with the geometry (geometry) for a unit cube at the origin...\n" +
     "  // A geometry is considered to be an array of simplices.\n" +
-    "  var geometry = new EIGHT.CuboidGeometry()\n" +
+    "  var geometry = new EIGHT.CuboidSimplexGeometry()\n" +
     "  geometry.k = EIGHT.Simplex.TRIANGLE\n" +
     "  // Subdivide the geometry (here twice) if you wish to get more detail.\n" +
     "  // Hit 'Play' in mathdoodle.io to see the effect of, say, n = 0, 1, 2, 3.\n" +
@@ -591,9 +591,9 @@ angular.module('app').factory('templates', [
     "  // Check that we still have a defined geometry after all that mucking about.\n" +
     "  if (geometry.meta) {\n" +
     "    // Convert the geometry to drawing elements.\n" +
-    "    var elements: EIGHT.GeometryElements = geometry.toElements();\n" +
+    "    var primitives: EIGHT.DrawPrimitive[] = geometry.toPrimitives();\n" +
     "    // Submit the geometry data to the context which will manage underlying WebGLBuffer(s) for you.\n" +
-    "    geobuff = c3d.createBufferGeometry(elements)\n" +
+    "    geobuff = c3d.createBufferGeometry(primitives[0])\n" +
     "    if (geobuff) {\n" +
     "      // Pick an appropriate program to use with the mesh based upon the dimensionality.\n" +
     "      switch(geometry.meta.k) {\n" +
@@ -1171,11 +1171,11 @@ angular.module('app').factory('templates', [
     "      var vec1 = new EIGHT.Vector3([1.0, -0.2, 0.0])\n"+
     "      var vec2 = new EIGHT.Vector3([1.0, +0.2, 0.0])\n"+
     "      var simplices = EIGHT.triangle(vec0, vec1, vec2)\n"+
-    "      var meta = EIGHT.toGeometryMeta(simplices)\n"+
+    "      var meta = EIGHT.simplicesToGeometryMeta(simplices)\n"+
     "      // console.log(JSON.stringify(meta, null, 2))\n"+
     "      // Map standard names in geometry to names used in vertex shader code.\n"+
     "      meta.attributes[EIGHT.Symbolic.ATTRIBUTE_POSITION].name = 'aPosition'\n"+
-    "      var data = EIGHT.toGeometryData(simplices, meta)\n"+
+    "      var data = EIGHT.simplicesToDrawPrimitive(simplices, meta)\n"+
     "\n"+
     "      geobuff = c3d.createBufferGeometry(data)\n"+
     "\n"+
