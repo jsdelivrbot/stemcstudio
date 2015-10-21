@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Vector3 - davinci-eight</title>
+    <title>MutableSpinorE3 - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -17,7 +17,7 @@
                 <h1><img src="../../assets/logo.png" title="davinci-eight"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.136.0</em>
+            <em>API Docs for: 2.137.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -50,10 +50,6 @@
                                 <li><a href="../classes/BoxBuilder.html">BoxBuilder</a></li>
                                 <li><a href="../classes/BoxMesh.html">BoxMesh</a></li>
                                 <li><a href="../classes/Canvas3D.html">Canvas3D</a></li>
-                                <li><a href="../classes/Cartesian1.html">Cartesian1</a></li>
-                                <li><a href="../classes/Cartesian2.html">Cartesian2</a></li>
-                                <li><a href="../classes/Cartesian3.html">Cartesian3</a></li>
-                                <li><a href="../classes/Cartesian4.html">Cartesian4</a></li>
                                 <li><a href="../classes/Color.html">Color</a></li>
                                 <li><a href="../classes/ColorFacet.html">ColorFacet</a></li>
                                 <li><a href="../classes/ColorRGB.html">ColorRGB</a></li>
@@ -110,6 +106,7 @@
                                 <li><a href="../classes/IUnknown.html">IUnknown</a></li>
                                 <li><a href="../classes/IUnknownArray.html">IUnknownArray</a></li>
                                 <li><a href="../classes/IUnknownArray&lt;T extends IUnknown&gt;.html">IUnknownArray&lt;T extends IUnknown&gt;</a></li>
+                                <li><a href="../classes/KinematicRigidBodyFacetE3.html">KinematicRigidBodyFacetE3</a></li>
                                 <li><a href="../classes/KleinBottleSimplexGeometry.html">KleinBottleSimplexGeometry</a></li>
                                 <li><a href="../classes/Line3.html">Line3</a></li>
                                 <li><a href="../classes/LineMaterial.html">LineMaterial</a></li>
@@ -126,6 +123,10 @@
                                 <li><a href="../classes/ModelFacet.html">ModelFacet</a></li>
                                 <li><a href="../classes/Mutable.html">Mutable</a></li>
                                 <li><a href="../classes/MutableNumber.html">MutableNumber</a></li>
+                                <li><a href="../classes/MutableSpinorE3.html">MutableSpinorE3</a></li>
+                                <li><a href="../classes/MutableVectorE2.html">MutableVectorE2</a></li>
+                                <li><a href="../classes/MutableVectorE3.html">MutableVectorE3</a></li>
+                                <li><a href="../classes/MutableVectorE4.html">MutableVectorE4</a></li>
                                 <li><a href="../classes/NumberIUnknownMap&lt;V&gt;.html">NumberIUnknownMap&lt;V&gt;</a></li>
                                 <li><a href="../classes/OcosahedronGeometry.html">OcosahedronGeometry</a></li>
                                 <li><a href="../classes/OctahedronSimplexGeometry.html">OctahedronSimplexGeometry</a></li>
@@ -153,7 +154,6 @@
                                 <li><a href="../classes/SmartMaterial.html">SmartMaterial</a></li>
                                 <li><a href="../classes/SmartMaterialBuilder.html">SmartMaterialBuilder</a></li>
                                 <li><a href="../classes/SphericalPolarSimplexGeometry.html">SphericalPolarSimplexGeometry</a></li>
-                                <li><a href="../classes/Spinor3.html">Spinor3</a></li>
                                 <li><a href="../classes/StringIUnknownMap.html">StringIUnknownMap</a></li>
                                 <li><a href="../classes/Symbolic.html">Symbolic</a></li>
                                 <li><a href="../classes/TetrahedronSimplexGeometry.html">TetrahedronSimplexGeometry</a></li>
@@ -161,10 +161,11 @@
                                 <li><a href="../classes/UniformLocation.html">UniformLocation</a></li>
                                 <li><a href="../classes/UniformMetaInfo.html">UniformMetaInfo</a></li>
                                 <li><a href="../classes/Unit.html">Unit</a></li>
-                                <li><a href="../classes/Vector2.html">Vector2</a></li>
-                                <li><a href="../classes/Vector3.html">Vector3</a></li>
                                 <li><a href="../classes/Vector3Uniform.html">Vector3Uniform</a></li>
-                                <li><a href="../classes/Vector4.html">Vector4</a></li>
+                                <li><a href="../classes/VectorE1.html">VectorE1</a></li>
+                                <li><a href="../classes/VectorE2.html">VectorE2</a></li>
+                                <li><a href="../classes/VectorE3.html">VectorE3</a></li>
+                                <li><a href="../classes/VectorE4.html">VectorE4</a></li>
                                 <li><a href="../classes/VectorN&lt;T&gt;.html">VectorN&lt;T&gt;</a></li>
                                 <li><a href="../classes/VersionLogger.html">VersionLogger</a></li>
                                 <li><a href="../classes/VertexAttributeMap.html">VertexAttributeMap</a></li>
@@ -213,7 +214,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>Vector3 Class</h1>
+<h1>MutableSpinorE3 Class</h1>
 <div class="box meta">
 
         <div class="extends">
@@ -221,7 +222,7 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/src_davinci-eight_math_Vector3.ts.html#l36"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:36</code></a>
+            Defined in: <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l27"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:27</code></a>
         </div>
 
             Module: <a href="../modules/EIGHT.html">EIGHT</a>
@@ -235,8 +236,8 @@
 
     <div class="constructor">
         <h2>Constructor</h2>
-<div id="method_Vector3" class="method item">
-    <h3 class="name"><code>Vector3</code></h3>
+<div id="method_MutableSpinorE3" class="method item">
+    <h3 class="name"><code>MutableSpinorE3</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
@@ -259,7 +260,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l36"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:36</code></a>
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l27"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:27</code></a>
         </p>
 
 
@@ -280,7 +281,7 @@
 
 
                     <div class="param-description">
-                        <p>[number[] = [0, 0, 0]]</p>
+                        <p>[number[] = [0, 0, 0, 1]] Corresponds to the basis e2e3, e3e1, e1e2, 1</p>
 
                     </div>
 
@@ -324,18 +325,16 @@
                                 <a href="#method_add">add</a>
 
                             </li>
-                            <li class="index-item method deprecated">
-                                <a href="#method_applyMatrix">applyMatrix</a>
-
-                                    <span class="flag deprecated">deprecated</span>
-                            </li>
-                            <li class="index-item method deprecated">
-                                <a href="#method_applyMatrix3">applyMatrix3</a>
-
-                                    <span class="flag deprecated">deprecated</span>
-                            </li>
                             <li class="index-item method">
                                 <a href="#method_clone">clone</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_conj">conj</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_copy">copy</a>
 
                             </li>
                             <li class="index-item method">
@@ -344,23 +343,7 @@
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
-                                <a href="#method_copy">copy</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_cross">cross</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_cross2">cross2</a>
-
-                            </li>
-                            <li class="index-item method">
                                 <a href="#method_diff">diff</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_distanceTo">distanceTo</a>
 
                             </li>
                             <li class="index-item method">
@@ -368,33 +351,44 @@
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_dot">dot</a>
+                                <a href="#method_dual">dual</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_dot">dot</a>
+                                <a href="#method_exp">exp</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_inv">inv</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_lerp">lerp</a>
 
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
                                 <a href="#method_lerp">lerp</a>
 
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_lerp">lerp</a>
-
-                                    <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
                                 <a href="#method_lerp2">lerp2</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_magnitude">magnitude</a>
+                                <a href="#method_log">log</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_normalize">normalize</a>
+                                <a href="#method_multiply">multiply</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_norm">norm</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_product">product</a>
 
                             </li>
                             <li class="index-item method">
@@ -402,16 +396,11 @@
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_quadranceTo">quadranceTo</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_random">random</a>
-
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item method">
                                 <a href="#method_reflect">reflect</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_reverse">reverse</a>
 
                             </li>
                             <li class="index-item method">
@@ -419,32 +408,20 @@
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_rotor">rotor</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_rotorFromAxisAngle">rotorFromAxisAngle</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_scale">scale</a>
 
                             </li>
-                            <li class="index-item method deprecated">
-                                <a href="#method_set">set</a>
-
-                                    <span class="flag deprecated">deprecated</span>
-                            </li>
                             <li class="index-item method">
-                                <a href="#method_setMagnitude">setMagnitude</a>
+                                <a href="#method_spinor">spinor</a>
 
-                            </li>
-                            <li class="index-item method deprecated">
-                                <a href="#method_setX">setX</a>
-
-                                    <span class="flag deprecated">deprecated</span>
-                            </li>
-                            <li class="index-item method deprecated">
-                                <a href="#method_setY">setY</a>
-
-                                    <span class="flag deprecated">deprecated</span>
-                            </li>
-                            <li class="index-item method deprecated">
-                                <a href="#method_setZ">setZ</a>
-
-                                    <span class="flag deprecated">deprecated</span>
                             </li>
                             <li class="index-item method">
                                 <a href="#method_sub">sub</a>
@@ -466,15 +443,19 @@
 
                     <ul class="index-list properties extends">
                             <li class="index-item property">
-                                <a href="#property_x">x</a>
+                                <a href="#property_w">w</a>
 
                             </li>
                             <li class="index-item property">
-                                <a href="#property_y">y</a>
+                                <a href="#property_xy">xy</a>
 
                             </li>
                             <li class="index-item property">
-                                <a href="#property_z">z</a>
+                                <a href="#property_yz">yz</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_zx">zx</a>
 
                             </li>
                     </ul>
@@ -492,7 +473,7 @@
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>vector</code>
+                        <code>spinor</code>
                 </li>
                 <li class="arg">
                         <code>α</code>
@@ -501,7 +482,7 @@
         </div>
 
         <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+            <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>
         </span>
 
 
@@ -514,7 +495,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l78"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:78</code></a>
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l84"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:84</code></a>
         </p>
 
 
@@ -523,7 +504,7 @@
 
     <div class="description">
         <p>
-<code>this ⟼ this + vector * α</code>
+<code>this ⟼ this + α * spinor</code>
 </p>
     </div>
 
@@ -532,8 +513,8 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">vector</code>
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+                        <code class="param-name">spinor</code>
+                        <span class="type">SpinorE3</span>
 
 
                     <div class="param-description">
@@ -559,147 +540,7 @@
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
-                    <p><code>this</code></p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_applyMatrix" class="method item deprecated">
-    <h3 class="name"><code>applyMatrix</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>m</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-        </span>
-
-        <span class="flag deprecated">deprecated</span>
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l119"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:119</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Pre-multiplies the column vector corresponding to this vector by the matrix.
-The result is applied to this vector.
-Strictly speaking, this method does not make much sense because the dimensions
-of the square matrix and column vector don't match.
-TODO: Used by TubeSimplexGeometry.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">m</code>
-                        <span class="type">Object</span>
-
-
-                    <div class="param-description">
-                        <p>The 4x4 matrix that pre-multiplies this column vector.</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
-                    <p><code>this</code></p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_applyMatrix3" class="method item deprecated">
-    <h3 class="name"><code>applyMatrix3</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>m</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-        </span>
-
-        <span class="flag deprecated">deprecated</span>
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l96"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:96</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>
-<code>this ⟼ m * this</code>
-</p>
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">m</code>
-                        <span class="type"><a href="../classes/Matrix3.html" class="crosslink">Matrix3</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
+                        <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>:
                     <p><code>this</code></p>
 
             </div>
@@ -713,19 +554,20 @@ TODO: Used by TubeSimplexGeometry.</p>
         <span class="paren">()</span>
 
         <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+            <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>
         </span>
 
 
 
 
 
+        <span class="flag chainable">chainable</span>
 
 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l197"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:197</code></a>
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l103"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:103</code></a>
         </p>
 
 
@@ -741,8 +583,53 @@ TODO: Used by TubeSimplexGeometry.</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
-                    <p><code>copy(this)</code></p>
+                        <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>:
+                    <p>A copy of <code>this</code>.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_conj" class="method item">
+    <h3 class="name"><code>conj</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>
+        </span>
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l111"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:111</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>
+<code>this ⟼ (w, -B)</code>
+</p>
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>:
+                    <p><code>this</code></p>
 
             </div>
         </div>
@@ -755,13 +642,80 @@ TODO: Used by TubeSimplexGeometry.</p>
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>vector</code>
+                        <code>spinor</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
 
         <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+            <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>
+        </span>
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l125"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:125</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>
+<code>this ⟼ copy(spinor)</code>
+</p>
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">spinor</code>
+                        <span class="type">SpinorE3</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>:
+                    <p><code>this</code></p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_copy" class="method item">
+    <h3 class="name"><code>copy</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>spinor</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>
         </span>
 
 
@@ -774,7 +728,7 @@ TODO: Used by TubeSimplexGeometry.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l551"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:551</code></a>
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l532"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:532</code></a>
         </p>
 
 
@@ -790,8 +744,8 @@ TODO: Used by TubeSimplexGeometry.</p>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">vector</code>
-                        <span class="type">Cartesian</span>
+                        <code class="param-name">spinor</code>
+                        <span class="type">SpinorE3</span>
 
 
                     <div class="param-description">
@@ -806,220 +760,8 @@ TODO: Used by TubeSimplexGeometry.</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
-            </div>
-        </div>
-
-
-</div>
-<div id="method_copy" class="method item">
-    <h3 class="name"><code>copy</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>v</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-        </span>
-
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l204"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:204</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>
-<code>this ⟼ copy(v)</code>
-</p>
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">v</code>
-                        <span class="type"><a href="../classes/Cartesian3.html" class="crosslink">Cartesian3</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
-                    <p><code>this</code></p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_cross" class="method item">
-    <h3 class="name"><code>cross</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>v</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-        </span>
-
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l220"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:220</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>
-<code>this ⟼ this ✕ v</code>
-</p>
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">v</code>
-                        <span class="type"><a href="../classes/Cartesian3.html" class="crosslink">Cartesian3</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
-                    <p><code>this</code></p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_cross2" class="method item">
-    <h3 class="name"><code>cross2</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>a</code>
-                </li>
-                <li class="arg">
-                        <code>b</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-        </span>
-
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l233"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:233</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>
-<code>this ⟼ a ✕ b</code>
-</p>
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">a</code>
-                        <span class="type"><a href="../classes/Cartesian3.html" class="crosslink">Cartesian3</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">b</code>
-                        <span class="type"><a href="../classes/Cartesian3.html" class="crosslink">Cartesian3</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
-                    <p><code>this</code></p>
+                        <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>:
+                    <p>A copy of the <code>spinor</code> argument.</p>
 
             </div>
         </div>
@@ -1041,7 +783,7 @@ TODO: Used by TubeSimplexGeometry.</p>
         </div>
 
         <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+            <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>
         </span>
 
 
@@ -1054,7 +796,7 @@ TODO: Used by TubeSimplexGeometry.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l502"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:502</code></a>
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l142"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:142</code></a>
         </p>
 
 
@@ -1073,7 +815,7 @@ TODO: Used by TubeSimplexGeometry.</p>
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">a</code>
-                        <span class="type"><a href="../classes/Cartesian3.html" class="crosslink">Cartesian3</a></span>
+                        <span class="type">SpinorE3</span>
 
 
                     <div class="param-description">
@@ -1083,7 +825,7 @@ TODO: Used by TubeSimplexGeometry.</p>
                 </li>
                 <li class="param">
                         <code class="param-name">b</code>
-                        <span class="type"><a href="../classes/Cartesian3.html" class="crosslink">Cartesian3</a></span>
+                        <span class="type">SpinorE3</span>
 
 
                     <div class="param-description">
@@ -1098,71 +840,9 @@ TODO: Used by TubeSimplexGeometry.</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
+                        <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>:
                     <p><code>this</code></p>
 
-            </div>
-        </div>
-
-
-</div>
-<div id="method_distanceTo" class="method item">
-    <h3 class="name"><code>distanceTo</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>point</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type">Number</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l256"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:256</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">point</code>
-                        <span class="type"><a href="../classes/Cartesian3.html" class="crosslink">Cartesian3</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Number</span>:
             </div>
         </div>
 
@@ -1180,7 +860,7 @@ TODO: Used by TubeSimplexGeometry.</p>
         </div>
 
         <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+            <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>
         </span>
 
 
@@ -1193,7 +873,7 @@ TODO: Used by TubeSimplexGeometry.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l285"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:285</code></a>
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l159"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:159</code></a>
         </p>
 
 
@@ -1227,7 +907,7 @@ TODO: Used by TubeSimplexGeometry.</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
+                        <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>:
                     <p><code>this</code></p>
 
             </div>
@@ -1235,8 +915,8 @@ TODO: Used by TubeSimplexGeometry.</p>
 
 
 </div>
-<div id="method_dot" class="method item">
-    <h3 class="name"><code>dot</code></h3>
+<div id="method_dual" class="method item">
+    <h3 class="name"><code>dual</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
@@ -1247,19 +927,20 @@ TODO: Used by TubeSimplexGeometry.</p>
         </div>
 
         <span class="returns-inline">
-            <span class="type">Number</span>
+            <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>
         </span>
 
 
 
 
 
+        <span class="flag chainable">chainable</span>
 
 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l309"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:309</code></a>
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l175"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:175</code></a>
         </p>
 
 
@@ -1267,7 +948,10 @@ TODO: Used by TubeSimplexGeometry.</p>
     </div>
 
     <div class="description">
-        
+        <p>
+<code>this ⟼ dual(v) = I * v</code>
+</p>
+Notice that the dual of a vector is related to the spinor by the right-hand rule.
     </div>
 
         <div class="params">
@@ -1276,11 +960,12 @@ TODO: Used by TubeSimplexGeometry.</p>
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">v</code>
-                        <span class="type"><a href="../classes/Cartesian3.html" class="crosslink">Cartesian3</a></span>
+                        <span class="type"><a href="../classes/VectorE3.html" class="crosslink">VectorE3</a></span>
 
 
                     <div class="param-description">
-                         
+                        <p>The vector whose dual will be used to set this spinor.</p>
+
                     </div>
 
                 </li>
@@ -1291,14 +976,106 @@ TODO: Used by TubeSimplexGeometry.</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type">Number</span>:
+                        <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>:
+                    <p><code>this</code></p>
+
             </div>
         </div>
 
 
 </div>
-<div id="method_dot" class="method item">
-    <h3 class="name"><code>dot</code></h3>
+<div id="method_exp" class="method item">
+    <h3 class="name"><code>exp</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>
+        </span>
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l193"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:193</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>
+<code>this ⟼ e<sup>this</sup></code>
+</p>
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>:
+                    <p><code>this</code></p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_inv" class="method item">
+    <h3 class="name"><code>inv</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>
+        </span>
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l217"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:217</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>
+<code>this ⟼ conj(this) / quad(this)</code>
+</p>
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>:
+                    <p><code>this</code></p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_lerp" class="method item">
+    <h3 class="name"><code>lerp</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
@@ -1308,11 +1085,14 @@ TODO: Used by TubeSimplexGeometry.</p>
                 <li class="arg">
                         <code>b</code>
                 </li>
+                <li class="arg">
+                        <code>α</code>
+                </li>
             </ul><span class="paren">)</span>
         </div>
 
         <span class="returns-inline">
-            <span class="type">Number</span>
+            <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>
         </span>
 
 
@@ -1325,7 +1105,7 @@ TODO: Used by TubeSimplexGeometry.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l26"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:26</code></a>
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l541"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:541</code></a>
         </p>
 
 
@@ -1342,7 +1122,7 @@ TODO: Used by TubeSimplexGeometry.</p>
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">a</code>
-                        <span class="type"><a href="../classes/Cartesian3.html" class="crosslink">Cartesian3</a></span>
+                        <span class="type">SpinorE3</span>
 
 
                     <div class="param-description">
@@ -1352,7 +1132,17 @@ TODO: Used by TubeSimplexGeometry.</p>
                 </li>
                 <li class="param">
                         <code class="param-name">b</code>
-                        <span class="type"><a href="../classes/Cartesian3.html" class="crosslink">Cartesian3</a></span>
+                        <span class="type">SpinorE3</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">α</code>
+                        <span class="type">Number</span>
 
 
                     <div class="param-description">
@@ -1367,7 +1157,9 @@ TODO: Used by TubeSimplexGeometry.</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type">Number</span>:
+                        <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>:
+                    <p><code>a + α * (b - a)</code></p>
+
             </div>
         </div>
 
@@ -1388,7 +1180,7 @@ TODO: Used by TubeSimplexGeometry.</p>
         </div>
 
         <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+            <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>
         </span>
 
 
@@ -1401,7 +1193,7 @@ TODO: Used by TubeSimplexGeometry.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l333"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:333</code></a>
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l230"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:230</code></a>
         </p>
 
 
@@ -1420,7 +1212,7 @@ TODO: Used by TubeSimplexGeometry.</p>
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">target</code>
-                        <span class="type"><a href="../classes/Cartesian3.html" class="crosslink">Cartesian3</a></span>
+                        <span class="type">SpinorE3</span>
 
 
                     <div class="param-description">
@@ -1445,99 +1237,8 @@ TODO: Used by TubeSimplexGeometry.</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
+                        <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>:
                     <p><code>this</code></p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_lerp" class="method item">
-    <h3 class="name"><code>lerp</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>a</code>
-                </li>
-                <li class="arg">
-                        <code>b</code>
-                </li>
-                <li class="arg">
-                        <code>α</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-        </span>
-
-
-
-
-        <span class="flag static">static</span>
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l560"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:560</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">a</code>
-                        <span class="type"><a href="../classes/Cartesian3.html" class="crosslink">Cartesian3</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">b</code>
-                        <span class="type"><a href="../classes/Cartesian3.html" class="crosslink">Cartesian3</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">α</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
-                    <p><code>a + α * (b - a)</code></p>
 
             </div>
         </div>
@@ -1562,7 +1263,7 @@ TODO: Used by TubeSimplexGeometry.</p>
         </div>
 
         <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+            <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>
         </span>
 
 
@@ -1575,7 +1276,7 @@ TODO: Used by TubeSimplexGeometry.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l351"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:351</code></a>
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l251"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:251</code></a>
         </p>
 
 
@@ -1585,7 +1286,7 @@ TODO: Used by TubeSimplexGeometry.</p>
     <div class="description">
         <p>
 <code>this ⟼ a + α * (b - a)</code>
-</p>
+<p>
     </div>
 
         <div class="params">
@@ -1594,7 +1295,7 @@ TODO: Used by TubeSimplexGeometry.</p>
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">a</code>
-                        <span class="type"><a href="../classes/Cartesian3.html" class="crosslink">Cartesian3</a></span>
+                        <span class="type">SpinorE3</span>
 
 
                     <div class="param-description">
@@ -1604,7 +1305,7 @@ TODO: Used by TubeSimplexGeometry.</p>
                 </li>
                 <li class="param">
                         <code class="param-name">b</code>
-                        <span class="type"><a href="../classes/Cartesian3.html" class="crosslink">Cartesian3</a></span>
+                        <span class="type">SpinorE3</span>
 
 
                     <div class="param-description">
@@ -1629,7 +1330,7 @@ TODO: Used by TubeSimplexGeometry.</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
+                        <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>:
                     <p><code>this</code></p>
 
             </div>
@@ -1637,56 +1338,13 @@ TODO: Used by TubeSimplexGeometry.</p>
 
 
 </div>
-<div id="method_magnitude" class="method item">
-    <h3 class="name"><code>magnitude</code></h3>
+<div id="method_log" class="method item">
+    <h3 class="name"><code>log</code></h3>
 
         <span class="paren">()</span>
 
         <span class="returns-inline">
-            <span class="type">Number</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l317"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:317</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Returns the (Euclidean) norm of this vector.</p>
-
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Number</span>:
-                    <p><code>norm(this)</code></p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_normalize" class="method item">
-    <h3 class="name"><code>normalize</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+            <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>
         </span>
 
 
@@ -1699,7 +1357,7 @@ TODO: Used by TubeSimplexGeometry.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l369"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:369</code></a>
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l266"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:266</code></a>
         </p>
 
 
@@ -1708,7 +1366,7 @@ TODO: Used by TubeSimplexGeometry.</p>
 
     <div class="description">
         <p>
-<code>this ⟼ this / norm(this)</code>
+<code>this ⟼ log(this)</code>
 </p>
     </div>
 
@@ -1717,7 +1375,199 @@ TODO: Used by TubeSimplexGeometry.</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
+                        <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>:
+                    <p><code>this</code></p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_multiply" class="method item">
+    <h3 class="name"><code>multiply</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>rhs</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>
+        </span>
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l293"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:293</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>
+<code>this ⟼ this * rhs</code>
+</p>
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">rhs</code>
+                        <span class="type">SpinorE3</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>:
+                    <p><code>this</code></p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_norm" class="method item">
+    <h3 class="name"><code>norm</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>
+        </span>
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l305"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:305</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>
+<code>this ⟼ sqrt(this * conj(this))</code>
+</p>
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>:
+                    <p><code>this</code></p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_product" class="method item">
+    <h3 class="name"><code>product</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>a</code>
+                </li>
+                <li class="arg">
+                        <code>b</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>
+        </span>
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l336"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:336</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>
+<code>this ⟼ a * b</code>
+</p>
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">a</code>
+                        <span class="type">SpinorE3</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">b</code>
+                        <span class="type">SpinorE3</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>:
                     <p><code>this</code></p>
 
             </div>
@@ -1743,113 +1593,7 @@ TODO: Used by TubeSimplexGeometry.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l325"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:325</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Returns the (Euclidean) inner product of this vector with itself.</p>
-
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Number</span>:
-                    <p><code>this ⋅ this</code> or <code>norm(this) * norm(this)</code></p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_quadranceTo" class="method item">
-    <h3 class="name"><code>quadranceTo</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>point</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type">Number</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l269"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:269</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">point</code>
-                        <span class="type"><a href="../classes/Cartesian3.html" class="crosslink">Cartesian3</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Number</span>:
-            </div>
-        </div>
-
-
-</div>
-<div id="method_random" class="method item">
-    <h3 class="name"><code>random</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-        </span>
-
-
-
-
-        <span class="flag static">static</span>
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l571"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:571</code></a>
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l363"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:363</code></a>
         </p>
 
 
@@ -1865,7 +1609,9 @@ TODO: Used by TubeSimplexGeometry.</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
+                        <span class="type">Number</span>:
+                    <p><code>this * conj(this)</code></p>
+
             </div>
         </div>
 
@@ -1883,7 +1629,7 @@ TODO: Used by TubeSimplexGeometry.</p>
         </div>
 
         <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+            <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>
         </span>
 
 
@@ -1896,7 +1642,7 @@ TODO: Used by TubeSimplexGeometry.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l143"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:143</code></a>
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l388"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:388</code></a>
         </p>
 
 
@@ -1904,9 +1650,9 @@ TODO: Used by TubeSimplexGeometry.</p>
     </div>
 
     <div class="description">
-        <p>
-<code>this ⟼ - n * this * n</code>
-</p>
+        <p>Sets this Spinor to the value of its reflection in the plane orthogonal to n.
+The geometric formula for bivector reflection is B' = n * B * n.</p>
+
     </div>
 
         <div class="params">
@@ -1915,7 +1661,7 @@ TODO: Used by TubeSimplexGeometry.</p>
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">n</code>
-                        <span class="type"><a href="../classes/Cartesian3.html" class="crosslink">Cartesian3</a></span>
+                        <span class="type"><a href="../classes/VectorE3.html" class="crosslink">VectorE3</a></span>
 
 
                     <div class="param-description">
@@ -1930,7 +1676,52 @@ TODO: Used by TubeSimplexGeometry.</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
+                        <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>:
+                    <p><code>this</code></p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_reverse" class="method item">
+    <h3 class="name"><code>reverse</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>
+        </span>
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l374"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:374</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>
+<code>this = (w, B) ⟼ (w, -B)</code>
+</p>
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>:
                     <p><code>this</code></p>
 
             </div>
@@ -1944,13 +1735,13 @@ TODO: Used by TubeSimplexGeometry.</p>
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>R</code>
+                        <code>rotor</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
 
         <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+            <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>
         </span>
 
 
@@ -1963,7 +1754,7 @@ TODO: Used by TubeSimplexGeometry.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l166"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:166</code></a>
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l412"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:412</code></a>
         </p>
 
 
@@ -1972,7 +1763,7 @@ TODO: Used by TubeSimplexGeometry.</p>
 
     <div class="description">
         <p>
-<code>this ⟼ R * this * reverse(R)</code>
+<code>this = ⟼ rotor * this * reverse(rotor)</code>
 </p>
     </div>
 
@@ -1981,8 +1772,8 @@ TODO: Used by TubeSimplexGeometry.</p>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">R</code>
-                        <span class="type">Spinor3Coords</span>
+                        <code class="param-name">rotor</code>
+                        <span class="type">SpinorE3</span>
 
 
                     <div class="param-description">
@@ -1997,7 +1788,169 @@ TODO: Used by TubeSimplexGeometry.</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
+                        <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>:
+                    <p><code>this</code></p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_rotor" class="method item">
+    <h3 class="name"><code>rotor</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>b</code>
+                </li>
+                <li class="arg">
+                        <code>a</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>
+        </span>
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l425"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:425</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>
+Computes a rotor, R, from two unit vectors, where
+R = (1 + b * a) / sqrt(2 * (1 + b << a))
+</p>
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">b</code>
+                        <span class="type"><a href="../classes/VectorE3.html" class="crosslink">VectorE3</a></span>
+
+
+                    <div class="param-description">
+                        <p>The ending unit vector</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">a</code>
+                        <span class="type"><a href="../classes/VectorE3.html" class="crosslink">VectorE3</a></span>
+
+
+                    <div class="param-description">
+                        <p>The starting unit vector</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>:
+                    <p><code>this</code> The rotor representing a rotation from a to b.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_rotorFromAxisAngle" class="method item">
+    <h3 class="name"><code>rotorFromAxisAngle</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>axis</code>
+                </li>
+                <li class="arg">
+                        <code>θ</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l443"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:443</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>
+<code>this = ⟼ exp(- dual(a) * θ / 2)</code>
+</p>
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">axis</code>
+                        <span class="type"><a href="../classes/VectorE3.html" class="crosslink">VectorE3</a></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">θ</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>:
                     <p><code>this</code></p>
 
             </div>
@@ -2016,6 +1969,9 @@ TODO: Used by TubeSimplexGeometry.</p>
             </ul><span class="paren">)</span>
         </div>
 
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>
+        </span>
 
 
 
@@ -2026,7 +1982,7 @@ TODO: Used by TubeSimplexGeometry.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l380"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:380</code></a>
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l320"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:320</code></a>
         </p>
 
 
@@ -2056,42 +2012,46 @@ TODO: Used by TubeSimplexGeometry.</p>
             </ul>
         </div>
 
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>:
+                    <p><code>this</code></p>
+
+            </div>
+        </div>
 
 
 </div>
-<div id="method_set" class="method item deprecated">
-    <h3 class="name"><code>set</code></h3>
+<div id="method_spinor" class="method item">
+    <h3 class="name"><code>spinor</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>x</code>
+                        <code>a</code>
                 </li>
                 <li class="arg">
-                        <code>y</code>
-                </li>
-                <li class="arg">
-                        <code>z</code>
+                        <code>b</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
 
         <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+            <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>
         </span>
 
-        <span class="flag deprecated">deprecated</span>
 
 
 
 
-        <span class="flag chainable">chainable</span>
 
 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l394"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:394</code></a>
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l499"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:499</code></a>
         </p>
 
 
@@ -2100,8 +2060,9 @@ TODO: Used by TubeSimplexGeometry.</p>
 
     <div class="description">
         <p>
-<code>this ⟼ this</code>, with components modified.
+<code>this ⟼ a * b</code>
 </p>
+Sets this MutableSpinorE3 to the geometric product a * b of the vector arguments.
     </div>
 
         <div class="params">
@@ -2109,8 +2070,8 @@ TODO: Used by TubeSimplexGeometry.</p>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">x</code>
-                        <span class="type">Number</span>
+                        <code class="param-name">a</code>
+                        <span class="type"><a href="../classes/VectorE3.html" class="crosslink">VectorE3</a></span>
 
 
                     <div class="param-description">
@@ -2119,18 +2080,8 @@ TODO: Used by TubeSimplexGeometry.</p>
 
                 </li>
                 <li class="param">
-                        <code class="param-name">y</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">z</code>
-                        <span class="type">Number</span>
+                        <code class="param-name">b</code>
+                        <span class="type"><a href="../classes/VectorE3.html" class="crosslink">VectorE3</a></span>
 
 
                     <div class="param-description">
@@ -2145,273 +2096,7 @@ TODO: Used by TubeSimplexGeometry.</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
-                    <p><code>this</code></p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_setMagnitude" class="method item">
-    <h3 class="name"><code>setMagnitude</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>magnitude</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l412"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:412</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>
-<code>this ⟼ magnitude * this / norm(this)</code>
-</p>
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">magnitude</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
-                    <p><code>this</code></p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_setX" class="method item deprecated">
-    <h3 class="name"><code>setX</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>x</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-        </span>
-
-        <span class="flag deprecated">deprecated</span>
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l435"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:435</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">x</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
-                    <p><code>this</code></p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_setY" class="method item deprecated">
-    <h3 class="name"><code>setY</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>y</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-        </span>
-
-        <span class="flag deprecated">deprecated</span>
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l447"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:447</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">y</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
-                    <p><code>this</code></p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_setZ" class="method item deprecated">
-    <h3 class="name"><code>setZ</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>z</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
-        </span>
-
-        <span class="flag deprecated">deprecated</span>
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l459"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:459</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">z</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
-                    <p><code>this</code></p>
-
+                        <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>:
             </div>
         </div>
 
@@ -2423,13 +2108,16 @@ TODO: Used by TubeSimplexGeometry.</p>
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>v</code>
+                        <code>spinor</code>
+                </li>
+                <li class="arg">
+                        <code>α</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
 
         <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+            <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>
         </span>
 
 
@@ -2442,7 +2130,7 @@ TODO: Used by TubeSimplexGeometry.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l471"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:471</code></a>
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l463"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:463</code></a>
         </p>
 
 
@@ -2451,7 +2139,7 @@ TODO: Used by TubeSimplexGeometry.</p>
 
     <div class="description">
         <p>
-<code>this ⟼ this - v</code>
+<code>this ⟼ this - α * spinor</code>
 </p>
     </div>
 
@@ -2460,12 +2148,23 @@ TODO: Used by TubeSimplexGeometry.</p>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">v</code>
-                        <span class="type"><a href="../classes/Cartesian3.html" class="crosslink">Cartesian3</a></span>
+                        <code class="param-name">spinor</code>
+                        <span class="type">SpinorE3</span>
 
 
                     <div class="param-description">
                          
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">α</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>[number = 1]</p>
+
                     </div>
 
                 </li>
@@ -2476,7 +2175,7 @@ TODO: Used by TubeSimplexGeometry.</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
+                        <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>:
                     <p><code>this</code></p>
 
             </div>
@@ -2499,7 +2198,7 @@ TODO: Used by TubeSimplexGeometry.</p>
         </div>
 
         <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+            <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>
         </span>
 
 
@@ -2512,7 +2211,7 @@ TODO: Used by TubeSimplexGeometry.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l484"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:484</code></a>
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l482"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:482</code></a>
         </p>
 
 
@@ -2531,7 +2230,7 @@ TODO: Used by TubeSimplexGeometry.</p>
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">a</code>
-                        <span class="type"><a href="../classes/Cartesian3.html" class="crosslink">Cartesian3</a></span>
+                        <span class="type">SpinorE3</span>
 
 
                     <div class="param-description">
@@ -2541,7 +2240,7 @@ TODO: Used by TubeSimplexGeometry.</p>
                 </li>
                 <li class="param">
                         <code class="param-name">b</code>
-                        <span class="type"><a href="../classes/Cartesian3.html" class="crosslink">Cartesian3</a></span>
+                        <span class="type">SpinorE3</span>
 
 
                     <div class="param-description">
@@ -2556,7 +2255,7 @@ TODO: Used by TubeSimplexGeometry.</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>:
+                        <span class="type"><a href="../classes/MutableSpinorE3.html" class="crosslink">MutableSpinorE3</a></span>:
                     <p><code>this</code></p>
 
             </div>
@@ -2582,7 +2281,7 @@ TODO: Used by TubeSimplexGeometry.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l520"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:520</code></a>
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l525"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:525</code></a>
         </p>
 
 
@@ -2611,8 +2310,8 @@ TODO: Used by TubeSimplexGeometry.</p>
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
 
-<div id="property_x" class="property item">
-    <h3 class="name"><code>x</code></h3>
+<div id="property_w" class="property item">
+    <h3 class="name"><code>w</code></h3>
     <span class="type">Number</span>
 
 
@@ -2622,7 +2321,7 @@ TODO: Used by TubeSimplexGeometry.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l45"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:45</code></a>
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l72"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:72</code></a>
         </p>
 
 
@@ -2635,8 +2334,8 @@ TODO: Used by TubeSimplexGeometry.</p>
 
 
 </div>
-<div id="property_y" class="property item">
-    <h3 class="name"><code>y</code></h3>
+<div id="property_xy" class="property item">
+    <h3 class="name"><code>xy</code></h3>
     <span class="type">Number</span>
 
 
@@ -2646,7 +2345,7 @@ TODO: Used by TubeSimplexGeometry.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l56"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:56</code></a>
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l60"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:60</code></a>
         </p>
 
 
@@ -2659,8 +2358,8 @@ TODO: Used by TubeSimplexGeometry.</p>
 
 
 </div>
-<div id="property_z" class="property item">
-    <h3 class="name"><code>z</code></h3>
+<div id="property_yz" class="property item">
+    <h3 class="name"><code>yz</code></h3>
     <span class="type">Number</span>
 
 
@@ -2670,7 +2369,31 @@ TODO: Used by TubeSimplexGeometry.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Vector3.ts.html#l67"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Vector3.ts:67</code></a>
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l36"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:36</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+<div id="property_zx" class="property item">
+    <h3 class="name"><code>zx</code></h3>
+    <span class="type">Number</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_math_MutableSpinorE3.ts.html#l48"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;MutableSpinorE3.ts:48</code></a>
         </p>
 
 

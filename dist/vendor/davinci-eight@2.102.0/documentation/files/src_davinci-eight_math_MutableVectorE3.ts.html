@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/davinci-eight/math/Vector3.ts - davinci-eight</title>
+    <title>src/davinci-eight/math/MutableVectorE3.ts - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -17,7 +17,7 @@
                 <h1><img src="../../assets/logo.png" title="davinci-eight"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.136.0</em>
+            <em>API Docs for: 2.137.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -50,10 +50,6 @@
                                 <li><a href="../classes/BoxBuilder.html">BoxBuilder</a></li>
                                 <li><a href="../classes/BoxMesh.html">BoxMesh</a></li>
                                 <li><a href="../classes/Canvas3D.html">Canvas3D</a></li>
-                                <li><a href="../classes/Cartesian1.html">Cartesian1</a></li>
-                                <li><a href="../classes/Cartesian2.html">Cartesian2</a></li>
-                                <li><a href="../classes/Cartesian3.html">Cartesian3</a></li>
-                                <li><a href="../classes/Cartesian4.html">Cartesian4</a></li>
                                 <li><a href="../classes/Color.html">Color</a></li>
                                 <li><a href="../classes/ColorFacet.html">ColorFacet</a></li>
                                 <li><a href="../classes/ColorRGB.html">ColorRGB</a></li>
@@ -110,6 +106,7 @@
                                 <li><a href="../classes/IUnknown.html">IUnknown</a></li>
                                 <li><a href="../classes/IUnknownArray.html">IUnknownArray</a></li>
                                 <li><a href="../classes/IUnknownArray&lt;T extends IUnknown&gt;.html">IUnknownArray&lt;T extends IUnknown&gt;</a></li>
+                                <li><a href="../classes/KinematicRigidBodyFacetE3.html">KinematicRigidBodyFacetE3</a></li>
                                 <li><a href="../classes/KleinBottleSimplexGeometry.html">KleinBottleSimplexGeometry</a></li>
                                 <li><a href="../classes/Line3.html">Line3</a></li>
                                 <li><a href="../classes/LineMaterial.html">LineMaterial</a></li>
@@ -126,6 +123,10 @@
                                 <li><a href="../classes/ModelFacet.html">ModelFacet</a></li>
                                 <li><a href="../classes/Mutable.html">Mutable</a></li>
                                 <li><a href="../classes/MutableNumber.html">MutableNumber</a></li>
+                                <li><a href="../classes/MutableSpinorE3.html">MutableSpinorE3</a></li>
+                                <li><a href="../classes/MutableVectorE2.html">MutableVectorE2</a></li>
+                                <li><a href="../classes/MutableVectorE3.html">MutableVectorE3</a></li>
+                                <li><a href="../classes/MutableVectorE4.html">MutableVectorE4</a></li>
                                 <li><a href="../classes/NumberIUnknownMap&lt;V&gt;.html">NumberIUnknownMap&lt;V&gt;</a></li>
                                 <li><a href="../classes/OcosahedronGeometry.html">OcosahedronGeometry</a></li>
                                 <li><a href="../classes/OctahedronSimplexGeometry.html">OctahedronSimplexGeometry</a></li>
@@ -153,7 +154,6 @@
                                 <li><a href="../classes/SmartMaterial.html">SmartMaterial</a></li>
                                 <li><a href="../classes/SmartMaterialBuilder.html">SmartMaterialBuilder</a></li>
                                 <li><a href="../classes/SphericalPolarSimplexGeometry.html">SphericalPolarSimplexGeometry</a></li>
-                                <li><a href="../classes/Spinor3.html">Spinor3</a></li>
                                 <li><a href="../classes/StringIUnknownMap.html">StringIUnknownMap</a></li>
                                 <li><a href="../classes/Symbolic.html">Symbolic</a></li>
                                 <li><a href="../classes/TetrahedronSimplexGeometry.html">TetrahedronSimplexGeometry</a></li>
@@ -161,10 +161,11 @@
                                 <li><a href="../classes/UniformLocation.html">UniformLocation</a></li>
                                 <li><a href="../classes/UniformMetaInfo.html">UniformMetaInfo</a></li>
                                 <li><a href="../classes/Unit.html">Unit</a></li>
-                                <li><a href="../classes/Vector2.html">Vector2</a></li>
-                                <li><a href="../classes/Vector3.html">Vector3</a></li>
                                 <li><a href="../classes/Vector3Uniform.html">Vector3Uniform</a></li>
-                                <li><a href="../classes/Vector4.html">Vector4</a></li>
+                                <li><a href="../classes/VectorE1.html">VectorE1</a></li>
+                                <li><a href="../classes/VectorE2.html">VectorE2</a></li>
+                                <li><a href="../classes/VectorE3.html">VectorE3</a></li>
+                                <li><a href="../classes/VectorE4.html">VectorE4</a></li>
                                 <li><a href="../classes/VectorN&lt;T&gt;.html">VectorN&lt;T&gt;</a></li>
                                 <li><a href="../classes/VersionLogger.html">VersionLogger</a></li>
                                 <li><a href="../classes/VertexAttributeMap.html">VertexAttributeMap</a></li>
@@ -213,47 +214,62 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: src/davinci-eight/math/Vector3.ts</h1>
+<h1 class="file-heading">File: src/davinci-eight/math/MutableVectorE3.ts</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-import Cartesian3 = require(&#x27;../math/Cartesian3&#x27;);
+import VectorE3 = require(&#x27;../math/VectorE3&#x27;);
 import euclidean3Quaditude2Arg = require(&#x27;../math/euclidean3Quaditude2Arg&#x27;)
-import expectArg = require(&#x27;../checks/expectArg&#x27;);
-import LinearElement = require(&#x27;../math/LinearElement&#x27;);
-import Matrix3 = require(&#x27;../math/Matrix3&#x27;);
-import Matrix4 = require(&#x27;../math/Matrix4&#x27;);
-import isDefined = require(&#x27;../checks/isDefined&#x27;);
-import isNumber = require(&#x27;../checks/isNumber&#x27;);
-import mustBeNumber = require(&#x27;../checks/mustBeNumber&#x27;);
-import mustBeObject = require(&#x27;../checks/mustBeObject&#x27;);
-import Spinor3Coords = require(&#x27;../math/Spinor3Coords&#x27;);
-import VectorN = require(&#x27;../math/VectorN&#x27;);
-import wedgeXY = require(&#x27;../math/wedgeXY&#x27;);
-import wedgeYZ = require(&#x27;../math/wedgeYZ&#x27;);
-import wedgeZX = require(&#x27;../math/wedgeZX&#x27;);
+import Euclidean3 = require(&#x27;../math/Euclidean3&#x27;)
+import expectArg = require(&#x27;../checks/expectArg&#x27;)
+import LinearElement = require(&#x27;../math/LinearElement&#x27;)
+import Matrix3 = require(&#x27;../math/Matrix3&#x27;)
+import Matrix4 = require(&#x27;../math/Matrix4&#x27;)
+import isDefined = require(&#x27;../checks/isDefined&#x27;)
+import isNumber = require(&#x27;../checks/isNumber&#x27;)
+import mustBeNumber = require(&#x27;../checks/mustBeNumber&#x27;)
+import mustBeObject = require(&#x27;../checks/mustBeObject&#x27;)
+import SpinorE3 = require(&#x27;../math/SpinorE3&#x27;)
+import VectorN = require(&#x27;../math/VectorN&#x27;)
+import wedgeXY = require(&#x27;../math/wedgeXY&#x27;)
+import wedgeYZ = require(&#x27;../math/wedgeYZ&#x27;)
+import wedgeZX = require(&#x27;../math/wedgeZX&#x27;)
 
 /**
- * @class Vector3
+ * @class MutableVectorE3
  * @extends VectorN&lt;number&gt;
  */
-class Vector3 extends VectorN&lt;number&gt; implements Cartesian3, LinearElement&lt;Cartesian3, Vector3, Spinor3Coords, Cartesian3&gt; {
-
-    public static e1 = new Vector3([1, 0, 0]);
-    public static e2 = new Vector3([0, 1, 0]);
-    public static e3 = new Vector3([0, 0, 1]);
+class MutableVectorE3 extends VectorN&lt;number&gt; implements VectorE3, LinearElement&lt;VectorE3, MutableVectorE3, SpinorE3, VectorE3&gt; {
+    /**
+     * @property e1
+     * @type {Euclidean3}
+     * @static
+     */
+    public static e1 = Euclidean3.e1;
+    /**
+     * @property e2
+     * @type {Euclidean3}
+     * @static
+     */
+    public static e2 = Euclidean3.e2;
+    /**
+     * @property e3
+     * @type {Euclidean3}
+     * @static
+     */
+    public static e3 = Euclidean3.e3;
     /**
      * @method dot
-     * @param a {Cartesian3}
-     * @param b {Cartesian3}
+     * @param a {VectorE3}
+     * @param b {VectorE3}
      * @return {number}
      * @static
      */
-    public static dot(a: Cartesian3, b: Cartesian3): number {
+    public static dot(a: VectorE3, b: VectorE3): number {
         return a.x * b.x + a.y * b.y + a.z * b.z;
     }
     /**
-     * @class Vector3
+     * @class MutableVectorE3
      * @constructor
      * @param data [number[] = [0, 0, 0]]
      * @param modified [boolean = false]
@@ -299,12 +315,12 @@ class Vector3 extends VectorN&lt;number&gt; implements Cartesian3, LinearElement
      * &lt;code&gt;this ⟼ this + vector * α&lt;/code&gt;
      * &lt;/p&gt;
      * @method add
-     * @param vector {Vector3}
+     * @param vector {MutableVectorE3}
      * @param α [number = 1]
-     * @return {Vector3} &lt;code&gt;this&lt;/code&gt;
+     * @return {MutableVectorE3} &lt;code&gt;this&lt;/code&gt;
      * @chainable
      */
-    add(vector: Cartesian3, α: number = 1) {
+    add(vector: VectorE3, α: number = 1) {
         mustBeObject(&#x27;vector&#x27;, vector)
         mustBeNumber(&#x27;α&#x27;, α)
         this.x += vector.x * α
@@ -318,11 +334,11 @@ class Vector3 extends VectorN&lt;number&gt; implements Cartesian3, LinearElement
      * &lt;/p&gt;
      * @method applyMatrix3
      * @param m {Matrix3}
-     * @return {Vector3} &lt;code&gt;this&lt;/code&gt;
+     * @return {MutableVectorE3} &lt;code&gt;this&lt;/code&gt;
      * @chainable
      * @deprecated
      */
-    applyMatrix3(m: Matrix3): Vector3 {
+    applyMatrix3(m: Matrix3): MutableVectorE3 {
         let x = this.x;
         let y = this.y;
         let z = this.z;
@@ -343,11 +359,11 @@ class Vector3 extends VectorN&lt;number&gt; implements Cartesian3, LinearElement
      * TODO: Used by TubeSimplexGeometry.
      * @method applyMatrix
      * @param m The 4x4 matrix that pre-multiplies this column vector.
-     * @return {Vector3} &lt;code&gt;this&lt;/code&gt;
+     * @return {MutableVectorE3} &lt;code&gt;this&lt;/code&gt;
      * @chainable
      * @deprecated
      */
-    applyMatrix4(m: Matrix4): Vector3 {
+    applyMatrix4(m: Matrix4): MutableVectorE3 {
 
         var x = this.x, y = this.y, z = this.z;
 
@@ -364,11 +380,11 @@ class Vector3 extends VectorN&lt;number&gt; implements Cartesian3, LinearElement
      * &lt;code&gt;this ⟼ - n * this * n&lt;/code&gt;
      * &lt;/p&gt;
      * @method reflect
-     * @param n {Cartesian3}
-     * @return {Vector3} &lt;code&gt;this&lt;/code&gt;
+     * @param n {VectorE3}
+     * @return {MutableVectorE3} &lt;code&gt;this&lt;/code&gt;
      * @chainable
      */
-    reflect(n: Cartesian3) {
+    reflect(n: VectorE3) {
         mustBeObject(&#x27;n&#x27;, n);
         let ax = this.x;
         let ay = this.y;
@@ -387,11 +403,11 @@ class Vector3 extends VectorN&lt;number&gt; implements Cartesian3, LinearElement
      * &lt;code&gt;this ⟼ R * this * reverse(R)&lt;/code&gt;
      * &lt;/p&gt;
      * @method rotate
-     * @param R {Spinor3Coords}
-     * @return {Vector3} &lt;code&gt;this&lt;/code&gt;
+     * @param R {SpinorE3}
+     * @return {MutableVectorE3} &lt;code&gt;this&lt;/code&gt;
      * @chainable
      */
-    rotate(R: Spinor3Coords): Vector3 {
+    rotate(R: SpinorE3): MutableVectorE3 {
         mustBeObject(&#x27;R&#x27;, R);
         let x = this.x;
         let y = this.y;
@@ -415,21 +431,21 @@ class Vector3 extends VectorN&lt;number&gt; implements Cartesian3, LinearElement
     }
     /**
      * @method clone
-     * @return {Vector3} &lt;code&gt;copy(this)&lt;/code&gt;
+     * @return {MutableVectorE3} &lt;code&gt;copy(this)&lt;/code&gt;
      */
     clone() {
-        return new Vector3([this.x, this.y, this.z]);
+        return new MutableVectorE3([this.x, this.y, this.z]);
     }
     /**
      * &lt;p&gt;
      * &lt;code&gt;this ⟼ copy(v)&lt;/code&gt;
      * &lt;/p&gt;
      * @method copy
-     * @param v {Cartesian3}
-     * @return {Vector3} &lt;code&gt;this&lt;/code&gt;
+     * @param v {VectorE3}
+     * @return {MutableVectorE3} &lt;code&gt;this&lt;/code&gt;
      * @chainable
      */
-    copy(v: Cartesian3) {
+    copy(v: VectorE3) {
         mustBeObject(&#x27;v&#x27;, v);
         this.x = v.x;
         this.y = v.y;
@@ -441,11 +457,11 @@ class Vector3 extends VectorN&lt;number&gt; implements Cartesian3, LinearElement
      * &lt;code&gt;this ⟼ this ✕ v&lt;/code&gt;
      * &lt;/p&gt;
      * @method cross
-     * @param v {Cartesian3}
-     * @return {Vector3} &lt;code&gt;this&lt;/code&gt;
+     * @param v {VectorE3}
+     * @return {MutableVectorE3} &lt;code&gt;this&lt;/code&gt;
      * @chainable
      */
-    cross(v: Cartesian3): Vector3 {
+    cross(v: VectorE3): MutableVectorE3 {
         mustBeObject(&#x27;v&#x27;, v);
         return this.cross2(this, v);
     }
@@ -454,12 +470,12 @@ class Vector3 extends VectorN&lt;number&gt; implements Cartesian3, LinearElement
      * &lt;code&gt;this ⟼ a ✕ b&lt;/code&gt;
      * &lt;/p&gt;
      * @method cross2
-     * @param a {Cartesian3}
-     * @param b {Cartesian3}
-     * @return {Vector3} &lt;code&gt;this&lt;/code&gt;
+     * @param a {VectorE3}
+     * @param b {VectorE3}
+     * @return {MutableVectorE3} &lt;code&gt;this&lt;/code&gt;
      * @chainable
      */
-    cross2(a: Cartesian3, b: Cartesian3): Vector3 {
+    cross2(a: VectorE3, b: VectorE3): MutableVectorE3 {
         mustBeObject(&#x27;a&#x27;, a);
         mustBeObject(&#x27;b&#x27;, b);
 
@@ -474,10 +490,10 @@ class Vector3 extends VectorN&lt;number&gt; implements Cartesian3, LinearElement
     }
     /**
      * @method distanceTo
-     * @param point {Cartesian3}
+     * @param point {VectorE3}
      * @return {number}
      */
-    distanceTo(point: Cartesian3): number {
+    distanceTo(point: VectorE3): number {
         if (isDefined(point)) {
             return Math.sqrt(this.quadranceTo(point));
         }
@@ -487,10 +503,10 @@ class Vector3 extends VectorN&lt;number&gt; implements Cartesian3, LinearElement
     }
     /**
      * @method quadranceTo
-     * @param point {Cartesian3}
+     * @param point {VectorE3}
      * @return {number}
      */
-    quadranceTo(point: Cartesian3): number {
+    quadranceTo(point: VectorE3): number {
         if (isDefined(point)) {
             var dx = this.x - point.x;
             var dy = this.y - point.y;
@@ -507,7 +523,7 @@ class Vector3 extends VectorN&lt;number&gt; implements Cartesian3, LinearElement
      * &lt;/p&gt;
      * @method divideByScalar
      * @param α {number}
-     * @return {Vector3} &lt;code&gt;this&lt;/code&gt;
+     * @return {MutableVectorE3} &lt;code&gt;this&lt;/code&gt;
      * @chainable
      */
     divideByScalar(α: number) {
@@ -527,11 +543,11 @@ class Vector3 extends VectorN&lt;number&gt; implements Cartesian3, LinearElement
     }
     /**
      * @method dot
-     * @param v {Cartesian3}
+     * @param v {VectorE3}
      * @return {number}
      */
-    dot(v: Cartesian3): number {
-        return Vector3.dot(this, v);
+    dot(v: VectorE3): number {
+        return MutableVectorE3.dot(this, v);
     }
     /**
      * Returns the (Euclidean) norm of this vector.
@@ -554,12 +570,12 @@ class Vector3 extends VectorN&lt;number&gt; implements Cartesian3, LinearElement
      * &lt;code&gt;this ⟼ this + α * (target - this)&lt;/code&gt;
      * &lt;/p&gt;
      * @method lerp
-     * @param target {Cartesian3}
+     * @param target {VectorE3}
      * @param α {number}
-     * @return {Vector3} &lt;code&gt;this&lt;/code&gt;
+     * @return {MutableVectorE3} &lt;code&gt;this&lt;/code&gt;
      * @chainable
      */
-    lerp(target: Cartesian3, α: number) {
+    lerp(target: VectorE3, α: number) {
         mustBeObject(&#x27;target&#x27;, target)
         mustBeNumber(&#x27;α&#x27;, α)
         this.x += (target.x - this.x) * α;
@@ -572,13 +588,13 @@ class Vector3 extends VectorN&lt;number&gt; implements Cartesian3, LinearElement
      * &lt;code&gt;this ⟼ a + α * (b - a)&lt;/code&gt;
      * &lt;/p&gt;
      * @method lerp2
-     * @param a {Cartesian3}
-     * @param b {Cartesian3}
+     * @param a {VectorE3}
+     * @param b {VectorE3}
      * @param α {number}
-     * @return {Vector3} &lt;code&gt;this&lt;/code&gt;
+     * @return {MutableVectorE3} &lt;code&gt;this&lt;/code&gt;
      * @chainable
      */
-    lerp2(a: Cartesian3, b: Cartesian3, α: number) {
+    lerp2(a: VectorE3, b: VectorE3, α: number) {
         mustBeObject(&#x27;a&#x27;, a)
         mustBeObject(&#x27;b&#x27;, b)
         mustBeNumber(&#x27;α&#x27;, α)
@@ -590,10 +606,10 @@ class Vector3 extends VectorN&lt;number&gt; implements Cartesian3, LinearElement
      * &lt;code&gt;this ⟼ this / norm(this)&lt;/code&gt;
      * &lt;/p&gt;
      * @method normalize
-     * @return {Vector3} &lt;code&gt;this&lt;/code&gt;
+     * @return {MutableVectorE3} &lt;code&gt;this&lt;/code&gt;
      * @chainable
      */
-    normalize(): Vector3 {
+    normalize(): MutableVectorE3 {
         return this.divideByScalar(this.magnitude());
     }
     /**
@@ -603,7 +619,7 @@ class Vector3 extends VectorN&lt;number&gt; implements Cartesian3, LinearElement
      * @method scale
      * @param α {number} 
      */
-    scale(α: number): Vector3 {
+    scale(α: number): MutableVectorE3 {
         mustBeNumber(&#x27;α&#x27;, α)
         this.x *= α
         this.y *= α
@@ -618,7 +634,7 @@ class Vector3 extends VectorN&lt;number&gt; implements Cartesian3, LinearElement
      * @param x {number}
      * @param y {number}
      * @param z {number}
-     * @return {Vector3} &lt;code&gt;this&lt;/code&gt;
+     * @return {MutableVectorE3} &lt;code&gt;this&lt;/code&gt;
      * @chainable
      * @deprecated
      */
@@ -634,9 +650,9 @@ class Vector3 extends VectorN&lt;number&gt; implements Cartesian3, LinearElement
      * &lt;/p&gt;
      * @method setMagnitude
      * @param magnitude {number}
-     * @return {Vector3} &lt;code&gt;this&lt;/code&gt;
+     * @return {MutableVectorE3} &lt;code&gt;this&lt;/code&gt;
      */
-    setMagnitude(magnitude: number): Vector3 {
+    setMagnitude(magnitude: number): MutableVectorE3 {
         let m = this.magnitude();
         if (m !== 0) {
             if (magnitude !== m) {
@@ -654,11 +670,11 @@ class Vector3 extends VectorN&lt;number&gt; implements Cartesian3, LinearElement
     /**
      * @method setX
      * @param x {number}
-     * @return {Vector3} &lt;code&gt;this&lt;/code&gt;
+     * @return {MutableVectorE3} &lt;code&gt;this&lt;/code&gt;
      * @chainable
      * @deprecated
      */
-    setX(x: number): Vector3 {
+    setX(x: number): MutableVectorE3 {
         mustBeNumber(&#x27;x&#x27;, x)
         this.x = x;
         return this;
@@ -666,11 +682,11 @@ class Vector3 extends VectorN&lt;number&gt; implements Cartesian3, LinearElement
     /**
      * @method setY
      * @param y {number}
-     * @return {Vector3} &lt;code&gt;this&lt;/code&gt;
+     * @return {MutableVectorE3} &lt;code&gt;this&lt;/code&gt;
      * @chainable
      * @deprecated
      */
-    setY(y: number): Vector3 {
+    setY(y: number): MutableVectorE3 {
         mustBeNumber(&#x27;y&#x27;, y)
         this.y = y;
         return this;
@@ -678,11 +694,11 @@ class Vector3 extends VectorN&lt;number&gt; implements Cartesian3, LinearElement
     /**
      * @method setZ
      * @param z {number}
-     * @return {Vector3} &lt;code&gt;this&lt;/code&gt;
+     * @return {MutableVectorE3} &lt;code&gt;this&lt;/code&gt;
      * @chainable
      * @deprecated
      */
-    setZ(z: number): Vector3 {
+    setZ(z: number): MutableVectorE3 {
         mustBeNumber(&#x27;z&#x27;, z)
         this.z = z;
         return this;
@@ -692,11 +708,11 @@ class Vector3 extends VectorN&lt;number&gt; implements Cartesian3, LinearElement
      * &lt;code&gt;this ⟼ this - v&lt;/code&gt;
      * &lt;/p&gt;
      * @method sub
-     * @param v {Cartesian3}
-     * @return {Vector3} &lt;code&gt;this&lt;/code&gt;
+     * @param v {VectorE3}
+     * @return {MutableVectorE3} &lt;code&gt;this&lt;/code&gt;
      * @chainable
      */
-    sub(v: Cartesian3): Vector3 {
+    sub(v: VectorE3): MutableVectorE3 {
         mustBeObject(&#x27;v&#x27;, v)
         return this.diff(this, v);
     }
@@ -705,12 +721,12 @@ class Vector3 extends VectorN&lt;number&gt; implements Cartesian3, LinearElement
      * &lt;code&gt;this ⟼ a + b&lt;/code&gt;
      * &lt;/p&gt;
      * @method sum
-     * @param a {Cartesian3}
-     * @param b {Cartesian3}
-     * @return {Vector3} &lt;code&gt;this&lt;/code&gt;
+     * @param a {VectorE3}
+     * @param b {VectorE3}
+     * @return {MutableVectorE3} &lt;code&gt;this&lt;/code&gt;
      * @chainable
      */
-    sum(a: Cartesian3, b: Cartesian3): Vector3 {
+    sum(a: VectorE3, b: VectorE3): MutableVectorE3 {
         mustBeObject(&#x27;a&#x27;, a)
         mustBeObject(&#x27;b&#x27;, b)
         this.x = a.x + b.x
@@ -723,12 +739,12 @@ class Vector3 extends VectorN&lt;number&gt; implements Cartesian3, LinearElement
      * &lt;code&gt;this ⟼ a - b&lt;/code&gt;
      * &lt;/p&gt;
      * @method diff
-     * @param a {Cartesian3}
-     * @param b {Cartesian3}
-     * @return {Vector3} &lt;code&gt;this&lt;/code&gt;
+     * @param a {VectorE3}
+     * @param b {VectorE3}
+     * @return {MutableVectorE3} &lt;code&gt;this&lt;/code&gt;
      * @chainable
      */
-    diff(a: Cartesian3, b: Cartesian3): Vector3 {
+    diff(a: VectorE3, b: VectorE3): MutableVectorE3 {
         mustBeObject(&#x27;a&#x27;, a)
         mustBeObject(&#x27;b&#x27;, b)
         this.x = a.x - b.x;
@@ -741,25 +757,25 @@ class Vector3 extends VectorN&lt;number&gt; implements Cartesian3, LinearElement
      * @return {string} A non-normative string representation of the target.
      */
     toString(): string {
-        return &quot;Vector3({x: &quot; + this.x + &quot;, y: &quot; + this.y + &quot;, z: &quot; + this.z + &quot;})&quot;
+        return &quot;MutableVectorE3({x: &quot; + this.x + &quot;, y: &quot; + this.y + &quot;, z: &quot; + this.z + &quot;})&quot;
     }
-    __add__(rhs: Vector3): Vector3 {
-        if (rhs instanceof Vector3) {
+    __add__(rhs: MutableVectorE3): MutableVectorE3 {
+        if (rhs instanceof MutableVectorE3) {
             return this.clone().add(rhs, 1.0);
         }
         else {
             return void 0;
         }
     }
-    __sub__(rhs: Vector3): Vector3 {
-        if (rhs instanceof Vector3) {
+    __sub__(rhs: MutableVectorE3): MutableVectorE3 {
+        if (rhs instanceof MutableVectorE3) {
             return this.clone().sub(rhs);
         }
         else {
             return void 0;
         }
     }
-    __mul__(rhs: number): Vector3 {
+    __mul__(rhs: number): MutableVectorE3 {
         if (isNumber(rhs)) {
             return this.clone().scale(rhs);
         }
@@ -769,35 +785,35 @@ class Vector3 extends VectorN&lt;number&gt; implements Cartesian3, LinearElement
     }
     /**
      * @method copy
-     * @param vector {Cartesian}
-     * @return {Vector3}
+     * @param vector {VectorE3}
+     * @return {MutableVectorE3}
      * @static
      */
-    static copy(vector: Cartesian3): Vector3 {
-        return new Vector3([vector.x, vector.y, vector.z])
+    static copy(vector: VectorE3): MutableVectorE3 {
+        return new MutableVectorE3([vector.x, vector.y, vector.z])
     }
     /**
      * @method lerp
-     * @param a {Cartesian3}
-     * @param b {Cartesian3}
+     * @param a {VectorE3}
+     * @param b {VectorE3}
      * @param α {number}
-     * @return {Vector3} &lt;code&gt;a + α * (b - a)&lt;/code&gt;
+     * @return {MutableVectorE3} &lt;code&gt;a + α * (b - a)&lt;/code&gt;
      * @static
      */
-    static lerp(a: Cartesian3, b: Cartesian3, α: number): Vector3 {
-        return Vector3.copy(b).sub(a).scale(α).add(a)
+    static lerp(a: VectorE3, b: VectorE3, α: number): MutableVectorE3 {
+        return MutableVectorE3.copy(b).sub(a).scale(α).add(a)
     }
     /**
      * @method random
-     * @return {Vector3}
+     * @return {MutableVectorE3}
      * @static
      */
-    static random(): Vector3 {
-        return new Vector3([Math.random(), Math.random(), Math.random()])
+    static random(): MutableVectorE3 {
+        return new MutableVectorE3([Math.random(), Math.random(), Math.random()])
     }
 }
 
-export = Vector3;
+export = MutableVectorE3;
 
     </pre>
 </div>

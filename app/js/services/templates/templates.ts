@@ -295,9 +295,26 @@ angular.module('app').factory('templates', [
     "var camera: EIGHT.PerspectiveCamera\n" +
     "var cube: EIGHT.Drawable<EIGHT.MeshMaterial>\n" +
     "\n" +
+    "var zero = EIGHT.Euclidean3.zero\n" +
     "var e1 = EIGHT.Euclidean3.e1\n" +
     "var e2 = EIGHT.Euclidean3.e2\n" +
     "var e3 = EIGHT.Euclidean3.e3\n" +
+    "/**\n" +
+    " * The pseudoscalar for the Euclidean3 Geometric Space, I = e1 * e2 * e3.\n" +
+    " */\n" +
+    "var I  = e1 * e2 * e3\n" +
+    "/**\n" +
+    " * The universal exponential function, exp.\n" +
+    " */\n" +
+    "var exp = blade.universals.exp\n" +
+    "/**\n" +
+    " * The time interval between animation frames.\n" +
+    " */\n" +
+    "var dt = 1 / 60 // assume we are getting 60 frames a second.\n" +
+    "/**\n" +
+    " * The angular velocity vector.\n" +
+    " */\n" +
+    "var ω = 2 * Math.PI * (1/5) * e2\n" +
     "\n" +
     "var ambLight = new EIGHT.AmbientLight()\n" +
     "var dirLight = new EIGHT.DirectionalLight()\n" +
@@ -320,14 +337,14 @@ angular.module('app').factory('templates', [
     "  var aspect = window.innerWidth / window.innerHeight\n" +
     "  camera = new EIGHT.PerspectiveCamera(75 * Math.PI / 180, aspect, 1, 1000).setEye(e3 * 2 + e1 * 0.05 + e2)\n" +
     "\n" +
-    "  var geometry = new EIGHT.CuboidSimplexGeometry()\n" +
+    "  var geometry = new EIGHT.CuboidGeometry()\n" +
     "  var primitives = geometry.toPrimitives()\n" +
     "  var material = new EIGHT.MeshMaterial()\n" +
     "\n" +
     "  cube = new EIGHT.Drawable(primitives, material)\n" +
     "  scene.add(cube)\n" +
-    "  cube.setFacet('model', new EIGHT.ModelFacet()).release()\n" +
-    "  cube.setFacet('color', new EIGHT.ColorFacet()).setRGB(0, 1, 0).release()\n" +
+    "  cube.setFacet('kinematics', new EIGHT.KinematicRigidBodyFacetE3()).Ω.copy(I * ω)\n" +
+    "  cube.setFacet('color', new EIGHT.ColorFacet()).setRGB(0, 1, 0)\n" +
     "\n" +
     "  c3d.canvas.width = window.innerWidth\n" +
     "  c3d.canvas.height = window.innerHeight\n" +
@@ -339,21 +356,35 @@ angular.module('app').factory('templates', [
     " */\n" +
     "function animate() {\n" +
     "  stats.begin()\n" +
+    "  try {\n" +
+    "    var gl = c3d.gl\n" +
     "\n" +
-    "  requestAnimationFrame(animate)\n" +
+    "    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)\n" +
     "\n" +
-    "  var gl = c3d.gl\n" +
+    "    var θ = Date.now() * 0.001\n" +
     "\n" +
-    "  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)\n" +
+    "    var kinematics = <EIGHT.KinematicRigidBodyFacetE3>cube.getFacet('kinematics')\n" +
+    "    // var R = EIGHT.Euclidean3.fromSpinorE3(kinematics.R)\n" +
+    "    // var Ω = EIGHT.Euclidean3.fromSpinorE3(kinematics.Ω)\n" +
+    "    // kinematics.X.copy(e1)\n" +
+    "    kinematics.R.rotorFromAxisAngle(e2, θ)\n" +
+    "    // kinematics.R.dual(e2).scale(-θ / 2).exp()\n" +
+    "    // kinematics.R.copy(I * e2).scale(-θ / 2).exp()\n" +
+    "    // kinematics.R.copy(exp(I * e2 * -θ / 2))\n" +
+    "    // kinematics.R.copy(exp(e1 * e2 * e3 * e2 * -θ / 2))\n" +
+    "    // kinematics.R.spinor(e3, e1).scale(-θ / 2).exp()\n" +
+    "    // kinematics.R.sub(Ω * R * dt / 2) // Integrate dR(t)/dt wrt t\n" +
     "\n" +
-    "  var theta = Date.now() * 0.001\n" +
+    "    scene.draw([camera, ambLight, dirLight], c3d.canvasId)\n" +
     "\n" +
-    "  var model = <EIGHT.ModelFacet>cube.getFacet('model')\n" +
-    "  model.attitude.spinor(e1, e3).scale(-theta/2).exp()\n" +
-    "\n" +
-    "  scene.draw([camera, ambLight, dirLight], c3d.canvasId)\n" +
-    "\n" +
-    "  stats.end()\n" +
+    "    requestAnimationFrame(animate)\n" +
+    "  }\n" +
+    "  catch(e) {\n" +
+    "    console.error(e)\n" +
+    "  }\n" +
+    "  finally {\n" +
+    "    stats.end()\n" +
+    "  }\n" +
     "}\n";
 
   var LIBS_TEMPLATE_EIGHTJS = "\n";
@@ -465,7 +496,7 @@ angular.module('app').factory('templates', [
     "/**\n" +
     " * For a future example...\n" +
     " */\n" +
-    "function surfaceFn(u: number, v: number): EIGHT.Cartesian3 {\n" +
+    "function surfaceFn(u: number, v: number): EIGHT.VectorE3 {\n" +
     "  var x = 3 * (u - 0.5)\n" +
     "  var z = 3 * (v - 0.5)\n" +
     "  var y = 0\n" +
@@ -513,15 +544,15 @@ angular.module('app').factory('templates', [
     "  /**\n" +
     "   * Ambient Light.\n" +
     "   */\n" +
-    "  var ambientLight = new EIGHT.Vector3([0.3, 0.3, 0.3])\n" +
+    "  var ambientLight = new EIGHT.MutableVectorE3([0.3, 0.3, 0.3])\n" +
     "  /**\n" +
     "   * Directional Light Color.\n" +
     "   */\n" +
-    "  var dLightColor = new EIGHT.Vector3([0.7, 0.7, 0.7])\n" +
+    "  var dLightColor = new EIGHT.MutableVectorE3([0.7, 0.7, 0.7])\n" +
     "  /**\n" +
     "   * Directional Light Directiion.\n" +
     "   */\n" +
-    "  var dLightDirection = new EIGHT.Vector3([2, 3, 5])\n" +
+    "  var dLightDirection = new EIGHT.MutableVectorE3([2, 3, 5])\n" +
     "\n" +
     "  /**\n" +
     "   * Program for rendering TRIANGLES with moderately fancy lighting.\n" +
@@ -642,8 +673,8 @@ angular.module('app').factory('templates', [
     "  // The global constants, e1, e2 and e3, are defined in the 'Libs' file.\n" +
     "  var S = exp(-(e2 ^ e1) * tiltAngle / 2)\n" +
     "  var B = e3 ^ e1\n" +
-    "  var rotorL = new EIGHT.Spinor3()\n" +
-    "  var rotorR = new EIGHT.Spinor3()\n" +
+    "  var rotorL = new EIGHT.MutableSpinorE3()\n" +
+    "  var rotorR = new EIGHT.MutableSpinorE3()\n" +
     "\n" +
     "  EIGHT.animation((time: number) => {\n" +
     "    stats.begin()\n" +
@@ -653,21 +684,21 @@ angular.module('app').factory('templates', [
     "     */\n" +
     "    var theta: number = omega.w * time\n" +
     "    // Simple Harmonic Motion.\n" +
-    "    // model.position.copy(e2).scale(1.2 * sin(theta))\n" +
+    "    // model.X.copy(e2).scale(1.2 * sin(theta))\n" +
     "\n" +
     "    // Precession demonstrates spinor multiplication.\n" +
     "    // R = exp(-B * theta / 2)\n" +
     "    // attitude = R * S * ~R\n" +
     "    rotorL.copy(B).scale(-theta / 2).exp()\n" +
     "    rotorR.copy(rotorL).reverse()\n" +
-    "    model.attitude.copy(rotorL).multiply(S).multiply(rotorR)\n" +
+    "    model.R.copy(rotorL).multiply(S).multiply(rotorR)\n" +
     "\n" +
     "    // Rotation generated by e1 ^ e3.\n" +
-    "    // model.attitude.spinor(e1, e3).scale(-theta / 2).exp()\n" +
+    "    // model.R.spinor(e1, e3).scale(-theta / 2).exp()\n" +
     "\n" +
     "    // orbit\n" +
     "    // position = R * e1 * ~R\n" +
-    "    // model.position.copy(e1).rotate(rotorL)\n" +
+    "    // model.X.copy(e1).rotate(rotorL)\n" +
     "\n" +
     "    var gl = c3d.gl\n" +
     "\n" +
@@ -739,10 +770,10 @@ angular.module('app').factory('templates', [
     "var hertz    = blade.e3ga.units.hertz\n" +
     "\n" +
     "class Model extends EIGHT.Shareable implements EIGHT.IFacet {\n" +
-    "  public position = new EIGHT.Vector3()\n" +
-    "  public attitude = new EIGHT.Spinor3()\n" +
-    "  public scale: EIGHT.Vector3 = new EIGHT.Vector3([1, 1, 1])\n" +
-    "  public color: EIGHT.Vector3 = new EIGHT.Vector3([1, 1, 1])\n" +
+    "  public position = new EIGHT.MutableVectorE3()\n" +
+    "  public attitude = new EIGHT.MutableSpinorE3()\n" +
+    "  public scale: EIGHT.MutableVectorE3 = new EIGHT.MutableVectorE3([1, 1, 1])\n" +
+    "  public color: EIGHT.MutableVectorE3 = new EIGHT.MutableVectorE3([1, 1, 1])\n" +
     "  private M = EIGHT.Matrix4.identity()\n" +
     "  private N = EIGHT.Matrix3.identity()\n" +
     "  private R = EIGHT.Matrix4.identity()\n" +
@@ -766,6 +797,12 @@ angular.module('app').factory('templates', [
     "    this.S        = void 0\n" +
     "    this.T        = void 0\n" +
     "  }\n" +
+    "  getProperty(name: string): number[] {\n" +
+    "    throw new Error()\n" +
+    "  }\n" +
+    "  setProperty(name: string, value: number[]): void {\n" +
+    "  }\n" +
+    "  \n" +
     "  setUniforms(visitor: EIGHT.IFacetVisitor, canvasId: number) {\n" +
     "  // FIXME: canvasId will be used in uniform setting calls.\n" +
     "    if (this.position.modified) {\n" +
@@ -786,7 +823,7 @@ angular.module('app').factory('templates', [
     "\n" +
     "    visitor.uniformMatrix4(EIGHT.Symbolic.UNIFORM_MODEL_MATRIX, false, this.M, canvasId)\n" +
     "    visitor.uniformMatrix3(EIGHT.Symbolic.UNIFORM_NORMAL_MATRIX, false, this.N, canvasId)\n" +
-    "    visitor.uniformVector3(EIGHT.Symbolic.UNIFORM_COLOR, this.color, canvasId)\n" +
+    "    visitor.uniformVectorE3(EIGHT.Symbolic.UNIFORM_COLOR, this.color, canvasId)\n" +
     "  }\n" +
     "}\n" +
     "";
@@ -1167,9 +1204,9 @@ angular.module('app').factory('templates', [
     "\n"+
     "      material = new EIGHT.HTMLScriptsMaterial([c3d], ['vs-points', 'fs-points'], document)\n" +
     "\n"+
-    "      var vec0 = new EIGHT.Vector3([0.0,  0.0, 0.0])\n"+
-    "      var vec1 = new EIGHT.Vector3([1.0, -0.2, 0.0])\n"+
-    "      var vec2 = new EIGHT.Vector3([1.0, +0.2, 0.0])\n"+
+    "      var vec0 = new EIGHT.MutableVectorE3([0.0,  0.0, 0.0])\n"+
+    "      var vec1 = new EIGHT.MutableVectorE3([1.0, -0.2, 0.0])\n"+
+    "      var vec2 = new EIGHT.MutableVectorE3([1.0, +0.2, 0.0])\n"+
     "      var simplices = EIGHT.triangle(vec0, vec1, vec2)\n"+
     "      var meta = EIGHT.simplicesToGeometryMeta(simplices)\n"+
     "      // console.log(JSON.stringify(meta, null, 2))\n"+
@@ -1199,7 +1236,7 @@ angular.module('app').factory('templates', [
     "\n" +
     "      color.setRGB(0.0, 1.0, 0.0)\n" +
     "      for(var i = 0; i < 8; i++) {\n" +
-    "        model.attitude.copy(R).scale(theta - i * 2 * Math.PI / 8).exp()\n" +
+    "        model.R.copy(R).scale(theta - i * 2 * Math.PI / 8).exp()\n" +
     "        model.setUniforms(material, c3d.canvasId)\n" +
     "        color.setUniforms(material, c3d.canvasId)\n" +
     "        geobuff.draw()\n"+

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/davinci-eight/math/Rational.ts - davinci-eight</title>
+    <title>src/davinci-eight/math/MutableVectorE4.ts - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -214,152 +214,149 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: src/davinci-eight/math/Rational.ts</h1>
+<h1 class="file-heading">File: src/davinci-eight/math/MutableVectorE4.ts</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-import mustBeInteger = require(&#x27;../checks/mustBeInteger&#x27;)
+import VectorE4 = require(&#x27;../math/VectorE4&#x27;);
+import LinearElement = require(&#x27;../math/LinearElement&#x27;);
+import expectArg = require(&#x27;../checks/expectArg&#x27;);
+import SpinorE4 = require(&#x27;../math/SpinorE4&#x27;);
+import VectorN = require(&#x27;../math/VectorN&#x27;);
 
 /**
- * @class Rational
+ * @class MutableVectorE4
  */
-class Rational {
-  /**
-   * @property _numer
-   * @type {number}
-   * @private
-   */
-  private _numer: number;
-  /**
-   * @property _denom
-   * @type {number}
-   * @private
-   */
-  private _denom: number;
-
-  /**
-   * The Rational class represents a rational number.
-   *
-   * @class Rational
-   * @constructor
-   * @param {number} n The numerator, an integer.
-   * @param {number} d The denominator, an integer.
-   */
-  constructor(n: number, d: number) {
-    mustBeInteger(&#x27;n&#x27;, n);
-    mustBeInteger(&#x27;d&#x27;, d);
-    var g: number;
-
-    var gcd = function(a: number, b: number) {
-      mustBeInteger(&#x27;a&#x27;, a);
-      mustBeInteger(&#x27;b&#x27;, b);
-      var temp: number;
-
-      if (a &lt; 0) {
-          a = -a;
-      }
-      if (b &lt; 0) {
-          b = -b;
-      }
-      if (b &gt; a) {
-          temp = a;
-          a = b;
-          b = temp;
-      }
-      while (true) {
-          a %= b;
-          if (a === 0) {
-              return b;
-          }
-          b %= a;
-          if (b === 0) {
-              return a;
-          }
-      }
-    };
-
-    if (d === 0) {
-      throw new Error(&quot;denominator must not be zero&quot;);
+class MutableVectorE4 extends VectorN&lt;number&gt; implements VectorE4, LinearElement&lt;VectorE4, MutableVectorE4, SpinorE4, VectorE4&gt; {
+    /**
+     * @class MutableVectorE4
+     * @constructor
+     * @param data {number[]} Default is [0, 0, 0, 0].
+     * @param modified {boolean} Default is false.
+     */
+    constructor(data = [0, 0, 0, 0], modified = false) {
+        super(data, modified, 4);
     }
-    if (n === 0) {
-      g = 1;
+    /**
+     * @property x
+     * @type Number
+     */
+    get x(): number {
+        return this.data[0];
     }
-    else {
-      g = gcd(Math.abs(n), Math.abs(d));
+    set x(value: number) {
+        this.modified = this.modified || this.x !== value;
+        this.data[0] = value;
     }
-    if (d &lt; 0) {
-      n = -n;
-      d = -d;
+    setX(x: number) {
+        this.x = x;
+        return this;
     }
-    this._numer = n / g;
-    this._denom = d / g;
-  }
-  /**
-   * @property numer
-   * @type {number}
-   * @readOnly
-   */
-  get numer(): number {
-    return this._numer;
-  }
-  /**
-   * @property denom
-   * @type {number}
-   * @readOnly
-   */
-  get denom(): number {
-    return this._denom;
-  }
-
-  add(rhs: Rational): Rational {
-    return new Rational(this._numer * rhs._denom + this._denom * rhs._numer, this._denom * rhs._denom);
-  }
-
-  sub(rhs: Rational): Rational {
-    return new Rational(this._numer * rhs._denom - this._denom * rhs._numer, this._denom * rhs._denom);
-  }
-
-  mul(rhs: Rational): Rational {
-    return new Rational(this._numer * rhs._numer, this._denom * rhs._denom);
-  }
-
-  // TODO: div testing
-  div(rhs: any): Rational {
-    if (typeof rhs === &#x27;number&#x27;) {
-        return new Rational(this._numer, this._denom * rhs);
+    /**
+     * @property y
+     * @type Number
+     */
+    get y(): number {
+        return this.data[1];
     }
-    else {
-        return new Rational(this._numer * rhs._denom, this._denom * rhs._numer);
+    set y(value: number) {
+        this.modified = this.modified || this.y !== value;
+        this.data[1] = value;
     }
-  }
-
-  isZero(): boolean {
-    return this._numer === 0;
-  }
-
-  negative(): Rational {
-    return new Rational(-this._numer, this._denom);
-  }
-
-  equals(other: any): boolean {
-    if (other instanceof Rational) {
-        return this._numer * other._denom === this._denom * other._numer;
+    setY(y: number) {
+        this.y = y;
+        return this;
     }
-    else {
-        return false;
+    /**
+     * @property z
+     * @type Number
+     */
+    get z(): number {
+        return this.data[2];
     }
-  }
-
-  toString(): string {
-    return &quot;&quot; + this._numer + &quot;/&quot; + this._denom;
-  }
-
-  static ONE: Rational = new Rational(1, 1);
-  static TWO: Rational = new Rational(2, 1);
-  static MINUS_ONE: Rational = new Rational(-1, 1);
-  static ZERO: Rational = new Rational(0, 1);
+    set z(value: number) {
+        this.modified = this.modified || this.z !== value;
+        this.data[2] = value;
+    }
+    setZ(z: number) {
+        this.z = z;
+        return this;
+    }
+    /**
+     * @property w
+     * @type Number
+     */
+    get w(): number {
+        return this.data[3];
+    }
+    set w(value: number) {
+        this.modified = this.modified || this.w !== value;
+        this.data[3] = value;
+    }
+    setW(w: number) {
+        this.w = w;
+        return this;
+    }
+    add(vector: VectorE4, alpha: number = 1) {
+        this.x += vector.x * alpha
+        this.y += vector.y * alpha
+        this.z += vector.z * alpha
+        this.w += vector.w * alpha
+        return this
+    }
+    sum(a: VectorE4, b: VectorE4) {
+        return this;
+    }
+    clone() {
+        return new MutableVectorE4([this.x, this.y, this.z, this.w]);
+    }
+    copy(v: VectorE4) {
+        this.x = v.x;
+        this.y = v.y;
+        this.z = v.z;
+        this.w = v.w;
+        return this;
+    }
+    divideByScalar(scalar: number) {
+        this.x /= scalar;
+        this.y /= scalar;
+        this.z /= scalar;
+        this.w /= scalar;
+        return this;
+    }
+    lerp(target: VectorE4, alpha: number) {
+        this.x += (target.x - this.x) * alpha;
+        this.y += (target.y - this.y) * alpha;
+        this.z += (target.z - this.z) * alpha;
+        this.w += (target.w - this.w) * alpha;
+        return this;
+    }
+    lerp2(a: VectorE4, b: VectorE4, α: number): MutableVectorE4 {
+        this.diff(b, a).scale(α).add(a)
+        return this
+    }
+    scale(scalar: number) {
+        this.x *= scalar;
+        this.y *= scalar;
+        this.z *= scalar;
+        this.w *= scalar;
+        return this;
+    }
+    reflect(n: VectorE4) {
+        return this;
+    }
+    rotate(rotor: SpinorE4) {
+        return this;
+    }
+    sub(rhs: VectorE4) {
+        return this;
+    }
+    diff(a: VectorE4, b: VectorE4): MutableVectorE4 {
+        return this;
+    }
 }
-export = Rational;
+
+export = MutableVectorE4;
     </pre>
 </div>
                     </div>

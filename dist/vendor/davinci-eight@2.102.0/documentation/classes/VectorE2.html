@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/davinci-eight/math/Rational.ts - davinci-eight</title>
+    <title>VectorE2 - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -214,153 +214,110 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: src/davinci-eight/math/Rational.ts</h1>
+<h1>VectorE2 Class</h1>
+<div class="box meta">
 
-<div class="file">
-    <pre class="code prettyprint linenums">
-import mustBeInteger = require(&#x27;../checks/mustBeInteger&#x27;)
 
-/**
- * @class Rational
- */
-class Rational {
-  /**
-   * @property _numer
-   * @type {number}
-   * @private
-   */
-  private _numer: number;
-  /**
-   * @property _denom
-   * @type {number}
-   * @private
-   */
-  private _denom: number;
+        <div class="foundat">
+            Defined in: <a href="../files/src_davinci-eight_math_VectorE2.ts.html#l1"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;VectorE2.ts:1</code></a>
+        </div>
 
-  /**
-   * The Rational class represents a rational number.
-   *
-   * @class Rational
-   * @constructor
-   * @param {number} n The numerator, an integer.
-   * @param {number} d The denominator, an integer.
-   */
-  constructor(n: number, d: number) {
-    mustBeInteger(&#x27;n&#x27;, n);
-    mustBeInteger(&#x27;d&#x27;, d);
-    var g: number;
+            Module: <a href="../modules/EIGHT.html">EIGHT</a>
 
-    var gcd = function(a: number, b: number) {
-      mustBeInteger(&#x27;a&#x27;, a);
-      mustBeInteger(&#x27;b&#x27;, b);
-      var temp: number;
+</div>
 
-      if (a &lt; 0) {
-          a = -a;
-      }
-      if (b &lt; 0) {
-          b = -b;
-      }
-      if (b &gt; a) {
-          temp = a;
-          a = b;
-          b = temp;
-      }
-      while (true) {
-          a %= b;
-          if (a === 0) {
-              return b;
-          }
-          b %= a;
-          if (b === 0) {
-              return a;
-          }
-      }
-    };
 
-    if (d === 0) {
-      throw new Error(&quot;denominator must not be zero&quot;);
-    }
-    if (n === 0) {
-      g = 1;
-    }
-    else {
-      g = gcd(Math.abs(n), Math.abs(d));
-    }
-    if (d &lt; 0) {
-      n = -n;
-      d = -d;
-    }
-    this._numer = n / g;
-    this._denom = d / g;
-  }
-  /**
-   * @property numer
-   * @type {number}
-   * @readOnly
-   */
-  get numer(): number {
-    return this._numer;
-  }
-  /**
-   * @property denom
-   * @type {number}
-   * @readOnly
-   */
-  get denom(): number {
-    return this._denom;
-  }
+<div class="box intro">
+    
+</div>
 
-  add(rhs: Rational): Rational {
-    return new Rational(this._numer * rhs._denom + this._denom * rhs._numer, this._denom * rhs._denom);
-  }
 
-  sub(rhs: Rational): Rational {
-    return new Rational(this._numer * rhs._denom - this._denom * rhs._numer, this._denom * rhs._denom);
-  }
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
 
-  mul(rhs: Rational): Rational {
-    return new Rational(this._numer * rhs._numer, this._denom * rhs._denom);
-  }
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
+    </ul>
 
-  // TODO: div testing
-  div(rhs: any): Rational {
-    if (typeof rhs === &#x27;number&#x27;) {
-        return new Rational(this._numer, this._denom * rhs);
-    }
-    else {
-        return new Rational(this._numer * rhs._denom, this._denom * rhs._numer);
-    }
-  }
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
 
-  isZero(): boolean {
-    return this._numer === 0;
-  }
 
-  negative(): Rational {
-    return new Rational(-this._numer, this._denom);
-  }
+                <div class="index-section properties">
+                    <h3>Properties</h3>
 
-  equals(other: any): boolean {
-    if (other instanceof Rational) {
-        return this._numer * other._denom === this._denom * other._numer;
-    }
-    else {
-        return false;
-    }
-  }
+                    <ul class="index-list properties">
+                            <li class="index-item property">
+                                <a href="#property_x">x</a>
 
-  toString(): string {
-    return &quot;&quot; + this._numer + &quot;/&quot; + this._denom;
-  }
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_y">y</a>
 
-  static ONE: Rational = new Rational(1, 1);
-  static TWO: Rational = new Rational(2, 1);
-  static MINUS_ONE: Rational = new Rational(-1, 1);
-  static ZERO: Rational = new Rational(0, 1);
-}
-export = Rational;
-    </pre>
+                            </li>
+                    </ul>
+                </div>
+
+
+        </div>
+
+
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+
+<div id="property_x" class="property item">
+    <h3 class="name"><code>x</code></h3>
+    <span class="type">Number</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_math_VectorE2.ts.html#l5"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;VectorE2.ts:5</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+<div id="property_y" class="property item">
+    <h3 class="name"><code>y</code></h3>
+    <span class="type">Number</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_math_VectorE2.ts.html#l10"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;VectorE2.ts:10</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+            </div>
+
+
+    </div>
 </div>
                     </div>
                 </div>
