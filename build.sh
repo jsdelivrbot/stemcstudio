@@ -8,18 +8,18 @@ echo $DEPLOYMENT_SOURCE
 # selectNodeVersion
 
 # 2. NPM
-if [ -e "package.json" ]; then
-  echo Skipping NPM install
+#if [ -e "package.json" ]; then
+  #echo Skipping NPM install
   # npm install
   # eval $NPM_CMD install
   # npm install
   # exitWithMessageOnError "npm failed"
-fi
+#fi
 
 # 3. Bower
-if [ -e "bower.json" ]; then
-  bower install
-fi
+#if [ -e "bower.json" ]; then
+#  bower install
+#fi
 
 # 4. Run Lineman
 # Why can't I make "$DEPLOYMENT_SOURCE/Gruntfile.js" work? 

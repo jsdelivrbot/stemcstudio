@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>createView - davinci-eight</title>
+    <title>Quaternion - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -213,12 +213,12 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>createView Class</h1>
+<h1>Quaternion Class</h1>
 <div class="box meta">
 
 
         <div class="foundat">
-            Defined in: <a href="../files/src_davinci-eight_cameras_createView.ts.html#l14"><code>src&#x2F;davinci-eight&#x2F;cameras&#x2F;createView.ts:14</code></a>
+            Defined in: <a href="../files/src_davinci-eight_math_Quaternion.ts.html#l28"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Quaternion.ts:28</code></a>
         </div>
 
             Module: <a href="../modules/EIGHT.html">EIGHT</a>
@@ -232,10 +232,19 @@
 
     <div class="constructor">
         <h2>Constructor</h2>
-<div id="method_createView" class="method item">
-    <h3 class="name"><code>createView</code></h3>
+<div id="method_Quaternion" class="method item">
+    <h3 class="name"><code>Quaternion</code></h3>
 
-        <span class="paren">()</span>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>t</code>
+                </li>
+                <li class="arg">
+                        <code>v</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
 
 
 
@@ -247,7 +256,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_cameras_createView.ts.html#l14"><code>src&#x2F;davinci-eight&#x2F;cameras&#x2F;createView.ts:14</code></a>
+        <a href="../files/src_davinci-eight_math_Quaternion.ts.html#l28"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Quaternion.ts:28</code></a>
         </p>
 
 
@@ -258,6 +267,34 @@
         
     </div>
 
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">t</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>[number = 1]</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">v</code>
+                        <span class="type">X: 0, y: 0, z: 0</span>
+
+
+                    <div class="param-description">
+                        <p>[Cartesian3 = ]</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
 
 
 
@@ -269,6 +306,7 @@
         <li class="api-class-tab index"><a href="#index">Index</a></li>
 
             <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
     </ul>
 
     <div>
@@ -280,20 +318,58 @@
 
                     <ul class="index-list methods">
                             <li class="index-item method">
-                                <a href="#method_createFrustum">createFrustum</a>
+                                <a href="#method_add">add</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_createPerspective">createPerspective</a>
+                                <a href="#method_clone">clone</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_setEye">setEye</a>
+                                <a href="#method_conj">conj</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_exp">exp</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_inv">inv</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_norm">norm</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_product">product</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_rotorFromAxisAngle">rotorFromAxisAngle</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_scale">scale</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_sum">sum</a>
 
                             </li>
                     </ul>
                 </div>
 
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+
+                    <ul class="index-list properties">
+                            <li class="index-item property">
+                                <a href="#property_t">t</a>
+
+                            </li>
+                    </ul>
+                </div>
 
 
         </div>
@@ -301,13 +377,94 @@
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method_createFrustum" class="method item">
-    <h3 class="name"><code>createFrustum</code></h3>
+<div id="method_add" class="method item">
+    <h3 class="name"><code>add</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>q</code>
+                </li>
+                <li class="arg">
+                        <code>α</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/Quaternion.html" class="crosslink">Quaternion</a></span>
+        </span>
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_math_Quaternion.ts.html#l45"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Quaternion.ts:45</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>
+<code>this ⟼ this + q * α</code>
+</p>
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">q</code>
+                        <span class="type"><a href="../classes/Quaternion.html" class="crosslink">Quaternion</a></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">α</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>[number = 1]</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/Quaternion.html" class="crosslink">Quaternion</a></span>:
+                    <p><code>this</code></p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_clone" class="method item">
+    <h3 class="name"><code>clone</code></h3>
 
         <span class="paren">()</span>
 
         <span class="returns-inline">
-            <span class="type"><a href="../classes/Frustum.html" class="crosslink">Frustum</a></span>
+            <span class="type"><a href="../classes/Quaternion.html" class="crosslink">Quaternion</a></span>
         </span>
 
 
@@ -319,7 +476,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_cameras_createFrustum.ts.html#l12"><code>src&#x2F;davinci-eight&#x2F;cameras&#x2F;createFrustum.ts:12</code></a>
+        <a href="../files/src_davinci-eight_math_Quaternion.ts.html#l87"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Quaternion.ts:87</code></a>
         </p>
 
 
@@ -335,34 +492,66 @@
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type"><a href="../classes/Frustum.html" class="crosslink">Frustum</a></span>:
+                        <span class="type"><a href="../classes/Quaternion.html" class="crosslink">Quaternion</a></span>:
+                    <p><code>copy(target)</code></p>
+
             </div>
         </div>
 
 
 </div>
-<div id="method_createPerspective" class="method item">
-    <h3 class="name"><code>createPerspective</code></h3>
+<div id="method_conj" class="method item">
+    <h3 class="name"><code>conj</code></h3>
 
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>fov</code>
-                </li>
-                <li class="arg">
-                        <code>aspect</code>
-                </li>
-                <li class="arg">
-                        <code>near</code>
-                </li>
-                <li class="arg">
-                        <code>far</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
+        <span class="paren">()</span>
 
         <span class="returns-inline">
-            <span class="type"><a href="../classes/Perspective.html" class="crosslink">Perspective</a></span>
+            <span class="type"><a href="../classes/Quaternion.html" class="crosslink">Quaternion</a></span>
+        </span>
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_math_Quaternion.ts.html#l94"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Quaternion.ts:94</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>
+<code>this = (t, -v)</code>
+</p>
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/Quaternion.html" class="crosslink">Quaternion</a></span>:
+                    <p><code>this</code></p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_exp" class="method item">
+    <h3 class="name"><code>exp</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/Quaternion.html" class="crosslink">Quaternion</a></span>
         </span>
 
 
@@ -374,7 +563,50 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_cameras_createPerspective.ts.html#l19"><code>src&#x2F;davinci-eight&#x2F;cameras&#x2F;createPerspective.ts:19</code></a>
+        <a href="../files/src_davinci-eight_math_Quaternion.ts.html#l121"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Quaternion.ts:121</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>
+<code>this ⟼ exp(t) * (cos(|v|), sin(|v|) * v / |v|)</code>
+</p>
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/Quaternion.html" class="crosslink">Quaternion</a></span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_inv" class="method item">
+    <h3 class="name"><code>inv</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/Quaternion.html" class="crosslink">Quaternion</a></span>
+        </span>
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_math_Quaternion.ts.html#l138"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Quaternion.ts:138</code></a>
         </p>
 
 
@@ -385,13 +617,112 @@
         
     </div>
 
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/Quaternion.html" class="crosslink">Quaternion</a></span>:
+                    <p><code>this</code></p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_norm" class="method item">
+    <h3 class="name"><code>norm</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/Quaternion.html" class="crosslink">Quaternion</a></span>
+        </span>
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_math_Quaternion.ts.html#l167"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Quaternion.ts:167</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>
+<code>this ⟼ sqrt(this * conj(this))</code>
+</p>
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/Quaternion.html" class="crosslink">Quaternion</a></span>:
+                    <p><code>this</code></p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_product" class="method item">
+    <h3 class="name"><code>product</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>a</code>
+                </li>
+                <li class="arg">
+                        <code>b</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/Quaternion.html" class="crosslink">Quaternion</a></span>
+        </span>
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_math_Quaternion.ts.html#l182"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Quaternion.ts:182</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>
+<code>this ⟼ (a, <b>B</b>)(c, <b>D</b>)</code>
+</p>
+    </div>
+
         <div class="params">
             <h4>Parameters:</h4>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">fov</code>
-                        <span class="type">Number</span>
+                        <code class="param-name">a</code>
+                        <span class="type"><a href="../classes/Quaternion.html" class="crosslink">Quaternion</a></span>
 
 
                     <div class="param-description">
@@ -400,8 +731,78 @@
 
                 </li>
                 <li class="param">
-                        <code class="param-name">aspect</code>
-                        <span class="type">Number</span>
+                        <code class="param-name">b</code>
+                        <span class="type"><a href="../classes/Quaternion.html" class="crosslink">Quaternion</a></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/Quaternion.html" class="crosslink">Quaternion</a></span>:
+                    <p><code>this</code></p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_rotorFromAxisAngle" class="method item">
+    <h3 class="name"><code>rotorFromAxisAngle</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>axis</code>
+                </li>
+                <li class="arg">
+                        <code>θ</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/Quaternion.html" class="crosslink">Quaternion</a></span>
+        </span>
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_math_Quaternion.ts.html#l249"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Quaternion.ts:249</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>
+<code>this = ⟼ exp(- dual(a) * θ / 2)</code>
+</p>
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">axis</code>
+                        <span class="type"><a href="../classes/Cartesian3.html" class="crosslink">Cartesian3</a></span>
 
 
                     <div class="param-description">
@@ -410,17 +811,7 @@
 
                 </li>
                 <li class="param">
-                        <code class="param-name">near</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">far</code>
+                        <code class="param-name">θ</code>
                         <span class="type">Number</span>
 
 
@@ -436,37 +827,40 @@
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type"><a href="../classes/Perspective.html" class="crosslink">Perspective</a></span>:
+                        <span class="type"><a href="../classes/Quaternion.html" class="crosslink">Quaternion</a></span>:
+                    <p><code>this</code></p>
+
             </div>
         </div>
 
 
 </div>
-<div id="method_setEye" class="method item">
-    <h3 class="name"><code>setEye</code></h3>
+<div id="method_scale" class="method item">
+    <h3 class="name"><code>scale</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>eye</code>
+                        <code>α</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
 
         <span class="returns-inline">
-            <span class="type"><a href="../classes/View.html" class="crosslink">View</a></span>
+            <span class="type"><a href="../classes/Quaternion.html" class="crosslink">Quaternion</a></span>
         </span>
 
 
 
 
 
+        <span class="flag chainable">chainable</span>
 
 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_cameras_createView.ts.html#l55"><code>src&#x2F;davinci-eight&#x2F;cameras&#x2F;createView.ts:55</code></a>
+        <a href="../files/src_davinci-eight_math_Quaternion.ts.html#l201"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Quaternion.ts:201</code></a>
         </p>
 
 
@@ -474,7 +868,9 @@
     </div>
 
     <div class="description">
-        
+        <p>
+<code>this ⟼ this * α</code>
+</p>
     </div>
 
         <div class="params">
@@ -482,8 +878,8 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">eye</code>
-                        <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
+                        <code class="param-name">α</code>
+                        <span class="type">Number</span>
 
 
                     <div class="param-description">
@@ -498,8 +894,88 @@
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type"><a href="../classes/View.html" class="crosslink">View</a></span>:
-                    <p><code>this</code> instance.</p>
+                        <span class="type"><a href="../classes/Quaternion.html" class="crosslink">Quaternion</a></span>:
+                    <p><code>this</code></p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_sum" class="method item">
+    <h3 class="name"><code>sum</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>a</code>
+                </li>
+                <li class="arg">
+                        <code>b</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/Quaternion.html" class="crosslink">Quaternion</a></span>
+        </span>
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_math_Quaternion.ts.html#l68"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Quaternion.ts:68</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>
+<code>this ⟼ a + b = (α, A) + (β, B) = (α + β, A + B)</code>
+</p>
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">a</code>
+                        <span class="type"><a href="../classes/Quaternion.html" class="crosslink">Quaternion</a></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">b</code>
+                        <span class="type"><a href="../classes/Quaternion.html" class="crosslink">Quaternion</a></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/Quaternion.html" class="crosslink">Quaternion</a></span>:
+                    <p><code>this</code></p>
 
             </div>
         </div>
@@ -508,6 +984,35 @@
 </div>
             </div>
 
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+
+<div id="property_t" class="property item">
+    <h3 class="name"><code>t</code></h3>
+    <span class="type">Number</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_math_Quaternion.ts.html#l22"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Quaternion.ts:22</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>The scalar part of the Quaternion.</p>
+
+    </div>
+
+
+
+</div>
+            </div>
 
 
     </div>
