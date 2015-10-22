@@ -4783,6 +4783,22 @@ define('davinci-eight/math/MutableSpinorE3',["require", "exports", '../math/cart
         };
         /**
          * <p>
+         * <code>this ⟼ this / magnitude(this)</code>
+         * </p>
+         * @method normalize
+         * @return {MutableQuaternion} <code>this</code>
+         * @chainable
+         */
+        MutableSpinorE3.prototype.normalize = function () {
+            var modulus = this.magnitude();
+            this.yz = this.yz / modulus;
+            this.zx = this.zx / modulus;
+            this.xy = this.xy / modulus;
+            this.w = this.w / modulus;
+            return this;
+        };
+        /**
+         * <p>
          * <code>this ⟼ this * α</code>
          * </p>
          * @method scale

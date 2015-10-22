@@ -1028,6 +1028,15 @@
             "fors": {},
             "namespaces": {}
         },
+        "src/davinci-eight/math/MutableQuaternion.ts": {
+            "name": "src/davinci-eight/math/MutableQuaternion.ts",
+            "modules": {},
+            "classes": {
+                "MutableQuaternion": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "src/davinci-eight/math/MutableSpinorE3.ts": {
             "name": "src/davinci-eight/math/MutableSpinorE3.ts",
             "modules": {},
@@ -1060,15 +1069,6 @@
             "modules": {},
             "classes": {
                 "MutableVectorE4": 1
-            },
-            "fors": {},
-            "namespaces": {}
-        },
-        "src/davinci-eight/math/Quaternion.ts": {
-            "name": "src/davinci-eight/math/Quaternion.ts",
-            "modules": {},
-            "classes": {
-                "Quaternion": 1
             },
             "fors": {},
             "namespaces": {}
@@ -1682,11 +1682,11 @@
                 "Matrix4": 1,
                 "Mutable": 1,
                 "MutableNumber": 1,
+                "MutableQuaternion": 1,
                 "MutableSpinorE3": 1,
                 "MutableVectorE2": 1,
                 "MutableVectorE3": 1,
                 "MutableVectorE4": 1,
-                "Quaternion": 1,
                 "Rational": 1,
                 "Unit": 1,
                 "VectorE1": 1,
@@ -3661,6 +3661,30 @@
                 }
             ]
         },
+        "MutableQuaternion": {
+            "name": "MutableQuaternion",
+            "shortname": "MutableQuaternion",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "EIGHT",
+            "namespace": "",
+            "file": "src/davinci-eight/math/MutableQuaternion.ts",
+            "line": 29,
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "t",
+                    "description": "[number = 1]"
+                },
+                {
+                    "name": "v",
+                    "description": "[VectorE3 = 0]"
+                }
+            ]
+        },
         "MutableSpinorE3": {
             "name": "MutableSpinorE3",
             "shortname": "MutableSpinorE3",
@@ -3760,30 +3784,6 @@
                     "name": "modified",
                     "description": "Default is false.",
                     "type": "Boolean"
-                }
-            ]
-        },
-        "Quaternion": {
-            "name": "Quaternion",
-            "shortname": "Quaternion",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "EIGHT",
-            "namespace": "",
-            "file": "src/davinci-eight/math/Quaternion.ts",
-            "line": 29,
-            "is_constructor": 1,
-            "params": [
-                {
-                    "name": "t",
-                    "description": "[number = 1]"
-                },
-                {
-                    "name": "v",
-                    "description": "[VectorE3 = 0]"
                 }
             ]
         },
@@ -9765,8 +9765,8 @@
         },
         {
             "file": "src/davinci-eight/math/GeometricElement.ts",
-            "line": 19,
-            "description": "The geometric product of the vectors.",
+            "line": 20,
+            "description": "The geometric product of the vectors. Duplicates product?",
             "class": "Matrix<M>",
             "module": "EIGHT"
         },
@@ -10060,6 +10060,220 @@
             },
             "chainable": 1,
             "class": "MutableNumber",
+            "module": "EIGHT"
+        },
+        {
+            "file": "src/davinci-eight/math/MutableQuaternion.ts",
+            "line": 23,
+            "description": "The scalar part of the MutableQuaternion.",
+            "itemtype": "property",
+            "name": "t",
+            "type": "{number}",
+            "class": "MutableQuaternion",
+            "module": "EIGHT"
+        },
+        {
+            "file": "src/davinci-eight/math/MutableQuaternion.ts",
+            "line": 46,
+            "description": "<p>\n<code>this ⟼ this + q * α</code>\n</p>",
+            "itemtype": "method",
+            "name": "add",
+            "params": [
+                {
+                    "name": "q",
+                    "description": "",
+                    "type": "MutableQuaternion"
+                },
+                {
+                    "name": "α",
+                    "description": "[number = 1]"
+                }
+            ],
+            "return": {
+                "description": "<code>this</code>",
+                "type": "MutableQuaternion"
+            },
+            "chainable": 1,
+            "class": "MutableQuaternion",
+            "module": "EIGHT"
+        },
+        {
+            "file": "src/davinci-eight/math/MutableQuaternion.ts",
+            "line": 69,
+            "description": "<p>\n<code>this ⟼ a + b = (α, A) + (β, B) = (α + β, A + B)</code>\n</p>",
+            "itemtype": "method",
+            "name": "sum",
+            "params": [
+                {
+                    "name": "a",
+                    "description": "",
+                    "type": "MutableQuaternion"
+                },
+                {
+                    "name": "b",
+                    "description": "",
+                    "type": "MutableQuaternion"
+                }
+            ],
+            "return": {
+                "description": "<code>this</code>",
+                "type": "MutableQuaternion"
+            },
+            "chainable": 1,
+            "class": "MutableQuaternion",
+            "module": "EIGHT"
+        },
+        {
+            "file": "src/davinci-eight/math/MutableQuaternion.ts",
+            "line": 88,
+            "itemtype": "method",
+            "name": "clone",
+            "return": {
+                "description": "<code>copy(target)</code>",
+                "type": "MutableQuaternion"
+            },
+            "class": "MutableQuaternion",
+            "module": "EIGHT"
+        },
+        {
+            "file": "src/davinci-eight/math/MutableQuaternion.ts",
+            "line": 95,
+            "description": "<p>\n<code>this = (t, -v)</code>\n</p>",
+            "itemtype": "method",
+            "name": "conj",
+            "return": {
+                "description": "<code>this</code>",
+                "type": "MutableQuaternion"
+            },
+            "chainable": 1,
+            "class": "MutableQuaternion",
+            "module": "EIGHT"
+        },
+        {
+            "file": "src/davinci-eight/math/MutableQuaternion.ts",
+            "line": 122,
+            "description": "<p>\n<code>this ⟼ exp(t) * (cos(|v|), sin(|v|) * v / |v|)</code>\n</p>",
+            "itemtype": "method",
+            "name": "exp",
+            "return": {
+                "description": "",
+                "type": "MutableQuaternion"
+            },
+            "class": "MutableQuaternion",
+            "module": "EIGHT"
+        },
+        {
+            "file": "src/davinci-eight/math/MutableQuaternion.ts",
+            "line": 139,
+            "itemtype": "method",
+            "name": "inv",
+            "return": {
+                "description": "<code>this</code>",
+                "type": "MutableQuaternion"
+            },
+            "chainable": 1,
+            "class": "MutableQuaternion",
+            "module": "EIGHT"
+        },
+        {
+            "file": "src/davinci-eight/math/MutableQuaternion.ts",
+            "line": 168,
+            "description": "<p>\n<code>this ⟼ sqrt(this * conj(this))</code>\n</p>",
+            "itemtype": "method",
+            "name": "norm",
+            "return": {
+                "description": "<code>this</code>",
+                "type": "MutableQuaternion"
+            },
+            "chainable": 1,
+            "class": "MutableQuaternion",
+            "module": "EIGHT"
+        },
+        {
+            "file": "src/davinci-eight/math/MutableQuaternion.ts",
+            "line": 183,
+            "description": "<p>\n<code>this ⟼ (a, <b>B</b>)(c, <b>D</b>)</code>\n</p>",
+            "itemtype": "method",
+            "name": "product",
+            "params": [
+                {
+                    "name": "a",
+                    "description": "",
+                    "type": "MutableQuaternion"
+                },
+                {
+                    "name": "b",
+                    "description": "",
+                    "type": "MutableQuaternion"
+                }
+            ],
+            "return": {
+                "description": "<code>this</code>",
+                "type": "MutableQuaternion"
+            },
+            "chainable": 1,
+            "class": "MutableQuaternion",
+            "module": "EIGHT"
+        },
+        {
+            "file": "src/davinci-eight/math/MutableQuaternion.ts",
+            "line": 202,
+            "description": "<p>\n<code>this ⟼ this * α</code>\n</p>",
+            "itemtype": "method",
+            "name": "scale",
+            "params": [
+                {
+                    "name": "α",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "<code>this</code>",
+                "type": "MutableQuaternion"
+            },
+            "chainable": 1,
+            "class": "MutableQuaternion",
+            "module": "EIGHT"
+        },
+        {
+            "file": "src/davinci-eight/math/MutableQuaternion.ts",
+            "line": 219,
+            "description": "<p>\n<code>this ⟼ this / magnitude(this)</code>\n</p>",
+            "itemtype": "method",
+            "name": "normalize",
+            "return": {
+                "description": "<code>this</code>",
+                "type": "MutableQuaternion"
+            },
+            "chainable": 1,
+            "class": "MutableQuaternion",
+            "module": "EIGHT"
+        },
+        {
+            "file": "src/davinci-eight/math/MutableQuaternion.ts",
+            "line": 249,
+            "description": "<p>\n<code>this = ⟼ exp(- dual(a) * θ / 2)</code>\n</p>",
+            "itemtype": "method",
+            "name": "rotorFromAxisAngle",
+            "params": [
+                {
+                    "name": "axis",
+                    "description": "",
+                    "type": "VectorE3"
+                },
+                {
+                    "name": "θ",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "<code>this</code>",
+                "type": "MutableQuaternion"
+            },
+            "chainable": 1,
+            "class": "MutableQuaternion",
             "module": "EIGHT"
         },
         {
@@ -10376,6 +10590,20 @@
         {
             "file": "src/davinci-eight/math/MutableSpinorE3.ts",
             "line": 320,
+            "description": "<p>\n<code>this ⟼ this / magnitude(this)</code>\n</p>",
+            "itemtype": "method",
+            "name": "normalize",
+            "return": {
+                "description": "<code>this</code>",
+                "type": "MutableQuaternion"
+            },
+            "chainable": 1,
+            "class": "MutableSpinorE3",
+            "module": "EIGHT"
+        },
+        {
+            "file": "src/davinci-eight/math/MutableSpinorE3.ts",
+            "line": 336,
             "description": "<p>\n<code>this ⟼ this * α</code>\n</p>",
             "itemtype": "method",
             "name": "scale",
@@ -10395,7 +10623,7 @@
         },
         {
             "file": "src/davinci-eight/math/MutableSpinorE3.ts",
-            "line": 336,
+            "line": 352,
             "description": "<p>\n<code>this ⟼ a * b</code>\n</p>",
             "itemtype": "method",
             "name": "product",
@@ -10421,7 +10649,7 @@
         },
         {
             "file": "src/davinci-eight/math/MutableSpinorE3.ts",
-            "line": 363,
+            "line": 379,
             "itemtype": "method",
             "name": "quaditude",
             "return": {
@@ -10433,7 +10661,7 @@
         },
         {
             "file": "src/davinci-eight/math/MutableSpinorE3.ts",
-            "line": 374,
+            "line": 390,
             "description": "<p>\n<code>this = (w, B) ⟼ (w, -B)</code>\n</p>",
             "itemtype": "method",
             "name": "reverse",
@@ -10447,7 +10675,7 @@
         },
         {
             "file": "src/davinci-eight/math/MutableSpinorE3.ts",
-            "line": 388,
+            "line": 404,
             "description": "Sets this Spinor to the value of its reflection in the plane orthogonal to n.\nThe geometric formula for bivector reflection is B' = n * B * n.",
             "itemtype": "method",
             "name": "reflect",
@@ -10468,7 +10696,7 @@
         },
         {
             "file": "src/davinci-eight/math/MutableSpinorE3.ts",
-            "line": 412,
+            "line": 428,
             "description": "<p>\n<code>this = ⟼ rotor * this * reverse(rotor)</code>\n</p>",
             "itemtype": "method",
             "name": "rotate",
@@ -10489,7 +10717,7 @@
         },
         {
             "file": "src/davinci-eight/math/MutableSpinorE3.ts",
-            "line": 425,
+            "line": 441,
             "description": "<p>\nComputes a rotor, R, from two unit vectors, where\nR = (1 + b * a) / sqrt(2 * (1 + b << a))\n</p>",
             "itemtype": "method",
             "name": "rotor",
@@ -10515,7 +10743,7 @@
         },
         {
             "file": "src/davinci-eight/math/MutableSpinorE3.ts",
-            "line": 443,
+            "line": 459,
             "description": "<p>\n<code>this = ⟼ exp(- dual(a) * θ / 2)</code>\n</p>",
             "itemtype": "method",
             "name": "rotorFromAxisAngle",
@@ -10540,7 +10768,7 @@
         },
         {
             "file": "src/davinci-eight/math/MutableSpinorE3.ts",
-            "line": 463,
+            "line": 479,
             "description": "<p>\n<code>this ⟼ this - α * spinor</code>\n</p>",
             "itemtype": "method",
             "name": "sub",
@@ -10565,7 +10793,7 @@
         },
         {
             "file": "src/davinci-eight/math/MutableSpinorE3.ts",
-            "line": 482,
+            "line": 498,
             "description": "<p>\n<code>this ⟼ a + b</code>\n</p>",
             "itemtype": "method",
             "name": "sum",
@@ -10591,7 +10819,7 @@
         },
         {
             "file": "src/davinci-eight/math/MutableSpinorE3.ts",
-            "line": 499,
+            "line": 515,
             "description": "<p>\n<code>this ⟼ a * b</code>\n</p>\nSets this MutableSpinorE3 to the geometric product a * b of the vector arguments.",
             "itemtype": "method",
             "name": "spinor",
@@ -10616,7 +10844,7 @@
         },
         {
             "file": "src/davinci-eight/math/MutableSpinorE3.ts",
-            "line": 525,
+            "line": 541,
             "itemtype": "method",
             "name": "toString",
             "return": {
@@ -10628,7 +10856,7 @@
         },
         {
             "file": "src/davinci-eight/math/MutableSpinorE3.ts",
-            "line": 532,
+            "line": 548,
             "itemtype": "method",
             "name": "copy",
             "params": [
@@ -10648,7 +10876,7 @@
         },
         {
             "file": "src/davinci-eight/math/MutableSpinorE3.ts",
-            "line": 541,
+            "line": 557,
             "itemtype": "method",
             "name": "lerp",
             "params": [
@@ -11485,206 +11713,6 @@
             "name": "w",
             "type": "Number",
             "class": "MutableVectorE4",
-            "module": "EIGHT"
-        },
-        {
-            "file": "src/davinci-eight/math/Quaternion.ts",
-            "line": 23,
-            "description": "The scalar part of the Quaternion.",
-            "itemtype": "property",
-            "name": "t",
-            "type": "{number}",
-            "class": "Quaternion",
-            "module": "EIGHT"
-        },
-        {
-            "file": "src/davinci-eight/math/Quaternion.ts",
-            "line": 46,
-            "description": "<p>\n<code>this ⟼ this + q * α</code>\n</p>",
-            "itemtype": "method",
-            "name": "add",
-            "params": [
-                {
-                    "name": "q",
-                    "description": "",
-                    "type": "Quaternion"
-                },
-                {
-                    "name": "α",
-                    "description": "[number = 1]"
-                }
-            ],
-            "return": {
-                "description": "<code>this</code>",
-                "type": "Quaternion"
-            },
-            "chainable": 1,
-            "class": "Quaternion",
-            "module": "EIGHT"
-        },
-        {
-            "file": "src/davinci-eight/math/Quaternion.ts",
-            "line": 69,
-            "description": "<p>\n<code>this ⟼ a + b = (α, A) + (β, B) = (α + β, A + B)</code>\n</p>",
-            "itemtype": "method",
-            "name": "sum",
-            "params": [
-                {
-                    "name": "a",
-                    "description": "",
-                    "type": "Quaternion"
-                },
-                {
-                    "name": "b",
-                    "description": "",
-                    "type": "Quaternion"
-                }
-            ],
-            "return": {
-                "description": "<code>this</code>",
-                "type": "Quaternion"
-            },
-            "chainable": 1,
-            "class": "Quaternion",
-            "module": "EIGHT"
-        },
-        {
-            "file": "src/davinci-eight/math/Quaternion.ts",
-            "line": 88,
-            "itemtype": "method",
-            "name": "clone",
-            "return": {
-                "description": "<code>copy(target)</code>",
-                "type": "Quaternion"
-            },
-            "class": "Quaternion",
-            "module": "EIGHT"
-        },
-        {
-            "file": "src/davinci-eight/math/Quaternion.ts",
-            "line": 95,
-            "description": "<p>\n<code>this = (t, -v)</code>\n</p>",
-            "itemtype": "method",
-            "name": "conj",
-            "return": {
-                "description": "<code>this</code>",
-                "type": "Quaternion"
-            },
-            "chainable": 1,
-            "class": "Quaternion",
-            "module": "EIGHT"
-        },
-        {
-            "file": "src/davinci-eight/math/Quaternion.ts",
-            "line": 122,
-            "description": "<p>\n<code>this ⟼ exp(t) * (cos(|v|), sin(|v|) * v / |v|)</code>\n</p>",
-            "itemtype": "method",
-            "name": "exp",
-            "return": {
-                "description": "",
-                "type": "Quaternion"
-            },
-            "class": "Quaternion",
-            "module": "EIGHT"
-        },
-        {
-            "file": "src/davinci-eight/math/Quaternion.ts",
-            "line": 139,
-            "itemtype": "method",
-            "name": "inv",
-            "return": {
-                "description": "<code>this</code>",
-                "type": "Quaternion"
-            },
-            "chainable": 1,
-            "class": "Quaternion",
-            "module": "EIGHT"
-        },
-        {
-            "file": "src/davinci-eight/math/Quaternion.ts",
-            "line": 168,
-            "description": "<p>\n<code>this ⟼ sqrt(this * conj(this))</code>\n</p>",
-            "itemtype": "method",
-            "name": "norm",
-            "return": {
-                "description": "<code>this</code>",
-                "type": "Quaternion"
-            },
-            "chainable": 1,
-            "class": "Quaternion",
-            "module": "EIGHT"
-        },
-        {
-            "file": "src/davinci-eight/math/Quaternion.ts",
-            "line": 183,
-            "description": "<p>\n<code>this ⟼ (a, <b>B</b>)(c, <b>D</b>)</code>\n</p>",
-            "itemtype": "method",
-            "name": "product",
-            "params": [
-                {
-                    "name": "a",
-                    "description": "",
-                    "type": "Quaternion"
-                },
-                {
-                    "name": "b",
-                    "description": "",
-                    "type": "Quaternion"
-                }
-            ],
-            "return": {
-                "description": "<code>this</code>",
-                "type": "Quaternion"
-            },
-            "chainable": 1,
-            "class": "Quaternion",
-            "module": "EIGHT"
-        },
-        {
-            "file": "src/davinci-eight/math/Quaternion.ts",
-            "line": 202,
-            "description": "<p>\n<code>this ⟼ this * α</code>\n</p>",
-            "itemtype": "method",
-            "name": "scale",
-            "params": [
-                {
-                    "name": "α",
-                    "description": "",
-                    "type": "Number"
-                }
-            ],
-            "return": {
-                "description": "<code>this</code>",
-                "type": "Quaternion"
-            },
-            "chainable": 1,
-            "class": "Quaternion",
-            "module": "EIGHT"
-        },
-        {
-            "file": "src/davinci-eight/math/Quaternion.ts",
-            "line": 250,
-            "description": "<p>\n<code>this = ⟼ exp(- dual(a) * θ / 2)</code>\n</p>",
-            "itemtype": "method",
-            "name": "rotorFromAxisAngle",
-            "params": [
-                {
-                    "name": "axis",
-                    "description": "",
-                    "type": "VectorE3"
-                },
-                {
-                    "name": "θ",
-                    "description": "",
-                    "type": "Number"
-                }
-            ],
-            "return": {
-                "description": "<code>this</code>",
-                "type": "Quaternion"
-            },
-            "chainable": 1,
-            "class": "Quaternion",
             "module": "EIGHT"
         },
         {
@@ -14307,8 +14335,8 @@
             "line": " src/davinci-eight/math/GeometricElement.ts:2"
         },
         {
-            "message": "Missing item type\nThe geometric product of the vectors.",
-            "line": " src/davinci-eight/math/GeometricElement.ts:19"
+            "message": "Missing item type\nThe geometric product of the vectors. Duplicates product?",
+            "line": " src/davinci-eight/math/GeometricElement.ts:20"
         },
         {
             "message": "Missing item type",

@@ -652,6 +652,9 @@ declare module EIGHT {
         public zx: number;
         public xy: number;
         public w: number;
+        /**
+         *
+         */
         constructor(data?: number[], modified?: boolean);
         /**
          * this ⟼ this + spinor * α
@@ -673,10 +676,15 @@ declare module EIGHT {
          */
         exp(): MutableSpinorE3;
         inverse(): MutableSpinorE3;
-        lerp(target: SpinorE3, alpha: number): MutableSpinorE3;
+        lerp(target: SpinorE3, α: number): MutableSpinorE3;
         log(): MutableSpinorE3;
         magnitude(): number;
         multiply(rhs: SpinorE3): MutableSpinorE3;
+        /**
+         * this ⟼ this / magnitude(this)
+         * <em>s.normalize()</em> scales the target spinor, <em>s</em>, so that it has unit magnitude.
+         */
+        normalize(): MutableSpinorE3;
         /**
          * this ⟼ this * α
          */
@@ -694,6 +702,8 @@ declare module EIGHT {
         rotate(R: SpinorE3): MutableSpinorE3;
         /**
          * this ⟼ exp(- dual(axis) * θ / 2)
+         * <code>axis</code> The direction (unit vector) of the rotation.
+         * <code>θ</code> The angle of the rotation, measured in radians.
          */
         rotorFromAxisAngle(axis: VectorE3, θ: number): MutableSpinorE3;
         /**
