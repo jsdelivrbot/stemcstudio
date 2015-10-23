@@ -1356,7 +1356,7 @@ angular.module('app').factory('templates', [
   return [
     {
       uuid: uuid.generate(),
-      description: "EIGHT — Mathematical Computer Graphics using WebGL",
+      description: "EIGHT — Mathematical Computer Graphics using WebGL (1)",
       isCodeVisible: true,
       isViewVisible: true,
       focusEditor: undefined,
@@ -1370,7 +1370,7 @@ angular.module('app').factory('templates', [
     },
     {
       uuid: uuid.generate(),
-      description: "EIGHT + blade — Mathematical Computer Graphics using WebGL",
+      description: "EIGHT — Mathematical Computer Graphics using WebGL (2)",
       isCodeVisible: true,
       isViewVisible: true,
       focusEditor: undefined,
@@ -1384,7 +1384,7 @@ angular.module('app').factory('templates', [
     },
     {
       uuid: uuid.generate(),
-      description: "EIGHT + blade + AngularJS — Mathematical Computer Graphics using WebGL",
+      description: "EIGHT — Mathematical Computer Graphics using WebGL (3)",
       isCodeVisible: true,
       isViewVisible: true,
       focusEditor: undefined,

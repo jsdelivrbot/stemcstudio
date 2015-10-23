@@ -633,7 +633,16 @@ declare module EIGHT {
         sub(v: VectorE2): MutableVectorE2;
         diff(a: VectorE2, b: VectorE2): MutableVectorE2;
     }
-
+    /**
+     * A mutable multivector in 3D with a Euclidean metric.
+     */
+    class MutableE3 extends VectorN<number> {
+      /**
+       * Constructs a <code>MutableE3</code> from Cartesian coordinates.
+       * <code>data</code> The cartesian coordinates of the multivector.
+       */
+      constructor(data?: number[]);
+    }
     /**
      *
      */
@@ -723,7 +732,7 @@ declare module EIGHT {
     }
 
     /**
-     * `Components` of a vector in a 3-dimensional cartesian coordinate system.
+     * `Components` of a vector in a 3-dimensional Cartesian coordinate system.
      */
     interface VectorE3 {
         /**
@@ -887,7 +896,7 @@ declare module EIGHT {
     /**
      * A transformation from the 3D world coordinates or view volume to the canonical view volume.
      * The canonical view volume is the cube that extends from -1 to +1
-     * in all cartesian directions. 
+     * in all Cartesian directions. 
      */
     interface Perspective extends View {
         /**

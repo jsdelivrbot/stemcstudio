@@ -3026,11 +3026,12 @@ define('davinci-eight/math/Euclidean3',["require", "exports", '../math/Euclidean
         return str;
     }
     /**
-     * The Euclidean3 class represents a multivector for a 3-dimensional vector space with a Euclidean metric.
      * @class Euclidean3
+     * @extends GeometricE3
      */
     var Euclidean3 = (function () {
         /**
+         * The Euclidean3 class represents a multivector for a 3-dimensional vector space with a Euclidean metric.
          * Constructs a Euclidean3 from its coordinates.
          * @constructor
          * @param {number} w The scalar part of the multivector.
@@ -3854,6 +3855,24 @@ define('davinci-eight/math/MutableVectorE3',["require", "exports", '../math/eucl
         };
         /**
          * <p>
+         * <code>this ⟼ a + b</code>
+         * </p>
+         * @method add2
+         * @param a {VectorE3}
+         * @param b {VectorE3}
+         * @return {MutableVectorE3} <code>this</code>
+         * @chainable
+         */
+        MutableVectorE3.prototype.add2 = function (a, b) {
+            mustBeObject('a', a);
+            mustBeObject('b', b);
+            this.x = a.x + b.x;
+            this.y = a.y + b.y;
+            this.z = a.z + b.z;
+            return this;
+        };
+        /**
+         * <p>
          * <code>this ⟼ m * this</code>
          * </p>
          * @method applyMatrix3
@@ -4108,7 +4127,7 @@ define('davinci-eight/math/MutableVectorE3',["require", "exports", '../math/eucl
             mustBeObject('a', a);
             mustBeObject('b', b);
             mustBeNumber('α', α);
-            this.diff(b, a).scale(α).add(a);
+            this.sub2(b, a).scale(α).add(a);
             return this;
         };
         /**
@@ -4219,42 +4238,30 @@ define('davinci-eight/math/MutableVectorE3',["require", "exports", '../math/eucl
          * </p>
          * @method sub
          * @param v {VectorE3}
+         * @param α [number = 1]
          * @return {MutableVectorE3} <code>this</code>
          * @chainable
          */
-        MutableVectorE3.prototype.sub = function (v) {
+        MutableVectorE3.prototype.sub = function (v, α) {
+            if (α === void 0) { α = 1; }
             mustBeObject('v', v);
-            return this.diff(this, v);
-        };
-        /**
-         * <p>
-         * <code>this ⟼ a + b</code>
-         * </p>
-         * @method sum
-         * @param a {VectorE3}
-         * @param b {VectorE3}
-         * @return {MutableVectorE3} <code>this</code>
-         * @chainable
-         */
-        MutableVectorE3.prototype.sum = function (a, b) {
-            mustBeObject('a', a);
-            mustBeObject('b', b);
-            this.x = a.x + b.x;
-            this.y = a.y + b.y;
-            this.z = a.z + b.z;
+            mustBeNumber('α', α);
+            this.x -= v.x * α;
+            this.y -= v.y * α;
+            this.z -= v.z * α;
             return this;
         };
         /**
          * <p>
          * <code>this ⟼ a - b</code>
          * </p>
-         * @method diff
+         * @method sub2
          * @param a {VectorE3}
          * @param b {VectorE3}
          * @return {MutableVectorE3} <code>this</code>
          * @chainable
          */
-        MutableVectorE3.prototype.diff = function (a, b) {
+        MutableVectorE3.prototype.sub2 = function (a, b) {
             mustBeObject('a', a);
             mustBeObject('b', b);
             this.x = a.x - b.x;
@@ -4565,6 +4572,23 @@ define('davinci-eight/math/MutableSpinorE3',["require", "exports", '../math/cart
             return this;
         };
         /**
+         * <p>
+         * <code>this ⟼ a + b</code>
+         * </p>
+         * @method add2
+         * @param a {SpinorE3}
+         * @param b {SpinorE3}
+         * @return {MutableSpinorE3} <code>this</code>
+         * @chainable
+         */
+        MutableSpinorE3.prototype.add2 = function (a, b) {
+            this.w = a.w + b.w;
+            this.yz = a.yz + b.yz;
+            this.zx = a.zx + b.zx;
+            this.xy = a.xy + b.xy;
+            return this;
+        };
+        /**
          * @method clone
          * @return {MutableSpinorE3} A copy of <code>this</code>.
          * @chainable
@@ -4605,19 +4629,42 @@ define('davinci-eight/math/MutableSpinorE3',["require", "exports", '../math/cart
         };
         /**
          * <p>
-         * <code>this ⟼ a - b</code>
+         * <code>this ⟼ this / s</code>
          * </p>
-         * @method diff
+         * @method divide
+         * @param s {SpinorE3}
+         * @return {MutableSpinorE3} <code>this</code>
+         * @chainable
+         */
+        MutableSpinorE3.prototype.divide = function (s) {
+            return this.multiply2(this, s);
+        };
+        /**
+         * <p>
+         * <code>this ⟼ a / b</code>
+         * </p>
+         * @method divide2
          * @param a {SpinorE3}
          * @param b {SpinorE3}
          * @return {MutableSpinorE3} <code>this</code>
          * @chainable
          */
-        MutableSpinorE3.prototype.diff = function (a, b) {
-            this.yz = a.yz - b.yz;
-            this.zx = a.zx - b.zx;
-            this.xy = a.xy - b.xy;
-            this.w = a.w - b.w;
+        MutableSpinorE3.prototype.divide2 = function (a, b) {
+            var a0 = a.w;
+            var a1 = a.yz;
+            var a2 = a.zx;
+            var a3 = a.xy;
+            var b0 = b.w;
+            var b1 = b.yz;
+            var b2 = b.zx;
+            var b3 = b.xy;
+            // Compare this to the product for Quaternions
+            // It would be interesting to DRY this out.
+            this.w = a0 * b0 - a1 * b1 - a2 * b2 - a3 * b3;
+            // this.w = a0 * b0 - cartesianQuaditudeE3(a1, a2, a3, b1, b2, b3)
+            this.yz = a0 * b1 + a1 * b0 - a2 * b3 + a3 * b2;
+            this.zx = a0 * b2 + a1 * b3 + a2 * b0 - a3 * b1;
+            this.xy = a0 * b3 - a1 * b2 + a2 * b1 + a3 * b0;
             return this;
         };
         /**
@@ -4724,7 +4771,7 @@ define('davinci-eight/math/MutableSpinorE3',["require", "exports", '../math/cart
          * @chainable
          */
         MutableSpinorE3.prototype.lerp2 = function (a, b, α) {
-            this.diff(b, a).scale(α).add(a);
+            this.sub2(b, a).scale(α).add(a);
             return this;
         };
         /**
@@ -4756,15 +4803,43 @@ define('davinci-eight/math/MutableSpinorE3',["require", "exports", '../math/cart
         };
         /**
          * <p>
-         * <code>this ⟼ this * rhs</code>
+         * <code>this ⟼ this * s</code>
          * </p>
          * @method multiply
-         * @param rhs {SpinorE3}
+         * @param s {SpinorE3}
          * @return {MutableSpinorE3} <code>this</code>
          * @chainable
          */
-        MutableSpinorE3.prototype.multiply = function (rhs) {
-            return this.product(this, rhs);
+        MutableSpinorE3.prototype.multiply = function (s) {
+            return this.multiply2(this, s);
+        };
+        /**
+         * <p>
+         * <code>this ⟼ a * b</code>
+         * </p>
+         * @method multiply2
+         * @param a {SpinorE3}
+         * @param b {SpinorE3}
+         * @return {MutableSpinorE3} <code>this</code>
+         * @chainable
+         */
+        MutableSpinorE3.prototype.multiply2 = function (a, b) {
+            var a0 = a.w;
+            var a1 = a.yz;
+            var a2 = a.zx;
+            var a3 = a.xy;
+            var b0 = b.w;
+            var b1 = b.yz;
+            var b2 = b.zx;
+            var b3 = b.xy;
+            // Compare this to the product for Quaternions
+            // It would be interesting to DRY this out.
+            this.w = a0 * b0 - a1 * b1 - a2 * b2 - a3 * b3;
+            // this.w = a0 * b0 - cartesianQuaditudeE3(a1, a2, a3, b1, b2, b3)
+            this.yz = a0 * b1 + a1 * b0 - a2 * b3 + a3 * b2;
+            this.zx = a0 * b2 + a1 * b3 + a2 * b0 - a3 * b1;
+            this.xy = a0 * b3 - a1 * b2 + a2 * b1 + a3 * b0;
+            return this;
         };
         /**
         * <p>
@@ -4811,33 +4886,6 @@ define('davinci-eight/math/MutableSpinorE3',["require", "exports", '../math/cart
             this.zx *= α;
             this.xy *= α;
             this.w *= α;
-            return this;
-        };
-        /**
-         * <p>
-         * <code>this ⟼ a * b</code>
-         * </p>
-         * @method product
-         * @param a {SpinorE3}
-         * @param b {SpinorE3}
-         * @return {MutableSpinorE3} <code>this</code>
-         * @chainable
-         */
-        MutableSpinorE3.prototype.product = function (a, b) {
-            var a0 = a.w;
-            var a1 = a.yz;
-            var a2 = a.zx;
-            var a3 = a.xy;
-            var b0 = b.w;
-            var b1 = b.yz;
-            var b2 = b.zx;
-            var b3 = b.xy;
-            // Compare this to the product for Quaternions
-            // It would be interesting to DRY this out.
-            this.w = a0 * b0 - a1 * b1 - a2 * b2 - a3 * b3;
-            this.yz = a0 * b1 + a1 * b0 - a2 * b3 + a3 * b2;
-            this.zx = a0 * b2 + a1 * b3 + a2 * b0 - a3 * b1;
-            this.xy = a0 * b3 - a1 * b2 + a2 * b1 + a3 * b0;
             return this;
         };
         /**
@@ -4930,7 +4978,6 @@ define('davinci-eight/math/MutableSpinorE3',["require", "exports", '../math/cart
          * @return {MutableSpinorE3} <code>this</code>
          */
         MutableSpinorE3.prototype.rotorFromAxisAngle = function (axis, θ) {
-            //this.dual(a).scale(-θ/2).exp()
             var φ = θ / 2;
             var s = sin(φ);
             this.yz = -axis.x * s;
@@ -4941,39 +4988,39 @@ define('davinci-eight/math/MutableSpinorE3',["require", "exports", '../math/cart
         };
         /**
          * <p>
-         * <code>this ⟼ this - α * spinor</code>
+         * <code>this ⟼ this - s * α</code>
          * </p>
          * @method sub
-         * @param spinor {SpinorE3}
+         * @param s {SpinorE3}
          * @param α [number = 1]
          * @return {MutableSpinorE3} <code>this</code>
          * @chainable
          */
-        MutableSpinorE3.prototype.sub = function (spinor, α) {
+        MutableSpinorE3.prototype.sub = function (s, α) {
             if (α === void 0) { α = 1; }
-            mustBeObject('spinor', spinor);
+            mustBeObject('s', s);
             mustBeNumber('α', α);
-            this.yz -= spinor.yz * α;
-            this.zx -= spinor.zx * α;
-            this.xy -= spinor.xy * α;
-            this.w -= spinor.w * α;
+            this.yz -= s.yz * α;
+            this.zx -= s.zx * α;
+            this.xy -= s.xy * α;
+            this.w -= s.w * α;
             return this;
         };
         /**
          * <p>
-         * <code>this ⟼ a + b</code>
+         * <code>this ⟼ a - b</code>
          * </p>
-         * @method sum
+         * @method sub2
          * @param a {SpinorE3}
          * @param b {SpinorE3}
          * @return {MutableSpinorE3} <code>this</code>
          * @chainable
          */
-        MutableSpinorE3.prototype.sum = function (a, b) {
-            this.w = a.w + b.w;
-            this.yz = a.yz + b.yz;
-            this.zx = a.zx + b.zx;
-            this.xy = a.xy + b.xy;
+        MutableSpinorE3.prototype.sub2 = function (a, b) {
+            this.yz = a.yz - b.yz;
+            this.zx = a.zx - b.zx;
+            this.xy = a.xy - b.xy;
+            this.w = a.w - b.w;
             return this;
         };
         /**
@@ -6176,16 +6223,12 @@ define('davinci-eight/math/MutableNumber',["require", "exports", '../math/Vector
             this.x += vector.x * alpha;
             return this;
         };
-        MutableNumber.prototype.addScalar = function (s) {
-            this.x += s;
+        MutableNumber.prototype.add2 = function (a, b) {
+            this.x = a.x + b.x;
             return this;
         };
         MutableNumber.prototype.determinant = function () {
             return this.x;
-        };
-        MutableNumber.prototype.sum = function (a, b) {
-            this.x = a.x + b.x;
-            return this;
         };
         MutableNumber.prototype.exp = function () {
             this.x = Math.exp(this.x);
@@ -6199,7 +6242,7 @@ define('davinci-eight/math/MutableNumber',["require", "exports", '../math/Vector
             this.x -= s;
             return this;
         };
-        MutableNumber.prototype.diff = function (a, b) {
+        MutableNumber.prototype.sub2 = function (a, b) {
             this.x = a.x - b.x;
             return this;
         };
@@ -6220,13 +6263,7 @@ define('davinci-eight/math/MutableNumber',["require", "exports", '../math/Vector
             return this;
         };
         MutableNumber.prototype.divideByScalar = function (scalar) {
-            if (scalar !== 0) {
-                var invScalar = 1 / scalar;
-                this.x *= invScalar;
-            }
-            else {
-                this.x = 0;
-            }
+            this.x /= scalar;
             return this;
         };
         MutableNumber.prototype.min = function (v) {
@@ -6297,13 +6334,21 @@ define('davinci-eight/math/MutableNumber',["require", "exports", '../math/Vector
             }
             return this;
         };
-        MutableNumber.prototype.lerp = function (v, alpha) {
-            this.x += (v.x - this.x) * alpha;
+        /**
+         * this ⟼ this + α * (v - this)</code>
+         * @method lerp
+         * @param v {VectorE1}
+         * @param α {number}
+         * @return {MutanbleNumber}
+         * @chainable
+         */
+        MutableNumber.prototype.lerp = function (v, α) {
+            this.x += (v.x - this.x) * α;
             return this;
         };
         /**
          * <p>
-         * <code>this = a + α * (b - a)</code>
+         * <code>this ⟼ a + α * (b - a)</code>
          * </p>
          * @method lerp2
          * @param a {MutableNumber}
@@ -6313,7 +6358,7 @@ define('davinci-eight/math/MutableNumber',["require", "exports", '../math/Vector
          * @chainable
          */
         MutableNumber.prototype.lerp2 = function (a, b, α) {
-            this.diff(b, a).scale(α).add(a);
+            this.sub2(b, a).scale(α).add(a);
             return this;
         };
         MutableNumber.prototype.equals = function (v) {
@@ -10872,7 +10917,7 @@ define('davinci-eight/cameras/viewArray',["require", "exports", '../math/Mutable
     function viewArray(eye, look, up, matrix) {
         var m = isDefined(matrix) ? matrix : new Float32Array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
         expectArg('matrix', m).toSatisfy(m.length === 16, 'matrix must have length 16');
-        var n = new MutableVectorE3().diff(eye, look);
+        var n = new MutableVectorE3().sub2(eye, look);
         if (n.x === 0 && n.y === 0 && n.z === 0) {
             // View direction is ambiguous.
             n.z = 1;
@@ -11923,12 +11968,7 @@ define('davinci-eight/math/MutableVectorE2',["require", "exports", '../math/Vect
             this.y += v.y * alpha;
             return this;
         };
-        MutableVectorE2.prototype.addScalar = function (s) {
-            this.x += s;
-            this.y += s;
-            return this;
-        };
-        MutableVectorE2.prototype.sum = function (a, b) {
+        MutableVectorE2.prototype.add2 = function (a, b) {
             this.x = a.x + b.x;
             this.y = a.y + b.y;
             return this;
@@ -11943,7 +11983,7 @@ define('davinci-eight/math/MutableVectorE2',["require", "exports", '../math/Vect
             this.y -= s;
             return this;
         };
-        MutableVectorE2.prototype.diff = function (a, b) {
+        MutableVectorE2.prototype.sub2 = function (a, b) {
             this.x = a.x - b.x;
             this.y = a.y - b.y;
             return this;
@@ -12052,14 +12092,22 @@ define('davinci-eight/math/MutableVectorE2',["require", "exports", '../math/Vect
             }
             return this;
         };
-        MutableVectorE2.prototype.lerp = function (v, alpha) {
-            this.x += (v.x - this.x) * alpha;
-            this.y += (v.y - this.y) * alpha;
+        /**
+         * this ⟼ this + (v - this) * α
+         * @method lerp
+         * @param v {VectorE2}
+         * @param α {number}
+         * @return {MutableVectorE2}
+         * @chainable
+         */
+        MutableVectorE2.prototype.lerp = function (v, α) {
+            this.x += (v.x - this.x) * α;
+            this.y += (v.y - this.y) * α;
             return this;
         };
         /**
          * <p>
-         * <code>this = a + α * (b - a)</code>
+         * <code>this ⟼ a + α * (b - a)</code>
          * </p>
          * @method lerp2
          * @param a {VectorE2}
@@ -12068,8 +12116,8 @@ define('davinci-eight/math/MutableVectorE2',["require", "exports", '../math/Vect
          * @return {MutableVectorE2} <code>this</code>
          * @chainable
          */
-        MutableVectorE2.prototype.lerp2 = function (a, v2, α) {
-            this.diff(v2, a).scale(α).add(a);
+        MutableVectorE2.prototype.lerp2 = function (a, b, α) {
+            this.copy(a).lerp(b, α);
             return this;
         };
         MutableVectorE2.prototype.equals = function (v) {
@@ -17009,7 +17057,7 @@ define('davinci-eight/geometries/VortexSimplexGeometry',["require", "exports", '
                     var Rminor = Rmajor.mul(Rminor0).mul(Rmajor.__tilde__()).scalarMultiply(-v / 2).exp();
                     // var Rminor = Rminor0.clone().rotate(Rmajor).scale(-v/2).exp()
                     var r = Rminor.mul(r0).mul(Rminor.__tilde__());
-                    vertex.sum(center, r);
+                    vertex.add2(center, r);
                     points.push(vertex);
                     uvs.push(new MutableVectorE2([i / circleSegments, j / radialSegments]));
                     normals.push(MutableVectorE3.copy(r).normalize());
@@ -17346,6 +17394,32 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+define('davinci-eight/math/MutableE3',["require", "exports", '../math/VectorN'], function (require, exports, VectorN) {
+    /**
+     * @class MutableE3
+     */
+    var MutableE3 = (function (_super) {
+        __extends(MutableE3, _super);
+        /**
+         * Constructs a <code>MutableE3</code>
+         * @class MutableE3
+         * @constructor
+         * @param data [number[] = [0, 0, 0, 0, 0, 0, 0, 0]] The Cartesian coordinates of the multivector.
+         */
+        function MutableE3(data) {
+            if (data === void 0) { data = [0, 0, 0, 0, 0, 0, 0, 0]; }
+            _super.call(this, data, false, 8);
+        }
+        return MutableE3;
+    })(VectorN);
+    return MutableE3;
+});
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 define('davinci-eight/math/MutableVectorE4',["require", "exports", '../math/VectorN'], function (require, exports, VectorN) {
     /**
      * @class MutableVectorE4
@@ -17439,15 +17513,19 @@ define('davinci-eight/math/MutableVectorE4',["require", "exports", '../math/Vect
             this.w = w;
             return this;
         };
-        MutableVectorE4.prototype.add = function (vector, alpha) {
-            if (alpha === void 0) { alpha = 1; }
-            this.x += vector.x * alpha;
-            this.y += vector.y * alpha;
-            this.z += vector.z * alpha;
-            this.w += vector.w * alpha;
+        MutableVectorE4.prototype.add = function (vector, α) {
+            if (α === void 0) { α = 1; }
+            this.x += vector.x * α;
+            this.y += vector.y * α;
+            this.z += vector.z * α;
+            this.w += vector.w * α;
             return this;
         };
-        MutableVectorE4.prototype.sum = function (a, b) {
+        MutableVectorE4.prototype.add2 = function (a, b) {
+            this.x = a.x + b.x;
+            this.y = a.y + b.y;
+            this.z = a.z + b.z;
+            this.w = a.w + b.w;
             return this;
         };
         MutableVectorE4.prototype.clone = function () {
@@ -17460,41 +17538,51 @@ define('davinci-eight/math/MutableVectorE4',["require", "exports", '../math/Vect
             this.w = v.w;
             return this;
         };
-        MutableVectorE4.prototype.divideByScalar = function (scalar) {
-            this.x /= scalar;
-            this.y /= scalar;
-            this.z /= scalar;
-            this.w /= scalar;
+        MutableVectorE4.prototype.divideByScalar = function (α) {
+            this.x /= α;
+            this.y /= α;
+            this.z /= α;
+            this.w /= α;
             return this;
         };
-        MutableVectorE4.prototype.lerp = function (target, alpha) {
-            this.x += (target.x - this.x) * alpha;
-            this.y += (target.y - this.y) * alpha;
-            this.z += (target.z - this.z) * alpha;
-            this.w += (target.w - this.w) * alpha;
+        MutableVectorE4.prototype.lerp = function (target, α) {
+            this.x += (target.x - this.x) * α;
+            this.y += (target.y - this.y) * α;
+            this.z += (target.z - this.z) * α;
+            this.w += (target.w - this.w) * α;
             return this;
         };
         MutableVectorE4.prototype.lerp2 = function (a, b, α) {
-            this.diff(b, a).scale(α).add(a);
+            this.sub2(b, a).scale(α).add(a);
             return this;
         };
-        MutableVectorE4.prototype.scale = function (scalar) {
-            this.x *= scalar;
-            this.y *= scalar;
-            this.z *= scalar;
-            this.w *= scalar;
+        MutableVectorE4.prototype.scale = function (α) {
+            this.x *= α;
+            this.y *= α;
+            this.z *= α;
+            this.w *= α;
             return this;
         };
         MutableVectorE4.prototype.reflect = function (n) {
+            // TODO
             return this;
         };
         MutableVectorE4.prototype.rotate = function (rotor) {
+            // TODO
             return this;
         };
-        MutableVectorE4.prototype.sub = function (rhs) {
+        MutableVectorE4.prototype.sub = function (v, α) {
+            this.x -= v.x * α;
+            this.y -= v.y * α;
+            this.z -= v.z * α;
+            this.w -= v.w * α;
             return this;
         };
-        MutableVectorE4.prototype.diff = function (a, b) {
+        MutableVectorE4.prototype.sub2 = function (a, b) {
+            this.x = a.x - b.x;
+            this.y = a.y - b.y;
+            this.z = a.z - b.z;
+            this.w = a.w - b.w;
             return this;
         };
         return MutableVectorE4;
@@ -17996,7 +18084,7 @@ define('davinci-eight/utils/windowAnimationRunner',["require", "exports", '../ch
     return animation;
 });
 
-define('davinci-eight',["require", "exports", 'davinci-eight/slideshow/Slide', 'davinci-eight/slideshow/Director', 'davinci-eight/slideshow/DirectorKeyboardHandler', 'davinci-eight/slideshow/animations/WaitAnimation', 'davinci-eight/slideshow/animations/ColorAnimation', 'davinci-eight/slideshow/animations/Vector3Animation', 'davinci-eight/slideshow/animations/Spinor3Animation', 'davinci-eight/slideshow/commands/AnimateDrawableCommand', 'davinci-eight/slideshow/commands/CreateCuboidDrawable', 'davinci-eight/slideshow/commands/DestroyDrawableCommand', 'davinci-eight/slideshow/commands/TestCommand', 'davinci-eight/slideshow/commands/TestCommand', 'davinci-eight/slideshow/commands/UseDrawableInSceneCommand', 'davinci-eight/cameras/createFrustum', 'davinci-eight/cameras/createPerspective', 'davinci-eight/cameras/createView', 'davinci-eight/cameras/frustumMatrix', 'davinci-eight/cameras/perspectiveMatrix', 'davinci-eight/cameras/viewMatrix', 'davinci-eight/commands/WebGLBlendFunc', 'davinci-eight/commands/WebGLClearColor', 'davinci-eight/commands/WebGLDisable', 'davinci-eight/commands/WebGLEnable', 'davinci-eight/core/AttribLocation', 'davinci-eight/core/Color', 'davinci-eight/core', 'davinci-eight/core/DrawMode', 'davinci-eight/core/Symbolic', 'davinci-eight/core/UniformLocation', 'davinci-eight/curves/Curve', 'davinci-eight/devices/Keyboard', 'davinci-eight/geometries/DrawAttribute', 'davinci-eight/geometries/DrawPrimitive', 'davinci-eight/geometries/Simplex', 'davinci-eight/geometries/Vertex', 'davinci-eight/geometries/simplicesToGeometryMeta', 'davinci-eight/geometries/computeFaceNormals', 'davinci-eight/geometries/cube', 'davinci-eight/geometries/quadrilateral', 'davinci-eight/geometries/square', 'davinci-eight/geometries/tetrahedron', 'davinci-eight/geometries/simplicesToDrawPrimitive', 'davinci-eight/geometries/triangle', 'davinci-eight/topologies/Topology', 'davinci-eight/topologies/PointTopology', 'davinci-eight/topologies/LineTopology', 'davinci-eight/topologies/MeshTopology', 'davinci-eight/topologies/GridTopology', 'davinci-eight/scene/createDrawList', 'davinci-eight/scene/Drawable', 'davinci-eight/scene/PerspectiveCamera', 'davinci-eight/scene/Scene', 'davinci-eight/scene/Canvas3D', 'davinci-eight/geometries/AxialSimplexGeometry', 'davinci-eight/geometries/ArrowGeometry', 'davinci-eight/geometries/ArrowSimplexGeometry', 'davinci-eight/geometries/BarnSimplexGeometry', 'davinci-eight/geometries/ConeGeometry', 'davinci-eight/geometries/ConeSimplexGeometry', 'davinci-eight/geometries/CuboidGeometry', 'davinci-eight/geometries/CuboidSimplexGeometry', 'davinci-eight/geometries/CylinderGeometry', 'davinci-eight/geometries/CylinderSimplexGeometry', 'davinci-eight/geometries/DodecahedronSimplexGeometry', 'davinci-eight/geometries/IcosahedronSimplexGeometry', 'davinci-eight/geometries/KleinBottleSimplexGeometry', 'davinci-eight/geometries/Simplex1Geometry', 'davinci-eight/geometries/MobiusStripSimplexGeometry', 'davinci-eight/geometries/OctahedronSimplexGeometry', 'davinci-eight/geometries/SliceSimplexGeometry', 'davinci-eight/geometries/GridSimplexGeometry', 'davinci-eight/geometries/PolyhedronSimplexGeometry', 'davinci-eight/geometries/RevolutionSimplexGeometry', 'davinci-eight/geometries/RingGeometry', 'davinci-eight/geometries/RingSimplexGeometry', 'davinci-eight/geometries/SphericalPolarSimplexGeometry', 'davinci-eight/geometries/TetrahedronSimplexGeometry', 'davinci-eight/geometries/VortexSimplexGeometry', 'davinci-eight/programs/createMaterial', 'davinci-eight/programs/smartProgram', 'davinci-eight/programs/programFromScripts', 'davinci-eight/materials/Material', 'davinci-eight/materials/HTMLScriptsMaterial', 'davinci-eight/materials/LineMaterial', 'davinci-eight/materials/MeshMaterial', 'davinci-eight/materials/MeshLambertMaterial', 'davinci-eight/materials/PointMaterial', 'davinci-eight/materials/SmartMaterialBuilder', 'davinci-eight/mappers/RoundUniform', 'davinci-eight/math/Euclidean3', 'davinci-eight/math/MutableNumber', 'davinci-eight/math/Matrix3', 'davinci-eight/math/Matrix4', 'davinci-eight/math/MutableSpinorE3', 'davinci-eight/math/MutableVectorE2', 'davinci-eight/math/MutableVectorE3', 'davinci-eight/math/MutableVectorE4', 'davinci-eight/math/VectorN', 'davinci-eight/models/EulerFacet', 'davinci-eight/models/KinematicRigidBodyFacetE3', 'davinci-eight/models/ModelFacet', 'davinci-eight/renderers/initWebGL', 'davinci-eight/renderers/renderer', 'davinci-eight/uniforms/AmbientLight', 'davinci-eight/uniforms/ColorFacet', 'davinci-eight/uniforms/DirectionalLight', 'davinci-eight/uniforms/PointSize', 'davinci-eight/uniforms/Vector3Uniform', 'davinci-eight/utils/contextProxy', 'davinci-eight/collections/IUnknownArray', 'davinci-eight/collections/NumberIUnknownMap', 'davinci-eight/utils/refChange', 'davinci-eight/utils/Shareable', 'davinci-eight/collections/StringIUnknownMap', 'davinci-eight/utils/workbench3D', 'davinci-eight/utils/windowAnimationRunner'], function (require, exports, Slide, Director, DirectorKeyboardHandler, WaitAnimation, ColorAnimation, Vector3Animation, Spinor3Animation, AnimateDrawableCommand, CreateCuboidDrawable, DestroyDrawableCommand, GeometryCommand, TestCommand, UseDrawableInSceneCommand, createFrustum, createPerspective, createView, frustumMatrix, perspectiveMatrix, viewMatrix, WebGLBlendFunc, WebGLClearColor, WebGLDisable, WebGLEnable, AttribLocation, Color, core, DrawMode, Symbolic, UniformLocation, Curve, Keyboard, DrawAttribute, DrawPrimitive, Simplex, Vertex, simplicesToGeometryMeta, computeFaceNormals, cube, quadrilateral, square, tetrahedron, simplicesToDrawPrimitive, triangle, Topology, PointTopology, LineTopology, MeshTopology, GridTopology, createDrawList, Drawable, PerspectiveCamera, Scene, Canvas3D, AxialSimplexGeometry, ArrowGeometry, ArrowSimplexGeometry, BarnSimplexGeometry, ConeGeometry, ConeSimplexGeometry, CuboidGeometry, CuboidSimplexGeometry, CylinderGeometry, CylinderSimplexGeometry, DodecahedronSimplexGeometry, IcosahedronSimplexGeometry, KleinBottleSimplexGeometry, Simplex1Geometry, MobiusStripSimplexGeometry, OctahedronSimplexGeometry, SliceSimplexGeometry, GridSimplexGeometry, PolyhedronSimplexGeometry, RevolutionSimplexGeometry, RingGeometry, RingSimplexGeometry, SphericalPolarSimplexGeometry, TetrahedronSimplexGeometry, VortexSimplexGeometry, createMaterial, smartProgram, programFromScripts, Material, HTMLScriptsMaterial, LineMaterial, MeshMaterial, MeshLambertMaterial, PointMaterial, SmartMaterialBuilder, RoundUniform, Euclidean3, MutableNumber, Matrix3, Matrix4, MutableSpinorE3, MutableVectorE2, MutableVectorE3, MutableVectorE4, VectorN, EulerFacet, KinematicRigidBodyFacetE3, ModelFacet, initWebGL, renderer, AmbientLight, ColorFacet, DirectionalLight, PointSize, Vector3Uniform, contextProxy, IUnknownArray, NumberIUnknownMap, refChange, Shareable, StringIUnknownMap, workbench3D, windowAnimationRunner) {
+define('davinci-eight',["require", "exports", 'davinci-eight/slideshow/Slide', 'davinci-eight/slideshow/Director', 'davinci-eight/slideshow/DirectorKeyboardHandler', 'davinci-eight/slideshow/animations/WaitAnimation', 'davinci-eight/slideshow/animations/ColorAnimation', 'davinci-eight/slideshow/animations/Vector3Animation', 'davinci-eight/slideshow/animations/Spinor3Animation', 'davinci-eight/slideshow/commands/AnimateDrawableCommand', 'davinci-eight/slideshow/commands/CreateCuboidDrawable', 'davinci-eight/slideshow/commands/DestroyDrawableCommand', 'davinci-eight/slideshow/commands/TestCommand', 'davinci-eight/slideshow/commands/TestCommand', 'davinci-eight/slideshow/commands/UseDrawableInSceneCommand', 'davinci-eight/cameras/createFrustum', 'davinci-eight/cameras/createPerspective', 'davinci-eight/cameras/createView', 'davinci-eight/cameras/frustumMatrix', 'davinci-eight/cameras/perspectiveMatrix', 'davinci-eight/cameras/viewMatrix', 'davinci-eight/commands/WebGLBlendFunc', 'davinci-eight/commands/WebGLClearColor', 'davinci-eight/commands/WebGLDisable', 'davinci-eight/commands/WebGLEnable', 'davinci-eight/core/AttribLocation', 'davinci-eight/core/Color', 'davinci-eight/core', 'davinci-eight/core/DrawMode', 'davinci-eight/core/Symbolic', 'davinci-eight/core/UniformLocation', 'davinci-eight/curves/Curve', 'davinci-eight/devices/Keyboard', 'davinci-eight/geometries/DrawAttribute', 'davinci-eight/geometries/DrawPrimitive', 'davinci-eight/geometries/Simplex', 'davinci-eight/geometries/Vertex', 'davinci-eight/geometries/simplicesToGeometryMeta', 'davinci-eight/geometries/computeFaceNormals', 'davinci-eight/geometries/cube', 'davinci-eight/geometries/quadrilateral', 'davinci-eight/geometries/square', 'davinci-eight/geometries/tetrahedron', 'davinci-eight/geometries/simplicesToDrawPrimitive', 'davinci-eight/geometries/triangle', 'davinci-eight/topologies/Topology', 'davinci-eight/topologies/PointTopology', 'davinci-eight/topologies/LineTopology', 'davinci-eight/topologies/MeshTopology', 'davinci-eight/topologies/GridTopology', 'davinci-eight/scene/createDrawList', 'davinci-eight/scene/Drawable', 'davinci-eight/scene/PerspectiveCamera', 'davinci-eight/scene/Scene', 'davinci-eight/scene/Canvas3D', 'davinci-eight/geometries/AxialSimplexGeometry', 'davinci-eight/geometries/ArrowGeometry', 'davinci-eight/geometries/ArrowSimplexGeometry', 'davinci-eight/geometries/BarnSimplexGeometry', 'davinci-eight/geometries/ConeGeometry', 'davinci-eight/geometries/ConeSimplexGeometry', 'davinci-eight/geometries/CuboidGeometry', 'davinci-eight/geometries/CuboidSimplexGeometry', 'davinci-eight/geometries/CylinderGeometry', 'davinci-eight/geometries/CylinderSimplexGeometry', 'davinci-eight/geometries/DodecahedronSimplexGeometry', 'davinci-eight/geometries/IcosahedronSimplexGeometry', 'davinci-eight/geometries/KleinBottleSimplexGeometry', 'davinci-eight/geometries/Simplex1Geometry', 'davinci-eight/geometries/MobiusStripSimplexGeometry', 'davinci-eight/geometries/OctahedronSimplexGeometry', 'davinci-eight/geometries/SliceSimplexGeometry', 'davinci-eight/geometries/GridSimplexGeometry', 'davinci-eight/geometries/PolyhedronSimplexGeometry', 'davinci-eight/geometries/RevolutionSimplexGeometry', 'davinci-eight/geometries/RingGeometry', 'davinci-eight/geometries/RingSimplexGeometry', 'davinci-eight/geometries/SphericalPolarSimplexGeometry', 'davinci-eight/geometries/TetrahedronSimplexGeometry', 'davinci-eight/geometries/VortexSimplexGeometry', 'davinci-eight/programs/createMaterial', 'davinci-eight/programs/smartProgram', 'davinci-eight/programs/programFromScripts', 'davinci-eight/materials/Material', 'davinci-eight/materials/HTMLScriptsMaterial', 'davinci-eight/materials/LineMaterial', 'davinci-eight/materials/MeshMaterial', 'davinci-eight/materials/MeshLambertMaterial', 'davinci-eight/materials/PointMaterial', 'davinci-eight/materials/SmartMaterialBuilder', 'davinci-eight/mappers/RoundUniform', 'davinci-eight/math/Euclidean3', 'davinci-eight/math/MutableNumber', 'davinci-eight/math/Matrix3', 'davinci-eight/math/Matrix4', 'davinci-eight/math/MutableE3', 'davinci-eight/math/MutableSpinorE3', 'davinci-eight/math/MutableVectorE2', 'davinci-eight/math/MutableVectorE3', 'davinci-eight/math/MutableVectorE4', 'davinci-eight/math/VectorN', 'davinci-eight/models/EulerFacet', 'davinci-eight/models/KinematicRigidBodyFacetE3', 'davinci-eight/models/ModelFacet', 'davinci-eight/renderers/initWebGL', 'davinci-eight/renderers/renderer', 'davinci-eight/uniforms/AmbientLight', 'davinci-eight/uniforms/ColorFacet', 'davinci-eight/uniforms/DirectionalLight', 'davinci-eight/uniforms/PointSize', 'davinci-eight/uniforms/Vector3Uniform', 'davinci-eight/utils/contextProxy', 'davinci-eight/collections/IUnknownArray', 'davinci-eight/collections/NumberIUnknownMap', 'davinci-eight/utils/refChange', 'davinci-eight/utils/Shareable', 'davinci-eight/collections/StringIUnknownMap', 'davinci-eight/utils/workbench3D', 'davinci-eight/utils/windowAnimationRunner'], function (require, exports, Slide, Director, DirectorKeyboardHandler, WaitAnimation, ColorAnimation, Vector3Animation, Spinor3Animation, AnimateDrawableCommand, CreateCuboidDrawable, DestroyDrawableCommand, GeometryCommand, TestCommand, UseDrawableInSceneCommand, createFrustum, createPerspective, createView, frustumMatrix, perspectiveMatrix, viewMatrix, WebGLBlendFunc, WebGLClearColor, WebGLDisable, WebGLEnable, AttribLocation, Color, core, DrawMode, Symbolic, UniformLocation, Curve, Keyboard, DrawAttribute, DrawPrimitive, Simplex, Vertex, simplicesToGeometryMeta, computeFaceNormals, cube, quadrilateral, square, tetrahedron, simplicesToDrawPrimitive, triangle, Topology, PointTopology, LineTopology, MeshTopology, GridTopology, createDrawList, Drawable, PerspectiveCamera, Scene, Canvas3D, AxialSimplexGeometry, ArrowGeometry, ArrowSimplexGeometry, BarnSimplexGeometry, ConeGeometry, ConeSimplexGeometry, CuboidGeometry, CuboidSimplexGeometry, CylinderGeometry, CylinderSimplexGeometry, DodecahedronSimplexGeometry, IcosahedronSimplexGeometry, KleinBottleSimplexGeometry, Simplex1Geometry, MobiusStripSimplexGeometry, OctahedronSimplexGeometry, SliceSimplexGeometry, GridSimplexGeometry, PolyhedronSimplexGeometry, RevolutionSimplexGeometry, RingGeometry, RingSimplexGeometry, SphericalPolarSimplexGeometry, TetrahedronSimplexGeometry, VortexSimplexGeometry, createMaterial, smartProgram, programFromScripts, Material, HTMLScriptsMaterial, LineMaterial, MeshMaterial, MeshLambertMaterial, PointMaterial, SmartMaterialBuilder, RoundUniform, Euclidean3, MutableNumber, Matrix3, Matrix4, MutableE3, MutableSpinorE3, MutableVectorE2, MutableVectorE3, MutableVectorE4, VectorN, EulerFacet, KinematicRigidBodyFacetE3, ModelFacet, initWebGL, renderer, AmbientLight, ColorFacet, DirectionalLight, PointSize, Vector3Uniform, contextProxy, IUnknownArray, NumberIUnknownMap, refChange, Shareable, StringIUnknownMap, workbench3D, windowAnimationRunner) {
     /**
      * @module EIGHT
      */
@@ -18115,8 +18203,9 @@ define('davinci-eight',["require", "exports", 'davinci-eight/slideshow/Slide', '
         get Euclidean3() { return Euclidean3; },
         get Matrix3() { return Matrix3; },
         get Matrix4() { return Matrix4; },
-        get MutableSpinorE3() { return MutableSpinorE3; },
+        get MutableE3() { return MutableE3; },
         get MutableNumber() { return MutableNumber; },
+        get MutableSpinorE3() { return MutableSpinorE3; },
         get MutableVectorE2() { return MutableVectorE2; },
         get MutableVectorE3() { return MutableVectorE3; },
         get MutableVectorE4() { return MutableVectorE4; },
