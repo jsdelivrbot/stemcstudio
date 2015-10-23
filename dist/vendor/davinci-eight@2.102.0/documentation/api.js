@@ -83,7 +83,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "MeshTopology",
         "ModelFacet",
         "Mutable",
-        "MutableE3",
+        "MutableG3",
         "MutableNumber",
         "MutableSpinorE3",
         "MutableVectorE2",
