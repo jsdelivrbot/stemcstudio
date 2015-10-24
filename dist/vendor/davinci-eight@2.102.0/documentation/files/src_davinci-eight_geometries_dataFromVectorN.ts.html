@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/davinci-eight/math/Rational.ts - davinci-eight</title>
+    <title>src/davinci-eight/geometries/dataFromVectorN.ts - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -17,7 +17,7 @@
                 <h1><img src="../../assets/logo.png" title="davinci-eight"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.139.0</em>
+            <em>API Docs for: 2.140.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -50,10 +50,10 @@
                                 <li><a href="../classes/BoxBuilder.html">BoxBuilder</a></li>
                                 <li><a href="../classes/BoxMesh.html">BoxMesh</a></li>
                                 <li><a href="../classes/Canvas3D.html">Canvas3D</a></li>
+                                <li><a href="../classes/CC.html">CC</a></li>
                                 <li><a href="../classes/Color.html">Color</a></li>
                                 <li><a href="../classes/ColorFacet.html">ColorFacet</a></li>
                                 <li><a href="../classes/ColorRGB.html">ColorRGB</a></li>
-                                <li><a href="../classes/Complex.html">Complex</a></li>
                                 <li><a href="../classes/ConeGeometry.html">ConeGeometry</a></li>
                                 <li><a href="../classes/ConeSimplexGeometry.html">ConeSimplexGeometry</a></li>
                                 <li><a href="../classes/ContextAttributesLogger.html">ContextAttributesLogger</a></li>
@@ -124,11 +124,6 @@
                                 <li><a href="../classes/MeshTopology.html">MeshTopology</a></li>
                                 <li><a href="../classes/ModelFacet.html">ModelFacet</a></li>
                                 <li><a href="../classes/Mutable.html">Mutable</a></li>
-                                <li><a href="../classes/MutableNumber.html">MutableNumber</a></li>
-                                <li><a href="../classes/MutableSpinorE3.html">MutableSpinorE3</a></li>
-                                <li><a href="../classes/MutableVectorE2.html">MutableVectorE2</a></li>
-                                <li><a href="../classes/MutableVectorE3.html">MutableVectorE3</a></li>
-                                <li><a href="../classes/MutableVectorE4.html">MutableVectorE4</a></li>
                                 <li><a href="../classes/NumberIUnknownMap&lt;V&gt;.html">NumberIUnknownMap&lt;V&gt;</a></li>
                                 <li><a href="../classes/OcosahedronGeometry.html">OcosahedronGeometry</a></li>
                                 <li><a href="../classes/OctahedronSimplexGeometry.html">OctahedronSimplexGeometry</a></li>
@@ -140,7 +135,11 @@
                                 <li><a href="../classes/PointTopology.html">PointTopology</a></li>
                                 <li><a href="../classes/PolyhedronSimplexGeometry.html">PolyhedronSimplexGeometry</a></li>
                                 <li><a href="../classes/PseudoscalarE3.html">PseudoscalarE3</a></li>
-                                <li><a href="../classes/Rational.html">Rational</a></li>
+                                <li><a href="../classes/QQ.html">QQ</a></li>
+                                <li><a href="../classes/R1.html">R1</a></li>
+                                <li><a href="../classes/R2.html">R2</a></li>
+                                <li><a href="../classes/R3.html">R3</a></li>
+                                <li><a href="../classes/R4.html">R4</a></li>
                                 <li><a href="../classes/RevolutionSimplexGeometry.html">RevolutionSimplexGeometry</a></li>
                                 <li><a href="../classes/RingGeometry.html">RingGeometry</a></li>
                                 <li><a href="../classes/RingSimplexGeometry.html">RingSimplexGeometry</a></li>
@@ -156,6 +155,7 @@
                                 <li><a href="../classes/SmartMaterial.html">SmartMaterial</a></li>
                                 <li><a href="../classes/SmartMaterialBuilder.html">SmartMaterialBuilder</a></li>
                                 <li><a href="../classes/SphericalPolarSimplexGeometry.html">SphericalPolarSimplexGeometry</a></li>
+                                <li><a href="../classes/SpinG3.html">SpinG3</a></li>
                                 <li><a href="../classes/StringIUnknownMap.html">StringIUnknownMap</a></li>
                                 <li><a href="../classes/Symbolic.html">Symbolic</a></li>
                                 <li><a href="../classes/TetrahedronSimplexGeometry.html">TetrahedronSimplexGeometry</a></li>
@@ -216,152 +216,39 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: src/davinci-eight/math/Rational.ts</h1>
+<h1 class="file-heading">File: src/davinci-eight/geometries/dataFromVectorN.ts</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-import mustBeInteger = require(&#x27;../checks/mustBeInteger&#x27;)
+import G3 = require(&#x27;../math/G3&#x27;)
+import R2 = require(&#x27;../math/R2&#x27;)
+import R3 = require(&#x27;../math/R3&#x27;)
+import VectorN = require(&#x27;../math/VectorN&#x27;)
 
 /**
- * @class Rational
+ * This seems a bit hacky. Maybe we need an abstraction that recognizes the existence of
+ * geometric numbers fo vertex attributes, but allows us to extract the vector (grade-1) part?
  */
-class Rational {
-  /**
-   * @property _numer
-   * @type {number}
-   * @private
-   */
-  private _numer: number;
-  /**
-   * @property _denom
-   * @type {number}
-   * @private
-   */
-  private _denom: number;
-
-  /**
-   * The Rational class represents a rational number.
-   *
-   * @class Rational
-   * @constructor
-   * @param {number} n The numerator, an integer.
-   * @param {number} d The denominator, an integer.
-   */
-  constructor(n: number, d: number) {
-    mustBeInteger(&#x27;n&#x27;, n);
-    mustBeInteger(&#x27;d&#x27;, d);
-    var g: number;
-
-    var gcd = function(a: number, b: number) {
-      mustBeInteger(&#x27;a&#x27;, a);
-      mustBeInteger(&#x27;b&#x27;, b);
-      var temp: number;
-
-      if (a &lt; 0) {
-          a = -a;
-      }
-      if (b &lt; 0) {
-          b = -b;
-      }
-      if (b &gt; a) {
-          temp = a;
-          a = b;
-          b = temp;
-      }
-      while (true) {
-          a %= b;
-          if (a === 0) {
-              return b;
-          }
-          b %= a;
-          if (b === 0) {
-              return a;
-          }
-      }
-    };
-
-    if (d === 0) {
-      throw new Error(&quot;denominator must not be zero&quot;);
+function dataFromVectorN(source: VectorN&lt;number&gt;): number[] {
+    if (source instanceof G3) {
+        let g3 = &lt;G3&gt;source
+        return [g3.x, g3.y, g3.z]
     }
-    if (n === 0) {
-      g = 1;
+    else if (source instanceof R3) {
+        let v3 = &lt;R3&gt;source
+        return [v3.x, v3.y, v3.z]
+    }
+    else if (source instanceof R2) {
+        let v2 = &lt;R2&gt;source
+        return [v2.x, v2.y]
     }
     else {
-      g = gcd(Math.abs(n), Math.abs(d));
+        // console.warn(&quot;dataFromVectorN(source: VectorN&lt;number&gt;): number[], source.length =&gt; &quot; + source.length)
+        return source.data
     }
-    if (d &lt; 0) {
-      n = -n;
-      d = -d;
-    }
-    this._numer = n / g;
-    this._denom = d / g;
-  }
-  /**
-   * @property numer
-   * @type {number}
-   * @readOnly
-   */
-  get numer(): number {
-    return this._numer;
-  }
-  /**
-   * @property denom
-   * @type {number}
-   * @readOnly
-   */
-  get denom(): number {
-    return this._denom;
-  }
-
-  add(rhs: Rational): Rational {
-    return new Rational(this._numer * rhs._denom + this._denom * rhs._numer, this._denom * rhs._denom);
-  }
-
-  sub(rhs: Rational): Rational {
-    return new Rational(this._numer * rhs._denom - this._denom * rhs._numer, this._denom * rhs._denom);
-  }
-
-  mul(rhs: Rational): Rational {
-    return new Rational(this._numer * rhs._numer, this._denom * rhs._denom);
-  }
-
-  // TODO: div testing
-  div(rhs: any): Rational {
-    if (typeof rhs === &#x27;number&#x27;) {
-        return new Rational(this._numer, this._denom * rhs);
-    }
-    else {
-        return new Rational(this._numer * rhs._denom, this._denom * rhs._numer);
-    }
-  }
-
-  isZero(): boolean {
-    return this._numer === 0;
-  }
-
-  negative(): Rational {
-    return new Rational(-this._numer, this._denom);
-  }
-
-  equals(other: any): boolean {
-    if (other instanceof Rational) {
-        return this._numer * other._denom === this._denom * other._numer;
-    }
-    else {
-        return false;
-    }
-  }
-
-  toString(): string {
-    return &quot;&quot; + this._numer + &quot;/&quot; + this._denom;
-  }
-
-  static ONE: Rational = new Rational(1, 1);
-  static TWO: Rational = new Rational(2, 1);
-  static MINUS_ONE: Rational = new Rational(-1, 1);
-  static ZERO: Rational = new Rational(0, 1);
 }
-export = Rational;
+
+export = dataFromVectorN
     </pre>
 </div>
                     </div>

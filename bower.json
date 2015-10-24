@@ -1,6 +1,6 @@
 {
   "name": "mathdoodle",
-  "version": "1.186.0",
+  "version": "1.187.0",
   "description": "Learning Mathematics and Geometric Physics through Computational Modeling",
   "homepage": "https://github.com/geometryzen/mathdoodle",
   "authors": [
@@ -35,7 +35,7 @@
     "bootstrap3-dialog": "~1.34.6",
     "davinci-blade": "~1.7.2",
     "davinci-deuce": "~1.0.7",
-    "davinci-eight": "~2.139.0",
+    "davinci-eight": "~2.140.0",
     "davinci-mathscript": "~1.0.10",
     "dialog-polyfill": "~0.4.1",
     "gl-matrix": "~2.3.1",

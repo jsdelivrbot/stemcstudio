@@ -337,9 +337,10 @@ angular.module('app').factory('templates', [
     "  var aspect = window.innerWidth / window.innerHeight\n" +
     "  camera = new EIGHT.PerspectiveCamera(75 * Math.PI / 180, aspect, 1, 1000).setEye(e3 * 2 + e1 * 0.05 + e2)\n" +
     "\n" +
-    "  var geometry = new EIGHT.CuboidGeometry()\n" +
+    "  var geometry = new EIGHT.BarnSimplexGeometry()\n" +
+    "  geometry.k = 1\n" +
     "  var primitives = geometry.toPrimitives()\n" +
-    "  var material = new EIGHT.MeshMaterial()\n" +
+    "  var material = new EIGHT.LineMaterial()\n" +
     "\n" +
     "  cube = new EIGHT.Drawable(primitives, material)\n" +
     "  scene.add(cube)\n" +
@@ -364,16 +365,18 @@ angular.module('app').factory('templates', [
     "    var θ = Date.now() * 0.001\n" +
     "\n" +
     "    var kinematics = <EIGHT.KinematicRigidBodyFacetE3>cube.getFacet('kinematics')\n" +
-    "    // var R = EIGHT.Euclidean3.fromSpinorE3(kinematics.R)\n" +
-    "    // var Ω = EIGHT.Euclidean3.fromSpinorE3(kinematics.Ω)\n" +
-    "    // kinematics.X.copy(e1)\n" +
-    "    kinematics.R.rotorFromAxisAngle(e2, θ)\n" +
-    "    // kinematics.R.dual(e2).scale(-θ / 2).exp()\n" +
-    "    // kinematics.R.copy(I * e2).scale(-θ / 2).exp()\n" +
-    "    // kinematics.R.copy(exp(I * e2 * -θ / 2))\n" +
-    "    // kinematics.R.copy(exp(e1 * e2 * e3 * e2 * -θ / 2))\n" +
-    "    // kinematics.R.spinor(e3, e1).scale(-θ / 2).exp()\n" +
-    "    // kinematics.R.sub(Ω * R * dt / 2) // Integrate dR(t)/dt wrt t\n" +
+    "    var X = kinematics.X\n" +
+    "    var R = kinematics.R\n" +
+    "    var V = kinematics.V\n" +
+    "    var Ω = kinematics.Ω\n" +
+    "    // X.copy(e1)\n" +
+    "    R.rotorFromAxisAngle(e2, θ)\n" +
+    "    // R.dual(e2).scale(-θ / 2).exp()\n" +
+    "    // R.copy(I * e2).scale(-θ / 2).exp()\n" +
+    "    // R.copy(exp(I * e2 * -θ / 2))\n" +
+    "    // R.copy(exp(e1 * e2 * e3 * e2 * -θ / 2))\n" +
+    "    // R.spinor(e3, e1).scale(-θ / 2).exp()\n" +
+    "    // R.sub(Ω * R * dt / 2) // Integrate dR(t)/dt wrt t\n" +
     "\n" +
     "    scene.draw([camera, ambLight, dirLight], c3d.canvasId)\n" +
     "\n" +
@@ -544,15 +547,15 @@ angular.module('app').factory('templates', [
     "  /**\n" +
     "   * Ambient Light.\n" +
     "   */\n" +
-    "  var ambientLight = new EIGHT.MutableVectorE3([0.3, 0.3, 0.3])\n" +
+    "  var ambientLight = new EIGHT.R3([0.3, 0.3, 0.3])\n" +
     "  /**\n" +
     "   * Directional Light Color.\n" +
     "   */\n" +
-    "  var dLightColor = new EIGHT.MutableVectorE3([0.7, 0.7, 0.7])\n" +
+    "  var dLightColor = new EIGHT.R3([0.7, 0.7, 0.7])\n" +
     "  /**\n" +
     "   * Directional Light Directiion.\n" +
     "   */\n" +
-    "  var dLightDirection = new EIGHT.MutableVectorE3([2, 3, 5])\n" +
+    "  var dLightDirection = new EIGHT.R3([2, 3, 5])\n" +
     "\n" +
     "  /**\n" +
     "   * Program for rendering TRIANGLES with moderately fancy lighting.\n" +
@@ -673,8 +676,8 @@ angular.module('app').factory('templates', [
     "  // The global constants, e1, e2 and e3, are defined in the 'Libs' file.\n" +
     "  var S = exp(-(e2 ^ e1) * tiltAngle / 2)\n" +
     "  var B = e3 ^ e1\n" +
-    "  var rotorL = new EIGHT.MutableSpinorE3()\n" +
-    "  var rotorR = new EIGHT.MutableSpinorE3()\n" +
+    "  var rotorL = new EIGHT.G3()\n" +
+    "  var rotorR = new EIGHT.G3()\n" +
     "\n" +
     "  EIGHT.animation((time: number) => {\n" +
     "    stats.begin()\n" +
@@ -770,10 +773,10 @@ angular.module('app').factory('templates', [
     "var hertz    = blade.e3ga.units.hertz\n" +
     "\n" +
     "class Model extends EIGHT.Shareable implements EIGHT.IFacet {\n" +
-    "  public position = new EIGHT.MutableVectorE3()\n" +
-    "  public attitude = new EIGHT.MutableSpinorE3()\n" +
-    "  public scale: EIGHT.MutableVectorE3 = new EIGHT.MutableVectorE3([1, 1, 1])\n" +
-    "  public color: EIGHT.MutableVectorE3 = new EIGHT.MutableVectorE3([1, 1, 1])\n" +
+    "  public position = new EIGHT.R3()\n" +
+    "  public attitude = new EIGHT.SpinG3()\n" +
+    "  public scale: EIGHT.R3 = new EIGHT.R3([1, 1, 1])\n" +
+    "  public color: EIGHT.R3 = new EIGHT.R3([1, 1, 1])\n" +
     "  private M = EIGHT.Matrix4.identity()\n" +
     "  private N = EIGHT.Matrix3.identity()\n" +
     "  private R = EIGHT.Matrix4.identity()\n" +
@@ -1204,9 +1207,9 @@ angular.module('app').factory('templates', [
     "\n"+
     "      material = new EIGHT.HTMLScriptsMaterial([c3d], ['vs-points', 'fs-points'], document)\n" +
     "\n"+
-    "      var vec0 = new EIGHT.MutableVectorE3([0.0,  0.0, 0.0])\n"+
-    "      var vec1 = new EIGHT.MutableVectorE3([1.0, -0.2, 0.0])\n"+
-    "      var vec2 = new EIGHT.MutableVectorE3([1.0, +0.2, 0.0])\n"+
+    "      var vec0 = new EIGHT.R3([0.0,  0.0, 0.0])\n"+
+    "      var vec1 = new EIGHT.R3([1.0, -0.2, 0.0])\n"+
+    "      var vec2 = new EIGHT.R3([1.0, +0.2, 0.0])\n"+
     "      var simplices = EIGHT.triangle(vec0, vec1, vec2)\n"+
     "      var meta = EIGHT.simplicesToGeometryMeta(simplices)\n"+
     "      // console.log(JSON.stringify(meta, null, 2))\n"+
