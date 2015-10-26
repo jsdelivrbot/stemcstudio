@@ -32,7 +32,7 @@ declare module JXG {
          * @param handler
          * @param context The context the handler will be called in, default is the element itself.
          */
-        on(event: string, handler: ()=>void, context?: {}): void;
+        on(event: string, handler: () => void, context?: {}): void;
         /**
          * Sets an arbitrary number of attributes.
          * @param attributes An object with attributes.
@@ -73,7 +73,7 @@ declare module JXG {
          * @param time Number of milliseconds the animation should last.
          * @param options
          */
-        moveTo(where: number[], time?: number, options?: {callback?: ()=>void; effect?: string;}): Point;
+        moveTo(where: number[], time?: number, options?: { callback?: () => void; effect?: string; }): Point;
     }
     /**
      *
@@ -89,6 +89,7 @@ declare module JXG {
      *
      */
     export interface Circle extends GeometryElement {
+        Radius(): number;
     }
     /**
      *
@@ -134,6 +135,8 @@ declare module JXG {
      *
      */
     export interface Point extends CoordsElement {
+        X(): number;
+        Y(): number;
     }
     /**
      *
@@ -153,6 +156,11 @@ declare module JXG {
      *
      */
     export interface Line extends GeometryElement {
+    }
+    /**
+     *
+     */
+    export interface Arc extends Line {
     }
     /**
      *
@@ -215,9 +223,24 @@ declare module JXG {
      */
     export interface Board {
         /**
+         * Register a new event handler.
+         * For a list of possible events see documentation of the elements and objects
+         * implementing the EventEmitter interface. 
+         * @method on
+         * @param event {string}
+         * @param handler {()=>void}
+         * @param context [{}] The context the handler will be called in, default is the element itself.
+         * @return Reference to the object.
+         */
+        on(event: string, handler: () => void, context?: {}): {};
+        /**
          *
          */
         create(elementType: "angle", parents?: any[], attributes?: {}): Angle;
+        /**
+         *
+         */
+        create(elementType: "arc", parents?: any[], attributes?: {}): Arc;
         /**
          *
          */
@@ -269,6 +292,10 @@ declare module JXG {
         /**
          *
          */
+        create(elementType: "segment", parents: any[], attributes?: {}): Segment;
+        /**
+         *
+         */
         create(elementType: "slider", parents: any[], attributes?: {}): Slider;
         /**
          *
@@ -309,7 +336,7 @@ declare module JXG {
          * @param attributes An object that sets some of the board properties. Most of these properties can be set via JXG.Options.
          * @returns Reference to the created board.
          */
-        initBoard(box: string, attributes: { axis?: boolean; boundingbox?: number[]; showCopyright?: boolean; showNavigation?: boolean}): Board;
+        initBoard(box: string, attributes: { axis?: boolean; boundingbox?: number[]; showCopyright?: boolean; showNavigation?: boolean }): Board;
     }
     /**
      *
@@ -367,24 +394,24 @@ declare module JXG {
     var Math: Math;
 
     export interface Numerics {
-      /**
-       * Solves a system of linear equations given by A and b using the Gauss-Jordan-elimination.
-       * The algorithm runs in-place. I.e. the entries of A and b are changed.
-       * @param A Square matrix represented by an array of rows, containing the coefficients of the linear equation system.
-       * @param b A vector containing the linear equation system's right hand side.
-       * @returns A vector that solves the linear equation system.
-       */
-      Gauss(A: number[][], b: number[]): number[];
-      /**
-       * Solve initial value problems numerically using Runge-Kutta-methods.
-       * See http://en.wikipedia.org/wiki/Runge-Kutta_methods for more information on the algorithm.
-       * @param butcher
-       * @param x0
-       * @param I
-       * @param N
-       * @param f
-       * @return An array of vectors describing the solution of the ode on the given interval I.
-       */
-      rungeKutta(butcher, x0: number[], I: number[], N: number, f): number[][];
+        /**
+         * Solves a system of linear equations given by A and b using the Gauss-Jordan-elimination.
+         * The algorithm runs in-place. I.e. the entries of A and b are changed.
+         * @param A Square matrix represented by an array of rows, containing the coefficients of the linear equation system.
+         * @param b A vector containing the linear equation system's right hand side.
+         * @returns A vector that solves the linear equation system.
+         */
+        Gauss(A: number[][], b: number[]): number[];
+        /**
+         * Solve initial value problems numerically using Runge-Kutta-methods.
+         * See http://en.wikipedia.org/wiki/Runge-Kutta_methods for more information on the algorithm.
+         * @param butcher
+         * @param x0
+         * @param I
+         * @param N
+         * @param f
+         * @return An array of vectors describing the solution of the ode on the given interval I.
+         */
+        rungeKutta(butcher, x0: number[], I: number[], N: number, f): number[][];
     }
 }
