@@ -159,6 +159,12 @@ angular.module('app').factory('templates', [
     "      <li>\n" +
     "        <a href='https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API' target='_blank'>Canvas API</a>\n" +
     "      </li>\n" +
+    "      <li>\n" +
+    "        <a href='http://www.mathdoodle.io/vendor/davinci-eight@2.102.0/documentation/index.html' target='_blank'>EIGHT API</a>\n" +
+    "      </li>\n" +
+    "      <li>\n" +
+    "        <a href='http://www.snible.org/greek/greek-keys.html' target='_blank'>Greek Keyboard</a>\n" +
+    "      </li>\n" +
     "    </ul>\n" +
     libsMarker() +
     codeMarker() +
@@ -166,32 +172,114 @@ angular.module('app').factory('templates', [
     "</html>\n";
 
   var CODE_TEMPLATE_CANVAS = "" +
-    "DomReady.ready(load);\n" +
+    "DomReady.ready(guard(main))\n" +
     "\n" +
     "/**\n" +
     " * The handler function to be called at the end of the document loading process.\n" +
-    " * @param ev The `load` event.\n" +
     " */\n" +
-    "function load() {\n" +
+    "function main() {\n" +
     "\n" +
-    "  var canvas: HTMLCanvasElement = document.createElement('canvas');\n" +
+    "  var canvas: HTMLCanvasElement = document.createElement('canvas')\n" +
     "\n" +
-    "  canvas.id = 'doodle1';\n" +
-    "  canvas.width = 1000;\n" +
-    "  canvas.height = 1000;\n" +
-    "\n" +
-    "  document.body.appendChild(canvas);\n" +
-    "\n" +
-    "  var context: CanvasRenderingContext2D = canvas.getContext('2d');\n"+
+    "  canvas.id = 'doodle1'\n" +
     "\n" +
     "  // The width and height properties are the modeling dimensions.\n" +
     "  // The CSS style determines the physical size in pixels.\n" +
+    "  canvas.width = 400\n" +
+    "  canvas.height = 400\n" +
     "\n" +
-    "  context.fillStyle = 'orange';\n" +
-    "  context.fillRect(0, 0, 500, 500);\n" +
+    "  document.body.appendChild(canvas)\n" +
+    "\n" +
+    "  var context: CanvasRenderingContext2D = canvas.getContext('2d');\n"+
+    "\n" +
+    "  /**\n" +
+    "   * The <em>east</em> <em>unit vector</em> (alias for <b>e</b><sub>1</sub>).\n" +
+    "   */\n" +
+    "  var E = EIGHT.G2.e1\n" +
+    "  // console.log(\"E => \" + E)\n" +
+    "\n" +
+    "  /**\n" +
+    "   * The south <em>unit vector</em> (alias for <b>e</b><sub>2</sub>).\n" +
+    "   */\n" +
+    "  var S = EIGHT.G2.e2\n" +
+    "  // console.log(\"S => \" + S)\n" +
+    "  var SE = (S + E).normalize()\n" +
+    "  // console.log(\"SE => \" + SE.toFixed(4))\n" +
+    "\n" +
+    "  var W = -E\n" +
+    "  var N = -S\n" +
+    "  // console.log(\"N => \" + N)\n" +
+    "\n" +
+    "  /**\n" +
+    "   * The counter-clockwise <em>bivector</em>, which is oriented from east to north.\n" +
+    "   * It is the <em>generator</em> of rotations in the plane.\n" +
+    "   */\n" +
+    "  var ccw = E ^ N\n" +
+    "  // console.log(\"ccw => \" + ccw)\n" +
+    "  // console.log(\"ccw * ccw => \" + ccw * ccw)\n" +
+    "\n" +
+    "  /**\n" +
+    "   * The <em>position</em> of the <em>center of mass</em>, a <em>vector</em>.\n" +
+    "   */\n" +
+    "  var X = 200 * E + 200 * S\n" +
+    "  // console.log(\"X => \" + X)\n" +
+    "\n" +
+    "  /**\n" +
+    "   * The <em>attitude</em> of the <em>rigid body</em>, a <em>spinor</em>.\n" +
+    "   */\n" +
+    "  var R = EIGHT.G2.fromScalar(1)\n" +
+    "  // console.log(\"R => \" + R)\n" +
+    "\n" +
+    "  /**\n" +
+    "   * The <em>periodic time</em> of the rotation.\n" +
+    "   */\n" +
+    "  var T = 4\n" +
+    "  var f = 1 / T\n" +
+    "  /**\n" +
+    "   * The <em>angular frequency</em> of the rotation.\n" +
+    "   */\n" +
+    "  var ω = 2 * Math.PI * f\n" +
+    "\n" +
+    "  function animate() {\n" +
+    "    var t = Date.now() * 0.001\n" +
+    "    var θ = ω * t\n" +
+    "    R.rotorFromGeneratorAngle(ccw, θ).scale(1)\n" +
+    "    // R.copy(ccw).scale(-θ/2).exp().scale(1)\n" +
+    "    // console.log(\"R => \" + R)\n" +
+    "\n" +
+    "    context.clearRect(0, 0, canvas.width, canvas.height)\n" +
+    "    context.save()\n" +
+    "    context.translate(X.x, X.y)\n" +
+    "    context.rotate(R.arg() * -2)\n" +
+    "    var squaredNorm = R.quaditude()\n" +
+    "    context.scale(squaredNorm, squaredNorm)\n" +
+    "    context.fillStyle = 'orange'\n" +
+    "    context.fillRect(-40, -25, 80, 50)\n" +
+    "    context.restore()\n" +
+    "\n" +
+    "    window.requestAnimationFrame(guard(animate))\n" +
+    "  }\n" +
+    "  window.requestAnimationFrame(guard(animate))\n" +
     "}\n";
 
-  var LIBS_TEMPLATE_CANVAS = "//\n";
+  var LIBS_TEMPLATE_CANVAS = "" +
+    "/**\n" +
+    " * Wrapper function to catch exceptions and log them to the Console as warnings.\n" +
+    " * This allows us to continue editing without being interrupted by the debugger.\n" +
+    " * <b>Ctrl+Shift+I</b> will open the <em>Developer tools</em> in the Google Chrome browser.\n" +
+    " * @param f The function to be wrapped.\n" +
+    " */\n" +
+    "function guard(f: () => void) {\n" +
+    "  return function() {\n" +
+    "    try {\n" +
+    "      f()\n" +
+    "    }\n" +
+    "    catch(e) {\n" +
+    "      console.warn(e)\n" +
+    "    }\n" +
+    "  }\n" +
+    "}\n" +
+    "\n";
 
   var LESS_TEMPLATE_CANVAS = "" +
     "#doodle1 {\n" +
@@ -1359,6 +1447,20 @@ angular.module('app').factory('templates', [
   return [
     {
       uuid: uuid.generate(),
+      description: "2D Graphics with HTML5 Canvas API and Geometric Algebra",
+      isCodeVisible: true,
+      isViewVisible: true,
+      focusEditor: undefined,
+      lastKnownJs: {},
+      operatorOverloading: true,
+      html: HTML_TEMPLATE_CANVAS,
+      code: CODE_TEMPLATE_CANVAS,
+      libs: LIBS_TEMPLATE_CANVAS,
+      less: LESS_TEMPLATE_CANVAS,
+      dependencies: ['DomReady', 'davinci-eight']
+    },
+    {
+      uuid: uuid.generate(),
       description: "EIGHT — Mathematical Computer Graphics using WebGL (1)",
       isCodeVisible: true,
       isViewVisible: true,
@@ -1456,20 +1558,6 @@ angular.module('app').factory('templates', [
       libs: LIBS_TEMPLATE_THREEJS,
       less: LESS_TEMPLATE_THREEJS,
       dependencies: ['three.js', 'stats.js']
-    },
-    {
-      uuid: uuid.generate(),
-      description: "Canvas — 2D Vector Graphics with HTML5 Canvas API",
-      isCodeVisible: true,
-      isViewVisible: true,
-      focusEditor: undefined,
-      lastKnownJs: {},
-      operatorOverloading: true,
-      html: HTML_TEMPLATE_CANVAS,
-      code: CODE_TEMPLATE_CANVAS,
-      libs: LIBS_TEMPLATE_CANVAS,
-      less: LESS_TEMPLATE_CANVAS,
-      dependencies: ['DomReady']
     },
     {
       uuid: uuid.generate(),
