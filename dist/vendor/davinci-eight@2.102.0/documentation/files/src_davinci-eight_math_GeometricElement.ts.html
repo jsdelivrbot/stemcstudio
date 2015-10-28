@@ -17,7 +17,7 @@
                 <h1><img src="../../assets/logo.png" title="davinci-eight"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.145.0</em>
+            <em>API Docs for: 2.147.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -228,11 +228,17 @@ import LinearElement = require(&#x27;../math/LinearElement&#x27;);
 /**
  * This interface is provided to ensure consistency.
  * It is not part of the documented API.
+ * Notice that the effect on the target depends upon whether the target class in mutable.
  */
 interface GeometricElement&lt;I, M, S, V&gt; extends LinearElement&lt;I, M, S, V&gt; {
 
     /**
-     *
+     * Addition of a pseudoscalar.
+     */
+    addPseudo(β: number): M;
+
+    /**
+     * Addition of a scalar.
      */
     addScalar(α: number): M;
 
@@ -304,7 +310,7 @@ interface GeometricElement&lt;I, M, S, V&gt; extends LinearElement&lt;I, M, S, V
     /**
      * squared norm, as a number
      */
-    quaditude(): number; // FIXME: This method drops units. Some authors might call this &#x60;det&#x60;
+    squaredNorm(): number; // FIXME: This method drops units. Some authors might call this &#x60;det&#x60;
 
     /**
      * Right contraction

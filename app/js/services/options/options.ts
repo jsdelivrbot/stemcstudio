@@ -14,7 +14,6 @@ angular.module('app').factory('options', [
 
   let VERSION_ANGULARJS  = '1.4.6'
   let VERSION_ASYNC      = '1.4.2'
-  let VERSION_BLADE      = '1.7.2'
   let VERSION_DOMREADY   = '1.0.0'
   let VERSION_D3         = '3.5.5'
   let VERSION_EIGHT      = '2.102.0'
@@ -47,9 +46,6 @@ angular.module('app').factory('options', [
   }
   function ng(fileName: string): string {
     return vendorFolder('angular', VERSION_ANGULARJS, void 0, fileName)
-  }
-  function blade(subFolder: string, fileName: string): string {
-    return vendorFolder('davinci-blade', VERSION_BLADE, subFolder, fileName)
   }
   function domready(fileName: string): string {
     return vendorFolder('domready', VERSION_DOMREADY, void 0, fileName)
@@ -116,18 +112,6 @@ angular.module('app').factory('options', [
       dependencies: {}
     },
     {
-      name: 'davinci-blade',
-      moniker: 'blade',
-      description: "Geometric Algebra Library",
-      homepage: 'https://github.com/geometryzen/davinci-blade',
-      version: VERSION_BLADE,
-      visible: true,
-      dts:   blade('dist', 'davinci-blade.d.ts'),
-      js:    blade('dist', 'davinci-blade.js'),
-      minJs: blade('dist', 'davinci-blade.min.js'),
-      dependencies: {}
-    },
-    {
       name: 'gl-matrix',
       moniker: 'gl-matrix',
       description: "Matrix and Vector library for High Performance WebGL apps",
@@ -149,7 +133,7 @@ angular.module('app').factory('options', [
       dts: eight('dist', 'davinci-eight.d.ts'),
       js: eight('dist', 'davinci-eight.js'),
       minJs: eight('dist', 'davinci-eight.js'), // Use the force, Luke.
-      dependencies: {'davinci-blade': '*','gl-matrix': '*'}
+      dependencies: {}
     },
     {
       name: 'd3',

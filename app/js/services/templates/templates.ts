@@ -172,10 +172,12 @@ angular.module('app').factory('templates', [
     "</html>\n";
 
   var CODE_TEMPLATE_CANVAS = "" +
-    "DomReady.ready(guard(main))\n" +
+    "//\n" +
+    "// 2D Mathematical Graphics with the HTML5 Canvas and Geometric Algebra.\n" +
+    "//\n" +
     "\n" +
     "/**\n" +
-    " * The handler function to be called at the end of the document loading process.\n" +
+    " * The handler function that will be called at the end of the document loading process.\n" +
     " */\n" +
     "function main() {\n" +
     "\n" +
@@ -196,13 +198,7 @@ angular.module('app').factory('templates', [
     "   * The <em>east</em> <em>unit vector</em> (alias for <b>e</b><sub>1</sub>).\n" +
     "   */\n" +
     "  var E = EIGHT.G2.e1\n" +
-    "\n" +
-    "  /**\n" +
-    "   * The south <em>unit vector</em> (alias for <b>e</b><sub>2</sub>).\n" +
-    "   */\n" +
     "  var S = EIGHT.G2.e2\n" +
-    "  var SE = (S + E).normalize()\n" +
-    "\n" +
     "  var W = -E\n" +
     "  var N = -S\n" +
     "\n" +
@@ -215,7 +211,7 @@ angular.module('app').factory('templates', [
     "  /**\n" +
     "   * The <em>position</em> of the <em>center of mass</em>, a <em>vector</em>.\n" +
     "   */\n" +
-    "  var X = 200 * E + 200 * S\n" +
+    "  var X = EIGHT.G2.zero\n" +
     "\n" +
     "  /**\n" +
     "   * The <em>attitude</em> of the <em>rigid body</em>, a <em>spinor</em>.\n" +
@@ -240,33 +236,101 @@ angular.module('app').factory('templates', [
     "    // R.rotorFromDirections(N, N + E)\n" +
     "\n" +
     "    context.clearRect(0, 0, canvas.width, canvas.height)\n" +
-    "    drawMagnet(context, X, R)\n" +
+    "    drawLineTee(context, X, R * E * ~R, 'blue', canvas)\n" +
+    "    drawSpinTee(context, X, R, 'magenta', canvas)\n" +
+    "    // drawMagnet(context, X, R, canvas)\n" +
     "\n" +
     "    window.requestAnimationFrame(guard(animate))\n" +
     "  }\n" +
-    "  window.requestAnimationFrame(guard(animate))\n" +
+    "  guard(animate)()\n" +
+    "}\n" +
+    "\n" +
+    "DomReady.ready(guard(main))\n" +
+    "\n";
+
+  var LIBS_TEMPLATE_CANVAS = "" +
+    "var PI = Math.PI\n" +
+    "var sqrt = Math.sqrt\n" +
+    "var LINE_WIDTH = 6\n" +
+    "var TEE_WIDTH = 6 * LINE_WIDTH\n" +
+    "var MAGNET_WIDTH = 0.15\n" +
+    "var MAGNET_LENGTH = 4 * MAGNET_WIDTH\n" +
+    "\n" +
+    "function toCanvasX(position: EIGHT.G2, canvas: HTMLCanvasElement): number {\n" +
+    "  return (position.x + 1) * canvas.width / 2\n" +
+    "}\n" +
+    "\n" +
+    "function toCanvasY(position: EIGHT.G2, canvas: HTMLCanvasElement): number {\n" +
+    "  return (position.y + 1) * canvas.height / 2\n" +
     "}\n" +
     "\n" +
     "/**\n" +
-    " * Draws a <em>bar magnet</em> at the specified position, <code>X</code>, and with the specified attitude, <code>R</code>.\n" +
-    " * @param context The canvas rendering context.\n" +
-    " * @param X The position.\n" +
-    " * @param R The attitude.\n" +
+    " * Draws a <em>curly tee</em> as the geometric representation of a spinor.\n" +
     " */\n" +
-    "function drawMagnet(context: CanvasRenderingContext2D, X: EIGHT.VectorE2, R: EIGHT.SpinorE2) {\n" +
+    "function drawSpinTee(context: CanvasRenderingContext2D, position: EIGHT.G2, spinor: EIGHT.G2, color: any, canvas: HTMLCanvasElement) {\n" +
+    "  var radius = sqrt(spinor.magnitude() / PI) * canvas.width / 2\n" +
+    "  // The arg is in relation to I, which is e1 ^ e2, which here is clockwise!\n" +
+    "  // So a negative angle is clockwise!\n" +
+    "  var θ = spinor.arg()\n" +
+    "  // Or to say it another way, anticlockwise is positive.\n" +
+    "  var anticlockwise: boolean = θ > 0\n" +
+    "\n" +
     "  context.save()\n" +
-    "  context.translate(X.x, X.y)\n" +
-    "  context.rotate(R.arg() * -2)\n" +
-    "  var squaredNorm = R.quaditude()\n" +
+    "  context.lineWidth = LINE_WIDTH\n" +
+    "  context.strokeStyle = color\n" +
+    "\n" +
+    "  context.translate(toCanvasX(position, canvas), toCanvasY(position, canvas))\n" +
+    "\n" +
+    "  // The angle argument is clockwise positive, so we must flip the sign.\n" +
+    "  context.rotate(-θ)\n" +
+    "\n" +
+    "  context.beginPath()\n" +
+    "  // The start angle must compensate for the rotation to get it back to zero.\n" +
+    "  // The end angle is zero so that it meets with the `T`.\n" +
+    "  var endAngle = 0\n" +
+    "  context.arc(0, 0, radius, +θ, endAngle, anticlockwise)\n" +
+    "\n" +
+    "  context.moveTo(radius - TEE_WIDTH / 2, 0)\n" +
+    "  context.lineTo(radius + TEE_WIDTH / 2, 0)\n" +
+    "  context.stroke()\n" +
+    "  context.restore()\n" +
+    "}\n" +
+    "\n" +
+    "/**\n" +
+    " * Draws a <em>bar magnet</em> at the specified <code>position</code> and with the specified <code>attitude</code>.\n" +
+    " */\n" +
+    "function drawMagnet(context: CanvasRenderingContext2D, position: EIGHT.G2, attitude: EIGHT.G2, canvas: HTMLCanvasElement) {\n" +
+    "  var width = MAGNET_WIDTH * canvas.width / 2\n" +
+    "  var length = MAGNET_LENGTH * canvas.width / 2\n" +
+    "\n" +
+    "  context.save()\n" +
+    "  context.translate(toCanvasX(position, canvas), toCanvasY(position, canvas))\n" +
+    "  context.rotate(attitude.arg() * -2)\n" +
+    "  var squaredNorm = attitude.squaredNorm()\n" +
     "  context.scale(squaredNorm, squaredNorm)\n" +
     "  context.fillStyle = 'red'\n" +
-    "  context.fillRect(-10, -40, 20, 40)\n" +
+    "  context.fillRect(-width / 2, -length / 2, width, length / 2)\n" +
     "  context.fillStyle = 'white'\n" +
-    "  context.fillRect(-10, 0, 20, 40)\n" +
+    "  context.fillRect(-width / 2, 0, width, length / 2)\n" +
     "  context.restore()\n" +
-    "}\n";
-
-  var LIBS_TEMPLATE_CANVAS = "" +
+    "}\n" +
+    "\n" +
+    "/**\n" +
+    " * Draws a <em>wind tee</em> as the geometric representation of a vector.\n" +
+    " */\n" +
+    "function drawLineTee(context: CanvasRenderingContext2D, position: EIGHT.G2, vector: EIGHT.G2, color: any, canvas: HTMLCanvasElement) {\n" +
+    "  var length = vector.magnitude() * canvas.width / 2\n" +
+    "  var north = -EIGHT.G2.e2\n" +
+    "  var R = new EIGHT.G2().rotorFromDirections(north, vector)\n" +
+    "  context.save()\n" +
+    "  context.translate(toCanvasX(position, canvas), toCanvasY(position, canvas))\n" +
+    "  context.rotate(R.arg() * -2)\n" +
+    "  context.fillStyle = color\n" +
+    "  context.fillRect(-TEE_WIDTH / 2, -length / 2, TEE_WIDTH, LINE_WIDTH)\n" +
+    "  context.fillRect(-LINE_WIDTH / 2, -length / 2, LINE_WIDTH, length)\n" +
+    "  context.restore()\n" +
+    "}\n" +
+    "\n" +
     "/**\n" +
     " * Wrapper function to catch exceptions and log them to the Console as warnings.\n" +
     " * This allows us to continue editing without being interrupted by the debugger.\n" +
@@ -398,7 +462,7 @@ angular.module('app').factory('templates', [
     "/**\n" +
     " * The universal exponential function, exp.\n" +
     " */\n" +
-    "var exp = blade.universals.exp\n" +
+    "var exp = EIGHT.exp\n" +
     "/**\n" +
     " * The time interval between animation frames.\n" +
     " */\n" +
@@ -578,7 +642,7 @@ angular.module('app').factory('templates', [
     " * Break the rules! It's better to use (sometimes) short variable names in math programs!!\n" +
     " * Hint: Hover over a variable anywhere in the program to see the corresponding documentation.\n" +
     " */\n" +
-    "var T: blade.Euclidean3 = 4 * second\n" +
+    "var T: EIGHT.Euclidean3 = 4 * second\n" +
     "/**\n" +
     " * The frequency of the motions in the animation.\n" +
     " */\n" +
@@ -600,9 +664,8 @@ angular.module('app').factory('templates', [
     "\n" +
     "/**\n" +
     " * main() is called by the DomReady preamble in the Libs file, in case you were wondering!\n" +
-    " * This code illustrates the main ideas in using EIGHT and blade.\n" +
+    " * This code illustrates the main ideas in using EIGHT.\n" +
     " * This code does not show how to perform robust resource management.\n" +
-    " * See the example template 'EIGHT + blade + AngularJS' for advanced resource management and tracking.\n" +
     " */\n" +
     "function main() {\n" +
     "\n" +
@@ -754,8 +817,8 @@ angular.module('app').factory('templates', [
     "\n" +
     "  // PERFORMANCE HINT\n"+
     "  // In order to avoid creating temporary objects and excessive garbage collection,\n" +
-    "  // perform blade computations outside of the animation loop and\n" +
-    "  // use EIGHT mutable components inside the animation loop.\n" +
+    "  // perform immutable/operator computations outside of the animation loop and\n" +
+    "  // use EIGHT mutable objects and methods inside the animation loop.\n" +
     "  /**\n" +
     "   * The angle of tilt of the precessing vector.\n" +
     "   */\n" +
@@ -763,7 +826,7 @@ angular.module('app').factory('templates', [
     "  /**\n" +
     "   * S, a spinor representing the default attitude of the cube.\n" +
     "   */\n" +
-    "  // We're using blade, Geometric Algebra, and operator overloading here.\n" +
+    "  // We're using EIGHT, Geometric Algebra, and operator overloading here.\n" +
     "  // We perform similar calculations inside the animation loop using BLADE mutable types.\n" +
     "  // The global constants, e1, e2 and e3, are defined in the 'Libs' file.\n" +
     "  var S = exp(-(e2 ^ e1) * tiltAngle / 2)\n" +
@@ -777,7 +840,7 @@ angular.module('app').factory('templates', [
     "    /**\n" +
     "     * theta = omega * time, is the basic angle used in the animation.\n" +
     "     */\n" +
-    "    var theta: number = omega.w * time\n" +
+    "    var theta: number = omega.α * time\n" +
     "    // Simple Harmonic Motion.\n" +
     "    // model.X.copy(e2).scale(1.2 * sin(theta))\n" +
     "\n" +
@@ -830,15 +893,15 @@ angular.module('app').factory('templates', [
     "/**\n" +
     " * Standard basis vector in the x-axis direction.\n" +
     " */\n" +
-    "var e1 = blade.e3ga.e1\n" +
+    "var e1 = EIGHT.Euclidean3.e1\n" +
     "/**\n" +
     " * Standard basis vector in the y-axis direction.\n" +
     " */\n" +
-    "var e2 = blade.e3ga.e2\n" +
+    "var e2 = EIGHT.Euclidean3.e2\n" +
     "/**\n" +
     " * Standard basis vector in the z-axis direction.\n" +
     " */\n" +
-    "var e3 = blade.e3ga.e3\n" +
+    "var e3 = EIGHT.Euclidean3.e3\n" +
     "var e12 = e1 * e2\n" +
     "var e23 = e2 * e3\n" +
     "var e32 = e3 * e2\n" +
@@ -846,23 +909,23 @@ angular.module('app').factory('templates', [
     "/**\n" +
     " * Returns the cosine of a number.\n" +
     " */\n" +
-    "var cos = blade.universals.cos\n" +
+    "var cos = EIGHT.cos\n" +
     "/**\n" +
     " * Returns e (the base of natural logarithms) raised to a power.\n" +
     " */\n" +
-    "var exp = blade.universals.exp\n" +
+    "var exp = EIGHT.exp\n" +
     "/**\n" +
     " * Returns the sine of a number.\n" +
     " */\n" +
-    "var sin = blade.universals.sin\n" +
+    "var sin = EIGHT.sin\n" +
     "\n" +
     "/**\n" +
     " * S.I. units of measure.\n" +
     " */\n" +
-    "var kilogram = blade.e3ga.units.kilogram\n" +
-    "var meter    = blade.e3ga.units.meter\n" +
-    "var second   = blade.e3ga.units.second\n" +
-    "var hertz    = blade.e3ga.units.hertz\n" +
+    "var kilogram = EIGHT.Euclidean3.kilogram\n" +
+    "var meter    = EIGHT.Euclidean3.meter\n" +
+    "var second   = EIGHT.Euclidean3.second\n" +
+    "var hertz    = 1 / EIGHT.Euclidean3.second\n" +
     "\n" +
     "class Model extends EIGHT.Shareable implements EIGHT.IFacet {\n" +
     "  public position = new EIGHT.R3()\n" +
@@ -1182,7 +1245,7 @@ angular.module('app').factory('templates', [
 
   var CODE_TEMPLATE_D3 = "var x = d3;\n";
 
-  var HTML_TEMPLATE_ANGULAR_BLADE_EIGHT = "" +
+  var HTML_TEMPLATE_ANGULAR_EIGHT = "" +
     "<!doctype html>\n" +
     "<html ng-app='doodle'>\n" +
     "  <head>\n" +
@@ -1214,11 +1277,11 @@ angular.module('app').factory('templates', [
     "  <body>\n" +
     "    <div class='container'>\n" +
     "      <div class='page-header'>\n" +
-    "        <h1>AngularJS, blade, and eight.js</h1>\n" +
+    "        <h1>AngularJS and EIGHT</h1>\n" +
     "      </div>\n" +
     "      <div ng-controller='my-controller'>\n" +
     "        <h3>Spinors and Rotations</h3>\n" +
-    "        <p>An example using the <em>blade</em> module to perform <b>Geometric Algebra</b> mathematics, <em>eight.js</em> for <b>WebGL</b> rendering, and <em>AngularJS</em> for the Model-View-Whatever <b>User Interface</b>.</p>\n" +
+    "        <p>An example using the <em>EIGHT</em> module to perform <b>Geometric Algebra</b> mathematics, <em>EIGHT</em> for <b>WebGL</b> rendering, and <em>AngularJS</em> for the Model-View-Whatever <b>User Interface</b>.</p>\n" +
     "        <canvas id='canvasId' style='width:600px; height:400px;'></canvas>\n" +
     "        <div>\n" +
     "          <h1>time: {{runner.time | number:2}}</h1>\n"+
@@ -1241,7 +1304,7 @@ angular.module('app').factory('templates', [
     "  </body>\n" +
     "</html>\n";
 
-  var CODE_TEMPLATE_ANGULAR_BLADE_EIGHT = "" +
+  var CODE_TEMPLATE_ANGULAR_EIGHT = "" +
     "interface IMyScope extends angular.IScope {\n" +
     "  /**\n"+
     "   * The `runner` runs the animation.\n"+
@@ -1263,12 +1326,12 @@ angular.module('app').factory('templates', [
     "\n"+
     "    // PERFORMANCE HINT\n"+
     "    // In order to avoid creating temporary objects and excessive garbage collection,\n"+
-    "    // perform blade computations outside of the animation loop and\n"+
-    "    // use EIGHT mutable components inside the animation loop.\n"+
-    "    var e1 = blade.vectorE3(1,0,0)\n" +
-    "    var e2 = blade.vectorE3(0,1,0)\n" +
-    "    var e3 = blade.vectorE3(0,0,1)\n" +
-    "    var exp = blade.universals.exp\n" +
+    "    // perform immutable/operator computations outside of the animation loop and\n"+
+    "    // use EIGHT mutable objects and methods inside the animation loop.\n"+
+    "    var e1 = EIGHT.Euclidean3.e1\n" +
+    "    var e2 = EIGHT.Euclidean3.e2\n" +
+    "    var e3 = EIGHT.Euclidean3.e3\n" +
+    "    var exp = EIGHT.exp\n" +
     "    var T = 4\n" +
     "    var f = 1 / T\n" +
     "    var omega = 2 * Math.PI * f\n" +
@@ -1394,7 +1457,7 @@ angular.module('app').factory('templates', [
     "  }]);\n" +
     "})(angular.module('doodle', []))\n";
 
-  var LIBS_TEMPLATE_ANGULAR_BLADE_EIGHT = "//\n";
+  var LIBS_TEMPLATE_ANGULAR_EIGHT = "//\n";
 
   var HTML_TEMPLATE_MATHBOX = "" +
     "<!doctype html>\n" +
@@ -1440,7 +1503,7 @@ angular.module('app').factory('templates', [
     "}\n" +
 "\n" +
 "function surfaceFn(x: number, y: number): number[] {\n" +
-"  var z = new blade.Complex(x, y).exp();\n" +
+"  var z = new EIGHT.CC(x, y).exp();\n" +
 "  return [z.x, z.y, x+y];\n" +
 "}\n";
 
@@ -1489,7 +1552,7 @@ angular.module('app').factory('templates', [
       code: CODE_TEMPLATE_EIGHT,
       libs: LIBS_TEMPLATE_EIGHT,
       less: LESS_TEMPLATE_EIGHT,
-      dependencies: ['DomReady', 'davinci-blade', 'davinci-eight', 'stats.js']
+      dependencies: ['DomReady', 'davinci-eight', 'stats.js']
     },
     {
       uuid: uuid.generate(),
@@ -1499,11 +1562,11 @@ angular.module('app').factory('templates', [
       focusEditor: undefined,
       lastKnownJs: {},
       operatorOverloading: true,
-      html: HTML_TEMPLATE_ANGULAR_BLADE_EIGHT,
-      code: CODE_TEMPLATE_ANGULAR_BLADE_EIGHT,
-      libs: LIBS_TEMPLATE_ANGULAR_BLADE_EIGHT,
+      html: HTML_TEMPLATE_ANGULAR_EIGHT,
+      code: CODE_TEMPLATE_ANGULAR_EIGHT,
+      libs: LIBS_TEMPLATE_ANGULAR_EIGHT,
       less: LESS_TEMPLATE_BASIC,
-      dependencies: ['angular', 'davinci-blade', 'davinci-eight', 'stats.js']
+      dependencies: ['angular', 'davinci-eight', 'stats.js']
     },
     {
       uuid: uuid.generate(),
@@ -1517,7 +1580,7 @@ angular.module('app').factory('templates', [
       code: CODE_TEMPLATE_CALCULATION,
       libs: LIBS_TEMPLATE_CALCULATION,
       less: LESS_TEMPLATE_CALCULATION,
-      dependencies: ['DomReady', 'davinci-blade', 'davinci-eight']
+      dependencies: ['DomReady', 'davinci-eight']
     },
     /*
     {
@@ -1532,7 +1595,7 @@ angular.module('app').factory('templates', [
       code: CODE_TEMPLATE_MATHBOX,
       libs: LIBS_TEMPLATE_MATHBOX,
       less: LESS_TEMPLATE_MATHBOX,
-      dependencies: ['DomReady','davinci-mathbox','davinci-blade']
+      dependencies: ['DomReady','davinci-mathbox','davinci-eight']
     },
     */
     {
