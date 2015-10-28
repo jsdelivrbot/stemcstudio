@@ -196,39 +196,31 @@ angular.module('app').factory('templates', [
     "   * The <em>east</em> <em>unit vector</em> (alias for <b>e</b><sub>1</sub>).\n" +
     "   */\n" +
     "  var E = EIGHT.G2.e1\n" +
-    "  // console.log(\"E => \" + E)\n" +
     "\n" +
     "  /**\n" +
     "   * The south <em>unit vector</em> (alias for <b>e</b><sub>2</sub>).\n" +
     "   */\n" +
     "  var S = EIGHT.G2.e2\n" +
-    "  // console.log(\"S => \" + S)\n" +
     "  var SE = (S + E).normalize()\n" +
-    "  // console.log(\"SE => \" + SE.toFixed(4))\n" +
     "\n" +
     "  var W = -E\n" +
     "  var N = -S\n" +
-    "  // console.log(\"N => \" + N)\n" +
     "\n" +
     "  /**\n" +
     "   * The counter-clockwise <em>bivector</em>, which is oriented from east to north.\n" +
     "   * It is the <em>generator</em> of rotations in the plane.\n" +
     "   */\n" +
     "  var ccw = E ^ N\n" +
-    "  // console.log(\"ccw => \" + ccw)\n" +
-    "  // console.log(\"ccw * ccw => \" + ccw * ccw)\n" +
     "\n" +
     "  /**\n" +
     "   * The <em>position</em> of the <em>center of mass</em>, a <em>vector</em>.\n" +
     "   */\n" +
     "  var X = 200 * E + 200 * S\n" +
-    "  // console.log(\"X => \" + X)\n" +
     "\n" +
     "  /**\n" +
     "   * The <em>attitude</em> of the <em>rigid body</em>, a <em>spinor</em>.\n" +
     "   */\n" +
     "  var R = EIGHT.G2.fromScalar(1)\n" +
-    "  // console.log(\"R => \" + R)\n" +
     "\n" +
     "  /**\n" +
     "   * The <em>periodic time</em> of the rotation.\n" +
@@ -245,21 +237,33 @@ angular.module('app').factory('templates', [
     "    var θ = ω * t\n" +
     "    R.rotorFromGeneratorAngle(ccw, θ).scale(1)\n" +
     "    // R.copy(ccw).scale(-θ/2).exp().scale(1)\n" +
-    "    // console.log(\"R => \" + R)\n" +
+    "    // R.rotorFromDirections(N, N + E)\n" +
     "\n" +
     "    context.clearRect(0, 0, canvas.width, canvas.height)\n" +
-    "    context.save()\n" +
-    "    context.translate(X.x, X.y)\n" +
-    "    context.rotate(R.arg() * -2)\n" +
-    "    var squaredNorm = R.quaditude()\n" +
-    "    context.scale(squaredNorm, squaredNorm)\n" +
-    "    context.fillStyle = 'orange'\n" +
-    "    context.fillRect(-40, -25, 80, 50)\n" +
-    "    context.restore()\n" +
+    "    drawMagnet(context, X, R)\n" +
     "\n" +
     "    window.requestAnimationFrame(guard(animate))\n" +
     "  }\n" +
     "  window.requestAnimationFrame(guard(animate))\n" +
+    "}\n" +
+    "\n" +
+    "/**\n" +
+    " * Draws a <em>bar magnet</em> at the specified position, <code>X</code>, and with the specified attitude, <code>R</code>.\n" +
+    " * @param context The canvas rendering context.\n" +
+    " * @param X The position.\n" +
+    " * @param R The attitude.\n" +
+    " */\n" +
+    "function drawMagnet(context: CanvasRenderingContext2D, X: EIGHT.VectorE2, R: EIGHT.SpinorE2) {\n" +
+    "  context.save()\n" +
+    "  context.translate(X.x, X.y)\n" +
+    "  context.rotate(R.arg() * -2)\n" +
+    "  var squaredNorm = R.quaditude()\n" +
+    "  context.scale(squaredNorm, squaredNorm)\n" +
+    "  context.fillStyle = 'red'\n" +
+    "  context.fillRect(-10, -40, 20, 40)\n" +
+    "  context.fillStyle = 'white'\n" +
+    "  context.fillRect(-10, 0, 20, 40)\n" +
+    "  context.restore()\n" +
     "}\n";
 
   var LIBS_TEMPLATE_CANVAS = "" +
@@ -1447,7 +1451,7 @@ angular.module('app').factory('templates', [
   return [
     {
       uuid: uuid.generate(),
-      description: "2D Graphics with HTML5 Canvas API and Geometric Algebra",
+      description: "2D Mathematical Graphics with HTML5 Canvas API and Geometric Algebra",
       isCodeVisible: true,
       isViewVisible: true,
       focusEditor: undefined,
@@ -1461,7 +1465,7 @@ angular.module('app').factory('templates', [
     },
     {
       uuid: uuid.generate(),
-      description: "EIGHT — Mathematical Computer Graphics using WebGL (1)",
+      description: "3D Mathematical Graphics with EIGHT, WebGL, and Geometric Algebra (1)",
       isCodeVisible: true,
       isViewVisible: true,
       focusEditor: undefined,
@@ -1475,7 +1479,7 @@ angular.module('app').factory('templates', [
     },
     {
       uuid: uuid.generate(),
-      description: "EIGHT — Mathematical Computer Graphics using WebGL (2)",
+      description: "3D Mathematical Graphics with EIGHT, WebGL, and Geometric Algebra (2)",
       isCodeVisible: true,
       isViewVisible: true,
       focusEditor: undefined,
@@ -1489,7 +1493,7 @@ angular.module('app').factory('templates', [
     },
     {
       uuid: uuid.generate(),
-      description: "EIGHT — Mathematical Computer Graphics using WebGL (3)",
+      description: "3D Mathematical Graphics with EIGHT, WebGL, and Geometric Algebra (3)",
       isCodeVisible: true,
       isViewVisible: true,
       focusEditor: undefined,
