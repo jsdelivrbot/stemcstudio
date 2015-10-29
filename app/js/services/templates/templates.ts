@@ -249,7 +249,8 @@ angular.module('app').factory('templates', [
     "\n";
 
   var LIBS_TEMPLATE_CANVAS = "" +
-    "var PI = Math.PI\n" +
+    "var π = Math.PI\n" +
+    "var τ = 2 * π\n" +
     "var sqrt = Math.sqrt\n" +
     "var LINE_WIDTH = 6\n" +
     "var TEE_WIDTH = 6 * LINE_WIDTH\n" +
@@ -264,14 +265,17 @@ angular.module('app').factory('templates', [
     "  return (position.y + 1) * canvas.height / 2\n" +
     "}\n" +
     "\n" +
+    "var zeroTwoPi = (θ: number) => {return (θ < 0) ? θ + τ : θ}\n" +
+    "var circleRadiusFromArea = (A: number) => {return sqrt(A/π)}\n" +
+    "\n" +
     "/**\n" +
     " * Draws a <em>curly tee</em> as the geometric representation of a spinor.\n" +
     " */\n" +
     "function drawSpinTee(context: CanvasRenderingContext2D, position: EIGHT.G2, spinor: EIGHT.G2, color: any, canvas: HTMLCanvasElement) {\n" +
-    "  var radius = sqrt(spinor.magnitude() / PI) * canvas.width / 2\n" +
+    "  var radius = circleRadiusFromArea(spinor.magnitude()) * canvas.width / 2\n" +
     "  // The arg is in relation to I, which is e1 ^ e2, which here is clockwise!\n" +
     "  // So a negative angle is clockwise!\n" +
-    "  var θ = spinor.arg()\n" +
+    "  var θ = zeroTwoPi(spinor.arg())\n" +
     "  // Or to say it another way, anticlockwise is positive.\n" +
     "  var anticlockwise: boolean = θ > 0\n" +
     "\n" +
