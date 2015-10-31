@@ -2,6 +2,9 @@
   "name": "mathdoodle",
   "version": "1.195.0",
   "description": "Learning Mathematics and Geometric Physics through Computational Modeling",
+  "engines": {
+    "node": "0.12.0"
+  },
   "scripts": {
     "start": "NODE_ENV=local nodemon web.js",
     "test": "lineman spec-ci"
