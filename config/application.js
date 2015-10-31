@@ -16,8 +16,13 @@ module.exports = function(lineman) {
     {name: 'davinci-eight',      version: '2.102.0', src: ['dist/**','documentation/**', 'bower.json', 'LICENSE']},
     {name: 'davinci-mathscript', version: '1.0.8',   src: ['dist/**','documentation/**', 'bower.json', 'LICENSE']},
     {name: 'd3',                 version: '3.5.5',   src: ['**']},
+    {name: 'deck.js',            version: '1.1.0',   src: ['core/**']},
+    {name: 'deck.js',            version: '1.1.0',   src: ['extensions/**']},
+    {name: 'deck.js',            version: '1.1.0',   src: ['themes/**']},
+    {name: 'deck.js',            version: '1.1.0',   src: ['modernizr.custom.js']},
     {name: 'domready',           version: '1.0.0',   src: ['**']},
     {name: 'gl-matrix',          version: '2.3.1',   src: ['dist/**']},
+    {name: 'jquery',             version: '2.1.4',   src: ['dist/**']},
     {name: 'jsxgraph',           version: '0.99.3',  src: ['**']},
     {name: 'requirejs',          version: '2.1.9',   src: ['**']},
     {name: 'stats.js',           version: '0.0.14',  src: ['**']},
@@ -71,6 +76,7 @@ module.exports = function(lineman) {
       {src: "vendor/bootstrap/dist/fonts/glyphicons-halflings-regular.woff",  dest: targetOut("fonts/glyphicons-halflings-regular.woff")},
       {src: "vendor/bootstrap/dist/fonts/glyphicons-halflings-regular.woff2", dest: targetOut("fonts/glyphicons-halflings-regular.woff2")}
     ];
+    // We try to copy from museum, vendor, and maybe a local folder.
     for (var i = 0; i < specs.length; i++) {
       var spec = specs[i];
       var wildPath = '/' + spec.name;

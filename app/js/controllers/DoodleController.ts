@@ -734,7 +734,7 @@ angular.module('app').controller('doodle-controller', [
             var done = false;
             while (!done) {
                 var size = nameSet.size();
-
+                // FIXME: This only computes the closure. It does not sort into for dependencies.
                 namesToOptions(nameSet.toArray()).forEach(function(option: IOption) {
                     for (var name in option.dependencies) {
                         nameSet.add(name);
@@ -816,9 +816,14 @@ angular.module('app').controller('doodle-controller', [
                     html = html.replace('<!-- STYLE-MARKER -->', ['<style>', doodles.current().less, '</style>'].join(""));
                     html = html.replace('<!-- CODE-MARKER -->', currentJavaScript(FILENAME_CODE));
 
-                    content.open();
-                    content.write(html);
-                    content.close();
+                    content.open()
+                    if (false) {
+                        console.log("HTML")
+                        console.log("----")
+                        console.log(html)
+                    }
+                    content.write(html)
+                    content.close()
                 }
                 else {
                     // Do nothing
