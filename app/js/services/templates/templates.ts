@@ -181,64 +181,71 @@ angular.module('app').factory('templates', [
     " */\n" +
     "function main() {\n" +
     "\n" +
+    "  // Boilerplate code for creating a canvas and '2d' context.\n" +
     "  var canvas: HTMLCanvasElement = document.createElement('canvas')\n" +
-    "\n" +
     "  canvas.id = 'doodle1'\n" +
-    "\n" +
     "  // The width and height properties are the modeling dimensions.\n" +
     "  // The CSS style determines the physical size in pixels.\n" +
     "  canvas.width = 400\n" +
     "  canvas.height = 400\n" +
-    "\n" +
     "  document.body.appendChild(canvas)\n" +
-    "\n" +
     "  var context: CanvasRenderingContext2D = canvas.getContext('2d');\n"+
     "\n" +
     "  /**\n" +
     "   * The <em>east</em> <em>unit vector</em> (alias for <b>e</b><sub>1</sub>).\n" +
     "   */\n" +
-    "  var E = EIGHT.G2.e1\n" +
-    "  var S = EIGHT.G2.e2\n" +
+    "  var E = e1\n" +
+    "  var S = e2\n" +
     "  var W = -E\n" +
     "  var N = -S\n" +
+    "  var origin = zero\n" +
     "\n" +
-    "  /**\n" +
-    "   * The counter-clockwise <em>bivector</em>, which is oriented from east to north.\n" +
-    "   * It is the <em>generator</em> of rotations in the plane.\n" +
-    "   */\n" +
-    "  var ccw = E ^ N\n" +
-    "\n" +
-    "  /**\n" +
-    "   * The <em>position</em> of the <em>center of mass</em>, a <em>vector</em>.\n" +
-    "   */\n" +
-    "  var X = EIGHT.G2.zero\n" +
-    "\n" +
-    "  /**\n" +
-    "   * The <em>attitude</em> of the <em>rigid body</em>, a <em>spinor</em>.\n" +
-    "   */\n" +
-    "  var R = EIGHT.G2.fromScalar(1)\n" +
-    "\n" +
-    "  /**\n" +
-    "   * The <em>periodic time</em> of the rotation.\n" +
-    "   */\n" +
     "  var T = 4\n" +
     "  var f = 1 / T\n" +
+    "  var ω = τ * f\n" +
+    "\n" +
     "  /**\n" +
-    "   * The <em>angular frequency</em> of the rotation.\n" +
+    "   * The <em>rotational velocity</em>, a <em>bivector</em>.\n" +
     "   */\n" +
-    "  var ω = 2 * Math.PI * f\n" +
+    "  var Ω = -clockwise * ω\n" +
+    "\n" +
+    "  // Define permanent mutable variables (for performance).\n" +
+    "  // Initialize them with sensible defaults.\n" +
+    "  var θ = Ω.clone().scale(0)\n" +
+    "  var red = N.clone()\n" +
+    "  var blue = E.clone()\n" +
+    "  var magnet = one.clone()\n" +
+    "  var R = one.clone()\n" +
     "\n" +
     "  function animate() {\n" +
+    "    // Reset permanent variables for this frame.\n" +
+    "    red.copy(N)\n" +
+    "    blue.copy(E)\n" +
+    "\n" +
     "    var t = Date.now() * 0.001\n" +
-    "    var θ = ω * t\n" +
-    "    R.rotorFromGeneratorAngle(ccw, θ).scale(1)\n" +
-    "    // R.copy(ccw).scale(-θ/2).exp().scale(1)\n" +
+    "    // θ = Ω * t\n" +
+    "    θ.copy(Ω).scale(t)\n" +
+    "\n" +
+    "    // R = exp(-θ/2)\n" +
+    "    R.copy(θ).scale(-0.5).exp()\n" +
     "    // R.rotorFromDirections(N, N + E)\n" +
+    "    // R.rotorFromGeneratorAngle(clockwise, θ.magnitude()).scale(1)\n" +
+    "    // R.copy(E).mul(N).log().scale(-0.5*(1/3)).exp()\n" +
+    "\n" +
+    "    // red = R * red * ~R\n" +
+    "    red.rotate(R)\n" +
+    "\n" +
+    "    // blue = R * blue * ~R\n" +
+    "    blue.rotate(R)\n" +
+    "\n" +
+    "    magnet.copy(R)\n" +
     "\n" +
     "    context.clearRect(0, 0, canvas.width, canvas.height)\n" +
-    "    drawLineTee(context, X, R * E * ~R, 'blue', canvas)\n" +
-    "    drawSpinTee(context, X, R, 'magenta', canvas)\n" +
-    "    // drawMagnet(context, X, R, canvas)\n" +
+    "\n" +
+    "    drawLineTee(context, origin, red, 'red', canvas)\n" +
+    "    drawLineTee(context, origin, blue, 'blue', canvas)\n" +
+    "    drawSpinTee(context, origin, R, 'magenta', canvas)\n" +
+    "    drawMagnet(context, origin, magnet, canvas)\n" +
     "\n" +
     "    window.requestAnimationFrame(guard(animate))\n" +
     "  }\n" +
@@ -251,17 +258,40 @@ angular.module('app').factory('templates', [
   var LIBS_TEMPLATE_CANVAS = "" +
     "var π = Math.PI\n" +
     "var τ = 2 * π\n" +
-    "var sqrt = Math.sqrt\n" +
+    "/**\n" +
+    " * <b>e</b><sub>1</sub> is the basis <em>vector</em> corresponding to the <em>x coordinate</em>.\n" +
+    " */\n" +
+    "var e1 = EIGHT.G2.e1\n" +
+    "/**\n" +
+    " * <b>e</b><sub>2</sub> is the basis <em>vector</em> corresponding to the <em>y coordinate</em>.\n" +
+    " */\n" +
+    "var e2 = EIGHT.G2.e2\n" +
+    "var zero = EIGHT.G2.zero\n" +
+    "var one = EIGHT.G2.one\n" +
+    "\n" +
+    "/**\n" +
+    " * The clockwise <em>bivector</em>, <b>e</b><sub>1</sub> * <b>e</b><sub>2</sub>.\n" +
+    " * It is the <em>generator</em> of rotations in the plane.\n" +
+    " * It's also a unitary <em>spinor</em> (magnitude is 1).\n" +
+    " */\n" +
+    "var clockwise = e1 * e2\n" +
+    "//console.log(\"clockwise => \" + clockwise)\n" +
+    "//console.log(\"angle(clockwise) => \" + clockwise.clone().angle().scale(2 / π) + \" * π / 2 \")\n" +
+    "\n" +
+    "var up = -e2\n" +
+    "var exp = EIGHT.exp\n" +
+    "var sqrt = EIGHT.sqrt\n" +
+    "\n" +
     "var LINE_WIDTH = 6\n" +
     "var TEE_WIDTH = 6 * LINE_WIDTH\n" +
     "var MAGNET_WIDTH = 0.15\n" +
     "var MAGNET_LENGTH = 4 * MAGNET_WIDTH\n" +
     "\n" +
-    "function toCanvasX(position: EIGHT.G2, canvas: HTMLCanvasElement): number {\n" +
+    "function toCanvasX(position: EIGHT.VectorE2, canvas: HTMLCanvasElement): number {\n" +
     "  return (position.x + 1) * canvas.width / 2\n" +
     "}\n" +
     "\n" +
-    "function toCanvasY(position: EIGHT.G2, canvas: HTMLCanvasElement): number {\n" +
+    "function toCanvasY(position: EIGHT.VectorE2, canvas: HTMLCanvasElement): number {\n" +
     "  return (position.y + 1) * canvas.height / 2\n" +
     "}\n" +
     "\n" +
@@ -269,31 +299,42 @@ angular.module('app').factory('templates', [
     "var circleRadiusFromArea = (A: number) => {return sqrt(A/π)}\n" +
     "\n" +
     "/**\n" +
+    " * Computes the <em>radian measure</em> in going from <em>direction</em> <code>a</code> to <em>direction</em> <code>b</code> relative to the specified angle <code>θ</code>.\n" +
+    " */\n" +
+    "function radiansFromDirections(a: EIGHT.G2, b: EIGHT.G2, θ: EIGHT.G2): number {\n" +
+    "  // a * b = exp(angle)\n" +
+    "  var angle = (a * b).angle()\n" +
+    "  return radiansFromAngle(angle, θ)\n" +
+    "}\n" +
+    "\n" +
+    "/**\n" +
+    " *\n" +
+    " */\n" +
+    "function radiansFromAngle(angle: EIGHT.G2, θ: EIGHT.G2): number {\n" +
+    "  var signum = θ.clone().scp(angle).α < 0 ? +1 : -1\n" +
+    "  return angle.magnitude() * signum\n" +
+    "}\n" +
+    "\n" +
+    "/**\n" +
+    " *\n" +
+    " */\n" +
+    "function radiansFromSpinor(spinor: EIGHT.G2, θ: EIGHT.G2): number {return radiansFromAngle(spinor.clone().angle(), θ)}\n" +
+    "\n" +
+    "/**\n" +
     " * Draws a <em>curly tee</em> as the geometric representation of a spinor.\n" +
     " */\n" +
-    "function drawSpinTee(context: CanvasRenderingContext2D, position: EIGHT.G2, spinor: EIGHT.G2, color: any, canvas: HTMLCanvasElement) {\n" +
+    "function drawSpinTee(context: CanvasRenderingContext2D, position: EIGHT.VectorE2, spinor: EIGHT.G2, color: any, canvas: HTMLCanvasElement) {\n" +
     "  var radius = circleRadiusFromArea(spinor.magnitude()) * canvas.width / 2\n" +
-    "  // The arg is in relation to I, which is e1 ^ e2, which here is clockwise!\n" +
-    "  // So a negative angle is clockwise!\n" +
-    "  var θ = zeroTwoPi(spinor.arg())\n" +
-    "  // Or to say it another way, anticlockwise is positive.\n" +
-    "  var anticlockwise: boolean = θ > 0\n" +
+    "  var θ = zeroTwoPi(radiansFromSpinor(spinor, clockwise))\n" +
     "\n" +
     "  context.save()\n" +
     "  context.lineWidth = LINE_WIDTH\n" +
     "  context.strokeStyle = color\n" +
     "\n" +
     "  context.translate(toCanvasX(position, canvas), toCanvasY(position, canvas))\n" +
-    "\n" +
-    "  // The angle argument is clockwise positive, so we must flip the sign.\n" +
     "  context.rotate(-θ)\n" +
-    "\n" +
     "  context.beginPath()\n" +
-    "  // The start angle must compensate for the rotation to get it back to zero.\n" +
-    "  // The end angle is zero so that it meets with the `T`.\n" +
-    "  var endAngle = 0\n" +
-    "  context.arc(0, 0, radius, +θ, endAngle, anticlockwise)\n" +
-    "\n" +
+    "  context.arc(0, 0, radius, +θ, 0, θ > 0)\n" +
     "  context.moveTo(radius - TEE_WIDTH / 2, 0)\n" +
     "  context.lineTo(radius + TEE_WIDTH / 2, 0)\n" +
     "  context.stroke()\n" +
@@ -303,15 +344,15 @@ angular.module('app').factory('templates', [
     "/**\n" +
     " * Draws a <em>bar magnet</em> at the specified <code>position</code> and with the specified <code>attitude</code>.\n" +
     " */\n" +
-    "function drawMagnet(context: CanvasRenderingContext2D, position: EIGHT.G2, attitude: EIGHT.G2, canvas: HTMLCanvasElement) {\n" +
+    "function drawMagnet(context: CanvasRenderingContext2D, position: EIGHT.VectorE2, attitude: EIGHT.G2, canvas: HTMLCanvasElement) {\n" +
     "  var width = MAGNET_WIDTH * canvas.width / 2\n" +
     "  var length = MAGNET_LENGTH * canvas.width / 2\n" +
     "\n" +
     "  context.save()\n" +
     "  context.translate(toCanvasX(position, canvas), toCanvasY(position, canvas))\n" +
-    "  context.rotate(attitude.arg() * -2)\n" +
-    "  var squaredNorm = attitude.squaredNorm()\n" +
-    "  context.scale(squaredNorm, squaredNorm)\n" +
+    "  context.rotate(radiansFromSpinor(attitude, clockwise) * -2)\n" +
+    "  // var squaredNorm = attitude.squaredNorm()\n" +
+    "  // context.scale(squaredNorm, squaredNorm)\n" +
     "  context.fillStyle = 'red'\n" +
     "  context.fillRect(-width / 2, -length / 2, width, length / 2)\n" +
     "  context.fillStyle = 'white'\n" +
@@ -323,15 +364,13 @@ angular.module('app').factory('templates', [
     " * Draws a <em>wind tee</em> as the geometric representation of a vector.\n" +
     " */\n" +
     "function drawLineTee(context: CanvasRenderingContext2D, position: EIGHT.G2, vector: EIGHT.G2, color: any, canvas: HTMLCanvasElement) {\n" +
-    "  var length = vector.magnitude() * canvas.width / 2\n" +
-    "  var north = -EIGHT.G2.e2\n" +
-    "  var R = new EIGHT.G2().rotorFromDirections(north, vector)\n" +
     "  context.save()\n" +
     "  context.translate(toCanvasX(position, canvas), toCanvasY(position, canvas))\n" +
-    "  context.rotate(R.arg() * -2)\n" +
+    "  context.rotate(radiansFromDirections(up, vector, clockwise))\n" +
     "  context.fillStyle = color\n" +
-    "  context.fillRect(-TEE_WIDTH / 2, -length / 2, TEE_WIDTH, LINE_WIDTH)\n" +
-    "  context.fillRect(-LINE_WIDTH / 2, -length / 2, LINE_WIDTH, length)\n" +
+    "  var height = vector.magnitude() * canvas.width / 2\n" +
+    "  context.fillRect(-TEE_WIDTH / 2, -height / 2, TEE_WIDTH, LINE_WIDTH)\n" +
+    "  context.fillRect(-LINE_WIDTH / 2, -height / 2, LINE_WIDTH, height)\n" +
     "  context.restore()\n" +
     "}\n" +
     "\n" +
@@ -504,7 +543,7 @@ angular.module('app').factory('templates', [
     "\n" +
     "  cube = new EIGHT.Drawable(primitives, material)\n" +
     "  scene.add(cube)\n" +
-    "  cube.setFacet('kinematics', new EIGHT.KinematicRigidBodyFacetE3()).Ω.copy(I * ω)\n" +
+    "  cube.setFacet('kinematics', new EIGHT.RigidBodyFacetE3()).Ω.copy(I * ω)\n" +
     "  cube.setFacet('color', new EIGHT.ColorFacet()).setRGB(0, 1, 0)\n" +
     "\n" +
     "  c3d.canvas.width = window.innerWidth\n" +
@@ -524,7 +563,7 @@ angular.module('app').factory('templates', [
     "\n" +
     "    var θ = Date.now() * 0.001\n" +
     "\n" +
-    "    var kinematics = <EIGHT.KinematicRigidBodyFacetE3>cube.getFacet('kinematics')\n" +
+    "    var kinematics = <EIGHT.RigidBodyFacetE3>cube.getFacet('kinematics')\n" +
     "    var X = kinematics.X\n" +
     "    var R = kinematics.R\n" +
     "    var V = kinematics.V\n" +
@@ -761,7 +800,7 @@ angular.module('app').factory('templates', [
     "   * Implement your own custom models to do e.g., articulated robots./\n" +
     "   * See example in Libs file./\n" +
     "   */\n" +
-    "  var model: EIGHT.ModelFacet\n" +
+    "  var model: EIGHT.ModelFacetE3\n" +
     "  var color: EIGHT.ColorFacet\n" +
     "\n" +
     "  // We start with the geometry (geometry) for a unit cube at the origin...\n" +
@@ -815,7 +854,7 @@ angular.module('app').factory('templates', [
     "    console.warn('Nothing to see because the geometry is undefined.')\n" +
     "  }\n" +
     "  // Create the model anyway (not what we would do in the real world).\n" +
-    "  model = new EIGHT.ModelFacet()\n" +
+    "  model = new EIGHT.ModelFacetE3()\n" +
     "  // Green, like on the 'Matrix', would be a good color, Neo. Or maybe red or blue?\n" +
     "  color = new EIGHT.ColorFacet().setRGB(0, 1, 0)\n" +
     "\n" +
@@ -1350,7 +1389,7 @@ angular.module('app').factory('templates', [
     "\n"+
     "    var geobuff: EIGHT.IBufferGeometry\n"+
     "    var material: EIGHT.IMaterial\n" +
-    "    var model = new EIGHT.ModelFacet()\n"+
+    "    var model = new EIGHT.ModelFacetE3()\n"+
     "    var color = new EIGHT.ColorFacet()\n"+
     "\n"+
     "    var R = -(e1 ^ e2) / 2\n"+
