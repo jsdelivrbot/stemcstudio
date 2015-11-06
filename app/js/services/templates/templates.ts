@@ -990,11 +990,11 @@ angular.module('app').factory('templates', [
             "  public attitude = new EIGHT.SpinG3()\n" +
             "  public scale: EIGHT.R3 = new EIGHT.R3([1, 1, 1])\n" +
             "  public color: EIGHT.R3 = new EIGHT.R3([1, 1, 1])\n" +
-            "  private M = EIGHT.Matrix4.identity()\n" +
-            "  private N = EIGHT.Matrix3.identity()\n" +
-            "  private R = EIGHT.Matrix4.identity()\n" +
-            "  private S = EIGHT.Matrix4.identity()\n" +
-            "  private T = EIGHT.Matrix4.identity()\n" +
+            "  private M = EIGHT.Matrix4.one()\n" +
+            "  private N = EIGHT.Matrix3.one()\n" +
+            "  private R = EIGHT.Matrix4.one()\n" +
+            "  private S = EIGHT.Matrix4.one()\n" +
+            "  private T = EIGHT.Matrix4.one()\n" +
             "  constructor() {\n" +
             "    super('Model')\n" +
             "    this.position.modified = true\n" +
@@ -1628,7 +1628,7 @@ angular.module('app').factory('templates', [
             },
             {
                 uuid: uuid.generate(),
-                description: "Blade — Geometric Algebra and Unit of Measure calculations",
+                description: "Geometric Algebra and Unit of Measure calculations using EIGHT",
                 isCodeVisible: true,
                 isViewVisible: true,
                 focusEditor: undefined,

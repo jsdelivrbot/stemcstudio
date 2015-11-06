@@ -17,7 +17,7 @@
                 <h1><img src="../../assets/logo.png" title="davinci-eight"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.150.0</em>
+            <em>API Docs for: 2.152.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -149,7 +149,7 @@
                                 <li><a href="../classes/PerspectiveCamera.html">PerspectiveCamera</a></li>
                                 <li><a href="../classes/Point3.html">Point3</a></li>
                                 <li><a href="../classes/PointMaterial.html">PointMaterial</a></li>
-                                <li><a href="../classes/PointSize.html">PointSize</a></li>
+                                <li><a href="../classes/PointSizeFacet.html">PointSizeFacet</a></li>
                                 <li><a href="../classes/PointTopology.html">PointTopology</a></li>
                                 <li><a href="../classes/PolyhedronSimplexGeometry.html">PolyhedronSimplexGeometry</a></li>
                                 <li><a href="../classes/Pseudo.html">Pseudo</a></li>
@@ -158,6 +158,7 @@
                                 <li><a href="../classes/R2.html">R2</a></li>
                                 <li><a href="../classes/R3.html">R3</a></li>
                                 <li><a href="../classes/R4.html">R4</a></li>
+                                <li><a href="../classes/ReflectionFacet.html">ReflectionFacet</a></li>
                                 <li><a href="../classes/RevolutionSimplexGeometry.html">RevolutionSimplexGeometry</a></li>
                                 <li><a href="../classes/RigidBodyE2.html">RigidBodyE2</a></li>
                                 <li><a href="../classes/RigidBodyE3.html">RigidBodyE3</a></li>
@@ -192,7 +193,7 @@
                                 <li><a href="../classes/UniformMetaInfo.html">UniformMetaInfo</a></li>
                                 <li><a href="../classes/Unit.html">Unit</a></li>
                                 <li><a href="../classes/Vector.html">Vector</a></li>
-                                <li><a href="../classes/Vector3Uniform.html">Vector3Uniform</a></li>
+                                <li><a href="../classes/Vector3Facet.html">Vector3Facet</a></li>
                                 <li><a href="../classes/VectorE1.html">VectorE1</a></li>
                                 <li><a href="../classes/VectorE2.html">VectorE2</a></li>
                                 <li><a href="../classes/VectorE3.html">VectorE3</a></li>
@@ -251,7 +252,7 @@
     <pre class="code prettyprint linenums">
 import Euclidean1Coords = require(&#x27;../math/Euclidean1Coords&#x27;)
 import LinearElement = require(&#x27;../math/LinearElement&#x27;)
-import Measure = require(&#x27;../math/Measure&#x27;)
+import ImmutableMeasure = require(&#x27;../math/ImmutableMeasure&#x27;)
 import mustBeInteger = require(&#x27;../checks/mustBeInteger&#x27;)
 import readOnly = require(&#x27;../i18n/readOnly&#x27;)
 import Unit = require(&#x27;../math/Unit&#x27;)
@@ -286,7 +287,7 @@ function assertArgUnitOrUndefined(name: string, uom: Unit): Unit {
 /**
  * @class Euclidean1
  */
-class Euclidean1 implements /*LinearElement&lt;Euclidean1Coords, Euclidean1, Euclidean1Coords&gt;,*/ Measure&lt;Euclidean1&gt; {
+class Euclidean1 implements /*LinearElement&lt;Euclidean1Coords, Euclidean1, Euclidean1Coords&gt;,*/ ImmutableMeasure&lt;Euclidean1&gt; {
     private w: number;
     private x: number;
     public uom: Unit;
@@ -335,7 +336,7 @@ class Euclidean1 implements /*LinearElement&lt;Euclidean1Coords, Euclidean1, Euc
         throw new Error(readOnly(&#x27;β&#x27;).message)
     }
 
-    coordinates(): number[] {
+    get coords(): number[] {
         return [this.w, this.x]
     }
 

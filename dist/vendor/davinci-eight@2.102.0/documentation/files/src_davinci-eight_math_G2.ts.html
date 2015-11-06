@@ -17,7 +17,7 @@
                 <h1><img src="../../assets/logo.png" title="davinci-eight"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.150.0</em>
+            <em>API Docs for: 2.152.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -149,7 +149,7 @@
                                 <li><a href="../classes/PerspectiveCamera.html">PerspectiveCamera</a></li>
                                 <li><a href="../classes/Point3.html">Point3</a></li>
                                 <li><a href="../classes/PointMaterial.html">PointMaterial</a></li>
-                                <li><a href="../classes/PointSize.html">PointSize</a></li>
+                                <li><a href="../classes/PointSizeFacet.html">PointSizeFacet</a></li>
                                 <li><a href="../classes/PointTopology.html">PointTopology</a></li>
                                 <li><a href="../classes/PolyhedronSimplexGeometry.html">PolyhedronSimplexGeometry</a></li>
                                 <li><a href="../classes/Pseudo.html">Pseudo</a></li>
@@ -158,6 +158,7 @@
                                 <li><a href="../classes/R2.html">R2</a></li>
                                 <li><a href="../classes/R3.html">R3</a></li>
                                 <li><a href="../classes/R4.html">R4</a></li>
+                                <li><a href="../classes/ReflectionFacet.html">ReflectionFacet</a></li>
                                 <li><a href="../classes/RevolutionSimplexGeometry.html">RevolutionSimplexGeometry</a></li>
                                 <li><a href="../classes/RigidBodyE2.html">RigidBodyE2</a></li>
                                 <li><a href="../classes/RigidBodyE3.html">RigidBodyE3</a></li>
@@ -192,7 +193,7 @@
                                 <li><a href="../classes/UniformMetaInfo.html">UniformMetaInfo</a></li>
                                 <li><a href="../classes/Unit.html">Unit</a></li>
                                 <li><a href="../classes/Vector.html">Vector</a></li>
-                                <li><a href="../classes/Vector3Uniform.html">Vector3Uniform</a></li>
+                                <li><a href="../classes/Vector3Facet.html">Vector3Facet</a></li>
                                 <li><a href="../classes/VectorE1.html">VectorE1</a></li>
                                 <li><a href="../classes/VectorE2.html">VectorE2</a></li>
                                 <li><a href="../classes/VectorE3.html">VectorE3</a></li>
@@ -252,6 +253,7 @@
 import b2 = require(&#x27;../geometries/b2&#x27;)
 import b3 = require(&#x27;../geometries/b3&#x27;)
 import dotVector = require(&#x27;../math/dotVectorE2&#x27;)
+import Euclidean2 = require(&#x27;../math/Euclidean2&#x27;)
 import extE2 = require(&#x27;../math/extE2&#x27;)
 import GeometricE2 = require(&#x27;../math/GeometricE2&#x27;)
 import isDefined = require(&#x27;../checks/isDefined&#x27;)
@@ -259,6 +261,7 @@ import isNumber = require(&#x27;../checks/isNumber&#x27;)
 import isObject = require(&#x27;../checks/isObject&#x27;)
 import lcoE2 = require(&#x27;../math/lcoE2&#x27;)
 import GeometricOperators = require(&#x27;../math/GeometricOperators&#x27;)
+import Measure = require(&#x27;../math/Measure&#x27;)
 import mulE2 = require(&#x27;../math/mulE2&#x27;)
 import mustBeInteger = require(&#x27;../checks/mustBeInteger&#x27;)
 import mustBeNumber = require(&#x27;../checks/mustBeNumber&#x27;)
@@ -273,6 +276,7 @@ import rotorFromDirections = require(&#x27;../math/rotorFromDirections&#x27;)
 import scpE2 = require(&#x27;../math/scpE2&#x27;)
 import SpinorE2 = require(&#x27;../math/SpinorE2&#x27;)
 import stringFromCoordinates = require(&#x27;../math/stringFromCoordinates&#x27;)
+import Unit = require(&#x27;../math/Unit&#x27;)
 import VectorE2 = require(&#x27;../math/VectorE2&#x27;)
 import VectorN = require(&#x27;../math/VectorN&#x27;)
 import wedgeXY = require(&#x27;../math/wedgeXY&#x27;)
@@ -294,7 +298,21 @@ let cos = Math.cos
 let sin = Math.sin
 let sqrt = Math.sqrt
 
-let BASIS_LABELS = [&quot;1&quot;, &quot;e1&quot;, &quot;e2&quot;, &quot;I&quot;]
+//let ANTICLOCKWISE_GAPPED_CIRCLE = &quot;⟲&quot;
+//let ANTICLOCKWISE_CLOSED_CIRCLE = &quot;⥀&quot;
+//let CLOCKWISE_GAPPED_CIRCLE = &quot;⟳&quot;
+
+let LEFTWARDS_ARROW = &quot;←&quot;
+let RIGHTWARDS_ARROW = &quot;→&quot;
+let UPWARDS_ARROW = &quot;↑&quot;
+let DOWNWARDS_ARROW = &quot;↓&quot;
+let BULLSEYE = &quot;◎&quot;
+let CLOCKWISE_OPEN_CIRCLE_ARROW = &quot;↻&quot;
+let ANTICLOCKWISE_OPEN_CIRCLE_ARROW = &quot;↺&quot;
+
+let ARROW_LABELS = [&quot;1&quot;, [LEFTWARDS_ARROW, RIGHTWARDS_ARROW], [DOWNWARDS_ARROW, UPWARDS_ARROW], [CLOCKWISE_OPEN_CIRCLE_ARROW, ANTICLOCKWISE_OPEN_CIRCLE_ARROW]]
+let STANDARD_LABELS = [&quot;1&quot;, &quot;e1&quot;, &quot;e2&quot;, &quot;I&quot;]
+
 /**
  * Coordinates corresponding to basis labels.
  */
@@ -335,10 +353,24 @@ function duckCopy(value: any): G2 {
 
 /**
  * @class G2
- * @extends GeometricE2
+ * @extends VectorN
  * @beta
  */
-class G2 extends VectorN&lt;number&gt; implements GeometricE2, MutableGeometricElement&lt;GeometricE2, G2, SpinorE2, VectorE2&gt;, GeometricOperators&lt;G2&gt; {
+class G2 extends VectorN&lt;number&gt; implements GeometricE2, Measure&lt;G2&gt;, MutableGeometricElement&lt;GeometricE2, G2, SpinorE2, VectorE2&gt;, GeometricOperators&lt;G2&gt; {
+    /**
+     * @property BASIS_LABELS
+     * @type {(string | string[])[]}
+     */
+    static BASIS_LABELS: (string | string[])[] = STANDARD_LABELS
+
+    /**
+     * The optional unit of measure.
+     * @property uom
+     * @type {Unit}
+     * @beta
+     */
+    uom: Unit;
+
     /**
      * Constructs a &lt;code&gt;G2&lt;/code&gt;.
      * The multivector is initialized to zero.
@@ -528,85 +560,21 @@ class G2 extends VectorN&lt;number&gt; implements GeometricE2, MutableGeometricE
         this.β = -this.β;
         return this
     }
+
+    cos(): G2 {
+        throw new Error(&quot;TODO: G2.cos&quot;)
+    }
+
+    cosh(): G2 {
+        throw new Error(&quot;TODO: G2.cosh&quot;)
+    }
+
     distanceTo(point: GeometricE2): number {
         throw new Error(&quot;TODO: G2.distanceTo&quot;)
     }
+
     equals(point: GeometricE2): boolean {
         throw new Error(&quot;TODO: G2.equals&quot;)
-    }
-    /**
-     * &lt;p&gt;
-     * &lt;code&gt;this ⟼ this &lt;&lt; m&lt;/code&gt;
-     * &lt;/p&gt;
-     * @method lco
-     * @param m {GeometricE2}
-     * @return {G2} &lt;code&gt;this&lt;/code&gt;
-     * @chainable
-     */
-    lco(m: GeometricE2): G2 {
-        return this.lco2(this, m)
-    }
-    /**
-     * &lt;p&gt;
-     * &lt;code&gt;this ⟼ a &lt;&lt; b&lt;/code&gt;
-     * &lt;/p&gt;
-     * @method lco2
-     * @param a {GeometricE2}
-     * @param b {GeometricE2}
-     * @return {G2} &lt;code&gt;this&lt;/code&gt;
-     * @chainable
-     */
-    lco2(a: GeometricE2, b: GeometricE2): G2 {
-        let a0 = a.α
-        let a1 = a.x
-        let a2 = a.y
-        let a3 = a.β
-        let b0 = b.α
-        let b1 = b.x
-        let b2 = b.y
-        let b3 = b.β
-        this.α = lcoE2(a0, a1, a2, a3, b0, b1, b2, b3, 0)
-        this.x = lcoE2(a0, a1, a2, a3, b0, b1, b2, b3, 1)
-        this.y = lcoE2(a0, a1, a2, a3, b0, b1, b2, b3, 2)
-        this.β = lcoE2(a0, a1, a2, a3, b0, b1, b2, b3, 3)
-        return this
-    }
-    /**
-     * &lt;p&gt;
-     * &lt;code&gt;this ⟼ this &gt;&gt; m&lt;/code&gt;
-     * &lt;/p&gt;
-     * @method rco
-     * @param m {GeometricE2}
-     * @return {G2} &lt;code&gt;this&lt;/code&gt;
-     * @chainable
-     */
-    rco(m: GeometricE2): G2 {
-        return this.rco2(this, m)
-    }
-    /**
-     * &lt;p&gt;
-     * &lt;code&gt;this ⟼ a &gt;&gt; b&lt;/code&gt;
-     * &lt;/p&gt;
-     * @method rco2
-     * @param a {GeometricE2}
-     * @param b {GeometricE2}
-     * @return {G2} &lt;code&gt;this&lt;/code&gt;
-     * @chainable
-     */
-    rco2(a: GeometricE2, b: GeometricE2): G2 {
-        let a0 = a.α
-        let a1 = a.x
-        let a2 = a.y
-        let a3 = a.β
-        let b0 = b.α
-        let b1 = b.x
-        let b2 = b.y
-        let b3 = b.β
-        this.α = rcoE2(a0, a1, a2, a3, b0, b1, b2, b3, 0)
-        this.x = rcoE2(a0, a1, a2, a3, b0, b1, b2, b3, 1)
-        this.y = rcoE2(a0, a1, a2, a3, b0, b1, b2, b3, 2)
-        this.β = rcoE2(a0, a1, a2, a3, b0, b1, b2, b3, 3)
-        return this
     }
 
     /**
@@ -811,6 +779,45 @@ class G2 extends VectorN&lt;number&gt; implements GeometricE2, MutableGeometricE
 
     /**
      * &lt;p&gt;
+     * &lt;code&gt;this ⟼ this &lt;&lt; m&lt;/code&gt;
+     * &lt;/p&gt;
+     * @method lco
+     * @param m {GeometricE2}
+     * @return {G2} &lt;code&gt;this&lt;/code&gt;
+     * @chainable
+     */
+    lco(m: GeometricE2): G2 {
+        return this.lco2(this, m)
+    }
+
+    /**
+     * &lt;p&gt;
+     * &lt;code&gt;this ⟼ a &lt;&lt; b&lt;/code&gt;
+     * &lt;/p&gt;
+     * @method lco2
+     * @param a {GeometricE2}
+     * @param b {GeometricE2}
+     * @return {G2} &lt;code&gt;this&lt;/code&gt;
+     * @chainable
+     */
+    lco2(a: GeometricE2, b: GeometricE2): G2 {
+        let a0 = a.α
+        let a1 = a.x
+        let a2 = a.y
+        let a3 = a.β
+        let b0 = b.α
+        let b1 = b.x
+        let b2 = b.y
+        let b3 = b.β
+        this.α = lcoE2(a0, a1, a2, a3, b0, b1, b2, b3, 0)
+        this.x = lcoE2(a0, a1, a2, a3, b0, b1, b2, b3, 1)
+        this.y = lcoE2(a0, a1, a2, a3, b0, b1, b2, b3, 2)
+        this.β = lcoE2(a0, a1, a2, a3, b0, b1, b2, b3, 3)
+        return this
+    }
+
+    /**
+     * &lt;p&gt;
      * &lt;code&gt;this ⟼ this + α * (target - this)&lt;/code&gt;
      * &lt;/p&gt;
      * @method lerp
@@ -962,6 +969,24 @@ class G2 extends VectorN&lt;number&gt; implements GeometricE2, MutableGeometricE
     }
 
     /**
+     * Sets this multivector to the identity element for multiplication, &lt;b&gt;1&lt;/b&gt;.
+     * @method one
+     * @return {G2}
+     * @chainable
+     */
+    one() {
+        this.α = 1
+        this.x = 0
+        this.y = 0
+        this.β = 0
+        return this
+    }
+
+    pow(): G2 {
+        throw new Error(&quot;TODO: G2.pow&quot;)
+    }
+
+    /**
      * &lt;p&gt;
      * Updates &lt;code&gt;this&lt;/code&gt; target to be the &lt;em&gt;quad&lt;/em&gt; or &lt;em&gt;squared norm&lt;/em&gt; of the target.
      * &lt;/p&gt;
@@ -1000,17 +1025,43 @@ class G2 extends VectorN&lt;number&gt; implements GeometricE2, MutableGeometricE
     }
 
     /**
-     * Computes the &lt;em&gt;squared norm&lt;/em&gt; of this &lt;code&gt;G2&lt;/code&gt; multivector. 
-     * @method squaredNorm
-     * @return {number} &lt;code&gt;this | ~this&lt;/code&gt;
+     * &lt;p&gt;
+     * &lt;code&gt;this ⟼ this &gt;&gt; m&lt;/code&gt;
+     * &lt;/p&gt;
+     * @method rco
+     * @param m {GeometricE2}
+     * @return {G2} &lt;code&gt;this&lt;/code&gt;
+     * @chainable
      */
-    squaredNorm(): number {
-        let w = this.α
-        let x = this.x
-        let y = this.y
-        let B = this.β
-        return w * w + x * x + y * y + B * B
+    rco(m: GeometricE2): G2 {
+        return this.rco2(this, m)
     }
+    /**
+     * &lt;p&gt;
+     * &lt;code&gt;this ⟼ a &gt;&gt; b&lt;/code&gt;
+     * &lt;/p&gt;
+     * @method rco2
+     * @param a {GeometricE2}
+     * @param b {GeometricE2}
+     * @return {G2} &lt;code&gt;this&lt;/code&gt;
+     * @chainable
+     */
+    rco2(a: GeometricE2, b: GeometricE2): G2 {
+        let a0 = a.α
+        let a1 = a.x
+        let a2 = a.y
+        let a3 = a.β
+        let b0 = b.α
+        let b1 = b.x
+        let b2 = b.y
+        let b3 = b.β
+        this.α = rcoE2(a0, a1, a2, a3, b0, b1, b2, b3, 0)
+        this.x = rcoE2(a0, a1, a2, a3, b0, b1, b2, b3, 1)
+        this.y = rcoE2(a0, a1, a2, a3, b0, b1, b2, b3, 2)
+        this.β = rcoE2(a0, a1, a2, a3, b0, b1, b2, b3, 3)
+        return this
+    }
+
     /**
      * &lt;p&gt;
      * &lt;code&gt;this ⟼ - n * this * n&lt;/code&gt;
@@ -1021,15 +1072,12 @@ class G2 extends VectorN&lt;number&gt; implements GeometricE2, MutableGeometricE
      * @chainable
      */
     reflect(n: VectorE2): G2 {
-        // FIXME: This inly reflects the vector components.
+        // TODO: Optimize.
         mustBeObject(&#x27;n&#x27;, n);
-        let x = this.x;
-        let y = this.y;
-        let nx = n.x;
-        let ny = n.y;
-        let dot2 = (x * nx + y * ny) * 2;
-        this.x = x - dot2 * nx;
-        this.y = y - dot2 * ny;
+        let N = Euclidean2.fromVectorE2(n);
+        let M = Euclidean2.copy(this);
+        let R = N.mul(M).mul(N).scale(-1);
+        this.copy(R);
         return this;
     }
 
@@ -1049,6 +1097,15 @@ class G2 extends VectorN&lt;number&gt; implements GeometricE2, MutableGeometricE
         this.β = -this.β
         return this
     }
+
+    sin(): G2 {
+        throw new Error(&quot;G2.sin&quot;)
+    }
+
+    sinh(): G2 {
+        throw new Error(&quot;G2.sinh&quot;)
+    }
+
     /**
      * @method __tilde__
      * @return {G2}
@@ -1214,6 +1271,20 @@ class G2 extends VectorN&lt;number&gt; implements GeometricE2, MutableGeometricE
 
         return this
     }
+
+    /**
+     * Computes the &lt;em&gt;squared norm&lt;/em&gt; of this &lt;code&gt;G2&lt;/code&gt; multivector. 
+     * @method squaredNorm
+     * @return {number} &lt;code&gt;this | ~this&lt;/code&gt;
+     */
+    squaredNorm(): number {
+        let w = this.α
+        let x = this.x
+        let y = this.y
+        let B = this.β
+        return w * w + x * x + y * y + B * B
+    }
+
     /**
      * &lt;p&gt;
      * &lt;code&gt;this ⟼ this - M * α&lt;/code&gt;
@@ -1260,7 +1331,7 @@ class G2 extends VectorN&lt;number&gt; implements GeometricE2, MutableGeometricE
      */
     toExponential(): string {
         var coordToString = function(coord: number): string { return coord.toExponential() };
-        return stringFromCoordinates(coordinates(this), coordToString, BASIS_LABELS)
+        return stringFromCoordinates(coordinates(this), coordToString, G2.BASIS_LABELS)
     }
 
     /**
@@ -1271,7 +1342,7 @@ class G2 extends VectorN&lt;number&gt; implements GeometricE2, MutableGeometricE
      */
     toFixed(fractionDigits?: number): string {
         var coordToString = function(coord: number): string { return coord.toFixed(fractionDigits) };
-        return stringFromCoordinates(coordinates(this), coordToString, BASIS_LABELS)
+        return stringFromCoordinates(coordinates(this), coordToString, G2.BASIS_LABELS)
     }
 
     /**
@@ -1281,7 +1352,12 @@ class G2 extends VectorN&lt;number&gt; implements GeometricE2, MutableGeometricE
      */
     toString(): string {
         let coordToString = function(coord: number): string { return coord.toString() };
-        return stringFromCoordinates(coordinates(this), coordToString, BASIS_LABELS)
+        return stringFromCoordinates(coordinates(this), coordToString, G2.BASIS_LABELS)
+    }
+
+    unitary(): G2 {
+        // FIXME: Duplicates normalize
+        throw new Error(&quot;G2.unitary&quot;)
     }
 
     grade(grade: number): G2 {
@@ -1686,12 +1762,22 @@ class G2 extends VectorN&lt;number&gt; implements GeometricE2, MutableGeometricE
     }
 
     /**
+     * @method __bang__
+     * @return {G2}
+     * @private
+     * @chainable
+     */
+    __bang__(): G2 {
+        return G2.copy(this).inv()
+    }
+
+    /**
      * @method __pos__
      * @return {G2}
      * @private
      * @chainable
      */
-    __pos__() {
+    __pos__(): G2 {
         // It&#x27;s important that we make a copy whenever using operators.
         return G2.copy(this)/*.pos()*/
     }
@@ -1702,7 +1788,7 @@ class G2 extends VectorN&lt;number&gt; implements GeometricE2, MutableGeometricE
      * @private
      * @chainable
      */
-    __neg__() {
+    __neg__(): G2 {
         return G2.copy(this).neg()
     }
 
@@ -1719,7 +1805,7 @@ class G2 extends VectorN&lt;number&gt; implements GeometricE2, MutableGeometricE
     }
 
     /**
-     * The identity element for addition.
+     * The identity element for addition, &lt;b&gt;0&lt;/b&gt;.
      * @property zero
      * @type {G2}
      * @readOnly
@@ -1728,7 +1814,7 @@ class G2 extends VectorN&lt;number&gt; implements GeometricE2, MutableGeometricE
     static zero = G2.fromCartesian(0, 0, 0, 0);
 
     /**
-     * The identity element for multiplication.
+     * The identity element for multiplication, &lt;b&gt;1&lt;/b&gt;.
      * @property one
      * @type {G2}
      * @readOnly

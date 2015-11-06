@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/davinci-eight/models/RigidBodyFacetE3.ts - davinci-eight</title>
+    <title>Vector3Facet - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -17,7 +17,7 @@
                 <h1><img src="../../assets/logo.png" title="davinci-eight"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.150.0</em>
+            <em>API Docs for: 2.152.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -149,7 +149,7 @@
                                 <li><a href="../classes/PerspectiveCamera.html">PerspectiveCamera</a></li>
                                 <li><a href="../classes/Point3.html">Point3</a></li>
                                 <li><a href="../classes/PointMaterial.html">PointMaterial</a></li>
-                                <li><a href="../classes/PointSize.html">PointSize</a></li>
+                                <li><a href="../classes/PointSizeFacet.html">PointSizeFacet</a></li>
                                 <li><a href="../classes/PointTopology.html">PointTopology</a></li>
                                 <li><a href="../classes/PolyhedronSimplexGeometry.html">PolyhedronSimplexGeometry</a></li>
                                 <li><a href="../classes/Pseudo.html">Pseudo</a></li>
@@ -158,6 +158,7 @@
                                 <li><a href="../classes/R2.html">R2</a></li>
                                 <li><a href="../classes/R3.html">R3</a></li>
                                 <li><a href="../classes/R4.html">R4</a></li>
+                                <li><a href="../classes/ReflectionFacet.html">ReflectionFacet</a></li>
                                 <li><a href="../classes/RevolutionSimplexGeometry.html">RevolutionSimplexGeometry</a></li>
                                 <li><a href="../classes/RigidBodyE2.html">RigidBodyE2</a></li>
                                 <li><a href="../classes/RigidBodyE3.html">RigidBodyE3</a></li>
@@ -192,7 +193,7 @@
                                 <li><a href="../classes/UniformMetaInfo.html">UniformMetaInfo</a></li>
                                 <li><a href="../classes/Unit.html">Unit</a></li>
                                 <li><a href="../classes/Vector.html">Vector</a></li>
-                                <li><a href="../classes/Vector3Uniform.html">Vector3Uniform</a></li>
+                                <li><a href="../classes/Vector3Facet.html">Vector3Facet</a></li>
                                 <li><a href="../classes/VectorE1.html">VectorE1</a></li>
                                 <li><a href="../classes/VectorE2.html">VectorE2</a></li>
                                 <li><a href="../classes/VectorE3.html">VectorE3</a></li>
@@ -245,57 +246,111 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: src/davinci-eight/models/RigidBodyFacetE3.ts</h1>
+<h1>Vector3Facet Class</h1>
+<div class="box meta">
 
-<div class="file">
-    <pre class="code prettyprint linenums">
-import Euclidean3 = require(&#x27;../math/Euclidean3&#x27;)
-import ModelFacetE3 = require(&#x27;../models/ModelFacetE3&#x27;)
-import G3 = require(&#x27;../math/G3&#x27;)
 
-/**
- * @class RigidBodyFacetE3
- * @extends ModelFacetE3
- */
-class RigidBodyFacetE3 extends ModelFacetE3 {
-    /**
-     * &lt;p&gt;
-     * The &lt;em&gt;linear velocity&lt;/em&gt;, a vector.
-     * &lt;/p&gt;
-     * @property V
-     * @type {G3}
-     */
-    public V: G3 = new G3().copy(Euclidean3.zero);
-    /**
-     * &lt;p&gt;
-     * The &lt;em&gt;rotational velocity&lt;/em&gt;, a spinor.
-     * &lt;/p&gt;
-     * @property Ω
-     * @type {G3}
-     */
-    public Ω: G3 = new G3();
-    /**
-     * &lt;p&gt;
-     * Constructs a RigidBodyFacetE3.
-     * &lt;/p&gt;
-     * @class RigidBodyFacetE3
-     * @constructor
-     * @param [type = &#x27;RigidBodyFacetE3&#x27;] {string} The name used for reference counting.
-     */
-    constructor(type: string = &#x27;RigidBodyFacetE3&#x27;) {
-        super(type)
-    }
-    /**
-     * @method destructor
-     * @return {void}
-     * @protected
-     */
-    protected destructor(): void {
-        super.destructor()
-    }
-}
-export = RigidBodyFacetE3
-    </pre>
+        <div class="foundat">
+            Defined in: <a href="../files/src_davinci-eight_facets_Vector3Facet.ts.html#l20"><code>src&#x2F;davinci-eight&#x2F;facets&#x2F;Vector3Facet.ts:20</code></a>
+        </div>
+
+            Module: <a href="../modules/EIGHT.html">EIGHT</a>
+
+</div>
+
+
+<div class="box intro">
+    
+</div>
+
+    <div class="constructor">
+        <h2>Constructor</h2>
+<div id="method_Vector3Facet" class="method item">
+    <h3 class="name"><code>Vector3Facet</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>name</code>
+                </li>
+                <li class="arg">
+                        <code>vector</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_facets_Vector3Facet.ts.html#l20"><code>src&#x2F;davinci-eight&#x2F;facets&#x2F;Vector3Facet.ts:20</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">name</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">vector</code>
+                        <span class="type"><a href="../classes/R3.html" class="crosslink">R3</a></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+    </div>
+
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
+
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+
+
+
+        </div>
+
+
+
+
+    </div>
 </div>
                     </div>
                 </div>
