@@ -153,7 +153,8 @@ angular.module('app').controller('doodle-controller', [
 
         // Ensure that scrollbars are disabled.
         // This is so that we don't get double scrollbars when using the editor.
-        $window.document.body.style.overflow = 'hidden'
+        // I don't think we want this anymore now that we have side-by-side views.
+        // $window.document.body.style.overflow = 'hidden'
 
         var FWD_SLASH = '/';
 

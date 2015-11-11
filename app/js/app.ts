@@ -26,6 +26,7 @@ module mathdoodle {
 
 angular.module('app',
 [
+  'angularResizable',
   'davinci.mathscript',
   'google-analytics',
   'twitter-widgets',

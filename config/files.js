@@ -10,9 +10,9 @@ module.exports = function(lineman) {
         "vendor/angular-bootstrap/ui-bootstrap-tpls.js",
         "vendor/angular-bootstrap/ui-bootstrap.js",
         "vendor/angular-material-icons/angular-material-icons.js",
-        "vendor/angular-ui-router/release/angular-ui-router.js",
         "vendor/angular-sanitize/angular-sanitize.js",
         "vendor/angular-translate/angular-translate.js",
+        "vendor/angular-ui-router/release/angular-ui-router.js",
         "vendor/bootstrap/dist/js/bootstrap.js",
 
         "vendor/dialog-polyfill/dialog-polyfill.js",

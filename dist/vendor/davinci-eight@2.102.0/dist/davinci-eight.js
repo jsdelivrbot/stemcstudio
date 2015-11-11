@@ -5025,6 +5025,7 @@ define('davinci-eight/math/BASIS_LABELS_G3_GEOMETRIC',["require", "exports"], fu
     var E23_NEG_SYMBOL = "⬘";
     var E23_POS_SYMBOL = "⬙";
     var PSEUDO_POS_SYMBOL = "☐";
+    var PSEUDO_NEG_SYMBOL = "■";
     var BASIS_LABELS_G3_GEOMETRIC = [
         [SCALAR_POS_SYMBOL, SCALAR_POS_SYMBOL],
         [E1_NEG_SYMBOL, E1_POS_SYMBOL],
@@ -5033,7 +5034,7 @@ define('davinci-eight/math/BASIS_LABELS_G3_GEOMETRIC',["require", "exports"], fu
         [E12_NEG_SYMBOL, E12_POS_SYMBOL],
         [E23_NEG_SYMBOL, E23_POS_SYMBOL],
         [E31_NEG_SYMBOL, E31_POS_SYMBOL],
-        [PSEUDO_POS_SYMBOL, PSEUDO_POS_SYMBOL]
+        [PSEUDO_NEG_SYMBOL, PSEUDO_POS_SYMBOL]
     ];
     return BASIS_LABELS_G3_GEOMETRIC;
 });

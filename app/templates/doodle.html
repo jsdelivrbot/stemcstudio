@@ -1,35 +1,15 @@
-<div id='preview'></div>
-<div id='html-editor' ng-show='isEditMode &amp;&amp; isShowingHTML'></div>
-<div id='code-editor' ng-show='isEditMode &amp;&amp; isShowingCode'></div>
-<div id='libs-editor' ng-show='isEditMode &amp;&amp; isShowingLibs'></div>
-<div id='less-editor' ng-show='isEditMode &amp;&amp; isShowingLess'></div>
-<nav id='toolbar' class='navbar navbar-inverse'>
-  <div class='container-fluid'>
+<div id='doodle-page'>
+  <nav id='toolbar' class='navbar navbar-inverse'>
     <div class='navbar-header'>
       <a role='button' class='navbar-brand' ng-click='goHome()'><md-logo-text/></a>
     </div>
     <div class='ignore-collapse ignore-navbar-collapse'>
       <ul class='nav navbar-nav'>
-        <li ng-show='isEditMode'>
-          <a role='button' ng-click='toggleMode()'>
-            View
-          </a>
-        </li>
-        <li ng-hide='isEditMode'>
-          <a role='button' ng-click='toggleMode()'>
-            Edit
-          </a>
-        </li>
-        <li ng-show='isEditMode'>
-          <a role='button' ng-click='showHTML()'>
-            <span class="glyphicon glyphicon-ok" aria-hidden="true" ng-show='isShowingHTML'></span>
-            HTML
-          </a>
-        </li>
+        <!-- We'll always be in edit mode(less) from now on! -->
         <li ng-show='isEditMode'>
           <a role='button' ng-click='showCode()'>
             <span class="glyphicon glyphicon-ok" aria-hidden="true" ng-show='isShowingCode'></span>
-            Code
+            Main
           </a>
         </li>
         <li ng-show='isEditMode'>
@@ -39,9 +19,15 @@
           </a>
         </li>
         <li ng-show='isEditMode'>
+          <a role='button' ng-click='showHTML()'>
+            <span class="glyphicon glyphicon-ok" aria-hidden="true" ng-show='isShowingHTML'></span>
+            Html
+          </a>
+        </li>
+        <li ng-show='isEditMode'>
           <a role='button' ng-click='showLess()'>
             <span class="glyphicon glyphicon-ok" aria-hidden="true" ng-show='isShowingLess'></span>
-            CSS
+            Style
           </a>
         </li>
         <li ng-show='isEditMode'>
@@ -89,5 +75,14 @@
         </li>
       </ul>
     </div>
+  </nav>
+  <div id='doodle-container'>
+    <div id='editors' resizable r-directions="['right']" r-flex='true'>
+      <div id='html-editor' ng-show='isEditMode &amp;&amp; isShowingHTML'></div>
+      <div id='code-editor' ng-show='isEditMode &amp;&amp; isShowingCode'></div>
+      <div id='libs-editor' ng-show='isEditMode &amp;&amp; isShowingLibs'></div>
+      <div id='less-editor' ng-show='isEditMode &amp;&amp; isShowingLess'></div>
+    </div>
+    <div id='preview'></div>
   </div>
-</nav>
+</div>
