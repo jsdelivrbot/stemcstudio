@@ -1,6 +1,6 @@
 {
   "name": "mathdoodle",
-  "version": "1.201.0",
+  "version": "1.202.0",
   "description": "Learning Mathematics and Geometric Physics through Computational Modeling",
   "engines": {
     "node": "0.12.0"
