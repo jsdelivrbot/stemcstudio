@@ -140,9 +140,10 @@ angular.module('app').factory('templates', [
         var LESS_TEMPLATE_CALCULATION = "" +
             "#info {\n" +
             "  position: absolute;\n" +
-            "  left: 40%;\n" +
-            "  top: 200px;\n" +
+            "  left: 60px;\n" +
+            "  top: 60px;\n" +
             "  font-size: 26px;\n" +
+            "  color: #F9EE98;\n" +
             "}\n";
 
         var HTML_TEMPLATE_CANVAS = "" +
@@ -398,8 +399,8 @@ angular.module('app').factory('templates', [
             "  background-color: #cccccc;\n" +
             "  width: 400px;\n" +
             "  height: 400px;\n" +
-            "  top: 150px;\n" +
-            "  left: 400px;\n" +
+            "  top: 100px;\n" +
+            "  left: 100px;\n" +
             "}\n";
 
         var HTML_TEMPLATE_EIGHTJS = "" +
@@ -407,7 +408,7 @@ angular.module('app').factory('templates', [
             "<html>\n" +
             "  <head>\n" +
             styleMarker() +
-            "    <script i d='vs-triangles' type='x-sha der/x-vertex'>\n" +
+            "    <script id='vs-triangles' type='x-shader/x-vertex'>\n" +
             "      attribute vec3 aPosition;\n" +
             "      attribute vec3 aNormal;\n" +
             "      uniform vec3 uColor;\n" +
@@ -415,7 +416,7 @@ angular.module('app').factory('templates', [
             "      uniform mat3 uNormal;\n" +
             "      uniform mat4 uView;\n" +
             "      uniform mat4 uProjection;\n" +
-            "      unifor m vec3 uAmbientLight;\n" +
+            "      uniform vec3 uAmbientLight;\n" +
             "      uniform vec3 uDirectionalLightColor;\n" +
             "      uniform vec3 uDirectionalLightDirection;\n" +
             "      varying highp vec4 vColor;\n" +
@@ -441,7 +442,7 @@ angular.module('app').factory('templates', [
             "      uniform vec3 uColor;\n" +
             "      uniform mat4 uModel;\n" +
             "      uniform mat4 uView;\n" +
-            "      un iform mat4 uProjection;\n" +
+            "      uniform mat4 uProjection;\n" +
             "      varying highp vec4 vC olor;\n" +
             "      vo id main(void) {\n" +
             "        gl_Position = uProjection * uView * uModel * vec4(aPosition, 1.0);\n" +

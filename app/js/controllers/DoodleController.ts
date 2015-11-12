@@ -267,15 +267,19 @@ angular.module('app').controller('doodle-controller', [
 
         scope.updateView = function() {
             updateWorkspace();
+
             htmlEditor.setValue(doodles.current().html, -1);
             htmlEditor.resize(true);
             htmlEditor.gotoLine(0, 0);
+
             codeEditor.setValue(doodles.current().code, -1);
             codeEditor.resize(true);
             codeEditor.gotoLine(0, 0);
+
             libsEditor.setValue(doodles.current().libs, -1);
             libsEditor.resize(true);
             libsEditor.gotoLine(0, 0);
+
             lessEditor.setValue(doodles.current().less, -1);
             lessEditor.resize(true);
             lessEditor.gotoLine(0, 0);
@@ -599,6 +603,7 @@ angular.module('app').controller('doodle-controller', [
 
         codeEditor.getSession().on('syntaxErrors', function(event) {
             // I'm not seeing any events by this name!
+            console.log("syntaxErrors in codeEditor")
         });
 
         codeEditor.getSession().on('outputFiles', function(event) {
@@ -787,6 +792,7 @@ angular.module('app').controller('doodle-controller', [
                     scope.previewIFrame.style.width = '100%';
                     scope.previewIFrame.style.height = '100%';
                     scope.previewIFrame.style.border = '0';
+                    scope.previewIFrame.style.backgroundColor = '#232323';
 
                     preview.appendChild(scope.previewIFrame);
 

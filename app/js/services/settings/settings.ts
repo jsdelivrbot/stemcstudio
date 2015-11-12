@@ -13,7 +13,7 @@ module mathdoodle {
 
 angular.module('app').factory('settings', [function (): mathdoodle.ISettingsService {
     var settings: mathdoodle.ISettingsService = {
-      theme: 'ace/theme/twilight',
+      theme: 'ace/theme/mathdoodle',
       indent: 2,
       fontSize: '16px',
       showInvisibles: false,

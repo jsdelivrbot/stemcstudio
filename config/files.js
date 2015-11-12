@@ -21,10 +21,12 @@ module.exports = function(lineman) {
         "vendor/davinci-mathscript/dist/davinci-mathscript.js",
 
         "../davinci-deuce/build/src-noconflict/ace.js",
+        "../davinci-deuce/build/src-noconflict/theme-mathdoodle.js",
 
         "vendor/davinci-deuce/build/src-noconflict/theme-chrome.js",
         "vendor/davinci-deuce/build/src-noconflict/theme-eclipse.js",
         "vendor/davinci-deuce/build/src-noconflict/theme-iplastic.js",
+        "vendor/davinci-deuce/build/src-noconflict/theme-mathdoodle.js",
         "vendor/davinci-deuce/build/src-noconflict/theme-monokai.js",
         "vendor/davinci-deuce/build/src-noconflict/theme-textmate.js",
         "vendor/davinci-deuce/build/src-noconflict/theme-twilight.js",
