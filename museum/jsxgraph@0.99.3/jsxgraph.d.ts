@@ -17,14 +17,17 @@ declare module JXG {
      * This is the basic class for geometry elements like points, circles and lines. 
      */
     export interface GeometryElement {
+
         /**
          * Returns the element name.
          */
         getName(): string;
+
         /**
-         * Hide the element. It will still exist but not visible on the board.
+         * Hides the element. It will still exist but not be visible on the board.
          */
         hideElement(): void;
+
         /**
          * Register a new event handler.
          * For a list of possible events see documentation of the elements and objects implementing the EventEmitter interface. 
@@ -32,27 +35,179 @@ declare module JXG {
          * @param handler
          * @param context The context the handler will be called in, default is the element itself.
          */
-        on(event: string, handler: () => void, context?: {}): void;
+        on(event: string, handler: (e: Event) => void, context?: {}): void;
+
         /**
          * Sets an arbitrary number of attributes.
          * @param attributes An object with attributes.
          */
         setAttribute(attributes: {}): void;
+
         /**
          * Updates the element's label text, strips all html.
          * @param text The element label text.
          */
         setLabelText(text: string): string;
+
         /**
          * Updates the element's label text and the element's attribute "name", strips all html.
          * @param name The element name.
          */
         setName(name: string): string;
+
         /**
-         * Make the element visible.
+         * Makes the element visible.
          */
         showElement(): void;
     }
+
+    /**
+     *
+     */
+    export interface GeometryElementAttributes {
+
+        /**
+         * Determines the elements border-style.
+         * Possible values are:
+         * <ul><li>0 for a solid line</li>
+         * <li>1 for a dotted line</li>
+         * <li>2 for a line with small dashes</li>
+         * <li>3 for a line with medium dashes</li>
+         * <li>4 for a line with big dashes</li>
+         * <li>5 for a line with alternating medium and big dashes and large gaps</li>
+         * <li>6 for a line with alternating medium and big dashes and small gaps</li></ul>
+         */
+        dash?: number;
+
+        /**
+         * The fill color of this geometry element.
+         */
+        fillColor?: string;
+
+        /**
+         * Opacity for fill color.
+         */
+        fillOpacity?: number;
+
+        /**
+         * If true, the element is fixed and can not be dragged around.
+         */
+        fixed?: boolean;
+
+        /**
+         * If true the element is fixed and can not be dragged around. The element
+         * will even stay at its position on zoom and moveOrigin events.
+         * Only free elements like points, texts, curves can be frozen.
+         */
+        frozen?: boolean;
+
+        /**
+         *
+         */
+        highlight?: boolean;
+
+        /**
+         * The fill color of the given geometry element when the mouse is pointed over it.
+         */
+        highlightFillColor?: string;
+
+        /**
+         * Opacity for fill color when the object is highlighted.
+         */
+        highlightFillOpacity?: number;
+
+        /**
+         * The stroke color of the given geometry element when the user moves the mouse over it.
+         */
+        highlightStrokeColor?: string;
+
+        /**
+         * Width of the element's stroke when the mouse is pointed over it.
+         */
+        highlightStrokeWidth?: number;
+
+        /**
+         * Opacity for stroke color when the object is highlighted.
+         */
+        highlightStrokeOpacity?: number;
+
+        /**
+         * Display layer which will contain the element.
+         */
+        layer?: number;
+
+        /**
+         * Not necessarily unique name for the element.
+         */
+        name?: string;
+
+        /**
+         * If this is set to true, the element is updated in every update
+         * call of the board. If set to false, the element is updated only after
+         * zoom events or more generally, when the bounding box has been changed.
+         */
+        needsRegularUpdate?: boolean;
+
+        /**
+         * A private element will be inaccessible in certain environments, e.g. a graphical user interface.
+         */
+        priv?: boolean;
+
+        /**
+         * Determines whether two-finger manipulation of this object may change its size.
+         * If set to false, the object is only rotated and translated.
+         */
+        scalable?: boolean;
+
+        /**
+         * If true the element will get a shadow.
+         */
+        shadow?: boolean;
+
+        /**
+         * Snaps the element or its parents to the grid. Currently only relevant for points, circles,
+         * and lines. Points are snapped to grid directly, on circles and lines it's only the parent
+         * points that are snapped
+         */
+        snapToGrid?: boolean;
+
+        /**
+         * The stroke color of the given geometry element.
+         */
+        strokeColor?: string;
+
+        /**
+         * Opacity for element's stroke color.
+         */
+        strokeOpacity?: number;
+
+        /**
+         * Width of the element's stroke.
+         */
+        strokeWidth?: number;
+
+        /**
+         * If true the element will be traced, i.e. on every movement the element will be copied
+         * to the background. Use {@link JXG.GeometryElement#clearTrace} to delete the trace elements.
+         */
+        trace?: boolean;
+
+        /**
+         * Extra visual properties for traces of an element
+         */
+        traceAttributes?: {};
+
+        /**
+         * If false the element won't be visible on the board, otherwise it is shown.
+         */
+        visible?: boolean;
+
+        /**
+         * If true, a label will display the element's name.
+         */
+        withLabel?: boolean;
+    }
+
     /**
      *
      */
@@ -75,6 +230,14 @@ declare module JXG {
          */
         moveTo(where: number[], time?: number, options?: { callback?: () => void; effect?: string; }): Point;
     }
+
+    /**
+     *
+     */
+    export interface CoordsElementAttributes extends GeometryElementAttributes {
+
+    }
+
     /**
      *
      */
@@ -131,6 +294,7 @@ declare module JXG {
      */
     export interface Functiongraph {
     }
+
     /**
      *
      */
@@ -138,6 +302,13 @@ declare module JXG {
         X(): number;
         Y(): number;
     }
+
+    export interface PointAttributes extends CoordsElementAttributes {
+        face?: string;
+        name?: string;
+        size?: number;
+    }
+
     /**
      *
      */
@@ -152,11 +323,44 @@ declare module JXG {
          */
         Value(): number;
     }
+
     /**
      *
      */
     export interface Line extends GeometryElement {
+        /**
+         * Determines the angle between the positive x axis and the line.
+         */
+        getAngle(): number
+
+        /**
+         * The distance between the two points defining the line.
+         */
+        L(): number;
     }
+
+    export interface LineAttributes extends GeometryElementAttributes {
+        /**
+         * Determines whether the line has an arrow at the first defining point.
+         */
+        firstArrow?: boolean;
+
+        /**
+         * Determines whether the line has an arrow at the second defining point.
+         */
+        lastArrow?: boolean;
+
+        /**
+         * Colors the line in the color specified.
+         */
+        strokeColor?: string;
+
+        /**
+         * Determines whether the line is traced.
+         */
+        trace?: boolean;
+    }
+
     /**
      *
      */
@@ -172,11 +376,16 @@ declare module JXG {
      */
     export interface Axis extends Line {
     }
+
     /**
      *
      */
     export interface Segment extends Line {
     }
+
+    export interface SegmentAttributes extends LineAttributes {
+    }
+
     /**
      *
      */
@@ -284,15 +493,15 @@ declare module JXG {
         /**
          *
          */
-        create(elementType: "line", parents: any[], attributes?: {}): Line;
+        create(elementType: "line", parents: any[], attributes?: LineAttributes): Line;
         /**
          *
          */
-        create(elementType: "point", parents?: any[], attributes?: {}): Point;
+        create(elementType: "point", parents?: any[], attributes?: PointAttributes): Point;
         /**
          *
          */
-        create(elementType: "segment", parents: any[], attributes?: {}): Segment;
+        create(elementType: "segment", parents: any[], attributes?: SegmentAttributes): Segment;
         /**
          *
          */
