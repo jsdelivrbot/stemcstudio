@@ -403,7 +403,85 @@ angular.module('app').factory('templates', [
             "  left: 100px;\n" +
             "}\n";
 
-        var HTML_TEMPLATE_EIGHTJS = "" +
+        var HTML_TEMPLATE_EIGHT_2D_1 = "" +
+            "<!doctype html>\n" +
+            "<html>\n" +
+            "  <head>\n" +
+            styleMarker() +
+            "    <script id='vs' type='x-shader/x-vertex'>\n" +
+            "      attribute vec2 aPosition;\n" +
+            "      uniform vec3 uColor;\n" +
+            "      varying highp vec4 vColor;\n" +
+            "      void main(void) {\n" +
+            "        gl_Position = vec4(aPosition, 0.0, 1.0);\n" +
+            "        vColor = vec4(uColor, 1.0);\n" +
+            "      }\n" +
+            "    </script>\n" +
+            "    <script id='fs' type='x-shader/x-fragment'>\n" +
+            "      varying highp vec4 vColor;\n" +
+            "      void main(void) {\n" +
+            "        gl_FragColor = vec4(vColor.xyz, vColor.a);\n" +
+            "      }\n" +
+            "    </script>\n" +
+            scriptsMarker() +
+            "  </head>\n" +
+            "  <body>\n" +
+            libsMarker() +
+            codeMarker() +
+            "    <canvas id='my-canvas'>\n" +
+            "      Your browser does not support the canvas element.\n" +
+            "    </canvas>\n" +
+            "  </body>\n" +
+            "</html>\n";
+
+        var CODE_TEMPLATE_EIGHT_2D_1 = "" +
+            "DomReady.ready(main)\n" +
+            "\n" +
+            "function main() {\n" +
+            "  var canvas = <HTMLCanvasElement>document.getElementById('my-canvas')\n" +
+            "  canvas.width = 400\n" +
+            "  canvas.height = 400\n" +
+            "\n" +
+            "  var ctxt = new EIGHT.ContextGL()\n" +
+            "  ctxt.clearColor(0.1, 0.1, 0.1, 1.0)\n" +
+            "\n" +
+            "  ctxt.start(canvas)\n" +
+            "\n" +
+            "  var attributes: {[name: string]: EIGHT.DrawAttribute} = {}\n" +
+            "  var points = new EIGHT.DrawAttribute([0,0, 1,0, 0,1], 2)\n" +
+            "  attributes['aPosition'] = points\n" +
+            "  var primitive = new EIGHT.DrawPrimitive(EIGHT.DrawMode.LINE_LOOP, [0, 1, 2], attributes)\n" +
+            "  var buffer = ctxt.createBufferGeometry(primitive)\n" +
+            "\n" +
+            "  var program = new EIGHT.HTMLScriptsMaterial([ctxt], ['vs', 'fs'])\n" +
+            "  program.uniform3f('uColor', 1, 0, 0)\n" +
+            "\n" +
+            "  function animate() {\n" +
+            "\n" +
+            "    ctxt.gl.clear(ctxt.gl.COLOR_BUFFER_BIT)\n" +
+            "\n" +
+            "    program.use()\n" +
+            "    buffer.bind(program)\n" +
+            "    buffer.draw()\n" +
+            "    buffer.unbind()\n" +
+            "\n" +
+            "    window.requestAnimationFrame(animate)\n" +
+            "  }\n" +
+            "\n" +
+            "  animate()\n" +
+            "}\n"
+
+        var LIBS_TEMPLATE_EIGHT_2D_1 = ""
+
+        var LESS_TEMPLATE_EIGHT_2D_1 = "" +
+            "#my-canvas {\n" +
+            "  position: absolute;\n" +
+            "  top: 0;\n" +
+            "  left: 15px;\n" +
+            "  background-color: #141414;\n" +
+            "}\n"
+
+        var HTML_TEMPLATE_EIGHT_3D_1 = "" +
             "<!doctype html>\n" +
             "<html>\n" +
             "  <head>\n" +
@@ -486,18 +564,18 @@ angular.module('app').factory('templates', [
             "  </body>\n" +
             "</html>\n";
 
-        var CODE_TEMPLATE_EIGHTJS = "" +
+        var CODE_TEMPLATE_EIGHT_3D_1 = "" +
             "DomReady.ready(() => {\n" +
             "  init()\n" +
             "  animate()\n" +
             "})\n" +
             "\n" +
-            "var c3d = new EIGHT.Canvas3D()\n" +
-            "c3d.enable(EIGHT.Capability.DEPTH_TEST)\n" +
-            "c3d.clearColor(0.2, 0.2, 0.2, 1.0)\n" +
+            "var ctxt = new EIGHT.ContextGL()\n" +
+            "ctxt.enable(EIGHT.Capability.DEPTH_TEST)\n" +
+            "ctxt.clearColor(0.2, 0.2, 0.2, 1.0)\n" +
             "\n" +
             "var ambients: EIGHT.IFacet[] = []\n" +
-            "var scene = new EIGHT.Scene([c3d])\n" +
+            "var scene = new EIGHT.Scene([ctxt])\n" +
             "var camera: EIGHT.PerspectiveCamera\n" +
             "var cube: EIGHT.Drawable<EIGHT.MeshMaterial>\n" +
             "\n" +
@@ -520,7 +598,7 @@ angular.module('app').factory('templates', [
             " */\n" +
             "function init() {\n" +
             "  var canvas = <HTMLCanvasElement>document.getElementById('my-canvas')\n" +
-            "  c3d.start(canvas, 0)\n" +
+            "  ctxt.start(canvas, 0)\n" +
             "\n" +
             "  var aspect = window.innerWidth / window.innerHeight\n" +
             "  camera = new EIGHT.PerspectiveCamera(75 * Math.PI / 180, aspect, 1, 1000).setEye(e3 * 2 + e1 * 0.05 + e2)\n" +
@@ -536,9 +614,9 @@ angular.module('app').factory('templates', [
             "  cube.setFacet('kinematics', new EIGHT.RigidBodyFacetE3()).Ω.copy(I * ω)\n" +
             "  cube.setFacet('color', new EIGHT.ColorFacet()).setRGB(0, 1, 0)\n" +
             "\n" +
-            "  c3d.canvas.width = window.innerWidth\n" +
-            "  c3d.canvas.height = window.innerHeight\n" +
-            "  c3d.viewport(0, 0, window.innerWidth, window.innerHeight)\n" +
+            "  ctxt.canvas.width = window.innerWidth\n" +
+            "  ctxt.canvas.height = window.innerHeight\n" +
+            "  ctxt.viewport(0, 0, window.innerWidth, window.innerHeight)\n" +
             "}\n" +
             "\n" +
             "/**\n" +
@@ -546,7 +624,7 @@ angular.module('app').factory('templates', [
             " */\n" +
             "function animate() {\n" +
             "  try {\n" +
-            "    var gl = c3d.gl\n" +
+            "    var gl = ctxt.gl\n" +
             "\n" +
             "    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)\n" +
             "\n" +
@@ -566,7 +644,7 @@ angular.module('app').factory('templates', [
             "    // R.spinor(e3, e1).scale(-θ / 2).exp()\n" +
             "    // R.sub(Ω * R * dt / 2) // Integrate dR(t)/dt wrt t\n" +
             "\n" +
-            "    scene.draw(ambients, c3d.canvasId)\n" +
+            "    scene.draw(ambients, ctxt.canvasId)\n" +
             "\n" +
             "    requestAnimationFrame(animate)\n" +
             "  }\n" +
@@ -575,7 +653,7 @@ angular.module('app').factory('templates', [
             "  }\n" +
             "}\n";
 
-        var LIBS_TEMPLATE_EIGHTJS = "" +
+        var LIBS_TEMPLATE_EIGHT_3D_1 = "" +
             "var zero = EIGHT.Euclidean3.zero\n" +
             "var one = EIGHT.Euclidean3.one\n" +
             "var e1 = EIGHT.Euclidean3.e1\n" +
@@ -607,12 +685,12 @@ angular.module('app').factory('templates', [
             "}\n" +
             "\n"
 
-        var LESS_TEMPLATE_EIGHTJS = "" +
+        var LESS_TEMPLATE_EIGHT_3D_1 = "" +
             "body { margin: 0; }\n" +
             "canvas { width: 100%; height: 100% }\n" +
             "#stats { position: absolute; top: 0; left: 0; }\n";
 
-        var HTML_TEMPLATE_EIGHT = "" +
+        var HTML_TEMPLATE_EIGHT_3D_2 = "" +
             "<!doctype html>\n" +
             "<html>\n" +
             "  <head>\n" +
@@ -695,7 +773,7 @@ angular.module('app').factory('templates', [
             "  </body>\n" +
             "</html>\n";
 
-        var CODE_TEMPLATE_EIGHT = "" +
+        var CODE_TEMPLATE_EIGHT_3D_2 = "" +
             "/**\n" +
             " * The period of the motions in the animation.\n" +
             " * Break the rules! It's better to use (sometimes) short variable names in math programs!!\n" +
@@ -750,9 +828,9 @@ angular.module('app').factory('templates', [
             "   * But there are also utilities for smart programs, predefined geometries, and transformations to get you started or for demos.\n" +
             "   * We start the manager now to initialize the WebGL context.\n" +
             "   */\n" +
-            "  var c3d = new EIGHT.Canvas3D()\n" +
-            "  c3d.enable(EIGHT.Capability.DEPTH_TEST)\n" +
-            "  c3d.clearColor(0.2, 0.2, 0.2, 1.0)\n" +
+            "  var ctxt = new EIGHT.ContextGL()\n" +
+            "  ctxt.enable(EIGHT.Capability.DEPTH_TEST)\n" +
+            "  ctxt.clearColor(0.2, 0.2, 0.2, 1.0)\n" +
             "\n" +
             "  /**\n" +
             "   * The camera is mutable and provides uniforms through the EIGHT.IFacet interface.\n" +
@@ -774,21 +852,21 @@ angular.module('app').factory('templates', [
             "  /**\n" +
             "   * Program for rendering TRIANGLES with moderately fancy lighting.\n" +
             "   */\n" +
-            "  var programT = new EIGHT.HTMLScriptsMaterial([c3d], ['vs-triangles', 'fs-triangles'], document)\n" +
+            "  var programT = new EIGHT.HTMLScriptsMaterial([ctxt], ['vs-triangles', 'fs-triangles'], document)\n" +
             "  /**\n" +
             "   * Program for rendering LINES.\n" +
             "   */\n" +
-            "  var programL = new EIGHT.HTMLScriptsMaterial([c3d], ['vs-lines', 'fs-lines'], document)\n" +
+            "  var programL = new EIGHT.HTMLScriptsMaterial([ctxt], ['vs-lines', 'fs-lines'], document)\n" +
             "  /**\n" +
             "   * Program for rendering POINTS.\n" +
             "   */\n" +
-            "  var programP = new EIGHT.HTMLScriptsMaterial([c3d], ['vs-points', 'fs-points'], document)\n" +
+            "  var programP = new EIGHT.HTMLScriptsMaterial([ctxt], ['vs-points', 'fs-points'], document)\n" +
             "  /**\n" +
             "   * Program used by the cube, TBD based on geometry dimensionality.\n" +
             "   */\n" +
             "  var materialCube: EIGHT.IMaterial\n" +
             "\n" +
-            "  c3d.start(canvas, canvasId)\n" +
+            "  ctxt.start(canvas, canvasId)\n" +
             "\n" +
             "  var stats = new Stats()\n" +
             "  stats.setMode(0)\n" +
@@ -841,7 +919,7 @@ angular.module('app').factory('templates', [
             "    // Convert the geometry to drawing elements.\n" +
             "    var primitives: EIGHT.DrawPrimitive[] = geometry.toPrimitives();\n" +
             "    // Submit the geometry data to the context which will manage underlying WebGLBuffer(s) for you.\n" +
-            "    geobuff = c3d.createBufferGeometry(primitives[0])\n" +
+            "    geobuff = ctxt.createBufferGeometry(primitives[0])\n" +
             "    if (geobuff) {\n" +
             "      // Pick an appropriate program to use with the mesh based upon the dimensionality.\n" +
             "      switch(geometry.meta.k) {\n" +
@@ -917,7 +995,7 @@ angular.module('app').factory('templates', [
             "    // position = R * e1 * ~R\n" +
             "    // model.X.copy(e1).rotate(rotorL)\n" +
             "\n" +
-            "    var gl = c3d.gl\n" +
+            "    var gl = ctxt.gl\n" +
             "\n" +
             "    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)\n" +
             "\n" +
@@ -939,7 +1017,7 @@ angular.module('app').factory('templates', [
             "  }).start()\n" +
             "}\n";
 
-        var LIBS_TEMPLATE_EIGHT = "" +
+        var LIBS_TEMPLATE_EIGHT_3D_2 = "" +
             "DomReady.ready(function() {\n" +
             "  try {\n" +
             "    main()\n" +
@@ -1045,7 +1123,7 @@ angular.module('app').factory('templates', [
             "}\n" +
             "";
 
-        var LESS_TEMPLATE_EIGHT = "" +
+        var LESS_TEMPLATE_EIGHT_3D_2 = "" +
             "body { margin: 0; }\n" +
             "canvas { width: 100%; height: 100% }\n" +
             "#stats { position: absolute; top: 0; left: 0; }\n";
@@ -1399,7 +1477,7 @@ angular.module('app').factory('templates', [
             "    canvas.width = 600\n" +
             "    canvas.height = 400\n" +
             "\n" +
-            "    var c3d: EIGHT.Canvas3D\n" +
+            "    var ctxt: EIGHT.ContextGL\n" +
             "\n" +
             "    var camera = new EIGHT.PerspectiveCamera().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(3.0 * e3)\n" +
             "\n" +
@@ -1414,12 +1492,12 @@ angular.module('app').factory('templates', [
             "      EIGHT.refChange('reset', 'setUp()')\n" +
             "      EIGHT.refChange('start', 'setUp()')\n" +
             "\n" +
-            "      c3d = new EIGHT.Canvas3D()\n" +
-            "      c3d.enable(EIGHT.Capability.DEPTH_TEST)\n" +
-            "      c3d.clearColor(0.2, 0.2, 0.2, 1.0)\n" +
-            "      c3d.start(canvas, 0)\n" +
+            "      ctxt = new EIGHT.ContextGL()\n" +
+            "      ctxt.enable(EIGHT.Capability.DEPTH_TEST)\n" +
+            "      ctxt.clearColor(0.2, 0.2, 0.2, 1.0)\n" +
+            "      ctxt.start(canvas, 0)\n" +
             "\n" +
-            "      material = new EIGHT.HTMLScriptsMaterial([c3d], ['vs-points', 'fs-points'], document)\n" +
+            "      material = new EIGHT.HTMLScriptsMaterial([ctxt], ['vs-points', 'fs-points'], document)\n" +
             "\n" +
             "      var vec0 = new EIGHT.R3([0.0,  0.0, 0.0])\n" +
             "      var vec1 = new EIGHT.R3([1.0, -0.2, 0.0])\n" +
@@ -1431,9 +1509,9 @@ angular.module('app').factory('templates', [
             "      meta.attributes[EIGHT.Symbolic.ATTRIBUTE_POSITION].name = 'aPosition'\n" +
             "      var data = EIGHT.simplicesToDrawPrimitive(simplices, meta)\n" +
             "\n" +
-            "      geobuff = c3d.createBufferGeometry(data)\n" +
+            "      geobuff = ctxt.createBufferGeometry(data)\n" +
             "\n" +
-            "      camera.setUniforms(material, c3d.canvasId)\n" +
+            "      camera.setUniforms(material, ctxt.canvasId)\n" +
             "    }\n" +
             "\n" +
             "    // If you wish to work with AngularJS scope variables,\n" +
@@ -1454,8 +1532,8 @@ angular.module('app').factory('templates', [
             "      color.setRGB(0.0, 1.0, 0.0)\n" +
             "      for(var i = 0; i < 8; i++) {\n" +
             "        model.R.copy(R).scale(theta - i * 2 * Math.PI / 8).exp()\n" +
-            "        model.setUniforms(material, c3d.canvasId)\n" +
-            "        color.setUniforms(material, c3d.canvasId)\n" +
+            "        model.setUniforms(material, ctxt.canvasId)\n" +
+            "        color.setUniforms(material, ctxt.canvasId)\n" +
             "        geobuff.draw()\n" +
             "        color.scaleRGB(0.7)\n" +
             "      }\n" +
@@ -1477,9 +1555,9 @@ angular.module('app').factory('templates', [
             "      material.release()\n" +
             "      material = void 0\n" +
             "\n" +
-            "      c3d.stop()\n" +
-            "      c3d.release()\n" +
-            "      c3d = void 0\n" +
+            "      ctxt.stop()\n" +
+            "      ctxt.release()\n" +
+            "      ctxt = void 0\n" +
             "\n" +
             "      var outstanding = EIGHT.refChange('stop', 'tearDown()')\n" +
             "      //if (outstanding > 0) {\n" +
@@ -1573,6 +1651,20 @@ angular.module('app').factory('templates', [
         return [
             {
                 uuid: uuid.generate(),
+                description: "2D Mathematical Graphics with EIGHT and WebGL",
+                isCodeVisible: true,
+                isViewVisible: true,
+                focusEditor: undefined,
+                lastKnownJs: {},
+                operatorOverloading: true,
+                html: HTML_TEMPLATE_EIGHT_2D_1,
+                code: CODE_TEMPLATE_EIGHT_2D_1,
+                libs: LIBS_TEMPLATE_EIGHT_2D_1,
+                less: LESS_TEMPLATE_EIGHT_2D_1,
+                dependencies: ['DomReady', 'davinci-eight']
+            },
+            {
+                uuid: uuid.generate(),
                 description: "2D Mathematical Graphics with HTML5 Canvas API and Geometric Algebra",
                 isCodeVisible: true,
                 isViewVisible: true,
@@ -1593,10 +1685,10 @@ angular.module('app').factory('templates', [
                 focusEditor: undefined,
                 lastKnownJs: {},
                 operatorOverloading: true,
-                html: HTML_TEMPLATE_EIGHTJS,
-                code: CODE_TEMPLATE_EIGHTJS,
-                libs: LIBS_TEMPLATE_EIGHTJS,
-                less: LESS_TEMPLATE_EIGHTJS,
+                html: HTML_TEMPLATE_EIGHT_3D_1,
+                code: CODE_TEMPLATE_EIGHT_3D_1,
+                libs: LIBS_TEMPLATE_EIGHT_3D_1,
+                less: LESS_TEMPLATE_EIGHT_3D_1,
                 dependencies: ['DomReady', 'davinci-eight', 'stats.js']
             },
             {
@@ -1607,10 +1699,10 @@ angular.module('app').factory('templates', [
                 focusEditor: undefined,
                 lastKnownJs: {},
                 operatorOverloading: true,
-                html: HTML_TEMPLATE_EIGHT,
-                code: CODE_TEMPLATE_EIGHT,
-                libs: LIBS_TEMPLATE_EIGHT,
-                less: LESS_TEMPLATE_EIGHT,
+                html: HTML_TEMPLATE_EIGHT_3D_2,
+                code: CODE_TEMPLATE_EIGHT_3D_2,
+                libs: LIBS_TEMPLATE_EIGHT_3D_2,
+                less: LESS_TEMPLATE_EIGHT_3D_2,
                 dependencies: ['DomReady', 'davinci-eight', 'stats.js']
             },
             {
