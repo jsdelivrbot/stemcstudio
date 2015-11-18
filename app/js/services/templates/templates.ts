@@ -591,7 +591,7 @@ angular.module('app').factory('templates', [
             "var Ω = dual(ω)\n" +
             "\n" +
             "ambients.push(new EIGHT.AmbientLight(EIGHT.Color.white))\n" +
-            "ambients.push(new EIGHT.DirectionalLight(-e3))\n" +
+            "ambients.push(new EIGHT.DirectionalLightE3(-e3))\n" +
             "\n" +
             "/**\n" +
             " * Initializes the scene.\n" +

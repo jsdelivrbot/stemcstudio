@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/davinci-eight/commands/WebGLEnable.ts - davinci-eight</title>
+    <title>src/davinci-eight/facets/ReflectionFacetE3.ts - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -241,75 +241,114 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: src/davinci-eight/commands/WebGLEnable.ts</h1>
+<h1 class="file-heading">File: src/davinci-eight/facets/ReflectionFacetE3.ts</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-import Capability = require(&#x27;../commands/Capability&#x27;)
-import glCapability = require(&#x27;../commands/glCapability&#x27;)
-import IContextConsumer = require(&#x27;../core/IContextConsumer&#x27;);
-import IContextProvider = require(&#x27;../core/IContextProvider&#x27;);
-import IContextCommand = require(&#x27;../core/IContextCommand&#x27;);
-import mustBeNumber = require(&#x27;../checks/mustBeNumber&#x27;);
-import mustBeString = require(&#x27;../checks/mustBeString&#x27;);
-import Shareable = require(&#x27;../utils/Shareable&#x27;);
+import CartesianE3 = require(&#x27;../math/CartesianE3&#x27;)
+import IFacet = require(&#x27;../core/IFacet&#x27;)
+import IFacetVisitor = require(&#x27;../core/IFacetVisitor&#x27;)
+import mustBeArray = require(&#x27;../checks/mustBeArray&#x27;)
+import mustBeString = require(&#x27;../checks/mustBeString&#x27;)
+import R3 = require(&#x27;../math/R3&#x27;)
+import Matrix4 = require(&#x27;../math/Matrix4&#x27;)
+import readOnly = require(&#x27;../i18n/readOnly&#x27;);
+import Shareable = require(&#x27;../utils/Shareable&#x27;)
+import Symbolic = require(&#x27;../core/Symbolic&#x27;)
 
 /**
- * &lt;p&gt;
- * enable(capability: Capability): void
- * &lt;p&gt; 
- * @class WebGLEnable
+ * @class ReflectionFacetE3
  * @extends Shareable
- * @implements IContextCommand
- * @implements IContextConsumer
  */
-class WebGLEnable extends Shareable implements IContextCommand, IContextConsumer {
-    private _capability: Capability;
+class ReflectionFacetE3 extends Shareable implements IFacet {
     /**
-     * @class WebGLEnable
+     * The vector perpendicular to the (hyper-)plane of reflection.
+     * @property _normal
+     * @type {R3}
+     * @private
+     */
+    public _normal: R3;
+    /**
+     * @property matrix
+     * @type {Matrix4}
+     * @private
+     */
+    private matrix = Matrix4.one();
+    private name: string;
+
+    /**
+     * @class ReflectionFacetE3
      * @constructor
-     * @param capability {Capability} The capability to be enabled.
+     * @param name {string} The name of the uniform variable.
      */
-    constructor(capability: Capability) {
-        super(&#x27;WebGLEnable&#x27;)
-        this._capability = mustBeNumber(&#x27;capability&#x27;, capability)
+    constructor(name: string) {
+        super(&#x27;ReflectionFacetE3&#x27;)
+        this.name = mustBeString(&#x27;name&#x27;, name)
+        // The mathematics of the reflection causes a zero vector to be the identity transformation.
+        this._normal = new R3().copy(CartesianE3.zero)
+        this._normal.modified = true
     }
+
     /**
-     * @method contextFree
-     * @param canvasId {number}
-     * @return {void}
+     * @property normal
+     * @type R3
+     * @readOnly
      */
-    contextFree(canvasId: number): void {
-        // do nothing
+    get normal(): R3 {
+        return this._normal
     }
-    /**
-     * @method contextGain
-     * @param manager {IContextProvider}
-     * @return {void}
-     */
-    contextGain(manager: IContextProvider): void {
-        manager.gl.enable(glCapability(this._capability, manager.gl))
+    set normal(unused) {
+        throw new Error(readOnly(&#x27;normal&#x27;).message)
     }
-    /**
-     * @method contextLost
-     * @param canvasId {number}
-     * @return {void}
-     */
-    contextLost(canvasId: number): void {
-        // do nothing
-    }
+
     /**
      * @method destructor
      * @return {void}
      * @protected
      */
     protected destructor(): void {
-        this._capability = void 0
+        this._normal = void 0
+        this.matrix = void 0
         super.destructor()
+    }
+
+    /**
+     * @method getProperty
+     * @param name {string}
+     * @return {Array&lt;number&gt;}
+     */
+    getProperty(name: string): Array&lt;number&gt; {
+        mustBeString(&#x27;name&#x27;, name)
+        return void 0;
+    }
+
+    /**
+     * @method setProperty
+     * @param name {string}
+     * @param value {Array&lt;number&gt;}
+     * @return {void}
+     */
+    setProperty(name: string, value: Array&lt;number&gt;): void {
+        mustBeString(&#x27;name&#x27;, name)
+        mustBeArray(&#x27;value&#x27;, value)
+    }
+
+    /**
+     * @method setUniforms
+     * @param visitor {IFacetVisitor}
+     * @param canvasId {number}
+     * @return {void}
+     */
+    setUniforms(visitor: IFacetVisitor, canvasId: number): void {
+        if (this._normal.modified) {
+            this.matrix.reflection(this._normal)
+            this._normal.modified = false
+        }
+        visitor.uniformMatrix4(this.name, false, this.matrix, canvasId)
     }
 }
 
-export = WebGLEnable
+export = ReflectionFacetE3
     </pre>
 </div>
                     </div>
