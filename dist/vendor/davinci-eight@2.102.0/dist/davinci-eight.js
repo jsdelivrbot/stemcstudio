@@ -21644,11 +21644,10 @@ define('davinci-eight/materials/GraphicsProgram',["require", "exports", '../core
         /**
          * Returns a map of GLSL attribute name to <code>AttribLocation</code>.
          * @method attributes
-         * @param [canvasId = 0] {number} Determines which WebGLProgram to use.
+         * @param [canvasId] {number} Determines which WebGLProgram to use.
          * @return {{[name: string]: AttribLocation}}
          */
         GraphicsProgram.prototype.attributes = function (canvasId) {
-            if (canvasId === void 0) { canvasId = 0; }
             // FIXME: Why is this called?
             // FIXME: The map should be protected but that is slow
             // FIXME Clear need for performant solution.
@@ -21668,11 +21667,10 @@ define('davinci-eight/materials/GraphicsProgram',["require", "exports", '../core
         };
         /**
          * @method uniforms
-         * @param [canvasId = 0] {number} Determines which WebGLProgram to use.
+         * @param [canvasId] {number} Determines which WebGLProgram to use.
          * @return {{[name: string]: UniformLocation}}
          */
         GraphicsProgram.prototype.uniforms = function (canvasId) {
-            if (canvasId === void 0) { canvasId = 0; }
             if (this.inner) {
                 return this.inner.uniforms(canvasId);
             }
@@ -21690,11 +21688,10 @@ define('davinci-eight/materials/GraphicsProgram',["require", "exports", '../core
         /**
          * @method enableAttrib
          * @param name {string}
-         * @param [canvasId = 0] {number} Determines which WebGLProgram to use.
+         * @param [canvasId] {number} Determines which WebGLProgram to use.
          * @return {void}
          */
         GraphicsProgram.prototype.enableAttrib = function (name, canvasId) {
-            if (canvasId === void 0) { canvasId = 0; }
             if (this.inner) {
                 return this.inner.enableAttrib(name, canvasId);
             }
@@ -21712,11 +21709,10 @@ define('davinci-eight/materials/GraphicsProgram',["require", "exports", '../core
         /**
          * @method disableAttrib
          * @param name {string}
-         * @param [canvasId = 0] {number} Determines which WebGLProgram to use.
+         * @param [canvasId] {number} Determines which WebGLProgram to use.
          * @return {void}
          */
         GraphicsProgram.prototype.disableAttrib = function (name, canvasId) {
-            if (canvasId === void 0) { canvasId = 0; }
             if (this.inner) {
                 return this.inner.disableAttrib(name, canvasId);
             }
@@ -21733,7 +21729,7 @@ define('davinci-eight/materials/GraphicsProgram',["require", "exports", '../core
         };
         /**
          * @method contextFree
-         * @param canvasId {number} Determines which WebGLProgram to use.
+         * @param [canvasId] {number} Determines which WebGLProgram to use.
          * @return {void}
          */
         GraphicsProgram.prototype.contextFree = function (canvasId) {
@@ -21756,7 +21752,7 @@ define('davinci-eight/materials/GraphicsProgram',["require", "exports", '../core
         };
         /**
          * @method contextLost
-         * @param canvasId {number} Determines which WebGLProgram to use.
+         * @param [canvasId] {number} Determines which WebGLProgram to use.
          * @return {void}
          */
         GraphicsProgram.prototype.contextLost = function (canvasId) {
@@ -21777,11 +21773,10 @@ define('davinci-eight/materials/GraphicsProgram',["require", "exports", '../core
          * @method uniform1f
          * @param name {string}
          * @param x {number}
-         * @param [canvasId = 0] {number} Determines which WebGLProgram to use.
+         * @param [canvasId] {number} Determines which WebGLProgram to use.
          * @return {void}
          */
         GraphicsProgram.prototype.uniform1f = function (name, x, canvasId) {
-            if (canvasId === void 0) { canvasId = 0; }
             if (this.inner) {
                 this.inner.uniform1f(name, x, canvasId);
             }
@@ -21804,11 +21799,10 @@ define('davinci-eight/materials/GraphicsProgram',["require", "exports", '../core
          * @param name {string}
          * @param x {number}
          * @param y {number}
-         * @param [canvasId = 0] {number} Determines which WebGLProgram to use.
+         * @param [canvasId] {number} Determines which WebGLProgram to use.
          * @return {void}
          */
         GraphicsProgram.prototype.uniform2f = function (name, x, y, canvasId) {
-            if (canvasId === void 0) { canvasId = 0; }
             if (this.inner) {
                 this.inner.uniform2f(name, x, y, canvasId);
             }
@@ -21832,11 +21826,10 @@ define('davinci-eight/materials/GraphicsProgram',["require", "exports", '../core
          * @param x {number}
          * @param y {number}
          * @param z {number}
-         * @param [canvasId = 0] {number} Determines which WebGLProgram to use.
+         * @param [canvasId] {number} Determines which WebGLProgram to use.
          * @return {void}
          */
         GraphicsProgram.prototype.uniform3f = function (name, x, y, z, canvasId) {
-            if (canvasId === void 0) { canvasId = 0; }
             if (this.inner) {
                 this.inner.uniform3f(name, x, y, z, canvasId);
             }
@@ -21861,11 +21854,10 @@ define('davinci-eight/materials/GraphicsProgram',["require", "exports", '../core
          * @param y {number}
          * @param z {number}
          * @param w {number}
-         * @param [canvasId = 0] {number} Determines which WebGLProgram to use.
+         * @param [canvasId] {number} Determines which WebGLProgram to use.
          * @return {void}
          */
         GraphicsProgram.prototype.uniform4f = function (name, x, y, z, w, canvasId) {
-            if (canvasId === void 0) { canvasId = 0; }
             if (this.inner) {
                 this.inner.uniform4f(name, x, y, z, w, canvasId);
             }
@@ -21892,7 +21884,6 @@ define('davinci-eight/materials/GraphicsProgram',["require", "exports", '../core
          * @return {void}
          */
         GraphicsProgram.prototype.uniformMatrix2 = function (name, transpose, matrix, canvasId) {
-            if (canvasId === void 0) { canvasId = 0; }
             if (this.inner) {
                 this.inner.uniformMatrix2(name, transpose, matrix, canvasId);
             }
@@ -21915,11 +21906,10 @@ define('davinci-eight/materials/GraphicsProgram',["require", "exports", '../core
          * @param name {string}
          * @param transpose {boolean}
          * @param matrix {Matrix3}
-         * @param [canvasId = 0] {number} Determines which WebGLProgram to use.
+         * @param [canvasId] {number} Determines which WebGLProgram to use.
          * @return {void}
          */
         GraphicsProgram.prototype.uniformMatrix3 = function (name, transpose, matrix, canvasId) {
-            if (canvasId === void 0) { canvasId = 0; }
             if (this.inner) {
                 this.inner.uniformMatrix3(name, transpose, matrix, canvasId);
             }
@@ -21942,11 +21932,10 @@ define('davinci-eight/materials/GraphicsProgram',["require", "exports", '../core
          * @param name {string}
          * @param transpose {boolean}
          * @param matrix {Matrix4}
-         * @param [canvasId = 0] {number} Determines which WebGLProgram to use.
+         * @param [canvasId] {number} Determines which WebGLProgram to use.
          * @return {void}
          */
         GraphicsProgram.prototype.uniformMatrix4 = function (name, transpose, matrix, canvasId) {
-            if (canvasId === void 0) { canvasId = 0; }
             if (this.inner) {
                 this.inner.uniformMatrix4(name, transpose, matrix, canvasId);
             }
@@ -21970,11 +21959,10 @@ define('davinci-eight/materials/GraphicsProgram',["require", "exports", '../core
          * @method uniformVectorE2
          * @param name {string}
          * @param vector {VectorE2}
-         * @param [canvasId = 0] {number} Determines which WebGLProgram to use.
+         * @param [canvasId] {number} Determines which WebGLProgram to use.
          * @return {void}
          */
         GraphicsProgram.prototype.uniformVectorE2 = function (name, vector, canvasId) {
-            if (canvasId === void 0) { canvasId = 0; }
             if (this.inner) {
                 this.inner.uniformVectorE2(name, vector, canvasId);
             }
@@ -21996,11 +21984,10 @@ define('davinci-eight/materials/GraphicsProgram',["require", "exports", '../core
          * @method uniformVectorE3
          * @param name {string}
          * @param vector {VectorE3}
-         * @param [canvasId = 0] {number} Determines which WebGLProgram to use.
+         * @param [canvasId] {number} Determines which WebGLProgram to use.
          * @return {void}
          */
         GraphicsProgram.prototype.uniformVectorE3 = function (name, vector, canvasId) {
-            if (canvasId === void 0) { canvasId = 0; }
             if (this.inner) {
                 this.inner.uniformVectorE3(name, vector, canvasId);
             }
@@ -22022,11 +22009,10 @@ define('davinci-eight/materials/GraphicsProgram',["require", "exports", '../core
          * @method uniformVectorE4
          * @param name {string}
          * @param vector {VectorE4}
-         * @param [canvasId = 0] {number} Determines which WebGLProgram to use.
+         * @param [canvasId] {number} Determines which WebGLProgram to use.
          * @return {void}
          */
         GraphicsProgram.prototype.uniformVectorE4 = function (name, vector, canvasId) {
-            if (canvasId === void 0) { canvasId = 0; }
             if (this.inner) {
                 this.inner.uniformVectorE4(name, vector, canvasId);
             }
@@ -22048,11 +22034,10 @@ define('davinci-eight/materials/GraphicsProgram',["require", "exports", '../core
          * @method vector2
          * @param name {string}
          * @param data {number[]}
-         * @param [canvasId = 0] {number} Determines which WebGLProgram to use.
+         * @param [canvasId] {number} Determines which WebGLProgram to use.
          * @return {void}
          */
         GraphicsProgram.prototype.vector2 = function (name, data, canvasId) {
-            if (canvasId === void 0) { canvasId = 0; }
             if (this.inner) {
                 this.inner.vector2(name, data, canvasId);
             }
@@ -22074,11 +22059,10 @@ define('davinci-eight/materials/GraphicsProgram',["require", "exports", '../core
          * @method vector3
          * @param name {string}
          * @param data {number[]}
-         * @param [canvasId = 0] {number} Determines which WebGLProgram to use.
+         * @param [canvasId] {number} Determines which WebGLProgram to use.
          * @return {void}
          */
         GraphicsProgram.prototype.vector3 = function (name, data, canvasId) {
-            if (canvasId === void 0) { canvasId = 0; }
             if (this.inner) {
                 this.inner.vector3(name, data, canvasId);
             }
@@ -22100,11 +22084,10 @@ define('davinci-eight/materials/GraphicsProgram',["require", "exports", '../core
          * @method vector4
          * @param name {string}
          * @param data {number[]}
-         * @param [canvasId = 0] {number} Determines which WebGLProgram to use.
+         * @param [canvasId] {number} Determines which WebGLProgram to use.
          * @return {void}
          */
         GraphicsProgram.prototype.vector4 = function (name, data, canvasId) {
-            if (canvasId === void 0) { canvasId = 0; }
             if (this.inner) {
                 this.inner.vector4(name, data, canvasId);
             }

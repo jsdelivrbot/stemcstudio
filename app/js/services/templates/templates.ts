@@ -570,9 +570,16 @@ angular.module('app').factory('templates', [
             "  <body>\n" +
             libsMarker() +
             codeMarker() +
-            "    <canvas id='my-canvas'>\n" +
-            "      Your browser does not support the canvas element.\n" +
-            "    </canvas>\n" +
+            "    <div id='viewer'>\n" +
+            "      <canvas id='my-canvas'>\n" +
+            "        Your browser does not support the canvas element.\n" +
+            "      </canvas>\n" +
+            "      <div id='overlay'>\n" +
+            "        <div>t: <span id='t'></span></div>\n" +
+            "        <div>θ: <span id='θ'></span></div>\n" +
+            "        <div>R: <span id='R'></span></div>\n" +
+            "      </div>\n" +
+            "    </div>\n" +
             "  </body>\n" +
             "</html>\n";
 
@@ -590,6 +597,13 @@ angular.module('app').factory('templates', [
             "var scene = new EIGHT.Scene([ctxt])\n" +
             "var camera: EIGHT.PerspectiveCamera\n" +
             "var cube: EIGHT.Drawable<EIGHT.MeshMaterial>\n" +
+            "\n" +
+            "var timeElement: HTMLElement\n" +
+            "var timeNode: Text\n" +
+            "var angleElement: HTMLElement\n" +
+            "var angleNode: Text\n" +
+            "var spinorElement: HTMLElement\n" +
+            "var spinorNode: Text\n" +
             "\n" +
             "/**\n" +
             " * The time interval between animation frames.\n" +
@@ -629,6 +643,18 @@ angular.module('app').factory('templates', [
             "  ctxt.canvas.width = window.innerWidth\n" +
             "  ctxt.canvas.height = window.innerHeight\n" +
             "  ctxt.viewport(0, 0, window.innerWidth, window.innerHeight)\n" +
+            "\n" +
+            "  timeElement = document.getElementById('t')\n" +
+            "  timeNode = document.createTextNode('')\n" +
+            "  timeElement.appendChild(timeNode)\n" +
+            "\n" +
+            "  angleElement = document.getElementById('θ')\n" +
+            "  angleNode = document.createTextNode('')\n" +
+            "  angleElement.appendChild(angleNode)\n" +
+            "\n" +
+            "  spinorElement = document.getElementById('R')\n" +
+            "  spinorNode = document.createTextNode('')\n" +
+            "  spinorElement.appendChild(spinorNode)\n" +
             "}\n" +
             "\n" +
             "/**\n" +
@@ -640,7 +666,10 @@ angular.module('app').factory('templates', [
             "\n" +
             "    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)\n" +
             "\n" +
-            "    var θ = Date.now() * 0.001\n" +
+            "    var time = Date.now() * 0.001\n" +
+            "    timeNode.nodeValue = time.toFixed(2)\n" +
+            "\n" +
+            "    var θ = time\n" +
             "\n" +
             "    var kinematics = <EIGHT.RigidBodyFacetE3>cube.getFacet('kinematics')\n" +
             "    var X = kinematics.X\n" +
@@ -655,6 +684,9 @@ angular.module('app').factory('templates', [
             "    // R.copy(exp(e1 * e2 * e3 * e2 * -θ / 2))\n" +
             "    // R.spinor(e3, e1).scale(-θ / 2).exp()\n" +
             "    // R.sub(Ω * R * dt / 2) // Integrate dR(t)/dt wrt t\n" +
+            "\n" +
+            "    angleNode.nodeValue = R.clone().angle().toFixed(2)\n" +
+            "    spinorNode.nodeValue = R.toFixed(2)\n" +
             "\n" +
             "    scene.draw(ambients)\n" +
             "\n" +
@@ -698,8 +730,28 @@ angular.module('app').factory('templates', [
             "\n"
 
         var LESS_TEMPLATE_EIGHT_3D_1 = "" +
-            "body { margin: 0; }\n" +
-            "canvas { width: 100%; height: 100% }\n" +
+            "body {\n" +
+            "  margin: 0;\n" +
+            "}\n" +
+            "\n" +
+            "canvas {\n" +
+            "  width: 100%;\n" +
+            "  height: 100%;\n" +
+            "}\n" +
+            "\n" +
+            "#overlay {\n" +
+            "  position: absolute;\n" +
+            "  left: 10px;\n" +
+            "  top: 10px;\n" +
+            "  background-color: rgba(0, 0, 0, 0.7);\n" +
+            "  color: white;\n" +
+            "  font-family: monospace;\n" +
+            "  padding: 1em;\n" +
+            "  border-radius: 1em;\n" +
+            "  border: 2px solid #00ff00;\n" +
+            "  // text-shadow: 0px 0px 4px white;\n" +
+            "}\n" +
+            "\n" +
             "#stats { position: absolute; top: 0; left: 0; }\n";
 
         var HTML_TEMPLATE_EIGHT_3D_2 = "" +
