@@ -442,28 +442,40 @@ angular.module('app').factory('templates', [
             "  canvas.width = 400\n" +
             "  canvas.height = 400\n" +
             "\n" +
-            "  var ctxt = new EIGHT.ContextGL()\n" +
+            "  var ctxt = new EIGHT.GraphicsContext()\n" +
             "  ctxt.clearColor(0.1, 0.1, 0.1, 1.0)\n" +
             "\n" +
             "  ctxt.start(canvas)\n" +
             "\n" +
             "  var attributes: {[name: string]: EIGHT.DrawAttribute} = {}\n" +
-            "  var points = new EIGHT.DrawAttribute([0,0, 1,0, 0,1], 2)\n" +
-            "  attributes['aPosition'] = points\n" +
+            "  var points = new EIGHT.DrawAttribute([0, 0, 0.75, 0, 0, 1], 2)\n" +
+            "  attributes[EIGHT.GraphicsProgramSymbols.ATTRIBUTE_POSITION] = points\n" +
             "  var primitive = new EIGHT.DrawPrimitive(EIGHT.DrawMode.LINE_LOOP, [0, 1, 2], attributes)\n" +
-            "  var buffer = ctxt.createBufferGeometry(primitive)\n" +
+            "  var triangleElements = ctxt.createBufferGeometry(primitive)\n" +
             "\n" +
-            "  var program = new EIGHT.HTMLScriptsMaterial([ctxt], ['vs', 'fs'])\n" +
-            "  program.uniform3f('uColor', 1, 0, 0)\n" +
+            "  // Generate the graphics program rather than building it manually.\n" +
+            "  var builder = new EIGHT.GraphicsProgramBuilder()\n" +
+            "  // Describe the required program parameters to the builder.\n" +
+            "  builder.attribute(EIGHT.GraphicsProgramSymbols.ATTRIBUTE_POSITION, 2)\n" +
+            "  builder.uniform(EIGHT.GraphicsProgramSymbols.UNIFORM_COLOR, 'vec3')\n" +
+            "  var program = builder.build([ctxt])\n" +
+            "  // Take a look at the shader source code that was generated for us.\n" +
+            "  console.log(program.vertexShader)\n" +
+            "  console.log(program.fragmentShader)\n" +
+            "\n" +
+            "  // Take control of the the Graphics Pipeline Programming.\n" +
+            "  // var program = new EIGHT.HTMLScriptsGraphicsProgram([ctxt], ['vs', 'fs'])\n" +
             "\n" +
             "  function animate() {\n" +
             "\n" +
             "    ctxt.gl.clear(ctxt.gl.COLOR_BUFFER_BIT)\n" +
             "\n" +
             "    program.use()\n" +
-            "    buffer.bind(program)\n" +
-            "    buffer.draw()\n" +
-            "    buffer.unbind()\n" +
+            "\n" +
+            "    program.uniform3f(EIGHT.GraphicsProgramSymbols.UNIFORM_COLOR, 1, 0, 0)\n" +
+            "    triangleElements.bind(program)\n" +
+            "    triangleElements.draw()\n" +
+            "    triangleElements.unbind()\n" +
             "\n" +
             "    window.requestAnimationFrame(animate)\n" +
             "  }\n" +
@@ -570,7 +582,7 @@ angular.module('app').factory('templates', [
             "  animate()\n" +
             "})\n" +
             "\n" +
-            "var ctxt = new EIGHT.ContextGL()\n" +
+            "var ctxt = new EIGHT.GraphicsContext()\n" +
             "ctxt.enable(EIGHT.Capability.DEPTH_TEST)\n" +
             "ctxt.clearColor(0.2, 0.2, 0.2, 1.0)\n" +
             "\n" +
@@ -598,7 +610,7 @@ angular.module('app').factory('templates', [
             " */\n" +
             "function init() {\n" +
             "  var canvas = <HTMLCanvasElement>document.getElementById('my-canvas')\n" +
-            "  ctxt.start(canvas, 0)\n" +
+            "  ctxt.start(canvas)\n" +
             "\n" +
             "  var aspect = window.innerWidth / window.innerHeight\n" +
             "  camera = new EIGHT.PerspectiveCamera(75 * Math.PI / 180, aspect, 1, 1000).setEye(e3 * 2 + e1 * 0.05 + e2)\n" +
@@ -644,7 +656,7 @@ angular.module('app').factory('templates', [
             "    // R.spinor(e3, e1).scale(-θ / 2).exp()\n" +
             "    // R.sub(Ω * R * dt / 2) // Integrate dR(t)/dt wrt t\n" +
             "\n" +
-            "    scene.draw(ambients, ctxt.canvasId)\n" +
+            "    scene.draw(ambients)\n" +
             "\n" +
             "    requestAnimationFrame(animate)\n" +
             "  }\n" +
@@ -828,7 +840,7 @@ angular.module('app').factory('templates', [
             "   * But there are also utilities for smart programs, predefined geometries, and transformations to get you started or for demos.\n" +
             "   * We start the manager now to initialize the WebGL context.\n" +
             "   */\n" +
-            "  var ctxt = new EIGHT.ContextGL()\n" +
+            "  var ctxt = new EIGHT.GraphicsContext()\n" +
             "  ctxt.enable(EIGHT.Capability.DEPTH_TEST)\n" +
             "  ctxt.clearColor(0.2, 0.2, 0.2, 1.0)\n" +
             "\n" +
@@ -852,19 +864,19 @@ angular.module('app').factory('templates', [
             "  /**\n" +
             "   * Program for rendering TRIANGLES with moderately fancy lighting.\n" +
             "   */\n" +
-            "  var programT = new EIGHT.HTMLScriptsMaterial([ctxt], ['vs-triangles', 'fs-triangles'], document)\n" +
+            "  var programT = new EIGHT.HTMLScriptsGraphicsProgram([ctxt], ['vs-triangles', 'fs-triangles'], document)\n" +
             "  /**\n" +
             "   * Program for rendering LINES.\n" +
             "   */\n" +
-            "  var programL = new EIGHT.HTMLScriptsMaterial([ctxt], ['vs-lines', 'fs-lines'], document)\n" +
+            "  var programL = new EIGHT.HTMLScriptsGraphicsProgram([ctxt], ['vs-lines', 'fs-lines'], document)\n" +
             "  /**\n" +
             "   * Program for rendering POINTS.\n" +
             "   */\n" +
-            "  var programP = new EIGHT.HTMLScriptsMaterial([ctxt], ['vs-points', 'fs-points'], document)\n" +
+            "  var programP = new EIGHT.HTMLScriptsGraphicsProgram([ctxt], ['vs-points', 'fs-points'], document)\n" +
             "  /**\n" +
             "   * Program used by the cube, TBD based on geometry dimensionality.\n" +
             "   */\n" +
-            "  var materialCube: EIGHT.IMaterial\n" +
+            "  var materialCube: EIGHT.IGraphicsProgram\n" +
             "\n" +
             "  ctxt.start(canvas, canvasId)\n" +
             "\n" +
@@ -878,7 +890,7 @@ angular.module('app').factory('templates', [
             "  camera.setUniforms(programP, canvasId)\n" +
             "  // Uniforms may also be set directly and some standard names are symbolically defined.\n" +
             "  // The names used here should match the names used in the program source code.\n" +
-            "  programT.vector3(EIGHT.Symbolic.UNIFORM_AMBIENT_LIGHT, ambientLight.coords, canvasId)\n" +
+            "  programT.vector3(EIGHT.GraphicsProgramSymbols.UNIFORM_AMBIENT_LIGHT, ambientLight.coords, canvasId)\n" +
             "  programT.vector3('uDirectionalLightColor', dLightColor.coords, canvasId)\n" +
             "  programT.vector3('uDirectionalLightDirection', dLightDirection.coords, canvasId)\n" +
             "  programP.uniform1f('uPointSize', 4, canvasId)\n" +
@@ -1116,9 +1128,9 @@ angular.module('app').factory('templates', [
             "\n" +
             "    this.N.normalFromMatrix4(this.M)\n" +
             "\n" +
-            "    visitor.uniformMatrix4(EIGHT.Symbolic.UNIFORM_MODEL_MATRIX, false, this.M, canvasId)\n" +
-            "    visitor.uniformMatrix3(EIGHT.Symbolic.UNIFORM_NORMAL_MATRIX, false, this.N, canvasId)\n" +
-            "    visitor.uniformVectorE3(EIGHT.Symbolic.UNIFORM_COLOR, this.color, canvasId)\n" +
+            "    visitor.uniformMatrix4(EIGHT.GraphicsProgramSymbols.UNIFORM_MODEL_MATRIX, false, this.M, canvasId)\n" +
+            "    visitor.uniformMatrix3(EIGHT.GraphicsProgramSymbols.UNIFORM_NORMAL_MATRIX, false, this.N, canvasId)\n" +
+            "    visitor.uniformVectorE3(EIGHT.GraphicsProgramSymbols.UNIFORM_COLOR, this.color, canvasId)\n" +
             "  }\n" +
             "}\n" +
             "";
@@ -1477,12 +1489,12 @@ angular.module('app').factory('templates', [
             "    canvas.width = 600\n" +
             "    canvas.height = 400\n" +
             "\n" +
-            "    var ctxt: EIGHT.ContextGL\n" +
+            "    var ctxt: EIGHT.GraphicsContext\n" +
             "\n" +
             "    var camera = new EIGHT.PerspectiveCamera().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(3.0 * e3)\n" +
             "\n" +
             "    var geobuff: EIGHT.IBufferGeometry\n" +
-            "    var material: EIGHT.IMaterial\n" +
+            "    var material: EIGHT.IGraphicsProgram\n" +
             "    var model = new EIGHT.ModelFacetE3()\n" +
             "    var color = new EIGHT.ColorFacet()\n" +
             "\n" +
@@ -1492,12 +1504,12 @@ angular.module('app').factory('templates', [
             "      EIGHT.refChange('reset', 'setUp()')\n" +
             "      EIGHT.refChange('start', 'setUp()')\n" +
             "\n" +
-            "      ctxt = new EIGHT.ContextGL()\n" +
+            "      ctxt = new EIGHT.GraphicsContext()\n" +
             "      ctxt.enable(EIGHT.Capability.DEPTH_TEST)\n" +
             "      ctxt.clearColor(0.2, 0.2, 0.2, 1.0)\n" +
             "      ctxt.start(canvas, 0)\n" +
             "\n" +
-            "      material = new EIGHT.HTMLScriptsMaterial([ctxt], ['vs-points', 'fs-points'], document)\n" +
+            "      material = new EIGHT.HTMLScriptsGraphicsProgram([ctxt], ['vs-points', 'fs-points'], document)\n" +
             "\n" +
             "      var vec0 = new EIGHT.R3([0.0,  0.0, 0.0])\n" +
             "      var vec1 = new EIGHT.R3([1.0, -0.2, 0.0])\n" +
@@ -1506,7 +1518,7 @@ angular.module('app').factory('templates', [
             "      var meta = EIGHT.simplicesToGeometryMeta(simplices)\n" +
             "      // console.log(JSON.stringify(meta, null, 2))\n" +
             "      // Map standard names in geometry to names used in vertex shader code.\n" +
-            "      meta.attributes[EIGHT.Symbolic.ATTRIBUTE_POSITION].name = 'aPosition'\n" +
+            "      meta.attributes[EIGHT.GraphicsProgramSymbols.ATTRIBUTE_POSITION].name = 'aPosition'\n" +
             "      var data = EIGHT.simplicesToDrawPrimitive(simplices, meta)\n" +
             "\n" +
             "      geobuff = ctxt.createBufferGeometry(data)\n" +
