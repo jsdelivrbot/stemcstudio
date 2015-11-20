@@ -460,8 +460,8 @@ angular.module('app').factory('templates', [
             "  builder.uniform(EIGHT.GraphicsProgramSymbols.UNIFORM_COLOR, 'vec3')\n" +
             "  var program = builder.build([ctxt])\n" +
             "  // Take a look at the shader source code that was generated for us.\n" +
-            "  console.log(program.vertexShader)\n" +
-            "  console.log(program.fragmentShader)\n" +
+            "  // console.log(program.vertexShader)\n" +
+            "  // console.log(program.fragmentShader)\n" +
             "\n" +
             "  // Take control of the the Graphics Pipeline Programming.\n" +
             "  // var program = new EIGHT.HTMLScriptsGraphicsProgram([ctxt], ['vs', 'fs'])\n" +
@@ -533,8 +533,8 @@ angular.module('app').factory('templates', [
             "      uniform mat4 uModel;\n" +
             "      uniform mat4 uView;\n" +
             "      uniform mat4 uProjection;\n" +
-            "      varying highp vec4 vC olor;\n" +
-            "      vo id main(void) {\n" +
+            "      varying highp vec4 vColor;\n" +
+            "      void main(void) {\n" +
             "        gl_Position = uProjection * uView * uModel * vec4(aPosition, 1.0);\n" +
             "        vColor = vec4(uColor, 1.0);\n" +
             "      }\n" +
@@ -633,9 +633,27 @@ angular.module('app').factory('templates', [
             "  var geometry = new EIGHT.BarnSimplexGeometry()\n" +
             "  geometry.k = 1\n" +
             "  var primitives = geometry.toPrimitives()\n" +
-            "  var material = new EIGHT.LineMaterial()\n" +
             "\n" +
-            "  cube = new EIGHT.Drawable(primitives, material)\n" +
+            "  // 3 roads to a graphics program that runs on the GPU:\n" +
+            "  // 1) Use a graphics program generator.\n" +
+            "  var smb = new EIGHT.GraphicsProgramBuilder()\n" +
+            "  smb.attribute(EIGHT.GraphicsProgramSymbols.ATTRIBUTE_POSITION, 3)\n" +
+            "  smb.uniform(EIGHT.GraphicsProgramSymbols.UNIFORM_MODEL_MATRIX, 'mat4')\n" +
+            "  smb.uniform(EIGHT.GraphicsProgramSymbols.UNIFORM_VIEW_MATRIX, 'mat4')\n" +
+            "  smb.uniform(EIGHT.GraphicsProgramSymbols.UNIFORM_PROJECTION_MATRIX, 'mat4')\n" +
+            "  smb.uniform(EIGHT.GraphicsProgramSymbols.UNIFORM_COLOR, 'vec3')\n" +
+            "  var program = smb.build([ctxt])\n" +
+            "\n" +
+            "  // 2) Use an off-the shelf graphics program.\n" +
+            "  // var program = new EIGHT.LineMaterial([ctxt])\n" +
+            "\n" +
+            "  // 3) Write your own graphics program.\n" +
+            "  // var program = new EIGHT.HTMLScriptsGraphicsProgram([ctxt], ['vs-lines', 'fs-lines'])\n" +
+            "  // Let's take a look at the shader programs...\n" +
+            "  // console.log(program.vertexShader)\n" +
+            "  // console.log(program.fragmentShader)\n" +
+            "\n" +
+            "  cube = new EIGHT.Drawable(primitives, program)\n" +
             "  scene.add(cube)\n" +
             "  cube.setFacet('kinematics', new EIGHT.RigidBodyFacetE3()).Ω.copy(I * ω)\n" +
             "  cube.setFacet('color', new EIGHT.ColorFacet()).setRGB(0, 1, 0)\n" +
@@ -1266,9 +1284,9 @@ angular.module('app').factory('templates', [
             "  scene.add(camera);\n" +
             "\n" +
             "  var geometry = new THREE.BoxGeometry(100, 100, 100);\n" +
-            "  var material = new THREE.MeshNormalMaterial();\n" +
+            "  var program = new THREE.MeshNormalMaterial();\n" +
             "\n" +
-            "  mesh = new THREE.Mesh(geometry, material);\n" +
+            "  mesh = new THREE.Mesh(geometry, program);\n" +
             "  scene.add(mesh);\n" +
             "\n" +
             "  renderer.setClearColor(0xFFFFFF, 1.0);\n" +
@@ -1546,7 +1564,7 @@ angular.module('app').factory('templates', [
             "    var camera = new EIGHT.PerspectiveCamera().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(3.0 * e3)\n" +
             "\n" +
             "    var geobuff: EIGHT.IBufferGeometry\n" +
-            "    var material: EIGHT.IGraphicsProgram\n" +
+            "    var program: EIGHT.IGraphicsProgram\n" +
             "    var model = new EIGHT.ModelFacetE3()\n" +
             "    var color = new EIGHT.ColorFacet()\n" +
             "\n" +
@@ -1561,7 +1579,7 @@ angular.module('app').factory('templates', [
             "      ctxt.clearColor(0.2, 0.2, 0.2, 1.0)\n" +
             "      ctxt.start(canvas, 0)\n" +
             "\n" +
-            "      material = new EIGHT.HTMLScriptsGraphicsProgram([ctxt], ['vs-points', 'fs-points'], document)\n" +
+            "      program = new EIGHT.HTMLScriptsGraphicsProgram([ctxt], ['vs-points', 'fs-points'], document)\n" +
             "\n" +
             "      var vec0 = new EIGHT.R3([0.0,  0.0, 0.0])\n" +
             "      var vec1 = new EIGHT.R3([1.0, -0.2, 0.0])\n" +
@@ -1575,7 +1593,7 @@ angular.module('app').factory('templates', [
             "\n" +
             "      geobuff = ctxt.createBufferGeometry(data)\n" +
             "\n" +
-            "      camera.setUniforms(material, ctxt.canvasId)\n" +
+            "      camera.setUniforms(program, ctxt.canvasId)\n" +
             "    }\n" +
             "\n" +
             "    // If you wish to work with AngularJS scope variables,\n" +
@@ -1591,13 +1609,13 @@ angular.module('app').factory('templates', [
             "      var theta = omega * time\n" +
             "\n" +
             "\n" +
-            "      geobuff.bind(material)\n" +
+            "      geobuff.bind(program)\n" +
             "\n" +
             "      color.setRGB(0.0, 1.0, 0.0)\n" +
             "      for(var i = 0; i < 8; i++) {\n" +
             "        model.R.copy(R).scale(theta - i * 2 * Math.PI / 8).exp()\n" +
-            "        model.setUniforms(material, ctxt.canvasId)\n" +
-            "        color.setUniforms(material, ctxt.canvasId)\n" +
+            "        model.setUniforms(program, ctxt.canvasId)\n" +
+            "        color.setUniforms(program, ctxt.canvasId)\n" +
             "        geobuff.draw()\n" +
             "        color.scaleRGB(0.7)\n" +
             "      }\n" +
@@ -1616,8 +1634,8 @@ angular.module('app').factory('templates', [
             "      geobuff.release()\n" +
             "      geobuff = void 0\n" +
             "\n" +
-            "      material.release()\n" +
-            "      material = void 0\n" +
+            "      program.release()\n" +
+            "      program = void 0\n" +
             "\n" +
             "      ctxt.stop()\n" +
             "      ctxt.release()\n" +
