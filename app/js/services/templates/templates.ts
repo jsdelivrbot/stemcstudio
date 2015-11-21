@@ -433,7 +433,7 @@ angular.module('app').factory('templates', [
             "    </script>\n" +
             "    <script id='fs' type='x-shader/x-fragment'>\n" +
             "      void main(void) {\n" +
-            "        gl_FragColor = vec4(0, 1, 0, 1);\n" +
+            "        gl_FragColor = vec4(1, 1, 1, 1);\n" +
             "      }\n" +
             "    </script>\n" +
             scriptsMarker() +
@@ -501,10 +501,39 @@ angular.module('app').factory('templates', [
 
         var LIBS_TEMPLATE_EIGHT_WEBGL_MINIMAL = "" +
             "/**\n" +
-            " * Interprets the vertices as the boundary points\n" +
-            " * of a sequence of line segments.\n" +
+            " * \n" +
+            " */\n" +
+            "var POINTS = EIGHT.DrawMode.POINTS\n" +
+            "\n" +
+            "/**\n" +
+            " * \n" +
+            " */\n" +
+            "var LINES = EIGHT.DrawMode.LINES\n" +
+            "\n" +
+            "/**\n" +
+            " * \n" +
             " */\n" +
             "var LINE_STRIP = EIGHT.DrawMode.LINE_STRIP\n" +
+            "\n" +
+            "/**\n" +
+            " * \n" +
+            " */\n" +
+            "var LINE_LOOP = EIGHT.DrawMode.LINE_LOOP\n" +
+            "\n" +
+            "/**\n" +
+            " * \n" +
+            " */\n" +
+            "var TRIANGLES = EIGHT.DrawMode.TRIANGLES\n" +
+            "\n" +
+            "/**\n" +
+            " * \n" +
+            " */\n" +
+            "var TRIANGLE_STRIP = EIGHT.DrawMode.TRIANGLE_STRIP\n" +
+            "\n" +
+            "/**\n" +
+            " * \n" +
+            " */\n" +
+            "var TRIANGLE_FAN = EIGHT.DrawMode.TRIANGLE_FAN\n" +
             ""
 
         var LESS_TEMPLATE_EIGHT_WEBGL_MINIMAL = "" +
