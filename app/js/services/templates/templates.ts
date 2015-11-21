@@ -37,7 +37,7 @@ angular.module('app').factory('templates', [
         let FWD_SLASH = '/';
         let DOMAIN = $location.protocol() + ':' + FWD_SLASH + FWD_SLASH + $location.host() + ":" + $location.port();
 
-        var HTML_TEMPLATE_BASIC = "" +
+        var HTML_TEMPLATE_MINIMAL = "" +
             "<!doctype html>\n" +
             "<html>\n" +
             "  <head>\n" +
@@ -48,13 +48,30 @@ angular.module('app').factory('templates', [
             libsMarker() +
             codeMarker() +
             "  </body>\n" +
-            "</html>\n";
+            "</html>\n"
 
-        var CODE_TEMPLATE_BASIC = "";
+        var CODE_TEMPLATE_MINIMAL = "" +
+            "/**\n" +
+            " * <code>main</code> is the entry point and is called when the DOM has finished loading.\n" +
+            " */\n" +
+            "function main() {\n" +
+            "\n" +
+            "}\n" +
+            "\n" +
+            "// Wait until the DOM has finished loading before using it.\n" +
+            "DomReady.ready(function() {\n" +
+            "  try {\n" +
+            "    main()\n" +
+            "  }\n" +
+            "  catch(e) {\n" +
+            "    console.warn(e)\n" +
+            "  }\n" +
+            "})\n" +
+            "\n"
 
-        var LESS_TEMPLATE_BASIC = "";
+        var LESS_TEMPLATE_MINIMAL = "";
 
-        var LIBS_TEMPLATE_BASIC = "";
+        var LIBS_TEMPLATE_MINIMAL = "";
 
         var HTML_TEMPLATE_CALCULATION = "" +
             "<!doctype html>\n" +
@@ -403,24 +420,20 @@ angular.module('app').factory('templates', [
             "  left: 100px;\n" +
             "}\n";
 
-        var HTML_TEMPLATE_EIGHT_2D_1 = "" +
+        var HTML_TEMPLATE_EIGHT_WEBGL_MINIMAL = "" +
             "<!doctype html>\n" +
             "<html>\n" +
             "  <head>\n" +
             styleMarker() +
             "    <script id='vs' type='x-shader/x-vertex'>\n" +
-            "      attribute vec2 aPosition;\n" +
-            "      uniform vec3 uColor;\n" +
-            "      varying highp vec4 vColor;\n" +
+            "      attribute vec3 aPosition;\n" +
             "      void main(void) {\n" +
-            "        gl_Position = vec4(aPosition, 0.0, 1.0);\n" +
-            "        vColor = vec4(uColor, 1.0);\n" +
+            "        gl_Position = vec4(aPosition, 1.0);\n" +
             "      }\n" +
             "    </script>\n" +
             "    <script id='fs' type='x-shader/x-fragment'>\n" +
-            "      varying highp vec4 vColor;\n" +
             "      void main(void) {\n" +
-            "        gl_FragColor = vec4(vColor.xyz, vColor.a);\n" +
+            "        gl_FragColor = vec4(0, 1, 0, 1);\n" +
             "      }\n" +
             "    </script>\n" +
             scriptsMarker() +
@@ -434,58 +447,61 @@ angular.module('app').factory('templates', [
             "  </body>\n" +
             "</html>\n";
 
-        var CODE_TEMPLATE_EIGHT_2D_1 = "" +
-            "DomReady.ready(main)\n" +
-            "\n" +
+        var CODE_TEMPLATE_EIGHT_WEBGL_MINIMAL = "" +
+            "/**\n" +
+            " * <code>main</code> is the <em>entry point</em> and\n" +
+            " * is called when the <em>DOM</em> has finished loading.\n" +
+            " */\n" +
             "function main() {\n" +
             "  var canvas = <HTMLCanvasElement>document.getElementById('my-canvas')\n" +
-            "  canvas.width = 400\n" +
-            "  canvas.height = 400\n" +
+            "  canvas.width = 300\n" +
+            "  canvas.height = 300\n" +
             "\n" +
-            "  var ctxt = new EIGHT.GraphicsContext()\n" +
-            "  ctxt.clearColor(0.1, 0.1, 0.1, 1.0)\n" +
-            "\n" +
-            "  ctxt.start(canvas)\n" +
+            "  var ctxt = new EIGHT.GraphicsContext().start(canvas)\n" +
             "\n" +
             "  var attributes: {[name: string]: EIGHT.DrawAttribute} = {}\n" +
-            "  var points = new EIGHT.DrawAttribute([0, 0, 0.75, 0, 0, 1], 2)\n" +
-            "  attributes[EIGHT.GraphicsProgramSymbols.ATTRIBUTE_POSITION] = points\n" +
+            "  var positions = new EIGHT.DrawAttribute([\n" +
+            "  0   , 0, 0,\n" +
+            "  0.75, 0, 0,\n" +
+            "  0   , 1, 0],\n" +
+            "  3)\n" +
+            "  attributes['aPosition'] = positions\n" +
             "  var primitive = new EIGHT.DrawPrimitive(EIGHT.DrawMode.LINE_LOOP, [0, 1, 2], attributes)\n" +
-            "  var triangleElements = ctxt.createBufferGeometry(primitive)\n" +
+            "  var elements = ctxt.createBufferGeometry(primitive)\n" +
             "\n" +
-            "  // Generate the graphics program rather than building it manually.\n" +
-            "  var builder = new EIGHT.GraphicsProgramBuilder()\n" +
-            "  // Describe the required program parameters to the builder.\n" +
-            "  builder.attribute(EIGHT.GraphicsProgramSymbols.ATTRIBUTE_POSITION, 2)\n" +
-            "  builder.uniform(EIGHT.GraphicsProgramSymbols.UNIFORM_COLOR, 'vec3')\n" +
-            "  var program = builder.build([ctxt])\n" +
-            "  // Take a look at the shader source code that was generated for us.\n" +
-            "  // console.log(program.vertexShader)\n" +
-            "  // console.log(program.fragmentShader)\n" +
-            "\n" +
-            "  // Take control of the the Graphics Pipeline Programming.\n" +
-            "  // var program = new EIGHT.HTMLScriptsGraphicsProgram([ctxt], ['vs', 'fs'])\n" +
+            "  var program = new EIGHT.HTMLScriptsGraphicsProgram([ctxt], ['vs', 'fs'])\n" +
             "\n" +
             "  function animate() {\n" +
             "\n" +
-            "    ctxt.gl.clear(ctxt.gl.COLOR_BUFFER_BIT)\n" +
+            "    var gl = ctxt.gl\n" +
+            "    gl.clear(gl.COLOR_BUFFER_BIT)\n" +
             "\n" +
             "    program.use()\n" +
             "\n" +
-            "    program.uniform3f(EIGHT.GraphicsProgramSymbols.UNIFORM_COLOR, 1, 0, 0)\n" +
-            "    triangleElements.bind(program)\n" +
-            "    triangleElements.draw()\n" +
-            "    triangleElements.unbind()\n" +
+            "    elements.bind(program)\n" +
+            "    elements.draw()\n" +
+            "    elements.unbind()\n" +
             "\n" +
             "    window.requestAnimationFrame(animate)\n" +
             "  }\n" +
             "\n" +
             "  animate()\n" +
-            "}\n"
+            "}\n" +
+            "\n" +
+            "// Wait until the DOM has finished loading before using it.\n" +
+            "DomReady.ready(function() {\n" +
+            "  try {\n" +
+            "    main()\n" +
+            "  }\n" +
+            "  catch(e) {\n" +
+            "    console.warn(e)\n" +
+            "  }\n" +
+            "})\n" +
+            ""
 
-        var LIBS_TEMPLATE_EIGHT_2D_1 = ""
+        var LIBS_TEMPLATE_EIGHT_WEBGL_MINIMAL = ""
 
-        var LESS_TEMPLATE_EIGHT_2D_1 = "" +
+        var LESS_TEMPLATE_EIGHT_WEBGL_MINIMAL = "" +
             "#my-canvas {\n" +
             "  position: absolute;\n" +
             "  top: 0;\n" +
@@ -1733,16 +1749,16 @@ angular.module('app').factory('templates', [
         return [
             {
                 uuid: uuid.generate(),
-                description: "2D Mathematical Graphics with EIGHT and WebGL",
+                description: "Mathematical Graphics with EIGHT and WebGL",
                 isCodeVisible: true,
-                isViewVisible: true,
+                isViewVisible: false,
                 focusEditor: undefined,
                 lastKnownJs: {},
-                operatorOverloading: true,
-                html: HTML_TEMPLATE_EIGHT_2D_1,
-                code: CODE_TEMPLATE_EIGHT_2D_1,
-                libs: LIBS_TEMPLATE_EIGHT_2D_1,
-                less: LESS_TEMPLATE_EIGHT_2D_1,
+                operatorOverloading: false,
+                html: HTML_TEMPLATE_EIGHT_WEBGL_MINIMAL,
+                code: CODE_TEMPLATE_EIGHT_WEBGL_MINIMAL,
+                libs: LIBS_TEMPLATE_EIGHT_WEBGL_MINIMAL,
+                less: LESS_TEMPLATE_EIGHT_WEBGL_MINIMAL,
                 dependencies: ['DomReady', 'davinci-eight']
             },
             {
@@ -1798,7 +1814,7 @@ angular.module('app').factory('templates', [
                 html: HTML_TEMPLATE_ANGULAR_EIGHT,
                 code: CODE_TEMPLATE_ANGULAR_EIGHT,
                 libs: LIBS_TEMPLATE_ANGULAR_EIGHT,
-                less: LESS_TEMPLATE_BASIC,
+                less: LESS_TEMPLATE_MINIMAL,
                 dependencies: ['angular', 'davinci-eight', 'stats.js']
             },
             {
@@ -1853,7 +1869,7 @@ angular.module('app').factory('templates', [
                 focusEditor: undefined,
                 lastKnownJs: {},
                 operatorOverloading: true,
-                html: HTML_TEMPLATE_BASIC,
+                html: HTML_TEMPLATE_MINIMAL,
                 code: CODE_TEMPLATE_THREEJS,
                 libs: LIBS_TEMPLATE_THREEJS,
                 less: LESS_TEMPLATE_THREEJS,
@@ -1870,22 +1886,22 @@ angular.module('app').factory('templates', [
                 html: HTML_TEMPLATE_ANGULAR,
                 code: CODE_TEMPLATE_ANGULAR,
                 libs: LIBS_TEMPLATE_ANGULAR,
-                less: LESS_TEMPLATE_BASIC,
+                less: LESS_TEMPLATE_MINIMAL,
                 dependencies: ['angular']
             },
             {
                 uuid: uuid.generate(),
-                description: "None",
+                description: "Minimal",
                 isCodeVisible: true,
-                isViewVisible: true,
+                isViewVisible: false,
                 focusEditor: undefined,
                 lastKnownJs: {},
-                operatorOverloading: true,
-                html: HTML_TEMPLATE_BASIC,
-                code: CODE_TEMPLATE_BASIC,
-                libs: LIBS_TEMPLATE_BASIC,
-                less: LESS_TEMPLATE_BASIC,
-                dependencies: []
+                operatorOverloading: false,
+                html: HTML_TEMPLATE_MINIMAL,
+                code: CODE_TEMPLATE_MINIMAL,
+                libs: LIBS_TEMPLATE_MINIMAL,
+                less: LESS_TEMPLATE_MINIMAL,
+                dependencies: ['DomReady']
             }
             /*
             {
@@ -1896,9 +1912,9 @@ angular.module('app').factory('templates', [
               focusEditor: undefined,
               lastKnownJs: {},
               operatorOverloading: true,
-              html: HTML_TEMPLATE_BASIC,
+              html: HTML_TEMPLATE_MINIMAL,
               code: CODE_TEMPLATE_D3,
-              less: LESS_TEMPLATE_BASIC,
+              less: LESS_TEMPLATE_MINIMAL,
               dependencies: ['d3']
             }
             */

@@ -42,7 +42,7 @@ angular.module('angularResizable', [])
             },
             link: function(scope: angularResizable.IResizableScope, element: angular.IAugmentedJQuery, attr: angular.IAttributes) {
                 
-                // register watchers on width and height attributes if they are set
+                // Register watchers on width and height attributes if they are set.
                 scope.$watch('rWidth', function(value) {
                     element[0].style.width = scope.rWidth + 'px'
                 })
@@ -53,30 +53,38 @@ angular.module('angularResizable', [])
                 element.addClass('resizable')
 
                 var style = window.getComputedStyle(element[0], null)
+
                 /**
                  * The style width property value captured at dragStart.
                  */
                 var w: number
+
                 /**
                  * The style height property value captured at dragStart.
                  */
                 var h: number
+
                 var dir: string[] = scope.rDirections
+
                 var vx: number = scope.rCenteredX ? 2 : 1 // if centered double velocity
                 var vy: number = scope.rCenteredY ? 2 : 1 // if centered double velocity
+
                 /**
                  * The innerHTML structure of the synthesized grabber div element.
                  */
                 var inner = scope.rGrabber ? scope.rGrabber : '<span></span>'
+
                 /**
                  * Initialized to clientX or clientY according to the drag axis.
                  */
                 var start: number
+
                 /**
                  * 'top', 'right', 'bottom', or 'left'.
                  * Records the dragging direction which is current at dragStart.
                  */
                 var dragDir: string
+
                 /**
                  * 'x' or 'y' according to the direction which may be left, right, top or bottom.
                  */
@@ -141,7 +149,8 @@ angular.module('angularResizable', [])
                     }
                     updateInfo()
                     throttle(function() { scope.$emit("angular-resizable.resizing", info); })
-                };
+                }
+
                 var dragEnd = function(e: MouseEvent) {
                     updateInfo()
                     scope.$emit("angular-resizable.resizeEnd", info)
@@ -152,7 +161,8 @@ angular.module('angularResizable', [])
                 }
 
                 /**
-                 * The dragStart adds listeners for mousemove and mouseup
+                 * The dragStart function adds listeners for mousemove and mouseup.
+                 * The dragStart function handles a mousedown event.
                  */
                 var dragStart = function(e: MouseEvent, direction: string) {
                     dragDir = direction
@@ -162,13 +172,13 @@ angular.module('angularResizable', [])
                     w = parseInt(style.getPropertyValue("width"))
                     h = parseInt(style.getPropertyValue("height"))
 
-                    //prevent transition while dragging
+                    // Prevent transition while dragging.
                     element.addClass('no-transition')
 
                     document.addEventListener('mouseup', dragEnd, false);
                     document.addEventListener('mousemove', dragging, false);
                     
-                    // Disable highlighting while dragging
+                    // Disable highlighting while dragging.
                     if (e.stopPropagation) {
                         e.stopPropagation()
                     }
@@ -182,14 +192,14 @@ angular.module('angularResizable', [])
 
                     scope.$emit("angular-resizable.resizeStart", info)
                     scope.$apply()
-                };
+                }
 
                 for (var i = 0, iLength = dir.length; i < iLength; i++) {
                     (function() {
                         var grabber = document.createElement('div')
                         var direction = dir[i]
 
-                        // add class for styling purposes
+                        // Add class for styling purposes.
                         grabber.setAttribute('class', 'rg-' + dir[i])
                         grabber.innerHTML = inner
                         element[0].appendChild(grabber)
