@@ -426,9 +426,9 @@ angular.module('app').factory('templates', [
             "  <head>\n" +
             styleMarker() +
             "    <script id='vs' type='x-shader/x-vertex'>\n" +
-            "      attribute vec3 aPosition;\n" +
+            "      attribute vec2 aPosition;\n" +
             "      void main(void) {\n" +
-            "        gl_Position = vec4(aPosition, 1.0);\n" +
+            "        gl_Position = vec4(aPosition, 0, 1);\n" +
             "      }\n" +
             "    </script>\n" +
             "    <script id='fs' type='x-shader/x-fragment'>\n" +
@@ -461,12 +461,12 @@ angular.module('app').factory('templates', [
             "\n" +
             "  var attributes: {[name: string]: EIGHT.DrawAttribute} = {}\n" +
             "  var positions = new EIGHT.DrawAttribute([\n" +
-            "  0   , 0, 0,\n" +
-            "  0.75, 0, 0,\n" +
-            "  0   , 1, 0],\n" +
-            "  3)\n" +
+            "  0   , 0,\n" +
+            "  0.75, 0,\n" +
+            "  0   , 1],\n" +
+            "  2)\n" +
             "  attributes['aPosition'] = positions\n" +
-            "  var primitive = new EIGHT.DrawPrimitive(EIGHT.DrawMode.LINE_LOOP, [0, 1, 2], attributes)\n" +
+            "  var primitive = new EIGHT.DrawPrimitive(LINE_STRIP, [0, 1, 2, 0], attributes)\n" +
             "  var elements = ctxt.createBufferGeometry(primitive)\n" +
             "\n" +
             "  var program = new EIGHT.HTMLScriptsGraphicsProgram([ctxt], ['vs', 'fs'])\n" +
@@ -499,7 +499,13 @@ angular.module('app').factory('templates', [
             "})\n" +
             ""
 
-        var LIBS_TEMPLATE_EIGHT_WEBGL_MINIMAL = ""
+        var LIBS_TEMPLATE_EIGHT_WEBGL_MINIMAL = "" +
+            "/**\n" +
+            " * Interprets the vertices as the boundary points\n" +
+            " * of a sequence of line segments.\n" +
+            " */\n" +
+            "var LINE_STRIP = EIGHT.DrawMode.LINE_STRIP\n" +
+            ""
 
         var LESS_TEMPLATE_EIGHT_WEBGL_MINIMAL = "" +
             "#my-canvas {\n" +
