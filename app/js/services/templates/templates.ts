@@ -427,13 +427,18 @@ angular.module('app').factory('templates', [
             styleMarker() +
             "    <script id='vs' type='x-shader/x-vertex'>\n" +
             "      attribute vec2 aPosition;\n" +
+            "      attribute vec3 aColor;\n" +
+            "      uniform mat2 uModel;\n" +
+            "      varying highp vec3 vColor;\n" +
             "      void main(void) {\n" +
-            "        gl_Position = vec4(aPosition, 0, 1);\n" +
+            "        vColor = aColor;\n" +
+            "        gl_Position = vec4(uModel * aPosition, 0, 1);\n" +
             "      }\n" +
             "    </script>\n" +
             "    <script id='fs' type='x-shader/x-fragment'>\n" +
+            "      varying highp vec3 vColor;\n" +
             "      void main(void) {\n" +
-            "        gl_FragColor = vec4(1, 1, 1, 1);\n" +
+            "        gl_FragColor = vec4(vColor, 1);\n" +
             "      }\n" +
             "    </script>\n" +
             scriptsMarker() +
@@ -453,11 +458,13 @@ angular.module('app').factory('templates', [
             " * is called when the <em>DOM</em> has finished loading.\n" +
             " */\n" +
             "function main() {\n" +
-            "  var canvas = <HTMLCanvasElement>document.getElementById('my-canvas')\n" +
+            "  var canvas = EIGHT.getCanvasElementById('my-canvas')\n" +
             "  canvas.width = 300\n" +
             "  canvas.height = 300\n" +
             "\n" +
-            "  var ctxt = new EIGHT.GraphicsContext().start(canvas)\n" +
+            "  var ctxt = new EIGHT.GraphicsContext()\n" +
+            "  .clearColor(0.1, 0.1, 0.1, 1.0)\n" +
+            "  .start(canvas)\n" +
             "\n" +
             "  var attributes: {[name: string]: EIGHT.DrawAttribute} = {}\n" +
             "  var positions = new EIGHT.DrawAttribute([\n" +
@@ -465,11 +472,23 @@ angular.module('app').factory('templates', [
             "  0.75, 0,\n" +
             "  0   , 1],\n" +
             "  2)\n" +
+            "  var colors = new EIGHT.DrawAttribute([\n" +
+            "  1, 0, 0,\n" +
+            "  0, 1, 0,\n" +
+            "  0, 0, 1],\n" +
+            "  3)\n" +
             "  attributes['aPosition'] = positions\n" +
+            "  attributes['aColor'] = colors\n" +
             "  var primitive = new EIGHT.DrawPrimitive(LINE_STRIP, [0, 1, 2, 0], attributes)\n" +
             "  var elements = ctxt.createBufferGeometry(primitive)\n" +
             "\n" +
             "  var program = new EIGHT.HTMLScriptsGraphicsProgram([ctxt], ['vs', 'fs'])\n" +
+            "\n" +
+            "  var I = EIGHT.Mat2R.one()\n" +
+            "  var N = EIGHT.Mat2R.reflection(EIGHT.G2.e1)\n" +
+            "  var M = EIGHT.Mat2R.reflection(EIGHT.G2.e2)\n" +
+            "\n" +
+            "  var uModel = M * N\n" +
             "\n" +
             "  function animate() {\n" +
             "\n" +
@@ -477,6 +496,7 @@ angular.module('app').factory('templates', [
             "    gl.clear(gl.COLOR_BUFFER_BIT)\n" +
             "\n" +
             "    program.use()\n" +
+            "    program.mat2('uModel', uModel)\n" +
             "\n" +
             "    elements.bind(program)\n" +
             "    elements.draw()\n" +
@@ -1202,11 +1222,11 @@ angular.module('app').factory('templates', [
             "  public attitude = new EIGHT.SpinG3()\n" +
             "  public scale: EIGHT.R3 = new EIGHT.R3([1, 1, 1])\n" +
             "  public color: EIGHT.R3 = new EIGHT.R3([1, 1, 1])\n" +
-            "  private M = EIGHT.Matrix4.one()\n" +
-            "  private N = EIGHT.Matrix3.one()\n" +
-            "  private R = EIGHT.Matrix4.one()\n" +
-            "  private S = EIGHT.Matrix4.one()\n" +
-            "  private T = EIGHT.Matrix4.one()\n" +
+            "  private M = EIGHT.Mat4R.one()\n" +
+            "  private N = EIGHT.Mat3R.one()\n" +
+            "  private R = EIGHT.Mat4R.one()\n" +
+            "  private S = EIGHT.Mat4R.one()\n" +
+            "  private T = EIGHT.Mat4R.one()\n" +
             "  constructor() {\n" +
             "    super('Model')\n" +
             "    this.position.modified = true\n" +
@@ -1247,10 +1267,10 @@ angular.module('app').factory('templates', [
             "    }\n" +
             "    this.M.copy(this.T).mul(this.R).mul(this.S)\n" +
             "\n" +
-            "    this.N.normalFromMatrix4(this.M)\n" +
+            "    this.N.normalFromMat4R(this.M)\n" +
             "\n" +
-            "    visitor.uniformMatrix4(EIGHT.GraphicsProgramSymbols.UNIFORM_MODEL_MATRIX, false, this.M, canvasId)\n" +
-            "    visitor.uniformMatrix3(EIGHT.GraphicsProgramSymbols.UNIFORM_NORMAL_MATRIX, false, this.N, canvasId)\n" +
+            "    visitor.mat4(EIGHT.GraphicsProgramSymbols.UNIFORM_MODEL_MATRIX, this.M, false, canvasId)\n" +
+            "    visitor.mat3(EIGHT.GraphicsProgramSymbols.UNIFORM_NORMAL_MATRIX, this.N, false, canvasId)\n" +
             "    visitor.uniformVectorE3(EIGHT.GraphicsProgramSymbols.UNIFORM_COLOR, this.color, canvasId)\n" +
             "  }\n" +
             "}\n" +
@@ -1786,10 +1806,10 @@ angular.module('app').factory('templates', [
                 uuid: uuid.generate(),
                 description: "Mathematical Graphics with EIGHT and WebGL",
                 isCodeVisible: true,
-                isViewVisible: false,
+                isViewVisible: true,
                 focusEditor: undefined,
                 lastKnownJs: {},
-                operatorOverloading: false,
+                operatorOverloading: true,
                 html: HTML_TEMPLATE_EIGHT_WEBGL_MINIMAL,
                 code: CODE_TEMPLATE_EIGHT_WEBGL_MINIMAL,
                 libs: LIBS_TEMPLATE_EIGHT_WEBGL_MINIMAL,
