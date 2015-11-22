@@ -485,8 +485,8 @@ angular.module('app').factory('templates', [
             "  var program = new EIGHT.HTMLScriptsGraphicsProgram([ctxt], ['vs', 'fs'])\n" +
             "\n" +
             "  var I = EIGHT.Mat2R.one()\n" +
-            "  var N = EIGHT.Mat2R.reflection(EIGHT.G2.e1)\n" +
-            "  var M = EIGHT.Mat2R.reflection(EIGHT.G2.e2)\n" +
+            "  var N = reflection(EIGHT.G2.e1)\n" +
+            "  var M = reflection(EIGHT.G2.e2)\n" +
             "\n" +
             "  var uModel = M * N\n" +
             "\n" +
@@ -527,6 +527,24 @@ angular.module('app').factory('templates', [
             ""
 
         var LIBS_TEMPLATE_EIGHT_WEBGL_MINIMAL = "" +
+            "/**\n" +
+            " * Computes the matrix that effects a reflection in the\n" +
+            " * plane perpendicular to the unit vector <b>n</b>.\n" +
+            " * reflection(<b>n</b>) => I - 2 <b>n</b> <b>n</b><sup>T</sup>\n" +
+            " */\n" +
+            "function reflection(n: EIGHT.VectorE2): EIGHT.Mat2R {\n" +
+            "\n" +
+            "  var nx = n.x\n" +
+            "  var ny = n.y\n" +
+            "\n" +
+            "  var aa = -2 * nx * ny\n" +
+            "\n" +
+            "  var xx = 1 - 2 * nx * nx\n" +
+            "  var yy = 1 - 2 * ny * ny\n" +
+            "\n" +
+            "  return EIGHT.Mat2R.zero().set(xx, aa, aa, yy)\n" +
+            "}\n" +
+            "\n" +
             "/**\n" +
             " * \n" +
             " */\n" +
