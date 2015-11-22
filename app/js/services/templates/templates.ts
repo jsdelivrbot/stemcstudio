@@ -496,10 +496,17 @@ angular.module('app').factory('templates', [
             "    gl.clear(gl.COLOR_BUFFER_BIT)\n" +
             "\n" +
             "    program.use()\n" +
-            "    program.mat2('uModel', uModel)\n" +
             "\n" +
             "    elements.bind(program)\n" +
+            "\n" +
+            "    // Original.\n" +
+            "    program.mat2('uModel', I)\n" +
             "    elements.draw()\n" +
+            "\n" +
+            "    // Transformed.\n" +
+            "    program.mat2('uModel', uModel)\n" +
+            "    elements.draw()\n" +
+            "\n" +
             "    elements.unbind()\n" +
             "\n" +
             "    window.requestAnimationFrame(animate)\n" +
