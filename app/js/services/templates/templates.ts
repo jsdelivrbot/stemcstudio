@@ -1051,14 +1051,19 @@ angular.module('app').factory('templates', [
             "  document.body.appendChild(stats.domElement)\n" +
             "\n" +
             "  // The camera sets uniforms for the visiting program by canvas.\n" +
+            "  programT.use(canvasId)\n" +
             "  camera.setUniforms(programT, canvasId)\n" +
+            "  programL.use(canvasId)\n" +
             "  camera.setUniforms(programL, canvasId)\n" +
+            "  programP.use(canvasId)\n" +
             "  camera.setUniforms(programP, canvasId)\n" +
             "  // Uniforms may also be set directly and some standard names are symbolically defined.\n" +
             "  // The names used here should match the names used in the program source code.\n" +
+            "  programT.use(canvasId)\n" +
             "  programT.vector3(EIGHT.GraphicsProgramSymbols.UNIFORM_AMBIENT_LIGHT, ambientLight.coords, canvasId)\n" +
             "  programT.vector3('uDirectionalLightColor', dLightColor.coords, canvasId)\n" +
             "  programT.vector3('uDirectionalLightDirection', dLightDirection.coords, canvasId)\n" +
+            "  programP.use(canvasId)\n" +
             "  programP.uniform1f('uPointSize', 4, canvasId)\n" +
             "\n" +
             "  /**\n" +
@@ -1296,7 +1301,7 @@ angular.module('app').factory('templates', [
             "\n" +
             "    visitor.mat4(EIGHT.GraphicsProgramSymbols.UNIFORM_MODEL_MATRIX, this.M, false, canvasId)\n" +
             "    visitor.mat3(EIGHT.GraphicsProgramSymbols.UNIFORM_NORMAL_MATRIX, this.N, false, canvasId)\n" +
-            "    visitor.uniformVectorE3(EIGHT.GraphicsProgramSymbols.UNIFORM_COLOR, this.color, canvasId)\n" +
+            "    visitor.vec3(EIGHT.GraphicsProgramSymbols.UNIFORM_COLOR, this.color, canvasId)\n" +
             "  }\n" +
             "}\n" +
             "";
@@ -1689,6 +1694,7 @@ angular.module('app').factory('templates', [
             "\n" +
             "      geobuff = ctxt.createBufferGeometry(data)\n" +
             "\n" +
+            "      program.use(ctxt.canvasId)\n" +
             "      camera.setUniforms(program, ctxt.canvasId)\n" +
             "    }\n" +
             "\n" +
