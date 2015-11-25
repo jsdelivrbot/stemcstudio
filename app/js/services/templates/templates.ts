@@ -692,7 +692,7 @@ angular.module('app').factory('templates', [
             "var ambients: EIGHT.IFacet[] = []\n" +
             "var scene = new EIGHT.Scene([ctxt])\n" +
             "var camera: EIGHT.PerspectiveCamera\n" +
-            "var cube: EIGHT.Drawable<EIGHT.MeshMaterial>\n" +
+            "var cube: EIGHT.Drawable\n" +
             "\n" +
             "var timeElement: HTMLElement\n" +
             "var timeNode: Text\n" +
@@ -752,7 +752,7 @@ angular.module('app').factory('templates', [
             "  cube = new EIGHT.Drawable(primitives, program)\n" +
             "  scene.add(cube)\n" +
             "  cube.setFacet('model', new EIGHT.ModelFacetE3())\n" +
-            "  cube.setFacet('color', new EIGHT.ColorFacet()).setRGB(0, 1, 0)\n" +
+            "  cube.setFacet('color', new EIGHT.ColorFacet())\n" +
             "\n" +
             "  ctxt.canvas.width = window.innerWidth\n" +
             "  ctxt.canvas.height = window.innerHeight\n" +
