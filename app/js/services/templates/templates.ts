@@ -751,7 +751,7 @@ angular.module('app').factory('templates', [
             "\n" +
             "  cube = new EIGHT.Drawable(primitives, program)\n" +
             "  scene.add(cube)\n" +
-            "  cube.setFacet('kinematics', new EIGHT.RigidBodyFacetE3()).Ω.copy(I * ω)\n" +
+            "  cube.setFacet('model', new EIGHT.ModelFacetE3())\n" +
             "  cube.setFacet('color', new EIGHT.ColorFacet()).setRGB(0, 1, 0)\n" +
             "\n" +
             "  ctxt.canvas.width = window.innerWidth\n" +
@@ -785,11 +785,9 @@ angular.module('app').factory('templates', [
             "\n" +
             "    var θ = time\n" +
             "\n" +
-            "    var kinematics = <EIGHT.RigidBodyFacetE3>cube.getFacet('kinematics')\n" +
-            "    var X = kinematics.X\n" +
-            "    var R = kinematics.R\n" +
-            "    var V = kinematics.V\n" +
-            "    var Ω = kinematics.Ω\n" +
+            "    var model = <EIGHT.ModelFacetE3>cube.getFacet('model')\n" +
+            "    var X = model.X\n" +
+            "    var R = model.R\n" +
             "    // X.copy(e1)\n" +
             "    R.rotorFromAxisAngle(e2, θ)\n" +
             "    // R.dual(e2).scale(-θ / 2).exp()\n" +
