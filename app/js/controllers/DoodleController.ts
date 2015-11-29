@@ -151,12 +151,14 @@ angular.module('app').controller('doodle-controller', [
         // Disable scrollbars for this editing page ('hidden' and 'auto').
         $window.document.body.style.overflow = "hidden";
 
-        $window.addEventListener('resize', function(e: UIEvent) {
+        function resize(unused: UIEvent) {
             var toolbar = $window.document.getElementById('toolbar')
             var doodlec = $window.document.getElementById('doodle-container')
             // 5px comes from the border-bottom on the navbar.
             doodlec.style.height = "" + ($window.innerHeight - toolbar.clientHeight - 5) + "px";
-        });
+        }
+
+        $window.addEventListener('resize', resize);
 
         // Not sure how best to do this. I don't want loading to trigger processing until ready.
         var cascade = false;
@@ -1039,4 +1041,5 @@ angular.module('app').controller('doodle-controller', [
         }
 
         init();
+        resize(void 0);
     }]);
