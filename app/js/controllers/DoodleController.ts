@@ -148,6 +148,16 @@ angular.module('app').controller('doodle-controller', [
         VENDOR_FOLDER_MARKER: string,
         settings: mathdoodle.ISettingsService
     ) {
+        // Disable scrollbars for this editing page ('hidden' and 'auto').
+        $window.document.body.style.overflow = "hidden";
+
+        $window.addEventListener('resize', function(e: UIEvent) {
+            var toolbar = $window.document.getElementById('toolbar')
+            var doodlec = $window.document.getElementById('doodle-container')
+            // 5px comes from the border-bottom on the navbar.
+            doodlec.style.height = "" + ($window.innerHeight - toolbar.clientHeight - 5) + "px";
+        });
+
         // Not sure how best to do this. I don't want loading to trigger processing until ready.
         var cascade = false;
 
@@ -778,62 +788,110 @@ angular.module('app').controller('doodle-controller', [
             }
         }
 
+        // The iframe will capture the mouse events that we need to
+        // resize the output widow. This function
+        function bubbleIframeMouseMove(iframe: HTMLIFrameElement) {
+            // Save any previous onmousemove handler.
+            var existingOnMouseMove = iframe.contentWindow.onmousemove
+
+            // Attach a new onmousemove listener.
+            iframe.contentWindow.onmousemove = function(e: MouseEvent) {
+                // Fire any existing onmousemove listener.
+                if (existingOnMouseMove) existingOnMouseMove(e)
+
+                // Create a new event for the this window.
+                var evt: MouseEvent = document.createEvent("MouseEvents")
+
+                // We'll need this to offset the mouse move appropriately.
+                var boundingClientRect = iframe.getBoundingClientRect()
+
+                // Initialize the event, copying exiting event values (most of them).
+                evt.initMouseEvent(
+                    "mousemove",
+                    true, // bubbles
+                    false, // not cancelable 
+                    window,
+                    e.detail,
+                    e.screenX,
+                    e.screenY,
+                    e.clientX + boundingClientRect.left,
+                    e.clientY + boundingClientRect.top,
+                    e.ctrlKey,
+                    e.altKey,
+                    e.shiftKey,
+                    e.metaKey,
+                    e.button,
+                    null // no related element
+                )
+
+                // Dispatch the mousemove event on the iframe element.
+                iframe.dispatchEvent(evt)
+            }
+        }
+
         function rebuildPreview() {
             try {
                 // Kill any existing frames.
                 scope.previewIFrame = undefined;
-                var preview = document.getElementById('preview');
-                while (preview.children.length > 0) {
-                    preview.removeChild(preview.firstChild);
-                }
-
-                if (scope.isViewVisible && doodles.current() && (typeof doodles.current().lastKnownJs[FILENAME_CODE] === 'string') && (typeof doodles.current().lastKnownJs[FILENAME_LIBS] === 'string')) {
-                    scope.previewIFrame = document.createElement('iframe');
-                    scope.previewIFrame.style.width = '100%';
-                    scope.previewIFrame.style.height = '100%';
-                    scope.previewIFrame.style.border = '0';
-                    scope.previewIFrame.style.backgroundColor = '#232323';
-
-                    preview.appendChild(scope.previewIFrame);
-
-                    var content = scope.previewIFrame.contentDocument || scope.previewIFrame.contentWindow.document;
-
-                    var selOpts: IOption[] = options.filter(function(option: IOption, index: number, array: IOption[]) {
-                        return doodles.current().dependencies.indexOf(option.name) > -1;
-                    });
-
-                    var closureOpts: IOption[] = closure(selOpts);
-
-                    var chosenFileNames: string[] = closureOpts.map(function(option: IOption) { return option.minJs; });
-                    // TODO: We will later want to make operator overloading configurable for speed.
-
-                    var scriptFileNames: string[] = doodles.current().operatorOverloading ? chosenFileNames.concat(FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS) : chosenFileNames;
-                    // TOOD: Don't fix the location of the JavaScript here.
-                    var scriptTags = scriptFileNames.map(function(fileName: string) {
-                        // FIXME
-                        return "<script src='" + scriptURL(DOMAIN, fileName) + "'></script>\n";
-                    });
-
-                    var html = doodles.current().html;
-                    html = html.replace(SCRIPTS_MARKER, scriptTags.join(""));
-                    html = html.replace(STYLE_MARKER, [doodles.current().less].join(""));
-                    html = html.replace(LIBS_MARKER, currentJavaScript(FILENAME_LIBS));
-                    html = html.replace(CODE_MARKER, currentJavaScript(FILENAME_CODE));
-                    // For backwards compatibility...
-                    html = html.replace('<!-- STYLE-MARKER -->', ['<style>', doodles.current().less, '</style>'].join(""));
-                    html = html.replace('<!-- CODE-MARKER -->', currentJavaScript(FILENAME_CODE));
-
-                    content.open()
-                    if (false) {
-                        console.log("HTML")
-                        console.log("----")
-                        console.log(html)
+                var preview = $window.document.getElementById('preview');
+                if (preview) {
+                    while (preview.children.length > 0) {
+                        preview.removeChild(preview.firstChild);
                     }
-                    content.write(html)
-                    content.close()
+
+                    if (scope.isViewVisible && doodles.current() && (typeof doodles.current().lastKnownJs[FILENAME_CODE] === 'string') && (typeof doodles.current().lastKnownJs[FILENAME_LIBS] === 'string')) {
+                        scope.previewIFrame = document.createElement('iframe');
+                        scope.previewIFrame.style.width = '100%';
+                        scope.previewIFrame.style.height = '100%';
+                        scope.previewIFrame.style.border = '0';
+                        scope.previewIFrame.style.backgroundColor = '#232323';
+
+                        preview.appendChild(scope.previewIFrame);
+
+                        var content = scope.previewIFrame.contentDocument || scope.previewIFrame.contentWindow.document;
+
+                        var selOpts: IOption[] = options.filter(function(option: IOption, index: number, array: IOption[]) {
+                            return doodles.current().dependencies.indexOf(option.name) > -1;
+                        });
+
+                        var closureOpts: IOption[] = closure(selOpts);
+
+                        var chosenFileNames: string[] = closureOpts.map(function(option: IOption) { return option.minJs; });
+                        // TODO: We will later want to make operator overloading configurable for speed.
+
+                        var scriptFileNames: string[] = doodles.current().operatorOverloading ? chosenFileNames.concat(FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS) : chosenFileNames;
+                        // TOOD: Don't fix the location of the JavaScript here.
+                        var scriptTags = scriptFileNames.map(function(fileName: string) {
+                            // FIXME
+                            return "<script src='" + scriptURL(DOMAIN, fileName) + "'></script>\n";
+                        });
+
+                        var html = doodles.current().html;
+                        html = html.replace(SCRIPTS_MARKER, scriptTags.join(""));
+                        html = html.replace(STYLE_MARKER, [doodles.current().less].join(""));
+                        html = html.replace(LIBS_MARKER, currentJavaScript(FILENAME_LIBS));
+                        html = html.replace(CODE_MARKER, currentJavaScript(FILENAME_CODE));
+                        // For backwards compatibility...
+                        html = html.replace('<!-- STYLE-MARKER -->', ['<style>', doodles.current().less, '</style>'].join(""));
+                        html = html.replace('<!-- CODE-MARKER -->', currentJavaScript(FILENAME_CODE));
+
+                        content.open()
+                        if (false) {
+                            console.log("HTML")
+                            console.log("----")
+                            console.log(html)
+                        }
+                        content.write(html)
+                        content.close()
+
+                        bubbleIframeMouseMove(scope.previewIFrame)
+                    }
+                    else {
+                        // Do nothing
+                    }
                 }
                 else {
-                    // Do nothing
+                    // There is no reserved element on the doodle page.
                 }
             }
             catch (e) {
