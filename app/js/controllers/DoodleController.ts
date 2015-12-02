@@ -297,7 +297,8 @@ angular.module('app').controller('doodle-controller', [
             lessEditor.gotoLine(0, 0);
             // Bit of a smell here. Should we be updating the scope?
             setEditMode(doodles.current().isCodeVisible);
-            setViewMode(doodles.current().isViewVisible);
+            // Don't start in Playing mode in case the user has a looping program.
+            setViewMode(false/*doodles.current().isViewVisible*/);
             setCurrentEditor(doodles.current().focusEditor);
             $window.document.title = doodles.current().description;
         }
