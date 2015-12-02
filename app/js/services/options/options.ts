@@ -12,7 +12,6 @@ angular.module('app').factory('options', [
         VENDOR_FOLDER_MARKER
     ) {
 
-        let VERSION_ANGULARJS = '1.4.6'
         let VERSION_ASYNC = '1.4.2'
         let VERSION_DECKJS = '1.1.0'
         let VERSION_DOMREADY = '1.0.0'
@@ -46,9 +45,6 @@ angular.module('app').factory('options', [
         // Functions defining the name of the folder and version being used.
         function async(fileName: string): string {
             return vendorFolder('async', VERSION_ASYNC, void 0, fileName)
-        }
-        function ng(fileName: string): string {
-            return vendorFolder('angular', VERSION_ANGULARJS, void 0, fileName)
         }
         function deck(fileName: string): string {
             return vendorFolder('deck.js', VERSION_DECKJS, 'core', fileName)
@@ -95,18 +91,6 @@ angular.module('app').factory('options', [
                 dts: requirejs('require.d.ts'),
                 js: requirejs('require.js'),
                 minJs: requirejs('require.js'),
-                dependencies: {}
-            },
-            {
-                name: 'angular',
-                moniker: 'Angular JS',
-                description: "HTML enhanced for Web Applications",
-                homepage: 'https://angularjs.org',
-                version: VERSION_ANGULARJS,
-                visible: true,
-                dts: ng('angular.d.ts'),
-                js: ng('angular.js'),
-                minJs: ng('angular.min.js'),
                 dependencies: {}
             },
             {
