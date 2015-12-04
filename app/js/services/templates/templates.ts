@@ -466,20 +466,10 @@ angular.module('app').factory('templates', [
             "  .clearColor(0.1, 0.1, 0.1, 1.0)\n" +
             "  .start(canvas)\n" +
             "\n" +
-            "  var attributes: {[name: string]: EIGHT.DrawAttribute} = {}\n" +
-            "  var positions = new EIGHT.DrawAttribute([\n" +
-            "  0   , 0,\n" +
-            "  0.75, 0,\n" +
-            "  0   , 1],\n" +
-            "  2)\n" +
-            "  var colors = new EIGHT.DrawAttribute([\n" +
-            "  1, 0, 0,\n" +
-            "  0, 1, 0,\n" +
-            "  0, 0, 1],\n" +
-            "  3)\n" +
-            "  attributes['aPosition'] = positions\n" +
-            "  attributes['aColor'] = colors\n" +
-            "  var primitive = new EIGHT.DrawPrimitive(LINE_STRIP, [0, 1, 2, 0], attributes)\n" +
+            "  var attributes: {[name: string]: {values: number[]; size: number;}} = {}\n" +
+            "  attributes['aPosition'] = {values: [0, 0, 0.75, 0, 0, 1], size: 2}\n" +
+            "  attributes['aColor']    = {values: [1, 0, 0, 0, 1, 0, 0, 0, 1], size: 3}\n" +
+            "  var primitive = {mode: LINE_STRIP, indices: [0, 1, 2, 0], attributes: attributes}\n" +
             "  var elements = ctxt.createBufferGeometry(primitive)\n" +
             "\n" +
             "  var program = new EIGHT.HTMLScriptsGraphicsProgram([ctxt], ['vs', 'fs'])\n" +

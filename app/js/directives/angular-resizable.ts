@@ -153,6 +153,7 @@ angular.module('angularResizable', [])
 
                 var dragEnd = function(e: MouseEvent) {
                     updateInfo()
+                    // Dispatch the event upwards through the scope hierarchy.
                     scope.$emit("angular-resizable.resizeEnd", info)
                     scope.$apply()
                     document.removeEventListener('mouseup', dragEnd, false)
