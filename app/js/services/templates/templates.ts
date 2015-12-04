@@ -135,7 +135,7 @@ angular.module('app').factory('templates', [
             ""
         ].join('\n');
 
-        var LIBS_TEMPLATE_CALCULATION = "//\n";
+        var LIBS_TEMPLATE_CALCULATION = "";
 
         var LESS_TEMPLATE_CALCULATION = "" +
             "#info {\n" +
@@ -1332,7 +1332,7 @@ angular.module('app').factory('templates', [
             "  stats.end();\n" +
             "}\n";
 
-        var LIBS_TEMPLATE_THREEJS = "//\n";
+        var LIBS_TEMPLATE_THREEJS = "";
 
         var LESS_TEMPLATE_THREEJS = "" +
             "body { margin: 0; }\n" +
@@ -1481,7 +1481,7 @@ angular.module('app').factory('templates', [
             "\n" +
             "brd.create('circle',[ [xm,ym], r]);\n";
 
-        var LIBS_TEMPLATE_JSXGRAPH_DEMO = "//\n";
+        var LIBS_TEMPLATE_JSXGRAPH_DEMO = "";
 
         return [
             {
