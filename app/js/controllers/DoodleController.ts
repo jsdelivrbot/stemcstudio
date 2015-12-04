@@ -866,10 +866,11 @@ angular.module('app').controller('doodle-controller', [
 
                     if (scope.isViewVisible && doodles.current() && (typeof doodles.current().lastKnownJs[FILENAME_CODE] === 'string') && (typeof doodles.current().lastKnownJs[FILENAME_LIBS] === 'string')) {
                         scope.previewIFrame = document.createElement('iframe');
+                        // Let's not change any more styles than we have to. 
                         scope.previewIFrame.style.width = '100%';
                         scope.previewIFrame.style.height = '100%';
                         scope.previewIFrame.style.border = '0';
-                        scope.previewIFrame.style.backgroundColor = '#232323';
+                        scope.previewIFrame.style.backgroundColor = '#ffffff';
 
                         preview.appendChild(scope.previewIFrame);
 

@@ -48,26 +48,9 @@ angular.module('app').factory('templates', [
             libsMarker() +
             codeMarker() +
             "  </body>\n" +
-            "</html>\n"
+            "</html>\n";
 
-        var CODE_TEMPLATE_MINIMAL = "" +
-            "/**\n" +
-            " * <code>main</code> is the entry point and is called when the DOM has finished loading.\n" +
-            " */\n" +
-            "function main() {\n" +
-            "\n" +
-            "}\n" +
-            "\n" +
-            "// Wait until the DOM has finished loading before using it.\n" +
-            "DomReady.ready(function() {\n" +
-            "  try {\n" +
-            "    main()\n" +
-            "  }\n" +
-            "  catch(e) {\n" +
-            "    console.warn(e)\n" +
-            "  }\n" +
-            "})\n" +
-            "\n"
+        var CODE_TEMPLATE_MINIMAL = "";
 
         var LESS_TEMPLATE_MINIMAL = "";
 
@@ -1503,6 +1486,20 @@ angular.module('app').factory('templates', [
         return [
             {
                 uuid: uuid.generate(),
+                description: "Minimal",
+                isCodeVisible: true,
+                isViewVisible: false,
+                focusEditor: undefined,
+                lastKnownJs: {},
+                operatorOverloading: false,
+                html: HTML_TEMPLATE_MINIMAL,
+                code: CODE_TEMPLATE_MINIMAL,
+                libs: LIBS_TEMPLATE_MINIMAL,
+                less: LESS_TEMPLATE_MINIMAL,
+                dependencies: []
+            },
+            {
+                uuid: uuid.generate(),
                 description: "Mathematical Graphics with EIGHT and WebGL",
                 isCodeVisible: true,
                 isViewVisible: true,
@@ -1598,20 +1595,6 @@ angular.module('app').factory('templates', [
                 libs: LIBS_TEMPLATE_THREEJS,
                 less: LESS_TEMPLATE_THREEJS,
                 dependencies: ['three.js', 'stats.js']
-            },
-            {
-                uuid: uuid.generate(),
-                description: "Minimal",
-                isCodeVisible: true,
-                isViewVisible: false,
-                focusEditor: undefined,
-                lastKnownJs: {},
-                operatorOverloading: false,
-                html: HTML_TEMPLATE_MINIMAL,
-                code: CODE_TEMPLATE_MINIMAL,
-                libs: LIBS_TEMPLATE_MINIMAL,
-                less: LESS_TEMPLATE_MINIMAL,
-                dependencies: ['DomReady']
             }
         ];
     }]);
