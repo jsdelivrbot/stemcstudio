@@ -688,6 +688,9 @@ define('davinci-eight/utils/uuid4',["require", "exports"], function (require, ex
 });
 
 define('davinci-eight/utils/Shareable',["require", "exports", '../checks/mustBeString', '../i18n/readOnly', '../utils/refChange', '../utils/uuid4'], function (require, exports, mustBeString, readOnly, refChange, uuid4) {
+    /**
+     * @class Shareable
+     */
     var Shareable = (function () {
         /**
          * <p>
@@ -712,7 +715,7 @@ define('davinci-eight/utils/Shareable',["require", "exports", '../checks/mustBeS
          * @method addRef
          * @return {number} The new value of the reference count.
          */
-        Shareable.prototype.addRef = function (client) {
+        Shareable.prototype.addRef = function () {
             this._refCount++;
             refChange(this._uuid, this._type, +1);
             return this._refCount;
@@ -725,7 +728,7 @@ define('davinci-eight/utils/Shareable',["require", "exports", '../checks/mustBeS
          * @method release
          * @return {number} The new value of the reference count.
          */
-        Shareable.prototype.release = function (client) {
+        Shareable.prototype.release = function () {
             this._refCount--;
             refChange(this._uuid, this._type, -1);
             var refCount = this._refCount;
@@ -19864,7 +19867,6 @@ define('davinci-eight/scene/GraphicsContext',["require", "exports", '../renderer
          * @param [attributes] {WebGLContextAttributes} Allow the context to be configured.
          * @beta
          */
-        // FIXME: Move attributes to start()
         function GraphicsContext(attributes) {
             _super.call(this, 'GraphicsContext');
             this._kahuna = contextProxy(attributes);

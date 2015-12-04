@@ -5555,7 +5555,7 @@
             "module": "EIGHT",
             "namespace": "",
             "file": "src/davinci-eight/utils/Shareable.ts",
-            "line": 11,
+            "line": 14,
             "description": "<p>\nConvenient base class for derived classes implementing <code>IUnknown</code>.\n</p>",
             "extends": "IUnknown",
             "is_constructor": 1,
@@ -27902,7 +27902,7 @@
         },
         {
             "file": "src/davinci-eight/scene/GraphicsContext.ts",
-            "line": 69,
+            "line": 68,
             "itemtype": "method",
             "name": "destructor!~YUIDOC_LINE~!return",
             "type": "Void",
@@ -27913,7 +27913,7 @@
         },
         {
             "file": "src/davinci-eight/scene/GraphicsContext.ts",
-            "line": 83,
+            "line": 82,
             "itemtype": "method",
             "name": "addContextListener",
             "params": [
@@ -27932,7 +27932,7 @@
         },
         {
             "file": "src/davinci-eight/scene/GraphicsContext.ts",
-            "line": 92,
+            "line": 91,
             "itemtype": "property",
             "name": "canvas",
             "type": "{HTMLCanvasElement}",
@@ -27941,7 +27941,7 @@
         },
         {
             "file": "src/davinci-eight/scene/GraphicsContext.ts",
-            "line": 103,
+            "line": 102,
             "itemtype": "property",
             "name": "canvasId",
             "type": "{number}",
@@ -27951,7 +27951,7 @@
         },
         {
             "file": "src/davinci-eight/scene/GraphicsContext.ts",
-            "line": 116,
+            "line": 115,
             "itemtype": "property",
             "name": "commands",
             "type": "{IUnknownArray}",
@@ -27962,7 +27962,7 @@
         },
         {
             "file": "src/davinci-eight/scene/GraphicsContext.ts",
-            "line": 129,
+            "line": 128,
             "description": "<p>\nSpecifies color values to use by the <code>clear</code> method to clear the color buffer.\n<p>",
             "itemtype": "method",
             "name": "clearColor",
@@ -27998,7 +27998,7 @@
         },
         {
             "file": "src/davinci-eight/scene/GraphicsContext.ts",
-            "line": 146,
+            "line": 145,
             "itemtype": "method",
             "name": "contextFree",
             "params": [
@@ -28018,7 +28018,7 @@
         },
         {
             "file": "src/davinci-eight/scene/GraphicsContext.ts",
-            "line": 155,
+            "line": 154,
             "itemtype": "method",
             "name": "contextGain",
             "params": [
@@ -28037,7 +28037,7 @@
         },
         {
             "file": "src/davinci-eight/scene/GraphicsContext.ts",
-            "line": 164,
+            "line": 163,
             "itemtype": "method",
             "name": "contextLost",
             "params": [
@@ -28057,7 +28057,7 @@
         },
         {
             "file": "src/davinci-eight/scene/GraphicsContext.ts",
-            "line": 173,
+            "line": 172,
             "itemtype": "method",
             "name": "createArrayBuffer",
             "return": {
@@ -28069,7 +28069,7 @@
         },
         {
             "file": "src/davinci-eight/scene/GraphicsContext.ts",
-            "line": 181,
+            "line": 180,
             "itemtype": "method",
             "name": "createBufferGeometry",
             "params": [
@@ -28094,7 +28094,7 @@
         },
         {
             "file": "src/davinci-eight/scene/GraphicsContext.ts",
-            "line": 191,
+            "line": 190,
             "itemtype": "method",
             "name": "createElementArrayBuffer",
             "return": {
@@ -28106,7 +28106,7 @@
         },
         {
             "file": "src/davinci-eight/scene/GraphicsContext.ts",
-            "line": 199,
+            "line": 198,
             "itemtype": "method",
             "name": "createTextureCubeMap",
             "return": {
@@ -28118,7 +28118,7 @@
         },
         {
             "file": "src/davinci-eight/scene/GraphicsContext.ts",
-            "line": 207,
+            "line": 206,
             "itemtype": "method",
             "name": "createTexture2D",
             "return": {
@@ -28130,7 +28130,7 @@
         },
         {
             "file": "src/davinci-eight/scene/GraphicsContext.ts",
-            "line": 215,
+            "line": 214,
             "description": "Turns off specific WebGL capabilities for this context.",
             "itemtype": "method",
             "name": "disable",
@@ -28151,7 +28151,7 @@
         },
         {
             "file": "src/davinci-eight/scene/GraphicsContext.ts",
-            "line": 227,
+            "line": 226,
             "description": "Turns on specific WebGL capabilities for this context.",
             "itemtype": "method",
             "name": "enable",
@@ -28172,7 +28172,7 @@
         },
         {
             "file": "src/davinci-eight/scene/GraphicsContext.ts",
-            "line": 239,
+            "line": 238,
             "itemtype": "property",
             "name": "gl",
             "type": "{WebGLRenderingContext}",
@@ -28182,7 +28182,7 @@
         },
         {
             "file": "src/davinci-eight/scene/GraphicsContext.ts",
-            "line": 251,
+            "line": 250,
             "itemtype": "method",
             "name": "removeContextListener",
             "params": [
@@ -28201,7 +28201,7 @@
         },
         {
             "file": "src/davinci-eight/scene/GraphicsContext.ts",
-            "line": 260,
+            "line": 259,
             "description": "Defines what part of the canvas will be used in rendering the drawing buffer.",
             "itemtype": "method",
             "name": "viewport",
@@ -28237,7 +28237,7 @@
         },
         {
             "file": "src/davinci-eight/scene/GraphicsContext.ts",
-            "line": 275,
+            "line": 274,
             "description": "Initializes the WebGL context for the specified <code>canvas</code>.",
             "itemtype": "method",
             "name": "start",
@@ -28264,7 +28264,7 @@
         },
         {
             "file": "src/davinci-eight/scene/GraphicsContext.ts",
-            "line": 296,
+            "line": 295,
             "itemtype": "method",
             "name": "stop",
             "return": {
@@ -28277,7 +28277,7 @@
         },
         {
             "file": "src/davinci-eight/scene/GraphicsContext.ts",
-            "line": 306,
+            "line": 305,
             "itemtype": "method",
             "name": "synchronize",
             "params": [
@@ -28951,7 +28951,7 @@
         },
         {
             "file": "src/davinci-eight/utils/Shareable.ts",
-            "line": 24,
+            "line": 27,
             "description": "<p>\nNotifies this instance that something is dereferencing it.\n</p>",
             "itemtype": "method",
             "name": "addRef",
@@ -28964,7 +28964,7 @@
         },
         {
             "file": "src/davinci-eight/utils/Shareable.ts",
-            "line": 37,
+            "line": 40,
             "description": "<p>\nNotifies this instance that something is dereferencing it.\n</p>",
             "itemtype": "method",
             "name": "release",
@@ -28977,7 +28977,7 @@
         },
         {
             "file": "src/davinci-eight/utils/Shareable.ts",
-            "line": 58,
+            "line": 61,
             "description": "<p>\nOutputs a warning to the console that this method should be implemented by the derived class.\n</p>\n<p>\n<em>This method should be implemented by derived classes.</em>\n</p>\n<p>\n<em>Not implementing this method in a derived class risks leaking resources allocated by the derived class.</em>\n</p>",
             "itemtype": "method",
             "name": "destructor",
@@ -28992,7 +28992,7 @@
         },
         {
             "file": "src/davinci-eight/utils/Shareable.ts",
-            "line": 77,
+            "line": 80,
             "itemtype": "property",
             "name": "uuid",
             "type": "{string}",

@@ -3289,7 +3289,11 @@ declare module EIGHT {
     }
 
     /**
-     *
+     * A wrapper around a <code>WebGLRenderingContext</code> with additional capabilities.
+     * <ul>
+     *   <li>Shareable resources using reference counting.</li>
+     *   <li>Monitoring for <code>webglcontextlost</code> and <code>webglcontextrestored</code>.</li>
+     * </ul>
      */
     class GraphicsContext extends Shareable implements ContextController, IContextMonitor, IContextRenderer {
 
@@ -3317,7 +3321,7 @@ declare module EIGHT {
         gl: WebGLRenderingContext;
 
         /**
-         *
+         * Constructs a <code>GraphicsContext</code> using <code>WebGLContextAttributes</code>.
          */
         constructor(attributes?: WebGLContextAttributes);
 
@@ -3396,7 +3400,7 @@ declare module EIGHT {
         start(canvas: HTMLCanvasElement, canvasId?: number): GraphicsContext;
 
         /**
-         *
+         * Terminates the <code>WebGLRenderingContext</code> for the underlying canvas.
          */
         stop(): GraphicsContext;
 
@@ -3746,11 +3750,11 @@ declare module EIGHT {
     }
 
     /**
-     * AAA
+     * A <code>GraphicsProgram</code> based upon scripts in a DOM.
      */
     class HTMLScriptsGraphicsProgram extends GraphicsProgram {
         /**
-         * BBB
+         * Constructs a <code>GraphicsProgram</code> using scripts in a Document Object Model (DOM).
          * contexts:  The contexts that this material must support.
          * scriptIds: The id properties of the script elements. Defaults to [].
          * dom:       The document object model. Defaults to document.
