@@ -3316,7 +3316,7 @@ declare module EIGHT {
         commands: IUnknownArray<IContextCommand>;
 
         /**
-         *
+         * @param gl The underlying <code>WebGLRenderingContext</code>.
          */
         gl: WebGLRenderingContext;
 

@@ -11,10 +11,15 @@ This version uses TypeScript exclusively as the modeling language and saves mode
 
 1. `git clone https://github.com/geometryzen/mathdoodle.git`
 2. `cd mathdoodle`
-3. `sudo npm install -g lineman`
+3. `npm install -g lineman`
 4. `npm install`
-5. `lineman run`
-6. open your web browser to localhost:8000
+5. `bower install`
+
+6. `lineman clean`
+7. `lineman build`
+8. `lineman run`
+
+9. open your web browser to localhost:8000
 
 # Running Tests
 
@@ -32,3 +37,19 @@ To run the end-to-end tests:
 3. Make sure you have chrome installed.
 4. `lineman run` from 1 terminal window
 5. `lineman grunt spec-e2e` from another terminal window
+
+# Upgrading
+
+Update versions in
+
+1. package.json
+2. bower.json
+3. appcache.mf
+4. app/js/services/constants/constants.ts
+
+git push origin master
+git push -f heroku master
+
+# Remotes
+
+git remote add heroku git@heroku.com:mathdoodle.git

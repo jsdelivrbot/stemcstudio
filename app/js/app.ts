@@ -86,9 +86,9 @@ angular.module('app',
           type: BootstrapDialog.TYPE_SUCCESS,
           title: $("<h3>Update Ready</h3>"),
           message: "A new version of mathdoodle is available. Would you like to use it now?",
-          closable: false,
-          closeByBackdrop: false,
-          closeByKeyboard: false,
+          /*closable: false,*/
+          /*closeByBackdrop: false,*/
+          /*closeByKeyboard: false,*/
           buttons: [
           {
             label: "Yes, Now",

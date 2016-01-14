@@ -1,6 +1,6 @@
 {
   "name": "mathdoodle",
-  "version": "1.233.0",
+  "version": "1.234.0",
   "description": "Learning Mathematics and Geometric Physics through Computational Modeling",
   "engines": {
     "node": "0.12.0"
@@ -12,16 +12,15 @@
   "author": "David Holmes",
   "license": "MIT",
   "devDependencies": {
-    "bootstrap": "^3.3.4",
+    "bootstrap": "^3.3.6",
     "coffee-script": "1.6.3",
     "grunt": "^0.4.5",
-    "grunt-typescript": "0.7.0",
-    "jasmine-given": "^2.6.2",
-    "lineman": "^0.36.1",
+    "grunt-typescript": "0.8.0",
+    "lineman": "^0.36.6",
     "lineman-angular": "^0.3.0",
-    "lineman-less": "^0.0.1",
-    "protractor": "^2.0.0",
-    "typescript": "1.4.1"
+    "lineman-less": "^0.1.0",
+    "protractor": "^3.0.0",
+    "typescript": "1.7.5"
   },
   "repository": {
     "type": "git",
@@ -29,8 +28,8 @@
   },
   "dependencies": {
     "express": "3.3.4",
-    "jade": "1.9.2",
+    "jade": "1.11.0",
     "lactate": "0.13.12",
-    "nconf": "0.7.1"
+    "nconf": "0.8.2"
   }
 }
