@@ -1,6 +1,7 @@
 .DS_Store
 
-jspm_packages/
+# Need system.js
+/jspm_packages/
 
 # Only include node_modules if the project is "deployed".
 # See http://www.mikealrogers.com/posts/nodemodules-in-git.html
