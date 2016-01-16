@@ -20,26 +20,7 @@ module.exports = function(lineman) {
 
         "vendor/davinci-mathscript/dist/davinci-mathscript.js",
 
-        "../davinci-deuce/build/src-noconflict/ace.js",
-        "../davinci-deuce/build/src-noconflict/theme-mathdoodle.js",
-
-        "vendor/davinci-deuce/build/src-noconflict/theme-chrome.js",
-        "vendor/davinci-deuce/build/src-noconflict/theme-eclipse.js",
-        "vendor/davinci-deuce/build/src-noconflict/theme-iplastic.js",
-        "vendor/davinci-deuce/build/src-noconflict/theme-mathdoodle.js",
-        "vendor/davinci-deuce/build/src-noconflict/theme-monokai.js",
-        "vendor/davinci-deuce/build/src-noconflict/theme-textmate.js",
-        "vendor/davinci-deuce/build/src-noconflict/theme-twilight.js",
-
-        "vendor/davinci-deuce/build/src-noconflict/mode-coffee.js",
-        "vendor/davinci-deuce/build/src-noconflict/mode-css.js",
-        "vendor/davinci-deuce/build/src-noconflict/mode-glsl.js",
-        "vendor/davinci-deuce/build/src-noconflict/mode-html.js",
-        "vendor/davinci-deuce/build/src-noconflict/mode-json.js",
-        "vendor/davinci-deuce/build/src-noconflict/mode-less.js",
-        "vendor/davinci-deuce/build/src-noconflict/mode-python.js",
-        "vendor/davinci-deuce/build/src-noconflict/mode-javascript.js",
-        "vendor/davinci-deuce/build/src-noconflict/mode-typescript.js"
+        "manual/ace/ace.js"
       ],
       app: [
         "app/js/app.js",

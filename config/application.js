@@ -44,31 +44,35 @@ module.exports = function(lineman) {
   var MDOODLE_COMPONENTS = 'vendor'
 
   function deuceDir(fileName) {
-    return MDOODLE_COMPONENTS + '/davinci-deuce/' + fileName
+    return 'manual/ace/' + fileName
   }
   function deuceDirReg(fileName) {
-    return deuceDir('build/src-noconflict/' + fileName)
+    return deuceDir(fileName)
   }
   function deuceDirMin(fileName) {
-    return deuceDir('build/src-min-noconflict/' + fileName)
+    return deuceDir(fileName)
   }
 
   /**
    * Compute the files to be copied.
    * This is almost the same for development and production, the only difference
    * being the locations that we pull and push to.
-   * param deuceIn {(name:string)=>string} Computes the source path from a filename for davinci-deuce.
+   * param editorIn {(name:string)=>string} Computes the source path from a filename for ace.
    */
-  function files(deuceIn, targetOut) {
+  function files(editorIn, targetOut) {
     var copies = [
       {src: "appcache.mf", dest: targetOut("appcache.mf")},
 
-      {src: deuceIn("worker-workspace.js"),   dest: targetOut("js/worker-workspace.js")},
-      {src: deuceIn("worker-html.js"),        dest: targetOut("js/worker-html.js")},
-      {src: deuceIn("worker-javascript.js)"), dest: targetOut("js/worker-javascript.js")},
-      {src: deuceIn("worker-json.js"),        dest: targetOut("js/worker-json.js")},
-      {src: deuceIn("worker-typescript.js"),  dest: targetOut("js/worker-typescript.js")},
-      {src: deuceIn("worker-css.js"),         dest: targetOut("js/worker-css.js")},
+      {src: editorIn("worker.js"),             dest: targetOut("js/worker.js")},
+      {src: editorIn("ace-workers.js"),        dest: targetOut("js/ace-workers.js")},
+
+      {src: "jspm_packages/system.js",         dest: targetOut("jspm_packages/system.js")},
+      {src: "jspm.config.js",                  dest: targetOut("js/jspm.config.js")},
+
+      {src: "manual/typescript/typescriptServices.js", dest: targetOut("js/typescriptServices.js")},
+      {src: "manual/typescript/lib.es6.d.ts",  dest: targetOut("typings/lib.es6.d.ts")},
+
+      {src: "app/themes/twilight.css",         dest: targetOut("themes/twilight.css")},
 
       {src: "vendor/bootstrap/dist/fonts/glyphicons-halflings-regular.eot",   dest: targetOut("fonts/glyphicons-halflings-regular.eot")},
       {src: "vendor/bootstrap/dist/fonts/glyphicons-halflings-regular.svg",   dest: targetOut("fonts/glyphicons-halflings-regular.svg")},

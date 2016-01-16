@@ -1,7 +1,7 @@
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../../../typings/angular-ui-router/angular-ui-router.d.ts" />
 /// <reference path="../../../typings/bootstrap-dialog/bootstrap-dialog.d.ts" />
-/// <reference path="../../../typings/deuce/deuce.d.ts" />
+/// <reference path="../../../typings/ace/ace.d.ts" />
 /// <reference path="../../../typings/davinci-mathscript/davinci-mathscript.d.ts" />
 /// <reference path="../../../typings/dialog-polyfill/dialog-polyfill.d.ts" />
 /// <reference path="../../../typings/google-analytics/ga.d.ts" />
@@ -272,7 +272,7 @@ angular.module('app').controller('doodle-controller', [
                 return domain + '/vendor' + fileName.substring(VENDOR_FOLDER_MARKER.length)
             }
             else {
-                // FIXME: While we migrate options, everything is still local.
+                // TODO: While we migrate options, everything is still local.
                 return domain + '/js/' + fileName
             }
         }
@@ -617,15 +617,22 @@ angular.module('app').controller('doodle-controller', [
          */
         var DOMAIN = $location.protocol() + ':' + FWD_SLASH + FWD_SLASH + $location.host() + ":" + $location.port();
 
-        ace.config.set('workerPath', '/js')
+        var systemImports = ['/jspm_packages/system.js', '/js/jspm.config.js'];
+        var workerImports = systemImports.concat(['/js/ace-workers.js']);
+        var typescriptServices = ['/js/typescriptServices.js'];
 
-        var workspace = ace.workspace();
+        /*ace.config.set('workerPath', '/js');*/
 
-        var codeEditor = ace.edit($window.document.getElementById('code-editor'), workspace);
+        var workspace = ace.createWorkspace();
+        workspace.init('/js/worker.js', workerImports.concat(typescriptServices));
+        workspace.setDefaultLibrary('/typings/lib.es6.d.ts');
+
+        var codeEditor = ace.edit($window.document.getElementById('code-editor'));
         codeEditor.resize(true);
-        codeEditor.getSession().setMode('ace/mode/typescript');
-
-        codeEditor.setTheme(settings.theme);
+        codeEditor.setLanguageMode(ace.createTypeScriptMode('/js/worker.js', workerImports));
+        codeEditor.setThemeCss('ace-twilight', '/themes/twilight.css');
+        codeEditor.setThemeDark(true)
+        codeEditor.setPadding(4);
         codeEditor.getSession().setTabSize(settings.indent);
         codeEditor.setShowInvisibles(settings.showInvisibles);
         codeEditor.setFontSize(settings.fontSize);
@@ -667,11 +674,12 @@ angular.module('app').controller('doodle-controller', [
             }
         });
 
-        var libsEditor = ace.edit($window.document.getElementById('libs-editor'), workspace);
+        var libsEditor = ace.edit($window.document.getElementById('libs-editor'));
         libsEditor.resize(true);
-        libsEditor.getSession().setMode('ace/mode/typescript');
-
-        libsEditor.setTheme(settings.theme);
+        libsEditor.setLanguageMode(ace.createTypeScriptMode('/js/worker.js', workerImports));
+        libsEditor.setThemeCss('ace-twilight', '/themes/twilight.css');
+        libsEditor.setThemeDark(true)
+        libsEditor.setPadding(4);
         libsEditor.getSession().setTabSize(settings.indent);
         libsEditor.setShowInvisibles(settings.showInvisibles);
         libsEditor.setFontSize(settings.fontSize);
@@ -712,11 +720,10 @@ angular.module('app').controller('doodle-controller', [
             }
         });
 
-        var htmlEditor = ace.edit($window.document.getElementById('html-editor'), workspace);
+        var htmlEditor = ace.edit($window.document.getElementById('html-editor'));
         htmlEditor.resize(true);
-        htmlEditor.getSession().setMode('ace/mode/html');
-
-        htmlEditor.setTheme(settings.theme);
+        htmlEditor.setLanguageMode(ace.createHtmlMode('/js/worker.js', workerImports));
+        htmlEditor.setThemeCss('ace-twilight', '/themes/twilight.css');
         htmlEditor.getSession().setTabSize(settings.indent);
         htmlEditor.setShowInvisibles(settings.showInvisibles);
         htmlEditor.setFontSize(settings.fontSize);
@@ -731,11 +738,11 @@ angular.module('app').controller('doodle-controller', [
             }
         });
 
-        var lessEditor = ace.edit($window.document.getElementById('less-editor'), workspace);
+        var lessEditor = ace.edit($window.document.getElementById('less-editor'));
         lessEditor.resize(true);
-        lessEditor.getSession().setMode('ace/mode/less');
-
-        lessEditor.setTheme(settings.theme);
+        lessEditor.getSession().setUseWorker(false);
+        lessEditor.setLanguageMode(ace.createCssMode('/js/worker.js', workerImports));
+        lessEditor.setThemeCss('ace-twilight', '/themes/twilight.css');
         lessEditor.getSession().setTabSize(settings.indent);
         lessEditor.setShowInvisibles(settings.showInvisibles);
         lessEditor.setFontSize(settings.fontSize);
@@ -775,7 +782,7 @@ angular.module('app').controller('doodle-controller', [
             var done = false;
             while (!done) {
                 var size = nameSet.size();
-                // FIXME: This only computes the closure. It does not sort into for dependencies.
+                // TODO: This only computes the closure. It does not sort into for dependencies.
                 namesToOptions(nameSet.toArray()).forEach(function(option: IOption) {
                     for (var name in option.dependencies) {
                         nameSet.add(name);
@@ -888,7 +895,6 @@ angular.module('app').controller('doodle-controller', [
                         var scriptFileNames: string[] = doodles.current().operatorOverloading ? chosenFileNames.concat(FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS) : chosenFileNames;
                         // TOOD: Don't fix the location of the JavaScript here.
                         var scriptTags = scriptFileNames.map(function(fileName: string) {
-                            // FIXME
                             return "<script src='" + scriptURL(DOMAIN, fileName) + "'></script>\n";
                         });
 
@@ -977,12 +983,8 @@ angular.module('app').controller('doodle-controller', [
             addUnits.forEach(function(addUnit) {
                 readFile(addUnit.fileName, function(err, content) {
                     if (!err) {
-                        if (workspace) {
-                            workspace.ensureScript(addUnit.fileName, content.replace(/\r\n?/g, '\n'), true);
-                            olds.unshift(addUnit.name);
-                        }
-                        else {
-                        }
+                        workspace.ensureScript(addUnit.fileName, content.replace(/\r\n?/g, '\n'));
+                        olds.unshift(addUnit.name);
                     }
                 });
             });
@@ -1008,6 +1010,10 @@ angular.module('app').controller('doodle-controller', [
             if (typeof doodles.current().less !== 'string') {
                 doodles.current().less = "";
             }
+            function changeFile(content: string, fileName: string, cursorPos: number, editor: ace.Editor): void {
+                var data = content.replace(/\r\n?/g, '\n');
+                editor.setValue(data, cursorPos);
+            }
             // We are now guaranteed that there is a current doodle i.e. doodles.current() exists.
 
             // Following a browser refresh, show the code so that it refreshes correctly (bug).
@@ -1016,13 +1022,20 @@ angular.module('app').controller('doodle-controller', [
             doodles.current().isCodeVisible = true;
             //  doodles.current().isViewVisible = false;
             // We need to make sure that the files have names (for the TypeScript compiler).
-            htmlEditor.changeFile(doodles.current().html, FILENAME_HTML, -1);
+            changeFile(doodles.current().html, FILENAME_HTML, -1, htmlEditor);
             htmlEditor.resize(true);
-            codeEditor.changeFile(doodles.current().code, FILENAME_CODE, -1);
+
+            workspace.detachEditor(FILENAME_CODE, codeEditor);
+            changeFile(doodles.current().code, FILENAME_CODE, -1, codeEditor);
+            workspace.attachEditor(FILENAME_CODE, codeEditor);
             codeEditor.resize(true);
-            libsEditor.changeFile(doodles.current().libs, FILENAME_LIBS, -1);
+
+            workspace.detachEditor(FILENAME_LIBS, libsEditor);
+            changeFile(doodles.current().libs, FILENAME_LIBS, -1, libsEditor);
+            workspace.attachEditor(FILENAME_LIBS, libsEditor);
             libsEditor.resize(true);
-            lessEditor.changeFile(doodles.current().less, FILENAME_LESS, -1);
+
+            changeFile(doodles.current().less, FILENAME_LESS, -1, lessEditor);
             lessEditor.resize(true);
 
             // Now that things have settled down...
