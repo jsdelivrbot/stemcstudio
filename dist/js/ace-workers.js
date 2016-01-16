@@ -17415,8 +17415,12 @@ System.register("src/mode/typescript/DefaultLanguageServiceHost.js", ["src/mode/
         };
         DefaultLanguageServiceHost.prototype.getScriptSnapshot = function(fileName) {
           var script = this.scripts[fileName];
-          var result = ts.ScriptSnapshot.fromString(script.getValue());
-          return result;
+          if (script) {
+            var result = ts.ScriptSnapshot.fromString(script.getValue());
+            return result;
+          } else {
+            throw new Error("getScriptSnapshot(" + fileName + ")");
+          }
         };
         DefaultLanguageServiceHost.prototype.getCurrentDirectory = function() {
           return "";

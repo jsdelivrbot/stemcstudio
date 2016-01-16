@@ -23905,6 +23905,19 @@ var ts;
                             // NOTE: unknown type here denotes error type. Old compiler treated this case as any type so do we.
                             resultType = leftType === unknownType || rightType === unknownType ? unknownType : anyType;
                         }
+                        else if (allConstituentTypesHaveKind(leftType, 132 /* NumberLike */)) {
+                            resultType = rightType;
+                        }
+                        else if (allConstituentTypesHaveKind(rightType, 132 /* NumberLike */)) {
+                            resultType = leftType;
+                        }
+                        else {
+                            if (!allConstituentTypesHaveKind(leftType, 258 /* StringLike */) && !allConstituentTypesHaveKind(rightType, 258 /* StringLike */)) {
+                                resultType = rightType; // Pick any one!
+                            }
+                            else {
+                            }
+                        }
                         // Symbols are not allowed at all in arithmetic expressions
                         if (resultType && !checkForDisallowedESSymbolOperand(operator)) {
                             return resultType;
