@@ -1023,19 +1023,23 @@ angular.module('app').controller('doodle-controller', [
             //  doodles.current().isViewVisible = false;
             // We need to make sure that the files have names (for the TypeScript compiler).
             changeFile(doodles.current().html, FILENAME_HTML, -1, htmlEditor);
+            htmlEditor.getSession().getUndoManager().reset();
             htmlEditor.resize(true);
 
             workspace.detachEditor(FILENAME_CODE, codeEditor);
             changeFile(doodles.current().code, FILENAME_CODE, -1, codeEditor);
+            codeEditor.getSession().getUndoManager().reset();
             workspace.attachEditor(FILENAME_CODE, codeEditor);
             codeEditor.resize(true);
 
             workspace.detachEditor(FILENAME_LIBS, libsEditor);
             changeFile(doodles.current().libs, FILENAME_LIBS, -1, libsEditor);
+            libsEditor.getSession().getUndoManager().reset();
             workspace.attachEditor(FILENAME_LIBS, libsEditor);
             libsEditor.resize(true);
 
             changeFile(doodles.current().less, FILENAME_LESS, -1, lessEditor);
+            lessEditor.getSession().getUndoManager().reset();
             lessEditor.resize(true);
 
             // Now that things have settled down...

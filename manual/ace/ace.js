@@ -914,6 +914,12 @@ define('Range',["require", "exports"], function (require, exports) {
             }
         };
         Range.prototype.clipRows = function (firstRow, lastRow) {
+            if (typeof firstRow !== 'number') {
+                throw new TypeError("clipRows() firstRow must be a number.");
+            }
+            if (typeof lastRow !== 'number') {
+                throw new TypeError("clipRows() lastRow must be a number.");
+            }
             var start;
             var end;
             if (this.end.row > lastRow)
@@ -949,10 +955,12 @@ define('Range',["require", "exports"], function (require, exports) {
             return Range.fromPoints(this.start, this.end);
         };
         Range.prototype.collapseRows = function () {
-            if (this.end.column === 0)
+            if (this.end.column === 0) {
                 return new Range(this.start.row, 0, Math.max(this.start.row, this.end.row - 1), 0);
-            else
+            }
+            else {
                 return new Range(this.start.row, 0, this.end.row, 0);
+            }
         };
         Range.prototype.moveBy = function (row, column) {
             this.start.row += row;
@@ -4425,10 +4433,6 @@ define('Selection',["require", "exports", "./lib/lang", "./lib/EventEmitterClass
             }
         };
         ;
-        Selection.prototype.getAllRanges = function () {
-            return this.rangeCount ? this.rangeList.ranges.concat() : [this.getRange()];
-        };
-        ;
         Selection.prototype.splitIntoLines = function () {
             var _this = this;
             if (this.rangeCount > 1) {
@@ -4436,14 +4440,14 @@ define('Selection',["require", "exports", "./lib/lang", "./lib/EventEmitterClass
                 var lastRange = ranges[ranges.length - 1];
                 var range = Range_1.default.fromPoints(ranges[0].start, lastRange.end);
                 this.toSingleRange();
-                this.setSelectionRange(range, lastRange.cursor == lastRange.start);
+                this.setSelectionRange(range, lastRange.cursor === lastRange.start);
             }
             else {
                 var range = this.getRange();
                 var isBackwards = this.isBackwards();
                 var startRow = range.start.row;
                 var endRow = range.end.row;
-                if (startRow == endRow) {
+                if (startRow === endRow) {
                     if (isBackwards)
                         var start = range.end, end = range.start;
                     else
@@ -4467,8 +4471,8 @@ define('Selection',["require", "exports", "./lib/lang", "./lib/EventEmitterClass
         };
         ;
         Selection.prototype.isEmpty = function () {
-            return (this.$isEmpty || (this.anchor.row == this.lead.row &&
-                this.anchor.column == this.lead.column));
+            return (this.$isEmpty || (this.anchor.row === this.lead.row &&
+                this.anchor.column === this.lead.column));
         };
         Selection.prototype.isMultiLine = function () {
             if (this.isEmpty()) {
@@ -4480,6 +4484,12 @@ define('Selection',["require", "exports", "./lib/lang", "./lib/EventEmitterClass
             return this.lead.getPosition();
         };
         Selection.prototype.setSelectionAnchor = function (row, column) {
+            if (typeof row !== 'number') {
+                throw new TypeError("row must be a number");
+            }
+            if (typeof column !== 'number') {
+                throw new TypeError("column must be a number");
+            }
             this.anchor.setPosition(row, column);
             if (this.$isEmpty) {
                 this.$isEmpty = false;
@@ -4521,6 +4531,18 @@ define('Selection',["require", "exports", "./lib/lang", "./lib/EventEmitterClass
         Selection.prototype.getRange = function () {
             var anchor = this.anchor;
             var lead = this.lead;
+            if (typeof anchor.row !== 'number') {
+                throw new TypeError();
+            }
+            if (typeof anchor.column !== 'number') {
+                throw new TypeError();
+            }
+            if (typeof lead.row !== 'number') {
+                throw new TypeError();
+            }
+            if (typeof lead.column !== 'number') {
+                throw new TypeError();
+            }
             if (this.isEmpty())
                 return Range_1.default.fromPoints(lead, lead);
             if (this.isBackwards()) {
@@ -4629,7 +4651,7 @@ define('Selection',["require", "exports", "./lib/lang", "./lib/EventEmitterClass
             this.setSelectionRange(range);
         };
         Selection.prototype.getLineRange = function (row, excludeLastChar) {
-            var rowStart = typeof row == "number" ? row : this.lead.row;
+            var rowStart = typeof row === "number" ? row : this.lead.row;
             var rowEnd;
             var foldLine = this.session.getFoldLine(rowStart);
             if (foldLine) {
@@ -4666,7 +4688,8 @@ define('Selection',["require", "exports", "./lib/lang", "./lib/EventEmitterClass
             this.moveCursorBy(1, 0);
         };
         Selection.prototype.moveCursorLeft = function () {
-            var cursor = this.lead.getPosition(), fold;
+            var cursor = this.lead.getPosition();
+            var fold;
             if (fold = this.session.getFoldAt(cursor.row, cursor.column, -1)) {
                 this.moveCursorTo(fold.start.row, fold.start.column);
             }
@@ -4677,7 +4700,7 @@ define('Selection',["require", "exports", "./lib/lang", "./lib/EventEmitterClass
             }
             else {
                 var tabSize = this.session.getTabSize();
-                if (this.session.isTabStop(cursor) && this.doc.getLine(cursor.row).slice(cursor.column - tabSize, cursor.column).split(" ").length - 1 == tabSize)
+                if (this.session.isTabStop(cursor) && this.doc.getLine(cursor.row).slice(cursor.column - tabSize, cursor.column).split(" ").length - 1 === tabSize)
                     this.moveCursorBy(0, -tabSize);
                 else
                     this.moveCursorBy(0, -1);
@@ -4689,7 +4712,7 @@ define('Selection',["require", "exports", "./lib/lang", "./lib/EventEmitterClass
             if (fold) {
                 this.moveCursorTo(fold.end.row, fold.end.column);
             }
-            else if (this.lead.column == this.doc.getLine(this.lead.row).length) {
+            else if (this.lead.column === this.doc.getLine(this.lead.row).length) {
                 if (this.lead.row < this.doc.getLength() - 1) {
                     this.moveCursorTo(this.lead.row + 1, 0);
                 }
@@ -4697,7 +4720,7 @@ define('Selection',["require", "exports", "./lib/lang", "./lib/EventEmitterClass
             else {
                 var tabSize = this.session.getTabSize();
                 var cursor = this.lead;
-                if (this.session.isTabStop(cursor) && this.doc.getLine(cursor.row).slice(cursor.column, cursor.column + tabSize).split(" ").length - 1 == tabSize) {
+                if (this.session.isTabStop(cursor) && this.doc.getLine(cursor.row).slice(cursor.column, cursor.column + tabSize).split(" ").length - 1 === tabSize) {
                     this.moveCursorBy(0, tabSize);
                 }
                 else {
@@ -4710,18 +4733,18 @@ define('Selection',["require", "exports", "./lib/lang", "./lib/EventEmitterClass
             var column = this.lead.column;
             var screenRow = this.session.documentToScreenRow(row, column);
             var firstColumnPosition = this.session.screenToDocumentPosition(screenRow, 0);
-            var beforeCursor = this.session['getDisplayLine'](row, null, firstColumnPosition.row, firstColumnPosition.column);
+            var beforeCursor = this.session.getDisplayLine(row, null, firstColumnPosition.row, firstColumnPosition.column);
             var leadingSpace = beforeCursor.match(/^\s*/);
-            if (leadingSpace[0].length != column && !this.session['$useEmacsStyleLineStart'])
+            if (leadingSpace[0].length !== column && !this.session.$useEmacsStyleLineStart)
                 firstColumnPosition.column += leadingSpace[0].length;
             this.moveCursorToPosition(firstColumnPosition);
         };
         Selection.prototype.moveCursorLineEnd = function () {
             var lead = this.lead;
             var lineEnd = this.session.getDocumentLastRowColumnPosition(lead.row, lead.column);
-            if (this.lead.column == lineEnd.column) {
+            if (this.lead.column === lineEnd.column) {
                 var line = this.session.getLine(lineEnd.row);
-                if (lineEnd.column == line.length) {
+                if (lineEnd.column === line.length) {
                     var textEnd = line.search(/\s+$/);
                     if (textEnd > 0)
                         lineEnd.column = textEnd;
@@ -4803,7 +4826,9 @@ define('Selection',["require", "exports", "./lib/lang", "./lib/EventEmitterClass
             this.moveCursorTo(row, column);
         };
         Selection.prototype.$shortWordEndIndex = function (rightOfCursor) {
-            var match, index = 0, ch;
+            var match;
+            var index = 0;
+            var ch;
             var whitespaceRe = /\s/;
             var tokenRe = this.session.tokenRe;
             tokenRe.lastIndex = 0;
@@ -4844,7 +4869,7 @@ define('Selection',["require", "exports", "./lib/lang", "./lib/EventEmitterClass
             var fold = this.session.getFoldAt(row, column, 1);
             if (fold)
                 return this.moveCursorTo(fold.end.row, fold.end.column);
-            if (column == line.length) {
+            if (column === line.length) {
                 var l = this.doc.getLength();
                 do {
                     row++;
@@ -4864,7 +4889,7 @@ define('Selection',["require", "exports", "./lib/lang", "./lib/EventEmitterClass
             if (fold = this.session.getFoldAt(row, column, -1))
                 return this.moveCursorTo(fold.start.row, fold.start.column);
             var line = this.session.getLine(row).substring(0, column);
-            if (column == 0) {
+            if (column === 0) {
                 do {
                     row--;
                     line = this.doc.getLine(row);
@@ -4878,7 +4903,7 @@ define('Selection',["require", "exports", "./lib/lang", "./lib/EventEmitterClass
             return this.moveCursorTo(row, column - index);
         };
         Selection.prototype.moveCursorWordRight = function () {
-            if (this.session['$selectLongWords']) {
+            if (this.session.$selectLongWords) {
                 this.moveCursorLongWordRight();
             }
             else {
@@ -4886,7 +4911,7 @@ define('Selection',["require", "exports", "./lib/lang", "./lib/EventEmitterClass
             }
         };
         Selection.prototype.moveCursorWordLeft = function () {
-            if (this.session['$selectLongWords']) {
+            if (this.session.$selectLongWords) {
                 this.moveCursorLongWordLeft();
             }
             else {
@@ -4939,7 +4964,7 @@ define('Selection',["require", "exports", "./lib/lang", "./lib/EventEmitterClass
             this.session = this.doc = null;
         };
         Selection.prototype.fromOrientedRange = function (range) {
-            this.setSelectionRange(range, range.cursor == range.start);
+            this.setSelectionRange(range, range.cursor === range.start);
             this.$desiredColumn = range.desiredColumn || this.$desiredColumn;
         };
         Selection.prototype.toOrientedRange = function (range) {
@@ -4975,7 +5000,7 @@ define('Selection',["require", "exports", "./lib/lang", "./lib/EventEmitterClass
             if (this.rangeCount) {
                 var ranges = this.ranges.map(function (r) {
                     var r1 = r.clone();
-                    r1['isBackwards'] = r.cursor === r.start;
+                    r1.isBackwards = r.cursor === r.start;
                     return r1;
                 });
                 return ranges;
@@ -4992,7 +5017,9 @@ define('Selection',["require", "exports", "./lib/lang", "./lib/EventEmitterClass
             if (removed.length) {
                 this.$onRemoveRange(removed);
             }
-            range && this.fromOrientedRange(range);
+            if (range) {
+                this.fromOrientedRange(range);
+            }
         };
         Selection.prototype.addRange = function (range, $blockChangeEvents) {
             if (!range) {
@@ -5002,7 +5029,7 @@ define('Selection',["require", "exports", "./lib/lang", "./lib/EventEmitterClass
                 var oldRange = this.toOrientedRange();
                 this.rangeList.add(oldRange);
                 this.rangeList.add(range);
-                if (this.rangeList.ranges.length != 2) {
+                if (this.rangeList.ranges.length !== 2) {
                     this.rangeList.removeAll();
                     return $blockChangeEvents || this.fromOrientedRange(range);
                 }
@@ -5034,7 +5061,7 @@ define('Selection',["require", "exports", "./lib/lang", "./lib/EventEmitterClass
         ;
         Selection.prototype.$onRemoveRange = function (removed) {
             this.rangeCount = this.rangeList.ranges.length;
-            if (this.rangeCount == 1 && this.inMultiSelectMode) {
+            if (this.rangeCount === 1 && this.inMultiSelectMode) {
                 var lastRange = this.rangeList.ranges.pop();
                 removed.push(lastRange);
                 this.rangeCount = 0;
@@ -5058,7 +5085,7 @@ define('Selection',["require", "exports", "./lib/lang", "./lib/EventEmitterClass
         };
         ;
         Selection.prototype.fromJSON = function (data) {
-            if (data.start == undefined) {
+            if (data.start === void 0) {
                 if (this.rangeList) {
                     this.toSingleRange(data[0]);
                     for (var i = data.length; i--;) {
@@ -10717,6 +10744,16 @@ define('SearchHighlight',["require", "exports", "./lib/lang", "./Range"], functi
             this.regExp = regExp;
             this.cache = [];
         };
+        Object.defineProperty(SearchHighlight.prototype, "range", {
+            get: function () {
+                return this._range;
+            },
+            set: function (range) {
+                throw new Error();
+            },
+            enumerable: true,
+            configurable: true
+        });
         SearchHighlight.prototype.update = function (html, markerLayer, session, config) {
             if (!this.regExp)
                 return;
@@ -10742,39 +10779,6 @@ define('SearchHighlight',["require", "exports", "./lib/lang", "./Range"], functi
     })();
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = SearchHighlight;
-});
-
-define('lib/asserts',["require", "exports"], function (require, exports) {
-    "use strict";
-    exports.ENABLE_ASSERTS = true;
-    var AssertionError = (function () {
-        function AssertionError(message, args) {
-            this.name = 'AssertionError';
-            this.message = message;
-        }
-        return AssertionError;
-    })();
-    exports.AssertionError = AssertionError;
-    function doAssertFailure(defaultMessage, defaultArgs, givenMessage, givenArgs) {
-        var message = 'Assertion failed';
-        if (givenMessage) {
-            message += ': ' + givenMessage;
-            var args = givenArgs;
-        }
-        else if (defaultMessage) {
-            message += ': ' + defaultMessage;
-            args = defaultArgs;
-        }
-        throw new AssertionError('' + message, args || []);
-    }
-    function assert(condition, message, args) {
-        if (exports.ENABLE_ASSERTS && !condition) {
-            doAssertFailure('', null, message, Array.prototype.slice.call(arguments, 2));
-        }
-        return condition;
-    }
-    exports.assert = assert;
-    ;
 });
 
 define('BracketMatch',["require", "exports", "./TokenIterator", "./Range"], function (require, exports, TokenIterator_1, Range_1) {
@@ -11530,7 +11534,7 @@ define('mode/TextMode',["require", "exports", "../Tokenizer", "./TextHighlightRu
     exports.default = TextMode;
 });
 
-define('EditSession',["require", "exports", "./lib/lang", "./config", "./lib/EventEmitterClass", "./FoldLine", "./Fold", "./Selection", "./Range", "./Document", "./BackgroundTokenizer", "./SearchHighlight", './lib/asserts', "./BracketMatch", './TokenIterator', "./mode/TextMode"], function (require, exports, lang_1, config_1, EventEmitterClass_1, FoldLine_1, Fold_1, Selection_1, Range_1, Document_1, BackgroundTokenizer_1, SearchHighlight_1, asserts_1, BracketMatch_1, TokenIterator_1, TextMode_1) {
+define('EditSession',["require", "exports", "./lib/lang", "./config", "./lib/EventEmitterClass", "./FoldLine", "./Fold", "./Selection", "./Range", "./Document", "./BackgroundTokenizer", "./SearchHighlight", "./BracketMatch", './TokenIterator', "./mode/TextMode"], function (require, exports, lang_1, config_1, EventEmitterClass_1, FoldLine_1, Fold_1, Selection_1, Range_1, Document_1, BackgroundTokenizer_1, SearchHighlight_1, BracketMatch_1, TokenIterator_1, TextMode_1) {
     var CHAR = 1, CHAR_EXT = 2, PLACEHOLDER_START = 3, PLACEHOLDER_BODY = 4, PUNCTUATION = 9, SPACE = 10, TAB = 11, TAB_SPACE = 12;
     function isFullWidth(c) {
         if (c < 0x1100)
@@ -11892,6 +11896,20 @@ define('EditSession',["require", "exports", "./lib/lang", "./config", "./lib/Eve
         EditSession.prototype.addMarker = function (range, clazz, type, renderer, inFront) {
             if (type === void 0) { type = 'line'; }
             var id = this.$markerId++;
+            if (range) {
+                if (typeof range.start.row !== 'number') {
+                    throw new TypeError();
+                }
+                if (typeof range.start.column !== 'number') {
+                    throw new TypeError();
+                }
+                if (typeof range.end.row !== 'number') {
+                    throw new TypeError();
+                }
+                if (typeof range.end.column !== 'number') {
+                    throw new TypeError();
+                }
+            }
             var marker = {
                 range: range,
                 type: type || "line",
@@ -12213,8 +12231,7 @@ define('EditSession',["require", "exports", "./lib/lang", "./config", "./lib/Eve
                 var delta = deltas[i];
                 if (delta.group === "doc") {
                     this.doc.revertDeltas(delta.deltas);
-                    lastUndoRange =
-                        this.$getUndoSelection(delta.deltas, true, lastUndoRange);
+                    lastUndoRange = this.$getUndoSelection(delta.deltas, true, lastUndoRange);
                 }
                 else {
                     delta.deltas.forEach(function (foldDelta) {
@@ -12257,7 +12274,8 @@ define('EditSession',["require", "exports", "./lib/lang", "./config", "./lib/Eve
                 return isUndo ? delta.action !== "insert" : delta.action === "insert";
             }
             var delta = deltas[0];
-            var range, point;
+            var range;
+            var point;
             var lastDeltaIsInsert = false;
             if (isInsert(delta)) {
                 range = Range_1.default.fromPoints(delta.start, delta.end);
@@ -12272,11 +12290,11 @@ define('EditSession',["require", "exports", "./lib/lang", "./config", "./lib/Eve
                 if (isInsert(delta)) {
                     point = delta.start;
                     if (range.compare(point.row, point.column) == -1) {
-                        range.setStart(point);
+                        range.setStart(point.row, point.column);
                     }
                     point = delta.end;
                     if (range.compare(point.row, point.column) == 1) {
-                        range.setEnd(point);
+                        range.setEnd(point.row, point.column);
                     }
                     lastDeltaIsInsert = true;
                 }
@@ -12295,10 +12313,10 @@ define('EditSession',["require", "exports", "./lib/lang", "./config", "./lib/Eve
                 }
                 var cmp = lastUndoRange.compareRange(range);
                 if (cmp == 1) {
-                    range.setStart(lastUndoRange.start);
+                    range.setStart(lastUndoRange.start.row, lastUndoRange.start.column);
                 }
                 else if (cmp == -1) {
-                    range.setEnd(lastUndoRange.end);
+                    range.setEnd(lastUndoRange.end.row, lastUndoRange.end.column);
                 }
             }
             return range;
@@ -12922,19 +12940,21 @@ define('EditSession',["require", "exports", "./lib/lang", "./config", "./lib/Eve
             return { row: docRow, column: docColumn };
         };
         EditSession.prototype.documentToScreenPosition = function (docRow, docColumn) {
-            var pos;
-            if (typeof docColumn === "undefined") {
-                pos = this.$clipPositionToDocument(docRow['row'], docRow['column']);
+            if (typeof docRow !== 'number') {
+                throw new TypeError("docRow must be a number");
             }
-            else {
-                asserts_1.assert(typeof docRow === 'number', "docRow must be a number");
-                asserts_1.assert(typeof docColumn === 'number', "docColumn must be a number");
-                pos = this.$clipPositionToDocument(docRow, docColumn);
+            if (typeof docColumn !== 'number') {
+                throw new TypeError("docColumn must be a number");
             }
+            var pos = this.$clipPositionToDocument(docRow, docColumn);
             docRow = pos.row;
             docColumn = pos.column;
-            asserts_1.assert(typeof docRow === 'number', "docRow must be a number");
-            asserts_1.assert(typeof docColumn === 'number', "docColumn must be a number");
+            if (typeof docRow !== 'number') {
+                throw new TypeError("docRow must be a number");
+            }
+            if (typeof docColumn !== 'number') {
+                throw new TypeError("docColumn must be a number");
+            }
             var screenRow = 0;
             var foldStartRow = null;
             var fold = null;
@@ -12943,13 +12963,14 @@ define('EditSession',["require", "exports", "./lib/lang", "./config", "./lib/Eve
                 docRow = fold.start.row;
                 docColumn = fold.start.column;
             }
-            var rowEnd, row = 0;
+            var rowEnd;
+            var row = 0;
             var rowCache = this.$docRowCache;
             var i = this.$getRowCacheIndex(rowCache, docRow);
             var l = rowCache.length;
             if (l && i >= 0) {
-                var row = rowCache[i];
-                var screenRow = this.$screenRowCache[i];
+                row = rowCache[i];
+                screenRow = this.$screenRowCache[i];
                 var doCache = docRow > rowCache[l - 1];
             }
             else {
@@ -14500,6 +14521,18 @@ define('layer/MarkerLayer',["require", "exports", './AbstractLayer', "../Range"]
                 if (!marker.range) {
                     marker.update(html, this, this.session, config);
                     continue;
+                }
+                if (typeof marker.range.start.row !== 'number') {
+                    throw new TypeError();
+                }
+                if (typeof marker.range.start.column !== 'number') {
+                    throw new TypeError();
+                }
+                if (typeof marker.range.end.row !== 'number') {
+                    throw new TypeError();
+                }
+                if (typeof marker.range.end.row !== 'number') {
+                    throw new TypeError();
                 }
                 var range = marker.range.clipRows(config.firstRow, config.lastRow);
                 if (range.isEmpty())
@@ -16735,7 +16768,7 @@ define('CompletionList',["require", "exports"], function (require, exports) {
     exports.default = CompletionList;
 });
 
-define('autocomplete/ListViewPopup',["require", "exports", "../Document", "../EditSession", "../Renderer", "../Editor", "../Range", "../lib/event", "../lib/lang", "../lib/dom"], function (require, exports, Document_1, EditSession_1, Renderer_1, Editor_1, Range_1, event_1, lang_1, dom_1) {
+define('autocomplete/ListViewPopup',["require", "exports", '../createEditSession', "../Document", "../Renderer", "../Editor", "../Range", "../lib/event", "../lib/lang", "../lib/dom"], function (require, exports, createEditSession_1, Document_1, Renderer_1, Editor_1, Range_1, event_1, lang_1, dom_1) {
     var noop = function () { };
     var ListViewPopup = (function () {
         function ListViewPopup(container) {
@@ -16755,8 +16788,8 @@ define('autocomplete/ListViewPopup',["require", "exports", "../Document", "../Ed
                 renderer.$cursorLayer.element.style.opacity = "0";
                 renderer.$maxLines = 8;
                 renderer.$keepTextAreaAtCursor = false;
-                var model = new Document_1.default("");
-                var editSession = new EditSession_1.default(model);
+                var doc = new Document_1.default("");
+                var editSession = createEditSession_1.default(doc);
                 var editor = new Editor_1.default(renderer, editSession);
                 editor.setHighlightActiveLine(false);
                 editor.setShowPrintMargin(false);
@@ -20318,13 +20351,13 @@ define('mode/createTypeScriptMode',["require", "exports", './TypeScriptMode'], f
     exports.default = createTypeScriptMode;
 });
 
-define('edit',["require", "exports", './createDocument', './createEditor', './createEditSession', './createRenderer', './lib/dom'], function (require, exports, createDocument_1, createEditor_1, createEditSession_1, createRenderer_1, dom_1) {
+define('edit',["require", "exports", './createDocument', './createEditor', './createEditSession', './createRenderer', './createUndoManager'], function (require, exports, createDocument_1, createEditor_1, createEditSession_1, createRenderer_1, createUndoManager_1) {
     function edit(container) {
         var text = "";
         if (container && /input|textarea/i.test(container.tagName)) {
             var oldNode = container;
-            text = oldNode['value'];
-            container = dom_1.createElement("pre");
+            text = oldNode.value;
+            container = container.ownerDocument.createElement('pre');
             oldNode.parentNode.replaceChild(container, oldNode);
         }
         else if (container) {
@@ -20335,6 +20368,8 @@ define('edit',["require", "exports", './createDocument', './createEditor', './cr
         var session = createEditSession_1.default(doc);
         var renderer = createRenderer_1.default(container);
         var editor = createEditor_1.default(renderer, session);
+        var undoManager = createUndoManager_1.default();
+        editor.getSession().setUndoManager(undoManager);
         return editor;
     }
     Object.defineProperty(exports, "__esModule", { value: true });
