@@ -56,7 +56,7 @@ angular.module('app').factory('templates', [
 
         var LIBS_TEMPLATE_MINIMAL = "";
 
-        var HTML_TEMPLATE_CALCULATION = "" +
+        const HTML_TEMPLATE_CALCULATION = "" +
             "<!doctype html>\n" +
             "<html>\n" +
             "  <head>\n" +
@@ -70,25 +70,43 @@ angular.module('app').factory('templates', [
             "  </body>\n" +
             "</html>\n";
 
-        var CODE_TEMPLATE_CALCULATION = [
+        const CODE_TEMPLATE_CALCULATION = [
+            "/**",
+            " * Executed when the DOM is ready...",
+            " */",
+            "function main() {",
+            "  const g = -9.81 * e3 * newton / kilogram",
+            "  const m = 70 * kilogram",
+            "  const F = m * g",
+            "",
+            "  printvar('g', g)",
+            "  printvar('g.direction()', g.direction())",
+//          "  printvar('g.magnitude()', g.magnitude())",
+            "  printvar('m', m)",
+            "  printvar('F = m * g', F.toFixed(2))",
+            "}",
+            ""
+        ].join('\n');
+
+        const LIBS_TEMPLATE_CALCULATION = [
             "// Create shortcuts for some values.",
-            "var e1 = EIGHT.Euclidean3.e1",
-            "var e2 = EIGHT.Euclidean3.e2",
-            "var e3 = EIGHT.Euclidean3.e3",
-            "var meter    = EIGHT.Euclidean3.meter",
-            "var kilogram = EIGHT.Euclidean3.kilogram",
-            "var second   = EIGHT.Euclidean3.second",
-            "var coulomb  = EIGHT.Euclidean3.coulomb",
-            "var ampere   = EIGHT.Euclidean3.ampere",
-            "var kelvin   = EIGHT.Euclidean3.kelvin",
-            "var mole     = EIGHT.Euclidean3.mole",
-            "var candela  = EIGHT.Euclidean3.candela",
-            "var newton   = meter * kilogram / (second * second)",
+            "const e1 = EIGHT.Euclidean3.e1",
+            "const e2 = EIGHT.Euclidean3.e2",
+            "const e3 = EIGHT.Euclidean3.e3",
+            "const meter    = EIGHT.Euclidean3.meter",
+            "const kilogram = EIGHT.Euclidean3.kilogram",
+            "const second   = EIGHT.Euclidean3.second",
+            "const coulomb  = EIGHT.Euclidean3.coulomb",
+            "const ampere   = EIGHT.Euclidean3.ampere",
+            "const kelvin   = EIGHT.Euclidean3.kelvin",
+            "const mole     = EIGHT.Euclidean3.mole",
+            "const candela  = EIGHT.Euclidean3.candela",
+            "const newton   = meter * kilogram / (second * second)",
             "",
             "// Wait for the DOM to be loaded.",
             "DomReady.ready(function() {",
             "  try {",
-            "    calculate();",
+            "    main();",
             "  }",
             "  catch(e) {",
             "    function colorize(arg: any, color: string) {",
@@ -99,23 +117,10 @@ angular.module('app').factory('templates', [
             "});",
             "",
             "/**",
-            " * Performs the calculation.",
-            " */",
-            "function calculate() {",
-            "  var a = -9.81 * e3 * newton / kilogram;",
-            "  var m = 70 * kilogram;",
-            "  var F = m * a;",
-            "",
-            "  printvar('a', a);",
-            "  printvar('m', m);",
-            "  printvar('F = m * a', F.toFixed(2));",
-            "}",
-            "",
-            "/**",
             " * Print the HTML string without a line ending.",
             " */",
             "function print(html: string): void {",
-            "  var element = document.getElementById('info');",
+            "  const element = document.getElementById('info');",
             "  element.innerHTML = element.innerHTML + html;",
             "}",
             "",
@@ -135,16 +140,19 @@ angular.module('app').factory('templates', [
             ""
         ].join('\n');
 
-        var LIBS_TEMPLATE_CALCULATION = "";
-
-        var LESS_TEMPLATE_CALCULATION = "" +
-            "#info {\n" +
-            "  position: absolute;\n" +
-            "  left: 60px;\n" +
-            "  top: 60px;\n" +
-            "  font-size: 26px;\n" +
-            "  color: #F9EE98;\n" +
-            "}\n";
+        const LESS_TEMPLATE_CALCULATION = [
+            "body {",
+            "  background-color: #000000;",
+            "}",
+            "",
+            "#info {",
+            "  position: absolute;",
+            "  left: 20px;",
+            "  top: 20px;",
+            "  font-size: 26px;",
+            "  color: #00FF00;",
+            "}"
+        ].join('\n');
 
         var HTML_TEMPLATE_CANVAS = "" +
             "<!doctype html>\n" +
