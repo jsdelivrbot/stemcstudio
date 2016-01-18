@@ -1496,6 +1496,44 @@ define('lib/dom',["require", "exports"], function (require, exports) {
     exports.getParentWindow = getParentWindow;
 });
 
+define('lib/lang/createDelayedCall',["require", "exports"], function (require, exports) {
+    function createDelayedCall(fcn, defaultTimeout) {
+        var timer = null;
+        var callback = function () {
+            timer = null;
+            fcn();
+        };
+        var _self = function (timeout) {
+            if (timer == null) {
+                timer = window.setTimeout(callback, timeout || defaultTimeout);
+            }
+        };
+        _self.delay = function (timeout) {
+            if (timer) {
+                window.clearTimeout(timer);
+            }
+            timer = window.setTimeout(callback, timeout || defaultTimeout);
+        };
+        _self.schedule = _self;
+        _self.call = function () {
+            this.cancel();
+            fcn();
+        };
+        _self.cancel = function () {
+            if (timer) {
+                window.clearTimeout(timer);
+            }
+            timer = null;
+        };
+        _self.isPending = function () {
+            return !!timer;
+        };
+        return _self;
+    }
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = createDelayedCall;
+});
+
 define('lib/lang',["require", "exports"], function (require, exports) {
     function last(a) {
         return a[a.length - 1];
@@ -1635,36 +1673,6 @@ define('lib/lang',["require", "exports"], function (require, exports) {
         return deferred;
     }
     exports.deferredCall = deferredCall;
-    ;
-    function delayedCall(fcn, defaultTimeout) {
-        var timer = null;
-        var callback = function () {
-            timer = null;
-            fcn();
-        };
-        var _self = function (timeout) {
-            if (timer == null)
-                timer = setTimeout(callback, timeout || defaultTimeout);
-        };
-        _self.delay = function (timeout) {
-            timer && clearTimeout(timer);
-            timer = setTimeout(callback, timeout || defaultTimeout);
-        };
-        _self.schedule = _self;
-        _self.call = function () {
-            this.cancel();
-            fcn();
-        };
-        _self.cancel = function () {
-            timer && clearTimeout(timer);
-            timer = null;
-        };
-        _self.isPending = function () {
-            return timer;
-        };
-        return _self;
-    }
-    exports.delayedCall = delayedCall;
     ;
 });
 
@@ -2333,7 +2341,7 @@ define('keyboard/KeyBinding',["require", "exports", "../lib/keys", "../lib/event
     exports.default = KeyBinding;
 });
 
-define('keyboard/TextInput',["require", "exports", "../lib/event", "../lib/useragent", "../lib/dom", "../lib/lang", '../editor_protocol', '../editor_protocol'], function (require, exports, event_1, useragent_1, dom_1, lang_1, editor_protocol_1, editor_protocol_2) {
+define('keyboard/TextInput',["require", "exports", "../lib/event", "../lib/useragent", "../lib/dom", "../lib/lang/createDelayedCall", '../editor_protocol', '../editor_protocol'], function (require, exports, event_1, useragent_1, dom_1, createDelayedCall_1, editor_protocol_1, editor_protocol_2) {
     "use strict";
     var BROKEN_SETDATA = useragent_1.isChrome < 18;
     var USE_IE_MIME_TYPE = useragent_1.isIE;
@@ -2372,10 +2380,10 @@ define('keyboard/TextInput',["require", "exports", "../lib/event", "../lib/usera
                 editor.onFocus();
                 _this.resetSelection();
             });
-            var syncSelection = lang_1.delayedCall(function () {
+            var syncSelection = createDelayedCall_1.default(function () {
                 _this._isFocused && _this.resetSelection(isSelectionEmpty);
             });
-            this.syncValue = lang_1.delayedCall(function () {
+            this.syncValue = createDelayedCall_1.default(function () {
                 if (!_this.inComposition) {
                     _this.text.value = PLACEHOLDER;
                     _this._isFocused && _this.resetSelection();
@@ -2428,7 +2436,7 @@ define('keyboard/TextInput',["require", "exports", "../lib/event", "../lib/usera
                     _this.resetValue();
                     inPropertyChange = false;
                 };
-                var syncProperty = lang_1.delayedCall(onPropertyChange);
+                var syncProperty = createDelayedCall_1.default(onPropertyChange);
                 event_1.addListener(this.text, "propertychange", onPropertyChange);
                 var keytable = { 13: 1, 27: 1 };
                 event_1.addListener(this.text, "keyup", function (e) {
@@ -2456,8 +2464,9 @@ define('keyboard/TextInput',["require", "exports", "../lib/event", "../lib/usera
                 }
             };
             var onInput = function (e) {
-                if (_this.inComposition)
+                if (_this.inComposition) {
                     return;
+                }
                 var data = _this.text.value;
                 _this.sendText(data);
                 _this.resetValue();
@@ -2605,7 +2614,7 @@ define('keyboard/TextInput',["require", "exports", "../lib/event", "../lib/usera
                     editor.selection.setRange(c.range);
                 }
             };
-            var syncComposition = lang_1.delayedCall(onCompositionUpdate, 50);
+            var syncComposition = createDelayedCall_1.default(onCompositionUpdate, 50);
             event_1.addListener(this.text, "compositionstart", onCompositionStart);
             if (useragent_1.isGecko) {
                 event_1.addListener(this.text, "text", function () { syncComposition.schedule(); });
@@ -4433,6 +4442,9 @@ define('Selection',["require", "exports", "./lib/lang", "./lib/EventEmitterClass
             }
         };
         ;
+        Selection.prototype.getAllRanges = function () {
+            return this.rangeCount ? this.rangeList.ranges.concat() : [this.getRange()];
+        };
         Selection.prototype.splitIntoLines = function () {
             var _this = this;
             if (this.rangeCount > 1) {
@@ -5397,13 +5409,13 @@ define('Tokenizer',["require", "exports"], function (require, exports) {
     exports.default = Tokenizer;
 });
 
-define('TabstopManager',["require", "exports", "./comparePoints", "./lib/lang", "./keyboard/KeyboardHandler", "./Range"], function (require, exports, comparePoints_1, lang_1, KeyboardHandler_1, Range_1) {
+define('TabstopManager',["require", "exports", "./comparePoints", "./lib/lang/createDelayedCall", "./keyboard/KeyboardHandler", "./Range"], function (require, exports, comparePoints_1, createDelayedCall_1, KeyboardHandler_1, Range_1) {
     var TabstopManager = (function () {
         function TabstopManager(editor) {
             var _this = this;
             this.keyboardHandler = new KeyboardHandler_1.default();
             this.$onChange = this.onChange.bind(this);
-            this.$onChangeSelection = lang_1.delayedCall(this.onChangeSelection.bind(this)).schedule;
+            this.$onChangeSelection = createDelayedCall_1.default(this.onChangeSelection.bind(this)).schedule;
             this.$onChangeSession = this.onChangeSession.bind(this);
             this.$onAfterExec = this.onAfterExec.bind(this);
             this.attach(editor);
@@ -7533,7 +7545,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-define('Editor',["require", "exports", "./lib/oop", "./lib/dom", "./lib/lang", "./lib/useragent", "./keyboard/KeyboardHandler", "./keyboard/KeyBinding", "./keyboard/TextInput", "./Search", "./Range", "./lib/EventEmitterClass", "./commands/CommandManager", "./commands/default_commands", "./config", "./TokenIterator", './editor_protocol', './editor_protocol', './editor_protocol', './editor_protocol', './Selection', './SnippetManager', "./lib/event", './touch/touch', "./Tooltip"], function (require, exports, oop_1, dom_1, lang_1, useragent_1, KeyboardHandler_1, KeyBinding_1, TextInput_1, Search_1, Range_1, EventEmitterClass_1, CommandManager_1, default_commands_1, config_1, TokenIterator_1, editor_protocol_1, editor_protocol_2, editor_protocol_3, editor_protocol_4, Selection_1, SnippetManager_1, event_1, touch_1, Tooltip_1) {
+define('Editor',["require", "exports", "./lib/oop", "./lib/dom", './lib/lang/createDelayedCall', "./lib/lang", "./lib/useragent", "./keyboard/KeyboardHandler", "./keyboard/KeyBinding", "./keyboard/TextInput", "./Search", "./Range", "./lib/EventEmitterClass", "./commands/CommandManager", "./commands/default_commands", "./config", "./TokenIterator", './editor_protocol', './editor_protocol', './editor_protocol', './editor_protocol', './Selection', './SnippetManager', "./lib/event", './touch/touch', "./Tooltip"], function (require, exports, oop_1, dom_1, createDelayedCall_1, lang_1, useragent_1, KeyboardHandler_1, KeyBinding_1, TextInput_1, Search_1, Range_1, EventEmitterClass_1, CommandManager_1, default_commands_1, config_1, TokenIterator_1, editor_protocol_1, editor_protocol_2, editor_protocol_3, editor_protocol_4, Selection_1, SnippetManager_1, event_1, touch_1, Tooltip_1) {
     "use strict";
     var search = new Search_1.default();
     function find(session, needle, dir) {
@@ -7571,7 +7583,7 @@ define('Editor',["require", "exports", "./lib/oop", "./lib/dom", "./lib/lang", "
             this.$historyTracker = this.$historyTracker.bind(this);
             this.commands.on("exec", this.$historyTracker);
             this.$initOperationListeners();
-            this._$emitInputEvent = lang_1.delayedCall(function () {
+            this._$emitInputEvent = createDelayedCall_1.default(function () {
                 _this._signal("input", {});
                 _this.session.bgTokenizer && _this.session.bgTokenizer.scheduleStart();
             });
@@ -7994,7 +8006,7 @@ define('Editor',["require", "exports", "./lib/oop", "./lib/dom", "./lib/lang", "
                 }
                 _this.endOperation(e);
             }, true);
-            this.$opResetTimer = lang_1.delayedCall(this.endOperation.bind(this));
+            this.$opResetTimer = createDelayedCall_1.default(this.endOperation.bind(this));
             this.eventBus.on("change", function () {
                 _this.curOp || _this.startOperation();
                 _this.curOp.docChanged = true;
@@ -10749,7 +10761,7 @@ define('SearchHighlight',["require", "exports", "./lib/lang", "./Range"], functi
                 return this._range;
             },
             set: function (range) {
-                throw new Error();
+                this._range = range;
             },
             enumerable: true,
             configurable: true
@@ -11534,7 +11546,7 @@ define('mode/TextMode',["require", "exports", "../Tokenizer", "./TextHighlightRu
     exports.default = TextMode;
 });
 
-define('EditSession',["require", "exports", "./lib/lang", "./config", "./lib/EventEmitterClass", "./FoldLine", "./Fold", "./Selection", "./Range", "./Document", "./BackgroundTokenizer", "./SearchHighlight", "./BracketMatch", './TokenIterator', "./mode/TextMode"], function (require, exports, lang_1, config_1, EventEmitterClass_1, FoldLine_1, Fold_1, Selection_1, Range_1, Document_1, BackgroundTokenizer_1, SearchHighlight_1, BracketMatch_1, TokenIterator_1, TextMode_1) {
+define('EditSession',["require", "exports", './lib/lang/createDelayedCall', "./lib/lang", "./config", "./lib/EventEmitterClass", "./FoldLine", "./Fold", "./Selection", "./Range", "./Document", "./BackgroundTokenizer", "./SearchHighlight", "./BracketMatch", './TokenIterator', "./mode/TextMode"], function (require, exports, createDelayedCall_1, lang_1, config_1, EventEmitterClass_1, FoldLine_1, Fold_1, Selection_1, Range_1, Document_1, BackgroundTokenizer_1, SearchHighlight_1, BracketMatch_1, TokenIterator_1, TextMode_1) {
     var CHAR = 1, CHAR_EXT = 2, PLACEHOLDER_START = 3, PLACEHOLDER_BODY = 4, PUNCTUATION = 9, SPACE = 10, TAB = 11, TAB_SPACE = 12;
     function isFullWidth(c) {
         if (c < 0x1100)
@@ -11811,7 +11823,7 @@ define('EditSession',["require", "exports", "./lib/lang", "./config", "./lib/Eve
                     self.mergeUndoDeltas = false;
                     self.$deltas = [];
                 };
-                this.$informUndoManager = lang_1.delayedCall(this.$syncInformUndoManager);
+                this.$informUndoManager = createDelayedCall_1.default(this.$syncInformUndoManager);
             }
         };
         EditSession.prototype.markUndoGroup = function () {
@@ -16768,6 +16780,43 @@ define('CompletionList',["require", "exports"], function (require, exports) {
     exports.default = CompletionList;
 });
 
+define('autocomplete/retrievePrecedingIdentifier',["require", "exports"], function (require, exports) {
+    'use strict';
+    var ID_REGEX = /[a-zA-Z_0-9\$\-\u00A2-\uFFFF]/;
+    function retrievePrecedingIdentifier(text, pos, regex) {
+        regex = regex || ID_REGEX;
+        var buf = [];
+        for (var i = pos - 1; i >= 0; i--) {
+            if (regex.test(text[i]))
+                buf.push(text[i]);
+            else
+                break;
+        }
+        return buf.reverse().join("");
+    }
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = retrievePrecedingIdentifier;
+});
+
+define('autocomplete/getCompletionPrefix',["require", "exports", './retrievePrecedingIdentifier'], function (require, exports, retrievePrecedingIdentifier_1) {
+    function getCompletionPrefix(editor) {
+        var pos = editor.getCursorPosition();
+        var line = editor.session.getLine(pos.row);
+        var prefix;
+        editor.completers.forEach(function (completer) {
+            if (completer.identifierRegexps) {
+                completer.identifierRegexps.forEach(function (identifierRegex) {
+                    if (!prefix && identifierRegex)
+                        prefix = retrievePrecedingIdentifier_1.default(line, pos.column, identifierRegex);
+                });
+            }
+        });
+        return prefix || retrievePrecedingIdentifier_1.default(line, pos.column);
+    }
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = getCompletionPrefix;
+});
+
 define('autocomplete/ListViewPopup',["require", "exports", '../createEditSession', "../Document", "../Renderer", "../Editor", "../Range", "../lib/event", "../lib/lang", "../lib/dom"], function (require, exports, createEditSession_1, Document_1, Renderer_1, Editor_1, Range_1, event_1, lang_1, dom_1) {
     var noop = function () { };
     var ListViewPopup = (function () {
@@ -16828,7 +16877,7 @@ define('autocomplete/ListViewPopup',["require", "exports", '../createEditSession
                 _this.lastMouseEvent = e;
                 _this.lastMouseEventScrollTop = _this.editor.renderer.scrollTop;
                 var row = _this.lastMouseEvent.getDocumentPosition().row;
-                if (_this.hoverMarker.start.row != row) {
+                if (_this.hoverMarker.start.row !== row) {
                     if (!_this.hoverMarkerId) {
                         _this.setRow(row);
                     }
@@ -16836,7 +16885,7 @@ define('autocomplete/ListViewPopup',["require", "exports", '../createEditSession
                 }
             });
             this.editor.renderer.on("beforeRender", function () {
-                if (_this.lastMouseEvent && _this.hoverMarker.start.row != -1) {
+                if (_this.lastMouseEvent && _this.hoverMarker.start.row !== -1) {
                     _this.lastMouseEvent.$pos = null;
                     var row = _this.lastMouseEvent.getDocumentPosition().row;
                     if (!_this.hoverMarkerId) {
@@ -16849,11 +16898,11 @@ define('autocomplete/ListViewPopup',["require", "exports", '../createEditSession
                 var row = _this.getRow();
                 var t = _this.editor.renderer.$textLayer;
                 var selected = t.element.childNodes[row - t.config.firstRow];
-                if (selected == t['selectedNode'])
+                if (selected === t.selectedNode)
                     return;
-                if (t['selectedNode'])
-                    dom_1.removeCssClass(t['selectedNode'], "ace_selected");
-                t['selectedNode'] = selected;
+                if (t.selectedNode)
+                    dom_1.removeCssClass(t.selectedNode, "ace_selected");
+                t.selectedNode = selected;
                 if (selected)
                     dom_1.addCssClass(selected, "ace_selected");
             });
@@ -16875,7 +16924,7 @@ define('autocomplete/ListViewPopup',["require", "exports", '../createEditSession
                 if (!data)
                     return tokens;
                 if (!data.caption) {
-                    data.caption = data.value || data['name'];
+                    data.caption = data.value || data.name;
                 }
                 var last = -1;
                 var flag;
@@ -16884,7 +16933,7 @@ define('autocomplete/ListViewPopup',["require", "exports", '../createEditSession
                     c = data.caption[cIndex];
                     flag = data.matchMask & (1 << cIndex) ? 1 : 0;
                     if (last !== flag) {
-                        tokens.push({ type: data['className'] || "" + (flag ? "completion-highlight" : ""), value: c });
+                        tokens.push({ type: data.className || "" + (flag ? "completion-highlight" : ""), value: c });
                         last = flag;
                     }
                     else {
@@ -16987,7 +17036,7 @@ define('autocomplete/ListViewPopup',["require", "exports", '../createEditSession
         };
         ListViewPopup.prototype.setRow = function (row) {
             row = Math.max(-1, Math.min(this.data.length, row));
-            if (this.selectionMarker.start.row != row) {
+            if (this.selectionMarker.start.row !== row) {
                 this.editor.selection.clearSelection();
                 this.selectionMarker.start.row = this.selectionMarker.end.row = row || 0;
                 this.editor.getSession()._emit("changeBackMarker");
@@ -17025,65 +17074,21 @@ define('autocomplete/ListViewPopup',["require", "exports", '../createEditSession
     exports.default = ListViewPopup;
 });
 
-define('autocomplete/util',["require", "exports"], function (require, exports) {
-    function parForEach(array, fn, callback) {
-        var completed = 0;
-        var arLength = array.length;
-        if (arLength === 0)
-            callback();
-        for (var i = 0; i < arLength; i++) {
-            fn(array[i], function (result, err) {
-                completed++;
-                if (completed === arLength)
-                    callback(result, err);
-            });
-        }
-    }
-    exports.parForEach = parForEach;
-    var ID_REGEX = /[a-zA-Z_0-9\$\-\u00A2-\uFFFF]/;
-    function retrievePrecedingIdentifier(text, pos, regex) {
-        regex = regex || ID_REGEX;
-        var buf = [];
-        for (var i = pos - 1; i >= 0; i--) {
-            if (regex.test(text[i]))
-                buf.push(text[i]);
-            else
-                break;
-        }
-        return buf.reverse().join("");
-    }
-    exports.retrievePrecedingIdentifier = retrievePrecedingIdentifier;
-    function retrieveFollowingIdentifier(text, pos, regex) {
-        regex = regex || ID_REGEX;
-        var buf = [];
-        for (var i = pos; i < text.length; i++) {
-            if (regex.test(text[i]))
-                buf.push(text[i]);
-            else
-                break;
-        }
-        return buf;
-    }
-    exports.retrieveFollowingIdentifier = retrieveFollowingIdentifier;
-});
-
-define('autocomplete/CompletionManager',["require", "exports", '../Anchor', '../CompletionList', "../lib/lang", '../keyboard/KeyboardHandler', './ListViewPopup', '../Range', "./util", '../editor_protocol'], function (require, exports, Anchor_1, CompletionList_1, lang_1, KeyboardHandler_1, ListViewPopup_1, Range_1, util_1, editor_protocol_1) {
-    var DOWN = function (editor) { editor.completionManager.down(); };
-    var DETACH = function (editor) { editor.completionManager.detach(); };
+define('autocomplete/CompletionManager',["require", "exports", '../Anchor', '../CompletionList', '../lib/lang/createDelayedCall', './getCompletionPrefix', '../keyboard/KeyboardHandler', './ListViewPopup', '../Range', '../editor_protocol'], function (require, exports, Anchor_1, CompletionList_1, createDelayedCall_1, getCompletionPrefix_1, KeyboardHandler_1, ListViewPopup_1, Range_1, editor_protocol_1) {
     var CompletionManager = (function () {
-        function CompletionManager(editor) {
+        function CompletionManager() {
             var _this = this;
             this.keyboardHandler = new KeyboardHandler_1.default();
             this.gatherCompletionsId = 0;
+            this.autoInsert = false;
             this.autoSelect = true;
-            this.autoInsert = true;
-            this.editor = editor;
+            this.exactMatch = false;
+            var DETACH = function (editor) { _this.detach(); };
+            var DOWN = function (editor) { _this.down(); };
             this.commands = {
                 "Up": function (editor) { _this.goTo("up"); },
-                "Down": DOWN,
                 "Ctrl-Up|Ctrl-Home": function (editor) { _this.goTo("start"); },
                 "Ctrl-Down|Ctrl-End": function (editor) { _this.goTo("end"); },
-                "Esc": DETACH,
                 "Space": function (editor) { _this.detach(); editor.insert(" ", false); },
                 "Return": function (editor) { return _this.insertMatch(); },
                 "Shift-Return": function (editor) { _this.insertMatch(true); },
@@ -17099,13 +17104,59 @@ define('autocomplete/CompletionManager',["require", "exports", '../Anchor', '../
                 "PageDown": function (editor) { _this.goTo('pageDown'); }
             };
             this.keyboardHandler.bindKey("Down", DOWN);
+            this.keyboardHandler.bindKey("Esc", DETACH);
             this.keyboardHandler.bindKeys(this.commands);
+            this.blurListener = function () {
+            };
             this.blurListener = this.blurListener.bind(this);
-            this.changeListener = this.changeListener.bind(this);
+            this.editorChangeSelectionListener = this.editorChangeSelectionListener.bind(this);
             this.mousedownListener = this.mousedownListener.bind(this);
             this.mousewheelListener = this.mousewheelListener.bind(this);
-            this.changeTimer = lang_1.delayedCall(function () { this.updateCompletions(true); }.bind(this));
+            this.changeTimer = createDelayedCall_1.default(function () {
+                _this.updateCompletions(true);
+            });
+            this.tooltipTimer = createDelayedCall_1.default(function () {
+                _this.updateDocTooltip();
+            }, 50);
         }
+        CompletionManager.prototype.attach = function (editor) {
+            if (this.editor) {
+                this.detach();
+            }
+            this.activated = true;
+            this.editor = editor;
+            if (editor.completionManager !== this) {
+                if (editor.completionManager) {
+                    editor.completionManager.detach();
+                }
+                editor.completionManager = this;
+            }
+            editor.keyBinding.addKeyboardHandler(this.keyboardHandler);
+            editor.on("changeSelection", this.editorChangeSelectionListener);
+            editor.on("blur", this.blurListener);
+            editor.on("mousedown", this.mousedownListener);
+            editor.on("mousewheel", this.mousewheelListener);
+            this.updateCompletions(false);
+        };
+        CompletionManager.prototype.detach = function () {
+            this.editor.keyBinding.removeKeyboardHandler(this.keyboardHandler);
+            this.editor.off("changeSelection", this.editorChangeSelectionListener);
+            this.editor.off("blur", this.blurListener);
+            this.editor.off("mousedown", this.mousedownListener);
+            this.editor.off("mousewheel", this.mousewheelListener);
+            this.changeTimer.cancel();
+            this.hideDocTooltip();
+            this.gatherCompletionsId += 1;
+            if (this.popup && this.popup.isOpen) {
+                this.popup.hide();
+            }
+            if (this.base) {
+                this.base.detach();
+                this.base = null;
+            }
+            this.activated = false;
+            this.completions = null;
+        };
         CompletionManager.prototype.insertMatch = function (data) {
             if (!data) {
                 data = this.popup.getData(this.popup.getRow());
@@ -17118,7 +17169,7 @@ define('autocomplete/CompletionManager',["require", "exports", '../Anchor', '../
             }
             else {
                 if (this.completions.filterText) {
-                    var ranges = this.editor.selection.rangeList.ranges;
+                    var ranges = this.editor.selection.getAllRanges();
                     for (var i = 0, iLength = ranges.length; i < iLength; i++) {
                         var range = ranges[i];
                         range.start.column -= this.completions.filterText.length;
@@ -17133,22 +17184,6 @@ define('autocomplete/CompletionManager',["require", "exports", '../Anchor', '../
                 }
             }
             this.detach();
-        };
-        CompletionManager.prototype.detach = function () {
-            this.editor.keyBinding.removeKeyboardHandler(this.keyboardHandler);
-            this.editor.off("changeSelection", this.changeListener);
-            this.editor.off("blur", this.blurListener);
-            this.editor.off("mousedown", this.mousedownListener);
-            this.editor.off("mousewheel", this.mousewheelListener);
-            this.changeTimer.cancel();
-            if (this.popup && this.popup.isOpen) {
-                this.gatherCompletionsId += 1;
-                this.popup.hide();
-            }
-            if (this.base)
-                this.base.detach();
-            this.activated = false;
-            this.completions = this.base = null;
         };
         CompletionManager.prototype.goTo = function (where) {
             var row = this.popup.getRow();
@@ -17177,8 +17212,10 @@ define('autocomplete/CompletionManager',["require", "exports", '../Anchor', '../
             row = row >= max ? -1 : row + 1;
             this.popup.setRow(row);
         };
-        CompletionManager.prototype.getCompletions = function (editor, session, pos, prefix, callback) {
+        CompletionManager.prototype.gatherCompletions = function (editor, pos, prefix, callback) {
+            var session = editor.getSession();
             this.base = new Anchor_1.default(session.doc, pos.row, pos.column - prefix.length);
+            this.base.insertRight = true;
             var matches = [];
             var total = editor.completers.length;
             editor.completers.forEach(function (completer, index) {
@@ -17202,30 +17239,28 @@ define('autocomplete/CompletionManager',["require", "exports", '../Anchor', '../
         };
         CompletionManager.prototype.updateCompletions = function (keepPopupPosition) {
             var _this = this;
-            var pos = this.editor.getCursorPosition();
-            var prefix;
+            var editor = this.editor;
+            var pos = editor.getCursorPosition();
             if (keepPopupPosition && this.base && this.completions) {
                 var range = new Range_1.default(this.base.row, this.base.column, pos.row, pos.column);
-                prefix = this.editor.getSession().getTextRange(range);
-                if (prefix === this.completions.filterText)
+                var prefix = editor.getSession().getTextRange(range);
+                if (prefix === this.completions.filterText) {
                     return;
+                }
                 this.completions.setFilter(prefix);
                 if (!this.completions.filtered.length)
                     return this.detach();
                 if (this.completions.filtered.length === 1 && this.completions.filtered[0].value === prefix && !this.completions.filtered[0].snippet) {
                     return this.detach();
                 }
-                this.openPopup(this.editor, prefix, keepPopupPosition);
+                this.openPopup(editor, prefix, keepPopupPosition);
             }
             else {
                 var _id = this.gatherCompletionsId;
-                var editor = this.editor;
-                var session = editor.getSession();
-                var line = session.getLine(pos.row);
-                prefix = util_1.retrievePrecedingIdentifier(line, pos.column);
-                this.getCompletions(this.editor, session, this.editor.getCursorPosition(), prefix, function (err, results) {
+                var prefix = getCompletionPrefix_1.default(editor);
+                this.gatherCompletions(editor, pos, prefix, function (err, results) {
                     if (err) {
-                        console.warn("updateCompletions => " + err);
+                        console.warn("gatherCompletions => " + err);
                     }
                     else {
                         var detachIfFinished = function () {
@@ -17233,23 +17268,24 @@ define('autocomplete/CompletionManager',["require", "exports", '../Anchor', '../
                                 return;
                             return _this.detach();
                         };
-                        var prefix = results.prefix;
+                        var prefix_1 = results.prefix;
                         var matches = results && results.matches;
                         if (!matches || !matches.length)
                             return detachIfFinished();
-                        if (prefix.indexOf(results.prefix) !== 0 || _id !== _this.gatherCompletionsId)
+                        if (prefix_1.indexOf(results.prefix) !== 0 || _id !== _this.gatherCompletionsId) {
                             return;
+                        }
                         _this.completions = new CompletionList_1.default(matches);
-                        _this.completions.setFilter(prefix);
+                        _this.completions.setFilter(prefix_1);
                         var filtered = _this.completions.filtered;
                         if (!filtered.length)
                             return detachIfFinished();
-                        if (filtered.length === 1 && filtered[0].value === prefix && !filtered[0].snippet)
+                        if (filtered.length === 1 && filtered[0].value === prefix_1 && !filtered[0].snippet)
                             return detachIfFinished();
                         if (_this.autoInsert && filtered.length === 1) {
                             return _this.insertMatch(filtered[0]);
                         }
-                        _this.openPopup(_this.editor, prefix, keepPopupPosition);
+                        _this.openPopup(editor, prefix_1, keepPopupPosition);
                     }
                 });
             }
@@ -17258,38 +17294,53 @@ define('autocomplete/CompletionManager',["require", "exports", '../Anchor', '../
             var _this = this;
             if (!this.popup) {
                 this.popup = new ListViewPopup_1.default(document.body || document.documentElement);
-                this.popup.on("click", function (e) { _this.insertMatch(); e.stop(); });
+                this.popup.on("click", function (e) {
+                    _this.insertMatch();
+                    e.stop();
+                });
                 this.popup.focus = this.editor.focus.bind(this.editor);
+                this.popup.on('show', this.tooltipTimer.bind(null, null));
+                this.popup.on('select', this.tooltipTimer.bind(null, null));
+                this.popup.on('changeHoverMarker', this.tooltipTimer.bind(null, null));
             }
             this.popup.setData(this.completions.filtered);
             this.popup.setRow(this.autoSelect ? 0 : -1);
+            var renderer = editor.renderer;
             if (!keepPopupPosition) {
                 this.popup.setThemeCss(editor.getTheme(), void 0);
                 this.popup.setThemeDark(true);
                 this.popup.setFontSize(editor.getFontSize());
-                var lineHeight = editor.renderer.layerConfig.lineHeight;
-                var pos = editor.renderer.getPixelPosition(this.base, true);
+                var lineHeight = renderer.layerConfig.lineHeight;
+                var pos = renderer.getPixelPosition(this.base, true);
                 pos.left -= this.popup.getTextLeftOffset();
                 var rect = editor.container.getBoundingClientRect();
-                pos.top += rect.top - editor.renderer.layerConfig.offset;
-                pos.left += rect.left - editor.renderer.scrollLeft;
-                pos.left += editor.renderer.$gutterLayer.gutterWidth;
+                pos.top += rect.top - renderer.layerConfig.offset;
+                pos.left += rect.left - renderer.scrollLeft;
+                pos.left += renderer.gutterWidth;
                 this.popup.show(pos, lineHeight);
             }
+            else if (keepPopupPosition && !prefix) {
+                this.detach();
+            }
         };
-        CompletionManager.prototype.changeListener = function (e) {
+        CompletionManager.prototype.editorChangeSelectionListener = function (e) {
             var cursor = this.editor.selection.lead;
             if (cursor.row !== this.base.row || cursor.column < this.base.column) {
                 this.detach();
             }
-            if (this.activated)
+            if (this.activated) {
                 this.changeTimer.schedule();
-            else
+            }
+            else {
                 this.detach();
+            }
         };
-        CompletionManager.prototype.blurListener = function () {
+        CompletionManager.prototype.blurListener = function (e) {
             var el = document.activeElement;
-            if (el !== this.editor.textInput.getElement() && el.parentNode !== this.popup.container) {
+            var textArea = this.editor.textInput.getElement();
+            var fromTooltip = e.relatedTarget && e.relatedTarget === this.tooltipNode;
+            var container = this.popup && this.popup.container;
+            if (el !== textArea && el.parentNode !== container && !fromTooltip && el !== this.tooltipNode && e.relatedTarget !== textArea) {
                 this.detach();
             }
         };
@@ -17299,27 +17350,77 @@ define('autocomplete/CompletionManager',["require", "exports", '../Anchor', '../
         CompletionManager.prototype.mousewheelListener = function (e) {
             this.detach();
         };
-        CompletionManager.prototype.showPopup = function (editor) {
-            if (this.editor) {
-                this.detach();
-            }
-            this.activated = true;
-            this.editor = editor;
-            if (editor.completionManager !== this) {
-                if (editor.completionManager) {
-                    editor.completionManager.detach();
-                }
-                editor.completionManager = this;
-            }
-            editor.keyBinding.addKeyboardHandler(this.keyboardHandler);
-            editor.on("changeSelection", this.changeListener);
-            editor.on("blur", this.blurListener);
-            editor.on("mousedown", this.mousedownListener);
-            editor.on("mousewheel", this.mousewheelListener);
-            this.updateCompletions();
-        };
         CompletionManager.prototype.cancelContextMenu = function () {
             this.editor.cancelMouseContextMenu();
+        };
+        CompletionManager.prototype.updateDocTooltip = function () {
+            var popup = this.popup;
+            var all = popup.data;
+            var selected = all && (all[popup.getHoveredRow()] || all[popup.getRow()]);
+            var doc = null;
+            if (!selected || !this.editor || !this.popup.isOpen)
+                return this.hideDocTooltip();
+            this.editor.completers.some(function (completer) {
+                if (completer.getDocTooltip) {
+                    doc = completer.getDocTooltip(selected);
+                }
+                return doc;
+            });
+            if (!doc)
+                doc = selected;
+            if (typeof doc === "string") {
+                doc = { docText: doc };
+            }
+            if (!doc || !(doc.docHTML || doc.docText)) {
+                return this.hideDocTooltip();
+            }
+            this.showDocTooltip(doc);
+        };
+        CompletionManager.prototype.showDocTooltip = function (item) {
+            if (!this.tooltipNode) {
+                this.tooltipNode = this.editor.container.ownerDocument.createElement('div');
+                this.tooltipNode.className = "ace_tooltip ace_doc-tooltip";
+                this.tooltipNode.style.margin = '0';
+                this.tooltipNode.style.pointerEvents = "auto";
+                this.tooltipNode.tabIndex = -1;
+                this.tooltipNode.onblur = this.blurListener.bind(this);
+            }
+            var tooltipNode = this.tooltipNode;
+            if (item.docHTML) {
+                tooltipNode.innerHTML = item.docHTML;
+            }
+            else if (item.docText) {
+                tooltipNode.textContent = item.docText;
+            }
+            if (!tooltipNode.parentNode) {
+                document.body.appendChild(tooltipNode);
+            }
+            var popup = this.popup;
+            var rect = popup.container.getBoundingClientRect();
+            tooltipNode.style.top = popup.container.style.top;
+            tooltipNode.style.bottom = popup.container.style.bottom;
+            if (window.innerWidth - rect.right < 320) {
+                tooltipNode.style.right = window.innerWidth - rect.left + "px";
+                tooltipNode.style.left = "";
+            }
+            else {
+                tooltipNode.style.left = (rect.right + 1) + "px";
+                tooltipNode.style.right = "";
+            }
+            tooltipNode.style.display = "block";
+        };
+        CompletionManager.prototype.hideDocTooltip = function () {
+            this.tooltipTimer.cancel();
+            if (!this.tooltipNode)
+                return;
+            var el = this.tooltipNode;
+            if (!this.editor.isFocused() && document.activeElement === el) {
+                this.editor.focus();
+            }
+            this.tooltipNode = null;
+            if (el.parentNode) {
+                el.parentNode.removeChild(el);
+            }
         };
         return CompletionManager;
     })();
@@ -17336,12 +17437,12 @@ define('autocomplete/AutoCompleteCommand',["require", "exports", './CompletionMa
             this.exec = function (editor) {
                 var manager = editor.completionManager;
                 if (!manager) {
-                    manager = new CompletionManager_1.default(editor);
+                    manager = new CompletionManager_1.default();
                     editor.completionManager = manager;
                 }
                 manager.autoInsert = true;
                 manager.autoSelect = true;
-                manager.showPopup(editor);
+                manager.attach(editor);
                 manager.cancelContextMenu();
             };
         }
@@ -17659,7 +17760,6 @@ define('workspace/WorkspaceCompleter',["require", "exports", './EditorPosition']
         }
         WorkspaceCompleter.prototype.getCompletionsAtPosition = function (editor, position, prefix) {
             var _this = this;
-            var session = editor.getSession();
             var offset = EditorPosition_1.default.getPositionChars(editor, position);
             return new Promise(function (resolve, reject) {
                 _this.workspace.getCompletionsAtPosition(_this.fileName, offset, prefix)

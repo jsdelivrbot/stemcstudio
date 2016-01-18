@@ -68,88 +68,6 @@ System.register("createTokenizer.js", ["Tokenizer.js"], function(exports_1) {
   };
 });
 
-System.register("UndoManager.js", [], function(exports_1) {
-  "use strict";
-  var UndoManager;
-  return {
-    setters: [],
-    execute: function() {
-      UndoManager = (function() {
-        function UndoManager() {
-          this.reset();
-        }
-        UndoManager.prototype.execute = function(options) {
-          var deltas = options.args[0];
-          this._editSession = options.args[1];
-          if (options.merge && this.hasUndo()) {
-            this._dirtyCounter--;
-            deltas = this.$undoStack.pop().concat(deltas);
-          }
-          this.$undoStack.push(deltas);
-          this.$redoStack = [];
-          if (this._dirtyCounter < 0) {
-            this._dirtyCounter = NaN;
-          }
-          this._dirtyCounter++;
-        };
-        UndoManager.prototype.undo = function(dontSelect) {
-          var deltas = this.$undoStack.pop();
-          var undoSelectionRange = null;
-          if (deltas) {
-            undoSelectionRange = this._editSession.undoChanges(deltas, dontSelect);
-            this.$redoStack.push(deltas);
-            this._dirtyCounter--;
-          }
-          return undoSelectionRange;
-        };
-        UndoManager.prototype.redo = function(dontSelect) {
-          var deltas = this.$redoStack.pop();
-          var redoSelectionRange = null;
-          if (deltas) {
-            redoSelectionRange = this._editSession.redoChanges(deltas, dontSelect);
-            this.$undoStack.push(deltas);
-            this._dirtyCounter++;
-          }
-          return redoSelectionRange;
-        };
-        UndoManager.prototype.reset = function() {
-          this.$undoStack = [];
-          this.$redoStack = [];
-          this.markClean();
-        };
-        UndoManager.prototype.hasUndo = function() {
-          return this.$undoStack.length > 0;
-        };
-        UndoManager.prototype.hasRedo = function() {
-          return this.$redoStack.length > 0;
-        };
-        UndoManager.prototype.markClean = function() {
-          this._dirtyCounter = 0;
-        };
-        UndoManager.prototype.isClean = function() {
-          return this._dirtyCounter === 0;
-        };
-        return UndoManager;
-      })();
-      exports_1("default", UndoManager);
-    }
-  };
-});
-
-System.register("createUndoManager.js", ["UndoManager.js"], function(exports_1) {
-  var UndoManager_1;
-  function createUndoManager() {
-    return new UndoManager_1.default();
-  }
-  exports_1("default", createUndoManager);
-  return {
-    setters: [function(UndoManager_1_1) {
-      UndoManager_1 = UndoManager_1_1;
-    }],
-    execute: function() {}
-  };
-});
-
 System.register("createWorkerClient.js", ["worker/WorkerClient.js"], function(exports_1) {
   var WorkerClient_1;
   function createWorkerClient(workerUrl) {
@@ -242,9 +160,57 @@ System.register("CompletionList.js", [], function(exports_1) {
   };
 });
 
-System.register("autocomplete/ListViewPopup.js", ["Document.js", "EditSession.js", "Renderer.js", "Editor.js", "Range.js", "lib/event.js", "lib/lang.js", "lib/dom.js"], function(exports_1) {
-  var Document_1,
-      EditSession_1,
+System.register("autocomplete/retrievePrecedingIdentifier.js", [], function(exports_1) {
+  'use strict';
+  var ID_REGEX;
+  function retrievePrecedingIdentifier(text, pos, regex) {
+    regex = regex || ID_REGEX;
+    var buf = [];
+    for (var i = pos - 1; i >= 0; i--) {
+      if (regex.test(text[i]))
+        buf.push(text[i]);
+      else
+        break;
+    }
+    return buf.reverse().join("");
+  }
+  exports_1("default", retrievePrecedingIdentifier);
+  return {
+    setters: [],
+    execute: function() {
+      ID_REGEX = /[a-zA-Z_0-9\$\-\u00A2-\uFFFF]/;
+    }
+  };
+});
+
+System.register("autocomplete/getCompletionPrefix.js", ["autocomplete/retrievePrecedingIdentifier.js"], function(exports_1) {
+  var retrievePrecedingIdentifier_1;
+  function getCompletionPrefix(editor) {
+    var pos = editor.getCursorPosition();
+    var line = editor.session.getLine(pos.row);
+    var prefix;
+    editor.completers.forEach(function(completer) {
+      if (completer.identifierRegexps) {
+        completer.identifierRegexps.forEach(function(identifierRegex) {
+          if (!prefix && identifierRegex)
+            prefix = retrievePrecedingIdentifier_1.default(line, pos.column, identifierRegex);
+        });
+      }
+    });
+    return prefix || retrievePrecedingIdentifier_1.default(line, pos.column);
+  }
+  exports_1("default", getCompletionPrefix);
+  return {
+    setters: [function(retrievePrecedingIdentifier_1_1) {
+      retrievePrecedingIdentifier_1 = retrievePrecedingIdentifier_1_1;
+    }],
+    execute: function() {}
+  };
+});
+
+System.register("autocomplete/ListViewPopup.js", ["createEditSession.js", "Document.js", "Renderer.js", "Editor.js", "Range.js", "lib/event.js", "lib/lang.js", "lib/dom.js"], function(exports_1) {
+  var createEditSession_1,
+      Document_1,
       Renderer_1,
       Editor_1,
       Range_1,
@@ -254,10 +220,10 @@ System.register("autocomplete/ListViewPopup.js", ["Document.js", "EditSession.js
   var noop,
       ListViewPopup;
   return {
-    setters: [function(Document_1_1) {
+    setters: [function(createEditSession_1_1) {
+      createEditSession_1 = createEditSession_1_1;
+    }, function(Document_1_1) {
       Document_1 = Document_1_1;
-    }, function(EditSession_1_1) {
-      EditSession_1 = EditSession_1_1;
     }, function(Renderer_1_1) {
       Renderer_1 = Renderer_1_1;
     }, function(Editor_1_1) {
@@ -291,8 +257,8 @@ System.register("autocomplete/ListViewPopup.js", ["Document.js", "EditSession.js
             renderer.$cursorLayer.element.style.opacity = "0";
             renderer.$maxLines = 8;
             renderer.$keepTextAreaAtCursor = false;
-            var model = new Document_1.default("");
-            var editSession = new EditSession_1.default(model);
+            var doc = new Document_1.default("");
+            var editSession = createEditSession_1.default(doc);
             var editor = new Editor_1.default(renderer, editSession);
             editor.setHighlightActiveLine(false);
             editor.setShowPrintMargin(false);
@@ -331,7 +297,7 @@ System.register("autocomplete/ListViewPopup.js", ["Document.js", "EditSession.js
             _this.lastMouseEvent = e;
             _this.lastMouseEventScrollTop = _this.editor.renderer.scrollTop;
             var row = _this.lastMouseEvent.getDocumentPosition().row;
-            if (_this.hoverMarker.start.row != row) {
+            if (_this.hoverMarker.start.row !== row) {
               if (!_this.hoverMarkerId) {
                 _this.setRow(row);
               }
@@ -339,7 +305,7 @@ System.register("autocomplete/ListViewPopup.js", ["Document.js", "EditSession.js
             }
           });
           this.editor.renderer.on("beforeRender", function() {
-            if (_this.lastMouseEvent && _this.hoverMarker.start.row != -1) {
+            if (_this.lastMouseEvent && _this.hoverMarker.start.row !== -1) {
               _this.lastMouseEvent.$pos = null;
               var row = _this.lastMouseEvent.getDocumentPosition().row;
               if (!_this.hoverMarkerId) {
@@ -352,11 +318,11 @@ System.register("autocomplete/ListViewPopup.js", ["Document.js", "EditSession.js
             var row = _this.getRow();
             var t = _this.editor.renderer.$textLayer;
             var selected = t.element.childNodes[row - t.config.firstRow];
-            if (selected == t['selectedNode'])
+            if (selected === t.selectedNode)
               return;
-            if (t['selectedNode'])
-              dom_1.removeCssClass(t['selectedNode'], "ace_selected");
-            t['selectedNode'] = selected;
+            if (t.selectedNode)
+              dom_1.removeCssClass(t.selectedNode, "ace_selected");
+            t.selectedNode = selected;
             if (selected)
               dom_1.addCssClass(selected, "ace_selected");
           });
@@ -380,7 +346,7 @@ System.register("autocomplete/ListViewPopup.js", ["Document.js", "EditSession.js
             if (!data)
               return tokens;
             if (!data.caption) {
-              data.caption = data.value || data['name'];
+              data.caption = data.value || data.name;
             }
             var last = -1;
             var flag;
@@ -391,7 +357,7 @@ System.register("autocomplete/ListViewPopup.js", ["Document.js", "EditSession.js
               flag = data.matchMask & (1 << cIndex) ? 1 : 0;
               if (last !== flag) {
                 tokens.push({
-                  type: data['className'] || "" + (flag ? "completion-highlight" : ""),
+                  type: data.className || "" + (flag ? "completion-highlight" : ""),
                   value: c
                 });
                 last = flag;
@@ -455,8 +421,8 @@ System.register("autocomplete/ListViewPopup.js", ["Document.js", "EditSession.js
           this.isOpen = false;
         };
         ListViewPopup.prototype.setData = function(items) {
-          this.data = items || [];
           this.editor.setValue(lang_1.stringRepeat("\n", items.length), -1);
+          this.data = items || [];
           this.setRow(0);
         };
         ListViewPopup.prototype.getData = function(row) {
@@ -496,7 +462,7 @@ System.register("autocomplete/ListViewPopup.js", ["Document.js", "EditSession.js
         };
         ListViewPopup.prototype.setRow = function(row) {
           row = Math.max(-1, Math.min(this.data.length, row));
-          if (this.selectionMarker.start.row != row) {
+          if (this.selectionMarker.start.row !== row) {
             this.editor.selection.clearSelection();
             this.selectionMarker.start.row = this.selectionMarker.end.row = row || 0;
             this.editor.getSession()._emit("changeBackMarker");
@@ -535,63 +501,59 @@ System.register("autocomplete/ListViewPopup.js", ["Document.js", "EditSession.js
   };
 });
 
-System.register("autocomplete/CompletionManager.js", ["Anchor.js", "CompletionList.js", "lib/lang.js", "keyboard/KeyboardHandler.js", "autocomplete/ListViewPopup.js", "Range.js", "autocomplete/util.js", "editor_protocol.js"], function(exports_1) {
+System.register("autocomplete/CompletionManager.js", ["Anchor.js", "CompletionList.js", "lib/lang/createDelayedCall.js", "autocomplete/getCompletionPrefix.js", "keyboard/KeyboardHandler.js", "autocomplete/ListViewPopup.js", "Range.js", "editor_protocol.js"], function(exports_1) {
   var Anchor_1,
       CompletionList_1,
-      lang_1,
+      createDelayedCall_1,
+      getCompletionPrefix_1,
       KeyboardHandler_1,
       ListViewPopup_1,
       Range_1,
-      util_1,
       editor_protocol_1;
-  var DOWN,
-      DETACH,
-      CompletionManager;
+  var CompletionManager;
   return {
     setters: [function(Anchor_1_1) {
       Anchor_1 = Anchor_1_1;
     }, function(CompletionList_1_1) {
       CompletionList_1 = CompletionList_1_1;
-    }, function(lang_1_1) {
-      lang_1 = lang_1_1;
+    }, function(createDelayedCall_1_1) {
+      createDelayedCall_1 = createDelayedCall_1_1;
+    }, function(getCompletionPrefix_1_1) {
+      getCompletionPrefix_1 = getCompletionPrefix_1_1;
     }, function(KeyboardHandler_1_1) {
       KeyboardHandler_1 = KeyboardHandler_1_1;
     }, function(ListViewPopup_1_1) {
       ListViewPopup_1 = ListViewPopup_1_1;
     }, function(Range_1_1) {
       Range_1 = Range_1_1;
-    }, function(util_1_1) {
-      util_1 = util_1_1;
     }, function(editor_protocol_1_1) {
       editor_protocol_1 = editor_protocol_1_1;
     }],
     execute: function() {
-      DOWN = function(editor) {
-        editor.completeUI.down();
-      };
-      DETACH = function(editor) {
-        editor.completeUI.detach();
-      };
       CompletionManager = (function() {
-        function CompletionManager(editor) {
+        function CompletionManager() {
           var _this = this;
           this.keyboardHandler = new KeyboardHandler_1.default();
           this.gatherCompletionsId = 0;
+          this.autoInsert = false;
           this.autoSelect = true;
-          this.autoInsert = true;
-          this.editor = editor;
+          this.exactMatch = false;
+          var DETACH = function(editor) {
+            _this.detach();
+          };
+          var DOWN = function(editor) {
+            _this.down();
+          };
           this.commands = {
             "Up": function(editor) {
               _this.goTo("up");
             },
-            "Down": DOWN,
             "Ctrl-Up|Ctrl-Home": function(editor) {
               _this.goTo("start");
             },
             "Ctrl-Down|Ctrl-End": function(editor) {
               _this.goTo("end");
             },
-            "Esc": DETACH,
             "Space": function(editor) {
               _this.detach();
               editor.insert(" ", false);
@@ -604,7 +566,7 @@ System.register("autocomplete/CompletionManager.js", ["Anchor.js", "CompletionLi
             },
             "Tab": function(editor) {
               var result = _this.insertMatch();
-              if (!result && !editor['tabstopManager']) {
+              if (!result && !editor.tabstopManager) {
                 _this.goTo("down");
               } else
                 return result;
@@ -617,15 +579,58 @@ System.register("autocomplete/CompletionManager.js", ["Anchor.js", "CompletionLi
             }
           };
           this.keyboardHandler.bindKey("Down", DOWN);
+          this.keyboardHandler.bindKey("Esc", DETACH);
           this.keyboardHandler.bindKeys(this.commands);
+          this.blurListener = function() {};
           this.blurListener = this.blurListener.bind(this);
-          this.changeListener = this.changeListener.bind(this);
+          this.editorChangeSelectionListener = this.editorChangeSelectionListener.bind(this);
           this.mousedownListener = this.mousedownListener.bind(this);
           this.mousewheelListener = this.mousewheelListener.bind(this);
-          this.changeTimer = lang_1.delayedCall(function() {
-            this.updateCompletions(true);
-          }.bind(this));
+          this.changeTimer = createDelayedCall_1.default(function() {
+            _this.updateCompletions(true);
+          });
+          this.tooltipTimer = createDelayedCall_1.default(function() {
+            _this.updateDocTooltip();
+          }, 50);
         }
+        CompletionManager.prototype.attach = function(editor) {
+          if (this.editor) {
+            this.detach();
+          }
+          this.activated = true;
+          this.editor = editor;
+          if (editor.completionManager !== this) {
+            if (editor.completionManager) {
+              editor.completionManager.detach();
+            }
+            editor.completionManager = this;
+          }
+          editor.keyBinding.addKeyboardHandler(this.keyboardHandler);
+          editor.on("changeSelection", this.editorChangeSelectionListener);
+          editor.on("blur", this.blurListener);
+          editor.on("mousedown", this.mousedownListener);
+          editor.on("mousewheel", this.mousewheelListener);
+          this.updateCompletions(false);
+        };
+        CompletionManager.prototype.detach = function() {
+          this.editor.keyBinding.removeKeyboardHandler(this.keyboardHandler);
+          this.editor.off("changeSelection", this.editorChangeSelectionListener);
+          this.editor.off("blur", this.blurListener);
+          this.editor.off("mousedown", this.mousedownListener);
+          this.editor.off("mousewheel", this.mousewheelListener);
+          this.changeTimer.cancel();
+          this.hideDocTooltip();
+          this.gatherCompletionsId += 1;
+          if (this.popup && this.popup.isOpen) {
+            this.popup.hide();
+          }
+          if (this.base) {
+            this.base.detach();
+            this.base = null;
+          }
+          this.activated = false;
+          this.completions = null;
+        };
         CompletionManager.prototype.insertMatch = function(data) {
           if (!data) {
             data = this.popup.getData(this.popup.getRow());
@@ -637,7 +642,7 @@ System.register("autocomplete/CompletionManager.js", ["Anchor.js", "CompletionLi
             data.completer.insertMatch(this.editor);
           } else {
             if (this.completions.filterText) {
-              var ranges = this.editor.selection.rangeList.ranges;
+              var ranges = this.editor.selection.getAllRanges();
               for (var i = 0,
                   iLength = ranges.length; i < iLength; i++) {
                 var range = ranges[i];
@@ -651,22 +656,6 @@ System.register("autocomplete/CompletionManager.js", ["Anchor.js", "CompletionLi
             }
           }
           this.detach();
-        };
-        CompletionManager.prototype.detach = function() {
-          this.editor.keyBinding.removeKeyboardHandler(this.keyboardHandler);
-          this.editor.off("changeSelection", this.changeListener);
-          this.editor.off("blur", this.blurListener);
-          this.editor.off("mousedown", this.mousedownListener);
-          this.editor.off("mousewheel", this.mousewheelListener);
-          this.changeTimer.cancel();
-          if (this.popup && this.popup.isOpen) {
-            this.gatherCompletionsId += 1;
-            this.popup.hide();
-          }
-          if (this.base)
-            this.base.detach();
-          this.activated = false;
-          this.completions = this.base = null;
         };
         CompletionManager.prototype.goTo = function(where) {
           var row = this.popup.getRow();
@@ -684,6 +673,8 @@ System.register("autocomplete/CompletionManager.js", ["Anchor.js", "CompletionLi
             case "end":
               row = max;
               break;
+            default:
+              {}
           }
           this.popup.setRow(row);
         };
@@ -693,70 +684,78 @@ System.register("autocomplete/CompletionManager.js", ["Anchor.js", "CompletionLi
           row = row >= max ? -1 : row + 1;
           this.popup.setRow(row);
         };
-        CompletionManager.prototype.getCompletions = function(editor, session, pos, prefix, callback) {
+        CompletionManager.prototype.gatherCompletions = function(editor, pos, prefix, callback) {
+          var session = editor.getSession();
           this.base = new Anchor_1.default(session.doc, pos.row, pos.column - prefix.length);
+          this.base.insertRight = true;
           var matches = [];
           var total = editor.completers.length;
           editor.completers.forEach(function(completer, index) {
             completer.getCompletions(editor, session, pos, prefix, function(err, results) {
-              if (!err)
-                matches = matches.concat(results);
-              var pos = editor.getCursorPosition();
-              var line = session.getLine(pos.row);
-              callback(null, {
-                prefix: util_1.retrievePrecedingIdentifier(line, pos.column, results[0] && results[0].identifierRegex),
-                matches: matches,
-                finished: (--total === 0)
-              });
+              if (err) {
+                callback(err);
+              } else {
+                if (results) {
+                  matches = matches.concat(results);
+                }
+                callback(null, {
+                  prefix: prefix,
+                  matches: matches,
+                  finished: (--total === 0)
+                });
+              }
             });
           });
           return true;
         };
         CompletionManager.prototype.updateCompletions = function(keepPopupPosition) {
           var _this = this;
-          var pos = this.editor.getCursorPosition();
-          var prefix;
+          var editor = this.editor;
+          var pos = editor.getCursorPosition();
           if (keepPopupPosition && this.base && this.completions) {
             var range = new Range_1.default(this.base.row, this.base.column, pos.row, pos.column);
-            prefix = this.editor.getSession().getTextRange(range);
-            if (prefix === this.completions.filterText)
+            var prefix = editor.getSession().getTextRange(range);
+            if (prefix === this.completions.filterText) {
               return;
+            }
             this.completions.setFilter(prefix);
             if (!this.completions.filtered.length)
               return this.detach();
-            if (this.completions.filtered.length == 1 && this.completions.filtered[0].value == prefix && !this.completions.filtered[0].snippet) {
+            if (this.completions.filtered.length === 1 && this.completions.filtered[0].value === prefix && !this.completions.filtered[0].snippet) {
               return this.detach();
             }
-            this.openPopup(this.editor, prefix, keepPopupPosition);
+            this.openPopup(editor, prefix, keepPopupPosition);
           } else {
             var _id = this.gatherCompletionsId;
-            var editor = this.editor;
-            var session = editor.getSession();
-            var line = session.getLine(pos.row);
-            prefix = util_1.retrievePrecedingIdentifier(line, pos.column);
-            this.getCompletions(this.editor, session, this.editor.getCursorPosition(), prefix, function(err, results) {
-              var detachIfFinished = function() {
-                if (!results.finished)
+            var prefix = getCompletionPrefix_1.default(editor);
+            this.gatherCompletions(editor, pos, prefix, function(err, results) {
+              if (err) {
+                console.warn("gatherCompletions => " + err);
+              } else {
+                var detachIfFinished = function() {
+                  if (!results.finished)
+                    return;
+                  return _this.detach();
+                };
+                var prefix_1 = results.prefix;
+                var matches = results && results.matches;
+                if (!matches || !matches.length)
+                  return detachIfFinished();
+                if (prefix_1.indexOf(results.prefix) !== 0 || _id !== _this.gatherCompletionsId) {
                   return;
-                return _this.detach();
-              };
-              var prefix = results.prefix;
-              var matches = results && results.matches;
-              if (!matches || !matches.length)
-                return detachIfFinished();
-              if (prefix.indexOf(results.prefix) !== 0 || _id != _this.gatherCompletionsId)
-                return;
-              _this.completions = new CompletionList_1.default(matches);
-              _this.completions.setFilter(prefix);
-              var filtered = _this.completions.filtered;
-              if (!filtered.length)
-                return detachIfFinished();
-              if (filtered.length == 1 && filtered[0].value == prefix && !filtered[0].snippet)
-                return detachIfFinished();
-              if (_this.autoInsert && filtered.length === 1) {
-                return _this.insertMatch(filtered[0]);
+                }
+                _this.completions = new CompletionList_1.default(matches);
+                _this.completions.setFilter(prefix_1);
+                var filtered = _this.completions.filtered;
+                if (!filtered.length)
+                  return detachIfFinished();
+                if (filtered.length === 1 && filtered[0].value === prefix_1 && !filtered[0].snippet)
+                  return detachIfFinished();
+                if (_this.autoInsert && filtered.length === 1) {
+                  return _this.insertMatch(filtered[0]);
+                }
+                _this.openPopup(editor, prefix_1, keepPopupPosition);
               }
-              _this.openPopup(_this.editor, prefix, keepPopupPosition);
             });
           }
         };
@@ -769,36 +768,46 @@ System.register("autocomplete/CompletionManager.js", ["Anchor.js", "CompletionLi
               e.stop();
             });
             this.popup.focus = this.editor.focus.bind(this.editor);
+            this.popup.on('show', this.tooltipTimer.bind(null, null));
+            this.popup.on('select', this.tooltipTimer.bind(null, null));
+            this.popup.on('changeHoverMarker', this.tooltipTimer.bind(null, null));
           }
           this.popup.setData(this.completions.filtered);
           this.popup.setRow(this.autoSelect ? 0 : -1);
+          var renderer = editor.renderer;
           if (!keepPopupPosition) {
             this.popup.setThemeCss(editor.getTheme(), void 0);
             this.popup.setThemeDark(true);
             this.popup.setFontSize(editor.getFontSize());
-            var lineHeight = editor.renderer.layerConfig.lineHeight;
-            var pos = editor.renderer.getPixelPosition(this.base, true);
+            var lineHeight = renderer.layerConfig.lineHeight;
+            var pos = renderer.getPixelPosition(this.base, true);
             pos.left -= this.popup.getTextLeftOffset();
             var rect = editor.container.getBoundingClientRect();
-            pos.top += rect.top - editor.renderer.layerConfig.offset;
-            pos.left += rect.left - editor.renderer.scrollLeft;
-            pos.left += editor.renderer.$gutterLayer.gutterWidth;
+            pos.top += rect.top - renderer.layerConfig.offset;
+            pos.left += rect.left - renderer.scrollLeft;
+            pos.left += renderer.gutterWidth;
             this.popup.show(pos, lineHeight);
+          } else if (keepPopupPosition && !prefix) {
+            this.detach();
           }
         };
-        CompletionManager.prototype.changeListener = function(e) {
+        CompletionManager.prototype.editorChangeSelectionListener = function(e) {
           var cursor = this.editor.selection.lead;
-          if (cursor.row != this.base.row || cursor.column < this.base.column) {
+          if (cursor.row !== this.base.row || cursor.column < this.base.column) {
             this.detach();
           }
-          if (this.activated)
+          if (this.activated) {
             this.changeTimer.schedule();
-          else
+          } else {
             this.detach();
+          }
         };
-        CompletionManager.prototype.blurListener = function() {
+        CompletionManager.prototype.blurListener = function(e) {
           var el = document.activeElement;
-          if (el != this.editor.textInput.getElement() && el.parentNode != this.popup.container) {
+          var textArea = this.editor.textInput.getElement();
+          var fromTooltip = e.relatedTarget && e.relatedTarget === this.tooltipNode;
+          var container = this.popup && this.popup.container;
+          if (el !== textArea && el.parentNode !== container && !fromTooltip && el !== this.tooltipNode && e.relatedTarget !== textArea) {
             this.detach();
           }
         };
@@ -808,27 +817,75 @@ System.register("autocomplete/CompletionManager.js", ["Anchor.js", "CompletionLi
         CompletionManager.prototype.mousewheelListener = function(e) {
           this.detach();
         };
-        CompletionManager.prototype.showPopup = function(editor) {
-          if (this.editor) {
-            this.detach();
-          }
-          this.activated = true;
-          this.editor = editor;
-          if (editor.completeUI !== this) {
-            if (editor.completeUI) {
-              editor.completeUI.detach();
-            }
-            editor.completeUI = this;
-          }
-          editor.keyBinding.addKeyboardHandler(this.keyboardHandler);
-          editor.on("changeSelection", this.changeListener);
-          editor.on("blur", this.blurListener);
-          editor.on("mousedown", this.mousedownListener);
-          editor.on("mousewheel", this.mousewheelListener);
-          this.updateCompletions();
-        };
         CompletionManager.prototype.cancelContextMenu = function() {
           this.editor.cancelMouseContextMenu();
+        };
+        CompletionManager.prototype.updateDocTooltip = function() {
+          var popup = this.popup;
+          var all = popup.data;
+          var selected = all && (all[popup.getHoveredRow()] || all[popup.getRow()]);
+          var doc = null;
+          if (!selected || !this.editor || !this.popup.isOpen)
+            return this.hideDocTooltip();
+          this.editor.completers.some(function(completer) {
+            if (completer.getDocTooltip) {
+              doc = completer.getDocTooltip(selected);
+            }
+            return doc;
+          });
+          if (!doc)
+            doc = selected;
+          if (typeof doc === "string") {
+            doc = {docText: doc};
+          }
+          if (!doc || !(doc.docHTML || doc.docText)) {
+            return this.hideDocTooltip();
+          }
+          this.showDocTooltip(doc);
+        };
+        CompletionManager.prototype.showDocTooltip = function(item) {
+          if (!this.tooltipNode) {
+            this.tooltipNode = this.editor.container.ownerDocument.createElement('div');
+            this.tooltipNode.className = "ace_tooltip ace_doc-tooltip";
+            this.tooltipNode.style.margin = '0';
+            this.tooltipNode.style.pointerEvents = "auto";
+            this.tooltipNode.tabIndex = -1;
+            this.tooltipNode.onblur = this.blurListener.bind(this);
+          }
+          var tooltipNode = this.tooltipNode;
+          if (item.docHTML) {
+            tooltipNode.innerHTML = item.docHTML;
+          } else if (item.docText) {
+            tooltipNode.textContent = item.docText;
+          }
+          if (!tooltipNode.parentNode) {
+            document.body.appendChild(tooltipNode);
+          }
+          var popup = this.popup;
+          var rect = popup.container.getBoundingClientRect();
+          tooltipNode.style.top = popup.container.style.top;
+          tooltipNode.style.bottom = popup.container.style.bottom;
+          if (window.innerWidth - rect.right < 320) {
+            tooltipNode.style.right = window.innerWidth - rect.left + "px";
+            tooltipNode.style.left = "";
+          } else {
+            tooltipNode.style.left = (rect.right + 1) + "px";
+            tooltipNode.style.right = "";
+          }
+          tooltipNode.style.display = "block";
+        };
+        CompletionManager.prototype.hideDocTooltip = function() {
+          this.tooltipTimer.cancel();
+          if (!this.tooltipNode)
+            return;
+          var el = this.tooltipNode;
+          if (!this.editor.isFocused() && document.activeElement === el) {
+            this.editor.focus();
+          }
+          this.tooltipNode = null;
+          if (el.parentNode) {
+            el.parentNode.removeChild(el);
+          }
         };
         return CompletionManager;
       })();
@@ -856,468 +913,20 @@ System.register("autocomplete/AutoCompleteCommand.js", ["autocomplete/Completion
           this.name = name;
           this.bindKey = 'Ctrl-Space|Ctrl-Shift-Space|Alt-Space';
           this.exec = function(editor) {
-            var aggregate = editor.completeUI;
-            if (!aggregate) {
-              aggregate = new CompletionManager_1.default(editor);
-              editor.completeUI;
+            var manager = editor.completionManager;
+            if (!manager) {
+              manager = new CompletionManager_1.default();
+              editor.completionManager = manager;
             }
-            aggregate.autoInsert = true;
-            aggregate.autoSelect = true;
-            aggregate.showPopup(editor);
-            aggregate.cancelContextMenu();
+            manager.autoInsert = true;
+            manager.autoSelect = true;
+            manager.attach(editor);
+            manager.cancelContextMenu();
           };
         }
         return AutoCompleteCommand;
       })();
       exports_1("default", AutoCompleteCommand);
-    }
-  };
-});
-
-System.register("workspace/AutoCompleteView.js", [], function(exports_1) {
-  "use strict";
-  var CLASSNAME,
-      CLASSNAME_SELECTED,
-      AutoCompleteView;
-  function height(element) {
-    var computedStyle = getComputedStyle(element);
-    return parseFloat(computedStyle.height.replace('px', ''));
-  }
-  function borderTop(element) {
-    var computedStyle = getComputedStyle(element);
-    return parseFloat(computedStyle.borderTop.replace('px', ''));
-  }
-  function borderBottom(element) {
-    var computedStyle = getComputedStyle(element);
-    return parseFloat(computedStyle.borderBottom.replace('px', ''));
-  }
-  function marginTop(element) {
-    var computedStyle = getComputedStyle(element);
-    return parseFloat(computedStyle.marginTop.replace('px', ''));
-  }
-  function marginBottom(element) {
-    var computedStyle = getComputedStyle(element);
-    return parseFloat(computedStyle.marginBottom.replace('px', ''));
-  }
-  function paddingTop(element) {
-    var computedStyle = getComputedStyle(element);
-    return parseFloat(computedStyle.paddingTop.replace('px', ''));
-  }
-  function paddingBottom(element) {
-    var computedStyle = getComputedStyle(element);
-    return parseFloat(computedStyle.paddingBottom.replace('px', ''));
-  }
-  function outerHeight(element) {
-    var h = height(element);
-    var p = paddingTop(element) + paddingBottom(element);
-    var m = marginTop(element) + marginBottom(element);
-    var b = borderTop(element) + borderBottom(element);
-    return h + p + m + b;
-  }
-  function position(el) {
-    var left = 0;
-    var top = 0;
-    while (el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
-      left += el.offsetLeft - el.scrollLeft;
-      top += el.offsetTop - el.scrollTop;
-      el = el.offsetParent;
-    }
-    return {
-      top: top,
-      left: left
-    };
-  }
-  return {
-    setters: [],
-    execute: function() {
-      CLASSNAME = 'ace_autocomplete';
-      CLASSNAME_SELECTED = 'ace_autocomplete_selected';
-      AutoCompleteView = (function() {
-        function AutoCompleteView(editor) {
-          if (typeof editor === 'undefined') {
-            throw new TypeError('editor must be defined');
-          }
-          this.editor = editor;
-          this.wrap = document.createElement('div');
-          this.listElement = document.createElement('ul');
-          this.wrap.className = CLASSNAME;
-          this.wrap.appendChild(this.listElement);
-          this.editor.container.appendChild(this.wrap);
-          this.wrap.style.display = 'none';
-          this.listElement.style.listStyleType = 'none';
-          this.wrap.style.position = 'fixed';
-          this.wrap.style.zIndex = '1000';
-        }
-        AutoCompleteView.prototype.show = function(pos, lineHeight, topdownOnly) {
-          var el = this.wrap;
-          var screenHeight = window.innerHeight;
-          var screenWidth = window.innerWidth;
-          var renderer = this.editor.renderer;
-          var maxH = renderer.$maxLines * lineHeight * 1.4;
-          var top = pos.top;
-          if (top + maxH > screenHeight - lineHeight && !topdownOnly) {
-            el.style.top = "";
-            el.style.bottom = screenHeight - top + "px";
-          } else {
-            top += lineHeight;
-            el.style.top = top + "px";
-            el.style.bottom = "";
-          }
-          el.style.display = "block";
-          renderer.$textLayer.checkForSizeChanges();
-          var left = pos.left;
-          if (left + el.offsetWidth > screenWidth) {
-            left = screenWidth - el.offsetWidth;
-          }
-          el.style.left = left + "px";
-          this.listElement.style.marginTop = "0";
-        };
-        AutoCompleteView.prototype.hide = function() {
-          this.wrap.style.display = 'none';
-        };
-        AutoCompleteView.prototype.current = function() {
-          var i;
-          var children = this.listElement.childNodes;
-          for (i in children) {
-            var child = children[i];
-            if (child.className === CLASSNAME_SELECTED) {
-              return child;
-            }
-          }
-          return null;
-        };
-        AutoCompleteView.prototype.focusNext = function() {
-          var curr;
-          var focus;
-          curr = this.current();
-          focus = curr.nextSibling;
-          if (focus) {
-            curr.className = '';
-            focus.className = CLASSNAME_SELECTED;
-            return this.adjustPosition();
-          }
-        };
-        AutoCompleteView.prototype.focusPrev = function() {
-          var curr;
-          var focus;
-          curr = this.current();
-          focus = curr.previousSibling;
-          if (focus) {
-            curr.className = '';
-            focus.className = CLASSNAME_SELECTED;
-            return this.adjustPosition();
-          }
-        };
-        AutoCompleteView.prototype.ensureFocus = function() {
-          if (!this.current()) {
-            if (this.listElement.firstChild) {
-              var firstChild = this.listElement.firstChild;
-              firstChild.className = CLASSNAME_SELECTED;
-              return this.adjustPosition();
-            }
-          }
-        };
-        AutoCompleteView.prototype.adjustPosition = function() {
-          var elm = this.current();
-          if (elm) {
-            var newMargin = '';
-            var totalHeight = height(this.wrap);
-            var itemHeight = outerHeight(elm);
-            var oldMargin = marginTop(this.listElement);
-            var pos = position(elm);
-            while (pos.top >= (totalHeight - itemHeight)) {
-              oldMargin = marginTop(this.listElement);
-              newMargin = (oldMargin - itemHeight) + 'px';
-              this.listElement.style.marginTop = newMargin;
-              pos = position(elm);
-            }
-            while (pos.top < 0) {
-              oldMargin = marginTop(this.listElement);
-              newMargin = (oldMargin + itemHeight) + 'px';
-              this.listElement.style.marginTop = newMargin;
-              pos = position(elm);
-            }
-          }
-        };
-        return AutoCompleteView;
-      })();
-      exports_1("default", AutoCompleteView);
-    }
-  };
-});
-
-System.register("workspace/createAutoComplete.js", ["workspace/AutoCompleteView.js", "lib/EventEmitterClass.js", "keyboard/KeyboardHandler.js", "editor_protocol.js"], function(exports_1) {
-  var AutoCompleteView_1,
-      EventEmitterClass_1,
-      KeyboardHandler_1,
-      editor_protocol_1;
-  function makeCompareFn(text) {
-    return function(a, b) {
-      var matchFunc = function(entry) {
-        return entry.name.indexOf(text) === 0 ? 1 : 0;
-      };
-      var matchCompare = function() {
-        return matchFunc(b) - matchFunc(a);
-      };
-      var textCompare = function() {
-        if (a.name === b.name) {
-          return 0;
-        } else {
-          return (a.name > b.name) ? 1 : -1;
-        }
-      };
-      var ret = matchCompare();
-      return (ret !== 0) ? ret : textCompare();
-    };
-  }
-  function createAutoComplete(editor, fileNameProvider, completionService) {
-    var AutoComplete = function() {};
-    var that = new AutoComplete();
-    that.isActive = isActive;
-    that.activate = activate;
-    that.deactivate = deactivate;
-    var _eventEmitter = new EventEmitterClass_1.default(that);
-    var _active = false;
-    var _handler = new KeyboardHandler_1.default();
-    var _view = new AutoCompleteView_1.default(editor);
-    var _inputText = '';
-    _handler.attach = function() {
-      editor.on("change", onEditorChange);
-      _eventEmitter._emit("attach", {'sender': that});
-      _active = true;
-    };
-    _handler.detach = function() {
-      editor.off("change", onEditorChange);
-      _view.hide();
-      _eventEmitter._emit("detach", {'sender': that});
-      _active = false;
-    };
-    _handler.handleKeyboard = function(unused, hashId, key, keyCode) {
-      if (hashId === -1) {
-        if (" -=,[]_/()!';:<>".indexOf(key) !== -1) {
-          deactivate();
-        }
-        return null;
-      }
-      var command = _handler.findKeyCommand(hashId, key);
-      if (!command) {
-        var defaultCommand = editor.commands.findKeyCommand(hashId, key);
-        if (defaultCommand) {
-          if (defaultCommand.name === editor_protocol_1.COMMAND_NAME_BACKSPACE) {
-            return null;
-          }
-          deactivate();
-        }
-        return null;
-      }
-      return {
-        'command': command,
-        'args': void 0
-      };
-    };
-    _handler.bindKey("Up|Ctrl-p", function(editor) {
-      _view.focusPrev();
-    });
-    _handler.bindKey("Down|Ctrl-n", function(editor) {
-      _view.focusNext();
-    });
-    _handler.bindKey("esc|Ctrl-g", function(editor) {
-      deactivate();
-    });
-    _handler.bindKey("Return|Tab", function(editor) {
-      editor.off("change", onEditorChange);
-      for (var i = 0; i < _inputText.length; i++) {
-        editor.remove("left");
-      }
-      var curr = _view.current();
-      if (curr) {
-        var text = curr.getAttribute('data-name');
-        editor.insert(text, false);
-      }
-      deactivate();
-    });
-    function isActive() {
-      return _active;
-    }
-    function activateUsingCursor(position) {
-      completionService.getCompletionsAtCursor(fileNameProvider(), position).then(function(completions) {
-        var text = completionService.matchText;
-        function showCompletions(infos) {
-          if (infos && infos.length > 0) {
-            editor.container.appendChild(_view.wrap);
-            var html = '';
-            for (var n in infos) {
-              var info = infos[n];
-              var name = '<span class="label-name">' + info.name + '</span>';
-              var kind = '<span class="label-kind label-kind-' + info.kind + '">' + info.kind.charAt(0) + '</span>';
-              html += '<li data-name="' + info.name + '">' + kind + name + '</li>';
-            }
-            var pos = editor.renderer.getPixelPosition(position, true);
-            var lineHeight = editor.renderer.layerConfig.lineHeight;
-            var rect = editor.container.getBoundingClientRect();
-            pos.top += rect.top - editor.renderer.layerConfig.offset;
-            pos.left += rect.left - editor.renderer.scrollLeft;
-            pos.left += editor.renderer.$gutterLayer.gutterWidth;
-            _view.listElement.innerHTML = html;
-            _view.show(pos, lineHeight, false);
-            _view.ensureFocus();
-          } else {
-            _view.hide();
-          }
-        }
-        _inputText = text;
-        if (completions && _inputText.length > 0) {
-          completions = completions.filter(function(completion) {
-            return completion.name.toLowerCase().indexOf(_inputText.toLowerCase()) === 0;
-          });
-        }
-        completions = completions ? completions.sort(makeCompareFn(_inputText)) : completions;
-        showCompletions(completions);
-        var count = completions ? completions.length : 0;
-        if (count > 0) {
-          editor.keyBinding.addKeyboardHandler(_handler);
-        }
-      }).catch(function(err) {
-        console.warn("err => " + err);
-      });
-    }
-    function onEditorChange(delta) {
-      var position = editor.getCursorPosition();
-      if (delta.action === "insert") {
-        activateUsingCursor({
-          row: position.row,
-          column: position.column + 1
-        });
-      } else if (delta.action == "remove") {
-        if (delta.lines.length === 1 && delta.lines[0] === '\n') {
-          deactivate();
-        } else {
-          activateUsingCursor(position);
-        }
-      } else {
-        activateUsingCursor(position);
-      }
-    }
-    function activate() {
-      activateUsingCursor(editor.getCursorPosition());
-    }
-    function deactivate() {
-      editor.keyBinding.removeKeyboardHandler(_handler);
-    }
-    return that;
-  }
-  exports_1("default", createAutoComplete);
-  return {
-    setters: [function(AutoCompleteView_1_1) {
-      AutoCompleteView_1 = AutoCompleteView_1_1;
-    }, function(EventEmitterClass_1_1) {
-      EventEmitterClass_1 = EventEmitterClass_1_1;
-    }, function(KeyboardHandler_1_1) {
-      KeyboardHandler_1 = KeyboardHandler_1_1;
-    }, function(editor_protocol_1_1) {
-      editor_protocol_1 = editor_protocol_1_1;
-    }],
-    execute: function() {}
-  };
-});
-
-System.register("autocomplete/util.js", [], function(exports_1) {
-  var ID_REGEX;
-  function parForEach(array, fn, callback) {
-    var completed = 0;
-    var arLength = array.length;
-    if (arLength === 0)
-      callback();
-    for (var i = 0; i < arLength; i++) {
-      fn(array[i], function(result, err) {
-        completed++;
-        if (completed === arLength)
-          callback(result, err);
-      });
-    }
-  }
-  exports_1("parForEach", parForEach);
-  function retrievePrecedingIdentifier(text, pos, regex) {
-    regex = regex || ID_REGEX;
-    var buf = [];
-    for (var i = pos - 1; i >= 0; i--) {
-      if (regex.test(text[i]))
-        buf.push(text[i]);
-      else
-        break;
-    }
-    return buf.reverse().join("");
-  }
-  exports_1("retrievePrecedingIdentifier", retrievePrecedingIdentifier);
-  function retrieveFollowingIdentifier(text, pos, regex) {
-    regex = regex || ID_REGEX;
-    var buf = [];
-    for (var i = pos; i < text.length; i++) {
-      if (regex.test(text[i]))
-        buf.push(text[i]);
-      else
-        break;
-    }
-    return buf;
-  }
-  exports_1("retrieveFollowingIdentifier", retrieveFollowingIdentifier);
-  return {
-    setters: [],
-    execute: function() {
-      ID_REGEX = /[a-zA-Z_0-9\$\-\u00A2-\uFFFF]/;
-    }
-  };
-});
-
-System.register("workspace/CompletionService.js", ["workspace/EditorPosition.js", "autocomplete/util.js"], function(exports_1) {
-  "use strict";
-  var EditorPosition_1,
-      util_1;
-  var CompletionService;
-  return {
-    setters: [function(EditorPosition_1_1) {
-      EditorPosition_1 = EditorPosition_1_1;
-    }, function(util_1_1) {
-      util_1 = util_1_1;
-    }],
-    execute: function() {
-      CompletionService = (function() {
-        function CompletionService(editor, workspace) {
-          this.editor = editor;
-          this.workspace = workspace;
-        }
-        CompletionService.prototype._getCompletionsAtPosition = function(fileName, position, prefix) {
-          if (typeof this.workspace !== 'undefined') {
-            return this.workspace.getCompletionsAtPosition(fileName, position, prefix);
-          } else {
-            return new Promise(function(resolve, reject) {
-              reject(new Error("Completions are not available at this time."));
-            });
-          }
-        };
-        CompletionService.prototype.getCompletionsAtCursor = function(fileName, position) {
-          var editor = this.editor;
-          var positionChars = EditorPosition_1.default.getPositionChars(editor, position);
-          var session = editor.getSession();
-          var line = session.getLine(position.row);
-          var column = position.column;
-          var prefix = util_1.retrievePrecedingIdentifier(line, column);
-          var text = line.slice(0, column);
-          var matches = text.match(/\.([a-zA-Z_0-9\$]*$)/);
-          if (matches && matches.length > 0) {
-            this.matchText = matches[1];
-            this.memberMode = true;
-            positionChars -= this.matchText.length;
-          } else {
-            matches = text.match(/[a-zA-Z_0-9\$]*$/);
-            this.matchText = matches[0];
-            this.memberMode = false;
-          }
-          return this._getCompletionsAtPosition(fileName, positionChars, prefix);
-        };
-        return CompletionService;
-      })();
-      exports_1("default", CompletionService);
     }
   };
 });
@@ -1705,7 +1314,6 @@ System.register("workspace/WorkspaceCompleter.js", ["workspace/EditorPosition.js
         }
         WorkspaceCompleter.prototype.getCompletionsAtPosition = function(editor, position, prefix) {
           var _this = this;
-          var session = editor.getSession();
           var offset = EditorPosition_1.default.getPositionChars(editor, position);
           return new Promise(function(resolve, reject) {
             _this.workspace.getCompletionsAtPosition(_this.fileName, offset, prefix).then(function(entries) {
@@ -1736,12 +1344,9 @@ System.register("workspace/WorkspaceCompleter.js", ["workspace/EditorPosition.js
   };
 });
 
-System.register("workspace/Workspace.js", ["autocomplete/AutoCompleteCommand.js", "workspace/createAutoComplete.js", "workspace/CompletionService.js", "workspace/getPosition.js", "editor_protocol.js", "workspace/LanguageServiceProxy.js", "workspace/QuickInfoTooltip.js", "Range.js", "workspace/WorkspaceCompleter.js", "lib/net.js"], function(exports_1) {
+System.register("workspace/Workspace.js", ["autocomplete/AutoCompleteCommand.js", "workspace/getPosition.js", "workspace/LanguageServiceProxy.js", "workspace/QuickInfoTooltip.js", "Range.js", "workspace/WorkspaceCompleter.js", "lib/net.js"], function(exports_1) {
   var AutoCompleteCommand_1,
-      createAutoComplete_1,
-      CompletionService_1,
       getPosition_1,
-      editor_protocol_1,
       LanguageServiceProxy_1,
       QuickInfoTooltip_1,
       Range_1,
@@ -1750,7 +1355,6 @@ System.register("workspace/Workspace.js", ["autocomplete/AutoCompleteCommand.js"
   var Workspace;
   function diagnosticToAnnotation(doc, diagnostic) {
     var minChar = diagnostic.start;
-    var limChar = minChar + diagnostic.length;
     var pos = getPosition_1.default(doc, minChar);
     return {
       row: pos.row,
@@ -1762,14 +1366,8 @@ System.register("workspace/Workspace.js", ["autocomplete/AutoCompleteCommand.js"
   return {
     setters: [function(AutoCompleteCommand_1_1) {
       AutoCompleteCommand_1 = AutoCompleteCommand_1_1;
-    }, function(createAutoComplete_1_1) {
-      createAutoComplete_1 = createAutoComplete_1_1;
-    }, function(CompletionService_1_1) {
-      CompletionService_1 = CompletionService_1_1;
     }, function(getPosition_1_1) {
       getPosition_1 = getPosition_1_1;
-    }, function(editor_protocol_1_1) {
-      editor_protocol_1 = editor_protocol_1_1;
     }, function(LanguageServiceProxy_1_1) {
       LanguageServiceProxy_1 = LanguageServiceProxy_1_1;
     }, function(QuickInfoTooltip_1_1) {
@@ -1826,33 +1424,8 @@ System.register("workspace/Workspace.js", ["autocomplete/AutoCompleteCommand.js"
           };
           editor.session.on('annotations', annotationsHandler);
           this.annotationHandlers[fileName] = annotationsHandler;
-          if (false) {
-            editor.commands.addCommand(new AutoCompleteCommand_1.default());
-            editor.completers.push(new WorkspaceCompleter_1.default(fileName, this));
-          } else {
-            var completionService = new CompletionService_1.default(editor, this);
-            var autoComplete = createAutoComplete_1.default(editor, function() {
-              return fileName;
-            }, completionService);
-            var completeCommand = {
-              name: editor_protocol_1.COMMAND_NAME_AUTO_COMPLETE,
-              bindKey: "Ctrl-Space",
-              exec: function(editor) {
-                if (!autoComplete.isActive()) {
-                  autoComplete.activate();
-                }
-              }
-            };
-            editor.commands.addCommand(completeCommand);
-            this.command[fileName] = completeCommand;
-            var mousedownHandler = function(event) {
-              if (autoComplete.isActive()) {
-                autoComplete.deactivate();
-              }
-            };
-            editor.on("mousedown", mousedownHandler);
-            this.mousedn[fileName] = mousedownHandler;
-          }
+          editor.commands.addCommand(new AutoCompleteCommand_1.default());
+          editor.completers.push(new WorkspaceCompleter_1.default(fileName, this));
           var quickInfo = new QuickInfoTooltip_1.default(fileName, editor, this);
           quickInfo.init();
           this.quickin[fileName] = quickInfo;
@@ -1921,17 +1494,15 @@ System.register("workspace/Workspace.js", ["autocomplete/AutoCompleteCommand.js"
         };
         Workspace.prototype.semanticDiagnosticsForEditor = function(fileName, editor) {
           var _this = this;
-          var session = editor.getSession();
-          var doc = session.getDocument();
           this.workerProxy.getSyntaxErrors(fileName, function(err, syntaxErrors) {
             if (err) {
-              console.warn("getSyntaxErrors() => " + err);
+              console.warn("getSyntaxErrors(" + fileName + ") => " + err);
             } else {
               _this.updateEditor(syntaxErrors, editor);
-              if (syntaxErrors.length == 0) {
+              if (syntaxErrors.length === 0) {
                 _this.workerProxy.getSemanticErrors(fileName, function(err, semanticErrors) {
                   if (err) {
-                    console.warn("getSemanticErrors() => " + err);
+                    console.warn("getSemanticErrors(" + fileName + ") => " + err);
                   } else {
                     _this.updateEditor(semanticErrors, editor);
                   }
@@ -1952,7 +1523,9 @@ System.register("workspace/Workspace.js", ["autocomplete/AutoCompleteCommand.js"
           var session = editor.getSession();
           this.workerProxy.getOutputFiles(fileName).then(function(outputFiles) {
             session._emit("outputFiles", {data: outputFiles});
-          }).catch(function(err) {});
+          }).catch(function(err) {
+            console.warn("getOutputFiles(" + fileName + ") => " + err);
+          });
         };
         Workspace.prototype.getCompletionsAtPosition = function(fileName, position, prefix) {
           return this.workerProxy.getCompletionsAtPosition(fileName, position, prefix);
@@ -1968,7 +1541,6 @@ System.register("workspace/Workspace.js", ["autocomplete/AutoCompleteCommand.js"
           var action = delta.action;
           var markers = editor.getSession().getMarkers(true);
           var line_count = 0;
-          var isNewLine = editor.getSession().getDocument().isNewLine;
           if (action === "insert") {
             line_count = delta.lines.length;
           } else if (action === "remove") {
@@ -5022,12 +4594,12 @@ System.register("keyboard/KeyBinding.js", ["lib/keys.js", "lib/event.js", "edito
   };
 });
 
-System.register("keyboard/TextInput.js", ["lib/event.js", "lib/useragent.js", "lib/dom.js", "lib/lang.js", "editor_protocol.js"], function(exports_1) {
+System.register("keyboard/TextInput.js", ["lib/event.js", "lib/useragent.js", "lib/dom.js", "lib/lang/createDelayedCall.js", "editor_protocol.js"], function(exports_1) {
   "use strict";
   var event_1,
       useragent_1,
       dom_1,
-      lang_1,
+      createDelayedCall_1,
       editor_protocol_1,
       editor_protocol_2;
   var BROKEN_SETDATA,
@@ -5041,8 +4613,8 @@ System.register("keyboard/TextInput.js", ["lib/event.js", "lib/useragent.js", "l
       useragent_1 = useragent_1_1;
     }, function(dom_1_1) {
       dom_1 = dom_1_1;
-    }, function(lang_1_1) {
-      lang_1 = lang_1_1;
+    }, function(createDelayedCall_1_1) {
+      createDelayedCall_1 = createDelayedCall_1_1;
     }, function(editor_protocol_1_1) {
       editor_protocol_1 = editor_protocol_1_1;
       editor_protocol_2 = editor_protocol_1_1;
@@ -5084,10 +4656,10 @@ System.register("keyboard/TextInput.js", ["lib/event.js", "lib/useragent.js", "l
             editor.onFocus();
             _this.resetSelection();
           });
-          var syncSelection = lang_1.delayedCall(function() {
+          var syncSelection = createDelayedCall_1.default(function() {
             _this._isFocused && _this.resetSelection(isSelectionEmpty);
           });
-          this.syncValue = lang_1.delayedCall(function() {
+          this.syncValue = createDelayedCall_1.default(function() {
             if (!_this.inComposition) {
               _this.text.value = PLACEHOLDER;
               _this._isFocused && _this.resetSelection();
@@ -5138,7 +4710,7 @@ System.register("keyboard/TextInput.js", ["lib/event.js", "lib/useragent.js", "l
               _this.resetValue();
               inPropertyChange = false;
             };
-            var syncProperty = lang_1.delayedCall(onPropertyChange);
+            var syncProperty = createDelayedCall_1.default(onPropertyChange);
             event_1.addListener(this.text, "propertychange", onPropertyChange);
             var keytable = {
               13: 1,
@@ -5167,8 +4739,9 @@ System.register("keyboard/TextInput.js", ["lib/event.js", "lib/useragent.js", "l
             }
           };
           var onInput = function(e) {
-            if (_this.inComposition)
+            if (_this.inComposition) {
               return;
+            }
             var data = _this.text.value;
             _this.sendText(data);
             _this.resetValue();
@@ -5315,7 +4888,7 @@ System.register("keyboard/TextInput.js", ["lib/event.js", "lib/useragent.js", "l
               editor.selection.setRange(c.range);
             }
           };
-          var syncComposition = lang_1.delayedCall(onCompositionUpdate, 50);
+          var syncComposition = createDelayedCall_1.default(onCompositionUpdate, 50);
           event_1.addListener(this.text, "compositionstart", onCompositionStart);
           if (useragent_1.isGecko) {
             event_1.addListener(this.text, "text", function() {
@@ -6907,9 +6480,9 @@ System.register("keyboard/KeyboardHandler.js", ["lib/keys.js", "lib/useragent.js
   };
 });
 
-System.register("TabstopManager.js", ["comparePoints.js", "lib/lang.js", "keyboard/KeyboardHandler.js", "Range.js"], function(exports_1) {
+System.register("TabstopManager.js", ["comparePoints.js", "lib/lang/createDelayedCall.js", "keyboard/KeyboardHandler.js", "Range.js"], function(exports_1) {
   var comparePoints_1,
-      lang_1,
+      createDelayedCall_1,
       KeyboardHandler_1,
       Range_1;
   var TabstopManager,
@@ -6918,8 +6491,8 @@ System.register("TabstopManager.js", ["comparePoints.js", "lib/lang.js", "keyboa
   return {
     setters: [function(comparePoints_1_1) {
       comparePoints_1 = comparePoints_1_1;
-    }, function(lang_1_1) {
-      lang_1 = lang_1_1;
+    }, function(createDelayedCall_1_1) {
+      createDelayedCall_1 = createDelayedCall_1_1;
     }, function(KeyboardHandler_1_1) {
       KeyboardHandler_1 = KeyboardHandler_1_1;
     }, function(Range_1_1) {
@@ -6931,7 +6504,7 @@ System.register("TabstopManager.js", ["comparePoints.js", "lib/lang.js", "keyboa
           var _this = this;
           this.keyboardHandler = new KeyboardHandler_1.default();
           this.$onChange = this.onChange.bind(this);
-          this.$onChangeSelection = lang_1.delayedCall(this.onChangeSelection.bind(this)).schedule;
+          this.$onChangeSelection = createDelayedCall_1.default(this.onChangeSelection.bind(this)).schedule;
           this.$onChangeSession = this.onChangeSession.bind(this);
           this.$onAfterExec = this.onAfterExec.bind(this);
           this.attach(editor);
@@ -9185,7 +8758,7 @@ System.register("Tooltip.js", ["lib/dom.js"], function(exports_1) {
   };
 });
 
-System.register("Editor.js", ["lib/oop.js", "lib/dom.js", "lib/lang.js", "lib/useragent.js", "keyboard/KeyboardHandler.js", "keyboard/KeyBinding.js", "keyboard/TextInput.js", "Search.js", "Range.js", "lib/EventEmitterClass.js", "commands/CommandManager.js", "commands/default_commands.js", "config.js", "TokenIterator.js", "editor_protocol.js", "Selection.js", "SnippetManager.js", "lib/event.js", "touch/touch.js", "Tooltip.js"], function(exports_1) {
+System.register("Editor.js", ["lib/oop.js", "lib/dom.js", "lib/lang/createDelayedCall.js", "lib/lang.js", "lib/useragent.js", "keyboard/KeyboardHandler.js", "keyboard/KeyBinding.js", "keyboard/TextInput.js", "Search.js", "Range.js", "lib/EventEmitterClass.js", "commands/CommandManager.js", "commands/default_commands.js", "config.js", "TokenIterator.js", "editor_protocol.js", "Selection.js", "SnippetManager.js", "lib/event.js", "touch/touch.js", "Tooltip.js"], function(exports_1) {
   "use strict";
   var __extends = (this && this.__extends) || function(d, b) {
     for (var p in b)
@@ -9198,6 +8771,7 @@ System.register("Editor.js", ["lib/oop.js", "lib/dom.js", "lib/lang.js", "lib/us
   };
   var oop_1,
       dom_1,
+      createDelayedCall_1,
       lang_1,
       useragent_1,
       KeyboardHandler_1,
@@ -9401,6 +8975,8 @@ System.register("Editor.js", ["lib/oop.js", "lib/dom.js", "lib/lang.js", "lib/us
       oop_1 = oop_1_1;
     }, function(dom_1_1) {
       dom_1 = dom_1_1;
+    }, function(createDelayedCall_1_1) {
+      createDelayedCall_1 = createDelayedCall_1_1;
     }, function(lang_1_1) {
       lang_1 = lang_1_1;
     }, function(useragent_1_1) {
@@ -9471,7 +9047,7 @@ System.register("Editor.js", ["lib/oop.js", "lib/dom.js", "lib/lang.js", "lib/us
           this.$historyTracker = this.$historyTracker.bind(this);
           this.commands.on("exec", this.$historyTracker);
           this.$initOperationListeners();
-          this._$emitInputEvent = lang_1.delayedCall(function() {
+          this._$emitInputEvent = createDelayedCall_1.default(function() {
             _this._signal("input", {});
             _this.session.bgTokenizer && _this.session.bgTokenizer.scheduleStart();
           });
@@ -9883,7 +9459,7 @@ System.register("Editor.js", ["lib/oop.js", "lib/dom.js", "lib/lang.js", "lib/us
             }
             _this.endOperation(e);
           }, true);
-          this.$opResetTimer = lang_1.delayedCall(this.endOperation.bind(this));
+          this.$opResetTimer = createDelayedCall_1.default(this.endOperation.bind(this));
           this.eventBus.on("change", function() {
             _this.curOp || _this.startOperation();
             _this.curOp.docChanged = true;
@@ -12013,6 +11589,47 @@ System.register("createEditor.js", ["Editor.js"], function(exports_1) {
   };
 });
 
+System.register("lib/lang/createDelayedCall.js", [], function(exports_1) {
+  function createDelayedCall(fcn, defaultTimeout) {
+    var timer = null;
+    var callback = function() {
+      timer = null;
+      fcn();
+    };
+    var _self = function(timeout) {
+      if (timer == null) {
+        timer = window.setTimeout(callback, timeout || defaultTimeout);
+      }
+    };
+    _self.delay = function(timeout) {
+      if (timer) {
+        window.clearTimeout(timer);
+      }
+      timer = window.setTimeout(callback, timeout || defaultTimeout);
+    };
+    _self.schedule = _self;
+    _self.call = function() {
+      this.cancel();
+      fcn();
+    };
+    _self.cancel = function() {
+      if (timer) {
+        window.clearTimeout(timer);
+      }
+      timer = null;
+    };
+    _self.isPending = function() {
+      return !!timer;
+    };
+    return _self;
+  }
+  exports_1("default", createDelayedCall);
+  return {
+    setters: [],
+    execute: function() {}
+  };
+});
+
 System.register("FoldLine.js", ["Range.js"], function(exports_1) {
   "use strict";
   var Range_1;
@@ -12730,7 +12347,6 @@ System.register("Selection.js", ["lib/lang.js", "lib/EventEmitterClass.js", "Ran
         Selection.prototype.getAllRanges = function() {
           return this.rangeCount ? this.rangeList.ranges.concat() : [this.getRange()];
         };
-        ;
         Selection.prototype.splitIntoLines = function() {
           var _this = this;
           if (this.rangeCount > 1) {
@@ -12738,13 +12354,13 @@ System.register("Selection.js", ["lib/lang.js", "lib/EventEmitterClass.js", "Ran
             var lastRange = ranges[ranges.length - 1];
             var range = Range_1.default.fromPoints(ranges[0].start, lastRange.end);
             this.toSingleRange();
-            this.setSelectionRange(range, lastRange.cursor == lastRange.start);
+            this.setSelectionRange(range, lastRange.cursor === lastRange.start);
           } else {
             var range = this.getRange();
             var isBackwards = this.isBackwards();
             var startRow = range.start.row;
             var endRow = range.end.row;
-            if (startRow == endRow) {
+            if (startRow === endRow) {
               if (isBackwards)
                 var start = range.end,
                     end = range.start;
@@ -12772,7 +12388,7 @@ System.register("Selection.js", ["lib/lang.js", "lib/EventEmitterClass.js", "Ran
         };
         ;
         Selection.prototype.isEmpty = function() {
-          return (this.$isEmpty || (this.anchor.row == this.lead.row && this.anchor.column == this.lead.column));
+          return (this.$isEmpty || (this.anchor.row === this.lead.row && this.anchor.column === this.lead.column));
         };
         Selection.prototype.isMultiLine = function() {
           if (this.isEmpty()) {
@@ -12784,6 +12400,12 @@ System.register("Selection.js", ["lib/lang.js", "lib/EventEmitterClass.js", "Ran
           return this.lead.getPosition();
         };
         Selection.prototype.setSelectionAnchor = function(row, column) {
+          if (typeof row !== 'number') {
+            throw new TypeError("row must be a number");
+          }
+          if (typeof column !== 'number') {
+            throw new TypeError("column must be a number");
+          }
           this.anchor.setPosition(row, column);
           if (this.$isEmpty) {
             this.$isEmpty = false;
@@ -12824,6 +12446,18 @@ System.register("Selection.js", ["lib/lang.js", "lib/EventEmitterClass.js", "Ran
         Selection.prototype.getRange = function() {
           var anchor = this.anchor;
           var lead = this.lead;
+          if (typeof anchor.row !== 'number') {
+            throw new TypeError();
+          }
+          if (typeof anchor.column !== 'number') {
+            throw new TypeError();
+          }
+          if (typeof lead.row !== 'number') {
+            throw new TypeError();
+          }
+          if (typeof lead.column !== 'number') {
+            throw new TypeError();
+          }
           if (this.isEmpty())
             return Range_1.default.fromPoints(lead, lead);
           if (this.isBackwards()) {
@@ -12930,7 +12564,7 @@ System.register("Selection.js", ["lib/lang.js", "lib/EventEmitterClass.js", "Ran
           this.setSelectionRange(range);
         };
         Selection.prototype.getLineRange = function(row, excludeLastChar) {
-          var rowStart = typeof row == "number" ? row : this.lead.row;
+          var rowStart = typeof row === "number" ? row : this.lead.row;
           var rowEnd;
           var foldLine = this.session.getFoldLine(rowStart);
           if (foldLine) {
@@ -12964,8 +12598,8 @@ System.register("Selection.js", ["lib/lang.js", "lib/EventEmitterClass.js", "Ran
           this.moveCursorBy(1, 0);
         };
         Selection.prototype.moveCursorLeft = function() {
-          var cursor = this.lead.getPosition(),
-              fold;
+          var cursor = this.lead.getPosition();
+          var fold;
           if (fold = this.session.getFoldAt(cursor.row, cursor.column, -1)) {
             this.moveCursorTo(fold.start.row, fold.start.column);
           } else if (cursor.column === 0) {
@@ -12974,7 +12608,7 @@ System.register("Selection.js", ["lib/lang.js", "lib/EventEmitterClass.js", "Ran
             }
           } else {
             var tabSize = this.session.getTabSize();
-            if (this.session.isTabStop(cursor) && this.doc.getLine(cursor.row).slice(cursor.column - tabSize, cursor.column).split(" ").length - 1 == tabSize)
+            if (this.session.isTabStop(cursor) && this.doc.getLine(cursor.row).slice(cursor.column - tabSize, cursor.column).split(" ").length - 1 === tabSize)
               this.moveCursorBy(0, -tabSize);
             else
               this.moveCursorBy(0, -1);
@@ -12985,14 +12619,14 @@ System.register("Selection.js", ["lib/lang.js", "lib/EventEmitterClass.js", "Ran
           var fold = this.session.getFoldAt(pos.row, pos.column, 1);
           if (fold) {
             this.moveCursorTo(fold.end.row, fold.end.column);
-          } else if (this.lead.column == this.doc.getLine(this.lead.row).length) {
+          } else if (this.lead.column === this.doc.getLine(this.lead.row).length) {
             if (this.lead.row < this.doc.getLength() - 1) {
               this.moveCursorTo(this.lead.row + 1, 0);
             }
           } else {
             var tabSize = this.session.getTabSize();
             var cursor = this.lead;
-            if (this.session.isTabStop(cursor) && this.doc.getLine(cursor.row).slice(cursor.column, cursor.column + tabSize).split(" ").length - 1 == tabSize) {
+            if (this.session.isTabStop(cursor) && this.doc.getLine(cursor.row).slice(cursor.column, cursor.column + tabSize).split(" ").length - 1 === tabSize) {
               this.moveCursorBy(0, tabSize);
             } else {
               this.moveCursorBy(0, 1);
@@ -13004,18 +12638,18 @@ System.register("Selection.js", ["lib/lang.js", "lib/EventEmitterClass.js", "Ran
           var column = this.lead.column;
           var screenRow = this.session.documentToScreenRow(row, column);
           var firstColumnPosition = this.session.screenToDocumentPosition(screenRow, 0);
-          var beforeCursor = this.session['getDisplayLine'](row, null, firstColumnPosition.row, firstColumnPosition.column);
+          var beforeCursor = this.session.getDisplayLine(row, null, firstColumnPosition.row, firstColumnPosition.column);
           var leadingSpace = beforeCursor.match(/^\s*/);
-          if (leadingSpace[0].length != column && !this.session['$useEmacsStyleLineStart'])
+          if (leadingSpace[0].length !== column && !this.session.$useEmacsStyleLineStart)
             firstColumnPosition.column += leadingSpace[0].length;
           this.moveCursorToPosition(firstColumnPosition);
         };
         Selection.prototype.moveCursorLineEnd = function() {
           var lead = this.lead;
           var lineEnd = this.session.getDocumentLastRowColumnPosition(lead.row, lead.column);
-          if (this.lead.column == lineEnd.column) {
+          if (this.lead.column === lineEnd.column) {
             var line = this.session.getLine(lineEnd.row);
-            if (lineEnd.column == line.length) {
+            if (lineEnd.column === line.length) {
               var textEnd = line.search(/\s+$/);
               if (textEnd > 0)
                 lineEnd.column = textEnd;
@@ -13097,9 +12731,9 @@ System.register("Selection.js", ["lib/lang.js", "lib/EventEmitterClass.js", "Ran
           this.moveCursorTo(row, column);
         };
         Selection.prototype.$shortWordEndIndex = function(rightOfCursor) {
-          var match,
-              index = 0,
-              ch;
+          var match;
+          var index = 0;
+          var ch;
           var whitespaceRe = /\s/;
           var tokenRe = this.session.tokenRe;
           tokenRe.lastIndex = 0;
@@ -13138,7 +12772,7 @@ System.register("Selection.js", ["lib/lang.js", "lib/EventEmitterClass.js", "Ran
           var fold = this.session.getFoldAt(row, column, 1);
           if (fold)
             return this.moveCursorTo(fold.end.row, fold.end.column);
-          if (column == line.length) {
+          if (column === line.length) {
             var l = this.doc.getLength();
             do {
               row++;
@@ -13158,7 +12792,7 @@ System.register("Selection.js", ["lib/lang.js", "lib/EventEmitterClass.js", "Ran
           if (fold = this.session.getFoldAt(row, column, -1))
             return this.moveCursorTo(fold.start.row, fold.start.column);
           var line = this.session.getLine(row).substring(0, column);
-          if (column == 0) {
+          if (column === 0) {
             do {
               row--;
               line = this.doc.getLine(row);
@@ -13172,14 +12806,14 @@ System.register("Selection.js", ["lib/lang.js", "lib/EventEmitterClass.js", "Ran
           return this.moveCursorTo(row, column - index);
         };
         Selection.prototype.moveCursorWordRight = function() {
-          if (this.session['$selectLongWords']) {
+          if (this.session.$selectLongWords) {
             this.moveCursorLongWordRight();
           } else {
             this.moveCursorShortWordRight();
           }
         };
         Selection.prototype.moveCursorWordLeft = function() {
-          if (this.session['$selectLongWords']) {
+          if (this.session.$selectLongWords) {
             this.moveCursorLongWordLeft();
           } else {
             this.moveCursorShortWordLeft();
@@ -13231,7 +12865,7 @@ System.register("Selection.js", ["lib/lang.js", "lib/EventEmitterClass.js", "Ran
           this.session = this.doc = null;
         };
         Selection.prototype.fromOrientedRange = function(range) {
-          this.setSelectionRange(range, range.cursor == range.start);
+          this.setSelectionRange(range, range.cursor === range.start);
           this.$desiredColumn = range.desiredColumn || this.$desiredColumn;
         };
         Selection.prototype.toOrientedRange = function(range) {
@@ -13264,7 +12898,7 @@ System.register("Selection.js", ["lib/lang.js", "lib/EventEmitterClass.js", "Ran
           if (this.rangeCount) {
             var ranges = this.ranges.map(function(r) {
               var r1 = r.clone();
-              r1['isBackwards'] = r.cursor === r.start;
+              r1.isBackwards = r.cursor === r.start;
               return r1;
             });
             return ranges;
@@ -13280,7 +12914,9 @@ System.register("Selection.js", ["lib/lang.js", "lib/EventEmitterClass.js", "Ran
           if (removed.length) {
             this.$onRemoveRange(removed);
           }
-          range && this.fromOrientedRange(range);
+          if (range) {
+            this.fromOrientedRange(range);
+          }
         };
         Selection.prototype.addRange = function(range, $blockChangeEvents) {
           if (!range) {
@@ -13290,7 +12926,7 @@ System.register("Selection.js", ["lib/lang.js", "lib/EventEmitterClass.js", "Ran
             var oldRange = this.toOrientedRange();
             this.rangeList.add(oldRange);
             this.rangeList.add(range);
-            if (this.rangeList.ranges.length != 2) {
+            if (this.rangeList.ranges.length !== 2) {
               this.rangeList.removeAll();
               return $blockChangeEvents || this.fromOrientedRange(range);
             }
@@ -13322,7 +12958,7 @@ System.register("Selection.js", ["lib/lang.js", "lib/EventEmitterClass.js", "Ran
         ;
         Selection.prototype.$onRemoveRange = function(removed) {
           this.rangeCount = this.rangeList.ranges.length;
-          if (this.rangeCount == 1 && this.inMultiSelectMode) {
+          if (this.rangeCount === 1 && this.inMultiSelectMode) {
             var lastRange = this.rangeList.ranges.pop();
             removed.push(lastRange);
             this.rangeCount = 0;
@@ -13346,7 +12982,7 @@ System.register("Selection.js", ["lib/lang.js", "lib/EventEmitterClass.js", "Ran
         };
         ;
         Selection.prototype.fromJSON = function(data) {
-          if (data.start == undefined) {
+          if (data.start === void 0) {
             if (this.rangeList) {
               this.toSingleRange(data[0]);
               for (var i = data.length; i--; ) {
@@ -13389,7 +13025,8 @@ System.register("applyDelta.js", [], function(exports_1) {
     return position.row >= 0 && position.row < docLines.length && position.column >= 0 && position.column <= docLines[position.row].length;
   }
   function validateDelta(docLines, delta) {
-    if (delta.action !== "insert" && delta.action !== "remove")
+    var action = delta.action;
+    if (action !== "insert" && action !== "remove")
       throwDeltaError(delta, "delta.action must be 'insert' or 'remove'");
     if (!(delta.lines instanceof Array))
       throwDeltaError(delta, "delta.lines must be an Array");
@@ -13399,15 +13036,15 @@ System.register("applyDelta.js", [], function(exports_1) {
     if (!positionInDocument(docLines, delta.start))
       throwDeltaError(delta, "delta.start must be contained in document");
     var end = delta.end;
-    if (delta.action === "remove" && !positionInDocument(docLines, end))
-      throwDeltaError(delta, "delta.end must contained in document for 'remove' actions");
+    if (action === "remove" && !positionInDocument(docLines, end))
+      throwDeltaError(delta, "delta.end " + JSON.stringify(end) + " must be contained in document for 'remove' actions");
     var numRangeRows = end.row - start.row;
-    var numRangeLastLineChars = (end.column - (numRangeRows == 0 ? start.column : 0));
-    if (numRangeRows != delta.lines.length - 1 || delta.lines[numRangeRows].length != numRangeLastLineChars)
+    var numRangeLastLineChars = (end.column - (numRangeRows === 0 ? start.column : 0));
+    if (numRangeRows !== delta.lines.length - 1 || delta.lines[numRangeRows].length !== numRangeLastLineChars)
       throwDeltaError(delta, "delta.range must match delta lines");
   }
   function applyDelta(docLines, delta, doNotValidate) {
-    if (!doNotValidate) {
+    if (!doNotValidate && false) {
       validateDelta(docLines, delta);
     }
     var row = delta.start.row;
@@ -13435,6 +13072,8 @@ System.register("applyDelta.js", [], function(exports_1) {
           docLines.splice(row, endRow - row + 1, line.substring(0, startColumn) + docLines[endRow].substring(endColumn));
         }
         break;
+      default:
+        {}
     }
   }
   exports_1("default", applyDelta);
@@ -13499,8 +13138,8 @@ System.register("Document.js", ["applyDelta.js", "lib/EventEmitterClass.js", "Ra
           }
         }
         Document.prototype.setValue = function(text) {
-          var len = this.getLength() - 1;
-          this.remove(new Range_1.default(0, 0, len, this.getLine(len).length));
+          var row = this.getLength() - 1;
+          this.remove(new Range_1.default(0, 0, row, this.getLine(row).length));
           this.insert({
             row: 0,
             column: 0
@@ -13987,6 +13626,16 @@ System.register("SearchHighlight.js", ["lib/lang.js", "Range.js"], function(expo
           this.regExp = regExp;
           this.cache = [];
         };
+        Object.defineProperty(SearchHighlight.prototype, "range", {
+          get: function() {
+            return this._range;
+          },
+          set: function(range) {
+            this._range = range;
+          },
+          enumerable: true,
+          configurable: true
+        });
         SearchHighlight.prototype.update = function(html, markerLayer, session, config) {
           if (!this.regExp)
             return;
@@ -14012,45 +13661,6 @@ System.register("SearchHighlight.js", ["lib/lang.js", "Range.js"], function(expo
         return SearchHighlight;
       })();
       exports_1("default", SearchHighlight);
-    }
-  };
-});
-
-System.register("lib/asserts.js", [], function(exports_1) {
-  "use strict";
-  var ENABLE_ASSERTS,
-      AssertionError;
-  function doAssertFailure(defaultMessage, defaultArgs, givenMessage, givenArgs) {
-    var message = 'Assertion failed';
-    if (givenMessage) {
-      message += ': ' + givenMessage;
-      var args = givenArgs;
-    } else if (defaultMessage) {
-      message += ': ' + defaultMessage;
-      args = defaultArgs;
-    }
-    throw new AssertionError('' + message, args || []);
-  }
-  function assert(condition, message, args) {
-    if (ENABLE_ASSERTS && !condition) {
-      doAssertFailure('', null, message, Array.prototype.slice.call(arguments, 2));
-    }
-    return condition;
-  }
-  exports_1("assert", assert);
-  return {
-    setters: [],
-    execute: function() {
-      exports_1("ENABLE_ASSERTS", ENABLE_ASSERTS = true);
-      AssertionError = (function() {
-        function AssertionError(message, args) {
-          this.name = 'AssertionError';
-          this.message = message;
-        }
-        return AssertionError;
-      })();
-      exports_1("AssertionError", AssertionError);
-      ;
     }
   };
 });
@@ -15228,8 +14838,9 @@ System.register("mode/TextMode.js", ["Tokenizer.js", "mode/TextHighlightRules.js
   };
 });
 
-System.register("EditSession.js", ["lib/lang.js", "config.js", "lib/EventEmitterClass.js", "FoldLine.js", "Fold.js", "Selection.js", "Range.js", "Document.js", "BackgroundTokenizer.js", "SearchHighlight.js", "lib/asserts.js", "BracketMatch.js", "TokenIterator.js", "mode/TextMode.js"], function(exports_1) {
-  var lang_1,
+System.register("EditSession.js", ["lib/lang/createDelayedCall.js", "lib/lang.js", "config.js", "lib/EventEmitterClass.js", "FoldLine.js", "Fold.js", "Selection.js", "Range.js", "Document.js", "BackgroundTokenizer.js", "SearchHighlight.js", "BracketMatch.js", "TokenIterator.js", "mode/TextMode.js"], function(exports_1) {
+  var createDelayedCall_1,
+      lang_1,
       config_1,
       EventEmitterClass_1,
       FoldLine_1,
@@ -15239,7 +14850,6 @@ System.register("EditSession.js", ["lib/lang.js", "config.js", "lib/EventEmitter
       Document_1,
       BackgroundTokenizer_1,
       SearchHighlight_1,
-      asserts_1,
       BracketMatch_1,
       TokenIterator_1,
       TextMode_1;
@@ -15258,7 +14868,9 @@ System.register("EditSession.js", ["lib/lang.js", "config.js", "lib/EventEmitter
     return c >= 0x1100 && c <= 0x115F || c >= 0x11A3 && c <= 0x11A7 || c >= 0x11FA && c <= 0x11FF || c >= 0x2329 && c <= 0x232A || c >= 0x2E80 && c <= 0x2E99 || c >= 0x2E9B && c <= 0x2EF3 || c >= 0x2F00 && c <= 0x2FD5 || c >= 0x2FF0 && c <= 0x2FFB || c >= 0x3000 && c <= 0x303E || c >= 0x3041 && c <= 0x3096 || c >= 0x3099 && c <= 0x30FF || c >= 0x3105 && c <= 0x312D || c >= 0x3131 && c <= 0x318E || c >= 0x3190 && c <= 0x31BA || c >= 0x31C0 && c <= 0x31E3 || c >= 0x31F0 && c <= 0x321E || c >= 0x3220 && c <= 0x3247 || c >= 0x3250 && c <= 0x32FE || c >= 0x3300 && c <= 0x4DBF || c >= 0x4E00 && c <= 0xA48C || c >= 0xA490 && c <= 0xA4C6 || c >= 0xA960 && c <= 0xA97C || c >= 0xAC00 && c <= 0xD7A3 || c >= 0xD7B0 && c <= 0xD7C6 || c >= 0xD7CB && c <= 0xD7FB || c >= 0xF900 && c <= 0xFAFF || c >= 0xFE10 && c <= 0xFE19 || c >= 0xFE30 && c <= 0xFE52 || c >= 0xFE54 && c <= 0xFE66 || c >= 0xFE68 && c <= 0xFE6B || c >= 0xFF01 && c <= 0xFF60 || c >= 0xFFE0 && c <= 0xFFE6;
   }
   return {
-    setters: [function(lang_1_1) {
+    setters: [function(createDelayedCall_1_1) {
+      createDelayedCall_1 = createDelayedCall_1_1;
+    }, function(lang_1_1) {
       lang_1 = lang_1_1;
     }, function(config_1_1) {
       config_1 = config_1_1;
@@ -15278,8 +14890,6 @@ System.register("EditSession.js", ["lib/lang.js", "config.js", "lib/EventEmitter
       BackgroundTokenizer_1 = BackgroundTokenizer_1_1;
     }, function(SearchHighlight_1_1) {
       SearchHighlight_1 = SearchHighlight_1_1;
-    }, function(asserts_1_1) {
-      asserts_1 = asserts_1_1;
     }, function(BracketMatch_1_1) {
       BracketMatch_1 = BracketMatch_1_1;
     }, function(TokenIterator_1_1) {
@@ -15526,7 +15136,7 @@ System.register("EditSession.js", ["lib/lang.js", "config.js", "lib/EventEmitter
               self.mergeUndoDeltas = false;
               self.$deltas = [];
             };
-            this.$informUndoManager = lang_1.delayedCall(this.$syncInformUndoManager);
+            this.$informUndoManager = createDelayedCall_1.default(this.$syncInformUndoManager);
           }
         };
         EditSession.prototype.markUndoGroup = function() {
@@ -15612,6 +15222,20 @@ System.register("EditSession.js", ["lib/lang.js", "config.js", "lib/EventEmitter
             type = 'line';
           }
           var id = this.$markerId++;
+          if (range) {
+            if (typeof range.start.row !== 'number') {
+              throw new TypeError();
+            }
+            if (typeof range.start.column !== 'number') {
+              throw new TypeError();
+            }
+            if (typeof range.end.row !== 'number') {
+              throw new TypeError();
+            }
+            if (typeof range.end.column !== 'number') {
+              throw new TypeError();
+            }
+          }
           var marker = {
             range: range,
             type: type || "line",
@@ -15964,8 +15588,8 @@ System.register("EditSession.js", ["lib/lang.js", "config.js", "lib/EventEmitter
             return isUndo ? delta.action !== "insert" : delta.action === "insert";
           }
           var delta = deltas[0];
-          var range,
-              point;
+          var range;
+          var point;
           var lastDeltaIsInsert = false;
           if (isInsert(delta)) {
             range = Range_1.default.fromPoints(delta.start, delta.end);
@@ -15979,11 +15603,11 @@ System.register("EditSession.js", ["lib/lang.js", "config.js", "lib/EventEmitter
             if (isInsert(delta)) {
               point = delta.start;
               if (range.compare(point.row, point.column) == -1) {
-                range.setStart(point);
+                range.setStart(point.row, point.column);
               }
               point = delta.end;
               if (range.compare(point.row, point.column) == 1) {
-                range.setEnd(point);
+                range.setEnd(point.row, point.column);
               }
               lastDeltaIsInsert = true;
             } else {
@@ -16001,9 +15625,9 @@ System.register("EditSession.js", ["lib/lang.js", "config.js", "lib/EventEmitter
             }
             var cmp = lastUndoRange.compareRange(range);
             if (cmp == 1) {
-              range.setStart(lastUndoRange.start);
+              range.setStart(lastUndoRange.start.row, lastUndoRange.start.column);
             } else if (cmp == -1) {
-              range.setEnd(lastUndoRange.end);
+              range.setEnd(lastUndoRange.end.row, lastUndoRange.end.column);
             }
           }
           return range;
@@ -16612,18 +16236,21 @@ System.register("EditSession.js", ["lib/lang.js", "config.js", "lib/EventEmitter
           };
         };
         EditSession.prototype.documentToScreenPosition = function(docRow, docColumn) {
-          var pos;
-          if (typeof docColumn === "undefined") {
-            pos = this.$clipPositionToDocument(docRow['row'], docRow['column']);
-          } else {
-            asserts_1.assert(typeof docRow === 'number', "docRow must be a number");
-            asserts_1.assert(typeof docColumn === 'number', "docColumn must be a number");
-            pos = this.$clipPositionToDocument(docRow, docColumn);
+          if (typeof docRow !== 'number') {
+            throw new TypeError("docRow must be a number");
           }
+          if (typeof docColumn !== 'number') {
+            throw new TypeError("docColumn must be a number");
+          }
+          var pos = this.$clipPositionToDocument(docRow, docColumn);
           docRow = pos.row;
           docColumn = pos.column;
-          asserts_1.assert(typeof docRow === 'number', "docRow must be a number");
-          asserts_1.assert(typeof docColumn === 'number', "docColumn must be a number");
+          if (typeof docRow !== 'number') {
+            throw new TypeError("docRow must be a number");
+          }
+          if (typeof docColumn !== 'number') {
+            throw new TypeError("docColumn must be a number");
+          }
           var screenRow = 0;
           var foldStartRow = null;
           var fold = null;
@@ -16632,14 +16259,14 @@ System.register("EditSession.js", ["lib/lang.js", "config.js", "lib/EventEmitter
             docRow = fold.start.row;
             docColumn = fold.start.column;
           }
-          var rowEnd,
-              row = 0;
+          var rowEnd;
+          var row = 0;
           var rowCache = this.$docRowCache;
           var i = this.$getRowCacheIndex(rowCache, docRow);
           var l = rowCache.length;
           if (l && i >= 0) {
-            var row = rowCache[i];
-            var screenRow = this.$screenRowCache[i];
+            row = rowCache[i];
+            screenRow = this.$screenRowCache[i];
             var doCache = docRow > rowCache[l - 1];
           } else {
             var doCache = !l;
@@ -18649,6 +18276,12 @@ System.register("Range.js", [], function(exports_1) {
           }
         };
         Range.prototype.clipRows = function(firstRow, lastRow) {
+          if (typeof firstRow !== 'number') {
+            throw new TypeError("clipRows() firstRow must be a number.");
+          }
+          if (typeof lastRow !== 'number') {
+            throw new TypeError("clipRows() lastRow must be a number.");
+          }
           var start;
           var end;
           if (this.end.row > lastRow)
@@ -18700,10 +18333,11 @@ System.register("Range.js", [], function(exports_1) {
           return Range.fromPoints(this.start, this.end);
         };
         Range.prototype.collapseRows = function() {
-          if (this.end.column === 0)
+          if (this.end.column === 0) {
             return new Range(this.start.row, 0, Math.max(this.start.row, this.end.row - 1), 0);
-          else
+          } else {
             return new Range(this.start.row, 0, this.end.row, 0);
+          }
         };
         Range.prototype.moveBy = function(row, column) {
           this.start.row += row;
@@ -18772,6 +18406,18 @@ System.register("layer/MarkerLayer.js", ["layer/AbstractLayer.js", "Range.js"], 
             if (!marker.range) {
               marker.update(html, this, this.session, config);
               continue;
+            }
+            if (typeof marker.range.start.row !== 'number') {
+              throw new TypeError();
+            }
+            if (typeof marker.range.start.column !== 'number') {
+              throw new TypeError();
+            }
+            if (typeof marker.range.end.row !== 'number') {
+              throw new TypeError();
+            }
+            if (typeof marker.range.end.row !== 'number') {
+              throw new TypeError();
             }
             var range = marker.range.clipRows(config.firstRow, config.lastRow);
             if (range.isEmpty())
@@ -19004,41 +18650,11 @@ System.register("lib/lang.js", [], function(exports_1) {
     return deferred;
   }
   exports_1("deferredCall", deferredCall);
-  function delayedCall(fcn, defaultTimeout) {
-    var timer = null;
-    var callback = function() {
-      timer = null;
-      fcn();
-    };
-    var _self = function(timeout) {
-      if (timer == null)
-        timer = setTimeout(callback, timeout || defaultTimeout);
-    };
-    _self.delay = function(timeout) {
-      timer && clearTimeout(timer);
-      timer = setTimeout(callback, timeout || defaultTimeout);
-    };
-    _self.schedule = _self;
-    _self.call = function() {
-      this.cancel();
-      fcn();
-    };
-    _self.cancel = function() {
-      timer && clearTimeout(timer);
-      timer = null;
-    };
-    _self.isPending = function() {
-      return timer;
-    };
-    return _self;
-  }
-  exports_1("delayedCall", delayedCall);
   return {
     setters: [],
     execute: function() {
       trimBeginRegexp = /^\s\s*/;
       trimEndRegexp = /\s\s*$/;
-      ;
       ;
       ;
       ;
@@ -19609,6 +19225,160 @@ System.register("VScrollBar.js", ["lib/event.js", "ScrollBar.js", "lib/dom.js"],
         return VScrollBar;
       })(ScrollBar_1.default);
       exports_1("default", VScrollBar);
+    }
+  };
+});
+
+System.register("lib/dom.js", [], function(exports_1) {
+  var XHTML_NS,
+      computedStyle,
+      getInnerText,
+      setInnerText;
+  function getDocumentBody(doc) {
+    if (doc === void 0) {
+      doc = document;
+    }
+    return (doc.body || doc.getElementsByTagName("body")[0]);
+  }
+  exports_1("getDocumentBody", getDocumentBody);
+  function createHTMLDivElement(namespaceURI) {
+    return document.createElementNS ? document.createElementNS(namespaceURI || XHTML_NS, 'div') : document.createElement('div');
+  }
+  exports_1("createHTMLDivElement", createHTMLDivElement);
+  function createElement(tagName, namespaceURI) {
+    return document.createElementNS ? document.createElementNS(namespaceURI || XHTML_NS, tagName) : document.createElement(tagName);
+  }
+  exports_1("createElement", createElement);
+  function hasCssClass(element, name) {
+    var classes = element.className.split(/\s+/g);
+    return classes.indexOf(name) !== -1;
+  }
+  exports_1("hasCssClass", hasCssClass);
+  function addCssClass(element, name) {
+    if (!hasCssClass(element, name)) {
+      element.className += " " + name;
+    }
+  }
+  exports_1("addCssClass", addCssClass);
+  function removeCssClass(element, name) {
+    var classes = element.className.split(/\s+/g);
+    while (true) {
+      var index = classes.indexOf(name);
+      if (index === -1) {
+        break;
+      }
+      classes.splice(index, 1);
+    }
+    element.className = classes.join(" ");
+  }
+  exports_1("removeCssClass", removeCssClass);
+  function toggleCssClass(element, name) {
+    var classes = element.className.split(/\s+/g);
+    var add = true;
+    while (true) {
+      var index = classes.indexOf(name);
+      if (index == -1) {
+        break;
+      }
+      add = false;
+      classes.splice(index, 1);
+    }
+    if (add)
+      classes.push(name);
+    element.className = classes.join(" ");
+    return add;
+  }
+  exports_1("toggleCssClass", toggleCssClass);
+  function setCssClass(node, className, include) {
+    if (include) {
+      addCssClass(node, className);
+    } else {
+      removeCssClass(node, className);
+    }
+  }
+  exports_1("setCssClass", setCssClass);
+  function makeComputedStyle() {
+    if (window.getComputedStyle) {
+      return function(element, style) {
+        return (window.getComputedStyle(element, "") || {})[style] || "";
+      };
+    } else {
+      return function(element, style) {
+        if (style) {
+          return element['currentStyle'][style];
+        }
+        return element['currentStyle'];
+      };
+    }
+  }
+  function scrollbarWidth(document) {
+    var inner = createElement("ace_inner");
+    inner.style.width = "100%";
+    inner.style.minWidth = "0px";
+    inner.style.height = "200px";
+    inner.style.display = "block";
+    var outer = createElement("ace_outer");
+    var style = outer.style;
+    style.position = "absolute";
+    style.left = "-10000px";
+    style.overflow = "hidden";
+    style.width = "200px";
+    style.minWidth = "0px";
+    style.height = "150px";
+    style.display = "block";
+    outer.appendChild(inner);
+    var body = document.documentElement;
+    body.appendChild(outer);
+    var noScrollbar = inner.offsetWidth;
+    style.overflow = "scroll";
+    var withScrollbar = inner.offsetWidth;
+    if (noScrollbar === withScrollbar) {
+      withScrollbar = outer.clientWidth;
+    }
+    body.removeChild(outer);
+    return noScrollbar - withScrollbar;
+  }
+  exports_1("scrollbarWidth", scrollbarWidth);
+  function setInnerHtml(element, innerHTML) {
+    var clonedElement = element.cloneNode(false);
+    clonedElement.innerHTML = innerHTML;
+    element.parentNode.replaceChild(clonedElement, element);
+    return clonedElement;
+  }
+  exports_1("setInnerHtml", setInnerHtml);
+  function makeGetInnerText() {
+    if ("textContent" in document.documentElement) {
+      return function(el) {
+        return el.textContent;
+      };
+    } else {
+      return function(el) {
+        return el.innerText;
+      };
+    }
+  }
+  function makeSetInnerText() {
+    if ("textContent" in document.documentElement) {
+      return function(el, innerText) {
+        el.textContent = innerText;
+      };
+    } else {
+      return function(el, innerText) {
+        el.innerText = innerText;
+      };
+    }
+  }
+  function getParentWindow(document) {
+    return document.defaultView;
+  }
+  exports_1("getParentWindow", getParentWindow);
+  return {
+    setters: [],
+    execute: function() {
+      XHTML_NS = "http://www.w3.org/1999/xhtml";
+      exports_1("computedStyle", computedStyle = makeComputedStyle());
+      exports_1("getInnerText", getInnerText = makeGetInnerText());
+      exports_1("setInnerText", setInnerText = makeSetInnerText());
     }
   };
 });
@@ -21725,172 +21495,100 @@ System.register("createRenderer.js", ["Renderer.js"], function(exports_1) {
   };
 });
 
-System.register("lib/dom.js", [], function(exports_1) {
-  var XHTML_NS,
-      computedStyle,
-      getInnerText,
-      setInnerText;
-  function getDocumentBody(doc) {
-    if (doc === void 0) {
-      doc = document;
-    }
-    return (doc.body || doc.getElementsByTagName("body")[0]);
-  }
-  exports_1("getDocumentBody", getDocumentBody);
-  function createHTMLDivElement(namespaceURI) {
-    return document.createElementNS ? document.createElementNS(namespaceURI || XHTML_NS, 'div') : document.createElement('div');
-  }
-  exports_1("createHTMLDivElement", createHTMLDivElement);
-  function createElement(tagName, namespaceURI) {
-    return document.createElementNS ? document.createElementNS(namespaceURI || XHTML_NS, tagName) : document.createElement(tagName);
-  }
-  exports_1("createElement", createElement);
-  function hasCssClass(element, name) {
-    var classes = element.className.split(/\s+/g);
-    return classes.indexOf(name) !== -1;
-  }
-  exports_1("hasCssClass", hasCssClass);
-  function addCssClass(element, name) {
-    if (!hasCssClass(element, name)) {
-      element.className += " " + name;
-    }
-  }
-  exports_1("addCssClass", addCssClass);
-  function removeCssClass(element, name) {
-    var classes = element.className.split(/\s+/g);
-    while (true) {
-      var index = classes.indexOf(name);
-      if (index === -1) {
-        break;
-      }
-      classes.splice(index, 1);
-    }
-    element.className = classes.join(" ");
-  }
-  exports_1("removeCssClass", removeCssClass);
-  function toggleCssClass(element, name) {
-    var classes = element.className.split(/\s+/g);
-    var add = true;
-    while (true) {
-      var index = classes.indexOf(name);
-      if (index == -1) {
-        break;
-      }
-      add = false;
-      classes.splice(index, 1);
-    }
-    if (add)
-      classes.push(name);
-    element.className = classes.join(" ");
-    return add;
-  }
-  exports_1("toggleCssClass", toggleCssClass);
-  function setCssClass(node, className, include) {
-    if (include) {
-      addCssClass(node, className);
-    } else {
-      removeCssClass(node, className);
-    }
-  }
-  exports_1("setCssClass", setCssClass);
-  function makeComputedStyle() {
-    if (window.getComputedStyle) {
-      return function(element, style) {
-        return (window.getComputedStyle(element, "") || {})[style] || "";
-      };
-    } else {
-      return function(element, style) {
-        if (style) {
-          return element['currentStyle'][style];
-        }
-        return element['currentStyle'];
-      };
-    }
-  }
-  function scrollbarWidth(document) {
-    var inner = createElement("ace_inner");
-    inner.style.width = "100%";
-    inner.style.minWidth = "0px";
-    inner.style.height = "200px";
-    inner.style.display = "block";
-    var outer = createElement("ace_outer");
-    var style = outer.style;
-    style.position = "absolute";
-    style.left = "-10000px";
-    style.overflow = "hidden";
-    style.width = "200px";
-    style.minWidth = "0px";
-    style.height = "150px";
-    style.display = "block";
-    outer.appendChild(inner);
-    var body = document.documentElement;
-    body.appendChild(outer);
-    var noScrollbar = inner.offsetWidth;
-    style.overflow = "scroll";
-    var withScrollbar = inner.offsetWidth;
-    if (noScrollbar === withScrollbar) {
-      withScrollbar = outer.clientWidth;
-    }
-    body.removeChild(outer);
-    return noScrollbar - withScrollbar;
-  }
-  exports_1("scrollbarWidth", scrollbarWidth);
-  function setInnerHtml(element, innerHTML) {
-    var clonedElement = element.cloneNode(false);
-    clonedElement.innerHTML = innerHTML;
-    element.parentNode.replaceChild(clonedElement, element);
-    return clonedElement;
-  }
-  exports_1("setInnerHtml", setInnerHtml);
-  function makeGetInnerText() {
-    if ("textContent" in document.documentElement) {
-      return function(el) {
-        return el.textContent;
-      };
-    } else {
-      return function(el) {
-        return el.innerText;
-      };
-    }
-  }
-  function makeSetInnerText() {
-    if ("textContent" in document.documentElement) {
-      return function(el, innerText) {
-        el.textContent = innerText;
-      };
-    } else {
-      return function(el, innerText) {
-        el.innerText = innerText;
-      };
-    }
-  }
-  function getParentWindow(document) {
-    return document.defaultView;
-  }
-  exports_1("getParentWindow", getParentWindow);
+System.register("UndoManager.js", [], function(exports_1) {
+  "use strict";
+  var UndoManager;
   return {
     setters: [],
     execute: function() {
-      XHTML_NS = "http://www.w3.org/1999/xhtml";
-      exports_1("computedStyle", computedStyle = makeComputedStyle());
-      exports_1("getInnerText", getInnerText = makeGetInnerText());
-      exports_1("setInnerText", setInnerText = makeSetInnerText());
+      UndoManager = (function() {
+        function UndoManager() {
+          this.reset();
+        }
+        UndoManager.prototype.execute = function(options) {
+          var deltas = options.args[0];
+          this._editSession = options.args[1];
+          if (options.merge && this.hasUndo()) {
+            this._dirtyCounter--;
+            deltas = this.$undoStack.pop().concat(deltas);
+          }
+          this.$undoStack.push(deltas);
+          this.$redoStack = [];
+          if (this._dirtyCounter < 0) {
+            this._dirtyCounter = NaN;
+          }
+          this._dirtyCounter++;
+        };
+        UndoManager.prototype.undo = function(dontSelect) {
+          var deltas = this.$undoStack.pop();
+          var undoSelectionRange = null;
+          if (deltas) {
+            undoSelectionRange = this._editSession.undoChanges(deltas, dontSelect);
+            this.$redoStack.push(deltas);
+            this._dirtyCounter--;
+          }
+          return undoSelectionRange;
+        };
+        UndoManager.prototype.redo = function(dontSelect) {
+          var deltas = this.$redoStack.pop();
+          var redoSelectionRange = null;
+          if (deltas) {
+            redoSelectionRange = this._editSession.redoChanges(deltas, dontSelect);
+            this.$undoStack.push(deltas);
+            this._dirtyCounter++;
+          }
+          return redoSelectionRange;
+        };
+        UndoManager.prototype.reset = function() {
+          this.$undoStack = [];
+          this.$redoStack = [];
+          this.markClean();
+        };
+        UndoManager.prototype.hasUndo = function() {
+          return this.$undoStack.length > 0;
+        };
+        UndoManager.prototype.hasRedo = function() {
+          return this.$redoStack.length > 0;
+        };
+        UndoManager.prototype.markClean = function() {
+          this._dirtyCounter = 0;
+        };
+        UndoManager.prototype.isClean = function() {
+          return this._dirtyCounter === 0;
+        };
+        return UndoManager;
+      })();
+      exports_1("default", UndoManager);
     }
   };
 });
 
-System.register("edit.js", ["createDocument.js", "createEditor.js", "createEditSession.js", "createRenderer.js", "lib/dom.js"], function(exports_1) {
+System.register("createUndoManager.js", ["UndoManager.js"], function(exports_1) {
+  var UndoManager_1;
+  function createUndoManager() {
+    return new UndoManager_1.default();
+  }
+  exports_1("default", createUndoManager);
+  return {
+    setters: [function(UndoManager_1_1) {
+      UndoManager_1 = UndoManager_1_1;
+    }],
+    execute: function() {}
+  };
+});
+
+System.register("edit.js", ["createDocument.js", "createEditor.js", "createEditSession.js", "createRenderer.js", "createUndoManager.js"], function(exports_1) {
   var createDocument_1,
       createEditor_1,
       createEditSession_1,
       createRenderer_1,
-      dom_1;
+      createUndoManager_1;
   function edit(container) {
     var text = "";
     if (container && /input|textarea/i.test(container.tagName)) {
       var oldNode = container;
-      text = oldNode['value'];
-      container = dom_1.createElement("pre");
+      text = oldNode.value;
+      container = container.ownerDocument.createElement('pre');
       oldNode.parentNode.replaceChild(container, oldNode);
     } else if (container) {
       text = container.innerHTML;
@@ -21900,6 +21598,8 @@ System.register("edit.js", ["createDocument.js", "createEditor.js", "createEditS
     var session = createEditSession_1.default(doc);
     var renderer = createRenderer_1.default(container);
     var editor = createEditor_1.default(renderer, session);
+    var undoManager = createUndoManager_1.default();
+    editor.getSession().setUndoManager(undoManager);
     return editor;
   }
   exports_1("default", edit);
@@ -21912,8 +21612,8 @@ System.register("edit.js", ["createDocument.js", "createEditor.js", "createEditS
       createEditSession_1 = createEditSession_1_1;
     }, function(createRenderer_1_1) {
       createRenderer_1 = createRenderer_1_1;
-    }, function(dom_1_1) {
-      dom_1 = dom_1_1;
+    }, function(createUndoManager_1_1) {
+      createUndoManager_1 = createUndoManager_1_1;
     }],
     execute: function() {}
   };
