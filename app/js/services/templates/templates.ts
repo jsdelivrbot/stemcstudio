@@ -244,7 +244,7 @@ angular.module('app').factory('templates', [
             "    // R = exp(-θ/2)\n" +
             "    R.copy(θ).scale(-0.5).exp()\n" +
             "    // R.rotorFromDirections(N, N + E)\n" +
-            "    // R.rotorFromGeneratorAngle(clockwise, θ.magnitude()).scale(1)\n" +
+            "    // R.rotorFromGeneratorAngle(clockwise, θ.magnitude().α).scale(1)\n" +
             "    // R.copy(E).mul(N).log().scale(-0.5*(1/3)).exp()\n" +
             "\n" +
             "    // red = R * red * ~R\n" +
@@ -327,7 +327,7 @@ angular.module('app').factory('templates', [
             " */\n" +
             "function radiansFromAngle(angle: EIGHT.G2, θ: EIGHT.G2): number {\n" +
             "  var signum = θ.clone().scp(angle).α < 0 ? +1 : -1\n" +
-            "  return angle.magnitude() * signum\n" +
+            "  return angle.magnitude().α * signum\n" +
             "}\n" +
             "\n" +
             "/**\n" +
@@ -339,7 +339,7 @@ angular.module('app').factory('templates', [
             " * Draws a <em>curly tee</em> as the geometric representation of a spinor.\n" +
             " */\n" +
             "function drawSpinTee(context: CanvasRenderingContext2D, position: EIGHT.VectorE2, spinor: EIGHT.G2, color: any, canvas: HTMLCanvasElement) {\n" +
-            "  var radius = circleRadiusFromArea(spinor.magnitude()) * canvas.width / 2\n" +
+            "  var radius = circleRadiusFromArea(spinor.magnitude().α) * canvas.width / 2\n" +
             "  var θ = zeroTwoPi(radiansFromSpinor(spinor, clockwise))\n" +
             "\n" +
             "  context.save()\n" +
@@ -383,7 +383,7 @@ angular.module('app').factory('templates', [
             "  context.translate(toCanvasX(position, canvas), toCanvasY(position, canvas))\n" +
             "  context.rotate(radiansFromDirections(up, vector, clockwise))\n" +
             "  context.fillStyle = color\n" +
-            "  var height = vector.magnitude() * canvas.width / 2\n" +
+            "  var height = vector.magnitude().α * canvas.width / 2\n" +
             "  context.fillRect(-TEE_WIDTH / 2, -height / 2, TEE_WIDTH, LINE_WIDTH)\n" +
             "  context.fillRect(-LINE_WIDTH / 2, -height / 2, LINE_WIDTH, height)\n" +
             "  context.restore()\n" +
