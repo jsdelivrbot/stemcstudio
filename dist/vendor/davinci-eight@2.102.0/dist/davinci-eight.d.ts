@@ -777,7 +777,7 @@ declare module EIGHT {
         lco(rhs: Euclidean3): Euclidean3;
         lerp(target: Euclidean3, α: number): Euclidean3;
         log(): Euclidean3;
-        magnitude(): number;
+        magnitude(): Euclidean3;
         mul(rhs: Euclidean3): Euclidean3;
         neg(): Euclidean3;
         norm(): Euclidean3;
@@ -794,7 +794,7 @@ declare module EIGHT {
         sinh(): Euclidean3;
         slerp(target: Euclidean3, α: number): Euclidean3;
         sqrt(): Euclidean3;
-        squaredNorm(): number;
+        squaredNorm(): Euclidean3;
         sub(rhs: Euclidean3): Euclidean3;
         toExponential(): string;
         toFixed(digits?: number): string;
@@ -1481,7 +1481,7 @@ declare module EIGHT {
         /**
          * Computes the <em>square root</em> of the <em>squared norm</em>.
          */
-        magnitude(): number;
+        magnitude(): G2;
 
         /**
          * <p>
@@ -1531,7 +1531,7 @@ declare module EIGHT {
         /**
          * Computes the squared norm, scp(A, rev(A)).
          */
-        squaredNorm(): number;
+        squaredNorm(): G2;
 
         /**
          * Sets this multivector to the right contraction with another multivector.
@@ -1802,12 +1802,12 @@ declare module EIGHT {
         /**
          * Computes the <em>square root</em> of the <em>squared norm</em>.
          */
-        magnitude(): number;
+        magnitude(): SpinorE3;
 
         /**
          * The <em>squared norm</em>, as a <code>number</code>.
          */
-        squaredNorm(): number;
+        squaredNorm(): SpinorE3;
     }
 
     /**
@@ -2041,7 +2041,7 @@ declare module EIGHT {
         /**
          * Computes the <em>square root</em> of the <em>squared norm</em>.
          */
-        magnitude(): number;
+        magnitude(): G3;
 
         /**
          * <p>
@@ -2196,7 +2196,7 @@ declare module EIGHT {
         /**
          * Computes the <em>squared norm</em> of this multivector.
          */
-        squaredNorm(): number;
+        squaredNorm(): G3;
 
         /**
          * <p>
@@ -2354,28 +2354,37 @@ declare module EIGHT {
          */
         log(): SpinG3;
 
-        magnitude(): number;
+        magnitude(): SpinG3;
+
         mul(rhs: SpinorE3): SpinG3;
+
         /**
          * Sets this SpinG3 to the geometric product of the vectors a and b, a * b.
          */
         mul2(a: SpinorE3, b: SpinorE3): SpinG3;
+
         /**
          * this ⟼ this / magnitude(this)
          * <em>s.direction()</em> scales the target spinor, <em>s</em>, so that it has unit magnitude.
          */
         direction(): SpinG3;
+
         /**
          * this ⟼ this * α
          */
         scale(α: number): SpinG3;
-        squaredNorm(): number;
+
+        squaredNorm(): SpinG3;
+
         rev(): SpinG3;
+
         reflect(n: VectorE3): SpinG3;
+
         /**
          * this ⟼ R * this * rev(R)
          */
         rotate(R: SpinorE3): SpinG3;
+
         /**
          * this ⟼ exp(- dual(axis) * θ / 2)
          * <code>axis</code> The direction (unit vector) of the rotation.
