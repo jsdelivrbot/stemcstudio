@@ -18,6 +18,8 @@ const npm = require('./package.json');
 
 const cfg = require('./configure');
 
+const clientId = nconf.get("GITHUB_APPLICATION_CLIENT_ID");
+
 const isProductionMode = () => {
   switch(process.env.NODE_ENV || 'development') {
     case 'development':
@@ -124,6 +126,7 @@ app.get("/github_callback", (req, res, next) => {
 
 app.get("/*", (req, res, next) => {
   // Set a cookie to communicate the GitHub Client ID back to the client.
+  const clientId = nconf.get("GITHUB_APPLICATION_CLIENT_ID");
   res.cookie('mathdoodle-github-application-client-id', nconf.get("GITHUB_APPLICATION_CLIENT_ID"));
   res.render("index", {
     css: "/css/app.css?version=#{npm.version}",

@@ -2,9 +2,21 @@ var nconf = require("nconf");
 var http = require("http");
 var debug = require('debug')('mathdoodle:server');
 var app_1 = require("./app");
+var socketIO = require('socket.io');
 var port = normalizePort(nconf.get("PORT") || 8080);
 app_1["default"].set('port', port);
 var server = http.createServer(app_1["default"]);
+var io = socketIO(server);
+io.on('connection', function (socket) {
+    console.log('User connected');
+    socket.on('test', function (msg) {
+        console.log('message: ' + msg);
+        io.emit('foo', msg);
+    });
+    socket.on('disconnect', function () {
+        console.log('User disconnected');
+    });
+});
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);

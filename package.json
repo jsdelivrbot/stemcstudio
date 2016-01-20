@@ -1,6 +1,6 @@
 {
   "name": "mathdoodle",
-  "version": "1.247.0",
+  "version": "1.248.0",
   "private": true,
   "description": "Learning Mathematics and Geometric Physics through Computational Modeling",
   "engines": {
@@ -40,7 +40,8 @@
     "morgan": "^1.6.1",
     "multer": "^1.1.0",
     "nconf": "^0.8.2",
-    "serve-favicon": "^2.3.0"
+    "serve-favicon": "^2.3.0",
+    "socket.io": "^1.4.4"
   },
   "jspm": {
     "configFile": "jspm.config.js",

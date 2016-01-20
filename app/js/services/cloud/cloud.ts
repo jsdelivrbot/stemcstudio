@@ -32,20 +32,20 @@ angular.module('app').factory('cloud',[
 
   // Temporary to ensure correct Gist deserialization.
   function depArray(deps: {[key:string]:string}): string[] {
-    var ds: string[] = [];
-    for (var prop in deps) {
+    const ds: string[] = [];
+    for (let prop in deps) {
       ds.push(prop);
     }
     return ds;
   }
 
-  var cloud: mathdoodle.ICloud = {
+  const cloud: mathdoodle.ICloud = {
     downloadGist: function(token: string, gistId: string, callback: (err, doodle?: mathdoodle.IDoodle) => void) {
       github.getGist(token, gistId, function(err, gist) {
         if (!err) {
-          var metaInfo: mathdoodle.IDoodleConfig = JSON.parse(gist.files[FILENAME_META].content);
+          const metaInfo: mathdoodle.IDoodleConfig = JSON.parse(gist.files[FILENAME_META].content);
 
-          var doodle: mathdoodle.IDoodle = {
+          const doodle: mathdoodle.IDoodle = {
             gistId: gistId,
             uuid: metaInfo.uuid,
             description: gist.description,

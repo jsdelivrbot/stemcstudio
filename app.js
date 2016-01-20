@@ -11,6 +11,7 @@ var bodyParser = require('body-parser');
 var errorHandler = require('errorhandler');
 var npm = require('./package.json');
 var cfg = require('./configure');
+var clientId = nconf.get("GITHUB_APPLICATION_CLIENT_ID");
 var isProductionMode = function () {
     switch (process.env.NODE_ENV || 'development') {
         case 'development':
@@ -102,6 +103,7 @@ app.get("/github_callback", function (req, res, next) {
 });
 app.get("/*", function (req, res, next) {
     // Set a cookie to communicate the GitHub Client ID back to the client.
+    var clientId = nconf.get("GITHUB_APPLICATION_CLIENT_ID");
     res.cookie('mathdoodle-github-application-client-id', nconf.get("GITHUB_APPLICATION_CLIENT_ID"));
     res.render("index", {
         css: "/css/app.css?version=#{npm.version}",

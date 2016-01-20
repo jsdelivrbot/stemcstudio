@@ -37,7 +37,7 @@ angular.module('app').controller('properties-controller', [
    * Cancel processing to work correctly.
    */
   scope.toggleDependency = function(name: string) {
-    var idx = scope.zombie.dependencies.indexOf(name);
+    const idx = scope.zombie.dependencies.indexOf(name);
     if (idx > -1) {
       scope.zombie.dependencies.splice(idx, 1);
     }

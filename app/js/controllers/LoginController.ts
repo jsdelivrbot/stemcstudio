@@ -32,25 +32,25 @@ module doodle.login {
     ) {
 
       // The name of this cookie must correspond with the cookie sent back from the server.
-      var GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME = 'mathdoodle-github-application-client-id';
-      var GITHUB_TOKEN_COOKIE_NAME = 'github-token';
-      var GITHUB_LOGIN_COOKIE_NAME = 'github-login';
-      var GITHUB_GET_LOGIN_OAUTH_AUTHORIZE = "https://github.com/login/oauth/authorize";
+      const GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME = 'mathdoodle-github-application-client-id';
+      const GITHUB_TOKEN_COOKIE_NAME = 'github-token';
+      const GITHUB_LOGIN_COOKIE_NAME = 'github-login';
+      const GITHUB_GET_LOGIN_OAUTH_AUTHORIZE = "https://github.com/login/oauth/authorize";
 
       $scope.githubLogin = function(label?: string, value?: number) {
         ga('send', 'event', 'GitHub', 'login', label, value);
         // This is the beginning of the Web Application Flow for GitHub OAuth2.
         // The API now allows us to specify an unguessable random string called 'state'.
         // This 'state' string is used to protect against cross-site request forgery attacks.
-        var clientId = cookie.getItem(GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME)
+        const clientId = cookie.getItem(GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME);
 
-        var state = uuid4.generate();
-        var githubURL = GITHUB_GET_LOGIN_OAUTH_AUTHORIZE +
+        const state = uuid4.generate();
+        const githubURL = GITHUB_GET_LOGIN_OAUTH_AUTHORIZE +
         "?client_id=" + clientId +
         "&amp;scope=user,gist" +
         "&amp;state=" + state;
 
-        var github: IGitHubItem = {oauth: {pending: state}};
+        const github: IGitHubItem = {oauth: {pending: state}};
 
         $window.localStorage.setItem(githubKey, JSON.stringify(github));
 

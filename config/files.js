@@ -20,6 +20,8 @@ module.exports = function(lineman) {
 
         "vendor/davinci-mathscript/dist/davinci-mathscript.js",
 
+        "node_modules/socket.io-client/socket.io.js",
+
         "manual/ace/ace.js"
       ],
       app: [
