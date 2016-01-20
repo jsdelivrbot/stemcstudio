@@ -1297,12 +1297,12 @@ angular.module('app').factory('templates', [
             "#stats { position: absolute; top: 0; left: 0; }\n";
 
         var CODE_TEMPLATE_THREEJS = "" +
-            "var scene = new THREE.Scene();\n" +
-            "var camera: THREE.PerspectiveCamera;\n" +
-            "var renderer = new THREE.WebGLRenderer();\n" +
-            "var mesh: THREE.Mesh;\n" +
+            "const scene = new THREE.Scene();\n" +
+            "let camera: THREE.PerspectiveCamera;\n" +
+            "const renderer = new THREE.WebGLRenderer();\n" +
+            "let mesh: THREE.Mesh;\n" +
             "\n" +
-            "var stats = new Stats();\n" +
+            "const stats = new Stats();\n" +
             "stats.setMode(0);\n" +
             "document.body.appendChild(stats.domElement);\n" +
             "\n" +
@@ -1313,13 +1313,13 @@ angular.module('app').factory('templates', [
             " * Initializes the scene.\n" +
             " */\n" +
             "function init() {\n" +
-            "  var aspect = window.innerWidth / window.innerHeight;\n" +
+            "  const aspect = window.innerWidth / window.innerHeight;\n" +
             "  camera = new THREE.PerspectiveCamera(75, aspect, 1, 1000);\n" +
             "  camera.position.z = 200;\n" +
             "  scene.add(camera);\n" +
             "\n" +
-            "  var geometry = new THREE.BoxGeometry(100, 100, 100);\n" +
-            "  var program = new THREE.MeshNormalMaterial();\n" +
+            "  const geometry = new THREE.BoxGeometry(100, 100, 100);\n" +
+            "  const program = new THREE.MeshNormalMaterial();\n" +
             "\n" +
             "  mesh = new THREE.Mesh(geometry, program);\n" +
             "  scene.add(mesh);\n" +
