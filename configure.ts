@@ -8,6 +8,6 @@ const defaultConfig = {
   GITHUB_METHOD: "POST"
 };
 
-const env = process.env.NODE_ENV || "local";
-console.log(`using NODE_ENV=${env}`);
+const env = process.env.NODE_ENV || 'development';
+// console.log(`using NODE_ENV=${env}`);
 nconf.use("memory").argv().env().file({file: `config.${env}.json`}).defaults(defaultConfig);

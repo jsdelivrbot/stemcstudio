@@ -1,13 +1,13 @@
 {
   "name": "mathdoodle",
-  "version": "1.245.0",
+  "version": "1.246.0",
   "private": true,
   "description": "Learning Mathematics and Geometric Physics through Computational Modeling",
   "engines": {
     "node": "0.12.0"
   },
   "scripts": {
-    "start": "NODE_ENV=local nodemon web.js",
+    "start": "NODE_ENV=development nodemon web.js",
     "test": "lineman spec-ci"
   },
   "author": "David Holmes",
@@ -30,6 +30,7 @@
   "dependencies": {
     "body-parser": "^1.14.2",
     "cookie-parser": "^1.4.1",
+    "debug": "^2.2.0",
     "errorhandler": "^1.4.3",
     "express": "^4.13.3",
     "express-session": "^1.13.0",

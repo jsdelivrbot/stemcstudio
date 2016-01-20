@@ -1,26 +1,26 @@
-import * as cookieParser from "cookie-parser";
-import * as express from "express";
-import favicon = require("serve-favicon");
-import jade = require("jade");
-const lactate = require("lactate");
-import logger = require("morgan");
-import methodOverride = require("method-override");
-import nconf = require("nconf");
-import https = require("https");
-import qs = require("querystring");
-import session = require("express-session");
-import * as bodyParser from "body-parser";
-import multer = require("multer");
-import errorHandler = require("errorhandler");
+import * as cookieParser from 'cookie-parser';
+import * as express from 'express';
+import * as path from 'path';
+import favicon = require('serve-favicon');
+import jade = require('jade');
+const lactate = require('lactate');
+import logger = require('morgan');
+import methodOverride = require('method-override');
+import nconf = require('nconf');
+import https = require('https');
+import qs = require('querystring');
+import session = require('express-session');
+import * as bodyParser from 'body-parser';
+import multer = require('multer');
+import errorHandler = require('errorhandler');
 
-// No marketing
-const npm = require("./package.json");
+const npm = require('./package.json');
 
-const cfg = require("./configure");
+const cfg = require('./configure');
 
 const isProductionMode = () => {
-  switch(process.env.NODE_ENV || "local") {
-    case "local":
+  switch(process.env.NODE_ENV || 'development') {
+    case 'development':
       return false;
     default:
       return true;
@@ -29,11 +29,17 @@ const isProductionMode = () => {
 
 const app = express()
 
-app.set("views", `${__dirname}/views`);
-app.set("view engine", "jade");
-app.set("view options", {layout: false});
-// TODO app.use(favicon(__dirname + '/public/favicon.ico'));
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+// app.set("view options", {layout: false});
+
+// uncomment after placing your favicon in /public
+// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(cookieParser());
 app.use(methodOverride());
 // TODO session
 
@@ -42,9 +48,6 @@ const folder = `${isProductionMode() ? 'dist' : 'generated'}`;
 app.use("/font", lactate.static(`${__dirname}/${folder}/img`, {"max age": "one week"}));
 app.use(lactate.static(`${__dirname}/${folder}`, {"max age": "one week"}));
 
-app.use(cookieParser());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
 // Something rotten about the following line.
 // app.use multer()
 

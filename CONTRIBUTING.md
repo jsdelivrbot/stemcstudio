@@ -14,7 +14,17 @@ Learning Mathematics and Geometric Physics through Computational Modeling.
 7. `lineman build`
 8. `lineman run`
 
-9. open your web browser to localhost:8000
+The server at localhost:8000 cannot be used.
+
+9. Open another terminal
+10. `cd mathdoodle`
+11. tsc
+12. `set DEBUG=mathdoodle:* && npm start`
+13. open your web browser to localhost:8080
+
+You may want to open a third terminal in order to compile and watch the server code.
+
+14. `tsc -w`
 
 # Running Tests
 

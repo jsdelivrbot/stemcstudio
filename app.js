@@ -1,39 +1,41 @@
-var cookieParser = require("cookie-parser");
-var express = require("express");
-var lactate = require("lactate");
-var logger = require("morgan");
-var methodOverride = require("method-override");
-var nconf = require("nconf");
-var https = require("https");
-var qs = require("querystring");
-var bodyParser = require("body-parser");
-var errorHandler = require("errorhandler");
-// No marketing
-var npm = require("./package.json");
-var cfg = require("./configure");
+var cookieParser = require('cookie-parser');
+var express = require('express');
+var path = require('path');
+var lactate = require('lactate');
+var logger = require('morgan');
+var methodOverride = require('method-override');
+var nconf = require('nconf');
+var https = require('https');
+var qs = require('querystring');
+var bodyParser = require('body-parser');
+var errorHandler = require('errorhandler');
+var npm = require('./package.json');
+var cfg = require('./configure');
 var isProductionMode = function () {
-    switch (process.env.NODE_ENV || "local") {
-        case "local":
+    switch (process.env.NODE_ENV || 'development') {
+        case 'development':
             return false;
         default:
             return true;
     }
 };
 var app = express();
-app.set("views", __dirname + "/views");
-app.set("view engine", "jade");
-app.set("view options", { layout: false });
-// TODO app.use(favicon(__dirname + '/public/favicon.ico'));
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
+// app.set("view options", {layout: false});
+// uncomment after placing your favicon in /public
+// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(methodOverride());
 // TODO session
 // Serve out of dist or generated, depending upon the environment.
 var folder = "" + (isProductionMode() ? 'dist' : 'generated');
 app.use("/font", lactate.static(__dirname + "/" + folder + "/img", { "max age": "one week" }));
 app.use(lactate.static(__dirname + "/" + folder, { "max age": "one week" }));
-app.use(cookieParser());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 // Something rotten about the following line.
 // app.use multer()
 // Convenience for allowing CORS on routes - GET only
