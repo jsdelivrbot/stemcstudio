@@ -1,0 +1,51 @@
+{
+  "version": "v4",
+  "repo": "borisyankov/DefinitelyTyped",
+  "ref": "master",
+  "path": "typings",
+  "bundle": "typings/tsd.d.ts",
+  "installed": {
+    "express/express.d.ts": {
+      "commit": "2e7a477ac2b6471055aa6e0e56b333e8f327d6b7"
+    },
+    "node/node.d.ts": {
+      "commit": "2e7a477ac2b6471055aa6e0e56b333e8f327d6b7"
+    },
+    "serve-static/serve-static.d.ts": {
+      "commit": "2e7a477ac2b6471055aa6e0e56b333e8f327d6b7"
+    },
+    "mime/mime.d.ts": {
+      "commit": "2e7a477ac2b6471055aa6e0e56b333e8f327d6b7"
+    },
+    "method-override/method-override.d.ts": {
+      "commit": "2e7a477ac2b6471055aa6e0e56b333e8f327d6b7"
+    },
+    "errorhandler/errorhandler.d.ts": {
+      "commit": "2e7a477ac2b6471055aa6e0e56b333e8f327d6b7"
+    },
+    "cookie-parser/cookie-parser.d.ts": {
+      "commit": "2e7a477ac2b6471055aa6e0e56b333e8f327d6b7"
+    },
+    "nconf/nconf.d.ts": {
+      "commit": "2e7a477ac2b6471055aa6e0e56b333e8f327d6b7"
+    },
+    "jade/jade.d.ts": {
+      "commit": "2e7a477ac2b6471055aa6e0e56b333e8f327d6b7"
+    },
+    "body-parser/body-parser.d.ts": {
+      "commit": "2e7a477ac2b6471055aa6e0e56b333e8f327d6b7"
+    },
+    "express-session/express-session.d.ts": {
+      "commit": "2e7a477ac2b6471055aa6e0e56b333e8f327d6b7"
+    },
+    "morgan/morgan.d.ts": {
+      "commit": "2e7a477ac2b6471055aa6e0e56b333e8f327d6b7"
+    },
+    "multer/multer.d.ts": {
+      "commit": "2e7a477ac2b6471055aa6e0e56b333e8f327d6b7"
+    },
+    "serve-favicon/serve-favicon.d.ts": {
+      "commit": "2e7a477ac2b6471055aa6e0e56b333e8f327d6b7"
+    }
+  }
+}

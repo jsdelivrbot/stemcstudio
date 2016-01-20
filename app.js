@@ -1,0 +1,114 @@
+var cookieParser = require("cookie-parser");
+var express = require("express");
+var lactate = require("lactate");
+var logger = require("morgan");
+var methodOverride = require("method-override");
+var nconf = require("nconf");
+var https = require("https");
+var qs = require("querystring");
+var bodyParser = require("body-parser");
+var errorHandler = require("errorhandler");
+// No marketing
+var npm = require("./package.json");
+var cfg = require("./configure");
+var isProductionMode = function () {
+    switch (process.env.NODE_ENV || "local") {
+        case "local":
+            return false;
+        default:
+            return true;
+    }
+};
+var app = express();
+app.set("views", __dirname + "/views");
+app.set("view engine", "jade");
+app.set("view options", { layout: false });
+// TODO app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(logger('dev'));
+app.use(methodOverride());
+// TODO session
+// Serve out of dist or generated, depending upon the environment.
+var folder = "" + (isProductionMode() ? 'dist' : 'generated');
+app.use("/font", lactate.static(__dirname + "/" + folder + "/img", { "max age": "one week" }));
+app.use(lactate.static(__dirname + "/" + folder, { "max age": "one week" }));
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+// Something rotten about the following line.
+// app.use multer()
+// Convenience for allowing CORS on routes - GET only
+app.all('*', function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+});
+var authenticate = function (code, cb) {
+    // This is step two in the GitHub Web Application Flow and occurs
+    // after GitHub redirects back to the site (assuming user accepts request).
+    // The following step exchanges the temporary code for an access token.
+    // POST https://github.com/login/oauth/access_token
+    var data = qs.stringify({
+        client_id: nconf.get("GITHUB_APPLICATION_CLIENT_ID"),
+        client_secret: nconf.get("GITHUB_APPLICATION_CLIENT_SECRET"),
+        code: code
+    });
+    var options = {
+        host: nconf.get("GITHUB_HOST"),
+        port: nconf.get("GITHUB_PORT"),
+        path: nconf.get("GITHUB_PATH"),
+        method: nconf.get("GITHUB_METHOD"),
+        headers: { 'content-length': data.length }
+    };
+    var body = "";
+    var req = https.request(options, function (res) {
+        res.setEncoding('utf8');
+        res.on('data', function (chunk) { body += chunk; });
+        res.on('end', function () { cb(null, qs.parse(body).access_token); });
+    });
+    req.write(data);
+    req.end();
+    req.on('error', function (e) { cb(e.message); });
+};
+// Forward mathdoodle.herokuapp.com to www.mathdoodle.io
+// Notice that we use HTTP status 301 Moved Permanently (best for SEO purposes).
+app.get("/*", function (req, res, next) {
+    if (req.headers['host'].match(/^mathdoodle.herokuapp.com/)) {
+        res.redirect("http://www.mathdoodle.io#{req.url}", 301);
+    }
+    else {
+        next();
+    }
+});
+// Exchange the session code for an access token.
+app.get('/authenticate/:code', function (req, res) {
+    authenticate(req.params.code, function (err, token) {
+        if (err) {
+            return res.json(err);
+        }
+        else {
+            res.json(token ? { "token": token } : { "error": "bad_code" });
+        }
+    });
+});
+app.get("/github_callback", function (req, res, next) {
+    // Set a cookie to communicate the GitHub Client ID back to the client.
+    res.cookie('mathdoodle-github-application-client-id', nconf.get("GITHUB_APPLICATION_CLIENT_ID"));
+    res.render("github_callback", {
+        npm: npm
+    });
+});
+app.get("/*", function (req, res, next) {
+    // Set a cookie to communicate the GitHub Client ID back to the client.
+    res.cookie('mathdoodle-github-application-client-id', nconf.get("GITHUB_APPLICATION_CLIENT_ID"));
+    res.render("index", {
+        css: "/css/app.css?version=#{npm.version}",
+        js: "/js/app.js?version=#{npm.version}",
+        npm: npm
+    });
+});
+// error handling middleware should be loaded after loading the routes
+app.use(errorHandler());
+exports.__esModule = true;
+exports["default"] = app;
+//# sourceMappingURL=app.js.map
