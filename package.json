@@ -1,6 +1,7 @@
 {
   "name": "mathdoodle",
-  "version": "1.243.0",
+  "version": "1.244.0",
+  "private": true,
   "description": "Learning Mathematics and Geometric Physics through Computational Modeling",
   "engines": {
     "node": "0.12.0"
@@ -27,10 +28,18 @@
     "url": "https://github.com/geometryzen/mathdoodle.git"
   },
   "dependencies": {
-    "express": "3.3.4",
-    "jade": "1.11.0",
+    "body-parser": "^1.14.2",
+    "cookie-parser": "^1.4.1",
+    "errorhandler": "^1.4.3",
+    "express": "^4.13.3",
+    "express-session": "^1.13.0",
+    "jade": "^1.11.0",
     "lactate": "0.13.12",
-    "nconf": "0.8.2"
+    "method-override": "^2.3.5",
+    "morgan": "^1.6.1",
+    "multer": "^1.1.0",
+    "nconf": "^0.8.2",
+    "serve-favicon": "^2.3.0"
   },
   "jspm": {
     "configFile": "jspm.config.js",

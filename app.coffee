@@ -1,10 +1,18 @@
 coffee = require "coffee-script"
+cookieParser = require "cookie-parser"
 express = require "express"
+favicon = require "serve-favicon"
 jade = require "jade"
 lactate = require "lactate"
+logger = require "morgan"
+methodOverride = require "method-override"
 nconf = require "nconf"
 https = require "https"
 qs = require "querystring"
+session = require "express-session"
+bodyParser = require "body-parser"
+multer = require "multer"
+errorHandler = require "errorhandler"
 
 # No marketing
 npm = require "./package.json"
@@ -23,20 +31,21 @@ app = module.exports = express()
 app.set "views", "#{__dirname}/views"
 app.set "view engine", "jade"
 app.set "view options", layout: false
-
-app.use express.logger()
+# TODO app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use logger('dev')
+app.use methodOverride()
+# TODO session
 
 # Serve out of dist or generated, depending upon the environment.
 folder = "#{if isProductionMode() then 'dist' else 'generated'}"
 app.use "/font", lactate.static "#{__dirname}/#{folder}/img", "max age": "one week"
 app.use lactate.static "#{__dirname}/#{folder}", "max age": "one week"
 
-app.use express.cookieParser()
-app.use express.bodyParser()
-
-app.use app.router
-
-app.use express.errorHandler()
+app.use cookieParser()
+app.use bodyParser.json()
+app.use bodyParser.urlencoded({extended: true})
+# Something rotten about the following line.
+#app.use multer()
 
 # Convenience for allowing CORS on routes - GET only
 app.all '*', (req, res, next) ->
@@ -102,3 +111,6 @@ app.get "/*", (req, res, next) ->
     css: "/css/app.css?version=#{npm.version}"
     js:  "/js/app.js?version=#{npm.version}"
     npm: npm
+
+# error handling middleware should be loaded after loading the routes
+app.use errorHandler()
