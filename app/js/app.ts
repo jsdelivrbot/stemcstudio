@@ -2,7 +2,7 @@
 /// <reference path="../../typings/angular-ui-router/angular-ui-router.d.ts" />
 /// <reference path="../../typings/bootstrap-dialog/bootstrap-dialog.d.ts" />
 /// <reference path="../../typings/google-analytics/ga.d.ts" />
-/// <reference path="services/cookie/cookie.ts" />
+/// <reference path="services/cookie/CookieService.ts" />
 /// <reference path="services/gham/IGitHubItem.ts" />
 /// <reference path="services/uuid/IUuidService.ts" />
 module mathdoodle {
@@ -24,7 +24,7 @@ module mathdoodle {
     }
 }
 
-angular.module('app',
+const app = angular.module('app',
     [
         'angularResizable',
         'davinci.mathscript',
@@ -55,7 +55,7 @@ angular.module('app',
             $state: angular.ui.IStateService,
             $stateParams: angular.ui.IStateParams,
             $window: Window,
-            cookie: ICookieService,
+            cookie: CookieService,
             uuid4: IUuidService,
             ga: UniversalAnalytics.ga,
             githubKey: string,

@@ -2,7 +2,7 @@
 /// <reference path="../../../typings/angular-ui-router/angular-ui-router.d.ts" />
 /// <reference path="../../../typings/google-analytics/ga.d.ts" />
 /// <reference path="../app.ts" />
-/// <reference path="../services/cookie/cookie.ts" />
+/// <reference path="../services/cookie/CookieService.ts" />
 /// <reference path="../services/gham/IGitHubItem.ts" />
 
 module doodle.login {
@@ -25,7 +25,7 @@ module doodle.login {
       $scope: doodle.login.LoginScope,
       $state: angular.ui.IStateService,
       $window: angular.IWindowService,
-      cookie: ICookieService,
+      cookie: CookieService,
       uuid4: IUuidService,
       ga: UniversalAnalytics.ga,
       githubKey: string

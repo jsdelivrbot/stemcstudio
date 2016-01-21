@@ -10,7 +10,7 @@
 /// <reference path="../services/doodles/doodles.ts" />
 /// <reference path="../HTMLDialogElement.ts" />
 /// <reference path="../services/cloud/cloud.ts" />
-/// <reference path="../services/cookie/cookie.ts" />
+/// <reference path="../services/cookie/CookieService.ts" />
 /// <reference path="../services/gham/IGitHubAuthManager.ts" />
 /// <reference path="../services/gist/IGist.ts" />
 /// <reference path="../services/github/GitHub.ts" />
@@ -121,7 +121,7 @@ angular.module('app').controller('doodle-controller', [
     github,
     authManager: IGitHubAuthManager,
     cloud: mathdoodle.ICloud,
-    cookie: ICookieService,
+    cookie: CookieService,
     templates: mathdoodle.IDoodle[],
     uuid4: IUuidService,
     ga: UniversalAnalytics.ga,

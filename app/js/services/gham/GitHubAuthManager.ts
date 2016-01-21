@@ -1,7 +1,7 @@
 /// <reference path="../../../../typings/angularjs/angular.d.ts" />
 /// <reference path="IGitHubAuthManager.ts" />
 /// <reference path="IGitHubItem.ts" />
-/// <reference path="../cookie/cookie.ts" />
+/// <reference path="../cookie/CookieService.ts" />
 
 angular.module('app').service('GitHubAuthManager', [
   '$http',
@@ -14,7 +14,7 @@ angular.module('app').service('GitHubAuthManager', [
     $http: angular.IHttpService,
     $location: angular.ILocationService,
     $window: angular.IWindowService,
-    cookie: ICookieService,
+    cookie: CookieService,
     github,
     githubKey: string
   ) {

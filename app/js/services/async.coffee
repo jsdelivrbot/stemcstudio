@@ -1,1 +1,0 @@
-angular.module('async', []).factory 'async', ['$window', ($window) -> $window.async]

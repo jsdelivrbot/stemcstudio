@@ -3,6 +3,7 @@
 /// <reference path="../../../typings/google-analytics/ga.d.ts" />
 /// <reference path="../services/doodles/doodles.ts" />
 /// <reference path="../services/cloud/cloud.ts" />
+/// <reference path="../services/cookie/CookieService.ts" />
 /// <reference path="../services/gist/IGist.ts" />
 /// <reference path="../controllers/BodyController.ts" />
 /// <reference path="../app.ts" />
@@ -27,7 +28,7 @@ angular.module('app').controller('download-controller', [
     $state: angular.ui.IStateService,
     cloud: mathdoodle.ICloud,
     doodles: mathdoodle.IDoodleManager,
-    cookie: ICookieService,
+    cookie: CookieService,
     ga: UniversalAnalytics.ga,
     GITHUB_TOKEN_COOKIE_NAME: string,
     STATE_DOODLE: string

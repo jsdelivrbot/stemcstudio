@@ -1,7 +1,7 @@
 /// <reference path="../../../typings/angularjs/angular.d.ts" />
 /// <reference path="../../../typings/angular-ui-router/angular-ui-router.d.ts" />
 /// <reference path="../../../typings/google-analytics/ga.d.ts" />
-/// <reference path="../services/cookie/cookie.ts" />
+/// <reference path="../services/cookie/CookieService.ts" />
 /// <reference path="../services/doodles/doodles.ts" />
 /// <reference path="../services/gist/IGist.ts" />
 /// <reference path="../app.ts" />
@@ -33,7 +33,7 @@ module mathdoodle {
       ga: UniversalAnalytics.ga,
       $twitter,
       github,
-      cookie: ICookieService,
+      cookie: CookieService,
       GITHUB_TOKEN_COOKIE_NAME: string
     ) {
 
