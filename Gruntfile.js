@@ -475,6 +475,9 @@ module.exports = function(grunt) {
         options: {
           bootstrap: function(module, script) {
             return '' +
+              "//\n" +
+              "// GENERATED FILE\n" +
+              "//\n" +
               "import * as angular from 'angular';\n" + 
               "import app from './app';\n" + 
               "app.run(['$templateCache', function($templateCache: angular.ITemplateCacheService) {\n" + 

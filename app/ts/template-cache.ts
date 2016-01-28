@@ -1,3 +1,6 @@
+//
+// GENERATED FILE
+//
 import * as angular from 'angular';
 import app from './app';
 app.run(['$templateCache', function($templateCache: angular.ITemplateCacheService) {
