@@ -1,0 +1,10 @@
+.tscache/
+amd/
+documentation/
+dts/
+jspm_packages/
+node_modules/
+system/
+vendor/
+src/**/*.js
+src/**/*.js.map

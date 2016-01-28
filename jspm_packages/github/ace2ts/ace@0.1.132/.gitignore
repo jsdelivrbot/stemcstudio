@@ -1,0 +1,8 @@
+.tscache/
+documentation/
+generated/
+jspm_packages/
+node_modules/
+vendor/
+src/**/*.js
+src/**/*.js.map

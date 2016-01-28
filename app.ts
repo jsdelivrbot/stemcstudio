@@ -16,6 +16,8 @@ import errorHandler = require('errorhandler');
 
 const npm = require('./package.json');
 
+// console.log(`npm.version => ${npm.version}`);
+
 const cfg = require('./configure');
 
 const clientId = nconf.get("GITHUB_APPLICATION_CLIENT_ID");
@@ -97,7 +99,7 @@ const authenticate = (code, cb) => {
 // Notice that we use HTTP status 301 Moved Permanently (best for SEO purposes).
 app.get("/*", (req: express.Request, res, next) => {
     if (req.headers['host'].match(/^mathdoodle.herokuapp.com/)) {
-      res.redirect("http://www.mathdoodle.io#{req.url}", 301);
+      res.redirect(`http://www.mathdoodle.io${req.url}`, 301);
     }
     else {
       next()
@@ -129,8 +131,8 @@ app.get("/*", (req, res, next) => {
   const clientId = nconf.get("GITHUB_APPLICATION_CLIENT_ID");
   res.cookie('mathdoodle-github-application-client-id', nconf.get("GITHUB_APPLICATION_CLIENT_ID"));
   res.render("index", {
-    css: "/css/app.css?version=#{npm.version}",
-    js:  "/js/app.js?version=#{npm.version}",
+    css: `/css/app.css?version=${npm.version}`,
+    js:  `/js/app.js?version=${npm.version}`,
     npm: npm
   });
 });

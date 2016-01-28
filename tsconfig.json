@@ -1,15 +1,63 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "sourceMap": true
-    },
-    "exclude": [
-        "node_modules"
-    ],
-    "files": [
-      "./typings/tsd.d.ts",
-      "./app.ts",
-      "./configure.ts",
-      "./web.ts"
-    ]
+  "compilerOptions": {
+    "target": "ES5",
+    "module": "system",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "removeComments": true,
+    "noImplicitAny": false,
+    "outDir": "generated/js"
+  },
+  "files": [
+    "app/ts/HTMLDialogElement.ts",
+    "app/ts/AppScope.ts",
+    "app/ts/app.ts",
+    "app/ts/bootstrap.ts",
+    "app/ts/compsci/StringSet.ts",
+    "app/ts/controllers/AboutController.ts",
+    "app/ts/controllers/BodyController.ts",
+    "app/ts/controllers/CopyController.ts",
+    "app/ts/controllers/DoodleController.ts",
+    "app/ts/controllers/DownloadController.ts",
+    "app/ts/controllers/HomeController.ts",
+    "app/ts/controllers/LoginController.ts",
+    "app/ts/controllers/NewController.ts",
+    "app/ts/controllers/OpenController.ts",
+    "app/ts/controllers/PropertiesController.ts",
+    "app/ts/directives/angular-resizable.ts",
+    "app/ts/directives/header.ts",
+    "app/ts/directives/md-logo-text.ts",
+    "app/ts/services/cloud/cloud.ts",
+    "app/ts/services/cookie/cookie.ts",
+    "app/ts/services/doodles/doodles.ts",
+    "app/ts/services/ga/ga.ts",
+    "app/ts/services/gham/GitHubAuthManager.ts",
+    "app/ts/services/github/GitHub.ts",
+    "app/ts/services/options/options.ts",
+    "app/ts/services/settings/settings.ts",
+    "app/ts/services/templates/templates.ts",
+    "app/ts/services/tw/tw.ts",
+    "app/ts/services/uuid/UuidService.ts",
+    "app/ts/services/Base64.ts",
+    "app/ts/services/davinci-mathscript.ts",
+
+    "app/ts/template-cache.ts",
+
+    "typings/angular-ui-router/angular-ui-router.d.ts",
+    "typings/angular-ui-bootstrap/angular-ui-bootstrap.d.ts",
+    "typings/angularjs/angular.d.ts",
+    "typings/google.analytics/ga.d.ts",
+    "typings/jquery/jquery.d.ts",
+    "typings/twitter/twitter.d.ts",
+    "typings/underscore/underscore.d.ts",
+    "typings-manual/ace/ace.d.ts",
+    "typings-manual/bootstrap-dialog/bootstrap-dialog.d.ts",
+    "typings-manual/davinci-mathscript/davinci-mathscript.d.ts",
+    "./typings/tsd.d.ts",
+    "./app.ts",
+    "./configure.ts",
+    "./web.ts"
+  ]
 }

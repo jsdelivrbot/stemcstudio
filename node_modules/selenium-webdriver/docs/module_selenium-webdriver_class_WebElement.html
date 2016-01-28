@@ -105,14 +105,14 @@ resolved with the requested CSS value.</p>
 </dl></div></div></div></div><hr class="fn-sep"><div id="getId" class="function"><div><h3>getId()<span class="codelink"><a href="source/lib/webdriver/webdriver.js.src.html#l1779">code »</a></span></h3><div><div class="fn-details"><div><b>Returns</b></div><dl><dt><code><a href="class_webdriver_promise_Promise.html">webdriver.promise.Promise</a>&lt;{ELEMENT: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>}&gt;</code><dd><p>A promise
 that resolves to this element&#39;s JSON representation as defined by the
 WebDriver wire protocol.</p>
-</dl></div></div></div></div><hr class="fn-sep"><div id="getInnerHtml" class="function"><div><h3>getInnerHtml()<span class="codelink"><a href="source/lib/webdriver/webdriver.js.src.html#l2214">code »</a></span></h3><p>Schedules a command to retrieve the inner HTML of this element.</p>
+</dl></div></div></div></div><hr class="fn-sep"><div id="getInnerHtml" class="function"><div><h3>getInnerHtml()<span class="codelink"><a href="source/lib/webdriver/webdriver.js.src.html#l2233">code »</a></span></h3><p>Schedules a command to retrieve the inner HTML of this element.</p>
 <div><div class="fn-details"><div><b>Returns</b></div><dl><dt><code><a href="class_webdriver_promise_Promise.html">webdriver.promise.Promise</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>&gt;</code><dd><p>A promise that will be
 resolved with the element&#39;s inner HTML.</p>
 </dl></div></div></div></div><hr class="fn-sep"><div id="getLocation" class="function"><div><h3>getLocation()<span class="codelink"><a href="source/lib/webdriver/webdriver.js.src.html#l2118">code »</a></span></h3><p>Schedules a command to compute the location of this element in page space.</p>
 <div><div class="fn-details"><div><b>Returns</b></div><dl><dt><code><a href="class_webdriver_promise_Promise.html">webdriver.promise.Promise</a>&lt;{x: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, y: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>}&gt;</code><dd><p>A promise that
 will be resolved to the element&#39;s location as a
 <code>{x:number, y:number}</code> object.</p>
-</dl></div></div></div></div><hr class="fn-sep"><div id="getOuterHtml" class="function"><div><h3>getOuterHtml()<span class="codelink"><a href="source/lib/webdriver/webdriver.js.src.html#l2195">code »</a></span></h3><p>Schedules a command to retrieve the outer HTML of this element.</p>
+</dl></div></div></div></div><hr class="fn-sep"><div id="getOuterHtml" class="function"><div><h3>getOuterHtml()<span class="codelink"><a href="source/lib/webdriver/webdriver.js.src.html#l2214">code »</a></span></h3><p>Schedules a command to retrieve the outer HTML of this element.</p>
 <div><div class="fn-details"><div><b>Returns</b></div><dl><dt><code><a href="class_webdriver_promise_Promise.html">webdriver.promise.Promise</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>&gt;</code><dd><p>A promise that will be
 resolved with the element&#39;s outer HTML.</p>
 </dl></div></div></div></div><hr class="fn-sep"><div id="getRawId" class="function"><div><h3>getRawId()<span class="codelink"><a href="source/lib/webdriver/webdriver.js.src.html#l1790">code »</a></span></h3><p>Returns the raw ID string ID for this element.</p>
@@ -205,6 +205,13 @@ element if it is a FORM element). This command is a no-op if the element is
 not contained in a form.</p>
 <div><div class="fn-details"><div><b>Returns</b></div><dl><dt><code><a href="class_webdriver_promise_Promise.html">webdriver.promise.Promise</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Undefined">undefined</a>&gt;</code><dd><p>A promise that will be resolved
 when the form has been submitted.</p>
+</dl></div></div></div></div><hr class="fn-sep"><div id="takeScreenshot" class="function"><div><h3>takeScreenshot(<wbr>opt_scroll)<span class="codelink"><a href="source/lib/webdriver/webdriver.js.src.html#l2200">code »</a></span></h3><p>Take a screenshot of the visible region encompassed by this element&#39;s
+bounding rectangle.</p>
+<div><div class="fn-details"><div><b>Parameters</b></div><dl><dt>opt_scroll<code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>=</code><dd><p>Optional argument that indicates whether the
+element should be scrolled into view before taking a screenshot. Defaults
+to false.</p>
+</dl></div><div class="fn-details"><div><b>Returns</b></div><dl><dt><code><a href="class_webdriver_promise_Promise.html">webdriver.promise.Promise</a>&lt;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>&gt;</code><dd><p>A promise that will be
+resolved to the screenshot as a base-64 encoded PNG.</p>
 </dl></div></div></div></div><h2>Static Functions</h2><div id="WebElement.equals" class="function"><div><h3>WebElement.equals(<wbr>a, b)<span class="codelink"><a href="source/lib/webdriver/webdriver.js.src.html#l1743">code »</a></span></h3><p>Compares to WebElements for equality.</p>
 <div><div class="fn-details"><div><b>Parameters</b></div><dl><dt>a<code><a href="class_webdriver_WebElement.html">webdriver.WebElement</a></code><dd><p>A WebElement.</p>
 <dt>b<code><a href="class_webdriver_WebElement.html">webdriver.WebElement</a></code><dd><p>A WebElement.</p>

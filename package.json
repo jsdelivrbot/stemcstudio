@@ -1,25 +1,27 @@
 {
   "name": "mathdoodle",
-  "version": "1.249.0",
+  "version": "1.250.0",
   "private": true,
   "description": "Learning Mathematics and Geometric Physics through Computational Modeling",
   "engines": {
     "node": "0.12.0"
   },
   "scripts": {
-    "start": "NODE_ENV=development nodemon web.js",
-    "test": "lineman spec-ci"
+    "start": "NODE_ENV=development nodemon web.js"
   },
   "author": "David Holmes",
   "license": "MIT",
   "devDependencies": {
     "bootstrap": "^3.3.6",
-    "coffee-script": "1.6.3",
     "grunt": "^0.4.5",
-    "grunt-typescript": "0.8.0",
-    "lineman": "^0.36.6",
-    "lineman-angular": "^0.3.0",
-    "lineman-less": "^0.1.0",
+    "grunt-angular-templates": "^1.0.2",
+    "grunt-contrib-clean": "^0.7.0",
+    "grunt-contrib-copy": "^0.8.2",
+    "grunt-contrib-less": "^1.1.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-ts": "^5.3.2",
+    "jspm": "^0.16.24",
+    "systemjs-builder": "^0.15.5",
     "protractor": "^3.0.0",
     "typescript": "1.7.5"
   },
@@ -45,7 +47,17 @@
   },
   "jspm": {
     "configFile": "jspm.config.js",
-    "dependencies": {},
+    "dependencies": {
+      "ace2ts/ace": "github:ace2ts/ace@^0.1.132",
+      "angular": "github:angular/bower-angular@^1.4.9",
+      "angular-animate": "github:angular/bower-angular-animate@^1.4.9",
+      "angular-bootstrap": "github:angular-ui/bootstrap-bower@^1.1.0",
+      "angular-ui-router": "github:angular-ui/ui-router@^0.2.15",
+      "bootstrap-dialog": "npm:bootstrap-dialog@^1.34.6",
+      "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@^1.0.10",
+      "jquery": "npm:jquery@^2.2.0",
+      "underscore": "npm:underscore@^1.8.3"
+    },
     "devDependencies": {}
   }
 }

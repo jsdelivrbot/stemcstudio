@@ -602,7 +602,7 @@ webdriver.WebDriver.prototype.executeScript = function(script, var_args) {
  *         if (xhr.readyState == 4) {
  *           callback(xhr.responseText);
  *         }
- *       }
+ *       };
  *       xhr.send('');
  *     }).then(function(str) {
  *       console.log(JSON.parse(str)['food']);
@@ -2184,6 +2184,25 @@ webdriver.WebElement.prototype.isDisplayed = function() {
   return this.schedule_(
       new webdriver.Command(webdriver.CommandName.IS_ELEMENT_DISPLAYED),
       'WebElement.isDisplayed()');
+};
+
+
+/**
+ * Take a screenshot of the visible region encompassed by this element's
+ * bounding rectangle.
+ *
+ * @param {boolean=} opt_scroll Optional argument that indicates whether the
+ *     element should be scrolled into view before taking a screenshot. Defaults
+ *     to false.
+ * @return {!webdriver.promise.Promise.<string>} A promise that will be
+ *     resolved to the screenshot as a base-64 encoded PNG.
+ */
+webdriver.WebElement.prototype.takeScreenshot = function(opt_scroll) {
+  var scroll = !!opt_scroll;
+  return this.schedule_(
+      new webdriver.Command(webdriver.CommandName.TAKE_ELEMENT_SCREENSHOT)
+          .setParameter('scroll', scroll),
+      'WebElement.takeScreenshot(' + scroll + ')');
 };
 
 

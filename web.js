@@ -4,8 +4,8 @@ var debug = require('debug')('mathdoodle:server');
 var app_1 = require("./app");
 var socketIO = require('socket.io');
 var port = normalizePort(nconf.get("PORT") || 8080);
-app_1["default"].set('port', port);
-var server = http.createServer(app_1["default"]);
+app_1.default.set('port', port);
+var server = http.createServer(app_1.default);
 var io = socketIO(server);
 io.on('connection', function (socket) {
     console.log('User connected');
@@ -20,24 +20,16 @@ io.on('connection', function (socket) {
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
-/**
- * Normalize a port into a number, string, or false.
- */
 function normalizePort(value) {
     var port = parseInt(value, 10);
     if (isNaN(port)) {
-        // named pipe
         return value;
     }
     if (port >= 0) {
-        // port number
         return port;
     }
     return false;
 }
-/**
- * Event listener for HTTP server "error" event.
- */
 function onError(error) {
     if (error.syscall !== 'listen') {
         throw error;
@@ -45,7 +37,6 @@ function onError(error) {
     var bind = typeof port === 'string'
         ? 'Pipe ' + port
         : 'Port ' + port;
-    // handle specific listen errors with friendly messages
     switch (error.code) {
         case 'EACCES':
             console.error(bind + ' requires elevated privileges');
@@ -59,9 +50,6 @@ function onError(error) {
             throw error;
     }
 }
-/**
- * Event listener for HTTP server "listening" event.
- */
 function onListening() {
     var addr = server.address();
     var bind = typeof addr === 'string'

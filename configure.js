@@ -7,6 +7,5 @@ var defaultConfig = {
     GITHUB_METHOD: "POST"
 };
 var env = process.env.NODE_ENV || 'development';
-// console.log(`using NODE_ENV=${env}`);
 nconf.use("memory").argv().env().file({ file: "config." + env + ".json" }).defaults(defaultConfig);
 //# sourceMappingURL=configure.js.map
