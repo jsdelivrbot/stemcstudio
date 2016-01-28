@@ -8,7 +8,7 @@ System.config({
   },
 
   map: {
-    "ace.js": "github:ace2ts/ace@0.1.132",
+    "ace.js": "github:ace2ts/ace@0.1.134",
     "ace2ts/ace": "github:ace2ts/ace@0.1.134",
     "angular": "github:angular/bower-angular@1.4.9",
     "angular-animate": "github:angular/bower-angular-animate@1.4.9",
