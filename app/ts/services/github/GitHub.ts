@@ -22,6 +22,33 @@ const ACCEPT_HEADER = "application/vnd.github.v3+json";
 
 app.factory('GitHub', ['$http', function($http: angular.IHttpService): GitHubService {
 
+    function getGistsPage(token: string, href: string, done: (err: any, response: Gist[], status: number, headers, config) => any) {
+        const headers: any/*angular.IRequestConfig*/ = token ? {
+            Accept: ACCEPT_HEADER,
+            Authorization: "token " + token
+        } : {};
+        return $http({
+            method: HTTP_METHOD_GET,
+            url: href,
+            headers: headers
+        }).success(function(gists: Gist[], status: number, headers, config) {
+            // Hypermedia Links...
+            // console.log(headers('link'));
+            gists = _.map(gists, function(gist: Gist) {
+                return new Gist(gist.id, gist.description, gist["public"], gist.files, gist.html_url);
+            });
+            return done(null, gists, status, headers, config);
+        }).error(function(response, status, headers, config) {
+            if (response && response.message) {
+                return done(new Error(response.message), response, status, headers, config);
+            }
+            else {
+                return done(new Error("Invalid response from GitHub."), response, status, headers, config);
+            }
+        });
+    }
+
+
     return {
         getUser: function(token: string, done: (err: any, user: User, status: number, headers, config) => any) {
             var headers;
@@ -286,28 +313,11 @@ app.factory('GitHub', ['$http', function($http: angular.IHttpService): GitHubSer
             });
         },
         getGists: function(token: string, done: (err: any, response: Gist[], status: number, headers, config) => any) {
-            var headers;
-            headers = token ? {
-                Accept: ACCEPT_HEADER,
-                Authorization: "token " + token
-            } : {};
-            return $http({
-                method: HTTP_METHOD_GET,
-                url: "" + GITHUB_PROTOCOL + "://" + GITHUB_DOMAIN + "/gists",
-                headers: headers
-            }).success(function(gists: Gist[], status, headers, config) {
-                gists = _.map(gists, function(gist: Gist) {
-                    return new Gist(gist.id, gist.description, gist["public"], gist.files, gist.html_url);
-                });
-                return done(null, gists, status, headers, config);
-            }).error(function(response, status, headers, config) {
-                if (response && response.message) {
-                    return done(new Error(response.message), response, status, headers, config);
-                }
-                else {
-                    return done(new Error("Invalid response from GitHub."), response, status, headers, config);
-                }
-            });
+            const url = `${GITHUB_PROTOCOL}://${GITHUB_DOMAIN}/gists`;
+            return getGistsPage(token, url, done);
+        },
+        getGistsPage: function(token: string, href: string, done: (err: any, response: Gist[], status: number, headers, config) => any) {
+            return getGistsPage(token, href, done);
         }
     };
 }

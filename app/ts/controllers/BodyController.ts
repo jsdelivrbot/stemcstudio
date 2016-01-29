@@ -5,6 +5,7 @@ import CookieService from '../services/cookie/CookieService';
 import IDoodleManager from '../services/doodles/IDoodleManager';
 import Gist from '../services/github/Gist';
 import GitHubService from '../services/github/GitHubService';
+import linkToMap from '../utils/linkToMap';
 
 app.controller('body-controller', [
     '$scope',
@@ -34,10 +35,11 @@ app.controller('body-controller', [
 
         $scope.clickDownload = function(label?: string, value?: number) {
             ga('send', 'event', 'doodle', 'download', label, value);
-            var token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
+            const token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
             github.getGists(token, function(err: any, gists: Gist[], status: number, headers, config) {
                 if (!err) {
                     $scope.gists = gists;
+                    $scope.links = linkToMap(headers('link'));
                     $state.go('download');
                 }
                 else {
@@ -54,7 +56,6 @@ app.controller('body-controller', [
                             }
                         }]
                     });
-                    // $scope.alert("Error attempting to download Gists");
                 }
             });
         };

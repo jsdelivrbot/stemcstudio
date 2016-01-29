@@ -14,7 +14,6 @@
     "app/ts/AppScope.ts",
     "app/ts/app.ts",
     "app/ts/bootstrap.ts",
-    "app/ts/compsci/StringSet.ts",
     "app/ts/controllers/AboutController.ts",
     "app/ts/controllers/BodyController.ts",
     "app/ts/controllers/CopyController.ts",
@@ -40,6 +39,11 @@
     "app/ts/services/tw/tw.ts",
     "app/ts/services/uuid/UuidService.ts",
 
+    "app/ts/utils/linkToMap.ts",
+    "app/ts/utils/linkToMap.spec.ts",
+    "app/ts/utils/StringSet.ts",
+    "app/ts/utils/StringSet.spec.ts",
+
     "app/ts/template-cache.ts",
 
     "typings/angular-ui-router/angular-ui-router.d.ts",
@@ -47,6 +51,7 @@
     "typings/angularjs/angular.d.ts",
     "typings/google.analytics/ga.d.ts",
     "typings/jquery/jquery.d.ts",
+    "typings/jasmine/jasmine.d.ts",
     "typings/twitter/twitter.d.ts",
     "typings/underscore/underscore.d.ts",
     "typings-manual/ace/ace.d.ts",

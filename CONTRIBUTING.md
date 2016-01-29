@@ -2,6 +2,14 @@
 
 Learning Mathematics and Geometric Physics through Computational Modeling.
 
+# Prerequisites
+
+## Node.js
+## Karma
+```
+npm install -g karma-cli
+```
+
 # Instructions
 
 1. `git clone https://github.com/geometryzen/mathdoodle.git`

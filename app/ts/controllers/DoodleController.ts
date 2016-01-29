@@ -15,7 +15,7 @@ import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
 import IOption from '../services/options/IOption';
 import IOptionManager from '../services/options/IOptionManager';
 import ISettingsService from '../services/settings/ISettingsService';
-import StringSet from '../compsci/StringSet';
+import StringSet from '../utils/StringSet';
 import IUuidService from '../services/uuid/IUuidService';
 
 import BootstrapDialog from 'bootstrap-dialog';

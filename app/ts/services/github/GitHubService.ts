@@ -14,6 +14,7 @@ interface GitHubService {
     deleteRepo(token: string, owner: string, repo: string, done: (err: any, response, status, headers, config) => any);
     getGist(token: string, gist: string, done: (err: any, response: GetGistResponse, status, headers, config) => any);
     getGists(token: string, done: (err: any, gists: Gist[], status: number, headers, config) => any);
+    getGistsPage(token: string, href: string, done: (err: any, gists: Gist[], status: number, headers, config) => any);
     getPathContents(token: string, user: string, repo: string, path: string, done: (err: any, response, status, headers, config) => any);
     getRepoContents(token: string, user: string, repo: string, done: (err: any, response, status, headers, config) => any);
     getUser(token: string, done: (err: any, user: User, status, headers, config) => any);

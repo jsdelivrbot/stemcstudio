@@ -127,6 +127,10 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "    </p>\n" +
     "  </div>\n" +
     "  <div class='modal-footer'>\n" +
+    "    <button class='btn' ng-click=\"doPageF()\">First</button>\n" +
+    "    <button class='btn' ng-click=\"doPageP()\">Previous</button>\n" +
+    "    <button class='btn' ng-click=\"doPageN()\">Next</button>\n" +
+    "    <button class='btn' ng-click=\"doPageL()\">Last</button>\n" +
     "    <button class='btn' ng-click='doCancel()'>Close</button>\n" +
     "  </div>\n" +
     "</div>\n"
