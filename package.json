@@ -1,6 +1,6 @@
 {
   "name": "mathdoodle",
-  "version": "1.252.0",
+  "version": "1.253.0",
   "private": true,
   "description": "Learning Mathematics and Geometric Physics through Computational Modeling",
   "engines": {
@@ -21,8 +21,8 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-ts": "^5.3.2",
     "jspm": "^0.16.24",
-    "systemjs-builder": "^0.15.5",
     "protractor": "^3.0.0",
+    "systemjs-builder": "^0.15.5",
     "typescript": "1.7.5"
   },
   "repository": {

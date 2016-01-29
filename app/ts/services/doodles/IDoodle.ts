@@ -52,6 +52,14 @@ interface IDoodle {
      * 
      */
     dependencies: string[];
+    /**
+     *
+     */
+    created_at?: string;
+    /**
+     *
+     */
+    updated_at?: string;
 }
 
 export default IDoodle;

@@ -503,6 +503,20 @@ module.exports = function(grunt) {
           fast: 'never'
         }
       }
+    },
+
+    watch: {
+      scripts: {
+        files: ['app/ts/**/*.ts'],
+        tasks: ['ts:app'],
+        options: {
+          spawn: false
+        }
+      },
+      templates: {
+        files: ['app/templates/**/*.html'],
+        tasks: ['ngtemplates']
+      }
     }
 
   });
@@ -510,6 +524,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-angular-templates');
   grunt.loadNpmTasks('grunt-ts');
 

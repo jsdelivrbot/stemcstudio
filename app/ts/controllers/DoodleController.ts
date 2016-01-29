@@ -7,7 +7,10 @@ import IDoodle from '../services/doodles/IDoodle';
 import IDoodleConfig from '../services/cloud/IDoodleConfig';
 import IDoodleManager from '../services/doodles/IDoodleManager';
 import DoodleScope from './DoodleScope';
-import IGist from '../services/gist/IGist';
+import GistData from '../services/gist/GistData';
+import GitHubService from '../services/github/GitHubService';
+import PatchGistResponse from '../services/github/PatchGistResponse';
+import PostGistResponse from '../services/github/PostGistResponse';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
 import IOption from '../services/options/IOption';
 import IOptionManager from '../services/options/IOptionManager';
@@ -26,7 +29,6 @@ app.controller('doodle-controller', [
     '$location',
     '$timeout',
     '$window',
-    '$uibModal',
     'GitHub',
     'GitHubAuthManager',
     'cloud',
@@ -59,8 +61,7 @@ app.controller('doodle-controller', [
         $location: angular.ILocationService,
         $timeout: angular.ITimeoutService,
         $window: angular.IWindowService,
-        $uibModal,
-        github,
+        github: GitHubService,
         authManager: IGitHubAuthManager,
         cloud: ICloud,
         cookie: CookieService,
@@ -283,6 +284,11 @@ app.controller('doodle-controller', [
             var doodlec = $window.document.getElementById('doodle-container')
             // 5px comes from the border-bottom on the navbar.
             doodlec.style.height = "" + ($window.innerHeight - toolbar.clientHeight - 5) + "px";
+
+            htmlEditor.resize(true);
+            codeEditor.resize(true);
+            libsEditor.resize(true);
+            lessEditor.resize(true);
         }
 
         $window.addEventListener('resize', resize);
@@ -568,8 +574,9 @@ app.controller('doodle-controller', [
             };
         }
 
-        function doodleToGist(doodle: IDoodle): IGist {
-            const gist: IGist = {
+        // TODO: Encapsulate upload in cloud service.
+        function doodleToGist(doodle: IDoodle): GistData {
+            const gist: GistData = {
                 description: doodles.current().description,
                 public: true,
                 files: {}
@@ -607,10 +614,10 @@ app.controller('doodle-controller', [
             const token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
             if (token) {
                 const doodle = doodles.current();
-                const data: IGist = doodleToGist(doodle);
+                const data: GistData = doodleToGist(doodle);
                 const gistId = doodle.gistId;
                 if (gistId) {
-                    github.patchGist(token, gistId, data, function(err, response, status: number, headers, config) {
+                    github.patchGist(token, gistId, data, function(err: any, response: PatchGistResponse, status: number, headers, config) {
                         if (err) {
                             if (status === 404) {
                                 if (confirm("The Gist associated with your doodle no longer exists.\nWould you like me to disassociate your doodle so that you can create a new Gist?")) {
@@ -627,6 +634,10 @@ app.controller('doodle-controller', [
                             }
                         }
                         else {
+                            doodle.updated_at = response.updated_at;
+
+                            doodles.updateStorage();
+
                             BootstrapDialog.show({
                                 type: BootstrapDialog.TYPE_SUCCESS,
                                 title: $("<h3>Upload complete</h3>"),
@@ -644,7 +655,7 @@ app.controller('doodle-controller', [
                     });
                 }
                 else {
-                    github.postGist(token, data, function(err: any, response, status: number, headers, config) {
+                    github.postGist(token, data, function(err: any, response: PostGistResponse, status: number, headers, config) {
                         if (err) {
                             BootstrapDialog.show({
                                 type: BootstrapDialog.TYPE_DANGER,
@@ -660,8 +671,12 @@ app.controller('doodle-controller', [
                             });
                         }
                         else {
-                            doodles.current().gistId = response.id;
+                            doodle.gistId = response.id;
+                            doodle.created_at = response.created_at;
+                            doodle.updated_at = response.updated_at;
+
                             doodles.updateStorage();
+
                             BootstrapDialog.show({
                                 type: BootstrapDialog.TYPE_SUCCESS,
                                 title: $("<h3>Upload complete</h3>"),

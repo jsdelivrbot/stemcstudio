@@ -3,7 +3,8 @@ import BodyScope from './BodyScope';
 import BootstrapDialog from 'bootstrap-dialog';
 import CookieService from '../services/cookie/CookieService';
 import IDoodleManager from '../services/doodles/IDoodleManager';
-import IGist from '../services/gist/IGist';
+import Gist from '../services/github/Gist';
+import GitHubService from '../services/github/GitHubService';
 
 app.controller('body-controller', [
     '$scope',
@@ -18,7 +19,7 @@ app.controller('body-controller', [
         $state: angular.ui.IStateService,
         doodles: IDoodleManager,
         ga: UniversalAnalytics.ga,
-        github: any,  // FIXME
+        github: GitHubService,
         cookie: CookieService,
         GITHUB_TOKEN_COOKIE_NAME: string
     ) {
@@ -34,7 +35,7 @@ app.controller('body-controller', [
         $scope.clickDownload = function(label?: string, value?: number) {
             ga('send', 'event', 'doodle', 'download', label, value);
             var token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
-            github.getGists(token, function(err: any, gists: IGist[], status, headers, config) {
+            github.getGists(token, function(err: any, gists: Gist[], status: number, headers, config) {
                 if (!err) {
                     $scope.gists = gists;
                     $state.go('download');

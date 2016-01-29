@@ -1,3 +1,6 @@
+/**
+ * @class StringSet
+ */
 export default class StringSet {
     // The value isn't really important.
     private data: { [key: string]: boolean } = {};

@@ -1,8 +1,13 @@
 import app from '../../app';
+import GetGistResponse from '../github/GetGistResponse';
+import GitHubService from '../github/GitHubService';
 import ICloud from './ICloud';
 import IDoodle from '../doodles/IDoodle';
 import IDoodleConfig from './IDoodleConfig';
 
+//
+// The 'cloud' service is a slightly higher abstration over e.g., GitHub
+//
 app.factory('cloud', [
     'GitHub',
     'FILENAME_META',
@@ -11,7 +16,7 @@ app.factory('cloud', [
     'FILENAME_LIBS',
     'FILENAME_LESS',
     function(
-        github,
+        github: GitHubService,
         FILENAME_META: string,
         FILENAME_HTML: string,
         FILENAME_CODE: string,
@@ -30,7 +35,7 @@ app.factory('cloud', [
 
         const cloud: ICloud = {
             downloadGist: function(token: string, gistId: string, callback: (err, doodle?: IDoodle) => void) {
-                github.getGist(token, gistId, function(err, gist) {
+                github.getGist(token, gistId, function(err: any, gist: GetGistResponse) {
                     if (!err) {
                         const metaInfo: IDoodleConfig = JSON.parse(gist.files[FILENAME_META].content);
 

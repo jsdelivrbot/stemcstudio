@@ -1,9 +1,11 @@
+import GistFile from './GistFile';
+
 export default class Gist {
     id: string;
     description: string;
-    files: string[];
+    files: { [name: string]: GistFile };
     html_url: string;
-    constructor(id: string, description: string, isPublic: boolean, files: string[], html_url: string) {
+    constructor(id: string, description: string, isPublic: boolean, files: { [name: string]: GistFile }, html_url: string) {
         this.id = id;
         this.description = description;
         this["public"] = isPublic;
