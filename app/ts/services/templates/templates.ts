@@ -1358,6 +1358,7 @@ app.factory('templates', [
             "\n" +
             "  const time = Date.now() * 0.001\n" +
             "\n" +
+            "  // R = exp(-Ω * time / 2)\n" +
             "  R.copy(Ω).scale(-time/2).exp()\n" +
             "\n" +
             "  mesh.quaternion.set(-R.yz, -R.zx, -R.xy, R.α)\n" +
