@@ -1320,7 +1320,7 @@ app.factory('templates', [
             "/**\n" +
             " * The attitude of the cube.\n" +
             " */\n" +
-            "const R = EIGHT.G3.one.clone()\n" +
+            "let R = EIGHT.G3.one.clone()\n" +
             "\n" +
             "init()\n" +
             "animate()\n" +

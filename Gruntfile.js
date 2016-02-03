@@ -207,7 +207,12 @@ module.exports = function(grunt) {
             src: "vendor/underscore/underscore-min.map",
             dest: "generated/vendor/underscore@1.8.3/underscore-min.map"
           },
-          /*
+          {
+            expand: true,
+            cwd: "vendor/davinci-eight/documentation",
+            src: ["**"],
+            dest: "generated/docs/davinci-eight"
+          },
           {
             src: "vendor/davinci-eight/dist/davinci-eight.d.ts",
             dest: "generated/vendor/davinci-eight@2.102.0/dist/davinci-eight.d.ts"
@@ -216,7 +221,6 @@ module.exports = function(grunt) {
             src: "vendor/davinci-eight/dist/davinci-eight.js",
             dest: "generated/vendor/davinci-eight@2.102.0/dist/davinci-eight.js"
           },
-          */
           {
             src: "../davinci-eight/dist/davinci-eight.d.ts",
             dest: "generated/vendor/davinci-eight@2.102.0/dist/davinci-eight.d.ts"
@@ -438,6 +442,12 @@ module.exports = function(grunt) {
           {
             src: "vendor/underscore/underscore-min.map",
             dest: "dist/vendor/underscore@1.8.3/underscore-min.map"
+          },
+          {
+            expand: true,
+            cwd: "vendor/davinci-eight/documentation",
+            src: ["**"],
+            dest: "dist/docs/davinci-eight"
           },
           {
             src: "vendor/davinci-eight/dist/davinci-eight.d.ts",
