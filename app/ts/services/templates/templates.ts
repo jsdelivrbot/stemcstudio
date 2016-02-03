@@ -800,14 +800,14 @@ app.factory('templates', [
             ""].join('\n');
 
         const LIBS_TEMPLATE_EIGHT_3D_1 = "" +
-            "const zero = EIGHT.Euclidean3.zero\n" +
-            "const one = EIGHT.Euclidean3.one\n" +
-            "const e1 = EIGHT.Euclidean3.e1\n" +
-            "const e2 = EIGHT.Euclidean3.e2\n" +
-            "const e3 = EIGHT.Euclidean3.e3\n" +
+            "const zero = EIGHT.G3.zero\n" +
+            "const one = EIGHT.G3.one\n" +
+            "const e1 = EIGHT.G3.e1\n" +
+            "const e2 = EIGHT.G3.e2\n" +
+            "const e3 = EIGHT.G3.e3\n" +
             "\n" +
             "/**\n" +
-            " * The pseudoscalar for the Euclidean3 Geometric Space, I = e1 * e2 * e3.\n" +
+            " * The pseudoscalar for the Euclidean 3D Geometric Space, I = e1 * e2 * e3.\n" +
             " */\n" +
             "const I  = e1 * e2 * e3\n" +
             "\n" +
@@ -822,11 +822,11 @@ app.factory('templates', [
             "const log = EIGHT.log\n" +
             "\n" +
             "/**\n" +
-            " * dual(m) = m << I<sub>3</sub><sup>-1</sup>\n" +
+            " * dual(m), sign depends on who you talk to.\n" +
             " */\n" +
-            "function dual(m: EIGHT.Euclidean3): EIGHT.Euclidean3 {\n" +
-            "  return m << (I / (I * I)) // Dorst, Fontijne, Mann\n" +
-            "  // return I * m // Hestenes, Doran, Lasenby\n" +
+            "function dual(m: EIGHT.G3): EIGHT.G3 {\n" +
+            "  // return m << (I / (I * I)) // Dorst, Fontijne, Mann\n" +
+            "  return I * m // Hestenes, Doran, Lasenby\n" +
             "  // return m * (I / (I * I)) // Hestenes, Doran, Lasenby\n" +
             "}\n" +
             "\n"
@@ -1300,53 +1300,70 @@ app.factory('templates', [
             "#stats { position: absolute; top: 0; left: 0; }\n";
 
         var CODE_TEMPLATE_THREEJS = "" +
-            "const scene = new THREE.Scene();\n" +
-            "let camera: THREE.PerspectiveCamera;\n" +
-            "const renderer = new THREE.WebGLRenderer();\n" +
-            "let mesh: THREE.Mesh;\n" +
+            "const scene = new THREE.Scene()\n" +
+            "let camera: THREE.PerspectiveCamera\n" +
+            "const renderer = new THREE.WebGLRenderer()\n" +
+            "let mesh: THREE.Mesh\n" +
             "\n" +
-            "const stats = new Stats();\n" +
-            "stats.setMode(0);\n" +
-            "document.body.appendChild(stats.domElement);\n" +
+            "const stats = new Stats()\n" +
+            "stats.setMode(0)\n" +
+            "document.body.appendChild(stats.domElement)\n" +
             "\n" +
-            "init();\n" +
-            "animate();\n" +
+            "/**\n" +
+            " * The rotational velocity vector.\n" +
+            " */\n" +
+            "const ω = 2 * Math.PI * (1/10) * e2\n" +
+            "/**\n" +
+            " * The rotational velocity bivector.\n" +
+            " */\n" +
+            "const Ω = dual(ω)\n" +
+            "/**\n" +
+            " * The attitude of the cube.\n" +
+            " */\n" +
+            "const R = EIGHT.G3.one.clone()\n" +
+            "\n" +
+            "init()\n" +
+            "animate()\n" +
             "\n" +
             "/**\n" +
             " * Initializes the scene.\n" +
             " */\n" +
             "function init() {\n" +
-            "  const aspect = window.innerWidth / window.innerHeight;\n" +
-            "  camera = new THREE.PerspectiveCamera(75, aspect, 1, 1000);\n" +
-            "  camera.position.z = 200;\n" +
-            "  scene.add(camera);\n" +
+            "  const aspect = window.innerWidth / window.innerHeight\n" +
+            "  camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000)\n" +
+            "  camera.position.z = 3\n" +
+            "  camera.position.y = 1\n" +
+            "  scene.add(camera)\n" +
             "\n" +
-            "  const geometry = new THREE.BoxGeometry(100, 100, 100);\n" +
-            "  const program = new THREE.MeshNormalMaterial();\n" +
+            "  const geometry = new THREE.BoxGeometry(1, 1, 1)\n" +
+            "  const program = new THREE.MeshNormalMaterial()\n" +
             "\n" +
-            "  mesh = new THREE.Mesh(geometry, program);\n" +
-            "  scene.add(mesh);\n" +
+            "  mesh = new THREE.Mesh(geometry, program)\n" +
+            "  scene.add(mesh)\n" +
             "\n" +
-            "  renderer.setClearColor(0xFFFFFF, 1.0);\n" +
-            "  renderer.setSize(window.innerWidth, window.innerHeight);\n" +
+            "  renderer.setClearColor(0xFFFFFF, 1.0)\n" +
+            "  renderer.setSize(window.innerWidth, window.innerHeight)\n" +
             "\n" +
-            "  document.body.style.margin = '0px';\n" +
-            "  document.body.style.overflow = 'hidden';\n" +
-            "  document.body.appendChild(renderer.domElement);\n" +
+            "  document.body.style.margin = '0px'\n" +
+            "  document.body.style.overflow = 'hidden'\n" +
+            "  document.body.appendChild(renderer.domElement)\n" +
             "}\n" +
             "\n" +
             "/**\n" +
             " * Animates the scene.\n" +
             " */\n" +
             "function animate() {\n" +
-            "  stats.begin();\n" +
-            "  requestAnimationFrame(animate);\n" +
+            "  stats.begin()\n" +
+            "  requestAnimationFrame(animate)\n" +
             "\n" +
-            "  mesh.rotation.x = Date.now() * 0.0005;\n" +
-            "  mesh.rotation.y = Date.now() * 0.001;\n" +
+            "  const time = Date.now() * 0.001\n" +
             "\n" +
-            "  renderer.render(scene, camera);\n" +
-            "  stats.end();\n" +
+            "  R.copy(Ω).scale(-time/2).exp()\n" +
+            "\n" +
+            "  mesh.quaternion.set(-R.yz, -R.zx, -R.xy, R.α)\n" +
+            "\n" +
+            "  renderer.render(scene, camera)\n" +
+            "  stats.end()\n" +
             "}\n";
 
         var LIBS_TEMPLATE_THREEJS = "";
@@ -1616,9 +1633,9 @@ app.factory('templates', [
                 operatorOverloading: true,
                 html: HTML_TEMPLATE_MINIMAL,
                 code: CODE_TEMPLATE_THREEJS,
-                libs: LIBS_TEMPLATE_THREEJS,
+                libs: LIBS_TEMPLATE_EIGHT_3D_1,
                 less: LESS_TEMPLATE_THREEJS,
-                dependencies: ['three.js', 'stats.js']
+                dependencies: ['three.js', 'stats.js', 'davinci-eight']
             }
         ];
     }]);
