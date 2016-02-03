@@ -1515,6 +1515,7 @@ app.factory('templates', [
                 less: LESS_TEMPLATE_MINIMAL,
                 dependencies: []
             },
+            /*
             {
                 uuid: uuid.generate(),
                 description: "Mathematical Graphics with EIGHT and WebGL",
@@ -1529,6 +1530,7 @@ app.factory('templates', [
                 less: LESS_TEMPLATE_EIGHT_WEBGL_MINIMAL,
                 dependencies: ['DomReady', 'davinci-eight']
             },
+            */
             {
                 uuid: uuid.generate(),
                 description: "2D Mathematical Graphics with HTML5 Canvas API and Geometric Algebra",
@@ -1543,6 +1545,8 @@ app.factory('templates', [
                 less: LESS_TEMPLATE_CANVAS,
                 dependencies: ['DomReady', 'davinci-eight']
             },
+            //
+            /*
             {
                 uuid: uuid.generate(),
                 description: "3D Mathematical Graphics with EIGHT, WebGL, and Geometric Algebra (1)",
@@ -1557,6 +1561,8 @@ app.factory('templates', [
                 less: LESS_TEMPLATE_EIGHT_3D_1,
                 dependencies: ['DomReady', 'davinci-eight', 'stats.js']
             },
+            */
+            /*
             {
                 uuid: uuid.generate(),
                 description: "3D Mathematical Graphics with EIGHT, WebGL, and Geometric Algebra (2)",
@@ -1571,6 +1577,7 @@ app.factory('templates', [
                 less: LESS_TEMPLATE_EIGHT_3D_2,
                 dependencies: ['DomReady', 'davinci-eight', 'stats.js']
             },
+            */
             {
                 uuid: uuid.generate(),
                 description: "Geometric Algebra and Unit of Measure calculations using EIGHT",
