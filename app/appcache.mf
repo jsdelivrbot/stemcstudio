@@ -1,12 +1,12 @@
 CACHE MANIFEST
-# 1.254.0
+# 1.256.0
 
 # Explicitly cached entries
 index.html
 
-css/app.css?version=1.254.0
+css/app.css?version=1.256.0
 
-js/bootstrap.js?version=1.254.0
+js/bootstrap.js?version=1.256.0
 
 fonts/glyphicons-halflings-regular.eot
 fonts/glyphicons-halflings-regular.svg

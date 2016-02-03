@@ -460,7 +460,7 @@ app.factory('templates', [
             "  canvas.width = 300\n" +
             "  canvas.height = 300\n" +
             "\n" +
-            "  var ctxt = new EIGHT.GraphicsContext()\n" +
+            "  var renderer = new EIGHT.WebGLRenderer()\n" +
             "  .clearColor(0.1, 0.1, 0.1, 1.0)\n" +
             "  .start(canvas)\n" +
             "\n" +
@@ -468,9 +468,9 @@ app.factory('templates', [
             "  attributes['aPosition'] = {values: [0, 0, 0.75, 0, 0, 1], size: 2}\n" +
             "  attributes['aColor']    = {values: [1, 0, 0, 0, 1, 0, 0, 0, 1], size: 3}\n" +
             "  var primitive = {mode: LINE_STRIP, indices: [0, 1, 2, 0], attributes: attributes}\n" +
-            "  var elements = ctxt.createBufferGeometry(primitive)\n" +
+            "  var elements = renderer.createBufferGeometry(primitive)\n" +
             "\n" +
-            "  var program = new EIGHT.HTMLScriptsGraphicsProgram([ctxt], ['vs', 'fs'])\n" +
+            "  var program = new EIGHT.HTMLScriptsGraphicsProgram(['vs', 'fs'], document, [renderer])\n" +
             "\n" +
             "  var I = EIGHT.Mat2R.one()\n" +
             "  var N = reflection(EIGHT.G2.e1)\n" +
@@ -480,7 +480,7 @@ app.factory('templates', [
             "\n" +
             "  function animate() {\n" +
             "\n" +
-            "    var gl = ctxt.gl\n" +
+            "    var gl = renderer.gl\n" +
             "    gl.clear(gl.COLOR_BUFFER_BIT)\n" +
             "\n" +
             "    program.use()\n" +
@@ -667,135 +667,137 @@ app.factory('templates', [
             "  </body>\n" +
             "</html>\n";
 
-        const CODE_TEMPLATE_EIGHT_3D_1 = "" +
-            "DomReady.ready(() => {\n" +
-            "  init()\n" +
-            "  animate()\n" +
-            "})\n" +
-            "\n" +
-            "const ctxt = new EIGHT.GraphicsContext()\n" +
-            "ctxt.enable(EIGHT.Capability.DEPTH_TEST)\n" +
-            "ctxt.clearColor(0.2, 0.2, 0.2, 1.0)\n" +
-            "\n" +
-            "var ambients: EIGHT.IFacet[] = []\n" +
-            "var scene = new EIGHT.Scene([ctxt])\n" +
-            "var camera: EIGHT.PerspectiveCamera\n" +
-            "var cube: EIGHT.Drawable\n" +
-            "\n" +
-            "var timeElement: HTMLElement\n" +
-            "var timeNode: Text\n" +
-            "var angleElement: HTMLElement\n" +
-            "var angleNode: Text\n" +
-            "var spinorElement: HTMLElement\n" +
-            "var spinorNode: Text\n" +
-            "\n" +
-            "/**\n" +
-            " * The time interval between animation frames.\n" +
-            " */\n" +
-            "var dt = 1 / 60 // assume we are getting 60 frames a second.\n" +
-            "\n" +
-            "/**\n" +
-            " * The rotational velocity vector.\n" +
-            " */\n" +
-            "var ω = 2 * Math.PI * (1/5) * e2\n" +
-            "var Ω = dual(ω)\n" +
-            "\n" +
-            "ambients.push(new EIGHT.AmbientLight(EIGHT.Color.white))\n" +
-            "ambients.push(new EIGHT.DirectionalLightE3(-e3))\n" +
-            "\n" +
-            "/**\n" +
-            " * Initializes the scene.\n" +
-            " */\n" +
-            "function init() {\n" +
-            "  var canvas = <HTMLCanvasElement>document.getElementById('my-canvas')\n" +
-            "  ctxt.start(canvas)\n" +
-            "\n" +
-            "  var aspect = window.innerWidth / window.innerHeight\n" +
-            "  camera = new EIGHT.PerspectiveCamera(75 * Math.PI / 180, aspect, 1, 1000).setEye(e3 * 2 + e1 * 0.05 + e2)\n" +
-            "  ambients.push(camera)\n" +
-            "\n" +
-            "  var geometry = new EIGHT.BarnSimplexGeometry()\n" +
-            "  geometry.k = 1\n" +
-            "  var primitives = geometry.toPrimitives()\n" +
-            "\n" +
-            "  // 3 roads to a graphics program that runs on the GPU:\n" +
-            "  // 1) Use a graphics program generator.\n" +
-            "  var smb = new EIGHT.GraphicsProgramBuilder()\n" +
-            "  smb.attribute(EIGHT.GraphicsProgramSymbols.ATTRIBUTE_POSITION, 3)\n" +
-            "  smb.uniform(EIGHT.GraphicsProgramSymbols.UNIFORM_MODEL_MATRIX, 'mat4')\n" +
-            "  smb.uniform(EIGHT.GraphicsProgramSymbols.UNIFORM_VIEW_MATRIX, 'mat4')\n" +
-            "  smb.uniform(EIGHT.GraphicsProgramSymbols.UNIFORM_PROJECTION_MATRIX, 'mat4')\n" +
-            "  smb.uniform(EIGHT.GraphicsProgramSymbols.UNIFORM_COLOR, 'vec3')\n" +
-            "  var program = smb.build([ctxt])\n" +
-            "\n" +
-            "  // 2) Use an off-the shelf graphics program.\n" +
-            "  // var program = new EIGHT.LineMaterial([ctxt])\n" +
-            "\n" +
-            "  // 3) Write your own graphics program.\n" +
-            "  // var program = new EIGHT.HTMLScriptsGraphicsProgram([ctxt], ['vs-lines', 'fs-lines'])\n" +
-            "  // Let's take a look at the shader programs...\n" +
-            "  // console.log(program.vertexShader)\n" +
-            "  // console.log(program.fragmentShader)\n" +
-            "\n" +
-            "  cube = new EIGHT.Drawable(primitives, program)\n" +
-            "  scene.add(cube)\n" +
-            "  cube.setFacet('model', new EIGHT.ModelFacetE3())\n" +
-            "  cube.setFacet('color', new EIGHT.ColorFacet())\n" +
-            "\n" +
-            "  ctxt.canvas.width = window.innerWidth\n" +
-            "  ctxt.canvas.height = window.innerHeight\n" +
-            "  ctxt.viewport(0, 0, window.innerWidth, window.innerHeight)\n" +
-            "\n" +
-            "  timeElement = document.getElementById('t')\n" +
-            "  timeNode = document.createTextNode('')\n" +
-            "  timeElement.appendChild(timeNode)\n" +
-            "\n" +
-            "  angleElement = document.getElementById('θ')\n" +
-            "  angleNode = document.createTextNode('')\n" +
-            "  angleElement.appendChild(angleNode)\n" +
-            "\n" +
-            "  spinorElement = document.getElementById('R')\n" +
-            "  spinorNode = document.createTextNode('')\n" +
-            "  spinorElement.appendChild(spinorNode)\n" +
-            "}\n" +
-            "\n" +
-            "/**\n" +
-            " * Animates the scene.\n" +
-            " */\n" +
-            "function animate() {\n" +
-            "  try {\n" +
-            "    var gl = ctxt.gl\n" +
-            "\n" +
-            "    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)\n" +
-            "\n" +
-            "    var time = Date.now() * 0.001\n" +
-            "    timeNode.nodeValue = time.toFixed(2)\n" +
-            "\n" +
-            "    var θ = time\n" +
-            "\n" +
-            "    var model = <EIGHT.ModelFacetE3>cube.getFacet('model')\n" +
-            "    var X = model.X\n" +
-            "    var R = model.R\n" +
-            "    // X.copy(e1)\n" +
-            "    R.rotorFromAxisAngle(e2, θ)\n" +
-            "    // R.dual(e2).scale(-θ / 2).exp()\n" +
-            "    // R.copy(I * e2).scale(-θ / 2).exp()\n" +
-            "    // R.copy(exp(I * e2 * -θ / 2))\n" +
-            "    // R.copy(exp(e1 * e2 * e3 * e2 * -θ / 2))\n" +
-            "    // R.spinor(e3, e1).scale(-θ / 2).exp()\n" +
-            "    // R.sub(Ω * R * dt / 2) // Integrate dR(t)/dt wrt t\n" +
-            "\n" +
-            "    angleNode.nodeValue = R.clone().angle().toFixed(2)\n" +
-            "    spinorNode.nodeValue = R.toFixed(2)\n" +
-            "\n" +
-            "    scene.draw(ambients)\n" +
-            "\n" +
-            "    requestAnimationFrame(animate)\n" +
-            "  }\n" +
-            "  catch(e) {\n" +
-            "    console.error(e)\n" +
-            "  }\n" +
-            "}\n";
+        const CODE_TEMPLATE_EIGHT_3D_1 = [
+            "EIGHT.verbose = false;",
+            "",
+            "DomReady.ready(() => {",
+            "  init()",
+            "  animate()",
+            "})",
+            "",
+            "const renderer = new EIGHT.WebGLRenderer()",
+            "renderer.enable(EIGHT.Capability.DEPTH_TEST)",
+            "renderer.clearColor(0.2, 0.2, 0.2, 1.0)",
+            "",
+            "const uniforms: EIGHT.Facet[] = []",
+            "const scene = new EIGHT.Scene([renderer])",
+            "let camera: EIGHT.PerspectiveCamera",
+            "let cube: EIGHT.Drawable",
+            "",
+            "let timeElement: HTMLElement",
+            "let timeNode: Text",
+            "let angleElement: HTMLElement",
+            "let angleNode: Text",
+            "let spinorElement: HTMLElement",
+            "let spinorNode: Text",
+            "",
+            "/**",
+            " * The time interval between animation frames.",
+            " */",
+            "const dt = 1 / 60 // assume we are getting 60 frames a second.",
+            "",
+            "/**",
+            " * The rotational velocity vector.",
+            " */",
+            "const ω = 2 * Math.PI * (1/5) * e2",
+            "const Ω = dual(ω)",
+            "",
+            "uniforms.push(new EIGHT.AmbientLight(EIGHT.Color.white))",
+            "uniforms.push(new EIGHT.DirectionalLight(-e3-1.5*e2))",
+            "",
+            "/**",
+            " * Initializes the scene.",
+            " */",
+            "function init() {",
+            "  const canvas = <HTMLCanvasElement>document.getElementById('my-canvas')",
+            "  renderer.start(canvas)",
+            "",
+            "  const aspect = window.innerWidth / window.innerHeight",
+            "  camera = new EIGHT.PerspectiveCamera(75 * Math.PI / 180, aspect, 1, 1000).setEye(e3 * 2 + e1 * 0.05 + e2)",
+            "  uniforms.push(camera)",
+            "",
+            "  const geometry = new EIGHT.CuboidGeometry()",
+            "  const primitives = geometry.toPrimitives()",
+            "",
+            "  // Two roads to a graphics program that runs on the GPU:",
+            "  // 1) Use an off-the shelf graphics program.",
+            "  const program = new EIGHT.MeshLambertMaterial()",
+            "  // const program = new EIGHT.LineMaterial()",
+            "  // const program = new EIGHT.PointMaterial()",
+            "",
+            "  // 2) Write your own graphics program.",
+            "  // const program = new EIGHT.HTMLScriptsGraphicsProgram(['vs-triangles', 'fs-triangles'])",
+            "  // const program = new EIGHT.HTMLScriptsGraphicsProgram(['vs-lines',     'fs-lines'])",
+            "  // const program = new EIGHT.HTMLScriptsGraphicsProgram(['vs-points',    'fs-points'])",
+            "",
+            "  const buffers = new EIGHT.GraphicsBuffers(primitives)",
+            "  cube = new EIGHT.Drawable(buffers, program)",
+            "  scene.add(cube)",
+            "  // The ModelFacet provides the model matrix and the normal transformation matrix.",
+            "  cube.setFacet('model', new EIGHT.ModelFacet())",
+            "  cube.setFacet('color', new EIGHT.ColorFacet())",
+            "  cube.getFacet('color').setProperty('rgb', [0, 1, 0])",
+            "",
+            "  renderer.canvas.width = window.innerWidth",
+            "  renderer.canvas.height = window.innerHeight",
+            "  renderer.viewport(0, 0, window.innerWidth, window.innerHeight)",
+            "",
+            "  timeElement = document.getElementById('t')",
+            "  timeNode = document.createTextNode('')",
+            "  timeElement.appendChild(timeNode)",
+            "",
+            "  angleElement = document.getElementById('θ')",
+            "  angleNode = document.createTextNode('')",
+            "  angleElement.appendChild(angleNode)",
+            "",
+            "  spinorElement = document.getElementById('R')",
+            "  spinorNode = document.createTextNode('')",
+            "  spinorElement.appendChild(spinorNode)",
+            "",
+            "  // Let's take a look at the shader programs.",
+            "  // This is useful to understand the program parameters.",
+            "  // console.log(program.vertexShader)",
+            "  // console.log(program.fragmentShader)",
+            "}",
+            "",
+            "/**",
+            " * Animates the scene.",
+            " */",
+            "function animate() {",
+            "  try {",
+            "    const gl = renderer.gl",
+            "",
+            "    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)",
+            "",
+            "    const time = Date.now() * 0.001",
+            "    timeNode.nodeValue = time.toFixed(2)",
+            "",
+            "    const θ = time",
+            "",
+            "    const model = <EIGHT.ModelFacet>cube.getFacet('model')",
+            "    const X = model.X",
+            "    const R = model.R",
+            "    // X.copy(e1)",
+            "    R.rotorFromAxisAngle(e2, θ)",
+            "    // R.dual(e2).scale(-θ / 2).exp()",
+            "    // R.copy(I * e2).scale(-θ / 2).exp()",
+            "    // R.copy(exp(I * e2 * -θ / 2))",
+            "    // R.copy(exp(e1 * e2 * e3 * e2 * -θ / 2))",
+            "    // R.spinor(e3, e1).scale(-θ / 2).exp()",
+            "    // R.sub(Ω * R * dt / 2) // Integrate dR(t)/dt wrt t",
+            "",
+            "    angleNode.nodeValue = R.clone().angle().toFixed(2)",
+            "    spinorNode.nodeValue = R.toFixed(2)",
+            "",
+            "    scene.draw(uniforms, renderer.canvasId)",
+            "",
+            "    requestAnimationFrame(animate)",
+            "  }",
+            "  catch(e) {",
+            "    console.error(e)",
+            "  }",
+            "}",
+            ""].join('\n');
 
         const LIBS_TEMPLATE_EIGHT_3D_1 = "" +
             "const zero = EIGHT.Euclidean3.zero\n" +
@@ -992,12 +994,12 @@ app.factory('templates', [
             "   * But there are also utilities for smart programs, predefined geometries, and transformations to get you started or for demos.\n" +
             "   * We start the manager now to initialize the WebGL context.\n" +
             "   */\n" +
-            "  var ctxt = new EIGHT.GraphicsContext()\n" +
-            "  ctxt.enable(EIGHT.Capability.DEPTH_TEST)\n" +
-            "  ctxt.clearColor(0.2, 0.2, 0.2, 1.0)\n" +
+            "  var renderer = new EIGHT.WebGLRenderer()\n" +
+            "  renderer.enable(EIGHT.Capability.DEPTH_TEST)\n" +
+            "  renderer.clearColor(0.2, 0.2, 0.2, 1.0)\n" +
             "\n" +
             "  /**\n" +
-            "   * The camera is mutable and provides uniforms through the EIGHT.IFacet interface.\n" +
+            "   * The camera is mutable and provides uniforms through the EIGHT.Facet interface.\n" +
             "   */\n" +
             "  var camera = new EIGHT.PerspectiveCamera().setAspect(canvas.clientWidth / canvas.clientHeight).setEye(2.0 * e3)\n" +
             "  /**\n" +
@@ -1016,21 +1018,21 @@ app.factory('templates', [
             "  /**\n" +
             "   * Program for rendering TRIANGLES with moderately fancy lighting.\n" +
             "   */\n" +
-            "  var programT = new EIGHT.HTMLScriptsGraphicsProgram([ctxt], ['vs-triangles', 'fs-triangles'], document)\n" +
+            "  var programT = new EIGHT.HTMLScriptsGraphicsProgram(['vs-triangles', 'fs-triangles'], document, [renderer])\n" +
             "  /**\n" +
             "   * Program for rendering LINES.\n" +
             "   */\n" +
-            "  var programL = new EIGHT.HTMLScriptsGraphicsProgram([ctxt], ['vs-lines', 'fs-lines'], document)\n" +
+            "  var programL = new EIGHT.HTMLScriptsGraphicsProgram(['vs-lines', 'fs-lines'], document, [renderer])\n" +
             "  /**\n" +
             "   * Program for rendering POINTS.\n" +
             "   */\n" +
-            "  var programP = new EIGHT.HTMLScriptsGraphicsProgram([ctxt], ['vs-points', 'fs-points'], document)\n" +
+            "  var programP = new EIGHT.HTMLScriptsGraphicsProgram(['vs-points', 'fs-points'], document, [renderer])\n" +
             "  /**\n" +
             "   * Program used by the cube, TBD based on geometry dimensionality.\n" +
             "   */\n" +
             "  var materialCube: EIGHT.IGraphicsProgram\n" +
             "\n" +
-            "  ctxt.start(canvas, canvasId)\n" +
+            "  renderer.start(canvas, canvasId)\n" +
             "\n" +
             "  var stats = new Stats()\n" +
             "  stats.setMode(0)\n" +
@@ -1058,12 +1060,12 @@ app.factory('templates', [
             "   */\n" +
             "  var geobuff: EIGHT.IBufferGeometry\n" +
             "  /**\n" +
-            "   * The model for the cube, which implements EIGHT.IFacet having the\n" +
+            "   * The model for the cube, which implements EIGHT.Facet having the\n" +
             "   * method `setUniforms(visitor: EIGHT.IFacetVisitor, canvasId: number): void`./\n" +
             "   * Implement your own custom models to do e.g., articulated robots./\n" +
             "   * See example in Libs file./\n" +
             "   */\n" +
-            "  var model: EIGHT.ModelFacetE3\n" +
+            "  var model: EIGHT.ModelFacet\n" +
             "  var color: EIGHT.ColorFacet\n" +
             "\n" +
             "  // We start with the geometry (geometry) for a unit cube at the origin...\n" +
@@ -1088,7 +1090,7 @@ app.factory('templates', [
             "    // Convert the geometry to drawing elements.\n" +
             "    var primitives: EIGHT.DrawPrimitive[] = geometry.toPrimitives();\n" +
             "    // Submit the geometry data to the context which will manage underlying WebGLBuffer(s) for you.\n" +
-            "    geobuff = ctxt.createBufferGeometry(primitives[0])\n" +
+            "    geobuff = renderer.createBufferGeometry(primitives[0])\n" +
             "    if (geobuff) {\n" +
             "      // Pick an appropriate program to use with the mesh based upon the dimensionality.\n" +
             "      switch(geometry.meta.k) {\n" +
@@ -1117,7 +1119,7 @@ app.factory('templates', [
             "    console.warn('Nothing to see because the geometry is undefined.')\n" +
             "  }\n" +
             "  // Create the model anyway (not what we would do in the real world).\n" +
-            "  model = new EIGHT.ModelFacetE3()\n" +
+            "  model = new EIGHT.ModelFacet()\n" +
             "  // Green, like on the 'Matrix', would be a good color, Neo. Or maybe red or blue?\n" +
             "  color = new EIGHT.ColorFacet().setRGB(0, 1, 0)\n" +
             "\n" +
@@ -1164,7 +1166,7 @@ app.factory('templates', [
             "    // position = R * e1 * ~R\n" +
             "    // model.X.copy(e1).rotate(rotorL)\n" +
             "\n" +
-            "    var gl = ctxt.gl\n" +
+            "    var gl = renderer.gl\n" +
             "\n" +
             "    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)\n" +
             "\n" +
@@ -1233,7 +1235,7 @@ app.factory('templates', [
             "var second   = EIGHT.Euclidean3.second\n" +
             "var hertz    = 1 / EIGHT.Euclidean3.second\n" +
             "\n" +
-            "class Model extends EIGHT.Shareable implements EIGHT.IFacet {\n" +
+            "class Model extends EIGHT.Shareable implements EIGHT.Facet {\n" +
             "  public position = new EIGHT.R3()\n" +
             "  public attitude = new EIGHT.SpinG3()\n" +
             "  public scale: EIGHT.R3 = new EIGHT.R3([1, 1, 1])\n" +

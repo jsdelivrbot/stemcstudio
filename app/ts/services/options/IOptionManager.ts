@@ -1,5 +1,8 @@
 import IOption from './IOption';
 
+/**
+ *
+ */
 interface IOptionManager {
     unshift(doodle: IOption): void;
     length: number;

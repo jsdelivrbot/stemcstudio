@@ -228,7 +228,7 @@ app.factory('options', [
             },
         ];
 
-        var that: IOptionManager = {
+        const that: IOptionManager = {
 
             unshift: function(doodle: IOption) {
                 return _options.unshift(doodle);
