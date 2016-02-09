@@ -47,7 +47,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
   return VENDOR_FOLDER_MARKER + '/' + packageFolder + '/' + fileName;
 }
 
-app.constant('version', '1.264.0');
+app.constant('version', '1.265.0');
 // githubKey stores the key of the item in local storage for maintaining GitHub OAuth data.
 // Remark: This value is duplicated in views/github_callback.jade
 app.constant('githubKey', makeKey('github'));

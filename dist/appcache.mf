@@ -1,12 +1,12 @@
 CACHE MANIFEST
-# 1.264.0
+# 1.265.0
 
 # Explicitly cached entries
 index.html
 
-css/app.css?version=1.264.0
+css/app.css?version=1.265.0
 
-js/bootstrap.js?version=1.264.0
+js/bootstrap.js?version=1.265.0
 
 fonts/glyphicons-halflings-regular.eot
 fonts/glyphicons-halflings-regular.svg
@@ -36,10 +36,6 @@ vendor/async@1.4.2/dist/async.min.js
 vendor/d3@3.5.5/d3.d.ts
 vendor/d3@3.5.5/d3.js
 vendor/d3@3.5.5/d3.min.js
-
-#vendor/davinci-blade@1.7.2/dist/davinci-blade.d.ts
-#vendor/davinci-blade@1.7.2/dist/davinci-blade.js
-#vendor/davinci-blade@1.7.2/dist/davinci-blade.min.js
 
 #vendor/davinci-eight@2.102.0/dist/davinci-eight.d.ts
 #vendor/davinci-eight@2.102.0/dist/davinci-eight.js
