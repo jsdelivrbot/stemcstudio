@@ -121,7 +121,7 @@ app.factory('options', [
                 name: 'davinci-eight',
                 moniker: 'EIGHT',
                 description: "Mathematical Computer Graphics using WebGL",
-                homepage: 'https://github.com/geometryzen/davinci-eight',
+                homepage: 'http://www.mathdoodle.io/docs/davinci-eight/index.html',
                 version: VERSION_EIGHT,
                 visible: true,
                 dts: eight('dist', 'davinci-eight.d.ts'),

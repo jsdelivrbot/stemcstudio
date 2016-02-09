@@ -1,6 +1,10 @@
 import app from '../../app';
 import IDoodle from '../doodles/IDoodle';
 import IUuidService from '../uuid/IUuidService';
+import EIGHTJS_HTML from './EIGHTJS_HTML';
+import EIGHTJS_CODE from './EIGHTJS_CODE';
+import EIGHTJS_LIBS from './EIGHTJS_LIBS';
+import EIGHTJS_LESS from './EIGHTJS_LESS';
 
 /**
  * The `templates` service provides starting point doodles.
@@ -35,10 +39,10 @@ app.factory('templates', [
         function libsMarker(): string { return ['<script>', LIBS_MARKER, '</script>'].map(indent).map(newLine).join(""); }
 
         // DOMAIN is used to define the URL for links to documentation.
-        let FWD_SLASH = '/';
-        let DOMAIN = $location.protocol() + ':' + FWD_SLASH + FWD_SLASH + $location.host() + ":" + $location.port();
+        const FWD_SLASH = '/';
+        const DOMAIN = $location.protocol() + ':' + FWD_SLASH + FWD_SLASH + $location.host() + ":" + $location.port();
 
-        var HTML_TEMPLATE_MINIMAL = "" +
+        const HTML_TEMPLATE_MINIMAL = "" +
             "<!doctype html>\n" +
             "<html>\n" +
             "  <head>\n" +
@@ -51,11 +55,11 @@ app.factory('templates', [
             "  </body>\n" +
             "</html>\n";
 
-        var CODE_TEMPLATE_MINIMAL = "";
+        const CODE_TEMPLATE_MINIMAL = "";
 
-        var LESS_TEMPLATE_MINIMAL = "";
+        const LESS_TEMPLATE_MINIMAL = "";
 
-        var LIBS_TEMPLATE_MINIMAL = "";
+        const LIBS_TEMPLATE_MINIMAL = "";
 
         const HTML_TEMPLATE_CALCULATION = "" +
             "<!doctype html>\n" +
@@ -1299,7 +1303,7 @@ app.factory('templates', [
             "canvas { width: 100%; height: 100% }\n" +
             "#stats { position: absolute; top: 0; left: 0; }\n";
 
-        var CODE_TEMPLATE_THREEJS = "" +
+        const CODE_TEMPLATE_THREEJS = "" +
             "const scene = new THREE.Scene()\n" +
             "let camera: THREE.PerspectiveCamera\n" +
             "const renderer = new THREE.WebGLRenderer()\n" +
@@ -1369,7 +1373,7 @@ app.factory('templates', [
 
         var LIBS_TEMPLATE_THREEJS = "";
 
-        var LESS_TEMPLATE_THREEJS = "" +
+        const LESS_TEMPLATE_THREEJS = "" +
             "body { margin: 0; }\n" +
             "canvas { width: 100%; height: 100% }\n" +
             "#stats { position: absolute; top: 0; left: 0; }\n";
@@ -1623,6 +1627,20 @@ app.factory('templates', [
                 libs: LIBS_TEMPLATE_JSXGRAPH_DEMO,
                 less: LESS_TEMPLATE_JSXGRAPH,
                 dependencies: ['jsxgraph']
+            },
+            {
+                uuid: uuid.generate(),
+                description: "EightJS — 3D Library for WebGL Graphics and Geometric Algebra",
+                isCodeVisible: true,
+                isViewVisible: true,
+                focusEditor: undefined,
+                lastKnownJs: {},
+                operatorOverloading: true,
+                html: EIGHTJS_HTML(styleMarker, scriptsMarker, libsMarker, codeMarker),
+                code: EIGHTJS_CODE(),
+                libs: EIGHTJS_LIBS(),
+                less: EIGHTJS_LESS(),
+                dependencies: ['stats.js', 'davinci-eight']
             },
             {
                 uuid: uuid.generate(),
