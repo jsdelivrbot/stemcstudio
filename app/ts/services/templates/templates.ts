@@ -1531,6 +1531,48 @@ app.factory('templates', [
         return [
             {
                 uuid: uuid.generate(),
+                description: "EightJS — 3D Library for WebGL Graphics and Geometric Algebra (Bootstrap)",
+                isCodeVisible: true,
+                isViewVisible: true,
+                focusEditor: undefined,
+                lastKnownJs: {},
+                operatorOverloading: true,
+                html: BOOTSTRAP_HTML(styleMarker, scriptsMarker, libsMarker, codeMarker),
+                code: BOOTSTRAP_CODE(),
+                libs: BOOTSTRAP_LIBS(),
+                less: BOOTSTRAP_LESS(),
+                dependencies: ['stats.js', 'davinci-eight']
+            },
+            {
+                uuid: uuid.generate(),
+                description: "EightJS — 3D Library for WebGL Graphics and Geometric Algebra",
+                isCodeVisible: true,
+                isViewVisible: true,
+                focusEditor: undefined,
+                lastKnownJs: {},
+                operatorOverloading: true,
+                html: EIGHTJS_HTML(styleMarker, scriptsMarker, libsMarker, codeMarker),
+                code: EIGHTJS_CODE(),
+                libs: EIGHTJS_LIBS(),
+                less: EIGHTJS_LESS(),
+                dependencies: ['stats.js', 'davinci-eight']
+            },
+            {
+                uuid: uuid.generate(),
+                description: "Geometric Algebra and Unit of Measure calculations using EIGHT",
+                isCodeVisible: true,
+                isViewVisible: true,
+                focusEditor: undefined,
+                lastKnownJs: {},
+                operatorOverloading: true,
+                html: HTML_TEMPLATE_CALCULATION,
+                code: CODE_TEMPLATE_CALCULATION,
+                libs: LIBS_TEMPLATE_CALCULATION,
+                less: LESS_TEMPLATE_CALCULATION,
+                dependencies: ['DomReady', 'davinci-eight']
+            },
+            {
+                uuid: uuid.generate(),
                 description: "Minimal",
                 isCodeVisible: true,
                 isViewVisible: false,
@@ -1608,20 +1650,6 @@ app.factory('templates', [
             */
             {
                 uuid: uuid.generate(),
-                description: "Geometric Algebra and Unit of Measure calculations using EIGHT",
-                isCodeVisible: true,
-                isViewVisible: true,
-                focusEditor: undefined,
-                lastKnownJs: {},
-                operatorOverloading: true,
-                html: HTML_TEMPLATE_CALCULATION,
-                code: CODE_TEMPLATE_CALCULATION,
-                libs: LIBS_TEMPLATE_CALCULATION,
-                less: LESS_TEMPLATE_CALCULATION,
-                dependencies: ['DomReady', 'davinci-eight']
-            },
-            {
-                uuid: uuid.generate(),
                 description: "JSXGraph — 2D Library for Geometry",
                 isCodeVisible: true,
                 isViewVisible: true,
@@ -1633,34 +1661,6 @@ app.factory('templates', [
                 libs: LIBS_TEMPLATE_JSXGRAPH_DEMO,
                 less: LESS_TEMPLATE_JSXGRAPH,
                 dependencies: ['jsxgraph']
-            },
-            {
-                uuid: uuid.generate(),
-                description: "EightJS — 3D Library for WebGL Graphics and Geometric Algebra (Bootstrap)",
-                isCodeVisible: true,
-                isViewVisible: true,
-                focusEditor: undefined,
-                lastKnownJs: {},
-                operatorOverloading: true,
-                html: BOOTSTRAP_HTML(styleMarker, scriptsMarker, libsMarker, codeMarker),
-                code: BOOTSTRAP_CODE(),
-                libs: BOOTSTRAP_LIBS(),
-                less: BOOTSTRAP_LESS(),
-                dependencies: ['stats.js', 'davinci-eight']
-            },
-            {
-                uuid: uuid.generate(),
-                description: "EightJS — 3D Library for WebGL Graphics and Geometric Algebra",
-                isCodeVisible: true,
-                isViewVisible: true,
-                focusEditor: undefined,
-                lastKnownJs: {},
-                operatorOverloading: true,
-                html: EIGHTJS_HTML(styleMarker, scriptsMarker, libsMarker, codeMarker),
-                code: EIGHTJS_CODE(),
-                libs: EIGHTJS_LIBS(),
-                less: EIGHTJS_LESS(),
-                dependencies: ['stats.js', 'davinci-eight']
             },
             {
                 uuid: uuid.generate(),
