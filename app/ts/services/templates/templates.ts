@@ -1,6 +1,12 @@
 import app from '../../app';
 import IDoodle from '../doodles/IDoodle';
 import IUuidService from '../uuid/IUuidService';
+
+import BOOTSTRAP_HTML from './BOOTSTRAP_HTML';
+import BOOTSTRAP_CODE from './BOOTSTRAP_CODE';
+import BOOTSTRAP_LIBS from './BOOTSTRAP_LIBS';
+import BOOTSTRAP_LESS from './BOOTSTRAP_LESS';
+
 import EIGHTJS_HTML from './EIGHTJS_HTML';
 import EIGHTJS_CODE from './EIGHTJS_CODE';
 import EIGHTJS_LIBS from './EIGHTJS_LIBS';
@@ -1627,6 +1633,20 @@ app.factory('templates', [
                 libs: LIBS_TEMPLATE_JSXGRAPH_DEMO,
                 less: LESS_TEMPLATE_JSXGRAPH,
                 dependencies: ['jsxgraph']
+            },
+            {
+                uuid: uuid.generate(),
+                description: "EightJS — 3D Library for WebGL Graphics and Geometric Algebra (Bootstrap)",
+                isCodeVisible: true,
+                isViewVisible: true,
+                focusEditor: undefined,
+                lastKnownJs: {},
+                operatorOverloading: true,
+                html: BOOTSTRAP_HTML(styleMarker, scriptsMarker, libsMarker, codeMarker),
+                code: BOOTSTRAP_CODE(),
+                libs: BOOTSTRAP_LIBS(),
+                less: BOOTSTRAP_LESS(),
+                dependencies: ['stats.js', 'davinci-eight']
             },
             {
                 uuid: uuid.generate(),

@@ -1,5 +1,8 @@
 export default function(): string {
     const lines = [
+        "//",
+        "// Using the WebGLRenderer class for flexible development.",
+        "//",
         "EIGHT.refChange('start')",
         "",
         "const renderer = new EIGHT.WebGLRenderer()",
@@ -83,7 +86,7 @@ export default function(): string {
         "  stats.begin()",
         "  requestAnimationFrame(animate)",
         "",
-        "  renderer.prolog()",
+        "  renderer.clear()",
         "",
         "  const t = Date.now() * 0.001",
         "",
@@ -96,7 +99,7 @@ export default function(): string {
         "  arrow.X = rod.X",
         "  arrow.axis = rod.axis",
         "",
-        "  renderer.render(scene, ambients)",
+        "  scene.draw(ambients)",
         "",
         "  trail.draw(ambients)",
         "",
@@ -111,9 +114,6 @@ export default function(): string {
         "    renderer.release()",
         "    scene.release()",
         "",
-        "    camera.release()",
-        "    dirLight.release()",
-        "",
         "    arrow.release()",
         "    ball.release()",
         "    cube.release()",
@@ -121,7 +121,8 @@ export default function(): string {
         "",
         "    EIGHT.refChange('stop')",
         "    EIGHT.refChange('dump')",
-        "}"
+        "}",
+        ""
         ]
     return lines.join('\n')
 }

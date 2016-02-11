@@ -357,7 +357,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
 
 
   $templateCache.put('md-logo-text.html',
-    "<span class='md-logo-text-math'>math</span><span class='md-logo-text-doodle'>doodle</span><span class='md-logo-text-domain'>.io</span><span class='md-logo-text-version'><sup>βετα&nbsp;{{version}}</sup></span>"
+    "<span class='md-logo-text-math'>math</span><span class='md-logo-text-doodle'>doodle</span><span class='md-logo-text-domain'>.io</span><span class='md-logo-text-version'><sup>Alpha&nbsp;{{version}}</sup></span>"
   );
 
 
