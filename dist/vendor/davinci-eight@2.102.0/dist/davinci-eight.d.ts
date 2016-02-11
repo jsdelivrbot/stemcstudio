@@ -24,14 +24,13 @@ declare module EIGHT {
         release(): number;
     }
 
-    class IUnknownArray<T extends IUnknown> extends Shareable {
+    class ShareableArray<T extends IUnknown> extends Shareable {
         length: number;
         /**
          * Collection class for maintaining an array of types derived from IUnknown.
          * Provides a safer way to maintain reference counts than a native array.
          */
         constructor(elements?: T[]);
-        destructor(): void;
         get(index: number): T;
         /**
          * Gets the element at the specified index without incrementing the reference count.
@@ -39,8 +38,8 @@ declare module EIGHT {
          */
         getWeakRef(index: number): T;
         indexOf(searchElement: T, fromIndex?: number): number;
-        slice(begin?: number, end?: number): IUnknownArray<T>;
-        splice(index: number, deleteCount: number): IUnknownArray<T>;
+        slice(begin?: number, end?: number): ShareableArray<T>;
+        splice(index: number, deleteCount: number): ShareableArray<T>;
         forEach(callback: (value: T, index: number) => void): void;
         push(element: T): number;
         /**
@@ -54,7 +53,6 @@ declare module EIGHT {
     class NumberIUnknownMap<V extends IUnknown> extends Shareable {
         keys: number[];
         constructor()
-        destructor(): void
         exists(key: number): boolean
         get(key: number): V
         getWeakRef(key: number): V
@@ -67,7 +65,6 @@ declare module EIGHT {
     class StringIUnknownMap<V extends IUnknown> extends Shareable {
         keys: string[];
         constructor()
-        destructor(): void
         exists(key: string): boolean
         forEach(callback: (key: string, value: V) => void)
         get(key: string): V
@@ -79,8 +76,6 @@ declare module EIGHT {
 
     /**
      * Convenience base class for classes requiring reference counting.
-     * 
-     * Derived classes should implement the method destructor(): void.
      */
     class Shareable implements IUnknown {
         /**
@@ -91,6 +86,10 @@ declare module EIGHT {
          * type: A human-readable name for the derived class type.
          */
         constructor(type: string);
+        /**
+         *
+         */
+        destructor(): void
         /**
          * Notifies this instance that something is referencing it.
          */
@@ -128,19 +127,25 @@ declare module EIGHT {
         contextLost(): void;
     }
 
-    /**
-     *
-     */
-    interface IContextListender extends IUnknown, IContextConsumer {
+    interface IContextListener extends IContextConsumer {
+        subscribe(visual: WebGLRenderer): void;
+        unsubscribe(): void;
+    }
 
+    class ShareableContextListener extends Shareable implements IContextListener {
+        contextFree(context: IContextProvider): void;
+        contextGain(context: IContextProvider): void;
+        contextLost(): void;
+        subscribe(visual: WebGLRenderer): void;
+        unsubscribe(): void;
     }
 
     /**
      *
      */
-    interface IBufferGeometry extends IUnknown {
+    interface PrimitiveBuffers extends IUnknown {
         uuid: string;
-        bind(program: Material, aNameToKeyName?: { [name: string]: string }): void;
+        bind(material: Material, aNameToKeyName?: { [name: string]: string }): void;
         draw(): void;
         unbind(): void;
     }
@@ -194,27 +199,6 @@ declare module EIGHT {
          * The number of values that are associated with a given vertex.
          */
         size: number;
-        normalized?: boolean;
-        stride?: number;
-        offset?: number;
-    }
-
-    /**
-     * A convenience class for constructing and validating attribute values used for drawing.
-     */
-    class DrawAttribute implements Attribute {
-        /**
-         * The attribute values.
-         */
-        values: number[];
-        /**
-         * The number of values that constitute one vertex.
-         */
-        size: number;
-        /**
-         * Constructs the attribute and validates the arguments.
-         */
-        constructor(values: number[], size: number);
     }
 
     /**
@@ -235,32 +219,6 @@ declare module EIGHT {
          *
          */
         attributes: { [name: string]: Attribute };
-    }
-
-    /**
-     *
-     */
-    class DrawPrimitive implements Primitive {
-        mode: DrawMode;
-        indices: number[];
-        attributes: { [name: string]: Attribute };
-        constructor(mode: DrawMode, indices: number[], attributes: { [name: string]: Attribute });
-    }
-
-    /**
-     *
-     */
-    class Vertex {
-        attributes: { [name: string]: VectorN<number> };
-        constructor();
-    }
-
-    /**
-     *
-     */
-    interface GeometryMeta {
-        k: number;
-        attributes: { [key: string]: { size: number; name?: string } };
     }
 
     /**
@@ -2279,27 +2237,6 @@ declare module EIGHT {
     /**
      *
      */
-    class CartesianE3 implements VectorE3 {
-        x: number;
-        y: number;
-        z: number;
-        /**
-         *
-         */
-        constructor()
-        magnitude(): number;
-        squaredNorm(): number;
-        static zero: CartesianE3;
-        static e1: CartesianE3;
-        static e2: CartesianE3;
-        static e3: CartesianE3;
-        static fromVector(vector: VectorE3);
-        static direction(vector: VectorE3);
-    }
-
-    /**
-     *
-     */
     class R3 extends VectorN<number> implements VectorE3 {
         x: number;
         y: number;
@@ -2473,28 +2410,10 @@ declare module EIGHT {
     /**
      *
      */
-    interface IContextMonitor {
-        /**
-         *
-         */
-        addContextListener(user: IContextConsumer): void;
-        /**
-         *
-         */
-        removeContextListener(user: IContextConsumer): void;
-        /**
-         *
-         */
-        synchronize(user: IContextConsumer): void;
-    }
-
-    /**
-     *
-     */
     interface IContextProvider extends IUnknown {
         createArrayBuffer(): ShareableWebGLBuffer;
         createElementArrayBuffer(): ShareableWebGLBuffer;
-        createBufferGeometry(primitive: Primitive, usage?: number): IBufferGeometry;
+        createPrimitiveBuffers(primitive: Primitive, usage?: number): PrimitiveBuffers;
         createTexture2D(): ITexture2D;
         createTextureCubeMap(): ITextureCubeMap;
         gl: WebGLRenderingContext;
@@ -2630,14 +2549,6 @@ declare module EIGHT {
     /**
      *
      */
-    interface ContextController {
-        start(canvas: HTMLCanvasElement): void
-        stop(): void;
-    }
-
-    /**
-     *
-     */
     class Scene {
         constructor()
         add(mesh: Mesh): void
@@ -2648,10 +2559,10 @@ declare module EIGHT {
         draw(ambients: Facet[]): void
         findOne(match: (mesh: Mesh) => boolean): Mesh
         findOneByName(name: string): Mesh
-        findByName(name: string): IUnknownArray<Mesh>
+        findByName(name: string): ShareableArray<Mesh>
         release(): number
         remove(mesh: Mesh): void
-        subscribe(monitor: IContextMonitor): void
+        subscribe(visual: WebGLRenderer): void
         traverse(callback: (mesh: Mesh) => void): void
         unsubscribe(): void
     }
@@ -2708,11 +2619,6 @@ declare module EIGHT {
          * far...: The `far` property.
          */
         constructor(fov?: number, aspect?: number, near?: number, far?: number);
-        addRef(): number;
-        contextFree(manager: IContextProvider): void;
-        contextGain(manager: IContextProvider): void;
-        contextLost(): void;
-        draw(): void;
         /**
          *
          */
@@ -2728,18 +2634,11 @@ declare module EIGHT {
          *
          */
         setUniforms(visitor: FacetVisitor): void
-        release(): number
     }
 
-    /**
-     * A wrapper around a <code>WebGLRenderingContext</code> with additional capabilities.
-     * <ul>
-     *   <li>Shareable resources using reference counting.</li>
-     *   <li>Monitoring for <code>webglcontextlost</code> and <code>webglcontextrestored</code>.</li>
-     * </ul>
-     */
-    class WebGLRenderer extends Shareable implements ContextController, IContextMonitor {
-
+    class WebGLRenderer implements IUnknown {
+        addRef(): number;
+        release(): number;
         /**
          * If the canvas property has not been initialized by calling `start()`,
          * then any attempt to access this property will trigger the construction of
@@ -2751,7 +2650,7 @@ declare module EIGHT {
         /**
          *
          */
-        commands: IUnknownArray<IContextConsumer>;
+        commands: ShareableArray<IContextConsumer>;
 
         /**
          * @param gl The underlying <code>WebGLRenderingContext</code>.
@@ -2776,46 +2675,6 @@ declare module EIGHT {
         clearColor(red: number, green: number, blue: number, alpha: number): WebGLRenderer;
 
         /**
-         *
-         */
-        contextFree(manager: IContextProvider): void;
-
-        /**
-         *
-         */
-        contextGain(manager: IContextProvider): void;
-
-        /**
-         *
-         */
-        contextLost(): void;
-
-        /**
-         *
-         */
-        createArrayBuffer(): ShareableWebGLBuffer;
-
-        /**
-         *
-         */
-        createBufferGeometry(primitive: Primitive, usage?: number): IBufferGeometry;
-
-        /**
-         *
-         */
-        createElementArrayBuffer(): ShareableWebGLBuffer;
-
-        /**
-         *
-         */
-        createTexture2D(): ITexture2D;
-
-        /**
-         *
-         */
-        createTextureCubeMap(): ITextureCubeMap;
-
-        /**
          * Turns off specific WebGL capabilities for this context.
          */
         disable(capability: Capability): WebGLRenderer;
@@ -2826,14 +2685,9 @@ declare module EIGHT {
         enable(capability: Capability): WebGLRenderer;
 
         /**
-         * Performs the configured animation prolog such as clearing color and depth buffers.
-         */
-        prolog(): void;
-
-        /**
          *
          */
-        render(scene: Scene, ambients: Facet[]): void;
+        clear(): void;
 
         /**
          *
@@ -2865,31 +2719,55 @@ declare module EIGHT {
         viewport(x: number, y: number, width: number, height: number): WebGLRenderer;
     }
 
-    class Geometry extends Shareable implements IGraphicsBuffers {
-        constructor(primitives: Primitive[]);
-        contextFree(manager: IContextProvider): void;
-        contextGain(manager: IContextProvider): void;
-        contextLost(): void;
+    interface Geometry extends IContextConsumer {
+        partsLength: number;
+        addPart(geometry: Geometry): void;
+        removePart(index: number): void;
+        getPart(index: number): Geometry;
         draw(material: Material): void;
     }
 
-    class ArrowGeometry extends Geometry {
+    class GeometryPrimitive extends Shareable implements Geometry {
+        constructor(dataSource: Primitive);
+        partsLength: number;
+        addPart(geometry: Geometry): void;
+        removePart(index: number): void;
+        getPart(index: number): Geometry;
+        draw(material: Material): void;
+        contextFree(context: IContextProvider): void;
+        contextGain(context: IContextProvider): void;
+        contextLost(): void;
+    }
+
+    class GeometryContainer extends Shareable implements Geometry {
+        constructor();
+        partsLength: number;
+        addPart(geometry: Geometry): void;
+        removePart(index: number): void;
+        draw(material: Material): void;
+        getPart(index: number): Geometry;
+        contextFree(context: IContextProvider): void;
+        contextGain(context: IContextProvider): void;
+        contextLost(): void;
+    }
+
+    class ArrowGeometry extends GeometryContainer {
         constructor();
     }
 
-    class CuboidGeometry extends Geometry {
+    class CuboidGeometry extends GeometryContainer {
         constructor(width: number, height: number, depth: number);
     }
 
-    class CylinderGeometry extends Geometry {
+    class CylinderGeometry extends GeometryContainer {
         constructor();
     }
 
-    class SphereGeometry extends Geometry {
+    class SphereGeometry extends GeometryContainer {
         constructor();
     }
 
-    class TetrahedronGeometry extends Geometry {
+    class TetrahedronGeometry extends GeometryContainer {
         constructor(radius?: number)
     }
 
@@ -2906,7 +2784,7 @@ declare module EIGHT {
         contextFree(manager: IContextProvider): void;
         contextGain(manager: IContextProvider): void;
         contextLost(): void;
-        constructor(name: string, monitors?: IContextMonitor[]);
+        constructor(vertexShader: string, fragmentShader: string, attribs?: string[]);
         disableAttrib(name: string): void;
         enableAttrib(name: string): void;
         release(): number;
@@ -2963,7 +2841,7 @@ declare module EIGHT {
         /**
          *
          */
-        subscribe(monitor: IContextMonitor): void;
+        subscribe(visual: WebGLRenderer): void;
 
         /**
          *
@@ -3027,7 +2905,7 @@ declare module EIGHT {
         constructor();
     }
 
-    class AbstractFacet extends Shareable implements Facet {
+    class AbstractFacet implements Facet {
         getProperty(name: string): number[];
         setProperty(name: string, value: number[]): Facet;
         setUniforms(visitor: FacetVisitor): void;
@@ -3036,7 +2914,6 @@ declare module EIGHT {
     class AmbientLight extends AbstractFacet {
         color: Color;
         constructor(color: ColorRGB);
-        destructor(): void;
     }
 
     /**
@@ -3048,8 +2925,6 @@ declare module EIGHT {
         b: number;
         α: number
         constructor(name?: string);
-        incRef(): ColorFacet;
-        decRef(): ColorFacet;
         scaleRGB(α: number): ColorFacet;
         scaleRGBA(α: number): ColorFacet;
         setColorRGB(color: ColorRGB): ColorFacet;
@@ -3386,33 +3261,38 @@ declare module EIGHT {
          * Position (vector)
          */
         X: G3;
+
+        /**
+         * Configures the trail left behind a moving rigid body.
+         */
+        trail: {enabled: boolean; interval: number; retain: number};
     }
 
     class Arrow extends RigidBody {
-        constructor()
+        constructor(options?: { axis?: VectorE3; wireFrame?: boolean })
         length: number;
     }
 
     class Sphere extends RigidBody {
-        constructor()
+        constructor(options?: { axis?: VectorE3; wireFrame?: boolean })
         radius: number;
     }
 
     class Cuboid extends RigidBody {
-        constructor()
+        constructor(options?: { axis?: VectorE3; wireFrame?: boolean })
         width: number;
         height: number;
         depth: number;
     }
 
     class Cylinder extends RigidBody {
-        constructor()
+        constructor(options?: { axis?: VectorE3; wireFrame?: boolean })
         radius: number;
         length: number;
     }
 
     class Tetrahedron extends RigidBody {
-        constructor()
+        constructor(options?: { axis?: VectorE3; wireFrame?: boolean })
         radius: number;
     }
 
@@ -3446,6 +3326,23 @@ declare module EIGHT {
          */
         draw(ambients: Facet[]): void;
     }
+
+    /**
+     *
+     */
+    interface World extends IUnknown {
+        arrow(): Arrow;
+        cuboid(options?: { width?: number; height?: number; depth?: number }): Cuboid;
+        sphere(options?: { radius?: number }): Sphere;
+        cylinder(options?: { radius?: number }): Cylinder;
+        ambients: Facet[];
+        camera: PerspectiveCamera;
+    }
+
+    /**
+     *
+     */
+    function bootstrap(canvasId: string, animate: (timestamp: number) => any, terminate: () => any, options?: { memcheck?: boolean }): World;
 
     ///////////////////////////////////////////////////////////////////////////////
     function cos<T>(x: T): T;

@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="davinci-eight" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.180.0</em>
+            <em>API Docs for: 2.181.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -47,14 +47,12 @@
                                 <li><a href="../classes/Attribute.html">Attribute</a></li>
                                 <li><a href="../classes/BlendFactor.html">BlendFactor</a></li>
                                 <li><a href="../classes/Capability.html">Capability</a></li>
-                                <li><a href="../classes/CartesianE3.html">CartesianE3</a></li>
                                 <li><a href="../classes/CC.html">CC</a></li>
                                 <li><a href="../classes/Color.html">Color</a></li>
                                 <li><a href="../classes/ColorFacet.html">ColorFacet</a></li>
                                 <li><a href="../classes/ColorRGB.html">ColorRGB</a></li>
                                 <li><a href="../classes/ColorRGBA.html">ColorRGBA</a></li>
                                 <li><a href="../classes/ContextAttributesLogger.html">ContextAttributesLogger</a></li>
-                                <li><a href="../classes/ContextController.html">ContextController</a></li>
                                 <li><a href="../classes/createView.html">createView</a></li>
                                 <li><a href="../classes/Cuboid.html">Cuboid</a></li>
                                 <li><a href="../classes/CuboidGeometry.html">CuboidGeometry</a></li>
@@ -68,7 +66,6 @@
                                 <li><a href="../classes/Euclidean1.html">Euclidean1</a></li>
                                 <li><a href="../classes/Euclidean2.html">Euclidean2</a></li>
                                 <li><a href="../classes/Euclidean3.html">Euclidean3</a></li>
-                                <li><a href="../classes/EulerFacet.html">EulerFacet</a></li>
                                 <li><a href="../classes/Facet.html">Facet</a></li>
                                 <li><a href="../classes/FacetVisitor.html">FacetVisitor</a></li>
                                 <li><a href="../classes/Frustum.html">Frustum</a></li>
@@ -77,16 +74,15 @@
                                 <li><a href="../classes/GeometricE2.html">GeometricE2</a></li>
                                 <li><a href="../classes/GeometricE3.html">GeometricE3</a></li>
                                 <li><a href="../classes/Geometry.html">Geometry</a></li>
+                                <li><a href="../classes/GeometryContainer.html">GeometryContainer</a></li>
+                                <li><a href="../classes/GeometryPrimitive.html">GeometryPrimitive</a></li>
                                 <li><a href="../classes/GraphicsProgramSymbols.html">GraphicsProgramSymbols</a></li>
                                 <li><a href="../classes/HTMLScriptsMaterial.html">HTMLScriptsMaterial</a></li>
-                                <li><a href="../classes/IBufferGeometry.html">IBufferGeometry</a></li>
                                 <li><a href="../classes/IContextConsumer.html">IContextConsumer</a></li>
                                 <li><a href="../classes/IContextListener.html">IContextListener</a></li>
-                                <li><a href="../classes/IContextMonitor.html">IContextMonitor</a></li>
                                 <li><a href="../classes/IContextProgramConsumer.html">IContextProgramConsumer</a></li>
                                 <li><a href="../classes/IContextProvider.html">IContextProvider</a></li>
                                 <li><a href="../classes/IUnknown.html">IUnknown</a></li>
-                                <li><a href="../classes/IUnknownArray.html">IUnknownArray</a></li>
                                 <li><a href="../classes/LineMaterial.html">LineMaterial</a></li>
                                 <li><a href="../classes/Mat2R.html">Mat2R</a></li>
                                 <li><a href="../classes/Mat3R.html">Mat3R</a></li>
@@ -104,7 +100,7 @@
                                 <li><a href="../classes/PointMaterial.html">PointMaterial</a></li>
                                 <li><a href="../classes/PointSizeFacet.html">PointSizeFacet</a></li>
                                 <li><a href="../classes/Primitive.html">Primitive</a></li>
-                                <li><a href="../classes/PrimitiveBuffer.html">PrimitiveBuffer</a></li>
+                                <li><a href="../classes/PrimitiveBuffers.html">PrimitiveBuffers</a></li>
                                 <li><a href="../classes/Pseudo.html">Pseudo</a></li>
                                 <li><a href="../classes/QQ.html">QQ</a></li>
                                 <li><a href="../classes/R1.html">R1</a></li>
@@ -117,6 +113,7 @@
                                 <li><a href="../classes/Scalar.html">Scalar</a></li>
                                 <li><a href="../classes/Scene.html">Scene</a></li>
                                 <li><a href="../classes/Shareable.html">Shareable</a></li>
+                                <li><a href="../classes/ShareableArray.html">ShareableArray</a></li>
                                 <li><a href="../classes/ShareableContextListener.html">ShareableContextListener</a></li>
                                 <li><a href="../classes/ShareableWebGLBuffer.html">ShareableWebGLBuffer</a></li>
                                 <li><a href="../classes/ShareableWebGLShader.html">ShareableWebGLShader</a></li>
@@ -146,6 +143,7 @@
                                 <li><a href="../classes/VectorN.html">VectorN</a></li>
                                 <li><a href="../classes/VersionLogger.html">VersionLogger</a></li>
                                 <li><a href="../classes/View.html">View</a></li>
+                                <li><a href="../classes/VisualBody.html">VisualBody</a></li>
                                 <li><a href="../classes/WebGLBlendFunc.html">WebGLBlendFunc</a></li>
                                 <li><a href="../classes/WebGLClearColor.html">WebGLClearColor</a></li>
                                 <li><a href="../classes/WebGLDisable.html">WebGLDisable</a></li>
@@ -202,9 +200,9 @@
 import Facet from &#x27;../core/Facet&#x27;;
 import IContextProvider from &#x27;../core/IContextProvider&#x27;;
 import Mesh from &#x27;./Mesh&#x27;;
-import IUnknownArray from &#x27;../collections/IUnknownArray&#x27;;
+import ShareableArray from &#x27;../collections/ShareableArray&#x27;;
 import mustBeObject from &#x27;../checks/mustBeObject&#x27;;
-import PrimitiveBuffer from &#x27;./PrimitiveBuffer&#x27;;
+import Geometry from &#x27;./Geometry&#x27;;
 import Shareable from &#x27;../core/Shareable&#x27;;
 import ShareableContextListener from &#x27;../core/ShareableContextListener&#x27;;
 
@@ -222,7 +220,7 @@ class ScenePart extends Shareable {
     /**
      *
      */
-    private _buffer: PrimitiveBuffer;
+    private _geometry: Geometry;
 
     /**
      * Keep track of the &#x27;parent&#x27; mesh.
@@ -232,10 +230,10 @@ class ScenePart extends Shareable {
     /**
      *
      */
-    constructor(buffer: PrimitiveBuffer, mesh: Mesh) {
+    constructor(geometry: Geometry, mesh: Mesh) {
         super(&#x27;ScenePart&#x27;)
-        this._buffer = buffer
-        this._buffer.addRef()
+        this._geometry = geometry
+        this._geometry.addRef()
         this._mesh = mesh
         this._mesh.addRef()
     }
@@ -244,9 +242,9 @@ class ScenePart extends Shareable {
      *
      */
     protected destructor(): void {
-        this._buffer.release()
+        this._geometry.release()
         this._mesh.release()
-        this._buffer = void 0;
+        this._geometry = void 0;
         this._mesh = void 0
         super.destructor()
     }
@@ -270,22 +268,25 @@ class ScenePart extends Shareable {
 
             this._mesh.setUniforms();
 
-            this._buffer.draw(material)
+            this._geometry.draw(material)
             material.release()
         }
     }
 }
 
-function partsFromMesh(mesh: Mesh): IUnknownArray&lt;ScenePart&gt; {
+function partsFromMesh(mesh: Mesh): ShareableArray&lt;ScenePart&gt; {
     mustBeObject(&#x27;mesh&#x27;, mesh)
-    const parts = new IUnknownArray&lt;ScenePart&gt;()
-    const buffers = mesh.geometry
-    const iLen = buffers.length
+    const parts = new ShareableArray&lt;ScenePart&gt;()
+    const geometry = mesh.geometry
+    const iLen = geometry.partsLength
     for (let i = 0; i &lt; iLen; i++) {
-        const scenePart = new ScenePart(buffers.getWeakRef(i), mesh)
+        const geometryPart = geometry.getPart(i)
+        // FIXME: This needs to go down to the leaves.
+        const scenePart = new ScenePart(geometryPart, mesh)
+        geometryPart.release()
         parts.pushWeakRef(scenePart)
     }
-    buffers.release()
+    geometry.release()
     return parts
 }
 
@@ -295,8 +296,8 @@ function partsFromMesh(mesh: Mesh): IUnknownArray&lt;ScenePart&gt; {
  */
 export default class Scene extends ShareableContextListener {
 
-    private _meshes: IUnknownArray&lt;Mesh&gt;;
-    private _parts: IUnknownArray&lt;ScenePart&gt;;
+    private _meshes: ShareableArray&lt;Mesh&gt;;
+    private _parts: ShareableArray&lt;ScenePart&gt;;
 
     // FIXME: Do I need the collection, or can I be fooled into thinking there is one monitor?
     /**
@@ -307,12 +308,11 @@ export default class Scene extends ShareableContextListener {
      * &lt;/p&gt;
      * @class Scene
      * @constructor
-     * @param [monitors = []] {Array&amp;lt;IContextMonitor&amp;gt;}
      */
     constructor() {
         super(&#x27;Scene&#x27;)
-        this._meshes = new IUnknownArray&lt;Mesh&gt;()
-        this._parts = new IUnknownArray&lt;ScenePart&gt;()
+        this._meshes = new ShareableArray&lt;Mesh&gt;()
+        this._parts = new ShareableArray&lt;ScenePart&gt;()
     }
 
     /**
@@ -383,9 +383,9 @@ export default class Scene extends ShareableContextListener {
     /**
      * @method find
      * @param match {(mesh: Mesh) =&gt; boolean}
-     * @return {IUnknownArray}
+     * @return {ShareableArray}
      */
-    find(match: (mesh: Mesh) =&gt; boolean): IUnknownArray&lt;Mesh&gt; {
+    find(match: (mesh: Mesh) =&gt; boolean): ShareableArray&lt;Mesh&gt; {
         return this._meshes.find(match)
     }
 
@@ -410,9 +410,9 @@ export default class Scene extends ShareableContextListener {
     /**
      * @method findByName
      * @param name {string}
-     * @return {IUnknownArray}
+     * @return {ShareableArray}
      */
-    findByName(name: string): IUnknownArray&lt;Mesh&gt; {
+    findByName(name: string): ShareableArray&lt;Mesh&gt; {
         return this.find(function(mesh) { return mesh.name === name })
     }
 
