@@ -1,4 +1,12 @@
-export default function(styleMarker: () => string, scriptsMarker: () => string, libsMarker: () => string, codeMarker: () => string): string {
+export default function(
+    styleMarker: () => string,
+    scriptsMarker: () => string,
+    libsMarker: () => string,
+    codeMarker: () => string,
+    width: number,
+    height: number,
+    canvasId: string
+): string {
     const lines = "" +
         "<!doctype html>\n" +
         "<html>\n" +
@@ -9,7 +17,10 @@ export default function(styleMarker: () => string, scriptsMarker: () => string, 
         "  <body>\n" +
         libsMarker() +
         codeMarker() +
-        "    <canvas id='my-canvas'></canvas>\n" +
+        "    <div id='container'>\n" +
+        `      <canvas id='${canvasId}' width='${width}' height='${height}'></canvas>\n` +
+        "      <div id='overlay'></div>\n" +
+        "    </div>\n" +
         "  </body>\n" +
         "</html>\n";
     return lines;

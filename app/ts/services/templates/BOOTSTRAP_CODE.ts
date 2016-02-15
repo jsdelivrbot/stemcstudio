@@ -1,9 +1,14 @@
-export default function(options: { stats?: boolean } = {}): string {
+export default function(
+    canvasId: string,
+    options: {
+        stats?: boolean
+    } = {}
+): string {
     const lines = [
         "//",
         "// Using the bootstrap utility function for rapid development.",
         "//",
-        "const world = EIGHT.bootstrap('my-canvas', animate)",
+        `const world = EIGHT.bootstrap('${canvasId}', animate)`,
         "",
         "const arrow = world.arrow()",
         "",

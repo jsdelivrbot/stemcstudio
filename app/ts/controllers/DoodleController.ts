@@ -280,15 +280,18 @@ app.controller('doodle-controller', [
         ///////////////////////////////////////////////////////////////////////
 
         function resize(unused: UIEvent) {
-            var toolbar = $window.document.getElementById('toolbar')
-            var doodlec = $window.document.getElementById('doodle-container')
-            // 5px comes from the border-bottom on the navbar.
-            doodlec.style.height = "" + ($window.innerHeight - toolbar.clientHeight - 5) + "px";
+            const toolbar = $window.document.getElementById('toolbar')
+            const doodlec = $window.document.getElementById('doodle-container')
+            // It appears that we can receive these events after the toolbar and container have gone.
+            if (doodlec && toolbar) {
+                // 5px comes from the border-bottom on the navbar.
+                doodlec.style.height = `${($window.innerHeight - toolbar.clientHeight - 5)}px`
 
-            htmlEditor.resize(true);
-            codeEditor.resize(true);
-            libsEditor.resize(true);
-            lessEditor.resize(true);
+                htmlEditor.resize(true);
+                codeEditor.resize(true);
+                libsEditor.resize(true);
+                lessEditor.resize(true);
+            }
         }
 
         $window.addEventListener('resize', resize);

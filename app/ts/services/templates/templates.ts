@@ -1528,6 +1528,10 @@ app.factory('templates', [
 
         var LIBS_TEMPLATE_JSXGRAPH_DEMO = "";
 
+        const width = 400
+        const height = 400
+        const canvasId = 'canvas'
+
         return [
             {
                 uuid: uuid.generate(),
@@ -1537,10 +1541,10 @@ app.factory('templates', [
                 focusEditor: undefined,
                 lastKnownJs: {},
                 operatorOverloading: true,
-                html: BOOTSTRAP_HTML(styleMarker, scriptsMarker, libsMarker, codeMarker),
-                code: BOOTSTRAP_CODE(),
+                html: BOOTSTRAP_HTML(styleMarker, scriptsMarker, libsMarker, codeMarker, width, height, canvasId),
+                code: BOOTSTRAP_CODE(canvasId),
                 libs: BOOTSTRAP_LIBS(),
-                less: BOOTSTRAP_LESS(),
+                less: BOOTSTRAP_LESS(width, height),
                 dependencies: ['stats.js', 'davinci-eight']
             },
             {
@@ -1551,10 +1555,10 @@ app.factory('templates', [
                 focusEditor: undefined,
                 lastKnownJs: {},
                 operatorOverloading: true,
-                html: EIGHTJS_HTML(styleMarker, scriptsMarker, libsMarker, codeMarker),
-                code: EIGHTJS_CODE(),
+                html: EIGHTJS_HTML(styleMarker, scriptsMarker, libsMarker, codeMarker, width, height, canvasId),
+                code: EIGHTJS_CODE(width, height, canvasId),
                 libs: EIGHTJS_LIBS(),
-                less: EIGHTJS_LESS(),
+                less: EIGHTJS_LESS(width, height),
                 dependencies: ['stats.js', 'davinci-eight']
             },
             {

@@ -1,4 +1,4 @@
-export default function(): string {
+export default function(width: number, height: number, canvasId: string): string {
     const lines = [
         "//",
         "// Using the WebGLRenderer class for flexible development.",
@@ -76,10 +76,9 @@ export default function(): string {
         " * Initializes the WebGL context once the DOM is ready.",
         " */",
         "window.onload = function() {",
-        "  const canvas = <HTMLCanvasElement>document.getElementById('my-canvas')",
-        "  // Set the pixel resolution of the canvas, which may differ from the style.",
-        "  canvas.width = 600",
-        "  canvas.height = 600",
+        `  const canvas = <HTMLCanvasElement>document.getElementById('${canvasId}')`,
+        `  canvas.width = ${width}`,
+        `  canvas.height = ${height}`,
         "",
         "  renderer.start(canvas)",
         "",
