@@ -526,6 +526,13 @@ module.exports = function(grunt) {
     },
 
     watch: {
+      eight: {
+        files: ['../davinci-eight/dist/*.*'],
+        tasks: ['dev'],
+        options: {
+          spawn: false
+        }
+      },
       scripts: {
         files: ['app/ts/**/*.ts'],
         tasks: ['ts:app'],
