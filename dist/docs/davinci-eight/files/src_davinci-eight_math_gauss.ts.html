@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>IContextListener - davinci-eight</title>
+    <title>src/davinci-eight/math/gauss.ts - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -197,167 +197,99 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>IContextListener Class</h1>
-<div class="box meta">
-
-
-        <div class="foundat">
-            Defined in: <a href="../files/src_davinci-eight_core_IContextListener.ts.html#l4"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;IContextListener.ts:4</code></a>
-        </div>
-
-            Module: <a href="../modules/core.html">core</a><br>
-            Parent Module: <a href="../modules/EIGHT.html">EIGHT</a>
-
-</div>
-
-
-<div class="box intro">
-    
-</div>
-
-
-<div id="classdocs" class="tabview">
-    <ul class="api-class-tabs">
-        <li class="api-class-tab index"><a href="#index">Index</a></li>
-
-            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
-    </ul>
-
-    <div>
-        <div id="index" class="api-class-tabpanel index">
-            <h2 class="off-left">Item Index</h2>
-
-                <div class="index-section methods">
-                    <h3>Methods</h3>
-
-                    <ul class="index-list methods">
-                            <li class="index-item method">
-                                <a href="#method_subscribe">subscribe</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_unsubscribe">unsubscribe</a>
-
-                            </li>
-                    </ul>
-                </div>
-
-
-
-        </div>
-
-            <div id="methods" class="api-class-tabpanel">
-                <h2 class="off-left">Methods</h2>
-
-<div id="method_subscribe" class="method item">
-    <h3 class="name"><code>subscribe</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>visual</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type">Void</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_core_IContextListener.ts.html#l12"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;IContextListener.ts:12</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Instructs the consumer to subscribe to context events.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">visual</code>
-                        <span class="type"><a href="../classes/WebGLRenderer.html" class="crosslink">WebGLRenderer</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Void</span>:
-            </div>
-        </div>
-
-
-</div>
-<div id="method_unsubscribe" class="method item">
-    <h3 class="name"><code>unsubscribe</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type">Void</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_core_IContextListener.ts.html#l21"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;IContextListener.ts:21</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Instructs the consumer to unsubscribe from context events.</p>
-
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Void</span>:
-            </div>
-        </div>
-
-
-</div>
-            </div>
-
-
-
-    </div>
+<h1 class="file-heading">File: src/davinci-eight/math/gauss.ts</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+// import mustBeEQ from &#x27;../checks/mustBeEQ&#x27;
+// import mustBeNumber from &#x27;../checks/mustBeNumber&#x27;
+
+const abs = Math.abs;
+
+function makeColumnVector(n: number, v: number): number[] {
+    const a: number[] = [];
+    for (let i = 0; i &lt; n; i++) {
+        a.push(v)
+    }
+    return a;
+}
+
+function rowWithMaximumInColumn(A: number[][], column: number, N: number): number {
+    let biggest = abs(A[column][column]);
+    let maxRow = column;
+    for (let row = column + 1; row &lt; N; row++) {
+        if (abs(A[row][column]) &gt; biggest) {
+            biggest = abs(A[row][column])
+            maxRow = row
+        }
+    }
+    return maxRow
+}
+
+function swapRows(A: number[][], i: number, j: number, N: number) {
+    const colLength = N + 1
+    for (let column = i; column &lt; colLength; column++) {
+        const temp = A[j][column]
+        A[j][column] = A[i][column]
+        A[i][column] = temp
+    }
+}
+
+function makeZeroBelow(A: number[][], i: number, N: number): void {
+    for (let row = i + 1; row &lt; N; row++) {
+        const c = -A[row][i] / A[i][i];
+        for (let column = i; column &lt; N + 1; column++) {
+            if (i === column) {
+                A[row][column] = 0
+            }
+            else {
+                A[row][column] += c * A[i][column]
+            }
+        }
+    }
+}
+
+function solve(A: number[][], N: number) {
+    const x = makeColumnVector(N, 0);
+    for (let i = N - 1; i &gt; -1; i--) {
+        x[i] = A[i][N] / A[i][i]
+        for (let k = i - 1; k &gt; -1; k--) {
+            A[k][N] -= A[k][i] * x[i]
+        }
+    }
+    return x
+}
+
+
+/**
+ * Gaussian elimination
+ * Ax = b
+ */
+export default function gauss(A: number[][], b: number[]): number[] {
+
+    const N = A.length
+
+    // mustBeEQ(&#x27;A.length&#x27;, N, b.length)
+
+    for (let i = 0; i &lt; N; i++) {
+        const Ai = A[i]
+        const bi = b[i]
+        // mustBeEQ(&#x60;A[${i}].length&#x60;, Ai.length, N)
+        // mustBeNumber(&#x60;b[${i}].length&#x60;, bi)
+        Ai.push(bi)
+    }
+
+    for (let j = 0; j &lt; N; j++) {
+
+        swapRows(A, j, rowWithMaximumInColumn(A, j, N), N)
+
+        makeZeroBelow(A, j, N)
+    }
+
+    return solve(A, N)
+}
+
+    </pre>
 </div>
                     </div>
                 </div>
