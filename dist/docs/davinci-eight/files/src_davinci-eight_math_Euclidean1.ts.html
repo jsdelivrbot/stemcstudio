@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="davinci-eight" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.188.0</em>
+            <em>API Docs for: 2.189.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -284,6 +284,18 @@ export default class Euclidean1 implements /*LinearElement&lt;Euclidean1Coords, 
     }
     set β(unused) {
         throw new Error(readOnly(&#x27;β&#x27;).message)
+    }
+
+    /**
+     * The pseudoscalar part of this multivector.
+     * @property beta
+     * @return {number}
+     */
+    get beta(): number {
+        return this.x;
+    }
+    set beta(unused) {
+        throw new Error(readOnly(&#x27;beta&#x27;).message)
     }
 
     get coords(): number[] {

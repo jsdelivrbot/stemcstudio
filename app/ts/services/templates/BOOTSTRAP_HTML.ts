@@ -7,21 +7,21 @@ export default function(
     height: number,
     canvasId: string
 ): string {
-    const lines = "" +
-        "<!doctype html>\n" +
-        "<html>\n" +
-        "  <head>\n" +
-        styleMarker() +
-        scriptsMarker() +
-        "  </head>\n" +
-        "  <body>\n" +
-        libsMarker() +
-        codeMarker() +
-        "    <div id='container'>\n" +
-        `      <canvas id='${canvasId}' width='${width}' height='${height}'></canvas>\n` +
-        "      <div id='overlay'></div>\n" +
-        "    </div>\n" +
-        "  </body>\n" +
-        "</html>\n";
-    return lines;
+
+    const lines: string[] = []
+
+    lines.push("<!doctype html>\n")
+    lines.push("<html>\n")
+    lines.push("  <head>\n")
+    lines.push(styleMarker())
+    lines.push(scriptsMarker())
+    lines.push("  </head>\n")
+    lines.push("  <body>\n")
+    lines.push(libsMarker())
+    lines.push(codeMarker())
+    lines.push(`    <canvas id='${canvasId}' width='${width}' height='${height}'></canvas>\n`)
+    lines.push("  </body>\n")
+    lines.push("</html>\n")
+
+    return lines.join('')
 }

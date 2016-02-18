@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="davinci-eight" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.188.0</em>
+            <em>API Docs for: 2.189.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -206,11 +206,22 @@
  */
 interface Scalar {
     /**
-     * The &lt;em&gt;scalar&lt;/em&gt; property as a &lt;code&gt;number&lt;/code&gt;.
+     * The &lt;em&gt;scalar&lt;/em&gt; coordinate as a &lt;code&gt;number&lt;/code&gt;.
+     * This is an alias for the &lt;code&gt;alpha&lt;/code&gt; property and is useful for compact notation.
+     *
      * @property α
      * @type {number}
      */
     α: number;
+
+    /**
+     * The &lt;em&gt;scalar&lt;/em&gt; coordinate as a &lt;code&gt;number&lt;/code&gt;.
+     * This is an alias for the &lt;code&gt;α&lt;/code&gt; property and is useful on conventional keyboards.
+     *
+     * @property alpha
+     * @type {number}
+     */
+    alpha: number;
 }
 
 export default Scalar;

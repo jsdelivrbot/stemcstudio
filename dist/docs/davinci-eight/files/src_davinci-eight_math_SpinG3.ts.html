@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="davinci-eight" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.188.0</em>
+            <em>API Docs for: 2.189.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -292,6 +292,19 @@ export default class SpinG3 extends VectorN&lt;number&gt; implements SpinorE3, M
         mustBeNumber(&#x27;xy&#x27;, xy)
         this.modified = this.modified || this.xy !== xy;
         this.coords[COORD_XY] = xy;
+    }
+
+    /**
+     * @property alpha
+     * @type Number
+     */
+    get alpha(): number {
+        return this.coords[COORD_SCALAR];
+    }
+    set alpha(alpha: number) {
+        mustBeNumber(&#x27;alpha&#x27;, alpha)
+        this.modified = this.modified || this.alpha !== alpha;
+        this.coords[COORD_SCALAR] = alpha;
     }
 
     /**

@@ -331,12 +331,22 @@ declare module JXG {
         /**
          * Determines the angle between the positive x axis and the line.
          */
-        getAngle(): number
+        getAngle(): number;
 
         /**
          * The distance between the two points defining the line.
          */
         L(): number;
+
+        /**
+         * Startpoint of the line.
+         */
+        point1: Point;
+
+        /**
+         * Endpoint of the line.
+         */
+        point2: Point;
     }
 
     export interface LineAttributes extends GeometryElementAttributes {
@@ -541,10 +551,10 @@ declare module JXG {
      */
     export interface Graph {
 
-      /**
-       * Stores the renderer that is used to draw the boards.
-       */
-      rendererType: string;
+        /**
+         * Stores the renderer that is used to draw the boards.
+         */
+        rendererType: string;
 
         /**
          * Initialize a new board.
