@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/davinci-eight/math/R1m.ts - davinci-eight</title>
+    <title>src/davinci-eight/core/Drawable.ts - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="davinci-eight" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.190.0</em>
+            <em>API Docs for: 2.191.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -47,6 +47,7 @@
                                 <li><a href="../classes/Attribute.html">Attribute</a></li>
                                 <li><a href="../classes/BlendFactor.html">BlendFactor</a></li>
                                 <li><a href="../classes/Box.html">Box</a></li>
+                                <li><a href="../classes/CameraControls.html">CameraControls</a></li>
                                 <li><a href="../classes/Capability.html">Capability</a></li>
                                 <li><a href="../classes/CC.html">CC</a></li>
                                 <li><a href="../classes/Color.html">Color</a></li>
@@ -61,6 +62,7 @@
                                 <li><a href="../classes/CylinderGeometry.html">CylinderGeometry</a></li>
                                 <li><a href="../classes/Dimensions.html">Dimensions</a></li>
                                 <li><a href="../classes/DirectionalLight.html">DirectionalLight</a></li>
+                                <li><a href="../classes/Drawable.html">Drawable</a></li>
                                 <li><a href="../classes/DrawMode.html">DrawMode</a></li>
                                 <li><a href="../classes/EIGHTLogger.html">EIGHTLogger</a></li>
                                 <li><a href="../classes/Facet.html">Facet</a></li>
@@ -84,10 +86,10 @@
                                 <li><a href="../classes/IContextProvider.html">IContextProvider</a></li>
                                 <li><a href="../classes/IUnknown.html">IUnknown</a></li>
                                 <li><a href="../classes/LineMaterial.html">LineMaterial</a></li>
-                                <li><a href="../classes/Mat2R.html">Mat2R</a></li>
-                                <li><a href="../classes/Mat3R.html">Mat3R</a></li>
-                                <li><a href="../classes/Mat4R.html">Mat4R</a></li>
                                 <li><a href="../classes/Material.html">Material</a></li>
+                                <li><a href="../classes/Matrix2.html">Matrix2</a></li>
+                                <li><a href="../classes/Matrix3.html">Matrix3</a></li>
+                                <li><a href="../classes/Matrix4.html">Matrix4</a></li>
                                 <li><a href="../classes/Mesh.html">Mesh</a></li>
                                 <li><a href="../classes/MeshMaterial.html">MeshMaterial</a></li>
                                 <li><a href="../classes/ModelE2.html">ModelE2</a></li>
@@ -104,11 +106,7 @@
                                 <li><a href="../classes/PrimitiveBuffers.html">PrimitiveBuffers</a></li>
                                 <li><a href="../classes/Pseudo.html">Pseudo</a></li>
                                 <li><a href="../classes/QQ.html">QQ</a></li>
-                                <li><a href="../classes/R1m.html">R1m</a></li>
-                                <li><a href="../classes/R2m.html">R2m</a></li>
                                 <li><a href="../classes/R3.html">R3</a></li>
-                                <li><a href="../classes/R3m.html">R3m</a></li>
-                                <li><a href="../classes/R4m.html">R4m</a></li>
                                 <li><a href="../classes/ReflectionFacetE2.html">ReflectionFacetE2</a></li>
                                 <li><a href="../classes/ReflectionFacetE3.html">ReflectionFacetE3</a></li>
                                 <li><a href="../classes/RigidBody.html">RigidBody</a></li>
@@ -122,8 +120,8 @@
                                 <li><a href="../classes/ShareableWebGLTexture.html">ShareableWebGLTexture</a></li>
                                 <li><a href="../classes/Sphere.html">Sphere</a></li>
                                 <li><a href="../classes/SphereGeometry.html">SphereGeometry</a></li>
-                                <li><a href="../classes/SpinG2m.html">SpinG2m</a></li>
-                                <li><a href="../classes/SpinG3m.html">SpinG3m</a></li>
+                                <li><a href="../classes/Spinor2.html">Spinor2</a></li>
+                                <li><a href="../classes/Spinor3.html">Spinor3</a></li>
                                 <li><a href="../classes/SpinorE1.html">SpinorE1</a></li>
                                 <li><a href="../classes/SpinorE2.html">SpinorE2</a></li>
                                 <li><a href="../classes/SpinorE3.html">SpinorE3</a></li>
@@ -131,13 +129,16 @@
                                 <li><a href="../classes/StringIUnknownMap.html">StringIUnknownMap</a></li>
                                 <li><a href="../classes/Tetrahedron.html">Tetrahedron</a></li>
                                 <li><a href="../classes/TetrahedronGeometry.html">TetrahedronGeometry</a></li>
-                                <li><a href="../classes/TrackballCameraControls.html">TrackballCameraControls</a></li>
                                 <li><a href="../classes/Trail.html">Trail</a></li>
                                 <li><a href="../classes/UniformLocation.html">UniformLocation</a></li>
                                 <li><a href="../classes/UniformMetaInfo.html">UniformMetaInfo</a></li>
                                 <li><a href="../classes/Unit.html">Unit</a></li>
                                 <li><a href="../classes/Vector.html">Vector</a></li>
+                                <li><a href="../classes/Vector1.html">Vector1</a></li>
+                                <li><a href="../classes/Vector2.html">Vector2</a></li>
+                                <li><a href="../classes/Vector3.html">Vector3</a></li>
                                 <li><a href="../classes/Vector3Facet.html">Vector3Facet</a></li>
+                                <li><a href="../classes/Vector4.html">Vector4</a></li>
                                 <li><a href="../classes/VectorE0.html">VectorE0</a></li>
                                 <li><a href="../classes/VectorE1.html">VectorE1</a></li>
                                 <li><a href="../classes/VectorE2.html">VectorE2</a></li>
@@ -198,310 +199,221 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: src/davinci-eight/math/R1m.ts</h1>
+<h1 class="file-heading">File: src/davinci-eight/core/Drawable.ts</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-import MutableLinearElement from &#x27;../math/MutableLinearElement&#x27;;
-import Matrix from &#x27;../math/Matrix&#x27;;
-import SpinorE1 from &#x27;../math/SpinorE1&#x27;;
-import VectorE0 from &#x27;../math/VectorE0&#x27;;
-import VectorE1 from &#x27;../math/VectorE1&#x27;;
-import VectorN from &#x27;../math/VectorN&#x27;;
+import IContextProvider from &#x27;../core/IContextProvider&#x27;;
+import mustBeBoolean from &#x27;../checks/mustBeBoolean&#x27;
+import Geometry from &#x27;./Geometry&#x27;;
+import Material from &#x27;../core/Material&#x27;;
+import readOnly from &#x27;../i18n/readOnly&#x27;;
+import ShareableContextListener from &#x27;../core/ShareableContextListener&#x27;;
+import Facet from &#x27;../core/Facet&#x27;;
 
 /**
  * @module EIGHT
- * @submodule math
+ * @submodule core
  */
-
-let exp = Math.exp
-let log = Math.log
-let sqrt = Math.sqrt
-
-let COORD_X = 0
 
 /**
- * @class R1m
+ * @class Drawable
+ * @extends Shareable
  */
-export default class R1m extends VectorN&lt;number&gt; implements VectorE1, MutableLinearElement&lt;VectorE1, R1m, SpinorE1, VectorE1&gt;, Matrix&lt;R1m, VectorE1, VectorE0&gt; {
+export default class Drawable extends ShareableContextListener {
+
     /**
-     * @class R1m
+     * @property _geometry
+     * @type {Geometry}
+     * @private
+     */
+    protected _geometry: Geometry;
+
+    /**
+     * @property _material
+     * @type {Material}
+     * @private
+     */
+    protected _material: Material;
+
+    /**
+     * @property name
+     * @type {string}
+     * @optional
+     */
+    public name: string;
+
+    /**
+     * @property _visible
+     * @type boolean
+     * @private
+     */
+    private _visible = true;
+
+    /**
+     * @property _facets
+     * @private
+     */
+    private _facets: { [name: string]: Facet };
+
+    /**
+     * @class Drawable
      * @constructor
-     * @param data {number[]} Default is [0].
-     * @param modified {boolean} Default is false.
+     * @param geometry {Geometry}
+     * @param material {Material}
+     * @param [type = &#x27;Drawable&#x27;] {string}
      */
-    constructor(data = [0], modified = false) {
-        super(data, modified, 1);
+    constructor(geometry: Geometry, material: Material, type = &#x27;Drawable&#x27;) {
+        super(type)
+        this._geometry = geometry
+        this._geometry.addRef()
+        this._material = material
+        this._material.addRef()
+        this._facets = {}
     }
+
     /**
-     * @property x
-     * @type Number
+     * @method destructor
+     * @return {void}
+     * @protected
      */
-    get x(): number {
-        return this.coords[COORD_X];
-    }
-    set x(value: number) {
-        this.modified = this.modified || this.x !== value;
-        this.coords[COORD_X] = value;
-    }
-    set(x: number): R1m {
-        this.x = x;
-        return this;
-    }
-    add(vector: VectorE1, alpha = 1) {
-        this.x += vector.x * alpha
-        return this
-    }
-    add2(a: VectorE1, b: VectorE1) {
-        this.x = a.x + b.x;
-        return this;
-    }
-    scp(v: VectorE1) {
-        return this
+    protected destructor(): void {
+        this._geometry.release()
+        this._geometry = void 0
+        this._material.release()
+        this._material = void 0
+        super.destructor()
     }
 
-    adj(): R1m {
-        throw new Error(&#x27;TODO: R1m.adj&#x27;)
-    }
-
-    conj() {
-        return this
-    }
-    copy(v: VectorE1) {
-        this.x = v.x;
-        return this;
-    }
-    det(): number {
-        return this.x
-    }
-    dual() {
-        return this
-    }
-    exp() {
-        this.x = exp(this.x)
-        return this
-    }
-    one() {
-        this.x = 1
-        return this
-    }
-    inv() {
-        this.x = 1 / this.x
-        return this
-    }
-    lco(v: VectorE1) {
-        return this
-    }
-    log() {
-        this.x = log(this.x)
-        return this
-    }
-    mul(v: VectorE1) {
-        this.x *= v.x
-        return this
-    }
-    norm() {
-        return this
-    }
-    div(v: VectorE1) {
-        this.x /= v.x
-        return this
-    }
-    divByScalar(scalar: number) {
-        this.x /= scalar;
-        return this;
-    }
-    min(v: VectorE1) {
-        if (this.x &gt; v.x) {
-            this.x = v.x;
+    /**
+     * @method setUniforms
+     * @return {void}
+     */
+    setUniforms(): void {
+        const program = this._material
+        const facets = this._facets
+        // FIXME: Temporary object creation?
+        const keys = Object.keys(facets)
+        const keysLength = keys.length
+        for (let i = 0; i &lt; keysLength; i++) {
+            const key = keys[i]
+            const facet = facets[key]
+            facet.setUniforms(program)
         }
-        return this;
     }
-    max(v: VectorE1) {
-        if (this.x &lt; v.x) {
-            this.x = v.x;
+
+    /**
+     * @method draw
+     * @param ambients {Facet[]}
+     * @return {void}
+     */
+    draw(ambients: Facet[]): void {
+        if (this._visible) {
+            const material = this._material;
+
+            material.use();
+
+            const iL = ambients.length;
+            for (let i = 0; i &lt; iL; i++) {
+                const ambient = ambients[i]
+                ambient.setUniforms(material)
+            }
+
+            this.setUniforms();
+
+            this._geometry.draw(material)
         }
-        return this;
-    }
-    floor() {
-        this.x = Math.floor(this.x);
-        return this;
-    }
-    ceil() {
-        this.x = Math.ceil(this.x);
-        return this;
-    }
-    rev() {
-        return this
-    }
-    rco(v: VectorE1) {
-        return this
-    }
-    round() {
-        this.x = Math.round(this.x);
-        return this;
-    }
-    roundToZero() {
-        this.x = (this.x &lt; 0) ? Math.ceil(this.x) : Math.floor(this.x);
-        return this;
-    }
-    scale(scalar: number) {
-        this.x *= scalar
-        return this
-    }
-    sub(v: VectorE1) {
-        this.x -= v.x
-        return this
-    }
-    subScalar(s: number) {
-        this.x -= s
-        return this
-    }
-    sub2(a: VectorE1, b: VectorE1): R1m {
-        this.x = a.x - b.x
-        return this
-    }
-    /**
-     * @method neg
-     * @return {R1m} &lt;code&gt;this&lt;/code&gt;
-     */
-    neg() {
-        this.x = -this.x
-        return this
     }
 
     /**
-     * @method distanceTo
-     * @param point {VectorE1}
-     * @return {number}
+     * @method contextFree
+     * @param context {IContextProvider}
+     * @return {void}
      */
-    distanceTo(position: VectorE1) {
-        return sqrt(this.quadranceTo(position));
-    }
-    dot(v: VectorE1) {
-        return this.x * v.x;
+    contextFree(context: IContextProvider): void {
+        this._geometry.contextFree(context)
+        this._material.contextFree(context)
     }
 
     /**
-     * Computes the &lt;em&gt;square root&lt;/em&gt; of the &lt;em&gt;squared norm&lt;/em&gt;.
-     * @method magnitude
-     * @return {number}
+     * @method contextGain
+     * @param context {IContextProvider}
+     * @return {void}
      */
-    magnitude(): number {
-        return sqrt(this.squaredNorm());
-    }
-
-    direction() {
-        return this.divByScalar(this.magnitude());
-    }
-
-    mul2(a: VectorE1, b: VectorE1) {
-        return this
-    }
-    quad() {
-        let x = this.x
-        this.x = x * x
-        return this
-    }
-    squaredNorm(): number {
-        return this.x * this.x;
-    }
-    quadranceTo(position: VectorE1) {
-        let dx = this.x - position.x;
-        return dx * dx;
-    }
-    reflect(n: VectorE1): R1m {
-        // FIXME: TODO
-        return this;
-    }
-    reflection(n: VectorE0): R1m {
-        // FIXME: TODO
-        return this;
-    }
-
-    rotate(rotor: SpinorE1): R1m {
-        return this;
+    contextGain(context: IContextProvider): void {
+        this._geometry.contextGain(context)
+        this._material.contextGain(context)
     }
 
     /**
-     * this ⟼ this + α * (v - this)&lt;/code&gt;
-     * @method lerp
-     * @param v {VectorE1}
-     * @param α {number}
-     * @return {MutanbleNumber}
-     * @chainable
+     * @method contextLost
+     * @return {void}
      */
-    lerp(v: VectorE1, α: number) {
-        this.x += (v.x - this.x) * α;
-        return this;
-    }
-    /**
-     * &lt;p&gt;
-     * &lt;code&gt;this ⟼ a + α * (b - a)&lt;/code&gt;
-     * &lt;/p&gt;
-     * @method lerp2
-     * @param a {R1m}
-     * @param b {R1m}
-     * @param α {number}
-     * @return {R1m}
-     * @chainable
-     */
-    lerp2(a: R1m, b: R1m, α: number) {
-        this.sub2(b, a).scale(α).add(a);
-        return this;
-    }
-    equals(v: VectorE1) {
-        return v.x === this.x;
-    }
-    fromArray(array: number[], offset = 0) {
-        this.x = array[offset];
-        return this;
-    }
-    slerp(v: VectorE1, α: number) {
-        return this;
-    }
-    toArray(array: number[] = [], offset = 0) {
-        array[offset] = this.x;
-        return array;
-    }
-    toExponential(): string {
-        return &quot;TODO: R1m.toExponential&quot;;
-    }
-    toFixed(digits?: number): string {
-        return &quot;TODO: R1m.toFixed&quot;;
+    contextLost(): void {
+        this._geometry.contextLost()
+        this._material.contextLost()
     }
 
     /**
-     * @method translation
-     * @param d {VectorE0}
-     * @return {R1m}
-     * @chainable
+     * @method getFacet
+     * @param name {string}
+     * @return {Facet}
      */
-    translation(d: VectorE0): R1m {
-        return this.one()
-    }
-
-    fromAttribute(attribute: { itemSize: number, array: number[] }, index: number, offset = 0) {
-        index = index * attribute.itemSize + offset;
-        this.x = attribute.array[index];
-        return this;
-    }
-    clone() {
-        return new R1m([this.x]);
-    }
-    ext(v: VectorE1) {
-        return this
+    getFacet(name: string): Facet {
+        return this._facets[name]
     }
 
     /**
-     * Sets this vector to the identity element for addition, &lt;b&gt;0&lt;/b&gt;.
-     * @method zero
-     * @return {R1m}
-     * @chainable
+     * @method setFacet
+     * @param name {string}
+     * @param facet {Facet}
+     * @return {void}
      */
-    zero(): R1m {
-        this.x = 0
-        return this
+    setFacet(name: string, facet: Facet): void {
+        this._facets[name] = facet
+    }
+
+    /**
+     * Provides a reference counted reference to the graphics buffers property.
+     *
+     * @property geometry
+     * @type {Geometry}
+     * @readOnly
+     */
+    get geometry(): Geometry {
+        this._geometry.addRef()
+        return this._geometry
+    }
+    set geometry(unused) {
+        throw new Error(readOnly(&#x27;geometry&#x27;).message)
+    }
+
+    /**
+     * Provides a reference counted reference to the graphics program property.
+     *
+     * @property material
+     * @type {Material}
+     * @readOnly
+     */
+    get material(): Material {
+        this._material.addRef()
+        return this._material
+    }
+    set material(unused) {
+        throw new Error(readOnly(&#x27;material&#x27;).message)
+    }
+
+    /**
+     * @property visible
+     * @type boolean
+     * @default true
+     */
+    get visible(): boolean {
+        return this._visible
+    }
+    set visible(visible: boolean) {
+        mustBeBoolean(&#x27;visible&#x27;, visible, () =&gt; { return this._type })
+        this._visible = visible
     }
 }
 

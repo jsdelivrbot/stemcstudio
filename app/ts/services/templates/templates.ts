@@ -1536,21 +1536,21 @@ app.factory('templates', [
         return [
             {
                 uuid: uuid.generate(),
-                description: "EightJS — WebGL Graphics and Geometric Algebra (Bootstrap)",
+                description: "EightJS — WebGL Graphics and Geometric Algebra (Beginner)",
                 isCodeVisible: true,
                 isViewVisible: true,
                 focusEditor: undefined,
                 lastKnownJs: {},
                 operatorOverloading: true,
                 html: BOOTSTRAP_HTML(styleMarker, scriptsMarker, libsMarker, codeMarker, width, height, canvasId),
-                code: BOOTSTRAP_CODE(canvasId, { comments: true, example: true, geometry: 'G', dimensions: 3 }),
+                code: BOOTSTRAP_CODE(canvasId, { comments: true, example: true, geometry: 'G', dimensions: 3, stats: false }),
                 libs: BOOTSTRAP_LIBS({ geometry: 'G', dimensions: 3 }),
-                less: BOOTSTRAP_LESS(width, height, {}),
-                dependencies: ['stats.js', 'davinci-eight']
+                less: BOOTSTRAP_LESS(width, height, {stats: false}),
+                dependencies: ['davinci-eight']
             },
             {
                 uuid: uuid.generate(),
-                description: "EightJS — WebGL Graphics and Geometric Algebra (Advanced)",
+                description: "EightJS — WebGL Graphics and Geometric Algebra (Intermediate)",
                 isCodeVisible: true,
                 isViewVisible: true,
                 focusEditor: undefined,

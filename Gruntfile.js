@@ -20,10 +20,6 @@ module.exports = function(grunt) {
             dest: 'generated/index.html'
           },
           {
-            src: 'app/appcache.mf',
-            dest: 'generated/appcache.mf'
-          },
-          {
             src: 'manual/ace/worker.js',
             dest: 'generated/js/worker.js'
           },
@@ -250,10 +246,6 @@ module.exports = function(grunt) {
           {
             src: 'app/index.html',
             dest: 'dist/index.html'
-          },
-          {
-            src: 'app/appcache.mf',
-            dest: 'dist/appcache.mf'
           },
           {
             src: 'generated/css/app.css',

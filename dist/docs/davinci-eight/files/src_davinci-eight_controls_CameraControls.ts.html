@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/davinci-eight/math/Mat2R.ts - davinci-eight</title>
+    <title>src/davinci-eight/controls/CameraControls.ts - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="davinci-eight" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.190.0</em>
+            <em>API Docs for: 2.191.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -47,6 +47,7 @@
                                 <li><a href="../classes/Attribute.html">Attribute</a></li>
                                 <li><a href="../classes/BlendFactor.html">BlendFactor</a></li>
                                 <li><a href="../classes/Box.html">Box</a></li>
+                                <li><a href="../classes/CameraControls.html">CameraControls</a></li>
                                 <li><a href="../classes/Capability.html">Capability</a></li>
                                 <li><a href="../classes/CC.html">CC</a></li>
                                 <li><a href="../classes/Color.html">Color</a></li>
@@ -61,6 +62,7 @@
                                 <li><a href="../classes/CylinderGeometry.html">CylinderGeometry</a></li>
                                 <li><a href="../classes/Dimensions.html">Dimensions</a></li>
                                 <li><a href="../classes/DirectionalLight.html">DirectionalLight</a></li>
+                                <li><a href="../classes/Drawable.html">Drawable</a></li>
                                 <li><a href="../classes/DrawMode.html">DrawMode</a></li>
                                 <li><a href="../classes/EIGHTLogger.html">EIGHTLogger</a></li>
                                 <li><a href="../classes/Facet.html">Facet</a></li>
@@ -84,10 +86,10 @@
                                 <li><a href="../classes/IContextProvider.html">IContextProvider</a></li>
                                 <li><a href="../classes/IUnknown.html">IUnknown</a></li>
                                 <li><a href="../classes/LineMaterial.html">LineMaterial</a></li>
-                                <li><a href="../classes/Mat2R.html">Mat2R</a></li>
-                                <li><a href="../classes/Mat3R.html">Mat3R</a></li>
-                                <li><a href="../classes/Mat4R.html">Mat4R</a></li>
                                 <li><a href="../classes/Material.html">Material</a></li>
+                                <li><a href="../classes/Matrix2.html">Matrix2</a></li>
+                                <li><a href="../classes/Matrix3.html">Matrix3</a></li>
+                                <li><a href="../classes/Matrix4.html">Matrix4</a></li>
                                 <li><a href="../classes/Mesh.html">Mesh</a></li>
                                 <li><a href="../classes/MeshMaterial.html">MeshMaterial</a></li>
                                 <li><a href="../classes/ModelE2.html">ModelE2</a></li>
@@ -104,11 +106,7 @@
                                 <li><a href="../classes/PrimitiveBuffers.html">PrimitiveBuffers</a></li>
                                 <li><a href="../classes/Pseudo.html">Pseudo</a></li>
                                 <li><a href="../classes/QQ.html">QQ</a></li>
-                                <li><a href="../classes/R1m.html">R1m</a></li>
-                                <li><a href="../classes/R2m.html">R2m</a></li>
                                 <li><a href="../classes/R3.html">R3</a></li>
-                                <li><a href="../classes/R3m.html">R3m</a></li>
-                                <li><a href="../classes/R4m.html">R4m</a></li>
                                 <li><a href="../classes/ReflectionFacetE2.html">ReflectionFacetE2</a></li>
                                 <li><a href="../classes/ReflectionFacetE3.html">ReflectionFacetE3</a></li>
                                 <li><a href="../classes/RigidBody.html">RigidBody</a></li>
@@ -122,8 +120,8 @@
                                 <li><a href="../classes/ShareableWebGLTexture.html">ShareableWebGLTexture</a></li>
                                 <li><a href="../classes/Sphere.html">Sphere</a></li>
                                 <li><a href="../classes/SphereGeometry.html">SphereGeometry</a></li>
-                                <li><a href="../classes/SpinG2m.html">SpinG2m</a></li>
-                                <li><a href="../classes/SpinG3m.html">SpinG3m</a></li>
+                                <li><a href="../classes/Spinor2.html">Spinor2</a></li>
+                                <li><a href="../classes/Spinor3.html">Spinor3</a></li>
                                 <li><a href="../classes/SpinorE1.html">SpinorE1</a></li>
                                 <li><a href="../classes/SpinorE2.html">SpinorE2</a></li>
                                 <li><a href="../classes/SpinorE3.html">SpinorE3</a></li>
@@ -131,13 +129,16 @@
                                 <li><a href="../classes/StringIUnknownMap.html">StringIUnknownMap</a></li>
                                 <li><a href="../classes/Tetrahedron.html">Tetrahedron</a></li>
                                 <li><a href="../classes/TetrahedronGeometry.html">TetrahedronGeometry</a></li>
-                                <li><a href="../classes/TrackballCameraControls.html">TrackballCameraControls</a></li>
                                 <li><a href="../classes/Trail.html">Trail</a></li>
                                 <li><a href="../classes/UniformLocation.html">UniformLocation</a></li>
                                 <li><a href="../classes/UniformMetaInfo.html">UniformMetaInfo</a></li>
                                 <li><a href="../classes/Unit.html">Unit</a></li>
                                 <li><a href="../classes/Vector.html">Vector</a></li>
+                                <li><a href="../classes/Vector1.html">Vector1</a></li>
+                                <li><a href="../classes/Vector2.html">Vector2</a></li>
+                                <li><a href="../classes/Vector3.html">Vector3</a></li>
                                 <li><a href="../classes/Vector3Facet.html">Vector3Facet</a></li>
+                                <li><a href="../classes/Vector4.html">Vector4</a></li>
                                 <li><a href="../classes/VectorE0.html">VectorE0</a></li>
                                 <li><a href="../classes/VectorE1.html">VectorE1</a></li>
                                 <li><a href="../classes/VectorE2.html">VectorE2</a></li>
@@ -198,452 +199,225 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: src/davinci-eight/math/Mat2R.ts</h1>
+<h1 class="file-heading">File: src/davinci-eight/controls/CameraControls.ts</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-import AbstractMatrix from &#x27;../math/AbstractMatrix&#x27;;
-import add2x2 from &#x27;../math/add2x2&#x27;;
-import det2x2 from &#x27;../math/det2x2&#x27;;
-import isDefined from &#x27;../checks/isDefined&#x27;;
-import Matrix from &#x27;../math/Matrix&#x27;;
-import mustBeInteger from &#x27;../checks/mustBeInteger&#x27;;
-import mustBeNumber from &#x27;../checks/mustBeNumber&#x27;;
-import Ring from &#x27;../math/MutableRingElement&#x27;;
-import RingOperators from &#x27;../math/RingOperators&#x27;;
-import VectorE1 from &#x27;../math/VectorE1&#x27;;
-import VectorE2 from &#x27;../math/VectorE2&#x27;;
+import G3m from &#x27;../math/G3m&#x27;
+import MouseControls from &#x27;./MouseControls&#x27;
+import PerspectiveCamera from &#x27;../facets/PerspectiveCamera&#x27;
+import Vector2 from &#x27;../math/Vector2&#x27;
+import Vector3 from &#x27;../math/Vector3&#x27;
 
 /**
  * @module EIGHT
- * @submodule math
+ * @submodule controls
+ *
+ * @class CameraControls
+ * @extends Shareable
  */
-
-/**
- * @class Mat2R
- * @extends AbstractMatrix
- */
-export default class Mat2R extends AbstractMatrix&lt;Mat2R&gt; implements Matrix&lt;Mat2R, VectorE2, VectorE1&gt;, Ring&lt;Mat2R&gt;, RingOperators&lt;Mat2R&gt; {
-
+export default class CameraControls extends MouseControls {
     /**
-     * 2x2 (square) matrix of numbers.
-     * Constructs a Mat2R by wrapping a Float32Array.
-     * The elements are stored in column-major order:
-     * 0 2
-     * 1 3
      *
-     * @class Mat2R
+     */
+    public rotateSpeed = 1
+
+    /**
+     *
+     */
+    public zoomSpeed = 1
+
+    /**
+     *
+     */
+    public panSpeed = 1
+
+    /**
+     * The camera object is what we will be moving.
+     */
+    private camera: PerspectiveCamera
+
+    /**
+     * The eye vector is the position of the camera relative to the target position vector.
+     * So, camera.position = target + eye, or, eye = camera.position - target.
+     */
+    private eye = new Vector3()
+
+    /**
+     * The position that we look at.
+     */
+    private target = new G3m()
+
+    /**
+     * The initial position, look and up of the camera.
+     * We cache these so that we can reset the camera.
+     */
+    private position0: Vector3
+    private target0: G3m
+    private up0: Vector3
+
+    // Working storage for calculations that update the camera.
+    private moveDirection = new Vector3()
+    private eyeDirection = new Vector3()
+    private objectUpDirection = new Vector3()
+    private objectSidewaysDirection = new Vector3()
+    private axis = new Vector3()
+    private rotor = new G3m()
+    private mouseChange = new Vector2()
+    private pan = new Vector3()
+    private objectUp = new Vector3()
+
+    /**
+     * @class CameraControls
      * @constructor
-     * @param elements {Float32Array} The elements of the matrix in column-major order.
+     * @param camera
      */
-    constructor(elements: Float32Array) {
-        super(elements, 2);
+    constructor(camera: PerspectiveCamera) {
+        super(&#x27;CameraControls&#x27;)
+        this.camera = camera
+
+        // Cache camera properties required for a reset.
+        // TODO: Why don&#x27;t we cache the look vector?
+        // TODO: I think there is an assumption that the look is the origin.
+        this.target0 = this.target.clone() // ???
+        this.position0 = this.camera.position.clone()
+        this.up0 = this.camera.up.clone()
+
+        this.update()
     }
 
     /**
-     * @method add
-     * @param rhs {Mat2R}
-     * @return {Mat2R}
-     * @chainable
+     * @method destructor
+     * @return {void}
+     * @protected
      */
-    add(rhs: Mat2R): Mat2R {
-        return this.add2(this, rhs);
+    protected destructor(): void {
+        super.destructor()
     }
 
     /**
-     * @method add2
-     * @param a {Mat2R}
-     * @param b {Mat2R}
-     * @return {Mat2R}
-     * @chainable
+     *
      */
-    add2(a: Mat2R, b: Mat2R): Mat2R {
-        add2x2(a.elements, b.elements, this.elements)
-        return this
-    }
+    public reset() {
+        this.target.copy(this.target0)
+        this.camera.position.copy(this.position0)
+        this.camera.up.copy(this.up0)
 
-    clone(): Mat2R {
-        let te = this.elements;
-        let m11 = te[0];
-        let m21 = te[1];
-        let m12 = te[2];
-        let m22 = te[3];
-        return Mat2R.zero().set(m11, m12, m21, m22)
+        this.eye.copy(this.camera.position).sub(this.target)
+        this.camera.look.copy(this.target)
+        super.reset()
     }
 
     /**
-     * Computes the determinant.
-     * @method det
-     * @return {number}
+     * This should be called inside the animation frame to update the camera location.
+     * Notice that the movement of the mouse controls is decoupled from the effect.
+     * We also want to avoid temporary object creation in this and called methods by recycling variables.
+     *
+     * @method update
+     * @return {void}
      */
-    det(): number {
-        return det2x2(this.elements)
-    }
+    public update(): void {
 
-    /**
-     * @method inv
-     * @return {Mat2R}
-     * @chainable
-     */
-    inv(): Mat2R {
-        let te = this.elements;
-        let a = te[0];
-        let c = te[1];
-        let b = te[2];
-        let d = te[3];
-        let det = this.det()
-        return this.set(d, -b, -c, a).scale(1 / det)
-    }
+        this.eye.copy(this.camera.position).sub(this.target)
 
-    /**
-     * @method isOne
-     * @return {boolean}
-     */
-    isOne(): boolean {
-        let te = this.elements;
-        let a = te[0];
-        let c = te[1];
-        let b = te[2];
-        let d = te[3];
-        return (a === 1 &amp;&amp; b === 0 &amp;&amp; c === 0 &amp;&amp; d === 1)
-    }
-
-    /**
-     * @method isZero
-     * @return {boolean}
-     */
-    isZero(): boolean {
-        let te = this.elements;
-        let a = te[0];
-        let c = te[1];
-        let b = te[2];
-        let d = te[3];
-        return (a === 0 &amp;&amp; b === 0 &amp;&amp; c === 0 &amp;&amp; d === 0)
-    }
-
-    /**
-     * @method mul
-     * @param rhs {Mat2R}
-     * @return {Mat2R}
-     * @chainable
-     */
-    mul(rhs: Mat2R): Mat2R {
-        return this.mul2(this, rhs);
-    }
-
-    /**
-     * @method mul2
-     * @param a {Mat2R}
-     * @param b {Mat2R}
-     * @return {Mat2R}
-     * @chainable
-     */
-    mul2(a: Mat2R, b: Mat2R): Mat2R {
-        let ae = a.elements;
-        let a11 = ae[0];
-        let a21 = ae[1];
-        let a12 = ae[2];
-        let a22 = ae[3];
-
-        let be = b.elements;
-        let b11 = be[0];
-        let b21 = be[1];
-        let b12 = be[2];
-        let b22 = be[3];
-
-        let m11 = a11 * b11 + a12 * b21;
-        let m12 = a11 * b12 + a12 * b22;
-        let m21 = a21 * b11 + a22 * b21;
-        let m22 = a21 * b12 + a22 * b22;
-        return this.set(m11, m12, m21, m22)
-    }
-
-    /**
-     * @method neg
-     * @return {Mat2R}
-     * @chainable
-     */
-    neg(): Mat2R {
-        return this.scale(-1)
-    }
-
-    /**
-     * Sets this matrix to the identity element for multiplication, &lt;b&gt;1&lt;/b&gt;.
-     * @method one
-     * @return {Mat2R}
-     * @chainable
-     */
-    one(): Mat2R {
-        return this.set(1, 0, 0, 1)
-    }
-
-    /**
-     * Sets this matrix to the transformation for a
-     * reflection in the line normal to the unit vector &lt;code&gt;n&lt;/code&gt;.
-     * &lt;p&gt;
-     * this ⟼ reflection(&lt;b&gt;n&lt;/b&gt;) = I - 2 * &lt;b&gt;n&lt;/b&gt;&lt;sup&gt;T&lt;/sup&gt; * &lt;b&gt;n&lt;/b&gt;
-     * &lt;/p&gt;
-     * @method reflection
-     * @param n {VectorE1}
-     * @return {Mat2R}
-     * @chainable
-     */
-    reflection(n: VectorE1): Mat2R {
-
-        let nx = mustBeNumber(&#x27;n.x&#x27;, n.x)
-
-        let xx = 1 - 2 * nx * nx
-
-        return this.set(xx, 0, 0, 1)
-    }
-
-    /**
-     * @method row
-     * @param i {number} the zero-based index of the row.
-     * @return {Array&lt;number&gt;}
-     */
-    row(i: number): Array&lt;number&gt; {
-        let te = this.elements;
-        return [te[0 + i], te[2 + i]]
-    }
-
-    /**
-     * @method scale
-     * @param α {number}
-     * @return {Mat2R}
-     * @chainable
-     */
-    scale(α: number): Mat2R {
-        let te = this.elements;
-        let m11 = te[0] * α;
-        let m21 = te[1] * α;
-        let m12 = te[2] * α;
-        let m22 = te[3] * α;
-        return this.set(m11, m12, m21, m22);
-    }
-
-    /**
-     * Sets all elements of this matrix to the supplied row-major values m11, ..., m22.
-     * @method set
-     * @param m11 {number}
-     * @param m12 {number}
-     * @param m21 {number}
-     * @param m22 {number}
-     * @return {Mat2R}
-     * @chainable
-     */
-    set(m11: number, m12: number, m21: number, m22: number): Mat2R {
-        let te = this.elements;
-        // The elements are stored in column-major order.
-        te[0x0] = m11; te[0x2] = m12;
-        te[0x1] = m21; te[0x3] = m22;
-        return this;
-    }
-
-    /**
-     * @method sub
-     * @param rhs {Mat2R}
-     * @return {Mat2R}
-     * @chainable
-     */
-    sub(rhs: Mat2R): Mat2R {
-        let te = this.elements;
-        let t11 = te[0];
-        let t21 = te[1];
-        let t12 = te[2];
-        let t22 = te[3];
-
-        let re = rhs.elements;
-        let r11 = re[0];
-        let r21 = re[1];
-        let r12 = re[2];
-        let r22 = re[3];
-
-        let m11 = t11 - r11;
-        let m21 = t21 - r21;
-        let m12 = t12 - r12;
-        let m22 = t22 - r22;
-        return this.set(m11, m12, m21, m22)
-    }
-
-    /**
-     * @method toExponential
-     * @return {string}
-     */
-    toExponential(): string {
-        let text: string[] = [];
-        for (var i = 0; i &lt; this.dimensions; i++) {
-            text.push(this.row(i).map(function(element: number, index: number) { return element.toExponential() }).join(&#x27; &#x27;));
+        if (!this.noRotate) {
+            this.rotateCamera()
         }
-        return text.join(&#x27;\n&#x27;);
+        if (!this.noZoom) {
+            this.zoomCamera()
+        }
+        if (!this.noPan) {
+            this.panCamera()
+        }
+        this.camera.position.copy(this.target).add(this.eye)
+        this.checkDistances()
+        this.camera.look.copy(this.target)
+        // If the distance from the last position to the camera position is significant,
+        // Emit a change event and update the last position with the current camera position.
     }
 
     /**
-     * @method toFixed
-     * @param [digits] {number}
-     * @return {string}
+     * @method rotateCamera
+     * @return {void}
+     * @private
      */
-    toFixed(digits?: number): string {
-        if (isDefined(digits)) {
-            mustBeInteger(&#x27;digits&#x27;, digits)
+    private rotateCamera(): void {
+        // Temporarily use the moveDirection to calculate an angle.
+        this.moveDirection.setXYZ(this.moveCurr.x - this.movePrev.x, this.moveCurr.y - this.movePrev.y, 0)
+        // This is a quick and dirty approximation of the angle of the rotation.
+        // Since the coordinates of the mouse run from -1 to +1 in both directions,
+        // The largest mouse movement is 2 * sqrt(2).
+        // And so the corresponding angle in degrees is approximately 2 * 81 degrees = 162 degrees.
+        let angle = this.moveDirection.magnitude()
+        if (angle) {
+
+            this.eye.copy(this.camera.position).sub(this.target)
+
+            this.eyeDirection.copy(this.eye).direction()
+            // Compute the unit vector pointing in the camera up direction.
+            // We assume (and maintain) that the up direction is aligned with e2 in the mouse coordinate frame.
+            this.objectUpDirection.copy(this.camera.up).direction()
+            // Compute the unit vector pointing to the viewers right.
+            this.objectSidewaysDirection.copy(this.objectUpDirection).cross(this.eyeDirection)
+            // Scale these unit vectors (ahem) according to the mouse movements.
+            this.objectUpDirection.scale(this.moveCurr.y - this.movePrev.y)
+            this.objectSidewaysDirection.scale(this.moveCurr.x - this.movePrev.x)
+            // Compute the move direction from the components.
+            this.moveDirection.copy(this.objectUpDirection).add(this.objectSidewaysDirection).direction()
+            // Compute the axis of rotation. This computation appears to be off by a sign (-1),
+            // but that&#x27;s because the camera will move while the scene stays still.
+            this.axis.copy(this.moveDirection).cross(this.eyeDirection)
+            // We tweak the angle.
+            angle *= this.rotateSpeed;
+            // Compute the rotor for rotating the eye vector.
+            this.rotor.rotorFromAxisAngle(this.axis, angle)
+            // Move the viewing point relative to the target.
+            this.eye.rotate(this.rotor)
+            // Here&#x27;s where we maintain the camera&#x27;s up vector in the viewing plane.
+            // It seems inconsistent that we affect the camera.up vector, but not the camera.position.
+            // That&#x27;s probably because we are going to combine pan and zoom.
+            this.camera.up.rotate(this.rotor)
         }
-        let text: string[] = [];
-        for (var i = 0; i &lt; this.dimensions; i++) {
-            text.push(this.row(i).map(function(element: number, index: number) { return element.toFixed(digits) }).join(&#x27; &#x27;));
-        }
-        return text.join(&#x27;\n&#x27;);
+
+        this.movePrev.copy(this.moveCurr)
     }
 
     /**
-     * @method toString
-     * @return {string}
+     * @method zoomCamera
+     * @return {void}
+     * @private
      */
-    toString(): string {
-        let text: string[] = [];
-        for (var i = 0, iLength = this.dimensions; i &lt; iLength; i++) {
-            text.push(this.row(i).map(function(element: number, index: number) { return element.toString() }).join(&#x27; &#x27;));
-        }
-        return text.join(&#x27;\n&#x27;);
-    }
-
-    /**
-     * @method translation
-     * @param d {VectorE1}
-     * @return {Mat2R}
-     * @chainable
-     */
-    translation(d: VectorE1): Mat2R {
-        let x = d.x
-        return this.set(
-            1, x,
-            0, 1)
-    }
-
-    /**
-     * Sets this matrix to the identity element for addition, &lt;b&gt;0&lt;/b&gt;.
-     * @method zero
-     * @return {Mat2R}
-     * @chainable
-     */
-    zero(): Mat2R {
-        return this.set(0, 0, 0, 0);
-    }
-
-    __add__(rhs: any): Mat2R {
-        if (rhs instanceof Mat2R) {
-            return this.clone().add(rhs)
-        }
-        // TODO: Interpret this as I * rhs?
-        //        else if (typeof rhs === &#x27;number&#x27;) {
-        //            return this.clone().scale(rhs);
-        //        }
-        else {
-            return void 0
-        }
-    }
-
-    __radd__(lhs: any): Mat2R {
-        if (lhs instanceof Mat2R) {
-            return lhs.clone().add(this)
-        }
-        // TODO: Interpret this as I * rhs?
-        //        else if (typeof rhs === &#x27;number&#x27;) {
-        //            return this.clone().scale(rhs);
-        //        }
-        else {
-            return void 0
-        }
-    }
-
-    __mul__(rhs: any): Mat2R {
-        if (rhs instanceof Mat2R) {
-            return this.clone().mul(rhs)
-        }
-        else if (typeof rhs === &#x27;number&#x27;) {
-            return this.clone().scale(rhs);
-        }
-        else {
-            return void 0
-        }
-    }
-
-    __rmul__(lhs: any): Mat2R {
-        if (lhs instanceof Mat2R) {
-            return lhs.clone().mul(this)
-        }
-        else if (typeof lhs === &#x27;number&#x27;) {
-            return this.clone().scale(lhs);
-        }
-        else {
-            return void 0
-        }
-    }
-
-    __pos__(): Mat2R {
-        return this.clone()
-    }
-
-    __neg__(): Mat2R {
-        return this.clone().scale(-1)
-    }
-
-    __sub__(rhs: any): Mat2R {
-        if (rhs instanceof Mat2R) {
-            return this.clone().sub(rhs)
-        }
-        // TODO: Interpret this as I * rhs?
-        //        else if (typeof rhs === &#x27;number&#x27;) {
-        //            return this.clone().scale(rhs);
-        //        }
-        else {
-            return void 0
-        }
-    }
-
-    __rsub__(lhs: any): Mat2R {
-        if (lhs instanceof Mat2R) {
-            return lhs.clone().sub(this)
-        }
-        else {
-            return void 0
+    private zoomCamera(): void {
+        const factor = 1 + (this.zoomEnd.y - this.zoomStart.y) * this.zoomSpeed
+        if (factor !== 1 &amp;&amp; factor &gt; 0) {
+            this.eye.scale(factor)
+            this.zoomStart.copy(this.zoomEnd)
         }
     }
 
     /**
-     * &lt;p&gt;
-     * Creates a new matrix with all elements zero except those along the main diagonal which have the value unity.
-     * &lt;/p&gt;
-     * @method one
-     * @return {Mat2R}
-     * @static
-     * @chainable
+     * @method panCamera
+     * @return {void}
+     * @private
      */
-    public static one(): Mat2R {
-        return new Mat2R(new Float32Array([1, 0, 0, 1]));
+    private panCamera(): void {
+        this.mouseChange.copy(this.panEnd).sub(this.panStart)
+        if (this.mouseChange.squaredNorm()) {
+            this.mouseChange.scale(this.eye.magnitude() * this.panSpeed)
+            this.pan.copy(this.eye).cross(this.camera.up).direction().scale(this.mouseChange.x)
+            this.objectUp.copy(this.camera.up).direction().scale(this.mouseChange.y)
+            this.pan.add(this.objectUp)
+            this.camera.position.add(this.pan)
+            this.target.addVector(this.pan)
+            this.panStart.copy(this.panEnd)
+        }
     }
 
     /**
-     * @method reflection
-     * @param n {VectorE1}
-     * @return {Mat2R}
-     * @static
-     * @chainable
+     * Restricts the position of the camera to certain distance range
      */
-    public static reflection(n: VectorE1): Mat2R {
-        return Mat2R.zero().reflection(n)
-    }
-
-    /**
-     * &lt;p&gt;
-     * Creates a new matrix with all elements zero.
-     * &lt;/p&gt;
-     * @method zero
-     * @return {Mat2R}
-     * @static
-     * @chainable
-     */
-    public static zero(): Mat2R {
-        return new Mat2R(new Float32Array([0, 0, 0, 0]))
+    private checkDistances() {
+        // TODO
     }
 }
 

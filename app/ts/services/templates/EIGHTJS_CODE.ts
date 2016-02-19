@@ -23,7 +23,7 @@ export default function(width: number, height: number, canvasId: string): string
         "const dirLight = new EIGHT.DirectionalLight(-e3, EIGHT.Color.white)",
         "ambients.push(dirLight)",
         "",
-        "const controls = new EIGHT.TrackballControls(camera)",
+        "const controls = new EIGHT.CameraControls(camera)",
         "controls.rotateSpeed = 6",
         "controls.zoomSpeed = 4",
         "",

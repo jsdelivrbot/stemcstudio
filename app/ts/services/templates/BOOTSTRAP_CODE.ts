@@ -30,13 +30,12 @@ export default function(
 
     if (options.example) {
         lines.push("")
-        lines.push("const arrow = world.arrow()")
+        lines.push("const arrow = world.arrow({color: white})")
     }
 
     if (options.example) {
         lines.push("")
-        lines.push("const cube = world.box({width: 0.1})")
-        lines.push("cube.X = 1.3 * e1")
+        lines.push("const cube = world.box({pos: vec(1.3, 0, 0), width: 0.1, color: green})")
     }
     else {
         lines.push("")
@@ -45,14 +44,13 @@ export default function(
 
     if (options.example) {
         lines.push("")
-        lines.push("const ball = world.sphere({radius: 0.1})")
+        lines.push("const ball = world.sphere({radius: 0.1, color: blue})")
         lines.push("ball.trail.enabled = true")
     }
 
     if (options.example) {
         lines.push("")
-        lines.push("const rod = world.cylinder({radius: 0.1})")
-        lines.push("rod.X = -1.3 * e1")
+        lines.push("const rod = world.cylinder({pos: -1.3 * e1, radius: 0.1, color: magenta})")
     }
 
     if (options.stats) {
@@ -69,7 +67,7 @@ export default function(
         lines.push("/**")
         lines.push(" * The rotational velocity bivector.")
         lines.push(" */")
-        lines.push("const Ω = dual(ω)")
+        lines.push("const Ω = I * ω")
     }
 
     lines.push("")
