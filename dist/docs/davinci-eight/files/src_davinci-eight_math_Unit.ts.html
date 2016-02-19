@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="davinci-eight" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.189.0</em>
+            <em>API Docs for: 2.190.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -46,6 +46,7 @@
                                 <li><a href="../classes/AttribMetaInfo.html">AttribMetaInfo</a></li>
                                 <li><a href="../classes/Attribute.html">Attribute</a></li>
                                 <li><a href="../classes/BlendFactor.html">BlendFactor</a></li>
+                                <li><a href="../classes/Box.html">Box</a></li>
                                 <li><a href="../classes/Capability.html">Capability</a></li>
                                 <li><a href="../classes/CC.html">CC</a></li>
                                 <li><a href="../classes/Color.html">Color</a></li>
@@ -54,7 +55,6 @@
                                 <li><a href="../classes/ColorRGBA.html">ColorRGBA</a></li>
                                 <li><a href="../classes/ContextAttributesLogger.html">ContextAttributesLogger</a></li>
                                 <li><a href="../classes/createView.html">createView</a></li>
-                                <li><a href="../classes/Cuboid.html">Cuboid</a></li>
                                 <li><a href="../classes/CuboidGeometry.html">CuboidGeometry</a></li>
                                 <li><a href="../classes/CuboidPrimitivesBuilder.html">CuboidPrimitivesBuilder</a></li>
                                 <li><a href="../classes/Cylinder.html">Cylinder</a></li>
@@ -63,14 +63,14 @@
                                 <li><a href="../classes/DirectionalLight.html">DirectionalLight</a></li>
                                 <li><a href="../classes/DrawMode.html">DrawMode</a></li>
                                 <li><a href="../classes/EIGHTLogger.html">EIGHTLogger</a></li>
-                                <li><a href="../classes/Euclidean1.html">Euclidean1</a></li>
-                                <li><a href="../classes/Euclidean2.html">Euclidean2</a></li>
-                                <li><a href="../classes/Euclidean3.html">Euclidean3</a></li>
                                 <li><a href="../classes/Facet.html">Facet</a></li>
                                 <li><a href="../classes/FacetVisitor.html">FacetVisitor</a></li>
                                 <li><a href="../classes/Frustum.html">Frustum</a></li>
+                                <li><a href="../classes/G1.html">G1</a></li>
                                 <li><a href="../classes/G2.html">G2</a></li>
+                                <li><a href="../classes/G2m.html">G2m</a></li>
                                 <li><a href="../classes/G3.html">G3</a></li>
+                                <li><a href="../classes/G3m.html">G3m</a></li>
                                 <li><a href="../classes/GeometricE2.html">GeometricE2</a></li>
                                 <li><a href="../classes/GeometricE3.html">GeometricE3</a></li>
                                 <li><a href="../classes/Geometry.html">Geometry</a></li>
@@ -104,10 +104,11 @@
                                 <li><a href="../classes/PrimitiveBuffers.html">PrimitiveBuffers</a></li>
                                 <li><a href="../classes/Pseudo.html">Pseudo</a></li>
                                 <li><a href="../classes/QQ.html">QQ</a></li>
-                                <li><a href="../classes/R1.html">R1</a></li>
-                                <li><a href="../classes/R2.html">R2</a></li>
+                                <li><a href="../classes/R1m.html">R1m</a></li>
+                                <li><a href="../classes/R2m.html">R2m</a></li>
                                 <li><a href="../classes/R3.html">R3</a></li>
-                                <li><a href="../classes/R4.html">R4</a></li>
+                                <li><a href="../classes/R3m.html">R3m</a></li>
+                                <li><a href="../classes/R4m.html">R4m</a></li>
                                 <li><a href="../classes/ReflectionFacetE2.html">ReflectionFacetE2</a></li>
                                 <li><a href="../classes/ReflectionFacetE3.html">ReflectionFacetE3</a></li>
                                 <li><a href="../classes/RigidBody.html">RigidBody</a></li>
@@ -121,8 +122,8 @@
                                 <li><a href="../classes/ShareableWebGLTexture.html">ShareableWebGLTexture</a></li>
                                 <li><a href="../classes/Sphere.html">Sphere</a></li>
                                 <li><a href="../classes/SphereGeometry.html">SphereGeometry</a></li>
-                                <li><a href="../classes/SpinG2.html">SpinG2</a></li>
-                                <li><a href="../classes/SpinG3.html">SpinG3</a></li>
+                                <li><a href="../classes/SpinG2m.html">SpinG2m</a></li>
+                                <li><a href="../classes/SpinG3m.html">SpinG3m</a></li>
                                 <li><a href="../classes/SpinorE1.html">SpinorE1</a></li>
                                 <li><a href="../classes/SpinorE2.html">SpinorE2</a></li>
                                 <li><a href="../classes/SpinorE3.html">SpinorE3</a></li>
@@ -130,7 +131,7 @@
                                 <li><a href="../classes/StringIUnknownMap.html">StringIUnknownMap</a></li>
                                 <li><a href="../classes/Tetrahedron.html">Tetrahedron</a></li>
                                 <li><a href="../classes/TetrahedronGeometry.html">TetrahedronGeometry</a></li>
-                                <li><a href="../classes/TrackballControls.html">TrackballControls</a></li>
+                                <li><a href="../classes/TrackballCameraControls.html">TrackballCameraControls</a></li>
                                 <li><a href="../classes/Trail.html">Trail</a></li>
                                 <li><a href="../classes/UniformLocation.html">UniformLocation</a></li>
                                 <li><a href="../classes/UniformMetaInfo.html">UniformMetaInfo</a></li>
@@ -205,7 +206,6 @@ import DivisionRingOperators from &#x27;../math/DivisionRingOperators&#x27;;
 import Dimensions from &#x27;../math/Dimensions&#x27;;
 import LinearElement from &#x27;../math/LinearElement&#x27;;
 import QQ from &#x27;../math/QQ&#x27;;
-import UnitError from &#x27;../math/UnitError&#x27;;
 
 var LABELS_SI = [&#x27;kg&#x27;, &#x27;m&#x27;, &#x27;s&#x27;, &#x27;C&#x27;, &#x27;K&#x27;, &#x27;mol&#x27;, &#x27;candela&#x27;];
 
@@ -214,7 +214,7 @@ function assertArgNumber(name: string, x: number): number {
         return x;
     }
     else {
-        throw new UnitError(&quot;Argument &#x27;&quot; + name + &quot;&#x27; must be a number&quot;);
+        throw new Error(&quot;Argument &#x27;&quot; + name + &quot;&#x27; must be a number&quot;);
     }
 }
 
@@ -223,7 +223,7 @@ function assertArgDimensions(name: string, arg: Dimensions): Dimensions {
         return arg;
     }
     else {
-        throw new UnitError(&quot;Argument &#x27;&quot; + arg + &quot;&#x27; must be a Dimensions&quot;);
+        throw new Error(&quot;Argument &#x27;&quot; + arg + &quot;&#x27; must be a Dimensions&quot;);
     }
 }
 
@@ -232,7 +232,7 @@ function assertArgRational(name: string, arg: QQ): QQ {
         return arg;
     }
     else {
-        throw new UnitError(&quot;Argument &#x27;&quot; + arg + &quot;&#x27; must be a QQ&quot;);
+        throw new Error(&quot;Argument &#x27;&quot; + arg + &quot;&#x27; must be a QQ&quot;);
     }
 }
 
@@ -241,7 +241,7 @@ function assertArgUnit(name: string, arg: Unit): Unit {
         return arg;
     }
     else {
-        throw new UnitError(&quot;Argument &#x27;&quot; + arg + &quot;&#x27; must be a Unit&quot;);
+        throw new Error(&quot;Argument &#x27;&quot; + arg + &quot;&#x27; must be a Unit&quot;);
     }
 }
 
@@ -281,8 +281,8 @@ var dumbString = function(multiplier: number, dimensions: Dimensions, labels: st
     return &quot;&quot; + scaleString + operatorStr + unitsString;
 };
 
-var unitString = function(multiplier: number, dimensions: Dimensions, labels: string[]): string {
-    var patterns =
+const unitString = function(multiplier: number, dimensions: Dimensions, labels: string[]): string {
+    const patterns =
         [
             [-1, 1, -3, 1, 2, 1, 2, 1, 0, 1, 0, 1, 0, 1],
             [-1, 1, -2, 1, 1, 1, 2, 1, 0, 1, 0, 1, 0, 1],
@@ -314,7 +314,7 @@ var unitString = function(multiplier: number, dimensions: Dimensions, labels: st
             [1, 1, 2, 1, 0, 1, -2, 1, 0, 1, 0, 1, 0, 1],
             [1, 1, 2, 1, -1, 1, -1, 1, 0, 1, 0, 1, 0, 1]
         ];
-    var decodes =
+    const decodes =
         [
             [&quot;F/m&quot;],
             [&quot;S&quot;],
@@ -746,7 +746,7 @@ export default class Unit implements DivisionRingOperators&lt;Unit&gt;, LinearEl
 
     static assertDimensionless(uom: Unit) {
         if (!Unit.isOne(uom)) {
-            throw new UnitError(&quot;uom must be dimensionless.&quot;);
+            throw new Error(&quot;uom must be dimensionless.&quot;);
         }
     }
 
@@ -762,7 +762,7 @@ export default class Unit implements DivisionRingOperators&lt;Unit&gt;, LinearEl
                     return void 0;
                 }
                 else {
-                    throw new UnitError(lhs + &quot; is incompatible with 1&quot;);
+                    throw new Error(lhs + &quot; is incompatible with 1&quot;);
                 }
             }
         }
@@ -772,7 +772,7 @@ export default class Unit implements DivisionRingOperators&lt;Unit&gt;, LinearEl
                     return void 0;
                 }
                 else {
-                    throw new UnitError(&quot;1 is incompatible with &quot; + rhs);
+                    throw new Error(&quot;1 is incompatible with &quot; + rhs);
                 }
             }
             else {

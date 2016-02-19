@@ -105,17 +105,17 @@ app.factory('templates', [
 
         const LIBS_TEMPLATE_CALCULATION = [
             "// Create shortcuts for some values.",
-            "const e1 = EIGHT.Euclidean3.e1",
-            "const e2 = EIGHT.Euclidean3.e2",
-            "const e3 = EIGHT.Euclidean3.e3",
-            "const meter    = EIGHT.Euclidean3.meter",
-            "const kilogram = EIGHT.Euclidean3.kilogram",
-            "const second   = EIGHT.Euclidean3.second",
-            "const coulomb  = EIGHT.Euclidean3.coulomb",
-            "const ampere   = EIGHT.Euclidean3.ampere",
-            "const kelvin   = EIGHT.Euclidean3.kelvin",
-            "const mole     = EIGHT.Euclidean3.mole",
-            "const candela  = EIGHT.Euclidean3.candela",
+            "const e1 = EIGHT.G3.e1",
+            "const e2 = EIGHT.G3.e2",
+            "const e3 = EIGHT.G3.e3",
+            "const meter    = EIGHT.G3.meter",
+            "const kilogram = EIGHT.G3.kilogram",
+            "const second   = EIGHT.G3.second",
+            "const coulomb  = EIGHT.G3.coulomb",
+            "const ampere   = EIGHT.G3.ampere",
+            "const kelvin   = EIGHT.G3.kelvin",
+            "const mole     = EIGHT.G3.mole",
+            "const candela  = EIGHT.G3.candela",
             "const newton   = meter * kilogram / (second * second)",
             "const joule    = newton * meter",
             "const volt     = joule / coulomb",
@@ -287,13 +287,13 @@ app.factory('templates', [
             "/**\n" +
             " * <b>e</b><sub>1</sub> is the basis <em>vector</em> corresponding to the <em>x coordinate</em>.\n" +
             " */\n" +
-            "var e1 = EIGHT.G2.e1\n" +
+            "var e1 = EIGHT.G2m.e1\n" +
             "/**\n" +
             " * <b>e</b><sub>2</sub> is the basis <em>vector</em> corresponding to the <em>y coordinate</em>.\n" +
             " */\n" +
-            "var e2 = EIGHT.G2.e2\n" +
-            "var zero = EIGHT.G2.zero\n" +
-            "var one = EIGHT.G2.one\n" +
+            "var e2 = EIGHT.G2m.e2\n" +
+            "var zero = EIGHT.G2m.zero\n" +
+            "var one = EIGHT.G2m.one\n" +
             "\n" +
             "/**\n" +
             " * The clockwise <em>bivector</em>, <b>e</b><sub>1</sub> * <b>e</b><sub>2</sub>.\n" +
@@ -327,7 +327,7 @@ app.factory('templates', [
             "/**\n" +
             " * Computes the <em>radian measure</em> in going from <em>direction</em> <code>a</code> to <em>direction</em> <code>b</code> relative to the specified angle <code>θ</code>.\n" +
             " */\n" +
-            "function radiansFromDirections(a: EIGHT.G2, b: EIGHT.G2, θ: EIGHT.G2): number {\n" +
+            "function radiansFromDirections(a: EIGHT.G2m, b: EIGHT.G2m, θ: EIGHT.G2m): number {\n" +
             "  // a * b = exp(angle)\n" +
             "  var angle = (a * b).angle()\n" +
             "  return radiansFromAngle(angle, θ)\n" +
@@ -336,7 +336,7 @@ app.factory('templates', [
             "/**\n" +
             " *\n" +
             " */\n" +
-            "function radiansFromAngle(angle: EIGHT.G2, θ: EIGHT.G2): number {\n" +
+            "function radiansFromAngle(angle: EIGHT.G2m, θ: EIGHT.G2m): number {\n" +
             "  var signum = θ.clone().scp(angle).α < 0 ? +1 : -1\n" +
             "  return angle.magnitude().α * signum\n" +
             "}\n" +
@@ -344,12 +344,12 @@ app.factory('templates', [
             "/**\n" +
             " *\n" +
             " */\n" +
-            "function radiansFromSpinor(spinor: EIGHT.G2, θ: EIGHT.G2): number {return radiansFromAngle(spinor.clone().angle(), θ)}\n" +
+            "function radiansFromSpinor(spinor: EIGHT.G2m, θ: EIGHT.G2m): number {return radiansFromAngle(spinor.clone().angle(), θ)}\n" +
             "\n" +
             "/**\n" +
             " * Draws a <em>curly tee</em> as the geometric representation of a spinor.\n" +
             " */\n" +
-            "function drawSpinTee(context: CanvasRenderingContext2D, position: EIGHT.VectorE2, spinor: EIGHT.G2, color: any, canvas: HTMLCanvasElement) {\n" +
+            "function drawSpinTee(context: CanvasRenderingContext2D, position: EIGHT.VectorE2, spinor: EIGHT.G2m, color: any, canvas: HTMLCanvasElement) {\n" +
             "  var radius = circleRadiusFromArea(spinor.magnitude().α) * canvas.width / 2\n" +
             "  var θ = zeroTwoPi(radiansFromSpinor(spinor, clockwise))\n" +
             "\n" +
@@ -370,7 +370,7 @@ app.factory('templates', [
             "/**\n" +
             " * Draws a <em>bar magnet</em> at the specified <code>position</code> and with the specified <code>attitude</code>.\n" +
             " */\n" +
-            "function drawMagnet(context: CanvasRenderingContext2D, position: EIGHT.VectorE2, attitude: EIGHT.G2, canvas: HTMLCanvasElement) {\n" +
+            "function drawMagnet(context: CanvasRenderingContext2D, position: EIGHT.VectorE2, attitude: EIGHT.G2m, canvas: HTMLCanvasElement) {\n" +
             "  var width = MAGNET_WIDTH * canvas.width / 2\n" +
             "  var length = MAGNET_LENGTH * canvas.width / 2\n" +
             "\n" +
@@ -389,7 +389,7 @@ app.factory('templates', [
             "/**\n" +
             " * Draws a <em>wind tee</em> as the geometric representation of a vector.\n" +
             " */\n" +
-            "function drawLineTee(context: CanvasRenderingContext2D, position: EIGHT.G2, vector: EIGHT.G2, color: any, canvas: HTMLCanvasElement) {\n" +
+            "function drawLineTee(context: CanvasRenderingContext2D, position: EIGHT.G2m, vector: EIGHT.G2m, color: any, canvas: HTMLCanvasElement) {\n" +
             "  context.save()\n" +
             "  context.translate(toCanvasX(position, canvas), toCanvasY(position, canvas))\n" +
             "  context.rotate(radiansFromDirections(up, vector, clockwise))\n" +
@@ -483,8 +483,8 @@ app.factory('templates', [
             "  var program = new EIGHT.HTMLScriptsGraphicsProgram(['vs', 'fs'], document, [renderer])\n" +
             "\n" +
             "  var I = EIGHT.Mat2R.one()\n" +
-            "  var N = reflection(EIGHT.G2.e1)\n" +
-            "  var M = reflection(EIGHT.G2.e2)\n" +
+            "  var N = reflection(EIGHT.G2m.e1)\n" +
+            "  var M = reflection(EIGHT.G2m.e2)\n" +
             "\n" +
             "  var uModel = M * N\n" +
             "\n" +
@@ -810,11 +810,12 @@ app.factory('templates', [
             ""].join('\n');
 
         const LIBS_TEMPLATE_EIGHT_3D_1 = "" +
-            "const zero = EIGHT.G3.zero\n" +
-            "const one = EIGHT.G3.one\n" +
-            "const e1 = EIGHT.G3.e1\n" +
-            "const e2 = EIGHT.G3.e2\n" +
-            "const e3 = EIGHT.G3.e3\n" +
+            "const zero = EIGHT.G3m.zero\n" +
+            "const zero = EIGHT.G3m.zero\n" +
+            "const one = EIGHT.G3m.one\n" +
+            "const e1 = EIGHT.G3m.e1\n" +
+            "const e2 = EIGHT.G3m.e2\n" +
+            "const e3 = EIGHT.G3m.e3\n" +
             "\n" +
             "/**\n" +
             " * The pseudoscalar for the Euclidean 3D Geometric Space, I = e1 * e2 * e3.\n" +
@@ -834,7 +835,7 @@ app.factory('templates', [
             "/**\n" +
             " * dual(m), sign depends on who you talk to.\n" +
             " */\n" +
-            "function dual(m: EIGHT.G3): EIGHT.G3 {\n" +
+            "function dual(m: EIGHT.G3m): EIGHT.G3m {\n" +
             "  // return m << (I / (I * I)) // Dorst, Fontijne, Mann\n" +
             "  return I * m // Hestenes, Doran, Lasenby\n" +
             "  // return m * (I / (I * I)) // Hestenes, Doran, Lasenby\n" +
@@ -955,7 +956,7 @@ app.factory('templates', [
             " * Break the rules! It's better to use (sometimes) short variable names in math programs!!\n" +
             " * Hint: Hover over a variable anywhere in the program to see the corresponding documentation.\n" +
             " */\n" +
-            "var T: EIGHT.Euclidean3 = 4 * second\n" +
+            "var T: EIGHT.G3 = 4 * second\n" +
             "/**\n" +
             " * The frequency of the motions in the animation.\n" +
             " */\n" +
@@ -1015,15 +1016,15 @@ app.factory('templates', [
             "  /**\n" +
             "   * Ambient Light.\n" +
             "   */\n" +
-            "  var ambientLight = new EIGHT.R3([0.3, 0.3, 0.3])\n" +
+            "  var ambientLight = new EIGHT.R3m([0.3, 0.3, 0.3])\n" +
             "  /**\n" +
             "   * Directional Light Color.\n" +
             "   */\n" +
-            "  var dLightColor = new EIGHT.R3([0.7, 0.7, 0.7])\n" +
+            "  var dLightColor = new EIGHT.R3m([0.7, 0.7, 0.7])\n" +
             "  /**\n" +
             "   * Directional Light Directiion.\n" +
             "   */\n" +
-            "  var dLightDirection = new EIGHT.R3([2, 3, 5])\n" +
+            "  var dLightDirection = new EIGHT.R3m([2, 3, 5])\n" +
             "\n" +
             "  /**\n" +
             "   * Program for rendering TRIANGLES with moderately fancy lighting.\n" +
@@ -1149,8 +1150,8 @@ app.factory('templates', [
             "  // The global constants, e1, e2 and e3, are defined in the 'Libs' file.\n" +
             "  var S = exp(-(e2 ^ e1) * tiltAngle / 2)\n" +
             "  var B = e3 ^ e1\n" +
-            "  var rotorL = new EIGHT.G3()\n" +
-            "  var rotorR = new EIGHT.G3()\n" +
+            "  var rotorL = new EIGHT.G3m()\n" +
+            "  var rotorR = new EIGHT.G3m()\n" +
             "\n" +
             "  EIGHT.animation((time: number) => {\n" +
             "    stats.begin()\n" +
@@ -1211,15 +1212,15 @@ app.factory('templates', [
             "/**\n" +
             " * Standard basis vector in the x-axis direction.\n" +
             " */\n" +
-            "var e1 = EIGHT.Euclidean3.e1\n" +
+            "var e1 = EIGHT.G3.e1\n" +
             "/**\n" +
             " * Standard basis vector in the y-axis direction.\n" +
             " */\n" +
-            "var e2 = EIGHT.Euclidean3.e2\n" +
+            "var e2 = EIGHT.G3.e2\n" +
             "/**\n" +
             " * Standard basis vector in the z-axis direction.\n" +
             " */\n" +
-            "var e3 = EIGHT.Euclidean3.e3\n" +
+            "var e3 = EIGHT.G3.e3\n" +
             "var e12 = e1 * e2\n" +
             "var e23 = e2 * e3\n" +
             "var e32 = e3 * e2\n" +
@@ -1240,16 +1241,16 @@ app.factory('templates', [
             "/**\n" +
             " * S.I. units of measure.\n" +
             " */\n" +
-            "var kilogram = EIGHT.Euclidean3.kilogram\n" +
-            "var meter    = EIGHT.Euclidean3.meter\n" +
-            "var second   = EIGHT.Euclidean3.second\n" +
-            "var hertz    = 1 / EIGHT.Euclidean3.second\n" +
+            "var kilogram = EIGHT.G3.kilogram\n" +
+            "var meter    = EIGHT.G3.meter\n" +
+            "var second   = EIGHT.G3.second\n" +
+            "var hertz    = 1 / EIGHT.G3.second\n" +
             "\n" +
             "class Model extends EIGHT.Shareable implements EIGHT.Facet {\n" +
-            "  public position = new EIGHT.R3()\n" +
+            "  public position = new EIGHT.R3m()\n" +
             "  public attitude = new EIGHT.SpinG3()\n" +
-            "  public scale: EIGHT.R3 = new EIGHT.R3([1, 1, 1])\n" +
-            "  public color: EIGHT.R3 = new EIGHT.R3([1, 1, 1])\n" +
+            "  public scale: EIGHT.R3m = new EIGHT.R3m([1, 1, 1])\n" +
+            "  public color: EIGHT.R3m = new EIGHT.R3m([1, 1, 1])\n" +
             "  private M = EIGHT.Mat4R.one()\n" +
             "  private N = EIGHT.Mat3R.one()\n" +
             "  private R = EIGHT.Mat4R.one()\n" +
@@ -1330,7 +1331,7 @@ app.factory('templates', [
             "/**\n" +
             " * The attitude of the cube.\n" +
             " */\n" +
-            "let R = EIGHT.G3.one.clone()\n" +
+            "let R = EIGHT.G3m.one.clone()\n" +
             "\n" +
             "init()\n" +
             "animate()\n" +
@@ -1535,35 +1536,21 @@ app.factory('templates', [
         return [
             {
                 uuid: uuid.generate(),
-                description: "EightJS — WebGL Graphics and Geometric Algebra (Bootstrap example)",
+                description: "EightJS — WebGL Graphics and Geometric Algebra (Bootstrap)",
                 isCodeVisible: true,
                 isViewVisible: true,
                 focusEditor: undefined,
                 lastKnownJs: {},
                 operatorOverloading: true,
                 html: BOOTSTRAP_HTML(styleMarker, scriptsMarker, libsMarker, codeMarker, width, height, canvasId),
-                code: BOOTSTRAP_CODE(canvasId, { comments: true, example: true, geometry: 'Euclidean', dimensions: 3 }),
-                libs: BOOTSTRAP_LIBS({ geometry: 'Euclidean', dimensions: 3 }),
+                code: BOOTSTRAP_CODE(canvasId, { comments: true, example: true, geometry: 'G', dimensions: 3 }),
+                libs: BOOTSTRAP_LIBS({ geometry: 'G', dimensions: 3 }),
                 less: BOOTSTRAP_LESS(width, height, {}),
                 dependencies: ['stats.js', 'davinci-eight']
             },
             {
                 uuid: uuid.generate(),
-                description: "EightJS — WebGL Graphics and Geometric Algebra (Bootstrap template)",
-                isCodeVisible: true,
-                isViewVisible: true,
-                focusEditor: undefined,
-                lastKnownJs: {},
-                operatorOverloading: true,
-                html: BOOTSTRAP_HTML(styleMarker, scriptsMarker, libsMarker, codeMarker, width, height, canvasId),
-                code: BOOTSTRAP_CODE(canvasId, { advanced: true, stats: true }),
-                libs: BOOTSTRAP_LIBS({}),
-                less: BOOTSTRAP_LESS(width, height, { stats: true }),
-                dependencies: ['stats.js', 'davinci-eight']
-            },
-            {
-                uuid: uuid.generate(),
-                description: "EightJS — WebGL Graphics and Geometric Algebra (General example)",
+                description: "EightJS — WebGL Graphics and Geometric Algebra (Advanced)",
                 isCodeVisible: true,
                 isViewVisible: true,
                 focusEditor: undefined,

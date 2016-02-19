@@ -35,12 +35,12 @@ export default function(
 
     if (options.example) {
         lines.push("")
-        lines.push("const cube = world.cuboid({width: 0.1})")
+        lines.push("const cube = world.box({width: 0.1})")
         lines.push("cube.X = 1.3 * e1")
     }
     else {
         lines.push("")
-        lines.push("const cube = world.cuboid()")
+        lines.push("const cube = world.box()")
     }
 
     if (options.example) {

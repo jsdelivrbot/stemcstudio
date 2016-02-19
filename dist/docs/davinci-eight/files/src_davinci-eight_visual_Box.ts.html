@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/davinci-eight/math/Euclidean1.ts - davinci-eight</title>
+    <title>src/davinci-eight/visual/Box.ts - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="davinci-eight" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.189.0</em>
+            <em>API Docs for: 2.190.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -46,6 +46,7 @@
                                 <li><a href="../classes/AttribMetaInfo.html">AttribMetaInfo</a></li>
                                 <li><a href="../classes/Attribute.html">Attribute</a></li>
                                 <li><a href="../classes/BlendFactor.html">BlendFactor</a></li>
+                                <li><a href="../classes/Box.html">Box</a></li>
                                 <li><a href="../classes/Capability.html">Capability</a></li>
                                 <li><a href="../classes/CC.html">CC</a></li>
                                 <li><a href="../classes/Color.html">Color</a></li>
@@ -54,7 +55,6 @@
                                 <li><a href="../classes/ColorRGBA.html">ColorRGBA</a></li>
                                 <li><a href="../classes/ContextAttributesLogger.html">ContextAttributesLogger</a></li>
                                 <li><a href="../classes/createView.html">createView</a></li>
-                                <li><a href="../classes/Cuboid.html">Cuboid</a></li>
                                 <li><a href="../classes/CuboidGeometry.html">CuboidGeometry</a></li>
                                 <li><a href="../classes/CuboidPrimitivesBuilder.html">CuboidPrimitivesBuilder</a></li>
                                 <li><a href="../classes/Cylinder.html">Cylinder</a></li>
@@ -63,14 +63,14 @@
                                 <li><a href="../classes/DirectionalLight.html">DirectionalLight</a></li>
                                 <li><a href="../classes/DrawMode.html">DrawMode</a></li>
                                 <li><a href="../classes/EIGHTLogger.html">EIGHTLogger</a></li>
-                                <li><a href="../classes/Euclidean1.html">Euclidean1</a></li>
-                                <li><a href="../classes/Euclidean2.html">Euclidean2</a></li>
-                                <li><a href="../classes/Euclidean3.html">Euclidean3</a></li>
                                 <li><a href="../classes/Facet.html">Facet</a></li>
                                 <li><a href="../classes/FacetVisitor.html">FacetVisitor</a></li>
                                 <li><a href="../classes/Frustum.html">Frustum</a></li>
+                                <li><a href="../classes/G1.html">G1</a></li>
                                 <li><a href="../classes/G2.html">G2</a></li>
+                                <li><a href="../classes/G2m.html">G2m</a></li>
                                 <li><a href="../classes/G3.html">G3</a></li>
+                                <li><a href="../classes/G3m.html">G3m</a></li>
                                 <li><a href="../classes/GeometricE2.html">GeometricE2</a></li>
                                 <li><a href="../classes/GeometricE3.html">GeometricE3</a></li>
                                 <li><a href="../classes/Geometry.html">Geometry</a></li>
@@ -104,10 +104,11 @@
                                 <li><a href="../classes/PrimitiveBuffers.html">PrimitiveBuffers</a></li>
                                 <li><a href="../classes/Pseudo.html">Pseudo</a></li>
                                 <li><a href="../classes/QQ.html">QQ</a></li>
-                                <li><a href="../classes/R1.html">R1</a></li>
-                                <li><a href="../classes/R2.html">R2</a></li>
+                                <li><a href="../classes/R1m.html">R1m</a></li>
+                                <li><a href="../classes/R2m.html">R2m</a></li>
                                 <li><a href="../classes/R3.html">R3</a></li>
-                                <li><a href="../classes/R4.html">R4</a></li>
+                                <li><a href="../classes/R3m.html">R3m</a></li>
+                                <li><a href="../classes/R4m.html">R4m</a></li>
                                 <li><a href="../classes/ReflectionFacetE2.html">ReflectionFacetE2</a></li>
                                 <li><a href="../classes/ReflectionFacetE3.html">ReflectionFacetE3</a></li>
                                 <li><a href="../classes/RigidBody.html">RigidBody</a></li>
@@ -121,8 +122,8 @@
                                 <li><a href="../classes/ShareableWebGLTexture.html">ShareableWebGLTexture</a></li>
                                 <li><a href="../classes/Sphere.html">Sphere</a></li>
                                 <li><a href="../classes/SphereGeometry.html">SphereGeometry</a></li>
-                                <li><a href="../classes/SpinG2.html">SpinG2</a></li>
-                                <li><a href="../classes/SpinG3.html">SpinG3</a></li>
+                                <li><a href="../classes/SpinG2m.html">SpinG2m</a></li>
+                                <li><a href="../classes/SpinG3m.html">SpinG3m</a></li>
                                 <li><a href="../classes/SpinorE1.html">SpinorE1</a></li>
                                 <li><a href="../classes/SpinorE2.html">SpinorE2</a></li>
                                 <li><a href="../classes/SpinorE3.html">SpinorE3</a></li>
@@ -130,7 +131,7 @@
                                 <li><a href="../classes/StringIUnknownMap.html">StringIUnknownMap</a></li>
                                 <li><a href="../classes/Tetrahedron.html">Tetrahedron</a></li>
                                 <li><a href="../classes/TetrahedronGeometry.html">TetrahedronGeometry</a></li>
-                                <li><a href="../classes/TrackballControls.html">TrackballControls</a></li>
+                                <li><a href="../classes/TrackballCameraControls.html">TrackballCameraControls</a></li>
                                 <li><a href="../classes/Trail.html">Trail</a></li>
                                 <li><a href="../classes/UniformLocation.html">UniformLocation</a></li>
                                 <li><a href="../classes/UniformMetaInfo.html">UniformMetaInfo</a></li>
@@ -197,250 +198,59 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: src/davinci-eight/math/Euclidean1.ts</h1>
+<h1 class="file-heading">File: src/davinci-eight/visual/Box.ts</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-import Euclidean1Coords from &#x27;../math/Euclidean1Coords&#x27;;
-import ImmutableMeasure from &#x27;../math/ImmutableMeasure&#x27;;
-import mustBeInteger from &#x27;../checks/mustBeInteger&#x27;;
-import readOnly from &#x27;../i18n/readOnly&#x27;;
-import Unit from &#x27;../math/Unit&#x27;;
-
-function assertArgNumber(name: string, x: number): number {
-    if (typeof x === &#x27;number&#x27;) {
-        return x
-    }
-    else {
-        throw new Error(&quot;Argument &#x27;&quot; + name + &quot;&#x27; must be a number&quot;)
-    }
-}
-
-function assertArgEuclidean1(name: string, arg: Euclidean1): Euclidean1 {
-    if (arg instanceof Euclidean1) {
-        return arg
-    }
-    else {
-        throw new Error(&quot;Argument &#x27;&quot; + arg + &quot;&#x27; must be a Euclidean1&quot;)
-    }
-}
-
-function assertArgUnitOrUndefined(name: string, uom: Unit): Unit {
-    if (typeof uom === &#x27;undefined&#x27; || uom instanceof Unit) {
-        return uom
-    }
-    else {
-        throw new Error(&quot;Argument &#x27;&quot; + uom + &quot;&#x27; must be a Unit or undefined&quot;)
-    }
-}
+import BoxOptions from &#x27;./BoxOptions&#x27;
+import Color from &#x27;../core/Color&#x27;
+import isDefined from &#x27;../checks/isDefined&#x27;
+import mustBeNumber from &#x27;../checks/mustBeNumber&#x27;
+import visualCache from &#x27;./visualCache&#x27;
+import VisualBody from &#x27;./VisualBody&#x27;
 
 /**
- * @class Euclidean1
+ * @module EIGHT
+ * @submodule visual
  */
-export default class Euclidean1 implements /*LinearElement&lt;Euclidean1Coords, Euclidean1, Euclidean1Coords&gt;,*/ ImmutableMeasure&lt;Euclidean1&gt; {
-    private w: number;
-    private x: number;
-    public uom: Unit;
-    /**
-     * The Euclidean1 class represents a multivector for a 1-dimensional linear space with a Euclidean metric.
-     *
-     * @class Euclidean1
-     * @constructor
-     * @param {number} α The grade zero part of the multivector.
-     * @param {number} β The vector component of the multivector.
-     * @param uom The optional unit of measure.
-     */
-    constructor(α: number, β: number, uom?: Unit) {
-        this.w = assertArgNumber(&#x27;α&#x27;, α)
-        this.x = assertArgNumber(&#x27;β&#x27;, β)
-        this.uom = assertArgUnitOrUndefined(&#x27;uom&#x27;, uom)
-        if (this.uom &amp;&amp; this.uom.multiplier !== 1) {
-            var multiplier: number = this.uom.multiplier
-            this.w *= multiplier
-            this.x *= multiplier
-            this.uom = new Unit(1, uom.dimensions, uom.labels)
-        }
-    }
 
-    /**
-     * The scalar part of this multivector.
-     * @property α
-     * @return {number}
-     */
-    get α(): number {
-        return this.w;
+/**
+ * @class Box
+ * @extends RigidBody
+ */
+export default class Box extends VisualBody {
+    constructor(options: BoxOptions = {}) {
+        super(visualCache.box(options), visualCache.material(options), &#x27;Box&#x27;)
+        this._geometry.release()
+        this._material.release()
+        this.width = isDefined(options.width) ? mustBeNumber(&#x27;width&#x27;, options.width) : 1
+        this.height = isDefined(options.height) ? mustBeNumber(&#x27;height&#x27;, options.height) : 1
+        this.depth = isDefined(options.depth) ? mustBeNumber(&#x27;depth&#x27;, options.depth) : 1
+        this.color = Color.green
     }
-    set α(unused) {
-        throw new Error(readOnly(&#x27;α&#x27;).message)
+    protected destructor(): void {
+        super.destructor()
     }
-
-    /**
-     * The pseudoscalar part of this multivector.
-     * @property β
-     * @return {number}
-     */
-    get β(): number {
-        return this.x;
+    get width(): number {
+        return this.getScaleX()
     }
-    set β(unused) {
-        throw new Error(readOnly(&#x27;β&#x27;).message)
+    set width(width: number) {
+        mustBeNumber(&#x27;width&#x27;, width)
+        this.setScaleX(width)
     }
-
-    /**
-     * The pseudoscalar part of this multivector.
-     * @property beta
-     * @return {number}
-     */
-    get beta(): number {
-        return this.x;
+    get height(): number {
+        return this.getScaleY()
     }
-    set beta(unused) {
-        throw new Error(readOnly(&#x27;beta&#x27;).message)
+    set height(height: number) {
+        mustBeNumber(&#x27;height&#x27;, height)
+        this.setScaleY(height)
     }
-
-    get coords(): number[] {
-        return [this.w, this.x]
+    get depth(): number {
+        return this.getScaleZ()
     }
-
-    copy(source: Euclidean1Coords): Euclidean1 {
-        this.w = source.w;
-        this.x = source.x;
-        this.uom = source.uom;
-        return this;
-    }
-
-    difference(a: Euclidean1Coords, b: Euclidean1Coords): Euclidean1 {
-        this.w = a.w - b.w;
-        this.x = a.x - b.x;
-        this.uom = Unit.compatible(a.uom, b.uom);
-        // FIXME this.uom.difference(a.uom, b.uom)
-        return this;
-    }
-
-    add(rhs: Euclidean1): Euclidean1 {
-        assertArgEuclidean1(&#x27;rhs&#x27;, rhs)
-        return new Euclidean1(this.w + rhs.w, this.x + rhs.x, Unit.compatible(this.uom, rhs.uom))
-    }
-
-    /**
-     * @method angle
-     * @return {Euclidean1}
-     */
-    angle(): Euclidean1 {
-        return this.log().grade(2);
-    }
-
-    sub(rhs: Euclidean1): Euclidean1 {
-        assertArgEuclidean1(&#x27;rhs&#x27;, rhs)
-        return new Euclidean1(this.w - rhs.w, this.x - rhs.x, Unit.compatible(this.uom, rhs.uom))
-    }
-
-    mul(rhs: Euclidean1): Euclidean1 {
-        // assertArgEuclidean1(&#x27;rhs&#x27;, rhs)
-        throw new Error(&#x27;mul&#x27;)
-    }
-
-    div(rhs: Euclidean1): Euclidean1 {
-        // assertArgEuclidean1(&#x27;rhs&#x27;, rhs)
-        throw new Error(&#x27;div&#x27;)
-    }
-
-    divByScalar(α: number) {
-        return new Euclidean1(this.w / α, this.x / α, this.uom)
-    }
-
-    scp(rhs: Euclidean1): Euclidean1 {
-        throw new Error(&#x27;wedge&#x27;)
-    }
-
-    ext(rhs: Euclidean1): Euclidean1 {
-        throw new Error(&#x27;wedge&#x27;)
-    }
-
-    lco(rhs: Euclidean1): Euclidean1 {
-        // assertArgEuclidean1(&#x27;rhs&#x27;, rhs)
-        throw new Error(&#x27;lshift&#x27;)
-    }
-
-    lerp(target: Euclidean1, α: number): Euclidean1 {
-        // FIXME: TODO
-        return this
-    }
-
-    log(): Euclidean1 {
-        // assertArgEuclidean1(&#x27;rhs&#x27;, rhs)
-        throw new Error(&#x27;log&#x27;)
-    }
-
-    rco(rhs: Euclidean1): Euclidean1 {
-        // assertArgEuclidean1(&#x27;rhs&#x27;, rhs)
-        throw new Error(&#x27;rshift&#x27;)
-    }
-
-    pow(exponent: Euclidean1): Euclidean1 {
-        // assertArgEuclidean1(&#x27;rhs&#x27;, rhs)
-        throw new Error(&#x27;pow&#x27;)
-    }
-
-    cos(): Euclidean1 {
-        throw new Error(&#x27;cos&#x27;)
-    }
-
-    cosh(): Euclidean1 {
-        throw new Error(&#x27;cosh&#x27;)
-    }
-
-    exp(): Euclidean1 {
-        throw new Error(&#x27;exp&#x27;)
-    }
-
-    norm(): Euclidean1 {
-        return new Euclidean1(Math.sqrt(this.w * this.w + this.x * this.x), 0, this.uom)
-    }
-
-    quad(): Euclidean1 {
-        return new Euclidean1(this.w * this.w + this.x * this.x, 0, Unit.mul(this.uom, this.uom))
-    }
-
-    scale(α: number) {
-        return new Euclidean1(α * this.w, α * this.x, this.uom)
-    }
-
-    sin(): Euclidean1 {
-        throw new Error(&#x27;sin&#x27;)
-    }
-
-    sinh(): Euclidean1 {
-        throw new Error(&#x27;sinh&#x27;)
-    }
-
-    slerp(target: Euclidean1, α: number): Euclidean1 {
-        // FIXME: TODO
-        return this
-    }
-    direction(): Euclidean1 {
-        throw new Error(&#x27;direction&#x27;)
-    }
-
-    grade(grade: number): Euclidean1 {
-        mustBeInteger(&#x27;grade&#x27;, grade)
-        switch (grade) {
-            case 0: return new Euclidean1(this.w, 0, this.uom)
-            case 1: return new Euclidean1(0, this.x, this.uom)
-            default: return new Euclidean1(0, 0, this.uom)
-        }
-    }
-
-    toExponential(): string {
-        return &quot;Euclidean1&quot;
-    }
-
-    toFixed(digits?: number): string {
-        return &quot;Euclidean1&quot;
-    }
-
-    toString(): string {
-        return &quot;Euclidean1&quot;
+    set depth(depth: number) {
+        mustBeNumber(&#x27;depth&#x27;, depth)
+        this.setScaleZ(depth)
     }
 }
 
