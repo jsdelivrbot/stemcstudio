@@ -810,12 +810,11 @@ app.factory('templates', [
             ""].join('\n');
 
         const LIBS_TEMPLATE_EIGHT_3D_1 = "" +
-            "const zero = EIGHT.G3m.zero\n" +
-            "const zero = EIGHT.G3m.zero\n" +
-            "const one = EIGHT.G3m.one\n" +
-            "const e1 = EIGHT.G3m.e1\n" +
-            "const e2 = EIGHT.G3m.e2\n" +
-            "const e3 = EIGHT.G3m.e3\n" +
+            "const zero = EIGHT.G3.zero\n" +
+            "const one = EIGHT.G3.one\n" +
+            "const e1 = EIGHT.G3.e1\n" +
+            "const e2 = EIGHT.G3.e2\n" +
+            "const e3 = EIGHT.G3.e3\n" +
             "\n" +
             "/**\n" +
             " * The pseudoscalar for the Euclidean 3D Geometric Space, I = e1 * e2 * e3.\n" +
@@ -831,15 +830,6 @@ app.factory('templates', [
             " * The universal logarithm function, log.\n" +
             " */\n" +
             "const log = EIGHT.log\n" +
-            "\n" +
-            "/**\n" +
-            " * dual(m), sign depends on who you talk to.\n" +
-            " */\n" +
-            "function dual(m: EIGHT.G3m): EIGHT.G3m {\n" +
-            "  // return m << (I / (I * I)) // Dorst, Fontijne, Mann\n" +
-            "  return I * m // Hestenes, Doran, Lasenby\n" +
-            "  // return m * (I / (I * I)) // Hestenes, Doran, Lasenby\n" +
-            "}\n" +
             "\n"
 
         var LESS_TEMPLATE_EIGHT_3D_1 = "" +
@@ -1327,11 +1317,11 @@ app.factory('templates', [
             "/**\n" +
             " * The rotational velocity bivector.\n" +
             " */\n" +
-            "const Ω = dual(ω)\n" +
+            "const Ω = I * ω\n" +
             "/**\n" +
             " * The attitude of the cube.\n" +
             " */\n" +
-            "let R = EIGHT.G3m.one.clone()\n" +
+            "const R = new EIGHT.Spinor3()\n" +
             "\n" +
             "init()\n" +
             "animate()\n" +
