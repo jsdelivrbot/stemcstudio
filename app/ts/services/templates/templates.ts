@@ -287,13 +287,13 @@ app.factory('templates', [
             "/**\n" +
             " * <b>e</b><sub>1</sub> is the basis <em>vector</em> corresponding to the <em>x coordinate</em>.\n" +
             " */\n" +
-            "var e1 = EIGHT.G2m.e1\n" +
+            "var e1 = EIGHT.G2.e1\n" +
             "/**\n" +
             " * <b>e</b><sub>2</sub> is the basis <em>vector</em> corresponding to the <em>y coordinate</em>.\n" +
             " */\n" +
-            "var e2 = EIGHT.G2m.e2\n" +
-            "var zero = EIGHT.G2m.zero\n" +
-            "var one = EIGHT.G2m.one\n" +
+            "var e2 = EIGHT.G2.e2\n" +
+            "var zero = EIGHT.G2.zero\n" +
+            "var one = EIGHT.G2.one\n" +
             "\n" +
             "/**\n" +
             " * The clockwise <em>bivector</em>, <b>e</b><sub>1</sub> * <b>e</b><sub>2</sub>.\n" +
@@ -327,7 +327,7 @@ app.factory('templates', [
             "/**\n" +
             " * Computes the <em>radian measure</em> in going from <em>direction</em> <code>a</code> to <em>direction</em> <code>b</code> relative to the specified angle <code>θ</code>.\n" +
             " */\n" +
-            "function radiansFromDirections(a: EIGHT.G2m, b: EIGHT.G2m, θ: EIGHT.G2m): number {\n" +
+            "function radiansFromDirections(a: EIGHT.Geometric2, b: EIGHT.Geometric2, θ: EIGHT.Geometric2): number {\n" +
             "  // a * b = exp(angle)\n" +
             "  var angle = (a * b).angle()\n" +
             "  return radiansFromAngle(angle, θ)\n" +
@@ -336,7 +336,7 @@ app.factory('templates', [
             "/**\n" +
             " *\n" +
             " */\n" +
-            "function radiansFromAngle(angle: EIGHT.G2m, θ: EIGHT.G2m): number {\n" +
+            "function radiansFromAngle(angle: EIGHT.Geometric2, θ: EIGHT.Geometric2): number {\n" +
             "  var signum = θ.clone().scp(angle).α < 0 ? +1 : -1\n" +
             "  return angle.magnitude().α * signum\n" +
             "}\n" +
@@ -344,12 +344,12 @@ app.factory('templates', [
             "/**\n" +
             " *\n" +
             " */\n" +
-            "function radiansFromSpinor(spinor: EIGHT.G2m, θ: EIGHT.G2m): number {return radiansFromAngle(spinor.clone().angle(), θ)}\n" +
+            "function radiansFromSpinor(spinor: EIGHT.Geometric2, θ: EIGHT.Geometric2): number {return radiansFromAngle(spinor.clone().angle(), θ)}\n" +
             "\n" +
             "/**\n" +
             " * Draws a <em>curly tee</em> as the geometric representation of a spinor.\n" +
             " */\n" +
-            "function drawSpinTee(context: CanvasRenderingContext2D, position: EIGHT.VectorE2, spinor: EIGHT.G2m, color: any, canvas: HTMLCanvasElement) {\n" +
+            "function drawSpinTee(context: CanvasRenderingContext2D, position: EIGHT.VectorE2, spinor: EIGHT.SpinorE2, color: any, canvas: HTMLCanvasElement) {\n" +
             "  var radius = circleRadiusFromArea(spinor.magnitude().α) * canvas.width / 2\n" +
             "  var θ = zeroTwoPi(radiansFromSpinor(spinor, clockwise))\n" +
             "\n" +
@@ -370,7 +370,7 @@ app.factory('templates', [
             "/**\n" +
             " * Draws a <em>bar magnet</em> at the specified <code>position</code> and with the specified <code>attitude</code>.\n" +
             " */\n" +
-            "function drawMagnet(context: CanvasRenderingContext2D, position: EIGHT.VectorE2, attitude: EIGHT.G2m, canvas: HTMLCanvasElement) {\n" +
+            "function drawMagnet(context: CanvasRenderingContext2D, position: EIGHT.VectorE2, attitude: SpinorE2, canvas: HTMLCanvasElement) {\n" +
             "  var width = MAGNET_WIDTH * canvas.width / 2\n" +
             "  var length = MAGNET_LENGTH * canvas.width / 2\n" +
             "\n" +
@@ -389,7 +389,7 @@ app.factory('templates', [
             "/**\n" +
             " * Draws a <em>wind tee</em> as the geometric representation of a vector.\n" +
             " */\n" +
-            "function drawLineTee(context: CanvasRenderingContext2D, position: EIGHT.G2m, vector: EIGHT.G2m, color: any, canvas: HTMLCanvasElement) {\n" +
+            "function drawLineTee(context: CanvasRenderingContext2D, position: EIGHT.VectorE2, vector: EIGHT.VectorE2, color: any, canvas: HTMLCanvasElement) {\n" +
             "  context.save()\n" +
             "  context.translate(toCanvasX(position, canvas), toCanvasY(position, canvas))\n" +
             "  context.rotate(radiansFromDirections(up, vector, clockwise))\n" +
@@ -483,8 +483,8 @@ app.factory('templates', [
             "  var program = new EIGHT.HTMLScriptsGraphicsProgram(['vs', 'fs'], document, [renderer])\n" +
             "\n" +
             "  var I = EIGHT.Mat2R.one()\n" +
-            "  var N = reflection(EIGHT.G2m.e1)\n" +
-            "  var M = reflection(EIGHT.G2m.e2)\n" +
+            "  var N = reflection(EIGHT.G2.e1)\n" +
+            "  var M = reflection(EIGHT.G2.e2)\n" +
             "\n" +
             "  var uModel = M * N\n" +
             "\n" +
@@ -1140,8 +1140,8 @@ app.factory('templates', [
             "  // The global constants, e1, e2 and e3, are defined in the 'Libs' file.\n" +
             "  var S = exp(-(e2 ^ e1) * tiltAngle / 2)\n" +
             "  var B = e3 ^ e1\n" +
-            "  var rotorL = new EIGHT.G3m()\n" +
-            "  var rotorR = new EIGHT.G3m()\n" +
+            "  var rotorL = new EIGHT.Geometric3()\n" +
+            "  var rotorR = new EIGHT.Geometric3()\n" +
             "\n" +
             "  EIGHT.animation((time: number) => {\n" +
             "    stats.begin()\n" +
@@ -1596,6 +1596,7 @@ app.factory('templates', [
                 dependencies: ['DomReady', 'davinci-eight']
             },
             */
+            /*
             {
                 uuid: uuid.generate(),
                 description: "2D Mathematical Graphics with HTML5 Canvas API and Geometric Algebra",
@@ -1610,6 +1611,7 @@ app.factory('templates', [
                 less: LESS_TEMPLATE_CANVAS,
                 dependencies: ['DomReady', 'davinci-eight']
             },
+            */
             //
             /*
             {
