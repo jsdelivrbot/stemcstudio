@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/davinci-eight/core/GeometryElements.ts - davinci-eight</title>
+    <title>src/davinci-eight/core/GeometryBuffers.ts - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="davinci-eight" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.193.0</em>
+            <em>API Docs for: 2.195.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -76,8 +76,8 @@
                                 <li><a href="../classes/GeometricE2.html">GeometricE2</a></li>
                                 <li><a href="../classes/GeometricE3.html">GeometricE3</a></li>
                                 <li><a href="../classes/Geometry.html">Geometry</a></li>
+                                <li><a href="../classes/GeometryBuffers.html">GeometryBuffers</a></li>
                                 <li><a href="../classes/GeometryContainer.html">GeometryContainer</a></li>
-                                <li><a href="../classes/GeometryElements.html">GeometryElements</a></li>
                                 <li><a href="../classes/GeometryPrimitive.html">GeometryPrimitive</a></li>
                                 <li><a href="../classes/GraphicsProgramSymbols.html">GraphicsProgramSymbols</a></li>
                                 <li><a href="../classes/HTMLScriptsMaterial.html">HTMLScriptsMaterial</a></li>
@@ -132,6 +132,7 @@
                                 <li><a href="../classes/Tetrahedron.html">Tetrahedron</a></li>
                                 <li><a href="../classes/TetrahedronGeometry.html">TetrahedronGeometry</a></li>
                                 <li><a href="../classes/Trail.html">Trail</a></li>
+                                <li><a href="../classes/TriangleStrip.html">TriangleStrip</a></li>
                                 <li><a href="../classes/UniformLocation.html">UniformLocation</a></li>
                                 <li><a href="../classes/UniformMetaInfo.html">UniformMetaInfo</a></li>
                                 <li><a href="../classes/Unit.html">Unit</a></li>
@@ -148,6 +149,8 @@
                                 <li><a href="../classes/VectorE4.html">VectorE4</a></li>
                                 <li><a href="../classes/VectorN.html">VectorN</a></li>
                                 <li><a href="../classes/VersionLogger.html">VersionLogger</a></li>
+                                <li><a href="../classes/Vertex.html">Vertex</a></li>
+                                <li><a href="../classes/VertexAttributeMap.html">VertexAttributeMap</a></li>
                                 <li><a href="../classes/View.html">View</a></li>
                                 <li><a href="../classes/VisualBody.html">VisualBody</a></li>
                                 <li><a href="../classes/WebGLBlendFunc.html">WebGLBlendFunc</a></li>
@@ -201,7 +204,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: src/davinci-eight/core/GeometryElements.ts</h1>
+<h1 class="file-heading">File: src/davinci-eight/core/GeometryBuffers.ts</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -224,10 +227,10 @@ import VertexArrays from &#x27;./VertexArrays&#x27;
 /**
  * A Geometry that supports interleaved vertex buffers.
  *
- * @class GeometryElements
- * @extends Shareable
+ * @class GeometryBuffers
+ * @extends ShareableContextListener
  */
-export default class GeometryElements extends ShareableContextListener implements Geometry {
+export default class GeometryBuffers extends ShareableContextListener implements Geometry {
 
     private drawMode: DrawMode
     private mode: number
@@ -241,12 +244,12 @@ export default class GeometryElements extends ShareableContextListener implement
     private pointers: VertexAttribPointer[]
 
     /**
-     * @class GeometryElements
+     * @class GeometryBuffers
      * @constructor
      * @param dataSource {VertexArrays}
      */
     constructor(dataSource: VertexArrays) {
-        super(&#x27;GeometryElements&#x27;)
+        super(&#x27;GeometryBuffers&#x27;)
         this.drawMode = dataSource.drawMode;
         this.count = dataSource.indices.length
         this.ia = new Uint16Array(dataSource.indices)
