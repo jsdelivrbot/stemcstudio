@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/davinci-eight/math/MutableGeometricElement.ts - davinci-eight</title>
+    <title>src/davinci-eight/math/rotorFromDirectionsE3.ts - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -201,87 +201,66 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: src/davinci-eight/math/MutableGeometricElement.ts</h1>
+<h1 class="file-heading">File: src/davinci-eight/math/rotorFromDirectionsE3.ts</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-import GeometricElement from &#x27;../math/GeometricElement&#x27;;
-import MutableLinearElement from &#x27;../math/MutableLinearElement&#x27;;
-import MutableRingElement from &#x27;../math/MutableRingElement&#x27;;
+import dot from &#x27;./dotVectorE3&#x27;
+import quad from &#x27;./quadVectorE3&#x27;
+import Vector from &#x27;./VectorE3&#x27;
+import Spinor from &#x27;./SpinorE3&#x27;
+import wedgeXY from &#x27;./wedgeXY&#x27;
+import wedgeYZ from &#x27;./wedgeYZ&#x27;
+import wedgeZX from &#x27;./wedgeZX&#x27;
 
-/**
- * This interface is provided to ensure consistency.
- * It is not part of the documented API.
- */
-interface MutableGeometricElement&lt;I, M, S, V&gt; extends GeometricElement&lt;I, M, S, V&gt;, MutableLinearElement&lt;I, M, S, V&gt;, MutableRingElement&lt;M&gt; {
+const sqrt = Math.sqrt
 
-    /**
-     * Sets this multivector to the left contraction of the multivectors.
-     */
-    lco2(a: I, b: I): M;
-
-    /**
-     * Sets this multivector to the right contraction of the multivectors.
-     */
-    rco2(a: I, b: I): M;
-
-    /**
-     * Sets this multivector to the value of the scalar, &lt;code&gt;α&lt;/code&gt;.
-     */
-    copyScalar(α: number): M;
-
-    /**
-     * Sets this multivector to the value of the spinor.
-     */
-    copySpinor(spinor: S): M;
-
-    /**
-     * Sets this multivector to the value of the vector.
-     */
-    copyVector(vector: V): M;
-
-    /**
-     * Sets this multivector to this / norm(this)
-     */
-    direction(): void;
-
-    /**
-     * Sets this multivector to a / b. This may not be defined.
-     */
-    div2(a: I, b: I): M;
-
-    /**
-     * Sets this multivector to the geometric product of the multivectors.
-     */
-    mul2(a: I, b: I): M;
-
-    /**
-     * Sets this multivector to a unitary spinor (a rotor), even if the vectors are not unitary.
-     */
-    rotorFromDirections(a: V, b: V): M;
-
-    /**
-     * Sets this multivector to a unitary spinor (a rotor).
-     */
-    rotorFromGeneratorAngle(B: S, θ: number): M;
-
-    /**
-     * Sets this multivector to the scalar product of the multivectors.
-     */
-    scp2(a: I, b: I): M;
-
-    /**
-     * Sets this multivector to the geometric product of the vectors.
-     */
-    versor(a: V, b: V): M;
-
-    /**
-     * Sets this multivector to the exterior product of the multivectors.
-     */
-    ext2(a: I, b: I): M;
+interface Output extends Spinor {
+    versor(a: Vector, b: Vector): Output
+    addScalar(α: number): Output
+    direction(): Output
+    divByScalar(α: number): Output
+    rotorFromGeneratorAngle(G: Spinor, θ: number): Output
+    zero(): Output
 }
 
-export default MutableGeometricElement;
+/**
+ * Sets this multivector to a rotor representing a rotation from a to b.
+ * R = (|b||a| + b * a) / sqrt(2 * |b||a|(|b||a| + b &lt;&lt; a))
+ * Returns undefined (void 0) if the vectors are anti-parallel.
+ */
+export default function(a: Vector, b: Vector, m: Output): void {
+    const quadA = quad(a)
+    const absA = sqrt(quadA)
+    const quadB = quad(b)
+    const absB = sqrt(quadB)
+    const BA = absB * absA
+    const dotBA = dot(b, a)
+    const denom = sqrt(2 * (quadB * quadA + BA * dotBA))
+    if (denom !== 0) {
+        m = m.versor(b, a)
+        m = m.addScalar(BA)
+        m = m.divByScalar(denom)
+    }
+    else {
+        // The denominator is zero when |a||b| + a &lt;&lt; b = 0.
+        // If θ is the angle between a and b, then  cos(θ) = (a &lt;&lt; b) /|a||b| = -1
+        // Then a and b are anti-parallel.
+        // The plane of the rotation is ambiguous.
+        // Compute a random bivector containing the start vector, then turn
+        // it into a rotor that achieves the 180-degree rotation.
+        const rx = Math.random()
+        const ry = Math.random()
+        const rz = Math.random()
+
+        m.zero()
+        m.yz = wedgeYZ(rx, ry, rz, a.x, a.y, a.z)
+        m.zx = wedgeZX(rx, ry, rz, a.x, a.y, a.z)
+        m.xy = wedgeXY(rx, ry, rz, a.x, a.y, a.z)
+        m.direction()
+        m.rotorFromGeneratorAngle(m, Math.PI)
+    }
+}
 
     </pre>
 </div>
