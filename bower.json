@@ -10,7 +10,7 @@
   "license": "MIT",
   "ignore": [
     "**/.*",
-    "vendor",
+    "bower_components",
     "config",
     "dist",
     "generated",

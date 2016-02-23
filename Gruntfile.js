@@ -64,27 +64,27 @@ module.exports = function(grunt) {
             dest: 'generated/themes/twilight.css'
           },
           {
-            src: "vendor/bootstrap/dist/fonts/glyphicons-halflings-regular.eot",
+            src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot",
             dest: "generated/fonts/glyphicons-halflings-regular.eot"
           },
           {
-            src: "vendor/bootstrap/dist/fonts/glyphicons-halflings-regular.svg",
+            src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.svg",
             dest: "generated/fonts/glyphicons-halflings-regular.svg"
           },
           {
-            src: "vendor/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf",
+            src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf",
             dest: "generated/fonts/glyphicons-halflings-regular.ttf"
           },
           {
-            src: "vendor/bootstrap/dist/fonts/glyphicons-halflings-regular.woff",
+            src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff",
             dest: "generated/fonts/glyphicons-halflings-regular.woff"
           },
           {
-            src: "vendor/bootstrap/dist/fonts/glyphicons-halflings-regular.woff2",
+            src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff2",
             dest: "generated/fonts/glyphicons-halflings-regular.woff2"
           },
           {
-            src: "vendor/angular/angular.js",
+            src: "bower_components/angular/angular.js",
             dest: "generated/js/angular.js"
           },
           {
@@ -94,15 +94,15 @@ module.exports = function(grunt) {
             dest: "generated/vendor/angular@1.4.6"
           },
           {
-            src: "vendor/angular/angular.js",
+            src: "bower_components/angular/angular.js",
             dest: "generated/vendor/angular@1.4.6/angular.js"
           },
           {
-            src: "vendor/angular/angular.min.js",
+            src: "bower_components/angular/angular.min.js",
             dest: "generated/vendor/angular@1.4.6/angular.min.js"
           },
           {
-            src: "vendor/angular/angular.min.js.map",
+            src: "bower_components/angular/angular.min.js.map",
             dest: "generated/vendor/angular@1.4.6/angular.min.js.map"
           },
           {
@@ -112,16 +112,16 @@ module.exports = function(grunt) {
             dest: "generated/vendor/async@1.4.2"
           },
           {
-            src: "vendor/async/dist/async.js",
+            src: "bower_components/async/dist/async.js",
             dest: "generated/vendor/async@1.4.2/dist/async.js"
           },
           {
-            src: "vendor/async/dist/async.min.js",
+            src: "bower_components/async/dist/async.min.js",
             dest: "generated/vendor/async@1.4.2/dist/async.min.js"
           },
           {
             expand: true,
-            cwd: "vendor/bootstrap",
+            cwd: "bower_components/bootstrap",
             src: ["**"],
             dest: "generated/vendor/bootstrap"
           },
@@ -144,11 +144,11 @@ module.exports = function(grunt) {
             dest: "generated/vendor/jquery@2.1.4"
           },
           {
-            src: "vendor/jquery/dist/jquery.js",
+            src: "bower_components/jquery/dist/jquery.js",
             dest: "generated/vendor/jquery@2.1.4/dist/jquery.js"
           },
           {
-            src: "vendor/jquery/dist/jquery.min.js",
+            src: "bower_components/jquery/dist/jquery.min.js",
             dest: "generated/vendor/jquery@2.1.4/dist/jquery.min.js"
           },
           {
@@ -162,7 +162,7 @@ module.exports = function(grunt) {
             dest: "generated/vendor/requirejs@2.1.9/require.d.ts"
           },
           {
-            src: "vendor/requirejs/require.js",
+            src: "bower_components/requirejs/require.js",
             dest: "generated/vendor/requirejs@2.1.9/require.js"
           },
           {
@@ -178,11 +178,11 @@ module.exports = function(grunt) {
             dest: "generated/vendor/threejs@0.72.0"
           },
           {
-            src: "vendor/threejs/build/three.js",
+            src: "bower_components/threejs/build/three.js",
             dest: "generated/vendor/threejs@0.72.0/build/three.js"
           },
           {
-            src: "vendor/threejs/build/three.min.js",
+            src: "bower_components/threejs/build/three.min.js",
             dest: "generated/vendor/threejs@0.72.0/build/three.min.js"
           },
           {
@@ -192,29 +192,29 @@ module.exports = function(grunt) {
             dest: "generated/vendor/underscore@1.8.3"
           },
           {
-            src: "vendor/underscore/underscore.js",
+            src: "bower_components/underscore/underscore.js",
             dest: "generated/vendor/underscore@1.8.3/underscore.js"
           },
           {
-            src: "vendor/underscore/underscore-min.js",
+            src: "bower_components/underscore/underscore-min.js",
             dest: "generated/vendor/underscore@1.8.3/underscore-min.js"
           },
           {
-            src: "vendor/underscore/underscore-min.map",
+            src: "bower_components/underscore/underscore-min.map",
             dest: "generated/vendor/underscore@1.8.3/underscore-min.map"
           },
           {
             expand: true,
-            cwd: "vendor/davinci-eight/documentation",
+            cwd: "bower_components/davinci-eight/documentation",
             src: ["**"],
             dest: "generated/docs/davinci-eight"
           },
           {
-            src: "vendor/davinci-eight/dist/davinci-eight.d.ts",
+            src: "bower_components/davinci-eight/dist/davinci-eight.d.ts",
             dest: "generated/vendor/davinci-eight@2.102.0/dist/davinci-eight.d.ts"
           },
           {
-            src: "vendor/davinci-eight/dist/davinci-eight.js",
+            src: "bower_components/davinci-eight/dist/davinci-eight.js",
             dest: "generated/vendor/davinci-eight@2.102.0/dist/davinci-eight.js"
           },
           {
@@ -226,17 +226,17 @@ module.exports = function(grunt) {
             dest: "generated/vendor/davinci-eight@2.102.0/dist/davinci-eight.js"
           },
           {
-            src: "vendor/davinci-mathscript/dist/davinci-mathscript.d.ts",
+            src: "bower_components/davinci-mathscript/dist/davinci-mathscript.d.ts",
             dest: "generated/vendor/davinci-mathscript@1.0.8/dist/davinci-mathscript.d.ts"
           },
           {
             // This version is bundled for transpile.
-            src: "vendor/davinci-mathscript/dist/davinci-mathscript.js",
+            src: "bower_components/davinci-mathscript/dist/davinci-mathscript.js",
             dest: "generated/vendor/davinci-mathscript@1.0.8/dist/davinci-mathscript.js"
           },
           {
             // This version is loaded into iframe for the runtime.
-            src: "vendor/davinci-mathscript/dist/davinci-mathscript.min.js",
+            src: "bower_components/davinci-mathscript/dist/davinci-mathscript.min.js",
             dest: "generated/vendor/davinci-mathscript@1.0.8/dist/davinci-mathscript.min.js"
           }
         ]
@@ -296,27 +296,27 @@ module.exports = function(grunt) {
             dest: 'dist/themes/twilight.css'
           },
           {
-            src: "vendor/bootstrap/dist/fonts/glyphicons-halflings-regular.eot",
+            src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot",
             dest: "dist/fonts/glyphicons-halflings-regular.eot"
           },
           {
-            src: "vendor/bootstrap/dist/fonts/glyphicons-halflings-regular.svg",
+            src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.svg",
             dest: "dist/fonts/glyphicons-halflings-regular.svg"
           },
           {
-            src: "vendor/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf",
+            src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf",
             dest: "dist/fonts/glyphicons-halflings-regular.ttf"
           },
           {
-            src: "vendor/bootstrap/dist/fonts/glyphicons-halflings-regular.woff",
+            src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff",
             dest: "dist/fonts/glyphicons-halflings-regular.woff"
           },
           {
-            src: "vendor/bootstrap/dist/fonts/glyphicons-halflings-regular.woff2",
+            src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff2",
             dest: "dist/fonts/glyphicons-halflings-regular.woff2"
           },
           {
-            src: "vendor/angular/angular.js",
+            src: "bower_components/angular/angular.js",
             dest: "dist/js/angular.js"
           },
           {
@@ -326,15 +326,15 @@ module.exports = function(grunt) {
             dest: "dist/vendor/angular@1.4.6"
           },
           {
-            src: "vendor/angular/angular.js",
+            src: "bower_components/angular/angular.js",
             dest: "dist/vendor/angular@1.4.6/angular.js"
           },
           {
-            src: "vendor/angular/angular.min.js",
+            src: "bower_components/angular/angular.min.js",
             dest: "dist/vendor/angular@1.4.6/angular.min.js"
           },
           {
-            src: "vendor/angular/angular.min.js.map",
+            src: "bower_components/angular/angular.min.js.map",
             dest: "dist/vendor/angular@1.4.6/angular.min.js.map"
           },
           {
@@ -344,16 +344,16 @@ module.exports = function(grunt) {
             dest: "dist/vendor/async@1.4.2"
           },
           {
-            src: "vendor/async/dist/async.js",
+            src: "bower_components/async/dist/async.js",
             dest: "dist/vendor/async@1.4.2/dist/async.js"
           },
           {
-            src: "vendor/async/dist/async.min.js",
+            src: "bower_components/async/dist/async.min.js",
             dest: "dist/vendor/async@1.4.2/dist/async.min.js"
           },
           {
             expand: true,
-            cwd: "vendor/bootstrap",
+            cwd: "bower_components/bootstrap",
             src: ["**"],
             dest: "dist/vendor/bootstrap"
           },
@@ -376,11 +376,11 @@ module.exports = function(grunt) {
             dest: "dist/vendor/jquery@2.1.4"
           },
           {
-            src: "vendor/jquery/dist/jquery.js",
+            src: "bower_components/jquery/dist/jquery.js",
             dest: "dist/vendor/jquery@2.1.4/dist/jquery.js"
           },
           {
-            src: "vendor/jquery/dist/jquery.min.js",
+            src: "bower_components/jquery/dist/jquery.min.js",
             dest: "dist/vendor/jquery@2.1.4/dist/jquery.min.js"
           },
           {
@@ -394,7 +394,7 @@ module.exports = function(grunt) {
             dest: "dist/vendor/requirejs@2.1.9/require.d.ts"
           },
           {
-            src: "vendor/requirejs/require.js",
+            src: "bower_components/requirejs/require.js",
             dest: "dist/vendor/requirejs@2.1.9/require.js"
           },
           {
@@ -410,11 +410,11 @@ module.exports = function(grunt) {
             dest: "dist/vendor/threejs@0.72.0"
           },
           {
-            src: "vendor/threejs/build/three.js",
+            src: "bower_components/threejs/build/three.js",
             dest: "dist/vendor/threejs@0.72.0/build/three.js"
           },
           {
-            src: "vendor/threejs/build/three.min.js",
+            src: "bower_components/threejs/build/three.min.js",
             dest: "dist/vendor/threejs@0.72.0/build/three.min.js"
           },
           {
@@ -424,43 +424,43 @@ module.exports = function(grunt) {
             dest: "dist/vendor/underscore@1.8.3"
           },
           {
-            src: "vendor/underscore/underscore.js",
+            src: "bower_components/underscore/underscore.js",
             dest: "dist/vendor/underscore@1.8.3/underscore.js"
           },
           {
-            src: "vendor/underscore/underscore-min.js",
+            src: "bower_components/underscore/underscore-min.js",
             dest: "dist/vendor/underscore@1.8.3/underscore-min.js"
           },
           {
-            src: "vendor/underscore/underscore-min.map",
+            src: "bower_components/underscore/underscore-min.map",
             dest: "dist/vendor/underscore@1.8.3/underscore-min.map"
           },
           {
             expand: true,
-            cwd: "vendor/davinci-eight/documentation",
+            cwd: "bower_components/davinci-eight/documentation",
             src: ["**"],
             dest: "dist/docs/davinci-eight"
           },
           {
-            src: "vendor/davinci-eight/dist/davinci-eight.d.ts",
+            src: "bower_components/davinci-eight/dist/davinci-eight.d.ts",
             dest: "dist/vendor/davinci-eight@2.102.0/dist/davinci-eight.d.ts"
           },
           {
-            src: "vendor/davinci-eight/dist/davinci-eight.js",
+            src: "bower_components/davinci-eight/dist/davinci-eight.js",
             dest: "dist/vendor/davinci-eight@2.102.0/dist/davinci-eight.js"
           },
           {
-            src: "vendor/davinci-mathscript/dist/davinci-mathscript.d.ts",
+            src: "bower_components/davinci-mathscript/dist/davinci-mathscript.d.ts",
             dest: "dist/vendor/davinci-mathscript@1.0.8/dist/davinci-mathscript.d.ts"
           },
           {
             // This version is bundled for transpile.
-            src: "vendor/davinci-mathscript/dist/davinci-mathscript.js",
+            src: "bower_components/davinci-mathscript/dist/davinci-mathscript.js",
             dest: "dist/vendor/davinci-mathscript@1.0.8/dist/davinci-mathscript.js"
           },
           {
             // This version is loaded into iframe for the runtime.
-            src: "vendor/davinci-mathscript/dist/davinci-mathscript.min.js",
+            src: "bower_components/davinci-mathscript/dist/davinci-mathscript.min.js",
             dest: "dist/vendor/davinci-mathscript@1.0.8/dist/davinci-mathscript.min.js"
           }
         ]

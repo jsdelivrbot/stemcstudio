@@ -1,4 +1,4 @@
 .tscache
 generated/
 typings/
-vendor/
+bower_components/
