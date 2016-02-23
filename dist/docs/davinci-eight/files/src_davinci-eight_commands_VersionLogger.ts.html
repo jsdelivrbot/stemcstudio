@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="davinci-eight" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.195.0</em>
+            <em>API Docs for: 2.196.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -243,7 +243,7 @@ export default class VersionLogger extends Shareable {
      * @return {void}
      */
     contextGain(manager: IContextProvider): void {
-        var gl = manager.gl
+        const gl = manager.gl
         console.log(gl.getParameter(gl.VERSION))
     }
     contextLost(): void {
