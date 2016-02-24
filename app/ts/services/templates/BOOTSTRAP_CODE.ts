@@ -35,7 +35,7 @@ export default function(
 
     if (options.example) {
         lines.push("")
-        lines.push("const cube = world.box({pos: vec(1.3, 0, 0), width: 0.1, color: green})")
+        lines.push("const cube = world.box({pos: vector(1.3, 0, 0), width: 0.1, color: green})")
     }
     else {
         lines.push("")
@@ -45,7 +45,7 @@ export default function(
     if (options.example) {
         lines.push("")
         lines.push("const ball = world.sphere({radius: 0.1, color: blue})")
-        lines.push("ball.trail.enabled = true")
+        lines.push("const trail = new EIGHT.Trail(ball)")
     }
 
     if (options.example) {
@@ -89,22 +89,25 @@ export default function(
 
     if (options.example) {
         lines.push("")
-        lines.push("  ball.X = 2 * (cos(t) * e1 + sin(t) * e3)")
+        lines.push("  ball.position = 2 * (cos(t) * e1 + sin(t) * e3)")
+        lines.push("")
+        lines.push("  trail.snapshot()")
+        lines.push("  trail.draw(world.ambients)")
     }
 
     if (options.example) {
         lines.push("")
-        lines.push("  cube.R = exp(-Ω * t/2)")
+        lines.push("  cube.attitude = exp(-Ω * t/2)")
     }
 
     if (options.example) {
         lines.push("")
-        lines.push("  rod.R = exp(Ω * t/2)")
+        lines.push("  rod.attitude = exp(Ω * t/2)")
     }
 
     if (options.example) {
         lines.push("")
-        lines.push("  arrow.axis = ball.X - arrow.X")
+        lines.push("  arrow.axis = ball.position - arrow.position")
     }
 
     if (options.stats) {

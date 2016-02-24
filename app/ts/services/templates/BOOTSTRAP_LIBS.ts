@@ -7,17 +7,17 @@ export default function(options: { geometry?: string, dimensions?: number } = {}
         lines.push("//////////////////////////////////////////////////")
         lines.push("// Standard Basis")
         // Multivector constants zero and one
-        lines.push(`const zero = EIGHT.${options.geometry}${options.dimensions}.zero`)
-        lines.push(`const one = EIGHT.${options.geometry}${options.dimensions}.one`)
+        lines.push(`const zero = EIGHT.${options.geometry}${options.dimensions}.zero()`)
+        lines.push(`const one = EIGHT.${options.geometry}${options.dimensions}.one()`)
         // Basis vectors
         if (options.dimensions >= 1) {
-            lines.push(`const e1 = EIGHT.${options.geometry}${options.dimensions}.e1`)
+            lines.push(`const e1 = EIGHT.${options.geometry}${options.dimensions}.e1()`)
         }
         if (options.dimensions >= 2) {
-            lines.push(`const e2 = EIGHT.${options.geometry}${options.dimensions}.e2`)
+            lines.push(`const e2 = EIGHT.${options.geometry}${options.dimensions}.e2()`)
         }
         if (options.dimensions >= 3) {
-            lines.push(`const e3 = EIGHT.${options.geometry}${options.dimensions}.e3`)
+            lines.push(`const e3 = EIGHT.${options.geometry}${options.dimensions}.e3()`)
         }
 
         lines.push("")
@@ -34,12 +34,6 @@ export default function(options: { geometry?: string, dimensions?: number } = {}
             lines.push("const I  = e1")
         }
 
-        lines.push("")
-        lines.push("//////////////////////////////////////////////////")
-        lines.push("// Units of Measure")
-        lines.push(`const kilogram = EIGHT.${options.geometry}${options.dimensions}.kilogram`)
-        lines.push(`const meter = EIGHT.${options.geometry}${options.dimensions}.meter`)
-        lines.push(`const second = EIGHT.${options.geometry}${options.dimensions}.second`)
     }
 
     lines.push("")
@@ -79,7 +73,7 @@ export default function(options: { geometry?: string, dimensions?: number } = {}
         lines.push("/**")
         lines.push(" * Constructs a vector from Cartesian coordinates with the standard basis [e1, e2, e3]")
         lines.push(" */")
-        lines.push(`const vec = EIGHT.${options.geometry}${options.dimensions}.vector`)
+        lines.push(`const vector = EIGHT.${options.geometry}${options.dimensions}.vector`)
 
         lines.push("")
         lines.push("/**")
