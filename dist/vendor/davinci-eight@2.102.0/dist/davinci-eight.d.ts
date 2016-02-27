@@ -314,14 +314,12 @@ declare module EIGHT {
     }
 
     /**
-     * A rational number.
+     * The QQ class represents a rational number.
+     * The QQ implementation is that of an immutable (value) type.
+     * The numerator and denominator are reduced to their lowest form.
+     * Construct new instances using the static valueOf method.
      */
     class QQ {
-
-        /**
-         * The numerator.
-         */
-        numer: number;
 
         /**
          * The denominator.
@@ -329,44 +327,64 @@ declare module EIGHT {
         denom: number;
 
         /**
-         * Constructs a rational number from an ordered pair of integers.
-         * @param numer The numerator.
-         * @param denom The denominator.
+         * The numerator.
          */
-        constructor(numer: number, denom: number);
+        numer: number;
+
+        /**
+         *
+         */
+        add(rhs: QQ): QQ
+
+        /**
+         *
+         */
+        div(rhs: QQ): QQ
+
+        /**
+         *
+         */
+        equals(other: QQ): boolean
 
         /**
          * Computes the multiplicative inverse of this rational number.
          */
-        inv(): QQ;
+        inv(): QQ
 
         /**
          * Determines whether this rational number is the multiplicative identity, <b>1</b>.
          */
-        isOne(): boolean;
+        isOne(): boolean
 
         /**
          * Determines whether this rational number is the additive identity, <b>0</b>.
          */
-        isZero(): boolean;
+        isZero(): boolean
+
+        /**
+         *
+         */
+        mul(rhs: QQ): QQ
 
         /**
          * Computes the additive inverse of this rational number.
          */
-        neg(): QQ;
-
-        static MINUS_ONE: QQ;
+        neg(): QQ
 
         /**
-         * The multiplicative identity <b>1</b> for rational numbers.
+         *
          */
-        static ONE: QQ;
-        static TWO: QQ;
+        sub(rhs: QQ): QQ
 
         /**
-         * The additive identity <b>0</b> for rational numbers.
+         *
          */
-        static ZERO: QQ;
+        toString(): string
+
+        /**
+         *
+         */
+        static valueOf(numer: number, denom: number): QQ
     }
 
     /**
@@ -2134,14 +2152,17 @@ declare module EIGHT {
         static I(): Geometric3;
 
         /**
+         * Creates a copy of a scalar.
+         */
+        static fromScalar(scalar: Scalar): Geometric3;
+
+        /**
          * Creates a copy of a spinor.
-         * @param spinor
          */
         static fromSpinor(spinor: SpinorE3): Geometric3;
 
         /**
          * Creates a copy of a vector.
-         * @param vector
          */
         static fromVector(vector: VectorE3): Geometric3;
 
@@ -2151,6 +2172,11 @@ declare module EIGHT {
          * @param b The <em>to</em> vector.
          */
         static rotorFromDirections(a: VectorE3, b: VectorE3): Geometric3;
+
+        /**
+         * Constructs a new scalar from a number
+         */
+        static scalar(α: number): Geometric3;
 
         /**
          * Constructs a new vector from Cartesian coordinates
@@ -2651,7 +2677,7 @@ declare module EIGHT {
         /**
          * 'aTextureCoords'
          */
-        static ATTRIBUTE_TEXTURE_COORDS: string;
+        static ATTRIBUTE_TEXTURE_COORD: string;
 
         static UNIFORM_AMBIENT_LIGHT: string;
         static UNIFORM_COLOR: string;
@@ -2905,24 +2931,90 @@ declare module EIGHT {
         draw(material: Material): void;
     }
 
-    class ArrowGeometry extends GeometryContainer {
-        constructor();
+    interface GeometryBuilder {
+        stress: Vector3
+        tilt: Spinor3
+        offset: Vector3
+        toGeometry(): Geometry
     }
 
-    class BoxGeometry extends GeometryContainer {
-        constructor(options?: { width?: number, height?: number, depth?: number });
+    class ArrowBuilder implements GeometryBuilder {
+        heightCone: number
+        offset: Vector3
+        radiusCone: number
+        radiusShaft: number
+        sliceAngle: number
+        stress: Vector3
+        thetaSegments: number
+        tilt: Spinor3
+        useNormal: boolean
+        usePosition: boolean
+        useTextureCoord: boolean
+        constructor(e: VectorE3, cutLine: VectorE3, clockwise: boolean)
+        toGeometry(): Geometry
     }
 
-    class CylinderGeometry extends GeometryContainer {
-        constructor();
+    class ConicalShellBuilder implements GeometryBuilder {
+        height: number
+        offset: Vector3
+        radius: number
+        radialSegments: number
+        sliceAngle: number
+        stress: Vector3
+        thetaSegments: number
+        tilt: Spinor3
+        useNormal: boolean
+        usePosition: boolean
+        useTextureCoord: boolean
+        constructor(e: VectorE3, cutLine: VectorE3, clockwise: boolean)
+        toGeometry(): Geometry
     }
 
-    class SphereGeometry extends GeometryContainer {
-        constructor();
+    class CylinderBuilder implements GeometryBuilder {
+        offset: Vector3
+        openBottom: boolean
+        openTop: boolean
+        sliceAngle: number
+        stress: Vector3
+        tilt: Spinor3
+        useNormal: boolean
+        usePosition: boolean
+        useTextureCoord: boolean
+        constructor(e: VectorE3, cutLine: VectorE3, clockwise: boolean)
+        boundary(times?: number): void
+        toGeometry(): Geometry
     }
 
-    class TetrahedronGeometry extends GeometryContainer {
-        constructor(radius?: number)
+    class CylindricalShellBuilder implements GeometryBuilder {
+        height: number
+        offset: Vector3
+        radialSegments: number
+        radius: number
+        sliceAngle: number
+        stress: Vector3
+        thetaSegments: number
+        tilt: Spinor3
+        useNormal: boolean
+        usePosition: boolean
+        useTextureCoord: boolean
+        constructor(e: VectorE3, cutLine: VectorE3, clockwise: boolean)
+        toGeometry(): Geometry
+    }
+
+    class RingBuilder implements GeometryBuilder {
+        innerRadius: number
+        offset: Vector3
+        outerRadius: number
+        radialSegments: number
+        sliceAngle: number
+        stress: Vector3
+        thetaSegments: number
+        tilt: Spinor3
+        useNormal: boolean
+        usePosition: boolean
+        useTextureCoord: boolean
+        constructor(e: VectorE3, cutLine: VectorE3, clockwise: boolean)
+        toGeometry(): Geometry
     }
 
     /**
@@ -3424,7 +3516,10 @@ declare module EIGHT {
     }
 
     class RigidBody extends Mesh {
-        public axis: R3
+        /**
+         * The axis of the RigidBody.
+         */
+        public axis: Geometric3
 
         /**
          * The (dimensionless) mass of the RigidBody.
