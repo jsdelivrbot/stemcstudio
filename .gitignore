@@ -2,3 +2,4 @@
 generated/
 typings/
 bower_components/
+node_modules/
