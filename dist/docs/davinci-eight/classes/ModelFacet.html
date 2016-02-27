@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="davinci-eight" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.199.0</em>
+            <em>API Docs for: 2.200.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -100,6 +100,10 @@
                                 <li><a href="../classes/IContextListener.html">IContextListener</a></li>
                                 <li><a href="../classes/IContextProgramConsumer.html">IContextProgramConsumer</a></li>
                                 <li><a href="../classes/IContextProvider.html">IContextProvider</a></li>
+                                <li><a href="../classes/IDrawable.html">IDrawable</a></li>
+                                <li><a href="../classes/IGeometric3RigidBody.html">IGeometric3RigidBody</a></li>
+                                <li><a href="../classes/IMaterial.html">IMaterial</a></li>
+                                <li><a href="../classes/IMesh.html">IMesh</a></li>
                                 <li><a href="../classes/IUnknown.html">IUnknown</a></li>
                                 <li><a href="../classes/LineMaterial.html">LineMaterial</a></li>
                                 <li><a href="../classes/Material.html">Material</a></li>
@@ -339,10 +343,6 @@ Constructs a ModelFacet at the origin and with unity attitude.
                                 <a href="#property__attitude">_attitude</a>
 
                             </li>
-                            <li class="index-item property private">
-                                <a href="#property__deviation">_deviation</a>
-
-                            </li>
                             <li class="index-item property private inherited">
                                 <a href="#property__posCache">_posCache</a>
 
@@ -352,15 +352,15 @@ Constructs a ModelFacet at the origin and with unity attitude.
 
                             </li>
                             <li class="index-item property private">
-                                <a href="#property__scaleXYZ">_scaleXYZ</a>
+                                <a href="#property__stress">_stress</a>
+
+                            </li>
+                            <li class="index-item property private">
+                                <a href="#property__tilt">_tilt</a>
 
                             </li>
                             <li class="index-item property inherited">
                                 <a href="#property_attitude">attitude</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_deviation">deviation</a>
 
                             </li>
                             <li class="index-item property private">
@@ -377,6 +377,10 @@ Constructs a ModelFacet at the origin and with unity attitude.
                             </li>
                             <li class="index-item property">
                                 <a href="#property_scale">scale</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_tilt">tilt</a>
 
                             </li>
                     </ul>
@@ -647,35 +651,6 @@ Constructs a ModelFacet at the origin and with unity attitude.
 
 
 </div>
-<div id="property__deviation" class="property item private">
-    <h3 class="name"><code>_deviation</code></h3>
-    <span class="type"><a href="../classes/Spinor3.html" class="crosslink">Spinor3</a></span>
-
-
-        <span class="flag private">private</span>
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_facets_ModelFacet.ts.html#l32"><code>src&#x2F;davinci-eight&#x2F;facets&#x2F;ModelFacet.ts:32</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p>The deviation is the spinor that rotates the object from
-the coordinate frame used for scaling to the local coordinate
-frame of the object. We want the scaling to work relative to the
-local coordinate frame of the object.</p>
-
-    </div>
-
-
-
-</div>
 <div id="property__posCache" class="property item private inherited">
     <h3 class="name"><code>_posCache</code></h3>
     <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
@@ -727,8 +702,8 @@ local coordinate frame of the object.</p>
 
 
 </div>
-<div id="property__scaleXYZ" class="property item private">
-    <h3 class="name"><code>_scaleXYZ</code></h3>
+<div id="property__stress" class="property item private">
+    <h3 class="name"><code>_stress</code></h3>
     <span class="type"><a href="../classes/Vector3.html" class="crosslink">Vector3</a></span>
 
 
@@ -747,6 +722,35 @@ local coordinate frame of the object.</p>
 
     <div class="description">
         
+    </div>
+
+
+
+</div>
+<div id="property__tilt" class="property item private">
+    <h3 class="name"><code>_tilt</code></h3>
+    <span class="type"><a href="../classes/Spinor3.html" class="crosslink">Spinor3</a></span>
+
+
+        <span class="flag private">private</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_facets_ModelFacet.ts.html#l32"><code>src&#x2F;davinci-eight&#x2F;facets&#x2F;ModelFacet.ts:32</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>The tilt is the spinor that rotates the object from
+the coordinate frame used for scaling to the local coordinate
+frame of the object. We want the scaling to work relative to the
+local coordinate frame of the object.</p>
+
     </div>
 
 
@@ -771,32 +775,6 @@ local coordinate frame of the object.</p>
 
     <div class="description">
         
-    </div>
-
-
-
-</div>
-<div id="property_deviation" class="property item">
-    <h3 class="name"><code>deviation</code></h3>
-    <span class="type"><a href="../classes/Spinor3.html" class="crosslink">Spinor3</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_facets_ModelFacet.ts.html#l81"><code>src&#x2F;davinci-eight&#x2F;facets&#x2F;ModelFacet.ts:81</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p>The spinor that rotates the object from the frame used for scaling
-to the local frame of the object.</p>
-
     </div>
 
 
@@ -894,6 +872,32 @@ to the local frame of the object.</p>
 
     <div class="description">
         
+    </div>
+
+
+
+</div>
+<div id="property_tilt" class="property item">
+    <h3 class="name"><code>tilt</code></h3>
+    <span class="type"><a href="../classes/Spinor3.html" class="crosslink">Spinor3</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_facets_ModelFacet.ts.html#l81"><code>src&#x2F;davinci-eight&#x2F;facets&#x2F;ModelFacet.ts:81</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>The spinor that rotates the object from the 'XYZ' frame used for scaling
+to the reference (initial) frame of the object.</p>
+
     </div>
 
 

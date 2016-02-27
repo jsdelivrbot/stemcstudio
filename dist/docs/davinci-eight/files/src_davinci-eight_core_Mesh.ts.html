@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="davinci-eight" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.199.0</em>
+            <em>API Docs for: 2.200.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -100,6 +100,10 @@
                                 <li><a href="../classes/IContextListener.html">IContextListener</a></li>
                                 <li><a href="../classes/IContextProgramConsumer.html">IContextProgramConsumer</a></li>
                                 <li><a href="../classes/IContextProvider.html">IContextProvider</a></li>
+                                <li><a href="../classes/IDrawable.html">IDrawable</a></li>
+                                <li><a href="../classes/IGeometric3RigidBody.html">IGeometric3RigidBody</a></li>
+                                <li><a href="../classes/IMaterial.html">IMaterial</a></li>
+                                <li><a href="../classes/IMesh.html">IMesh</a></li>
                                 <li><a href="../classes/IUnknown.html">IUnknown</a></li>
                                 <li><a href="../classes/LineMaterial.html">LineMaterial</a></li>
                                 <li><a href="../classes/Material.html">Material</a></li>
@@ -237,8 +241,6 @@ import Color from &#x27;./Color&#x27;;
 import ColorFacet from &#x27;../facets/ColorFacet&#x27;;
 import Drawable from &#x27;./Drawable&#x27;
 import Geometric3 from &#x27;../math/Geometric3&#x27;
-import Geometry from &#x27;./Geometry&#x27;;
-import Material from &#x27;./Material&#x27;;
 import Matrix4 from &#x27;../math/Matrix4&#x27;
 import ModelFacet from &#x27;../facets/ModelFacet&#x27;;
 import notSupported from &#x27;../i18n/notSupported&#x27;
@@ -267,12 +269,10 @@ export default class Mesh extends Drawable {
     /**
      * @class Mesh
      * @constructor
-     * @param geometry {Geometry}
-     * @param material {Material}
      * @param [type = &#x27;Mesh&#x27;] {string}
      */
-    constructor(geometry: Geometry, material: Material, type = &#x27;Mesh&#x27;) {
-        super(geometry, material, type)
+    constructor(type = &#x27;Mesh&#x27;) {
+        super(type)
 
         const modelFacet = new ModelFacet()
         this.setFacet(MODEL_FACET_NAME, modelFacet)
@@ -345,25 +345,25 @@ export default class Mesh extends Drawable {
      * in which scaling is defined to the initial frame of the
      * object.
      *
-     * @property deviation
+     * @property tilt
      * @type Spinor3
      */
-    get deviation(): Spinor3 {
+    get tilt(): Spinor3 {
         const facet = &lt;ModelFacet&gt;this.getFacet(MODEL_FACET_NAME)
         if (facet) {
-            return facet.deviation
+            return facet.tilt
         }
         else {
-            throw new Error(notSupported(&#x27;deviation&#x27;).message)
+            throw new Error(notSupported(&#x27;tilt&#x27;).message)
         }
     }
-    set deviation(deviation: Spinor3) {
+    set tilt(tilt: Spinor3) {
         const facet = &lt;ModelFacet&gt;this.getFacet(MODEL_FACET_NAME)
         if (facet) {
-            facet.deviation.copy(deviation)
+            facet.tilt.copy(tilt)
         }
         else {
-            throw new Error(notSupported(&#x27;deviation&#x27;).message)
+            throw new Error(notSupported(&#x27;tilt&#x27;).message)
         }
     }
 
