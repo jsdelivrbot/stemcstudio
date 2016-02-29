@@ -126,6 +126,18 @@ module.exports = function(grunt) {
             dest: "generated/vendor/bootstrap"
           },
           {
+            src: "museum/dat-gui@0.5.0/dat-gui.d.ts",
+            dest: "generated/vendor/dat-gui@0.5.0/dat-gui.d.ts"
+          },
+          {
+            src: "bower_components/dat-gui/build/dat.gui.js",
+            dest: "generated/vendor/dat-gui@0.5.0/dat-gui.js"
+          },
+          {
+            src: "bower_components/dat-gui/build/dat.gui.min.js",
+            dest: "generated/vendor/dat-gui@0.5.0/dat-gui.min.js"
+          },
+          {
             expand: true,
             cwd: "museum/d3@3.5.5",
             src: ["**"],
@@ -184,6 +196,18 @@ module.exports = function(grunt) {
           {
             src: "bower_components/threejs/build/three.min.js",
             dest: "generated/vendor/threejs@0.72.0/build/three.min.js"
+          },
+          {
+            src: "museum/two@0.5.0/two.d.ts",
+            dest: "generated/vendor/two@0.5.0/two.d.ts"
+          },
+          {
+            src: "museum/two@0.5.0/two.js",
+            dest: "generated/vendor/two@0.5.0/two.js"
+          },
+          {
+            src: "museum/two@0.5.0/two.min.js",
+            dest: "generated/vendor/two@0.5.0/two.min.js"
           },
           {
             expand: true,
@@ -358,6 +382,18 @@ module.exports = function(grunt) {
             dest: "dist/vendor/bootstrap"
           },
           {
+            src: "museum/dat-gui@0.5.0/dat-gui.d.ts",
+            dest: "dist/vendor/dat-gui@0.5.0/dat-gui.d.ts"
+          },
+          {
+            src: "bower_components/dat-gui/build/dat.gui.js",
+            dest: "dist/vendor/dat-gui@0.5.0/dat-gui.js"
+          },
+          {
+            src: "bower_components/dat-gui/build/dat.gui.min.js",
+            dest: "dist/vendor/dat-gui@0.5.0/dat-gui.min.js"
+          },
+          {
             expand: true,
             cwd: "museum/d3@3.5.5",
             src: ["**"],
@@ -416,6 +452,18 @@ module.exports = function(grunt) {
           {
             src: "bower_components/threejs/build/three.min.js",
             dest: "dist/vendor/threejs@0.72.0/build/three.min.js"
+          },
+          {
+            src: "museum/two@0.5.0/two.d.ts",
+            dest: "dist/vendor/two@0.5.0/two.d.ts"
+          },
+          {
+            src: "museum/two@0.5.0/two.js",
+            dest: "dist/vendor/two@0.5.0/two.js"
+          },
+          {
+            src: "museum/two@0.5.0/two.min.js",
+            dest: "dist/vendor/two@0.5.0/two.min.js"
           },
           {
             expand: true,

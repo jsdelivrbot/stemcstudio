@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>ArrowConfig - davinci-eight</title>
+    <title>src/davinci-eight/visual/BoxOptions.ts - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="davinci-eight" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.200.0</em>
+            <em>API Docs for: 2.201.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -43,7 +43,6 @@
                                 <li><a href="../classes/Approximation.html">Approximation</a></li>
                                 <li><a href="../classes/Arrow.html">Arrow</a></li>
                                 <li><a href="../classes/ArrowBuilder.html">ArrowBuilder</a></li>
-                                <li><a href="../classes/ArrowConfig.html">ArrowConfig</a></li>
                                 <li><a href="../classes/ArrowGeometry.html">ArrowGeometry</a></li>
                                 <li><a href="../classes/ArrowOptions.html">ArrowOptions</a></li>
                                 <li><a href="../classes/AttribLocation.html">AttribLocation</a></li>
@@ -51,15 +50,16 @@
                                 <li><a href="../classes/Attribute.html">Attribute</a></li>
                                 <li><a href="../classes/AxialPrimitivesBuilder.html">AxialPrimitivesBuilder</a></li>
                                 <li><a href="../classes/BlendFactor.html">BlendFactor</a></li>
+                                <li><a href="../classes/BootstrapOptions.html">BootstrapOptions</a></li>
                                 <li><a href="../classes/Box.html">Box</a></li>
                                 <li><a href="../classes/BoxGeometry.html">BoxGeometry</a></li>
+                                <li><a href="../classes/BoxGeometryOptions.html">BoxGeometryOptions</a></li>
+                                <li><a href="../classes/BoxOptions.html">BoxOptions</a></li>
                                 <li><a href="../classes/CameraControls.html">CameraControls</a></li>
                                 <li><a href="../classes/Capability.html">Capability</a></li>
                                 <li><a href="../classes/CC.html">CC</a></li>
                                 <li><a href="../classes/Color.html">Color</a></li>
                                 <li><a href="../classes/ColorFacet.html">ColorFacet</a></li>
-                                <li><a href="../classes/ColorRGB.html">ColorRGB</a></li>
-                                <li><a href="../classes/ColorRGBA.html">ColorRGBA</a></li>
                                 <li><a href="../classes/ConeTransform.html">ConeTransform</a></li>
                                 <li><a href="../classes/ConicalShellBuilder.html">ConicalShellBuilder</a></li>
                                 <li><a href="../classes/ContextAttributesLogger.html">ContextAttributesLogger</a></li>
@@ -96,6 +96,7 @@
                                 <li><a href="../classes/GeometryPrimitive.html">GeometryPrimitive</a></li>
                                 <li><a href="../classes/GraphicsProgramSymbols.html">GraphicsProgramSymbols</a></li>
                                 <li><a href="../classes/HTMLScriptsMaterial.html">HTMLScriptsMaterial</a></li>
+                                <li><a href="../classes/IColor.html">IColor</a></li>
                                 <li><a href="../classes/IContextConsumer.html">IContextConsumer</a></li>
                                 <li><a href="../classes/IContextListener.html">IContextListener</a></li>
                                 <li><a href="../classes/IContextProgramConsumer.html">IContextProgramConsumer</a></li>
@@ -150,6 +151,7 @@
                                 <li><a href="../classes/Sphere.html">Sphere</a></li>
                                 <li><a href="../classes/SphereBuilder.html">SphereBuilder</a></li>
                                 <li><a href="../classes/SphereGeometry.html">SphereGeometry</a></li>
+                                <li><a href="../classes/SphereOptions.html">SphereOptions</a></li>
                                 <li><a href="../classes/Spinor2.html">Spinor2</a></li>
                                 <li><a href="../classes/Spinor3.html">Spinor3</a></li>
                                 <li><a href="../classes/SpinorE1.html">SpinorE1</a></li>
@@ -159,6 +161,7 @@
                                 <li><a href="../classes/StringIUnknownMap.html">StringIUnknownMap</a></li>
                                 <li><a href="../classes/Tetrahedron.html">Tetrahedron</a></li>
                                 <li><a href="../classes/TetrahedronGeometry.html">TetrahedronGeometry</a></li>
+                                <li><a href="../classes/TetrahedronGeometryOptions.html">TetrahedronGeometryOptions</a></li>
                                 <li><a href="../classes/TextureCoords.html">TextureCoords</a></li>
                                 <li><a href="../classes/Trail.html">Trail</a></li>
                                 <li><a href="../classes/Translation.html">Translation</a></li>
@@ -233,146 +236,69 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>ArrowConfig Class</h1>
-<div class="box meta">
+<h1 class="file-heading">File: src/davinci-eight/visual/BoxOptions.ts</h1>
 
+<div class="file">
+    <pre class="code prettyprint linenums">
+import Color from &#x27;../core/Color&#x27;
+import VectorE3 from &#x27;../math/VectorE3&#x27;
 
-        <div class="foundat">
-            Defined in: <a href="../files/src_davinci-eight_geometries_ArrowConfig.ts.html#l3"><code>src&#x2F;davinci-eight&#x2F;geometries&#x2F;ArrowConfig.ts:3</code></a>
-        </div>
+/**
+ * @class BoxOptions
+ */
+interface BoxOptions {
 
-            Module: <a href="../modules/EIGHT.html">EIGHT</a>
+    /**
+     * @attribute color
+     * @type Color
+     * @optional
+     */
+    color?: Color
 
-</div>
+    /**
+     * @attribute depth
+     * @type number
+     * @optional
+     * @default 1
+     */
+    depth?: number;
 
-    <div class="box deprecated">
-        <p>
-            <strong>Deprecated:</strong> Use ArrowBuilder instead.
-        </p>
-    </div>
+    /**
+     * @attribute height
+     * @type number
+     * @optional
+     * @default 1
+     */
+    height?: number;
 
-<div class="box intro">
-    
-</div>
+    /**
+     * @attribute offset
+     * @type VectorE3
+     * @optional
+     * @default 0
+     */
+    offset?: VectorE3;
 
+    /**
+     * @attribute position
+     * @type VectorE3
+     * @optional
+     * @default 0
+     */
+    position?: VectorE3;
 
-<div id="classdocs" class="tabview">
-    <ul class="api-class-tabs">
-        <li class="api-class-tab index"><a href="#index">Index</a></li>
+    /**
+     * @attribute width
+     * @type number
+     * @optional
+     * @default 1
+     */
+    width?: number;
+}
 
-            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
-    </ul>
+export default BoxOptions
 
-    <div>
-        <div id="index" class="api-class-tabpanel index">
-            <h2 class="off-left">Item Index</h2>
-
-
-                <div class="index-section properties">
-                    <h3>Properties</h3>
-
-                    <ul class="index-list properties">
-                            <li class="index-item property">
-                                <a href="#property_offset">offset</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_stress">stress</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_tilt">tilt</a>
-
-                            </li>
-                    </ul>
-                </div>
-
-
-        </div>
-
-
-            <div id="properties" class="api-class-tabpanel">
-                <h2 class="off-left">Properties</h2>
-
-<div id="property_offset" class="property item">
-    <h3 class="name"><code>offset</code></h3>
-    <span class="type"><a href="../classes/Geometric3.html" class="crosslink">Geometric3</a></span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_geometries_ArrowConfig.ts.html#l23"><code>src&#x2F;davinci-eight&#x2F;geometries&#x2F;ArrowConfig.ts:23</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <p><strong>Default:</strong> 0</p>
-
-
-</div>
-<div id="property_stress" class="property item">
-    <h3 class="name"><code>stress</code></h3>
-    <span class="type">Geometric3 (vector)</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_geometries_ArrowConfig.ts.html#l9"><code>src&#x2F;davinci-eight&#x2F;geometries&#x2F;ArrowConfig.ts:9</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <p><strong>Default:</strong> vector(1, 1, 1)</p>
-
-
-</div>
-<div id="property_tilt" class="property item">
-    <h3 class="name"><code>tilt</code></h3>
-    <span class="type">Geometric3 (spinor)</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_geometries_ArrowConfig.ts.html#l16"><code>src&#x2F;davinci-eight&#x2F;geometries&#x2F;ArrowConfig.ts:16</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <p><strong>Default:</strong> 1</p>
-
-
-</div>
-            </div>
-
-
-    </div>
+    </pre>
 </div>
                     </div>
                 </div>

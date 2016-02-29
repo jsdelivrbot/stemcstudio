@@ -12,22 +12,24 @@ app.factory('options', [
         VENDOR_FOLDER_MARKER
     ) {
 
-        let VERSION_ASYNC = '1.4.2'
-        let VERSION_DECKJS = '1.1.0'
-        let VERSION_DOMREADY = '1.0.0'
-        let VERSION_D3 = '3.5.5'
-        let VERSION_EIGHT = '2.102.0'
-        let VERSION_GLMATRIX = '2.3.1'
-        let VERSION_JQUERY = '2.1.4'
-        let VERSION_JSXGRAPH = '0.99.3'
-        let VERSION_REQUIREJS = '2.1.9'
-        let VERSION_STATSJS = '0.0.14'
-        let VERSION_THREEJS = '0.72.0'
-        let VERSION_UNDERSCORE = '1.8.3'
+        const VERSION_ASYNC = '1.4.2'
+        const VERSION_DAT_GUI = '0.5.0'
+        const VERSION_DECKJS = '1.1.0'
+        const VERSION_DOMREADY = '1.0.0'
+        const VERSION_D3 = '3.5.5'
+        const VERSION_EIGHT = '2.102.0'
+        const VERSION_GLMATRIX = '2.3.1'
+        const VERSION_JQUERY = '2.1.4'
+        const VERSION_JSXGRAPH = '0.99.3'
+        const VERSION_REQUIREJS = '2.1.9'
+        const VERSION_STATSJS = '0.0.14'
+        const VERSION_THREEJS = '0.72.0'
+        const VERSION_TWO = '0.5.0'
+        const VERSION_UNDERSCORE = '1.8.3'
 
         // FIXME: DRY This function is defined in constants.ts?
         function vendorFolder(packageFolder: string, version: string, subFolder: string, fileName: string): string {
-            let steps: string[] = []
+            const steps: string[] = []
             steps.push(VENDOR_FOLDER_MARKER)
             steps.push('/')
             steps.push(packageFolder)
@@ -45,6 +47,9 @@ app.factory('options', [
         // Functions defining the name of the folder and version being used.
         function async(fileName: string): string {
             return vendorFolder('async', VERSION_ASYNC, void 0, fileName)
+        }
+        function datGUI(fileName: string): string {
+            return vendorFolder('dat-gui', VERSION_DAT_GUI, void 0, fileName)
         }
         function deck(fileName: string): string {
             return vendorFolder('deck.js', VERSION_DECKJS, 'core', fileName)
@@ -76,6 +81,9 @@ app.factory('options', [
         function threejs(fileName: string): string {
             return vendorFolder('threejs', VERSION_THREEJS, 'build', fileName)
         }
+        function two(fileName: string): string {
+            return vendorFolder('two', VERSION_TWO, void 0, fileName)
+        }
         function underscore(fileName: string): string {
             return vendorFolder('underscore', VERSION_UNDERSCORE, void 0, fileName);
         }
@@ -84,7 +92,7 @@ app.factory('options', [
             {
                 name: 'requirejs',
                 moniker: 'RequireJS',
-                description: "A file and module loader for JavaScript",
+                description: "A file and module loader for JavaScript.",
                 homepage: 'http://requirejs.org',
                 version: VERSION_REQUIREJS,
                 visible: true,
@@ -96,7 +104,7 @@ app.factory('options', [
             {
                 name: 'async',
                 moniker: 'async',
-                description: "Async utilities for node and the browser",
+                description: "Async utilities for node and the browser.",
                 homepage: 'https://github.com/caolan/async',
                 version: VERSION_ASYNC,
                 visible: true,
@@ -108,7 +116,7 @@ app.factory('options', [
             {
                 name: 'gl-matrix',
                 moniker: 'gl-matrix',
-                description: "Matrix and Vector library for High Performance WebGL apps",
+                description: "Matrix and Vector library for High Performance WebGL apps.",
                 homepage: 'http://glmatrix.net',
                 version: VERSION_GLMATRIX,
                 visible: true,
@@ -118,9 +126,21 @@ app.factory('options', [
                 dependencies: {}
             },
             {
+                name: 'dat-gui',
+                moniker: 'dat.GUI',
+                description: "dat.gui is a lightweight controller library for JavaScript.",
+                homepage: 'https://github.com/dataarts/dat.gui',
+                version: VERSION_DAT_GUI,
+                visible: true,
+                dts: datGUI('dat-gui.d.ts'),
+                js: datGUI('dat-gui.js'),
+                minJs: datGUI('dat-gui.min.js'),
+                dependencies: {}
+            },
+            {
                 name: 'davinci-eight',
-                moniker: 'EIGHT',
-                description: "Mathematical Computer Graphics using WebGL",
+                moniker: 'Eight.js',
+                description: "Mathematical Computer Graphics using WebGL.",
                 homepage: 'http://www.mathdoodle.io/docs/davinci-eight/index.html',
                 version: VERSION_EIGHT,
                 visible: true,
@@ -132,7 +152,7 @@ app.factory('options', [
             {
                 name: 'd3',
                 moniker: 'd3',
-                description: "Data-Driven Documents",
+                description: "Data-Driven Documents.",
                 homepage: 'http://d3js.org',
                 version: VERSION_D3,
                 visible: true,
@@ -144,7 +164,7 @@ app.factory('options', [
             {
                 name: 'DomReady',
                 moniker: 'DomReady',
-                description: "Browser portable and safe way to know when DOM has loaded",
+                description: "Browser portable and safe way to know when DOM has loaded.",
                 homepage: '',
                 version: VERSION_DOMREADY,
                 visible: true,
@@ -156,7 +176,7 @@ app.factory('options', [
             {
                 name: 'jquery',
                 moniker: 'jQuery',
-                description: "The Write Less, Do More, JavaScript Library",
+                description: "The Write Less, Do More, JavaScript Library.",
                 homepage: 'https://jquery.com',
                 version: VERSION_JQUERY,
                 visible: true,
@@ -169,7 +189,7 @@ app.factory('options', [
             {
                 name: 'deck.js',
                 moniker: 'deckJS',
-                description: "Modern HTML Presentations",
+                description: "Modern HTML Presentations.",
                 homepage: 'http://imakewebthings.github.com/deck.js',
                 version: VERSION_DECKJS,
                 visible: true,
@@ -181,7 +201,7 @@ app.factory('options', [
             {
                 name: 'jsxgraph',
                 moniker: 'JSXGraph',
-                description: "2D Geometry, Plotting, and Visualization",
+                description: "2D Geometry, Plotting, and Visualization.",
                 homepage: 'http://jsxgraph.uni-bayreuth.de',
                 version: VERSION_JSXGRAPH,
                 visible: true,
@@ -193,7 +213,7 @@ app.factory('options', [
             {
                 name: 'stats.js',
                 moniker: 'Stats',
-                description: "JavaScript Performance Monitoring",
+                description: "JavaScript Performance Monitoring.",
                 homepage: 'https://github.com/mrdoob/stats.js',
                 version: VERSION_STATSJS,
                 visible: true,
@@ -204,8 +224,8 @@ app.factory('options', [
             },
             {
                 name: 'three.js',
-                moniker: 'THREE',
-                description: "JavaScript 3D library",
+                moniker: 'Three.js',
+                description: "JavaScript 3D library.",
                 homepage: 'http://threejs.org/',
                 version: VERSION_THREEJS,
                 visible: true,
@@ -215,9 +235,21 @@ app.factory('options', [
                 dependencies: {}
             },
             {
+                name: 'two.js',
+                moniker: 'Two.js',
+                description: "A two-dimensional drawing api for modern browsers.",
+                homepage: 'http://jonobr1.github.io/two.js/',
+                version: VERSION_TWO,
+                visible: true,
+                dts: threejs('two.d.ts'),
+                js: threejs('two.js'),
+                minJs: threejs('two.min.js'),
+                dependencies: {}
+            },
+            {
                 name: 'underscore',
                 moniker: 'underscore',
-                description: "Functional Programming Library",
+                description: "Functional Programming Library.",
                 homepage: 'http://underscorejs.org',
                 version: VERSION_UNDERSCORE,
                 visible: true,

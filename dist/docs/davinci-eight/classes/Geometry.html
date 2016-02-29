@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="davinci-eight" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.200.0</em>
+            <em>API Docs for: 2.201.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -43,7 +43,6 @@
                                 <li><a href="../classes/Approximation.html">Approximation</a></li>
                                 <li><a href="../classes/Arrow.html">Arrow</a></li>
                                 <li><a href="../classes/ArrowBuilder.html">ArrowBuilder</a></li>
-                                <li><a href="../classes/ArrowConfig.html">ArrowConfig</a></li>
                                 <li><a href="../classes/ArrowGeometry.html">ArrowGeometry</a></li>
                                 <li><a href="../classes/ArrowOptions.html">ArrowOptions</a></li>
                                 <li><a href="../classes/AttribLocation.html">AttribLocation</a></li>
@@ -51,15 +50,16 @@
                                 <li><a href="../classes/Attribute.html">Attribute</a></li>
                                 <li><a href="../classes/AxialPrimitivesBuilder.html">AxialPrimitivesBuilder</a></li>
                                 <li><a href="../classes/BlendFactor.html">BlendFactor</a></li>
+                                <li><a href="../classes/BootstrapOptions.html">BootstrapOptions</a></li>
                                 <li><a href="../classes/Box.html">Box</a></li>
                                 <li><a href="../classes/BoxGeometry.html">BoxGeometry</a></li>
+                                <li><a href="../classes/BoxGeometryOptions.html">BoxGeometryOptions</a></li>
+                                <li><a href="../classes/BoxOptions.html">BoxOptions</a></li>
                                 <li><a href="../classes/CameraControls.html">CameraControls</a></li>
                                 <li><a href="../classes/Capability.html">Capability</a></li>
                                 <li><a href="../classes/CC.html">CC</a></li>
                                 <li><a href="../classes/Color.html">Color</a></li>
                                 <li><a href="../classes/ColorFacet.html">ColorFacet</a></li>
-                                <li><a href="../classes/ColorRGB.html">ColorRGB</a></li>
-                                <li><a href="../classes/ColorRGBA.html">ColorRGBA</a></li>
                                 <li><a href="../classes/ConeTransform.html">ConeTransform</a></li>
                                 <li><a href="../classes/ConicalShellBuilder.html">ConicalShellBuilder</a></li>
                                 <li><a href="../classes/ContextAttributesLogger.html">ContextAttributesLogger</a></li>
@@ -96,6 +96,7 @@
                                 <li><a href="../classes/GeometryPrimitive.html">GeometryPrimitive</a></li>
                                 <li><a href="../classes/GraphicsProgramSymbols.html">GraphicsProgramSymbols</a></li>
                                 <li><a href="../classes/HTMLScriptsMaterial.html">HTMLScriptsMaterial</a></li>
+                                <li><a href="../classes/IColor.html">IColor</a></li>
                                 <li><a href="../classes/IContextConsumer.html">IContextConsumer</a></li>
                                 <li><a href="../classes/IContextListener.html">IContextListener</a></li>
                                 <li><a href="../classes/IContextProgramConsumer.html">IContextProgramConsumer</a></li>
@@ -150,6 +151,7 @@
                                 <li><a href="../classes/Sphere.html">Sphere</a></li>
                                 <li><a href="../classes/SphereBuilder.html">SphereBuilder</a></li>
                                 <li><a href="../classes/SphereGeometry.html">SphereGeometry</a></li>
+                                <li><a href="../classes/SphereOptions.html">SphereOptions</a></li>
                                 <li><a href="../classes/Spinor2.html">Spinor2</a></li>
                                 <li><a href="../classes/Spinor3.html">Spinor3</a></li>
                                 <li><a href="../classes/SpinorE1.html">SpinorE1</a></li>
@@ -159,6 +161,7 @@
                                 <li><a href="../classes/StringIUnknownMap.html">StringIUnknownMap</a></li>
                                 <li><a href="../classes/Tetrahedron.html">Tetrahedron</a></li>
                                 <li><a href="../classes/TetrahedronGeometry.html">TetrahedronGeometry</a></li>
+                                <li><a href="../classes/TetrahedronGeometryOptions.html">TetrahedronGeometryOptions</a></li>
                                 <li><a href="../classes/TextureCoords.html">TextureCoords</a></li>
                                 <li><a href="../classes/Trail.html">Trail</a></li>
                                 <li><a href="../classes/Translation.html">Translation</a></li>
@@ -238,7 +241,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/src_davinci-eight_core_Geometry.ts.html#l4"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;Geometry.ts:4</code></a>
+            Defined in: <a href="../files/src_davinci-eight_core_Geometry.ts.html#l5"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;Geometry.ts:5</code></a>
         </div>
 
             Module: <a href="../modules/EIGHT.html">EIGHT</a>
@@ -280,11 +283,23 @@
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_getPrincipalScale">getPrincipalScale</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_hasPrincipalScale">hasPrincipalScale</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_isLeaf">isLeaf</a>
 
                             </li>
                             <li class="index-item method">
                                 <a href="#method_removePart">removePart</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_setPrincipalScale">setPrincipalScale</a>
 
                             </li>
                     </ul>
@@ -296,6 +311,10 @@
                     <ul class="index-list properties">
                             <li class="index-item property">
                                 <a href="#property_partsLength">partsLength</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_scaling">scaling</a>
 
                             </li>
                     </ul>
@@ -331,7 +350,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_core_Geometry.ts.html#l15"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;Geometry.ts:15</code></a>
+        <a href="../files/src_davinci-eight_core_Geometry.ts.html#l23"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;Geometry.ts:23</code></a>
         </p>
 
 
@@ -393,7 +412,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_core_Geometry.ts.html#l36"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;Geometry.ts:36</code></a>
+        <a href="../files/src_davinci-eight_core_Geometry.ts.html#l44"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;Geometry.ts:44</code></a>
         </p>
 
 
@@ -455,7 +474,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_core_Geometry.ts.html#l29"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;Geometry.ts:29</code></a>
+        <a href="../files/src_davinci-eight_core_Geometry.ts.html#l37"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;Geometry.ts:37</code></a>
         </p>
 
 
@@ -493,6 +512,130 @@
 
 
 </div>
+<div id="method_getPrincipalScale" class="method item">
+    <h3 class="name"><code>getPrincipalScale</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>name</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Number</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_core_Geometry.ts.html#l67"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;Geometry.ts:67</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">name</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Number</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_hasPrincipalScale" class="method item">
+    <h3 class="name"><code>hasPrincipalScale</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>name</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_core_Geometry.ts.html#l60"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;Geometry.ts:60</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">name</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Boolean</span>:
+            </div>
+        </div>
+
+
+</div>
 <div id="method_isLeaf" class="method item">
     <h3 class="name"><code>isLeaf</code></h3>
 
@@ -511,7 +654,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_core_Geometry.ts.html#l43"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;Geometry.ts:43</code></a>
+        <a href="../files/src_davinci-eight_core_Geometry.ts.html#l51"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;Geometry.ts:51</code></a>
         </p>
 
 
@@ -557,7 +700,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_core_Geometry.ts.html#l22"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;Geometry.ts:22</code></a>
+        <a href="../files/src_davinci-eight_core_Geometry.ts.html#l30"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;Geometry.ts:30</code></a>
         </p>
 
 
@@ -595,6 +738,81 @@
 
 
 </div>
+<div id="method_setPrincipalScale" class="method item">
+    <h3 class="name"><code>setPrincipalScale</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>name</code>
+                </li>
+                <li class="arg">
+                        <code>value</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Void</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_core_Geometry.ts.html#l74"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;Geometry.ts:74</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">name</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">value</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Void</span>:
+            </div>
+        </div>
+
+
+</div>
             </div>
 
             <div id="properties" class="api-class-tabpanel">
@@ -611,7 +829,31 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_core_Geometry.ts.html#l8"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;Geometry.ts:8</code></a>
+        <a href="../files/src_davinci-eight_core_Geometry.ts.html#l9"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;Geometry.ts:9</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+<div id="property_scaling" class="property item">
+    <h3 class="name"><code>scaling</code></h3>
+    <span class="type"><a href="../classes/Matrix4.html" class="crosslink">Matrix4</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_core_Geometry.ts.html#l16"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;Geometry.ts:16</code></a>
         </p>
 
 

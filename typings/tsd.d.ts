@@ -24,3 +24,4 @@
 /// <reference path="underscore/underscore.d.ts" />
 /// <reference path="angular-ui-bootstrap/angular-ui-bootstrap.d.ts" />
 /// <reference path="jasmine/jasmine.d.ts" />
+/// <reference path="dat-gui/dat-gui.d.ts" />

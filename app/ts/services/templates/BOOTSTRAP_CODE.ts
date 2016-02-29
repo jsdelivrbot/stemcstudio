@@ -30,27 +30,32 @@ export default function(
 
     if (options.example) {
         lines.push("")
-        lines.push("const arrow = world.arrow({color: white})")
+        lines.push("const arrow = new EIGHT.Arrow({color: white})")
+        lines.push("world.add(arrow)")
     }
 
     if (options.example) {
         lines.push("")
-        lines.push("const cube = world.box({pos: vector(1.3, 0, 0), width: 0.1, color: green})")
+        lines.push("const cube = new EIGHT.Box({position: vector(1.3, 0, 0), width: 0.1, color: green})")
+        lines.push("world.add(cube)")
     }
     else {
         lines.push("")
-        lines.push("const cube = world.box()")
+        lines.push("const cube = new EIGHT.Box()")
+        lines.push("world.add(cube)")
     }
 
     if (options.example) {
         lines.push("")
-        lines.push("const ball = world.sphere({radius: 0.1, color: blue})")
+        lines.push("const ball = new EIGHT.Sphere({radius: 0.1, color: blue})")
+        lines.push("world.add(ball)")
         lines.push("const trail = new EIGHT.Trail(ball)")
     }
 
     if (options.example) {
         lines.push("")
-        lines.push("const rod = world.cylinder({pos: -1.3 * e1, radius: 0.1, color: magenta})")
+        lines.push("const rod = new EIGHT.Cylinder({position: -1.3 * e1, radius: 0.1, color: magenta})")
+        lines.push("world.add(rod)")
     }
 
     if (options.stats) {
