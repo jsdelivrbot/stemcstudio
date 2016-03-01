@@ -1,6 +1,6 @@
 {
   "name": "mathdoodle",
-  "version": "1.287.0",
+  "version": "1.288.0",
   "private": true,
   "description": "Learning Mathematics and Geometric Physics through Computational Modeling",
   "engines": {
@@ -25,6 +25,7 @@
     "karma-chrome-launcher": "^0.2.2",
     "karma-jasmine": "^0.3.6",
     "karma-jspm": "^2.0.2",
+    "plotly.js": "^1.5.2",
     "protractor": "^3.0.0",
     "systemjs-builder": "^0.15.5",
     "typescript": "1.7.5"

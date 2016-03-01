@@ -21,6 +21,7 @@ app.factory('options', [
         const VERSION_GLMATRIX = '2.3.1'
         const VERSION_JQUERY = '2.1.4'
         const VERSION_JSXGRAPH = '0.99.3'
+        const VERSION_PLOTLY = '1.5.2'
         const VERSION_REQUIREJS = '2.1.9'
         const VERSION_STATSJS = '0.0.14'
         const VERSION_THREEJS = '0.72.0'
@@ -72,6 +73,9 @@ app.factory('options', [
         function jsxgraph(fileName: string): string {
             return vendorFolder('jsxgraph', VERSION_JSXGRAPH, void 0, fileName);
         }
+        function plotly(fileName: string): string {
+            return vendorFolder('plotly', VERSION_PLOTLY, void 0, fileName)
+        }
         function requirejs(fileName: string): string {
             return vendorFolder('requirejs', VERSION_REQUIREJS, void 0, fileName);
         }
@@ -88,7 +92,8 @@ app.factory('options', [
             return vendorFolder('underscore', VERSION_UNDERSCORE, void 0, fileName);
         }
         // TODO: Make this external.
-        var _options: IOption[] = [
+        let _options: IOption[] = [
+            /*
             {
                 name: 'requirejs',
                 moniker: 'RequireJS',
@@ -101,6 +106,8 @@ app.factory('options', [
                 minJs: requirejs('require.js'),
                 dependencies: {}
             },
+            */
+            /*
             {
                 name: 'async',
                 moniker: 'async',
@@ -113,6 +120,8 @@ app.factory('options', [
                 minJs: async('async.js'),
                 dependencies: {}
             },
+            */
+            /*
             {
                 name: 'gl-matrix',
                 moniker: 'gl-matrix',
@@ -125,6 +134,7 @@ app.factory('options', [
                 minJs: glMatrix('gl-matrix-min.js'),
                 dependencies: {}
             },
+            */
             {
                 name: 'dat-gui',
                 moniker: 'dat.GUI',
@@ -211,6 +221,18 @@ app.factory('options', [
                 dependencies: {}
             },
             {
+                name: 'plot.ly',
+                moniker: 'plotly',
+                description: "The open source JavaScript graphing library that powers plotly.",
+                homepage: 'https://plot.ly/javascript/',
+                version: VERSION_PLOTLY,
+                visible: true,
+                dts: plotly('plotly.d.ts'),
+                js: plotly('plotly.js'),
+                minJs: plotly('plotly.min.js'),
+                dependencies: {}
+            },
+            {
                 name: 'stats.js',
                 moniker: 'Stats',
                 description: "JavaScript Performance Monitoring.",
@@ -241,11 +263,12 @@ app.factory('options', [
                 homepage: 'http://jonobr1.github.io/two.js/',
                 version: VERSION_TWO,
                 visible: true,
-                dts: threejs('two.d.ts'),
-                js: threejs('two.js'),
-                minJs: threejs('two.min.js'),
+                dts: two('two.d.ts'),
+                js: two('two.js'),
+                minJs: two('two.min.js'),
                 dependencies: {}
-            },
+            }
+            /*
             {
                 name: 'underscore',
                 moniker: 'underscore',
@@ -257,7 +280,8 @@ app.factory('options', [
                 js: underscore('underscore.js'),
                 minJs: underscore('underscore.min.js'),
                 dependencies: {}
-            },
+            }
+            */
         ];
 
         const that: IOptionManager = {
