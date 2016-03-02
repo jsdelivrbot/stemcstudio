@@ -41,13 +41,13 @@ function makeKey(name: string): string {
   return DOMAIN.reverse().concat(name).join('.');
 }
 
-let VENDOR_FOLDER_MARKER = '$VENDOR-FOLDER-MARKER';
+const VENDOR_FOLDER_MARKER = '$VENDOR-FOLDER-MARKER';
 
 function vendorPath(packageFolder: string, fileName: string): string {
   return VENDOR_FOLDER_MARKER + '/' + packageFolder + '/' + fileName;
 }
 
-app.constant('version', '1.288.0');
+app.constant('version', '1.289.0');
 // githubKey stores the key of the item in local storage for maintaining GitHub OAuth data.
 // Remark: This value is duplicated in views/github_callback.jade
 app.constant('githubKey', makeKey('github'));

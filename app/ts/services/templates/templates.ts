@@ -1524,6 +1524,7 @@ app.factory('templates', [
         const canvasId = 'canvas'
 
         return [
+            /*
             {
                 uuid: uuid.generate(),
                 description: "EightJS — WebGL Graphics and Geometric Algebra (Bootstrap)",
@@ -1538,9 +1539,10 @@ app.factory('templates', [
                 less: BOOTSTRAP_LESS(width, height, {stats: false}),
                 dependencies: ['davinci-eight']
             },
+            */
             {
                 uuid: uuid.generate(),
-                description: "EightJS — WebGL Graphics and Geometric Algebra (Explicit)",
+                description: "EightJS — WebGL Graphics and Geometric Algebra",
                 isCodeVisible: true,
                 isViewVisible: true,
                 focusEditor: undefined,
