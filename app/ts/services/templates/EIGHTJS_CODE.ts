@@ -43,7 +43,7 @@ export default function(width: number, height: number, canvasId: string): string
         "scene.add(cube)",
         "",
         "const grid = new EIGHT.Grid({",
-        "  drawMode: EIGHT.DrawMode.POINTS,",
+        "  drawMode: EIGHT.DrawMode.LINES,",
         "  uSegments: 4,",
         "  vSegments: 4",
         "})",
