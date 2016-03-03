@@ -1321,7 +1321,7 @@ app.factory('templates', [
             "/**\n" +
             " * The attitude of the cube.\n" +
             " */\n" +
-            "const R = new EIGHT.Spinor3()\n" +
+            "const R = EIGHT.Spinor3.one()\n" +
             "\n" +
             "init()\n" +
             "animate()\n" +
@@ -1519,8 +1519,8 @@ app.factory('templates', [
 
         var LIBS_TEMPLATE_JSXGRAPH_DEMO = "";
 
-        const width = 400
-        const height = 400
+        const width = 600
+        const height = 600
         const canvasId = 'canvas'
 
         return [
@@ -1542,17 +1542,17 @@ app.factory('templates', [
             */
             {
                 uuid: uuid.generate(),
-                description: "EightJS — WebGL Graphics and Geometric Algebra",
+                description: "EightJS — 3D Library for WebGL Graphics and Geometric Algebra",
                 isCodeVisible: true,
                 isViewVisible: true,
                 focusEditor: undefined,
                 lastKnownJs: {},
                 operatorOverloading: true,
                 html: EIGHTJS_HTML(styleMarker, scriptsMarker, libsMarker, codeMarker, width, height, canvasId),
-                code: EIGHTJS_CODE(width, height, canvasId),
+                code: EIGHTJS_CODE(width, height, canvasId, true, true),
                 libs: EIGHTJS_LIBS(),
                 less: EIGHTJS_LESS(width, height),
-                dependencies: ['stats.js', 'davinci-eight']
+                dependencies: ['stats.js', 'dat-gui', 'davinci-eight']
             },
             {
                 uuid: uuid.generate(),
@@ -1660,7 +1660,8 @@ app.factory('templates', [
                 libs: LIBS_TEMPLATE_JSXGRAPH_DEMO,
                 less: LESS_TEMPLATE_JSXGRAPH,
                 dependencies: ['jsxgraph']
-            },
+            }
+            /*
             {
                 uuid: uuid.generate(),
                 description: "ThreeJS — 3D Library for WebGL Graphics",
@@ -1675,5 +1676,6 @@ app.factory('templates', [
                 less: LESS_TEMPLATE_THREEJS,
                 dependencies: ['three.js', 'stats.js', 'davinci-eight']
             }
+            */
         ];
     }]);

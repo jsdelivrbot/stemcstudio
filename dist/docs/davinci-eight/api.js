@@ -43,6 +43,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "Drawable",
         "Duality",
         "EIGHTLogger",
+        "ErrorMode",
         "Facet",
         "FacetVisitor",
         "Frustum",
@@ -75,12 +76,12 @@ YUI.add("yuidoc-meta", function(Y) {
         "IContextProvider",
         "IDrawable",
         "IGeometric3RigidBody",
-        "IMaterial",
         "IMesh",
         "IUnknown",
         "LineMaterial",
         "LineMaterialOptions",
         "Material",
+        "MaterialBase",
         "Matrix2",
         "Matrix3",
         "Matrix4",
@@ -139,6 +140,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "TetrahedronGeometryOptions",
         "TextureCoords",
         "Trail",
+        "TrailConfig",
         "Translation",
         "UniformLocation",
         "UniformMetaInfo",
@@ -165,7 +167,6 @@ YUI.add("yuidoc-meta", function(Y) {
         "WebGLDisable",
         "WebGLEnable",
         "WebGLRenderer",
-        "World",
         "createView"
     ],
     "modules": [
@@ -182,7 +183,8 @@ YUI.add("yuidoc-meta", function(Y) {
     "allModules": [
         {
             "displayName": "controls",
-            "name": "controls"
+            "name": "controls",
+            "description": "<p>\nAllows a camera to be manipulated using mouse controls.\n</p>"
         },
         {
             "displayName": "core",

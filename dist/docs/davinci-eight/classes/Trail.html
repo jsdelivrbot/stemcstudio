@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="davinci-eight" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.204.0</em>
+            <em>API Docs for: 2.206.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -81,6 +81,7 @@
                                 <li><a href="../classes/DrawMode.html">DrawMode</a></li>
                                 <li><a href="../classes/Duality.html">Duality</a></li>
                                 <li><a href="../classes/EIGHTLogger.html">EIGHTLogger</a></li>
+                                <li><a href="../classes/ErrorMode.html">ErrorMode</a></li>
                                 <li><a href="../classes/Facet.html">Facet</a></li>
                                 <li><a href="../classes/FacetVisitor.html">FacetVisitor</a></li>
                                 <li><a href="../classes/Frustum.html">Frustum</a></li>
@@ -113,12 +114,12 @@
                                 <li><a href="../classes/IContextProvider.html">IContextProvider</a></li>
                                 <li><a href="../classes/IDrawable.html">IDrawable</a></li>
                                 <li><a href="../classes/IGeometric3RigidBody.html">IGeometric3RigidBody</a></li>
-                                <li><a href="../classes/IMaterial.html">IMaterial</a></li>
                                 <li><a href="../classes/IMesh.html">IMesh</a></li>
                                 <li><a href="../classes/IUnknown.html">IUnknown</a></li>
                                 <li><a href="../classes/LineMaterial.html">LineMaterial</a></li>
                                 <li><a href="../classes/LineMaterialOptions.html">LineMaterialOptions</a></li>
                                 <li><a href="../classes/Material.html">Material</a></li>
+                                <li><a href="../classes/MaterialBase.html">MaterialBase</a></li>
                                 <li><a href="../classes/Matrix2.html">Matrix2</a></li>
                                 <li><a href="../classes/Matrix3.html">Matrix3</a></li>
                                 <li><a href="../classes/Matrix4.html">Matrix4</a></li>
@@ -177,6 +178,7 @@
                                 <li><a href="../classes/TetrahedronGeometryOptions.html">TetrahedronGeometryOptions</a></li>
                                 <li><a href="../classes/TextureCoords.html">TextureCoords</a></li>
                                 <li><a href="../classes/Trail.html">Trail</a></li>
+                                <li><a href="../classes/TrailConfig.html">TrailConfig</a></li>
                                 <li><a href="../classes/Translation.html">Translation</a></li>
                                 <li><a href="../classes/UniformLocation.html">UniformLocation</a></li>
                                 <li><a href="../classes/UniformMetaInfo.html">UniformMetaInfo</a></li>
@@ -203,7 +205,6 @@
                                 <li><a href="../classes/WebGLDisable.html">WebGLDisable</a></li>
                                 <li><a href="../classes/WebGLEnable.html">WebGLEnable</a></li>
                                 <li><a href="../classes/WebGLRenderer.html">WebGLRenderer</a></li>
-                                <li><a href="../classes/World.html">World</a></li>
                             </ul>
                 
                 
@@ -355,6 +356,10 @@ Mesh to be drawn in its historical configuration.</p>
                             </li>
                             <li class="index-item method">
                                 <a href="#method_draw">draw</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_erase">erase</a>
 
                             </li>
                             <li class="index-item method inherited inherited">
@@ -520,7 +525,7 @@ Notifies this instance that something is referencing it.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_visual_Trail.ts.html#l105"><code>src&#x2F;davinci-eight&#x2F;visual&#x2F;Trail.ts:105</code></a>
+        <a href="../files/src_davinci-eight_visual_Trail.ts.html#l118"><code>src&#x2F;davinci-eight&#x2F;visual&#x2F;Trail.ts:118</code></a>
         </p>
 
 
@@ -547,6 +552,47 @@ Notifies this instance that something is referencing it.
                 </li>
             </ul>
         </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Void</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_erase" class="method item">
+    <h3 class="name"><code>erase</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Void</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_visual_Trail.ts.html#l87"><code>src&#x2F;davinci-eight&#x2F;visual&#x2F;Trail.ts:87</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Erases the trail history.</p>
+
+    </div>
+
 
         <div class="returns">
             <h4>Returns:</h4>
@@ -623,7 +669,7 @@ Notifies this instance that something is dereferencing it.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_visual_Trail.ts.html#l87"><code>src&#x2F;davinci-eight&#x2F;visual&#x2F;Trail.ts:87</code></a>
+        <a href="../files/src_davinci-eight_visual_Trail.ts.html#l98"><code>src&#x2F;davinci-eight&#x2F;visual&#x2F;Trail.ts:98</code></a>
         </p>
 
 
@@ -653,7 +699,7 @@ Notifies this instance that something is dereferencing it.
 
 <div id="property_config" class="property item">
     <h3 class="name"><code>config</code></h3>
-    <span class="type">TrailConfig</span>
+    <span class="type"><a href="../classes/TrailConfig.html" class="crosslink">TrailConfig</a></span>
 
 
 
