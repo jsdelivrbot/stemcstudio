@@ -149,6 +149,7 @@ declare module EIGHT {
     vertexShaderSrc: string
     fragmentShaderSrc: string
     getAttribLocation(name: string): number
+    getUniformLocation(name: string): UniformLocation
     use(): void
   }
 
@@ -920,12 +921,24 @@ declare module EIGHT {
     one(): Matrix4;
 
     reflection(n: VectorE3): Matrix3;
+    rotate(spinor: SpinorE2): Matrix3;
+    rotation(spinor: SpinorE2): Matrix3;
     row(i: number): number[];
     scale(alpha: number): Matrix3;
     set(m11: number, m12: number, m13: number, m21: number, m22: number, m23: number, m31: number, m32: number, m33: number): Matrix3;
     sub(rhs: Matrix3): Matrix3;
     toString(): string;
     transpose(): Matrix3;
+    /**
+     * Sets the target to the homogeneous translation matrix,
+     *
+     * -         -
+     * |1  0  a.x|
+     * |0  1  a.y|
+     * |0  0  1  |
+     * -         -
+     */
+    translation(a: VectorE2): Matrix3;
     zero(): Matrix3;
 
     /**
@@ -938,6 +951,14 @@ declare module EIGHT {
      */
     static one(): Matrix3;
     static reflection(n: VectorE2): Matrix3;
+    /**
+     * Generates the homogeneous (3x3) matrix corresponding to the 2D rotation given by the spinor.
+     */
+    static rotation(s: SpinorE2): Matrix3;
+    /**
+     * Generates the homogeneous (3x3) matrix corresponding to the 2D translation given by the vector.
+     */
+    static translation(a: VectorE2): Matrix3;
     static zero(): Matrix3;
   }
 
@@ -1549,9 +1570,10 @@ declare module EIGHT {
     static zero: Geometric2;
 
     /**
-     * The identity element for multiplication, <b>1</b>.
+     * The identity element for multiplication, 1.
+     * This method creates a new Geometric2 instance.
      */
-    static one: Geometric2;
+    static one(): Geometric2;
 
     /**
      * Basis vector corresponding to the <code>x</code> coordinate.
@@ -1672,6 +1694,9 @@ declare module EIGHT {
     static lerp(a: VectorE2, b: VectorE2, α: number): Vector2
     static random(): Vector2
     static vector(x: number, y: number): Vector2
+  }
+
+  class Spinor2 {
   }
 
   interface Scalar {
@@ -3001,9 +3026,17 @@ declare module EIGHT {
   }
 
   class GeometryElements extends ShareableContextConsumer implements Geometry {
+    attributes: number[];
     data: VertexArrays;
+    drawMode: DrawMode;
+    indices: number[];
     partsLength: number;
-    constructor(data: VertexArrays);
+    pointers: VertexAttribPointer[];
+    /**
+     * The total number of bytes for each element.
+     */
+    stride: number;
+    constructor(data: VertexArrays, engine: Engine);
     addPart(geometry: Geometry): void;
     removePart(index: number): void;
     getPart(index: number): Geometry;
@@ -3103,15 +3136,16 @@ declare module EIGHT {
     attributeNames: string[];
     fragmentShaderSrc: string;
     vertexShaderSrc: string;
-    constructor(vertexShaderSrc: string, fragmentShaderSrc: string, attribs?: string[]);
-    contextFree(manager: ContextProvider): void;
-    contextGain(manager: ContextProvider): void;
+    constructor(vertexShaderSrc: string, fragmentShaderSrc: string, attribs: string[], type: string, engine: Engine);
+    contextFree(contextProvider: ContextProvider): void;
+    contextGain(contextProvider: ContextProvider): void;
     contextLost(): void;
     disableAttrib(name: string): void;
     disableAttribs(): void;
     enableAttrib(name: string): void;
     enableAttribs(): void;
     getAttribLocation(name: string): number;
+    getUniformLocation(name: string): UniformLocation;
     mat2(name: string, matrix: Matrix2, transpose: boolean): void;
     mat3(name: string, matrix: Matrix3, transpose: boolean): void;
     mat4(name: string, matrix: Matrix4, transpose: boolean): void;
@@ -3119,7 +3153,6 @@ declare module EIGHT {
     uniform2f(name: string, x: number, y: number): void;
     uniform3f(name: string, x: number, y: number, z: number): void;
     uniform4f(name: string, x: number, y: number, z: number, w: number): void;
-    uniforms(): { [name: string]: UniformLocation };
     use(): void;
     vec2(name: string, vector: VectorE2): void;
     vec3(name: string, vector: VectorE3): void;

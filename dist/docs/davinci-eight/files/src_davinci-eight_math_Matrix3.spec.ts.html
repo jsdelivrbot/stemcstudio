@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>CurvePrimitive - davinci-eight</title>
+    <title>src/davinci-eight/math/Matrix3.spec.ts - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -261,595 +261,61 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>CurvePrimitive Class</h1>
-<div class="box meta">
-
-        <div class="extends">
-            Extends <a href="../classes/GeometryPrimitive.html" class="crosslink">GeometryPrimitive</a>
-        </div>
-
-        <div class="foundat">
-            Defined in: <a href="../files/src_davinci-eight_geometries_primitives_CurvePrimitive.ts.html#l38"><code>src&#x2F;davinci-eight&#x2F;geometries&#x2F;primitives&#x2F;CurvePrimitive.ts:38</code></a>
-        </div>
-
-            Module: <a href="../modules/primitives.html">primitives</a><br>
-            Parent Module: <a href="../modules/EIGHT.html">EIGHT</a>
-
-</div>
-
-
-<div class="box intro">
-    
-</div>
-
-    <div class="constructor">
-        <h2>Constructor</h2>
-<div id="method_CurvePrimitive" class="method item">
-    <h3 class="name"><code>CurvePrimitive</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>mode</code>
-                </li>
-                <li class="arg">
-                        <code>uSegments</code>
-                </li>
-                <li class="arg">
-                        <code>uClosed</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_geometries_primitives_CurvePrimitive.ts.html#l38"><code>src&#x2F;davinci-eight&#x2F;geometries&#x2F;primitives&#x2F;CurvePrimitive.ts:38</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">mode</code>
-                        <span class="type"><a href="../classes/DrawMode.html" class="crosslink">DrawMode</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">uSegments</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">uClosed</code>
-                        <span class="type">Boolean</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-    </div>
-
-<div id="classdocs" class="tabview">
-    <ul class="api-class-tabs">
-        <li class="api-class-tab index"><a href="#index">Index</a></li>
-
-            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
-            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
-    </ul>
-
-    <div>
-        <div id="index" class="api-class-tabpanel index">
-            <h2 class="off-left">Item Index</h2>
-
-                <div class="index-section methods">
-                    <h3>Methods</h3>
-
-                    <ul class="index-list methods extends">
-                            <li class="index-item method inherited">
-                                <a href="#method_toPrimitive">toPrimitive</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_toVertexArrays">toVertexArrays</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_vertex">vertex</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_vertexTransform">vertexTransform</a>
-
-                            </li>
-                    </ul>
-                </div>
-
-                <div class="index-section properties">
-                    <h3>Properties</h3>
-
-                    <ul class="index-list properties extends">
-                            <li class="index-item property private">
-                                <a href="#property__uClosed">_uClosed</a>
-
-                            </li>
-                            <li class="index-item property private">
-                                <a href="#property__uSegments">_uSegments</a>
-
-                            </li>
-                            <li class="index-item property protected inherited">
-                                <a href="#property_elements">elements</a>
-
-                            </li>
-                            <li class="index-item property private inherited">
-                                <a href="#property_mode">mode</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_uLength">uLength</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_uSegments">uSegments</a>
-
-                            </li>
-                            <li class="index-item property protected inherited">
-                                <a href="#property_vertices">vertices</a>
-
-                            </li>
-                    </ul>
-                </div>
-
-
-        </div>
-
-            <div id="methods" class="api-class-tabpanel">
-                <h2 class="off-left">Methods</h2>
-
-<div id="method_toPrimitive" class="method item inherited">
-    <h3 class="name"><code>toPrimitive</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/Primitive.html" class="crosslink">Primitive</a></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/GeometryPrimitive.html#method_toPrimitive">GeometryPrimitive</a>:
-        <a href="../files/src_davinci-eight_geometries_primitives_GeometryPrimitive.ts.html#l109"><code>src&#x2F;davinci-eight&#x2F;geometries&#x2F;primitives&#x2F;GeometryPrimitive.ts:109</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="../classes/Primitive.html" class="crosslink">Primitive</a></span>:
-            </div>
-        </div>
-
-
-</div>
-<div id="method_toVertexArrays" class="method item inherited">
-    <h3 class="name"><code>toVertexArrays</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code class="optional">[names]</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/VertexArrays.html" class="crosslink">VertexArrays</a></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/GeometryPrimitive.html#method_toVertexArrays">GeometryPrimitive</a>:
-        <a href="../files/src_davinci-eight_geometries_primitives_GeometryPrimitive.ts.html#l120"><code>src&#x2F;davinci-eight&#x2F;geometries&#x2F;primitives&#x2F;GeometryPrimitive.ts:120</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name optional">[names]</code>
-                        <span class="type">String</span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
-
-
-                    <div class="param-description">
-                        Optional. Allows the attributes to be filtered and ordered.
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="../classes/VertexArrays.html" class="crosslink">VertexArrays</a></span>:
-            </div>
-        </div>
-
-
-</div>
-<div id="method_vertex" class="method item">
-    <h3 class="name"><code>vertex</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>uIndex</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/Vertex.html" class="crosslink">Vertex</a></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_geometries_primitives_CurvePrimitive.ts.html#l99"><code>src&#x2F;davinci-eight&#x2F;geometries&#x2F;primitives&#x2F;CurvePrimitive.ts:99</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">uIndex</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="../classes/Vertex.html" class="crosslink">Vertex</a></span>:
-            </div>
-        </div>
-
-
-</div>
-<div id="method_vertexTransform" class="method item">
-    <h3 class="name"><code>vertexTransform</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>transform</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type">Void</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_geometries_primitives_CurvePrimitive.ts.html#l85"><code>src&#x2F;davinci-eight&#x2F;geometries&#x2F;primitives&#x2F;CurvePrimitive.ts:85</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">transform</code>
-                        <span class="type"><a href="../classes/Transform.html" class="crosslink">Transform</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Void</span>:
-            </div>
-        </div>
-
-
-</div>
-            </div>
-
-            <div id="properties" class="api-class-tabpanel">
-                <h2 class="off-left">Properties</h2>
-
-<div id="property__uClosed" class="property item private">
-    <h3 class="name"><code>_uClosed</code></h3>
-    <span class="type">Boolean</span>
-
-
-        <span class="flag private">private</span>
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_geometries_primitives_CurvePrimitive.ts.html#l31"><code>src&#x2F;davinci-eight&#x2F;geometries&#x2F;primitives&#x2F;CurvePrimitive.ts:31</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-
-</div>
-<div id="property__uSegments" class="property item private">
-    <h3 class="name"><code>_uSegments</code></h3>
-    <span class="type">Number</span>
-
-
-        <span class="flag private">private</span>
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_geometries_primitives_CurvePrimitive.ts.html#l24"><code>src&#x2F;davinci-eight&#x2F;geometries&#x2F;primitives&#x2F;CurvePrimitive.ts:24</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-
-</div>
-<div id="property_elements" class="property item protected inherited">
-    <h3 class="name"><code>elements</code></h3>
-    <span class="type">Number</span>
-
-
-        <span class="flag protected">protected</span>
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/GeometryPrimitive.html#property_elements">GeometryPrimitive</a>:
-        <a href="../files/src_davinci-eight_geometries_primitives_GeometryPrimitive.ts.html#l69"><code>src&#x2F;davinci-eight&#x2F;geometries&#x2F;primitives&#x2F;GeometryPrimitive.ts:69</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-
-</div>
-<div id="property_mode" class="property item private inherited">
-    <h3 class="name"><code>mode</code></h3>
-    <span class="type"><a href="../classes/DrawMode.html" class="crosslink">DrawMode</a></span>
-
-
-        <span class="flag private">private</span>
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/GeometryPrimitive.html#property_mode">GeometryPrimitive</a>:
-        <a href="../files/src_davinci-eight_geometries_primitives_GeometryPrimitive.ts.html#l62"><code>src&#x2F;davinci-eight&#x2F;geometries&#x2F;primitives&#x2F;GeometryPrimitive.ts:62</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-
-</div>
-<div id="property_uLength" class="property item">
-    <h3 class="name"><code>uLength</code></h3>
-    <span class="type">Number</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_geometries_primitives_CurvePrimitive.ts.html#l71"><code>src&#x2F;davinci-eight&#x2F;geometries&#x2F;primitives&#x2F;CurvePrimitive.ts:71</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p>uLength = uSegments + 1</p>
-
-    </div>
-
-
-
-</div>
-<div id="property_uSegments" class="property item">
-    <h3 class="name"><code>uSegments</code></h3>
-    <span class="type">Number</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_geometries_primitives_CurvePrimitive.ts.html#l59"><code>src&#x2F;davinci-eight&#x2F;geometries&#x2F;primitives&#x2F;CurvePrimitive.ts:59</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-
-</div>
-<div id="property_vertices" class="property item protected inherited">
-    <h3 class="name"><code>vertices</code></h3>
-    <span class="type"><a href="../classes/Vertex.html" class="crosslink">Vertex</a></span>
-
-
-        <span class="flag protected">protected</span>
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/GeometryPrimitive.html#property_vertices">GeometryPrimitive</a>:
-        <a href="../files/src_davinci-eight_geometries_primitives_GeometryPrimitive.ts.html#l76"><code>src&#x2F;davinci-eight&#x2F;geometries&#x2F;primitives&#x2F;GeometryPrimitive.ts:76</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-
-</div>
-            </div>
-
-
-    </div>
+<h1 class="file-heading">File: src/davinci-eight/math/Matrix3.spec.ts</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+import Matrix3 from &#x27;./Matrix3&#x27;
+import Vector2 from &#x27;./Vector2&#x27;
+import Vector3 from &#x27;./Vector3&#x27;
+
+// Accept some loss of accuracy due to using Float32Array.
+/**
+ * The number of decimal places.
+ */
+const precision = 5
+
+describe(&quot;Matrix3&quot;, function() {
+  describe(&quot;elements&quot;, function() {
+    it(&quot;should be a Float32Array to support WebGL&quot;, function() {
+      const m = new Matrix3(new Float32Array([1, 0, 0, 0, 1, 0, 0, 0, 1]))
+      expect(m.elements instanceof Float32Array).toBe(true)
+    })
+  })
+  describe(&quot;translation&quot;, function() {
+    const a = Vector2.random()
+    const T = Matrix3.one().translation(a)
+    it(&quot;should set the elements correctly&quot;, function() {
+      // 1st row
+      expect(T.getElement(0, 0)).toBe(1)
+      expect(T.getElement(0, 1)).toBe(0)
+      expect(T.getElement(0, 2)).toBeCloseTo(a.x, precision)
+      // 2nd row
+      expect(T.getElement(1, 0)).toBe(0)
+      expect(T.getElement(1, 1)).toBe(1)
+      expect(T.getElement(1, 2)).toBeCloseTo(a.y, precision)
+      // 3nd row
+      expect(T.getElement(2, 0)).toBe(0)
+      expect(T.getElement(2, 1)).toBe(0)
+      expect(T.getElement(2, 2)).toBe(1)
+    })
+    it(&quot;should translate a position vector&quot;, function() {
+      // Create a random point in 2D space.
+      const point = Vector2.zero()
+      // Create the equivalent homogeneous point.
+      const x = Vector3.vector(point.x, point.y, 1)
+
+      const Tx = x.clone().applyMatrix(T)
+
+      const displacement = Tx.clone().sub(x)
+      expect(displacement.x).toBeCloseTo(a.x, precision)
+      expect(displacement.y).toBeCloseTo(a.y, precision)
+      expect(displacement.z).toBe(0)
+    })
+  })
+})
+
+    </pre>
 </div>
                     </div>
                 </div>
