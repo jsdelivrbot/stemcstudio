@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="davinci-eight" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.213.0</em>
+            <em>API Docs for: 2.216.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -221,6 +221,7 @@
                 
                 
                             <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/collections.html">collections</a></li>
                                 <li><a href="../modules/commands.html">commands</a></li>
                                 <li><a href="../modules/controls.html">controls</a></li>
                                 <li><a href="../modules/core.html">core</a></li>
@@ -435,8 +436,10 @@ export default class ShareableContextConsumer extends ShareableBase implements C
    * @return {void}
    */
   contextFree(contextProvider: ContextProvider): void {
-    this.contextProvider.release()
-    this.contextProvider = void 0
+    if (this.contextProvider) {
+      this.contextProvider.release()
+      this.contextProvider = void 0
+    }
   }
 
   /**
@@ -445,8 +448,14 @@ export default class ShareableContextConsumer extends ShareableBase implements C
    * @return {void}
    */
   contextGain(contextProvider: ContextProvider): void {
-    contextProvider.addRef()
-    this.contextProvider = contextProvider
+    if (this.contextProvider !== contextProvider) {
+      if (this.contextProvider) {
+        this.contextProvider.release()
+        this.contextProvider = void 0
+      }
+      contextProvider.addRef()
+      this.contextProvider = contextProvider
+    }
   }
 
   /**
@@ -454,8 +463,10 @@ export default class ShareableContextConsumer extends ShareableBase implements C
    * @return {void}
    */
   contextLost(): void {
-    this.contextProvider.release()
-    this.contextProvider = void 0
+    if (this.contextProvider) {
+      this.contextProvider.release()
+      this.contextProvider = void 0
+    }
   }
 
   /**
