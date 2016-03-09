@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="davinci-eight" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.216.0</em>
+            <em>API Docs for: 2.218.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -40,7 +40,6 @@
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/AbstractColor.html">AbstractColor</a></li>
                                 <li><a href="../classes/AbstractDrawable.html">AbstractDrawable</a></li>
-                                <li><a href="../classes/AbstractMaterial.html">AbstractMaterial</a></li>
                                 <li><a href="../classes/AbstractMatrix.html">AbstractMatrix</a></li>
                                 <li><a href="../classes/AbstractMesh.html">AbstractMesh</a></li>
                                 <li><a href="../classes/AmbientLight.html">AmbientLight</a></li>
@@ -128,6 +127,7 @@
                                 <li><a href="../classes/LinePoints.html">LinePoints</a></li>
                                 <li><a href="../classes/LineStrip.html">LineStrip</a></li>
                                 <li><a href="../classes/Material.html">Material</a></li>
+                                <li><a href="../classes/MaterialBase.html">MaterialBase</a></li>
                                 <li><a href="../classes/MaterialOptions.html">MaterialOptions</a></li>
                                 <li><a href="../classes/Matrix2.html">Matrix2</a></li>
                                 <li><a href="../classes/Matrix3.html">Matrix3</a></li>
@@ -273,7 +273,7 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/src_davinci-eight_core_GeometryArrays.ts.html#l58"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryArrays.ts:58</code></a>
+            Defined in: <a href="../files/src_davinci-eight_core_GeometryArrays.ts.html#l71"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryArrays.ts:71</code></a>
         </div>
 
             Module: <a href="../modules/core.html">core</a><br>
@@ -296,9 +296,6 @@
                 <li class="arg">
                         <code>engine</code>
                 </li>
-                <li class="arg">
-                        <code>level</code>
-                </li>
             </ul><span class="paren">)</span>
         </div>
 
@@ -312,7 +309,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_core_GeometryArrays.ts.html#l58"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryArrays.ts:58</code></a>
+        <a href="../files/src_davinci-eight_core_GeometryArrays.ts.html#l71"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryArrays.ts:71</code></a>
         </p>
 
 
@@ -337,21 +334,25 @@
                     </div>
 
                 </li>
-                <li class="param">
-                        <code class="param-name">level</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
             </ul>
         </div>
 
 
 
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <pre class="code prettyprint"><code> const engine = new EIGHT.Engine()
+const geometry = new EIGHT.GeometryArrays(engine)
+ geometry.drawMode = EIGHT.DrawMode.LINES
+ geometry.setAttribute('aPosition', {values: [0, 0, 1, 0, 0, 0, 0, 1], size: 2})
+ geometry.setAttribute('aColor', {values: [0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0], size: 3})
+geometry.draw(material)
+geometry.release()</code></pre>
+
+            </div>
+        </div>
 </div>
     </div>
 
@@ -536,7 +537,7 @@
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/GeometryLeaf.html#method_addPart">GeometryLeaf</a>:
-        <a href="../files/src_davinci-eight_core_GeometryLeaf.ts.html#l125"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryLeaf.ts:125</code></a>
+        <a href="../files/src_davinci-eight_core_GeometryLeaf.ts.html#l124"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryLeaf.ts:124</code></a>
         </p>
 
 
@@ -646,7 +647,7 @@ The new reference count. This value is intended to be used only for test purpose
                 ContextConsumer
             </a>
             but overwritten in
-        <a href="../files/src_davinci-eight_core_GeometryArrays.ts.html#l82"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryArrays.ts:82</code></a>
+        <a href="../files/src_davinci-eight_core_GeometryArrays.ts.html#l95"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryArrays.ts:95</code></a>
         </p>
 
 
@@ -711,7 +712,7 @@ The new reference count. This value is intended to be used only for test purpose
                 ContextConsumer
             </a>
             but overwritten in
-        <a href="../files/src_davinci-eight_core_GeometryArrays.ts.html#l92"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryArrays.ts:92</code></a>
+        <a href="../files/src_davinci-eight_core_GeometryArrays.ts.html#l105"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryArrays.ts:105</code></a>
         </p>
 
 
@@ -770,7 +771,7 @@ The new reference count. This value is intended to be used only for test purpose
                 ContextConsumer
             </a>
             but overwritten in
-        <a href="../files/src_davinci-eight_core_GeometryArrays.ts.html#l102"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryArrays.ts:102</code></a>
+        <a href="../files/src_davinci-eight_core_GeometryArrays.ts.html#l115"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryArrays.ts:115</code></a>
         </p>
 
 
@@ -820,7 +821,7 @@ The new reference count. This value is intended to be used only for test purpose
                 ShareableContextConsumer
             </a>
             but overwritten in
-        <a href="../files/src_davinci-eight_core_GeometryArrays.ts.html#l70"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryArrays.ts:70</code></a>
+        <a href="../files/src_davinci-eight_core_GeometryArrays.ts.html#l83"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryArrays.ts:83</code></a>
         </p>
 
 
@@ -885,7 +886,7 @@ The new reference count. This value is intended to be used only for test purpose
                 GeometryLeaf
             </a>
             but overwritten in
-        <a href="../files/src_davinci-eight_core_GeometryArrays.ts.html#l111"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryArrays.ts:111</code></a>
+        <a href="../files/src_davinci-eight_core_GeometryArrays.ts.html#l124"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryArrays.ts:124</code></a>
         </p>
 
 
@@ -902,7 +903,7 @@ The new reference count. This value is intended to be used only for test purpose
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">material</code>
-                        <span class="type"><a href="../classes/AbstractMaterial.html" class="crosslink">AbstractMaterial</a></span>
+                        <span class="type"><a href="../classes/Material.html" class="crosslink">Material</a></span>
 
 
                     <div class="param-description">
@@ -947,7 +948,7 @@ The new reference count. This value is intended to be used only for test purpose
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_core_GeometryArrays.ts.html#l147"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryArrays.ts:147</code></a>
+        <a href="../files/src_davinci-eight_core_GeometryArrays.ts.html#l160"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryArrays.ts:160</code></a>
         </p>
 
 
@@ -1009,7 +1010,7 @@ The new reference count. This value is intended to be used only for test purpose
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/GeometryLeaf.html#method_getPart">GeometryLeaf</a>:
-        <a href="../files/src_davinci-eight_core_GeometryLeaf.ts.html#l175"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryLeaf.ts:175</code></a>
+        <a href="../files/src_davinci-eight_core_GeometryLeaf.ts.html#l174"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryLeaf.ts:174</code></a>
         </p>
 
 
@@ -1071,7 +1072,7 @@ The new reference count. This value is intended to be used only for test purpose
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/GeometryLeaf.html#method_getPrincipalScale">GeometryLeaf</a>:
-        <a href="../files/src_davinci-eight_core_GeometryLeaf.ts.html#l202"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryLeaf.ts:202</code></a>
+        <a href="../files/src_davinci-eight_core_GeometryLeaf.ts.html#l201"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryLeaf.ts:201</code></a>
         </p>
 
 
@@ -1133,7 +1134,7 @@ The new reference count. This value is intended to be used only for test purpose
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/GeometryLeaf.html#method_hasPrincipalScale">GeometryLeaf</a>:
-        <a href="../files/src_davinci-eight_core_GeometryLeaf.ts.html#l193"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryLeaf.ts:193</code></a>
+        <a href="../files/src_davinci-eight_core_GeometryLeaf.ts.html#l192"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryLeaf.ts:192</code></a>
         </p>
 
 
@@ -1189,7 +1190,7 @@ The new reference count. This value is intended to be used only for test purpose
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/GeometryLeaf.html#method_isLeaf">GeometryLeaf</a>:
-        <a href="../files/src_davinci-eight_core_GeometryLeaf.ts.html#l94"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryLeaf.ts:94</code></a>
+        <a href="../files/src_davinci-eight_core_GeometryLeaf.ts.html#l93"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryLeaf.ts:93</code></a>
         </p>
 
 
@@ -1280,7 +1281,7 @@ The new reference count. This value is intended to be used only for test purpose
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/GeometryLeaf.html#method_removePart">GeometryLeaf</a>:
-        <a href="../files/src_davinci-eight_core_GeometryLeaf.ts.html#l166"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryLeaf.ts:166</code></a>
+        <a href="../files/src_davinci-eight_core_GeometryLeaf.ts.html#l165"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryLeaf.ts:165</code></a>
         </p>
 
 
@@ -1345,7 +1346,7 @@ The new reference count. This value is intended to be used only for test purpose
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_core_GeometryArrays.ts.html#l156"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryArrays.ts:156</code></a>
+        <a href="../files/src_davinci-eight_core_GeometryArrays.ts.html#l169"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryArrays.ts:169</code></a>
         </p>
 
 
@@ -1420,7 +1421,7 @@ The new reference count. This value is intended to be used only for test purpose
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/GeometryLeaf.html#method_setPrincipalScale">GeometryLeaf</a>:
-        <a href="../files/src_davinci-eight_core_GeometryLeaf.ts.html#l211"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryLeaf.ts:211</code></a>
+        <a href="../files/src_davinci-eight_core_GeometryLeaf.ts.html#l210"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryLeaf.ts:210</code></a>
         </p>
 
 
@@ -1713,7 +1714,7 @@ Normally, we will use gl.FLOAT for each number which takes 4 bytes.
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/ShareableContextConsumer.html#property_contextProvider">ShareableContextConsumer</a>:
-        <a href="../files/src_davinci-eight_core_ShareableContextConsumer.ts.html#l56"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;ShareableContextConsumer.ts:56</code></a>
+        <a href="../files/src_davinci-eight_core_ShareableContextConsumer.ts.html#l57"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;ShareableContextConsumer.ts:57</code></a>
         </p>
 
 
@@ -1738,7 +1739,7 @@ Normally, we will use gl.FLOAT for each number which takes 4 bytes.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_core_GeometryArrays.ts.html#l36"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryArrays.ts:36</code></a>
+        <a href="../files/src_davinci-eight_core_GeometryArrays.ts.html#l49"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryArrays.ts:49</code></a>
         </p>
 
 
@@ -1764,7 +1765,7 @@ This is currently maintained at this level because this class only supportes buf
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/GeometryLeaf.html#property_drawMode">GeometryLeaf</a>:
-        <a href="../files/src_davinci-eight_core_GeometryLeaf.ts.html#l80"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryLeaf.ts:80</code></a>
+        <a href="../files/src_davinci-eight_core_GeometryLeaf.ts.html#l79"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryLeaf.ts:79</code></a>
         </p>
 
 
@@ -1789,7 +1790,7 @@ This is currently maintained at this level because this class only supportes buf
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/ShareableContextConsumer.html#property_engine">ShareableContextConsumer</a>:
-        <a href="../files/src_davinci-eight_core_ShareableContextConsumer.ts.html#l49"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;ShareableContextConsumer.ts:49</code></a>
+        <a href="../files/src_davinci-eight_core_ShareableContextConsumer.ts.html#l50"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;ShareableContextConsumer.ts:50</code></a>
         </p>
 
 
@@ -1814,7 +1815,7 @@ This is currently maintained at this level because this class only supportes buf
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_core_GeometryArrays.ts.html#l26"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryArrays.ts:26</code></a>
+        <a href="../files/src_davinci-eight_core_GeometryArrays.ts.html#l39"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryArrays.ts:39</code></a>
         </p>
 
 
@@ -1895,7 +1896,7 @@ This property is deprecated to encourage access throught the <code>ContextProvid
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/GeometryLeaf.html#property_partsLength">GeometryLeaf</a>:
-        <a href="../files/src_davinci-eight_core_GeometryLeaf.ts.html#l102"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryLeaf.ts:102</code></a>
+        <a href="../files/src_davinci-eight_core_GeometryLeaf.ts.html#l101"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryLeaf.ts:101</code></a>
         </p>
 
 
@@ -1919,7 +1920,7 @@ This property is deprecated to encourage access throught the <code>ContextProvid
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/GeometryLeaf.html#property_scaling">GeometryLeaf</a>:
-        <a href="../files/src_davinci-eight_core_GeometryLeaf.ts.html#l114"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryLeaf.ts:114</code></a>
+        <a href="../files/src_davinci-eight_core_GeometryLeaf.ts.html#l113"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryLeaf.ts:113</code></a>
         </p>
 
 
@@ -1944,7 +1945,7 @@ This property is deprecated to encourage access throught the <code>ContextProvid
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_core_GeometryArrays.ts.html#l51"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryArrays.ts:51</code></a>
+        <a href="../files/src_davinci-eight_core_GeometryArrays.ts.html#l64"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;GeometryArrays.ts:64</code></a>
         </p>
 
 

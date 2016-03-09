@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="davinci-eight" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.216.0</em>
+            <em>API Docs for: 2.218.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -40,7 +40,6 @@
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/AbstractColor.html">AbstractColor</a></li>
                                 <li><a href="../classes/AbstractDrawable.html">AbstractDrawable</a></li>
-                                <li><a href="../classes/AbstractMaterial.html">AbstractMaterial</a></li>
                                 <li><a href="../classes/AbstractMatrix.html">AbstractMatrix</a></li>
                                 <li><a href="../classes/AbstractMesh.html">AbstractMesh</a></li>
                                 <li><a href="../classes/AmbientLight.html">AmbientLight</a></li>
@@ -128,6 +127,7 @@
                                 <li><a href="../classes/LinePoints.html">LinePoints</a></li>
                                 <li><a href="../classes/LineStrip.html">LineStrip</a></li>
                                 <li><a href="../classes/Material.html">Material</a></li>
+                                <li><a href="../classes/MaterialBase.html">MaterialBase</a></li>
                                 <li><a href="../classes/MaterialOptions.html">MaterialOptions</a></li>
                                 <li><a href="../classes/Matrix2.html">Matrix2</a></li>
                                 <li><a href="../classes/Matrix3.html">Matrix3</a></li>
@@ -291,6 +291,7 @@ function contextBuilder() {
 }
 
 /**
+ * Constructs a white light in the -e3 direction.
  * @class AmbientLight
  */
 export default class AmbientLight implements Facet {
@@ -299,8 +300,8 @@ export default class AmbientLight implements Facet {
      * @type {Color}
      */
     public color: Color;
+
     /**
-     * Constructs a white light in the -e3 direction.
      * @class AmbientLight
      * @constructor
      */
@@ -325,9 +326,9 @@ export default class AmbientLight implements Facet {
      * @chainable
      */
     setProperty(name: string, value: number[]): AmbientLight {
-        mustBeString(&#x27;name&#x27;, name, contextBuilder);
-        mustBeArray(&#x27;value&#x27;, value, contextBuilder);
-        return this;
+        mustBeString(&#x27;name&#x27;, name, contextBuilder)
+        mustBeArray(&#x27;value&#x27;, value, contextBuilder)
+        return this
     }
 
     /**
@@ -336,8 +337,8 @@ export default class AmbientLight implements Facet {
      * @return {void}
      */
     setUniforms(visitor: FacetVisitor): void {
-        var coords = [this.color.r, this.color.g, this.color.b]
-        visitor.vector3(GraphicsProgramSymbols.UNIFORM_AMBIENT_LIGHT, coords)
+        const color = this.color
+        visitor.uniform3f(GraphicsProgramSymbols.UNIFORM_AMBIENT_LIGHT, color.r, color.g, color.b)
     }
 }
 

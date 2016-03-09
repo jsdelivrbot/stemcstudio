@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="davinci-eight" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.216.0</em>
+            <em>API Docs for: 2.218.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -40,7 +40,6 @@
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/AbstractColor.html">AbstractColor</a></li>
                                 <li><a href="../classes/AbstractDrawable.html">AbstractDrawable</a></li>
-                                <li><a href="../classes/AbstractMaterial.html">AbstractMaterial</a></li>
                                 <li><a href="../classes/AbstractMatrix.html">AbstractMatrix</a></li>
                                 <li><a href="../classes/AbstractMesh.html">AbstractMesh</a></li>
                                 <li><a href="../classes/AmbientLight.html">AmbientLight</a></li>
@@ -128,6 +127,7 @@
                                 <li><a href="../classes/LinePoints.html">LinePoints</a></li>
                                 <li><a href="../classes/LineStrip.html">LineStrip</a></li>
                                 <li><a href="../classes/Material.html">Material</a></li>
+                                <li><a href="../classes/MaterialBase.html">MaterialBase</a></li>
                                 <li><a href="../classes/MaterialOptions.html">MaterialOptions</a></li>
                                 <li><a href="../classes/Matrix2.html">Matrix2</a></li>
                                 <li><a href="../classes/Matrix3.html">Matrix3</a></li>
@@ -269,11 +269,11 @@
 <div class="box meta">
 
         <div class="extends">
-            Extends <a href="../classes/Material.html" class="crosslink">Material</a>
+            Extends <a href="../classes/MaterialBase.html" class="crosslink">MaterialBase</a>
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/src_davinci-eight_materials_MeshNormalMaterial.ts.html#l44"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MeshNormalMaterial.ts:44</code></a>
+            Defined in: <a href="../files/src_davinci-eight_materials_MeshNormalMaterial.ts.html#l43"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MeshNormalMaterial.ts:43</code></a>
         </div>
 
             Module: <a href="../modules/materials.html">materials</a><br>
@@ -291,13 +291,7 @@
 <div id="method_MeshNormalMaterial" class="method item">
     <h3 class="name"><code>MeshNormalMaterial</code></h3>
 
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>level</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
+        <span class="paren">()</span>
 
 
 
@@ -309,7 +303,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_materials_MeshNormalMaterial.ts.html#l44"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MeshNormalMaterial.ts:44</code></a>
+        <a href="../files/src_davinci-eight_materials_MeshNormalMaterial.ts.html#l43"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MeshNormalMaterial.ts:43</code></a>
         </p>
 
 
@@ -320,22 +314,6 @@
         
     </div>
 
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">level</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
 
 
 
@@ -374,7 +352,7 @@
                                 <a href="#method_contextLost">contextLost</a>
 
                             </li>
-                            <li class="index-item method protected inherited">
+                            <li class="index-item method protected inherited inherited">
                                 <a href="#method_destructor">destructor</a>
 
                             </li>
@@ -394,12 +372,16 @@
                                 <a href="#method_enableAttribs">enableAttribs</a>
 
                             </li>
-                            <li class="index-item method inherited inherited">
+                            <li class="index-item method inherited">
                                 <a href="#method_getAttribLocation">getAttribLocation</a>
 
                             </li>
-                            <li class="index-item method inherited inherited">
+                            <li class="index-item method inherited">
                                 <a href="#method_getUniformLocation">getUniformLocation</a>
+
+                            </li>
+                            <li class="index-item method inherited">
+                                <a href="#method_hasUniformLocation">hasUniformLocation</a>
 
                             </li>
                             <li class="index-item method inherited">
@@ -419,6 +401,10 @@
 
                             </li>
                             <li class="index-item method inherited">
+                                <a href="#method_subscribe">subscribe</a>
+
+                            </li>
+                            <li class="index-item method inherited">
                                 <a href="#method_uniform1f">uniform1f</a>
 
                             </li>
@@ -434,7 +420,11 @@
                                 <a href="#method_uniform4f">uniform4f</a>
 
                             </li>
-                            <li class="index-item method inherited inherited">
+                            <li class="index-item method inherited">
+                                <a href="#method_unsubscribe">unsubscribe</a>
+
+                            </li>
+                            <li class="index-item method inherited">
                                 <a href="#method_use">use</a>
 
                             </li>
@@ -451,15 +441,15 @@
 
                             </li>
                             <li class="index-item method inherited">
-                                <a href="#method_vector2">vector2</a>
+                                <a href="#method_vector2fv">vector2fv</a>
 
                             </li>
                             <li class="index-item method inherited">
-                                <a href="#method_vector3">vector3</a>
+                                <a href="#method_vector3fv">vector3fv</a>
 
                             </li>
                             <li class="index-item method inherited">
-                                <a href="#method_vector4">vector4</a>
+                                <a href="#method_vector4fv">vector4fv</a>
 
                             </li>
                             <li class="index-item method inherited">
@@ -501,11 +491,24 @@
                                 <a href="#property_attributeNames">attributeNames</a>
 
                             </li>
-                            <li class="index-item property inherited inherited">
+                            <li class="index-item property protected inherited">
+                                <a href="#property_contextProvider">contextProvider</a>
+
+                            </li>
+                            <li class="index-item property private inherited">
+                                <a href="#property_engine">engine</a>
+
+                            </li>
+                            <li class="index-item property inherited">
                                 <a href="#property_fragmentShaderSrc">fragmentShaderSrc</a>
 
                             </li>
-                            <li class="index-item property inherited inherited">
+                            <li class="index-item property deprecated inherited">
+                                <a href="#property_gl">gl</a>
+
+                                    <span class="flag deprecated">deprecated</span>
+                            </li>
+                            <li class="index-item property inherited">
                                 <a href="#property_vertexShaderSrc">vertexShaderSrc</a>
 
                             </li>
@@ -590,7 +593,7 @@ The new reference count. This value is intended to be used only for test purpose
                 ContextConsumer
             </a>
             but overwritten in
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l171"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:171</code></a>
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l169"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:169</code></a>
         </p>
 
 
@@ -655,7 +658,7 @@ The new reference count. This value is intended to be used only for test purpose
                 ContextConsumer
             </a>
             but overwritten in
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l114"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:114</code></a>
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l112"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:112</code></a>
         </p>
 
 
@@ -714,7 +717,7 @@ The new reference count. This value is intended to be used only for test purpose
                 ContextConsumer
             </a>
             but overwritten in
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l152"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:152</code></a>
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l150"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:150</code></a>
         </p>
 
 
@@ -759,9 +762,12 @@ The new reference count. This value is intended to be used only for test purpose
 
 
     <div class="meta">
-                <p>Inherited from
-                <a href="../classes/Material.html#method_destructor">Material</a>:
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l100"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:100</code></a>
+            <p>Inherited from
+            <a href="../classes/ShareableContextConsumer.html#method_destructor">
+                ShareableContextConsumer
+            </a>
+            but overwritten in
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l98"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:98</code></a>
         </p>
 
 
@@ -822,8 +828,8 @@ The new reference count. This value is intended to be used only for test purpose
 
     <div class="meta">
                 <p>Inherited from
-                <a href="../classes/Material.html#method_disableAttrib">Material</a>:
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l308"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:308</code></a>
+                <a href="../classes/MaterialBase.html#method_disableAttrib">MaterialBase</a>:
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l306"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:306</code></a>
         </p>
 
 
@@ -878,8 +884,8 @@ The new reference count. This value is intended to be used only for test purpose
 
     <div class="meta">
                 <p>Inherited from
-                <a href="../classes/Material.html#method_disableAttribs">Material</a>:
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l320"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:320</code></a>
+                <a href="../classes/MaterialBase.html#method_disableAttribs">MaterialBase</a>:
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l318"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:318</code></a>
         </p>
 
 
@@ -924,8 +930,8 @@ The new reference count. This value is intended to be used only for test purpose
 
     <div class="meta">
                 <p>Inherited from
-                <a href="../classes/Material.html#method_enableAttrib">Material</a>:
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l281"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:281</code></a>
+                <a href="../classes/MaterialBase.html#method_enableAttrib">MaterialBase</a>:
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l279"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:279</code></a>
         </p>
 
 
@@ -980,8 +986,8 @@ The new reference count. This value is intended to be used only for test purpose
 
     <div class="meta">
                 <p>Inherited from
-                <a href="../classes/Material.html#method_enableAttribs">Material</a>:
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l293"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:293</code></a>
+                <a href="../classes/MaterialBase.html#method_enableAttribs">MaterialBase</a>:
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l291"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:291</code></a>
         </p>
 
 
@@ -1025,12 +1031,9 @@ The new reference count. This value is intended to be used only for test purpose
 
 
     <div class="meta">
-            <p>Inherited from
-            <a href="../classes/AbstractMaterial.html#method_getAttribLocation">
-                AbstractMaterial
-            </a>
-            but overwritten in
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l335"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:335</code></a>
+                <p>Inherited from
+                <a href="../classes/MaterialBase.html#method_getAttribLocation">MaterialBase</a>:
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l333"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:333</code></a>
         </p>
 
 
@@ -1092,12 +1095,9 @@ Returns <code>-1</code> if the name does not correspond to an attribute.</p>
 
 
     <div class="meta">
-            <p>Inherited from
-            <a href="../classes/AbstractMaterial.html#method_getUniformLocation">
-                AbstractMaterial
-            </a>
-            but overwritten in
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l353"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:353</code></a>
+                <p>Inherited from
+                <a href="../classes/MaterialBase.html#method_getUniformLocation">MaterialBase</a>:
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l351"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:351</code></a>
         </p>
 
 
@@ -1105,7 +1105,11 @@ Returns <code>-1</code> if the name does not correspond to an attribute.</p>
     </div>
 
     <div class="description">
-        
+        <p>
+Returns a <code>UniformLocation</code> object corresponding to the <code>uniform</code>
+parameter of the same name in the shader code. If a uniform parameter of the specified name
+does not exist, this method throws a descriptive <code>Error</code>.
+</p>
     </div>
 
         <div class="params">
@@ -1130,6 +1134,72 @@ Returns <code>-1</code> if the name does not correspond to an attribute.</p>
 
             <div class="returns-description">
                         <span class="type"><a href="../classes/UniformLocation.html" class="crosslink">UniformLocation</a></span>:
+                    <p>The location object bound to the specified name.</p>
+
+            </div>
+        </div>
+
+
+</div>
+<div id="method_hasUniformLocation" class="method item inherited">
+    <h3 class="name"><code>hasUniformLocation</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>name</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/MaterialBase.html#method_hasUniformLocation">MaterialBase</a>:
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l387"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:387</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>
+Determines whether a <code>uniform</code> with the specified <code>name</code> exists in the <code>WebGLProgram</code>.
+</p>
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">name</code>
+                        <span class="type">String</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Boolean</span>:
             </div>
         </div>
 
@@ -1164,8 +1234,8 @@ Returns <code>-1</code> if the name does not correspond to an attribute.</p>
 
     <div class="meta">
                 <p>Inherited from
-                <a href="../classes/Material.html#method_mat2">Material</a>:
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l434"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:434</code></a>
+                <a href="../classes/MaterialBase.html#method_mat2">MaterialBase</a>:
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l472"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:472</code></a>
         </p>
 
 
@@ -1252,8 +1322,8 @@ Returns <code>-1</code> if the name does not correspond to an attribute.</p>
 
     <div class="meta">
                 <p>Inherited from
-                <a href="../classes/Material.html#method_mat3">Material</a>:
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l448"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:448</code></a>
+                <a href="../classes/MaterialBase.html#method_mat3">MaterialBase</a>:
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l486"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:486</code></a>
         </p>
 
 
@@ -1340,8 +1410,8 @@ Returns <code>-1</code> if the name does not correspond to an attribute.</p>
 
     <div class="meta">
                 <p>Inherited from
-                <a href="../classes/Material.html#method_mat4">Material</a>:
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l462"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:462</code></a>
+                <a href="../classes/MaterialBase.html#method_mat4">MaterialBase</a>:
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l500"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:500</code></a>
         </p>
 
 
@@ -1444,6 +1514,86 @@ The new reference count. This value is intended to be used only for test purpose
 
 
 </div>
+<div id="method_subscribe" class="method item inherited">
+    <h3 class="name"><code>subscribe</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>engine</code>
+                </li>
+                <li class="arg">
+                        <code>synchronize</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Void</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/ShareableContextConsumer.html#method_subscribe">ShareableContextConsumer</a>:
+        <a href="../files/src_davinci-eight_core_ShareableContextConsumer.ts.html#l91"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;ShareableContextConsumer.ts:91</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>
+Instructs the consumer to subscribe to context events.
+</p>
+<p>
+This method is idempotent; calling it more than once with the same <code>Engine</code> does not change the state.
+</p>
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">engine</code>
+                        <span class="type"><a href="../classes/Engine.html" class="crosslink">Engine</a></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">synchronize</code>
+                        <span class="type">Boolean</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Void</span>:
+            </div>
+        </div>
+
+
+</div>
 <div id="method_uniform1f" class="method item inherited">
     <h3 class="name"><code>uniform1f</code></h3>
 
@@ -1470,8 +1620,8 @@ The new reference count. This value is intended to be used only for test purpose
 
     <div class="meta">
                 <p>Inherited from
-                <a href="../classes/Material.html#method_uniform1f">Material</a>:
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l376"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:376</code></a>
+                <a href="../classes/MaterialBase.html#method_uniform1f">MaterialBase</a>:
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l414"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:414</code></a>
         </p>
 
 
@@ -1548,8 +1698,8 @@ The new reference count. This value is intended to be used only for test purpose
 
     <div class="meta">
                 <p>Inherited from
-                <a href="../classes/Material.html#method_uniform2f">Material</a>:
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l389"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:389</code></a>
+                <a href="../classes/MaterialBase.html#method_uniform2f">MaterialBase</a>:
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l427"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:427</code></a>
         </p>
 
 
@@ -1639,8 +1789,8 @@ The new reference count. This value is intended to be used only for test purpose
 
     <div class="meta">
                 <p>Inherited from
-                <a href="../classes/Material.html#method_uniform3f">Material</a>:
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l403"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:403</code></a>
+                <a href="../classes/MaterialBase.html#method_uniform3f">MaterialBase</a>:
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l441"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:441</code></a>
         </p>
 
 
@@ -1743,8 +1893,8 @@ The new reference count. This value is intended to be used only for test purpose
 
     <div class="meta">
                 <p>Inherited from
-                <a href="../classes/Material.html#method_uniform4f">Material</a>:
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l418"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:418</code></a>
+                <a href="../classes/MaterialBase.html#method_uniform4f">MaterialBase</a>:
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l456"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:456</code></a>
         </p>
 
 
@@ -1822,6 +1972,74 @@ The new reference count. This value is intended to be used only for test purpose
 
 
 </div>
+<div id="method_unsubscribe" class="method item inherited">
+    <h3 class="name"><code>unsubscribe</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>synchronize</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Void</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/ShareableContextConsumer.html#method_unsubscribe">ShareableContextConsumer</a>:
+        <a href="../files/src_davinci-eight_core_ShareableContextConsumer.ts.html#l138"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;ShareableContextConsumer.ts:138</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>
+Instructs the consumer to unsubscribe from context events.
+</p>
+<p>
+This method is idempotent; calling it more than once does not change the state.
+</p>
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">synchronize</code>
+                        <span class="type">Boolean</span>
+
+
+                    <div class="param-description">
+                        <p>Triggers <code>contextFree()</code> or <code>contextLost()</code>, as appropriate.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Void</span>:
+            </div>
+        </div>
+
+
+</div>
 <div id="method_use" class="method item inherited">
     <h3 class="name"><code>use</code></h3>
 
@@ -1838,12 +2056,9 @@ The new reference count. This value is intended to be used only for test purpose
 
 
     <div class="meta">
-            <p>Inherited from
-            <a href="../classes/AbstractMaterial.html#method_use">
-                AbstractMaterial
-            </a>
-            but overwritten in
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l205"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:205</code></a>
+                <p>Inherited from
+                <a href="../classes/MaterialBase.html#method_use">MaterialBase</a>:
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l203"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:203</code></a>
         </p>
 
 
@@ -1891,8 +2106,8 @@ The new reference count. This value is intended to be used only for test purpose
 
     <div class="meta">
                 <p>Inherited from
-                <a href="../classes/Material.html#method_vec2">Material</a>:
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l476"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:476</code></a>
+                <a href="../classes/MaterialBase.html#method_vec2">MaterialBase</a>:
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l514"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:514</code></a>
         </p>
 
 
@@ -1966,8 +2181,8 @@ The new reference count. This value is intended to be used only for test purpose
 
     <div class="meta">
                 <p>Inherited from
-                <a href="../classes/Material.html#method_vec3">Material</a>:
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l489"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:489</code></a>
+                <a href="../classes/MaterialBase.html#method_vec3">MaterialBase</a>:
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l527"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:527</code></a>
         </p>
 
 
@@ -2041,8 +2256,8 @@ The new reference count. This value is intended to be used only for test purpose
 
     <div class="meta">
                 <p>Inherited from
-                <a href="../classes/Material.html#method_vec4">Material</a>:
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l502"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:502</code></a>
+                <a href="../classes/MaterialBase.html#method_vec4">MaterialBase</a>:
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l540"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:540</code></a>
         </p>
 
 
@@ -2090,8 +2305,8 @@ The new reference count. This value is intended to be used only for test purpose
 
 
 </div>
-<div id="method_vector2" class="method item inherited">
-    <h3 class="name"><code>vector2</code></h3>
+<div id="method_vector2fv" class="method item inherited">
+    <h3 class="name"><code>vector2fv</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
@@ -2116,8 +2331,8 @@ The new reference count. This value is intended to be used only for test purpose
 
     <div class="meta">
                 <p>Inherited from
-                <a href="../classes/Material.html#method_vector2">Material</a>:
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l515"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:515</code></a>
+                <a href="../classes/MaterialBase.html#method_vector2fv">MaterialBase</a>:
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l553"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:553</code></a>
         </p>
 
 
@@ -2144,7 +2359,7 @@ The new reference count. This value is intended to be used only for test purpose
                 </li>
                 <li class="param">
                         <code class="param-name">data</code>
-                        <span class="type">Number</span>
+                        <span class="type">Float32Array</span>
 
 
                     <div class="param-description">
@@ -2165,8 +2380,8 @@ The new reference count. This value is intended to be used only for test purpose
 
 
 </div>
-<div id="method_vector3" class="method item inherited">
-    <h3 class="name"><code>vector3</code></h3>
+<div id="method_vector3fv" class="method item inherited">
+    <h3 class="name"><code>vector3fv</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
@@ -2191,8 +2406,8 @@ The new reference count. This value is intended to be used only for test purpose
 
     <div class="meta">
                 <p>Inherited from
-                <a href="../classes/Material.html#method_vector3">Material</a>:
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l528"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:528</code></a>
+                <a href="../classes/MaterialBase.html#method_vector3fv">MaterialBase</a>:
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l566"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:566</code></a>
         </p>
 
 
@@ -2219,7 +2434,7 @@ The new reference count. This value is intended to be used only for test purpose
                 </li>
                 <li class="param">
                         <code class="param-name">data</code>
-                        <span class="type">Number</span>
+                        <span class="type">Float32Array</span>
 
 
                     <div class="param-description">
@@ -2240,8 +2455,8 @@ The new reference count. This value is intended to be used only for test purpose
 
 
 </div>
-<div id="method_vector4" class="method item inherited">
-    <h3 class="name"><code>vector4</code></h3>
+<div id="method_vector4fv" class="method item inherited">
+    <h3 class="name"><code>vector4fv</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
@@ -2266,8 +2481,8 @@ The new reference count. This value is intended to be used only for test purpose
 
     <div class="meta">
                 <p>Inherited from
-                <a href="../classes/Material.html#method_vector4">Material</a>:
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l541"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:541</code></a>
+                <a href="../classes/MaterialBase.html#method_vector4fv">MaterialBase</a>:
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l579"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:579</code></a>
         </p>
 
 
@@ -2294,7 +2509,7 @@ The new reference count. This value is intended to be used only for test purpose
                 </li>
                 <li class="param">
                         <code class="param-name">data</code>
-                        <span class="type">Number</span>
+                        <span class="type">Float32Array</span>
 
 
                     <div class="param-description">
@@ -2350,8 +2565,8 @@ The new reference count. This value is intended to be used only for test purpose
 
     <div class="meta">
                 <p>Inherited from
-                <a href="../classes/Material.html#method_vertexPointer">Material</a>:
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l362"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:362</code></a>
+                <a href="../classes/MaterialBase.html#method_vertexPointer">MaterialBase</a>:
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l400"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:400</code></a>
         </p>
 
 
@@ -2445,8 +2660,8 @@ The new reference count. This value is intended to be used only for test purpose
 
     <div class="meta">
                 <p>Inherited from
-                <a href="../classes/Material.html#property__attribs">Material</a>:
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l49"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:49</code></a>
+                <a href="../classes/MaterialBase.html#property__attribs">MaterialBase</a>:
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l50"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:50</code></a>
         </p>
 
 
@@ -2470,8 +2685,8 @@ The new reference count. This value is intended to be used only for test purpose
 
     <div class="meta">
                 <p>Inherited from
-                <a href="../classes/Material.html#property__attributes">Material</a>:
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l63"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:63</code></a>
+                <a href="../classes/MaterialBase.html#property__attributes">MaterialBase</a>:
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l64"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:64</code></a>
         </p>
 
 
@@ -2495,8 +2710,8 @@ The new reference count. This value is intended to be used only for test purpose
 
     <div class="meta">
                 <p>Inherited from
-                <a href="../classes/Material.html#property__fragmentShaderSrc">Material</a>:
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l42"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:42</code></a>
+                <a href="../classes/MaterialBase.html#property__fragmentShaderSrc">MaterialBase</a>:
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l43"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:43</code></a>
         </p>
 
 
@@ -2520,8 +2735,8 @@ The new reference count. This value is intended to be used only for test purpose
 
     <div class="meta">
                 <p>Inherited from
-                <a href="../classes/Material.html#property__program">Material</a>:
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l56"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:56</code></a>
+                <a href="../classes/MaterialBase.html#property__program">MaterialBase</a>:
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l57"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:57</code></a>
         </p>
 
 
@@ -2545,8 +2760,8 @@ The new reference count. This value is intended to be used only for test purpose
 
     <div class="meta">
                 <p>Inherited from
-                <a href="../classes/Material.html#property__uniforms">Material</a>:
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l70"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:70</code></a>
+                <a href="../classes/MaterialBase.html#property__uniforms">MaterialBase</a>:
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l71"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:71</code></a>
         </p>
 
 
@@ -2570,8 +2785,8 @@ The new reference count. This value is intended to be used only for test purpose
 
     <div class="meta">
                 <p>Inherited from
-                <a href="../classes/Material.html#property__vertexShaderSrc">Material</a>:
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l35"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:35</code></a>
+                <a href="../classes/MaterialBase.html#property__vertexShaderSrc">MaterialBase</a>:
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l36"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:36</code></a>
         </p>
 
 
@@ -2594,8 +2809,58 @@ The new reference count. This value is intended to be used only for test purpose
 
     <div class="meta">
                 <p>Inherited from
-                <a href="../classes/Material.html#property_attributeNames">Material</a>:
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l263"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:263</code></a>
+                <a href="../classes/MaterialBase.html#property_attributeNames">MaterialBase</a>:
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l261"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:261</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+<div id="property_contextProvider" class="property item protected inherited">
+    <h3 class="name"><code>contextProvider</code></h3>
+    <span class="type"><a href="../classes/ContextProvider.html" class="crosslink">ContextProvider</a></span>
+
+
+        <span class="flag protected">protected</span>
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/ShareableContextConsumer.html#property_contextProvider">ShareableContextConsumer</a>:
+        <a href="../files/src_davinci-eight_core_ShareableContextConsumer.ts.html#l57"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;ShareableContextConsumer.ts:57</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+<div id="property_engine" class="property item private inherited">
+    <h3 class="name"><code>engine</code></h3>
+    <span class="type"><a href="../classes/Engine.html" class="crosslink">Engine</a></span>
+
+
+        <span class="flag private">private</span>
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/ShareableContextConsumer.html#property_engine">ShareableContextConsumer</a>:
+        <a href="../files/src_davinci-eight_core_ShareableContextConsumer.ts.html#l50"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;ShareableContextConsumer.ts:50</code></a>
         </p>
 
 
@@ -2617,12 +2882,9 @@ The new reference count. This value is intended to be used only for test purpose
 
 
     <div class="meta">
-            <p>Inherited from
-            <a href="../classes/AbstractMaterial.html#property_fragmentShaderSrc">
-                AbstractMaterial
-            </a>
-            but overwritten in
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l241"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:241</code></a>
+                <p>Inherited from
+                <a href="../classes/MaterialBase.html#property_fragmentShaderSrc">MaterialBase</a>:
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l239"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:239</code></a>
         </p>
 
 
@@ -2630,6 +2892,36 @@ The new reference count. This value is intended to be used only for test purpose
 
     <div class="description">
         
+    </div>
+
+
+
+</div>
+<div id="property_gl" class="property item deprecated inherited">
+    <h3 class="name"><code>gl</code></h3>
+    <span class="type">WebGLRenderingContext</span>
+
+        <span class="flag deprecated">deprecated</span>
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/ShareableContextConsumer.html#property_gl">ShareableContextConsumer</a>:
+        <a href="../files/src_davinci-eight_core_ShareableContextConsumer.ts.html#l201"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;ShareableContextConsumer.ts:201</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>
+Provides access to the underlying WebGL context.
+</p>
+<p>
+This property is deprecated to encourage access throught the <code>ContextProvider</code>.
+</p>
     </div>
 
 
@@ -2644,12 +2936,9 @@ The new reference count. This value is intended to be used only for test purpose
 
 
     <div class="meta">
-            <p>Inherited from
-            <a href="../classes/AbstractMaterial.html#property_vertexShaderSrc">
-                AbstractMaterial
-            </a>
-            but overwritten in
-        <a href="../files/src_davinci-eight_materials_Material.ts.html#l219"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;Material.ts:219</code></a>
+                <p>Inherited from
+                <a href="../classes/MaterialBase.html#property_vertexShaderSrc">MaterialBase</a>:
+        <a href="../files/src_davinci-eight_materials_MaterialBase.ts.html#l217"><code>src&#x2F;davinci-eight&#x2F;materials&#x2F;MaterialBase.ts:217</code></a>
         </p>
 
 

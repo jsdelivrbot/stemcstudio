@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="davinci-eight" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.216.0</em>
+            <em>API Docs for: 2.218.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -40,7 +40,6 @@
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/AbstractColor.html">AbstractColor</a></li>
                                 <li><a href="../classes/AbstractDrawable.html">AbstractDrawable</a></li>
-                                <li><a href="../classes/AbstractMaterial.html">AbstractMaterial</a></li>
                                 <li><a href="../classes/AbstractMatrix.html">AbstractMatrix</a></li>
                                 <li><a href="../classes/AbstractMesh.html">AbstractMesh</a></li>
                                 <li><a href="../classes/AmbientLight.html">AmbientLight</a></li>
@@ -128,6 +127,7 @@
                                 <li><a href="../classes/LinePoints.html">LinePoints</a></li>
                                 <li><a href="../classes/LineStrip.html">LineStrip</a></li>
                                 <li><a href="../classes/Material.html">Material</a></li>
+                                <li><a href="../classes/MaterialBase.html">MaterialBase</a></li>
                                 <li><a href="../classes/MaterialOptions.html">MaterialOptions</a></li>
                                 <li><a href="../classes/Matrix2.html">Matrix2</a></li>
                                 <li><a href="../classes/Matrix3.html">Matrix3</a></li>
@@ -271,7 +271,6 @@
     <pre class="code prettyprint linenums">
 import ContextProvider from &#x27;./ContextProvider&#x27;;
 import Engine from &#x27;./Engine&#x27;;
-import incLevel from &#x27;../base/incLevel&#x27;;
 import mustBeObject from &#x27;../checks/mustBeObject&#x27;;
 import mustBeUndefined from &#x27;../checks/mustBeUndefined&#x27;;
 import ShareableContextConsumer from &#x27;./ShareableContextConsumer&#x27;;
@@ -299,7 +298,7 @@ function bufferVertexData(contextProvider: ContextProvider, buffer: WebGLBuffer,
 
 /**
  * &lt;p&gt;
- * A wrapper around a WebGLBuffer with bunding to ARRAY_BUFFER.
+ * A wrapper around a WebGLBuffer with binding to ARRAY_BUFFER.
  * &lt;/p&gt;
  *
  * @class VertexBuffer
@@ -308,11 +307,11 @@ function bufferVertexData(contextProvider: ContextProvider, buffer: WebGLBuffer,
 export default class VertexBuffer extends ShareableContextConsumer {
 
   /**
-   * @property _buffer
+   * @property webGLBuffer
    * @type WebGLBuffer
    * @private
    */
-  private _buffer: WebGLBuffer;
+  private webGLBuffer: WebGLBuffer;
 
   /**
    * @property _data
@@ -325,27 +324,23 @@ export default class VertexBuffer extends ShareableContextConsumer {
    * @class VertexBuffer
    * @constructor
    * @param engine {Engine}
-   * @param level {number}
    */
-  constructor(engine: Engine, level: number) {
-    super(&#x27;VertexBuffer&#x27;, engine, incLevel(level))
-    if (level === 0) {
-      this.synchUp()
-    }
+  constructor(engine: Engine) {
+    super(engine)
+    this.setLoggingName(&#x27;VertexBuffer&#x27;)
+    this.synchUp()
   }
 
   /**
    * @method destructor
-   * @param level {number}
+   * @param levelUp {number}
    * @return {void}
    * @protected
    */
-  protected destructor(level: number): void {
-    if (level === 0) {
-      this.cleanUp()
-    }
-    mustBeUndefined(this._type, this._buffer)
-    super.destructor(incLevel(level))
+  protected destructor(levelUp: number): void {
+    this.cleanUp()
+    mustBeUndefined(this._type, this.webGLBuffer)
+    super.destructor(levelUp + 1)
   }
 
   /**
@@ -360,20 +355,25 @@ export default class VertexBuffer extends ShareableContextConsumer {
     // But how do we know that we haven&#x27;t been unbound?
     // Centralizing in the contextProvider might help?
     this._data = data
-    bufferVertexData(this.contextProvider, this._buffer, this._data)
+    bufferVertexData(this.contextProvider, this.webGLBuffer, this._data)
   }
 
+  /**
+   * @method contextFree
+   * @param contextProvider {ContextProvider}
+   * @return {void}
+   */
   contextFree(contextProvider: ContextProvider): void {
     mustBeObject(&#x27;contextProvider&#x27;, contextProvider)
-    if (this._buffer) {
+    if (this.webGLBuffer) {
       const gl = contextProvider.gl
       if (gl) {
-        gl.deleteBuffer(this._buffer)
+        gl.deleteBuffer(this.webGLBuffer)
       }
       else {
         console.error(&#x60;${this._type} must leak WebGLBuffer because WebGLRenderingContext is &#x60; + typeof gl)
       }
-      this._buffer = void 0
+      this.webGLBuffer = void 0
     }
     else {
       // It&#x27;s a duplicate, ignore.
@@ -381,12 +381,17 @@ export default class VertexBuffer extends ShareableContextConsumer {
     super.contextFree(contextProvider)
   }
 
+  /**
+   * @method contextGain
+   * @param contextProvider {ContextProvider}
+   * @return {void}
+   */
   contextGain(contextProvider: ContextProvider): void {
     mustBeObject(&#x27;contextProvider&#x27;, contextProvider)
     const gl = contextProvider.gl
-    if (!this._buffer) {
-      this._buffer = gl.createBuffer()
-      bufferVertexData(contextProvider, this._buffer, this._data)
+    if (!this.webGLBuffer) {
+      this.webGLBuffer = gl.createBuffer()
+      bufferVertexData(contextProvider, this.webGLBuffer, this._data)
     }
     else {
       // It&#x27;s a duplicate, ignore the call.
@@ -394,8 +399,12 @@ export default class VertexBuffer extends ShareableContextConsumer {
     super.contextGain(contextProvider)
   }
 
+  /**
+   * @method contextFree
+   * @return {void}
+   */
   contextLost(): void {
-    this._buffer = void 0
+    this.webGLBuffer = void 0
     super.contextLost()
   }
 
@@ -406,7 +415,7 @@ export default class VertexBuffer extends ShareableContextConsumer {
   bind(): void {
     const gl = this.gl
     if (gl) {
-      gl.bindBuffer(gl.ARRAY_BUFFER, this._buffer)
+      gl.bindBuffer(gl.ARRAY_BUFFER, this.webGLBuffer)
     }
     else {
       console.warn(&#x60;${this._type}.bind() ignored because no context.&#x60;)

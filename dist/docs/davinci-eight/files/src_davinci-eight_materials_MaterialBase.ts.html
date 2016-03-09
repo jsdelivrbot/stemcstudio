@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>AbstractMaterial - davinci-eight</title>
+    <title>src/davinci-eight/materials/MaterialBase.ts - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="davinci-eight" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.216.0</em>
+            <em>API Docs for: 2.218.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -40,7 +40,6 @@
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/AbstractColor.html">AbstractColor</a></li>
                                 <li><a href="../classes/AbstractDrawable.html">AbstractDrawable</a></li>
-                                <li><a href="../classes/AbstractMaterial.html">AbstractMaterial</a></li>
                                 <li><a href="../classes/AbstractMatrix.html">AbstractMatrix</a></li>
                                 <li><a href="../classes/AbstractMesh.html">AbstractMesh</a></li>
                                 <li><a href="../classes/AmbientLight.html">AmbientLight</a></li>
@@ -128,6 +127,7 @@
                                 <li><a href="../classes/LinePoints.html">LinePoints</a></li>
                                 <li><a href="../classes/LineStrip.html">LineStrip</a></li>
                                 <li><a href="../classes/Material.html">Material</a></li>
+                                <li><a href="../classes/MaterialBase.html">MaterialBase</a></li>
                                 <li><a href="../classes/MaterialOptions.html">MaterialOptions</a></li>
                                 <li><a href="../classes/Matrix2.html">Matrix2</a></li>
                                 <li><a href="../classes/Matrix3.html">Matrix3</a></li>
@@ -265,566 +265,603 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>AbstractMaterial Class</h1>
-<div class="box meta">
-
-        <div class="extends">
-            Extends <a href="../classes/ContextConsumer.html" class="crosslink">ContextConsumer</a>
-        </div>
-
-        <div class="foundat">
-            Defined in: <a href="../files/src_davinci-eight_core_AbstractMaterial.ts.html#l10"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;AbstractMaterial.ts:10</code></a>
-        </div>
-
-            Module: <a href="../modules/core.html">core</a><br>
-            Parent Module: <a href="../modules/EIGHT.html">EIGHT</a>
-
-</div>
-
-
-<div class="box intro">
-    <p>
-<code>AbstractMaterial</code> is an object-oriented wrapper around a <code>WebGLProgram</code>
-<p/>
-</div>
-
-
-<div id="classdocs" class="tabview">
-    <ul class="api-class-tabs">
-        <li class="api-class-tab index"><a href="#index">Index</a></li>
-
-            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
-            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
-    </ul>
-
-    <div>
-        <div id="index" class="api-class-tabpanel index">
-            <h2 class="off-left">Item Index</h2>
-
-                <div class="index-section methods">
-                    <h3>Methods</h3>
-
-                    <ul class="index-list methods extends">
-                            <li class="index-item method inherited">
-                                <a href="#method_addRef">addRef</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_contextFree">contextFree</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_contextGain">contextGain</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_contextLost">contextLost</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_getAttribLocation">getAttribLocation</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_getUniformLocation">getUniformLocation</a>
-
-                            </li>
-                            <li class="index-item method inherited">
-                                <a href="#method_release">release</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_use">use</a>
-
-                            </li>
-                    </ul>
-                </div>
-
-                <div class="index-section properties">
-                    <h3>Properties</h3>
-
-                    <ul class="index-list properties extends">
-                            <li class="index-item property">
-                                <a href="#property_fragmentShaderSrc">fragmentShaderSrc</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_vertexShaderSrc">vertexShaderSrc</a>
-
-                            </li>
-                    </ul>
-                </div>
-
-
-        </div>
-
-            <div id="methods" class="api-class-tabpanel">
-                <h2 class="off-left">Methods</h2>
-
-<div id="method_addRef" class="method item inherited">
-    <h3 class="name"><code>addRef</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type">Number</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/Shareable.html#method_addRef">Shareable</a>:
-        <a href="../files/src_davinci-eight_core_Shareable.ts.html#l7"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;Shareable.ts:7</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>
-Increments the reference count of an Shareable instance.
-</p>
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Number</span>:
-                    <p>
-The new reference count. This value is intended to be used only for test purposes.
-</p>
-            </div>
-        </div>
-
-
-</div>
-<div id="method_contextFree" class="method item inherited">
-    <h3 class="name"><code>contextFree</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>contextProvider</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/ContextConsumer.html#method_contextFree">ContextConsumer</a>:
-        <a href="../files/src_davinci-eight_core_ContextConsumer.ts.html#l20"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;ContextConsumer.ts:20</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        Called to request the consumer to free any WebGL resources acquired and owned.
-The consumer may assume that its cached context is still valid in order
-to properly dispose of any cached resources. In the case of shared objects, this
-method may be called multiple times for what is logically the same context. In such
-cases the consumer must be idempotent and respond only to the first request.
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">contextProvider</code>
-                        <span class="type"><a href="../classes/ContextProvider.html" class="crosslink">ContextProvider</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_contextGain" class="method item inherited">
-    <h3 class="name"><code>contextGain</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>contextProvider</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/ContextConsumer.html#method_contextGain">ContextConsumer</a>:
-        <a href="../files/src_davinci-eight_core_ContextConsumer.ts.html#l32"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;ContextConsumer.ts:32</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        Called to inform the dependent of a new WebGL rendering context.
-The implementation should ignore the notification if it has already
-received the same context.
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">contextProvider</code>
-                        <span class="type"><a href="../classes/ContextProvider.html" class="crosslink">ContextProvider</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_contextLost" class="method item inherited">
-    <h3 class="name"><code>contextLost</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type">Void</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/ContextConsumer.html#method_contextLost">ContextConsumer</a>:
-        <a href="../files/src_davinci-eight_core_ContextConsumer.ts.html#l42"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;ContextConsumer.ts:42</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        Called to inform the dependent of a loss of WebGL rendering context.
-The dependent must assume that any cached context is invalid.
-The dependent must not try to use and cached context to free resources.
-The dependent should reset its state to that for which there is no context.
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Void</span>:
-            </div>
-        </div>
-
-
-</div>
-<div id="method_getAttribLocation" class="method item">
-    <h3 class="name"><code>getAttribLocation</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>name</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type">Number</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_core_AbstractMaterial.ts.html#l33"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;AbstractMaterial.ts:33</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">name</code>
-                        <span class="type">String</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Number</span>:
-            </div>
-        </div>
-
-
-</div>
-<div id="method_getUniformLocation" class="method item">
-    <h3 class="name"><code>getUniformLocation</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>name</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/UniformLocation.html" class="crosslink">UniformLocation</a></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_core_AbstractMaterial.ts.html#l40"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;AbstractMaterial.ts:40</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">name</code>
-                        <span class="type">String</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="../classes/UniformLocation.html" class="crosslink">UniformLocation</a></span>:
-            </div>
-        </div>
-
-
-</div>
-<div id="method_release" class="method item inherited">
-    <h3 class="name"><code>release</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type">Number</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/Shareable.html#method_release">Shareable</a>:
-        <a href="../files/src_davinci-eight_core_Shareable.ts.html#l18"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;Shareable.ts:18</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>
-Decrements the reference count of an Shareable instance.
-</p>
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Number</span>:
-                    <p>
-The new reference count. This value is intended to be used only for test purposes.
-</p>
-            </div>
-        </div>
-
-
-</div>
-<div id="method_use" class="method item">
-    <h3 class="name"><code>use</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type">Void</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_core_AbstractMaterial.ts.html#l47"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;AbstractMaterial.ts:47</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Void</span>:
-            </div>
-        </div>
-
-
-</div>
-            </div>
-
-            <div id="properties" class="api-class-tabpanel">
-                <h2 class="off-left">Properties</h2>
-
-<div id="property_fragmentShaderSrc" class="property item">
-    <h3 class="name"><code>fragmentShaderSrc</code></h3>
-    <span class="type">String</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_core_AbstractMaterial.ts.html#l27"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;AbstractMaterial.ts:27</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-
-</div>
-<div id="property_vertexShaderSrc" class="property item">
-    <h3 class="name"><code>vertexShaderSrc</code></h3>
-    <span class="type">String</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_core_AbstractMaterial.ts.html#l21"><code>src&#x2F;davinci-eight&#x2F;core&#x2F;AbstractMaterial.ts:21</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-
-</div>
-            </div>
-
-
-    </div>
+<h1 class="file-heading">File: src/davinci-eight/materials/MaterialBase.ts</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+import AttribLocation from &#x27;../core/AttribLocation&#x27;;
+import config from &#x27;../core&#x27;;
+import ContextProvider from &#x27;../core/ContextProvider&#x27;;
+import incLevel from &#x27;../base/incLevel&#x27;;
+import isDefined from &#x27;../checks/isDefined&#x27;;
+import isString from &#x27;../checks/isString&#x27;;
+import isNull from &#x27;../checks/isNull&#x27;;
+import makeWebGLProgram from &#x27;../core/makeWebGLProgram&#x27;;
+import Material from &#x27;../core/Material&#x27;
+import Engine from &#x27;../core/Engine&#x27;;
+import ErrorMode from &#x27;../core/ErrorMode&#x27;;
+import Matrix2 from &#x27;../math/Matrix2&#x27;;
+import Matrix3 from &#x27;../math/Matrix3&#x27;;
+import Matrix4 from &#x27;../math/Matrix4&#x27;;
+import mustBeArray from &#x27;../checks/mustBeArray&#x27;;
+import mustBeString from &#x27;../checks/mustBeString&#x27;;
+import mustBeUndefined from &#x27;../checks/mustBeUndefined&#x27;;
+import readOnly from &#x27;../i18n/readOnly&#x27;;
+import ShareableContextConsumer from &#x27;../core/ShareableContextConsumer&#x27;;
+import UniformLocation from &#x27;../core/UniformLocation&#x27;;
+import VectorE2 from &#x27;../math/VectorE2&#x27;;
+import VectorE3 from &#x27;../math/VectorE3&#x27;;
+import VectorE4 from &#x27;../math/VectorE4&#x27;;
+
+/**
+ * @module EIGHT
+ * @submodule materials
+ */
+
+/**
+ * @class MaterialBase
+ * @extends ShareableContextConsumer
+ */
+export default class MaterialBase extends ShareableContextConsumer implements Material {
+
+  /**
+   * @property _vertexShaderSrc
+   * @type string
+   * @private
+   */
+  private _vertexShaderSrc: string
+
+  /**
+   * @property _fragmentShaderSrc
+   * @type string
+   * @private
+   */
+  private _fragmentShaderSrc: string
+
+  /**
+   * @property _attribs
+   * @type string[]
+   * @private
+   */
+  private _attribs: string[]
+
+  /**
+   * @property _program
+   * @type WebGLProgram
+   * @private
+   */
+  private _program: WebGLProgram
+
+  /**
+   * @property _attributes
+   * @type {[name: string]: AttribLocation}
+   * @private
+   */
+  private _attributes: { [name: string]: AttribLocation } = {}
+
+  /**
+   * @property _uniforms
+   * @type {{[name: string]: UniformLocation}}
+   * @private
+   */
+  private _uniforms: { [name: string]: UniformLocation } = {}
+
+  /**
+   * @class MaterialBase
+   * @constructor
+   * @param vertexShaderSrc {string} The vertex shader source code.
+   * @param fragmentShaderSrc {string} The fragment shader source code.
+   * @param attribs {string[]} The attribute ordering.
+   * @param engine {Engine} The &lt;code&gt;Engine&lt;/code&gt; to subscribe to or &lt;code&gt;null&lt;/code&gt; for deferred subscription.
+   */
+  constructor(vertexShaderSrc: string, fragmentShaderSrc: string, attribs: string[], engine: Engine) {
+    super(engine)
+    this.setLoggingName(&#x27;MaterialBase&#x27;)
+    if (isDefined(vertexShaderSrc) &amp;&amp; !isNull(vertexShaderSrc)) {
+      this._vertexShaderSrc = mustBeString(&#x27;vertexShaderSrc&#x27;, vertexShaderSrc)
+    }
+    if (isDefined(fragmentShaderSrc) &amp;&amp; !isNull(fragmentShaderSrc)) {
+      this._fragmentShaderSrc = mustBeString(&#x27;fragmentShaderSrc&#x27;, fragmentShaderSrc)
+    }
+    this._attribs = mustBeArray(&#x27;attribs&#x27;, attribs)
+  }
+
+  /**
+   * @method destructor
+   * @param level {number}
+   * @return {void}
+   * @protected
+   */
+  protected destructor(level: number): void {
+    if (level === 0) {
+      this.cleanUp()
+    }
+    mustBeUndefined(this._type, this._program)
+    super.destructor(incLevel(level))
+  }
+
+  /**
+   * @method contextGain
+   * @param context {ContextProvider}
+   * @return {void}
+   */
+  contextGain(context: ContextProvider): void {
+    const gl = context.gl
+    if (!this._program &amp;&amp; isString(this._vertexShaderSrc) &amp;&amp; isString(this._fragmentShaderSrc)) {
+      this._program = makeWebGLProgram(gl, this._vertexShaderSrc, this._fragmentShaderSrc, this._attribs)
+      this._attributes = {}
+      this._uniforms = {}
+
+      const aLen: number = gl.getProgramParameter(this._program, gl.ACTIVE_ATTRIBUTES)
+      for (let a = 0; a &lt; aLen; a++) {
+        const attribInfo: WebGLActiveInfo = gl.getActiveAttrib(this._program, a)
+        this._attributes[attribInfo.name] = new AttribLocation(attribInfo)
+      }
+
+      const uLen: number = gl.getProgramParameter(this._program, gl.ACTIVE_UNIFORMS)
+      for (let u = 0; u &lt; uLen; u++) {
+        const uniformInfo: WebGLActiveInfo = gl.getActiveUniform(this._program, u)
+        this._uniforms[uniformInfo.name] = new UniformLocation(uniformInfo)
+      }
+
+      for (let aName in this._attributes) {
+        if (this._attributes.hasOwnProperty(aName)) {
+          this._attributes[aName].contextGain(gl, this._program);
+        }
+      }
+      for (let uName in this._uniforms) {
+        if (this._uniforms.hasOwnProperty(uName)) {
+          this._uniforms[uName].contextGain(gl, this._program);
+        }
+      }
+    }
+    super.contextGain(context)
+  }
+
+  /**
+   * @method contextLost
+   * @return {void}
+   */
+  contextLost(): void {
+    this._program = void 0
+    for (var aName in this._attributes) {
+      if (this._attributes.hasOwnProperty(aName)) {
+        this._attributes[aName].contextLost()
+      }
+    }
+    for (var uName in this._uniforms) {
+      if (this._uniforms.hasOwnProperty(uName)) {
+        this._uniforms[uName].contextLost()
+      }
+    }
+    super.contextLost()
+  }
+
+  /**
+   * @method contextFree
+   * @param context {ContextProvider}
+   * @return {void}
+   */
+  contextFree(context: ContextProvider): void {
+    if (this._program) {
+      const gl = context.gl
+      if (gl) {
+        if (!gl.isContextLost()) {
+          gl.deleteProgram(this._program)
+        }
+        else {
+          // WebGL has lost the context, effectively cleaning up everything.
+        }
+      }
+      else {
+        console.warn(&quot;memory leak: WebGLProgram has not been deleted because WebGLRenderingContext is not available anymore.&quot;)
+      }
+      this._program = void 0
+    }
+    for (let aName in this._attributes) {
+      if (this._attributes.hasOwnProperty(aName)) {
+        this._attributes[aName].contextFree()
+      }
+    }
+    for (let uName in this._uniforms) {
+      if (this._uniforms.hasOwnProperty(uName)) {
+        this._uniforms[uName].contextFree()
+      }
+    }
+    super.contextFree(context)
+  }
+
+  /**
+   * @method use
+   * @return {void}
+   */
+  use(): void {
+    const gl = this.gl
+    if (gl) {
+      gl.useProgram(this._program)
+    }
+    else {
+      console.warn(&#x60;${this._type}.use() missing WebGL rendering context.&#x60;)
+    }
+  }
+
+  /**
+   * @property vertexShaderSrc
+   * @type string
+   */
+  get vertexShaderSrc(): string {
+    return this._vertexShaderSrc
+  }
+  set vertexShaderSrc(vertexShaderSrc: string) {
+    this._vertexShaderSrc = mustBeString(&#x27;vertexShaderSrc&#x27;, vertexShaderSrc)
+    if (this.contextProvider) {
+      this.contextProvider.addRef()
+      const contextProvider = this.contextProvider
+      try {
+        this.contextFree(contextProvider)
+        this.contextGain(contextProvider)
+      }
+      finally {
+        contextProvider.release()
+      }
+    }
+  }
+
+  /**
+   * @property fragmentShaderSrc
+   * @type string
+   */
+  get fragmentShaderSrc(): string {
+    return this._fragmentShaderSrc
+  }
+  set fragmentShaderSrc(fragmentShaderSrc: string) {
+    this._fragmentShaderSrc = mustBeString(&#x27;fragmentShaderSrc&#x27;, fragmentShaderSrc)
+    if (this.contextProvider) {
+      this.contextProvider.addRef()
+      const contextProvider = this.contextProvider
+      try {
+        this.contextFree(contextProvider)
+        this.contextGain(contextProvider)
+      }
+      finally {
+        contextProvider.release()
+      }
+    }
+  }
+
+  /**
+   * @property attributeNames
+   * @type string[]
+   * @readOnly
+   */
+  get attributeNames(): string[] {
+    const attributes = this._attributes
+    if (attributes) {
+      return Object.keys(attributes)
+    }
+    else {
+      return void 0
+    }
+  }
+  set attributeNames(unused) {
+    throw new Error(readOnly(&#x27;attributeNames&#x27;).message)
+  }
+
+  /**
+   * @method enableAttrib
+   * @param name {string}
+   * @return {void}
+   */
+  enableAttrib(name: string): void {
+    const attribLoc = this._attributes[name]
+    if (attribLoc) {
+      attribLoc.enable()
+    }
+  }
+
+  /**
+   * @method enableAttribs
+   * @return {void}
+   */
+  enableAttribs(): void {
+    const attribLocations = this._attributes
+    if (attribLocations) {
+      // TODO: Store loactions as a plain array in order to avoid temporaries (aNames)
+      const aNames = Object.keys(attribLocations)
+      for (var i = 0, iLength = aNames.length; i &lt; iLength; i++) {
+        attribLocations[aNames[i]].enable()
+      }
+    }
+  }
+
+  /**
+   * @method disableAttrib
+   * @param name {string}
+   * @return {void}
+   */
+  disableAttrib(name: string): void {
+    const attribLoc = this._attributes[name]
+    if (attribLoc) {
+      attribLoc.disable()
+    }
+  }
+
+  /**
+   * @method disableAttribs
+   * @return {void}
+   */
+  disableAttribs(): void {
+    const attribLocations = this._attributes
+    if (attribLocations) {
+      // TODO: Store loactions as a plain array in order to avoid temporaries (aNames)
+      const aNames = Object.keys(attribLocations)
+      for (var i = 0, iLength = aNames.length; i &lt; iLength; i++) {
+        attribLocations[aNames[i]].disable()
+      }
+    }
+  }
+
+  /**
+   * Returns the location (index) of the attribute with the specified name.
+   * Returns &lt;code&gt;-1&lt;/code&gt; if the name does not correspond to an attribute.
+   *
+   * @method getAttribLocation
+   * @param name {string}
+   * @return {number}
+   */
+  getAttribLocation(name: string): number {
+    const attribLoc = this._attributes[name]
+    if (attribLoc) {
+      return attribLoc.index
+    }
+    else {
+      return -1
+    }
+  }
+
+  /**
+   * &lt;p&gt;
+   * Returns a &lt;code&gt;UniformLocation&lt;/code&gt; object corresponding to the &lt;code&gt;uniform&lt;/code&gt;
+   * parameter of the same name in the shader code. If a uniform parameter of the specified name
+   * does not exist, this method throws a descriptive &lt;code&gt;Error&lt;/code&gt;.
+   * &lt;/p&gt;
+   *
+   * @method getUniformLocation
+   * @param name {string}
+   * @return {UniformLocation} The location object bound to the specified name.
+   */
+  getUniformLocation(name: string): UniformLocation {
+    const uniforms = this._uniforms
+    if (uniforms[name]) {
+      return this._uniforms[name]
+    }
+    else {
+      const msg = &#x60;uniform ${name} not found.&#x60;
+      switch (config.errorMode) {
+        case ErrorMode.WARNME: {
+          console.warn(msg)
+          return new UniformLocation(null)
+        }
+        case ErrorMode.IGNORE: {
+          return new UniformLocation(null)
+        }
+        default: {
+          // In STRICT mode, throwing an Error is consistent with the the other modes
+          // returning a null-like UniformLocation. Returning void 0 would be inconsistent
+          // even though it allows testing for the existence of a uniform. 
+          throw new Error(msg)
+        }
+      }
+    }
+  }
+
+  /**
+   * &lt;p&gt;
+   * Determines whether a &lt;code&gt;uniform&lt;/code&gt; with the specified &lt;code&gt;name&lt;/code&gt; exists in the &lt;code&gt;WebGLProgram&lt;/code&gt;.
+   * &lt;/p&gt;
+   *
+   * @method hasUniformLocation
+   * @param name {string}
+   * @return {boolean}
+   */
+  hasUniformLocation(name: string): boolean {
+    return isDefined(this._uniforms[name])
+  }
+
+  /**
+   * @method vertexPointer
+   * @param name {string}
+   * @param size {number}
+   * @param normalized {boolean}
+   * @param stride {number}
+   * @param offset {number}
+   * @return {void}
+   */
+  vertexPointer(name: string, size: number, normalized: boolean, stride: number, offset: number): void {
+    const attributeLocation = this._attributes[name]
+    attributeLocation.vertexPointer(size, normalized, stride, offset)
+  }
+
+  /**
+   * @method uniform1f
+   * @param name {string}
+   * @param x {number}
+   * @return {void}
+   */
+  uniform1f(name: string, x: number): void {
+    const uniformLoc = this._uniforms[name]
+    if (uniformLoc) {
+      uniformLoc.uniform1f(x)
+    }
+  }
+
+  /**
+   * @method uniform2f
+   * @param name {string}
+   * @param x {number}
+   * @param y {number}
+   * @return {void}
+   */
+  uniform2f(name: string, x: number, y: number): void {
+    const uniformLoc = this._uniforms[name]
+    if (uniformLoc) {
+      uniformLoc.uniform2f(x, y)
+    }
+  }
+
+  /**
+   * @method uniform3f
+   * @param name {string}
+   * @param x {number}
+   * @param y {number}
+   * @param z {number}
+   * @return {void}
+   */
+  uniform3f(name: string, x: number, y: number, z: number): void {
+    const uniformLoc = this._uniforms[name]
+    if (uniformLoc) {
+      uniformLoc.uniform3f(x, y, z)
+    }
+  }
+
+  /**
+   * @method uniform4f
+   * @param name {string}
+   * @param x {number}
+   * @param y {number}
+   * @param z {number}
+   * @param w {number}
+   * @return {void}
+   */
+  uniform4f(name: string, x: number, y: number, z: number, w: number): void {
+    const uniformLoc = this._uniforms[name]
+    if (uniformLoc) {
+      uniformLoc.uniform4f(x, y, z, w)
+    }
+  }
+
+  /**
+   * @method mat2
+   * @param name {string}
+   * @param matrix {Matrix2}
+   * @param transpose {boolean}
+   * @return {void}
+   */
+  mat2(name: string, matrix: Matrix2, transpose: boolean): void {
+    const uniformLoc = this._uniforms[name]
+    if (uniformLoc) {
+      uniformLoc.matrix2fv(transpose, matrix.elements)
+    }
+  }
+
+  /**
+   * @method mat3
+   * @param name {string}
+   * @param matrix {Matrix3}
+   * @param transpose {boolean}
+   * @return {void}
+   */
+  mat3(name: string, matrix: Matrix3, transpose: boolean) {
+    const uniformLoc = this._uniforms[name]
+    if (uniformLoc) {
+      uniformLoc.matrix3fv(transpose, matrix.elements)
+    }
+  }
+
+  /**
+   * @method mat4
+   * @param name {string}
+   * @param matrix {Matrix4}
+   * @param transpose {boolean}
+   * @return {void}
+   */
+  mat4(name: string, matrix: Matrix4, transpose: boolean) {
+    const uniformLoc = this._uniforms[name]
+    if (uniformLoc) {
+      uniformLoc.matrix4fv(transpose, matrix.elements)
+    }
+  }
+
+  /**
+   * @method vec2
+   * @param name {string}
+   * @param vector {VectorE2}
+   * @return {void}
+   */
+  vec2(name: string, vector: VectorE2) {
+    const uniformLoc = this._uniforms[name]
+    if (uniformLoc) {
+      uniformLoc.uniform2f(vector.x, vector.y)
+    }
+  }
+
+  /**
+   * @method vec3
+   * @param name {string}
+   * @param vector {VectorE3}
+   * @return {void}
+   */
+  vec3(name: string, vector: VectorE3) {
+    const uniformLoc = this._uniforms[name]
+    if (uniformLoc) {
+      uniformLoc.uniform3f(vector.x, vector.y, vector.z)
+    }
+  }
+
+  /**
+   * @method vec4
+   * @param name {string}
+   * @param vector {VectorE4}
+   * @return {void}
+   */
+  vec4(name: string, vector: VectorE4) {
+    const uniformLoc = this._uniforms[name]
+    if (uniformLoc) {
+      uniformLoc.uniform4f(vector.x, vector.y, vector.z, vector.w)
+    }
+  }
+
+  /**
+   * @method vector2fv
+   * @param name {string}
+   * @param data {Float32Array}
+   * @return {void}
+   */
+  vector2fv(name: string, data: Float32Array): void {
+    const uniformLoc = this._uniforms[name]
+    if (uniformLoc) {
+      uniformLoc.uniform2fv(data)
+    }
+  }
+
+  /**
+   * @method vector3fv
+   * @param name {string}
+   * @param data {Float32Array}
+   * @return {void}
+   */
+  vector3fv(name: string, data: Float32Array): void {
+    const uniformLoc = this._uniforms[name]
+    if (uniformLoc) {
+      uniformLoc.uniform3fv(data)
+    }
+  }
+
+  /**
+   * @method vector4fv
+   * @param name {string}
+   * @param data {Float32Array}
+   * @return {void}
+   */
+  vector4fv(name: string, data: Float32Array): void {
+    const uniformLoc = this._uniforms[name]
+    if (uniformLoc) {
+      uniformLoc.uniform4fv(data)
+    }
+  }
+}
+
+    </pre>
 </div>
                     </div>
                 </div>

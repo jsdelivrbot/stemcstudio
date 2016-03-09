@@ -30,9 +30,9 @@ declare module EIGHT {
   class ShareableBase implements Shareable {
 
     /**
-     * type: A human-readable name for the derived class type.
+     *
      */
-    constructor(type: string, level: number);
+    constructor();
 
     /**
      * Notifies this instance that something is referencing it.
@@ -42,7 +42,12 @@ declare module EIGHT {
     /**
      *
      */
-    protected destructor(level: number): void;
+    protected destructor(levelUp: number): void;
+
+    /**
+     *
+     */
+    getLoggingName(): string;
 
     /**
      *
@@ -53,6 +58,11 @@ declare module EIGHT {
      * Notifies this instance that something is dereferencing it.
      */
     release(): number;
+
+    /**
+     *
+     */
+    protected setLoggingName(name: string): void;
   }
 
   class ShareableArray<T extends Shareable> extends ShareableBase {
@@ -61,7 +71,7 @@ declare module EIGHT {
      * Collection class for maintaining an array of types derived from Shareable.
      * Provides a safer way to maintain reference counts than a native array.
      */
-    constructor(elements: T[], level: number);
+    constructor(elements: T[]);
     forEach(callback: (value: T, index: number) => void): void;
     get(index: number): T;
     /**
@@ -150,7 +160,63 @@ declare module EIGHT {
     unbind(): void
   }
 
-  interface AbstractMaterial extends FacetVisitor, ContextConsumer {
+  /**
+   * Utility class for managing a shader uniform variable.
+   */
+  class UniformLocation implements ContextProgramConsumer {
+    constructor(info: WebGLActiveInfo);
+
+    contextFree(): void;
+    contextGain(gl: WebGLRenderingContext, program: WebGLProgram): void;
+    contextLost(): void;
+
+    /**
+     * Sets the uniform location to the value of the specified matrix.
+     */
+    matrix2fv(transpose: boolean, value: Float32Array): void;
+
+    /**
+     * Sets the uniform location to the value of the specified matrix.
+     */
+    matrix3fv(transpose: boolean, value: Float32Array): void;
+
+    /**
+     * Sets the uniform location to the value of the specified matrix.
+     */
+    matrix4fv(transpose: boolean, value: Float32Array): void;
+
+    toString(): string;
+
+    uniform1f(x: number): void;
+    uniform1fv(data: Float32Array): void;
+    uniform2f(x: number, y: number): void;
+    uniform2fv(data: Float32Array): void;
+    uniform3f(x: number, y: number, z: number): void;
+    uniform3fv(data: Float32Array): void;
+    uniform4f(x: number, y: number, z: number, w: number): void;
+    uniform4fv(data: Float32Array): void;
+  }
+
+  /**
+   *
+   */
+  interface FacetVisitor {
+    mat2(name: string, matrix: Matrix2, transpose: boolean): void;
+    mat3(name: string, matrix: Matrix3, transpose: boolean): void;
+    mat4(name: string, matrix: Matrix4, transpose: boolean): void;
+    uniform1f(name: string, x: number): void;
+    uniform2f(name: string, x: number, y: number): void;
+    uniform3f(name: string, x: number, y: number, z: number): void;
+    uniform4f(name: string, x: number, y: number, z: number, w: number): void;
+    vec2(name: string, vector: VectorE2): void;
+    vec3(name: string, vector: VectorE3): void;
+    vec4(name: string, vector: VectorE4): void;
+    vector2fv(name: string, data: Float32Array): void;
+    vector3fv(name: string, data: Float32Array): void;
+    vector4fv(name: string, data: Float32Array): void;
+  }
+
+  interface Material extends FacetVisitor, ContextConsumer {
     vertexShaderSrc: string
     fragmentShaderSrc: string
     getAttribLocation(name: string): number
@@ -163,7 +229,7 @@ declare module EIGHT {
    */
   interface PrimitiveBuffers extends Shareable {
     uuid: string;
-    bind(material: AbstractMaterial, aNameToKeyName?: { [name: string]: string }): void;
+    bind(material: Material, aNameToKeyName?: { [name: string]: string }): void;
     draw(): void;
     unbind(): void;
   }
@@ -278,52 +344,6 @@ declare module EIGHT {
   }
 
   /**
-   * Utility class for managing a shader uniform variable.
-   */
-  class UniformLocation implements ContextProgramConsumer {
-    contextFree(): void;
-    contextGain(gl: WebGLRenderingContext, program: WebGLProgram): void;
-    contextLost(): void;
-    uniform1f(x: number): void;
-    uniform2f(x: number, y: number): void;
-    uniform3f(x: number, y: number, z: number): void;
-    uniform4f(x: number, y: number, z: number, w: number): void;
-    /**
-     * Sets the uniform location to the value of the specified vector.
-     */
-    vec1(coords: VectorE1): UniformLocation;
-    /**
-     * Sets the uniform location to the value of the specified vector.
-     */
-    vec2(coords: VectorE2): UniformLocation;
-    /**
-     * Sets the uniform location to the value of the specified vector.
-     */
-    vec3(coords: VectorE3): UniformLocation;
-    /**
-     * Sets the uniform location to the value of the specified vector.
-     */
-    vec4(coords: VectorE4): UniformLocation;
-    /**
-     * Sets the uniform location to the value of the specified matrix.
-     */
-    mat2(matrix: Matrix2, transpose?: boolean): UniformLocation;
-    /**
-     * Sets the uniform location to the value of the specified matrix.
-     */
-    mat3(matrix: Matrix3, transpose?: boolean): UniformLocation;
-    /**
-     * Sets the uniform location to the value of the specified matrix.
-     */
-    mat4(matrix: Matrix4, transpose?: boolean): UniformLocation;
-
-    vector2(coords: number[]): void;
-    vector3(coords: number[]): void;
-    vector4(coords: number[]): void;
-    toString(): string;
-  }
-
-  /**
    *
    */
   interface ITexture extends ContextConsumer {
@@ -349,7 +369,7 @@ declare module EIGHT {
 
   /**
    * The QQ class represents a rational number.
-   * The QQ implementation is that of an immutable (value) type.
+   * The QQ implementation is that of an immutable value.
    * The numerator and denominator are reduced to their lowest form.
    * Construct new instances using the static valueOf method.
    */
@@ -1164,66 +1184,81 @@ declare module EIGHT {
      * You can also use Unicode symbols
      * 
      */
-    static BASIS_LABELS: string[][];
-    // FIXME: When TypeScript has been upgraded we can do this...
-    // static BASIS_LABELS: (string | string[])[];
+    static BASIS_LABELS: (string | string[])[];
+
+    static BASIS_LABELS_COMPASS: (string | string[])[];
+    static BASIS_LABELS_GEOMETRIC: (string | string[])[];
+    static BASIS_LABELS_STANDARD: (string | string[])[];
 
     /**
      * Constructs a <code>Geometric2</code>.
      * The multivector is initialized to zero.
      */
     constructor();
+
     /**
      * The coordinate corresponding to the unit standard basis scalar.
      */
     α: number
+
+    /**
+     * The coordinate corresponding to the unit standard basis scalar.
+     */
     alpha: number
+
     /**
      * The coordinate corresponding to the <b>e</b><sub>1</sub> standard basis vector.
      */
     x: number;
+
     /**
      * The coordinate corresponding to the <b>e</b><sub>2</sub> standard basis vector.
      */
     y: number;
+
     /**
      * The coordinate corresponding to the <b>e</b><sub>1</sub><b>e</b><sub>2</sub> standard basis bivector.
      */
     β: number;
+
+    /**
+     * The coordinate corresponding to the <b>e</b><sub>1</sub><b>e</b><sub>2</sub> standard basis bivector.
+     */
     beta: number;
-    xy: number;
 
     /**
      * <p>
      * <code>this ⟼ this + M * α</code>
      * </p>
-     * @param M
-     * @param α
      */
     add(M: GeometricE2, α?: number): Geometric2;
 
     /**
      * <p>
-     * <code>this ⟼ this + v * α</code>
+     * <code>this ⟼ a + b</code>
      * </p>
-     * @param v
-     * @param α
      */
-    addVector(v: VectorE2, α?: number): Geometric2;
+    add2(a: GeometricE2, b: GeometricE2): Geometric2;
+
+    addPseudo(β: number): Geometric2;
+
+    addScalar(α: number): Geometric2;
 
     /**
      * <p>
-     * <code>this ⟼ a + b</code>
+     * <code>this ⟼ this + v * α</code>
      * </p>
-     * @param a
-     * @param b
      */
-    add2(a: GeometricE2, b: GeometricE2): Geometric2;
+    addVector(v: VectorE2, α?: number): Geometric2;
+
+    adj(): Geometric2;
 
     /**
      * The bivector whose area (magnitude) is θ/2, where θ is the radian measure. 
      */
     angle(): Geometric2;
+
+    approx(n: number): Geometric2;
 
     /**
      *
@@ -1243,61 +1278,73 @@ declare module EIGHT {
      * <p>
      * <code>this ⟼ copy(M)</code>
      * </p>
-     * @param M
      */
     copy(M: GeometricE2): Geometric2;
+
+    copyScalar(α: number): Geometric2;
 
     /**
      * Sets this multivector to be a copy of a spinor.
      * <p>
      * <code>this ⟼ copy(spinor)</code>
      * </p>
-     * @param spinor
      */
     copySpinor(spinor: SpinorE2): Geometric2;
+
     /**
      * Sets this multivector to be a copy of a vector.
      * <p>
      * <code>this ⟼ copyVector(vector)</code>
      * </p>
-     * @param vector
      */
     copyVector(vector: VectorE2): Geometric2;
+
+    cos(): Geometric2;
+
+    cosh(): Geometric2;
+
+    cubicBezier(t: number, controlBegin: GeometricE2, controlEnd: GeometricE2, endPoint: GeometricE2): Geometric2;
+
+    /**
+     * <p>
+     * <code>this ⟼ this / magnitude(this)</code>
+     * </p>
+     */
+    direction(): Geometric2;
+
+    distanceTo(M: GeometricE2): number;
 
     /**
      * Sets this multivector to the result of division by another multivector.
      * <p>
      * <code>this ⟼ this / m</code>
      * </p>
-     * @param m
      */
     div(m: GeometricE2): Geometric2;
 
     /**
      * <p>
-     * <code>this ⟼ this / α</code>
+     * <code>this ⟼ a / b</code>
      * </p>
-     * @param α
      */
-    divByScalar(α: number): Geometric2;
+    div2(a: GeometricE2, b: GeometricE2): Geometric2;
 
     /**
      * <p>
-     * <code>this ⟼ a / b</code>
+     * <code>this ⟼ this / α</code>
      * </p>
-     * @param a
-     * @param b
      */
-    div2(a: SpinorE2, b: SpinorE2): Geometric2;
+    divByScalar(α: number): Geometric2;
 
     /**
      * <p>
      * <code>this ⟼ dual(m) = I * m</code>
      * </p>
      * Notice that the dual of a vector is related to the spinor by the right-hand rule.
-     * @param m The vector whose dual will be used to set this spinor.
      */
-    dual(m: VectorE2): Geometric2;
+    dual(m: GeometricE2): Geometric2;
+
+    equals(M: GeometricE2): boolean;
 
     /**
      * <p>
@@ -1310,7 +1357,6 @@ declare module EIGHT {
      * <p>
      * <code>this ⟼ this ^ m</code>
      * </p>
-     * @param m
      */
     ext(m: GeometricE2): Geometric2;
 
@@ -1318,10 +1364,10 @@ declare module EIGHT {
      * <p>
      * <code>this ⟼ a ^ b</code>
      * </p>
-     * @param a
-     * @param b
      */
     ext2(a: GeometricE2, b: GeometricE2): Geometric2;
+
+    grade(grade: number): Geometric2;
 
     /**
      * <p>
@@ -1330,12 +1376,15 @@ declare module EIGHT {
      */
     inv(): Geometric2;
 
+    isOne(): boolean;
+
+    isZero(): boolean;
+
     /**
      * Sets this multivector to the left contraction with another multivector.
      * <p>
      * <code>this ⟼ this << m</code>
      * </p>
-     * @param m
      */
     lco(m: GeometricE2): Geometric2;
 
@@ -1344,8 +1393,6 @@ declare module EIGHT {
      * <p>
      * <code>this ⟼ a << b</code>
      * </p>
-     * @param a
-     * @param b
      */
     lco2(a: GeometricE2, b: GeometricE2): Geometric2;
 
@@ -1353,8 +1400,6 @@ declare module EIGHT {
      * <p>
      * <code>this ⟼ this + α * (target - this)</code>
      * </p>
-     * @param target
-     * @param α
      */
     lerp(target: GeometricE2, α: number): Geometric2;
 
@@ -1362,9 +1407,6 @@ declare module EIGHT {
      * <p>
      * <code>this ⟼ a + α * (b - a)</code>
      * </p>
-     * @param a
-     * @param b
-     * @param α
      */
     lerp2(a: GeometricE2, b: GeometricE2, α: number): Geometric2;
 
@@ -1384,7 +1426,6 @@ declare module EIGHT {
      * <p>
      * <code>this ⟼ this * s</code>
      * </p>
-     * @param m
      */
     mul(m: GeometricE2): Geometric2;
 
@@ -1392,8 +1433,6 @@ declare module EIGHT {
      * <p>
      * <code>this ⟼ a * b</code>
      * </p>
-     * @param a
-     * @param b
      */
     mul2(a: GeometricE2, b: GeometricE2): Geometric2;
 
@@ -1411,12 +1450,9 @@ declare module EIGHT {
      */
     norm(): Geometric2;
 
-    /**
-     * <p>
-     * <code>this ⟼ this / magnitude(this)</code>
-     * </p>
-     */
-    direction(): Geometric2;
+    one(): Geometric2;
+
+    pow(): Geometric2;
 
     /**
      * <p>
@@ -1425,17 +1461,13 @@ declare module EIGHT {
      */
     quad(): Geometric2;
 
-    /**
-     * Computes the squared norm, scp(A, rev(A)).
-     */
-    squaredNorm(): Geometric2;
+    quadraticBezier(t: number, controlPoint: GeometricE2, endPoint: GeometricE2): Geometric2;
 
     /**
      * Sets this multivector to the right contraction with another multivector.
      * <p>
      * <code>this ⟼ this >> m</code>
      * </p>
-     * @param m
      */
     rco(m: GeometricE2): Geometric2;
 
@@ -1444,8 +1476,6 @@ declare module EIGHT {
      * <p>
      * <code>this ⟼ a >> b</code>
      * </p>
-     * @param a
-     * @param b
      */
     rco2(a: GeometricE2, b: GeometricE2): Geometric2;
 
@@ -1453,7 +1483,6 @@ declare module EIGHT {
      * <p>
      * <code>this ⟼ - n * this * n</code>
      * </p>
-     * @param n
      */
     reflect(n: VectorE2): Geometric2;
 
@@ -1468,7 +1497,6 @@ declare module EIGHT {
      * <p>
      * <code>this ⟼ R * this * rev(R)</code>
      * </p>
-     * @param R
      */
     rotate(R: SpinorE2): Geometric2;
 
@@ -1477,8 +1505,6 @@ declare module EIGHT {
      * Sets this multivector to a rotor representing a rotation from a to b.
      * R = (|b||a| + b * a) / sqrt(2 * |b||a|(|b||a| + b << a))
      * </p>
-     * @param a The <em>from</em> vector.
-     * @param b The <em>to</em> vector.
      */
     rotorFromDirections(a: VectorE2, b: VectorE2): Geometric2;
 
@@ -1486,8 +1512,6 @@ declare module EIGHT {
      * <p>
      * <code>this = ⟼ exp(- B * θ / 2)</code>
      * </p>
-     * @param B
-     * @param θ
      */
     rotorFromGeneratorAngle(B: SpinorE2, θ: number): Geometric2;
 
@@ -1495,7 +1519,6 @@ declare module EIGHT {
      * <p>
      * <code>this ⟼ this * α</code>
      * </p>
-     * @param α
      */
     scale(α: number): Geometric2;
 
@@ -1503,7 +1526,6 @@ declare module EIGHT {
      * <p>
      * <code>this ⟼ scp(this, m)</code>
      * </p>
-     * @param m
      */
     scp(m: GeometricE2): Geometric2;
 
@@ -1511,47 +1533,43 @@ declare module EIGHT {
      * <p>
      * <code>this ⟼ scp(a, b)</code>
      * </p>
-     * @param a
-     * @param b
      */
     scp2(a: GeometricE2, b: GeometricE2): Geometric2;
 
+    sin(): Geometric2;
+
+    sinh(): Geometric2;
+
+    slerp(target: GeometricE2, α: number): Geometric2;
+
     /**
-     * <p>
-     * <code>this ⟼ a * b = a · b + a ^ b</code>
-     * </p>
-     * Sets this Geometric2 to the geometric product a * b of the vector arguments.
-     * @param a
-     * @param b
+     * Computes the squared norm, scp(A, rev(A)).
      */
-    versor(a: VectorE2, b: VectorE2): Geometric2;
+    squaredNorm(): Geometric2;
+
+    stress(σ: VectorE2): Geometric2;
 
     /**
      * <p>
      * <code>this ⟼ this - M * α</code>
      * </p>
-     * @param M
-     * @param α
      */
     sub(M: GeometricE2, α?: number): Geometric2;
+
     /**
      * <p>
      * <code>this ⟼ a - b</code>
      * </p>
-     * @param a
-     * @param b
      */
     sub2(a: GeometricE2, b: GeometricE2): Geometric2;
 
     /**
      * Returns a string representing the number in exponential notation.
-     * @param fractionDigits
      */
     toExponential(): string;
 
     /**
      * Returns a string representing the number in fixed-point notation.
-     * @param fractionDigits
      */
     toFixed(fractionDigits?: number): string;
 
@@ -1561,9 +1579,58 @@ declare module EIGHT {
     toString(): string;
 
     /**
+     * <p>
+     * <code>this ⟼ a * b = a · b + a ^ b</code>
+     * </p>
+     * Sets this Geometric2 to the geometric product a * b of the vector arguments.
+     */
+    versor(a: VectorE2, b: VectorE2): Geometric2;
+
+    zero(): Geometric2;
+
+    /**
+     * Creates a copy of a multivector.
+     */
+    static copy(M: GeometricE2): Geometric2;
+
+    /**
      * The identity element for addition, <b>0</b>.
      */
-    static zero: Geometric2;
+    static zero(): Geometric2;
+
+    /**
+     * Basis vector corresponding to the <code>x</code> coordinate.
+     */
+    static e1(): Geometric2;
+
+    /**
+     * Basis vector corresponding to the <code>y</code> coordinate.
+     */
+    static e2(): Geometric2;
+
+    static fromCartesian(α: number, x: number, y: number, β: number): Geometric2;
+
+    /**
+     * Creates a copy of a spinor.
+     */
+    static fromSpinor(spinor: SpinorE2): Geometric2;
+
+    /**
+     * Creates a copy of a vector.
+     */
+    static fromVector(vector: VectorE2): Geometric2;
+
+    /**
+     * Basis vector corresponding to the <code>β</code> coordinate.
+     */
+    static I(): Geometric2;
+
+    /**
+     * Linear interpolation of two multivectors.
+     *
+     * A + α * (B - A)
+     */
+    static lerp(A: GeometricE2, B: GeometricE2, α: number): Geometric2;
 
     /**
      * The identity element for multiplication, 1.
@@ -1572,64 +1639,26 @@ declare module EIGHT {
     static one(): Geometric2;
 
     /**
-     * Basis vector corresponding to the <code>x</code> coordinate.
+     * Computes the rotor corresponding to a rotation from vector <code>a</code> to vector <code>b</code>.
      */
-    static e1: Geometric2;
+    static rotorFromDirections(a: VectorE2, b: VectorE2): Geometric2;
 
     /**
-     * Basis vector corresponding to the <code>y</code> coordinate.
+     * Creates a copy of a pseudoscalar.
      */
-    static e2: Geometric2;
-
-    /**
-     * Basis vector corresponding to the <code>β</code> coordinate.
-     */
-    static I: Geometric2;
-
-    /**
-     * Creates a copy of a multivector.  
-     * @param M
-     */
-    static copy(M: GeometricE2): Geometric2;
+    static scalar(β: number): Geometric2;
 
     /**
      * Creates a copy of a scalar.
-     * @param α
      */
-    static fromScalar(α: number): Geometric2
-
-    /**
-     * Creates a copy of a spinor.
-     * @param spinor
-     */
-    static fromSpinor(spinor: SpinorE2): Geometric2
-
-    /**
-     * Creates a copy of a vector.
-     * @param vector
-     */
-    static fromVector(vector: VectorE2): Geometric2
-
-    /**
-     * Linear interpolation of two multivectors.
-     * <code>A + α * (B - A)</code>
-     * @param A
-     * @param B
-     * @param α
-     */
-    static lerp(A: GeometricE2, B: GeometricE2, α: number): Geometric2
-
-    /**
-     * Computes the rotor corresponding to a rotation from vector <code>a</code> to vector <code>b</code>.
-     * @param a
-     * @param b
-     */
-    static rotorFromDirections(a: VectorE2, b: VectorE2): Geometric2
+    static scalar(α: number): Geometric2;
 
     /**
      * Creates a vector from Cartesian coordinates
      */
-    static vector(x: number, y: number): Geometric2
+    static vector(x: number, y: number): Geometric2;
+
+    static zero(): Geometric2;
   }
 
   /**
@@ -2554,25 +2583,6 @@ declare module EIGHT {
   }
 
   /**
-   *
-   */
-  interface FacetVisitor {
-    uniform1f(name: string, x: number): void;
-    uniform2f(name: string, x: number, y: number): void;
-    uniform3f(name: string, x: number, y: number, z: number): void;
-    uniform4f(name: string, x: number, y: number, z: number, w: number): void;
-    mat2(name: string, matrix: Matrix2, transpose: boolean): void;
-    mat3(name: string, matrix: Matrix3, transpose: boolean): void;
-    mat4(name: string, matrix: Matrix4, transpose: boolean): void;
-    vec2(name: string, vector: VectorE2): void;
-    vec3(name: string, vector: VectorE3): void;
-    vec4(name: string, vector: VectorE4): void;
-    vector2(name: string, coords: number[]): void;
-    vector3(name: string, coords: number[]): void;
-    vector4(name: string, coords: number[]): void;
-  }
-
-  /**
    * A provider of a collection of 'uniform' variables for use in a WebGL program.
    */
   interface Facet {
@@ -2628,7 +2638,7 @@ declare module EIGHT {
     /**
      *
      */
-    draw(program: AbstractMaterial): void;
+    draw(program: Material): void;
   }
 
   /**
@@ -3003,7 +3013,7 @@ declare module EIGHT {
     partsLength: number;
     scaling: Matrix4;
     addPart(geometry: Geometry): void;
-    draw(material: AbstractMaterial): void;
+    draw(material: Material): void;
     getPart(index: number): Geometry;
     getPrincipalScale(name: string): number;
     hasPrincipalScale(name: string): boolean;
@@ -3021,7 +3031,7 @@ declare module EIGHT {
     contextFree(context: ContextProvider): void;
     contextGain(context: ContextProvider): void;
     contextLost(): void;
-    draw(material: AbstractMaterial): void;
+    draw(material: Material): void;
     getPart(index: number): Geometry;
     getPrincipalScale(name: string): number;
     hasPrincipalScale(name: string): boolean;
@@ -3030,14 +3040,20 @@ declare module EIGHT {
     setPrincipalScale(name: string, value: number): void;
   }
 
+  /**
+   * A Geometry for supporting drawArrays.
+   */
   class GeometryArrays extends ShareableContextConsumer implements Geometry {
     drawMode: DrawMode
     partsLength: number;
     scaling: Matrix4;
-    constructor(engine: Engine, level: number);
-    protected destructor(): void;
+    /**
+     *
+     */
+    constructor(engine: Engine);
+    protected destructor(levelUp: number): void;
     addPart(geometry: Geometry): void;
-    draw(material: AbstractMaterial): void;
+    draw(material: Material): void;
     getAttribute(name: string): Attribute;
     getPart(index: number): Geometry;
     getPrincipalScale(name: string): number;
@@ -3059,10 +3075,10 @@ declare module EIGHT {
      * The total number of bytes for each element.
      */
     stride: number;
-    constructor(type: string, data: VertexArrays, engine: Engine, level: number);
-    protected destructor(): void;
+    constructor(data: VertexArrays, engine: Engine);
+    protected destructor(levelUp: number): void;
     addPart(geometry: Geometry): void;
-    draw(material: AbstractMaterial): void;
+    draw(material: Material): void;
     getPart(index: number): Geometry;
     getPrincipalScale(name: string): number;
     hasPrincipalScale(name: string): boolean;
@@ -3160,20 +3176,22 @@ declare module EIGHT {
   /**
    *
    */
-  class Material extends ShareableContextConsumer implements AbstractMaterial {
+  class MaterialBase extends ShareableContextConsumer implements Material {
     attributeNames: string[];
     fragmentShaderSrc: string;
     vertexShaderSrc: string;
-    constructor(vertexShaderSrc: string, fragmentShaderSrc: string, attribs: string[], type: string, engine: Engine);
+    constructor(vertexShaderSrc: string, fragmentShaderSrc: string, attribs: string[], engine: Engine);
     contextFree(contextProvider: ContextProvider): void;
     contextGain(contextProvider: ContextProvider): void;
     contextLost(): void;
+    protected destructor(levelUp: number): void;
     disableAttrib(name: string): void;
     disableAttribs(): void;
     enableAttrib(name: string): void;
     enableAttribs(): void;
     getAttribLocation(name: string): number;
     getUniformLocation(name: string): UniformLocation;
+    hasUniformLocation(name: string): boolean;
     mat2(name: string, matrix: Matrix2, transpose: boolean): void;
     mat3(name: string, matrix: Matrix3, transpose: boolean): void;
     mat4(name: string, matrix: Matrix4, transpose: boolean): void;
@@ -3185,16 +3203,16 @@ declare module EIGHT {
     vec2(name: string, vector: VectorE2): void;
     vec3(name: string, vector: VectorE3): void;
     vec4(name: string, vector: VectorE4): void;
-    vector2(name: string, coords: number[]): void;
-    vector3(name: string, coords: number[]): void;
-    vector4(name: string, coords: number[]): void;
+    vector2fv(name: string, data: Float32Array): void;
+    vector3fv(name: string, data: Float32Array): void;
+    vector4fv(name: string, data: Float32Array): void;
     vertexPointer(name: string, size: number, normalized: boolean, stride: number, offset: number): void;
   }
 
   interface AbstractDrawable extends ContextConsumer {
     fragmentShaderSrc: string;
     geometry: Geometry;
-    material: AbstractMaterial;
+    material: Material;
     name: string;
     vertexShaderSrc: string;
     visible: boolean;
@@ -3206,7 +3224,7 @@ declare module EIGHT {
    * The primitives provide attribute arguments to the graphics program.
    * The facets provide uniform arguments to the graphics program. 
    */
-  class Drawable extends ShareableBase implements AbstractDrawable {
+  class Drawable extends ShareableContextConsumer implements AbstractDrawable {
 
     /**
      *
@@ -3221,7 +3239,7 @@ declare module EIGHT {
     /**
      *
      */
-    material: AbstractMaterial;
+    material: Material;
 
     /**
      * A user-assigned name that allows the composite object to be found.
@@ -3241,28 +3259,15 @@ declare module EIGHT {
     /**
      *
      */
-    constructor(type: string, geometry: Geometry, material: AbstractMaterial);
-
-    /**
-     *
-     */
-    subscribe(context: Engine): void;
-
-    /**
-     *
-     */
-    unsubscribe(): void;
-
-    setUniforms(): void;
-
-    /**
-     *
-     */
-    draw(ambients: Facet[]): void;
+    constructor(geometry: Geometry, material: Material, engine: Engine);
 
     contextFree(manager: ContextProvider): void;
     contextGain(manager: ContextProvider): void;
     contextLost(): void;
+
+    protected destructor(levelUp: number): void;
+
+    draw(ambients: Facet[]): void;
 
     /**
      * Gets a facet of this composite object by name.
@@ -3275,38 +3280,30 @@ declare module EIGHT {
      * Facets provide uniform arguments to the graphics program.
      */
     setFacet(name: string, facet: Facet): void;
+
+    setUniforms(): void;
   }
 
   /**
-   * A AbstractMaterial based upon scripts in a DOM.
+   * A material based upon scripts in a DOM.
    */
-  class HTMLScriptsMaterial extends Material {
+  class HTMLScriptsMaterial extends MaterialBase {
     /**
      *
      */
     constructor(scriptIds: string[], dom: Document, attribs: string[], engine: Engine);
+    protected destructor(levelUp: number): void;
   }
 
-  /**
-   *
-   */
-  class PointMaterial extends Material {
-    constructor();
-  }
-
-  interface LineMaterialOptions {
+  interface PointMaterialOptions {
 
     /**
-     * @attribute attributes
-     * @type {[name: string]: number}
-     * @optional
+     *
      */
     attributes?: { [name: string]: number }
 
     /**
-     * @attribute uniforms
-     * @type {[name: string]: string}
-     * @optional
+     *
      */
     uniforms?: { [name: string]: string }
   }
@@ -3314,21 +3311,57 @@ declare module EIGHT {
   /**
    *
    */
-  class LineMaterial extends Material {
+  class PointMaterial extends MaterialBase {
+    constructor(options: PointMaterialOptions, engine: Engine);
+    protected destructor(levelUp: number): void;
+  }
+
+  interface LineMaterialOptions {
+
+    /**
+     *
+     */
+    attributes?: { [name: string]: number }
+
+    /**
+     *
+     */
+    uniforms?: { [name: string]: string }
+  }
+
+  /**
+   *
+   */
+  class LineMaterial extends MaterialBase {
     constructor(options: LineMaterialOptions, engine: Engine)
+    protected destructor(levelUp: number): void;
+  }
+
+  interface MeshMaterialOptions {
+
+    /**
+     *
+     */
+    attributes?: { [name: string]: number }
+
+    /**
+     *
+     */
+    uniforms?: { [name: string]: string }
   }
 
   /**
    *
    */
-  class MeshMaterial extends Material {
-    constructor();
+  class MeshMaterial extends MaterialBase {
+    constructor(options: MeshMaterialOptions, engine: Engine);
+    protected destructor(levelUp: number): void;
   }
 
   /**
    *
    */
-  class MeshNormalMaterial extends Material {
+  class MeshNormalMaterial extends MaterialBase {
     constructor();
   }
 
@@ -3664,21 +3697,41 @@ declare module EIGHT {
    * which are implemented as Facet(s).
    */
   class Mesh extends Drawable implements AbstractMesh {
-    /**
-     *
-     */
-    attitude: Geometric3
-    color: Color
-    matrix: Matrix4
-    position: Geometric3
-    scale: Vector3
-    stress: Matrix4
-    tilt: Spinor3
 
     /**
      *
      */
-    constructor(geometry: Geometry, material: AbstractMaterial, type?: string)
+    attitude: Geometric3;
+
+    /**
+     *
+     */
+    color: Color;
+
+    /**
+     *
+     */
+    matrix: Matrix4;
+
+    /**
+     *
+     */
+    position: Geometric3;
+
+    /**
+     *
+     */
+    stress: Matrix4;
+
+    /**
+     *
+     */
+    constructor(geometry: Geometry, material: Material, engine: Engine);
+  
+    /**
+     *
+     */
+    protected destructor(levelUp: number): void;
   }
 
   /**
@@ -3693,35 +3746,43 @@ declare module EIGHT {
     /**
      *
      */
-    constructor(mesh: Mesh, axis: VectorE3, type?: string)
+    constructor(mesh: Mesh, axis: VectorE3);
+    protected destructor(levelUp: number): void;
   }
 
   class RigidBody extends Mesh {
     /**
      * The axis of the RigidBody.
      */
-    public axis: Geometric3
+    public axis: Geometric3;
+
+    public initialAxis: R3;
 
     /**
      * The (dimensionless) mass of the RigidBody.
      */
-    public mass: number
+    public mass: number;
 
     /**
      * The (dimensionless) momentum of the RigidBody.
      */
-    public momentum: Geometric3
+    public momentum: Geometric3;
 
-    constructor(type: string, initialAxis: VectorE3)
+    constructor(geometry: Geometry, material: Material, engine: Engine, initialAxis: VectorE3);
+    protected destructor(levelUp: number): void;
   }
 
   class Arrow extends RigidBody {
-    length: number
+    length: number;
     constructor(
       options?: {
+        attitude?: SpinorE3;
         axis?: VectorE3;
-        color?: Color;
+        color?: AbstractColor;
+        engine?: Engine;
+        offset?: VectorE3;
         position?: VectorE3;
+        tilt?: SpinorE3;
       })
   }
 
@@ -3732,13 +3793,14 @@ declare module EIGHT {
     constructor(
       options?: {
         attitude?: SpinorE3;
-        color?: Color;
+        color?: AbstractColor;
         depth?: number;
+        engine?: Engine;
         height?: number;
         offset?: VectorE3;
-        openCap?: boolean;
         openBack?: boolean;
         openBase?: boolean;
+        openCap?: boolean;
         openFront?: boolean;
         openLeft?: boolean;
         openRight?: boolean;
@@ -3753,44 +3815,58 @@ declare module EIGHT {
     radius: number;
     constructor(
       options?: {
+        attitude?: SpinorE3;
         axis?: VectorE3;
-        color?: Color;
+        color?: AbstractColor;
+        engine?: Engine;
         length?: number;
         offset?: VectorE3;
         openBase?: boolean;
         openCap?: boolean;
         openWall?: boolean;
         position?: VectorE3;
-        tilt?: SpinorE3;
         radius?: number;
+        tilt?: SpinorE3;
       })
   }
 
   class Curve extends Mesh {
     constructor(
       options?: {
-        aColor?: (u: number) => AbstractColor
-        aPosition?: (u: number) => VectorE3
-        drawMode?: DrawMode
-        uMax?: number
-        uMin?: number
-        uSegments?: number
+        aColor?: (u: number) => AbstractColor;
+        aPosition?: (u: number) => VectorE3;
+        attitude: SpinorE3;
+        color?: AbstractColor;
+        drawMode?: DrawMode;
+        engine?: Engine;
+        offset?: VectorE3;
+        position?: VectorE3;
+        tilt?: SpinorE3;
+        uMax?: number;
+        uMin?: number;
+        uSegments?: number;
       })
   }
 
   class Grid extends Mesh {
     constructor(
       options?: {
-        aColor?: (u: number, v: number) => AbstractColor
-        aNormal?: (u: number, v: number) => VectorE3
-        aPosition?: (u: number, v: number) => VectorE3
-        drawMode?: DrawMode
-        uMax?: number
-        uMin?: number
-        uSegments?: number
-        vMax?: number
-        vMin?: number
-        vSegments?: number
+        aColor?: (u: number, v: number) => AbstractColor;
+        aNormal?: (u: number, v: number) => VectorE3;
+        aPosition?: (u: number, v: number) => VectorE3;
+        attitude?: SpinorE3;
+        color?: AbstractColor;
+        drawMode?: DrawMode;
+        engine?: Engine;
+        offset?: VectorE3;
+        position?: VectorE3;
+        tilt?: SpinorE3;
+        uMax?: number;
+        uMin?: number;
+        uSegments?: number;
+        vMax?: number;
+        vMin?: number;
+        vSegments?: number;
       })
   }
 
@@ -3798,17 +3874,28 @@ declare module EIGHT {
     radius: number;
     constructor(
       options?: {
+        attitude?: SpinorE3;
         color?: AbstractColor;
         engine?: Engine;
         offset?: VectorE3;
         position?: VectorE3;
         radius?: number;
+        tilt?: SpinorE3;
       })
   }
 
   class Tetrahedron extends Mesh {
     radius: number;
-    constructor(options?: { axis?: VectorE3 })
+    constructor(
+      options?: {
+        attitude?: SpinorE3;
+        color?: AbstractColor;
+        engine?: Engine;
+        offset?: VectorE3;
+        position?: VectorE3;
+        tilt?: SpinorE3;
+      })
+    protected destructor(levelUp: number): void;
   }
 
   interface TrailConfig {
