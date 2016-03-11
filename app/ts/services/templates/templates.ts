@@ -98,7 +98,7 @@ app.factory('templates', [
             "  printvar('mass', mass)",
             "  printvar('F = mass * g', F.toFixed(2))",
             "  printvar('d', d)",
-            "  printvar('W = F << d', W.toFixed(2))",
+            "  printvar('W = F << d', W.toPrecision(6))",
             "}",
             ""
         ].join('\n');
