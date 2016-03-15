@@ -1,5 +1,6 @@
 export default function(width: number, height: number, canvasId: string, refChange: boolean, useStats: boolean): string {
   const lines = [
+    "EIGHT.refChange('quiet')",
     "EIGHT.refChange('start')",
     "",
     "class ModelController {",
@@ -12,8 +13,8 @@ export default function(width: number, height: number, canvasId: string, refChan
     "   */",
     "  public T = 5",
     "  private _trail: EIGHT.Trail",
-    "  private controls: EIGHT.CameraControls",
-    "  constructor(controls: EIGHT.CameraControls, trail: EIGHT.Trail) {",
+    "  private controls: EIGHT.TrackballControls",
+    "  constructor(controls: EIGHT.TrackballControls, trail: EIGHT.Trail) {",
     "    this.controls = controls",
     "    this._trail = trail",
     "  }",
@@ -51,7 +52,7 @@ export default function(width: number, height: number, canvasId: string, refChan
     "const dirLight = new EIGHT.DirectionalLight()",
     "ambients.push(dirLight)",
     "",
-    "const controls = new EIGHT.CameraControls(camera)",
+    "const controls = new EIGHT.TrackballControls(camera)",
     "",
     "const arrow = new EIGHT.Arrow({color: white})",
     "scene.add(arrow)",
