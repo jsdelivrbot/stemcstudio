@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Frustum - davinci-eight</title>
+    <title>EngineAppOptions - davinci-eight</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="davinci-eight" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.222.0</em>
+            <em>API Docs for: 2.225.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -44,6 +44,7 @@
                                 <li><a href="../classes/AbstractMesh.html">AbstractMesh</a></li>
                                 <li><a href="../classes/AmbientLight.html">AmbientLight</a></li>
                                 <li><a href="../classes/AnimationApp.html">AnimationApp</a></li>
+                                <li><a href="../classes/AnimationAppOptions.html">AnimationAppOptions</a></li>
                                 <li><a href="../classes/Approximation.html">Approximation</a></li>
                                 <li><a href="../classes/Arrow.html">Arrow</a></li>
                                 <li><a href="../classes/ArrowBuilder.html">ArrowBuilder</a></li>
@@ -60,6 +61,7 @@
                                 <li><a href="../classes/BoxGeometryOptions.html">BoxGeometryOptions</a></li>
                                 <li><a href="../classes/BoxOptions.html">BoxOptions</a></li>
                                 <li><a href="../classes/BrowserApp.html">BrowserApp</a></li>
+                                <li><a href="../classes/BrowserAppOptions.html">BrowserAppOptions</a></li>
                                 <li><a href="../classes/Capability.html">Capability</a></li>
                                 <li><a href="../classes/CC.html">CC</a></li>
                                 <li><a href="../classes/Color.html">Color</a></li>
@@ -70,7 +72,6 @@
                                 <li><a href="../classes/ContextConsumer.html">ContextConsumer</a></li>
                                 <li><a href="../classes/ContextProgramConsumer.html">ContextProgramConsumer</a></li>
                                 <li><a href="../classes/ContextProvider.html">ContextProvider</a></li>
-                                <li><a href="../classes/ControlTarget.html">ControlTarget</a></li>
                                 <li><a href="../classes/Coords.html">Coords</a></li>
                                 <li><a href="../classes/CoordsTransform1D.html">CoordsTransform1D</a></li>
                                 <li><a href="../classes/CoordsTransform2D.html">CoordsTransform2D</a></li>
@@ -95,10 +96,10 @@
                                 <li><a href="../classes/EIGHTLogger.html">EIGHTLogger</a></li>
                                 <li><a href="../classes/Engine.html">Engine</a></li>
                                 <li><a href="../classes/EngineApp.html">EngineApp</a></li>
+                                <li><a href="../classes/EngineAppOptions.html">EngineAppOptions</a></li>
                                 <li><a href="../classes/ErrorMode.html">ErrorMode</a></li>
                                 <li><a href="../classes/Facet.html">Facet</a></li>
                                 <li><a href="../classes/FacetVisitor.html">FacetVisitor</a></li>
-                                <li><a href="../classes/Frustum.html">Frustum</a></li>
                                 <li><a href="../classes/G2.html">G2</a></li>
                                 <li><a href="../classes/G3.html">G3</a></li>
                                 <li><a href="../classes/Geometric2.html">Geometric2</a></li>
@@ -144,10 +145,10 @@
                                 <li><a href="../classes/ModelFacet.html">ModelFacet</a></li>
                                 <li><a href="../classes/MouseControls.html">MouseControls</a></li>
                                 <li><a href="../classes/MultiViewApp.html">MultiViewApp</a></li>
+                                <li><a href="../classes/MultiViewAppOptions.html">MultiViewAppOptions</a></li>
                                 <li><a href="../classes/Mutable.html">Mutable</a></li>
                                 <li><a href="../classes/NumberShareableMap.html">NumberShareableMap</a></li>
                                 <li><a href="../classes/OrbitControls.html">OrbitControls</a></li>
-                                <li><a href="../classes/Perspective.html">Perspective</a></li>
                                 <li><a href="../classes/PerspectiveCamera.html">PerspectiveCamera</a></li>
                                 <li><a href="../classes/PointMaterial.html">PointMaterial</a></li>
                                 <li><a href="../classes/PointMaterialOptions.html">PointMaterialOptions</a></li>
@@ -219,6 +220,8 @@
                                 <li><a href="../classes/VertexAttributeMap.html">VertexAttributeMap</a></li>
                                 <li><a href="../classes/VertexBuffer.html">VertexBuffer</a></li>
                                 <li><a href="../classes/View.html">View</a></li>
+                                <li><a href="../classes/ViewController.html">ViewController</a></li>
+                                <li><a href="../classes/ViewControls.html">ViewControls</a></li>
                                 <li><a href="../classes/Viewport.html">Viewport</a></li>
                                 <li><a href="../classes/VisualOptions.html">VisualOptions</a></li>
                                 <li><a href="../classes/WebGLBlendFunc.html">WebGLBlendFunc</a></li>
@@ -274,12 +277,15 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>Frustum Class</h1>
+<h1>EngineAppOptions Class</h1>
 <div class="box meta">
 
+        <div class="extends">
+            Extends <a href="../classes/BrowserAppOptions.html" class="crosslink">BrowserAppOptions</a>
+        </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/src_davinci-eight_facets_Frustum.ts.html#l4"><code>src&#x2F;davinci-eight&#x2F;facets&#x2F;Frustum.ts:4</code></a>
+            Defined in: <a href="../files/src_davinci-eight_base_EngineAppOptions.ts.html#l3"><code>src&#x2F;davinci-eight&#x2F;base&#x2F;EngineAppOptions.ts:3</code></a>
         </div>
 
             Module: <a href="../modules/EIGHT.html">EIGHT</a>
@@ -296,380 +302,131 @@
     <ul class="api-class-tabs">
         <li class="api-class-tab index"><a href="#index">Index</a></li>
 
-            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
-            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
+            <li class="api-class-tab attrs"><a href="#attrs">Attributes</a></li>
     </ul>
 
     <div>
         <div id="index" class="api-class-tabpanel index">
             <h2 class="off-left">Item Index</h2>
 
-                <div class="index-section methods">
-                    <h3>Methods</h3>
 
-                    <ul class="index-list methods">
-                            <li class="index-item method">
-                                <a href="#method_setEye">setEye</a>
 
+                <div class="index-section attrs">
+                    <h3>Attributes</h3>
+
+                    <ul class="index-list attrs extends">
+                            <li class="index-item attr">
+                                <a href="#attr_canvasId">canvasId</a>
                             </li>
-                            <li class="index-item method">
-                                <a href="#method_setLook">setLook</a>
-
+                            <li class="index-item attr inherited">
+                                <a href="#attr_memcheck">memcheck</a>
                             </li>
-                            <li class="index-item method">
-                                <a href="#method_setUp">setUp</a>
-
-                            </li>
-                    </ul>
-                </div>
-
-                <div class="index-section properties">
-                    <h3>Properties</h3>
-
-                    <ul class="index-list properties">
-                            <li class="index-item property">
-                                <a href="#property_bottom">bottom</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_far">far</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_left">left</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_near">near</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_right">right</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_top">top</a>
-
+                            <li class="index-item attr inherited">
+                                <a href="#attr_window">window</a>
                             </li>
                     </ul>
                 </div>
 
-
-        </div>
-
-            <div id="methods" class="api-class-tabpanel">
-                <h2 class="off-left">Methods</h2>
-
-<div id="method_setEye" class="method item">
-    <h3 class="name"><code>setEye</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>eye</code>
-                </li>
-            </ul><span class="paren">)</span>
         </div>
 
 
 
+            <div id="attrs" class="api-class-tabpanel">
+                <h2 class="off-left">Attributes</h2>
 
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_facets_Frustum.ts.html#l38"><code>src&#x2F;davinci-eight&#x2F;facets&#x2F;Frustum.ts:38</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Convenience method for setting the eye property allowing chainable method calls.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">eye</code>
-                        <span class="type"><a href="../classes/VectorE3.html" class="crosslink">VectorE3</a></span>
-
-
-                    <div class="param-description">
-                         
+                    <div id="attr_canvasId" class="attr item">
+                        <a name="config_canvasId"></a> 
+                        <h3 class="name"><code>canvasId</code></h3>
+                        <span class="type">String</span>
+                    
+                    
+                    
+                    
+                    
+                            <span class="flag optional">optional</span>
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>
+                                    Defined in
+                            <a href="../files/src_davinci-eight_base_EngineAppOptions.ts.html#l8"><code>src&#x2F;davinci-eight&#x2F;base&#x2F;EngineAppOptions.ts:8</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            <p>
+                    The element id of the <code>HTMLCanvasElement</code>.
+                    </p>
+                        </div>
+                    
+                            <p><strong>Default:</strong> &#x27;canvas&#x27;</p>
+                    
+                    
                     </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_setLook" class="method item">
-    <h3 class="name"><code>setLook</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>look</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_facets_Frustum.ts.html#l44"><code>src&#x2F;davinci-eight&#x2F;facets&#x2F;Frustum.ts:44</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Convenience method for setting the look property allowing chainable method calls.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">look</code>
-                        <span class="type"><a href="../classes/VectorE3.html" class="crosslink">VectorE3</a></span>
-
-
-                    <div class="param-description">
-                         
+                    <div id="attr_memcheck" class="attr item inherited">
+                        <a name="config_memcheck"></a> 
+                        <h3 class="name"><code>memcheck</code></h3>
+                        <span class="type">Boolean</span>
+                    
+                    
+                    
+                    
+                    
+                            <span class="flag optional">optional</span>
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>Inherited from
+                                    <a href="../classes/BrowserAppOptions.html#attr_memcheck">BrowserAppOptions</a>:
+                            <a href="../files/src_davinci-eight_base_BrowserAppOptions.ts.html#l7"><code>src&#x2F;davinci-eight&#x2F;base&#x2F;BrowserAppOptions.ts:7</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            
+                        </div>
+                    
+                            <p><strong>Default:</strong> false</p>
+                    
+                    
                     </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_setUp" class="method item">
-    <h3 class="name"><code>setUp</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>up</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_facets_Frustum.ts.html#l50"><code>src&#x2F;davinci-eight&#x2F;facets&#x2F;Frustum.ts:50</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Convenience method for setting the up property allowing chainable method calls.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">up</code>
-                        <span class="type"><a href="../classes/VectorE3.html" class="crosslink">VectorE3</a></span>
-
-
-                    <div class="param-description">
-                         
+                    <div id="attr_window" class="attr item inherited">
+                        <a name="config_window"></a> 
+                        <h3 class="name"><code>window</code></h3>
+                        <span class="type">Window</span>
+                    
+                    
+                    
+                    
+                    
+                            <span class="flag optional">optional</span>
+                    
+                    
+                    
+                        <div class="meta">
+                                    <p>Inherited from
+                                    <a href="../classes/BrowserAppOptions.html#attr_window">BrowserAppOptions</a>:
+                            <a href="../files/src_davinci-eight_base_BrowserAppOptions.ts.html#l15"><code>src&#x2F;davinci-eight&#x2F;base&#x2F;BrowserAppOptions.ts:15</code></a>
+                            </p>
+                    
+                    
+                        </div>
+                    
+                        <div class="description">
+                            
+                        </div>
+                    
+                            <p><strong>Default:</strong> window</p>
+                    
+                    
                     </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
             </div>
-
-            <div id="properties" class="api-class-tabpanel">
-                <h2 class="off-left">Properties</h2>
-
-<div id="property_bottom" class="property item">
-    <h3 class="name"><code>bottom</code></h3>
-    <span class="type">Number</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_facets_Frustum.ts.html#l18"><code>src&#x2F;davinci-eight&#x2F;facets&#x2F;Frustum.ts:18</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-
-</div>
-<div id="property_far" class="property item">
-    <h3 class="name"><code>far</code></h3>
-    <span class="type">Number</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_facets_Frustum.ts.html#l33"><code>src&#x2F;davinci-eight&#x2F;facets&#x2F;Frustum.ts:33</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-
-</div>
-<div id="property_left" class="property item">
-    <h3 class="name"><code>left</code></h3>
-    <span class="type">Number</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_facets_Frustum.ts.html#l8"><code>src&#x2F;davinci-eight&#x2F;facets&#x2F;Frustum.ts:8</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-
-</div>
-<div id="property_near" class="property item">
-    <h3 class="name"><code>near</code></h3>
-    <span class="type">Number</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_facets_Frustum.ts.html#l28"><code>src&#x2F;davinci-eight&#x2F;facets&#x2F;Frustum.ts:28</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-
-</div>
-<div id="property_right" class="property item">
-    <h3 class="name"><code>right</code></h3>
-    <span class="type">Number</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_facets_Frustum.ts.html#l13"><code>src&#x2F;davinci-eight&#x2F;facets&#x2F;Frustum.ts:13</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-
-</div>
-<div id="property_top" class="property item">
-    <h3 class="name"><code>top</code></h3>
-    <span class="type">Number</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_facets_Frustum.ts.html#l23"><code>src&#x2F;davinci-eight&#x2F;facets&#x2F;Frustum.ts:23</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-
-</div>
-            </div>
-
 
     </div>
 </div>

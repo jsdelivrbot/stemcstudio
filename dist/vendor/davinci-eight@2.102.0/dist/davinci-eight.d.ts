@@ -114,10 +114,17 @@ declare module EIGHT {
     putWeakRef(key: string, value: V): void
     remove(key: string): void
   }
-
+  ///////////////////////////////////////////////////////////////////////////////
+  interface BrowserAppOptions {
+    memcheck?: boolean;
+    window?: Window;
+  }
+  /**
+   *
+   */
   class BrowserApp {
     protected window: Window;
-    constructor(wnd?: Window);
+    constructor(optins?: BrowserAppOptions);
     protected destructor(): void;
     protected initialize(): void;
     public isRunning(): boolean;
@@ -267,18 +274,37 @@ declare module EIGHT {
      */
     viewport(x: number, y: number, width: number, height: number): Engine;
   }
-
+  ///////////////////////////////////////////////////////////////////////////////
+  interface EngineAppOptions extends BrowserAppOptions {
+  }
+  /**
+   *
+   */
   class EngineApp extends BrowserApp {
     protected canvas: HTMLCanvasElement;
     protected engine: Engine;
-    constructor(canvasId: string, wnd?: Window);
+    constructor(options: EngineAppOptions);
+    /**
+     * Sets the graphics buffers to values preselected by clearColor, clearDepth or clearStencil.
+     * This method is a shortcut for this.engine.clear()
+     */
     protected clear(): void;
     protected destructor(): void;
     protected initialize(): void;
   }
-
+  ///////////////////////////////////////////////////////////////////////////////
+  /**
+   *
+   */
+  interface AnimationAppOptions extends EngineAppOptions {
+  }
+  ///////////////////////////////////////////////////////////////////////////////
+  /**
+   *
+   */
   class AnimationApp extends EngineApp {
-    constructor(canvasId: string, wnd?: Window);
+    protected animation: WindowAnimationRunner;
+    constructor(options: AnimationAppOptions);
     protected animate(time: number): void;
     protected destructor(): void;
     protected initialize(): void;
@@ -2881,63 +2907,71 @@ declare module EIGHT {
   interface ContextProvider extends Shareable {
     gl: WebGLRenderingContext;
   }
-
+  ///////////////////////////////////////////////////////////////////////////////
   /**
-   * A set of <em>state variables</em> for graphics modeling in Euclidean 2D space.
+   * A set of state variables for graphics modeling in Euclidean 2D space.
    */
-  class ModelE2 extends ShareableBase {
+  class ModelE2 {
+    static PROP_ATTITUDE: string;
+    static PROP_POSITION: string;
     /**
-     * The <em>position</em>, a vector. Initialized to <em>0</em>
-     */
-    X: Geometric2;
-    /**
-     * The <em>attitude</em>, a unitary spinor. Initialized to <em>1</em>.
+     * Attitude (spinor). Initialized to 1.
      */
     R: Geometric2;
     /**
-     * Constructs a <code>ModelE2</code> at the origin and with unity attitude.
-     * Initializes <code>X</code> to <code>0</code>.
-     * Initializes <code>R</code> to <code>1</code>.
+     * Position (vector). Initialized to 0.
+     */
+    X: Geometric2;
+    /**
+     *
      */
     constructor();
     getProperty(name: string): number[];
     setProperty(name: string, value: number[]): ModelE2;
   }
-
+  ///////////////////////////////////////////////////////////////////////////////
+  /**
+   *
+   */
+  class ModelE3 {
+    static PROP_ATTITUDE: string;
+    static PROP_POSITION: string;
+    /**
+     * Attitude (spinor). Initialized to 1.
+     */
+    R: Geometric3;
+    /**
+     * Position (vector). Initialized to 0.
+     */
+    X: Geometric3;
+    /**
+     *
+     */
+    constructor();
+    getProperty(name: string): number[];
+    setProperty(name: string, value: number[]): ModelE3;
+  }
+  ///////////////////////////////////////////////////////////////////////////////
   /**
    * A collection of properties governing GLSL uniforms for Computer Graphics Modeling.
    */
-  class ModelFacet implements Facet {
-
-    /**
-     * The position, a vector.
-     */
-    position: Geometric3
-
-    /**
-     * The attitude, a unitary spinor.
-     */
-    R: Geometric3
-
-    /**
-     * The overall scale.
-     */
-    scaleXYZ: Vector3
-
+  class ModelFacet extends ModelE3 {
     /**
      * The matrix that is used for the uniform conventionally named 'uModel'.
      */
     matrix: Matrix4
-
+    /**
+     * The overall scale.
+     */
+    stress: Matrix4
     /**
      * Constructs a ModelFacet at the origin and with unity attitude.
      */
     constructor()
-    getProperty(name: string): number[]
     setProperty(name: string, value: number[]): ModelFacet
     setUniforms(visitor: FacetVisitor): void
   }
-
+  ///////////////////////////////////////////////////////////////////////////////
   /**
    * Record reference count changes and debug reference counts.
    *
@@ -3034,10 +3068,19 @@ declare module EIGHT {
     remove(drawable: AbstractDrawable): void
   }
 
+  interface View {
+    eye: Geometric3;
+    look: Geometric3;
+    up: Geometric3;
+    setEye(eye: VectorE3): View;
+    setLook(look: VectorE3): View;
+    setUp(up: VectorE3): View;
+  }
+
   /**
    *
    */
-  class PerspectiveCamera extends AbstractFacet {
+  class PerspectiveCamera extends AbstractFacet implements View {
 
     /**
      * The aspect ratio of the viewport, i.e., width / height.
@@ -3045,9 +3088,9 @@ declare module EIGHT {
     aspect: number;
 
     /**
-     * The position of the camera.
+     * The position of the camera, a position vector.
      */
-    eye: Vector3;
+    eye: Geometric3;
 
     /**
      * The distance to the far plane of the viewport.
@@ -3063,7 +3106,7 @@ declare module EIGHT {
     /**
      * The point (position vector) that the camera looks at.
      */
-    look: Vector3;
+    look: Geometric3;
 
     /**
      *The distance to the near plane of the viewport.
@@ -3071,44 +3114,18 @@ declare module EIGHT {
     near: number;
 
     /**
-     *
+     * The direction that is used to orient the camera. 
      */
-    position: Vector3;
+    up: Geometric3;
 
-
-    /**
-     * The projection matrix
-     */
-    projectionMatrix: Matrix4;
-
-    /**
-     * The "guess" direction that is used to generate the upwards direction for the camera. 
-     */
-    up: Vector3;
-
-    /**
-     * The view matrix
-     */
-    viewMatrix: Matrix4;
-
-    /**
-     * fov...: The `fov` property.
-     * aspect: The `aspect` property.
-     * near..: The `near` property.
-     * far...: The `far` property.
-     */
     constructor(fov?: number, aspect?: number, near?: number, far?: number)
-    getAttitude(): SpinorE3
-    getPosition(): VectorE3
     getProperty(name: string): number[]
     setAspect(aspect: number): PerspectiveCamera
-    setAttitude(attitude: SpinorE3): void
     setEye(eye: VectorE3): PerspectiveCamera
     setFar(far: number): PerspectiveCamera
     setFov(fov: number): PerspectiveCamera
     setLook(look: VectorE3): PerspectiveCamera
     setNear(near: number): PerspectiveCamera
-    setPosition(position: VectorE3): void
     setProperty(name: string, value: number[]): PerspectiveCamera
     setUniforms(visitor: FacetVisitor): void
     setUp(up: VectorE3): PerspectiveCamera
@@ -3533,7 +3550,7 @@ declare module EIGHT {
     /**
      * The <em>direction</em> (unit vector) in which the light is travelling.
      */
-    direction: Vector3;
+    direction: Geometric3;
     /**
      * The <em>color</em> of the light.
      */
@@ -3815,97 +3832,133 @@ declare module EIGHT {
   }
 
   ///////////////////////////////////////////////////////////////////////////////
-
+  /**
+   *
+   */
   interface AbstractMesh extends AbstractDrawable {
-    attitude: Geometric3;
+    /**
+     * Color
+     */
     color: Color;
-    position: Geometric3;
+    /**
+     * Attitude (spinor)
+     */
+    R: Geometric3;
+    /**
+     * Position (vector)
+     */
+    X: Geometric3;
+    /**
+     * Stress (tensor)
+     */
     stress: Matrix4;
   }
-
+  ///////////////////////////////////////////////////////////////////////////////
   /**
    * A Mesh is a Decorator for a Drawable.
    * A Mesh adds attitude, color, position, and scale properties to a Drawable
    * which are implemented as Facet(s).
    */
   class Mesh extends Drawable implements AbstractMesh {
-
     /**
-     *
-     */
-    attitude: Geometric3;
-
-    /**
-     *
+     * Color
      */
     color: Color;
-
     /**
-     *
+     * Attitude (spinor)
      */
-    matrix: Matrix4;
-
+    R: Geometric3;
     /**
-     *
-     */
-    position: Geometric3;
-
-    /**
-     *
+     * Stress (tensor)
      */
     stress: Matrix4;
-
+    /**
+     * Position (vector)
+     */
+    X: Geometric3;
     /**
      *
      */
     constructor(geometry: Geometry, material: Material, engine: Engine);
-
     /**
      *
      */
     protected destructor(levelUp: number): void;
-    getAttitude(): Geometric3;
-    getPosition(): Geometric3;
     getPrincipalScale(name: string): number;
-    setAttitude(attitude: SpinorE3): void;
-    setPosition(position: VectorE3): void;
     protected setPrincipalScale(name: string, value: number): void;
   }
-
+  ///////////////////////////////////////////////////////////////////////////////
   /**
    *
    */
   class RigidBodyWithUnits extends ShareableBase {
-    attitude: G3
+    /**
+     * Axis (vector)
+     */
     axis: G3
-    mass: G3
-    momentum: G3
-    position: G3
+    /**
+     * Angular momentum (bivector)
+     */
+    L: G3
+    /**
+     * Mass (scalar)
+     */
+    m: G3
+    /**
+     * Momentum (vector)
+     */
+    P: G3
+    /**
+     * Charge
+     */
+    Q: G3
+    /**
+     * Attitude (spinor)
+     */
+    R: G3
+    /**
+     * Position (vector)
+     */
+    X: G3
     /**
      *
      */
     constructor(mesh: Mesh, axis: VectorE3);
     protected destructor(levelUp: number): void;
   }
-
+  ///////////////////////////////////////////////////////////////////////////////
+  /**
+   * Decorates the Mesh by adding properties for physical modeling.
+   */
   class RigidBody extends Mesh {
     /**
+     * Axis (vector).
      * The axis of the RigidBody.
      */
     public axis: Geometric3;
-
+    /**
+     *
+     */
     public initialAxis: R3;
-
     /**
-     * The (dimensionless) mass of the RigidBody.
+     * Angular momentum (bivector)
      */
-    public mass: number;
-
+    public L: Geometric3;
     /**
-     * The (dimensionless) momentum of the RigidBody.
+     * Mass (scalar)
      */
-    public momentum: Geometric3;
-
+    public m: number;
+    /**
+     * Momentum (vector)
+     */
+    public P: Geometric3;
+    /**
+     * Charge
+     */
+    public Q: Geometric3;
+    /**
+     *
+     */
     constructor(geometry: Geometry, material: Material, engine: Engine, initialAxis: VectorE3);
     protected destructor(levelUp: number): void;
   }
@@ -4041,41 +4094,58 @@ declare module EIGHT {
       })
     protected destructor(levelUp: number): void;
   }
-
+  ///////////////////////////////////////////////////////////////////////////////
+  /**
+   *
+   */
   interface TrailConfig {
+    /**
+     * Determines whether the trail will record historical events and draw them.
+     * Default is true.
+     */
     enabled: boolean;
+    /**
+     * Determines the number of animation frames between the recording of events.
+     * Default is 10.
+     */
     interval: number;
+    /**
+     * Determines the maximum number of historical events that form the trail.
+     * Default is 10.
+     */
     retain: number;
   }
-
+  ///////////////////////////////////////////////////////////////////////////////
+  /**
+   *
+   */
   class Trail extends ShareableBase {
-
     /**
      *
      */
     config: TrailConfig
-
     /**
      * Constructs a trail for the specified mesh.
      */
     constructor(mesh: Mesh);
-
-    /**
-     * Erases the trail history.
-     */
-    erase(): void;
-
+    protected destructor(levelUp: number): void;
     /**
      * Draws the mesh in its historical positions and attitudes.
      */
     draw(ambients: Facet[]): void;
-
+    /**
+     * Erases the trail history.
+     */
+    erase(): void;
     /**
      * Records the graphics model variables.
      */
     snapshot(): void;
   }
-
+  ///////////////////////////////////////////////////////////////////////////////
+  /**
+   *
+   */
   class Viewport extends ShareableBase {
     ambients: Facet[];
     ambLight: AmbientLight;
@@ -4095,23 +4165,42 @@ declare module EIGHT {
     public draw(): void;
     public setPortal(x: number, y: number, width: number, height: number): void;
   }
-
+  ///////////////////////////////////////////////////////////////////////////////
+  /**
+   *
+   */
+  interface SingleViewAppOptions extends AnimationAppOptions {
+  }
+  ///////////////////////////////////////////////////////////////////////////////
+  /**
+   *
+   */
   class SingleViewApp extends AnimationApp {
     protected view: Viewport;
-    constructor(canvasId: string, wnd?: Window);
+    constructor(options?: SingleViewAppOptions);
     protected destructor(): void;
     protected draw(): void;
     protected initialize(): void;
   }
-
+  ///////////////////////////////////////////////////////////////////////////////
+  /**
+   *
+   */
+  interface MultiViewAppOptions extends AnimationAppOptions {
+    numViews?: number;
+  }
+  ///////////////////////////////////////////////////////////////////////////////
+  /**
+   *
+   */
   class MultiViewApp extends AnimationApp {
     protected views: ShareableArray<Viewport>;
-    constructor(numViews: number, canvasId: string, wnd?: Window);
+    constructor(options?: MultiViewAppOptions);
     protected destructor(): void;
     protected draw(): void;
     protected initialize(): void;
   }
-
+  ///////////////////////////////////////////////////////////////////////////////
   /**
    *
    */
@@ -4121,7 +4210,7 @@ declare module EIGHT {
     canvas: HTMLCanvasElement;
     add(mesh: Drawable): void;
   }
-
+  ///////////////////////////////////////////////////////////////////////////////
   /**
    *
    */
@@ -4135,8 +4224,10 @@ declare module EIGHT {
       onunload?: () => any;
       width?: number;
     }): World;
-
   ///////////////////////////////////////////////////////////////////////////////
+  /**
+   *
+   */
   class MouseControls extends ShareableBase {
     enabled: boolean;
     maxDistance: number;
@@ -4153,69 +4244,127 @@ declare module EIGHT {
     constructor(wnd: Window);
     protected destructor(levelUp: number): void;
     handleResize(): void;
+    move(x: number, y: number): void;
     reset(): void;
     subscribe(domElement: HTMLElement): void;
     unsubscribe(): void;
   }
   ///////////////////////////////////////////////////////////////////////////////
-  interface ControlsTarget {
-    getAttitude(): SpinorE3;
-    setAttitude(attitude: SpinorE3): void;
-    getPosition(): VectorE3;
-    setPosition(position: VectorE3): void;
-  }
-  ///////////////////////////////////////////////////////////////////////////////
-  class OrbitControls extends MouseControls {
-    constructor(wnd?: Window);
-    protected destructor(levelUp: number): void;
-    reset(): void;
-    setTarget(target: ControlsTarget): void;
-    update(): void;
-  }
-  ///////////////////////////////////////////////////////////////////////////////
-  class TrackballControls extends MouseControls {
-
-    public panSpeed: number
-    public rotateSpeed: number
-    public zoomSpeed: number
-
-    constructor(camera: PerspectiveCamera)
-    protected destructor(): void
-
+  /**
+   *
+   */
+  interface ViewController {
     /**
-     * This should be called whenever the window is resized.
+     * Called during the animation loop to update the target.
      */
-    public handleResize()
-
+    update(): void;
+    /**
+     * Reset the view to the last synchronization point.
+     */
+    reset(): void;
+    /**
+     * Called at any time to set a view for this controller.
+     */
+    setView(view: View): void;
+    /**
+     * Synchronizes this controller with the view.
+     */
+    synchronize(): void;
+  }
+  ///////////////////////////////////////////////////////////////////////////////
+  /**
+   *
+   */
+  class ViewControls extends MouseControls implements ViewController {
+    protected eyeMinusLook: Geometric3;
+    protected look: Geometric3;
+    public panSpeed: number;
+    public rotateSpeed: number;
+    protected view: View;
+    public zoomSpeed: number;
+    constructor(view: View, wnd: Window);
+    protected destructor(levelUp: number): void;
+    /**
+     *
+     */
+    protected panCamera(): void;
     /**
      * Resets the camera position and attitude.
      */
-    public reset(): void
-
+    reset(): void;
     /**
-     * Start listening to mouse events from the specified HTMLElement.
+     *
      */
-    public subscribe(domElement: HTMLElement): void
-
+    protected rotateCamera(): void;
     /**
-     * Stop listening to mouse events.
+     * Sets the view being controlled vythe view controller.
      */
-    public unsubscribe()
-
+    setView(view: View): void;
+    /**
+     * Synchronizes this controller with the view.
+     */
+    synchronize(): void;
     /**
      * Updates the camera position and attitude based upon movement of the mouse controls.
      */
-    public update()
+    update(): void;
+    /**
+     *
+     */
+    protected zoomCamera(): void;
   }
   ///////////////////////////////////////////////////////////////////////////////
+  /**
+   *
+   */
+  class OrbitControls extends ViewControls {
+    constructor(view: View, wnd: Window);
+    protected destructor(levelUp: number): void;
+  }
+  ///////////////////////////////////////////////////////////////////////////////
+  /**
+   *
+   */
+  class TrackballControls extends ViewControls {
+    constructor(view: View, wnd: Window)
+    protected destructor(): void
+  }
+  ///////////////////////////////////////////////////////////////////////////////
+  /**
+   * Universal cosine function.
+   */
   function cos<T>(x: T): T;
+  /**
+   * Universal hyperbolic cosine function.
+   */
   function cosh<T>(x: T): T;
+  /**
+   * Universal exponential function.
+   */
   function exp<T>(x: T): T;
+  /**
+   * Universal (natural) logarithm function.
+   */
   function log<T>(x: T): T;
+  /**
+   *
+   */
   function norm<T>(x: T): T;
+  /**
+   *
+   */
   function quad<T>(x: T): T;
+  /**
+   * Universal sine function.
+   */
   function sin<T>(x: T): T;
+  /**
+   * Universal hyperbolic sine function.
+   */
   function sinh<T>(x: T): T;
+  /**
+   *
+   */
   function sqrt<T>(x: T): T;
   ///////////////////////////////////////////////////////////////////////////////
 }

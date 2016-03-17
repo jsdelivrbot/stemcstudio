@@ -17,7 +17,7 @@
                 <h1><img src="../assets/css/logo.png" title="davinci-eight" width="117" height="52"></h1>
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 2.222.0</em>
+            <em>API Docs for: 2.225.0</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -44,6 +44,7 @@
                                 <li><a href="../classes/AbstractMesh.html">AbstractMesh</a></li>
                                 <li><a href="../classes/AmbientLight.html">AmbientLight</a></li>
                                 <li><a href="../classes/AnimationApp.html">AnimationApp</a></li>
+                                <li><a href="../classes/AnimationAppOptions.html">AnimationAppOptions</a></li>
                                 <li><a href="../classes/Approximation.html">Approximation</a></li>
                                 <li><a href="../classes/Arrow.html">Arrow</a></li>
                                 <li><a href="../classes/ArrowBuilder.html">ArrowBuilder</a></li>
@@ -60,6 +61,7 @@
                                 <li><a href="../classes/BoxGeometryOptions.html">BoxGeometryOptions</a></li>
                                 <li><a href="../classes/BoxOptions.html">BoxOptions</a></li>
                                 <li><a href="../classes/BrowserApp.html">BrowserApp</a></li>
+                                <li><a href="../classes/BrowserAppOptions.html">BrowserAppOptions</a></li>
                                 <li><a href="../classes/Capability.html">Capability</a></li>
                                 <li><a href="../classes/CC.html">CC</a></li>
                                 <li><a href="../classes/Color.html">Color</a></li>
@@ -70,7 +72,6 @@
                                 <li><a href="../classes/ContextConsumer.html">ContextConsumer</a></li>
                                 <li><a href="../classes/ContextProgramConsumer.html">ContextProgramConsumer</a></li>
                                 <li><a href="../classes/ContextProvider.html">ContextProvider</a></li>
-                                <li><a href="../classes/ControlTarget.html">ControlTarget</a></li>
                                 <li><a href="../classes/Coords.html">Coords</a></li>
                                 <li><a href="../classes/CoordsTransform1D.html">CoordsTransform1D</a></li>
                                 <li><a href="../classes/CoordsTransform2D.html">CoordsTransform2D</a></li>
@@ -95,10 +96,10 @@
                                 <li><a href="../classes/EIGHTLogger.html">EIGHTLogger</a></li>
                                 <li><a href="../classes/Engine.html">Engine</a></li>
                                 <li><a href="../classes/EngineApp.html">EngineApp</a></li>
+                                <li><a href="../classes/EngineAppOptions.html">EngineAppOptions</a></li>
                                 <li><a href="../classes/ErrorMode.html">ErrorMode</a></li>
                                 <li><a href="../classes/Facet.html">Facet</a></li>
                                 <li><a href="../classes/FacetVisitor.html">FacetVisitor</a></li>
-                                <li><a href="../classes/Frustum.html">Frustum</a></li>
                                 <li><a href="../classes/G2.html">G2</a></li>
                                 <li><a href="../classes/G3.html">G3</a></li>
                                 <li><a href="../classes/Geometric2.html">Geometric2</a></li>
@@ -144,10 +145,10 @@
                                 <li><a href="../classes/ModelFacet.html">ModelFacet</a></li>
                                 <li><a href="../classes/MouseControls.html">MouseControls</a></li>
                                 <li><a href="../classes/MultiViewApp.html">MultiViewApp</a></li>
+                                <li><a href="../classes/MultiViewAppOptions.html">MultiViewAppOptions</a></li>
                                 <li><a href="../classes/Mutable.html">Mutable</a></li>
                                 <li><a href="../classes/NumberShareableMap.html">NumberShareableMap</a></li>
                                 <li><a href="../classes/OrbitControls.html">OrbitControls</a></li>
-                                <li><a href="../classes/Perspective.html">Perspective</a></li>
                                 <li><a href="../classes/PerspectiveCamera.html">PerspectiveCamera</a></li>
                                 <li><a href="../classes/PointMaterial.html">PointMaterial</a></li>
                                 <li><a href="../classes/PointMaterialOptions.html">PointMaterialOptions</a></li>
@@ -219,6 +220,8 @@
                                 <li><a href="../classes/VertexAttributeMap.html">VertexAttributeMap</a></li>
                                 <li><a href="../classes/VertexBuffer.html">VertexBuffer</a></li>
                                 <li><a href="../classes/View.html">View</a></li>
+                                <li><a href="../classes/ViewController.html">ViewController</a></li>
+                                <li><a href="../classes/ViewControls.html">ViewControls</a></li>
                                 <li><a href="../classes/Viewport.html">Viewport</a></li>
                                 <li><a href="../classes/VisualOptions.html">VisualOptions</a></li>
                                 <li><a href="../classes/WebGLBlendFunc.html">WebGLBlendFunc</a></li>
@@ -282,7 +285,7 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l75"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:75</code></a>
+            Defined in: <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l81"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:81</code></a>
         </div>
 
             Module: <a href="../modules/math.html">math</a><br>
@@ -314,7 +317,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l75"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:75</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l81"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:81</code></a>
         </p>
 
 
@@ -477,6 +480,10 @@ The multivector is initialized to zero.</p>
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
+                                <a href="#method_copyCoordinates">copyCoordinates</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_copyScalar">copyScalar</a>
 
                             </li>
@@ -486,6 +493,10 @@ The multivector is initialized to zero.</p>
                             </li>
                             <li class="index-item method">
                                 <a href="#method_copyVector">copyVector</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_distanceTo">distanceTo</a>
 
                             </li>
                             <li class="index-item method">
@@ -623,15 +634,24 @@ The multivector is initialized to zero.</p>
                             <li class="index-item method">
                                 <a href="#method_one">one</a>
 
+                                    <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
                                 <a href="#method_one">one</a>
 
-                                    <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
                                 <a href="#method_quad">quad</a>
 
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_quadranceTo">quadranceTo</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_random">random</a>
+
+                                    <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
                                 <a href="#method_rco">rco</a>
@@ -651,10 +671,6 @@ The multivector is initialized to zero.</p>
                             </li>
                             <li class="index-item method">
                                 <a href="#method_rotate">rotate</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_rotorFromAxisAngle">rotorFromAxisAngle</a>
 
                             </li>
                             <li class="index-item method">
@@ -686,6 +702,11 @@ The multivector is initialized to zero.</p>
                             <li class="index-item method">
                                 <a href="#method_slerp">slerp</a>
 
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_spinor">spinor</a>
+
+                                    <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
                                 <a href="#method_squaredNorm">squaredNorm</a>
@@ -733,6 +754,11 @@ The multivector is initialized to zero.</p>
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_wedge">wedge</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_zero">zero</a>
 
                             </li>
@@ -758,6 +784,10 @@ The multivector is initialized to zero.</p>
                             </li>
                             <li class="index-item property private">
                                 <a href="#property_eventBus">eventBus</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_maskG3">maskG3</a>
 
                             </li>
                             <li class="index-item property">
@@ -826,7 +856,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1375"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1375</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1522"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1522</code></a>
         </p>
 
 
@@ -843,7 +873,7 @@ The multivector is initialized to zero.</p>
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">rhs</code>
-                        <span class="type">Number | <a href="../classes/Geometric3.html" class="crosslink">Geometric3</a></span>
+                        <span class="type">Number | CartesianG3</span>
 
 
                     <div class="param-description">
@@ -884,7 +914,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1663"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1663</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1804"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1804</code></a>
         </p>
 
 
@@ -931,7 +961,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1393"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1393</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1538"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1538</code></a>
         </p>
 
 
@@ -948,7 +978,7 @@ The multivector is initialized to zero.</p>
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">rhs</code>
-                        <span class="type">Number | <a href="../classes/Geometric3.html" class="crosslink">Geometric3</a></span>
+                        <span class="type">Number | CartesianG3</span>
 
 
                     <div class="param-description">
@@ -994,7 +1024,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1555"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1555</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1696"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1696</code></a>
         </p>
 
 
@@ -1057,7 +1087,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1429"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1429</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1572"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1572</code></a>
         </p>
 
 
@@ -1074,7 +1104,7 @@ The multivector is initialized to zero.</p>
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">rhs</code>
-                        <span class="type">Number | <a href="../classes/Geometric3.html" class="crosslink">Geometric3</a></span>
+                        <span class="type">Number | CartesianG3</span>
 
 
                     <div class="param-description">
@@ -1115,7 +1145,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1683"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1683</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1824"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1824</code></a>
         </p>
 
 
@@ -1157,7 +1187,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1673"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1673</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1814"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1814</code></a>
         </p>
 
 
@@ -1204,7 +1234,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1465"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1465</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1606"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1606</code></a>
         </p>
 
 
@@ -1267,7 +1297,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1411"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1411</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1554"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1554</code></a>
         </p>
 
 
@@ -1330,7 +1360,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1573"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1573</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1714"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1714</code></a>
         </p>
 
 
@@ -1393,7 +1423,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1447"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1447</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1588"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1588</code></a>
         </p>
 
 
@@ -1456,7 +1486,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1609"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1609</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1750"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1750</code></a>
         </p>
 
 
@@ -1519,7 +1549,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1591"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1591</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1732"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1732</code></a>
         </p>
 
 
@@ -1582,7 +1612,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1499"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1499</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1640"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1640</code></a>
         </p>
 
 
@@ -1645,7 +1675,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1645"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1645</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1786"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1786</code></a>
         </p>
 
 
@@ -1708,7 +1738,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1536"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1536</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1677"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1677</code></a>
         </p>
 
 
@@ -1771,7 +1801,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1482"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1482</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1624"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1624</code></a>
         </p>
 
 
@@ -1788,7 +1818,7 @@ The multivector is initialized to zero.</p>
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">rhs</code>
-                        <span class="type">Number | <a href="../classes/Geometric3.html" class="crosslink">Geometric3</a></span>
+                        <span class="type">Number | CartesianG3</span>
 
 
                     <div class="param-description">
@@ -1828,7 +1858,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l964"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:964</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1124"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1124</code></a>
         </p>
 
 
@@ -1875,7 +1905,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1627"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1627</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1768"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1768</code></a>
         </p>
 
 
@@ -1938,7 +1968,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1517"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1517</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1658"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1658</code></a>
         </p>
 
 
@@ -2004,7 +2034,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l228"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:228</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l266"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:266</code></a>
         </p>
 
 
@@ -2085,7 +2115,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l295"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:295</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l333"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:333</code></a>
         </p>
 
 
@@ -2162,7 +2192,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l250"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:250</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l288"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:288</code></a>
         </p>
 
 
@@ -2229,7 +2259,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l264"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:264</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l302"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:302</code></a>
         </p>
 
 
@@ -2299,7 +2329,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l278"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:278</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l316"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:316</code></a>
         </p>
 
 
@@ -2377,7 +2407,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1064"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1064</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1211"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1211</code></a>
         </p>
 
 
@@ -2437,7 +2467,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l321"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:321</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l359"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:359</code></a>
         </p>
 
 
@@ -2459,7 +2489,7 @@ The multivector is initialized to zero.</p>
 
 
 </div>
-<div id="method_approx" class="method item inherited">
+<div id="method_approx" class="method item">
     <h3 class="name"><code>approx</code></h3>
 
         <div class="args">
@@ -2471,19 +2501,23 @@ The multivector is initialized to zero.</p>
         </div>
 
         <span class="returns-inline">
-            <span class="type">Void</span>
+            <span class="type"><a href="../classes/Geometric3.html" class="crosslink">Geometric3</a></span>
         </span>
 
 
 
 
 
+        <span class="flag chainable">chainable</span>
 
 
     <div class="meta">
-                <p>Inherited from
-                <a href="../classes/Coords.html#method_approx">Coords</a>:
-        <a href="../files/src_davinci-eight_math_Coords.ts.html#l18"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Coords.ts:18</code></a>
+            <p>Inherited from
+            <a href="../classes/Coords.html#method_approx">
+                Coords
+            </a>
+            but overwritten in
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l367"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:367</code></a>
         </p>
 
 
@@ -2515,7 +2549,7 @@ The multivector is initialized to zero.</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type">Void</span>:
+                        <span class="type"><a href="../classes/Geometric3.html" class="crosslink">Geometric3</a></span>:
             </div>
         </div>
 
@@ -2540,7 +2574,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l329"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:329</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l378"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:378</code></a>
         </p>
 
 
@@ -2583,7 +2617,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l338"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:338</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l387"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:387</code></a>
         </p>
 
 
@@ -2634,7 +2668,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l409"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:409</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l510"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:510</code></a>
         </p>
 
 
@@ -2702,7 +2736,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1755"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1755</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1896"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1896</code></a>
         </p>
 
 
@@ -2740,6 +2774,72 @@ The multivector is initialized to zero.</p>
 
 
 </div>
+<div id="method_copyCoordinates" class="method item">
+    <h3 class="name"><code>copyCoordinates</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>coordinates</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/Geometric3.html" class="crosslink">Geometric3</a></span>
+        </span>
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l404"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:404</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Copies the coordinate values into this <code>Geometric3</code>.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">coordinates</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/Geometric3.html" class="crosslink">Geometric3</a></span>:
+                    <p><code>this</code></p>
+
+            </div>
+        </div>
+
+
+</div>
 <div id="method_copyScalar" class="method item">
     <h3 class="name"><code>copyScalar</code></h3>
 
@@ -2765,7 +2865,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l431"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:431</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l532"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:532</code></a>
         </p>
 
 
@@ -2829,7 +2929,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l443"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:443</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l544"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:544</code></a>
         </p>
 
 
@@ -2896,7 +2996,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l461"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:461</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l562"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:562</code></a>
         </p>
 
 
@@ -2938,6 +3038,68 @@ The multivector is initialized to zero.</p>
 
 
 </div>
+<div id="method_distanceTo" class="method item">
+    <h3 class="name"><code>distanceTo</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>point</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Number</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l425"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:425</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">point</code>
+                        <span class="type"><a href="../classes/VectorE3.html" class="crosslink">VectorE3</a></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Number</span>:
+            </div>
+        </div>
+
+
+</div>
 <div id="method_div" class="method item">
     <h3 class="name"><code>div</code></h3>
 
@@ -2963,7 +3125,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l478"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:478</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l580"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:580</code></a>
         </p>
 
 
@@ -3033,7 +3195,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l518"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:518</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l678"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:678</code></a>
         </p>
 
 
@@ -3110,7 +3272,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l497"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:497</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l657"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:657</code></a>
         </p>
 
 
@@ -3177,7 +3339,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l548"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:548</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l708"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:708</code></a>
         </p>
 
 
@@ -3239,7 +3401,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1715"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1715</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1856"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1856</code></a>
         </p>
 
 
@@ -3282,7 +3444,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1725"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1725</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1866"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1866</code></a>
         </p>
 
 
@@ -3325,7 +3487,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1735"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1735</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1876"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1876</code></a>
         </p>
 
 
@@ -3375,7 +3537,7 @@ The multivector is initialized to zero.</p>
                 Coords
             </a>
             but overwritten in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l579"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:579</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l739"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:739</code></a>
         </p>
 
 
@@ -3432,7 +3594,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l594"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:594</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l754"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:754</code></a>
         </p>
 
 
@@ -3483,7 +3645,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1330"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1330</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1477"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1477</code></a>
         </p>
 
 
@@ -3553,7 +3715,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1343"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1343</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1490"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1490</code></a>
         </p>
 
 
@@ -3631,7 +3793,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1775"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1775</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1916"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1916</code></a>
         </p>
 
 
@@ -3695,7 +3857,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1786"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1786</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1927"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1927</code></a>
         </p>
 
 
@@ -3759,7 +3921,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1802"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1802</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1943"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1943</code></a>
         </p>
 
 
@@ -3822,7 +3984,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1272"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1272</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1419"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1419</code></a>
         </p>
 
 
@@ -3880,7 +4042,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1745"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1745</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1886"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1886</code></a>
         </p>
 
 
@@ -3922,7 +4084,7 @@ The multivector is initialized to zero.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l633"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:633</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l793"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:793</code></a>
         </p>
 
 
@@ -3966,7 +4128,7 @@ Computes the inverse of this multivector.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l679"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:679</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l839"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:839</code></a>
         </p>
 
 
@@ -4006,7 +4168,7 @@ Computes the inverse of this multivector.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l687"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:687</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l847"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:847</code></a>
         </p>
 
 
@@ -4053,7 +4215,7 @@ Computes the inverse of this multivector.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l355"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:355</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l456"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:456</code></a>
         </p>
 
 
@@ -4123,7 +4285,7 @@ Computes the inverse of this multivector.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l368"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:368</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l469"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:469</code></a>
         </p>
 
 
@@ -4203,7 +4365,7 @@ Computes the inverse of this multivector.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l695"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:695</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l855"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:855</code></a>
         </p>
 
 
@@ -4287,7 +4449,7 @@ Computes the inverse of this multivector.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1817"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1817</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1958"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1958</code></a>
         </p>
 
 
@@ -4378,7 +4540,7 @@ Computes the inverse of this multivector.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l717"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:717</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l877"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:877</code></a>
         </p>
 
 
@@ -4459,7 +4621,7 @@ Computes the inverse of this multivector.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l733"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:733</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l893"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:893</code></a>
         </p>
 
 
@@ -4503,7 +4665,7 @@ Computes the inverse of this multivector.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l756"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:756</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l916"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:916</code></a>
         </p>
 
 
@@ -4552,7 +4714,7 @@ Computes the <em>square root</em> of the <em>squared norm</em>.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l775"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:775</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l935"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:935</code></a>
         </p>
 
 
@@ -4622,7 +4784,7 @@ Computes the <em>square root</em> of the <em>squared norm</em>.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l788"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:788</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l948"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:948</code></a>
         </p>
 
 
@@ -4693,7 +4855,7 @@ Computes the <em>square root</em> of the <em>squared norm</em>.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l803"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:803</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l963"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:963</code></a>
         </p>
 
 
@@ -4738,7 +4900,7 @@ Computes the <em>square root</em> of the <em>squared norm</em>.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l823"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:823</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l983"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:983</code></a>
         </p>
 
 
@@ -4783,7 +4945,7 @@ Computes the <em>square root</em> of the <em>squared norm</em>.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l843"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:843</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1003"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1003</code></a>
         </p>
 
 
@@ -4826,6 +4988,7 @@ Since the metric is Euclidean, this will only happen if the multivector is also 
 
 
 
+        <span class="flag static">static</span>
 
         <span class="flag chainable">chainable</span>
 
@@ -4833,7 +4996,7 @@ Since the metric is Euclidean, this will only happen if the multivector is also 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l872"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:872</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1845"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1845</code></a>
         </p>
 
 
@@ -4841,7 +5004,8 @@ Since the metric is Euclidean, this will only happen if the multivector is also 
     </div>
 
     <div class="description">
-        <p>Sets this multivector to the identity element for multiplication, <b>1</b>.</p>
+        <p>Constructs a Geometric3 representing the number one.
+The identity element for multiplication, <b>1</b>.</p>
 
     </div>
 
@@ -4868,7 +5032,6 @@ Since the metric is Euclidean, this will only happen if the multivector is also 
 
 
 
-        <span class="flag static">static</span>
 
         <span class="flag chainable">chainable</span>
 
@@ -4876,7 +5039,7 @@ Since the metric is Euclidean, this will only happen if the multivector is also 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1704"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1704</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1032"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1032</code></a>
         </p>
 
 
@@ -4884,8 +5047,7 @@ Since the metric is Euclidean, this will only happen if the multivector is also 
     </div>
 
     <div class="description">
-        <p>Constructs a Geometric3 representing the number one.
-The identity element for multiplication, <b>1</b>.</p>
+        <p>Sets this multivector to the identity element for multiplication, <b>1</b>.</p>
 
     </div>
 
@@ -4919,7 +5081,7 @@ The identity element for multiplication, <b>1</b>.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l890"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:890</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1050"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1050</code></a>
         </p>
 
 
@@ -4940,6 +5102,112 @@ The identity element for multiplication, <b>1</b>.</p>
                         <span class="type"><a href="../classes/Geometric3.html" class="crosslink">Geometric3</a></span>:
                     <p><code>this</code></p>
 
+            </div>
+        </div>
+
+
+</div>
+<div id="method_quadranceTo" class="method item">
+    <h3 class="name"><code>quadranceTo</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>point</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Number</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l439"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:439</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">point</code>
+                        <span class="type"><a href="../classes/VectorE3.html" class="crosslink">VectorE3</a></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Number</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_random" class="method item">
+    <h3 class="name"><code>random</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/Geometric3.html" class="crosslink">Geometric3</a></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1971"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1971</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>
+Computes a unit multivector with a random direction.
+</p>
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/Geometric3.html" class="crosslink">Geometric3</a></span>:
             </div>
         </div>
 
@@ -4970,7 +5238,7 @@ The identity element for multiplication, <b>1</b>.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l382"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:382</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l483"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:483</code></a>
         </p>
 
 
@@ -5040,7 +5308,7 @@ The identity element for multiplication, <b>1</b>.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l395"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:395</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l496"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:496</code></a>
         </p>
 
 
@@ -5117,7 +5385,7 @@ The identity element for multiplication, <b>1</b>.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l925"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:925</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1085"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1085</code></a>
         </p>
 
 
@@ -5178,7 +5446,7 @@ The identity element for multiplication, <b>1</b>.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l943"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:943</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1103"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1103</code></a>
         </p>
 
 
@@ -5229,7 +5497,7 @@ The identity element for multiplication, <b>1</b>.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l973"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:973</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1133"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1133</code></a>
         </p>
 
 
@@ -5249,86 +5517,6 @@ The identity element for multiplication, <b>1</b>.</p>
                 <li class="param">
                         <code class="param-name">R</code>
                         <span class="type"><a href="../classes/SpinorE3.html" class="crosslink">SpinorE3</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"><a href="../classes/Geometric3.html" class="crosslink">Geometric3</a></span>:
-                    <p><code>this</code></p>
-
-            </div>
-        </div>
-
-
-</div>
-<div id="method_rotorFromAxisAngle" class="method item">
-    <h3 class="name"><code>rotorFromAxisAngle</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>axis</code>
-                </li>
-                <li class="arg">
-                        <code>θ</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type"><a href="../classes/Geometric3.html" class="crosslink">Geometric3</a></span>
-        </span>
-
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1021"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1021</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>
-<code>this = ⟼ exp(- dual(a) * θ / 2)</code>
-</p>
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">axis</code>
-                        <span class="type"><a href="../classes/VectorE3.html" class="crosslink">VectorE3</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">θ</code>
-                        <span class="type">Number</span>
 
 
                     <div class="param-description">
@@ -5380,7 +5568,7 @@ The identity element for multiplication, <b>1</b>.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1830"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1830</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1995"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1995</code></a>
         </p>
 
 
@@ -5459,7 +5647,7 @@ The identity element for multiplication, <b>1</b>.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1005"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1005</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1165"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1165</code></a>
         </p>
 
 
@@ -5542,7 +5730,7 @@ R = (1 + b * a) / sqrt(2 * (1 + b << a))
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1043"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1043</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1181"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1181</code></a>
         </p>
 
 
@@ -5551,7 +5739,7 @@ R = (1 + b * a) / sqrt(2 * (1 + b << a))
 
     <div class="description">
         <p>
-<code>this = ⟼ exp(- B * θ / 2)</code>
+<code>this = ⟼ exp(- B * θ / 2) = cos(|B| * θ / 2) - B * sin(|B| * θ / 2) / |B|</code>
 </p>
     </div>
 
@@ -5621,7 +5809,7 @@ R = (1 + b * a) / sqrt(2 * (1 + b << a))
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1843"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1843</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l2008"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:2008</code></a>
         </p>
 
 
@@ -5680,7 +5868,7 @@ R = (1 + b * a) / sqrt(2 * (1 + b << a))
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1091"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1091</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1238"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1238</code></a>
         </p>
 
 
@@ -5741,7 +5929,7 @@ R = (1 + b * a) / sqrt(2 * (1 + b << a))
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1077"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1077</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1224"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1224</code></a>
         </p>
 
 
@@ -5821,7 +6009,7 @@ R = (1 + b * a) / sqrt(2 * (1 + b << a))
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1110"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1110</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1257"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1257</code></a>
         </p>
 
 
@@ -5870,6 +6058,109 @@ R = (1 + b * a) / sqrt(2 * (1 + b << a))
 
 
 </div>
+<div id="method_spinor" class="method item">
+    <h3 class="name"><code>spinor</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>yz</code>
+                </li>
+                <li class="arg">
+                        <code>zx</code>
+                </li>
+                <li class="arg">
+                        <code>xy</code>
+                </li>
+                <li class="arg">
+                        <code>α</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/Geometric3.html" class="crosslink">Geometric3</a></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l2019"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:2019</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">yz</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">zx</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">xy</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">α</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/Geometric3.html" class="crosslink">Geometric3</a></span>:
+            </div>
+        </div>
+
+
+</div>
 <div id="method_squaredNorm" class="method item">
     <h3 class="name"><code>squaredNorm</code></h3>
 
@@ -5888,7 +6179,7 @@ R = (1 + b * a) / sqrt(2 * (1 + b << a))
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l906"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:906</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1066"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1066</code></a>
         </p>
 
 
@@ -5939,7 +6230,7 @@ Computes the <em>squared norm</em> of this multivector.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1123"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1123</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1270"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1270</code></a>
         </p>
 
 
@@ -6006,7 +6297,7 @@ Computes the <em>squared norm</em> of this multivector.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1167"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1167</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1314"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1314</code></a>
         </p>
 
 
@@ -6087,7 +6378,7 @@ Computes the <em>squared norm</em> of this multivector.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1206"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1206</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1353"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1353</code></a>
         </p>
 
 
@@ -6167,7 +6458,7 @@ Computes the <em>squared norm</em> of this multivector.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1189"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1189</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1336"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1336</code></a>
         </p>
 
 
@@ -6244,7 +6535,7 @@ Computes the <em>squared norm</em> of this multivector.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1228"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1228</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1375"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1375</code></a>
         </p>
 
 
@@ -6308,7 +6599,7 @@ Computes the <em>squared norm</em> of this multivector.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1239"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1239</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1386"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1386</code></a>
         </p>
 
 
@@ -6372,7 +6663,7 @@ Computes the <em>squared norm</em> of this multivector.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1250"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1250</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1397"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1397</code></a>
         </p>
 
 
@@ -6435,7 +6726,7 @@ Computes the <em>squared norm</em> of this multivector.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1260"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1260</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1407"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1407</code></a>
         </p>
 
 
@@ -6507,7 +6798,7 @@ Computes the <em>squared norm</em> of this multivector.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1854"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1854</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l2039"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:2039</code></a>
         </p>
 
 
@@ -6592,7 +6883,7 @@ Computes the <em>squared norm</em> of this multivector.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1139"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1139</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1286"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1286</code></a>
         </p>
 
 
@@ -6645,6 +6936,84 @@ Sets this Geometric3 to the geometric product a * b of the vector arguments.
 
 
 </div>
+<div id="method_wedge" class="method item">
+    <h3 class="name"><code>wedge</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>a</code>
+                </li>
+                <li class="arg">
+                        <code>b</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/Geometric3.html" class="crosslink">Geometric3</a></span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l2057"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:2057</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">a</code>
+                        <span class="type"><a href="../classes/GeometricE3.html" class="crosslink">GeometricE3</a></span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">b</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>{GeometricE3</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/Geometric3.html" class="crosslink">Geometric3</a></span>:
+            </div>
+        </div>
+
+
+</div>
 <div id="method_zero" class="method item">
     <h3 class="name"><code>zero</code></h3>
 
@@ -6664,7 +7033,7 @@ Sets this Geometric3 to the geometric product a * b of the vector arguments.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1357"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1357</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1504"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1504</code></a>
         </p>
 
 
@@ -6707,7 +7076,7 @@ Sets this Geometric3 to the geometric product a * b of the vector arguments.
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1693"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1693</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l1834"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:1834</code></a>
         </p>
 
 
@@ -6747,7 +7116,7 @@ The identity element for addition, <b>0</b>.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l120"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:120</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l125"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:125</code></a>
         </p>
 
 
@@ -6772,7 +7141,7 @@ The identity element for addition, <b>0</b>.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l216"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:216</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l221"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:221</code></a>
         </p>
 
 
@@ -6798,7 +7167,31 @@ The identity element for addition, <b>0</b>.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l68"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:68</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l74"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:74</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
+<div id="property_maskG3" class="property item">
+    <h3 class="name"><code>maskG3</code></h3>
+    <span class="type">Number</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l232"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:232</code></a>
         </p>
 
 
@@ -6822,7 +7215,7 @@ The identity element for addition, <b>0</b>.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l132"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:132</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l137"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:137</code></a>
         </p>
 
 
@@ -6847,7 +7240,7 @@ The identity element for addition, <b>0</b>.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l192"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:192</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l197"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:197</code></a>
         </p>
 
 
@@ -6872,7 +7265,7 @@ The identity element for addition, <b>0</b>.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l144"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:144</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l149"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:149</code></a>
         </p>
 
 
@@ -6897,7 +7290,7 @@ The identity element for addition, <b>0</b>.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l168"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:168</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l173"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:173</code></a>
         </p>
 
 
@@ -6922,7 +7315,7 @@ The identity element for addition, <b>0</b>.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l156"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:156</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l161"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:161</code></a>
         </p>
 
 
@@ -6947,7 +7340,7 @@ The identity element for addition, <b>0</b>.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l180"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:180</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l185"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:185</code></a>
         </p>
 
 
@@ -6972,7 +7365,7 @@ The identity element for addition, <b>0</b>.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l108"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:108</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l113"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:113</code></a>
         </p>
 
 
@@ -6997,7 +7390,7 @@ The identity element for addition, <b>0</b>.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l204"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:204</code></a>
+        <a href="../files/src_davinci-eight_math_Geometric3.ts.html#l209"><code>src&#x2F;davinci-eight&#x2F;math&#x2F;Geometric3.ts:209</code></a>
         </p>
 
 
