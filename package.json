@@ -1,6 +1,6 @@
 {
   "name": "mathdoodle",
-  "version": "1.310.0",
+  "version": "1.311.0",
   "private": true,
   "description": "Learning Mathematics and Geometric Physics through Computational Modeling",
   "engines": {
