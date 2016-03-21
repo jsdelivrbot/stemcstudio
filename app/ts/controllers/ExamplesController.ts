@@ -1,0 +1,82 @@
+import * as angular from 'angular';
+import app from '../app';
+import ExamplesScope from './ExamplesScope';
+import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
+
+app.controller('examples-controller', [
+    '$scope',
+    '$state',
+    '$stateParams',
+    '$http',
+    '$location',
+    '$timeout',
+    '$window',
+    'GitHubAuthManager',
+    'ga',
+    'STATE_GISTS',
+    function(
+        scope: ExamplesScope,
+        $state: angular.ui.IStateService,
+        $stateParams: angular.ui.IStateParamsService,
+        http: angular.IHttpService,
+        $location: angular.ILocationService,
+        $timeout: angular.ITimeoutService,
+        $window: angular.IWindowService,
+        authManager: IGitHubAuthManager,
+        ga: UniversalAnalytics.ga,
+        STATE_GISTS: string
+    ) {
+
+        ///////////////////////////////////////////////////////////////////////////
+        const GITHUB_TOKEN_COOKIE_NAME = 'github-token';
+
+        authManager.handleGitHubLoginCallback(function(err: any, token: string) {
+            if (err) {
+                scope.alert(err.message);
+            }
+        });
+
+        ///////////////////////////////////////////////////////////////////////////
+
+        /**
+         * The domain on which we are running. e.g., `http://www.mathdoodle.io` or `localhost:8080`.
+         * We determine this dynamically in order to access files in known locations on our server.
+         * Current usage is for JavaScript files, TypeScript d.ts files, and paths to gists.
+         * TODO: JavaScript and TypeScript to come from external repos.
+         */
+        const FWD_SLASH = '/';
+        const DOMAIN = $location.protocol() + ':' + FWD_SLASH + FWD_SLASH + $location.host() + ":" + $location.port();
+
+        ///////////////////////////////////////////////////////////////////////
+        // THIS IS A TEST OF SOCKET.IO
+        /*
+        const socket = io({ autoConnect: false });
+        socket.connect();
+        socket.on('foo', function(msg) {
+            console.log('foo: ' + msg);
+        });
+        socket.emit('test', [1, 2, 3]);
+        */
+        ///////////////////////////////////////////////////////////////////////
+
+        // Disable scrollbars for this editing page ('hidden' and 'auto').
+        $window.document.body.style.overflow = "auto";
+
+        ///////////////////////////////////////////////////////////////////////
+
+        // Ensure that scrollbars are disabled.
+        // This is so that we don't get double scrollbars when using the editor.
+        // I don't think we want this anymore now that we have side-by-side views.
+        // $window.document.body.style.overflow = 'hidden'
+
+        // Reminder: Do not create multiple trackers in this (single page) app.
+        ga('create', 'UA-41504069-3', 'auto');
+        ga('send', 'pageview');
+
+        ///////////////////////////////////////////////////////////////////////
+        scope.goHome = function(label?: string, value?: number) {
+            ga('send', 'event', 'examples', 'goHome', label, value);
+            $state.go('home');
+        };
+
+    }]);

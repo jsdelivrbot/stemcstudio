@@ -11,6 +11,7 @@ app.controller('home-controller', [
     'GitHubAuthManager',
     'NAMESPACE_TWITTER_WIDGETS',
     'STATE_DOODLE',
+    'STATE_EXAMPLES',
     function(
         $scope: HomeScope,
         $state: angular.ui.IStateService,
@@ -18,7 +19,8 @@ app.controller('home-controller', [
         $window: angular.IWindowService,
         authManager: IGitHubAuthManager,
         NAMESPACE_TWITTER_WIDGETS: string,
-        STATE_DOODLE: string
+        STATE_DOODLE: string,
+        STATE_EXAMPLES: string
     ) {
 
         // Ensure that scrollbars are disabled.
@@ -44,5 +46,9 @@ app.controller('home-controller', [
 
         $scope.goDoodle = function() {
             $state.go(STATE_DOODLE);
+        }
+
+        $scope.goExamples = function() {
+            $state.go(STATE_EXAMPLES);
         }
     }]);

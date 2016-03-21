@@ -47,7 +47,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
   return VENDOR_FOLDER_MARKER + '/' + packageFolder + '/' + fileName;
 }
 
-app.constant('version', '1.311.0');
+app.constant('version', '1.312.0');
 // githubKey stores the key of the item in local storage for maintaining GitHub OAuth data.
 // Remark: This value is duplicated in views/github_callback.jade
 app.constant('githubKey', makeKey('github'));
@@ -84,6 +84,7 @@ app.constant('NAMESPACE_TWITTER_WIDGETS', 'twttr');
 app.constant('GITHUB_TOKEN_COOKIE_NAME', 'github-token');
 
 app.constant('STATE_DOODLE', 'doodle');
+app.constant('STATE_EXAMPLES', 'examples');
 app.constant('STATE_GISTS', 'gists');
 
 // The following entries must be synchronized with appcache.mf:
@@ -99,10 +100,14 @@ app.constant('FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS', vendorPath('davinci-maths
 app.config([
   '$stateProvider',
   '$urlRouterProvider',
+  'STATE_DOODLE',
+  'STATE_EXAMPLES',
   'STATE_GISTS',
   function(
     $stateProvider: angular.ui.IStateProvider,
     $urlRouterProvider: angular.ui.IUrlRouterProvider,
+    STATE_DOODLE: string,
+    STATE_EXAMPLES: string,
     STATE_GISTS: string
   ) {
 
@@ -112,10 +117,15 @@ app.config([
         templateUrl: 'home.html',
         controller: 'home-controller'
       })
-      .state('doodle', {
+      .state(STATE_DOODLE, {
         url: '/doodle',
         templateUrl: 'doodle.html',
         controller: 'doodle-controller'
+      })
+      .state(STATE_EXAMPLES, {
+        url: '/examples',
+        templateUrl: 'examples.html',
+        controller: 'examples-controller'
       })
       .state(STATE_GISTS, {
         url: '/' + STATE_GISTS + '/{gistId}',

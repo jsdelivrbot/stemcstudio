@@ -14,6 +14,7 @@ import './controllers/BodyController';
 import './controllers/CopyController';
 import './controllers/DoodleController';
 import './controllers/DownloadController';
+import './controllers/ExamplesController';
 import './controllers/HomeController';
 import './controllers/LoginController';
 import './controllers/NewController';

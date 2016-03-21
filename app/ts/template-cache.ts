@@ -137,6 +137,204 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
   );
 
 
+  $templateCache.put('examples.html',
+    "<div id='examples-page'>\n" +
+    "  <nav id='toolbar' class='navbar navbar-inverse'>\n" +
+    "    <div class='navbar-header'>\n" +
+    "      <a role='button' class='navbar-brand' ng-click='goHome()'><md-logo-text/></a>\n" +
+    "    </div>\n" +
+    "  </nav>\n" +
+    "  <div class='md-docs-header'>\n" +
+    "    <div class='container'>\n" +
+    "      <h1>Examples</h1>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "  <div class='container md-docs-container'>\n" +
+    "    <div class='row'>\n" +
+    "      <div class='col-md-9' role='main'>\n" +
+    "\n" +
+    "        <div class='md-docs-section'>\n" +
+    "          <h1 class='page-header'>Geometric Algebra and 3D WebGL Graphics</h1>\n" +
+    "          <p class='lead'>\n" +
+    "            <a href='/#/gists/129a4a31fa803df9e4a5'>Creating and Animating a Scene with Eight.Js</a>\n" +
+    "          </p>\n" +
+    "          <p>\n" +
+    "          The Eight.Js library that ships with MathDoodle has a coherent layered architecture that allows\n" +
+    "          you to choose the appropriate level for flexibility and reuse. Eight.Js integrates Geometric\n" +
+    "          Algebra with WebGL Graphics providing an efficient starting point for explorations into Geometry,\n" +
+    "          Physics, Mathematics and Computing.\n" +
+    "          </p>\n" +
+    "          <p>\n" +
+    "          This example demonstrates many features of the Eight.Js library. It builds a scene from high level\n" +
+    "          components and drives the animation using Geometric Algebra for computation.\n" +
+    "          </p>\n" +
+    "          <p>\n" +
+    "          May be a good starting point for Physics explorations.\n" +
+    "          </p>\n" +
+    "          <p>\n" +
+    "          This example is rather verbose and contains boilerplate code that could be\n" +
+    "          eliminated with an appropriate application framework. However, the explicit\n" +
+    "          nature of the example makes it easier to understand the various components and\n" +
+    "          how they interact.\n" +
+    "          </p>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class='md-docs-section'>\n" +
+    "          <h1 class='page-header'>Physics Exploration</h1>\n" +
+    "          <p class='lead'>\n" +
+    "            <a href='/#/gists/72b8c2b765792d2fe100'>Projectile Motion</a>\n" +
+    "          <p>\n" +
+    "          Physics demonstrations and explorations require accessible solutions without having to re-invent\n" +
+    "          graphical components. This example shows how to model projectile motion by composing high-level\n" +
+    "          components in the Eight.Js library.\n" +
+    "          </p>\n" +
+    "          <p class='lead'>\n" +
+    "            <a href='/#/gists/e5a3cbf25d8972d1b79d'>Binary Star</a>\n" +
+    "          <p>\n" +
+    "          A classic two-body simulation demonstrating gravitation, the center of mass, and reduced-mass concepts.\n" +
+    "          </p>\n" +
+    "          <p class='lead'>\n" +
+    "          <a href='/#/gists/925701cc2a654bfefcf0'>Earth-Moon</a>\n" +
+    "          <p>\n" +
+    "          Demonstrates using two viewports to display a scene from different perspectives.\n" +
+    "          Simulates the Earth-Moon gravitation system with directional lighting\n" +
+    "          provided by the sun. The scene is rendered in plan view and and from the Earth.\n" +
+    "          </p>\n" +
+    "          <p class='lead'>\n" +
+    "            <a href='/#/gists/a1ee16bc6b1c98317ba1'>Units of Measure</a>\n" +
+    "          <p>\n" +
+    "          Replacing the labels used for basis vectors can be an instructive way to learn the\n" +
+    "          relationships between geometric quantities, magnitudes, directions,\n" +
+    "          aspect, and orientation.\n" +
+    "          </p>\n" +
+    "          <p class='lead'>\n" +
+    "            <a href='/#/gists/d51e8b997c6a1de2ce71'>Basis Labeling</a>\n" +
+    "          <p>\n" +
+    "          Replacing the labels used for basis vectors can be an instructive way to learn the\n" +
+    "          relationships between geometric measures, geometric quantities, magnitudes, directions,\n" +
+    "          aspect, orientation, and units of measure.\n" +
+    "          </p>\n" +
+    "          <p>\n" +
+    "          Basis labels can also be customized appropriate to the context, e.g. compass directions. In this example\n" +
+    "          we use Unicode graphical symbols to represent vectors, bivectors and the pseudoscalar and show how they\n" +
+    "          interact under the geometric product.\n" +
+    "          </p>\n" +
+    "          <p class='lead'>\n" +
+    "            <a href='/#/gists/43e23d39431bae5bb401'>Projectile Motion with Units</a>\n" +
+    "          <p>\n" +
+    "          Brings units of measure into simulations. While this may not be desirable for high-performance\n" +
+    "          applications, it does motivate the use of consistent units in order to allow the simulation to run!\n" +
+    "          </p>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class='md-docs-section'>\n" +
+    "          <h1 class='page-header'>Teaching 3D Computer Graphics</h1>\n" +
+    "          <p class='lead'>\n" +
+    "            <a href='/#/gists/157e85464659bbbd3bac'>Teaching a Computer Graphics Course with WebGL</a>\n" +
+    "          <p>\n" +
+    "          This example was inspired by the article by Edward Angel and Dave Shreiner in the book\n" +
+    "          WebGL Insights by Patrick Cozzi.\n" +
+    "          </p>\n" +
+    "          <p>\n" +
+    "          The article describes the benefits of moving from OpenGL to WebGL. MathDoodle enhances the\n" +
+    "          experience for the student by providing a powerful development environment, Geometric Algebra\n" +
+    "          libraries, and a Graphics Library with entry points at many levels of flexibility and reuse.\n" +
+    "          </p>\n" +
+    "          <p class='lead'>\n" +
+    "            <a href='/#/gists/89ee3cf12e4360999510'>Ray Tracing: The Science behind Computer Animation</a>\n" +
+    "          <p>\n" +
+    "          While WebGL provides a high performance real-time graphics environment, movie-quality animations\n" +
+    "          require Physics calculations based upon Geometric Optics and are often computed off-line taking many\n" +
+    "          hours.\n" +
+    "          </p>\n" +
+    "          <p>\n" +
+    "          This example shows how simple ray tracing can be performed in the browser with the results written\n" +
+    "          out to the HTML5 Canvas in a few seconds. The example is due to Microsoft. It would be interesting\n" +
+    "          to adapt it to Geometric Algebra and enable learning Geometric Optics.\n" +
+    "          </p>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class='md-docs-section'>\n" +
+    "          <h1 class='page-header'>Mathematical Research</h1>\n" +
+    "          <p class='lead'>\n" +
+    "          <a href='/#/gists/d4a1b374cb80ca178ad2'>Eight Surface</a>\n" +
+    "          <p>\n" +
+    "          This example demonstrates the flexibility inherent in an environment that is based upon\n" +
+    "          general-purpose programming with standards-based tools.\n" +
+    "          </p>\n" +
+    "          <p class='lead'>\n" +
+    "            <a href='/#/gists/8571a36545d10f34bfef'>Fundamental Theorem of Algebra</a>\n" +
+    "          <p>\n" +
+    "          Colors a complex (G2+) function in the Wessel (Argand) plane in order to visualize the direction.\n" +
+    "          This may be used as a basis for introductory arguments for the Fundamental Theorem of Algebra.\n" +
+    "          </p>\n" +
+    "          <p>\n" +
+    "          This example takes advantage of the GPU using custom shader programs for fast rendering.\n" +
+    "          </p>\n" +
+    "          <p class='lead'>\n" +
+    "            <a href='/#/gists/5c70bee3c68b2b7a4572'>Mandelbrot Set</a>\n" +
+    "          <p>\n" +
+    "          A rendering of the Mandelbrot Set.\n" +
+    "          </p>\n" +
+    "          <p class='lead'>\n" +
+    "            <a href='/#/gists/39390d95450ff9159b8e'>Julia Set</a>\n" +
+    "          <p>\n" +
+    "          A rendering of the Julia Set in 2D. Interestingly, this may be generalized to 3D and higher\n" +
+    "          dimensions through the use of Geometric Algebra.\n" +
+    "          </p>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class='md-docs-section'>\n" +
+    "          <h1 class='page-header'>Integrated Learning through a Game Development Project</h1>\n" +
+    "          <p class='lead'><a href='/#/gists/563f391f711bfcfccac5'>Game2D</a></p>\n" +
+    "          <p>\n" +
+    "          A computer game that realistically applies Physics pinciples, uses Geometric\n" +
+    "          mathematics for the simulation and graphics, and with User Interaction through keyboard\n" +
+    "          and mouse.\n" +
+    "          </p>\n" +
+    "          <p>\n" +
+    "          This makes an ideal Capstone project or a theme for Project Based Learning.\n" +
+    "          </p>\n" +
+    "          <p>\n" +
+    "          (This example is under development).\n" +
+    "          </p>\n" +
+    "        </div>\n" +
+    "\n" +
+    "        <div class='md-docs-section'>\n" +
+    "\n" +
+    "          <h1 class='page-header'>\n" +
+    "            Miscellaneous\n" +
+    "          </h1>\n" +
+    "\n" +
+    "          <p class='lead'><a href='/#/gists/8d58e1a9412168b987f7'>SingleViewApp</a></p>\n" +
+    "          <p>\n" +
+    "          Demonstrates a lightweigh application framework for minimizing boilerplate code in a browser\n" +
+    "          application using Eight.Js. This framework creates a single Viewport for a Scene with a Camera\n" +
+    "          and DirectionalLight. The framework coordinates with DOM loading and cleans up correctly when\n" +
+    "          the window is unloaded. See the API reference for details.\n" +
+    "          </p>\n" +
+    "\n" +
+    "          <p class='lead'><a href='/#/gists/2685e5f638fe34a7f97f'>MultiViewApp</a></p>\n" +
+    "          <p>\n" +
+    "          Upgrade a single view application to multiple viewports.\n" +
+    "          </p>\n" +
+    "\n" +
+    "          <p class='lead'><a href='/#/gists/d1259b443308060443a1'>Orbit Controls</a></p>\n" +
+    "          <p>\n" +
+    "          Controls that keep the camera upright.\n" +
+    "          </p>\n" +
+    "\n" +
+    "        </div>\n" +
+    "\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "</div>\n" +
+    "\n" +
+    "</div>"
+  );
+
+
   $templateCache.put('header.html',
     "<header>\n" +
     "  <h1>My Header<h1>\n" +
@@ -158,6 +356,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "    </div>\n" +
     "    <div class='collapse navbar-collapse' id='navbar-header-collapse'>\n" +
     "      <button type=\"button\" class=\"btn btn-primary navbar-btn\" ng-click='goDoodle()'>Doodle Now!</button>\n" +
+    "      <button type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goExamples()'>Browse Examples</button>\n" +
     "      <button type=\"button\" class=\"btn btn-default navbar-btn\" ng-click='logout()' ng-show='isLoggedIn()'>Log out {{userLogin()}}</button>\n" +
     "      <button type=\"button\" class=\"btn btn-default navbar-btn\" ng-click='login()' ng-hide='isLoggedIn()'>Log In</button>\n" +
     "    </div>\n" +

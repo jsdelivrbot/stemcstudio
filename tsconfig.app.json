@@ -19,6 +19,7 @@
     "app/ts/controllers/CopyController.ts",
     "app/ts/controllers/DoodleController.ts",
     "app/ts/controllers/DownloadController.ts",
+    "app/ts/controllers/ExamplesController.ts",
     "app/ts/controllers/HomeController.ts",
     "app/ts/controllers/LoginController.ts",
     "app/ts/controllers/NewController.ts",
