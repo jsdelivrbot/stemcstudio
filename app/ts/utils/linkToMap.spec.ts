@@ -1,4 +1,4 @@
-/// <reference path="../../../typings/jasmine/jasmine.d.ts" />
+//// <reference path="../../../typings/main/ambient/jasmine/index.d.ts" />
 
 import linkToMap from './linkToMap';
 
@@ -13,8 +13,8 @@ describe("linkToMap", function() {
   });
   describe("multi", function() {
     const parts: string[] = [];
-    const href = `http://www.xyz.com?page=${Math.random()}`;
-    const rel = 'more';
+    // const href = `http://www.xyz.com?page=${Math.random()}`;
+    // const rel = 'more';
     parts.push(`<a>; rel="one"`);
     parts.push(`<b>; rel="two"`);
     const link = parts.join(',');

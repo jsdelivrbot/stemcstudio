@@ -10,15 +10,15 @@ app.factory('uuid4', function() {
         return Math.pow(2, bits);
     };
 
-    const limitUI04 = maxFromBits(4);
+    // const limitUI04 = maxFromBits(4);
     const limitUI06 = maxFromBits(6);
     const limitUI08 = maxFromBits(8);
     const limitUI12 = maxFromBits(12);
-    const limitUI14 = maxFromBits(14);
+    // const limitUI14 = maxFromBits(14);
     const limitUI16 = maxFromBits(16);
     const limitUI32 = maxFromBits(32);
-    const limitUI40 = maxFromBits(40);
-    const limitUI48 = maxFromBits(48);
+    // const limitUI40 = maxFromBits(40);
+    // const limitUI48 = maxFromBits(48);
 
     const getRandomInt = function(min: number, max: number): number {
         return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -74,8 +74,8 @@ app.factory('uuid4', function() {
         return hex;
     };
 
-    return {
-        generate: function(): string {
+    const that: IUuidService = {
+        generate(): string {
             return fromParts(
                 randomUI32(),
                 randomUI16(),
@@ -88,9 +88,11 @@ app.factory('uuid4', function() {
 
         // addition by Ka-Jan to test for validity
         // Based on: http://stackoverflow.com/questions/7905929/how-to-test-valid-uuid-guid
-        validate: function(uuid: string): boolean {
+        validate(uuid: string): boolean {
             const testPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
             return testPattern.test(uuid);
         }
     };
+
+    return that;
 });

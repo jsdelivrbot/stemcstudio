@@ -22,13 +22,13 @@ import './controllers/OpenController';
 import './controllers/PropertiesController';
 
 import './directives/angular-resizable';
-import './directives/header';
 import './directives/md-logo-text';
+
+import './fugly/ga/ga';
 
 import './services/cloud/cloud';
 import './services/cookie/cookie';
 import './services/doodles/doodles';
-import './services/ga/ga';
 import './services/gham/GitHubAuthManager';
 import './services/github/GitHub';
 import './services/options/options';

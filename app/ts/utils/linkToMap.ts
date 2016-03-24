@@ -11,7 +11,7 @@ export default function linkToMap(links: string): { [rel: string]: string } {
     const link = parts[i];
     const lt = link.indexOf('<');
     const gt = link.indexOf('>');
-    const sc = link.indexOf(';');
+    // const sc = link.indexOf(';');
     const rs = link.indexOf('rel=');
     const href = link.substring(lt + 1, gt);
     const rem = link.substring(rs + 5);

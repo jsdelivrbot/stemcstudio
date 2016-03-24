@@ -1,4 +1,4 @@
-/// <reference path="../../../typings/jasmine/jasmine.d.ts" />
+//// <reference path="../../../typings/main/ambient/jasmine/index.d.ts" />
 
 import StringSet from './StringSet';
 

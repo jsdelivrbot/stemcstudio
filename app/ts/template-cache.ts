@@ -312,13 +312,6 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
   );
 
 
-  $templateCache.put('header.html',
-    "<header>\n" +
-    "  <h1>My Header<h1>\n" +
-    "</header>"
-  );
-
-
   $templateCache.put('home.html',
     "<header class='navbar navbar-static-top navbar-inverse md-docs-nav'>\n" +
     "  <div class='container'>\n" +

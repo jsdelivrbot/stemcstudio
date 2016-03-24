@@ -47,7 +47,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
   return VENDOR_FOLDER_MARKER + '/' + packageFolder + '/' + fileName;
 }
 
-app.constant('version', '1.313.0');
+app.constant('version', '1.314.0');
 // githubKey stores the key of the item in local storage for maintaining GitHub OAuth data.
 // Remark: This value is duplicated in views/github_callback.jade
 app.constant('githubKey', makeKey('github'));
@@ -207,6 +207,7 @@ app.run([
     // Doing this twice is a hack for Firefox. It may not be required anymore.
     $window.applicationCache.addEventListener('updateready', function(e: Event) {
       $rootScope.$apply(function() {
+        // Do nothing.
       });
     }, false);
     $window.onload = function() {
@@ -245,35 +246,42 @@ app.run([
     };
     $window.applicationCache.addEventListener('checking', function(e: Event) {
       $rootScope.$apply(function() {
+        // Do nothing.
       });
     }, false);
     $window.applicationCache.addEventListener('noupdate', function(e: Event) {
       $rootScope.$apply(function() {
+        // Do nothing.
       });
     }, false);
     $window.applicationCache.addEventListener('downloading', function(e: Event) {
       $rootScope.$apply(function() {
+        // Do nothing.
       });
     }, false);
     $window.applicationCache.addEventListener('progress', function(e: Event) {
       $rootScope.$apply(function() {
+        // Do nothing.
       });
     }, false);
     $window.applicationCache.addEventListener('cached', function(e: Event) {
       $rootScope.$apply(function() {
+        // Do nothing.
       });
     }, false);
     $window.applicationCache.addEventListener('obsolete', function(e: Event) {
       $rootScope.$apply(function() {
+        // Do nothing.
       });
     }, false);
     $window.applicationCache.addEventListener('error', function(e: Event) {
       $rootScope.$apply(function() {
+        // Do nothing.
       });
     }, false);
 
     // If we don't specify where to go we'll get a blank screen!
-    //$state.transitionTo('home');
+    // $state.transitionTo('home');
 
     // The server drops this cookie so that we can make the GitHub autorization request.
     $rootScope.clientId = function() {

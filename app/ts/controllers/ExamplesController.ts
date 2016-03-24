@@ -28,25 +28,11 @@ app.controller('examples-controller', [
     ) {
 
         ///////////////////////////////////////////////////////////////////////////
-        const GITHUB_TOKEN_COOKIE_NAME = 'github-token';
-
         authManager.handleGitHubLoginCallback(function(err: any, token: string) {
             if (err) {
                 scope.alert(err.message);
             }
         });
-
-        ///////////////////////////////////////////////////////////////////////////
-
-        /**
-         * The domain on which we are running. e.g., `http://www.mathdoodle.io` or `localhost:8080`.
-         * We determine this dynamically in order to access files in known locations on our server.
-         * Current usage is for JavaScript files, TypeScript d.ts files, and paths to gists.
-         * TODO: JavaScript and TypeScript to come from external repos.
-         */
-        const FWD_SLASH = '/';
-        const DOMAIN = $location.protocol() + ':' + FWD_SLASH + FWD_SLASH + $location.host() + ":" + $location.port();
-
         ///////////////////////////////////////////////////////////////////////
         // THIS IS A TEST OF SOCKET.IO
         /*

@@ -1,18 +1,24 @@
 {
   "name": "mathdoodle",
-  "version": "1.313.0",
+  "version": "1.314.0",
   "private": true,
   "description": "Learning Mathematics and Geometric Physics through Computational Modeling",
   "engines": {
     "node": "0.12.0"
   },
   "scripts": {
-    "start": "NODE_ENV=development nodemon web.js"
+    "start": "concurrently \"npm run watch\" \"npm run serve-web\" ",
+    "watch": "grunt watch",
+    "serve-dev": "lite-server",
+    "serve-web": "NODE_ENV=development nodemon web.js",
+    "typings": "typings",
+    "postinstall": "typings install"
   },
   "author": "David Holmes",
   "license": "MIT",
   "devDependencies": {
     "bootstrap": "^3.3.6",
+    "concurrently": "^2.0.0",
     "grunt": "^0.4.5",
     "grunt-angular-templates": "^1.0.2",
     "grunt-contrib-clean": "^0.7.0",
@@ -20,25 +26,33 @@
     "grunt-contrib-less": "^1.1.0",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-ts": "^5.3.2",
+    "grunt-tslint": "^3.0.3",
     "jspm": "^0.16.24",
     "karma": "^0.13.19",
     "karma-chrome-launcher": "^0.2.2",
     "karma-jasmine": "^0.3.6",
     "karma-jspm": "^2.0.2",
+    "lite-server": "^2.1.0",
     "plotly.js": "^1.5.2",
     "protractor": "^3.0.0",
     "systemjs-builder": "^0.15.5",
-    "typescript": "1.7.5"
+    "tslint": "^3.6.0",
+    "typescript": "^1.8.9",
+    "typings": "^0.7.9"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/geometryzen/mathdoodle.git"
   },
   "dependencies": {
+    "angular": "^1.5.2",
+    "angular2": "^2.0.0-beta.11",
     "body-parser": "^1.14.2",
     "cookie-parser": "^1.4.1",
     "debug": "^2.2.0",
     "errorhandler": "^1.4.3",
+    "es6-promise": "^3.1.2",
+    "es6-shim": "^0.35.0",
     "express": "^4.13.3",
     "express-session": "^1.13.0",
     "jade": "^1.11.0",
@@ -47,8 +61,12 @@
     "morgan": "^1.6.1",
     "multer": "^1.1.0",
     "nconf": "^0.8.2",
+    "reflect-metadata": "^0.1.3",
+    "rxjs": "^5.0.0-beta.3",
     "serve-favicon": "^2.3.0",
-    "socket.io": "^1.4.4"
+    "socket.io": "^1.4.4",
+    "systemjs": "^0.19.24",
+    "zone.js": "^0.6.5"
   },
   "jspm": {
     "configFile": "jspm.config.js",
@@ -58,6 +76,7 @@
       "angular-animate": "github:angular/bower-angular-animate@^1.4.9",
       "angular-bootstrap": "github:angular-ui/bootstrap-bower@^1.1.0",
       "angular-ui-router": "github:angular-ui/ui-router@^0.2.15",
+      "angular2": "npm:angular2@^2.0.0-beta.11",
       "bootstrap-dialog": "npm:bootstrap-dialog@^1.34.6",
       "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@^1.0.10",
       "jquery": "npm:jquery@^2.2.0",

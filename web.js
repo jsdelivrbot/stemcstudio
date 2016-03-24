@@ -1,3 +1,4 @@
+"use strict";
 var nconf = require("nconf");
 var http = require("http");
 var debug = require('debug')('mathdoodle:server');

@@ -1,15 +1,19 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "sourceMap": true
-    },
-    "exclude": [
-        "node_modules"
-    ],
-    "files": [
-      "./typings/tsd.d.ts",
-      "./app.ts",
-      "./configure.ts",
-      "./web.ts"
-    ]
+  "compilerOptions": {
+    "module": "commonjs",
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
+  },
+  "files": [
+    "./typings/main.d.ts",
+    "./app.ts",
+    "./configure.ts",
+    "./web.ts"
+  ],
+  "exclude": [
+    "typings/browser",
+    "typings/browser.d.ts",
+    "node_modules"
+  ]
 }

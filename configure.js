@@ -1,3 +1,4 @@
+"use strict";
 var nconf = require("nconf");
 var defaultConfig = {
     PORT: 8080,

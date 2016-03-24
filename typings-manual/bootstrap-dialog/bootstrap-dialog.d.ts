@@ -1,4 +1,4 @@
-///<reference path="../../typings/jquery/jquery.d.ts"/>
+////<reference path="../../typings/main/ambient/jquery/index.d.ts"/>
 //
 // bootstrap-dialog.d.ts
 //

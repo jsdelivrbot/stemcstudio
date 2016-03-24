@@ -576,7 +576,7 @@ module.exports = function(grunt) {
 
     ts: {
       app: {
-        tsconfig: './tsconfig.app.json',
+        tsconfig: './tsconfig.json',
         options: {
           fast: 'never'
         }
@@ -586,6 +586,20 @@ module.exports = function(grunt) {
         options: {
           fast: 'never'
         }
+      }
+    },
+
+    tslint: {
+      src: [
+        "app/ts/controllers/**/*.ts",
+        "app/ts/directives/**/*.ts",
+        "app/ts/services/**/*.ts",
+        "app/ts/templates/**/*.ts",
+        "app/ts/utils/**/*.ts",
+        "app/ts/*.ts",
+      ],
+      options: {
+        configuration: 'tslint.json'
       }
     },
 
@@ -618,6 +632,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-angular-templates');
   grunt.loadNpmTasks('grunt-ts');
+  grunt.loadNpmTasks('grunt-tslint');
 
   function bundle() {
     // Set the baseURL and load the configuration file.
@@ -645,9 +660,9 @@ module.exports = function(grunt) {
     });
   });
 
-  grunt.registerTask('dev', ['clean','ngtemplates', 'ts:app', 'copy:dev', 'less:dev']);
+  grunt.registerTask('dev', ['clean','ngtemplates', 'ts:app', 'tslint', 'copy:dev', 'less:dev']);
 
-  grunt.registerTask('prod', ['dev', 'ts:web', 'copy:prod', 'bundle']);
+  grunt.registerTask('prod', ['dev', 'ts:web', 'tslint', 'copy:prod', 'bundle']);
 
   grunt.registerTask('default', ['prod']);
 

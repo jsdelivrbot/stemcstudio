@@ -24,8 +24,6 @@ app.controller('LoginController', [
 
         // The name of this cookie must correspond with the cookie sent back from the server.
         const GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME = 'mathdoodle-github-application-client-id';
-        const GITHUB_TOKEN_COOKIE_NAME = 'github-token';
-        const GITHUB_LOGIN_COOKIE_NAME = 'github-login';
         const GITHUB_GET_LOGIN_OAUTH_AUTHORIZE = "https://github.com/login/oauth/authorize";
 
         $scope.githubLogin = function(label?: string, value?: number) {

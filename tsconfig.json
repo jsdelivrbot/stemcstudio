@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
-    "target": "ES5",
+    "target": "es5",
     "module": "system",
     "moduleResolution": "node",
     "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "removeComments": true,
+    "removeComments": false,
     "noImplicitAny": false,
     "outDir": "generated/js"
   },
@@ -14,24 +14,24 @@
     "app/ts/AppScope.ts",
     "app/ts/app.ts",
     "app/ts/bootstrap.ts",
+    "app/ts/main.ts",
     "app/ts/controllers/AboutController.ts",
     "app/ts/controllers/BodyController.ts",
     "app/ts/controllers/CopyController.ts",
     "app/ts/controllers/DoodleController.ts",
     "app/ts/controllers/DownloadController.ts",
-    "app/ts/controllers/ExamlesController.ts",
+    "app/ts/controllers/ExamplesController.ts",
     "app/ts/controllers/HomeController.ts",
     "app/ts/controllers/LoginController.ts",
     "app/ts/controllers/NewController.ts",
     "app/ts/controllers/OpenController.ts",
     "app/ts/controllers/PropertiesController.ts",
     "app/ts/directives/angular-resizable.ts",
-    "app/ts/directives/header.ts",
     "app/ts/directives/md-logo-text.ts",
+    "app/ts/fugly/ga/ga.ts",
     "app/ts/services/cloud/cloud.ts",
     "app/ts/services/cookie/cookie.ts",
     "app/ts/services/doodles/doodles.ts",
-    "app/ts/services/ga/ga.ts",
     "app/ts/services/gham/GitHubAuthManager.ts",
     "app/ts/services/github/GitHub.ts",
     "app/ts/services/options/options.ts",
@@ -47,20 +47,15 @@
 
     "app/ts/template-cache.ts",
 
-    "typings/angular-ui-router/angular-ui-router.d.ts",
-    "typings/angular-ui-bootstrap/angular-ui-bootstrap.d.ts",
-    "typings/angularjs/angular.d.ts",
-    "typings/google.analytics/ga.d.ts",
-    "typings/jquery/jquery.d.ts",
-    "typings/jasmine/jasmine.d.ts",
-    "typings/twitter/twitter.d.ts",
-    "typings/underscore/underscore.d.ts",
+    "typings/browser.d.ts",
+
     "typings-manual/ace/ace.d.ts",
     "typings-manual/bootstrap-dialog/bootstrap-dialog.d.ts",
-    "typings-manual/davinci-mathscript/davinci-mathscript.d.ts",
-    "./typings/tsd.d.ts",
-    "./app.ts",
-    "./configure.ts",
-    "./web.ts"
+    "typings-manual/davinci-mathscript/davinci-mathscript.d.ts"
+  ],
+  "exclude": [
+    "typings/main",
+    "typings/main.d.ts",
+    "node_modules"
   ]
 }
