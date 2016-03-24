@@ -11,8 +11,7 @@
     "watch": "grunt watch",
     "serve-dev": "lite-server",
     "serve-web": "NODE_ENV=development nodemon web.js",
-    "typings": "typings",
-    "postinstall": "typings install"
+    "typings": "typings"
   },
   "author": "David Holmes",
   "license": "MIT",
