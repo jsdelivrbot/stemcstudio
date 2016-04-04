@@ -1,6 +1,6 @@
 {
   "name": "mathdoodle",
-  "version": "1.314.0",
+  "version": "1.315.0",
   "description": "Learning Mathematics and Geometric Physics through Computational Modeling",
   "homepage": "https://github.com/geometryzen/mathdoodle",
   "authors": [
@@ -23,14 +23,14 @@
     "views"
   ],
   "dependencies": {
-    "angular-animate": "~1.4.10",
-    "angular-bootstrap": "~0.13.4",
-    "angular-material-icons": "~0.6.0",
-    "angular-resizable": "~1.2.0",
-    "angular-translate": "~2.11.0",
-    "angular-ui-router": "~0.2.15",
-    "angular-uuid4": "~0.3.0",
-    "angular": "~1.5.1",
+    "angular-animate": "^1.4.10",
+    "angular-bootstrap": "^1.2.5",
+    "angular-material-icons": "^0.7.0",
+    "angular-resizable": "^1.2.0",
+    "angular-translate": "^2.11.0",
+    "angular-ui-router": "^0.2.18",
+    "angular-uuid4": "^0.3.0",
+    "angular": "^1.5.3",
     "async": "~1.5.0",
     "bootstrap": "~3.3.5",
     "bootstrap3-dialog": "~1.35.0",
@@ -40,9 +40,9 @@
     "deck.js": "~1.1.0",
     "dialog-polyfill": "~0.4.1",
     "gl-matrix": "~2.3.1",
-    "jquery": "~2.2.0",
+    "jquery": "~2.2.2",
     "normalize-css": "~4.0.0",
-    "requirejs": "~2.1.20",
+    "requirejs": "^2.2.0",
     "threejs": "latest",
     "stats.js": "latest",
     "underscore": "~1.8.3",
@@ -50,10 +50,10 @@
     "dat-gui": "~0.5.1",
     "two.js": "~0.6.0"
   },
-  "resolutions": {
-    "angular": "~1.5.1"
-  },
   "devDependencies": {
     "randomcolor": "randomColor#~0.4.4"
+  },
+  "resolutions": {
+    "angular": "1.5.3"
   }
 }

@@ -14,7 +14,6 @@
     "app/ts/AppScope.ts",
     "app/ts/app.ts",
     "app/ts/bootstrap.ts",
-    "app/ts/main.ts",
     "app/ts/controllers/AboutController.ts",
     "app/ts/controllers/BodyController.ts",
     "app/ts/controllers/CopyController.ts",
