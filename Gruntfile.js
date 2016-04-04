@@ -89,21 +89,9 @@ module.exports = function(grunt) {
           },
           {
             expand: true,
-            cwd: "museum/angular@1.4.6",
+            cwd: "museum/angular@1.5.3",
             src: ["**"],
-            dest: "generated/vendor/angular@1.4.6"
-          },
-          {
-            src: "bower_components/angular/angular.js",
-            dest: "generated/vendor/angular@1.4.6/angular.js"
-          },
-          {
-            src: "bower_components/angular/angular.min.js",
-            dest: "generated/vendor/angular@1.4.6/angular.min.js"
-          },
-          {
-            src: "bower_components/angular/angular.min.js.map",
-            dest: "generated/vendor/angular@1.4.6/angular.min.js.map"
+            dest: "generated/vendor/angular@1.5.3"
           },
           {
             expand: true,
@@ -357,21 +345,9 @@ module.exports = function(grunt) {
           },
           {
             expand: true,
-            cwd: "museum/angular@1.4.6",
+            cwd: "museum/angular@1.5.3",
             src: ["**"],
-            dest: "dist/vendor/angular@1.4.6"
-          },
-          {
-            src: "bower_components/angular/angular.js",
-            dest: "dist/vendor/angular@1.4.6/angular.js"
-          },
-          {
-            src: "bower_components/angular/angular.min.js",
-            dest: "dist/vendor/angular@1.4.6/angular.min.js"
-          },
-          {
-            src: "bower_components/angular/angular.min.js.map",
-            dest: "dist/vendor/angular@1.4.6/angular.min.js.map"
+            dest: "dist/vendor/angular@1.5.3"
           },
           {
             expand: true,

@@ -12,6 +12,7 @@ app.factory('options', [
     VENDOR_FOLDER_MARKER
   ) {
 
+    const VERSION_ANGULARJS = '1.5.3'
     // const VERSION_ASYNC = '1.4.2'
     const VERSION_DAT_GUI = '0.5.0'
     const VERSION_DECKJS = '1.1.0'
@@ -46,6 +47,9 @@ app.factory('options', [
     }
 
     // Functions defining the name of the folder and version being used.
+    function angular(fileName: string): string {
+      return vendorFolder('angular', VERSION_ANGULARJS, void 0, fileName)
+    }
     /*
     function async(fileName: string): string {
       return vendorFolder('async', VERSION_ASYNC, void 0, fileName)
@@ -101,6 +105,18 @@ app.factory('options', [
     */
     // TODO: Make this external.
     let _options: IOption[] = [
+      {
+        name: 'angular',
+        moniker: 'AngularJS',
+        description: "HTML enhanced for web apps!",
+        homepage: 'https://angularjs.org',
+        version: VERSION_ANGULARJS,
+        visible: true,
+        dts: angular('angular.d.ts'),
+        js: angular('angular.js'),
+        minJs: angular('angular.min.js'),
+        dependencies: {}
+      },
       /*
       {
           name: 'requirejs',
