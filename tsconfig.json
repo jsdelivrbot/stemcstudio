@@ -26,7 +26,6 @@
     "app/ts/controllers/OpenController.ts",
     "app/ts/controllers/PropertiesController.ts",
     "app/ts/directives/angular-resizable.ts",
-    "app/ts/directives/md-logo-text.ts",
     "app/ts/fugly/ga/ga.ts",
     "app/ts/services/cloud/cloud.ts",
     "app/ts/services/cookie/cookie.ts",

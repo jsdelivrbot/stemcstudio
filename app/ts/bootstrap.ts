@@ -3,6 +3,7 @@
 //
 import app from './app';
 import * as angular from 'angular';
+import logoText from './directives/logoText/logoText';
 
 //
 // We import other Angular services that are needed by the Angular 'app' module.
@@ -22,7 +23,7 @@ import './controllers/OpenController';
 import './controllers/PropertiesController';
 
 import './directives/angular-resizable';
-import './directives/md-logo-text';
+app.directive('logoText', logoText);
 
 import './fugly/ga/ga';
 

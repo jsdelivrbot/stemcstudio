@@ -28,7 +28,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "<div id='doodle-page'>\n" +
     "  <nav id='toolbar' class='navbar navbar-inverse'>\n" +
     "    <div class='navbar-header'>\n" +
-    "      <a role='button' class='navbar-brand' ng-click='goHome()'><md-logo-text/></a>\n" +
+    "      <a role='button' class='navbar-brand' ng-click='goHome()'><logo-text version='{{version}}'/></a>\n" +
     "    </div>\n" +
     "    <div class='ignore-collapse ignore-navbar-collapse'>\n" +
     "      <ul class='nav navbar-nav'>\n" +
@@ -141,7 +141,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "<div id='examples-page'>\n" +
     "  <nav id='toolbar' class='navbar navbar-inverse'>\n" +
     "    <div class='navbar-header'>\n" +
-    "      <a role='button' class='navbar-brand' ng-click='goHome()'><md-logo-text/></a>\n" +
+    "      <a role='button' class='navbar-brand' ng-click='goHome()'><logo-text version='{{version}}'/></a>\n" +
     "    </div>\n" +
     "  </nav>\n" +
     "  <div class='md-docs-header'>\n" +
@@ -322,7 +322,6 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "        <span class=\"icon-bar\"></span>\n" +
     "        <span class=\"icon-bar\"></span>\n" +
     "      </button>\n" +
-    "      <!--a class='navbar-brand'><md-logo-text/></a-->\n" +
     "    </div>\n" +
     "    <div class='collapse navbar-collapse' id='navbar-header-collapse'>\n" +
     "      <button type=\"button\" class=\"btn btn-primary navbar-btn\" ng-click='goDoodle()'>Doodle Now!</button>\n" +
@@ -335,7 +334,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "\n" +
     "<div class='md-docs-header'>\n" +
     "  <div class='container'>\n" +
-    "    <h1><md-logo-text/></h1>\n" +
+    "    <h1><logo-text version='{{version}}'/></h1>\n" +
     "    <p>\n" +
     "      Learning Mathematics and Geometric Physics<br/>through Computational Modeling.\n" +
     "    </p>\n" +
@@ -522,11 +521,6 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
   $templateCache.put('login.html',
     "<h1>Login</h1>\n" +
     "<button ng-click=\"githubLogin()\">Login with GitHub - Really</button>"
-  );
-
-
-  $templateCache.put('md-logo-text.html',
-    "<span class='md-logo-text-math'>math</span><span class='md-logo-text-doodle'>doodle</span><span class='md-logo-text-domain'>.io</span><span class='md-logo-text-version'><sup>Alpha&nbsp;{{version}}</sup></span>"
   );
 
 
