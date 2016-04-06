@@ -1,8 +1,7 @@
-import * as angular from 'angular';
-import app from '../app';
-import IResizableScope from './IResizableScope';
+import * as angular from 'angular'
+import ResizableScope from './ResizableScope';
 
-app.directive('resizable', function() {
+export default function() {
   var toCall: () => any;
 
   // This function is used to regulate the resizing events that are broadcast.
@@ -32,7 +31,7 @@ app.directive('resizable', function() {
       rDisabled: '@',
       rNoThrottle: '='
     },
-    link: function(scope: IResizableScope, element: angular.IAugmentedJQuery, attr: angular.IAttributes) {
+    link: function(scope: ResizableScope, element: angular.IAugmentedJQuery, attr: angular.IAttributes) {
       const flexBasis =
         'flexBasis' in document.documentElement.style ? 'flexBasis' :
           'webkitFlexBasis' in document.documentElement.style ? 'webkitFlexBasis' :
@@ -249,4 +248,4 @@ app.directive('resizable', function() {
       }
     }
   }
-})
+}

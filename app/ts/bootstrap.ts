@@ -4,6 +4,7 @@
 import app from './app';
 import * as angular from 'angular';
 import logoText from './directives/logoText/logoText';
+import resizable from './directives/resizable/resizable';
 
 //
 // We import other Angular services that are needed by the Angular 'app' module.
@@ -22,8 +23,8 @@ import './controllers/NewController';
 import './controllers/OpenController';
 import './controllers/PropertiesController';
 
-import './directives/angular-resizable';
 app.directive('logoText', logoText);
+app.directive('resizable', resizable);
 
 import './fugly/ga/ga';
 

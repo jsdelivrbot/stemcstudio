@@ -5,7 +5,7 @@ import * as angular from 'angular';
  * resizing
  * resizeEnd
  */
-interface IResizableScope extends angular.IScope {
+interface ResizableScope extends angular.IScope {
 
   /**
    * integer or $scope variable
@@ -55,4 +55,4 @@ interface IResizableScope extends angular.IScope {
   rNoThrottle: boolean;
 }
 
-export default IResizableScope;
+export default ResizableScope;
