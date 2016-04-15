@@ -9,6 +9,10 @@ import editor from './directives/editor/editor.component';
 import explorer from './directives/explorer/explorer.component';
 import ExplorerFilesController from './directives/explorer/ExplorerFilesController';
 import logoText from './directives/logoText/logoText';
+import AlertController from './services/modalService/AlertController';
+import ConfirmController from './services/modalService/ConfirmController';
+import PromptController from './services/modalService/PromptController';
+import ModalService from './services/modalService/ModalService';
 import resizable from './directives/resizable/resizable';
 import TextService from './services/text/TextService';
 import workspace from './directives/workspace/workspace.component';
@@ -20,6 +24,9 @@ import workspace from './directives/workspace/workspace.component';
 //
 app.controller('doodle-controller', DoodleController)
 app.controller('ExplorerFilesController', ExplorerFilesController)
+app.controller('AlertController', AlertController)
+app.controller('ConfirmController', ConfirmController)
+app.controller('PromptController', PromptController)
 import './controllers/AboutController';
 import './controllers/BodyController';
 import './controllers/CopyController';
@@ -50,6 +57,7 @@ import './services/settings/settings';
 import './services/templates/templates';
 import './services/tw/tw';
 import './services/uuid/UuidService';
+app.service('modalService', ModalService)
 app.service('textService', TextService)
 
 import './template-cache';

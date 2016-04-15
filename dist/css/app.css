@@ -7702,6 +7702,9 @@ dialog::backdrop {
   max-height: 400px;
   color: #000000;
 }
+.modal-title-right {
+  text-align: right;
+}
 .clearfix:before,
 .clearfix:after,
 .dl-horizontal dd:before,

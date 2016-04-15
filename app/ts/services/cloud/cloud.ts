@@ -63,7 +63,7 @@ app.factory('cloud', [
                         const metaInfo: IDoodleConfig = JSON.parse(gist.files[FILENAME_META].content);
 
                         const doodle = new Doodle()
-                        // doodle.gistId = gistId
+                        doodle.gistId = gistId
                         doodle.uuid = metaInfo.uuid
                         doodle.description = gist.description
                         doodle.operatorOverloading = metaInfo.operatorOverloading

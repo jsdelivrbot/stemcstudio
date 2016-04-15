@@ -4,10 +4,13 @@ import IDoodleFile from '../services/doodles/IDoodleFile';
 import GistData from '../services/gist/GistData';
 import stripWS from './stripWS';
 import IOptionManager from '../services/options/IOptionManager';
+import modeFromName from './modeFromName';
 
 function mash(name: string, content: string): string {
-    switch (name) {
-        case 'index.html': {
+    const mode = modeFromName(name)
+    console.log(`${name} => ${mode}, ${stripWS(content).length}`)
+    switch (mode) {
+        case 'HTML': {
             if (stripWS(content).length > 0) {
                 return content;
             }
@@ -15,7 +18,7 @@ function mash(name: string, content: string): string {
                 return '<!DOCTYPE html>\n';
             }
         }
-        case 'script.ts': {
+        case 'TypeScript': {
             if (stripWS(content).length > 0) {
                 return content;
             }
@@ -23,7 +26,7 @@ function mash(name: string, content: string): string {
                 return '//\n';
             }
         }
-        case 'style.less': {
+        case 'LESS': {
             if (stripWS(content).length > 0) {
                 return content;
             }
