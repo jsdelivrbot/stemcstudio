@@ -2,6 +2,7 @@ import * as angular from 'angular';
 import ace from 'ace.js';
 import ICloud from '../../services/cloud/ICloud';
 import CookieService from '../../services/cookie/CookieService';
+import detect1x from './detect1x';
 import Doodle from '../../services/doodles/Doodle';
 import IDoodleManager from '../../services/doodles/IDoodleManager';
 import GitHubService from '../../services/github/GitHubService';
@@ -54,6 +55,10 @@ function closure(options: IOption[], manager: IOptionManager): IOption[] {
     return namesToOptions(nameSet.toArray(), manager);
 }
 
+/**
+ * Returns the contents of the file providing that the fileName exists on the Doodle.
+ * If the file does not exits, a warning is logged to the console and we return undefined.
+ */
 function fileContent(fileName: string, doodle: Doodle): string {
     const file = doodle.files[fileName];
     if (file) {
@@ -61,7 +66,7 @@ function fileContent(fileName: string, doodle: Doodle): string {
     }
     else {
         console.warn(`fileContent(${fileName}), ${fileName} does not exist.`)
-        return ""
+        return void 0
     }
 }
 
@@ -260,20 +265,6 @@ export default class WorkspaceController implements WorkspaceMixin {
         this.workspace.init('/js/worker.js', workerImports.concat(typescriptServices))
         this.workspace.setDefaultLibrary('/typings/lib.es6.d.ts')
 
-        const moduleKind = 'system'
-        this.workspace.setModuleKind(moduleKind, function(err: any) {
-            if (err) {
-                console.warn(`setModuleKind('${moduleKind}') => ${err}`)
-            }
-        })
-
-        const scriptTarget = 'es5'
-        this.workspace.setScriptTarget(scriptTarget, function(err: any) {
-            if (err) {
-                console.warn(`setScriptTarget('${scriptTarget}') => ${err}`)
-            }
-        })
-
         let rebuildPromise: angular.IPromise<void>
         $scope.updatePreview = (delay: number) => {
             if (rebuildPromise) { $timeout.cancel(rebuildPromise); }
@@ -326,14 +317,30 @@ export default class WorkspaceController implements WorkspaceMixin {
             $window.document.title = doodles.current().description;
         }
 
+        // Ensure that there is a current doodle i.e. doodles.current() exists.
         if (doodles.length === 0) {
             // If there is no document, construct one based upon the first template.
             doodles.createDoodle($scope.templates[0], "My Math Doodle");
         }
-        // We are now guaranteed that there is a current doodle i.e. doodles.current() exists.
 
         // Perform conversions required for doodle evolution.
         const doodle = doodleGroom(doodles.current());
+
+        // Set the module kind for transpilation consistent with the version.
+        const moduleKind = detect1x(doodle) ? 'none' : 'system'
+        this.workspace.setModuleKind(moduleKind, function(err: any) {
+            if (err) {
+                console.warn(`setModuleKind('${moduleKind}') => ${err}`)
+            }
+        })
+
+        // Set the script target for transpilation consistent with the version.
+        const scriptTarget = detect1x(doodle) ? 'es5' : 'es5'
+        this.workspace.setScriptTarget(scriptTarget, function(err: any) {
+            if (err) {
+                console.warn(`setScriptTarget('${scriptTarget}') => ${err}`)
+            }
+        })
 
         // Following a browser refresh, show the code so that it refreshes correctly (bug).
         // This also side-steps the issue of the time it takes to restart the preview.
@@ -664,51 +671,54 @@ export default class WorkspaceController implements WorkspaceMixin {
 
                     // We are definitely assuming that we have an index.html file.
                     let html: string = fileContent(this.FILENAME_HTML, doodle)
+                    if (typeof html === 'string') {
 
-                    const selOpts: IOption[] = this.options.filter((option: IOption, index: number, array: IOption[]) => {
-                        return doodle.dependencies.indexOf(option.name) > -1;
-                    });
+                        const selOpts: IOption[] = this.options.filter((option: IOption, index: number, array: IOption[]) => {
+                            return doodle.dependencies.indexOf(option.name) > -1;
+                        });
 
-                    const closureOpts: IOption[] = closure(selOpts, this.options);
+                        const closureOpts: IOption[] = closure(selOpts, this.options);
 
-                    const chosenFileNames: string[] = closureOpts.map(function(option: IOption) { return option.minJs; });
-                    // TODO: We will later want to make operator overloading configurable for speed.
+                        const chosenFileNames: string[] = closureOpts.map(function(option: IOption) { return option.minJs; });
+                        // TODO: We will later want to make operator overloading configurable for speed.
 
-                    const scriptFileNames: string[] = this.doodles.current().operatorOverloading ? chosenFileNames.concat(this.FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS) : chosenFileNames;
-                    // TOOD: Don't fix the location of the JavaScript here.
-                    const scriptTags = scriptFileNames.map((fileName: string) => {
-                        return "<script src='" + scriptURL(DOMAIN, fileName, this.VENDOR_FOLDER_MARKER) + "'></script>\n";
-                    });
+                        const scriptFileNames: string[] = this.doodles.current().operatorOverloading ? chosenFileNames.concat(this.FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS) : chosenFileNames;
+                        // TOOD: Don't fix the location of the JavaScript here.
+                        const scriptTags = scriptFileNames.map((fileName: string) => {
+                            return "<script src='" + scriptURL(DOMAIN, fileName, this.VENDOR_FOLDER_MARKER) + "'></script>\n";
+                        });
 
-                    html = html.replace(this.SCRIPTS_MARKER, scriptTags.join(""));
-                    html = html.replace(this.STYLE_MARKER, [fileContent(this.FILENAME_LESS, doodle)].join(""));
+                        html = html.replace(this.SCRIPTS_MARKER, scriptTags.join(""));
 
-                    if ((typeof doodle.lastKnownJs[this.FILENAME_CODE] === 'string') && (typeof doodle.lastKnownJs[this.FILENAME_LIBS] === 'string')) {
+                        html = html.replace(this.STYLE_MARKER, [fileContent(this.FILENAME_LESS, doodle)].join(""));
 
-                        html = html.replace(this.LIBS_MARKER, currentJavaScript(this.FILENAME_LIBS, doodle));
-                        html = html.replace(this.CODE_MARKER, currentJavaScript(this.FILENAME_CODE, doodle));
-                        // For backwards compatibility...
-                        html = html.replace('<!-- STYLE-MARKER -->', ['<style>', fileContent(this.FILENAME_LESS, doodle), '</style>'].join(""));
-                        html = html.replace('<!-- CODE-MARKER -->', currentJavaScript(this.FILENAME_CODE, this.doodles.current()));
-                    }
-                    else {
-                        const modulesJs: string[] = []
-                        const names: string[] = Object.keys(doodle.lastKnownJs)
-                        const iLen: number = names.length
-                        for (let i = 0; i < iLen; i++) {
-                            const name = names[i]
-                            const moduleJs = doodle.lastKnownJs[name]
-                            const moduleMs = doodle.operatorOverloading ? mathscript.transpile(moduleJs) : moduleJs
-                            modulesJs.push(moduleMs)
+                        if (detect1x(doodle)) {
+
+                            html = html.replace(this.LIBS_MARKER, currentJavaScript(this.FILENAME_LIBS, doodle));
+                            html = html.replace(this.CODE_MARKER, currentJavaScript(this.FILENAME_CODE, doodle));
+                            // For backwards compatibility (less than 1.x) ...
+                            html = html.replace('<!-- STYLE-MARKER -->', ['<style>', fileContent(this.FILENAME_LESS, doodle), '</style>'].join(""));
+                            html = html.replace('<!-- CODE-MARKER -->', currentJavaScript(this.FILENAME_CODE, this.doodles.current()));
                         }
-                        html = html.replace(this.CODE_MARKER, modulesJs.join('\n'));
+                        else {
+                            const modulesJs: string[] = []
+                            const names: string[] = Object.keys(doodle.lastKnownJs)
+                            const iLen: number = names.length
+                            for (let i = 0; i < iLen; i++) {
+                                const name = names[i]
+                                const moduleJs = doodle.lastKnownJs[name]
+                                const moduleMs = doodle.operatorOverloading ? mathscript.transpile(moduleJs) : moduleJs
+                                modulesJs.push(moduleMs)
+                            }
+                            html = html.replace(this.CODE_MARKER, modulesJs.join('\n'));
+                        }
+
+                        content.open()
+                        content.write(html)
+                        content.close()
+
+                        bubbleIframeMouseMove(this.$scope.previewIFrame)
                     }
-
-                    content.open()
-                    content.write(html)
-                    content.close()
-
-                    bubbleIframeMouseMove(this.$scope.previewIFrame)
                 }
             }
             else {
