@@ -4,10 +4,14 @@
 //
 // This file was created manually in order to support the bootstrap-dialog library.
 //
+// BootstrapDialog does simple dialogs such as alerts well but suffers from a lack of
+// integration with AngularJS. In particular, the modal content is not digested.
+//
 interface IBootstrapDialog {
     realize(): IBootstrapDialog;
     open(): IBootstrapDialog;
     close(): IBootstrapDialog;
+    getButton(id: string): JQuery;
     getModal(): JQuery;
     getModalDialog(): JQuery;
     getModalContent(): JQuery;
@@ -18,7 +22,7 @@ interface IBootstrapDialog {
     setClosable(closable: boolean): void;
 }
 
-// This us the factory, it needs new
+// This is the factory, it needs new
 interface DialogFactory {
     new (options: {
         type?: string;
@@ -60,8 +64,12 @@ interface DialogFactory {
     show(options: {
         type?: string;
         title?: string | JQuery;
-        message: string | JQuery;
+        message: string | JQuery | ((dialog: IBootstrapDialog) => JQuery);
+        data?: { pageToLoad: string };
         buttons?: {
+            autospin?: boolean;
+            icon?: string;
+            id?: string;
             label: string;
             cssClass?: string;
             action?: (dialog: IBootstrapDialog) => void

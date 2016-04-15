@@ -1,7 +1,7 @@
 import app from '../app';
 import CookieService from '../services/cookie/CookieService';
 import IGitHubItem from '../services/gham/IGitHubItem';
-import LoginScope from './LoginScope';
+import LoginScope from '../scopes/LoginScope';
 import IUuidService from '../services/uuid/IUuidService';
 
 app.controller('LoginController', [

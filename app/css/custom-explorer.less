@@ -1,0 +1,40 @@
+explorer {
+  flex: 0 1 150px;
+  background-color: @gutterBackground;
+}
+
+.explorer-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.explorer-section-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    color: @logoTextVersionColor;
+}
+
+.explorer-section-box {
+    margin: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+ul.files {
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+ul.files li a {
+    color: @logoTextVersionColor;
+    text-decoration: none;
+    margin: 5px;
+}
+
+ul.files li.selected a {
+    color: @white;
+}

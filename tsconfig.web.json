@@ -10,10 +10,5 @@
     "./app.ts",
     "./configure.ts",
     "./web.ts"
-  ],
-  "exclude": [
-    "typings/browser",
-    "typings/browser.d.ts",
-    "node_modules"
   ]
 }

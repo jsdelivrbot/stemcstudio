@@ -49,10 +49,5 @@
     "typings-manual/ace/ace.d.ts",
     "typings-manual/bootstrap-dialog/bootstrap-dialog.d.ts",
     "typings-manual/davinci-mathscript/davinci-mathscript.d.ts"
-  ],
-  "exclude": [
-    "typings/main",
-    "typings/main.d.ts",
-    "node_modules"
   ]
 }

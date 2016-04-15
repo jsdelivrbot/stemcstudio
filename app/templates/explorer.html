@@ -1,0 +1,25 @@
+<div id='explorer'>
+    <div class='explorer-section' ng-controller='ExplorerFilesController as filesController'>
+        <div class='explorer-section-header'>
+            <div class='navbar navbar-inverse explorer-section-box'>
+                <div>
+                    <span>FILES</span>
+                </div>
+            </div>
+            <div class='navbar navbar-inverse explorer-section-box'>
+                <ul class='nav navbar-nav'>
+                    <li>
+                        <a role='button' ng-click='filesController.newFile()'>
+                            <span class="glyphicon glyphicon-file" aria-hidden="true" uib-tooltip="New File" tooltip-placement="bottom"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <ul class='files'>
+            <li ng-repeat='(name, file) in currentDoodle().files' ng-class='{selected: file.selected}' context-menu='menu(name, file)'>
+                <a href ng-click='$ctrl.selectFile(name)' ng-dblclick='$ctrl.openFile(name)'>{{name}}</a>
+            </li>
+        </ul>
+    </div>
+</div>

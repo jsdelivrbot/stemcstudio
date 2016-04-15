@@ -1,5 +1,5 @@
 import app from '../app';
-import BodyScope from './BodyScope';
+import BodyScope from '../scopes/BodyScope';
 import BootstrapDialog from 'bootstrap-dialog';
 import CookieService from '../services/cookie/CookieService';
 import IDoodleManager from '../services/doodles/IDoodleManager';

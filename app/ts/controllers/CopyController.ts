@@ -1,5 +1,5 @@
 import app from '../app';
-import CopyScope from './CopyScope';
+import CopyScope from '../scopes/CopyScope';
 import IDoodleManager from '../services/doodles/IDoodleManager';
 
 app.controller('copy-controller', [

@@ -898,6 +898,10 @@ declare module ace {
     detachEditor(fileName: string, editor: Editor): void;
     detachEditors(): void;
     ensureScript(fileName: string, content: string): void;
+    getModuleKind(callback: (err?: any, moduleKind?: string) => void): void;
+    setModuleKind(moduleKind: string, callback: (err: any) => void): void
+    getScriptTarget(callback: (err?: any, scriptTarget?: string) => void): void;
+    setScriptTarget(scriptTarget: string, callback: (err?: any) => void): void
     init(workerUrl: string, scriptImports: string[]): void;
     removeScript(fileName: string): void;
     setDefaultLibrary(url: string): void;

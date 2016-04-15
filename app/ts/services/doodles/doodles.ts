@@ -1,7 +1,45 @@
 import app from '../../app';
+import Doodle from './Doodle';
+import DoodleFile from './DoodleFile';
 import IDoodle from './IDoodle';
+import IDoodleFile from './IDoodleFile';
 import IDoodleManager from './IDoodleManager';
 import IUuidService from '../uuid/IUuidService';
+
+function deserialize(doodles: IDoodle[]): Doodle[] {
+    const ds: Doodle[] = []
+    const iLen = doodles.length
+    for (let i = 0; i < iLen; i++) {
+        const inDoodle = doodles[i]
+        const d = new Doodle()
+        d.dependencies = inDoodle.dependencies.slice()
+        d.description = inDoodle.description
+        d.files = copyFiles(inDoodle.files)
+        d.focusEditor = inDoodle.focusEditor
+        d.isCodeVisible = inDoodle.isCodeVisible
+        d.isViewVisible = inDoodle.isViewVisible
+        d.lastKnownJs = inDoodle.lastKnownJs
+        d.operatorOverloading = inDoodle.operatorOverloading
+        d.uuid = inDoodle.uuid
+        ds.push(d)
+    }
+    return ds
+}
+
+function copyFiles(inFiles: { [name: string]: IDoodleFile }): { [name: string]: DoodleFile } {
+    const outFiles: { [name: string]: DoodleFile } = {}
+    const names: string[] = Object.keys(inFiles)
+    const iLen: number = names.length
+    for (let i = 0; i < iLen; i++) {
+        const name = names[i]
+        const inFile = inFiles[name]
+        const outFile: DoodleFile = new DoodleFile()
+        outFile.content = inFile.content
+        outFile.language = inFile.language
+        outFiles[name] = outFile
+    }
+    return outFiles
+}
 
 app.factory('doodles', [
     '$window',
@@ -13,17 +51,18 @@ app.factory('doodles', [
         doodlesKey: string
     ) {
 
-        var _doodles: IDoodle[] = $window.localStorage[doodlesKey] !== undefined ? JSON.parse($window.localStorage[doodlesKey]) : [];
+        // The doodles from local storage must be converted into classes in order to support the methods.
+        var _doodles: Doodle[] = deserialize($window.localStorage[doodlesKey] !== undefined ? JSON.parse($window.localStorage[doodlesKey]) : []);
 
-        var suggestName = function(): string {
-            var UNTITLED = "Doodle";
+        const suggestName = function(): string {
+            const UNTITLED = "Doodle";
             // We assume that a doodle with a lower index will have a higher Untitled number.
             // To reduce sorting, sort as a descending sequence and use the resulting first
             // element as the highest number used so far. Add one to that.
             function compareNumbers(a: number, b: number) {
                 return b - a;
             }
-            var nums: number[] = _doodles.filter(function(doodle: IDoodle) {
+            const nums: number[] = _doodles.filter(function(doodle: IDoodle) {
                 return typeof doodle.description.match(new RegExp(UNTITLED)) !== 'null';
             }).
                 map(function(doodle: IDoodle) {
@@ -40,19 +79,19 @@ app.factory('doodles', [
 
         var that: IDoodleManager = {
 
-            unshift: function(doodle: IDoodle) {
+            unshift: function(doodle: Doodle): number {
                 return _doodles.unshift(doodle);
             },
 
-            get length() {
+            get length(): number {
                 return _doodles.length;
             },
 
-            filter: function(callback: (doodle: IDoodle, index: number, array: IDoodle[]) => boolean) {
+            filter: function(callback: (doodle: IDoodle, index: number, array: IDoodle[]) => boolean): Doodle[] {
                 return _doodles.filter(callback);
             },
 
-            current: function() {
+            current: function(): Doodle {
                 if (_doodles.length > 0) {
                     return _doodles[0];
                 }
@@ -61,29 +100,21 @@ app.factory('doodles', [
                 }
             },
 
-            createDoodle: function(template: IDoodle, description?: string) {
+            createDoodle: function(template: Doodle, description?: string): void {
                 if (!description) {
                     description = suggestName();
                 }
-                var doodle: IDoodle = {
-                    uuid: uuid4.generate(),
-                    description: description,
-                    isCodeVisible: template.isCodeVisible,
-                    isViewVisible: template.isViewVisible,
-                    focusEditor: template.focusEditor,
-                    lastKnownJs: template.lastKnownJs,
-                    operatorOverloading: template.operatorOverloading,
-                    html: template.html,
-                    code: template.code,
-                    libs: template.libs,
-                    less: template.less,
-                    dependencies: template.dependencies
-                };
-                _doodles.unshift(doodle);
+                const doodle: Doodle = new Doodle()
+                doodle.uuid = uuid4.generate()
+                doodle.description = description
+                doodle.operatorOverloading = template.operatorOverloading
+                doodle.files = copyFiles(template.files)
+                doodle.dependencies = template.dependencies.slice() // make a copy
+                _doodles.unshift(doodle)
             },
 
-            makeCurrent: function(uuid: string) {
-                var doodles: IDoodle[] = [];
+            makeCurrent: function(uuid: string): void {
+                const doodles: Doodle[] = [];
 
                 var i = 0, found;
                 while (i < _doodles.length) {
@@ -100,8 +131,8 @@ app.factory('doodles', [
                 _doodles = doodles;
             },
 
-            deleteDoodle: function(uuid: string) {
-                var doodles: IDoodle[] = [];
+            deleteDoodle: function(uuid: string): void {
+                const doodles: Doodle[] = [];
 
                 var i = 0, found;
                 while (i < _doodles.length) {
@@ -121,7 +152,7 @@ app.factory('doodles', [
 
             suggestName: suggestName,
 
-            updateStorage: function() {
+            updateStorage: function(): void {
                 $window.localStorage[doodlesKey] = JSON.stringify(_doodles);
             }
         };

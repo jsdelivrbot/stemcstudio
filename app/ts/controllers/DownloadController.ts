@@ -2,7 +2,7 @@ import app from '../app';
 import ICloud from '../services/cloud/ICloud';
 import CookieService from '../services/cookie/CookieService';
 import IDoodleManager from '../services/doodles/IDoodleManager';
-import DownloadScope from './DownloadScope';
+import DownloadScope from '../scopes/DownloadScope';
 import Gist from '../services/github/Gist';
 import GitHubService from '../services/github/GitHubService';
 import linkToMap from '../utils/linkToMap';

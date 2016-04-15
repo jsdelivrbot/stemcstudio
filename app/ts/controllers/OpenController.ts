@@ -1,6 +1,6 @@
 import app from '../app';
 import IDoodleManager from '../services/doodles/IDoodleManager';
-import OpenScope from './OpenScope';
+import OpenScope from '../scopes/OpenScope';
 
 app.controller('open-controller', [
     '$scope',

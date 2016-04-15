@@ -17366,9 +17366,163 @@ System.register("src/mode/typescript/DefaultLanguageServiceHost.js", ["src/mode/
     execute: function() {
       DefaultLanguageServiceHost = (function() {
         function DefaultLanguageServiceHost() {
-          this.compilerOptions = null;
+          this.compilerOptions = {};
+          this.compilerOptions.module = ts.ModuleKind.None;
+          this.compilerOptions.target = ts.ScriptTarget.ES3;
           this.scripts = {};
         }
+        Object.defineProperty(DefaultLanguageServiceHost.prototype, "moduleKind", {
+          get: function() {
+            var moduleKind = this.compilerOptions.module;
+            switch (moduleKind) {
+              case ts.ModuleKind.AMD:
+                {
+                  return 'amd';
+                }
+              case ts.ModuleKind.CommonJS:
+                {
+                  return 'commonjs';
+                }
+              case ts.ModuleKind.ES2015:
+                {
+                  return 'es2015';
+                }
+              case ts.ModuleKind.ES6:
+                {
+                  return 'es6';
+                }
+              case ts.ModuleKind.None:
+                {
+                  return 'none';
+                }
+              case ts.ModuleKind.System:
+                {
+                  return 'system';
+                }
+              case ts.ModuleKind.UMD:
+                {
+                  return 'umd';
+                }
+              default:
+                {
+                  throw new Error("Unrecognized module kind: " + moduleKind);
+                }
+            }
+          },
+          set: function(moduleKind) {
+            moduleKind = moduleKind.toLowerCase();
+            switch (moduleKind) {
+              case 'amd':
+                {
+                  this.compilerOptions.module = ts.ModuleKind.AMD;
+                  break;
+                }
+              case 'commonjs':
+                {
+                  this.compilerOptions.module = ts.ModuleKind.CommonJS;
+                  break;
+                }
+              case 'es2015':
+                {
+                  this.compilerOptions.module = ts.ModuleKind.ES2015;
+                  break;
+                }
+              case 'es6':
+                {
+                  this.compilerOptions.module = ts.ModuleKind.ES6;
+                  break;
+                }
+              case 'none':
+                {
+                  this.compilerOptions.module = ts.ModuleKind.None;
+                  break;
+                }
+              case 'system':
+                {
+                  this.compilerOptions.module = ts.ModuleKind.System;
+                  break;
+                }
+              case 'umd':
+                {
+                  this.compilerOptions.module = ts.ModuleKind.UMD;
+                  break;
+                }
+              default:
+                {
+                  throw new Error("Unrecognized module kind: " + moduleKind);
+                }
+            }
+          },
+          enumerable: true,
+          configurable: true
+        });
+        Object.defineProperty(DefaultLanguageServiceHost.prototype, "scriptTarget", {
+          get: function() {
+            var scriptTarget = this.compilerOptions.target;
+            switch (scriptTarget) {
+              case ts.ScriptTarget.ES2015:
+                {
+                  return 'ES2015';
+                }
+              case ts.ScriptTarget.ES3:
+                {
+                  return 'ES3';
+                }
+              case ts.ScriptTarget.ES5:
+                {
+                  return 'ES5';
+                }
+              case ts.ScriptTarget.ES6:
+                {
+                  return 'ES6';
+                }
+              case ts.ScriptTarget.Latest:
+                {
+                  return 'Latest';
+                }
+              default:
+                {
+                  throw new Error("Unrecognized script target: " + scriptTarget);
+                }
+            }
+          },
+          set: function(scriptTarget) {
+            scriptTarget = scriptTarget.toLowerCase();
+            switch (scriptTarget) {
+              case 'es2015':
+                {
+                  this.compilerOptions.target = ts.ScriptTarget.ES2015;
+                  break;
+                }
+              case 'es3':
+                {
+                  this.compilerOptions.target = ts.ScriptTarget.ES3;
+                  break;
+                }
+              case 'es5':
+                {
+                  this.compilerOptions.target = ts.ScriptTarget.ES5;
+                  break;
+                }
+              case 'es6':
+                {
+                  this.compilerOptions.target = ts.ScriptTarget.ES6;
+                  break;
+                }
+              case 'latest':
+                {
+                  this.compilerOptions.target = ts.ScriptTarget.Latest;
+                  break;
+                }
+              default:
+                {
+                  throw new Error("Unrecognized script target: " + scriptTarget);
+                }
+            }
+          },
+          enumerable: true,
+          configurable: true
+        });
         DefaultLanguageServiceHost.prototype.getScriptFileNames = function() {
           return Object.keys(this.scripts);
         };
@@ -17438,6 +17592,24 @@ System.register("src/mode/typescript/DefaultLanguageServiceHost.js", ["src/mode/
 System.register("src/mode/LanguageServiceWorker.js", ["src/mode/typescript/DefaultLanguageServiceHost.js"], function(exports_1) {
   var DefaultLanguageServiceHost_1;
   var LanguageServiceWorker;
+  function systemModuleName(prefix, fileName, extension) {
+    var lastPeriod = fileName.lastIndexOf('.');
+    if (lastPeriod >= 0) {
+      var name = fileName.substring(0, lastPeriod);
+      var suffix = fileName.substring(lastPeriod + 1);
+      if (typeof extension === 'string') {
+        return [prefix, name, '.', extension].join('');
+      } else {
+        return [prefix, name].join('');
+      }
+    } else {
+      if (typeof extension === 'string') {
+        return [prefix, fileName, '.', extension].join('');
+      } else {
+        return [prefix, fileName].join('');
+      }
+    }
+  }
   return {
     setters: [function(DefaultLanguageServiceHost_1_1) {
       DefaultLanguageServiceHost_1 = DefaultLanguageServiceHost_1_1;
@@ -17459,6 +17631,72 @@ System.register("src/mode/LanguageServiceWorker.js", ["src/mode/typescript/Defau
           });
           sender.on('removeScript', function(message) {
             _this.host.removeScript(message.data.fileName);
+          });
+          sender.on('getModuleKind', function(request) {
+            var data = request.data;
+            var callbackId = data.callbackId;
+            try {
+              var moduleKind = _this.host.moduleKind;
+              var response = {
+                moduleKind: moduleKind,
+                callbackId: callbackId
+              };
+              sender.emit("getModuleKind", response);
+            } catch (err) {
+              var response = {
+                err: "" + err,
+                callbackId: callbackId
+              };
+              sender.emit("getModuleKind", response);
+            }
+          });
+          sender.on('setModuleKind', function(request) {
+            var data = request.data;
+            var callbackId = data.callbackId;
+            try {
+              _this.host.moduleKind = data.moduleKind;
+              var response = {callbackId: callbackId};
+              sender.emit("setModuleKind", response);
+            } catch (err) {
+              var response = {
+                err: "" + err,
+                callbackId: callbackId
+              };
+              sender.emit("setModuleKind", response);
+            }
+          });
+          sender.on('getScriptTarget', function(request) {
+            var data = request.data;
+            var callbackId = data.callbackId;
+            try {
+              var scriptTarget = _this.host.scriptTarget;
+              var response = {
+                scriptTarget: scriptTarget,
+                callbackId: callbackId
+              };
+              sender.emit("getScriptTarget", response);
+            } catch (err) {
+              var response = {
+                err: "" + err,
+                callbackId: callbackId
+              };
+              sender.emit("getScriptTarget", response);
+            }
+          });
+          sender.on('setScriptTarget', function(request) {
+            var data = request.data;
+            var callbackId = data.callbackId;
+            try {
+              _this.host.scriptTarget = data.scriptTarget;
+              var response = {callbackId: callbackId};
+              sender.emit("setScriptTarget", response);
+            } catch (err) {
+              var response = {
+                err: "" + err,
+                callbackId: callbackId
+              };
+              sender.emit("setScriptTarget", response);
+            }
           });
           sender.on('getSyntaxErrors', function(request) {
             var data = request.data;
@@ -17555,14 +17793,30 @@ System.register("src/mode/LanguageServiceWorker.js", ["src/mode/typescript/Defau
             var fileName = data.fileName;
             var callbackId = data.callbackId;
             try {
-              var emitOutput = _this.service.getEmitOutput(fileName);
-              var outputFiles = emitOutput.outputFiles;
-              var response = {
+              var sourceFile = _this.service.getSourceFile(fileName);
+              var input = sourceFile.text;
+              var transpileOptions = {};
+              transpileOptions.compilerOptions = _this.host.getCompilationSettings();
+              transpileOptions.fileName = fileName;
+              transpileOptions.moduleName = systemModuleName('./', fileName, 'js');
+              transpileOptions.reportDiagnostics = false;
+              var output = ts.transpileModule(input, transpileOptions);
+              var outputFiles = [];
+              outputFiles.push({
+                name: systemModuleName(void 0, fileName, 'js'),
+                text: output.outputText,
+                writeByteOrderMark: void 0
+              });
+              sender.emit("outputFiles", {
                 outputFiles: outputFiles,
                 callbackId: callbackId
-              };
-              sender.emit("outputFiles", response);
-            } catch (e) {}
+              });
+            } catch (e) {
+              sender.emit("outputFiles", {
+                err: e.toString(),
+                callbackId: callbackId
+              });
+            }
           });
         }
         LanguageServiceWorker.prototype.ensureScript = function(fileName, content) {

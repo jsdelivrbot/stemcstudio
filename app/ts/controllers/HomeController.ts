@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 import app from '../app';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
-import HomeScope from './HomeScope';
+import HomeScope from '../scopes/HomeScope';
 
 app.controller('home-controller', [
     '$scope',

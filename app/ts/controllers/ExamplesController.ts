@@ -1,6 +1,6 @@
 import * as angular from 'angular';
 import app from '../app';
-import ExamplesScope from './ExamplesScope';
+import ExamplesScope from '../scopes/ExamplesScope';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
 
 app.controller('examples-controller', [

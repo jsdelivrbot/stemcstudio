@@ -6849,14 +6849,60 @@ body > div {
   flex-direction: row;
   height: 100%;
 }
-#doodle-container > * {
-  flex: 1;
-}
 #editors {
   display: flex;
   flex-direction: column;
   flex-grow: 0;
   flex-basis: 600px;
+  background-color: #232323;
+}
+/*
+body > .dropdown {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+body > .dropdown-menu {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+body > .dropdown-menu > li > a {
+    color: @white;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+*/
+explorer {
+  flex: 0 1 150px;
+  background-color: #232323;
+}
+.explorer-section {
+  display: flex;
+  flex-direction: column;
+}
+.explorer-section-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  color: #999;
+}
+.explorer-section-box {
+  margin: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+ul.files {
+  list-style-type: none;
+  padding: 0px;
+  margin: 0px;
+}
+ul.files li a {
+  color: #999;
+  text-decoration: none;
+  margin: 5px;
+}
+ul.files li.selected a {
+  color: #fff;
 }
 .ace_editor {
   position: relative;
@@ -7381,6 +7427,18 @@ article.ace_dts code {
   margin: 0;
   padding: 0;
 }
+span.glyphicon {
+  font-size: 1.3em;
+}
+span.glyphicon-play {
+  color: #00ff00;
+}
+span.glyphicon-play-circle {
+  color: #00ff00;
+}
+span.glyphicon-off {
+  color: #ff0000;
+}
 html {
   height: 100%;
 }
@@ -7489,6 +7547,19 @@ html {
 }
 .navbar-inverse {
   background: #232323;
+  border-color: #232323;
+}
+#viewbar {
+  display: flex;
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: 50px;
+  border-color: #232323;
+}
+workspace {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 ul.menu {
   margin: 0px;

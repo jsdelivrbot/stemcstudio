@@ -1,0 +1,1 @@
+module.exports = require("github:angular-ui/bootstrap-bower@1.3.2/index.js");

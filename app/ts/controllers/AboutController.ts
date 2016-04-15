@@ -1,6 +1,6 @@
 import * as angular from 'angular';
 import app from '../app';
-import AboutScope from './AboutScope';
+import AboutScope from '../scopes/AboutScope';
 
 app.controller('about-controller', [
     '$scope',

@@ -1,14 +1,14 @@
-import IDoodle from './IDoodle';
+import Doodle from './Doodle';
 
 interface IDoodleManager {
-    unshift(doodle: IDoodle): void;
+    unshift(doodle: Doodle): void;
     length: number;
-    filter(callback: (doodle: IDoodle, index: number, array: IDoodle[]) => boolean): IDoodle[];
-    current(): IDoodle;
+    filter(callback: (doodle: Doodle, index: number, array: Doodle[]) => boolean): Doodle[];
+    current(): Doodle;
     makeCurrent(uuid: string): void;
     deleteDoodle(uuid: string): void;
     updateStorage(): void;
-    createDoodle(template: IDoodle, description?: string);
+    createDoodle(template: Doodle, description?: string);
     suggestName(): string;
 }
 
