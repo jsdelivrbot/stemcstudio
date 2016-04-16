@@ -615,8 +615,8 @@ module.exports = function(grunt) {
     const builder = new Builder('./generated', './generated/jspm.config.js');
 
     var options = {
-      minify: false,
-      mangle: false,
+      minify: true,
+      mangle: true,
       sourceMaps: true,
       lowResSourceMaps: false
     };
