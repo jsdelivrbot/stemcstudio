@@ -159,11 +159,7 @@ export default class DoodleController {
             const token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
             if (token) {
                 const doodle = doodles.current();
-                console.log("DOODLE")
-                console.log(JSON.stringify(doodle))
                 const data: GistData = doodleToGist(doodle, options);
-                console.log("DATA")
-                console.log(JSON.stringify(data))
                 const gistId = doodle.gistId;
                 if (gistId) {
                     github.patchGist(token, gistId, data, function(err: any, response: PatchGistResponse, status: number, headers, config) {
