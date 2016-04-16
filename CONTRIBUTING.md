@@ -24,6 +24,17 @@ npm install -g karma-cli
 4. `bower install`
 5. `typings install`
 6. `jspm install`
+
+Manully tweak typings/browser/ambient/angular-ui-bootstrap/index.d.ts as follows:
+
+```
+declare module 'angular-bootstrap' {
+    export = AngularUiBootstrap
+}
+
+declare module AngularUiBootstrap {
+```
+
 7. `grunt`
 8. Open another terminal
 9. `cd mathdoodle`
