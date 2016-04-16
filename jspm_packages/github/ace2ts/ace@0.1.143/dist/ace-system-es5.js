@@ -1492,8 +1492,6 @@ System.register("workspace/Workspace.js", ["autocomplete/AutoCompleteCommand.js"
         function Workspace() {
           this.editors = {};
           this.quickin = {};
-          this.mousedn = {};
-          this.command = {};
           this.annotationHandlers = {};
           this.changeHandlers = {};
           this.refMarkers = [];
@@ -1595,20 +1593,6 @@ System.register("workspace/Workspace.js", ["autocomplete/AutoCompleteCommand.js"
             var quickInfo = this.quickin[fileName];
             quickInfo.terminate();
             delete this.quickin[fileName];
-            var mousedownHandler = this.mousedn[fileName];
-            if (mousedownHandler) {
-              editor.off("mousedown", mousedownHandler);
-              delete this.mousedn[fileName];
-            } else {
-              console.log("There is no mousedownHandler for " + fileName + ".");
-            }
-            var completeCommand = this.command[fileName];
-            if (completeCommand) {
-              editor.commands.removeCommand(completeCommand.name);
-              delete this.command[fileName];
-            } else {
-              console.log("There is no completeCommand for " + fileName + ".");
-            }
             var annotationHandler = this.annotationHandlers[fileName];
             editor.session.off('annotations', annotationHandler);
             delete this.annotationHandlers[fileName];
