@@ -8,7 +8,6 @@ import modeFromName from './modeFromName';
 
 function mash(name: string, content: string): string {
     const mode = modeFromName(name)
-    console.log(`${name} => ${mode}, ${stripWS(content).length}`)
     switch (mode) {
         case 'HTML': {
             if (stripWS(content).length > 0) {
@@ -18,6 +17,7 @@ function mash(name: string, content: string): string {
                 return '<!DOCTYPE html>\n';
             }
         }
+        case 'JavaScript':
         case 'TypeScript': {
             if (stripWS(content).length > 0) {
                 return content;
@@ -26,6 +26,7 @@ function mash(name: string, content: string): string {
                 return '//\n';
             }
         }
+        case 'CSS':
         case 'LESS': {
             if (stripWS(content).length > 0) {
                 return content;
@@ -33,6 +34,17 @@ function mash(name: string, content: string): string {
             else {
                 return '//\n';
             }
+        }
+        case 'Markdown': {
+            if (stripWS(content).length > 0) {
+                return content;
+            }
+            else {
+                return '#\n';
+            }
+        }
+        default: {
+            console.warn(`${name} => ${mode}, ${stripWS(content).length}`)
         }
     }
     return content

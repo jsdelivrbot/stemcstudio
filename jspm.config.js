@@ -23,7 +23,7 @@ System.config({
     "jquery": "npm:jquery@2.2.3",
     "underscore": "npm:underscore@1.8.3",
     "github:ace2ts/ace@0.1.143": {
-      "ace2ts/ace-workers": "github:ace2ts/ace-workers@0.1.49",
+      "ace2ts/ace-workers": "github:ace2ts/ace-workers@0.1.51",
       "typescript": "npm:typescript@1.8.10"
     },
     "github:angular-ui/ui-router@0.2.18": {

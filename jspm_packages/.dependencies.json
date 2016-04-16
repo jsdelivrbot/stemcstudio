@@ -34,7 +34,6 @@
   "npm:process@0.11.2": {
     "assert": "github:jspm/nodelibs-assert@^0.1.0"
   },
-  "github:ace2ts/ace-workers@0.1.49": {},
   "github:jspm/nodelibs-os@0.1.0": {
     "os-browserify": "npm:os-browserify@^0.1.2"
   },
@@ -91,5 +90,6 @@
   },
   "github:jspm/nodelibs-util@0.1.0": {
     "util": "npm:util@^0.10.3"
-  }
+  },
+  "github:ace2ts/ace-workers@0.1.51": {}
 }

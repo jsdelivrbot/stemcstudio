@@ -6,8 +6,6 @@ export default class PromptController {
     public static $inject: string[] = ['$scope', '$uibModalInstance', 'options']
     constructor($scope: PromptScope, $uibModalInstance: uib.IModalServiceInstance, options: PromptOptions) {
 
-        console.log(JSON.stringify(options, null, 2))
-
         $scope.options = options
 
         $scope.ok = function() {

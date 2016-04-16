@@ -73,9 +73,9 @@ interface IDoodle {
     /**
      * @method newFile
      * @param name {string}
-     * @return {void}
+     * @return {IDoodleFile}
      */
-    newFile(name: string): void;
+    newFile(name: string): IDoodleFile;
 
     /**
      * @method openFile

@@ -374,7 +374,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                <ul class='nav navbar-nav'>\n" +
     "                    <li>\n" +
     "                        <a role='button' ng-click='filesController.newFile()'>\n" +
-    "                            <span class=\"glyphicon glyphicon-file\" aria-hidden=\"true\" uib-tooltip=\"New File\" tooltip-placement=\"bottom\"></span>\n" +
+    "                            <span class=\"glyphicon glyphicon-plus\" aria-hidden=\"true\" uib-tooltip=\"New File\" tooltip-placement=\"bottom\"></span>\n" +
     "                        </a>\n" +
     "                    </li>\n" +
     "                </ul>\n" +

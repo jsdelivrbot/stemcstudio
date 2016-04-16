@@ -4,6 +4,8 @@ import ICloud from '../../services/cloud/ICloud';
 import CookieService from '../../services/cookie/CookieService';
 import detect1x from './detect1x';
 import Doodle from '../../services/doodles/Doodle';
+import fileContent from './fileContent';
+import fileExists from './fileExists';
 import IDoodleManager from '../../services/doodles/IDoodleManager';
 import GitHubService from '../../services/github/GitHubService';
 import IGitHubAuthManager from '../../services/gham/IGitHubAuthManager';
@@ -53,21 +55,6 @@ function closure(options: IOption[], manager: IOptionManager): IOption[] {
         done = size === nameSet.size();
     }
     return namesToOptions(nameSet.toArray(), manager);
-}
-
-/**
- * Returns the contents of the file providing that the fileName exists on the Doodle.
- * If the file does not exits, a warning is logged to the console and we return undefined.
- */
-function fileContent(fileName: string, doodle: Doodle): string {
-    const file = doodle.files[fileName];
-    if (file) {
-        return file.content
-    }
-    else {
-        console.warn(`fileContent(${fileName}), ${fileName} does not exist.`)
-        return void 0
-    }
 }
 
 /**
@@ -475,8 +462,10 @@ export default class WorkspaceController implements WorkspaceMixin {
                 editor.getSession().on('outputFiles', this.createOutputFilesEventHandler(filename))
                 break
             }
+            case 'CSS':
             case 'HTML':
-            case 'LESS': {
+            case 'LESS':
+            case 'Markdown': {
                 editor.getSession().on('change', this.createChangeHandler(filename))
                 break
             }
@@ -556,8 +545,10 @@ export default class WorkspaceController implements WorkspaceMixin {
                 this.workspace.detachEditor(filename, editor)
                 break
             }
+            case 'CSS':
             case 'HTML':
-            case 'LESS': {
+            case 'LESS':
+            case 'Markdown': {
                 const handler = this.changeHandlers[filename]
                 editor.getSession().off('change', handler)
                 this.deleteChangeHandler(filename)
@@ -690,10 +681,18 @@ export default class WorkspaceController implements WorkspaceMixin {
 
                         html = html.replace(this.SCRIPTS_MARKER, scriptTags.join(""));
 
-                        html = html.replace(this.STYLE_MARKER, [fileContent(this.FILENAME_LESS, doodle)].join(""));
+                        // TODO: It would be nice to have a more flexible way to define stylesheet imports.
+                        // TODO: We should then be able to move away from symbolic constants for the stylesheet file name.
+                        if (fileExists('style.css', doodle)) {
+                            html = html.replace(this.STYLE_MARKER, [fileContent('style.css', doodle)].join(""));
+                        }
+                        else if (fileExists(this.FILENAME_LESS, doodle)) {
+                            html = html.replace(this.STYLE_MARKER, [fileContent(this.FILENAME_LESS, doodle)].join(""));
+                        }
 
                         if (detect1x(doodle)) {
-
+                            // This code is for backwards compatibility only, now that we support ES6 modules.
+                            console.warn("Support for programs not using ES6 modules is deprecated. Please convert your program to use ES6 module loading.")
                             html = html.replace(this.LIBS_MARKER, currentJavaScript(this.FILENAME_LIBS, doodle));
                             html = html.replace(this.CODE_MARKER, currentJavaScript(this.FILENAME_CODE, doodle));
                             // For backwards compatibility (less than 1.x) ...

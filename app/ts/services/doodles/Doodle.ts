@@ -79,7 +79,7 @@ export default class Doodle {
     /**
      *
      */
-    newFile(name: string): void {
+    newFile(name: string): DoodleFile {
         const mode = modeFromName(name)
         if (!mode) {
             throw new Error(`${name} is not a recognized language.`)
@@ -89,6 +89,7 @@ export default class Doodle {
             const file = new DoodleFile()
             file.language = mode
             this.files[name] = file
+            return file
         }
         else {
             throw new Error(`${name} already exists. The name must be unique.`)

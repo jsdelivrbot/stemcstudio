@@ -44,6 +44,11 @@ function factory($timeout: ng.ITimeoutService, settings: ISettingsService, textS
                 editor.setLanguageMode(ace.createCssMode('/js/worker.js', workerImports))
                 break
             }
+            case 'Markdown': {
+                editor.getSession().setUseWorker(false);
+//              editor.setLanguageMode(ace.createMarkdownMode('/js/worker.js', workerImports))
+                break
+            }
             default: {
                 console.warn(`Unrecognized mode => ${$scope.mode}`)
             }

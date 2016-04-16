@@ -15,6 +15,12 @@ import EIGHTJS_CODE from './EIGHTJS_CODE';
 import EIGHTJS_LIBS from './EIGHTJS_LIBS';
 import EIGHTJS_LESS from './EIGHTJS_LESS';
 
+import MINIMAL_HTML from './MINIMAL_HTML';
+import MINIMAL_BOOTSTRAP from './MINIMAL_BOOTSTRAP';
+import MINIMAL_GREETING from './MINIMAL_GREETING';
+import MINIMAL_CSS from './MINIMAL_CSS';
+import MINIMAL_README from './MINIMAL_README';
+
 import SINGLE_VIEW_HTML from './SINGLE_VIEW_HTML';
 import SINGLE_VIEW_CODE from './SINGLE_VIEW_CODE';
 import SINGLE_VIEW_LIBS from './SINGLE_VIEW_LIBS';
@@ -64,25 +70,6 @@ app.factory('templates', [
         function scriptsMarker(): string { return [SCRIPTS_MARKER].map(indent).map(newLine).join(""); }
         function codeMarker(): string { return ['<script>', CODE_MARKER, '</script>'].map(indent).map(newLine).join(""); }
         function libsMarker(): string { return ['<script>', LIBS_MARKER, '</script>'].map(indent).map(newLine).join(""); }
-
-        const HTML_TEMPLATE_MINIMAL = "" +
-            "<!doctype html>\n" +
-            "<html>\n" +
-            "  <head>\n" +
-            styleMarker() +
-            scriptsMarker() +
-            "  </head>\n" +
-            "  <body>\n" +
-            libsMarker() +
-            codeMarker() +
-            "  </body>\n" +
-            "</html>\n";
-
-        const CODE_TEMPLATE_MINIMAL = "";
-
-        const LESS_TEMPLATE_MINIMAL = "";
-
-        const LIBS_TEMPLATE_MINIMAL = "";
 
         const HTML_TEMPLATE_CALCULATION = "" +
             "<!doctype html>\n" +
@@ -343,14 +330,15 @@ app.factory('templates', [
             LESS_TEMPLATE_CALCULATION)
         T2.dependencies = ['DomReady', 'davinci-eight']
 
-        const T3: IDoodle = new Doodle()
+        const T3: Doodle = new Doodle()
         T3.uuid = uuid.generate()
-        T3.description = "Minimal"
-        T3.files = makeFiles(
-            HTML_TEMPLATE_MINIMAL,
-            CODE_TEMPLATE_MINIMAL,
-            LIBS_TEMPLATE_MINIMAL,
-            LESS_TEMPLATE_MINIMAL)
+        T3.description = "Getting Started"
+        T3.files = {}
+        T3.newFile(FILENAME_HTML).content = MINIMAL_HTML()
+        T3.newFile('bootstrap.ts').content = MINIMAL_BOOTSTRAP()
+        T3.newFile('greeting.ts').content = MINIMAL_GREETING()
+        T3.newFile('style.css').content = MINIMAL_CSS()
+        T3.newFile('README.md').content = MINIMAL_README()
         T3.dependencies = []
 
         const T4: IDoodle = new Doodle()

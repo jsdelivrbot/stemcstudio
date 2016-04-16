@@ -1,5 +1,5 @@
-System.register("src/mode/ExampleWorker.js", ["src/worker/Mirror.js"], function(exports_1) {
-  "use strict";
+"use strict";
+System.register("src/mode/ExampleWorker.js", ["../worker/Mirror"], function(exports_1) {
   var __extends = (this && this.__extends) || function(d, b) {
     for (var p in b)
       if (b.hasOwnProperty(p))
@@ -217,7 +217,7 @@ System.register("src/mode/html/constants.js", [], function(exports_1) {
   };
 });
 
-System.register("src/mode/html/CharacterBuffer.js", ["src/mode/html/isWhitespace.js"], function(exports_1) {
+System.register("src/mode/html/CharacterBuffer.js", ["./isWhitespace"], function(exports_1) {
   var isWhitespace_1;
   function CharacterBuffer(characters) {
     this.characters = characters;
@@ -443,7 +443,7 @@ System.register("src/mode/html/formatMessage.js", [], function(exports_1) {
   };
 });
 
-System.register("src/mode/html/isAllWhitespace.js", ["src/mode/html/isWhitespace.js"], function(exports_1) {
+System.register("src/mode/html/isAllWhitespace.js", ["./isWhitespace"], function(exports_1) {
   var isWhitespace_1;
   function isAllWhitespace(characters) {
     for (var i = 0; i < characters.length; i++) {
@@ -462,7 +462,7 @@ System.register("src/mode/html/isAllWhitespace.js", ["src/mode/html/isWhitespace
   };
 });
 
-System.register("src/mode/html/isWhitespaceOrReplacementCharacter.js", ["src/mode/html/isWhitespace.js"], function(exports_1) {
+System.register("src/mode/html/isWhitespaceOrReplacementCharacter.js", ["./isWhitespace"], function(exports_1) {
   var isWhitespace_1;
   function isWhitespaceOrReplacementCharacter(ch) {
     return isWhitespace_1.default(ch) || ch === '\uFFFD';
@@ -476,7 +476,7 @@ System.register("src/mode/html/isWhitespaceOrReplacementCharacter.js", ["src/mod
   };
 });
 
-System.register("src/mode/html/isAllWhitespaceOrReplacementCharacters.js", ["src/mode/html/isWhitespaceOrReplacementCharacter.js"], function(exports_1) {
+System.register("src/mode/html/isAllWhitespaceOrReplacementCharacters.js", ["./isWhitespaceOrReplacementCharacter"], function(exports_1) {
   var isWhitespaceOrReplacementCharacter_1;
   function isAllWhitespaceOrReplacementCharacters(characters) {
     for (var i = 0; i < characters.length; i++) {
@@ -706,7 +706,7 @@ System.register("src/mode/html/StackItem.js", [], function(exports_1) {
   };
 });
 
-System.register("src/mode/html/TreeBuilder.js", ["src/mode/html/constants.js", "src/mode/html/CharacterBuffer.js", "src/mode/html/ElementStack.js", "src/mode/html/formatMessage.js", "src/mode/html/getAttribute.js", "src/mode/html/isWhitespace.js", "src/mode/html/isAllWhitespace.js", "src/mode/html/isAllWhitespaceOrReplacementCharacters.js", "src/mode/html/messages.js", "src/mode/html/StackItem.js", "src/mode/html/Tokenizer.js"], function(exports_1) {
+System.register("src/mode/html/TreeBuilder.js", ["./constants", "./CharacterBuffer", "./ElementStack", "./formatMessage", "./getAttribute", "./isWhitespace", "./isAllWhitespace", "./isAllWhitespaceOrReplacementCharacters", "./messages", "./StackItem", "./Tokenizer"], function(exports_1) {
   var constants_1,
       CharacterBuffer_1,
       ElementStack_1,
@@ -3132,7 +3132,7 @@ System.register("src/mode/html/TreeBuilder.js", ["src/mode/html/constants.js", "
   };
 });
 
-System.register("src/mode/html/Characters.js", ["src/mode/html/Node.js", "src/mode/html/NodeType.js"], function(exports_1) {
+System.register("src/mode/html/Characters.js", ["./Node", "./NodeType"], function(exports_1) {
   var __extends = (this && this.__extends) || function(d, b) {
     for (var p in b)
       if (b.hasOwnProperty(p))
@@ -3169,7 +3169,7 @@ System.register("src/mode/html/Characters.js", ["src/mode/html/Node.js", "src/mo
   };
 });
 
-System.register("src/mode/html/Comment.js", ["src/mode/html/Node.js", "src/mode/html/NodeType.js"], function(exports_1) {
+System.register("src/mode/html/Comment.js", ["./Node", "./NodeType"], function(exports_1) {
   var __extends = (this && this.__extends) || function(d, b) {
     for (var p in b)
       if (b.hasOwnProperty(p))
@@ -3206,7 +3206,7 @@ System.register("src/mode/html/Comment.js", ["src/mode/html/Node.js", "src/mode/
   };
 });
 
-System.register("src/mode/html/Document.js", ["src/mode/html/ParentNode.js", "src/mode/html/NodeType.js"], function(exports_1) {
+System.register("src/mode/html/Document.js", ["./ParentNode", "./NodeType"], function(exports_1) {
   var __extends = (this && this.__extends) || function(d, b) {
     for (var p in b)
       if (b.hasOwnProperty(p))
@@ -3259,7 +3259,7 @@ System.register("src/mode/html/DocumentFragment.js", [], function(exports_1) {
   };
 });
 
-System.register("src/mode/html/DTD.js", ["src/mode/html/ParentNode.js", "src/mode/html/NodeType.js"], function(exports_1) {
+System.register("src/mode/html/DTD.js", ["./ParentNode", "./NodeType"], function(exports_1) {
   var __extends = (this && this.__extends) || function(d, b) {
     for (var p in b)
       if (b.hasOwnProperty(p))
@@ -3354,7 +3354,7 @@ System.register("src/mode/html/Node.js", [], function(exports_1) {
   };
 });
 
-System.register("src/mode/html/ParentNode.js", ["src/mode/html/Node.js"], function(exports_1) {
+System.register("src/mode/html/ParentNode.js", ["./Node"], function(exports_1) {
   var __extends = (this && this.__extends) || function(d, b) {
     for (var p in b)
       if (b.hasOwnProperty(p))
@@ -3506,7 +3506,7 @@ System.register("src/mode/html/NodeType.js", [], function(exports_1) {
   };
 });
 
-System.register("src/mode/html/Element.js", ["src/mode/html/ParentNode.js", "src/mode/html/NodeType.js"], function(exports_1) {
+System.register("src/mode/html/Element.js", ["./ParentNode", "./NodeType"], function(exports_1) {
   var __extends = (this && this.__extends) || function(d, b) {
     for (var p in b)
       if (b.hasOwnProperty(p))
@@ -3579,7 +3579,7 @@ System.register("src/mode/html/getAttribute.js", [], function(exports_1) {
   };
 });
 
-System.register("src/mode/html/SAXTreeBuilder.js", ["src/mode/html/TreeBuilder.js", "src/mode/html/Characters.js", "src/mode/html/Comment.js", "src/mode/html/Document.js", "src/mode/html/DocumentFragment.js", "src/mode/html/DTD.js", "src/mode/html/Element.js", "src/mode/html/getAttribute.js"], function(exports_1) {
+System.register("src/mode/html/SAXTreeBuilder.js", ["./TreeBuilder", "./Characters", "./Comment", "./Document", "./DocumentFragment", "./DTD", "./Element", "./getAttribute"], function(exports_1) {
   var __extends = (this && this.__extends) || function(d, b) {
     for (var p in b)
       if (b.hasOwnProperty(p))
@@ -5978,7 +5978,7 @@ System.register("src/mode/html/isHexDigit.js", [], function(exports_1) {
   };
 });
 
-System.register("src/mode/html/EntityParser.js", ["src/mode/html/entities.js", "src/mode/html/InputStream.js", "src/mode/html/isAlphaNumeric.js", "src/mode/html/isDecimalDigit.js", "src/mode/html/isHexDigit.js"], function(exports_1) {
+System.register("src/mode/html/EntityParser.js", ["./entities", "./InputStream", "./isAlphaNumeric", "./isDecimalDigit", "./isHexDigit"], function(exports_1) {
   var entities_1,
       InputStream_1,
       isAlphaNumeric_1,
@@ -6350,7 +6350,7 @@ System.register("src/mode/html/isWhitespace.js", [], function(exports_1) {
   };
 });
 
-System.register("src/mode/html/Tokenizer.js", ["src/mode/html/EntityParser.js", "src/mode/html/InputStream.js", "src/mode/html/isAlpha.js", "src/mode/html/isWhitespace.js"], function(exports_1) {
+System.register("src/mode/html/Tokenizer.js", ["./EntityParser", "./InputStream", "./isAlpha", "./isWhitespace"], function(exports_1) {
   var EntityParser_1,
       InputStream_1,
       isAlpha_1,
@@ -8110,7 +8110,7 @@ System.register("src/mode/html/TreeParser.js", [], function(exports_1) {
   };
 });
 
-System.register("src/mode/html/SAXParser.js", ["src/mode/html/SAXTreeBuilder.js", "src/mode/html/Tokenizer.js", "src/mode/html/TreeParser.js"], function(exports_1) {
+System.register("src/mode/html/SAXParser.js", ["./SAXTreeBuilder", "./Tokenizer", "./TreeParser"], function(exports_1) {
   var SAXTreeBuilder_1,
       Tokenizer_1,
       TreeParser_1;
@@ -8176,8 +8176,8 @@ System.register("src/mode/html/SAXParser.js", ["src/mode/html/SAXTreeBuilder.js"
   };
 });
 
-System.register("src/mode/HtmlWorker.js", ["src/worker/Mirror.js", "src/mode/html/SAXParser.js"], function(exports_1) {
-  "use strict";
+"use strict";
+System.register("src/mode/HtmlWorker.js", ["../worker/Mirror", "./html/SAXParser"], function(exports_1) {
   var __extends = (this && this.__extends) || function(d, b) {
     for (var p in b)
       if (b.hasOwnProperty(p))
@@ -8257,8 +8257,8 @@ System.register("src/mode/HtmlWorker.js", ["src/worker/Mirror.js", "src/mode/htm
   };
 });
 
+"use strict";
 System.register("src/mode/javascript/vars.js", [], function(exports_1) {
-  "use strict";
   var reservedVars,
       ecmaIdentifiers,
       browser,
@@ -8967,8 +8967,8 @@ System.register("src/mode/javascript/vars.js", [], function(exports_1) {
   };
 });
 
+"use strict";
 System.register("src/mode/javascript/messages.js", [], function(exports_1) {
-  "use strict";
   var errorsMap,
       warningsMap,
       infoMap,
@@ -9262,8 +9262,8 @@ System.register("src/mode/javascript/non-ascii-identifier-part-only.js", [], fun
   };
 });
 
-System.register("src/mode/javascript/lex.js", ["src/mode/javascript/EventEmitter.js", "src/mode/javascript/reg.js", "src/mode/javascript/state.js", "src/mode/javascript/ascii-identifier-data.js", "src/mode/javascript/non-ascii-identifier-start.js", "src/mode/javascript/non-ascii-identifier-part-only.js"], function(exports_1) {
-  "use strict";
+"use strict";
+System.register("src/mode/javascript/lex.js", ["./EventEmitter", "./reg", "./state", "./ascii-identifier-data", "./non-ascii-identifier-start", "./non-ascii-identifier-part-only"], function(exports_1) {
   var EventEmitter_1,
       reg_1,
       state_1,
@@ -10640,8 +10640,8 @@ System.register("src/mode/javascript/lex.js", ["src/mode/javascript/EventEmitter
   };
 });
 
+"use strict";
 System.register("src/mode/javascript/reg.js", [], function(exports_1) {
-  "use strict";
   var unsafeString,
       unsafeChars,
       needEsc,
@@ -10667,8 +10667,8 @@ System.register("src/mode/javascript/reg.js", [], function(exports_1) {
   };
 });
 
+"use strict";
 System.register("src/mode/javascript/name-stack.js", [], function(exports_1) {
-  "use strict";
   var NameStack;
   return {
     setters: [],
@@ -10719,8 +10719,8 @@ System.register("src/mode/javascript/name-stack.js", [], function(exports_1) {
   };
 });
 
-System.register("src/mode/javascript/state.js", ["src/mode/javascript/name-stack.js"], function(exports_1) {
-  "use strict";
+"use strict";
+System.register("src/mode/javascript/state.js", ["./name-stack"], function(exports_1) {
   var name_stack_1;
   var state;
   return {
@@ -10792,8 +10792,8 @@ System.register("src/mode/javascript/state.js", ["src/mode/javascript/name-stack
   };
 });
 
+"use strict";
 System.register("src/mode/javascript/style.js", [], function(exports_1) {
-  "use strict";
   function register(linter) {
     linter.on("Identifier", function style_scanProto(data) {
       if (linter.getOption("proto")) {
@@ -10903,8 +10903,8 @@ System.register("src/mode/javascript/style.js", [], function(exports_1) {
   };
 });
 
+"use strict";
 System.register("src/mode/javascript/options.js", [], function(exports_1) {
-  "use strict";
   var bool,
       val,
       inverted,
@@ -11307,8 +11307,8 @@ System.register("src/fp/findLastIndex.js", [], function(exports_1) {
   };
 });
 
-System.register("src/mode/javascript/scope-manager.js", ["src/mode/javascript/EventEmitter.js", "src/fp/has.js", "src/fp/sliceArgs.js", "src/fp/findLastIndex.js"], function(exports_1) {
-  "use strict";
+"use strict";
+System.register("src/mode/javascript/scope-manager.js", ["./EventEmitter", "../../fp/has", "../../fp/sliceArgs", "../../fp/findLastIndex"], function(exports_1) {
   var EventEmitter_1,
       has_1,
       sliceArgs_1,
@@ -12042,7 +12042,7 @@ System.register("src/fp/zip.js", [], function(exports_1) {
   };
 });
 
-System.register("src/mode/javascript/jshint.js", ["src/mode/javascript/EventEmitter.js", "src/mode/javascript/vars.js", "src/mode/javascript/messages.js", "src/mode/javascript/lex.js", "src/mode/javascript/reg.js", "src/mode/javascript/state.js", "src/mode/javascript/style.js", "src/mode/javascript/options.js", "src/mode/javascript/scope-manager.js", "src/fp/contains.js", "src/fp/clone.js", "src/fp/each.js", "src/fp/extend.js", "src/fp/has.js", "src/fp/isEmpty.js", "src/fp/isNumber.js", "src/fp/reject.js", "src/fp/zip.js"], function(exports_1) {
+System.register("src/mode/javascript/jshint.js", ["./EventEmitter", "./vars", "./messages", "./lex", "./reg", "./state", "./style", "./options", "./scope-manager", "../../fp/contains", "../../fp/clone", "../../fp/each", "../../fp/extend", "../../fp/has", "../../fp/isEmpty", "../../fp/isNumber", "../../fp/reject", "../../fp/zip"], function(exports_1) {
   var EventEmitter_1,
       vars_1,
       messages_1,
@@ -14657,11 +14657,11 @@ System.register("src/mode/javascript/jshint.js", ["src/mode/javascript/EventEmit
             var ident;
             if (checkPunctuators(state_1.state.tokens.next, ["[", "{"])) {
               ids = destructuringPatternRecursive(recursiveOptions);
-              for (var id in ids) {
-                id = ids[id];
+              for (var key in ids) {
+                var id_1 = ids[key];
                 identifiers.push({
-                  id: id.id,
-                  token: id.token
+                  id: id_1.id,
+                  token: id_1.token
                 });
               }
             } else if (checkPunctuator(state_1.state.tokens.next, ",")) {
@@ -14839,9 +14839,9 @@ System.register("src/mode/javascript/jshint.js", ["src/mode/javascript/EventEmit
             if (!prefix && isConst && state_1.state.tokens.next.id !== "=") {
               warning("E012", state_1.state.tokens.curr, state_1.state.tokens.curr.value);
             }
-            for (var t in tokens) {
-              if (tokens.hasOwnProperty(t)) {
-                t = tokens[t];
+            for (var name in tokens) {
+              if (tokens.hasOwnProperty(name)) {
+                var t = tokens[name];
                 if (state_1.state.funct["(scope)"].block.isGlobal()) {
                   if (predefined[t.id] === false) {
                     warning("W079", t.token, t.id);
@@ -14922,9 +14922,9 @@ System.register("src/mode/javascript/jshint.js", ["src/mode/javascript/EventEmit
               warning("W132", this);
             }
             this.first = this.first.concat(names);
-            for (var t in tokens) {
-              if (tokens.hasOwnProperty(t)) {
-                t = tokens[t];
+            for (var name in tokens) {
+              if (tokens.hasOwnProperty(name)) {
+                var t = tokens[name];
                 if (!implied && state_1.state.funct["(global)"]) {
                   if (predefined[t.id] === false) {
                     warning("W079", t.token, t.id);
@@ -15367,7 +15367,6 @@ System.register("src/mode/javascript/jshint.js", ["src/mode/javascript/EventEmit
                 indent -= state_1.state.option.indent;
             }
           }
-          return this;
         }).labelled = true;
         stmt("debugger", function() {
           if (!state_1.state.option.debug) {
@@ -16397,8 +16396,8 @@ System.register("src/mode/javascript/jshint.js", ["src/mode/javascript/EventEmit
   };
 });
 
-System.register("src/mode/JavaScriptWorker.js", ["src/lib/mixin.js", "src/worker/Mirror.js", "src/mode/javascript/jshint.js"], function(exports_1) {
-  "use strict";
+"use strict";
+System.register("src/mode/JavaScriptWorker.js", ["../lib/mixin", "../worker/Mirror", "./javascript/jshint"], function(exports_1) {
   var __extends = (this && this.__extends) || function(d, b) {
     for (var p in b)
       if (b.hasOwnProperty(p))
@@ -16575,7 +16574,7 @@ System.register("src/lib/delayedCall.js", [], function(exports_1) {
   };
 });
 
-System.register("src/worker/Mirror.js", ["src/Document.js", "src/lib/delayedCall.js"], function(exports_1) {
+System.register("src/worker/Mirror.js", ["../Document", "../lib/delayedCall"], function(exports_1) {
   var Document_1,
       delayedCall_1;
   var Mirror;
@@ -16632,8 +16631,8 @@ System.register("src/worker/Mirror.js", ["src/Document.js", "src/lib/delayedCall
   };
 });
 
-System.register("src/mode/TypeScriptWorker.js", ["src/lib/mixin.js", "src/worker/Mirror.js"], function(exports_1) {
-  "use strict";
+"use strict";
+System.register("src/mode/TypeScriptWorker.js", ["../lib/mixin", "../worker/Mirror"], function(exports_1) {
   var __extends = (this && this.__extends) || function(d, b) {
     for (var p in b)
       if (b.hasOwnProperty(p))
@@ -16740,8 +16739,8 @@ System.register("src/applyDelta.js", [], function(exports_1) {
   };
 });
 
+"use strict";
 System.register("src/Range.js", [], function(exports_1) {
-  "use strict";
   var Range;
   return {
     setters: [],
@@ -16962,8 +16961,8 @@ System.register("src/Range.js", [], function(exports_1) {
   };
 });
 
-System.register("src/Document.js", ["src/applyDelta.js", "src/Range.js"], function(exports_1) {
-  "use strict";
+"use strict";
+System.register("src/Document.js", ["./applyDelta", "./Range"], function(exports_1) {
   var applyDelta_1,
       Range_1;
   var $split,
@@ -17324,7 +17323,7 @@ System.register("src/Document.js", ["src/applyDelta.js", "src/Range.js"], functi
   };
 });
 
-System.register("src/mode/typescript/ScriptInfo.js", ["src/Document.js"], function(exports_1) {
+System.register("src/mode/typescript/ScriptInfo.js", ["../../Document"], function(exports_1) {
   var Document_1;
   var ScriptInfo;
   return {
@@ -17355,8 +17354,8 @@ System.register("src/mode/typescript/ScriptInfo.js", ["src/Document.js"], functi
   };
 });
 
-System.register("src/mode/typescript/DefaultLanguageServiceHost.js", ["src/mode/typescript/ScriptInfo.js"], function(exports_1) {
-  "use strict";
+"use strict";
+System.register("src/mode/typescript/DefaultLanguageServiceHost.js", ["./ScriptInfo"], function(exports_1) {
   var ScriptInfo_1;
   var DefaultLanguageServiceHost;
   return {
@@ -17573,7 +17572,7 @@ System.register("src/mode/typescript/DefaultLanguageServiceHost.js", ["src/mode/
             var result = ts.ScriptSnapshot.fromString(script.getValue());
             return result;
           } else {
-            throw new Error("getScriptSnapshot(" + fileName + ")");
+            return void 0;
           }
         };
         DefaultLanguageServiceHost.prototype.getCurrentDirectory = function() {
@@ -17589,7 +17588,7 @@ System.register("src/mode/typescript/DefaultLanguageServiceHost.js", ["src/mode/
   };
 });
 
-System.register("src/mode/LanguageServiceWorker.js", ["src/mode/typescript/DefaultLanguageServiceHost.js"], function(exports_1) {
+System.register("src/mode/LanguageServiceWorker.js", ["./typescript/DefaultLanguageServiceHost"], function(exports_1) {
   var DefaultLanguageServiceHost_1;
   var LanguageServiceWorker;
   function systemModuleName(prefix, fileName, extension) {
@@ -17829,8 +17828,8 @@ System.register("src/mode/LanguageServiceWorker.js", ["src/mode/typescript/Defau
   };
 });
 
+"use strict";
 System.register("src/lib/event_emitter.js", [], function(exports_1) {
-  "use strict";
   var stopPropagation,
       preventDefault,
       EventEmitterClass;
@@ -17974,7 +17973,7 @@ System.register("src/lib/event_emitter.js", [], function(exports_1) {
   };
 });
 
-System.register("src/lib/Sender.js", ["src/lib/event_emitter.js"], function(exports_1) {
+System.register("src/lib/Sender.js", ["./event_emitter"], function(exports_1) {
   var __extends = (this && this.__extends) || function(d, b) {
     for (var p in b)
       if (b.hasOwnProperty(p))
@@ -18018,8 +18017,8 @@ System.register("src/lib/Sender.js", ["src/lib/event_emitter.js"], function(expo
   };
 });
 
-System.register("ace-workers.js", ["src/mode/ExampleWorker.js", "src/mode/HtmlWorker.js", "src/mode/JavaScriptWorker.js", "src/mode/TypeScriptWorker.js", "src/mode/LanguageServiceWorker.js", "src/lib/Sender.js"], function(exports_1) {
-  "use strict";
+"use strict";
+System.register("ace-workers.js", ["./src/mode/ExampleWorker", "./src/mode/HtmlWorker", "./src/mode/JavaScriptWorker", "./src/mode/TypeScriptWorker", "./src/mode/LanguageServiceWorker", "./src/lib/Sender"], function(exports_1) {
   var ExampleWorker_1,
       HtmlWorker_1,
       JavaScriptWorker_1,
