@@ -5,8 +5,22 @@ import IDoodle from './IDoodle';
 import IDoodleFile from './IDoodleFile';
 import IDoodleManager from './IDoodleManager';
 import IUuidService from '../uuid/IUuidService';
+import modeFromName from '../../utils/modeFromName';
 
 function deserialize(doodles: IDoodle[]): Doodle[] {
+    // Version 1.x used a fixed set of four files with properties that were strings.
+    const FILENAME_HTML = 'index.html'
+    const PROPERTY_HTML = 'html'
+
+    const FILENAME_CODE = 'script.ts'
+    const PROPERTY_CODE = 'code'
+
+    const FILENAME_LIBS = 'extras.ts'
+    const PROPERTY_LIBS = 'libs'
+
+    const FILENAME_LESS = 'style.less'
+    const PROPERTY_LESS = 'less'
+
     const ds: Doodle[] = []
     const iLen = doodles.length
     for (let i = 0; i < iLen; i++) {
@@ -14,7 +28,28 @@ function deserialize(doodles: IDoodle[]): Doodle[] {
         const d = new Doodle()
         d.dependencies = inDoodle.dependencies.slice()
         d.description = inDoodle.description
-        d.files = copyFiles(inDoodle.files)
+        if (inDoodle.files) {
+            d.files = copyFiles(inDoodle.files)
+        }
+        else {
+            d.files = {}
+
+            d.files[FILENAME_HTML] = new DoodleFile()
+            d.files[FILENAME_HTML].content = inDoodle[PROPERTY_HTML]
+            d.files[FILENAME_HTML].language = modeFromName(FILENAME_HTML)
+
+            d.files[FILENAME_CODE] = new DoodleFile()
+            d.files[FILENAME_CODE].content = inDoodle[PROPERTY_CODE]
+            d.files[FILENAME_CODE].language = modeFromName(FILENAME_CODE)
+
+            d.files[FILENAME_LIBS] = new DoodleFile()
+            d.files[FILENAME_LIBS].content = inDoodle[PROPERTY_LIBS]
+            d.files[FILENAME_LIBS].language = modeFromName(FILENAME_LIBS)
+
+            d.files[FILENAME_LESS] = new DoodleFile()
+            d.files[FILENAME_LESS].content = inDoodle[PROPERTY_LESS]
+            d.files[FILENAME_LESS].language = modeFromName(FILENAME_LESS)
+        }
         d.focusEditor = inDoodle.focusEditor
         d.isCodeVisible = inDoodle.isCodeVisible
         d.isViewVisible = inDoodle.isViewVisible

@@ -26744,13 +26744,22 @@ System.register("js/services/cookie/cookie.js", ["../../app"], function(exports_
   };
 });
 
-System.register("js/services/doodles/doodles.js", ["../../app", "./Doodle", "./DoodleFile"], function(exports_1, context_1) {
+System.register("js/services/doodles/doodles.js", ["../../app", "./Doodle", "./DoodleFile", "../../utils/modeFromName"], function(exports_1, context_1) {
   "use strict";
   var __moduleName = context_1 && context_1.id;
   var app_1,
       Doodle_1,
-      DoodleFile_1;
+      DoodleFile_1,
+      modeFromName_1;
   function deserialize(doodles) {
+    var FILENAME_HTML = 'index.html';
+    var PROPERTY_HTML = 'html';
+    var FILENAME_CODE = 'script.ts';
+    var PROPERTY_CODE = 'code';
+    var FILENAME_LIBS = 'extras.ts';
+    var PROPERTY_LIBS = 'libs';
+    var FILENAME_LESS = 'style.less';
+    var PROPERTY_LESS = 'less';
     var ds = [];
     var iLen = doodles.length;
     for (var i = 0; i < iLen; i++) {
@@ -26758,7 +26767,23 @@ System.register("js/services/doodles/doodles.js", ["../../app", "./Doodle", "./D
       var d = new Doodle_1.default();
       d.dependencies = inDoodle.dependencies.slice();
       d.description = inDoodle.description;
-      d.files = copyFiles(inDoodle.files);
+      if (inDoodle.files) {
+        d.files = copyFiles(inDoodle.files);
+      } else {
+        d.files = {};
+        d.files[FILENAME_HTML] = new DoodleFile_1.default();
+        d.files[FILENAME_HTML].content = inDoodle[PROPERTY_HTML];
+        d.files[FILENAME_HTML].language = modeFromName_1.default(FILENAME_HTML);
+        d.files[FILENAME_CODE] = new DoodleFile_1.default();
+        d.files[FILENAME_CODE].content = inDoodle[PROPERTY_CODE];
+        d.files[FILENAME_CODE].language = modeFromName_1.default(FILENAME_CODE);
+        d.files[FILENAME_LIBS] = new DoodleFile_1.default();
+        d.files[FILENAME_LIBS].content = inDoodle[PROPERTY_LIBS];
+        d.files[FILENAME_LIBS].language = modeFromName_1.default(FILENAME_LIBS);
+        d.files[FILENAME_LESS] = new DoodleFile_1.default();
+        d.files[FILENAME_LESS].content = inDoodle[PROPERTY_LESS];
+        d.files[FILENAME_LESS].language = modeFromName_1.default(FILENAME_LESS);
+      }
       d.focusEditor = inDoodle.focusEditor;
       d.isCodeVisible = inDoodle.isCodeVisible;
       d.isViewVisible = inDoodle.isViewVisible;
@@ -26790,6 +26815,8 @@ System.register("js/services/doodles/doodles.js", ["../../app", "./Doodle", "./D
       Doodle_1 = Doodle_1_1;
     }, function(DoodleFile_1_1) {
       DoodleFile_1 = DoodleFile_1_1;
+    }, function(modeFromName_1_1) {
+      modeFromName_1 = modeFromName_1_1;
     }],
     execute: function() {
       app_1.default.factory('doodles', ['$window', 'uuid4', 'doodlesKey', function($window, uuid4, doodlesKey) {
