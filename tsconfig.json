@@ -48,6 +48,7 @@
 
     "typings-manual/ace/ace.d.ts",
     "typings-manual/bootstrap-dialog/bootstrap-dialog.d.ts",
-    "typings-manual/davinci-mathscript/davinci-mathscript.d.ts"
+    "typings-manual/davinci-mathscript/davinci-mathscript.d.ts",
+    "typings-manual/showdown/showdown.d.ts"
   ]
 }

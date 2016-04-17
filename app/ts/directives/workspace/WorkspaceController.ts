@@ -1,5 +1,6 @@
 import * as angular from 'angular';
 import ace from 'ace.js';
+import sd from 'showdown';
 import ICloud from '../../services/cloud/ICloud';
 import CookieService from '../../services/cookie/CookieService';
 import detect1x from './detect1x';
@@ -647,74 +648,99 @@ export default class WorkspaceController implements WorkspaceMixin {
                     preview.removeChild(preview.firstChild);
                 }
                 const doodle: Doodle = this.doodles.current()
-                if (this.$scope.isViewVisible && doodle) {
+                if (doodle) {
+                    if (this.$scope.isViewVisible) {
 
-                    this.$scope.previewIFrame = document.createElement('iframe');
-                    // Let's not change any more styles than we have to. 
-                    this.$scope.previewIFrame.style.width = '100%';
-                    this.$scope.previewIFrame.style.height = '100%';
-                    this.$scope.previewIFrame.style.border = '0';
-                    this.$scope.previewIFrame.style.backgroundColor = '#ffffff';
+                        this.$scope.previewIFrame = document.createElement('iframe');
+                        // Let's not change any more styles than we have to. 
+                        this.$scope.previewIFrame.style.width = '100%';
+                        this.$scope.previewIFrame.style.height = '100%';
+                        this.$scope.previewIFrame.style.border = '0';
+                        this.$scope.previewIFrame.style.backgroundColor = '#ffffff';
 
-                    preview.appendChild(this.$scope.previewIFrame);
+                        preview.appendChild(this.$scope.previewIFrame);
 
-                    const content = this.$scope.previewIFrame.contentDocument || this.$scope.previewIFrame.contentWindow.document;
+                        const content = this.$scope.previewIFrame.contentDocument || this.$scope.previewIFrame.contentWindow.document;
 
-                    // We are definitely assuming that we have an index.html file.
-                    let html: string = fileContent(this.FILENAME_HTML, doodle)
-                    if (typeof html === 'string') {
+                        // We are definitely assuming that we have an index.html file.
+                        let html: string = fileContent(this.FILENAME_HTML, doodle)
+                        if (typeof html === 'string') {
 
-                        const selOpts: IOption[] = this.options.filter((option: IOption, index: number, array: IOption[]) => {
-                            return doodle.dependencies.indexOf(option.name) > -1;
-                        });
+                            const selOpts: IOption[] = this.options.filter((option: IOption, index: number, array: IOption[]) => {
+                                return doodle.dependencies.indexOf(option.name) > -1;
+                            });
 
-                        const closureOpts: IOption[] = closure(selOpts, this.options);
+                            const closureOpts: IOption[] = closure(selOpts, this.options);
 
-                        const chosenFileNames: string[] = closureOpts.map(function(option: IOption) { return option.minJs; });
-                        // TODO: We will later want to make operator overloading configurable for speed.
+                            const chosenFileNames: string[] = closureOpts.map(function(option: IOption) { return option.minJs; });
+                            // TODO: We will later want to make operator overloading configurable for speed.
 
-                        const scriptFileNames: string[] = this.doodles.current().operatorOverloading ? chosenFileNames.concat(this.FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS) : chosenFileNames;
-                        // TOOD: Don't fix the location of the JavaScript here.
-                        const scriptTags = scriptFileNames.map((fileName: string) => {
-                            return "<script src='" + scriptURL(DOMAIN, fileName, this.VENDOR_FOLDER_MARKER) + "'></script>\n";
-                        });
+                            const scriptFileNames: string[] = this.doodles.current().operatorOverloading ? chosenFileNames.concat(this.FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS) : chosenFileNames;
+                            // TOOD: Don't fix the location of the JavaScript here.
+                            const scriptTags = scriptFileNames.map((fileName: string) => {
+                                return "<script src='" + scriptURL(DOMAIN, fileName, this.VENDOR_FOLDER_MARKER) + "'></script>\n";
+                            });
 
-                        html = html.replace(this.SCRIPTS_MARKER, scriptTags.join(""));
+                            html = html.replace(this.SCRIPTS_MARKER, scriptTags.join(""));
 
-                        // TODO: It would be nice to have a more flexible way to define stylesheet imports.
-                        // TODO: We should then be able to move away from symbolic constants for the stylesheet file name.
-                        if (fileExists('style.css', doodle)) {
-                            html = html.replace(this.STYLE_MARKER, [fileContent('style.css', doodle)].join(""));
-                        }
-                        else if (fileExists(this.FILENAME_LESS, doodle)) {
-                            html = html.replace(this.STYLE_MARKER, [fileContent(this.FILENAME_LESS, doodle)].join(""));
-                        }
-
-                        if (detect1x(doodle)) {
-                            // This code is for backwards compatibility only, now that we support ES6 modules.
-                            console.warn("Support for programs not using ES6 modules is deprecated. Please convert your program to use ES6 module loading.")
-                            html = html.replace(this.LIBS_MARKER, currentJavaScript(this.FILENAME_LIBS, doodle));
-                            html = html.replace(this.CODE_MARKER, currentJavaScript(this.FILENAME_CODE, doodle));
-                            // For backwards compatibility (less than 1.x) ...
-                            html = html.replace('<!-- STYLE-MARKER -->', ['<style>', fileContent(this.FILENAME_LESS, doodle), '</style>'].join(""));
-                            html = html.replace('<!-- CODE-MARKER -->', currentJavaScript(this.FILENAME_CODE, this.doodles.current()));
-                        }
-                        else {
-                            const modulesJs: string[] = []
-                            const names: string[] = Object.keys(doodle.lastKnownJs)
-                            const iLen: number = names.length
-                            for (let i = 0; i < iLen; i++) {
-                                const name = names[i]
-                                const moduleJs = doodle.lastKnownJs[name]
-                                const moduleMs = doodle.operatorOverloading ? mathscript.transpile(moduleJs) : moduleJs
-                                modulesJs.push(moduleMs)
+                            // TODO: It would be nice to have a more flexible way to define stylesheet imports.
+                            // TODO: We should then be able to move away from symbolic constants for the stylesheet file name.
+                            if (fileExists('style.css', doodle)) {
+                                html = html.replace(this.STYLE_MARKER, [fileContent('style.css', doodle)].join(""));
                             }
-                            html = html.replace(this.CODE_MARKER, modulesJs.join('\n'));
-                        }
+                            else if (fileExists(this.FILENAME_LESS, doodle)) {
+                                html = html.replace(this.STYLE_MARKER, [fileContent(this.FILENAME_LESS, doodle)].join(""));
+                            }
 
-                        content.open()
-                        content.write(html)
-                        content.close()
+                            if (detect1x(doodle)) {
+                                // This code is for backwards compatibility only, now that we support ES6 modules.
+                                console.warn("Support for programs not using ES6 modules is deprecated. Please convert your program to use ES6 module loading.")
+                                html = html.replace(this.LIBS_MARKER, currentJavaScript(this.FILENAME_LIBS, doodle));
+                                html = html.replace(this.CODE_MARKER, currentJavaScript(this.FILENAME_CODE, doodle));
+                                // For backwards compatibility (less than 1.x) ...
+                                html = html.replace('<!-- STYLE-MARKER -->', ['<style>', fileContent(this.FILENAME_LESS, doodle), '</style>'].join(""));
+                                html = html.replace('<!-- CODE-MARKER -->', currentJavaScript(this.FILENAME_CODE, this.doodles.current()));
+                            }
+                            else {
+                                const modulesJs: string[] = []
+                                const names: string[] = Object.keys(doodle.lastKnownJs)
+                                const iLen: number = names.length
+                                for (let i = 0; i < iLen; i++) {
+                                    const name = names[i]
+                                    const moduleJs = doodle.lastKnownJs[name]
+                                    const moduleMs = doodle.operatorOverloading ? mathscript.transpile(moduleJs) : moduleJs
+                                    modulesJs.push(moduleMs)
+                                }
+                                html = html.replace(this.CODE_MARKER, modulesJs.join('\n'));
+                            }
+
+                            content.open()
+                            content.write(html)
+                            content.close()
+
+                            bubbleIframeMouseMove(this.$scope.previewIFrame)
+                        }
+                    }
+                    else {
+                        // The view is not visible.
+                        this.$scope.previewIFrame = document.createElement('iframe');
+                        // Let's not change any more styles than we have to. 
+                        this.$scope.previewIFrame.style.width = '100%';
+                        this.$scope.previewIFrame.style.height = '100%';
+                        this.$scope.previewIFrame.style.border = '0';
+                        this.$scope.previewIFrame.style.backgroundColor = '#ffffff';
+
+                        preview.appendChild(this.$scope.previewIFrame);
+
+                        const content = this.$scope.previewIFrame.contentDocument || this.$scope.previewIFrame.contentWindow.document;
+                        if (fileExists('README.md', doodle)) {
+                            const markdown: string = fileContent('README.md', doodle)
+                            const converter: sd.Converter = new sd.Converter()
+                            const html = converter.makeHtml(markdown)
+                            content.open()
+                            content.write(html)
+                            content.close()
+                        }
 
                         bubbleIframeMouseMove(this.$scope.previewIFrame)
                     }
