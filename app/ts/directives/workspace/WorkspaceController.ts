@@ -16,6 +16,7 @@ import ISettingsService from '../../services/settings/ISettingsService';
 import ChangeHandler from './ChangeHandler';
 import OutputFileHandler from './OutputFileHandler';
 import doodleGroom from '../../utils/doodleGroom';
+import readMeHTML from './readMeHTML';
 import StringSet from '../../utils/StringSet';
 import IUuidService from '../../services/uuid/IUuidService';
 import mathscript from 'davinci-mathscript';
@@ -180,6 +181,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         'options',
         'FILENAME_META',
         'FILENAME_HTML',
+        'FILENAME_README',
         'FILENAME_CODE',
         'FILENAME_LIBS',
         'FILENAME_LESS',
@@ -231,8 +233,9 @@ export default class WorkspaceController implements WorkspaceMixin {
         doodlesKey: string,
         private doodles: IDoodleManager,
         private options: IOptionManager,
-        FILENAME_META: string,
+        private FILENAME_META: string,
         private FILENAME_HTML: string,
+        private FILENAME_README: string,
         private FILENAME_CODE: string,
         private FILENAME_LIBS: string,
         private FILENAME_LESS: string,
@@ -732,15 +735,22 @@ export default class WorkspaceController implements WorkspaceMixin {
 
                         preview.appendChild(this.$scope.previewIFrame);
 
+                        let html = readMeHTML({})
+
                         const content = this.$scope.previewIFrame.contentDocument || this.$scope.previewIFrame.contentWindow.document;
-                        if (fileExists('README.md', doodle)) {
-                            const markdown: string = fileContent('README.md', doodle)
+                        if (fileExists(this.FILENAME_README, doodle)) {
+                            const markdown: string = fileContent(this.FILENAME_README, doodle)
                             const converter: sd.Converter = new sd.Converter()
-                            const html = converter.makeHtml(markdown)
-                            content.open()
-                            content.write(html)
-                            content.close()
+                            const markdownHTML = converter.makeHtml(markdown)
+                            html = html.replace('// README.md', markdownHTML);
                         }
+                        if (fileExists('README.css', doodle)) {
+                            html = html.replace('/* README.css */', fileContent('README.css', doodle));
+                        }
+
+                        content.open()
+                        content.write(html)
+                        content.close()
 
                         bubbleIframeMouseMove(this.$scope.previewIFrame)
                     }
