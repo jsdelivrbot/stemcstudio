@@ -11,6 +11,7 @@ export default class Doodle {
     public lastKnownJs: { [name: string]: string };
     public operatorOverloading: boolean;
     public files: { [name: string]: DoodleFile };
+    public trash: { [name: string]: DoodleFile } = {};
     public dependencies: string[];
     public created_at: string;
     public updated_at: string;
@@ -67,6 +68,54 @@ export default class Doodle {
             file.selected = false
         }
     }
+    /**
+     * Empties the map containing Gist files that are marked for deletion.
+     * 
+     * @method emtyTrash
+     * @return {void}
+     */
+    emptyTrash(): void {
+        this.trash = {}
+    }
+
+    private moveFileToTrash(name: string): void {
+        const unwantedFile = this.files[name]
+        if (unwantedFile) {
+            const conflictFile = this.trash[name]
+            if (!conflictFile) {
+                this.trash[name] = unwantedFile
+                delete this.files[name]
+            }
+            else {
+                throw new Error(`${name} cannot be moved to trash because of a naming conflict with an existing file.`)
+            }
+        }
+        else {
+            throw new Error(`${name} cannot be moved to trash because it does not exist.`)
+        }
+    }
+
+    /**
+     * @method restoreFileFromTrash
+     * @param name {string}
+     * @return {void}
+     */
+    private restoreFileFromTrash(name: string): void {
+        const wantedFile = this.trash[name]
+        if (wantedFile) {
+            const conflictFile = this.files[name]
+            if (!conflictFile) {
+                delete this.trash[name]
+                this.files[name] = wantedFile
+            }
+            else {
+                throw new Error(`${name} cannot be restored from trash because of a naming conflict with an existing file.`)
+            }
+        }
+        else {
+            throw new Error(`${name} cannot be restored from trash because it does not exist.`)
+        }
+    }
 
     /**
      * @method findFileByName
@@ -84,12 +133,20 @@ export default class Doodle {
         if (!mode) {
             throw new Error(`${name} is not a recognized language.`)
         }
-        const existing = this.findFileByName(name)
-        if (!existing) {
-            const file = new DoodleFile()
-            file.language = mode
-            this.files[name] = file
-            return file
+        const conflictFile = this.findFileByName(name)
+        if (!conflictFile) {
+            const trashedFile = this.trash[name]
+            if (!trashedFile) {
+                const file = new DoodleFile()
+                file.language = mode
+                this.files[name] = file
+                return file
+            }
+            else {
+                this.restoreFileFromTrash(name)
+                trashedFile.language = mode
+                return trashedFile
+            }
         }
         else {
             throw new Error(`${name} already exists. The name must be unique.`)
@@ -119,17 +176,27 @@ export default class Doodle {
     renameFile(oldName: string, newName: string): void {
         const mode = modeFromName(newName)
         if (!mode) {
-            throw new Error(`${name} is not a recognized language.`)
+            throw new Error(`${newName} is not a recognized language.`)
         }
-        const file = this.findFileByName(oldName)
-        if (file) {
+        const oldFile = this.findFileByName(oldName)
+        if (oldFile) {
             const existing = this.findFileByName(newName)
             if (!existing) {
-                this.files[newName] = file
-                file.language = mode
-                delete this.files[oldName]
-                this.lastKnownJs[newName] = this.lastKnownJs[oldName]
-                delete this.lastKnownJs[oldName]
+                if (oldFile.raw_url) {
+                    this.moveFileToTrash(oldName)
+                }
+                const newFile = oldFile.clone()
+
+                // Make it clear that this file did not come from GitHub.
+                newFile.raw_url = void 0
+                newFile.size = void 0
+                newFile.truncated = void 0
+                newFile.type = void 0
+
+                // Initialize properties that depend upon the new name.
+                newFile.language = mode
+
+                this.files[newName] = newFile
             }
             else {
                 throw new Error(`${newName} already exists. The new name must be unique.`)
@@ -169,6 +236,11 @@ export default class Doodle {
     deleteFile(name: string): void {
         const file = this.findFileByName(name)
         if (file) {
+            // Determine whether the file exists in GitHub so that we can delete it upon upload.
+            // Use the raw_url as the sentinel. Keep it in trash for later deletion.
+            if (file.raw_url) {
+                this.trash[name] = this.files[name]
+            }
             delete this.files[name]
             delete this.lastKnownJs[name]
         }

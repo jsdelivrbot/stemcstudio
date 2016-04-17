@@ -1,6 +1,7 @@
 import BodyScope from './BodyScope';
 import ExplorerMixin from './ExplorerMixin';
 import Doodle from '../services/doodles/Doodle';
+import ITemplate from '../services/templates/ITemplate';
 
 interface DoodleScope extends BodyScope, ExplorerMixin {
 
@@ -14,7 +15,7 @@ interface DoodleScope extends BodyScope, ExplorerMixin {
 
     goHome: () => void;
 
-    templates: Doodle[];
+    templates: ITemplate[];
 }
 
 export default DoodleScope;

@@ -49,6 +49,11 @@ interface IDoodle {
     files: { [name: string]: IDoodleFile };
 
     /**
+     *
+     */
+    trash: { [name: string]: IDoodleFile };
+
+    /**
      * 
      */
     dependencies: string[];
@@ -69,6 +74,14 @@ interface IDoodle {
      * @return {void}
      */
     closeFile(name: string): void;
+
+    /**
+     * Empties the map containing Gist files that are marked for deletion.
+     * 
+     * @method emtyTrash
+     * @return {void}
+     */
+    emptyTrash(): void;
 
     /**
      * @method newFile

@@ -1,7 +1,7 @@
 import app from '../../app';
 import Doodle from '../doodles/Doodle';
-import IDoodle from '../doodles/IDoodle';
-import IDoodleFile from '../doodles/IDoodleFile';
+import ITemplate from './ITemplate';
+import ITemplateFile from './ITemplateFile';
 import IUuidService from '../uuid/IUuidService';
 import modeFromName from '../../utils/modeFromName';
 
@@ -52,10 +52,10 @@ app.factory('templates', [
         FILENAME_CODE: string,
         FILENAME_LIBS: string,
         FILENAME_LESS: string
-    ): IDoodle[] {
+    ): ITemplate[] {
 
-        function makeFiles(html: string, code: string, libs: string, less: string): { [name: string]: IDoodleFile } {
-            const files: { [name: string]: IDoodleFile } = {}
+        function makeFiles(html: string, code: string, libs: string, less: string): { [name: string]: ITemplateFile } {
+            const files: { [name: string]: ITemplateFile } = {}
             files[FILENAME_HTML] = { content: html, language: modeFromName(FILENAME_HTML) }
             files[FILENAME_CODE] = { content: code, language: modeFromName(FILENAME_CODE) }
             files[FILENAME_LIBS] = { content: libs, language: modeFromName(FILENAME_LIBS) }
@@ -300,7 +300,7 @@ app.factory('templates', [
         // The following canvasId matches the default used in Eight.Js
         const canvasId = 'canvas'
 
-        const T0: IDoodle = new Doodle()
+        const T0: ITemplate = new Doodle()
         T0.uuid = uuid.generate()
         T0.description = "EightJS — 3D Library for WebGL Graphics and Geometric Algebra"
         T0.files = makeFiles(
@@ -310,7 +310,7 @@ app.factory('templates', [
             EIGHTJS_LESS(width, height))
         T0.dependencies = ['stats.js', 'dat-gui', 'davinci-eight']
 
-        const T1: IDoodle = new Doodle()
+        const T1: ITemplate = new Doodle()
         T1.uuid = uuid.generate()
         T1.description = "SingleViewApp — Template for WebGL Graphics and Geometric Algebra"
         T1.files = makeFiles(
@@ -320,7 +320,7 @@ app.factory('templates', [
             SINGLE_VIEW_LESS(width, height))
         T1.dependencies = ['stats.js', 'dat-gui', 'davinci-eight']
 
-        const T2: IDoodle = new Doodle()
+        const T2: ITemplate = new Doodle()
         T2.uuid = uuid.generate()
         T2.description = "Geometric Algebra and Unit of Measure calculations using EIGHT"
         T2.files = makeFiles(
@@ -341,7 +341,7 @@ app.factory('templates', [
         T3.newFile('README.md').content = MINIMAL_README()
         T3.dependencies = []
 
-        const T4: IDoodle = new Doodle()
+        const T4: ITemplate = new Doodle()
         T4.uuid = uuid.generate()
         T4.description = "JSXGraph — 2D Library for Geometry"
         T4.files = makeFiles(

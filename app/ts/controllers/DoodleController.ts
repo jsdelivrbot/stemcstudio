@@ -1,7 +1,6 @@
 import * as angular from 'angular';
 import ICloud from '../services/cloud/ICloud';
 import CookieService from '../services/cookie/CookieService';
-import Doodle from '../services/doodles/Doodle';
 import IDoodleManager from '../services/doodles/IDoodleManager';
 import DoodleScope from '../scopes/DoodleScope';
 import GistData from '../services/gist/GistData';
@@ -11,6 +10,7 @@ import PostGistResponse from '../services/github/PostGistResponse';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
 import IOptionManager from '../services/options/IOptionManager';
 import ISettingsService from '../services/settings/ISettingsService';
+import ITemplate from '../services/templates/ITemplate';
 import doodleToGist from '../utils/doodleToGist';
 import IUuidService from '../services/uuid/IUuidService';
 
@@ -64,7 +64,7 @@ export default class DoodleController {
         authManager: IGitHubAuthManager,
         cloud: ICloud,
         cookie: CookieService,
-        templates: Doodle[],
+        templates: ITemplate[],
         uuid4: IUuidService,
         ga: UniversalAnalytics.ga,
         doodlesKey: string,
@@ -171,6 +171,7 @@ export default class DoodleController {
                                 }
                             }
                             else {
+                                console.warn(`PATCH ${JSON.stringify(data, null, 2)}`)
                                 // If the status is 404 then the Gist no longer exists on GitHub.
                                 // We might as well set the gistId to undefined and let the user try to POST.
                                 alert("status: " + JSON.stringify(status));
@@ -179,6 +180,7 @@ export default class DoodleController {
                             }
                         }
                         else {
+                            doodle.emptyTrash();
                             doodle.updated_at = response.updated_at;
 
                             doodles.updateStorage();
@@ -202,10 +204,11 @@ export default class DoodleController {
                 else {
                     github.postGist(token, data, function(err: any, response: PostGistResponse, status: number, headers, config) {
                         if (err) {
+                            console.warn(`POST ${JSON.stringify(data, null, 2)}`)
                             BootstrapDialog.show({
                                 type: BootstrapDialog.TYPE_DANGER,
                                 title: $("<h3>Upload failed</h3>"),
-                                message: "Unable to patch your Gist at this time.",
+                                message: "Unable to post your Gist at this time.",
                                 buttons: [{
                                     label: "Close",
                                     cssClass: 'btn btn-primary',

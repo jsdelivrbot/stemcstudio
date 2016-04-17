@@ -50,15 +50,24 @@ function mash(name: string, content: string): string {
     return content
 }
 
-function doodleFilesToGistFiles(dFiles: { [name: string]: IDoodleFile }): { [name: string]: { content: string } } {
+function doodleFilesToGistFiles(dFiles: { [name: string]: IDoodleFile }, trash: { [name: string]: IDoodleFile }): { [name: string]: { content: string } } {
     const gFiles: { [name: string]: { content: string } } = {}
-    const names = Object.keys(dFiles)
-    const iLen = names.length
+
+    const dFileNames = Object.keys(dFiles)
+    const iLen = dFileNames.length
     for (let i = 0; i < iLen; i++) {
-        const name = names[i]
+        const name = dFileNames[i]
         const dFile: IDoodleFile = dFiles[name]
         const gFile: { content: string } = { content: mash(name, dFile.content) }
         gFiles[name] = gFile
+    }
+
+    const trashNames = Object.keys(trash)
+    const jLen = trashNames.length
+    for (let j = 0; j < jLen; j++) {
+        const name = trashNames[j]
+        // Deletes are performed by including a filename with a null object.
+        gFiles[name] = null
     }
     return gFiles
 }
@@ -67,7 +76,7 @@ export default function(doodle: IDoodle, options: IOptionManager): GistData {
     const gist: GistData = {
         description: doodle.description,
         public: true,
-        files: doodleFilesToGistFiles(doodle.files)
+        files: doodleFilesToGistFiles(doodle.files, doodle.trash)
     }
     gist.files['doodle.json'] = { content: JSON.stringify(doodleConfig(doodle, options), null, 2) + "\n" }
     return gist

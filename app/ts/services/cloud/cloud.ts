@@ -17,9 +17,14 @@ function mapFiles(gFiles: { [name: string]: GistFile }, excludes: string[]): { [
         const name = names[i]
         if (excludes.indexOf(name) < 0) {
             const gFile = gFiles[name]
+            // console.log(`gFile => ${JSON.stringify(gFile, null, 2)}`)
             const dFile: DoodleFile = new DoodleFile()
             dFile.content = gFile.content
             dFile.language = modeFromName(name)
+            dFile.raw_url = gFile.raw_url
+            dFile.size = gFile.size
+            dFile.truncated = gFile.truncated
+            dFile.type = gFile.type
             dFiles[name] = dFile
         }
     }

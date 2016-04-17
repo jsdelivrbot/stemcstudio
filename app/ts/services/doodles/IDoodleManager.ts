@@ -1,4 +1,5 @@
 import Doodle from './Doodle';
+import ITemplate from '../templates/ITemplate';
 
 interface IDoodleManager {
     unshift(doodle: Doodle): void;
@@ -8,7 +9,7 @@ interface IDoodleManager {
     makeCurrent(uuid: string): void;
     deleteDoodle(uuid: string): void;
     updateStorage(): void;
-    createDoodle(template: Doodle, description?: string);
+    createDoodle(template: ITemplate, description?: string);
     suggestName(): string;
 }
 
