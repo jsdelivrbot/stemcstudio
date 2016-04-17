@@ -3,10 +3,6 @@
   "npm:@angular/router@0.2.0": {
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "github:ace2ts/ace@0.1.143": {
-    "ace2ts/ace-workers": "github:ace2ts/ace-workers@^0.1.37",
-    "typescript": "npm:typescript@^1.8.10"
-  },
   "npm:angular2@2.0.0-beta.15": {
     "reflect-metadata": "npm:reflect-metadata@0.1.2",
     "rxjs": "npm:rxjs@^5.0.0-beta.2",
@@ -160,5 +156,9 @@
     "process": "github:jspm/nodelibs-process@^0.1.0",
     "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
     "fs": "github:jspm/nodelibs-fs@^0.1.0"
+  },
+  "github:ace2ts/ace@0.1.145": {
+    "ace2ts/ace-workers": "github:ace2ts/ace-workers@^0.1.37",
+    "typescript": "npm:typescript@^1.8.10"
   }
 }

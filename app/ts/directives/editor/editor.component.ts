@@ -45,8 +45,8 @@ function factory($timeout: ng.ITimeoutService, settings: ISettingsService, textS
                 break
             }
             case 'Markdown': {
-                editor.getSession().setUseWorker(false);
-//              editor.setLanguageMode(ace.createMarkdownMode('/js/worker.js', workerImports))
+                // editor.getSession().setUseWorker(false);
+                editor.setLanguageMode(ace.createMarkdownMode('/js/worker.js', workerImports))
                 break
             }
             default: {

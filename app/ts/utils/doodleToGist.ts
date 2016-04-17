@@ -69,6 +69,6 @@ export default function(doodle: IDoodle, options: IOptionManager): GistData {
         public: true,
         files: doodleFilesToGistFiles(doodle.files)
     }
-    gist.files['doodle.json'] = { content: JSON.stringify(doodleConfig(doodle, options), null, 2) }
+    gist.files['doodle.json'] = { content: JSON.stringify(doodleConfig(doodle, options), null, 2) + "\n" }
     return gist
 }
