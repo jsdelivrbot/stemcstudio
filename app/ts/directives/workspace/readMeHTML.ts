@@ -73,6 +73,7 @@ export default function readMeHTML(options: {} = {}): string {
     lines.push("    </style>")
     //  lines.push("    <script src='https://jspm.io/system.js'></script>")
     //  lines.push("<!-- SCRIPTS-MARKER -->")
+    lines.push("    <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>")
     lines.push("  </head>")
     lines.push("  <body>")
     lines.push("    <article class='markdown-body'>")
