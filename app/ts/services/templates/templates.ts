@@ -351,5 +351,5 @@ app.factory('templates', [
             LESS_TEMPLATE_JSXGRAPH_DEMO)
         T4.dependencies = ['jsxgraph']
 
-        return [T0, T1, T2, T3, T4];
+        return [T3, T0, T2, T4];
     }]);
