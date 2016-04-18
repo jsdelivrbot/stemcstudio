@@ -56,6 +56,38 @@ module.exports = function(grunt) {
             dest: 'generated/vendor/typescript@1.4.1.3/lib.d.ts'
           },
           {
+            src: 'museum/jasmine@2.4.1/lib/boot.js',
+            dest: 'generated/vendor/jasmine@2.4.1/lib/boot.js'
+          },
+          {
+            src: 'museum/jasmine@2.4.1/lib/console.js',
+            dest: 'generated/vendor/jasmine@2.4.1/lib/console.js'
+          },
+          {
+            src: 'museum/jasmine@2.4.1/lib/jasmine.css',
+            dest: 'generated/vendor/jasmine@2.4.1/lib/jasmine.css'
+          },
+          {
+            src: 'museum/jasmine@2.4.1/lib/jasmine.js',
+            dest: 'generated/vendor/jasmine@2.4.1/lib/jasmine.js'
+          },
+          {
+            src: 'museum/jasmine@2.4.1/lib/jasmine-html.js',
+            dest: 'generated/vendor/jasmine@2.4.1/lib/jasmine-html.js'
+          },
+          {
+            src: 'museum/jasmine@2.4.1/lib/jasmine.d.ts',
+            dest: 'generated/vendor/jasmine@2.4.1/lib/jasmine.d.ts'
+          },
+          {
+            src: 'museum/jasmine@2.4.1/lib/jasmine_favicon.png',
+            dest: 'generated/vendor/jasmine@2.4.1/lib/jasmine_favicon.png'
+          },
+          {
+            src: 'museum/jasmine@2.4.1/package.json',
+            dest: 'generated/vendor/jasmine@2.4.1/package.json'
+          },
+          {
             src: 'app/img/particles.png',
             dest: 'generated/img/particles.png'
           },
@@ -310,6 +342,38 @@ module.exports = function(grunt) {
           {
             src: 'museum/typescript@1.4.1.3/lib.d.ts',
             dest: 'dist/vendor/typescript@1.4.1.3/lib.d.ts'
+          },
+          {
+            src: 'museum/jasmine@2.4.1/lib/boot.js',
+            dest: 'dist/vendor/jasmine@2.4.1/lib/boot.js'
+          },
+          {
+            src: 'museum/jasmine@2.4.1/lib/console.js',
+            dest: 'dist/vendor/jasmine@2.4.1/lib/console.js'
+          },
+          {
+            src: 'museum/jasmine@2.4.1/lib/jasmine.css',
+            dest: 'dist/vendor/jasmine@2.4.1/lib/jasmine.css'
+          },
+          {
+            src: 'museum/jasmine@2.4.1/lib/jasmine.js',
+            dest: 'dist/vendor/jasmine@2.4.1/lib/jasmine.js'
+          },
+          {
+            src: 'museum/jasmine@2.4.1/lib/jasmine-html.js',
+            dest: 'dist/vendor/jasmine@2.4.1/lib/jasmine-html.js'
+          },
+          {
+            src: 'museum/jasmine@2.4.1/lib/jasmine.d.ts',
+            dest: 'dist/vendor/jasmine@2.4.1/lib/jasmine.d.ts'
+          },
+          {
+            src: 'museum/jasmine@2.4.1/lib/jasmine_favicon.png',
+            dest: 'dist/vendor/jasmine@2.4.1/lib/jasmine_favicon.png'
+          },
+          {
+            src: 'museum/jasmine@2.4.1/package.json',
+            dest: 'dist/vendor/jasmine@2.4.1/package.json'
           },
           {
             src: 'app/img/particles.png',

@@ -47,7 +47,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
   return VENDOR_FOLDER_MARKER + '/' + packageFolder + '/' + fileName;
 }
 
-app.constant('version', '2.0.0-beta.9');
+app.constant('version', '2.0.0-beta.10');
 // githubKey stores the key of the item in local storage for maintaining GitHub OAuth data.
 // Remark: This value is duplicated in views/github_callback.jade
 app.constant('githubKey', makeKey('github'));
@@ -91,9 +91,7 @@ app.constant('STATE_DOODLE', 'doodle');
 app.constant('STATE_EXAMPLES', 'examples');
 app.constant('STATE_GISTS', 'gists');
 
-// The following entries must be synchronized with appcache.mf:
 // The TypeScript d.ts library provides the type checking of global JavaScript types.
-// TODO: Reconcile this with the file being loaded in the DoodleController.
 app.constant('FILENAME_TYPESCRIPT_CURRENT_LIB_DTS', vendorPath('typescript@1.4.1.3', 'lib.d.ts'))
 // The MathScript js library provides operator overloading at runtime.
 app.constant('FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS', vendorPath('davinci-mathscript@1.0.8', 'dist/davinci-mathscript.min.js'))
