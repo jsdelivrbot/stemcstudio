@@ -68,14 +68,14 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                        <a role='button' ng-click='toggleExplorer()'>\n" +
     "                            <span\n" +
     "                                ng-show='isExplorerVisible'\n" +
-    "                                class=\"glyphicon glyphicon-list\"\n" +
+    "                                class=\"glyphicon glyphicon-menu-hamburger\"\n" +
     "                                aria-hidden=\"true\"\n" +
     "                                uib-tooltip=\"Hide File Explorer\"\n" +
     "                                tooltip-placement=\"bottom\">\n" +
     "                            </span>\n" +
     "                            <span\n" +
     "                                ng-hide='isExplorerVisible'\n" +
-    "                                class=\"glyphicon glyphicon-list\"\n" +
+    "                                class=\"glyphicon glyphicon-menu-hamburger\"\n" +
     "                                aria-hidden=\"true\"\n" +
     "                                uib-tooltip=\"Show File Explorer\"\n" +
     "                                tooltip-placement=\"bottom\">\n" +

@@ -185,6 +185,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         'FILENAME_CODE',
         'FILENAME_LIBS',
         'FILENAME_LESS',
+        'FILENAME_JASMINE_DTS',
         'FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS',
         'FILENAME_TYPESCRIPT_CURRENT_LIB_DTS',
         'STATE_GISTS',
@@ -239,6 +240,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         private FILENAME_CODE: string,
         private FILENAME_LIBS: string,
         private FILENAME_LESS: string,
+        private FILENAME_JASMINE_DTS: string,
         private FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS: string,
         private FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
         STATE_GISTS: string,
@@ -577,13 +579,36 @@ export default class WorkspaceController implements WorkspaceMixin {
         const news: string[] = optionsToNames(closure(namesToOptions(this.doodles.current().dependencies, this.options), this.options));
 
         // Determine what we need to add and remove from the workspace.
+        //
+        // We must add what we need if it doesn't already exist in the workspace.
+        // We must remove those things in the workspace that are no longer needed.
+        /**
+         * The things that we need to add to the workspace.
+         */
         const adds: string[] = news.filter((dep) => { return this.olds.indexOf(dep) < 0; });
+        /**
+         * The things that we need to remove from the workspace.
+         */
         const rmvs: string[] = this.olds.filter(function(dep) { return news.indexOf(dep) < 0; });
 
         // The following is not essential, as `lib` is not an option, it's always there.
-        // However, we do it to be explicit.
+        // TODO: This code is currently not being exercised because dependency changes cause a page reload.
+        // In future, dependency changes will not cause a page reload.
         if (rmvs.indexOf('lib') >= 0) {
+            // console.log("The remove list DOES contain the 'lib' dependency.")
+            // By removing it from the list, we will keep the 'lib' in the workspace and save an unload/load cycle.
             rmvs.splice(rmvs.indexOf('lib'), 1);
+        }
+        else {
+            // console.log("The remove list does NOT contain the 'lib' dependency.")
+        }
+        if (rmvs.indexOf('jasmine') >= 0) {
+            // console.log("The remove list DOES contain the 'jasmine' dependency.")
+            // By removing it from the list, we will keep the 'lib' in the workspace and save an unload/load cycle.
+            rmvs.splice(rmvs.indexOf('jasmine'), 1);
+        }
+        else {
+            // console.log("The remove list does NOT contain the 'jasmine' dependency.")
         }
 
         const rmvOpts: IOption[] = namesToOptions(rmvs, this.options);
@@ -594,8 +619,16 @@ export default class WorkspaceController implements WorkspaceMixin {
 
         // TODO: Optimize so that we don't keep loading `lib`.
         let addUnits: { name: string; fileName: string }[] = addOpts.map(function(option) { return { name: option.name, fileName: option.dts }; })
+
+        // Ensure that the TypeScript ambient type definitions are present.
         if (this.olds.indexOf('lib') < 0) {
             addUnits = addUnits.concat({ name: 'lib', fileName: this.FILENAME_TYPESCRIPT_CURRENT_LIB_DTS });
+        }
+        // Ensure that the Jasmine (ambient) type definitions are present.
+        // This represent a pollution of the global namespace, something we'd like to avoid.
+        // In future we may maintain a second workspace or use ES6 modules for explicit loading.
+        if (this.olds.indexOf('jasmine') < 0) {
+            addUnits = addUnits.concat({ name: 'jasmine', fileName: this.FILENAME_JASMINE_DTS });
         }
 
         /**
