@@ -9,8 +9,8 @@ System.config({
 
   map: {
     "@angular/router": "npm:@angular/router@0.2.0",
-    "ace.js": "github:ace2ts/ace@0.1.145",
-    "ace2ts/ace": "github:ace2ts/ace@0.1.145",
+    "ace.js": "github:ace2ts/ace@0.1.146",
+    "ace2ts/ace": "github:ace2ts/ace@0.1.146",
     "angular": "github:angular/bower-angular@1.5.4",
     "angular-animate": "github:angular/bower-angular-animate@1.5.3",
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.2",
@@ -23,7 +23,7 @@ System.config({
     "jquery": "npm:jquery@2.2.3",
     "showdown": "npm:showdown@1.3.0",
     "underscore": "npm:underscore@1.8.3",
-    "github:ace2ts/ace@0.1.145": {
+    "github:ace2ts/ace@0.1.146": {
       "ace2ts/ace-workers": "github:ace2ts/ace-workers@0.1.51",
       "typescript": "npm:typescript@1.8.10"
     },

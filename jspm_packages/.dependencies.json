@@ -157,7 +157,7 @@
     "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
     "fs": "github:jspm/nodelibs-fs@^0.1.0"
   },
-  "github:ace2ts/ace@0.1.145": {
+  "github:ace2ts/ace@0.1.146": {
     "ace2ts/ace-workers": "github:ace2ts/ace-workers@^0.1.37",
     "typescript": "npm:typescript@^1.8.10"
   }
