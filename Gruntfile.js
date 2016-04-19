@@ -217,6 +217,12 @@ module.exports = function(grunt) {
           },
           {
             expand: true,
+            cwd: "museum/systemjs@0.19.26",
+            src: ["**"],
+            dest: "generated/vendor/systemjs@0.19.26"
+          },
+          {
+            expand: true,
             cwd: "museum/threejs@0.72.0",
             src: ["**"],
             dest: "generated/vendor/threejs@0.72.0"
@@ -502,6 +508,12 @@ module.exports = function(grunt) {
             cwd: "museum/stats.js@0.0.14",
             src: ["**"],
             dest: "dist/vendor/stats.js@0.0.14"
+          },
+          {
+            expand: true,
+            cwd: "museum/systemjs@0.19.26",
+            src: ["**"],
+            dest: "dist/vendor/systemjs@0.19.26"
           },
           {
             expand: true,

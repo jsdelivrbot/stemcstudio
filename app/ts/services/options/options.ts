@@ -26,6 +26,7 @@ app.factory('options', [
         const VERSION_PLOTLY = '1.5.2'
         // const VERSION_REQUIREJS = '2.1.9'
         const VERSION_STATSJS = '0.0.14'
+        // const VERSION_SYSTEMJS = '0.19.26'
         const VERSION_THREEJS = '0.72.0'
         const VERSION_TWO = '0.5.0'
         // const VERSION_UNDERSCORE = '1.8.3'
@@ -96,6 +97,11 @@ app.factory('options', [
         function statsjs(fileName: string): string {
             return vendorFolder('stats.js', VERSION_STATSJS, void 0, fileName);
         }
+        /*
+        function systemjs(fileName: string): string {
+            return vendorFolder('systemjs', VERSION_SYSTEMJS, void 0, fileName);
+        }
+        */
         function threejs(fileName: string): string {
             return vendorFolder('threejs', VERSION_THREEJS, 'build', fileName)
         }
@@ -281,6 +287,21 @@ app.factory('options', [
                 minJs: [statsjs('stats.min.js')],
                 dependencies: {}
             },
+            /*
+            {
+                name: 'systemjs',
+                moniker: 'SystemJS',
+                description: "Universal dynamic module loader.",
+                homepage: 'https://jspm.io',
+                version: VERSION_SYSTEMJS,
+                visible: true,
+                css: [],
+                dts: systemjs('system.d.ts'),
+                js: [systemjs('system.js')],
+                minJs: [systemjs('system.js')],
+                dependencies: {}
+            },
+            */
             {
                 name: 'three.js',
                 moniker: 'Three.js',

@@ -20,6 +20,9 @@ import MINIMAL_BOOTSTRAP from './MINIMAL_BOOTSTRAP';
 import MINIMAL_GREETING from './MINIMAL_GREETING';
 import MINIMAL_CSS from './MINIMAL_CSS';
 import MINIMAL_README from './MINIMAL_README';
+import MINIMAL_SPEC_RUNNER_HTML from './MINIMAL_SPEC_RUNNER_HTML';
+import MINIMAL_SPEC_RUNNER from './MINIMAL_SPEC_RUNNER';
+import MINIMAL_EXTEND from './MINIMAL_EXTEND';
 
 import SINGLE_VIEW_HTML from './SINGLE_VIEW_HTML';
 import SINGLE_VIEW_CODE from './SINGLE_VIEW_CODE';
@@ -339,7 +342,10 @@ app.factory('templates', [
         T3.newFile('greeting.ts').content = MINIMAL_GREETING()
         T3.newFile('style.css').content = MINIMAL_CSS()
         T3.newFile('README.md').content = MINIMAL_README()
-        T3.dependencies = []
+        T3.newFile('specRunner.html').content = MINIMAL_SPEC_RUNNER_HTML()
+        T3.newFile('specRunner.ts').content = MINIMAL_SPEC_RUNNER()
+        T3.newFile('extend.ts').content = MINIMAL_EXTEND()
+        T3.dependencies = ['DomReady', 'jasmine']
 
         const T4: ITemplate = new Doodle()
         T4.uuid = uuid.generate()
