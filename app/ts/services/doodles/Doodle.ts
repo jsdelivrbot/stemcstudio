@@ -59,6 +59,27 @@ export default class Doodle {
         }
     }
 
+    /**
+     * @method deleteFile
+     * @param name {string}
+     * @return {void}
+     */
+    deleteFile(name: string): void {
+        const file = this.findFileByName(name)
+        if (file) {
+            // Determine whether the file exists in GitHub so that we can delete it upon upload.
+            // Use the raw_url as the sentinel. Keep it in trash for later deletion.
+            if (file.raw_url) {
+                this.trash[name] = this.files[name]
+            }
+            delete this.files[name]
+            delete this.lastKnownJs[name]
+        }
+        else {
+            console.warn(`deleteFile(${name}), ${name} was not found.`)
+        }
+    }
+
     private deselectAll() {
         const names = Object.keys(this.files)
         const iLen = names.length
@@ -68,6 +89,7 @@ export default class Doodle {
             file.selected = false
         }
     }
+
     /**
      * Empties the map containing Gist files that are marked for deletion.
      * 
@@ -76,6 +98,22 @@ export default class Doodle {
      */
     emptyTrash(): void {
         this.trash = {}
+    }
+
+    /**
+     * @method getPreviewFile
+     * @return {string}
+     */
+    getPreviewFile(): string {
+        const names = Object.keys(this.files)
+        const iLen = names.length
+        for (let i = 0; i < iLen; i++) {
+            const name = names[i]
+            if (this.files[name].preview) {
+                return name
+            }
+        }
+        return void 0
     }
 
     private moveFileToTrash(name: string): void {
@@ -208,7 +246,9 @@ export default class Doodle {
     }
 
     /**
-     *
+     * @method selectFile
+     * @param name {string}
+     * @return {void}
      */
     selectFile(name: string): void {
         // console.log(`Doodle.selectFile(${name})`)
@@ -231,21 +271,24 @@ export default class Doodle {
     }
 
     /**
-     *
+     * @method setPreviewFile
+     * @param name {string}
+     * @return {void}
      */
-    deleteFile(name: string): void {
+    setPreviewFile(name: string): void {
         const file = this.findFileByName(name)
         if (file) {
-            // Determine whether the file exists in GitHub so that we can delete it upon upload.
-            // Use the raw_url as the sentinel. Keep it in trash for later deletion.
-            if (file.raw_url) {
-                this.trash[name] = this.files[name]
+            const names = Object.keys(this.files)
+            const iLen = names.length
+            for (let i = 0; i < iLen; i++) {
+                const name = names[i]
+                this.files[name].preview = false
             }
-            delete this.files[name]
-            delete this.lastKnownJs[name]
+            file.preview = true
         }
         else {
-            console.warn(`deleteFile(${name}), ${name} was not found.`)
+            // Do nothing
+            console.log(`${name} => was not found or is not open`)
         }
     }
 }

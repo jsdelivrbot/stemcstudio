@@ -26,6 +26,11 @@ interface IDoodleFile {
     language: string;
 
     /**
+     * (Volatile)
+     */
+    preview: boolean;
+
+    /**
      * (Gist)
      */
     raw_url: string;

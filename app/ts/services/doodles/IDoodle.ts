@@ -76,12 +76,25 @@ interface IDoodle {
     closeFile(name: string): void;
 
     /**
+     * @method deleteFile
+     * @param name {string}
+     * @return {void}
+     */
+    deleteFile(name: string): void;
+
+    /**
      * Empties the map containing Gist files that are marked for deletion.
      * 
      * @method emtyTrash
      * @return {void}
      */
     emptyTrash(): void;
+
+    /**
+     * @method getPreviewFile
+     * @return {string}
+     */
+    getPreviewFile(): string;
 
     /**
      * @method newFile
@@ -113,11 +126,11 @@ interface IDoodle {
     selectFile(name: string): void;
 
     /**
-     * @method deleteFile
+     * @method setPreviewFile
      * @param name {string}
      * @return {void}
      */
-    deleteFile(name: string): void;
+    setPreviewFile(name: string): void;
 }
 
 export default IDoodle;

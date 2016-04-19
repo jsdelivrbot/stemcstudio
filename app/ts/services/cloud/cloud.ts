@@ -37,17 +37,9 @@ function mapFiles(gFiles: { [name: string]: GistFile }, excludes: string[]): { [
 app.factory('cloud', [
     'GitHub',
     'FILENAME_META',
-    'FILENAME_HTML',
-    'FILENAME_CODE',
-    'FILENAME_LIBS',
-    'FILENAME_LESS',
     function(
         github: GitHubService,
-        FILENAME_META: string,
-        FILENAME_HTML: string,
-        FILENAME_CODE: string,
-        FILENAME_LIBS: string,
-        FILENAME_LESS: string
+        FILENAME_META: string
     ): ICloud {
 
         // Temporary to ensure correct Gist deserialization.

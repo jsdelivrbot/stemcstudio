@@ -10,6 +10,7 @@ export default class DoodleFile implements IDoodleFile {
      */
     public isOpen: boolean;
     public language: string;
+    public preview: boolean;
     public raw_url: string;
     public selected: boolean;
     public size: number;
@@ -23,6 +24,7 @@ export default class DoodleFile implements IDoodleFile {
     constructor() {
         this.content = ""
         this.isOpen = true
+        this.preview = false
         this.selected = false
     }
 

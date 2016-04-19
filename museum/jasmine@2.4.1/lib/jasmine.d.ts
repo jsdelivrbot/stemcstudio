@@ -1,7 +1,13 @@
+/**
+ * Defines a suite of specifications.
+ */
 declare function describe(description: string, specDefinitions: () => void): void;
 declare function fdescribe(description: string, specDefinitions: () => void): void;
 declare function xdescribe(description: string, specDefinitions: () => void): void;
 
+/**
+ * Defines a specification.
+ */
 declare function it(expectation: string, assertion?: () => void, timeout?: number): void;
 declare function it(expectation: string, assertion?: (done: DoneFn) => void, timeout?: number): void;
 declare function fit(expectation: string, assertion?: () => void, timeout?: number): void;
@@ -23,6 +29,9 @@ declare function afterAll(action: () => void, timeout?: number): void;
 declare function afterAll(action: (done: DoneFn) => void, timeout?: number): void;
 
 declare function expect(spy: Function): jasmine.Matchers;
+/**
+ * Defines an expectation.
+ */
 declare function expect(actual: any): jasmine.Matchers;
 
 declare function fail(e?: any): void;
@@ -278,14 +287,38 @@ declare namespace jasmine {
         isNot?: boolean;
         message(): any;
 
+        /**
+         * The 'toBe' matcher compares with ===
+         */
         toBe(expected: any, expectationFailOutput?: any): boolean;
+        /**
+         * The 'toEqual' matcher compares objects by value.
+         */
         toEqual(expected: any, expectationFailOutput?: any): boolean;
+        /**
+         * The 'toMatch' matcher is for regular expressions.
+         */
         toMatch(expected: string | RegExp, expectationFailOutput?: any): boolean;
+        /**
+         * The 'toBeDefined' matcher compares against 'undefined'.
+         */
         toBeDefined(expectationFailOutput?: any): boolean;
+        /**
+         * The 'toBeDefined' matcher compares against 'undefined'.
+         */
         toBeUndefined(expectationFailOutput?: any): boolean;
+        /**
+         * The 'toBeNull' matcher compares against null.
+         */
         toBeNull(expectationFailOutput?: any): boolean;
         toBeNaN(): boolean;
+        /**
+         * The 'toBeTruthy' matcher is for boolean casting testing.
+         */
         toBeTruthy(expectationFailOutput?: any): boolean;
+        /**
+         * The 'toBeFalsy' matcher is for boolean casting testing.
+         */
         toBeFalsy(expectationFailOutput?: any): boolean;
         toHaveBeenCalled(): boolean;
         toHaveBeenCalledWith(...params: any[]): boolean;

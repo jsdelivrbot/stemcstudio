@@ -180,7 +180,6 @@ export default class WorkspaceController implements WorkspaceMixin {
         'doodles',
         'options',
         'FILENAME_META',
-        'FILENAME_HTML',
         'FILENAME_README',
         'FILENAME_CODE',
         'FILENAME_LIBS',
@@ -235,7 +234,6 @@ export default class WorkspaceController implements WorkspaceMixin {
         private doodles: IDoodleManager,
         private options: IOptionManager,
         private FILENAME_META: string,
-        private FILENAME_HTML: string,
         private FILENAME_README: string,
         private FILENAME_CODE: string,
         private FILENAME_LIBS: string,
@@ -684,7 +682,7 @@ export default class WorkspaceController implements WorkspaceMixin {
                     preview.removeChild(preview.firstChild);
                 }
                 const doodle: Doodle = this.doodles.current()
-                if (doodle) {
+                if (doodle && doodle.getPreviewFile()) {
                     if (this.$scope.isViewVisible) {
 
                         this.$scope.previewIFrame = document.createElement('iframe');
@@ -699,7 +697,7 @@ export default class WorkspaceController implements WorkspaceMixin {
                         const content = this.$scope.previewIFrame.contentDocument || this.$scope.previewIFrame.contentWindow.document;
 
                         // We are definitely assuming that we have an index.html file.
-                        let html: string = fileContent(this.FILENAME_HTML, doodle)
+                        let html: string = fileContent(doodle.getPreviewFile(), doodle)
                         if (typeof html === 'string') {
 
                             const selOpts: IOption[] = this.options.filter((option: IOption, index: number, array: IOption[]) => {
