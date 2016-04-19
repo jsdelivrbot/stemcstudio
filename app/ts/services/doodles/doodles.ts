@@ -51,6 +51,7 @@ function deserialize(doodles: IDoodle[]): Doodle[] {
             d.files[FILENAME_LESS].language = modeFromName(FILENAME_LESS)
         }
         d.focusEditor = inDoodle.focusEditor
+        d.gistId = inDoodle.gistId
         d.isCodeVisible = inDoodle.isCodeVisible
         d.isViewVisible = inDoodle.isViewVisible
         d.lastKnownJs = inDoodle.lastKnownJs

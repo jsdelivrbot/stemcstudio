@@ -345,10 +345,13 @@ export default class WorkspaceController implements WorkspaceMixin {
 
         const gistId: string = $stateParams['gistId'];
         if (gistId) {
+            // console.log(`gistId => ${gistId}`)
+            // console.log(`gistId (current) => ${doodles.current().gistId}`)
             if (doodles.current().gistId !== gistId) {
                 const token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
                 cloud.downloadGist(token, gistId, function(err: any, doodle: Doodle) {
                     if (!err) {
+                        // console.log(`downloaded, gistId => ${doodle.gistId}`)
                         doodles.deleteDoodle(doodle.uuid);
                         doodles.unshift(doodle);
                         doodles.updateStorage();
@@ -362,13 +365,16 @@ export default class WorkspaceController implements WorkspaceMixin {
                 });
             }
             else {
+                // console.log(`We've already got that Gist as current in Local Storage`)
                 $scope.updateView();
                 // cascade = true;
                 $scope.updatePreview(WAIT_NO_MORE);
             }
         }
         else {
+            // console.log("There is NO gistId parameter.")
             if (doodles.current().gistId) {
+                // console.log("But the current doodle DOES have a gistId")
                 $state.go(STATE_GISTS, { gistId: doodles.current().gistId });
             }
             else {

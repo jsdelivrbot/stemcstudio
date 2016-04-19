@@ -21,16 +21,28 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 var getJasmineRequireObj = (function (jasmineGlobal) {
+  //
+  // This IIFE is invoked using `this`, so
+  // jasmineGlobal will be `window` on the browser or `global` on the server.
+  //
+  
+  /**
+   * This is the object that we want to make available.
+   */
   var jasmineRequire;
 
   if (typeof module !== 'undefined' && module.exports) {
+    // console.log("Jasmine is running under CommonJS")
     if (typeof global !== 'undefined') {
       jasmineGlobal = global;
-    } else {
+    }
+    else {
       jasmineGlobal = {};
     }
     jasmineRequire = exports;
-  } else {
+  }
+  else {
+    // console.log("Jasmine is NOT running under CommonJS")
     if (typeof window !== 'undefined' && typeof window.toString === 'function' && window.toString() === '[object GjsGlobal]') {
       jasmineGlobal = window;
     }

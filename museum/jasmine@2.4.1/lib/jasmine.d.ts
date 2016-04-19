@@ -40,7 +40,7 @@ interface DoneFn extends Function {
     (): void;
 
     /** fails the spec and indicates that it has completed. If the message is an Error, Error.message is used */
-    fail: (message?: Error|string) => void;
+    fail: (message?: Error | string) => void;
 }
 
 declare function spyOn(object: any, method: string): jasmine.Spy;
@@ -49,6 +49,9 @@ declare function runs(asyncMethod: Function): void;
 declare function waitsFor(latchMethod: () => boolean, failureMessage?: string, timeout?: number): void;
 declare function waits(timeout?: number): void;
 
+/**
+ * A namespace is the TypeScript 1.5+ nomenclature for "Internal modules".
+ */
 declare namespace jasmine {
 
     var clock: () => Clock;
@@ -61,6 +64,9 @@ declare namespace jasmine {
     function createSpyObj(baseName: string, methodNames: any[]): any;
     function createSpyObj<T>(baseName: string, methodNames: any[]): T;
     function pp(value: any): string;
+    /**
+     * Returns a reference to the singleton Jasmine Env(ironment).
+     */
     function getEnv(): Env;
     function addCustomEqualityTester(equalityTester: CustomEqualityTester): void;
     function addMatchers(matchers: CustomMatcherFactories): void;
@@ -146,6 +152,9 @@ declare namespace jasmine {
         buildFailureMessage(matcherName: string, isNot: boolean, actual: any, ...expected: Array<any>): string;
     }
 
+    /**
+     * The Jasmine execution Environment.
+     */
     interface Env {
         setTimeout: any;
         clearTimeout: void;
@@ -179,7 +188,14 @@ declare namespace jasmine {
         contains_(haystack: any, needle: any): boolean;
         addCustomEqualityTester(equalityTester: CustomEqualityTester): void;
         addMatchers(matchers: CustomMatcherFactories): void;
+        catchExceptions(value: any): void;
+        catchingExceptions(): boolean;
+        randomizeTests(value: any): void;
+        randomTests(): boolean;
+        seed(value: any): void;
         specFilter(spec: Spec): boolean;
+        throwingExpectationFailures(): boolean;
+        throwOnExpectationFailure(value: any): void;
     }
 
     interface FakeTimer {
@@ -192,12 +208,27 @@ declare namespace jasmine {
         scheduleFunction(timeoutKey: any, funcToCall: () => void, millis: number, recurring: boolean): void;
     }
 
+    class Timer {
+    }
+
     interface HtmlReporter {
-        new (): any;
+        new (options: {
+            env?: Env;
+            onRaiseExceptionsClick?;
+            onThrowExpectationsClick?;
+            onRandomClick?;
+            addToExistingQueryString?;
+            getContainer;
+            createElement;
+            createTextNode;
+            timer?: Timer;
+        }): any;
     }
 
     interface HtmlSpecFilter {
-        new (): any;
+        new (options?: {
+            filterString?: () => string;
+        }): any;
     }
 
     interface Result {
@@ -220,12 +251,12 @@ declare namespace jasmine {
         passed(): boolean;
     }
 
-    interface MessageResult extends Result  {
+    interface MessageResult extends Result {
         values: any;
         trace: Trace;
     }
 
-    interface ExpectationResult extends Result  {
+    interface ExpectationResult extends Result {
         matcherName: string;
         passed(): boolean;
         expected: any;
@@ -524,7 +555,34 @@ declare namespace jasmine {
         util: Util;
     }
 
+    /**
+     *
+     */
+    class QueryString {
+        constructor(options: {
+            getWindowLocation: () => Location;
+        });
+        fullStringWithNewParam(key, value): string;
+        getParam(name: string): any;
+        navigateWithNewParam(name: string, value: any): void;
+    }
+
     export var HtmlReporter: HtmlReporter;
     export var HtmlSpecFilter: HtmlSpecFilter;
     export var DEFAULT_TIMEOUT_INTERVAL: number;
+}
+
+/**
+ * 
+ */
+declare namespace jasmineRequire {
+    /**
+     * Builds the public core API, Jasmine.
+     */
+    function core(jasmineRequire): jasmine.Jasmine;
+    /**
+     * Adds properties to the Jasmine API: HtmlReporter, HtmlSpecFilter, ResultsNode, QueryString.
+     */
+    function html(jasmine: jasmine.Jasmine): void;
+    function interface(jasmine, env: jasmine.Env): any;
 }

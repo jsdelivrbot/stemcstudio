@@ -12,6 +12,8 @@
 
 (function() {
 
+  console.log("boot.js")
+
   /**
    * ## Require &amp; Instantiate
    *
@@ -114,7 +116,9 @@
   var currentWindowOnload = window.onload;
 
   window.onload = function() {
+    console.log("Entering boot.js onload()")
     if (currentWindowOnload) {
+        console.log("Calling existing onload()")
       currentWindowOnload();
     }
     htmlReporter.initialize();
