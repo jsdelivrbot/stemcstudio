@@ -184,11 +184,11 @@ export default class WorkspaceController implements WorkspaceMixin {
         'FILENAME_CODE',
         'FILENAME_LIBS',
         'FILENAME_LESS',
-        'FILENAME_JASMINE_DTS',
         'FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS',
         'FILENAME_TYPESCRIPT_CURRENT_LIB_DTS',
         'STATE_GISTS',
         'STYLE_MARKER',
+        'STYLES_MARKER',
         'SCRIPTS_MARKER',
         'CODE_MARKER',
         'LIBS_MARKER',
@@ -238,11 +238,11 @@ export default class WorkspaceController implements WorkspaceMixin {
         private FILENAME_CODE: string,
         private FILENAME_LIBS: string,
         private FILENAME_LESS: string,
-        private FILENAME_JASMINE_DTS: string,
         private FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS: string,
         private FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
         STATE_GISTS: string,
         private STYLE_MARKER: string,
+        private STYLES_MARKER: string,
         private SCRIPTS_MARKER: string,
         private CODE_MARKER: string,
         private LIBS_MARKER: string,
@@ -606,14 +606,6 @@ export default class WorkspaceController implements WorkspaceMixin {
         else {
             // console.log("The remove list does NOT contain the 'lib' dependency.")
         }
-        if (rmvs.indexOf('jasmine') >= 0) {
-            // console.log("The remove list DOES contain the 'jasmine' dependency.")
-            // By removing it from the list, we will keep the 'lib' in the workspace and save an unload/load cycle.
-            rmvs.splice(rmvs.indexOf('jasmine'), 1);
-        }
-        else {
-            // console.log("The remove list does NOT contain the 'jasmine' dependency.")
-        }
 
         const rmvOpts: IOption[] = namesToOptions(rmvs, this.options);
 
@@ -627,12 +619,6 @@ export default class WorkspaceController implements WorkspaceMixin {
         // Ensure that the TypeScript ambient type definitions are present.
         if (this.olds.indexOf('lib') < 0) {
             addUnits = addUnits.concat({ name: 'lib', fileName: this.FILENAME_TYPESCRIPT_CURRENT_LIB_DTS });
-        }
-        // Ensure that the Jasmine (ambient) type definitions are present.
-        // This represent a pollution of the global namespace, something we'd like to avoid.
-        // In future we may maintain a second workspace or use ES6 modules for explicit loading.
-        if (this.olds.indexOf('jasmine') < 0) {
-            addUnits = addUnits.concat({ name: 'jasmine', fileName: this.FILENAME_JASMINE_DTS });
         }
 
         /**
@@ -712,10 +698,16 @@ export default class WorkspaceController implements WorkspaceMixin {
 
                             const closureOpts: IOption[] = closure(selOpts, this.options);
 
-                            const chosenFileNames: string[] = closureOpts.map(function(option: IOption) { return option.minJs; });
+                            const chosenCssFileNames: string[] = closureOpts.map(function(option: IOption) { return option.css; }).reduce(function(previousValue, currentValue) { return previousValue.concat(currentValue) }, []);
+                            const stylesTags = chosenCssFileNames.map((fileName: string) => {
+                                return "<link rel='stylesheet' href='" + scriptURL(DOMAIN, fileName, this.VENDOR_FOLDER_MARKER) + "'></link>\n";
+                            });
+                            html = html.replace(this.STYLES_MARKER, stylesTags.join(""));
+
+                            const chosenJsFileNames: string[] = closureOpts.map(function(option: IOption) { return option.minJs; }).reduce(function(previousValue, currentValue) { return previousValue.concat(currentValue) }, []);
                             // TODO: We will later want to make operator overloading configurable for speed.
 
-                            const scriptFileNames: string[] = this.doodles.current().operatorOverloading ? chosenFileNames.concat(this.FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS) : chosenFileNames;
+                            const scriptFileNames: string[] = this.doodles.current().operatorOverloading ? chosenJsFileNames.concat(this.FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS) : chosenJsFileNames;
                             // TOOD: Don't fix the location of the JavaScript here.
                             const scriptTags = scriptFileNames.map((fileName: string) => {
                                 return "<script src='" + scriptURL(DOMAIN, fileName, this.VENDOR_FOLDER_MARKER) + "'></script>\n";

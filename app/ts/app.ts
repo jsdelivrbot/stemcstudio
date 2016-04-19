@@ -47,7 +47,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
   return VENDOR_FOLDER_MARKER + '/' + packageFolder + '/' + fileName;
 }
 
-app.constant('version', '2.0.0-beta.14');
+app.constant('version', '2.0.0-beta.15');
 // githubKey stores the key of the item in local storage for maintaining GitHub OAuth data.
 // Remark: This value is duplicated in views/github_callback.jade
 app.constant('githubKey', makeKey('github'));
@@ -76,6 +76,7 @@ app.constant('VENDOR_FOLDER_MARKER', VENDOR_FOLDER_MARKER);
 
 // For backwards compatibility, don't change the values of these constants.
 app.constant('SCRIPTS_MARKER', '<!-- SCRIPTS-MARKER -->');
+app.constant('STYLES_MARKER', '<!-- STYLES-MARKER -->');
 app.constant('STYLE_MARKER', '/* STYLE-MARKER */');
 app.constant('CODE_MARKER', '// CODE-MARKER');
 app.constant('LIBS_MARKER', '// LIBS-MARKER');
@@ -93,8 +94,6 @@ app.constant('STATE_GISTS', 'gists');
 
 // The TypeScript d.ts library provides the type checking of global JavaScript types.
 app.constant('FILENAME_TYPESCRIPT_CURRENT_LIB_DTS', vendorPath('typescript@1.4.1.3', 'lib.d.ts'))
-// The Jasmine d.ts file provides the TypeScript type definitions for the Jasmine Unit Testing Framework.
-app.constant('FILENAME_JASMINE_DTS', vendorPath('jasmine@2.4.1', 'lib/jasmine.d.ts'))
 // The MathScript js library provides operator overloading at runtime.
 app.constant('FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS', vendorPath('davinci-mathscript@1.0.8', 'dist/davinci-mathscript.min.js'))
 
