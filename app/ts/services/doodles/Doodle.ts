@@ -70,10 +70,13 @@ export default class Doodle {
             // Determine whether the file exists in GitHub so that we can delete it upon upload.
             // Use the raw_url as the sentinel. Keep it in trash for later deletion.
             if (file.raw_url) {
-                this.trash[name] = this.files[name]
+                this.moveFileToTrash(name)
             }
-            delete this.files[name]
-            delete this.lastKnownJs[name]
+            else {
+                // It's a file that does not exist on GitHub.
+                delete this.files[name]
+                delete this.lastKnownJs[name]
+            }
         }
         else {
             console.warn(`deleteFile(${name}), ${name} was not found.`)
@@ -101,6 +104,24 @@ export default class Doodle {
     }
 
     /**
+     * @method existsFile
+     * @param name {string}
+     * @return {boolean}
+     */
+    existsFile(name: string): boolean {
+        return this.findFileByName(name) ? true : false
+    }
+
+    /**
+     * @method existsFileInTrash
+     * @param name {string}
+     * @return {boolean}
+     */
+    existsFileInTrash(name: string): boolean {
+        return this.trash[name] ? true : false
+    }
+
+    /**
      * @method getPreviewFile
      * @return {string}
      */
@@ -116,13 +137,66 @@ export default class Doodle {
         return void 0
     }
 
+    /**
+     * If a file has been explicitly marked as being the preview file then use it.
+     * Otherwise, make a best guess from the available files.
+     * This will improve the user experience.
+     *
+     * getPreviewFileOrBestAvailable
+     * @return {string}
+     */
+    getPreviewFileOrBestAvailable(): string {
+        const previewFile = this.getPreviewFile()
+        if (previewFile) {
+            return previewFile;
+        }
+        else {
+            let bestFile: string;
+            const names = Object.keys(this.files)
+            const iLen = names.length
+            for (let i = 0; i < iLen; i++) {
+                const name = names[i]
+                const mode = modeFromName(name)
+                if (mode === 'HTML') {
+                    if (name === 'index.html') {
+                        return name
+                    }
+                    else if (name.toLowerCase() === 'specrunner.html') {
+                        bestFile = name
+                    }
+                    else if (typeof bestFile === 'undefined') {
+                        bestFile = name
+                    }
+                    else {
+                        // Ignore the file.
+                    }
+                }
+                else {
+                    // We don't consider other file types for now.
+                }
+            }
+            return bestFile
+        }
+    }
+
+    /**
+     * @method moveFileToTrash
+     * @param name {string}
+     * @return {void}
+     */
     private moveFileToTrash(name: string): void {
+        // console.log(`moveFileToTrash ${name}`)
         const unwantedFile = this.files[name]
         if (unwantedFile) {
+            // Notice that the conflict could be with a TRASHED file.
             const conflictFile = this.trash[name]
             if (!conflictFile) {
+                // There is no conflict, proceed with the move.
                 this.trash[name] = unwantedFile
                 delete this.files[name]
+                if (this.existsFile(name)) {
+                    throw new Error(`${name} was not physically deleted from files.`)
+                }
             }
             else {
                 throw new Error(`${name} cannot be moved to trash because of a naming conflict with an existing file.`)
@@ -212,29 +286,40 @@ export default class Doodle {
     }
 
     renameFile(oldName: string, newName: string): void {
+        // console.log(`renameFile ${oldName} to ${newName}`)
         const mode = modeFromName(newName)
         if (!mode) {
             throw new Error(`${newName} is not a recognized language.`)
         }
+        // Make sure that the file we want to rename really does exist.
         const oldFile = this.findFileByName(oldName)
         if (oldFile) {
-            const existing = this.findFileByName(newName)
-            if (!existing) {
-                if (oldFile.raw_url) {
-                    this.moveFileToTrash(oldName)
+            if (!this.existsFile(newName)) {
+                // Determine whether we can recycle a file from trash or must create a new file.
+                if (!this.existsFileInTrash(newName)) {
+                    // We must create a new file.
+                    const newFile = oldFile.clone()
+
+                    // Make it clear that this file did not come from GitHub.
+                    newFile.raw_url = void 0
+                    newFile.size = void 0
+                    newFile.truncated = void 0
+                    newFile.type = void 0
+
+                    // Initialize properties that depend upon the new name.
+                    newFile.language = mode
+
+                    this.files[newName] = newFile
                 }
-                const newFile = oldFile.clone()
-
-                // Make it clear that this file did not come from GitHub.
-                newFile.raw_url = void 0
-                newFile.size = void 0
-                newFile.truncated = void 0
-                newFile.type = void 0
-
-                // Initialize properties that depend upon the new name.
-                newFile.language = mode
-
-                this.files[newName] = newFile
+                else {
+                    // We can recycle a file from trash.
+                    this.restoreFileFromTrash(newName)
+                    const theFile = this.findFileByName(newName)
+                    // Initialize properties that depend upon the new name.
+                    theFile.language = mode
+                }
+                // Delete the file by the old name.
+                this.deleteFile(oldName)
             }
             else {
                 throw new Error(`${newName} already exists. The new name must be unique.`)

@@ -682,8 +682,9 @@ export default class WorkspaceController implements WorkspaceMixin {
                     preview.removeChild(preview.firstChild);
                 }
                 const doodle: Doodle = this.doodles.current()
-                if (doodle && doodle.getPreviewFile()) {
-                    if (this.$scope.isViewVisible) {
+                if (doodle) {
+                    const bestFile: string = doodle.getPreviewFileOrBestAvailable()
+                    if (bestFile && this.$scope.isViewVisible) {
 
                         this.$scope.previewIFrame = document.createElement('iframe');
                         // Let's not change any more styles than we have to. 
@@ -696,8 +697,7 @@ export default class WorkspaceController implements WorkspaceMixin {
 
                         const content = this.$scope.previewIFrame.contentDocument || this.$scope.previewIFrame.contentWindow.document;
 
-                        // We are definitely assuming that we have an index.html file.
-                        let html: string = fileContent(doodle.getPreviewFile(), doodle)
+                        let html: string = fileContent(bestFile, doodle)
                         if (typeof html === 'string') {
 
                             const selOpts: IOption[] = this.options.filter((option: IOption, index: number, array: IOption[]) => {
@@ -753,6 +753,9 @@ export default class WorkspaceController implements WorkspaceMixin {
                             content.close()
 
                             bubbleIframeMouseMove(this.$scope.previewIFrame)
+                        }
+                        else {
+                            console.warn(`bestFile => ${bestFile}`)
                         }
                     }
                     else {

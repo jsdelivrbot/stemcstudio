@@ -91,10 +91,32 @@ interface IDoodle {
     emptyTrash(): void;
 
     /**
+     * @method existsFile
+     * @param name {string}
+     * @return {boolean}
+     */
+    existsFile(name: string): boolean;
+
+    /**
+     * @method existsFileInTrash
+     * @param name {string}
+     * @return {boolean}
+     */
+    existsFileInTrash(name: string): boolean;
+
+    /**
      * @method getPreviewFile
      * @return {string}
      */
     getPreviewFile(): string;
+
+    /**
+     * Makes a best attempt to return a file that can be rendered for preview.
+     * 
+     * @method getPreviewFileOrBestAvailable
+     * @return {string}
+     */
+    getPreviewFileOrBestAvailable(): string;
 
     /**
      * @method newFile
