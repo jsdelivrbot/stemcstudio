@@ -3,6 +3,7 @@ const NEWLINE = '\n'
 export default function(options: {} = {}): string {
     const lines: string[] = []
     lines.push("import extend from './extend'")
+    lines.push("import Vector from './Vector.spec'")
     lines.push("")
     lines.push("window['jasmine'] = jasmineRequire.core(jasmineRequire)")
     lines.push("")
@@ -37,7 +38,7 @@ export default function(options: {} = {}): string {
     lines.push("")
     lines.push("DomReady.ready(function() {")
     lines.push("  htmlReporter.initialize()")
-    lines.push("  // describe('spec', spec)")
+    lines.push("  describe(\"Vector\", Vector)")
     lines.push("  env.execute()")
     lines.push("})")
     return lines.join(NEWLINE).concat(NEWLINE)

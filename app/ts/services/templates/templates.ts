@@ -23,6 +23,8 @@ import MINIMAL_README from './MINIMAL_README';
 import MINIMAL_SPEC_RUNNER_HTML from './MINIMAL_SPEC_RUNNER_HTML';
 import MINIMAL_SPEC_RUNNER from './MINIMAL_SPEC_RUNNER';
 import MINIMAL_EXTEND from './MINIMAL_EXTEND';
+import MINIMAL_VECTOR from './MINIMAL_VECTOR';
+import MINIMAL_VECTOR_SPEC from './MINIMAL_VECTOR_SPEC';
 
 import SINGLE_VIEW_HTML from './SINGLE_VIEW_HTML';
 import SINGLE_VIEW_CODE from './SINGLE_VIEW_CODE';
@@ -345,6 +347,8 @@ app.factory('templates', [
         T3.newFile('specRunner.html').content = MINIMAL_SPEC_RUNNER_HTML()
         T3.newFile('specRunner.ts').content = MINIMAL_SPEC_RUNNER()
         T3.newFile('extend.ts').content = MINIMAL_EXTEND()
+        T3.newFile('Vector.ts').content = MINIMAL_VECTOR()
+        T3.newFile('Vector.spec.ts').content = MINIMAL_VECTOR_SPEC()
         T3.dependencies = ['DomReady', 'jasmine']
 
         const T4: ITemplate = new Doodle()

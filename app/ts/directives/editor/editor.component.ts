@@ -31,6 +31,7 @@ function factory($timeout: ng.ITimeoutService, settings: ISettingsService, textS
                 break
             }
             case 'TypeScript': {
+                // console.log(`showFoldWidgets => ${editor.getShowFoldWidgets()}`);
                 editor.setLanguageMode(ace.createTypeScriptMode('/js/worker.js', workerImports))
                 break
             }

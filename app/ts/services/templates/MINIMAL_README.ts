@@ -34,7 +34,7 @@ export default function(options: {} = {}): string {
     lines.push("")
     lines.push("## Unit Testing")
     lines.push("")
-    lines.push("Coming soon!")
+    lines.push("Unit Testing is supported using Jasmine.")
     lines.push("")
     lines.push("# How It Works")
     lines.push("")
