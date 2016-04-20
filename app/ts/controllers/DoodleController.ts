@@ -270,7 +270,7 @@ export default class DoodleController {
         ///////////////////////////////////////////////////////////////////////
         if (doodles.length === 0) {
             // If there is no document, construct one based upon the first template.
-            doodles.createDoodle($scope.templates[0], "My Math Doodle");
+            doodles.createDoodle($scope.templates[0], "My STEM Project");
         }
         else {
             // Do nothing.

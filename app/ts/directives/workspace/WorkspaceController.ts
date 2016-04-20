@@ -311,7 +311,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         // Ensure that there is a current doodle i.e. doodles.current() exists.
         if (doodles.length === 0) {
             // If there is no document, construct one based upon the first template.
-            doodles.createDoodle($scope.templates[0], "My Math Doodle");
+            doodles.createDoodle($scope.templates[0], "My STEM Project");
         }
 
         // Perform conversions required for doodle evolution.

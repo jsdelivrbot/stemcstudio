@@ -91,7 +91,7 @@ app.factory('doodles', [
         var _doodles: Doodle[] = deserialize($window.localStorage[doodlesKey] !== undefined ? JSON.parse($window.localStorage[doodlesKey]) : []);
 
         const suggestName = function(): string {
-            const UNTITLED = "Doodle";
+            const UNTITLED = "Project";
             // We assume that a doodle with a lower index will have a higher Untitled number.
             // To reduce sorting, sort as a descending sequence and use the resulting first
             // element as the highest number used so far. Add one to that.

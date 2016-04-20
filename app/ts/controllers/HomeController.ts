@@ -42,7 +42,7 @@ app.controller('home-controller', [
             // On subsequent reloading of the home template, when the controller is invoked, it triggers a load.
         }
 
-        $scope.twitterShareText = "MathDoodle · Learning Mathematics and Geometric Physics through Computational Modeling.";
+        $scope.twitterShareText = "STEMstudio · Learning Science and Mathematics through Computational Modeling.";
 
         $scope.goDoodle = function() {
             $state.go(STATE_DOODLE);
