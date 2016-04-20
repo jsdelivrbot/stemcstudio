@@ -1,0 +1,58 @@
+import Behaviour from '../Behaviour';
+import CstyleBehaviour from './CstyleBehaviour';
+import XmlBehaviour from "../behaviour/XmlBehaviour";
+import TokenIterator from "../../TokenIterator";
+import Editor from "../../Editor";
+import EditSession from "../../EditSession";
+
+function hasType(token: { type: string }, type: string) {
+    var hasType = true;
+    var typeList = token.type.split('.');
+    var needleList = type.split('.');
+    needleList.forEach(function(needle) {
+        if (typeList.indexOf(needle) === -1) {
+            hasType = false;
+            return false;
+        }
+    });
+    return hasType;
+}
+
+export default class XQueryBehaviour extends Behaviour {
+    constructor() {
+        super();
+        this.inherit(new CstyleBehaviour(), ["braces", "parens", "string_dquotes"]);
+        this.inherit(new XmlBehaviour());
+
+        this.add("autoclosing", "insertion", function(state: string, action, editor: Editor, session: EditSession, text: string) {
+            if (text === '>') {
+                var position = editor.getCursorPosition();
+                var iterator = new TokenIterator(session, position.row, position.column);
+                var token = iterator.getCurrentToken();
+                var atCursor = false;
+                const stateStr: string = JSON.parse(state).pop();
+                if ((token && token.value === '>') || stateStr !== "StartTag") return;
+                if (!token || !hasType(token, 'meta.tag') && !(hasType(token, 'text') && token.value.match('/'))) {
+                    do {
+                        token = iterator.stepBackward();
+                    } while (token && (hasType(token, 'string') || hasType(token, 'keyword.operator') || hasType(token, 'entity.attribute-name') || hasType(token, 'text')));
+                } else {
+                    atCursor = true;
+                }
+                var previous = iterator.stepBackward();
+                if (!token || !hasType(token, 'meta.tag') || (previous !== null && previous.value.match('/'))) {
+                    return;
+                }
+                var tag = token.value.substring(1);
+                if (atCursor) {
+                    var tag = tag.substring(0, position.column - token.start);
+                }
+
+                return {
+                    text: '>' + '</' + tag + '>',
+                    selection: [1, 1]
+                };
+            }
+        });
+    }
+}

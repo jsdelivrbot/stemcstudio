@@ -1,7 +1,7 @@
 <div class='modal-content'>
   <div class='modal-header'>
       <button type="button" class="close" data-dismiss="modal" aria-hidden='true' ng-click='doCancel()'>&times;</button>
-    <h3>Create a New Doodle</h3>
+    <h3>Create a New Project</h3>
   </div>
   <div class='modal-body'>
     <input type='text' ng-model='description' placeholder="Enter description" autofocus/>
@@ -9,7 +9,7 @@
     <select ng-model='template' ng-options='template.description for template in templates track by template.uuid'></select>
   </div>
   <div class='modal-footer'>
-    <button class='btn btn-primary' ng-click='doOK()'>Create doodle</button>
+    <button class='btn btn-primary' ng-click='doOK()'>Create project</button>
     <button class='btn' ng-click='doCancel()'>Cancel</button>
   </div>
 </div>

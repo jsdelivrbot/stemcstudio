@@ -1,6 +1,6 @@
 {
   "name": "mathdoodle",
-  "version": "2.0.0-beta.17",
+  "version": "2.0.0-beta.18",
   "description": "Learning Mathematics and Geometric Physics through Computational Modeling",
   "homepage": "https://github.com/geometryzen/mathdoodle",
   "authors": [
@@ -30,7 +30,7 @@
     "angular-translate": "^2.11.0",
     "angular-ui-router": "^0.2.18",
     "angular-uuid4": "^0.3.0",
-    "angular": "^1.5.3",
+    "angular": "^1.5.5",
     "async": "~1.5.0",
     "bootstrap": "~3.3.6",
     "bootstrap3-dialog": "~1.35.0",
@@ -54,6 +54,6 @@
     "randomcolor": "randomColor#~0.4.4"
   },
   "resolutions": {
-    "angular": "1.5.3"
+    "angular": "1.5.5"
   }
 }

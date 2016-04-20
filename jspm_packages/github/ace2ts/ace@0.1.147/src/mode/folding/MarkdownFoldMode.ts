@@ -1,0 +1,117 @@
+import Range from "../../Range";
+import FoldMode from "./FoldMode";
+import EditSession from "../../EditSession";
+import Token from "../../Token";
+
+/**
+ * @class MarkdownFoldMode
+ */
+export default class MarkdownFoldMode extends FoldMode {
+    /**
+     * @property foldingStartMarker
+     * @type RegExp
+     */
+    foldingStartMarker: RegExp = /^(?:[=-]+\s*$|#{1,6} |`{3})/;
+
+    /**
+     * @class MarkdownFoldMode
+     * @constructor
+     */
+    constructor() {
+        super();
+    }
+
+    /**
+     * @method getFoldWidget
+     * @param session {EditSession}
+     * @param foldStyle {string}
+     * @param row {number}
+     * @return {string}
+     */
+    getFoldWidget(session: EditSession, foldStyle: string, row: number): string {
+        var line = session.getLine(row);
+        if (!this.foldingStartMarker.test(line))
+            return "";
+
+        if (line[0] === "`") {
+            if (session.bgTokenizer.getState(row) === "start")
+                return "end";
+            return "start";
+        }
+
+        return "start";
+    }
+
+    /**
+     * @method getFoldWidgetRange
+     * @param session {EditSession}
+     * @param foldStyle {string}
+     * @param row {number}
+     * @return {Range}
+     */
+    getFoldWidgetRange(session: EditSession, foldStyle: string, row: number): Range {
+        let line = session.getLine(row);
+        const startColumn = line.length;
+        const maxRow = session.getLength();
+        const startRow = row;
+        let endRow = row;
+        if (!line.match(this.foldingStartMarker))
+            return;
+
+        if (line[0] === "`") {
+            if (session.bgTokenizer.getState(row) !== "start") {
+                while (++row < maxRow) {
+                    line = session.getLine(row);
+                    if (line[0] === "`" && line.substring(0, 3) === "```")
+                        break;
+                }
+                return new Range(startRow, startColumn, row, 0);
+            } else {
+                while (row-- > 0) {
+                    line = session.getLine(row);
+                    if (line[0] === "`" && line.substring(0, 3) === "```")
+                        break;
+                }
+                return new Range(row, line.length, startRow, 0);
+            }
+        }
+
+        var token: Token;
+        const heading = "markup.heading";
+        function isHeading(row) {
+            token = session.getTokens(row)[0];
+            return token && token.type.lastIndexOf(heading, 0) === 0;
+        }
+
+        function getLevel() {
+            const ch = token.value[0];
+            if (ch === "=") return 6;
+            if (ch === "-") return 5;
+            return 7 - token.value.search(/[^#]/);
+        }
+
+        if (isHeading(row)) {
+            var startHeadingLevel = getLevel();
+            while (++row < maxRow) {
+                if (!isHeading(row))
+                    continue;
+                var level = getLevel();
+                if (level >= startHeadingLevel)
+                    break;
+            }
+
+            endRow = row - (!token || ["=", "-"].indexOf(token.value[0]) === -1 ? 1 : 2);
+
+            if (endRow > startRow) {
+                while (endRow > startRow && /^\s*$/.test(session.getLine(endRow)))
+                    endRow--;
+            }
+
+            if (endRow > startRow) {
+                var endColumn = session.getLine(endRow).length;
+                return new Range(startRow, startColumn, endRow, endColumn);
+            }
+        }
+    }
+}
+

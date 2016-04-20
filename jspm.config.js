@@ -9,10 +9,10 @@ System.config({
 
   map: {
     "@angular/router": "npm:@angular/router@0.2.0",
-    "ace.js": "github:ace2ts/ace@0.1.146",
-    "ace2ts/ace": "github:ace2ts/ace@0.1.146",
-    "angular": "github:angular/bower-angular@1.5.4",
-    "angular-animate": "github:angular/bower-angular-animate@1.5.3",
+    "ace.js": "github:ace2ts/ace@0.1.147",
+    "ace2ts/ace": "github:ace2ts/ace@0.1.147",
+    "angular": "github:angular/bower-angular@1.5.5",
+    "angular-animate": "github:angular/bower-angular-animate@1.5.5",
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.2",
     "angular-ui-router": "github:angular-ui/ui-router@0.2.18",
     "angular2": "npm:angular2@2.0.0-beta.15",
@@ -23,15 +23,15 @@ System.config({
     "jquery": "npm:jquery@2.2.3",
     "showdown": "npm:showdown@1.3.0",
     "underscore": "npm:underscore@1.8.3",
-    "github:ace2ts/ace@0.1.146": {
+    "github:ace2ts/ace@0.1.147": {
       "ace2ts/ace-workers": "github:ace2ts/ace-workers@0.1.51",
       "typescript": "npm:typescript@1.8.10"
     },
     "github:angular-ui/ui-router@0.2.18": {
-      "angular": "github:angular/bower-angular@1.5.4"
+      "angular": "github:angular/bower-angular@1.5.5"
     },
-    "github:angular/bower-angular-animate@1.5.3": {
-      "angular": "github:angular/bower-angular@1.5.4"
+    "github:angular/bower-angular-animate@1.5.5": {
+      "angular": "github:angular/bower-angular@1.5.5"
     },
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.3.0"
@@ -60,7 +60,7 @@ System.config({
     "npm:angular2@2.0.0-beta.15": {
       "reflect-metadata": "npm:reflect-metadata@0.1.2",
       "rxjs": "npm:rxjs@5.0.0-beta.6",
-      "zone.js": "npm:zone.js@0.6.11"
+      "zone.js": "npm:zone.js@0.6.12"
     },
     "npm:assert@1.3.0": {
       "util": "npm:util@0.10.3"
@@ -163,7 +163,7 @@ System.config({
       "window-size": "npm:window-size@0.1.4",
       "y18n": "npm:y18n@3.2.1"
     },
-    "npm:zone.js@0.6.11": {
+    "npm:zone.js@0.6.12": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     }
