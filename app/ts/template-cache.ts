@@ -227,7 +227,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "            <a href='/#/gists/129a4a31fa803df9e4a5'>Creating and Animating a Scene with Eight.Js</a>\n" +
     "          </p>\n" +
     "          <p>\n" +
-    "          The Eight.Js library that ships with STEMstudio has a cohesive layered architecture that allows you to choose the appropriate level for flexibility and reuse. Eight.Js integrates Geometric Algebra with WebGL Graphics providing an efficient starting point for explorations into Geometry, Physics, Mathematics, and Computing.\n" +
+    "          The Eight.Js library that ships with STEMCstudio has a cohesive layered architecture that allows you to choose the appropriate level for flexibility and reuse. Eight.Js integrates Geometric Algebra with WebGL Graphics providing an efficient starting point for explorations into Geometry, Physics, Mathematics, and Computing.\n" +
     "          </p>\n" +
     "          <p>\n" +
     "          This example demonstrates many features of the Eight.Js library. It builds a scene from high level components and drives the animation using Geometric Algebra for computation.\n" +
@@ -292,7 +292,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "          WebGL Insights by Patrick Cozzi.\n" +
     "          </p>\n" +
     "          <p>\n" +
-    "          The article describes the benefits of moving from OpenGL to WebGL. STEMstudio enhances the experience for the student by providing a powerful development environment, Geometric Algebra libraries, and a Graphics Library with entry points at many levels of flexibility and reuse.\n" +
+    "          The article describes the benefits of moving from OpenGL to WebGL. STEMCstudio enhances the experience for the student by providing a powerful development environment, Geometric Algebra libraries, and a Graphics Library with entry points at many levels of flexibility and reuse.\n" +
     "          </p>\n" +
     "          <p class='lead'>\n" +
     "            <a href='/#/gists/89ee3cf12e4360999510'>Ray Tracing: The Science behind Computer Animation</a>\n" +
@@ -443,10 +443,10 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "    <div class='col-md-9' role='main'>\n" +
     "      <div class='md-docs-section'>\n" +
     "        <h1 id='overview' class='page-header'>\n" +
-    "          STEMstudio Overview\n" +
+    "          STEMCstudio Overview\n" +
     "        </h1>\n" +
     "        <p class='lead'>\n" +
-    "          The principle behind STEMstudio is to provide a learning environment in which the student can verify personal understanding and conceptual models by constructing a working software model. This learning environment takes the form of a general-purpose software development environment optimized for Mathematics and Computer Graphics. Programming a computer, sometimes in collaboration with others, provides a non-threatening environment, clarifies understanding, challenges mastery, and motivates further exploration.\n" +
+    "          The principle behind STEMCstudio is to provide a learning environment in which the student can verify personal understanding and conceptual models by constructing a working software model. This learning environment takes the form of a general-purpose software development environment optimized for Mathematics and Computer Graphics. Programming a computer, sometimes in collaboration with others, provides a non-threatening environment, clarifies understanding, challenges mastery, and motivates further exploration.\n" +
     "        </p>\n" +
     "      </div>\n" +
     "      <div class='md-docs-section'>\n" +
@@ -484,10 +484,10 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "      </div>\n" +
     "      <div class='md-docs-section'>\n" +
     "        <h1 id='features' class='page-header'>\n" +
-    "          Features and Benefits of STEMstudio\n" +
+    "          Features and Benefits of STEMCstudio\n" +
     "        </h1>\n" +
     "        <p class='lead'>\n" +
-    "          STEMstudio is unique among browser editing environments by being optimized for learning Mathematics and Geometry.\n" +
+    "          STEMCstudio is unique among browser editing environments by being optimized for learning Mathematics and Geometry.\n" +
     "        </p>\n" +
     "        <p>\n" +
     "          <dl>\n" +
@@ -517,19 +517,19 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "            <dt>Operator Overloading</dt>\n" +
     "            <dd>\n" +
     "              Operator Overloading is essential for making mathematical programming look natural\n" +
-    "              when dealing with structured types such as vectors and matrices. STEMstudio supports a rich set of mathematical operators (useful for performing multivector analysis). In addition to the usual arithmetic operators, there is support for inner and outer products, as well as left and right contraction. These operators may be used with your own custom datatypes. Operator Overloading is optional.\n" +
+    "              when dealing with structured types such as vectors and matrices. STEMCstudio supports a rich set of mathematical operators (useful for performing multivector analysis). In addition to the usual arithmetic operators, there is support for inner and outer products, as well as left and right contraction. These operators may be used with your own custom datatypes. Operator Overloading is optional.\n" +
     "            </dd>\n" +
     "            <dt>Geometric Algebra Library</dt>\n" +
     "            <dd>\n" +
-    "              STEMstudio provides a library (davinci-eight a.k.a 'EIGHT') for perfoming Geometric Algebra computations in 2D and 3D Euclidean geometries.\n" +
+    "              STEMCstudio provides a library (davinci-eight a.k.a 'EIGHT') for perfoming Geometric Algebra computations in 2D and 3D Euclidean geometries.\n" +
     "            </dd>\n" +
     "            <dt>WebGL Mathematical Computer Graphics Library</dt>\n" +
     "            <dd>\n" +
-    "              STEMstudio provides a library (davinci-eight a.k.a 'EIGHT') that helps to manage the complexity of WebGL shader programs rather than trying to hide it. This is important for high-performance graphics and mathematical flexibility.\n" +
+    "              STEMCstudio provides a library (davinci-eight a.k.a 'EIGHT') that helps to manage the complexity of WebGL shader programs rather than trying to hide it. This is important for high-performance graphics and mathematical flexibility.\n" +
     "            </dd>\n" +
     "            <dt>Units of Measure</dt>\n" +
     "            <dd>\n" +
-    "              STEMstudio incorporates a library (davinci-eight a.k.a 'EIGHT') that combines geometric quantities with units to create measures. Students can explore dimensional analysis and the S.I. system of units. Calculations may be performed without units or by carrying through units.\n" +
+    "              STEMCstudio incorporates a library (davinci-eight a.k.a 'EIGHT') that combines geometric quantities with units to create measures. Students can explore dimensional analysis and the S.I. system of units. Calculations may be performed without units or by carrying through units.\n" +
     "            </dd>\n" +
     "          </dl>\n" +
     "        </p>\n" +
@@ -544,11 +544,11 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "        </p>\n" +
     "        <p>\n" +
     "        I am frequently asked whether there is a curriculum for learning Geometric Algebra\n" +
-    "        at the middle and high-school level using STEMstudio to practice the concepts.\n" +
+    "        at the middle and high-school level using STEMCstudio to practice the concepts.\n" +
     "        To address this need I have created a blog in which I will capture a possible\n" +
     "        approach. I hope this will be a proving ground for developing a new curriculum.\n" +
     "        The <a href='http://www.geometricphysics.org'>Geometric Physics</a> blog will explain the pedagogic philosophy, incrementally develop the necessary mathematical theory for Geometric Algebra, provide the practical information for\n" +
-    "        using STEMstudio and related technologies, and finally guide the student or\n" +
+    "        using STEMCstudio and related technologies, and finally guide the student or\n" +
     "        educator in developing their own geometric numbers, computations and graphics.\n" +
     "        Once the necessary mathematical and computing infrastructure has been developed,\n" +
     "        it will be applied to understand the laws of Physics which are described geometrically.\n" +
@@ -563,14 +563,14 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "          Audience\n" +
     "        </h1>\n" +
     "        <p class='lead'>\n" +
-    "        STEMstudio is a general purpose mathematical tool for the scientific community.\n" +
+    "        STEMCstudio is a general purpose mathematical tool for the scientific community.\n" +
     "        </p>\n" +
     "        <p>\n" +
-    "        STEMstudio was conceived to tackle the problem of learning geometry effectively, but\n" +
+    "        STEMCstudio was conceived to tackle the problem of learning geometry effectively, but\n" +
     "        its general purpose nature makes it useful to a much wider audience. At the youngest\n" +
     "        end of the spectrum it can be used as the first introduction to a grown-up programming\n" +
     "        language. In the middle of the spectrum the tool may be used for learning and experiencing mathematical geometry with the programming being second-nature. Educators may\n" +
-    "        use STEMstudio for demonstration purposes or to set hands-on problems. Researchers may use the tool for convenient computation, exploring problems, or to present their work.\n" +
+    "        use STEMCstudio for demonstration purposes or to set hands-on problems. Researchers may use the tool for convenient computation, exploring problems, or to present their work.\n" +
     "        </p>\n" +
     "      </div>\n" +
     "\n" +
