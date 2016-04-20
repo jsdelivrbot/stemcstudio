@@ -23,9 +23,13 @@ import mathscript from 'davinci-mathscript';
 import WorkspaceScope from '../../scopes/WorkspaceScope';
 import WorkspaceMixin from '../editor/WorkspaceMixin';
 
+const FSLASH_STAR = '/*'
+const STAR_FSLASH = '*/'
+
 const WAIT_NO_MORE = 0;
 const WAIT_FOR_MORE_CODE_KEYSTROKES = 1500;
 const WAIT_FOR_MORE_OTHER_KEYSTROKES = 350;
+const WAIT_FOR_MORE_README_KEYSTROKES = 1000;
 
 function namesToOptions(names: string[], options: IOptionManager): IOption[] {
     return options.filter(function(option) { return names.indexOf(option.name) >= 0; });
@@ -207,6 +211,15 @@ export default class WorkspaceController implements WorkspaceMixin {
     private outputFilesEventHandlers: { [name: string]: OutputFileHandler } = {}
     private changeHandlers: { [name: string]: ChangeHandler } = {}
 
+    /**
+     * Promise to update the README view for throttling.
+     */
+    private readmePromise: angular.IPromise<void>
+    /**
+     * Keep track of the README handlers that are registered for cleanup.
+     */
+    private readmeChangeHandlers: { [name: string]: ChangeHandler } = {}
+
     private editors: { [name: string]: ace.Editor } = {}
     private resizeListener: (unused: UIEvent) => any;
 
@@ -298,6 +311,12 @@ export default class WorkspaceController implements WorkspaceMixin {
             $scope.updatePreview(WAIT_NO_MORE)
         }
 
+        $scope.toggleReadMeVisible = (label?: string, value?: number) => {
+            ga('send', 'event', 'doodle', 'toggleReadMeVisible', label, value)
+            $scope.isReadMeVisible = !$scope.isReadMeVisible
+            this.updateReadmeView(WAIT_NO_MORE)
+        }
+
         $scope.updateView = () => {
             this.updateWorkspace();
 
@@ -305,6 +324,7 @@ export default class WorkspaceController implements WorkspaceMixin {
             setEditMode(doodles.current().isCodeVisible);
             // Don't start in Playing mode in case the user has a looping program.
             setViewMode(false/*doodles.current().isViewVisible*/);
+            $scope.isReadMeVisible = true;
             $window.document.title = doodles.current().description;
         }
 
@@ -474,9 +494,12 @@ export default class WorkspaceController implements WorkspaceMixin {
             }
             case 'CSS':
             case 'HTML':
-            case 'LESS':
-            case 'Markdown': {
+            case 'LESS': {
                 editor.getSession().on('change', this.createChangeHandler(filename))
+                break
+            }
+            case 'Markdown': {
+                this.addReadmeChangeHandler(filename, editor)
                 break
             }
             default: {
@@ -488,6 +511,14 @@ export default class WorkspaceController implements WorkspaceMixin {
         editor.resize(true)
     }
 
+    /**
+     * Creates the handler function used to respond to (transpiled) 'outputFiles' events from the editor.
+     * The handler function is cached so that it can be removed when the editor is detached from the workspace.
+     *
+     * @method createOutputFilesEventHandler
+     * @param filename {string}
+     * @return {OutputFilesHandler}
+     */
     private createOutputFilesEventHandler(filename: string): OutputFileHandler {
         const handler = (event: { data: ace.OutputFile[] }, session: ace.EditSession) => {
             // It's OK to capture the current Doodle here, but not outside the handler!
@@ -528,8 +559,46 @@ export default class WorkspaceController implements WorkspaceMixin {
         return handler
     }
 
-    private deleteChangeHandler(filename) {
-        delete this.outputFilesEventHandlers[filename]
+    private createReadmeChangeHandler(filename: string): ChangeHandler {
+        const handler = (delta: ace.Delta, session: ace.EditSession) => {
+            if (/* this.cascade && */ this.doodles.current()) {
+                this.doodles.updateStorage()
+                this.updateReadmeView(WAIT_FOR_MORE_README_KEYSTROKES)
+            }
+        }
+        this.readmeChangeHandlers[filename] = handler
+        return handler
+    }
+
+    private updateReadmeView(delay: number) {
+        // Throttle the requests to update the README view.
+        if (this.readmePromise) { this.$timeout.cancel(this.readmePromise); }
+        this.readmePromise = this.$timeout(() => { this.rebuildReadmeView(); this.readmePromise = undefined; }, delay)
+    }
+
+    private deleteChangeHandler(filename: string): void {
+        delete this.changeHandlers[filename]
+    }
+
+    private addReadmeChangeHandler(filename: string, editor: ace.Editor): void {
+        if (this.readmeChangeHandlers[filename]) {
+            console.warn(`NOT Expecting to find a README change handler for file ${filename}.`)
+            return
+        }
+        const handler = this.createReadmeChangeHandler(filename)
+        editor.getSession().on('change', handler)
+        this.readmeChangeHandlers[filename] = handler
+    }
+
+    private removeReadmeChangeHandler(filename: string, editor: ace.Editor): void {
+        const handler = this.readmeChangeHandlers[filename]
+        if (handler) {
+            editor.getSession().off('change', handler)
+            delete this.readmeChangeHandlers[filename]
+        }
+        else {
+            console.warn(`Expecting to find a README change handler for file ${filename}.`)
+        }
     }
 
     /**
@@ -557,11 +626,14 @@ export default class WorkspaceController implements WorkspaceMixin {
             }
             case 'CSS':
             case 'HTML':
-            case 'LESS':
-            case 'Markdown': {
+            case 'LESS': {
                 const handler = this.changeHandlers[filename]
                 editor.getSession().off('change', handler)
                 this.deleteChangeHandler(filename)
+                break
+            }
+            case 'Markdown': {
+                this.removeReadmeChangeHandler(filename, editor)
                 break
             }
             default: {
@@ -687,7 +759,7 @@ export default class WorkspaceController implements WorkspaceMixin {
 
                         preview.appendChild(this.$scope.previewIFrame);
 
-                        const content = this.$scope.previewIFrame.contentDocument || this.$scope.previewIFrame.contentWindow.document;
+                        const content: Document = this.$scope.previewIFrame.contentDocument || this.$scope.previewIFrame.contentWindow.document;
 
                         let html: string = fileContent(bestFile, doodle)
                         if (typeof html === 'string') {
@@ -757,9 +829,8 @@ export default class WorkspaceController implements WorkspaceMixin {
                         }
                     }
                     else {
-                        // The view is not visible.
+                        /*
                         this.$scope.previewIFrame = document.createElement('iframe');
-                        // Let's not change any more styles than we have to. 
                         this.$scope.previewIFrame.style.width = '100%';
                         this.$scope.previewIFrame.style.height = '100%';
                         this.$scope.previewIFrame.style.border = '0';
@@ -777,7 +848,7 @@ export default class WorkspaceController implements WorkspaceMixin {
                             html = html.replace('// README.md', markdownHTML);
                         }
                         if (fileExists('README.css', doodle)) {
-                            html = html.replace('/* README.css */', fileContent('README.css', doodle));
+                            html = html.replace(`${FSLASH_STAR} README.css ${STAR_FSLASH}`, fileContent('README.css', doodle));
                         }
 
                         content.open()
@@ -785,6 +856,7 @@ export default class WorkspaceController implements WorkspaceMixin {
                         content.close()
 
                         bubbleIframeMouseMove(this.$scope.previewIFrame)
+                        */
                     }
                 }
             }
@@ -795,5 +867,56 @@ export default class WorkspaceController implements WorkspaceMixin {
         catch (e) {
             console.warn(e);
         }
-    };
+    }
+
+    /**
+     * 
+     */
+    rebuildReadmeView() {
+        try {
+            // Kill any existing frames.
+            this.$scope.previewIFrame = undefined;
+            const preview = this.$window.document.getElementById('readme');
+            if (preview) {
+                while (preview.children.length > 0) {
+                    preview.removeChild(preview.firstChild);
+                }
+                const doodle: Doodle = this.doodles.current()
+                if (doodle && this.$scope.isReadMeVisible) {
+                    this.$scope.previewIFrame = document.createElement('iframe');
+                    this.$scope.previewIFrame.style.width = '100%';
+                    this.$scope.previewIFrame.style.height = '100%';
+                    this.$scope.previewIFrame.style.border = '0';
+                    this.$scope.previewIFrame.style.backgroundColor = '#ffffff';
+
+                    preview.appendChild(this.$scope.previewIFrame);
+
+                    let html = readMeHTML({})
+
+                    const content = this.$scope.previewIFrame.contentDocument || this.$scope.previewIFrame.contentWindow.document;
+                    if (fileExists(this.FILENAME_README, doodle)) {
+                        const markdown: string = fileContent(this.FILENAME_README, doodle)
+                        const converter: sd.Converter = new sd.Converter()
+                        const markdownHTML = converter.makeHtml(markdown)
+                        html = html.replace('// README.md', markdownHTML);
+                    }
+                    if (fileExists('README.css', doodle)) {
+                        html = html.replace(`${FSLASH_STAR} README.css ${STAR_FSLASH}`, fileContent('README.css', doodle));
+                    }
+
+                    content.open()
+                    content.write(html)
+                    content.close()
+
+                    bubbleIframeMouseMove(this.$scope.previewIFrame)
+                }
+            }
+            else {
+                console.warn("There is no #preview element on the doodle page.")
+            }
+        }
+        catch (e) {
+            console.warn(e);
+        }
+    }
 }

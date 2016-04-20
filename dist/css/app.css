@@ -7459,6 +7459,10 @@ html {
   flex: 1;
   height: 100%;
 }
+#readme {
+  flex: 1;
+  height: 100%;
+}
 .resizable {
   position: relative;
 }

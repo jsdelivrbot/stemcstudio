@@ -14,6 +14,7 @@ System.config({
     "angular": "github:angular/bower-angular@1.5.5",
     "angular-animate": "github:angular/bower-angular-animate@1.5.5",
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.2",
+    "angular-material-icons": "npm:angular-material-icons@0.7.0",
     "angular-ui-router": "github:angular-ui/ui-router@0.2.18",
     "angular2": "npm:angular2@2.0.0-beta.15",
     "bootstrap": "vendor/bootstrap/dist/js/npm",
@@ -56,6 +57,9 @@ System.config({
     },
     "npm:@angular/router@0.2.0": {
       "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:angular-material-icons@0.7.0": {
+      "angular": "npm:angular@1.5.5"
     },
     "npm:angular2@2.0.0-beta.15": {
       "reflect-metadata": "npm:reflect-metadata@0.1.2",

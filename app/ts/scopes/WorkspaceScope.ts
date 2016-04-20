@@ -9,6 +9,9 @@ interface WorkspaceScope extends DoodleScope {
 
     isViewVisible: boolean;
     toggleView: () => void;
+    
+    isReadMeVisible: boolean;
+    toggleReadMeVisible: () => void;
 
     updateView(): void;
     updatePreview(delay: number): void;

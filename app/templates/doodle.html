@@ -10,11 +10,11 @@
                 <ul class='nav navbar-nav'>
                     <li>
                         <a role='button' ng-click='toggleExplorer()'>
-                            <span ng-show='isExplorerVisible' class="glyphicon glyphicon-menu-hamburger" aria-hidden="true" uib-tooltip="Hide File Explorer"
-                            tooltip-placement="bottom">
+                            <span ng-show='isExplorerVisible' class="glyphicon glyphicon-menu-hamburger" aria-hidden='true' uib-tooltip="Hide File Explorer"
+                            tooltip-placement='bottom'>
                             </span>
-                            <span ng-hide='isExplorerVisible' class="glyphicon glyphicon-menu-hamburger" aria-hidden="true" uib-tooltip="Show File Explorer"
-                            tooltip-placement="bottom">
+                            <span ng-hide='isExplorerVisible' class="glyphicon glyphicon-menu-hamburger" aria-hidden='true' uib-tooltip="Show File Explorer"
+                            tooltip-placement='bottom'>
                             </span>
                         </a>
                     </li>
@@ -27,67 +27,72 @@
                         </a>
                     </li>
                     <li uib-dropdown ng-show='isEditMode'>
-                        <a uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="View" tooltip-placement="bottom">
+                        <a uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="View" tooltip-placement='bottom'>
                             <span class='glyphicon glyphicon-picture' aria-hidden='true'></span>
                             <span class='caret'></span>
                         </a>
                         <ul class='dropdown-menu' uib-dropdown-menu role='menu'>
                             <li role='button' ng-repeat='(name, file) in currentDoodle().files' ng-if='name.indexOf(".html") &gt; 0'>
                                 <a ng-click='doView(name, file)'>{{name}}&nbsp;
-                                    <span class="glyphicon glyphicon-hand-left" aria-hidden="true" ng-if='file.preview'></span>
+                                    <span class="glyphicon glyphicon-hand-left" aria-hidden='true' ng-if='file.preview'></span>
                                 </a>
                             </li>
                         </ul>
                     </li>
                     <li uib-dropdown ng-show='isEditMode'>
-                        <a uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="Project" tooltip-placement="bottom">
+                        <a uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="Project" tooltip-placement='bottom'>
                             <span class="glyphicon glyphicon-hdd" aria-hidden='true'></span>
                             <span class='caret'></span>
                         </a>
                         <ul uib-dropdown-menu role='menu'>
                             <li>
                                 <a role='button' ng-click='doNew()'>
-                                    <span class="glyphicon glyphicon-file" aria-hidden="true"></span> New Project
+                                    <span class="glyphicon glyphicon-file" aria-hidden='true'></span> New Project
                                 </a>
                             </li>
                             <li>
                                 <a role='button' ng-click='doOpen()'>
-                                    <span class="glyphicon glyphicon-open-file" aria-hidden="true"></span> Open existing Project
+                                    <span class="glyphicon glyphicon-open-file" aria-hidden='true'></span> Open existing Project
                                 </a>
                             </li>
                             <li>
                                 <a role='button' ng-click='doCopy()'>
-                                    <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span> Copy this Project
+                                    <span class="glyphicon glyphicon-duplicate" aria-hidden='true'></span> Copy this Project
                                 </a>
                             </li>
                         </ul>
                     </li>
                     <li ng-show='isEditMode'>
+                        <a role='button' ng-click='toggleReadMeVisible()'>
+                            <ng-md-icon icon='assignment' style="fill: {{isReadMeVisible ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="toggle README.md visibility" tooltip-placement='bottom'><ng-md-icon>
+                        </a>
+                    </li>
+                    <li ng-show='isEditMode'>
                         <a role='button' ng-click='doProperties()'>
-                            <span class="glyphicon glyphicon-check" aria-hidden="true" uib-tooltip="Properties" tooltip-placement="bottom"></span>
+                            <span class="glyphicon glyphicon-check" aria-hidden='true' uib-tooltip="Properties" tooltip-placement='bottom'></span>
                         </a>
                     </li>
                     <li uib-dropdown ng-show='isEditMode &amp;&amp; isLoggedIn()'>
-                        <a ng-show='isLoggedIn()' uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="GitHub" tooltip-placement="bottom">
-                            <span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>
+                        <a ng-show='isLoggedIn()' uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="GitHub" tooltip-placement='bottom'>
+                            <span class="glyphicon glyphicon-cloud" aria-hidden='true'></span>
                             <span class='caret' ng-show='isLoggedIn()'></span>
                         </a>
                         <ul uib-dropdown-menu role="menu">
                             <li>
                                 <a ng-click='clickDownload()' ng-show='isLoggedIn()' role='button'>
-                                    <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span> Download
+                                    <span class="glyphicon glyphicon-cloud-download" aria-hidden='true'></span> Download
                                 </a>
                             </li>
                             <li>
                                 <a ng-click='doUpload()' ng-show='isLoggedIn()' role='button'>
-                                    <span class="glyphicon glyphicon-cloud-upload" aria-hidden="true"></span> Upload
+                                    <span class="glyphicon glyphicon-cloud-upload" aria-hidden='true'></span> Upload
                                 </a>
                             </li>
                         </ul>
                     </li>
                     <!--
                     <li uib-dropdown ng-show='isEditMode'>
-                        <a uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="View" tooltip-placement="bottom">
+                        <a uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="View" tooltip-placement='bottom'>
                             <span class='glyphicon glyphicon-picture' aria-hidden='true'></span>
                             <span class='caret'></span>
                         </a>
@@ -101,7 +106,7 @@
                     <!--
                     <li>
                         <a role='button'>
-                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-search" aria-hidden='true'></span>
                         </a>
                     </li>
                     -->
@@ -114,7 +119,8 @@
                 <div editor ng-repeat='(name, file) in currentDoodle().files' ng-model='file.content' id='{{name}}' mode='{{file.language}}'
                 ng-show='isEditMode &amp;&amp; file.selected'></div>
             </div>
-            <div id='preview'></div>
+            <div id='readme' ng-show='isReadMeVisible'></div>
+            <div id='preview' ng-show='isViewVisible' resizable r-directions="['left']" r-flex='true'></div>
         </div>
     </workspace>
 </div>

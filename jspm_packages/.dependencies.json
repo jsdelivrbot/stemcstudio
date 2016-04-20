@@ -160,5 +160,9 @@
   "github:ace2ts/ace@0.1.147": {
     "ace2ts/ace-workers": "github:ace2ts/ace-workers@^0.1.51",
     "typescript": "npm:typescript@^1.8.10"
-  }
+  },
+  "npm:angular-material-icons@0.7.0": {
+    "angular": "npm:angular"
+  },
+  "npm:angular@1.5.5": {}
 }
