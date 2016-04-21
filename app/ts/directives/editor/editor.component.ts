@@ -49,7 +49,7 @@ function factory($timeout: ng.ITimeoutService, settings: ISettingsService, textS
                 editor.getSession().setUseWrapMode(true)
                 editor.setWrapBehavioursEnabled(true)
                 // editor.getSession().setWrapLimit(90)  TODO: We seem to be missing this from the d.ts?
-                editor.getSession().setWrapLimitRange(60, 80)
+                // editor.getSession().setWrapLimitRange(60, 80)
                 editor.setLanguageMode(ace.createMarkdownMode('/js/worker.js', workerImports))
                 break
             }

@@ -21,7 +21,7 @@ export default function(options: {} = {}): string {
     lines.push("  createElement: function() { return document.createElement.apply(document, arguments) },")
     lines.push("  createTextNode: function() { return document.createTextNode.apply(document, arguments) },")
     lines.push("  timer: new jasmine.Timer()")
-    lines.push("});")
+    lines.push("})")
     lines.push("")
     lines.push("env.addReporter(jasmineInterface.jsApiReporter)")
     lines.push("env.addReporter(htmlReporter)")
