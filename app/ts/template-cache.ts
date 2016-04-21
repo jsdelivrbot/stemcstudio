@@ -175,8 +175,8 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                <div editor ng-repeat='(name, file) in currentDoodle().files' ng-model='file.content' id='{{name}}' mode='{{file.language}}'\n" +
     "                ng-show='isEditMode &amp;&amp; file.selected'></div>\n" +
     "            </div>\n" +
-    "            <div id='readme' ng-show='isReadMeVisible'></div>\n" +
-    "            <div id='preview' ng-show='isViewVisible' resizable r-directions=\"['left']\" r-flex='true'></div>\n" +
+    "            <div id='readme' ng-if='isReadMeVisible'></div>\n" +
+    "            <div id='output' ng-if='isViewVisible'></div>\n" +
     "        </div>\n" +
     "    </workspace>\n" +
     "</div>"

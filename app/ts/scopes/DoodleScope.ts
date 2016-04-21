@@ -22,11 +22,6 @@ interface DoodleScope extends BodyScope, ExplorerMixin {
     doCopy: () => void;
 
     /**
-     * View the specified file in the Viewer.
-     */
-    doView(name: string): void;
-
-    /**
      * 
      */
     doProperties(): void;

@@ -275,39 +275,37 @@ export default class WorkspaceController implements WorkspaceMixin {
             rebuildPromise = $timeout(() => { this.rebuildPreview(); rebuildPromise = undefined; }, delay)
         }
 
-        // Not sure how best to do this. I don't want loading to trigger processing until ready.
-        // let cascade = false;
-
-        const TEXT_CODE_HIDE = "View";
-        const TEXT_CODE_SHOW = "Edit";
-
-        function setEditMode(editMode: boolean) {
-            $scope.isEditMode = editMode;
-            $scope.toggleText = editMode ? TEXT_CODE_HIDE : TEXT_CODE_SHOW;
-        }
-
-        const setViewMode = function(isViewVisible: boolean) {
-            $scope.isViewVisible = isViewVisible;
+        $scope.doView = (name: string): void => {
+            const doodle = doodles.current()
+            const file = doodle.findFileByName(name)
+            if (file) {
+                doodle.setPreviewFile(name)
+                // The user probably wants to see the view, so make sure the view is visible.
+                $scope.isViewVisible = true
+                $scope.updatePreview(WAIT_NO_MORE)
+            }
         }
 
         $scope.toggleMode = function(label?: string, value?: number) {
-            ga('send', 'event', 'doodle', 'toggleMode', label, value);
-            setEditMode(!$scope.isEditMode);
+            // Is this dead code?
+            console.log(`toggleMode(${label}, ${value})`)
+            ga('send', 'event', 'doodle', 'toggleMode', label, value)
+            $scope.isEditMode = !$scope.isEditMode
             // Ensure the preview is running when going away from editing.
             if (!$scope.isEditMode) {
-                setViewMode(true);
-                $scope.updatePreview(WAIT_NO_MORE);
+                $scope.isViewVisible = true
+                $scope.updatePreview(WAIT_NO_MORE)
             }
             else {
                 if ($scope.isViewVisible) {
-                    $scope.updatePreview(WAIT_NO_MORE);
+                    $scope.updatePreview(WAIT_NO_MORE)
                 }
             }
         }
 
         $scope.toggleView = function(label?: string, value?: number) {
             ga('send', 'event', 'doodle', 'toggleView', label, value)
-            setViewMode(!$scope.isViewVisible)
+            $scope.isViewVisible = !$scope.isViewVisible
             $scope.updatePreview(WAIT_NO_MORE)
         }
 
@@ -318,12 +316,13 @@ export default class WorkspaceController implements WorkspaceMixin {
         }
 
         $scope.updateView = () => {
-            this.updateWorkspace();
+            this.updateWorkspace()
 
             // Bit of a smell here. Should we be updating the scope?
-            setEditMode(doodles.current().isCodeVisible);
-            // Don't start in Playing mode in case the user has a looping program.
-            setViewMode(false/*doodles.current().isViewVisible*/);
+            $scope.isEditMode = doodles.current().isCodeVisible
+            // Don't start in Playing mode in case the user has a looping program (give chance to fix the code).
+            $scope.isViewVisible = false
+            // No such issue with the README.md
             $scope.isReadMeVisible = true;
             $window.document.title = doodles.current().description;
         }
@@ -740,7 +739,8 @@ export default class WorkspaceController implements WorkspaceMixin {
         try {
             // Kill any existing frames.
             this.$scope.previewIFrame = undefined;
-            const preview = this.$window.document.getElementById('preview');
+            const elementId = 'output'
+            const preview = this.$window.document.getElementById(elementId)
             if (preview) {
                 while (preview.children.length > 0) {
                     preview.removeChild(preview.firstChild);
@@ -828,40 +828,11 @@ export default class WorkspaceController implements WorkspaceMixin {
                             console.warn(`bestFile => ${bestFile}`)
                         }
                     }
-                    else {
-                        /*
-                        this.$scope.previewIFrame = document.createElement('iframe');
-                        this.$scope.previewIFrame.style.width = '100%';
-                        this.$scope.previewIFrame.style.height = '100%';
-                        this.$scope.previewIFrame.style.border = '0';
-                        this.$scope.previewIFrame.style.backgroundColor = '#ffffff';
-
-                        preview.appendChild(this.$scope.previewIFrame);
-
-                        let html = readMeHTML({})
-
-                        const content = this.$scope.previewIFrame.contentDocument || this.$scope.previewIFrame.contentWindow.document;
-                        if (fileExists(this.FILENAME_README, doodle)) {
-                            const markdown: string = fileContent(this.FILENAME_README, doodle)
-                            const converter: sd.Converter = new sd.Converter()
-                            const markdownHTML = converter.makeHtml(markdown)
-                            html = html.replace('// README.md', markdownHTML);
-                        }
-                        if (fileExists('README.css', doodle)) {
-                            html = html.replace(`${FSLASH_STAR} README.css ${STAR_FSLASH}`, fileContent('README.css', doodle));
-                        }
-
-                        content.open()
-                        content.write(html)
-                        content.close()
-
-                        bubbleIframeMouseMove(this.$scope.previewIFrame)
-                        */
-                    }
                 }
             }
             else {
-                console.warn("There is no #preview element on the doodle page.")
+                // This can happen if we use ng-if to kill the element entirely, which we do.
+                // console.warn(`There is no element with id '${elementId}'.`)
             }
         }
         catch (e) {
@@ -874,49 +845,50 @@ export default class WorkspaceController implements WorkspaceMixin {
      */
     rebuildReadmeView() {
         try {
+            const elementId = 'readme'
             // Kill any existing frames.
-            this.$scope.previewIFrame = undefined;
-            const preview = this.$window.document.getElementById('readme');
-            if (preview) {
-                while (preview.children.length > 0) {
-                    preview.removeChild(preview.firstChild);
+            const hostElement: HTMLElement = this.$window.document.getElementById(elementId)
+            if (hostElement) {
+                while (hostElement.children.length > 0) {
+                    hostElement.removeChild(hostElement.firstChild)
                 }
                 const doodle: Doodle = this.doodles.current()
                 if (doodle && this.$scope.isReadMeVisible) {
-                    this.$scope.previewIFrame = document.createElement('iframe');
-                    this.$scope.previewIFrame.style.width = '100%';
-                    this.$scope.previewIFrame.style.height = '100%';
-                    this.$scope.previewIFrame.style.border = '0';
-                    this.$scope.previewIFrame.style.backgroundColor = '#ffffff';
+                    const iframe: HTMLIFrameElement = document.createElement('iframe')
+                    iframe.style.width = '100%'
+                    iframe.style.height = '100%'
+                    iframe.style.border = '0'
+                    iframe.style.backgroundColor = '#ffffff'
 
-                    preview.appendChild(this.$scope.previewIFrame);
+                    hostElement.appendChild(iframe)
 
                     let html = readMeHTML({})
 
-                    const content = this.$scope.previewIFrame.contentDocument || this.$scope.previewIFrame.contentWindow.document;
+                    const content = iframe.contentDocument || iframe.contentWindow.document
                     if (fileExists(this.FILENAME_README, doodle)) {
                         const markdown: string = fileContent(this.FILENAME_README, doodle)
                         const converter: sd.Converter = new sd.Converter()
                         const markdownHTML = converter.makeHtml(markdown)
-                        html = html.replace('// README.md', markdownHTML);
+                        html = html.replace('// README.md', markdownHTML)
                     }
                     if (fileExists('README.css', doodle)) {
-                        html = html.replace(`${FSLASH_STAR} README.css ${STAR_FSLASH}`, fileContent('README.css', doodle));
+                        html = html.replace(`${FSLASH_STAR} README.css ${STAR_FSLASH}`, fileContent('README.css', doodle))
                     }
 
                     content.open()
                     content.write(html)
                     content.close()
 
-                    bubbleIframeMouseMove(this.$scope.previewIFrame)
+                    bubbleIframeMouseMove(iframe)
                 }
             }
             else {
-                console.warn("There is no #preview element on the doodle page.")
+                // This can happen if we use ng-if to kill the element entirely, which we do.
+                // console.warn(`There is no element with id '${elementId}'.`)
             }
         }
         catch (e) {
-            console.warn(e);
+            console.warn(e)
         }
     }
 }

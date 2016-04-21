@@ -149,14 +149,6 @@ export default class DoodleController {
             $state.go('copy');
         };
 
-        $scope.doView = function(name: string): void {
-            const doodle = doodles.current();
-            const file = doodle.findFileByName(name)
-            if (file) {
-                doodle.setPreviewFile(name)
-            }
-        }
-
         $scope.doProperties = function(label?: string, value?: number) {
             ga('send', 'event', 'doodle', 'properties', label, value);
             $state.go('properties', { doodle: doodles.current() });

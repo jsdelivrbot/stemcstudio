@@ -119,8 +119,8 @@
                 <div editor ng-repeat='(name, file) in currentDoodle().files' ng-model='file.content' id='{{name}}' mode='{{file.language}}'
                 ng-show='isEditMode &amp;&amp; file.selected'></div>
             </div>
-            <div id='readme' ng-show='isReadMeVisible'></div>
-            <div id='preview' ng-show='isViewVisible' resizable r-directions="['left']" r-flex='true'></div>
+            <div id='readme' ng-if='isReadMeVisible'></div>
+            <div id='output' ng-if='isViewVisible'></div>
         </div>
     </workspace>
 </div>

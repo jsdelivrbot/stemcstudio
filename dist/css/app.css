@@ -7455,7 +7455,7 @@ html {
   color: #999;
   font-size: smaller;
 }
-#preview {
+#output {
   flex: 1;
   height: 100%;
 }
