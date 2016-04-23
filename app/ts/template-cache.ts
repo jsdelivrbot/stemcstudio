@@ -55,6 +55,8 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
 
   $templateCache.put('doodle.html',
     "<div id='doodle-page'>\n" +
+    "    <!-- The workspace directive has its own implicit controller, WorkspaceController -->\n" +
+    "    <!-- The corresponding scope is WorkspaceScope -->\n" +
     "    <workspace>\n" +
     "        <nav id='toolbar' class='navbar navbar-inverse'>\n" +
     "            <div class='navbar-header'>\n" +
@@ -74,7 +76,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                            </span>\n" +
     "                        </a>\n" +
     "                    </li>\n" +
-    "                    <li>\n" +
+    "                    <li ng-if='workspaceLoaded'>\n" +
     "                        <a role='button' ng-click='toggleView()' ng-hide='isViewVisible'>\n" +
     "                            <span class='glyphicon glyphicon-play' aria-hidden='true' ng-hide='isViewVisible' uib-tooltip=\"Run\" tooltip-placement='bottom'></span>\n" +
     "                        </a>\n" +
@@ -146,32 +148,12 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                            </li>\n" +
     "                        </ul>\n" +
     "                    </li>\n" +
-    "                    <!--\n" +
-    "                    <li uib-dropdown ng-show='isEditMode'>\n" +
-    "                        <a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"View\" tooltip-placement='bottom'>\n" +
-    "                            <span class='glyphicon glyphicon-picture' aria-hidden='true'></span>\n" +
-    "                            <span class='caret'></span>\n" +
-    "                        </a>\n" +
-    "                        <ul class='dropdown-menu' uib-dropdown-menu role='menu'>\n" +
-    "                            <li role='menuitem' ng-repeat='(name, file) in currentDoodle().files'>\n" +
-    "                                <a ng-click=''>{{name}}</a>\n" +
-    "                            </li>\n" +
-    "                        </ul>\n" +
-    "                    </li>\n" +
-    "                    -->\n" +
-    "                    <!--\n" +
-    "                    <li>\n" +
-    "                        <a role='button'>\n" +
-    "                            <span class=\"glyphicon glyphicon-search\" aria-hidden='true'></span>\n" +
-    "                        </a>\n" +
-    "                    </li>\n" +
-    "                    -->\n" +
     "                </ul>\n" +
     "            </div>\n" +
     "        </nav>\n" +
     "        <div id='doodle-container'>\n" +
     "            <explorer ng-model='currentDoodle().files' class='explorer' ng-show='isExplorerVisible'></explorer>\n" +
-    "            <div id='editors' resizable r-directions=\"['right']\" r-flex='true'>\n" +
+    "            <div id='editors' resizable r-directions=\"['right']\" r-flex='true' ng-if='doodleLoaded'>\n" +
     "                <div editor ng-repeat='(name, file) in currentDoodle().files' ng-model='file.content' id='{{name}}' mode='{{file.language}}'\n" +
     "                ng-show='isEditMode &amp;&amp; file.selected'></div>\n" +
     "            </div>\n" +

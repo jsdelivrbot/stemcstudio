@@ -1,4 +1,6 @@
 <div id='doodle-page'>
+    <!-- The workspace directive has its own implicit controller, WorkspaceController -->
+    <!-- The corresponding scope is WorkspaceScope -->
     <workspace>
         <nav id='toolbar' class='navbar navbar-inverse'>
             <div class='navbar-header'>
@@ -18,7 +20,7 @@
                             </span>
                         </a>
                     </li>
-                    <li>
+                    <li ng-if='workspaceLoaded'>
                         <a role='button' ng-click='toggleView()' ng-hide='isViewVisible'>
                             <span class='glyphicon glyphicon-play' aria-hidden='true' ng-hide='isViewVisible' uib-tooltip="Run" tooltip-placement='bottom'></span>
                         </a>
@@ -90,32 +92,12 @@
                             </li>
                         </ul>
                     </li>
-                    <!--
-                    <li uib-dropdown ng-show='isEditMode'>
-                        <a uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="View" tooltip-placement='bottom'>
-                            <span class='glyphicon glyphicon-picture' aria-hidden='true'></span>
-                            <span class='caret'></span>
-                        </a>
-                        <ul class='dropdown-menu' uib-dropdown-menu role='menu'>
-                            <li role='menuitem' ng-repeat='(name, file) in currentDoodle().files'>
-                                <a ng-click=''>{{name}}</a>
-                            </li>
-                        </ul>
-                    </li>
-                    -->
-                    <!--
-                    <li>
-                        <a role='button'>
-                            <span class="glyphicon glyphicon-search" aria-hidden='true'></span>
-                        </a>
-                    </li>
-                    -->
                 </ul>
             </div>
         </nav>
         <div id='doodle-container'>
             <explorer ng-model='currentDoodle().files' class='explorer' ng-show='isExplorerVisible'></explorer>
-            <div id='editors' resizable r-directions="['right']" r-flex='true'>
+            <div id='editors' resizable r-directions="['right']" r-flex='true' ng-if='doodleLoaded'>
                 <div editor ng-repeat='(name, file) in currentDoodle().files' ng-model='file.content' id='{{name}}' mode='{{file.language}}'
                 ng-show='isEditMode &amp;&amp; file.selected'></div>
             </div>

@@ -12,16 +12,15 @@ import GitHubService from '../../services/github/GitHubService';
 import IGitHubAuthManager from '../../services/gham/IGitHubAuthManager';
 import IOption from '../../services/options/IOption';
 import IOptionManager from '../../services/options/IOptionManager';
-import ISettingsService from '../../services/settings/ISettingsService';
 import ChangeHandler from './ChangeHandler';
 import OutputFileHandler from './OutputFileHandler';
 import doodleGroom from '../../utils/doodleGroom';
 import readMeHTML from './readMeHTML';
 import StringSet from '../../utils/StringSet';
-import IUuidService from '../../services/uuid/IUuidService';
 import mathscript from 'davinci-mathscript';
 import WorkspaceScope from '../../scopes/WorkspaceScope';
 import WorkspaceMixin from '../editor/WorkspaceMixin';
+import Workspace from '../../services/workspace/Workspace';
 
 const FSLASH_STAR = '/*'
 const STAR_FSLASH = '*/'
@@ -30,6 +29,11 @@ const WAIT_NO_MORE = 0;
 const WAIT_FOR_MORE_CODE_KEYSTROKES = 1500;
 const WAIT_FOR_MORE_OTHER_KEYSTROKES = 350;
 const WAIT_FOR_MORE_README_KEYSTROKES = 1000;
+// const WAIT_FOR_STATE_CHANGES = 100;
+
+const MODULE_KIND_NONE = 'none';
+const MODULE_KIND_SYSTEM = 'system';
+const SCRIPT_TARGET_ES5 = 'es5';
 
 function namesToOptions(names: string[], options: IOptionManager): IOption[] {
     return options.filter(function(option) { return names.indexOf(option.name) >= 0; });
@@ -166,6 +170,7 @@ export default class WorkspaceController implements WorkspaceMixin {
      *
      */
     public static $inject: string[] = [
+        '$q',
         '$scope',
         '$state',
         '$stateParams',
@@ -178,9 +183,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         'cloud',
         'cookie',
         'templates',
-        'uuid4',
         'ga',
-        'doodlesKey',
         'doodles',
         'options',
         'FILENAME_META',
@@ -197,16 +200,18 @@ export default class WorkspaceController implements WorkspaceMixin {
         'CODE_MARKER',
         'LIBS_MARKER',
         'VENDOR_FOLDER_MARKER',
-        'settings']
+        'workspace']
 
     /**
      * Keep track of the dependencies that are loaded in the workspace.
      */
     private olds: string[] = [];
 
-    private workspace: ace.Workspace = ace.createWorkspace();
-
-    // private cascade = true;
+    /**
+     * Keep track of validity of module kind and script target.
+     */
+    private moduleKindOK = false;
+    private scriptTargetOK = false;
 
     private outputFilesEventHandlers: { [name: string]: OutputFileHandler } = {}
     private changeHandlers: { [name: string]: ChangeHandler } = {}
@@ -224,26 +229,31 @@ export default class WorkspaceController implements WorkspaceMixin {
     private resizeListener: (unused: UIEvent) => any;
 
     /**
+     * Keep track of watches so that we can clean them up.
+     * I'm beginning to have a deja vu about addRef(), release() all over again.
+     */
+    private watches: (() => any)[] = [];
+
+    /**
      * @class WorkspaceController
      * @constructor
      * @param $scope {WorkspaceScope}
      */
     constructor(
+        private $q: ng.IQService,
         private $scope: WorkspaceScope,
-        $state: angular.ui.IStateService,
-        $stateParams: angular.ui.IStateParamsService,
+        private $state: angular.ui.IStateService,
+        private $stateParams: angular.ui.IStateParamsService,
         private $http: angular.IHttpService,
         private $location: angular.ILocationService,
         private $timeout: angular.ITimeoutService,
         private $window: angular.IWindowService,
         github: GitHubService,
         authManager: IGitHubAuthManager,
-        cloud: ICloud,
-        cookie: CookieService,
+        private cloud: ICloud,
+        private cookie: CookieService,
         templates: Doodle[],
-        uuid4: IUuidService,
         ga: UniversalAnalytics.ga,
-        doodlesKey: string,
         private doodles: IDoodleManager,
         private options: IOptionManager,
         private FILENAME_META: string,
@@ -253,21 +263,14 @@ export default class WorkspaceController implements WorkspaceMixin {
         private FILENAME_LESS: string,
         private FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS: string,
         private FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
-        STATE_GISTS: string,
+        private STATE_GISTS: string,
         private STYLE_MARKER: string,
         private STYLES_MARKER: string,
         private SCRIPTS_MARKER: string,
         private CODE_MARKER: string,
         private LIBS_MARKER: string,
         private VENDOR_FOLDER_MARKER: string,
-        settings: ISettingsService) {
-
-        const systemImports: string[] = ['/jspm_packages/system.js', '/jspm.config.js']
-        const workerImports: string[] = systemImports.concat(['/js/ace-workers.js'])
-        const typescriptServices = ['/js/typescriptServices.js']
-
-        this.workspace.init('/js/worker.js', workerImports.concat(typescriptServices))
-        this.workspace.setDefaultLibrary('/typings/lib.es6.d.ts')
+        private workspace: Workspace) {
 
         let rebuildPromise: angular.IPromise<void>
         $scope.updatePreview = (delay: number) => {
@@ -288,7 +291,6 @@ export default class WorkspaceController implements WorkspaceMixin {
 
         $scope.toggleMode = function(label?: string, value?: number) {
             // Is this dead code?
-            console.log(`toggleMode(${label}, ${value})`)
             ga('send', 'event', 'doodle', 'toggleMode', label, value)
             $scope.isEditMode = !$scope.isEditMode
             // Ensure the preview is running when going away from editing.
@@ -314,107 +316,13 @@ export default class WorkspaceController implements WorkspaceMixin {
             $scope.isReadMeVisible = !$scope.isReadMeVisible
             this.updateReadmeView(WAIT_NO_MORE)
         }
-
-        $scope.updateView = () => {
-            this.updateWorkspace()
-
-            // Bit of a smell here. Should we be updating the scope?
-            $scope.isEditMode = doodles.current().isCodeVisible
-            // Don't start in Playing mode in case the user has a looping program (give chance to fix the code).
-            $scope.isViewVisible = false
-            // No such issue with the README.md
-            $scope.isReadMeVisible = true;
-            $window.document.title = doodles.current().description;
-        }
-
-        // Ensure that there is a current doodle i.e. doodles.current() exists.
-        if (doodles.length === 0) {
-            // If there is no document, construct one based upon the first template.
-            doodles.createDoodle($scope.templates[0], "My STEM Project");
-        }
-
-        // Perform conversions required for doodle evolution.
-        const doodle = doodleGroom(doodles.current());
-
-        // Set the module kind for transpilation consistent with the version.
-        const moduleKind = detect1x(doodle) ? 'none' : 'system'
-        this.workspace.setModuleKind(moduleKind, function(err: any) {
-            if (err) {
-                console.warn(`setModuleKind('${moduleKind}') => ${err}`)
-            }
-        })
-
-        // Set the script target for transpilation consistent with the version.
-        const scriptTarget = detect1x(doodle) ? 'es5' : 'es5'
-        this.workspace.setScriptTarget(scriptTarget, function(err: any) {
-            if (err) {
-                console.warn(`setScriptTarget('${scriptTarget}') => ${err}`)
-            }
-        })
-
-        // Following a browser refresh, show the code so that it refreshes correctly (bug).
-        // This also side-steps the issue of the time it takes to restart the preview.
-        // Ideally we remove this line and use the cached `lastKnownJs` to provide the preview.
-        doodle.isCodeVisible = true;
-
-        // Now that things have settled down...
-        doodles.updateStorage();
-
-        const GITHUB_TOKEN_COOKIE_NAME = 'github-token';
-
-        const gistId: string = $stateParams['gistId'];
-        if (gistId) {
-            // console.log(`gistId => ${gistId}`)
-            // console.log(`gistId (current) => ${doodles.current().gistId}`)
-            if (doodles.current().gistId !== gistId) {
-                const token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
-                cloud.downloadGist(token, gistId, function(err: any, doodle: Doodle) {
-                    if (!err) {
-                        // console.log(`downloaded, gistId => ${doodle.gistId}`)
-                        doodles.deleteDoodle(doodle.uuid);
-                        doodles.unshift(doodle);
-                        doodles.updateStorage();
-                        $scope.updateView();
-                    }
-                    else {
-                        $scope.alert("Error attempting to download Gist");
-                    }
-                    // cascade = true;
-                    $scope.updatePreview(WAIT_NO_MORE);
-                });
-            }
-            else {
-                // console.log(`We've already got that Gist as current in Local Storage`)
-                $scope.updateView();
-                // cascade = true;
-                $scope.updatePreview(WAIT_NO_MORE);
-            }
-        }
-        else {
-            // console.log("There is NO gistId parameter.")
-            if (doodles.current().gistId) {
-                // console.log("But the current doodle DOES have a gistId")
-                $state.go(STATE_GISTS, { gistId: doodles.current().gistId });
-            }
-            else {
-                $scope.updateView();
-                // cascade = true;
-                $scope.updatePreview(WAIT_NO_MORE);
-            }
-        }
-
-        $scope.$watch('isViewVisible', function(newVal: boolean, oldVal, unused: angular.IScope) {
-            doodles.current().isViewVisible = $scope.isViewVisible;
-            doodles.updateStorage();
-        });
-
-        $scope.$watch('isEditMode', function(newVal: boolean, oldVal, unused: angular.IScope) {
-            doodles.current().isCodeVisible = $scope.isEditMode;
-            doodles.updateStorage();
-        });
     }
 
     /**
+     * This lifecycle hook will be executed when all controllers on an element have been constructed,
+     * and after their bindings are initialized. This hook is meant to be used for any kind of
+     * initialization work of a controller.
+     *
      * @method $onInit
      * @return {void}
      */
@@ -447,15 +355,135 @@ export default class WorkspaceController implements WorkspaceMixin {
         })
 
         this.resize()
+
+        this.workspace.init()
+        this.workspace.setDefaultLibrary('/typings/lib.es6.d.ts')
+
+        const doodles = this.doodles;
+        // Ensure that there is a current doodle i.e. doodles.current() exists.
+        if (doodles.length === 0) {
+            // If there is no document, construct one based upon the first template.
+            // FIXME: Bit of a smell here. $scope.templates is from a different controller.
+            doodles.createDoodle(this.$scope.templates[0], "My STEM Project");
+        }
+
+        // Perform conversions required for doodle evolution.
+        const doodle = doodleGroom(doodles.current());
+
+        // Following a browser refresh, show the code so that it refreshes correctly (bug).
+        // This also side-steps the issue of the time it takes to restart the preview.
+        // Ideally we remove this line and use the cached `lastKnownJs` to provide the preview.
+        doodle.isCodeVisible = true;
+
+        // Now that things have settled down...
+        doodles.updateStorage();
+
+        const GITHUB_TOKEN_COOKIE_NAME = 'github-token';
+
+        const gistId: string = this.$stateParams['gistId'];
+        if (gistId) {
+            if (doodles.current().gistId !== gistId) {
+                const token = this.cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
+                this.cloud.downloadGist(token, gistId, (err: any, doodle: Doodle) => {
+                    if (!err) {
+                        doodles.deleteDoodle(doodle.uuid);
+                        doodles.unshift(doodle);
+                        doodles.updateStorage();
+                        this.onChangeDoodle(doodles.current())
+                    }
+                    else {
+                        this.$scope.alert("Error attempting to download Gist");
+                    }
+                });
+            }
+            else {
+                this.onChangeDoodle(doodles.current())
+            }
+        }
+        else {
+            if (doodles.current().gistId) {
+                this.$state.go(this.STATE_GISTS, { gistId: doodles.current().gistId })
+            }
+            else {
+                this.onChangeDoodle(doodles.current())
+            }
+        }
+
+        this.watches.push(this.$scope.$watch('isViewVisible', (newVal: boolean, oldVal, unused: angular.IScope) => {
+            doodles.current().isViewVisible = this.$scope.isViewVisible
+            doodles.updateStorage()
+        }))
+
+        this.watches.push(this.$scope.$watch('isEditMode', (newVal: boolean, oldVal, unused: angular.IScope) => {
+            doodles.current().isCodeVisible = this.$scope.isEditMode
+            doodles.updateStorage()
+        }))
     }
 
     /**
+     * This hook allows us to react to changes of one-way bindings of a component.
+     * It is also called before $onInit the first time!
+     */
+    $onChanges(changes): void {
+        // Do nothing.
+    }
+
+    /**
+     * $onDestroy() is a hook that is called when its containing scope is destroyed.
+     * We can use this hook to release external resources, watches and event handlers.
+     *
      * @method $onDestroy
      * @return {void}
      */
     $onDestroy(): void {
+        // Cancel all of the watches.
+        for (let w = 0; w < this.watches.length; w++) {
+            const watch = this.watches[w]
+            watch()
+        }
+
         // This method is called BEFORE the child directives make their detachEditor calls.
-        this.$window.removeEventListener('resize', this.resizeListener);
+
+        this.workspace.removeScripts()
+
+        // Stop the workspace worker thread.
+        // FIXME: Only problem is that editors haven't detached yet.
+        this.workspace.terminate()
+        this.$window.removeEventListener('resize', this.resizeListener)
+    }
+
+    private onChangeDoodle(doodle: Doodle): void {
+
+        this.$scope.doodleLoaded = true
+
+        // Bit of a smell here. Should we be updating the scope?
+        this.$scope.isEditMode = doodle.isCodeVisible
+        // Don't start in Playing mode in case the user has a looping program (give chance to fix the code).
+        this.$scope.isViewVisible = false
+        // No such issue with the README.md
+        this.$scope.isReadMeVisible = true
+        this.$window.document.title = doodle.description
+
+        // FIXME: Some work to do in getting all the async work done right.
+        this.workspace.removeScripts()
+        this.updateWorkspace()
+
+        // Set the module kind for transpilation consistent with the version.
+        const moduleKind = detect1x(doodle) ? MODULE_KIND_NONE : MODULE_KIND_SYSTEM
+        this.workspace.setModuleKind(moduleKind)
+
+        // Set the script target for transpilation consistent with the version.
+        const scriptTarget = detect1x(doodle) ? SCRIPT_TARGET_ES5 : SCRIPT_TARGET_ES5
+        this.workspace.setScriptTarget(scriptTarget)
+
+        this.workspace.synchronize()
+            .then((promiseValue: any) => {
+                this.$scope.workspaceLoaded = true
+                this.$scope.updatePreview(WAIT_NO_MORE)
+            })
+            .catch((reason: any) => {
+                console.warn(`${reason}`)
+            })
     }
 
     /**
@@ -549,9 +577,11 @@ export default class WorkspaceController implements WorkspaceMixin {
 
     private createChangeHandler(filename: string): ChangeHandler {
         const handler = (delta: ace.Delta, session: ace.EditSession) => {
-            if (/* this.cascade && */ this.doodles.current()) {
+            if (this.doodles.current()) {
                 this.doodles.updateStorage()
-                this.$scope.updatePreview(WAIT_FOR_MORE_OTHER_KEYSTROKES)
+                if (this.moduleKindOK && this.scriptTargetOK) {
+                    this.$scope.updatePreview(WAIT_FOR_MORE_OTHER_KEYSTROKES)
+                }
             }
         }
         this.changeHandlers[filename] = handler
@@ -670,12 +700,8 @@ export default class WorkspaceController implements WorkspaceMixin {
         // TODO: This code is currently not being exercised because dependency changes cause a page reload.
         // In future, dependency changes will not cause a page reload.
         if (rmvs.indexOf('lib') >= 0) {
-            // console.log("The remove list DOES contain the 'lib' dependency.")
             // By removing it from the list, we will keep the 'lib' in the workspace and save an unload/load cycle.
             rmvs.splice(rmvs.indexOf('lib'), 1);
-        }
-        else {
-            // console.log("The remove list does NOT contain the 'lib' dependency.")
         }
 
         const rmvOpts: IOption[] = namesToOptions(rmvs, this.options);

@@ -2,6 +2,16 @@ import DoodleScope from './DoodleScope';
 
 interface WorkspaceScope extends DoodleScope {
 
+    /**
+     * The doodle is loaded when it has been loaded from GitHub or Local Storage.
+     */
+    doodleLoaded: boolean;
+
+    /**
+     * The workspace is loaded when it has all the file content, and compiler settings.
+     */
+    workspaceLoaded: boolean;
+
     isEditMode: boolean;
     toggleMode: () => void;
 
@@ -17,7 +27,6 @@ interface WorkspaceScope extends DoodleScope {
     doView(name: string): void;
 
     // We can probably kill these in refactoring cleanup.
-    updateView(): void;
     updatePreview(delay: number): void;
     previewIFrame: HTMLIFrameElement;
 }

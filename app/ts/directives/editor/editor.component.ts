@@ -25,32 +25,67 @@ function factory($timeout: ng.ITimeoutService, settings: ISettingsService, textS
 
         const container: HTMLElement = element[0]
         const editor: ace.Editor = ace.edit(container)
+        // The following are starting to look very similar!
         switch ($scope.mode) {
             case 'JavaScript': {
-                editor.setLanguageMode(ace.createJavaScriptMode('/js/worker.js', workerImports))
+                editor.setLanguageMode(ace.createJavaScriptMode('/js/worker.js', workerImports), function(err: any) {
+                    if (err) {
+                        console.warn(`${$scope.mode} => ${err}`)
+                    }
+                    else {
+                        console.log(`${$scope.mode} OK`)
+                    }
+                })
                 break
             }
             case 'TypeScript': {
-                // console.log(`showFoldWidgets => ${editor.getShowFoldWidgets()}`);
-                editor.setLanguageMode(ace.createTypeScriptMode('/js/worker.js', workerImports))
+                editor.setLanguageMode(ace.createTypeScriptMode('/js/worker.js', workerImports), function(err: any) {
+                    if (err) {
+                        console.warn(`${$scope.mode} => ${err}`)
+                    }
+                    else {
+                        console.log(`${$scope.mode} OK`)
+                    }
+                })
                 break
             }
             case 'HTML': {
-                editor.setLanguageMode(ace.createHtmlMode('/js/worker.js', workerImports))
+                editor.setLanguageMode(ace.createHtmlMode('/js/worker.js', workerImports), function(err: any) {
+                    if (err) {
+                        console.warn(`${$scope.mode} => ${err}`)
+                    }
+                    else {
+                        console.log(`${$scope.mode} OK`)
+                    }
+                })
                 break
             }
             case 'CSS':
             case 'LESS': {
-                editor.getSession().setUseWorker(false);
-                editor.setLanguageMode(ace.createCssMode('/js/worker.js', workerImports))
+                // If we don't use the worker then we don't get a confirmation.
+                // We also don't get syntax coloring, for some reason.
+                editor.getSession().setUseWorker(true);
+                editor.setLanguageMode(ace.createCssMode('/js/worker.js', workerImports), function(err: any) {
+                    if (err) {
+                        console.warn(`${$scope.mode} => ${err}`)
+                    }
+                    else {
+                        console.log(`${$scope.mode} OK`)
+                    }
+                })
                 break
             }
             case 'Markdown': {
                 editor.getSession().setUseWrapMode(true)
                 editor.setWrapBehavioursEnabled(true)
-                // editor.getSession().setWrapLimit(90)  TODO: We seem to be missing this from the d.ts?
-                // editor.getSession().setWrapLimitRange(60, 80)
-                editor.setLanguageMode(ace.createMarkdownMode('/js/worker.js', workerImports))
+                editor.setLanguageMode(ace.createMarkdownMode('/js/worker.js', workerImports), function(err: any) {
+                    if (err) {
+                        console.warn(`${$scope.mode} => ${err}`)
+                    }
+                    else {
+                        console.log(`${$scope.mode} OK`)
+                    }
+                })
                 break
             }
             default: {
@@ -64,6 +99,8 @@ function factory($timeout: ng.ITimeoutService, settings: ISettingsService, textS
         editor.setFontSize(settings.fontSize);
         editor.setShowPrintMargin(settings.showPrintMargin);
         editor.setDisplayIndentGuides(settings.displayIndentGuides);
+        editor.setTabSize(4)
+        editor.getSession().setUseSoftTabs(true)
 
         attrs.$observe<boolean>('readonly', function(readOnly: boolean) {
             editor.setReadOnly(readOnly)

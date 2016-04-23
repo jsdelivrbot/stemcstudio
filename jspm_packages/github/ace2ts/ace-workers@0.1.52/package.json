@@ -1,0 +1,64 @@
+{
+  "name": "ace-workers",
+  "version": "0.1.52",
+  "description": "Workers for Ace2ts Editor.",
+  "directories": {
+    "lib": "lib"
+  },
+  "main": "dist/ace-workers.min.js",
+  "homepage": "https://github.com/ace2ts/ace-workers",
+  "author": "david.geo.holmes@gmail.com",
+  "keywords": [
+    "editor",
+    "browser",
+    "Ace",
+    "Ace2ts",
+    "systemjs",
+    "es6",
+    "typescript",
+    "ts"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ace2ts/ace-workers.git"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "jspm": {
+    "directories": {
+      "lib": "lib"
+    },
+    "devDependencies": {
+      "babel": "npm:babel-core@^5.8.38",
+      "babel-runtime": "npm:babel-runtime@^5.8.38",
+      "core-js": "npm:core-js@^1.2.6",
+      "typescript": "npm:typescript@1.8.10"
+    }
+  },
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-cli": "~0.1.13",
+    "grunt-complexity": "~0.3.0",
+    "grunt-contrib-clean": "~0.7.0",
+    "grunt-contrib-concat": "^0.5.1",
+    "grunt-contrib-connect": "~0.9.0",
+    "grunt-contrib-copy": "~0.8.2",
+    "grunt-contrib-jasmine": "~0.8.2",
+    "grunt-contrib-jshint": "~0.11.3",
+    "grunt-contrib-requirejs": "~0.4.4",
+    "grunt-contrib-uglify": "~0.8.1",
+    "grunt-contrib-yuidoc": "~0.10.0",
+    "grunt-exec": "~0.4.6",
+    "grunt-jasmine-task": "*",
+    "grunt-template-jasmine-requirejs": "~0.2.3",
+    "grunt-typescript": "~0.8.0",
+    "jspm": "0.16.33",
+    "q": "~1.2.1",
+    "requirejs": "~2.1.0",
+    "servedir": "*",
+    "systemjs-builder": "0.15.15"
+  }
+}
