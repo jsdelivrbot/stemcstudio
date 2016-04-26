@@ -49,6 +49,21 @@ Update versions in
 2. bower.json
 3. app/ts/app.ts
 
+## Upgrading Ace
+
+1. tsconfig.json
+2. Gruntfile.js
+3. package.json
+4. jspm.config.js
+
+```
+npm install
+npm update
+jspm install
+jspm update
+``` 
+
+
 git push origin master
 
 # Upload to Heroku

@@ -159,10 +159,10 @@
     "angular": "npm:angular"
   },
   "npm:angular@1.5.5": {},
-  "github:systemjs/plugin-json@0.1.1": {},
-  "github:ace2ts/ace-workers@0.1.52": {},
-  "github:ace2ts/ace@0.1.150": {
-    "ace2ts/ace-workers": "github:ace2ts/ace-workers@^0.1.52",
+  "github:ace2ts/ace-workers@0.1.54": {},
+  "github:ace2ts/ace@0.1.160": {
+    "ace2ts/ace-workers": "github:ace2ts/ace-workers@^0.1.54",
     "typescript": "npm:typescript@^1.8.10"
-  }
+  },
+  "github:systemjs/plugin-json@0.1.2": {}
 }

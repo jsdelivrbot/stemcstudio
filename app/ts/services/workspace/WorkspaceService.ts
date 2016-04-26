@@ -1,6 +1,7 @@
 import Workspace from './Workspace';
 import ace from 'ace.js';
 import * as ng from 'angular';
+import PromiseManager from './PromiseManager';
 
 const systemImports: string[] = ['/jspm_packages/system.js', '/jspm.config.js']
 const workerImports: string[] = systemImports.concat(['/js/ace-workers.js'])
@@ -10,16 +11,22 @@ enum WorkspaceState {
     CONSTRUCTED,
     INIT_PENDING,
     INIT_FAILED,
-    OPERATIONAL
+    OPERATIONAL,
+    TERM_PENDING,
+    TERM_FAILED,
+    TERMINATED
 }
 
-interface WorkspaceCommand {
-
-}
-
-class SetDefaultLibraryCommand implements WorkspaceCommand {
-    constructor(workspace: ace.Workspace, url: string) {
-        // Do nothing, except maybe check arguments.
+function decodeWorkspaceState(state: WorkspaceState): string {
+    switch (state) {
+        case WorkspaceState.CONSTRUCTED: return "CONSTRUCTED";
+        case WorkspaceState.INIT_PENDING: return "INIT_PENDING";
+        case WorkspaceState.INIT_FAILED: return "INIT_FAILED";
+        case WorkspaceState.OPERATIONAL: return "OPERATIONAL";
+        case WorkspaceState.TERM_PENDING: return "TERM_PENDING";
+        case WorkspaceState.TERM_FAILED: return "TERM_FAILED";
+        case WorkspaceState.TERMINATED: return "TERMINATED";
+        default: return `Unknown state ${state}`;
     }
 }
 
@@ -27,46 +34,118 @@ class SetDefaultLibraryCommand implements WorkspaceCommand {
  * A thin wrapper around the ACE workspace in order to manage state and asynchronicity.
  */
 export default class WorkspaceService implements Workspace {
+    public trace: boolean = false;
     private state: WorkspaceState;
-    private workspace: ace.Workspace = ace.createWorkspace();
+    private workspace: ace.Workspace;
     /**
      * 
      */
-    private promises: ng.IPromise<any>[] = []
-    private scriptLoaded: { [fileName: string]: boolean } = {};
+    // private promises: ng.IPromise<any>[] = [];
+    private promises: PromiseManager;
+
+    private editorCapturing: { [fileName: string]: boolean } = {};
+    private editorLoaded: { [fileName: string]: ace.Editor } = {};
+    private editorReleasing: { [fileName: string]: boolean } = {};
+
+    /**
+     * 
+     */
+    private scriptCapturing: { [fileName: string]: boolean } = {};
+
+    /**
+     * 
+     */
+    private scriptWorking: { [fileName: string]: boolean } = {};
+
+    /**
+     * 
+     */
+    private scriptReleasing: { [fileName: string]: boolean } = {};
+
     public static $inject: string[] = ['$q'];
     /**
      * @class WorkspaceService
      * @constructor
      */
     constructor(private $q: ng.IQService) {
-        // In an ideal world, the constructor only serves to inject dependencies!
+        this.workspace = new ace.Workspace('/js/worker.js', workerImports.concat(typescriptServices));
         this.state = WorkspaceState.CONSTRUCTED
+        this.promises = new PromiseManager($q);
     }
 
     /**
-     * @method init
+     * Debugging function that dumps the state of this service.
+     */
+    private dump(where: string): void {
+        /**
+         * 
+         */
+        function showMe(title: string, map: { [fileName: string]: any }) {
+            const fileNames = Object.keys(map)
+            if (fileNames.length > 0) {
+                console.log(title)
+                console.log(JSON.stringify(fileNames, null, 2))
+            }
+        }
+
+        if (!this.trace) {
+            return;
+        }
+        console.log('===============================================')
+        console.log(decodeWorkspaceState(this.state))
+        console.log(`WorkspaceService.${where}`)
+        if (this.promises.length) {
+            console.log(`promises: ${this.promises.length}, ${JSON.stringify(this.promises.getOutstandingPurposes(), null, 2)}`)
+        }
+        console.log('===============================================')
+        showMe("Capturing EDITORS", this.editorCapturing)
+        showMe("Loaded    EDITORS", this.editorLoaded)
+        showMe("Releasing EDITORS", this.editorReleasing)
+        showMe("Capturing FILES", this.scriptCapturing)
+        showMe("Loaded    FILES", this.scriptWorking)
+        showMe("Releasing FILES", this.scriptReleasing)
+    }
+
+    /**
+     * @method initialize
      * @return {void}
      */
-    init(): void {
-        const deferred: ng.IDeferred<any> = this.$q.defer<any>();
+    initialize(): void {
+        this.dump(`initialize() (RAW)`)
+        if (this.promises.length) {
+            console.warn(`outstanding promises prior to reset: ${this.promises.length}, ${JSON.stringify(this.promises.getOutstandingPurposes(), null, 2)}`)
+        }
+        this.promises.reset()
+        this.dump(`initialize() (RESET)`)
+        const deferred = this.promises.defer('init')
         this.state = WorkspaceState.INIT_PENDING
-        this.workspace.init('/js/worker.js', workerImports.concat(typescriptServices), (err: any) => {
+        this.workspace.init((err: any) => {
             if (err) {
                 console.warn(`init() => ${err}`)
                 this.state = WorkspaceState.INIT_FAILED
-                deferred.reject(err)
+                this.promises.reject(deferred, err)
             }
             else {
+                this.dump(`init OK.`)
                 this.state = WorkspaceState.OPERATIONAL
-                deferred.resolve(true)
+                this.promises.resolve(deferred)
             }
         })
-        this.promises.push(deferred.promise)
     }
 
     synchronize(): ng.IPromise<any> {
-        return this.$q.all(this.promises)
+        this.dump(`synchronize()`)
+        const deferred: ng.IDeferred<any> = this.$q.defer<any>();
+        this.promises.synchronize()
+            .then(() => {
+                this.dump(`synchronize OK.`)
+                deferred.resolve()
+            })
+            .catch((err) => {
+                console.warn(`synchronize failed ${err}.`)
+                deferred.reject()
+            })
+        return deferred.promise
     }
 
     /**
@@ -74,7 +153,23 @@ export default class WorkspaceService implements Workspace {
      * @return {void}
      */
     terminate(): void {
-        this.workspace.terminate()
+        this.dump("terminate()")
+        this.detachEditors()
+        this.removeScripts()
+        this.synchronize().then(() => {
+            this.state = WorkspaceState.TERM_PENDING;
+            this.workspace.terminate((err: any) => {
+                if (!err) {
+                    this.state = WorkspaceState.TERMINATED;
+                    this.dump(`terminate OK.`)
+                }
+                else {
+                    this.state = WorkspaceState.TERM_FAILED;
+                    console.warn(`terminate() => ${err}`)
+                    this.dump(`terminate failed ${err}.`)
+                }
+            })
+        })
     }
 
     /**
@@ -83,25 +178,25 @@ export default class WorkspaceService implements Workspace {
      * @return {void}
      */
     setDefaultLibrary(url: string): void {
+        this.dump(`setDefaultLibrary(${url})`)
         switch (this.state) {
             case WorkspaceState.OPERATIONAL: {
-                const deferred: ng.IDeferred<boolean> = this.$q.defer<boolean>();
-                this.workspace.setDefaultLibrary(url, function(err: any) {
+                const deferred = this.promises.defer('setDefaultLibrary')
+                this.workspace.setDefaultLibrary(url, (err: any) => {
                     if (err) {
                         console.warn(`setDefaultLibrary(${url}) => ${err}`)
-                        deferred.reject(err)
+                        this.promises.reject(deferred, err)
                     }
                     else {
-                        deferred.resolve(true)
+                        this.promises.resolve(deferred, true)
                     }
+                    this.dump(`setDefaultLibrary(${url}) completed.`)
                 })
-                this.promises.push(deferred.promise)
                 break
             }
             case WorkspaceState.INIT_PENDING: {
                 this.synchronize()
                     .then(() => {
-                        this.promises = []
                         this.state = WorkspaceState.OPERATIONAL
                         // Using recursion allows me to avoid creating a stack of commands.
                         // Of course, the approaches are equivalent.
@@ -125,25 +220,25 @@ export default class WorkspaceService implements Workspace {
     }
 
     setModuleKind(moduleKind: string): void {
+        this.dump(`setModuleKind(${moduleKind})`)
         switch (this.state) {
             case WorkspaceState.OPERATIONAL: {
-                const deferred: ng.IDeferred<string> = this.$q.defer<string>();
+                const deferred = this.promises.defer('setModuleKind')
                 this.workspace.setModuleKind(moduleKind, (err: any) => {
                     if (err) {
                         console.warn(`setModuleKind('${moduleKind}') => ${err}`)
-                        deferred.reject(err)
+                        this.promises.reject(deferred, err)
                     }
                     else {
-                        deferred.resolve(moduleKind)
+                        this.promises.resolve(deferred, moduleKind)
                     }
+                    this.dump(`setModuleKind('${moduleKind}') completed.`)
                 })
-                this.promises.push(deferred.promise)
                 break
             }
             case WorkspaceState.INIT_PENDING: {
                 this.synchronize()
                     .then(() => {
-                        this.promises = []
                         // TODO: DRY
                         this.state = WorkspaceState.OPERATIONAL
                         // Using recursion allows me to avoid creating a stack of commands.
@@ -162,40 +257,118 @@ export default class WorkspaceService implements Workspace {
     }
 
     setScriptTarget(scriptTarget: string): void {
-        const deferred: ng.IDeferred<string> = this.$q.defer<string>();
+        this.dump(`setScriptTarget(${scriptTarget})`)
+        const deferred = this.promises.defer('setScriptTarget')
         this.workspace.setScriptTarget(scriptTarget, (err: any) => {
             if (err) {
                 console.warn(`setScriptTarget('${scriptTarget}') => ${err}`)
-                deferred.reject(err)
+                this.promises.reject(deferred, err)
             }
             else {
-                deferred.resolve(scriptTarget)
+                this.promises.resolve(deferred, scriptTarget)
             }
+            this.dump(`setScriptTarget(${scriptTarget}) completed.`)
         })
-        this.promises.push(deferred.promise)
     }
 
     attachEditor(fileName: string, editor: ace.Editor): void {
-        this.workspace.attachEditor(fileName, editor)
+        this.dump(`attachEditor(${fileName})`)
+        this.editorCapturing[fileName] = true;
+        const deferred = this.promises.defer(`attachEditor('${fileName}')`)
+        this.workspace.attachEditor(fileName, editor, (err: any) => {
+            if (!err) {
+                delete this.editorCapturing[fileName];
+                this.editorLoaded[fileName] = editor
+                this.promises.resolve(deferred, fileName)
+            }
+            else {
+                console.warn(`attachEditor('${fileName}') => ${err}`)
+                this.editorCapturing[fileName] = false;
+                this.promises.reject(deferred, err)
+            }
+            this.dump(`attachEditor(${fileName}) callback.`)
+        })
     }
 
     detachEditor(fileName: string, editor: ace.Editor): void {
-        this.workspace.detachEditor(fileName, editor)
+        this.dump(`detachEditor(${fileName})`)
+        if (this.editorCapturing[fileName]) {
+            console.warn(`${fileName} is already being captured, ignoring detachEditor(${fileName}).`)
+            return;
+        }
+        if (this.editorLoaded[fileName] && !this.editorReleasing[fileName]) {
+            this.editorReleasing[fileName] = true;
+            const deferred = this.promises.defer(`detachEditor('${fileName}')`)
+            this.workspace.detachEditor(fileName, editor, (err: any) => {
+                if (!err) {
+                    delete this.editorReleasing[fileName];
+                    delete this.editorLoaded[fileName]
+                    this.promises.resolve(deferred, fileName)
+                }
+                else {
+                    console.warn(`detachEditor('${fileName}') => ${err}`)
+                    this.editorReleasing[fileName] = err;
+                    this.promises.reject(deferred, err)
+                }
+                this.dump(`detachEditor(${fileName}) callback.`)
+            })
+        }
     }
 
     ensureScript(fileName: string, content: string): void {
-        this.workspace.ensureScript(fileName, content)
-        // TODO: This should wait for async result.
-        this.scriptLoaded[fileName] = true
+        this.dump(`ensureScript(${fileName})`)
+        this.scriptCapturing[fileName] = true;
+        const deferred = this.promises.defer(`ensureScript('${fileName}')`)
+        this.workspace.ensureScript(fileName, content, (err: any) => {
+            if (err) {
+                this.scriptCapturing[fileName] = false;
+                this.promises.reject(deferred, err);
+            }
+            else {
+                delete this.scriptCapturing[fileName];
+                this.scriptWorking[fileName] = true
+                this.promises.resolve(deferred)
+            }
+            this.dump(`ensureScript(${fileName}) callback.`)
+        })
     }
 
-    removeScript(fileName): void {
-        this.workspace.removeScript(fileName)
-        delete this.scriptLoaded[fileName]
+    removeScript(fileName: string): void {
+        this.dump(`removeScript(${fileName})`)
+        this.scriptReleasing[fileName] = true;
+        const deferred = this.promises.defer(`removeScript('${fileName}')`)
+        this.workspace.removeScript(fileName, (err: any) => {
+            if (err) {
+                this.scriptReleasing[fileName] = false;
+                this.promises.reject(deferred, err);
+            }
+            else {
+                delete this.scriptReleasing[fileName];
+                delete this.scriptWorking[fileName]
+                this.promises.resolve(deferred)
+            }
+            this.dump(`removeScript(${fileName}) callback.`)
+        })
     }
 
+    detachEditors(): void {
+        this.dump(`detachEditors()`)
+        const fileNames = Object.keys(this.editorLoaded)
+        const iLen = fileNames.length
+        for (let i = 0; i < iLen; i++) {
+            const fileName = fileNames[i]
+            const editor = this.editorLoaded[fileName]
+            this.detachEditor(fileName, editor)
+        }
+    }
+
+    /**
+     * Remove all the scripts that are currently loaded.
+     * TODO: Maybe need to account for in-flight requests.
+     */
     removeScripts(): void {
-        const fileNames = Object.keys(this.scriptLoaded)
+        this.dump(`removeScripts()`)
+        const fileNames = Object.keys(this.scriptWorking)
         const iLen = fileNames.length
         for (let i = 0; i < iLen; i++) {
             const fileName = fileNames[i]

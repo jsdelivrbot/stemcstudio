@@ -1,0 +1,57 @@
+{
+  "name": "ace",
+  "version": "0.1.160",
+  "description": "Browser Code Editor targeting ES6 written in TypeScript.",
+  "author":
+  {
+    "name": "David Holmes",
+    "email": "david.geo.holmes@gmail.com"
+  },
+  "main": "./dist/ace.js",
+  "repository":
+  {
+    "type": "git",
+    "url": "git://github.com/ace2ts/ace.git"
+  },
+  "bugs":
+  {
+    "url": "https://github.com/ace2ts/ace/issues"
+  },
+  "licenses":
+  [
+    {
+      "type": "MIT",
+      "url": "https://github.com/ace2ts/ace/blob/master/LICENSE"
+    }
+  ],
+  "dependencies":
+  {
+  },
+  "devDependencies":
+  {
+    "jasmine": "~2.4.1",
+    "almond": "~0.3.2",
+    "r.js": "~2.2.0",
+    "requirejs": "~2.2.0",
+    "jscover": "http://github.com/tntim96/JSCover.git"
+  },
+  "ignore":
+  [
+    ".settings",
+    "node_modules",
+    "test",
+    "typings",
+    "vendor",
+    ".bowerrc",
+    ".gitignore",
+    ".npmignore",
+    ".travis.yml",
+    "Jakefile.js",
+    "README.md",
+    "bower.json",
+    "build.js",
+    "grunt.js",
+    "package.json",
+    "tsd.json"
+  ]
+}

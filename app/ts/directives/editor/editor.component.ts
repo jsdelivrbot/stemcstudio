@@ -32,9 +32,6 @@ function factory($timeout: ng.ITimeoutService, settings: ISettingsService, textS
                     if (err) {
                         console.warn(`${$scope.mode} => ${err}`)
                     }
-                    else {
-                        console.log(`${$scope.mode} OK`)
-                    }
                 })
                 break
             }
@@ -42,9 +39,6 @@ function factory($timeout: ng.ITimeoutService, settings: ISettingsService, textS
                 editor.setLanguageMode(ace.createTypeScriptMode('/js/worker.js', workerImports), function(err: any) {
                     if (err) {
                         console.warn(`${$scope.mode} => ${err}`)
-                    }
-                    else {
-                        console.log(`${$scope.mode} OK`)
                     }
                 })
                 break
@@ -54,23 +48,16 @@ function factory($timeout: ng.ITimeoutService, settings: ISettingsService, textS
                     if (err) {
                         console.warn(`${$scope.mode} => ${err}`)
                     }
-                    else {
-                        console.log(`${$scope.mode} OK`)
-                    }
                 })
                 break
             }
             case 'CSS':
             case 'LESS': {
                 // If we don't use the worker then we don't get a confirmation.
-                // We also don't get syntax coloring, for some reason.
-                editor.getSession().setUseWorker(true);
+                editor.getSession().setUseWorker(false);
                 editor.setLanguageMode(ace.createCssMode('/js/worker.js', workerImports), function(err: any) {
                     if (err) {
                         console.warn(`${$scope.mode} => ${err}`)
-                    }
-                    else {
-                        console.log(`${$scope.mode} OK`)
                     }
                 })
                 break
@@ -81,9 +68,6 @@ function factory($timeout: ng.ITimeoutService, settings: ISettingsService, textS
                 editor.setLanguageMode(ace.createMarkdownMode('/js/worker.js', workerImports), function(err: any) {
                     if (err) {
                         console.warn(`${$scope.mode} => ${err}`)
-                    }
-                    else {
-                        console.log(`${$scope.mode} OK`)
                     }
                 })
                 break

@@ -16,7 +16,7 @@ import ModalService from './services/modalService/ModalService';
 import resizable from './directives/resizable/resizable';
 import TextService from './services/text/TextService';
 import workspace from './directives/workspace/workspace.component';
-import WorkspaceService from './services/workspace/WorkspaceService';
+import WorkspaceFactoryService from './services/workspace/WorkspaceFactoryService';
 
 //
 // We import other Angular services that are needed by the Angular 'app' module.
@@ -60,7 +60,7 @@ import './services/tw/tw';
 import './services/uuid/UuidService';
 app.service('modalService', ModalService)
 app.service('textService', TextService)
-app.service('workspace', WorkspaceService)
+app.service('workspaceFactory', WorkspaceFactoryService)
 
 import './template-cache';
 

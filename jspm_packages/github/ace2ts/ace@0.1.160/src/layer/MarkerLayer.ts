@@ -1,0 +1,232 @@
+import AbstractLayer from './AbstractLayer';
+import Marker from '../Marker';
+import EditSession from '../EditSession';
+import LayerConfig from "./LayerConfig";
+import MarkerConfig from "./MarkerConfig";
+import Range from "../Range";
+
+/**
+ * @class MarkerLayer
+ * @extends AbstractLayer
+ */
+export default class MarkerLayer extends AbstractLayer {
+
+    private session: EditSession;
+    private markers: { [id: number]: Marker };
+    private config: MarkerConfig;
+    private $padding: number = 0;
+
+    /**
+     * @class MarkerLayer
+     * @constructor
+     * @param parent {HTMLDivElement}
+     */
+    constructor(parent: HTMLDivElement) {
+        super(parent, "ace_layer ace_marker-layer");
+    }
+
+    public setPadding(padding: number) {
+        this.$padding = padding;
+    }
+
+    public setSession(session: EditSession) {
+        this.session = session;
+    }
+
+    public setMarkers(markers: { [id: number]: Marker }) {
+        this.markers = markers;
+    }
+
+    public update(config: MarkerConfig) {
+        config = config || this.config;
+        if (!config) {
+            return;
+        }
+
+        this.config = config;
+
+        const html: (number | string)[] = [];
+
+        const ids = Object.keys(this.markers);
+        const iLen = ids.length;
+        for (let i = 0; i < iLen; i++) {
+            const id = parseInt(ids[i], 10);
+
+            const marker: Marker = this.markers[id];
+
+            if (!marker.range) {
+                marker.update(html, this, this.session, config);
+                continue;
+            }
+
+            if (typeof marker.range.start.row !== 'number') {
+                throw new TypeError();
+            }
+            if (typeof marker.range.start.column !== 'number') {
+                throw new TypeError();
+            }
+            if (typeof marker.range.end.row !== 'number') {
+                throw new TypeError();
+            }
+            if (typeof marker.range.end.row !== 'number') {
+                throw new TypeError();
+            }
+
+            let range: Range = marker.range.clipRows(config.firstRow, config.lastRow);
+            if (range.isEmpty()) continue;
+
+            range = this.session.documentToScreenRange(range);
+            if (marker.renderer) {
+                const top = this.$getTop(range.start.row, config);
+                const left = this.$padding + range.start.column * config.characterWidth;
+                marker.renderer(html, range, left, top, config);
+            }
+            else if (marker.type === "fullLine") {
+                this.drawFullLineMarker(html, range, marker.clazz, config);
+            }
+            else if (marker.type === "screenLine") {
+                this.drawScreenLineMarker(html, range, marker.clazz, config);
+            }
+            else if (range.isMultiLine()) {
+                if (marker.type === "text")
+                    this.drawTextMarker(html, range, marker.clazz, config);
+                else
+                    this.drawMultiLineMarker(html, range, marker.clazz, config);
+            }
+            else {
+                this.drawSingleLineMarker(html, range, marker.clazz + " ace_start ace_br15", config);
+            }
+        }
+        this.element.innerHTML = html.join("");
+    }
+
+    private $getTop(row: number, layerConfig: LayerConfig): number {
+        return (row - layerConfig.firstRowScreen) * layerConfig.lineHeight;
+    }
+
+    // Draws a marker, which spans a range of text on multiple lines 
+    private drawTextMarker(stringBuilder: (number | string)[], range: Range, clazz: string, layerConfig: MarkerConfig, extraStyle?) {
+
+        function getBorderClass(tl: boolean, tr: boolean, br: boolean, bl: boolean): number {
+            return (tl ? 1 : 0) | (tr ? 2 : 0) | (br ? 4 : 0) | (bl ? 8 : 0);
+        }
+
+        const session = this.session;
+        const start = range.start.row;
+        const end = range.end.row;
+        let row = start;
+        let prev = 0;
+        let curr = 0;
+        let next = session.getScreenLastRowColumn(row);
+        const lineRange = new Range(row, range.start.column, row, curr);
+        for (; row <= end; row++) {
+            lineRange.start.row = lineRange.end.row = row;
+            lineRange.start.column = row === start ? range.start.column : session.getRowWrapIndent(row);
+            lineRange.end.column = next;
+            prev = curr;
+            curr = next;
+            next = row + 1 < end ? session.getScreenLastRowColumn(row + 1) : row === end ? 0 : range.end.column;
+            this.drawSingleLineMarker(
+                stringBuilder,
+                lineRange,
+                clazz + (row === start ? " ace_start" : "") + " ace_br" + getBorderClass(row === start || row === start + 1 && range.start.column !== 0, prev < curr, curr > next, row === end),
+                layerConfig,
+                row === end ? 0 : 1,
+                extraStyle);
+        }
+    }
+
+    // Draws a multi line marker, where lines span the full width
+    private drawMultiLineMarker(stringBuilder: (number | string)[], range: Range, clazz, config: MarkerConfig, extraStyle?: string) {
+        // from selection start to the end of the line
+        const padding = this.$padding;
+        let height = config.lineHeight;
+        let top = this.$getTop(range.start.row, config);
+        const left = padding + range.start.column * config.characterWidth;
+
+        extraStyle = extraStyle || "";
+
+        stringBuilder.push(
+            "<div class='", clazz, " ace_br1 ace_start' style='",
+            "height:", height, "px;",
+            "right:0;",
+            "top:", top, "px;",
+            "left:", left, "px;", extraStyle, "'></div>"
+        );
+
+        // from start of the last line to the selection end
+        top = this.$getTop(range.end.row, config);
+        const width = range.end.column * config.characterWidth;
+
+        stringBuilder.push(
+            "<div class='", clazz, " ace_br12' style='",
+            "height:", height, "px;",
+            "width:", width, "px;",
+            "top:", top, "px;",
+            "left:", padding, "px;", extraStyle, "'></div>"
+        );
+
+        // all the complete lines
+        height = (range.end.row - range.start.row - 1) * config.lineHeight;
+        if (height < 0) {
+            return;
+        }
+        top = this.$getTop(range.start.row + 1, config);
+
+        const radiusClass = (range.start.column ? 1 : 0) | (range.end.column ? 0 : 8);
+
+        stringBuilder.push(
+            "<div class='", clazz, (radiusClass ? " ace_br" + radiusClass : ""), "' style='",
+            "height:", height, "px;",
+            "right:0;",
+            "top:", top, "px;",
+            "left:", padding, "px;", extraStyle, "'></div>"
+        );
+    }
+
+    /**
+     * Draws a marker which covers part or whole width of a single screen line.
+     */
+    public drawSingleLineMarker(stringBuilder: (number | string)[], range: Range, clazz: string, config: MarkerConfig, extraLength?: number, extraStyle?: string): void {
+        var height = config.lineHeight;
+        var width = (range.end.column + (extraLength || 0) - range.start.column) * config.characterWidth;
+
+        var top = this.$getTop(range.start.row, config);
+        var left = this.$padding + range.start.column * config.characterWidth;
+
+        stringBuilder.push(
+            "<div class='", clazz, "' style='",
+            "height:", height, "px;",
+            "width:", width, "px;",
+            "top:", top, "px;",
+            "left:", left, "px;", extraStyle || "", "'></div>"
+        );
+    }
+
+    private drawFullLineMarker(stringBuilder: (number | string)[], range: Range, clazz: string, config: MarkerConfig, extraStyle?: string): void {
+        var top = this.$getTop(range.start.row, config);
+        var height = config.lineHeight;
+        if (range.start.row !== range.end.row) {
+            height += this.$getTop(range.end.row, config) - top;
+        }
+
+        stringBuilder.push(
+            "<div class='", clazz, "' style='",
+            "height:", height, "px;",
+            "top:", top, "px;",
+            "left:0;right:0;", extraStyle || "", "'></div>"
+        );
+    }
+
+    private drawScreenLineMarker(stringBuilder: (number | string)[], range: Range, clazz: string, config: MarkerConfig, extraStyle?: string): void {
+        var top = this.$getTop(range.start.row, config);
+        var height = config.lineHeight;
+
+        stringBuilder.push(
+            "<div class='", clazz, "' style='",
+            "height:", height, "px;",
+            "top:", top, "px;",
+            "left:0;right:0;", extraStyle || "", "'></div>"
+        );
+    }
+}

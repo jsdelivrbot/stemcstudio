@@ -9,8 +9,9 @@ System.config({
 
   map: {
     "@angular/router": "npm:@angular/router@0.2.0",
-    "ace.js": "github:ace2ts/ace@0.1.150",
-    "ace2ts/ace": "github:ace2ts/ace@0.1.150",
+    "ace.js": "github:ace2ts/ace@0.1.160",
+    "ace2ts/ace": "github:ace2ts/ace@0.1.160",
+    "ace2ts/ace-workers": "github:ace2ts/ace-workers@0.1.54",
     "angular": "github:angular/bower-angular@1.5.5",
     "angular-animate": "github:angular/bower-angular-animate@1.5.5",
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.2",
@@ -24,8 +25,8 @@ System.config({
     "jquery": "npm:jquery@2.2.3",
     "showdown": "npm:showdown@1.3.0",
     "underscore": "npm:underscore@1.8.3",
-    "github:ace2ts/ace@0.1.150": {
-      "ace2ts/ace-workers": "github:ace2ts/ace-workers@0.1.52",
+    "github:ace2ts/ace@0.1.160": {
+      "ace2ts/ace-workers": "github:ace2ts/ace-workers@0.1.54",
       "typescript": "npm:typescript@1.8.10"
     },
     "github:angular-ui/ui-router@0.2.18": {
@@ -97,7 +98,7 @@ System.config({
     },
     "npm:lcid@1.0.0": {
       "invert-kv": "npm:invert-kv@1.0.0",
-      "systemjs-json": "github:systemjs/plugin-json@0.1.1"
+      "systemjs-json": "github:systemjs/plugin-json@0.1.2"
     },
     "npm:os-browserify@0.1.2": {
       "os": "github:jspm/nodelibs-os@0.1.0"
@@ -124,7 +125,7 @@ System.config({
     "npm:showdown@1.3.0": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "process": "github:jspm/nodelibs-process@0.1.2",
-      "systemjs-json": "github:systemjs/plugin-json@0.1.1",
+      "systemjs-json": "github:systemjs/plugin-json@0.1.2",
       "yargs": "npm:yargs@3.32.0"
     },
     "npm:string-width@1.0.1": {

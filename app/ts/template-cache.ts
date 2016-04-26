@@ -76,7 +76,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                            </span>\n" +
     "                        </a>\n" +
     "                    </li>\n" +
-    "                    <li ng-if='workspaceLoaded'>\n" +
+    "                    <li>\n" +
     "                        <a role='button' ng-click='toggleView()' ng-hide='isViewVisible'>\n" +
     "                            <span class='glyphicon glyphicon-play' aria-hidden='true' ng-hide='isViewVisible' uib-tooltip=\"Run\" tooltip-placement='bottom'></span>\n" +
     "                        </a>\n" +
@@ -157,8 +157,8 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                <div editor ng-repeat='(name, file) in currentDoodle().files' ng-model='file.content' id='{{name}}' mode='{{file.language}}'\n" +
     "                ng-show='isEditMode &amp;&amp; file.selected'></div>\n" +
     "            </div>\n" +
-    "            <div id='readme' ng-if='isReadMeVisible'></div>\n" +
     "            <div id='output' ng-if='isViewVisible'></div>\n" +
+    "            <div id='readme' ng-if='isReadMeVisible'></div>\n" +
     "        </div>\n" +
     "    </workspace>\n" +
     "</div>"
