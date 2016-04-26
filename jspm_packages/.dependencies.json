@@ -2,11 +2,6 @@
   "npm:@angular/router@0.2.0": {
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "npm:angular2@2.0.0-beta.15": {
-    "reflect-metadata": "npm:reflect-metadata@0.1.2",
-    "rxjs": "npm:rxjs@^5.0.0-beta.2",
-    "zone.js": "npm:zone.js@^0.6.6"
-  },
   "github:jspm/nodelibs-process@0.1.2": {
     "process": "npm:process@^0.11.0"
   },
@@ -159,10 +154,15 @@
     "angular": "npm:angular"
   },
   "npm:angular@1.5.5": {},
-  "github:ace2ts/ace-workers@0.1.54": {},
-  "github:ace2ts/ace@0.1.160": {
-    "ace2ts/ace-workers": "github:ace2ts/ace-workers@^0.1.54",
-    "typescript": "npm:typescript@^1.8.10"
+  "github:systemjs/plugin-json@0.1.2": {},
+  "npm:angular2@2.0.0-beta.16": {
+    "reflect-metadata": "npm:reflect-metadata@0.1.2",
+    "rxjs": "npm:rxjs@^5.0.0-beta.2",
+    "zone.js": "npm:zone.js@^0.6.6"
   },
-  "github:systemjs/plugin-json@0.1.2": {}
+  "github:ace2ts/ace-workers@0.1.60": {},
+  "github:ace2ts/ace@0.1.163": {
+    "ace2ts/ace-workers": "github:ace2ts/ace-workers@^0.1.60",
+    "typescript": "npm:typescript@^1.8.10"
+  }
 }

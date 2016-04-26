@@ -20,15 +20,15 @@ module.exports = function(grunt) {
             dest: 'generated/index.html'
           },
           {
-            src: 'jspm_packages/github/ace2ts/ace@0.1.160/assets/js/worker.js',
+            src: 'jspm_packages/github/ace2ts/ace@0.1.163/assets/js/worker.js',
             dest: 'generated/js/worker.js'
           },
           {
-            src: 'jspm_packages/github/ace2ts/ace-workers@0.1.54/dist/ace-workers.js',
+            src: 'jspm_packages/github/ace2ts/ace-workers@0.1.60/dist/ace-workers.js',
             dest: 'generated/js/ace-workers.js'
           },
           {
-            src: 'jspm_packages/github/ace2ts/ace-workers@0.1.54/dist/ace-workers.js.map',
+            src: 'jspm_packages/github/ace2ts/ace-workers@0.1.60/dist/ace-workers.js.map',
             dest: 'generated/js/ace-workers.js.map'
           },
           {
@@ -44,7 +44,7 @@ module.exports = function(grunt) {
             dest: 'generated/jspm.config.js'
           },
           {
-            src: 'manual/typescript/typescriptServices.js',
+            src: 'manual/typescript@1.8.0/typescriptServices.js',
             dest: 'generated/js/typescriptServices.js'
           },
           {
@@ -314,15 +314,15 @@ module.exports = function(grunt) {
             dest: 'dist/css/app.css'
           },
           {
-            src: 'jspm_packages/github/ace2ts/ace@0.1.160/assets/js/worker.js',
+            src: 'jspm_packages/github/ace2ts/ace@0.1.163/assets/js/worker.js',
             dest: 'dist/js/worker.js'
           },
           {
-            src: 'jspm_packages/github/ace2ts/ace-workers@0.1.54/dist/ace-workers.js',
+            src: 'jspm_packages/github/ace2ts/ace-workers@0.1.60/dist/ace-workers.js',
             dest: 'dist/js/ace-workers.js'
           },
           {
-            src: 'jspm_packages/github/ace2ts/ace-workers@0.1.54/dist/ace-workers.js.map',
+            src: 'jspm_packages/github/ace2ts/ace-workers@0.1.60/dist/ace-workers.js.map',
             dest: 'dist/js/ace-workers.js.map'
           },
           {
@@ -338,7 +338,7 @@ module.exports = function(grunt) {
             dest: 'dist/jspm.config.js'
           },
           {
-            src: 'manual/typescript/typescriptServices.js',
+            src: 'manual/typescript@1.8.0/typescriptServices.js',
             dest: 'dist/js/typescriptServices.js'
           },
           {

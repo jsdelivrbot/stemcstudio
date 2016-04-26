@@ -9,15 +9,15 @@ System.config({
 
   map: {
     "@angular/router": "npm:@angular/router@0.2.0",
-    "ace.js": "github:ace2ts/ace@0.1.160",
-    "ace2ts/ace": "github:ace2ts/ace@0.1.160",
-    "ace2ts/ace-workers": "github:ace2ts/ace-workers@0.1.54",
+    "ace.js": "github:ace2ts/ace@0.1.163",
+    "ace2ts/ace": "github:ace2ts/ace@0.1.163",
+    "ace2ts/ace-workers": "github:ace2ts/ace-workers@0.1.60",
     "angular": "github:angular/bower-angular@1.5.5",
     "angular-animate": "github:angular/bower-angular-animate@1.5.5",
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.2",
     "angular-material-icons": "npm:angular-material-icons@0.7.0",
     "angular-ui-router": "github:angular-ui/ui-router@0.2.18",
-    "angular2": "npm:angular2@2.0.0-beta.15",
+    "angular2": "npm:angular2@2.0.0-beta.16",
     "bootstrap": "vendor/bootstrap/dist/js/npm",
     "bootstrap-dialog": "npm:bootstrap-dialog@1.34.6",
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.0.11",
@@ -25,8 +25,8 @@ System.config({
     "jquery": "npm:jquery@2.2.3",
     "showdown": "npm:showdown@1.3.0",
     "underscore": "npm:underscore@1.8.3",
-    "github:ace2ts/ace@0.1.160": {
-      "ace2ts/ace-workers": "github:ace2ts/ace-workers@0.1.54",
+    "github:ace2ts/ace@0.1.163": {
+      "ace2ts/ace-workers": "github:ace2ts/ace-workers@0.1.60",
       "typescript": "npm:typescript@1.8.10"
     },
     "github:angular-ui/ui-router@0.2.18": {
@@ -62,7 +62,7 @@ System.config({
     "npm:angular-material-icons@0.7.0": {
       "angular": "npm:angular@1.5.5"
     },
-    "npm:angular2@2.0.0-beta.15": {
+    "npm:angular2@2.0.0-beta.16": {
       "reflect-metadata": "npm:reflect-metadata@0.1.2",
       "rxjs": "npm:rxjs@5.0.0-beta.6",
       "zone.js": "npm:zone.js@0.6.12"

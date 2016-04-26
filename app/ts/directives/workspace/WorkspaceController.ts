@@ -332,6 +332,8 @@ export default class WorkspaceController implements WorkspaceMixin {
 
         // WARNING: Make sure that workspace create and release are balanced across $onInit and $onDestroy.
         this.workspace = this.workspaceFactory.createWorkspace()
+        // this.workspace.trace = false
+        // this.workspace.setTrace(false)
         this.workspace.setDefaultLibrary('/typings/lib.es6.d.ts')
 
 
@@ -340,7 +342,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         if (doodles.length === 0) {
             // If there is no document, construct one based upon the first template.
             // FIXME: Bit of a smell here. $scope.templates is from a different controller.
-            doodles.createDoodle(this.$scope.templates[0], "STEMCstudio Project");
+            doodles.createDoodle(this.$scope.templates[0], "STEMCstudio");
         }
 
         // Perform conversions required for doodle evolution.
@@ -486,7 +488,9 @@ export default class WorkspaceController implements WorkspaceMixin {
         this.workspace.setScriptTarget(scriptTarget)
 
         this.workspace.synchronize()
-            .then((promiseValue: any) => {
+            .then(() => {
+                // FIXME: Need a callback here...
+                this.workspace.outputFiles()
                 this.$scope.workspaceLoaded = true
                 this.$scope.updatePreview(WAIT_NO_MORE)
             })

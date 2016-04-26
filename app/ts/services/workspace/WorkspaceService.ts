@@ -69,6 +69,7 @@ export default class WorkspaceService implements Workspace {
      */
     constructor(private $q: ng.IQService) {
         this.workspace = new ace.Workspace('/js/worker.js', workerImports.concat(typescriptServices));
+        this.workspace.trace = false;
         this.state = WorkspaceState.CONSTRUCTED
         this.promises = new PromiseManager($q);
     }
@@ -271,6 +272,21 @@ export default class WorkspaceService implements Workspace {
         })
     }
 
+    setTrace(trace: boolean): void {
+        this.dump(`setTrace(${trace})`)
+        const deferred = this.promises.defer('setTrace')
+        this.workspace.setTrace(trace, (err: any) => {
+            if (err) {
+                console.warn(`setTrace('${trace}') => ${err}`)
+                this.promises.reject(deferred, err)
+            }
+            else {
+                this.promises.resolve(deferred, trace)
+            }
+            this.dump(`setTrace(${trace}) completed.`)
+        })
+    }
+
     attachEditor(fileName: string, editor: ace.Editor): void {
         this.dump(`attachEditor(${fileName})`)
         this.editorCapturing[fileName] = true;
@@ -374,5 +390,12 @@ export default class WorkspaceService implements Workspace {
             const fileName = fileNames[i]
             this.removeScript(fileName)
         }
+    }
+
+    /**
+     *
+     */
+    outputFiles(): void {
+        this.workspace.outputFiles()
     }
 }
