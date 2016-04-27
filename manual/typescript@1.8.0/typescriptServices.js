@@ -1641,6 +1641,7 @@ var ts;
                 if (verboseDebugInfo) {
                     verboseDebugString = "\r\nVerbose Debug Information: " + verboseDebugInfo();
                 }
+                // debugger;
                 throw new Error("Debug Failure. False expression: " + (message || "") + verboseDebugString);
             }
         }
@@ -52560,4 +52561,4 @@ var TypeScript;
 })(TypeScript || (TypeScript = {}));
 /* @internal */
 var toolsVersion = "1.6";
-//# sourceMappingURL=file:////home/david/dev/geometryzen/TypeScript/built/local/typescriptServices.js.map
+//# sourceMappingURL=file:////home/david/dev/geometryzen/TypeScript-1.8.0/built/local/typescriptServices.js.map

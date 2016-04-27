@@ -160,9 +160,9 @@
     "rxjs": "npm:rxjs@^5.0.0-beta.2",
     "zone.js": "npm:zone.js@^0.6.6"
   },
-  "github:ace2ts/ace-workers@0.1.60": {},
   "github:ace2ts/ace@0.1.163": {
     "ace2ts/ace-workers": "github:ace2ts/ace-workers@^0.1.60",
     "typescript": "npm:typescript@^1.8.10"
-  }
+  },
+  "github:ace2ts/ace-workers@0.1.65": {}
 }

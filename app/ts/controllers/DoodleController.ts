@@ -84,6 +84,7 @@ export default class DoodleController {
         LIBS_MARKER: string,
         VENDOR_FOLDER_MARKER: string,
         settings: ISettingsService) {
+
         ///////////////////////////////////////////////////////////////////////////
         const GITHUB_TOKEN_COOKIE_NAME = 'github-token';
 
@@ -258,14 +259,13 @@ export default class DoodleController {
         $scope.doHelp = function() {
             // Do nothing.
         };
+    }
 
-        ///////////////////////////////////////////////////////////////////////
-        if (doodles.length === 0) {
-            // If there is no document, construct one based upon the first template.
-            doodles.createDoodle($scope.templates[0], "My STEM Project");
-        }
-        else {
-            // Do nothing.
-        }
+    $onInit(): void {
+        // This is not called. Maybe because it's a routing controller?
+    }
+
+    $onDestroy(): void {
+        // This is not called. Maybe because it's a routing controller?
     }
 }

@@ -24,12 +24,8 @@ module.exports = function(grunt) {
             dest: 'generated/js/worker.js'
           },
           {
-            src: 'jspm_packages/github/ace2ts/ace-workers@0.1.60/dist/ace-workers.js',
+            src: 'jspm_packages/github/ace2ts/ace-workers@0.1.65/dist/ace-workers.js',
             dest: 'generated/js/ace-workers.js'
-          },
-          {
-            src: 'jspm_packages/github/ace2ts/ace-workers@0.1.60/dist/ace-workers.js.map',
-            dest: 'generated/js/ace-workers.js.map'
           },
           {
             // Maintain the same relative path with jspm.config.js.
@@ -318,12 +314,8 @@ module.exports = function(grunt) {
             dest: 'dist/js/worker.js'
           },
           {
-            src: 'jspm_packages/github/ace2ts/ace-workers@0.1.60/dist/ace-workers.js',
+            src: 'jspm_packages/github/ace2ts/ace-workers@0.1.65/dist/ace-workers.js',
             dest: 'dist/js/ace-workers.js'
-          },
-          {
-            src: 'jspm_packages/github/ace2ts/ace-workers@0.1.60/dist/ace-workers.js.map',
-            dest: 'dist/js/ace-workers.js.map'
           },
           {
             // Maintain the same relative path with jspm.config.js.

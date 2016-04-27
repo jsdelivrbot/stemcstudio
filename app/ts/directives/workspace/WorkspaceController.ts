@@ -82,7 +82,9 @@ function currentJavaScript(fileName: string, doodle: Doodle): string {
                 return mathscript.transpile(code);
             }
             catch (e) {
-                console.error(e);
+                // We might end up here if there is an error in the source code.
+                // TODO: Distinguish errors in transpile from errors in source code.
+                console.warn(e);
                 return code;
             }
         }
@@ -225,7 +227,6 @@ export default class WorkspaceController implements WorkspaceMixin {
 
     /**
      * Keep track of watches so that we can clean them up.
-     * I'm beginning to have a deja vu about addRef(), release() all over again.
      */
     private watches: (() => any)[] = [];
 
@@ -332,8 +333,8 @@ export default class WorkspaceController implements WorkspaceMixin {
 
         // WARNING: Make sure that workspace create and release are balanced across $onInit and $onDestroy.
         this.workspace = this.workspaceFactory.createWorkspace()
-        // this.workspace.trace = false
-        // this.workspace.setTrace(false)
+        // this.workspace.trace = true
+        // this.workspace.setTrace(true)
         this.workspace.setDefaultLibrary('/typings/lib.es6.d.ts')
 
 
