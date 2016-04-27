@@ -20,11 +20,11 @@ module.exports = function(grunt) {
             dest: 'generated/index.html'
           },
           {
-            src: 'jspm_packages/github/ace2ts/ace@0.1.163/assets/js/worker.js',
+            src: 'jspm_packages/github/ace2ts/ace@0.1.164/assets/js/worker.js',
             dest: 'generated/js/worker.js'
           },
           {
-            src: 'jspm_packages/github/ace2ts/ace-workers@0.1.65/dist/ace-workers.js',
+            src: 'jspm_packages/github/ace2ts/ace-workers@0.1.66/dist/ace-workers.js',
             dest: 'generated/js/ace-workers.js'
           },
           {
@@ -310,11 +310,11 @@ module.exports = function(grunt) {
             dest: 'dist/css/app.css'
           },
           {
-            src: 'jspm_packages/github/ace2ts/ace@0.1.163/assets/js/worker.js',
+            src: 'jspm_packages/github/ace2ts/ace@0.1.164/assets/js/worker.js',
             dest: 'dist/js/worker.js'
           },
           {
-            src: 'jspm_packages/github/ace2ts/ace-workers@0.1.65/dist/ace-workers.js',
+            src: 'jspm_packages/github/ace2ts/ace-workers@0.1.66/dist/ace-workers.js',
             dest: 'dist/js/ace-workers.js'
           },
           {

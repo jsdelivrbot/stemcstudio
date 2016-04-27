@@ -49,7 +49,7 @@ Update versions in
 2. bower.json
 3. app/ts/app.ts
 
-## Upgrading Ace
+## Upgrading ace
 
 1. tsconfig.json
 2. Gruntfile.js
@@ -62,7 +62,11 @@ npm update
 jspm install
 jspm update
 ``` 
+## Upgrading ace-workers
 
+1. Gruntfile.js
+2. package.json
+3. jspm.config.js
 
 git push origin master
 
