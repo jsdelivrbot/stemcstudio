@@ -321,6 +321,10 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "\n" +
     "        <div class='md-docs-section'>\n" +
     "          <h1 class='page-header'>Integrated Learning through a Game Development Project</h1>\n" +
+    "          <p class='lead'><a href='/#/gists/6774d1e77202db783182'>Asteroids</a></p>\n" +
+    "          <p>\n" +
+    "          The classic computer game originating from M.I.T.\n" +
+    "          </p>\n" +
     "          <p class='lead'><a href='/#/gists/563f391f711bfcfccac5'>Game2D</a></p>\n" +
     "          <p>\n" +
     "          A computer game that realistically applies Physics principles, uses Geometric\n" +

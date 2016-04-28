@@ -11,7 +11,7 @@ export default function(): ng.IDirective {
         template: [
             "<span class='md-logo-text-math'>STEMC</span>",
             "<span class='md-logo-text-doodle'>studio</span>",
-            "<!-- span class='md-logo-text-domain'>.org</span -->",
+            "<!-- span class='md-logo-text-domain'>.com</span -->",
             "<span class='md-logo-text-version'><sup>{{version}}</sup></span>"].join('')
     };
 }
