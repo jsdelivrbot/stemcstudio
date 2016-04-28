@@ -15,7 +15,7 @@ interface AppScope extends angular.IRootScopeService {
     logout(): void;
     userLogin(): string;
     /**
-     * The version of mathdoodle.
+     * The version of the application.
      */
     version: string;
 }

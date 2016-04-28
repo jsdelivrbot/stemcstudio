@@ -1,6 +1,6 @@
 // Type definitions for MathBox 1.0.0
 // Project: N/A
-// Definitions by: David Holmes <http://github.com/mathdoodle>
+// Definitions by: David Geo Holmes <http://github.com/geometryzen>
 
 /**
  * Functional constructor for MathBox.

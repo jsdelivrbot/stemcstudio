@@ -9,8 +9,8 @@ System.config({
 
   map: {
     "@angular/router": "npm:@angular/router@0.2.0",
-    "ace.js": "github:ace2ts/ace@0.1.164",
-    "ace2ts/ace": "github:ace2ts/ace@0.1.164",
+    "ace.js": "github:ace2ts/ace@0.1.165",
+    "ace2ts/ace": "github:ace2ts/ace@0.1.165",
     "ace2ts/ace-workers": "github:ace2ts/ace-workers@0.1.66",
     "angular": "github:angular/bower-angular@1.5.5",
     "angular-animate": "github:angular/bower-angular-animate@1.5.5",
@@ -25,7 +25,7 @@ System.config({
     "jquery": "npm:jquery@2.2.3",
     "showdown": "npm:showdown@1.3.0",
     "underscore": "npm:underscore@1.8.3",
-    "github:ace2ts/ace@0.1.164": {
+    "github:ace2ts/ace@0.1.165": {
       "ace2ts/ace-workers": "github:ace2ts/ace-workers@0.1.66",
       "typescript": "npm:typescript@1.8.10"
     },
@@ -64,7 +64,7 @@ System.config({
     },
     "npm:angular2@2.0.0-beta.16": {
       "reflect-metadata": "npm:reflect-metadata@0.1.2",
-      "rxjs": "npm:rxjs@5.0.0-beta.6",
+      "rxjs": "npm:rxjs@5.0.0-beta.7",
       "zone.js": "npm:zone.js@0.6.12"
     },
     "npm:assert@1.3.0": {
@@ -118,9 +118,10 @@ System.config({
       "assert": "github:jspm/nodelibs-assert@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:rxjs@5.0.0-beta.6": {
+    "npm:rxjs@5.0.0-beta.7": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
-      "process": "github:jspm/nodelibs-process@0.1.2"
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "symbol-observable": "npm:symbol-observable@0.2.4"
     },
     "npm:showdown@1.3.0": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",

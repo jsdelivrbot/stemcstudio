@@ -1,8 +1,8 @@
 {
-  "name": "mathdoodle",
+  "name": "stemcstudio",
   "version": "2.0.0-beta.29",
   "description": "Learning Mathematics and Geometric Physics through Computational Modeling",
-  "homepage": "https://github.com/geometryzen/mathdoodle",
+  "homepage": "https://github.com/geometryzen/STEMCstudio",
   "authors": [
     "David Holmes <david.geo.holmes@gmail.com>",
     "Geometry Zen <geometryzen@gmail.com>"

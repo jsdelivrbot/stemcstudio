@@ -45,7 +45,7 @@ const app: angular.IModule = angular.module('app', [
 ]);
 
 function makeKey(name: string): string {
-    const DOMAIN = ['mathdoodle', 'io'];
+    const DOMAIN = ['stemcstudio', 'com'];
     return DOMAIN.reverse().concat(name).join('.');
 }
 
@@ -59,9 +59,9 @@ app.constant('version', '2.0.0-beta.29');
 // githubKey stores the key of the item in local storage for maintaining GitHub OAuth data.
 // Remark: This value is duplicated in views/github_callback.jade
 app.constant('githubKey', makeKey('github'));
-// io.mathdoodle.doodles is the local storage key for doodles.
+// com.stemcstudio.doodles is the local storage key for doodles.
 app.constant('doodlesKey', makeKey('doodles'));
-// io.mathdoodle.config is the local storage key for configuration.
+// com.stemcstudio.config is the local storage key for configuration.
 app.constant('configKey', makeKey('config'));
 
 // The following 3 files have special significance.
@@ -204,7 +204,7 @@ app.run([
     ) {
 
         // The name of this cookie must correspond with the cookie sent back from the server.
-        const GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME = 'mathdoodle-github-application-client-id';
+        const GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME = 'stemcstudio-github-application-client-id';
         const GITHUB_TOKEN_COOKIE_NAME = 'github-token';
         const GITHUB_LOGIN_COOKIE_NAME = 'github-login';
         const GITHUB_GET_LOGIN_OAUTH_AUTHORIZE = "https://github.com/login/oauth/authorize";
@@ -227,7 +227,7 @@ app.run([
                     BootstrapDialog.show({
                         type: BootstrapDialog.TYPE_SUCCESS,
                         title: $("<h3>Update Ready</h3>"),
-                        message: "A new version of mathdoodle is available. Would you like to use it now?",
+                        message: "A new version of STEMCstudio is available. Would you like to use it now?",
                         /*closable: false,*/
                         /*closeByBackdrop: false,*/
                         /*closeByKeyboard: false,*/

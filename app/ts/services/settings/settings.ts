@@ -3,7 +3,7 @@ import ISettingsService from './ISettingsService';
 
 app.factory('settings', [function(): ISettingsService {
     var settings: ISettingsService = {
-        theme: 'ace/theme/mathdoodle',
+        theme: 'ace/theme/stemcstudio',
         indent: 2,
         fontSize: '16px',
         showInvisibles: false,

@@ -1,6 +1,6 @@
 // Type definitions for ThreeBox 1.0.0
 // Project: N/A
-// Definitions by: David Holmes <http://github.com/mathdoodle>
+// Definitions by: David Geo Holmes <http://github.com/geometryzen>
 
 /**
  * ThreeBox is a plug-in for tQuery/Three.js which provides an improved boilerplate set up.

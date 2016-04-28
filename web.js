@@ -1,7 +1,7 @@
 "use strict";
 var nconf = require("nconf");
 var http = require("http");
-var debug = require('debug')('mathdoodle:server');
+var debug = require('debug')('STEMCstudio:server');
 var app_1 = require("./app");
 var socketIO = require('socket.io');
 var port = normalizePort(nconf.get("PORT") || 8080);

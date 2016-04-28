@@ -173,7 +173,7 @@ app.factory('options', [
                 name: 'davinci-eight',
                 moniker: 'Eight.js',
                 description: "Mathematical Computer Graphics using WebGL.",
-                homepage: 'http://www.mathdoodle.io/docs/davinci-eight/index.html',
+                homepage: 'http://www.stemcstudio.com/docs/davinci-eight/index.html',
                 version: VERSION_EIGHT,
                 visible: true,
                 css: [],

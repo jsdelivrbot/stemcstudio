@@ -1,4 +1,4 @@
-# MathDoodle
+# STEMCstudio
 
 Learning Mathematics and Geometric Physics through Computational Modeling.
 
@@ -18,8 +18,8 @@ npm install -g karma-cli
 
 # Instructions
 
-1. `git clone https://github.com/geometryzen/mathdoodle.git`
-2. `cd mathdoodle`
+1. `git clone https://github.com/geometryzen/STEMCstudio.git`
+2. `cd STEMCstudio`
 3. `npm install`
 4. `bower install`
 5. `typings install`
@@ -37,7 +37,7 @@ declare module AngularUiBootstrap {
 
 7. `grunt`
 8. Open another terminal
-9. `cd mathdoodle`
+9. `cd STEMCstudio`
 10. `npm start`
 11. Open your web browser to localhost:8080
 
@@ -74,7 +74,7 @@ git push origin master
 
 ## Remote
 ```
-git remote add heroku git@heroku.com:mathdoodle.git
+git remote add heroku git@heroku.com:STEMCstudio.git
 ```
 
 ## Push

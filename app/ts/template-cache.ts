@@ -590,8 +590,8 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "      <ul class='md-docs-social-buttons'>\n" +
     "        <li class='follow-btn'>\n" +
     "          <a class='twitter-follow-button'\n" +
-    "            href='https://twitter.com/mathdoodle'>\n" +
-    "            Follow @mathdoodle</a>\n" +
+    "            href='https://twitter.com/stemcstudio'>\n" +
+    "            Follow @stemcstudio</a>\n" +
     "        </li>\n" +
     "        <li class='tweet-btn'>\n" +
     "          <a class='twitter-share-button'\n" +

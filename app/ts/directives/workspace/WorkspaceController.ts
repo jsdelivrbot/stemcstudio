@@ -730,7 +730,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         }
 
         /**
-         * The domain on which we are running. e.g., `http://www.mathdoodle.io` or `localhost:8080`.
+         * The domain on which we are running. e.g., `http://www.stemcstudio.com` or `localhost:8080`.
          * We determine this dynamically in order to access files in known locations on our server.
          * Current usage is for JavaScript files, TypeScript d.ts files, and paths to gists.
          * TODO: JavaScript and TypeScript to come from external repos.
@@ -766,7 +766,7 @@ export default class WorkspaceController implements WorkspaceMixin {
 
     rebuildPreview() {
         /**
-         * The domain on which we are running. e.g., `http://www.mathdoodle.io` or `localhost:8080`.
+         * The domain on which we are running. e.g., `http://www.stemcstudio.com` or `localhost:8080`.
          * We determine this dynamically in order to access files in known locations on our server.
          * Current usage is for JavaScript files, TypeScript d.ts files, and paths to gists.
          * TODO: JavaScript and TypeScript to come from external repos.

@@ -62,8 +62,8 @@ var authenticate = function (code, cb) {
     req.on('error', function (e) { cb(e.message); });
 };
 app.get("/*", function (req, res, next) {
-    if (req.headers['host'].match(/^mathdoodle.herokuapp.com/)) {
-        res.redirect("http://www.mathdoodle.io" + req.url, 301);
+    if (req.headers['host'].match(/^stemcstudio.herokuapp.com/)) {
+        res.redirect("http://www.stemcstudio.com" + req.url, 301);
     }
     else {
         next();
@@ -80,14 +80,14 @@ app.get('/authenticate/:code', function (req, res) {
     });
 });
 app.get("/github_callback", function (req, res, next) {
-    res.cookie('mathdoodle-github-application-client-id', nconf.get("GITHUB_APPLICATION_CLIENT_ID"));
+    res.cookie('stemcstudio-github-application-client-id', nconf.get("GITHUB_APPLICATION_CLIENT_ID"));
     res.render("github_callback", {
         npm: npm
     });
 });
 app.get("/*", function (req, res, next) {
     var clientId = nconf.get("GITHUB_APPLICATION_CLIENT_ID");
-    res.cookie('mathdoodle-github-application-client-id', nconf.get("GITHUB_APPLICATION_CLIENT_ID"));
+    res.cookie('stemcstudio-github-application-client-id', nconf.get("GITHUB_APPLICATION_CLIENT_ID"));
     res.render("index", {
         css: "/css/app.css?version=" + npm.version,
         js: "/js/app.js?version=" + npm.version,
