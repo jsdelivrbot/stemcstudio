@@ -101,3 +101,15 @@ git remote add heroku git@heroku.com:stemcstudio.git
 git push -f heroku master
 ```
 
+### Domains
+
+The `stemcstudio.com` domain is being managed using dnsimple.com.
+
+The acoount is david.geo.holmes
+
+The Services are configured as follows
+
+TXT      stemcstudio.com     ALIAS for stemcstudio.herokuapp.com
+ALIAS    stemcstudio.com     stemcstudio.herokuapp.com
+CNAME    www.stemcstudio.com stemcstudio.herokuapp.com 
+

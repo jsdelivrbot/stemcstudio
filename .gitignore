@@ -1,4 +1,5 @@
 .tscache
+config.development.json
 generated/
 typings/
 bower_components/
