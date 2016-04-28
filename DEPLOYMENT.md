@@ -133,7 +133,13 @@ The account is david.geo.holmes
 
 The Services are configured as follows
 
+Type     Domain Name         DNS Target
 TXT      stemcstudio.com     ALIAS for stemcstudio.herokuapp.com
 ALIAS    stemcstudio.com     stemcstudio.herokuapp.com
-CNAME    www.stemcstudio.com stemcstudio.herokuapp.com 
+CNAME    www.stemcstudio.com stemcstudio.herokuapp.com
+
+### SSL Support
+
+Once an SSL certificate has been installed on Heroku and the application has an SSL Endpoint,
+the dnsimple DNS records should be updated.
 

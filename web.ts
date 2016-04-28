@@ -1,6 +1,6 @@
 import * as nconf from "nconf";
 import * as http from "http";
-const debug = require('debug')('STEMCstudio:server');
+const debug = require('debug')('stemcstudio:server');
 import app from "./app";
 import * as socketIO from 'socket.io';
 
