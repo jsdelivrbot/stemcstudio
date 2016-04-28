@@ -225,6 +225,11 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "        <div class='md-docs-section'>\n" +
     "          <h1 class='page-header'>Physics Exploration</h1>\n" +
     "          <p class='lead'>\n" +
+    "            <a href='/#/gists/1af94bb1db939e36e5f84764b44030af'>Modeling a Gas</a>\n" +
+    "          <p>\n" +
+    "          This program models a Gas as a collection of Molecules interacting with each other and the walls of a Box through elastic collisions.\n" +
+    "          </p>\n" +
+    "          <p class='lead'>\n" +
     "            <a href='/#/gists/72b8c2b765792d2fe100'>Projectile Motion</a>\n" +
     "          <p>\n" +
     "          Physics demonstrations and explorations require accessible solutions without having to re-invent graphical components. This example shows how to model projectile motion by composing high-level components in the Eight.Js library.\n" +
