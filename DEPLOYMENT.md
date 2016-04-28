@@ -72,11 +72,11 @@ Copy the *Client ID* and *Client Secret* into the file `config.development.json`
 
 Name: `STEMCstudio`
 
-Homepage URL: http://www.stemcstudio.com
+Homepage URL: https://www.stemcstudio.com
 
 Description: Educational Computational Mathematics, Physics, Modeling and Geometry
 
-Authorization callback URL: http://www.stemcstudio.com/github_callback
+Authorization callback URL: https://www.stemcstudio.com/github_callback
 
 Copy the *Client ID* and *Client Secret* into the appropriate Heroku Config Variables.
 
