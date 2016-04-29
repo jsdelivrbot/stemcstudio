@@ -292,7 +292,12 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "        </div>\n" +
     "\n" +
     "        <div class='md-docs-section'>\n" +
-    "          <h1 class='page-header'>Mathematical Research</h1>\n" +
+    "          <h1 class='page-header'>Mathematics</h1>\n" +
+    "          <p class='lead'>\n" +
+    "          <a href='/#/gists/2d975217f9406177e4a6cd812bd28134'>Euclidean Plane using JSXGraph</a>\n" +
+    "          <p>\n" +
+    "          JSXGraph is a cross-browser JavaScript library for interactive geometry, function plotting, charting, and data visualization in the web browser.\n" +
+    "          </p>\n" +
     "          <p class='lead'>\n" +
     "          <a href='/#/gists/d4a1b374cb80ca178ad2'>Eight Surface</a>\n" +
     "          <p>\n" +
