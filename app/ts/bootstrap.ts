@@ -5,6 +5,8 @@ import app from './app';
 import * as angular from 'angular';
 import contextMenu from './directives/contextMenu/contextMenu.directive';
 import DoodleController from './controllers/DoodleController';
+import ExamplesController from './controllers/ExamplesController';
+import HomeController from './controllers/HomeController';
 import editor from './directives/editor/editor.component';
 import explorer from './directives/explorer/explorer.component';
 import ExplorerFilesController from './directives/explorer/ExplorerFilesController';
@@ -23,7 +25,14 @@ import WorkspaceFactoryService from './services/workspace/WorkspaceFactoryServic
 // The ordering relative to the app is critical but works automatically using the System loader
 // provided that the service imports the 'app' System module.
 //
+
+//
+// The (3) top-level controllers that participate in the routing.
+//
 app.controller('doodle-controller', DoodleController)
+app.controller('examples-controller', ExamplesController)
+app.controller('home-controller', HomeController)
+
 app.controller('ExplorerFilesController', ExplorerFilesController)
 app.controller('AlertController', AlertController)
 app.controller('ConfirmController', ConfirmController)

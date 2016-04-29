@@ -1,37 +1,39 @@
 import * as angular from 'angular';
-import app from '../app';
+import AbstractPageController from './AbstractPageController';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
 import HomeScope from '../scopes/HomeScope';
 
-app.controller('home-controller', [
-    '$scope',
-    '$state',
-    '$twitter',
-    '$window',
-    'GitHubAuthManager',
-    'NAMESPACE_TWITTER_WIDGETS',
-    'STATE_DOODLE',
-    'STATE_EXAMPLES',
-    function(
+/**
+ * @class HomeController
+ */
+export default class HomeController extends AbstractPageController {
+
+    public static $inject: string[] = [
+        '$scope',
+        '$state',
+        '$twitter',
+        '$window',
+        'GitHubAuthManager',
+        'ga',
+        'NAMESPACE_TWITTER_WIDGETS',
+        'STATE_DOODLE',
+        'STATE_EXAMPLES',
+        'UNIVERSAL_ANALYTICS_TRACKING_ID',
+    ];
+
+    constructor(
         $scope: HomeScope,
         $state: angular.ui.IStateService,
         $twitter: Twitter,
         $window: angular.IWindowService,
         authManager: IGitHubAuthManager,
+        ga: UniversalAnalytics.ga,
         NAMESPACE_TWITTER_WIDGETS: string,
         STATE_DOODLE: string,
-        STATE_EXAMPLES: string
+        STATE_EXAMPLES: string,
+        UNIVERSAL_ANALYTICS_TRACKING_ID: string
     ) {
-
-        // Ensure that scrollbars are disabled.
-        // This is so that we don't get double scrollbars when using the editor.
-        $window.document.body.style.overflow = 'auto';
-
-        authManager.handleGitHubLoginCallback(function(err, token: string) {
-            if (err) {
-                $scope.alert(err.message);
-            }
-        });
+        super($scope, $window, authManager, ga, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto')
 
         if ($window[NAMESPACE_TWITTER_WIDGETS] && $window[NAMESPACE_TWITTER_WIDGETS].widgets) {
             $window[NAMESPACE_TWITTER_WIDGETS].widgets.load();
@@ -51,4 +53,5 @@ app.controller('home-controller', [
         $scope.goExamples = function() {
             $state.go(STATE_EXAMPLES);
         }
-    }]);
+    }
+}

@@ -1,4 +1,5 @@
 import * as angular from 'angular';
+import AbstractPageController from './AbstractPageController';
 import ICloud from '../services/cloud/ICloud';
 import CookieService from '../services/cookie/CookieService';
 import IDoodleManager from '../services/doodles/IDoodleManager';
@@ -17,9 +18,12 @@ import IUuidService from '../services/uuid/IUuidService';
 import BootstrapDialog from 'bootstrap-dialog';
 
 /**
- * 
+ * This class could probably be merged with the WorkspaceController?
+ *
+ * @class DoodleController
+ * @extends AppController
  */
-export default class DoodleController {
+export default class DoodleController extends AbstractPageController {
     public static $inject: string[] = [
         '$scope',
         '$state',
@@ -50,6 +54,7 @@ export default class DoodleController {
         'SCRIPTS_MARKER',
         'CODE_MARKER',
         'LIBS_MARKER',
+        'UNIVERSAL_ANALYTICS_TRACKING_ID',
         'VENDOR_FOLDER_MARKER',
         'settings']
     constructor(
@@ -82,56 +87,19 @@ export default class DoodleController {
         SCRIPTS_MARKER: string,
         CODE_MARKER: string,
         LIBS_MARKER: string,
+        UNIVERSAL_ANALYTICS_TRACKING_ID: string,
         VENDOR_FOLDER_MARKER: string,
         settings: ISettingsService) {
 
-        ///////////////////////////////////////////////////////////////////////////
+        super($scope, $window, authManager, ga, UNIVERSAL_ANALYTICS_TRACKING_ID, 'hidden')
+
         const GITHUB_TOKEN_COOKIE_NAME = 'github-token';
 
-        authManager.handleGitHubLoginCallback(function(err: any, token: string) {
-            if (err) {
-                $scope.alert(err.message);
-            }
-        });
-
-        ///////////////////////////////////////////////////////////////////////////
-
-        ///////////////////////////////////////////////////////////////////////
-        // THIS IS A TEST OF SOCKET.IO
-        /*
-        const socket = io({ autoConnect: false });
-        socket.connect();
-        socket.on('foo', function(msg) {
-            console.log('foo: ' + msg);
-        });
-        socket.emit('test', [1, 2, 3]);
-        */
-        ///////////////////////////////////////////////////////////////////////
-
-        // Disable scrollbars for this editing page ('hidden' and 'auto').
-        $window.document.body.style.overflow = "hidden";
-
-        ///////////////////////////////////////////////////////////////////////
-
-        ///////////////////////////////////////////////////////////////////////
         // ExplorerMixin implementation.
         $scope.isExplorerVisible = true
         $scope.toggleExplorer = function() {
             $scope.isExplorerVisible = !$scope.isExplorerVisible
         }
-
-        ///////////////////////////////////////////////////////////////////////
-
-        // Ensure that scrollbars are disabled.
-        // This is so that we don't get double scrollbars when using the editor.
-        // I don't think we want this anymore now that we have side-by-side views.
-        // $window.document.body.style.overflow = 'hidden'
-
-        // Reminder: Do not create multiple trackers in this (single page) app.
-        ga('create', 'UA-41504069-3', 'auto');
-        ga('send', 'pageview');
-
-        ///////////////////////////////////////////////////////////////////////
 
         $scope.templates = templates;
 

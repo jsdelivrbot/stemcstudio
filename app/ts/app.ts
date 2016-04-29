@@ -55,7 +55,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
     return VENDOR_FOLDER_MARKER + '/' + packageFolder + '/' + fileName;
 }
 
-app.constant('version', '2.0.0-beta.31');
+app.constant('version', '2.0.0-beta.32');
 // githubKey stores the key of the item in local storage for maintaining GitHub OAuth data.
 // Remark: This value is duplicated in views/github_callback.jade
 app.constant('githubKey', makeKey('github'));
@@ -92,6 +92,7 @@ app.constant('LIBS_MARKER', '// LIBS-MARKER');
 // We can change the global namespace used by Google's Universal Analytics.
 // All access should be through the service wrapper.
 app.constant('NAMESPACE_GOOGLE_ANALYTICS', 'googleAnalytics');
+app.constant('UNIVERSAL_ANALYTICS_TRACKING_ID','UA-41504069-5');
 // This twitter widget namespace is a symbolic constant. It cannot be changed.
 app.constant('NAMESPACE_TWITTER_WIDGETS', 'twttr');
 app.constant('GITHUB_TOKEN_COOKIE_NAME', 'github-token');
