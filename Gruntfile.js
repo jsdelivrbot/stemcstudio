@@ -20,7 +20,7 @@ module.exports = function(grunt) {
             dest: 'generated/index.html'
           },
           {
-            src: 'jspm_packages/github/ace2ts/ace@0.1.165/assets/js/worker.js',
+            src: 'manual/ace/js/worker.js',
             dest: 'generated/js/worker.js'
           },
           {
@@ -310,7 +310,7 @@ module.exports = function(grunt) {
             dest: 'dist/css/app.css'
           },
           {
-            src: 'jspm_packages/github/ace2ts/ace@0.1.165/assets/js/worker.js',
+            src: 'manual/ace/js/worker.js',
             dest: 'dist/js/worker.js'
           },
           {

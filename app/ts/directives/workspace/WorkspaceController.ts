@@ -1,5 +1,8 @@
 import * as angular from 'angular';
-import ace from 'ace.js';
+import Delta from '../../widgets/editor/Delta';
+import Editor from '../../widgets/editor/Editor';
+import EditSession from '../../widgets/editor/EditSession';
+import OutputFile from '../../widgets/editor/workspace/OutputFile';
 import sd from 'showdown';
 import ICloud from '../../services/cloud/ICloud';
 import CookieService from '../../services/cookie/CookieService';
@@ -222,7 +225,7 @@ export default class WorkspaceController implements WorkspaceMixin {
      */
     private readmeChangeHandlers: { [name: string]: ChangeHandler } = {}
 
-    private editors: { [name: string]: ace.Editor } = {}
+    private editors: { [name: string]: Editor } = {}
     private resizeListener: (unused: UIEvent) => any;
 
     /**
@@ -520,7 +523,7 @@ export default class WorkspaceController implements WorkspaceMixin {
      * @param editor {Editor}
      * @return {void}
      */
-    attachEditor(filename: string, mode: string, editor: ace.Editor): void {
+    attachEditor(filename: string, mode: string, editor: Editor): void {
         switch (mode) {
             case 'TypeScript': {
                 this.workspace.attachEditor(filename, editor)
@@ -561,11 +564,11 @@ export default class WorkspaceController implements WorkspaceMixin {
      * @return {OutputFilesHandler}
      */
     private createOutputFilesEventHandler(filename: string): OutputFileHandler {
-        const handler = (event: { data: ace.OutputFile[] }, session: ace.EditSession) => {
+        const handler = (event: { data: OutputFile[] }, session: EditSession) => {
             // It's OK to capture the current Doodle here, but not outside the handler!
             const doodle = this.doodles.current()
             const outputFiles = event.data
-            outputFiles.forEach((outputFile: ace.OutputFile) => {
+            outputFiles.forEach((outputFile: OutputFile) => {
                 if (typeof doodle.lastKnownJs !== 'object') {
                     doodle.lastKnownJs = {}
                 }
@@ -589,7 +592,7 @@ export default class WorkspaceController implements WorkspaceMixin {
     }
 
     private createChangeHandler(filename: string): ChangeHandler {
-        const handler = (delta: ace.Delta, session: ace.EditSession) => {
+        const handler = (delta: Delta, session: EditSession) => {
             if (this.doodles.current()) {
                 this.doodles.updateStorage()
                 this.$scope.updatePreview(WAIT_FOR_MORE_OTHER_KEYSTROKES)
@@ -600,7 +603,7 @@ export default class WorkspaceController implements WorkspaceMixin {
     }
 
     private createReadmeChangeHandler(filename: string): ChangeHandler {
-        const handler = (delta: ace.Delta, session: ace.EditSession) => {
+        const handler = (delta: Delta, session: EditSession) => {
             if (this.doodles.current()) {
                 this.doodles.updateStorage()
                 this.updateReadmeView(WAIT_FOR_MORE_README_KEYSTROKES)
@@ -620,7 +623,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         delete this.changeHandlers[filename]
     }
 
-    private addReadmeChangeHandler(filename: string, editor: ace.Editor): void {
+    private addReadmeChangeHandler(filename: string, editor: Editor): void {
         if (this.readmeChangeHandlers[filename]) {
             console.warn(`NOT Expecting to find a README change handler for file ${filename}.`)
             return
@@ -630,7 +633,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         this.readmeChangeHandlers[filename] = handler
     }
 
-    private removeReadmeChangeHandler(filename: string, editor: ace.Editor): void {
+    private removeReadmeChangeHandler(filename: string, editor: Editor): void {
         const handler = this.readmeChangeHandlers[filename]
         if (handler) {
             editor.getSession().off('change', handler)
@@ -648,7 +651,7 @@ export default class WorkspaceController implements WorkspaceMixin {
      * @param editor {Editor}
      * @return {void}
      */
-    detachEditor(filename: string, mode: string, editor: ace.Editor): void {
+    detachEditor(filename: string, mode: string, editor: Editor): void {
         switch (mode) {
             case 'TypeScript': {
                 const handler = this.outputFilesEventHandlers[filename]

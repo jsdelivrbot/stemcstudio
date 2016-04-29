@@ -8,6 +8,7 @@
     "experimentalDecorators": true,
     "removeComments": false,
     "noImplicitAny": false,
+    "noLib": true,
     "outDir": "generated/js"
   },
   "files": [
@@ -46,9 +47,10 @@
 
     "typings/browser.d.ts",
 
-    "jspm_packages/github/ace2ts/ace@0.1.165/dist/ace.d.ts",
     "typings-manual/bootstrap-dialog/bootstrap-dialog.d.ts",
     "typings-manual/davinci-mathscript/davinci-mathscript.d.ts",
-    "typings-manual/showdown/showdown.d.ts"
+    "typings-manual/showdown/showdown.d.ts",
+
+    "./node_modules/typescript/lib/lib.dom.d.ts"
   ]
 }

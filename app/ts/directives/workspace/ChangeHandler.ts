@@ -1,10 +1,11 @@
-import ace from 'ace.js';
+import Delta from '../../widgets/editor/Delta';
+import EditSession from '../../widgets/editor/EditSession';
 
 /**
- * TODO: This could be an ACE interfaceinterface
+ * TODO: This could be an ACE interface.
  */
 interface ChangeHandler {
-    (delta: ace.Delta, session: ace.EditSession): any
+    (delta: Delta, session: EditSession): any
 }
 
 export default ChangeHandler;

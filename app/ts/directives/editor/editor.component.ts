@@ -1,5 +1,12 @@
-import ace from 'ace.js';
 import * as ng from 'angular';
+import createJavaScriptMode from '../../widgets/editor/mode/createJavaScriptMode';
+import createTypeScriptMode from '../../widgets/editor/mode/createTypeScriptMode';
+import createHtmlMode from '../../widgets/editor/mode/createHtmlMode';
+import createCssMode from '../../widgets/editor/mode/createCssMode';
+import createMarkdownMode from '../../widgets/editor/mode/createMarkdownMode';
+import Delta from '../../widgets/editor/Delta';
+import edit from '../../widgets/editor/edit';
+import Editor from '../../widgets/editor/Editor';
 import EditorScope from './EditorScope';
 import ISettingsService from '../../services/settings/ISettingsService';
 import ITextService from '../../services/text/ITextService';
@@ -24,11 +31,11 @@ function factory($timeout: ng.ITimeoutService, settings: ISettingsService, textS
         const workspace: WorkspaceMixin = controllers[1]
 
         const container: HTMLElement = element[0]
-        const editor: ace.Editor = ace.edit(container)
+        const editor: Editor = edit(container)
         // The following are starting to look very similar!
         switch ($scope.mode) {
             case 'JavaScript': {
-                editor.setLanguageMode(ace.createJavaScriptMode('/js/worker.js', workerImports), function(err: any) {
+                editor.setLanguageMode(createJavaScriptMode('/js/worker.js', workerImports), function(err: any) {
                     if (err) {
                         console.warn(`${$scope.mode} => ${err}`)
                     }
@@ -36,7 +43,7 @@ function factory($timeout: ng.ITimeoutService, settings: ISettingsService, textS
                 break
             }
             case 'TypeScript': {
-                editor.setLanguageMode(ace.createTypeScriptMode('/js/worker.js', workerImports), function(err: any) {
+                editor.setLanguageMode(createTypeScriptMode('/js/worker.js', workerImports), function(err: any) {
                     if (err) {
                         console.warn(`${$scope.mode} => ${err}`)
                     }
@@ -44,7 +51,7 @@ function factory($timeout: ng.ITimeoutService, settings: ISettingsService, textS
                 break
             }
             case 'HTML': {
-                editor.setLanguageMode(ace.createHtmlMode('/js/worker.js', workerImports), function(err: any) {
+                editor.setLanguageMode(createHtmlMode('/js/worker.js', workerImports), function(err: any) {
                     if (err) {
                         console.warn(`${$scope.mode} => ${err}`)
                     }
@@ -55,7 +62,7 @@ function factory($timeout: ng.ITimeoutService, settings: ISettingsService, textS
             case 'LESS': {
                 // If we don't use the worker then we don't get a confirmation.
                 editor.getSession().setUseWorker(false);
-                editor.setLanguageMode(ace.createCssMode('/js/worker.js', workerImports), function(err: any) {
+                editor.setLanguageMode(createCssMode('/js/worker.js', workerImports), function(err: any) {
                     if (err) {
                         console.warn(`${$scope.mode} => ${err}`)
                     }
@@ -65,7 +72,7 @@ function factory($timeout: ng.ITimeoutService, settings: ISettingsService, textS
             case 'Markdown': {
                 editor.getSession().setUseWrapMode(true)
                 editor.setWrapBehavioursEnabled(true)
-                editor.setLanguageMode(ace.createMarkdownMode('/js/worker.js', workerImports), function(err: any) {
+                editor.setLanguageMode(createMarkdownMode('/js/worker.js', workerImports), function(err: any) {
                     if (err) {
                         console.warn(`${$scope.mode} => ${err}`)
                     }
@@ -93,7 +100,7 @@ function factory($timeout: ng.ITimeoutService, settings: ISettingsService, textS
         /**
          * When the editor changes, propagate back to the model.
          */
-        function onEditorChange(event: ace.Delta, source: ace.Editor) {
+        function onEditorChange(event: Delta, source: Editor) {
             const viewValue: string = editor.getValue()
             ngModel.$setViewValue(viewValue)
         }

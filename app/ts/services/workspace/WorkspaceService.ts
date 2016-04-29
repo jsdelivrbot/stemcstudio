@@ -1,5 +1,6 @@
-import Workspace from './Workspace';
-import ace from 'ace.js';
+import WorkspaceLocal from './Workspace';
+import Editor from '../../widgets/editor/Editor';
+import Workspace from '../../widgets/editor/workspace/Workspace';
 import * as ng from 'angular';
 import PromiseManager from './PromiseManager';
 
@@ -33,10 +34,10 @@ function decodeWorkspaceState(state: WorkspaceState): string {
 /**
  * A thin wrapper around the ACE workspace in order to manage state and asynchronicity.
  */
-export default class WorkspaceService implements Workspace {
+export default class WorkspaceService implements WorkspaceLocal {
     public trace: boolean = false;
     private state: WorkspaceState;
-    private workspace: ace.Workspace;
+    private workspace: Workspace;
     /**
      * 
      */
@@ -44,7 +45,7 @@ export default class WorkspaceService implements Workspace {
     private promises: PromiseManager;
 
     private editorCapturing: { [fileName: string]: boolean } = {};
-    private editorLoaded: { [fileName: string]: ace.Editor } = {};
+    private editorLoaded: { [fileName: string]: Editor } = {};
     private editorReleasing: { [fileName: string]: boolean } = {};
 
     /**
@@ -68,7 +69,7 @@ export default class WorkspaceService implements Workspace {
      * @constructor
      */
     constructor(private $q: ng.IQService) {
-        this.workspace = new ace.Workspace('/js/worker.js', workerImports.concat(typescriptServices));
+        this.workspace = new Workspace('/js/worker.js', workerImports.concat(typescriptServices));
         this.workspace.trace = false;
         this.state = WorkspaceState.CONSTRUCTED
         this.promises = new PromiseManager($q);
@@ -287,7 +288,7 @@ export default class WorkspaceService implements Workspace {
         })
     }
 
-    attachEditor(fileName: string, editor: ace.Editor): void {
+    attachEditor(fileName: string, editor: Editor): void {
         this.dump(`attachEditor(${fileName})`)
         this.editorCapturing[fileName] = true;
         const deferred = this.promises.defer(`attachEditor('${fileName}')`)
@@ -306,7 +307,7 @@ export default class WorkspaceService implements Workspace {
         })
     }
 
-    detachEditor(fileName: string, editor: ace.Editor): void {
+    detachEditor(fileName: string, editor: Editor): void {
         this.dump(`detachEditor(${fileName})`)
         if (this.editorCapturing[fileName]) {
             console.warn(`${fileName} is already being captured, ignoring detachEditor(${fileName}).`)

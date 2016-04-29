@@ -9,15 +9,13 @@ System.config({
 
   map: {
     "@angular/router": "npm:@angular/router@0.2.0",
-    "ace.js": "github:ace2ts/ace@0.1.165",
-    "ace2ts/ace": "github:ace2ts/ace@0.1.165",
     "ace2ts/ace-workers": "github:ace2ts/ace-workers@0.1.66",
     "angular": "github:angular/bower-angular@1.5.5",
     "angular-animate": "github:angular/bower-angular-animate@1.5.5",
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.2",
     "angular-material-icons": "npm:angular-material-icons@0.7.0",
     "angular-ui-router": "github:angular-ui/ui-router@0.2.18",
-    "angular2": "npm:angular2@2.0.0-beta.16",
+    "angular2": "npm:angular2@2.0.0-beta.17",
     "bootstrap": "vendor/bootstrap/dist/js/npm",
     "bootstrap-dialog": "npm:bootstrap-dialog@1.34.6",
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.0.11",
@@ -25,10 +23,6 @@ System.config({
     "jquery": "npm:jquery@2.2.3",
     "showdown": "npm:showdown@1.3.0",
     "underscore": "npm:underscore@1.8.3",
-    "github:ace2ts/ace@0.1.165": {
-      "ace2ts/ace-workers": "github:ace2ts/ace-workers@0.1.66",
-      "typescript": "npm:typescript@1.8.10"
-    },
     "github:angular-ui/ui-router@0.2.18": {
       "angular": "github:angular/bower-angular@1.5.5"
     },
@@ -40,9 +34,6 @@ System.config({
     },
     "github:jspm/nodelibs-buffer@0.1.0": {
       "buffer": "npm:buffer@3.6.0"
-    },
-    "github:jspm/nodelibs-os@0.1.0": {
-      "os-browserify": "npm:os-browserify@0.1.2"
     },
     "github:jspm/nodelibs-path@0.1.0": {
       "path-browserify": "npm:path-browserify@0.0.0"
@@ -62,7 +53,7 @@ System.config({
     "npm:angular-material-icons@0.7.0": {
       "angular": "npm:angular@1.5.5"
     },
-    "npm:angular2@2.0.0-beta.16": {
+    "npm:angular2@2.0.0-beta.17": {
       "reflect-metadata": "npm:reflect-metadata@0.1.2",
       "rxjs": "npm:rxjs@5.0.0-beta.7",
       "zone.js": "npm:zone.js@0.6.12"
@@ -100,9 +91,6 @@ System.config({
       "invert-kv": "npm:invert-kv@1.0.0",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
     },
-    "npm:os-browserify@0.1.2": {
-      "os": "github:jspm/nodelibs-os@0.1.0"
-    },
     "npm:os-locale@1.4.0": {
       "child_process": "github:jspm/nodelibs-child_process@0.1.0",
       "lcid": "npm:lcid@1.0.0",
@@ -136,9 +124,6 @@ System.config({
     },
     "npm:strip-ansi@3.0.1": {
       "ansi-regex": "npm:ansi-regex@2.0.0"
-    },
-    "npm:typescript@1.8.10": {
-      "os": "github:jspm/nodelibs-os@0.1.0"
     },
     "npm:util@0.10.3": {
       "inherits": "npm:inherits@2.0.1",

@@ -1,4 +1,5 @@
 import * as ng from 'angular';
+import Editor from '../../widgets/editor/Editor';
 
 interface Workspace {
     trace: boolean;
@@ -10,8 +11,8 @@ interface Workspace {
     setScriptTarget(scriptTarget: string): void;
     setTrace(trace: boolean): void;
 
-    attachEditor(fileName: string, editor: ace.Editor): void;
-    detachEditor(fileName: string, editor: ace.Editor): void;
+    attachEditor(fileName: string, editor: Editor): void;
+    detachEditor(fileName: string, editor: Editor): void;
 
     ensureScript(fileName: string, content: string): void;
     removeScript(fileName: string): void;
