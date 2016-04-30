@@ -1,19 +1,33 @@
+import {LANGUAGE_CSS} from '../languages/modes';
+import {LANGUAGE_HTML} from '../languages/modes';
+import {LANGUAGE_JSON} from '../languages/modes';
+import {LANGUAGE_JAVA_SCRIPT} from '../languages/modes';
+import {LANGUAGE_LESS} from '../languages/modes';
+import {LANGUAGE_MARKDOWN} from '../languages/modes';
+import {LANGUAGE_TYPE_SCRIPT} from '../languages/modes';
+
 const extensionToMode: { [ext: string]: string } = {}
 
-extensionToMode['coffee'] = 'CoffeeScript'
-extensionToMode['css'] = 'CSS'
-extensionToMode['html'] = 'HTML'
-extensionToMode['js'] = 'JavaScript'
-extensionToMode['less'] = 'LESS'
-extensionToMode['md'] = 'Markdown'
-extensionToMode['py'] = 'Python'
-extensionToMode['sass'] = 'SASS'
-extensionToMode['ts'] = 'TypeScript'
+// extensionToMode['coffee'] = 'CoffeeScript'
+extensionToMode['css'] = LANGUAGE_CSS
+extensionToMode['html'] = LANGUAGE_HTML
+extensionToMode['js'] = LANGUAGE_JAVA_SCRIPT
+extensionToMode['json'] = LANGUAGE_JSON
+extensionToMode['less'] = LANGUAGE_LESS
+extensionToMode['md'] = LANGUAGE_MARKDOWN
+// extensionToMode['py'] = 'Python'
+// extensionToMode['sass'] = 'SASS'
+extensionToMode['ts'] = LANGUAGE_TYPE_SCRIPT
 
-export default function(name: string): string {
-    const period = name.lastIndexOf('.')
+/**
+ * Given a file name, determines the language (mode).
+ * The mode returned is a string containing the canonical mode name.
+ * If the mode cannot be determined, then undefined is returned.
+ */
+export default function modeFromName(fileName: string): string {
+    const period = fileName.lastIndexOf('.')
     if (period >= 0) {
-        const extension = name.substring(period + 1)
+        const extension = fileName.substring(period + 1)
         return extensionToMode[extension]
     }
     return void 0

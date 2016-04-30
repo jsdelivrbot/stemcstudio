@@ -25,6 +25,13 @@ import WorkspaceScope from '../../scopes/WorkspaceScope';
 import WorkspaceMixin from '../editor/WorkspaceMixin';
 import Workspace from '../../services/workspace/Workspace';
 import WorkspaceFactory from '../../services/workspace/WorkspaceFactory';
+import {LANGUAGE_CSS} from '../../languages/modes';
+import {LANGUAGE_HTML} from '../../languages/modes';
+import {LANGUAGE_JSON} from '../../languages/modes';
+import {LANGUAGE_JAVA_SCRIPT} from '../../languages/modes';
+import {LANGUAGE_LESS} from '../../languages/modes';
+import {LANGUAGE_MARKDOWN} from '../../languages/modes';
+import {LANGUAGE_TYPE_SCRIPT} from '../../languages/modes';
 
 const FSLASH_STAR = '/*'
 const STAR_FSLASH = '*/'
@@ -525,24 +532,25 @@ export default class WorkspaceController implements WorkspaceMixin {
      */
     attachEditor(filename: string, mode: string, editor: Editor): void {
         switch (mode) {
-            case 'TypeScript': {
+            case LANGUAGE_TYPE_SCRIPT: {
                 this.workspace.attachEditor(filename, editor)
                 editor.getSession().on('outputFiles', this.createOutputFilesEventHandler(filename));
                 break;
             }
-            case 'JavaScript': {
+            case LANGUAGE_JAVA_SCRIPT: {
                 // TODO: We probably don't get anything for JavaScript.
                 this.workspace.attachEditor(filename, editor)
                 editor.getSession().on('outputFiles', this.createOutputFilesEventHandler(filename))
                 break
             }
-            case 'CSS':
-            case 'HTML':
-            case 'LESS': {
+            case LANGUAGE_CSS:
+            case LANGUAGE_JSON:
+            case LANGUAGE_HTML:
+            case LANGUAGE_LESS: {
                 editor.getSession().on('change', this.createChangeHandler(filename))
                 break
             }
-            case 'Markdown': {
+            case LANGUAGE_MARKDOWN: {
                 this.addReadmeChangeHandler(filename, editor)
                 break
             }
@@ -653,29 +661,30 @@ export default class WorkspaceController implements WorkspaceMixin {
      */
     detachEditor(filename: string, mode: string, editor: Editor): void {
         switch (mode) {
-            case 'TypeScript': {
+            case LANGUAGE_TYPE_SCRIPT: {
                 const handler = this.outputFilesEventHandlers[filename]
                 editor.getSession().off('outputFiles', handler)
                 this.deleteOutputFileHandler(filename)
                 this.workspace.detachEditor(filename, editor)
                 break
             }
-            case 'JavaScript': {
+            case LANGUAGE_JAVA_SCRIPT: {
                 const handler = this.outputFilesEventHandlers[filename]
                 editor.getSession().off('outputFiles', handler)
                 this.deleteOutputFileHandler(filename)
                 this.workspace.detachEditor(filename, editor)
                 break
             }
-            case 'CSS':
-            case 'HTML':
-            case 'LESS': {
+            case LANGUAGE_CSS:
+            case LANGUAGE_HTML:
+            case LANGUAGE_JSON:
+            case LANGUAGE_LESS: {
                 const handler = this.changeHandlers[filename]
                 editor.getSession().off('change', handler)
                 this.deleteChangeHandler(filename)
                 break
             }
-            case 'Markdown': {
+            case LANGUAGE_MARKDOWN: {
                 this.removeReadmeChangeHandler(filename, editor)
                 break
             }

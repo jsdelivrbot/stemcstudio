@@ -1,0 +1,7 @@
+export const LANGUAGE_CSS = 'CSS'
+export const LANGUAGE_HTML = 'HTML'
+export const LANGUAGE_JAVA_SCRIPT = 'JavaScript'
+export const LANGUAGE_JSON = 'JSON'
+export const LANGUAGE_LESS = 'LESS'
+export const LANGUAGE_MARKDOWN = 'Markdown'
+export const LANGUAGE_TYPE_SCRIPT = 'TypeScript'

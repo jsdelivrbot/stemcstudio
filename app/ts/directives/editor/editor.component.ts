@@ -1,7 +1,8 @@
 import * as ng from 'angular';
 import createJavaScriptMode from '../../widgets/editor/mode/createJavaScriptMode';
 import createTypeScriptMode from '../../widgets/editor/mode/createTypeScriptMode';
-import createHtmlMode from '../../widgets/editor/mode/createHtmlMode';
+import HtmlMode from '../../widgets/editor/mode/HtmlMode';
+import JsonMode from '../../widgets/editor/mode/JsonMode';
 import createCssMode from '../../widgets/editor/mode/createCssMode';
 import createMarkdownMode from '../../widgets/editor/mode/createMarkdownMode';
 import Delta from '../../widgets/editor/Delta';
@@ -14,6 +15,13 @@ import ThemeManager from '../../services/themes/ThemeManager';
 import ThemeManagerEvent from '../../services/themes/ThemeManagerEvent';
 import {currentTheme} from '../../services/themes/ThemeManagerEvent';
 import WorkspaceMixin from '../../directives/editor/WorkspaceMixin';
+import {LANGUAGE_CSS} from '../../languages/modes';
+import {LANGUAGE_HTML} from '../../languages/modes';
+import {LANGUAGE_JSON} from '../../languages/modes';
+import {LANGUAGE_JAVA_SCRIPT} from '../../languages/modes';
+import {LANGUAGE_LESS} from '../../languages/modes';
+import {LANGUAGE_MARKDOWN} from '../../languages/modes';
+import {LANGUAGE_TYPE_SCRIPT} from '../../languages/modes';
 
 function factory(
     $timeout: ng.ITimeoutService,
@@ -48,7 +56,7 @@ function factory(
 
         // The following are starting to look very similar!
         switch ($scope.mode) {
-            case 'JavaScript': {
+            case LANGUAGE_JAVA_SCRIPT: {
                 editor.setLanguageMode(createJavaScriptMode('/js/worker.js', workerImports), function(err: any) {
                     if (err) {
                         console.warn(`${$scope.mode} => ${err}`)
@@ -56,7 +64,7 @@ function factory(
                 })
                 break
             }
-            case 'TypeScript': {
+            case LANGUAGE_TYPE_SCRIPT: {
                 editor.setLanguageMode(createTypeScriptMode('/js/worker.js', workerImports), function(err: any) {
                     if (err) {
                         console.warn(`${$scope.mode} => ${err}`)
@@ -64,16 +72,25 @@ function factory(
                 })
                 break
             }
-            case 'HTML': {
-                editor.setLanguageMode(createHtmlMode('/js/worker.js', workerImports), function(err: any) {
+            case LANGUAGE_HTML: {
+                editor.setLanguageMode(new HtmlMode('/js/worker.js', workerImports), function(err: any) {
                     if (err) {
                         console.warn(`${$scope.mode} => ${err}`)
                     }
                 })
                 break
             }
-            case 'CSS':
-            case 'LESS': {
+            case LANGUAGE_JSON: {
+                editor.getSession().setUseWorker(false);
+                editor.setLanguageMode(new JsonMode('/js/worker.js', workerImports), function(err: any) {
+                    if (err) {
+                        console.warn(`${$scope.mode} => ${err}`)
+                    }
+                })
+                break
+            }
+            case LANGUAGE_CSS:
+            case LANGUAGE_LESS: {
                 // If we don't use the worker then we don't get a confirmation.
                 editor.getSession().setUseWorker(false);
                 editor.setLanguageMode(createCssMode('/js/worker.js', workerImports), function(err: any) {
@@ -83,7 +100,7 @@ function factory(
                 })
                 break
             }
-            case 'Markdown': {
+            case LANGUAGE_MARKDOWN: {
                 editor.getSession().setUseWrapMode(true)
                 editor.setWrapBehavioursEnabled(true)
                 editor.setLanguageMode(createMarkdownMode('/js/worker.js', workerImports), function(err: any) {
