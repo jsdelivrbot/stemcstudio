@@ -2,8 +2,8 @@ import app from '../../app';
 import ISettingsService from './ISettingsService';
 
 app.factory('settings', [function(): ISettingsService {
-    var settings: ISettingsService = {
-        theme: 'ace/theme/stemcstudio',
+    const settings: ISettingsService = {
+        theme: 'Twilight',
         indent: 2,
         fontSize: '16px',
         showInvisibles: false,

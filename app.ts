@@ -98,6 +98,7 @@ const authenticate = (code, cb) => {
 // Forward stemcstudio.herokuapp.com to www.stemcstudio.com
 // Notice that we use HTTP status 301 Moved Permanently (best for SEO purposes).
 app.get("/*", (req: express.Request, res, next) => {
+    console.log(`host => ${req.headers['host']}`)
     if (req.headers['host'].match(/^stemcstudio.herokuapp.com/)) {
       res.redirect(`https://www.stemcstudio.com${req.url}`, 301);
     }

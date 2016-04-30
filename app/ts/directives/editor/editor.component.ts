@@ -10,9 +10,16 @@ import Editor from '../../widgets/editor/Editor';
 import EditorScope from './EditorScope';
 import ISettingsService from '../../services/settings/ISettingsService';
 import ITextService from '../../services/text/ITextService';
+import ThemeManager from '../../services/themes/ThemeManager';
+import ThemeManagerEvent from '../../services/themes/ThemeManagerEvent';
+import {currentTheme} from '../../services/themes/ThemeManagerEvent';
 import WorkspaceMixin from '../../directives/editor/WorkspaceMixin';
 
-function factory($timeout: ng.ITimeoutService, settings: ISettingsService, textService: ITextService) {
+function factory(
+    $timeout: ng.ITimeoutService,
+    settings: ISettingsService,
+    textService: ITextService,
+    themeManager: ThemeManager) {
 
     /**
      * @param $scope {IScope} Used to monitor $onDestroy and support transclude.
@@ -32,6 +39,13 @@ function factory($timeout: ng.ITimeoutService, settings: ISettingsService, textS
 
         const container: HTMLElement = element[0]
         const editor: Editor = edit(container)
+
+        const themeEventHandler = function(event: ThemeManagerEvent) {
+            editor.setThemeCss(event.cssClass, event.href)
+            editor.setThemeDark(event.isDark)
+        }
+        themeManager.addEventListener(currentTheme, themeEventHandler)
+
         // The following are starting to look very similar!
         switch ($scope.mode) {
             case 'JavaScript': {
@@ -83,14 +97,13 @@ function factory($timeout: ng.ITimeoutService, settings: ISettingsService, textS
                 console.warn(`Unrecognized mode => ${$scope.mode}`)
             }
         }
-        editor.setThemeCss('ace-twilight', '/themes/twilight.css');
         editor.setThemeDark(true)
-        editor.setPadding(4);
-        editor.setShowInvisibles(settings.showInvisibles);
-        editor.setFontSize(settings.fontSize);
-        editor.setShowPrintMargin(settings.showPrintMargin);
-        editor.setDisplayIndentGuides(settings.displayIndentGuides);
-        editor.setTabSize(4)
+        editor.setPadding(4)
+        editor.setShowInvisibles(settings.showInvisibles)
+        editor.setFontSize(settings.fontSize)
+        editor.setShowPrintMargin(settings.showPrintMargin)
+        editor.setDisplayIndentGuides(settings.displayIndentGuides)
+        editor.getSession().setTabSize(2)
         editor.getSession().setUseSoftTabs(true)
 
         attrs.$observe<boolean>('readonly', function(readOnly: boolean) {
@@ -210,6 +223,9 @@ function factory($timeout: ng.ITimeoutService, settings: ISettingsService, textS
             // Interestingly, there is no $off function, so assume Angular will handle the unhook.
             // editorsController.removeEditor(scope)
             editor.off('change', onEditorChange)
+
+            themeManager.removeEventListener(currentTheme, themeEventHandler)
+
             // What about stopping the worker?
             editor.destroy()
         }
@@ -249,6 +265,6 @@ function factory($timeout: ng.ITimeoutService, settings: ISettingsService, textS
     return directive
 }
 
-factory.$inject = ['$timeout', 'settings', 'textService']
+factory.$inject = ['$timeout', 'settings', 'textService', 'themeManager']
 
 export default factory

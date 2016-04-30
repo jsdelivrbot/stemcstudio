@@ -88,8 +88,10 @@ module.exports = function(grunt) {
             dest: 'generated/img/particles.png'
           },
           {
-            src: 'app/themes/twilight.css',
-            dest: 'generated/themes/twilight.css'
+            expand: true,
+            cwd: "app/themes",
+            src: ["**"],
+            dest: "generated/themes"
           },
           {
             src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot",
@@ -378,8 +380,10 @@ module.exports = function(grunt) {
             dest: 'dist/img/particles.png'
           },
           {
-            src: 'app/themes/twilight.css',
-            dest: 'dist/themes/twilight.css'
+            expand: true,
+            cwd: "app/themes",
+            src: ["**"],
+            dest: "dist/themes"
           },
           {
             src: "bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot",

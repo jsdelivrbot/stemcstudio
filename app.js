@@ -62,6 +62,7 @@ var authenticate = function (code, cb) {
     req.on('error', function (e) { cb(e.message); });
 };
 app.get("/*", function (req, res, next) {
+    console.log("host => " + req.headers['host']);
     if (req.headers['host'].match(/^stemcstudio.herokuapp.com/)) {
         res.redirect("https://www.stemcstudio.com" + req.url, 301);
     }
@@ -97,4 +98,3 @@ app.get("/*", function (req, res, next) {
 app.use(errorHandler());
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = app;
-//# sourceMappingURL=app.js.map

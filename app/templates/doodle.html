@@ -12,92 +12,82 @@
                 <ul class='nav navbar-nav'>
                     <li>
                         <a role='button' ng-click='toggleExplorer()'>
-                            <span ng-show='isExplorerVisible' class="glyphicon glyphicon-menu-hamburger" aria-hidden='true' uib-tooltip="Hide File Explorer"
-                            tooltip-placement='bottom'>
-                            </span>
-                            <span ng-hide='isExplorerVisible' class="glyphicon glyphicon-menu-hamburger" aria-hidden='true' uib-tooltip="Show File Explorer"
-                            tooltip-placement='bottom'>
-                            </span>
+                            <ng-md-icon icon="{{isExplorerVisible ? 'flip_to_back' : 'flip_to_front'}}" style="fill: {{isExplorerVisible ? '#ffffff' : '#ffffff'}}" size='24' aria-hidden='true' uib-tooltip="{{isExplorerVisible ? 'Hide Code' : 'Show Code'}}" tooltip-placement='left'><ng-md-icon>
                         </a>
                     </li>
                     <li>
                         <a role='button' ng-click='toggleView()' ng-hide='isViewVisible'>
-                            <span class='glyphicon glyphicon-play' aria-hidden='true' ng-hide='isViewVisible' uib-tooltip="Run" tooltip-placement='bottom'></span>
+                            <ng-md-icon icon='launch' style="fill: {{true ? '#00ff00' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="Launch Program" tooltip-placement='left'><ng-md-icon>
                         </a>
                         <a role='button' ng-click='toggleView()' ng-show='isViewVisible'>
-                            <span class='glyphicon glyphicon-off' aria-hidden='true' ng-show='isViewVisible' uib-tooltip="Stop" tooltip-placement='bottom'></span>
+                            <ng-md-icon icon='cancel' style="fill: {{true ? '#ff0000' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="Cancel Program" tooltip-placement='left'><ng-md-icon>
+                        </a>
+                    </li>
+                    <li ng-show='isEditMode'>
+                        <a role='button' ng-click='toggleReadMeVisible()'>
+                            <ng-md-icon icon='description' style="fill: {{isReadMeVisible ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="{{isReadMeVisible ?  'Hide README.md' : 'Show README.md'}}" tooltip-placement='left'><ng-md-icon>
                         </a>
                     </li>
                     <li uib-dropdown ng-show='isEditMode'>
-                        <a uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="View" tooltip-placement='bottom'>
-                            <span class='glyphicon glyphicon-picture' aria-hidden='true'></span>
-                            <span class='caret'></span>
+                        <a uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="Choose Program" tooltip-placement='left'>
+                            <ng-md-icon icon='playlist_add_check' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true'><ng-md-icon>
                         </a>
                         <ul class='dropdown-menu' uib-dropdown-menu role='menu'>
                             <li role='button' ng-repeat='(name, file) in currentDoodle().files' ng-if='name.indexOf(".html") &gt; 0'>
                                 <a ng-click='doView(name, file)'>{{name}}&nbsp;
-                                    <span class="glyphicon glyphicon-hand-left" aria-hidden='true' ng-if='file.preview'></span>
+                                    <ng-md-icon icon='done' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' ng-if='file.preview'><ng-md-icon>
                                 </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li ng-show='isEditMode'>
+                        <a role='button' ng-click='doProperties()'>
+                            <ng-md-icon icon='check_box' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="Project Properties" tooltip-placement='left'><ng-md-icon>
+                        </a>
+                    </li>
+                    <li uib-dropdown ng-show='isEditMode &amp;&amp; isLoggedIn()'>
+                        <a ng-show='isLoggedIn()' uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="GitHub Menu" tooltip-placement='left'>
+                            <ng-md-icon icon='github-box' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true'><ng-md-icon>
+                        </a>
+                        <ul uib-dropdown-menu role="menu">
+                            <li>
+                                <a ng-click='clickDownload()' ng-show='isLoggedIn()' role='button'>Download</a>
+                            </li>
+                            <li>
+                                <a ng-click='doUpload()' ng-show='isLoggedIn()' role='button'>Upload</a>
                             </li>
                         </ul>
                     </li>
                     <li uib-dropdown ng-show='isEditMode'>
-                        <a uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="Project" tooltip-placement='bottom'>
-                            <span class="glyphicon glyphicon-hdd" aria-hidden='true'></span>
-                            <span class='caret'></span>
+                        <a uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="Project Menu" tooltip-placement='left'>
+                            <ng-md-icon icon='folder' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true'><ng-md-icon>
+                            <ng-md-icon icon='arrow_drop_down' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true'><ng-md-icon>
                         </a>
                         <ul uib-dropdown-menu role='menu'>
                             <li>
-                                <a role='button' ng-click='doNew()'>
-                                    <span class="glyphicon glyphicon-file" aria-hidden='true'></span> New Project
-                                </a>
+                                <a role='button' ng-click='doNew()'>New Project</a>
                             </li>
                             <li>
-                                <a role='button' ng-click='doOpen()'>
-                                    <span class="glyphicon glyphicon-open-file" aria-hidden='true'></span> Open existing Project
-                                </a>
+                                <a role='button' ng-click='doOpen()'>Open Project</a>
                             </li>
                             <li>
-                                <a role='button' ng-click='doCopy()'>
-                                    <span class="glyphicon glyphicon-duplicate" aria-hidden='true'></span> Copy this Project
-                                </a>
+                                <a role='button' ng-click='doCopy()'>Copy Project</a>
                             </li>
                         </ul>
                     </li>
+                    <!--
                     <li ng-show='isEditMode'>
-                        <a role='button' ng-click='toggleReadMeVisible()'>
-                            <ng-md-icon icon='assignment' style="fill: {{isReadMeVisible ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="toggle README.md visibility" tooltip-placement='bottom'><ng-md-icon>
+                        <a role='button' ng-click='doSettings()'>
+                            <ng-md-icon icon='settings' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="Settings" tooltip-placement='left'><ng-md-icon>
                         </a>
                     </li>
-                    <li ng-show='isEditMode'>
-                        <a role='button' ng-click='doProperties()'>
-                            <span class="glyphicon glyphicon-check" aria-hidden='true' uib-tooltip="Properties" tooltip-placement='bottom'></span>
-                        </a>
-                    </li>
-                    <li uib-dropdown ng-show='isEditMode &amp;&amp; isLoggedIn()'>
-                        <a ng-show='isLoggedIn()' uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="GitHub" tooltip-placement='bottom'>
-                            <span class="glyphicon glyphicon-cloud" aria-hidden='true'></span>
-                            <span class='caret' ng-show='isLoggedIn()'></span>
-                        </a>
-                        <ul uib-dropdown-menu role="menu">
-                            <li>
-                                <a ng-click='clickDownload()' ng-show='isLoggedIn()' role='button'>
-                                    <span class="glyphicon glyphicon-cloud-download" aria-hidden='true'></span> Download
-                                </a>
-                            </li>
-                            <li>
-                                <a ng-click='doUpload()' ng-show='isLoggedIn()' role='button'>
-                                    <span class="glyphicon glyphicon-cloud-upload" aria-hidden='true'></span> Upload
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                    -->
                 </ul>
             </div>
         </nav>
         <div id='doodle-container'>
             <explorer ng-model='currentDoodle().files' class='explorer' ng-show='isExplorerVisible'></explorer>
-            <div id='editors' resizable r-directions="['right']" r-flex='true' ng-if='doodleLoaded'>
+            <div id='editors' resizable r-directions="['right']" r-flex='true' ng-if='doodleLoaded' ng-show='isExplorerVisible'>
                 <div editor ng-repeat='(name, file) in currentDoodle().files' ng-model='file.content' id='{{name}}' mode='{{file.language}}'
                 ng-show='isEditMode &amp;&amp; file.selected'></div>
             </div>

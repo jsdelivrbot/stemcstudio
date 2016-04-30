@@ -139,7 +139,11 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
      */
     private theme: { cssClass: string };
 
-    private $timer;
+    /**
+     * $timer is used for animated scrolling.
+     */
+    private $timer: number;
+
     private STEPS = 8;
     public $keepTextAreaAtCursor: boolean;
     public $gutter: HTMLDivElement;
@@ -1605,13 +1609,13 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
      * @param {Function} callback Function to be called after the animation has finished
      */
     scrollToLine(line: number, center: boolean, animate: boolean, callback: () => void) {
-        var pos = this.getPixelPosition({ row: line, column: 0 }, false);
-        var offset = pos.top;
+        const pos = this.getPixelPosition({ row: line, column: 0 }, false);
+        let offset = pos.top;
         if (center) {
             offset -= this.$size.scrollerHeight / 2;
         }
 
-        var initialScroll = this.scrollTop;
+        const initialScroll = this.scrollTop;
         this.session.setScrollTop(offset);
         if (animate !== false) {
             this.animateScrolling(initialScroll, callback);
@@ -1625,17 +1629,17 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
      * @return {void}
      */
     animateScrolling(fromValue: number, callback?: () => any): void {
-        var toValue = this.scrollTop;
+        let toValue = this.scrollTop;
         if (!this.$animatedScroll) {
             return;
         }
-        var _self = this;
 
-        if (fromValue === toValue)
+        if (fromValue === toValue) {
             return;
+        }
 
         if (this.$scrollAnimation) {
-            var oldSteps = this.$scrollAnimation.steps;
+            const oldSteps = this.$scrollAnimation.steps;
             if (oldSteps.length) {
                 fromValue = oldSteps[0];
                 if (fromValue === toValue)
@@ -1643,26 +1647,29 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
             }
         }
 
-        var steps = _self.$calcSteps(fromValue, toValue);
+        const steps = this.$calcSteps(fromValue, toValue);
         this.$scrollAnimation = { from: fromValue, to: toValue, steps: steps };
 
         clearInterval(this.$timer);
 
-        _self.session.setScrollTop(steps.shift());
+        this.session.setScrollTop(steps.shift());
         // trick session to think it's already scrolled to not loose toValue
-        _self.session.$scrollTop = toValue;
-        this.$timer = setInterval(function() {
+        this.session.$scrollTop = toValue;
+        this.$timer = setInterval(() => {
             if (steps.length) {
-                _self.session.setScrollTop(steps.shift());
-                _self.session.$scrollTop = toValue;
-            } else if (toValue != null) {
-                _self.session.$scrollTop = -1;
-                _self.session.setScrollTop(toValue);
+                this.session.setScrollTop(steps.shift());
+                this.session.$scrollTop = toValue;
+            }
+            else if (toValue != null) {
+                this.session.$scrollTop = -1;
+                this.session.setScrollTop(toValue);
                 toValue = null;
-            } else {
+            }
+            else {
                 // do this on separate step to not get spurious scroll event from scrollbar
-                _self.$timer = clearInterval(_self.$timer);
-                _self.$scrollAnimation = null;
+                clearInterval(this.$timer);
+                this.$timer = void 0;
+                this.$scrollAnimation = null;
                 if (callback) {
                     callback();
                 }
