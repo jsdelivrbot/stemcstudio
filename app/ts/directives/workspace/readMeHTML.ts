@@ -12,6 +12,26 @@ export default function readMeHTML(options: {} = {}): string {
     lines.push("<!DOCTYPE html>")
     lines.push("<html>")
     lines.push("  <head>")
+
+    githubStyle(lines)
+
+    lines.push("    <style>")
+    lines.push("/* README.css */")
+    lines.push("    </style>")
+
+    mathJax(lines)
+
+    lines.push("  </head>")
+    lines.push("  <body>")
+    lines.push("    <article class='markdown-body'>")
+    lines.push("// README.md")
+    lines.push("    </article>")
+    lines.push("  </body>")
+    lines.push("</html>")
+    return lines.join(NEWLINE).concat(NEWLINE)
+}
+
+function githubStyle(lines: string[]): void {
     lines.push("    <style>")
 
     lines.push('')
@@ -68,21 +88,25 @@ export default function readMeHTML(options: {} = {}): string {
     lines.push('}')
 
     lines.push("    </style>")
-    lines.push("    <style>")
-    lines.push("/* README.css */")
-    lines.push("    </style>")
-    //  lines.push("    <script src='https://jspm.io/system.js'></script>")
-    //  lines.push("<!-- SCRIPTS-MARKER -->")
+}
+
+function mathJax(lines: string[]): void {
+    lines.push('    <style TYPE="text/css">')
+    lines.push('    code.has-jax {font: inherit; font-size: 100%; background: inherit; border: inherit;}')
+    lines.push('    </style>')
+    lines.push('    <script type="text/x-mathjax-config">')
+    lines.push('    MathJax.Hub.Config({')
+    lines.push('      tex2jax: {')
+    lines.push("        inlineMath: [['$','$']],")
+    lines.push("        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'] // removed 'code' entry")
+    lines.push('      }')
+    lines.push('    });')
+    lines.push('    MathJax.Hub.Queue(function() {')
+    lines.push('      var all = MathJax.Hub.getAllJax(), i;')
+    lines.push('      for(i = 0; i < all.length; i += 1) {')
+    lines.push("        all[i].SourceElement().parentNode.className += ' has-jax';")
+    lines.push('      }')
+    lines.push('    });')
+    lines.push('    </script>')
     lines.push("    <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>")
-    lines.push("  </head>")
-    lines.push("  <body>")
-    lines.push("    <article class='markdown-body'>")
-    lines.push("// README.md")
-    lines.push("    </article>")
-    // lines.push("    <script>")
-    // lines.push("        System.import('./bootstrap.js')")
-    // lines.push("    </script>")
-    lines.push("  </body>")
-    lines.push("</html>")
-    return lines.join(NEWLINE).concat(NEWLINE)
 }
