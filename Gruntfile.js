@@ -24,7 +24,7 @@ module.exports = function(grunt) {
             dest: 'generated/js/worker.js'
           },
           {
-            src: 'jspm_packages/github/ace2ts/ace-workers@0.1.66/dist/ace-workers.js',
+            src: 'jspm_packages/github/ace2ts/ace-workers@0.1.67/dist/ace-workers.js',
             dest: 'generated/js/ace-workers.js'
           },
           {
@@ -316,7 +316,7 @@ module.exports = function(grunt) {
             dest: 'dist/js/worker.js'
           },
           {
-            src: 'jspm_packages/github/ace2ts/ace-workers@0.1.66/dist/ace-workers.js',
+            src: 'jspm_packages/github/ace2ts/ace-workers@0.1.67/dist/ace-workers.js',
             dest: 'dist/js/ace-workers.js'
           },
           {

@@ -81,7 +81,6 @@ function factory(
                 break
             }
             case LANGUAGE_JSON: {
-                editor.getSession().setUseWorker(false);
                 editor.setLanguageMode(new JsonMode('/js/worker.js', workerImports), function(err: any) {
                     if (err) {
                         console.warn(`${$scope.mode} => ${err}`)
