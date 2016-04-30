@@ -79,11 +79,6 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                            <ng-md-icon icon='cancel' style=\"fill: {{true ? '#ff0000' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"Cancel Program\" tooltip-placement='left'><ng-md-icon>\n" +
     "                        </a>\n" +
     "                    </li>\n" +
-    "                    <li ng-show='isEditMode'>\n" +
-    "                        <a role='button' ng-click='toggleReadMeVisible()'>\n" +
-    "                            <ng-md-icon icon='description' style=\"fill: {{isReadMeVisible ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"{{isReadMeVisible ?  'Hide README.md' : 'Show README.md'}}\" tooltip-placement='left'><ng-md-icon>\n" +
-    "                        </a>\n" +
-    "                    </li>\n" +
     "                    <li uib-dropdown ng-show='isEditMode'>\n" +
     "                        <a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"Choose Program\" tooltip-placement='left'>\n" +
     "                            <ng-md-icon icon='playlist_add_check' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'><ng-md-icon>\n" +
@@ -97,22 +92,14 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                        </ul>\n" +
     "                    </li>\n" +
     "                    <li ng-show='isEditMode'>\n" +
+    "                        <a role='button' ng-click='toggleReadMeVisible()'>\n" +
+    "                            <ng-md-icon icon='description' style=\"fill: {{isReadMeVisible ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"{{isReadMeVisible ?  'Hide README.md' : 'Show README.md'}}\" tooltip-placement='left'><ng-md-icon>\n" +
+    "                        </a>\n" +
+    "                    </li>\n" +
+    "                    <li ng-show='isEditMode'>\n" +
     "                        <a role='button' ng-click='doProperties()'>\n" +
     "                            <ng-md-icon icon='check_box' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"Project Properties\" tooltip-placement='left'><ng-md-icon>\n" +
     "                        </a>\n" +
-    "                    </li>\n" +
-    "                    <li uib-dropdown ng-show='isEditMode &amp;&amp; isLoggedIn()'>\n" +
-    "                        <a ng-show='isLoggedIn()' uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"GitHub Menu\" tooltip-placement='left'>\n" +
-    "                            <ng-md-icon icon='github-box' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'><ng-md-icon>\n" +
-    "                        </a>\n" +
-    "                        <ul uib-dropdown-menu role=\"menu\">\n" +
-    "                            <li>\n" +
-    "                                <a ng-click='clickDownload()' ng-show='isLoggedIn()' role='button'>Download</a>\n" +
-    "                            </li>\n" +
-    "                            <li>\n" +
-    "                                <a ng-click='doUpload()' ng-show='isLoggedIn()' role='button'>Upload</a>\n" +
-    "                            </li>\n" +
-    "                        </ul>\n" +
     "                    </li>\n" +
     "                    <li uib-dropdown ng-show='isEditMode'>\n" +
     "                        <a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"Project Menu\" tooltip-placement='left'>\n" +
@@ -128,6 +115,19 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                            </li>\n" +
     "                            <li>\n" +
     "                                <a role='button' ng-click='doCopy()'>Copy Project</a>\n" +
+    "                            </li>\n" +
+    "                        </ul>\n" +
+    "                    </li>\n" +
+    "                    <li uib-dropdown ng-show='isEditMode &amp;&amp; isLoggedIn()'>\n" +
+    "                        <a ng-show='isLoggedIn()' uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"GitHub Menu\" tooltip-placement='left'>\n" +
+    "                            <ng-md-icon icon='cloud' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'><ng-md-icon>\n" +
+    "                        </a>\n" +
+    "                        <ul uib-dropdown-menu role=\"menu\">\n" +
+    "                            <li>\n" +
+    "                                <a ng-click='clickDownload()' ng-show='isLoggedIn()' role='button'>Download</a>\n" +
+    "                            </li>\n" +
+    "                            <li>\n" +
+    "                                <a ng-click='doUpload()' ng-show='isLoggedIn()' role='button'>Upload</a>\n" +
     "                            </li>\n" +
     "                        </ul>\n" +
     "                    </li>\n" +
@@ -186,7 +186,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "  </nav>\n" +
     "  <div class='md-docs-header'>\n" +
     "    <div class='container'>\n" +
-    "      <h1>Examples</h1>\n" +
+    "      <h1>Example Projects</h1>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "  <div class='container md-docs-container'>\n" +
@@ -194,106 +194,45 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "      <div class='col-md-9' role='main'>\n" +
     "\n" +
     "        <div class='md-docs-section'>\n" +
-    "          <h1 class='page-header'>Geometric Algebra and 3D WebGL Graphics</h1>\n" +
-    "          <p class='lead'>\n" +
-    "            <a href='/#/gists/129a4a31fa803df9e4a5'>Creating and Animating a Scene with Eight.Js</a>\n" +
-    "          </p>\n" +
-    "          <p>\n" +
-    "          The Eight.Js library that ships with STEMCstudio has a cohesive layered architecture that allows you to choose the appropriate level for flexibility and reuse. Eight.Js integrates Geometric Algebra with WebGL Graphics providing an efficient starting point for explorations into Geometry, Physics, Mathematics, and Computing.\n" +
-    "          </p>\n" +
-    "          <p>\n" +
-    "          This example demonstrates many features of the Eight.Js library. It builds a scene from high level components and drives the animation using Geometric Algebra for computation.\n" +
-    "          </p>\n" +
-    "          <p>\n" +
-    "          <em>This example is rather verbose and contains boilerplate code that could be\n" +
-    "          eliminated with an appropriate application framework. However, the explicit\n" +
-    "          nature of the example makes it easier to understand the various components and\n" +
-    "          how they interact.</em>\n" +
-    "          </p>\n" +
-    "        </div>\n" +
     "\n" +
+    "        <!-- Physics -->\n" +
     "        <div class='md-docs-section'>\n" +
-    "          <h1 class='page-header'>Physics Exploration</h1>\n" +
-    "          <p class='lead'>\n" +
-    "            <a href='/#/gists/1af94bb1db939e36e5f84764b44030af'>Modeling a Gas</a>\n" +
-    "          <p>\n" +
-    "          This program models a Gas as a collection of Molecules interacting with each other and the walls of a Box through elastic collisions.\n" +
-    "          </p>\n" +
-    "          <p class='lead'>\n" +
-    "            <a href='/#/gists/72b8c2b765792d2fe100'>Projectile Motion</a>\n" +
-    "          <p>\n" +
-    "          Physics demonstrations and explorations require accessible solutions without having to re-invent graphical components. This example shows how to model projectile motion by composing high-level components in the Eight.Js library.\n" +
-    "          </p>\n" +
-    "          <p class='lead'>\n" +
-    "            <a href='/#/gists/e5a3cbf25d8972d1b79d'>Binary Star</a>\n" +
-    "          <p>\n" +
-    "          A classic two-body simulation demonstrating gravitation, center of mass, and reduced-mass concepts.\n" +
-    "          </p>\n" +
-    "          <p class='lead'>\n" +
-    "          <a href='/#/gists/925701cc2a654bfefcf0'>Earth-Moon</a>\n" +
-    "          <p>\n" +
-    "          Demonstrates using two viewports to display a scene from different perspectives.\n" +
-    "          Simulates the Earth-Moon gravitation system with directional lighting\n" +
-    "          provided by the sun. The scene is rendered in plan view and and from the Earth.\n" +
-    "          </p>\n" +
-    "          <p class='lead'>\n" +
-    "            <a href='/#/gists/a1ee16bc6b1c98317ba1'>Units of Measure</a>\n" +
-    "          <p>\n" +
-    "          The Eight.Js library includes Geometric Algebra measures that include optional units of\n" +
-    "          measure. The units are based upon the seven S.I. base units and is also able to recognize\n" +
-    "          some common derived units.\n" +
-    "          </p>\n" +
-    "          <p class='lead'>\n" +
-    "            <a href='/#/gists/d51e8b997c6a1de2ce71'>Basis Labeling</a>\n" +
-    "          <p>\n" +
-    "          Replacing the labels used for basis vectors can be an instructive way to learn the\n" +
-    "          relationships between geometric measures, geometric quantities, magnitudes, directions,\n" +
-    "          aspect, and orientation.\n" +
-    "          </p>\n" +
-    "          <p>\n" +
-    "          Basis labels can also be customized appropriate to the context, e.g. compass directions. In this example we use Unicode graphical symbols to represent vectors, bivectors and the pseudoscalar and show how they interact under the geometric product.\n" +
-    "          </p>\n" +
-    "          <p class='lead'>\n" +
-    "            <a href='/#/gists/43e23d39431bae5bb401'>Projectile Motion with Units</a>\n" +
-    "          <p>\n" +
-    "          Brings units of measure into simulations. While this may not be desirable for high-performance applications, it does motivate the use of consistent units in order to allow the simulation to run!\n" +
-    "          </p>\n" +
+    "\n" +
+    "          <h1 class='page-header'>Physics Modeling</h1>\n" +
+    "\n" +
+    "          <div ng-repeat='example in examples | filter : {category : \"Physics\"}'>\n" +
+    "            <p class='lead'>\n" +
+    "                <a href='/#/gists/{{example.gistId}}'>{{example.title}}</a>\n" +
+    "            </p>\n" +
+    "            <p>{{example.description}}</p>\n" +
+    "          </div>\n" +
     "        </div>\n" +
     "\n" +
+    "        <!-- Graphics -->\n" +
     "        <div class='md-docs-section'>\n" +
-    "          <h1 class='page-header'>Teaching 3D Computer Graphics</h1>\n" +
-    "          <p class='lead'>\n" +
-    "            <a href='/#/gists/157e85464659bbbd3bac'>Teaching a Computer Graphics Course with WebGL</a>\n" +
-    "          <p>\n" +
-    "          This example was inspired by the article by Edward Angel and Dave Shreiner in the book\n" +
-    "          WebGL Insights by Patrick Cozzi.\n" +
-    "          </p>\n" +
-    "          <p>\n" +
-    "          The article describes the benefits of moving from OpenGL to WebGL. STEMCstudio enhances the experience for the student by providing a powerful development environment, Geometric Algebra libraries, and a Graphics Library with entry points at many levels of flexibility and reuse.\n" +
-    "          </p>\n" +
-    "          <p class='lead'>\n" +
-    "            <a href='/#/gists/89ee3cf12e4360999510'>Ray Tracing: The Science behind Computer Animation</a>\n" +
-    "          <p>\n" +
-    "          While WebGL provides a high performance real-time graphics environment, movie-quality animations require Physics calculations based upon Geometric Optics and are often computed off-line taking many hours.\n" +
-    "          </p>\n" +
-    "          <p>\n" +
-    "          This example shows how simple ray tracing can be performed in the browser with the results written out to the HTML5 Canvas in a few seconds. The example is due to Microsoft. It would be interesting to adapt it to Geometric Algebra and enable learning Geometric Optics.\n" +
-    "          </p>\n" +
+    "\n" +
+    "          <h1 class='page-header'>3D Computer Graphics</h1>\n" +
+    "\n" +
+    "          <div ng-repeat='example in examples | filter : {category : \"Graphics\"}'>\n" +
+    "            <p class='lead'>\n" +
+    "                <a href='/#/gists/{{example.gistId}}'>{{example.title}}</a>\n" +
+    "            </p>\n" +
+    "            <p>{{example.description}}</p>\n" +
+    "          </div>\n" +
+    "\n" +
     "        </div>\n" +
     "\n" +
+    "        <!-- Mathematics -->\n" +
     "        <div class='md-docs-section'>\n" +
     "          <h1 class='page-header'>Mathematics</h1>\n" +
-    "          <p class='lead'>\n" +
-    "          <a href='/#/gists/2d975217f9406177e4a6cd812bd28134'>Euclidean Plane using JSXGraph</a>\n" +
-    "          <p>\n" +
-    "          JSXGraph is a cross-browser JavaScript library for interactive geometry, function plotting, charting, and data visualization in the web browser.\n" +
-    "          </p>\n" +
-    "          <p class='lead'>\n" +
-    "          <a href='/#/gists/d4a1b374cb80ca178ad2'>Eight Surface</a>\n" +
-    "          <p>\n" +
-    "          This example demonstrates the flexibility inherent in an environment that is based upon\n" +
-    "          general-purpose programming with standards-based tools.\n" +
-    "          </p>\n" +
+    "\n" +
+    "          <div ng-repeat='example in examples | filter : {category : \"Mathematics\"}'>\n" +
+    "            <p class='lead'>\n" +
+    "                <a href='/#/gists/{{example.gistId}}'>{{example.title}}</a>\n" +
+    "            </p>\n" +
+    "            <p>{{example.description}}</p>\n" +
+    "          </div>\n" +
+    "          <!--\n" +
     "          <p class='lead'>\n" +
     "            <a href='/#/gists/8571a36545d10f34bfef'>Fundamental Theorem of Algebra</a>\n" +
     "          <p>\n" +
@@ -312,33 +251,34 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "          <p>\n" +
     "          A rendering of the Julia Set in 2D. Interestingly, this may be generalized to 3D and higher dimensions through the use of Geometric Algebra.\n" +
     "          </p>\n" +
+    "          <p class='lead'>\n" +
+    "          <a href='/#/gists/d4a1b374cb80ca178ad2'>Eight Surface</a>\n" +
+    "          <p>\n" +
+    "          This example demonstrates the flexibility inherent in an environment that is based upon\n" +
+    "          general-purpose programming with standards-based tools.\n" +
+    "          </p>\n" +
+    "          -->\n" +
     "        </div>\n" +
     "\n" +
+    "        <!-- Games -->\n" +
     "        <div class='md-docs-section'>\n" +
-    "          <h1 class='page-header'>Integrated Learning through a Game Development Project</h1>\n" +
-    "          <p class='lead'><a href='/#/gists/6774d1e77202db783182'>Asteroids</a></p>\n" +
-    "          <p>\n" +
-    "          The classic computer game originating from M.I.T.\n" +
-    "          </p>\n" +
-    "          <p class='lead'><a href='/#/gists/563f391f711bfcfccac5'>Game2D</a></p>\n" +
-    "          <p>\n" +
-    "          A computer game that realistically applies Physics principles, uses Geometric\n" +
-    "          mathematics for the simulation and graphics, and with User Interaction through keyboard\n" +
-    "          and mouse.\n" +
-    "          </p>\n" +
-    "          <p>\n" +
-    "          This makes an ideal Capstone project or a theme for Project Based Learning.\n" +
-    "          </p>\n" +
-    "          <p>\n" +
-    "          (This example is under development).\n" +
-    "          </p>\n" +
+    "\n" +
+    "          <h1 class='page-header'>Integrated Learning through Game Development Projects</h1>\n" +
+    "\n" +
+    "          <div ng-repeat='example in examples | filter : {category : \"Games\"}'>\n" +
+    "            <p class='lead'>\n" +
+    "                <a href='/#/gists/{{example.gistId}}'>{{example.title}}</a>\n" +
+    "            </p>\n" +
+    "            <p>{{example.description}}</p>\n" +
+    "          </div>\n" +
+    "\n" +
     "        </div>\n" +
     "\n" +
+    "        <!-- Misc -->\n" +
+    "        <!--\n" +
     "        <div class='md-docs-section'>\n" +
     "\n" +
-    "          <h1 class='page-header'>\n" +
-    "            Miscellaneous\n" +
-    "          </h1>\n" +
+    "          <h1 class='page-header'>Miscellaneous</h1>\n" +
     "\n" +
     "          <p class='lead'><a href='/#/gists/8d58e1a9412168b987f7'>SingleViewApp</a></p>\n" +
     "          <p>\n" +
@@ -356,6 +296,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "          </p>\n" +
     "\n" +
     "        </div>\n" +
+    "        -->\n" +
     "\n" +
     "      </div>\n" +
     "    </div>\n" +

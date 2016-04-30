@@ -6,7 +6,7 @@
   </nav>
   <div class='md-docs-header'>
     <div class='container'>
-      <h1>Examples</h1>
+      <h1>Example Projects</h1>
     </div>
   </div>
   <div class='container md-docs-container'>
@@ -14,106 +14,45 @@
       <div class='col-md-9' role='main'>
 
         <div class='md-docs-section'>
-          <h1 class='page-header'>Geometric Algebra and 3D WebGL Graphics</h1>
-          <p class='lead'>
-            <a href='/#/gists/129a4a31fa803df9e4a5'>Creating and Animating a Scene with Eight.Js</a>
-          </p>
-          <p>
-          The Eight.Js library that ships with STEMCstudio has a cohesive layered architecture that allows you to choose the appropriate level for flexibility and reuse. Eight.Js integrates Geometric Algebra with WebGL Graphics providing an efficient starting point for explorations into Geometry, Physics, Mathematics, and Computing.
-          </p>
-          <p>
-          This example demonstrates many features of the Eight.Js library. It builds a scene from high level components and drives the animation using Geometric Algebra for computation.
-          </p>
-          <p>
-          <em>This example is rather verbose and contains boilerplate code that could be
-          eliminated with an appropriate application framework. However, the explicit
-          nature of the example makes it easier to understand the various components and
-          how they interact.</em>
-          </p>
-        </div>
 
+        <!-- Physics -->
         <div class='md-docs-section'>
-          <h1 class='page-header'>Physics Exploration</h1>
-          <p class='lead'>
-            <a href='/#/gists/1af94bb1db939e36e5f84764b44030af'>Modeling a Gas</a>
-          <p>
-          This program models a Gas as a collection of Molecules interacting with each other and the walls of a Box through elastic collisions.
-          </p>
-          <p class='lead'>
-            <a href='/#/gists/72b8c2b765792d2fe100'>Projectile Motion</a>
-          <p>
-          Physics demonstrations and explorations require accessible solutions without having to re-invent graphical components. This example shows how to model projectile motion by composing high-level components in the Eight.Js library.
-          </p>
-          <p class='lead'>
-            <a href='/#/gists/e5a3cbf25d8972d1b79d'>Binary Star</a>
-          <p>
-          A classic two-body simulation demonstrating gravitation, center of mass, and reduced-mass concepts.
-          </p>
-          <p class='lead'>
-          <a href='/#/gists/925701cc2a654bfefcf0'>Earth-Moon</a>
-          <p>
-          Demonstrates using two viewports to display a scene from different perspectives.
-          Simulates the Earth-Moon gravitation system with directional lighting
-          provided by the sun. The scene is rendered in plan view and and from the Earth.
-          </p>
-          <p class='lead'>
-            <a href='/#/gists/a1ee16bc6b1c98317ba1'>Units of Measure</a>
-          <p>
-          The Eight.Js library includes Geometric Algebra measures that include optional units of
-          measure. The units are based upon the seven S.I. base units and is also able to recognize
-          some common derived units.
-          </p>
-          <p class='lead'>
-            <a href='/#/gists/d51e8b997c6a1de2ce71'>Basis Labeling</a>
-          <p>
-          Replacing the labels used for basis vectors can be an instructive way to learn the
-          relationships between geometric measures, geometric quantities, magnitudes, directions,
-          aspect, and orientation.
-          </p>
-          <p>
-          Basis labels can also be customized appropriate to the context, e.g. compass directions. In this example we use Unicode graphical symbols to represent vectors, bivectors and the pseudoscalar and show how they interact under the geometric product.
-          </p>
-          <p class='lead'>
-            <a href='/#/gists/43e23d39431bae5bb401'>Projectile Motion with Units</a>
-          <p>
-          Brings units of measure into simulations. While this may not be desirable for high-performance applications, it does motivate the use of consistent units in order to allow the simulation to run!
-          </p>
+
+          <h1 class='page-header'>Physics Modeling</h1>
+
+          <div ng-repeat='example in examples | filter : {category : "Physics"}'>
+            <p class='lead'>
+                <a href='/#/gists/{{example.gistId}}'>{{example.title}}</a>
+            </p>
+            <p>{{example.description}}</p>
+          </div>
         </div>
 
+        <!-- Graphics -->
         <div class='md-docs-section'>
-          <h1 class='page-header'>Teaching 3D Computer Graphics</h1>
-          <p class='lead'>
-            <a href='/#/gists/157e85464659bbbd3bac'>Teaching a Computer Graphics Course with WebGL</a>
-          <p>
-          This example was inspired by the article by Edward Angel and Dave Shreiner in the book
-          WebGL Insights by Patrick Cozzi.
-          </p>
-          <p>
-          The article describes the benefits of moving from OpenGL to WebGL. STEMCstudio enhances the experience for the student by providing a powerful development environment, Geometric Algebra libraries, and a Graphics Library with entry points at many levels of flexibility and reuse.
-          </p>
-          <p class='lead'>
-            <a href='/#/gists/89ee3cf12e4360999510'>Ray Tracing: The Science behind Computer Animation</a>
-          <p>
-          While WebGL provides a high performance real-time graphics environment, movie-quality animations require Physics calculations based upon Geometric Optics and are often computed off-line taking many hours.
-          </p>
-          <p>
-          This example shows how simple ray tracing can be performed in the browser with the results written out to the HTML5 Canvas in a few seconds. The example is due to Microsoft. It would be interesting to adapt it to Geometric Algebra and enable learning Geometric Optics.
-          </p>
+
+          <h1 class='page-header'>3D Computer Graphics</h1>
+
+          <div ng-repeat='example in examples | filter : {category : "Graphics"}'>
+            <p class='lead'>
+                <a href='/#/gists/{{example.gistId}}'>{{example.title}}</a>
+            </p>
+            <p>{{example.description}}</p>
+          </div>
+
         </div>
 
+        <!-- Mathematics -->
         <div class='md-docs-section'>
           <h1 class='page-header'>Mathematics</h1>
-          <p class='lead'>
-          <a href='/#/gists/2d975217f9406177e4a6cd812bd28134'>Euclidean Plane using JSXGraph</a>
-          <p>
-          JSXGraph is a cross-browser JavaScript library for interactive geometry, function plotting, charting, and data visualization in the web browser.
-          </p>
-          <p class='lead'>
-          <a href='/#/gists/d4a1b374cb80ca178ad2'>Eight Surface</a>
-          <p>
-          This example demonstrates the flexibility inherent in an environment that is based upon
-          general-purpose programming with standards-based tools.
-          </p>
+
+          <div ng-repeat='example in examples | filter : {category : "Mathematics"}'>
+            <p class='lead'>
+                <a href='/#/gists/{{example.gistId}}'>{{example.title}}</a>
+            </p>
+            <p>{{example.description}}</p>
+          </div>
+          <!--
           <p class='lead'>
             <a href='/#/gists/8571a36545d10f34bfef'>Fundamental Theorem of Algebra</a>
           <p>
@@ -132,33 +71,34 @@
           <p>
           A rendering of the Julia Set in 2D. Interestingly, this may be generalized to 3D and higher dimensions through the use of Geometric Algebra.
           </p>
+          <p class='lead'>
+          <a href='/#/gists/d4a1b374cb80ca178ad2'>Eight Surface</a>
+          <p>
+          This example demonstrates the flexibility inherent in an environment that is based upon
+          general-purpose programming with standards-based tools.
+          </p>
+          -->
         </div>
 
+        <!-- Games -->
         <div class='md-docs-section'>
-          <h1 class='page-header'>Integrated Learning through a Game Development Project</h1>
-          <p class='lead'><a href='/#/gists/6774d1e77202db783182'>Asteroids</a></p>
-          <p>
-          The classic computer game originating from M.I.T.
-          </p>
-          <p class='lead'><a href='/#/gists/563f391f711bfcfccac5'>Game2D</a></p>
-          <p>
-          A computer game that realistically applies Physics principles, uses Geometric
-          mathematics for the simulation and graphics, and with User Interaction through keyboard
-          and mouse.
-          </p>
-          <p>
-          This makes an ideal Capstone project or a theme for Project Based Learning.
-          </p>
-          <p>
-          (This example is under development).
-          </p>
+
+          <h1 class='page-header'>Integrated Learning through Game Development Projects</h1>
+
+          <div ng-repeat='example in examples | filter : {category : "Games"}'>
+            <p class='lead'>
+                <a href='/#/gists/{{example.gistId}}'>{{example.title}}</a>
+            </p>
+            <p>{{example.description}}</p>
+          </div>
+
         </div>
 
+        <!-- Misc -->
+        <!--
         <div class='md-docs-section'>
 
-          <h1 class='page-header'>
-            Miscellaneous
-          </h1>
+          <h1 class='page-header'>Miscellaneous</h1>
 
           <p class='lead'><a href='/#/gists/8d58e1a9412168b987f7'>SingleViewApp</a></p>
           <p>
@@ -176,6 +116,7 @@
           </p>
 
         </div>
+        -->
 
       </div>
     </div>
