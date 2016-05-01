@@ -57,6 +57,7 @@ app.factory('cloud', [
             downloadGist: function(token: string, gistId: string, callback: (err, doodle?: IDoodle) => void) {
                 github.getGist(token, gistId, function(err: any, gist: GetGistResponse) {
                     if (!err) {
+                        // We want to avoid special-casing this file and just let it exist as package.json.
                         const metaInfo: IDoodleConfig = JSON.parse(gist.files[FILENAME_META].content);
 
                         const doodle = new Doodle()

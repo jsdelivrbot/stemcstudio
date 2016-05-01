@@ -78,6 +78,7 @@ export default function(doodle: IDoodle, options: IOptionManager): GistData {
         public: true,
         files: doodleFilesToGistFiles(doodle.files, doodle.trash)
     }
+    // FIXME: We should not need this special case to create the package.json; it should be there already.
     gist.files['doodle.json'] = { content: JSON.stringify(doodleConfig(doodle, options), null, 2) + "\n" }
     return gist
 }

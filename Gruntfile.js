@@ -169,6 +169,12 @@ module.exports = function(grunt) {
           },
           {
             expand: true,
+            cwd: "museum/gl-matrix@2.3.2",
+            src: ["**"],
+            dest: "generated/vendor/gl-matrix@2.3.2"
+          },
+          {
+            expand: true,
             cwd: "museum/jquery@2.1.4",
             src: ["**"],
             dest: "generated/vendor/jquery@2.1.4"
@@ -458,6 +464,12 @@ module.exports = function(grunt) {
             cwd: "museum/domready@1.0.0",
             src: ["**"],
             dest: "dist/vendor/domready@1.0.0"
+          },
+          {
+            expand: true,
+            cwd: "museum/gl-matrix@2.3.2",
+            src: ["**"],
+            dest: "dist/vendor/gl-matrix@2.3.2"
           },
           {
             expand: true,

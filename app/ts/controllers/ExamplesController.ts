@@ -79,6 +79,12 @@ export default class ExamplesController extends AbstractPageController {
                 category: 'Graphics'
             },
             {
+                gistId: '69a4edb74810531611d1',
+                title: "WebGL Fundamentals",
+                description: "Demonstrates low-level 3D graphics using only the WebGL API.",
+                category: 'Graphics'
+            },
+            {
                 gistId: '2d975217f9406177e4a6cd812bd28134',
                 title: "Euclidean Plane using JSXGraph",
                 description: "JSXGraph is a cross-browser JavaScript library for interactive geometry, function plotting, charting, and data visualization in the web browser.",

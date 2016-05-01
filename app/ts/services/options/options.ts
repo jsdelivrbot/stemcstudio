@@ -19,7 +19,7 @@ app.factory('options', [
         const VERSION_DOMREADY = '1.0.0'
         const VERSION_D3 = '3.5.5'
         const VERSION_EIGHT = '2.102.0'
-        // const VERSION_GLMATRIX = '2.3.1'
+        const VERSION_GLMATRIX = '2.3.2'
         const VERSION_JASMINE = '2.4.1'
         const VERSION_JQUERY = '2.1.4'
         const VERSION_JSXGRAPH = '0.99.3'
@@ -72,11 +72,9 @@ app.factory('options', [
         function eight(subFolder: string, fileName: string): string {
             return vendorFolder('davinci-eight', VERSION_EIGHT, subFolder, fileName)
         }
-        /*
         function glMatrix(fileName: string): string {
-          return vendorFolder('gl-matrix', VERSION_GLMATRIX, 'dist', fileName);
+          return vendorFolder('gl-matrix', VERSION_GLMATRIX, void 0, fileName);
         }
-        */
         function jasmine(fileName: string): string {
             return vendorFolder('jasmine', VERSION_JASMINE, 'lib', fileName)
         }
@@ -142,7 +140,6 @@ app.factory('options', [
                 dependencies: {}
             },
             */
-            /*
             {
                 name: 'gl-matrix',
                 moniker: 'gl-matrix',
@@ -150,12 +147,12 @@ app.factory('options', [
                 homepage: 'http://glmatrix.net',
                 version: VERSION_GLMATRIX,
                 visible: true,
+                css: [],
                 dts: glMatrix('gl-matrix.d.ts'),
-                js: glMatrix('gl-matrix-min.js'),
-                minJs: glMatrix('gl-matrix-min.js'),
+                js: [glMatrix('gl-matrix-min.js')],
+                minJs: [glMatrix('gl-matrix-min.js')],
                 dependencies: {}
             },
-            */
             {
                 name: 'dat-gui',
                 moniker: 'dat.GUI',
