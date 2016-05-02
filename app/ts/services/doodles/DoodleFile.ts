@@ -9,6 +9,9 @@ export default class DoodleFile implements IDoodleFile {
      * The file is open for editing.
      */
     public isOpen: boolean;
+    /**
+     * The mode of the file refers to the computing language canonical name.
+     */
     public language: string;
     public preview: boolean;
     public raw_url: string;

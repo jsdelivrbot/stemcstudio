@@ -5,7 +5,6 @@ import EditSession from '../../widgets/editor/EditSession';
 import OutputFile from '../../widgets/editor/workspace/OutputFile';
 import sd from 'showdown';
 import ICloud from '../../services/cloud/ICloud';
-import CookieService from '../../services/cookie/CookieService';
 import detect1x from './detect1x';
 import Doodle from '../../services/doodles/Doodle';
 import fileContent from './fileContent';
@@ -194,12 +193,10 @@ export default class WorkspaceController implements WorkspaceMixin {
         'GitHub',
         'GitHubAuthManager',
         'cloud',
-        'cookie',
         'templates',
         'ga',
         'doodles',
         'options',
-        'FILENAME_META',
         'FILENAME_README',
         'FILENAME_CODE',
         'FILENAME_LIBS',
@@ -264,12 +261,10 @@ export default class WorkspaceController implements WorkspaceMixin {
         github: GitHubService,
         authManager: IGitHubAuthManager,
         private cloud: ICloud,
-        private cookie: CookieService,
         templates: Doodle[],
         ga: UniversalAnalytics.ga,
         private doodles: IDoodleManager,
         private options: IOptionManager,
-        private FILENAME_META: string,
         private FILENAME_README: string,
         private FILENAME_CODE: string,
         private FILENAME_LIBS: string,
@@ -367,15 +362,12 @@ export default class WorkspaceController implements WorkspaceMixin {
         // Now that things have settled down...
         doodles.updateStorage();
 
-        const GITHUB_TOKEN_COOKIE_NAME = 'github-token';
-
         const gistId: string = this.$stateParams['gistId'];
         if (gistId) {
             if (doodles.current().gistId !== gistId) {
-                const token = this.cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
-                this.cloud.downloadGist(token, gistId, (err: any, doodle: Doodle) => {
+                this.cloud.downloadGist(gistId, (err: any, doodle: Doodle) => {
                     if (!err) {
-                        doodles.deleteDoodle(doodle.uuid);
+                        doodles.deleteDoodle(doodle);
                         doodles.unshift(doodle);
                         doodles.updateStorage();
                         this.onInitDoodle(doodles.current())

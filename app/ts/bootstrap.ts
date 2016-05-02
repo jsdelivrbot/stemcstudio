@@ -4,6 +4,7 @@
 import app from './app';
 import * as angular from 'angular';
 import contextMenu from './directives/contextMenu/contextMenu.directive';
+import contiguous from './filters/contiguous';
 import DoodleController from './controllers/DoodleController';
 import ExamplesController from './controllers/ExamplesController';
 import HomeController from './controllers/HomeController';
@@ -55,6 +56,8 @@ app.directive('explorer', explorer);
 app.directive('logoText', logoText);
 app.directive('resizable', resizable);
 app.directive('workspace', workspace);
+
+app.filter('contiguous', contiguous);
 
 import './fugly/ga/ga';
 

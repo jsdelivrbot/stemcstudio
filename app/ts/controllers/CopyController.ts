@@ -1,6 +1,7 @@
 import app from '../app';
 import CopyScope from '../scopes/CopyScope';
 import IDoodleManager from '../services/doodles/IDoodleManager';
+import ITemplate from '../services/templates/ITemplate';
 
 app.controller('copy-controller', [
     '$scope',
@@ -15,7 +16,17 @@ app.controller('copy-controller', [
     ) {
 
         $scope.description = doodles.suggestName();
-        $scope.template = doodles.current();
+
+        const copySource = doodles.current()
+
+        const template: ITemplate = {
+            description: copySource.description,
+            files: copySource.files,
+            dependencies: copySource.dependencies,
+            operatorOverloading: copySource.operatorOverloading
+        };
+
+        $scope.template = template;
 
         $scope.doOK = function() {
             doodles.createDoodle($scope.template, $scope.description);

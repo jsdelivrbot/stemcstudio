@@ -1,10 +1,10 @@
 import AppScope from '../AppScope';
-import Doodle from '../services/doodles/Doodle';
+import ITemplate from '../services/templates/ITemplate';
 
 interface NewScope extends AppScope {
     description: string;
-    template: Doodle;
-    templates: Doodle[];
+    template: ITemplate;
+    templates: ITemplate[];
     doOK: () => void;
     doCancel: () => void;
 }

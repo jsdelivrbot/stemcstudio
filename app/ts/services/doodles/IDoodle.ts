@@ -3,9 +3,14 @@ import IDoodleFile from './IDoodleFile';
 interface IDoodle {
 
     /**
-     * Every doodle gets a UUID to determine uniqueness.
+     *
      */
-    uuid: string;
+    name: string;
+
+    /**
+     *
+     */
+    version: string;
 
     /**
      * The GitHub Gist identifier.

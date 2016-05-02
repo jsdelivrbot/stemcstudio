@@ -55,7 +55,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
     return VENDOR_FOLDER_MARKER + '/' + packageFolder + '/' + fileName;
 }
 
-app.constant('version', '2.0.0-beta.40');
+app.constant('version', '2.0.0-beta.41');
 // githubKey stores the key of the item in local storage for maintaining GitHub OAuth data.
 // Remark: This value is duplicated in views/github_callback.jade
 app.constant('githubKey', makeKey('github'));
@@ -65,7 +65,7 @@ app.constant('doodlesKey', makeKey('doodles'));
 app.constant('configKey', makeKey('config'));
 
 // The following 3 files have special significance.
-app.constant('FILENAME_META', 'doodle.json');
+app.constant('FILENAME_META', 'package.json');
 app.constant('FILENAME_HTML', 'index.html');
 app.constant('FILENAME_README', 'README.md');
 

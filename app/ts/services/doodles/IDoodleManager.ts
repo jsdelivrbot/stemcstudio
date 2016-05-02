@@ -6,8 +6,8 @@ interface IDoodleManager {
     length: number;
     filter(callback: (doodle: Doodle, index: number, array: Doodle[]) => boolean): Doodle[];
     current(): Doodle;
-    makeCurrent(uuid: string): void;
-    deleteDoodle(uuid: string): void;
+    makeCurrent(doodle: Doodle): void;
+    deleteDoodle(doodle: Doodle): void;
     updateStorage(): void;
     createDoodle(template: ITemplate, description?: string);
     suggestName(): string;

@@ -40,11 +40,6 @@
                             <ng-md-icon icon='description' style="fill: {{isReadMeVisible ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="{{isReadMeVisible ?  'Hide README.md' : 'Show README.md'}}" tooltip-placement='left'><ng-md-icon>
                         </a>
                     </li>
-                    <li ng-show='isEditMode'>
-                        <a role='button' ng-click='doProperties()'>
-                            <ng-md-icon icon='check_box' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="Project Properties" tooltip-placement='left'><ng-md-icon>
-                        </a>
-                    </li>
                     <li uib-dropdown ng-show='isEditMode'>
                         <a uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="Project Menu" tooltip-placement='left'>
                             <ng-md-icon icon='folder' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true'><ng-md-icon>

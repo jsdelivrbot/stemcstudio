@@ -1,9 +1,9 @@
 import BodyScope from './BodyScope';
-import Doodle from '../services/doodles/Doodle';
+import ITemplate from '../services/templates/ITemplate';
 
 interface CopyScope extends BodyScope {
     description: string;
-    template: Doodle;
+    template: ITemplate;
     doOK: () => void;
     doCancel: () => void;
 }

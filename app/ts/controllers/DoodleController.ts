@@ -12,7 +12,7 @@ import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
 import IOptionManager from '../services/options/IOptionManager';
 import ISettingsService from '../services/settings/ISettingsService';
 import ITemplate from '../services/templates/ITemplate';
-import doodleToGist from '../utils/doodleToGist';
+import doodleToGist from '../services/cloud/doodleToGist';
 import IUuidService from '../services/uuid/IUuidService';
 
 import BootstrapDialog from 'bootstrap-dialog';
@@ -42,7 +42,6 @@ export default class DoodleController extends AbstractPageController {
         'doodlesKey',
         'doodles',
         'options',
-        'FILENAME_META',
         'FILENAME_HTML',
         'FILENAME_CODE',
         'FILENAME_LIBS',
@@ -75,7 +74,6 @@ export default class DoodleController extends AbstractPageController {
         doodlesKey: string,
         doodles: IDoodleManager,
         options: IOptionManager,
-        FILENAME_META: string,
         FILENAME_HTML: string,
         FILENAME_CODE: string,
         FILENAME_LIBS: string,

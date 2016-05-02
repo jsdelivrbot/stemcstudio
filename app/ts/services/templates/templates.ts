@@ -1,7 +1,7 @@
 import app from '../../app';
 import Doodle from '../doodles/Doodle';
+import IOptionManager from '../options/IOptionManager';
 import ITemplate from './ITemplate';
-import IUuidService from '../uuid/IUuidService';
 
 import MINIMAL_HTML from './MINIMAL_HTML';
 import MINIMAL_BOOTSTRAP from './MINIMAL_BOOTSTRAP';
@@ -20,7 +20,7 @@ import MINIMAL_VECTOR_SPEC from './MINIMAL_VECTOR_SPEC';
  */
 app.factory('templates', [
     '$location',
-    'uuid4',
+    'options',
     'CODE_MARKER',
     'LIBS_MARKER',
     'STYLE_MARKER',
@@ -31,7 +31,7 @@ app.factory('templates', [
     'FILENAME_LESS',
     function(
         $location: angular.ILocationService,
-        uuid: IUuidService,
+        options: IOptionManager,
         CODE_MARKER: string,
         LIBS_MARKER: string,
         STYLE_MARKER: string,
@@ -42,21 +42,26 @@ app.factory('templates', [
         FILENAME_LESS: string
     ): ITemplate[] {
 
-        const T0: Doodle = new Doodle()
-        T0.uuid = uuid.generate()
-        T0.description = "Application"
+        // We really don't need a full Doodle here.
+        // But maybe that won't save much?
+        const T0: Doodle = new Doodle(options)
         T0.files = {}
         T0.newFile(FILENAME_HTML).content = MINIMAL_HTML()
-        T0.newFile('bootstrap.ts').content = MINIMAL_BOOTSTRAP()
+        T0.newFile('index.ts').content = MINIMAL_BOOTSTRAP()
         T0.newFile('greeting.ts').content = MINIMAL_GREETING()
         T0.newFile('style.css').content = MINIMAL_CSS()
         T0.newFile('README.md').content = MINIMAL_README()
-        T0.newFile('specRunner.html').content = MINIMAL_SPEC_RUNNER_HTML()
-        T0.newFile('specRunner.ts').content = MINIMAL_SPEC_RUNNER()
+        T0.newFile('tests.html').content = MINIMAL_SPEC_RUNNER_HTML()
+        T0.newFile('tests.ts').content = MINIMAL_SPEC_RUNNER()
         T0.newFile('extend.ts').content = MINIMAL_EXTEND()
         T0.newFile('Vector.ts').content = MINIMAL_VECTOR()
         T0.newFile('Vector.spec.ts').content = MINIMAL_VECTOR_SPEC()
+        // The following should trigger the creation of the package.json file.
+        T0.name = "getting-started"
+        T0.version = "0.1.0"
+        T0.description = "Getting Started with STEMCstudio"
         T0.dependencies = ['DomReady', 'jasmine']
+        T0.operatorOverloading = false
 
         return [T0];
     }]);

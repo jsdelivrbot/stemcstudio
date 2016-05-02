@@ -2,12 +2,14 @@ import app from '../../app';
 import Doodle from './Doodle';
 import DoodleFile from './DoodleFile';
 import IDoodle from './IDoodle';
+import IDoodleDS from './IDoodleDS';
 import IDoodleFile from './IDoodleFile';
 import IDoodleManager from './IDoodleManager';
-import IUuidService from '../uuid/IUuidService';
+import IOptionManager from '../options/IOptionManager';
 import modeFromName from '../../utils/modeFromName';
+import doodlesToString from './doodlesToString';
 
-function deserialize(doodles: IDoodle[]): Doodle[] {
+function deserializeDoodles(doodles: IDoodleDS[], options: IOptionManager): Doodle[] {
     // Version 1.x used a fixed set of four files with properties that were strings.
     const FILENAME_HTML = 'index.html'
     const PROPERTY_HTML = 'html'
@@ -25,9 +27,8 @@ function deserialize(doodles: IDoodle[]): Doodle[] {
     const iLen = doodles.length
     for (let i = 0; i < iLen; i++) {
         const inDoodle = doodles[i]
-        const d = new Doodle()
-        d.dependencies = inDoodle.dependencies.slice()
-        d.description = inDoodle.description
+        const d = new Doodle(options)
+        // The existence of the files property indicates that this is probably a modern version.
         if (inDoodle.files) {
             d.files = copyFiles(inDoodle.files)
         }
@@ -50,13 +51,8 @@ function deserialize(doodles: IDoodle[]): Doodle[] {
             d.files[FILENAME_LESS].content = inDoodle[PROPERTY_LESS]
             d.files[FILENAME_LESS].language = modeFromName(FILENAME_LESS)
         }
-        d.focusEditor = inDoodle.focusEditor
         d.gistId = inDoodle.gistId
-        d.isCodeVisible = inDoodle.isCodeVisible
-        d.isViewVisible = inDoodle.isViewVisible
         d.lastKnownJs = inDoodle.lastKnownJs
-        d.operatorOverloading = inDoodle.operatorOverloading
-        d.uuid = inDoodle.uuid
         ds.push(d)
     }
     return ds
@@ -79,16 +75,16 @@ function copyFiles(inFiles: { [name: string]: IDoodleFile }): { [name: string]: 
 
 app.factory('doodles', [
     '$window',
-    'uuid4',
+    'options',
     'doodlesKey',
     function(
         $window: angular.IWindowService,
-        uuid4: IUuidService,
+        options: IOptionManager,
         doodlesKey: string
     ) {
 
         // The doodles from local storage must be converted into classes in order to support the methods.
-        var _doodles: Doodle[] = deserialize($window.localStorage[doodlesKey] !== undefined ? JSON.parse($window.localStorage[doodlesKey]) : []);
+        var _doodles: Doodle[] = deserializeDoodles($window.localStorage[doodlesKey] !== undefined ? JSON.parse($window.localStorage[doodlesKey]) : [], options);
 
         const suggestName = function(): string {
             const UNTITLED = "Project";
@@ -140,21 +136,28 @@ app.factory('doodles', [
                 if (!description) {
                     description = suggestName();
                 }
-                const doodle: Doodle = new Doodle()
-                doodle.uuid = uuid4.generate()
-                doodle.description = description
-                doodle.operatorOverloading = template.operatorOverloading
+                const doodle: Doodle = new Doodle(options)
+
+                // Initialize the files property first so that updates to name, ...
+                // are not written over.
                 doodle.files = copyFiles(template.files)
+
+                // The following updates will impact the package.json file.
+                doodle.name = description.replace(' ', '-').toLowerCase()
+                doodle.version = "0.1.0"
+                doodle.description = description
                 doodle.dependencies = template.dependencies.slice() // make a copy
+                doodle.operatorOverloading = template.operatorOverloading
+
                 _doodles.unshift(doodle)
             },
 
-            makeCurrent: function(uuid: string): void {
+            makeCurrent: function(dude: Doodle): void {
                 const doodles: Doodle[] = [];
 
                 var i = 0, found;
                 while (i < _doodles.length) {
-                    if (_doodles[i].uuid === uuid) {
+                    if (_doodles[i] === dude) {
                         found = _doodles[i];
                     }
                     else {
@@ -167,12 +170,12 @@ app.factory('doodles', [
                 _doodles = doodles;
             },
 
-            deleteDoodle: function(uuid: string): void {
+            deleteDoodle: function(dude: Doodle): void {
                 const doodles: Doodle[] = [];
 
                 var i = 0, found;
                 while (i < _doodles.length) {
-                    if (_doodles[i].uuid === uuid) {
+                    if (_doodles[i] === dude) {
                         found = _doodles[i];
                     }
                     else {
@@ -189,7 +192,7 @@ app.factory('doodles', [
             suggestName: suggestName,
 
             updateStorage: function(): void {
-                $window.localStorage[doodlesKey] = JSON.stringify(_doodles);
+                $window.localStorage[doodlesKey] = doodlesToString(_doodles);
             }
         };
 

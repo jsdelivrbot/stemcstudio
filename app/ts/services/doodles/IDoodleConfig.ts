@@ -1,5 +1,9 @@
+/**
+ * This is the schema for the package.json file.
+ */
 interface IDoodleConfig {
-  uuid: string;
+  name: string;
+  version: string;
   description?: string;
   dependencies: { [key: string]: string };
   operatorOverloading: boolean;

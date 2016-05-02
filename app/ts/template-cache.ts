@@ -96,11 +96,6 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                            <ng-md-icon icon='description' style=\"fill: {{isReadMeVisible ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"{{isReadMeVisible ?  'Hide README.md' : 'Show README.md'}}\" tooltip-placement='left'><ng-md-icon>\n" +
     "                        </a>\n" +
     "                    </li>\n" +
-    "                    <li ng-show='isEditMode'>\n" +
-    "                        <a role='button' ng-click='doProperties()'>\n" +
-    "                            <ng-md-icon icon='check_box' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"Project Properties\" tooltip-placement='left'><ng-md-icon>\n" +
-    "                        </a>\n" +
-    "                    </li>\n" +
     "                    <li uib-dropdown ng-show='isEditMode'>\n" +
     "                        <a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"Project Menu\" tooltip-placement='left'>\n" +
     "                            <ng-md-icon icon='folder' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'><ng-md-icon>\n" +
@@ -313,8 +308,15 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "        <div class='explorer-section-header'>\n" +
     "            <div class='navbar navbar-inverse explorer-section-box'>\n" +
     "                <div>\n" +
-    "                    <span class='md-logo-text-math'>{{currentDoodle().description | uppercase}}</span>\n" +
+    "                    <span class='md-logo-text-math'>{{ currentDoodle().name | contiguous | uppercase }}</span>\n" +
     "                </div>\n" +
+    "                <ul class='nav navbar-nav'>\n" +
+    "                    <li>\n" +
+    "                        <a role='button' ng-click='doProperties()'>\n" +
+    "                            <ng-md-icon icon='settings' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"Package Properties\" tooltip-placement='right'><ng-md-icon>\n" +
+    "                        </a>\n" +
+    "                    </li>\n" +
+    "                </ul>\n" +
     "            </div>\n" +
     "            <div class='navbar navbar-inverse explorer-section-box'>\n" +
     "                <ul class='nav navbar-nav'>\n" +
@@ -557,7 +559,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "  <div class='modal-body'>\n" +
     "    <input type='text' ng-model='description' placeholder=\"Enter description\" autofocus/>\n" +
     "    <label class='text-muted'>Template:</label>\n" +
-    "    <select ng-model='template' ng-options='template.description for template in templates track by template.uuid'></select>\n" +
+    "    <select ng-model='template' ng-options='template.description for template in templates'></select>\n" +
     "  </div>\n" +
     "  <div class='modal-footer'>\n" +
     "    <button class='btn btn-primary' ng-click='doOK()'>Create project</button>\n" +
@@ -574,9 +576,9 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "    <h3>Open Project</h3>\n" +
     "  </div>\n" +
     "  <div class='modal-body'>\n" +
-    "    <p ng-repeat='doodle in doodles() track by doodle.uuid'>\n" +
-    "      <a role='button' ng-click='doDelete(doodle.uuid)' class='delete'>&times;</a>\n" +
-    "      <a role='button' ng-click='doOpen(doodle.uuid)'>{{doodle.description}}</a>\n" +
+    "    <p ng-repeat='doodle in doodles()'>\n" +
+    "      <a role='button' ng-click='doDelete(doodle)' class='delete'>&times;</a>\n" +
+    "      <a role='button' ng-click='doOpen(doodle)'>{{doodle.description}}</a>\n" +
     "    </p>\n" +
     "  </div>\n" +
     "  <div class='modal-footer'>\n" +

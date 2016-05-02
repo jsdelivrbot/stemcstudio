@@ -1,4 +1,5 @@
 import app from '../app';
+import Doodle from '../services/doodles/Doodle';
 import IDoodleManager from '../services/doodles/IDoodleManager';
 import OpenScope from '../scopes/OpenScope';
 
@@ -14,13 +15,13 @@ app.controller('open-controller', [
         STATE_DOODLE: string
     ) {
 
-        $scope.doOpen = function(uuid: string) {
-            doodles.makeCurrent(uuid);
+        $scope.doOpen = function(doodle: Doodle) {
+            doodles.makeCurrent(doodle);
             $state.go(STATE_DOODLE);
         }
 
-        $scope.doDelete = function(uuid: string) {
-            doodles.deleteDoodle(uuid);
+        $scope.doDelete = function(doodle: Doodle) {
+            doodles.deleteDoodle(doodle);
         }
 
         $scope.doClose = function() {

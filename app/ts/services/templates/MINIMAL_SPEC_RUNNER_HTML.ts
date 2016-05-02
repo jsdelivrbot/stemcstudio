@@ -17,7 +17,7 @@ export default function(options: {} = {}): string {
   lines.push("    // CODE-MARKER")
   lines.push("    </script>")
   lines.push("    <script>")
-  lines.push("        System.import('./specRunner.js')")
+  lines.push("        System.import('./tests.js')")
   lines.push("    </script>")
   lines.push("  </body>")
   lines.push("</html>")

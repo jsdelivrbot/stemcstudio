@@ -1,28 +1,116 @@
 import DoodleFile from './DoodleFile';
+import IDoodleConfig from './IDoodleConfig';
 import modeFromName from '../../utils/modeFromName';
+import dependencyNames from './dependencyNames';
+import dependenciesMap from './dependenciesMap';
+import IOptionManager from '../options/IOptionManager'
 
 export default class Doodle {
     public gistId: string;
-    public uuid: string;
-    public description: string;
     public isCodeVisible: boolean;
     public isViewVisible: boolean;
     public focusEditor: string;
     public lastKnownJs: { [name: string]: string };
-    public operatorOverloading: boolean;
     public files: { [name: string]: DoodleFile };
     public trash: { [name: string]: DoodleFile } = {};
-    public dependencies: string[];
     public created_at: string;
     public updated_at: string;
 
-    constructor() {
+    constructor(private options: IOptionManager) {
         this.description = ""
         this.isCodeVisible = true
         this.isViewVisible = false
         this.lastKnownJs = {}
         this.operatorOverloading = true
         this.dependencies = []
+    }
+
+    get packageInfo(): IDoodleConfig {
+        try {
+            const file = this.ensurePackageJson()
+            return JSON.parse(file.content)
+        }
+        catch (e) {
+            return void 0
+        }
+    }
+
+    get name(): string {
+        const info = this.packageInfo
+        if (info) {
+            return info.name
+        }
+        else {
+            return void 0
+        }
+    }
+
+    set name(name: string) {
+        const file = this.ensurePackageJson()
+        const metaInfo: IDoodleConfig = JSON.parse(file.content);
+        metaInfo.name = name
+        file.content = JSON.stringify(metaInfo, null, 2)
+    }
+
+    get version(): string {
+        return this.packageInfo.version
+    }
+
+    set version(version: string) {
+        const file = this.ensurePackageJson()
+        const metaInfo: IDoodleConfig = JSON.parse(file.content);
+        metaInfo.version = version
+        file.content = JSON.stringify(metaInfo, null, 2)
+    }
+
+    get description(): string {
+        return this.packageInfo.description
+    }
+
+    set description(description: string) {
+        const file = this.ensurePackageJson()
+        const metaInfo: IDoodleConfig = JSON.parse(file.content);
+        metaInfo.description = description
+        file.content = JSON.stringify(metaInfo, null, 2)
+    }
+
+    get operatorOverloading(): boolean {
+        return this.packageInfo.operatorOverloading ? true : false
+    }
+
+    set operatorOverloading(operatorOverloading: boolean) {
+        const file = this.ensurePackageJson()
+        const metaInfo: IDoodleConfig = JSON.parse(file.content);
+        metaInfo.operatorOverloading = operatorOverloading
+        file.content = JSON.stringify(metaInfo, null, 2)
+    }
+
+    get dependencies(): string[] {
+        const dependencyMap = this.packageInfo.dependencies;
+        return dependencyNames(dependencyMap);
+    }
+
+    set dependencies(dependencies: string[]) {
+        const file = this.ensurePackageJson()
+        const metaInfo: IDoodleConfig = JSON.parse(file.content);
+        metaInfo.dependencies = dependenciesMap(dependencies, this.options);
+        file.content = JSON.stringify(metaInfo, null, 2)
+    }
+
+    private ensurePackageJson() {
+        return this.ensureFile('package.json', '{}')
+    }
+
+    private ensureFile(name: string, content: string): DoodleFile {
+        if (!this.existsFile(name)) {
+            const file = this.newFile(name)
+            file.content = content
+            file.language = modeFromName(name)
+            return file
+        }
+        else {
+            return this.findFileByName(name)
+        }
     }
 
     /**
@@ -232,9 +320,15 @@ export default class Doodle {
     /**
      * @method findFileByName
      * @param name {string}
+     * @return {DoodleFile}
      */
     findFileByName(name: string): DoodleFile {
-        return this.files[name]
+        if (this.files) {
+            return this.files[name]
+        }
+        else {
+            return void 0
+        }
     }
 
     /**
@@ -251,6 +345,9 @@ export default class Doodle {
             if (!trashedFile) {
                 const file = new DoodleFile()
                 file.language = mode
+                if (!this.files) {
+                    this.files = {}
+                }
                 this.files[name] = file
                 return file
             }
