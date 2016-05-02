@@ -6,7 +6,7 @@
   <div class='modal-body'>
     <input type='text' ng-model='description' placeholder="Enter description" autofocus/>
     <label class='text-muted'>Template:</label>
-    <select ng-model='template' ng-options='template.description for template in templates'></select>
+    <select ng-model='template' ng-options='template.description for template in templates track by template.name'></select>
   </div>
   <div class='modal-footer'>
     <button class='btn btn-primary' ng-click='doOK()'>Create project</button>

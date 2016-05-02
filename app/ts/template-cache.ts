@@ -559,7 +559,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "  <div class='modal-body'>\n" +
     "    <input type='text' ng-model='description' placeholder=\"Enter description\" autofocus/>\n" +
     "    <label class='text-muted'>Template:</label>\n" +
-    "    <select ng-model='template' ng-options='template.description for template in templates'></select>\n" +
+    "    <select ng-model='template' ng-options='template.description for template in templates track by template.name'></select>\n" +
     "  </div>\n" +
     "  <div class='modal-footer'>\n" +
     "    <button class='btn btn-primary' ng-click='doOK()'>Create project</button>\n" +
