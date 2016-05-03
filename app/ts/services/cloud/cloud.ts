@@ -1,10 +1,8 @@
 import app from '../../app';
-import CookieService from '../cookie/CookieService';
 import Doodle from '../doodles/Doodle';
 import GetGistResponse from '../github/GetGistResponse';
 import GitHubService from '../github/GitHubService';
 import ICloud from './ICloud';
-import IDoodle from '../doodles/IDoodle';
 import IOptionManager from '../options/IOptionManager';
 import gistFilesToDoodleFiles from './gistFilesToDoodleFiles';
 import hyphenate from '../../utils/hyphenate';
@@ -15,23 +13,18 @@ const LEGACY_META = 'doodle.json';
 // The 'cloud' service is a slightly higher abstration over e.g., GitHub
 //
 app.factory('cloud', [
-    'cookie',
     'GitHub',
     'FILENAME_META',
-    'GITHUB_TOKEN_COOKIE_NAME',
     'options',
     function(
-        cookie: CookieService,
         github: GitHubService,
         FILENAME_META: string,
-        GITHUB_TOKEN_COOKIE_NAME: string,
         options: IOptionManager
     ): ICloud {
 
         const cloud: ICloud = {
-            downloadGist: function(gistId: string, callback: (err, doodle?: IDoodle) => void) {
-                const token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
-                github.getGist(token, gistId, function(err: any, gist: GetGistResponse) {
+            downloadGist: function(gistId: string, callback: (err, doodle?: Doodle) => void) {
+                github.getGist(gistId, function(err: any, gist: GetGistResponse) {
                     if (!err) {
                         const doodle = new Doodle(options)
                         doodle.gistId = gistId

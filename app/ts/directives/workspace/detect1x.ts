@@ -5,6 +5,15 @@ import DoodleFile from '../../services/doodles/DoodleFile';
  * Existence check of a file (by name).
  */
 function exists(fileName: string, doodle: Doodle): boolean {
+    if (typeof fileName !== 'string') {
+        throw new Error("fileName must be a string");
+    }
+    if (!(doodle instanceof Doodle)) {
+        throw new Error("doodle must be a Doodle");
+    }
+    if (typeof doodle.files !== 'object') {
+        throw new Error("doodle.files must be an object");
+    }
     const file: DoodleFile = doodle.files[fileName]
     return typeof file === 'object'
 }

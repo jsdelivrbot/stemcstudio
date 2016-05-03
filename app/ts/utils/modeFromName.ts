@@ -4,9 +4,11 @@ import {LANGUAGE_JSON} from '../languages/modes';
 import {LANGUAGE_JAVA_SCRIPT} from '../languages/modes';
 import {LANGUAGE_LESS} from '../languages/modes';
 import {LANGUAGE_MARKDOWN} from '../languages/modes';
+import {LANGUAGE_TEXT} from '../languages/modes';
 import {LANGUAGE_TYPE_SCRIPT} from '../languages/modes';
 
 const extensionToMode: { [ext: string]: string } = {}
+const fileNameToMode: { [fileName: string]: string } = {}
 
 // extensionToMode['coffee'] = 'CoffeeScript'
 extensionToMode['css'] = LANGUAGE_CSS
@@ -19,6 +21,8 @@ extensionToMode['md'] = LANGUAGE_MARKDOWN
 // extensionToMode['sass'] = 'SASS'
 extensionToMode['ts'] = LANGUAGE_TYPE_SCRIPT
 
+fileNameToMode['LICENSE'] = LANGUAGE_TEXT
+
 /**
  * Given a file name, determines the language (mode).
  * The mode returned is a string containing the canonical mode name.
@@ -30,5 +34,9 @@ export default function modeFromName(fileName: string): string {
         const extension = fileName.substring(period + 1)
         return extensionToMode[extension]
     }
+    if (fileNameToMode[fileName]) {
+        return fileNameToMode[fileName]
+    }
+    console.warn(`modeFromName('${fileName}') can't figure that one out.`)
     return void 0
 }

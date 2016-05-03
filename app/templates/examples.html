@@ -1,58 +1,60 @@
 <div id='examples-page'>
-  <nav id='toolbar' class='navbar navbar-inverse'>
-    <div class='navbar-header'>
-      <a role='button' class='navbar-brand' ng-click='goHome()'><logo-text version='{{version}}'/></a>
-    </div>
-  </nav>
-  <div class='md-docs-header'>
-    <div class='container'>
-      <h1>Example Projects</h1>
-    </div>
-  </div>
-  <div class='container md-docs-container'>
-    <div class='row'>
-      <div class='col-md-9' role='main'>
-
-        <div class='md-docs-section'>
-
-        <!-- Physics -->
-        <div class='md-docs-section'>
-
-          <h1 class='page-header'>Physics Modeling</h1>
-
-          <div ng-repeat='example in examples | filter : {category : "Physics"}'>
-            <p class='lead'>
-                <a href='/#/gists/{{example.gistId}}'>{{example.title}}</a>
-            </p>
-            <p>{{example.description}}</p>
-          </div>
+    <nav id='toolbar' class='navbar navbar-inverse'>
+        <div class='navbar-header'>
+            <a role='button' class='navbar-brand' ng-click='goHome()'>
+                <logo-text version='{{version}}' />
+            </a>
         </div>
-
-        <!-- Graphics -->
-        <div class='md-docs-section'>
-
-          <h1 class='page-header'>3D Computer Graphics</h1>
-
-          <div ng-repeat='example in examples | filter : {category : "Graphics"}'>
-            <p class='lead'>
-                <a href='/#/gists/{{example.gistId}}'>{{example.title}}</a>
-            </p>
-            <p>{{example.description}}</p>
-          </div>
-
+    </nav>
+    <div class='md-docs-header'>
+        <div class='container'>
+            <h1>Example Projects</h1>
         </div>
+    </div>
+    <div class='container md-docs-container'>
+        <div class='row'>
+            <div class='col-md-9' role='main'>
 
-        <!-- Mathematics -->
-        <div class='md-docs-section'>
-          <h1 class='page-header'>Mathematics</h1>
+                <div class='md-docs-section'>
 
-          <div ng-repeat='example in examples | filter : {category : "Mathematics"}'>
-            <p class='lead'>
-                <a href='/#/gists/{{example.gistId}}'>{{example.title}}</a>
-            </p>
-            <p>{{example.description}}</p>
-          </div>
-          <!--
+                    <!-- Physics -->
+                    <div class='md-docs-section'>
+
+                        <h1 class='page-header'>Physics Modeling</h1>
+
+                        <div ng-repeat='example in examples | filter : {category : "Physics"}'>
+                            <p class='lead'>
+                                <a href='/#/gists/{{example.gistId}}'>{{example.title}}</a>
+                            </p>
+                            <p>{{example.description}}</p>
+                        </div>
+                    </div>
+
+                    <!-- Graphics -->
+                    <div class='md-docs-section'>
+
+                        <h1 class='page-header'>3D Computer Graphics</h1>
+
+                        <div ng-repeat='example in examples | filter : {category : "Graphics"}'>
+                            <p class='lead'>
+                                <a href='/#/gists/{{example.gistId}}'>{{example.title}}</a>
+                            </p>
+                            <p>{{example.description}}</p>
+                        </div>
+
+                    </div>
+
+                    <!-- Mathematics -->
+                    <div class='md-docs-section'>
+                        <h1 class='page-header'>Mathematics</h1>
+
+                        <div ng-repeat='example in examples | filter : {category : "Mathematics"}'>
+                            <p class='lead'>
+                                <a href='/#/gists/{{example.gistId}}'>{{example.title}}</a>
+                            </p>
+                            <p>{{example.description}}</p>
+                        </div>
+                        <!--
           <p class='lead'>
             <a href='/#/gists/8571a36545d10f34bfef'>Fundamental Theorem of Algebra</a>
           <p>
@@ -78,24 +80,24 @@
           general-purpose programming with standards-based tools.
           </p>
           -->
-        </div>
+                    </div>
 
-        <!-- Games -->
-        <div class='md-docs-section'>
+                    <!-- Games -->
+                    <div class='md-docs-section'>
 
-          <h1 class='page-header'>Integrated Learning through Game Development Projects</h1>
+                        <h1 class='page-header'>Integrated Learning through Game Development Projects</h1>
 
-          <div ng-repeat='example in examples | filter : {category : "Games"}'>
-            <p class='lead'>
-                <a href='/#/gists/{{example.gistId}}'>{{example.title}}</a>
-            </p>
-            <p>{{example.description}}</p>
-          </div>
+                        <div ng-repeat='example in examples | filter : {category : "Games"}'>
+                            <p class='lead'>
+                                <a href='/#/gists/{{example.gistId}}'>{{example.title}}</a>
+                            </p>
+                            <p>{{example.description}}</p>
+                        </div>
 
-        </div>
+                    </div>
 
-        <!-- Misc -->
-        <!--
+                    <!-- Misc -->
+                    <!--
         <div class='md-docs-section'>
 
           <h1 class='page-header'>Miscellaneous</h1>
@@ -118,9 +120,9 @@
         </div>
         -->
 
-      </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
 </div>

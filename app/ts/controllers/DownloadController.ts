@@ -1,6 +1,5 @@
 import app from '../app';
 import ICloud from '../services/cloud/ICloud';
-import CookieService from '../services/cookie/CookieService';
 import IDoodleManager from '../services/doodles/IDoodleManager';
 import DownloadScope from '../scopes/DownloadScope';
 import Gist from '../services/github/Gist';
@@ -18,20 +17,16 @@ app.controller('download-controller', [
     '$state',
     'cloud',
     'doodles',
-    'cookie',
     'ga',
     'GitHub',
-    'GITHUB_TOKEN_COOKIE_NAME',
     'STATE_DOODLE',
     function(
         $scope: DownloadScope,
         $state: angular.ui.IStateService,
         cloud: ICloud,
         doodles: IDoodleManager,
-        cookie: CookieService,
         ga: UniversalAnalytics.ga,
         github: GitHubService,
-        GITHUB_TOKEN_COOKIE_NAME: string,
         STATE_DOODLE: string
     ) {
 
@@ -57,8 +52,7 @@ app.controller('download-controller', [
                 return;
             }
             const href = $scope.links[rel];
-            const token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
-            github.getGistsPage(token, href, function(err: any, gists: Gist[], status: number, headers, config) {
+            github.getGistsPage(href, function(err: any, gists: Gist[], status: number, headers: (name: string) => string) {
                 if (!err) {
                     $scope.gists = gists;
                     $scope.links = linkToMap(headers('link'));

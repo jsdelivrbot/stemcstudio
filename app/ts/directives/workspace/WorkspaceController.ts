@@ -1,4 +1,5 @@
-import * as angular from 'angular';
+import * as ng from 'angular';
+import Base64Service from '../../services/base64/Base64Service';
 import Delta from '../../widgets/editor/Delta';
 import Editor from '../../widgets/editor/Editor';
 import EditSession from '../../widgets/editor/EditSession';
@@ -17,7 +18,9 @@ import IOptionManager from '../../services/options/IOptionManager';
 import ChangeHandler from './ChangeHandler';
 import OutputFileHandler from './OutputFileHandler';
 import doodleGroom from '../../utils/doodleGroom';
+import PathContents from '../../services/github/PathContents';
 import readMeHTML from './readMeHTML';
+import RepoElement from '../../services/github/RepoElement';
 import StringSet from '../../utils/StringSet';
 import mathscript from 'davinci-mathscript';
 import WorkspaceScope from '../../scopes/WorkspaceScope';
@@ -31,6 +34,7 @@ import {LANGUAGE_JAVA_SCRIPT} from '../../languages/modes';
 import {LANGUAGE_LESS} from '../../languages/modes';
 import {LANGUAGE_MARKDOWN} from '../../languages/modes';
 import {LANGUAGE_TYPE_SCRIPT} from '../../languages/modes';
+import {LANGUAGE_TEXT} from '../../languages/modes';
 
 const FSLASH_STAR = '/*'
 const STAR_FSLASH = '*/'
@@ -190,6 +194,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         '$location',
         '$timeout',
         '$window',
+        'base64',
         'GitHub',
         'GitHubAuthManager',
         'cloud',
@@ -204,6 +209,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         'FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS',
         'FILENAME_TYPESCRIPT_CURRENT_LIB_DTS',
         'STATE_GISTS',
+        'STATE_REPO',
         'STYLE_MARKER',
         'STYLES_MARKER',
         'SCRIPTS_MARKER',
@@ -258,7 +264,8 @@ export default class WorkspaceController implements WorkspaceMixin {
         private $location: angular.ILocationService,
         private $timeout: angular.ITimeoutService,
         private $window: angular.IWindowService,
-        github: GitHubService,
+        private base64: Base64Service,
+        private github: GitHubService,
         authManager: IGitHubAuthManager,
         private cloud: ICloud,
         templates: Doodle[],
@@ -272,6 +279,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         private FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS: string,
         private FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
         private STATE_GISTS: string,
+        private STATE_REPO: string,
         private STYLE_MARKER: string,
         private STYLES_MARKER: string,
         private SCRIPTS_MARKER: string,
@@ -335,7 +343,6 @@ export default class WorkspaceController implements WorkspaceMixin {
      * @return {void}
      */
     $onInit(): void {
-
         // WARNING: Make sure that workspace create and release are balanced across $onInit and $onDestroy.
         this.workspace = this.workspaceFactory.createWorkspace()
         // this.workspace.trace = true
@@ -362,11 +369,67 @@ export default class WorkspaceController implements WorkspaceMixin {
         // Now that things have settled down...
         doodles.updateStorage();
 
+        const userId: string = this.$stateParams['userId'];
+        const repoId: string = this.$stateParams['repoId'];
         const gistId: string = this.$stateParams['gistId'];
-        if (gistId) {
+        if (userId && repoId) {
+            if (doodles.current().userId !== userId && doodles.current().repoId !== repoId) {
+                this.github.getRepoContents(userId, repoId, (err: any, contents: RepoElement[]) => {
+                    if (!err) {
+                        const doodle = new Doodle(this.options)
+                        doodle.userId = userId
+                        doodle.repoId = repoId
+                        doodle.gistId = void 0
+                        const promises: ng.IPromise<PathContents>[] = [];
+                        for (let c = 0; c < contents.length; c++) {
+                            const element = contents[c]
+                            promises.push(this.github.getPathContents(userId, repoId, element.path))
+                        }
+                        const xs = this.$q.all(promises)
+                        xs.then((repoFiles: PathContents[]) => {
+                            for (let fileIdx = 0; fileIdx < repoFiles.length; fileIdx++) {
+                                const repoFile = repoFiles[fileIdx];
+                                // TODO: Use the encoding property to select the decoder.
+                                // TODO: We're not using the size and type.
+                                // The type should be 'file'.
+                                // The size should match the decoded length.
+                                // The path is probably what we should use for the key to the map.
+                                // The encoding will usually be 'base64'.
+                                console.log(JSON.stringify({ name: repoFile.name, path: repoFile.path, type: repoFile.type, size: repoFile.size, encoding: repoFile.encoding }))
+                                const fileContent = this.base64.decode(repoFile.content);
+                                const file = doodle.newFile(repoFile.path)
+                                file.content = fileContent
+                                // The sha is needed in order to perform an update.
+                                file.sha = repoFile.sha
+                            }
+                            doodles.unshift(doodle);
+                            doodles.updateStorage();
+                            this.onInitDoodle(doodles.current())
+                        }).catch((err) => {
+                            console.warn(`${err}`)
+                        })
+                    }
+                    else {
+                        console.warn(`${err}`)
+                    }
+                })
+            }
+            else {
+                if (doodles.current().userId && doodles.current().repoId) {
+                    // We end up here, e.g., when user presses Cancel from New dialog.
+                    // We're in the DOODLE routing state but we should be in the REPO routing state.
+                    this.$state.go(this.STATE_REPO, { userId, repoId })
+                }
+                else {
+                    this.onInitDoodle(doodles.current())
+                }
+            }
+        }
+        else if (gistId) {
             if (doodles.current().gistId !== gistId) {
                 this.cloud.downloadGist(gistId, (err: any, doodle: Doodle) => {
                     if (!err) {
+                        // Why are we deleting?
                         doodles.deleteDoodle(doodle);
                         doodles.unshift(doodle);
                         doodles.updateStorage();
@@ -538,7 +601,8 @@ export default class WorkspaceController implements WorkspaceMixin {
             case LANGUAGE_CSS:
             case LANGUAGE_JSON:
             case LANGUAGE_HTML:
-            case LANGUAGE_LESS: {
+            case LANGUAGE_LESS:
+            case LANGUAGE_TEXT: {
                 editor.getSession().on('change', this.createChangeHandler(filename))
                 break
             }
@@ -670,7 +734,8 @@ export default class WorkspaceController implements WorkspaceMixin {
             case LANGUAGE_CSS:
             case LANGUAGE_HTML:
             case LANGUAGE_JSON:
-            case LANGUAGE_LESS: {
+            case LANGUAGE_LESS:
+            case LANGUAGE_TEXT: {
                 const handler = this.changeHandlers[filename]
                 editor.getSession().off('change', handler)
                 this.deleteChangeHandler(filename)

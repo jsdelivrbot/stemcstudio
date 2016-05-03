@@ -1,7 +1,9 @@
 import * as angular from 'angular';
 import AbstractPageController from './AbstractPageController';
+import Base64Service from '../services/base64/Base64Service';
 import ICloud from '../services/cloud/ICloud';
-import CookieService from '../services/cookie/CookieService';
+import Doodle from '../services/doodles/Doodle';
+import DoodleFile from '../services/doodles/DoodleFile';
 import IDoodleManager from '../services/doodles/IDoodleManager';
 import DoodleScope from '../scopes/DoodleScope';
 import GistData from '../services/gist/GistData';
@@ -21,7 +23,7 @@ import BootstrapDialog from 'bootstrap-dialog';
  * This class could probably be merged with the WorkspaceController?
  *
  * @class DoodleController
- * @extends AppController
+ * @extends AbstractPageController
  */
 export default class DoodleController extends AbstractPageController {
     public static $inject: string[] = [
@@ -32,10 +34,10 @@ export default class DoodleController extends AbstractPageController {
         '$location',
         '$timeout',
         '$window',
+        'base64',
         'GitHub',
         'GitHubAuthManager',
         'cloud',
-        'cookie',
         'templates',
         'uuid4',
         'ga',
@@ -64,10 +66,10 @@ export default class DoodleController extends AbstractPageController {
         $location: angular.ILocationService,
         $timeout: angular.ITimeoutService,
         $window: angular.IWindowService,
+        base64: Base64Service,
         github: GitHubService,
         authManager: IGitHubAuthManager,
         cloud: ICloud,
-        cookie: CookieService,
         templates: ITemplate[],
         uuid4: IUuidService,
         ga: UniversalAnalytics.ga,
@@ -90,8 +92,6 @@ export default class DoodleController extends AbstractPageController {
         settings: ISettingsService) {
 
         super($scope, $window, authManager, ga, UNIVERSAL_ANALYTICS_TRACKING_ID, 'hidden')
-
-        const GITHUB_TOKEN_COOKIE_NAME = 'github-token';
 
         // ExplorerMixin implementation.
         $scope.isExplorerVisible = true
@@ -121,98 +121,114 @@ export default class DoodleController extends AbstractPageController {
             $state.go('properties', { doodle: doodles.current() });
         };
 
+        // FIXME: Upload really thinks it's only a Gist.
         $scope.doUpload = function(label?: string, value?: number) {
             ga('send', 'event', 'doodle', 'upload', label, value);
-            const token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
-            if (token) {
-                const doodle = doodles.current();
-                const data: GistData = doodleToGist(doodle, options);
-                const gistId = doodle.gistId;
-                if (gistId) {
-                    github.patchGist(token, gistId, data, function(err: any, response: PatchGistResponse, status: number, headers, config) {
-                        if (err) {
-                            if (status === 404) {
-                                if (confirm("The Gist associated with your doodle no longer exists.\nWould you like me to disassociate your doodle so that you can create a new Gist?")) {
-                                    doodle.gistId = undefined;
-                                    doodles.updateStorage();
+            const doodle = doodles.current();
+            const data: GistData = doodleToGist(doodle, options);
+            const userId = doodle.userId;
+            const repoId = doodle.repoId;
+            const gistId = doodle.gistId;
+            if (gistId) {
+                github.patchGist(gistId, data, function(err: any, response: PatchGistResponse, status: number) {
+                    if (err) {
+                        if (status === 404) {
+                            if (confirm("The Gist associated with your doodle no longer exists.\nWould you like me to disassociate your doodle so that you can create a new Gist?")) {
+                                doodle.gistId = undefined;
+                                doodles.updateStorage();
+                            }
+                        }
+                        else {
+                            console.warn(`PATCH ${JSON.stringify(data, null, 2)}`)
+                            // If the status is 404 then the Gist no longer exists on GitHub.
+                            // We might as well set the gistId to undefined and let the user try to POST.
+                            alert("status: " + JSON.stringify(status));
+                            alert("err: " + JSON.stringify(err));
+                            alert("response: " + JSON.stringify(response));
+                        }
+                    }
+                    else {
+                        doodle.emptyTrash();
+                        doodle.updated_at = response.updated_at;
+
+                        doodles.updateStorage();
+
+                        BootstrapDialog.show({
+                            type: BootstrapDialog.TYPE_SUCCESS,
+                            title: $("<h3>Upload complete</h3>"),
+                            message: "Your doodle was successfully uploaded and patched the existing Gist.",
+                            buttons: [{
+                                label: "Close",
+                                cssClass: 'btn btn-primary',
+                                action: function(dialog: IBootstrapDialog) {
+                                    $state.go(STATE_GISTS, { gistId: gistId });
+                                    dialog.close();
                                 }
-                            }
-                            else {
-                                console.warn(`PATCH ${JSON.stringify(data, null, 2)}`)
-                                // If the status is 404 then the Gist no longer exists on GitHub.
-                                // We might as well set the gistId to undefined and let the user try to POST.
-                                alert("status: " + JSON.stringify(status));
-                                alert("err: " + JSON.stringify(err));
-                                alert("response: " + JSON.stringify(response));
-                            }
+                            }]
+                        });
+                    }
+                });
+            }
+            else if (userId && repoId) {
+                console.warn("We have a repository!")
+                const doodle: Doodle = doodles.current()
+                const paths = Object.keys(doodle.files)
+                for (let fileIndex = 0; fileIndex < paths.length; fileIndex++) {
+                    const path = paths[fileIndex]
+                    const file: DoodleFile = doodle.files[path]
+                    const encoded = base64.encode(file.content)
+                    const message = `STEMCstudio`
+                    github.putFile(userId, repoId, path, message, encoded, file.sha, function(err: any, response: any) {
+                        if (!err) {
+                            console.log(`putFile => ${JSON.stringify(response, null, 2)}`)
                         }
                         else {
-                            doodle.emptyTrash();
-                            doodle.updated_at = response.updated_at;
-
-                            doodles.updateStorage();
-
-                            BootstrapDialog.show({
-                                type: BootstrapDialog.TYPE_SUCCESS,
-                                title: $("<h3>Upload complete</h3>"),
-                                message: "Your doodle was successfully uploaded and patched the existing Gist.",
-                                buttons: [{
-                                    label: "Close",
-                                    cssClass: 'btn btn-primary',
-                                    action: function(dialog: IBootstrapDialog) {
-                                        $state.go(STATE_GISTS, { gistId: gistId });
-                                        dialog.close();
-                                    }
-                                }]
-                            });
+                            console.warn(`${err}`)
                         }
-                    });
-                }
-                else {
-                    github.postGist(token, data, function(err: any, response: PostGistResponse, status: number, headers, config) {
-                        if (err) {
-                            console.warn(`POST ${JSON.stringify(data, null, 2)}`)
-                            BootstrapDialog.show({
-                                type: BootstrapDialog.TYPE_DANGER,
-                                title: $("<h3>Upload failed</h3>"),
-                                message: "Unable to post your Gist at this time.",
-                                buttons: [{
-                                    label: "Close",
-                                    cssClass: 'btn btn-primary',
-                                    action: function(dialog: IBootstrapDialog) {
-                                        dialog.close();
-                                    }
-                                }]
-                            });
-                        }
-                        else {
-                            doodle.gistId = response.id;
-                            doodle.created_at = response.created_at;
-                            doodle.updated_at = response.updated_at;
-
-                            doodles.updateStorage();
-
-                            BootstrapDialog.show({
-                                type: BootstrapDialog.TYPE_SUCCESS,
-                                title: $("<h3>Upload complete</h3>"),
-                                message: "Your doodle was successfully uploaded and associated with a new Gist.",
-                                buttons: [{
-                                    label: "Close",
-                                    cssClass: 'btn btn-primary',
-                                    action: function(dialog: IBootstrapDialog) {
-                                        $state.go(STATE_GISTS, { gistId: doodles.current().gistId });
-                                        dialog.close();
-                                    }
-                                }]
-                            });
-                        }
-                    });
+                    })
+                    //                    github.deleteFile(userId, repoId, path, message, file.sha, function(err: any, response: any) {
+                    //                        // Ignore
+                    //                    })
                 }
             }
             else {
-                BootstrapDialog.alert({
-                    type: BootstrapDialog.TYPE_INFO,
-                    message: "You must be logged in."
+                github.postGist(data, function(err: any, response: PostGistResponse) {
+                    if (err) {
+                        console.warn(`POST ${JSON.stringify(data, null, 2)}`)
+                        BootstrapDialog.show({
+                            type: BootstrapDialog.TYPE_DANGER,
+                            title: $("<h3>Upload failed</h3>"),
+                            message: "Unable to post your Gist at this time.",
+                            buttons: [{
+                                label: "Close",
+                                cssClass: 'btn btn-primary',
+                                action: function(dialog: IBootstrapDialog) {
+                                    dialog.close();
+                                }
+                            }]
+                        });
+                    }
+                    else {
+                        doodle.gistId = response.id;
+                        doodle.created_at = response.created_at;
+                        doodle.updated_at = response.updated_at;
+
+                        doodles.updateStorage();
+
+                        BootstrapDialog.show({
+                            type: BootstrapDialog.TYPE_SUCCESS,
+                            title: $("<h3>Upload complete</h3>"),
+                            message: "Your doodle was successfully uploaded and associated with a new Gist.",
+                            buttons: [{
+                                label: "Close",
+                                cssClass: 'btn btn-primary',
+                                action: function(dialog: IBootstrapDialog) {
+                                    $state.go(STATE_GISTS, { gistId: doodles.current().gistId });
+                                    dialog.close();
+                                }
+                            }]
+                        });
+                    }
                 });
             }
         };

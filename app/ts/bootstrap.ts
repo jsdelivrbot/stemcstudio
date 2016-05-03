@@ -3,10 +3,13 @@
 //
 import app from './app';
 import * as angular from 'angular';
+import Base64 from './services/base64/Base64';
 import contextMenu from './directives/contextMenu/contextMenu.directive';
 import contiguous from './filters/contiguous';
+import DashboardController from './controllers/DashboardController';
 import DoodleController from './controllers/DoodleController';
 import ExamplesController from './controllers/ExamplesController';
+import GitHubAccountController from './controllers/GitHubAccountController';
 import HomeController from './controllers/HomeController';
 import editor from './directives/editor/editor.component';
 import explorer from './directives/explorer/explorer.component';
@@ -16,6 +19,7 @@ import AlertController from './services/modalService/AlertController';
 import ConfirmController from './services/modalService/ConfirmController';
 import PromptController from './services/modalService/PromptController';
 import ModalService from './services/modalService/ModalService';
+import RepoController from './controllers/RepoController';
 import resizable from './directives/resizable/resizable';
 import TextService from './services/text/TextService';
 import DefaultThemeManager from './services/themes/DefaultThemeManager';
@@ -31,14 +35,17 @@ import WorkspaceFactoryService from './services/workspace/WorkspaceFactoryServic
 //
 // The (3) top-level controllers that participate in the routing.
 //
-app.controller('doodle-controller', DoodleController)
+app.controller('DashboardController', DashboardController)
+app.controller('DoodleController', DoodleController)
 app.controller('examples-controller', ExamplesController)
+app.controller('GitHubAccountController', GitHubAccountController)
 app.controller('home-controller', HomeController)
 
 app.controller('ExplorerFilesController', ExplorerFilesController)
 app.controller('AlertController', AlertController)
 app.controller('ConfirmController', ConfirmController)
 app.controller('PromptController', PromptController)
+app.controller('RepoController', RepoController)
 import './controllers/AboutController';
 import './controllers/BodyController';
 import './controllers/CopyController';
@@ -71,6 +78,7 @@ import './services/settings/settings';
 import './services/templates/templates';
 import './services/tw/tw';
 import './services/uuid/UuidService';
+app.service('base64', Base64)
 app.service('modalService', ModalService)
 app.service('textService', TextService)
 app.service('themeManager', DefaultThemeManager);

@@ -2,6 +2,8 @@ import Doodle from './Doodle';
 import IDoodleDS from './IDoodleDS';
 export default function doodleToSerializable(dude: Doodle): IDoodleDS {
     const data: IDoodleDS = {
+        userId: dude.userId,
+        repoId: dude.repoId,
         gistId: dude.gistId,
         lastKnownJs: dude.lastKnownJs,
         files: dude.files,

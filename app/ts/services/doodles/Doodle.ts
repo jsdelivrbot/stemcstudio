@@ -5,24 +5,28 @@ import dependencyNames from './dependencyNames';
 import dependenciesMap from './dependenciesMap';
 import IOptionManager from '../options/IOptionManager'
 
+const FILENAME_META = 'package.json'
+
 export default class Doodle {
+    public userId: string;
+    public repoId: string;
     public gistId: string;
     public isCodeVisible: boolean;
     public isViewVisible: boolean;
     public focusEditor: string;
     public lastKnownJs: { [name: string]: string };
-    public files: { [name: string]: DoodleFile };
-    public trash: { [name: string]: DoodleFile } = {};
+    public files: { [path: string]: DoodleFile };
+    public trash: { [path: string]: DoodleFile } = {};
     public created_at: string;
     public updated_at: string;
 
     constructor(private options: IOptionManager) {
-        this.description = ""
+        // this.description = ""
         this.isCodeVisible = true
         this.isViewVisible = false
         this.lastKnownJs = {}
-        this.operatorOverloading = true
-        this.dependencies = []
+        // this.operatorOverloading = true
+        // this.dependencies = []
     }
 
     get packageInfo(): IDoodleConfig {
@@ -36,9 +40,14 @@ export default class Doodle {
     }
 
     get name(): string {
-        const info = this.packageInfo
-        if (info) {
-            return info.name
+        if (this.existsPackageJson()) {
+            const info = this.packageInfo
+            if (info) {
+                return info.name
+            }
+            else {
+                return void 0
+            }
         }
         else {
             return void 0
@@ -53,7 +62,12 @@ export default class Doodle {
     }
 
     get version(): string {
-        return this.packageInfo.version
+        if (this.existsPackageJson()) {
+            return this.packageInfo.version
+        }
+        else {
+            return void 0
+        }
     }
 
     set version(version: string) {
@@ -64,7 +78,12 @@ export default class Doodle {
     }
 
     get description(): string {
-        return this.packageInfo.description
+        if (this.existsPackageJson()) {
+            return this.packageInfo.description
+        }
+        else {
+            return void 0;
+        }
     }
 
     set description(description: string) {
@@ -75,7 +94,12 @@ export default class Doodle {
     }
 
     get operatorOverloading(): boolean {
-        return this.packageInfo.operatorOverloading ? true : false
+        if (this.existsPackageJson()) {
+            return this.packageInfo.operatorOverloading ? true : false
+        }
+        else {
+            return false
+        }
     }
 
     set operatorOverloading(operatorOverloading: boolean) {
@@ -86,8 +110,13 @@ export default class Doodle {
     }
 
     get dependencies(): string[] {
-        const dependencyMap = this.packageInfo.dependencies;
-        return dependencyNames(dependencyMap);
+        if (this.existsPackageJson()) {
+            const dependencyMap = this.packageInfo.dependencies;
+            return dependencyNames(dependencyMap);
+        }
+        else {
+            return []
+        }
     }
 
     set dependencies(dependencies: string[]) {
@@ -97,8 +126,12 @@ export default class Doodle {
         file.content = JSON.stringify(metaInfo, null, 2)
     }
 
-    private ensurePackageJson() {
-        return this.ensureFile('package.json', '{}')
+    private existsPackageJson(): boolean {
+        return this.existsFile(FILENAME_META);
+    }
+
+    private ensurePackageJson(): DoodleFile {
+        return this.ensureFile(FILENAME_META, '{}')
     }
 
     private ensureFile(name: string, content: string): DoodleFile {
@@ -332,33 +365,35 @@ export default class Doodle {
     }
 
     /**
-     *
+     * @method newFile
+     * @param path {string}
+     * @return {DoodleFile}
      */
-    newFile(name: string): DoodleFile {
-        const mode = modeFromName(name)
+    newFile(path: string): DoodleFile {
+        const mode = modeFromName(path)
         if (!mode) {
-            throw new Error(`${name} is not a recognized language.`)
+            throw new Error(`${path} is not a recognized language.`)
         }
-        const conflictFile = this.findFileByName(name)
+        const conflictFile = this.findFileByName(path)
         if (!conflictFile) {
-            const trashedFile = this.trash[name]
+            const trashedFile = this.trash[path]
             if (!trashedFile) {
                 const file = new DoodleFile()
                 file.language = mode
                 if (!this.files) {
                     this.files = {}
                 }
-                this.files[name] = file
+                this.files[path] = file
                 return file
             }
             else {
-                this.restoreFileFromTrash(name)
+                this.restoreFileFromTrash(path)
                 trashedFile.language = mode
                 return trashedFile
             }
         }
         else {
-            throw new Error(`${name} already exists. The name must be unique.`)
+            throw new Error(`${path} already exists. The path must be unique.`)
         }
     }
 

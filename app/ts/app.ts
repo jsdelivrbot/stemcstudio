@@ -27,7 +27,7 @@ import 'angular-ui-router';
 //
 // Interfaces required for designtime TypeScript compilation.
 //
-import AppScope from './AppScope';
+import AppScope from './scopes/AppScope';
 import CookieService from './services/cookie/CookieService';
 import IGitHubItem from './services/gham/IGitHubItem';
 import IUuidService from './services/uuid/IUuidService';
@@ -55,7 +55,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
     return VENDOR_FOLDER_MARKER + '/' + packageFolder + '/' + fileName;
 }
 
-app.constant('version', '2.0.0-beta.42');
+app.constant('version', '2.0.0-beta.43');
 // githubKey stores the key of the item in local storage for maintaining GitHub OAuth data.
 // Remark: This value is duplicated in views/github_callback.jade
 app.constant('githubKey', makeKey('github'));
@@ -92,14 +92,16 @@ app.constant('LIBS_MARKER', '// LIBS-MARKER');
 // We can change the global namespace used by Google's Universal Analytics.
 // All access should be through the service wrapper.
 app.constant('NAMESPACE_GOOGLE_ANALYTICS', 'googleAnalytics');
-app.constant('UNIVERSAL_ANALYTICS_TRACKING_ID','UA-41504069-5');
+app.constant('UNIVERSAL_ANALYTICS_TRACKING_ID', 'UA-41504069-5');
 // This twitter widget namespace is a symbolic constant. It cannot be changed.
 app.constant('NAMESPACE_TWITTER_WIDGETS', 'twttr');
 app.constant('GITHUB_TOKEN_COOKIE_NAME', 'github-token');
 
+app.constant('STATE_DASHBOARD', 'dashboard');
 app.constant('STATE_DOODLE', 'doodle');
 app.constant('STATE_EXAMPLES', 'examples');
 app.constant('STATE_GISTS', 'gists');
+app.constant('STATE_REPO', 'repo');
 
 // The TypeScript d.ts library provides the type checking of global JavaScript types.
 app.constant('FILENAME_TYPESCRIPT_CURRENT_LIB_DTS', vendorPath('typescript@1.4.1.3', 'lib.d.ts'))
@@ -112,15 +114,19 @@ app.constant('FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS', vendorPath('davinci-maths
 app.config([
     '$stateProvider',
     '$urlRouterProvider',
+    'STATE_DASHBOARD',
     'STATE_DOODLE',
     'STATE_EXAMPLES',
     'STATE_GISTS',
+    'STATE_REPO',
     function(
         $stateProvider: angular.ui.IStateProvider,
         $urlRouterProvider: angular.ui.IUrlRouterProvider,
+        STATE_DASHBOARD: string,
         STATE_DOODLE: string,
         STATE_EXAMPLES: string,
-        STATE_GISTS: string
+        STATE_GISTS: string,
+        STATE_REPO: string
     ) {
 
         $stateProvider
@@ -129,20 +135,30 @@ app.config([
                 templateUrl: 'home.html',
                 controller: 'home-controller'
             })
+            .state(STATE_DASHBOARD, {
+                url: '/dashboard',
+                templateUrl: 'dashboard.html',
+                controller: 'DashboardController'
+            })
             .state(STATE_DOODLE, {
                 url: '/doodle',
                 templateUrl: 'doodle.html',
-                controller: 'doodle-controller'
+                controller: 'DoodleController'
             })
             .state(STATE_EXAMPLES, {
                 url: '/examples',
                 templateUrl: 'examples.html',
                 controller: 'examples-controller'
             })
-            .state(STATE_GISTS, {
-                url: '/' + STATE_GISTS + '/{gistId}',
+            .state(STATE_REPO, {
+                url: '/users/{userId}/repos/{repoId}',
                 templateUrl: 'doodle.html',
-                controller: 'doodle-controller'
+                controller: 'DoodleController'
+            })
+            .state(STATE_GISTS, {
+                url: '/gists/{gistId}',
+                templateUrl: 'doodle.html',
+                controller: 'DoodleController'
             })
             .state('new', {
                 url: '/new',

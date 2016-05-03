@@ -8,6 +8,11 @@ interface IDoodleFile {
     content: string;
 
     /**
+     * (Repo File)
+     */
+    sha: string;
+
+    /**
      * (Volatile)
      */
     isOpen?: boolean;

@@ -16,6 +16,7 @@ export default class DoodleFile implements IDoodleFile {
     public preview: boolean;
     public raw_url: string;
     public selected: boolean;
+    public sha: string;
     public size: number;
     public truncated: boolean;
     public type: string;

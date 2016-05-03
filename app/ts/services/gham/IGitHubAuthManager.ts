@@ -1,6 +1,6 @@
 interface IGitHubAuthManager {
-    handleGitHubLoginCallback(callback: (err, token) => void): void;
-    handleLoginCallback(callback: (err, token) => void): void;
+    handleGitHubLoginCallback(callback: (err: any, token: string) => void): void;
+    handleLoginCallback(callback: (err: any, token: string) => void): void;
 }
 
 export default IGitHubAuthManager;

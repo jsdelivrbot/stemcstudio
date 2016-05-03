@@ -1,4 +1,4 @@
-import AppScope from '../AppScope';
+import AppScope from './AppScope';
 import ITemplate from '../services/templates/ITemplate';
 
 interface NewScope extends AppScope {

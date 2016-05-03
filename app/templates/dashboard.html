@@ -1,0 +1,26 @@
+<div id='dashboard-page'>
+    <nav id='toolbar' class='navbar navbar-inverse'>
+        <div class='navbar-header'>
+            <a role='button' class='navbar-brand' ng-click='goHome()'>
+                <logo-text version='{{version}}' />
+            </a>
+        </div>
+    </nav>
+    <div id='dashboard-account' ng-controller='GitHubAccountController as account'>
+        <div id='dashboard-avatar'>
+            <img class='avatar' src='{{user.avatar_url}}&amp;s=460' height='230' width='230'></img>
+            <h1>
+                <div class='avatar-name'>{{user.name}}</div>
+                <div class='avatar-login'>{{user.login}}</div>
+            </h1>
+        </div>
+        <div id='dashboard-repos'>
+            <div ng-repeat='repo in repos'>
+                <h3>
+                    <a href='/#/users/{{user.login}}/repos/{{repo.name}}'>{{repo.name}}</a>
+                </h3>
+                <p>{{repo.description}}</p>
+            </div>
+        </div>
+    </div>
+</div>

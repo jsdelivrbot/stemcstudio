@@ -1,6 +1,6 @@
 import * as angular from 'angular';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
-import AppScope from '../AppScope';
+import AppScope from '../scopes/AppScope';
 
 /**
  * This class is intended to serve as an abstract base, not as a concrete controller.

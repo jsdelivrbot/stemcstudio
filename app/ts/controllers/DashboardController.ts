@@ -6,10 +6,9 @@ import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
 /**
  * The examples are currently not data-driven and not very pretty!
  * 
- * @class ExamplesController
- * @extends AbstractPageController
+ * @class DashboardController
  */
-export default class ExamplesController extends AbstractPageController {
+export default class DashboardController extends AbstractPageController {
 
     public static $inject: string[] = [
         '$scope',

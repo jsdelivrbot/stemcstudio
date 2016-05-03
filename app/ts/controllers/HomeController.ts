@@ -16,6 +16,7 @@ export default class HomeController extends AbstractPageController {
         'GitHubAuthManager',
         'ga',
         'NAMESPACE_TWITTER_WIDGETS',
+        'STATE_DASHBOARD',
         'STATE_DOODLE',
         'STATE_EXAMPLES',
         'UNIVERSAL_ANALYTICS_TRACKING_ID',
@@ -29,6 +30,7 @@ export default class HomeController extends AbstractPageController {
         authManager: IGitHubAuthManager,
         ga: UniversalAnalytics.ga,
         NAMESPACE_TWITTER_WIDGETS: string,
+        STATE_DASHBOARD: string,
         STATE_DOODLE: string,
         STATE_EXAMPLES: string,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string
@@ -45,6 +47,10 @@ export default class HomeController extends AbstractPageController {
         }
 
         $scope.twitterShareText = "STEMCstudio · Learning Science and Mathematics through Computational Modeling.";
+
+        $scope.goDashboard = function() {
+            $state.go(STATE_DASHBOARD);
+        }
 
         $scope.goDoodle = function() {
             $state.go(STATE_DOODLE);

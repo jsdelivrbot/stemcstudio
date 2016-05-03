@@ -2,9 +2,8 @@ import IDoodleFile from './IDoodleFile';
 
 interface IDoodleDS {
 
-    /**
-     * The GitHub Gist identifier.
-     */
+    userId: string;
+    repoId: string;
     gistId: string;
 
     /**

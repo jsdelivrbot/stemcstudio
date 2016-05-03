@@ -6834,6 +6834,39 @@ body > div {
   padding-right: 8px;
   line-height: 1;
 }
+#ashboard-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+#dashboard-account {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+#dashboard-avatar {
+  padding-top: 10px;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+.avatar {
+  display: inline-block;
+  overflow: hidden;
+  line-height: 1;
+  vertical-align: middle;
+  border-radius: 6px;
+}
+.avatar-name {
+  font-size: 26px;
+  line-height: 30px;
+}
+.avatar-login {
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 24px;
+  color: #666;
+}
 #doodle-page {
   display: flex;
   flex-direction: column;

@@ -3,6 +3,7 @@ import createJavaScriptMode from '../../widgets/editor/mode/createJavaScriptMode
 import createTypeScriptMode from '../../widgets/editor/mode/createTypeScriptMode';
 import HtmlMode from '../../widgets/editor/mode/HtmlMode';
 import JsonMode from '../../widgets/editor/mode/JsonMode';
+import TextMode from '../../widgets/editor/mode/TextMode';
 import createCssMode from '../../widgets/editor/mode/createCssMode';
 import createMarkdownMode from '../../widgets/editor/mode/createMarkdownMode';
 import Delta from '../../widgets/editor/Delta';
@@ -22,6 +23,7 @@ import {LANGUAGE_JAVA_SCRIPT} from '../../languages/modes';
 import {LANGUAGE_LESS} from '../../languages/modes';
 import {LANGUAGE_MARKDOWN} from '../../languages/modes';
 import {LANGUAGE_TYPE_SCRIPT} from '../../languages/modes';
+import {LANGUAGE_TEXT} from '../../languages/modes';
 
 function factory(
     $timeout: ng.ITimeoutService,
@@ -103,6 +105,14 @@ function factory(
                 editor.getSession().setUseWrapMode(true)
                 editor.setWrapBehavioursEnabled(true)
                 editor.setLanguageMode(createMarkdownMode('/js/worker.js', workerImports), function(err: any) {
+                    if (err) {
+                        console.warn(`${$scope.mode} => ${err}`)
+                    }
+                })
+                break
+            }
+            case LANGUAGE_TEXT: {
+                editor.setLanguageMode(new TextMode('/js/worker.js', workerImports), function(err: any) {
                     if (err) {
                         console.warn(`${$scope.mode} => ${err}`)
                     }

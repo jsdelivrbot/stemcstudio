@@ -1,7 +1,7 @@
-import IDoodle from '../doodles/IDoodle';
+import Doodle from '../doodles/Doodle';
 
 interface ICloud {
-  downloadGist(gistId: string, callback: (err, doodle?: IDoodle) => void);
+  downloadGist(gistId: string, callback: (err, doodle?: Doodle) => void);
 }
 
 export default ICloud;

@@ -1,7 +1,6 @@
 import app from '../app';
 import BodyScope from '../scopes/BodyScope';
 import BootstrapDialog from 'bootstrap-dialog';
-import CookieService from '../services/cookie/CookieService';
 import IDoodleManager from '../services/doodles/IDoodleManager';
 import Gist from '../services/github/Gist';
 import GitHubService from '../services/github/GitHubService';
@@ -13,16 +12,12 @@ app.controller('body-controller', [
     'doodles',
     'ga',
     'GitHub',
-    'cookie',
-    'GITHUB_TOKEN_COOKIE_NAME',
     function(
         $scope: BodyScope,
         $state: angular.ui.IStateService,
         doodles: IDoodleManager,
         ga: UniversalAnalytics.ga,
-        github: GitHubService,
-        cookie: CookieService,
-        GITHUB_TOKEN_COOKIE_NAME: string
+        github: GitHubService
     ) {
 
         $scope.currentDoodle = function() {
@@ -35,8 +30,7 @@ app.controller('body-controller', [
 
         $scope.clickDownload = function(label?: string, value?: number) {
             ga('send', 'event', 'doodle', 'download', label, value);
-            const token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
-            github.getGists(token, function(err: any, gists: Gist[], status: number, headers, config) {
+            github.getGists(function(err: any, gists: Gist[], status: number, headers: (name: string) => string) {
                 if (!err) {
                     $scope.gists = gists;
                     $scope.links = linkToMap(headers('link'));
@@ -59,6 +53,5 @@ app.controller('body-controller', [
                 }
             });
         };
-
     }
 ]);

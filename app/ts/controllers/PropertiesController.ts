@@ -21,7 +21,7 @@ interface PropertiesScope extends angular.IScope {
     doCancel: () => void;
 }
 
-// FIXME: Doing this as a state is causing the doodle-controller to reload.
+// FIXME: Doing this as a state is causing the other controller to reload.
 app.controller('properties-controller', [
     '$scope',
     '$state',
