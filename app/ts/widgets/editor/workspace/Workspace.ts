@@ -553,36 +553,32 @@ export default class Workspace {
         if (editor) {
             const action = delta.action;
             const markers: { [id: number]: Marker } = editor.getSession().getMarkers(true);
-            let line_count = 0;
-            // const isNewLine = editor.getSession().getDocument().isNewLine;
+            let lineCount = 0;
             if (action === "insert") {
-                line_count = delta.lines.length;
+                lineCount = delta.lines.length;
             }
             else if (action === "remove") {
-                line_count = -delta.lines.length;
+                lineCount = -delta.lines.length;
             }
             else {
                 console.warn(`updateMarkerModels(${fileName}, ${JSON.stringify(delta)})`);
             }
-            if (line_count !== 0) {
+            if (lineCount !== 0) {
                 const markerUpdate = function(markerId: number) {
                     const marker: Marker = markers[markerId];
                     let row = delta.start.row;
-                    if (line_count > 0) {
+                    if (lineCount > 0) {
                         row = +1;
                     }
                     if (marker && marker.range.start.row > row) {
-                        marker.range.start.row += line_count;
-                        marker.range.end.row += line_count;
+                        marker.range.start.row += lineCount;
+                        marker.range.end.row += lineCount;
                     }
                 };
                 this.errorMarkerIds.forEach(markerUpdate);
                 this.refMarkers.forEach(markerUpdate);
                 editor.updateFrontMarkers();
             }
-        }
-        else {
-            console.warn(`updateMarkerModels(${fileName}, ${JSON.stringify(delta)}) missing editor.`);
         }
     }
 }
