@@ -111,25 +111,6 @@ export default class Workspace {
      */
     private languageServiceProxy: LanguageServiceProxy;
 
-    private editorCapturing: { [fileName: string]: boolean } = {};
-    private editorLoaded: { [fileName: string]: Editor } = {};
-    private editorReleasing: { [fileName: string]: boolean } = {};
-
-    /**
-     * 
-     */
-    private scriptCapturing: { [fileName: string]: boolean } = {};
-
-    /**
-     * 
-     */
-    private scriptLoaded: { [fileName: string]: boolean } = {};
-
-    /**
-     * 
-     */
-    private scriptReleasing: { [fileName: string]: boolean } = {};
-
     /**
      * @class Workspace
      * @constructor
@@ -139,36 +120,6 @@ export default class Workspace {
     constructor(workerUrl: string, private scriptImports: string[]) {
         this.languageServiceProxy = new LanguageServiceProxy(workerUrl);
         this.state = WorkspaceState.CONSTRUCTED;
-        this.dump(`constructor(${workerUrl})`);
-    }
-
-    private dump(where: string): void {
-
-        if (!this.trace) {
-            return;
-        }
-
-        /**
-         * 
-         */
-        function showMe(title: string, map: { [fileName: string]: any }) {
-            const fileNames = Object.keys(map);
-            if (fileNames.length > 0) {
-                console.log(title);
-                console.log(JSON.stringify(fileNames, null, 2));
-            }
-        }
-
-        console.log('===============================================');
-        console.log(`Workspace ${where}`);
-        console.log(decodeWorkspaceState(this.state));
-        console.log('===============================================');
-        showMe("Capturing EDITORS", this.editorCapturing);
-        showMe("Loaded    EDITORS", this.editorLoaded);
-        showMe("Releasing EDITORS", this.editorReleasing);
-        showMe("Capturing FILES", this.scriptCapturing);
-        showMe("Loaded    FILES", this.scriptLoaded);
-        showMe("Releasing FILES", this.scriptReleasing);
     }
 
     /**
@@ -180,7 +131,6 @@ export default class Workspace {
      */
     public init(callback: (err: any) => any): void {
         checkCallback(callback);
-        this.dump(`init()`);
         this.state = WorkspaceState.INIT_PENDING;
         this.inFlight++;
         this.languageServiceProxy.init(this.scriptImports, (err: any) => {
@@ -204,7 +154,6 @@ export default class Workspace {
      */
     public terminate(callback: (err: any) => any): void {
         checkCallback(callback);
-        this.dump(`terminate()`);
         this.detachEditors(function(err: any) {
             callback(err);
         });
@@ -223,7 +172,6 @@ export default class Workspace {
      */
     public setDefaultLibrary(url: string, callback: (err: any) => any): void {
         checkCallback(callback);
-        this.dump(`setDefaultLibrary(${url})`);
         this.inFlight++;
         get(url, (err: Error, sourceCode: string) => {
             this.inFlight--;
@@ -253,7 +201,6 @@ export default class Workspace {
      */
     public setModuleKind(moduleKind: string, callback: setModuleKindCallback): void {
         checkCallback(callback);
-        this.dump(`setModuleKind(${moduleKind})`);
         if (this.languageServiceProxy) {
             this.inFlight++;
             this.languageServiceProxy.setModuleKind(moduleKind, (err: any) => {
@@ -274,7 +221,6 @@ export default class Workspace {
      */
     public setScriptTarget(scriptTarget: string, callback: setScriptTargetCallback): void {
         checkCallback(callback);
-        this.dump(`setScriptTarget(${scriptTarget})`);
         if (this.languageServiceProxy) {
             this.inFlight++;
             this.languageServiceProxy.setScriptTarget(scriptTarget, (err: any) => {
@@ -295,7 +241,6 @@ export default class Workspace {
      */
     public setTrace(trace: boolean, callback: (err: any) => any): void {
         checkCallback(callback);
-        this.dump(`setTrace(${trace})`);
         // We won't bother tracking inFlight for tracing.
         if (this.languageServiceProxy) {
             this.languageServiceProxy.setTrace(trace, callback);
@@ -319,8 +264,6 @@ export default class Workspace {
         checkEditor(editor);
         checkCallback(callback);
 
-        this.dump(`attachEditor(${fileName})`);
-
         // Idempotency.
         if (this.editors[fileName]) {
             setTimeout(callback, 0);
@@ -331,7 +274,6 @@ export default class Workspace {
         }
 
         const changeHandler = (delta: Delta, source: Editor) => {
-            this.dump(`changeHandler('${fileName}')`);
             this.inFlight++;
             this.languageServiceProxy.applyDelta(fileName, delta, (err: any) => {
                 this.inFlight--;
@@ -350,7 +292,6 @@ export default class Workspace {
         // This is our cue to begin semantic analysis and make use of transpiled files.
         const annotationsHandler = (event: { data: Annotation[]; type: string }) => {
             if (this.inFlight === 0) {
-                this.dump(`annotationsHandler('${fileName}')`);
                 this.semanticDiagnostics();
                 this.outputFiles();
             }
@@ -390,8 +331,6 @@ export default class Workspace {
         checkEditor(editor);
         checkCallback(callback);
 
-        this.dump(`detachEditor(${fileName})`);
-
         // Idempotency.
         if (!this.editors[fileName]) {
             setTimeout(callback, 0);
@@ -428,8 +367,6 @@ export default class Workspace {
     public detachEditors(callback: (err: any) => any): void {
         checkCallback(callback);
 
-        this.dump(`detachEditors()`);
-
         const fileNames = Object.keys(this.editors);
         const iLength = fileNames.length;
         let iCount = 0;
@@ -456,21 +393,13 @@ export default class Workspace {
         checkFileName(fileName);
         checkCallback(callback);
 
-        this.dump(`ensureScript(${fileName})`);
-
-        this.scriptCapturing[fileName] = true;
         this.inFlight++;
         this.languageServiceProxy.ensureScript(fileName, content, (err: any) => {
             this.inFlight--;
             if (!err) {
-                delete this.scriptCapturing[fileName];
-                this.scriptLoaded[fileName] = true;
-                this.dump(`ensureScript(${fileName}) completed.`);
                 callback(void 0);
             }
             else {
-                this.scriptCapturing[fileName] = err;
-                this.dump(`ensureScript(${fileName}) failed because ${err}.`);
                 callback(err);
             }
         });
@@ -487,8 +416,6 @@ export default class Workspace {
 
     private updateEditor(fileName: string, errors: Diagnostic[], editor: Editor): void {
         checkEditor(editor);
-
-        this.dump(`updateEditor(${fileName})`);
 
         const session = editor.getSession();
         const doc = session.getDocument();
@@ -515,8 +442,6 @@ export default class Workspace {
 
     private semanticDiagnosticsForEditor(fileName: string, editor: Editor): void {
         checkFileName(fileName);
-
-        this.dump(`semanticDiagnosticsForEditor(${fileName})`);
 
         this.inFlight++;
         this.languageServiceProxy.getSyntaxErrors(fileName, (err: any, syntaxErrors: Diagnostic[]) => {
@@ -558,8 +483,6 @@ export default class Workspace {
     private outputFilesForEditor(fileName: string, editor: Editor): void {
         checkFileName(fileName);
         checkEditor(editor);
-
-        this.dump(`outputFilesForEditor(${fileName})`);
 
         const session = editor.getSession();
 
@@ -612,20 +535,13 @@ export default class Workspace {
     public removeScript(fileName: string, callback: (err: any) => any): void {
         checkFileName(fileName);
         checkCallback(callback);
-        this.dump(`removeScript(${fileName})`);
-        this.scriptReleasing[fileName] = true;
         this.inFlight++;
         this.languageServiceProxy.removeScript(fileName, (err: any) => {
             this.inFlight--;
             if (!err) {
-                delete this.scriptReleasing[fileName];
-                delete this.scriptLoaded[fileName];
-                this.dump(`removeScript(${fileName}) completed.`);
                 callback(void 0);
             }
             else {
-                this.scriptReleasing[fileName] = false;
-                this.dump(`removeScript(${fileName}) failed because ${err}.`);
                 callback(err);
             }
         });
@@ -634,34 +550,39 @@ export default class Workspace {
     private updateMarkerModels(fileName: string, delta: Delta): void {
         checkFileName(fileName);
         const editor = this.editors[fileName];
-        const action = delta.action;
-        const markers: { [id: number]: Marker } = editor.getSession().getMarkers(true);
-        let line_count = 0;
-        // const isNewLine = editor.getSession().getDocument().isNewLine;
-        if (action === "insert") {
-            line_count = delta.lines.length;
-        }
-        else if (action === "remove") {
-            line_count = -delta.lines.length;
+        if (editor) {
+            const action = delta.action;
+            const markers: { [id: number]: Marker } = editor.getSession().getMarkers(true);
+            let line_count = 0;
+            // const isNewLine = editor.getSession().getDocument().isNewLine;
+            if (action === "insert") {
+                line_count = delta.lines.length;
+            }
+            else if (action === "remove") {
+                line_count = -delta.lines.length;
+            }
+            else {
+                console.warn(`updateMarkerModels(${fileName}, ${JSON.stringify(delta)})`);
+            }
+            if (line_count !== 0) {
+                const markerUpdate = function(markerId: number) {
+                    const marker: Marker = markers[markerId];
+                    let row = delta.start.row;
+                    if (line_count > 0) {
+                        row = +1;
+                    }
+                    if (marker && marker.range.start.row > row) {
+                        marker.range.start.row += line_count;
+                        marker.range.end.row += line_count;
+                    }
+                };
+                this.errorMarkerIds.forEach(markerUpdate);
+                this.refMarkers.forEach(markerUpdate);
+                editor.updateFrontMarkers();
+            }
         }
         else {
-            console.warn(`updateMarkerModels(${fileName}, ${JSON.stringify(delta)})`);
-        }
-        if (line_count !== 0) {
-            const markerUpdate = function(markerId: number) {
-                const marker: Marker = markers[markerId];
-                let row = delta.start.row;
-                if (line_count > 0) {
-                    row = +1;
-                }
-                if (marker && marker.range.start.row > row) {
-                    marker.range.start.row += line_count;
-                    marker.range.end.row += line_count;
-                }
-            };
-            this.errorMarkerIds.forEach(markerUpdate);
-            this.refMarkers.forEach(markerUpdate);
-            editor.updateFrontMarkers();
+            console.warn(`updateMarkerModels(${fileName}, ${JSON.stringify(delta)}) missing editor.`);
         }
     }
 }

@@ -22,7 +22,7 @@ const HTTP_METHOD_GET = 'GET';
 const HTTP_METHOD_PATCH = 'PATCH';
 const HTTP_METHOD_POST = 'POST';
 const HTTP_METHOD_PUT = 'PUT';
-const ACCEPT_HEADER = "application/vnd.github.v3+json";
+// const ACCEPT_HEADER = "application/vnd.github.v3+json";
 
 app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
     function($http: angular.IHttpService, $q: ng.IQService, cookie: CookieService, GITHUB_TOKEN_COOKIE_NAME: string): GitHubService {
@@ -36,7 +36,7 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
         function requestHeaders(): { Accept?: string; Authorization?: string } {
             const token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME)
             if (token) {
-                return { Accept: ACCEPT_HEADER, Authorization: `token ${token}` }
+                return { /*Accept: ACCEPT_HEADER,*/ Authorization: `token ${token}` }
             }
             else {
                 return {}
@@ -127,11 +127,9 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
             putFile: function(owner: string, repo: string, path: string, message: string, content: string, sha: string, done: (err, file) => any) {
                 const url = `${gitHub()}/repos/${owner}/${repo}/contents/${path}`
                 const data = {
-                    //                  path: path, // I don't think this is needed (wasn't in geometryzen).
                     message: message,
                     content: content,
                     sha: sha
-                    //                  branch: 'master'    // This should default to master anyway.
                 }
                 console.log(`putFile(${owner}, ${repo}, ${path}) data => ${JSON.stringify(data)}`)
                 return $http({
