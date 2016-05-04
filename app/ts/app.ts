@@ -32,8 +32,6 @@ import CookieService from './services/cookie/CookieService';
 import IGitHubItem from './services/gham/IGitHubItem';
 import IUuidService from './services/uuid/IUuidService';
 
-import BootstrapDialog from 'bootstrap-dialog';
-
 //
 // Create 'app' module and declare its Angular module dependencies.
 //
@@ -44,18 +42,32 @@ const app: angular.IModule = angular.module('app', [
     'ui.router'
 ]);
 
+/**
+ * makeKey('name') => 'com.stemcstudio.name'
+ */
 function makeKey(name: string): string {
     const DOMAIN = ['stemcstudio', 'com'];
     return DOMAIN.reverse().concat(name).join('.');
 }
 
+/**
+ * Allows us to run from the 'generated' or 'dist' folder depending on the NODE_ENV.
+ */
 const VENDOR_FOLDER_MARKER = '$VENDOR-FOLDER-MARKER';
 
 function vendorPath(packageFolder: string, fileName: string): string {
     return VENDOR_FOLDER_MARKER + '/' + packageFolder + '/' + fileName;
 }
 
-app.constant('version', '2.0.0-beta.46');
+app.constant('version', '2.0.0-beta.47');
+
+// Feature flags (boolean)
+app.constant('FEATURE_DASHBOARD_ENABLED', false);
+app.constant('FEATURE_EXAMPLES_ENABLED', true);
+app.constant('FEATURE_LOGIN_ENABLED', true);
+app.constant('FEATURE_GIST_ENABLED', true);
+app.constant('FEATURE_REPO_ENABLED', false);
+
 // githubKey stores the key of the item in local storage for maintaining GitHub OAuth data.
 // Remark: This value is duplicated in views/github_callback.jade
 app.constant('githubKey', makeKey('github'));
@@ -97,10 +109,12 @@ app.constant('UNIVERSAL_ANALYTICS_TRACKING_ID', 'UA-41504069-5');
 app.constant('NAMESPACE_TWITTER_WIDGETS', 'twttr');
 app.constant('GITHUB_TOKEN_COOKIE_NAME', 'github-token');
 
+// Names of routing states.
+// WARNING: Changing state names can break ui-sref directives.
 app.constant('STATE_DASHBOARD', 'dashboard');
 app.constant('STATE_DOODLE', 'doodle');
 app.constant('STATE_EXAMPLES', 'examples');
-app.constant('STATE_GISTS', 'gists');
+app.constant('STATE_GIST', 'gist');
 app.constant('STATE_REPO', 'repo');
 
 // The TypeScript d.ts library provides the type checking of global JavaScript types.
@@ -114,18 +128,26 @@ app.constant('FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS', vendorPath('davinci-maths
 app.config([
     '$stateProvider',
     '$urlRouterProvider',
+    'FEATURE_DASHBOARD_ENABLED',
+    'FEATURE_EXAMPLES_ENABLED',
+    'FEATURE_GIST_ENABLED',
+    'FEATURE_REPO_ENABLED',
     'STATE_DASHBOARD',
     'STATE_DOODLE',
     'STATE_EXAMPLES',
-    'STATE_GISTS',
+    'STATE_GIST',
     'STATE_REPO',
     function(
         $stateProvider: angular.ui.IStateProvider,
         $urlRouterProvider: angular.ui.IUrlRouterProvider,
+        FEATURE_DASHBOARD_ENABLED: boolean,
+        FEATURE_EXAMPLES_ENABLED: boolean,
+        FEATURE_GIST_ENABLED: boolean,
+        FEATURE_REPO_ENABLED: boolean,
         STATE_DASHBOARD: string,
         STATE_DOODLE: string,
         STATE_EXAMPLES: string,
-        STATE_GISTS: string,
+        STATE_GIST: string,
         STATE_REPO: string
     ) {
 
@@ -135,28 +157,8 @@ app.config([
                 templateUrl: 'home.html',
                 controller: 'home-controller'
             })
-            .state(STATE_DASHBOARD, {
-                url: '/dashboard',
-                templateUrl: 'dashboard.html',
-                controller: 'DashboardController'
-            })
             .state(STATE_DOODLE, {
                 url: '/doodle',
-                templateUrl: 'doodle.html',
-                controller: 'DoodleController'
-            })
-            .state(STATE_EXAMPLES, {
-                url: '/examples',
-                templateUrl: 'examples.html',
-                controller: 'examples-controller'
-            })
-            .state(STATE_REPO, {
-                url: '/users/{userId}/repos/{repoId}',
-                templateUrl: 'doodle.html',
-                controller: 'DoodleController'
-            })
-            .state(STATE_GISTS, {
-                url: '/gists/{gistId}',
                 templateUrl: 'doodle.html',
                 controller: 'DoodleController'
             })
@@ -191,6 +193,50 @@ app.config([
                 controller: 'about-controller'
             });
 
+        if (FEATURE_DASHBOARD_ENABLED) {
+            $stateProvider.state(STATE_DASHBOARD, {
+                url: '/dashboard',
+                templateUrl: 'dashboard.html',
+                controller: 'DashboardController'
+            })
+        }
+        else {
+            // TODO: Recognize the url but go to a no droids here.
+        }
+
+        if (FEATURE_EXAMPLES_ENABLED) {
+            $stateProvider.state(STATE_EXAMPLES, {
+                url: '/examples',
+                templateUrl: 'examples.html',
+                controller: 'examples-controller'
+            })
+        }
+        else {
+            // TODO: Recognize the url but go to a no droids here.
+        }
+
+        if (FEATURE_GIST_ENABLED) {
+            $stateProvider.state(STATE_GIST, {
+                url: '/gists/{gistId}',
+                templateUrl: 'doodle.html',
+                controller: 'DoodleController'
+            })
+        }
+        else {
+            // TODO: Recognize the url but go to a no droids here.
+        }
+
+        if (FEATURE_REPO_ENABLED) {
+            $stateProvider.state(STATE_REPO, {
+                url: '/users/{userId}/repos/{repoId}',
+                templateUrl: 'doodle.html',
+                controller: 'DoodleController'
+            })
+        }
+        else {
+            // TODO: Recognize the url but go to a no droids here.
+        }
+
         $urlRouterProvider.otherwise('/');
     }]);
 
@@ -208,6 +254,7 @@ app.run([
     'ga',
     'githubKey',
     'version',
+    'FEATURE_LOGIN_ENABLED',
     function(
         $rootScope: AppScope,
         $state: angular.ui.IStateService,
@@ -217,7 +264,8 @@ app.run([
         uuid4: IUuidService,
         ga: UniversalAnalytics.ga,
         githubKey: string,
-        version: string
+        version: string,
+        FEATURE_LOGIN_ENABLED: boolean
     ) {
 
         // The name of this cookie must correspond with the cookie sent back from the server.
@@ -231,89 +279,16 @@ app.run([
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
         $rootScope.version = version;
-
-        // Doing this twice is a hack for Firefox. It may not be required anymore.
-        $window.applicationCache.addEventListener('updateready', function(e: Event) {
-            $rootScope.$apply(function() {
-                // Do nothing.
-            });
-        }, false);
-        $window.onload = function() {
-            $window.applicationCache.addEventListener('updateready', function(e: Event) {
-                if ($window.applicationCache.status === $window.applicationCache.UPDATEREADY) {
-                    BootstrapDialog.show({
-                        type: BootstrapDialog.TYPE_SUCCESS,
-                        title: $("<h3>Update Ready</h3>"),
-                        message: "A new version of STEMCstudio is available. Would you like to use it now?",
-                        /*closable: false,*/
-                        /*closeByBackdrop: false,*/
-                        /*closeByKeyboard: false,*/
-                        buttons: [
-                            {
-                                label: "Yes, Now",
-                                cssClass: 'btn btn-primary',
-                                action: function(dialog: IBootstrapDialog) {
-                                    $window.location.reload();
-                                    dialog.close();
-                                }
-                            },
-                            {
-                                label: "No, Later",
-                                cssClass: 'btn',
-                                action: function(dialog: IBootstrapDialog) {
-                                    dialog.close();
-                                }
-                            }
-                        ]
-                    });
-                }
-                else {
-                    // Manifest didn't changed. Nothing new to server.
-                }
-            }, false);
-        };
-        $window.applicationCache.addEventListener('checking', function(e: Event) {
-            $rootScope.$apply(function() {
-                // Do nothing.
-            });
-        }, false);
-        $window.applicationCache.addEventListener('noupdate', function(e: Event) {
-            $rootScope.$apply(function() {
-                // Do nothing.
-            });
-        }, false);
-        $window.applicationCache.addEventListener('downloading', function(e: Event) {
-            $rootScope.$apply(function() {
-                // Do nothing.
-            });
-        }, false);
-        $window.applicationCache.addEventListener('progress', function(e: Event) {
-            $rootScope.$apply(function() {
-                // Do nothing.
-            });
-        }, false);
-        $window.applicationCache.addEventListener('cached', function(e: Event) {
-            $rootScope.$apply(function() {
-                // Do nothing.
-            });
-        }, false);
-        $window.applicationCache.addEventListener('obsolete', function(e: Event) {
-            $rootScope.$apply(function() {
-                // Do nothing.
-            });
-        }, false);
-        $window.applicationCache.addEventListener('error', function(e: Event) {
-            $rootScope.$apply(function() {
-                // Do nothing.
-            });
-        }, false);
-
-        // If we don't specify where to go we'll get a blank screen!
-        // $state.transitionTo('home');
+        $rootScope.FEATURE_LOGIN_ENABLED = FEATURE_LOGIN_ENABLED;
 
         // The server drops this cookie so that we can make the GitHub autorization request.
         $rootScope.clientId = function() {
-            return cookie.getItem(GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME);
+            if (FEATURE_LOGIN_ENABLED) {
+                return cookie.getItem(GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME);
+            }
+            else {
+                return void 0
+            }
         };
 
         $rootScope.log = function(thing) {
@@ -325,38 +300,60 @@ app.run([
         };
 
         $rootScope.login = function(label?: string, value?: number) {
-            ga('send', 'event', 'GitHub', 'login', label, value);
-            // This is the beginning of the Web Application Flow for GitHub OAuth2.
-            // The API now allows us to specify an unguessable random string called 'state'.
-            // This 'state' string is used to protect against cross-site request forgery attacks.
+            if (FEATURE_LOGIN_ENABLED) {
+                ga('send', 'event', 'GitHub', 'login', label, value);
+                // This is the beginning of the Web Application Flow for GitHub OAuth2.
+                // The API now allows us to specify an unguessable random string called 'state'.
+                // This 'state' string is used to protect against cross-site request forgery attacks.
 
-            const pending = uuid4.generate();
-            const githubURL = GITHUB_GET_LOGIN_OAUTH_AUTHORIZE +
-                "?client_id=" + $rootScope.clientId() +
-                "&amp;scope=user,gist" +
-                "&amp;state=" + pending;
+                const pending = uuid4.generate();
+                const githubURL = GITHUB_GET_LOGIN_OAUTH_AUTHORIZE +
+                    "?client_id=" + $rootScope.clientId() +
+                    "&amp;scope=gist,repo,user" +
+                    "&amp;state=" + pending;
 
-            // We effectively reset the GitHub property.
-            const github: IGitHubItem = { oauth: { pending: pending } };
-            $window.localStorage.setItem(githubKey, JSON.stringify(github));
-            // Begin the GET request to GitHub.
-            // Changing the browser URL appears to take you away from the app,
-            // but the login redirects back to the server.
-            $window.location.href = githubURL;
+                // We effectively reset the GitHub property.
+                const github: IGitHubItem = { oauth: { pending: pending } };
+                $window.localStorage.setItem(githubKey, JSON.stringify(github));
+                // Begin the GET request to GitHub.
+                // Changing the browser URL appears to take you away from the app,
+                // but the login redirects back to the server.
+                $window.location.href = githubURL;
+            }
+            else {
+                console.warn(`FEATURE_LOGIN_ENABLED => ${FEATURE_LOGIN_ENABLED}`)
+            }
         };
 
         $rootScope.logout = function(label?: string, value?: number) {
-            ga('send', 'event', 'GitHub', 'logout', label, value);
-            cookie.removeItem(GITHUB_TOKEN_COOKIE_NAME);
-            cookie.removeItem(GITHUB_LOGIN_COOKIE_NAME);
+            if (FEATURE_LOGIN_ENABLED) {
+                ga('send', 'event', 'GitHub', 'logout', label, value)
+                cookie.removeItem(GITHUB_TOKEN_COOKIE_NAME)
+                cookie.removeItem(GITHUB_LOGIN_COOKIE_NAME)
+            }
+            else {
+                console.warn(`FEATURE_LOGIN_ENABLED => ${FEATURE_LOGIN_ENABLED}`)
+            }
         };
 
         $rootScope.isLoggedIn = function() {
-            return cookie.hasItem(GITHUB_TOKEN_COOKIE_NAME);
+            if (FEATURE_LOGIN_ENABLED) {
+                return cookie.hasItem(GITHUB_TOKEN_COOKIE_NAME);
+            }
+            else {
+                console.warn(`FEATURE_LOGIN_ENABLED => ${FEATURE_LOGIN_ENABLED}`)
+                return false
+            }
         };
 
         $rootScope.userLogin = function() {
-            return cookie.getItem(GITHUB_LOGIN_COOKIE_NAME);
+            if (FEATURE_LOGIN_ENABLED) {
+                return cookie.getItem(GITHUB_LOGIN_COOKIE_NAME);
+            }
+            else {
+                console.warn(`FEATURE_LOGIN_ENABLED => ${FEATURE_LOGIN_ENABLED}`)
+                return void 0
+            }
         };
 
     }]);

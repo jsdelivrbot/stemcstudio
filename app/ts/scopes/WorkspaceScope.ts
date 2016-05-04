@@ -22,6 +22,11 @@ interface WorkspaceScope extends DoodleScope {
     toggleReadMeVisible: () => void;
 
     /**
+     * Upload
+     */
+    doUpload(): void;
+
+    /**
      * View the specified (HTML) file in the Viewer.
      */
     doView(name: string): void;

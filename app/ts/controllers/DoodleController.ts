@@ -2,22 +2,14 @@ import * as angular from 'angular';
 import AbstractPageController from './AbstractPageController';
 import Base64Service from '../services/base64/Base64Service';
 import ICloud from '../services/cloud/ICloud';
-import Doodle from '../services/doodles/Doodle';
-import DoodleFile from '../services/doodles/DoodleFile';
 import IDoodleManager from '../services/doodles/IDoodleManager';
 import DoodleScope from '../scopes/DoodleScope';
-import GistData from '../services/gist/GistData';
 import GitHubService from '../services/github/GitHubService';
-import PatchGistResponse from '../services/github/PatchGistResponse';
-import PostGistResponse from '../services/github/PostGistResponse';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
 import IOptionManager from '../services/options/IOptionManager';
 import ISettingsService from '../services/settings/ISettingsService';
 import ITemplate from '../services/templates/ITemplate';
-import doodleToGist from '../services/cloud/doodleToGist';
 import IUuidService from '../services/uuid/IUuidService';
-
-import BootstrapDialog from 'bootstrap-dialog';
 
 /**
  * This class could probably be merged with the WorkspaceController?
@@ -44,13 +36,15 @@ export default class DoodleController extends AbstractPageController {
         'doodlesKey',
         'doodles',
         'options',
+        'FEATURE_GIST_ENABLED',
+        'FEATURE_REPO_ENABLED',
         'FILENAME_HTML',
         'FILENAME_CODE',
         'FILENAME_LIBS',
         'FILENAME_LESS',
         'FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS',
         'FILENAME_TYPESCRIPT_CURRENT_LIB_DTS',
-        'STATE_GISTS',
+        'STATE_GIST',
         'STYLE_MARKER',
         'SCRIPTS_MARKER',
         'CODE_MARKER',
@@ -76,13 +70,15 @@ export default class DoodleController extends AbstractPageController {
         doodlesKey: string,
         doodles: IDoodleManager,
         options: IOptionManager,
+        FEATURE_GIST_ENABLED: boolean,
+        FEATURE_REPO_ENABLED: boolean,
         FILENAME_HTML: string,
         FILENAME_CODE: string,
         FILENAME_LIBS: string,
         FILENAME_LESS: string,
         FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS: string,
         FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
-        STATE_GISTS: string,
+        STATE_GIST: string,
         STYLE_MARKER: string,
         SCRIPTS_MARKER: string,
         CODE_MARKER: string,
@@ -119,118 +115,6 @@ export default class DoodleController extends AbstractPageController {
         $scope.doProperties = function(label?: string, value?: number) {
             ga('send', 'event', 'doodle', 'properties', label, value);
             $state.go('properties', { doodle: doodles.current() });
-        };
-
-        // FIXME: Upload really thinks it's only a Gist.
-        $scope.doUpload = function(label?: string, value?: number) {
-            ga('send', 'event', 'doodle', 'upload', label, value);
-            const doodle = doodles.current();
-            const data: GistData = doodleToGist(doodle, options);
-            const userId = doodle.userId;
-            const repoId = doodle.repoId;
-            const gistId = doodle.gistId;
-            if (gistId) {
-                github.patchGist(gistId, data, function(err: any, response: PatchGistResponse, status: number) {
-                    if (err) {
-                        if (status === 404) {
-                            if (confirm("The Gist associated with your doodle no longer exists.\nWould you like me to disassociate your doodle so that you can create a new Gist?")) {
-                                doodle.gistId = undefined;
-                                doodles.updateStorage();
-                            }
-                        }
-                        else {
-                            console.warn(`PATCH ${JSON.stringify(data, null, 2)}`)
-                            // If the status is 404 then the Gist no longer exists on GitHub.
-                            // We might as well set the gistId to undefined and let the user try to POST.
-                            alert("status: " + JSON.stringify(status));
-                            alert("err: " + JSON.stringify(err));
-                            alert("response: " + JSON.stringify(response));
-                        }
-                    }
-                    else {
-                        doodle.emptyTrash();
-                        doodle.updated_at = response.updated_at;
-
-                        doodles.updateStorage();
-
-                        BootstrapDialog.show({
-                            type: BootstrapDialog.TYPE_SUCCESS,
-                            title: $("<h3>Upload complete</h3>"),
-                            message: "Your doodle was successfully uploaded and patched the existing Gist.",
-                            buttons: [{
-                                label: "Close",
-                                cssClass: 'btn btn-primary',
-                                action: function(dialog: IBootstrapDialog) {
-                                    $state.go(STATE_GISTS, { gistId: gistId });
-                                    dialog.close();
-                                }
-                            }]
-                        });
-                    }
-                });
-            }
-            else if (userId && repoId) {
-                console.warn("We have a repository!")
-                const doodle: Doodle = doodles.current()
-                const paths = Object.keys(doodle.files)
-                for (let fileIndex = 0; fileIndex < paths.length; fileIndex++) {
-                    const path = paths[fileIndex]
-                    const file: DoodleFile = doodle.files[path]
-                    const encoded = base64.encode(file.content)
-                    const message = `STEMCstudio`
-                    github.putFile(userId, repoId, path, message, encoded, file.sha, function(err: any, response: any) {
-                        if (!err) {
-                            console.log(`putFile => ${JSON.stringify(response, null, 2)}`)
-                        }
-                        else {
-                            console.warn(`${err}`)
-                        }
-                    })
-                    //                    github.deleteFile(userId, repoId, path, message, file.sha, function(err: any, response: any) {
-                    //                        // Ignore
-                    //                    })
-                }
-            }
-            else {
-                github.postGist(data, function(err: any, response: PostGistResponse) {
-                    if (err) {
-                        console.warn(`POST ${JSON.stringify(data, null, 2)}`)
-                        BootstrapDialog.show({
-                            type: BootstrapDialog.TYPE_DANGER,
-                            title: $("<h3>Upload failed</h3>"),
-                            message: "Unable to post your Gist at this time.",
-                            buttons: [{
-                                label: "Close",
-                                cssClass: 'btn btn-primary',
-                                action: function(dialog: IBootstrapDialog) {
-                                    dialog.close();
-                                }
-                            }]
-                        });
-                    }
-                    else {
-                        doodle.gistId = response.id;
-                        doodle.created_at = response.created_at;
-                        doodle.updated_at = response.updated_at;
-
-                        doodles.updateStorage();
-
-                        BootstrapDialog.show({
-                            type: BootstrapDialog.TYPE_SUCCESS,
-                            title: $("<h3>Upload complete</h3>"),
-                            message: "Your doodle was successfully uploaded and associated with a new Gist.",
-                            buttons: [{
-                                label: "Close",
-                                cssClass: 'btn btn-primary',
-                                action: function(dialog: IBootstrapDialog) {
-                                    $state.go(STATE_GISTS, { gistId: doodles.current().gistId });
-                                    dialog.close();
-                                }
-                            }]
-                        });
-                    }
-                });
-            }
         };
 
         $scope.goHome = function(label?: string, value?: number) {

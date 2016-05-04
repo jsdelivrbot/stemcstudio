@@ -15,6 +15,8 @@ export default class HomeController extends AbstractPageController {
         '$window',
         'GitHubAuthManager',
         'ga',
+        'FEATURE_DASHBOARD_ENABLED',
+        'FEATURE_EXAMPLES_ENABLED',
         'NAMESPACE_TWITTER_WIDGETS',
         'STATE_DASHBOARD',
         'STATE_DOODLE',
@@ -29,6 +31,8 @@ export default class HomeController extends AbstractPageController {
         $window: angular.IWindowService,
         authManager: IGitHubAuthManager,
         ga: UniversalAnalytics.ga,
+        FEATURE_DASHBOARD_ENABLED: boolean,
+        FEATURE_EXAMPLES_ENABLED: boolean,
         NAMESPACE_TWITTER_WIDGETS: string,
         STATE_DASHBOARD: string,
         STATE_DOODLE: string,
@@ -36,6 +40,9 @@ export default class HomeController extends AbstractPageController {
         UNIVERSAL_ANALYTICS_TRACKING_ID: string
     ) {
         super($scope, $window, authManager, ga, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto')
+
+        $scope.FEATURE_DASHBOARD_ENABLED = FEATURE_DASHBOARD_ENABLED
+        $scope.FEATURE_EXAMPLES_ENABLED = FEATURE_EXAMPLES_ENABLED
 
         if ($window[NAMESPACE_TWITTER_WIDGETS] && $window[NAMESPACE_TWITTER_WIDGETS].widgets) {
             $window[NAMESPACE_TWITTER_WIDGETS].widgets.load();
@@ -49,7 +56,12 @@ export default class HomeController extends AbstractPageController {
         $scope.twitterShareText = "STEMCstudio · Learning Science and Mathematics through Computational Modeling.";
 
         $scope.goDashboard = function() {
-            $state.go(STATE_DASHBOARD);
+            if (FEATURE_DASHBOARD_ENABLED) {
+                $state.go(STATE_DASHBOARD);
+            }
+            else {
+                console.warn(`FEATURE_DASHBOARD_ENABLED => ${FEATURE_DASHBOARD_ENABLED}`)
+            }
         }
 
         $scope.goDoodle = function() {
@@ -57,7 +69,12 @@ export default class HomeController extends AbstractPageController {
         }
 
         $scope.goExamples = function() {
-            $state.go(STATE_EXAMPLES);
+            if (FEATURE_EXAMPLES_ENABLED) {
+                $state.go(STATE_EXAMPLES);
+            }
+            else {
+                console.warn(`FEATURE_EXAMPLES_ENABLED => ${FEATURE_EXAMPLES_ENABLED}`)
+            }
         }
     }
 }

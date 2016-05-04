@@ -25,16 +25,11 @@ interface DoodleScope extends BodyScope, ExplorerMixin {
      * 
      */
     doProperties(): void;
-    
+
     /**
      *
      */
     doHelp: () => void;
-
-    /**
-     * Upload
-     */
-    doUpload(): void;
 
     goHome: () => void;
 

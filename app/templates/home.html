@@ -10,12 +10,10 @@
         </div>
         <div class='collapse navbar-collapse' id='navbar-header-collapse'>
             <button type="button" class="btn btn-primary navbar-btn" ng-click='goDoodle()'>Code Now!</button>
-            <button type="button" class="btn btn-secondary navbar-btn" ng-click='goExamples()'>Browse Examples</button>
-            <button type="button" class="btn btn-default navbar-btn" ng-click='logout()' ng-show='isLoggedIn()'>Log out {{userLogin()}}</button>
-            <button type="button" class="btn btn-default navbar-btn" ng-click='login()' ng-hide='isLoggedIn()'>Log In</button>
-            <!--
-            <button type="button" class="btn btn-secondary navbar-btn" ng-click='goDashboard()' ng-show='isLoggedIn()'>Dashboard</button>
-            -->
+            <button ng-if='FEATURE_EXAMPLES_ENABLED' type="button" class="btn btn-secondary navbar-btn" ng-click='goExamples()'>Browse Examples</button>
+            <button ng-if='FEATURE_LOGIN_ENABLED' type="button" class="btn btn-default navbar-btn" ng-click='logout()' ng-show='isLoggedIn()'>Log out {{userLogin()}}</button>
+            <button ng-if='FEATURE_LOGIN_ENABLED' type="button" class="btn btn-default navbar-btn" ng-click='login()' ng-hide='isLoggedIn()'>Log In</button>
+            <button ng-if='FEATURE_DASHBOARD_ENABLED' type="button" class="btn btn-secondary navbar-btn" ng-click='goDashboard()' ng-show='isLoggedIn()'>Dashboard</button>
         </div>
     </div>
 </header>

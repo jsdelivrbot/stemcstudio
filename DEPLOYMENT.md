@@ -39,7 +39,7 @@ This is defined in `views/github_callback.jade`
 
 ### GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME
 
-This is defined in `app/ts/app.ts` and `app/ts/controllers/LoginController.ts`
+This is defined in `app/ts/app.ts`
 
 TODO: Need to DRY this!
 

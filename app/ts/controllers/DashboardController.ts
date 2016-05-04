@@ -20,7 +20,6 @@ export default class DashboardController extends AbstractPageController {
         '$window',
         'GitHubAuthManager',
         'ga',
-        'STATE_GISTS',
         'UNIVERSAL_ANALYTICS_TRACKING_ID',
     ];
 
@@ -34,7 +33,6 @@ export default class DashboardController extends AbstractPageController {
         $window: angular.IWindowService,
         authManager: IGitHubAuthManager,
         ga: UniversalAnalytics.ga,
-        STATE_GISTS: string,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string
     ) {
         super($scope, $window, authManager, ga, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto')

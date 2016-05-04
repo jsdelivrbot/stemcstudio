@@ -12,9 +12,22 @@ import CookieService from '../cookie/CookieService';
 import PatchGistResponse from './PatchGistResponse';
 import PathContents from './PathContents';
 import PostGistResponse from './PostGistResponse';
+import PutFileResponse from './PutFileResponse';
 // TODO: Get rid of the underscore dependency.
 import * as _ from 'underscore';
 
+/**
+ * Explicity request the v3 version of the API
+ * 
+ * https://developer.github.com/v3/#current-version
+ */
+const ACCEPT_HEADER = "application/vnd.github.v3+json";
+
+/**
+ * All access is over HTTPS, and accessed from https://api/github.com
+ * 
+ * https://developer.github.com/v3/#schema
+ */
 const GITHUB_PROTOCOL = 'https';
 const GITHUB_DOMAIN = 'api.github.com';
 const HTTP_METHOD_DELETE = 'DELETE';
@@ -22,7 +35,6 @@ const HTTP_METHOD_GET = 'GET';
 const HTTP_METHOD_PATCH = 'PATCH';
 const HTTP_METHOD_POST = 'POST';
 const HTTP_METHOD_PUT = 'PUT';
-// const ACCEPT_HEADER = "application/vnd.github.v3+json";
 
 app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
     function($http: angular.IHttpService, $q: ng.IQService, cookie: CookieService, GITHUB_TOKEN_COOKIE_NAME: string): GitHubService {
@@ -33,14 +45,15 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
         function gitHub(): string {
             return `${GITHUB_PROTOCOL}://${GITHUB_DOMAIN}`;
         }
-        function requestHeaders(): { Accept?: string; Authorization?: string } {
+        function requestHeaders(): { 'Accept': string; 'Authorization'?: string } {
             const token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME)
+            const headers: { 'Accept': string; 'Authorization'?: string; } = {
+                Accept: ACCEPT_HEADER
+            }
             if (token) {
-                return { /*Accept: ACCEPT_HEADER,*/ Authorization: `token ${token}` }
+                headers.Authorization = `token ${token}`
             }
-            else {
-                return {}
-            }
+            return headers
         }
         function getGistsPage(url: string, done: (err: any, response: Gist[], status: number, headers) => any) {
             return $http({ method: HTTP_METHOD_GET, url: url, headers: requestHeaders() })
@@ -124,24 +137,12 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
             requires the blob SHA of the file being replaced. In effect, the existence of the sha
             determines whether the intention is to create a new file or update an existing one.
             */
-            putFile: function(owner: string, repo: string, path: string, message: string, content: string, sha: string, done: (err, file) => any) {
+            putFile: function(owner: string, repo: string, path: string, message: string, content: string, sha: string): ng.IHttpPromise<PutFileResponse> {
+                const method = HTTP_METHOD_PUT
                 const url = `${gitHub()}/repos/${owner}/${repo}/contents/${path}`
-                const data = {
-                    message: message,
-                    content: content,
-                    sha: sha
-                }
-                console.log(`putFile(${owner}, ${repo}, ${path}) data => ${JSON.stringify(data)}`)
-                return $http({
-                    method: HTTP_METHOD_PUT,
-                    url: url,
-                    data: data,
-                    headers: requestHeaders()
-                }).success(function(file, status, headers, config) {
-                    return done(null, file);
-                }).error(function(response, status, headers, config) {
-                    return done(new Error(response.message), response);
-                });
+                const data = { message, content, sha }
+                const headers = requestHeaders()
+                return $http<PutFileResponse>({ method, url, data, headers });
             },
             deleteFile: function(owner: string, repo: string, path: string, message: string, sha: string, done: (err: any, response) => any) {
                 const url = "" + GITHUB_PROTOCOL + "://" + GITHUB_DOMAIN + "/repos/" + owner + "/" + repo + "/contents/" + path;

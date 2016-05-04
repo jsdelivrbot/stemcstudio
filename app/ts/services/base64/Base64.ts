@@ -3,10 +3,10 @@ import Base64Service from './Base64Service';
 const _keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
 
 const _utf8_decode = function(utftext: string): string {
-    let string = ""
+    let decoded = ""
     let i = 0
     let c = 0
-    let c2 = 0;
+    let c2 = 0
     let c3 = 0
 
     while (i < utftext.length) {
@@ -14,46 +14,46 @@ const _utf8_decode = function(utftext: string): string {
         c = utftext.charCodeAt(i)
 
         if (c < 128) {
-            string += String.fromCharCode(c)
+            decoded += String.fromCharCode(c)
             i++
         }
         else if ((c > 191) && (c < 224)) {
-            c2 = utftext.charCodeAt(i + 1);
-            string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+            c2 = utftext.charCodeAt(i + 1)
+            decoded += String.fromCharCode(((c & 31) << 6) | (c2 & 63))
             i += 2
         }
         else {
-            c2 = utftext.charCodeAt(i + 1);
-            c3 = utftext.charCodeAt(i + 2);
-            string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+            c2 = utftext.charCodeAt(i + 1)
+            c3 = utftext.charCodeAt(i + 2)
+            decoded += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63))
             i += 3
         }
     }
-    return string
+    return decoded
 }
 
 const _utf8_encode = function(s: string): string {
     s = s.replace(/\r\n/g, "\n")
-    let utftext = ""
+    let encoded = ""
 
-    for (let n = 0; n < s.length - 1; n++) {
+    for (let n = 0; n < s.length; n++) {
 
         const c = s.charCodeAt(n)
 
         if (c < 128) {
-            utftext += String.fromCharCode(c)
+            encoded += String.fromCharCode(c)
         }
         else if ((c > 127) && (c < 2048)) {
-            utftext += String.fromCharCode((c >> 6) | 192)
-            utftext += String.fromCharCode((c & 63) | 128)
+            encoded += String.fromCharCode((c >> 6) | 192)
+            encoded += String.fromCharCode((c & 63) | 128)
         }
         else {
-            utftext += String.fromCharCode((c >> 12) | 224)
-            utftext += String.fromCharCode(((c >> 6) & 63) | 128)
-            utftext += String.fromCharCode((c & 63) | 128)
+            encoded += String.fromCharCode((c >> 12) | 224)
+            encoded += String.fromCharCode(((c >> 6) & 63) | 128)
+            encoded += String.fromCharCode((c & 63) | 128)
         }
     }
-    return utftext
+    return encoded
 }
 
 export default class Base64 implements Base64Service {

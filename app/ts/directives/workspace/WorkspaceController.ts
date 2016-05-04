@@ -8,9 +8,11 @@ import sd from 'showdown';
 import ICloud from '../../services/cloud/ICloud';
 import detect1x from './detect1x';
 import Doodle from '../../services/doodles/Doodle';
+import doodleToGist from '../../services/cloud/doodleToGist';
 import fileContent from './fileContent';
 import fileExists from './fileExists';
 import IDoodleManager from '../../services/doodles/IDoodleManager';
+import GistData from '../../services/gist/GistData';
 import GitHubService from '../../services/github/GitHubService';
 import IGitHubAuthManager from '../../services/gham/IGitHubAuthManager';
 import IOption from '../../services/options/IOption';
@@ -18,7 +20,9 @@ import IOptionManager from '../../services/options/IOptionManager';
 import ChangeHandler from './ChangeHandler';
 import OutputFileHandler from './OutputFileHandler';
 import doodleGroom from '../../utils/doodleGroom';
+import PatchGistResponse from '../../services/github/PatchGistResponse';
 import PathContents from '../../services/github/PathContents';
+import PostGistResponse from '../../services/github/PostGistResponse';
 import readMeHTML from './readMeHTML';
 import RepoElement from '../../services/github/RepoElement';
 import StringSet from '../../utils/StringSet';
@@ -35,6 +39,8 @@ import {LANGUAGE_LESS} from '../../languages/modes';
 import {LANGUAGE_MARKDOWN} from '../../languages/modes';
 import {LANGUAGE_TYPE_SCRIPT} from '../../languages/modes';
 import {LANGUAGE_TEXT} from '../../languages/modes';
+
+import BootstrapDialog from 'bootstrap-dialog';
 
 const FSLASH_STAR = '/*'
 const STAR_FSLASH = '*/'
@@ -202,13 +208,15 @@ export default class WorkspaceController implements WorkspaceMixin {
         'ga',
         'doodles',
         'options',
+        'FEATURE_GIST_ENABLED',
+        'FEATURE_REPO_ENABLED',
         'FILENAME_README',
         'FILENAME_CODE',
         'FILENAME_LIBS',
         'FILENAME_LESS',
         'FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS',
         'FILENAME_TYPESCRIPT_CURRENT_LIB_DTS',
-        'STATE_GISTS',
+        'STATE_GIST',
         'STATE_REPO',
         'STYLE_MARKER',
         'STYLES_MARKER',
@@ -272,13 +280,15 @@ export default class WorkspaceController implements WorkspaceMixin {
         ga: UniversalAnalytics.ga,
         private doodles: IDoodleManager,
         private options: IOptionManager,
+        private FEATURE_GIST_ENABLED: boolean,
+        private FEATURE_REPO_ENABLED: boolean,
         private FILENAME_README: string,
         private FILENAME_CODE: string,
         private FILENAME_LIBS: string,
         private FILENAME_LESS: string,
         private FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS: string,
         private FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
-        private STATE_GISTS: string,
+        private STATE_GIST: string,
         private STATE_REPO: string,
         private STYLE_MARKER: string,
         private STYLES_MARKER: string,
@@ -332,6 +342,101 @@ export default class WorkspaceController implements WorkspaceMixin {
             $scope.isReadMeVisible = !$scope.isReadMeVisible
             this.updateReadmeView(WAIT_NO_MORE)
         }
+
+        // FIXME: Upload really thinks it's only a Gist.
+        $scope.doUpload = function(label?: string, value?: number) {
+            ga('send', 'event', 'doodle', 'upload', label, value);
+            const doodle = doodles.current();
+            const data: GistData = doodleToGist(doodle, options);
+            const userId = doodle.userId;
+            const repoId = doodle.repoId;
+            const gistId = doodle.gistId;
+            if (FEATURE_GIST_ENABLED && gistId) {
+                github.patchGist(gistId, data, function(err: any, response: PatchGistResponse, status: number) {
+                    if (err) {
+                        if (status === 404) {
+                            if (confirm("The Gist associated with your doodle no longer exists.\nWould you like me to disassociate your doodle so that you can create a new Gist?")) {
+                                doodle.gistId = undefined;
+                                doodles.updateStorage();
+                            }
+                        }
+                        else {
+                            console.warn(`PATCH ${JSON.stringify(data, null, 2)}`)
+                            // If the status is 404 then the Gist no longer exists on GitHub.
+                            // We might as well set the gistId to undefined and let the user try to POST.
+                            alert("status: " + JSON.stringify(status));
+                            alert("err: " + JSON.stringify(err));
+                            alert("response: " + JSON.stringify(response));
+                        }
+                    }
+                    else {
+                        doodle.emptyTrash();
+                        doodle.updated_at = response.updated_at;
+
+                        doodles.updateStorage();
+
+                        BootstrapDialog.show({
+                            type: BootstrapDialog.TYPE_SUCCESS,
+                            title: $("<h3>Upload complete</h3>"),
+                            message: "Your doodle was successfully uploaded and patched the existing Gist.",
+                            buttons: [{
+                                label: "Close",
+                                cssClass: 'btn btn-primary',
+                                action: function(dialog: IBootstrapDialog) {
+                                    $state.go(STATE_GIST, { gistId: gistId });
+                                    dialog.close();
+                                }
+                            }]
+                        });
+                    }
+                });
+            }
+            else if (FEATURE_REPO_ENABLED && userId && repoId) {
+                console.log(`OK. Let's make a commit for user ${userId} to the ${repoId} repo!`)
+            }
+            else {
+                if (FEATURE_GIST_ENABLED) {
+                    github.postGist(data, function(err: any, response: PostGistResponse) {
+                        if (err) {
+                            console.warn(`POST ${JSON.stringify(data, null, 2)}`)
+                            BootstrapDialog.show({
+                                type: BootstrapDialog.TYPE_DANGER,
+                                title: $("<h3>Upload failed</h3>"),
+                                message: "Unable to post your Gist at this time.",
+                                buttons: [{
+                                    label: "Close",
+                                    cssClass: 'btn btn-primary',
+                                    action: function(dialog: IBootstrapDialog) {
+                                        dialog.close();
+                                    }
+                                }]
+                            });
+                        }
+                        else {
+                            doodle.gistId = response.id;
+                            doodle.created_at = response.created_at;
+                            doodle.updated_at = response.updated_at;
+
+                            doodles.updateStorage();
+
+                            BootstrapDialog.show({
+                                type: BootstrapDialog.TYPE_SUCCESS,
+                                title: $("<h3>Upload complete</h3>"),
+                                message: "Your doodle was successfully uploaded and associated with a new Gist.",
+                                buttons: [{
+                                    label: "Close",
+                                    cssClass: 'btn btn-primary',
+                                    action: function(dialog: IBootstrapDialog) {
+                                        $state.go(STATE_GIST, { gistId: doodles.current().gistId });
+                                        dialog.close();
+                                    }
+                                }]
+                            });
+                        }
+                    });
+                }
+            }
+        };
     }
 
     /**
@@ -372,8 +477,28 @@ export default class WorkspaceController implements WorkspaceMixin {
         const userId: string = this.$stateParams['userId'];
         const repoId: string = this.$stateParams['repoId'];
         const gistId: string = this.$stateParams['gistId'];
-        if (userId && repoId) {
-            if (doodles.current().userId !== userId && doodles.current().repoId !== repoId) {
+
+        const matches = doodles.filter(function(doodle: Doodle) {
+            if (typeof userId === 'string' && typeof repoId === 'string') {
+                return doodle.userId === userId && doodle.repoId === repoId
+            }
+            else if (typeof gistId === 'string') {
+                return doodle.gistId === gistId
+            }
+            else {
+                return false
+            }
+        })
+        if (matches.length > 0) {
+            // We certainly don't want to overwrite anything in local storage.
+            // The use should be advised ant then may delete manually from local storage.
+            const match = matches[0]
+            doodles.makeCurrent(match)
+            // We can also assume that we are already in the correct state.
+            this.onInitDoodle(match)
+        }
+        else {
+            if (userId && repoId) {
                 this.github.getRepoContents(userId, repoId, (err: any, contents: RepoElement[]) => {
                     if (!err) {
                         const doodle = new Doodle(this.options)
@@ -395,7 +520,6 @@ export default class WorkspaceController implements WorkspaceMixin {
                                 // The size should match the decoded length.
                                 // The path is probably what we should use for the key to the map.
                                 // The encoding will usually be 'base64'.
-                                console.log(JSON.stringify({ name: repoFile.name, path: repoFile.path, type: repoFile.type, size: repoFile.size, encoding: repoFile.encoding }))
                                 const fileContent = this.base64.decode(repoFile.content);
                                 const file = doodle.newFile(repoFile.path)
                                 file.content = fileContent
@@ -406,31 +530,17 @@ export default class WorkspaceController implements WorkspaceMixin {
                             doodles.updateStorage();
                             this.onInitDoodle(doodles.current())
                         }).catch((err) => {
-                            console.warn(`${err}`)
+                            this.$scope.alert("Error attempting to download File");
                         })
                     }
                     else {
-                        console.warn(`${err}`)
+                        this.$scope.alert("Error attempting to download Repo");
                     }
                 })
             }
-            else {
-                if (doodles.current().userId && doodles.current().repoId) {
-                    // We end up here, e.g., when user presses Cancel from New dialog.
-                    // We're in the DOODLE routing state but we should be in the REPO routing state.
-                    this.$state.go(this.STATE_REPO, { userId, repoId })
-                }
-                else {
-                    this.onInitDoodle(doodles.current())
-                }
-            }
-        }
-        else if (gistId) {
-            if (doodles.current().gistId !== gistId) {
+            else if (gistId) {
                 this.cloud.downloadGist(gistId, (err: any, doodle: Doodle) => {
                     if (!err) {
-                        // Why are we deleting?
-                        doodles.deleteDoodle(doodle);
                         doodles.unshift(doodle);
                         doodles.updateStorage();
                         this.onInitDoodle(doodles.current())
@@ -441,17 +551,17 @@ export default class WorkspaceController implements WorkspaceMixin {
                 });
             }
             else {
-                this.onInitDoodle(doodles.current())
-            }
-        }
-        else {
-            if (doodles.current().gistId) {
+                // We don't need to load anything, but are we in the correct state for the Doodle?
                 // We end up here, e.g., when user presses Cancel from New dialog.
-                // We're in the DOODLE routing state but we should be in the GISTS routing state.
-                this.$state.go(this.STATE_GISTS, { gistId: doodles.current().gistId })
-            }
-            else {
-                this.onInitDoodle(doodles.current())
+                if (this.FEATURE_GIST_ENABLED && doodle.gistId) {
+                    this.$state.go(this.STATE_GIST, { gistId: doodle.gistId })
+                }
+                else if (this.FEATURE_REPO_ENABLED && doodle.userId && doodle.repoId) {
+                    this.$state.go(this.STATE_REPO, { userId: doodle.userId, repoId: doodle.repoId })
+                }
+                else {
+                    this.onInitDoodle(doodle)
+                }
             }
         }
 

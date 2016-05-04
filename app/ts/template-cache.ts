@@ -143,16 +143,16 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                            </li>\n" +
     "                        </ul>\n" +
     "                    </li>\n" +
-    "                    <li uib-dropdown ng-show='isEditMode &amp;&amp; isLoggedIn()'>\n" +
-    "                        <a ng-show='isLoggedIn()' uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"GitHub Menu\" tooltip-placement='left'>\n" +
+    "                    <li ng-if='FEATURE_LOGIN_ENABLED' uib-dropdown ng-show='isEditMode &amp;&amp; isLoggedIn()'>\n" +
+    "                        <a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"GitHub Menu\" tooltip-placement='left'>\n" +
     "                            <ng-md-icon icon='cloud' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'><ng-md-icon>\n" +
     "                        </a>\n" +
     "                        <ul uib-dropdown-menu role=\"menu\">\n" +
     "                            <li>\n" +
-    "                                <a ng-click='clickDownload()' ng-show='isLoggedIn()' role='button'>Download</a>\n" +
+    "                                <a ng-click='clickDownload()' role='button'>Download</a>\n" +
     "                            </li>\n" +
     "                            <li>\n" +
-    "                                <a ng-click='doUpload()' ng-show='isLoggedIn()' role='button'>Upload</a>\n" +
+    "                                <a ng-click='doUpload()' role='button'>Upload</a>\n" +
     "                            </li>\n" +
     "                        </ul>\n" +
     "                    </li>\n" +
@@ -188,7 +188,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "  </div>\n" +
     "  <div class='modal-body'>\n" +
     "    <p ng-repeat='gist in gists track by gist.id'>\n" +
-    "      <a ui-sref='gists({gistId: gist.id})'>{{gist.description}}</a>\n" +
+    "      <a ui-sref='gist({gistId: gist.id})'>{{gist.description}}</a>\n" +
     "    </p>\n" +
     "  </div>\n" +
     "  <div class='modal-footer'>\n" +
@@ -383,12 +383,10 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "        </div>\n" +
     "        <div class='collapse navbar-collapse' id='navbar-header-collapse'>\n" +
     "            <button type=\"button\" class=\"btn btn-primary navbar-btn\" ng-click='goDoodle()'>Code Now!</button>\n" +
-    "            <button type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goExamples()'>Browse Examples</button>\n" +
-    "            <button type=\"button\" class=\"btn btn-default navbar-btn\" ng-click='logout()' ng-show='isLoggedIn()'>Log out {{userLogin()}}</button>\n" +
-    "            <button type=\"button\" class=\"btn btn-default navbar-btn\" ng-click='login()' ng-hide='isLoggedIn()'>Log In</button>\n" +
-    "            <!--\n" +
-    "            <button type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goDashboard()' ng-show='isLoggedIn()'>Dashboard</button>\n" +
-    "            -->\n" +
+    "            <button ng-if='FEATURE_EXAMPLES_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goExamples()'>Browse Examples</button>\n" +
+    "            <button ng-if='FEATURE_LOGIN_ENABLED' type=\"button\" class=\"btn btn-default navbar-btn\" ng-click='logout()' ng-show='isLoggedIn()'>Log out {{userLogin()}}</button>\n" +
+    "            <button ng-if='FEATURE_LOGIN_ENABLED' type=\"button\" class=\"btn btn-default navbar-btn\" ng-click='login()' ng-hide='isLoggedIn()'>Log In</button>\n" +
+    "            <button ng-if='FEATURE_DASHBOARD_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goDashboard()' ng-show='isLoggedIn()'>Dashboard</button>\n" +
     "        </div>\n" +
     "    </div>\n" +
     "</header>\n" +
@@ -595,12 +593,6 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "  -->\n" +
     "    </div>\n" +
     "</footer>"
-  );
-
-
-  $templateCache.put('login.html',
-    "<h1>Login</h1>\n" +
-    "<button ng-click=\"githubLogin()\">Login with GitHub - Really</button>"
   );
 
 
