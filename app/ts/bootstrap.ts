@@ -10,6 +10,7 @@ import DashboardController from './controllers/DashboardController';
 import DoodleController from './controllers/DoodleController';
 import ExamplesController from './controllers/ExamplesController';
 import GitHubAccountController from './controllers/GitHubAccountController';
+import GitHubCloudService from './services/cloud/GitHubCloudService';
 import HomeController from './controllers/HomeController';
 import editor from './directives/editor/editor.component';
 import explorer from './directives/explorer/explorer.component';
@@ -67,7 +68,6 @@ app.filter('contiguous', contiguous);
 
 import './fugly/ga/ga';
 
-import './services/cloud/cloud';
 import './services/cookie/cookie';
 import './services/doodles/doodles';
 import './services/gham/GitHubAuthManager';
@@ -78,6 +78,7 @@ import './services/templates/templates';
 import './services/tw/tw';
 import './services/uuid/UuidService';
 app.service('base64', Base64)
+app.service('cloud', GitHubCloudService)
 app.service('modalService', ModalService)
 app.service('textService', TextService)
 app.service('themeManager', DefaultThemeManager);

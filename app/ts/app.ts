@@ -60,7 +60,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version for use by scopes.
-app.constant('version', '2.0.0-beta.48');
+app.constant('version', '2.0.0-beta.49');
 
 // Feature flags (boolean)
 app.constant('FEATURE_DASHBOARD_ENABLED', false);

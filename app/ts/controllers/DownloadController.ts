@@ -1,5 +1,4 @@
 import app from '../app';
-import ICloud from '../services/cloud/ICloud';
 import IDoodleManager from '../services/doodles/IDoodleManager';
 import DownloadScope from '../scopes/DownloadScope';
 import Gist from '../services/github/Gist';
@@ -15,7 +14,6 @@ const PAGE_L = 'last';
 app.controller('download-controller', [
     '$scope',
     '$state',
-    'cloud',
     'doodles',
     'ga',
     'GitHub',
@@ -23,7 +21,6 @@ app.controller('download-controller', [
     function(
         $scope: DownloadScope,
         $state: angular.ui.IStateService,
-        cloud: ICloud,
         doodles: IDoodleManager,
         ga: UniversalAnalytics.ga,
         github: GitHubService,

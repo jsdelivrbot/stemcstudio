@@ -1,20 +1,16 @@
 import * as ng from 'angular';
 import Base64Service from '../../services/base64/Base64Service';
-import BlobKey from '../../services/github/BlobKey';
-import CommitArg from '../../services/github/CommitArg';
 import Delta from '../../widgets/editor/Delta';
 import Editor from '../../widgets/editor/Editor';
 import EditSession from '../../widgets/editor/EditSession';
 import OutputFile from '../../widgets/editor/workspace/OutputFile';
 import sd from 'showdown';
-import ICloud from '../../services/cloud/ICloud';
+import CloudService from '../../services/cloud/CloudService';
 import detect1x from './detect1x';
 import Doodle from '../../services/doodles/Doodle';
-import doodleToGist from '../../services/cloud/doodleToGist';
 import fileContent from './fileContent';
 import fileExists from './fileExists';
 import IDoodleManager from '../../services/doodles/IDoodleManager';
-import GistData from '../../services/gist/GistData';
 import GitHubService from '../../services/github/GitHubService';
 import IGitHubAuthManager from '../../services/gham/IGitHubAuthManager';
 import IOption from '../../services/options/IOption';
@@ -23,13 +19,9 @@ import ChangeHandler from './ChangeHandler';
 import OutputFileHandler from './OutputFileHandler';
 import doodleGroom from '../../utils/doodleGroom';
 import PatchGistResponse from '../../services/github/PatchGistResponse';
-import PathContents from '../../services/github/PathContents';
 import PostGistResponse from '../../services/github/PostGistResponse';
 import readMeHTML from './readMeHTML';
-import ReferenceData from '../../services/github/ReferenceData';
-import RepoElement from '../../services/github/RepoElement';
 import StringSet from '../../utils/StringSet';
-import TreeArg from '../../services/github/TreeArg';
 import mathscript from 'davinci-mathscript';
 import WorkspaceScope from '../../scopes/WorkspaceScope';
 import WorkspaceMixin from '../editor/WorkspaceMixin';
@@ -196,7 +188,6 @@ export default class WorkspaceController implements WorkspaceMixin {
      *
      */
     public static $inject: string[] = [
-        '$q',
         '$scope',
         '$state',
         '$stateParams',
@@ -268,7 +259,6 @@ export default class WorkspaceController implements WorkspaceMixin {
      * @param $scope {WorkspaceScope}
      */
     constructor(
-        private $q: ng.IQService,
         private $scope: WorkspaceScope,
         private $state: angular.ui.IStateService,
         private $stateParams: angular.ui.IStateParamsService,
@@ -279,7 +269,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         private base64: Base64Service,
         private github: GitHubService,
         authManager: IGitHubAuthManager,
-        private cloud: ICloud,
+        private cloud: CloudService,
         templates: Doodle[],
         ga: UniversalAnalytics.ga,
         private doodles: IDoodleManager,
@@ -350,12 +340,11 @@ export default class WorkspaceController implements WorkspaceMixin {
         $scope.doUpload = function(label?: string, value?: number) {
             ga('send', 'event', 'doodle', 'upload', label, value);
             const doodle = doodles.current();
-            const data: GistData = doodleToGist(doodle, options);
             const owner = doodle.userId;
             const repo = doodle.repoId;
             const gistId = doodle.gistId;
             if (FEATURE_GIST_ENABLED && gistId) {
-                github.patchGist(gistId, data, function(err: any, response: PatchGistResponse, status: number) {
+                cloud.updateGist(doodle, gistId, function(err: any, response: PatchGistResponse, status: number) {
                     if (err) {
                         if (status === 404) {
                             if (confirm("The Gist associated with your doodle no longer exists.\nWould you like me to disassociate your doodle so that you can create a new Gist?")) {
@@ -364,7 +353,6 @@ export default class WorkspaceController implements WorkspaceMixin {
                             }
                         }
                         else {
-                            console.warn(`PATCH ${JSON.stringify(data, null, 2)}`)
                             // If the status is 404 then the Gist no longer exists on GitHub.
                             // We might as well set the gistId to undefined and let the user try to POST.
                             alert("status: " + JSON.stringify(status));
@@ -396,127 +384,14 @@ export default class WorkspaceController implements WorkspaceMixin {
             }
             else if (FEATURE_REPO_ENABLED && owner && repo) {
                 const ref = 'heads/master'
-                github.getReference(owner, repo, ref).then(function(response) {
-                    const reference = response.data
-                    if (reference.object.type === 'commit') {
-                        const commitSHA = reference.object.sha;
-                        github.getCommit(owner, repo, commitSHA).then(function(response) {
-                            const commit = response.data
-                            const treeSHA = commit.tree.sha;
-                            // Let's create blobs for ALL our files!
-                            const blobs: ng.IHttpPromise<BlobKey>[] = []
-                            const paths = Object.keys(doodle.files)
-                            for (let p = 0; p < paths.length; p++) {
-                                const path = paths[p]
-                                const file = doodle.files[path]
-                                const encoded = base64.encode(file.content)
-                                blobs.push(github.createBlob(owner, repo, encoded, 'base64'))
-                            }
-                            const data: TreeArg = { base_tree: treeSHA, tree: [] }
-                            $q.all(blobs).then(function(promiseValue) {
-                                for (let p = 0; p < paths.length; p++) {
-                                    const prom = promiseValue[p]
-                                    const blobSHA = prom.data.sha
-                                    data.tree.push({
-                                        path: paths[p],
-                                        mode: '100644',
-                                        type: 'blob',
-                                        sha: blobSHA
-                                    })
-                                }
-                                github.createTree(owner, repo, data).then(function(response) {
-                                    const treeKey = response.data
-                                    const commit: CommitArg = {
-                                        message: "Hello",
-                                        parents: [commitSHA],
-                                        tree: treeKey.sha
-                                    }
-                                    github.createCommit(owner, repo, commit).then(function(response) {
-                                        const commitKey = response.data
-                                        const data: ReferenceData = {
-                                            sha: commitKey.sha,
-                                            force: false
-                                        };
-                                        github.updateReference(owner, repo, ref, data).then(function(response) {
-                                            const status = response.status
-                                            console.log(`status => ${status}`) // 200
-                                            console.log(`statusText => ${response.statusText}`) // OK
-                                            const headers = response.headers
-                                            console.log(`X-RateLimit-Limit => ${headers('X-RateLimit-Limit')}`) // 5000
-                                            console.log(`X-RateLimit-Remaining => ${headers('X-RateLimit-Remaining')}`) // 4999
-                                            const reference = response.data
-                                            console.log(JSON.stringify(reference, null, 2))
-                                        }).catch(function(reason) {
-                                            console.warn(`Unable to update reference ${ref} because ${JSON.stringify(reason)}.`)
-                                        })
-                                    }).catch(function(reason) {
-                                        console.warn(`Unable to create commit because ${JSON.stringify(reason)}.`)
-                                    })
-                                }).catch(function(reason) {
-                                    console.warn(`Unable to create tree because ${JSON.stringify(reason)}.`)
-                                })
-                            }).catch(function(reason) {
-                                console.warn(`Unable to create blobs because ${JSON.stringify(reason)}.`)
-                            })
-                            // We don't really need to get the tree!
-                            /*
-                            github.getTree(owner, repo, treeSHA).then(function(response) {
-                                const tree = response.data
-                                for (let i = 0; i < tree.tree.length; i++) {
-                                    const child = tree.tree[i];
-                                    const path = child.path;
-                                    switch (child.type) {
-                                        case 'blob': {
-                                            github.getBlob(owner, repo, child.sha).then(function(response) {
-                                                // const status = response.status
-                                                // console.log(`status => ${status}`) // 200
-                                                // console.log(`statusText => ${response.statusText}`) // OK
-                                                // const headers = response.headers
-                                                // console.log(`X-RateLimit-Limit => ${headers('X-RateLimit-Limit')}`) // 5000
-                                                // console.log(`X-RateLimit-Remaining => ${headers('X-RateLimit-Remaining')}`) // 4999
-                                                const blob = response.data;
-                                                switch (blob.encoding) {
-                                                    case 'base64': {
-                                                        const content = base64.decode(blob.content);
-                                                        console.log(child.path)
-                                                        console.log(content)
-                                                        break;
-                                                    }
-                                                    default: {
-                                                        console.warn(`Expecting blob.encoding for '${path}', was ${blob.encoding}.`)
-                                                    }
-                                                }
-                                            }).catch(function(reason) {
-                                                console.warn(`Unable to get blob because ${JSON.stringify(reason)}.`)
-                                            })
-                                            break;
-                                        }
-                                        default: {
-                                            console.warn(`Expecting child '${path}' to be a blob, but was ${child.type}.`)
-                                        }
-                                    }
-                                }
-
-                            }).catch(function(reason) {
-                                console.warn(`Unable to get tree '${treeSHA}' because ${JSON.stringify(reason)}.`)
-                            })
-                            */
-                        }).catch(function(reason) {
-                            console.warn(`Unable to get commit '${commitSHA}' because ${JSON.stringify(reason)}.`)
-                        })
-                    }
-                    else {
-                        console.warn(`Expecting reference '${ref}' to be for a commit, but was ${reference.object.type}.`)
-                    }
-                }).catch(function(reason) {
-                    console.warn(`Unable to get reference '${ref}' because ${JSON.stringify(reason)}.`)
-                })
+                cloud.uploadToRepo(doodle, owner, repo, ref)
             }
             else {
+                // TODO: Need to ask user whether they want to create a Gist or a Repo.
                 if (FEATURE_GIST_ENABLED) {
-                    github.postGist(data, function(err: any, response: PostGistResponse) {
+                    cloud.createGist(doodle, function(err: any, response: PostGistResponse) {
                         if (err) {
-                            console.warn(`POST ${JSON.stringify(data, null, 2)}`)
+                            // TODO: Use a modal alert service.
                             BootstrapDialog.show({
                                 type: BootstrapDialog.TYPE_DANGER,
                                 title: $("<h3>Upload failed</h3>"),
@@ -592,13 +467,13 @@ export default class WorkspaceController implements WorkspaceMixin {
         // Now that things have settled down...
         doodles.updateStorage();
 
-        const userId: string = this.$stateParams['userId'];
-        const repoId: string = this.$stateParams['repoId'];
+        const owner: string = this.$stateParams['userId'];
+        const repo: string = this.$stateParams['repoId'];
         const gistId: string = this.$stateParams['gistId'];
 
         const matches = doodles.filter(function(doodle: Doodle) {
-            if (typeof userId === 'string' && typeof repoId === 'string') {
-                return doodle.userId === userId && doodle.repoId === repoId
+            if (typeof owner === 'string' && typeof repo === 'string') {
+                return doodle.userId === owner && doodle.repoId === repo
             }
             else if (typeof gistId === 'string') {
                 return doodle.gistId === gistId
@@ -616,43 +491,15 @@ export default class WorkspaceController implements WorkspaceMixin {
             this.onInitDoodle(match)
         }
         else {
-            if (userId && repoId) {
-                this.github.getRepoContents(userId, repoId, (err: any, contents: RepoElement[]) => {
+            if (owner && repo) {
+                this.cloud.downloadRepo(owner, repo, (err: any, doodle: Doodle) => {
                     if (!err) {
-                        const doodle = new Doodle(this.options)
-                        doodle.userId = userId
-                        doodle.repoId = repoId
-                        doodle.gistId = void 0
-                        const promises: ng.IPromise<PathContents>[] = [];
-                        for (let c = 0; c < contents.length; c++) {
-                            const element = contents[c]
-                            promises.push(this.github.getPathContents(userId, repoId, element.path))
-                        }
-                        const xs = this.$q.all(promises)
-                        xs.then((repoFiles: PathContents[]) => {
-                            for (let fileIdx = 0; fileIdx < repoFiles.length; fileIdx++) {
-                                const repoFile = repoFiles[fileIdx];
-                                // TODO: Use the encoding property to select the decoder.
-                                // TODO: We're not using the size and type.
-                                // The type should be 'file'.
-                                // The size should match the decoded length.
-                                // The path is probably what we should use for the key to the map.
-                                // The encoding will usually be 'base64'.
-                                const fileContent = this.base64.decode(repoFile.content);
-                                const file = doodle.newFile(repoFile.path)
-                                file.content = fileContent
-                                // The sha is needed in order to perform an update.
-                                file.sha = repoFile.sha
-                            }
-                            doodles.unshift(doodle);
-                            doodles.updateStorage();
-                            this.onInitDoodle(doodles.current())
-                        }).catch((err) => {
-                            this.$scope.alert("Error attempting to download File");
-                        })
+                        doodles.unshift(doodle);
+                        doodles.updateStorage();
+                        this.onInitDoodle(doodle)
                     }
                     else {
-                        this.$scope.alert("Error attempting to download Repo");
+                        this.$scope.alert(err);
                     }
                 })
             }
@@ -661,7 +508,7 @@ export default class WorkspaceController implements WorkspaceMixin {
                     if (!err) {
                         doodles.unshift(doodle);
                         doodles.updateStorage();
-                        this.onInitDoodle(doodles.current())
+                        this.onInitDoodle(doodle)
                     }
                     else {
                         this.$scope.alert("Error attempting to download Gist");

@@ -25,7 +25,6 @@
     "app/ts/controllers/OpenController.ts",
     "app/ts/controllers/PropertiesController.ts",
     "app/ts/fugly/ga/ga.ts",
-    "app/ts/services/cloud/cloud.ts",
     "app/ts/services/cookie/cookie.ts",
     "app/ts/services/doodles/doodles.ts",
     "app/ts/services/gham/GitHubAuthManager.ts",
