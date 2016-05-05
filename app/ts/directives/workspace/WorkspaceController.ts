@@ -1,5 +1,7 @@
 import * as ng from 'angular';
 import Base64Service from '../../services/base64/Base64Service';
+import BlobKey from '../../services/github/BlobKey';
+import CommitArg from '../../services/github/CommitArg';
 import Delta from '../../widgets/editor/Delta';
 import Editor from '../../widgets/editor/Editor';
 import EditSession from '../../widgets/editor/EditSession';
@@ -24,8 +26,10 @@ import PatchGistResponse from '../../services/github/PatchGistResponse';
 import PathContents from '../../services/github/PathContents';
 import PostGistResponse from '../../services/github/PostGistResponse';
 import readMeHTML from './readMeHTML';
+import ReferenceData from '../../services/github/ReferenceData';
 import RepoElement from '../../services/github/RepoElement';
 import StringSet from '../../utils/StringSet';
+import TreeArg from '../../services/github/TreeArg';
 import mathscript from 'davinci-mathscript';
 import WorkspaceScope from '../../scopes/WorkspaceScope';
 import WorkspaceMixin from '../editor/WorkspaceMixin';
@@ -343,13 +347,12 @@ export default class WorkspaceController implements WorkspaceMixin {
             this.updateReadmeView(WAIT_NO_MORE)
         }
 
-        // FIXME: Upload really thinks it's only a Gist.
         $scope.doUpload = function(label?: string, value?: number) {
             ga('send', 'event', 'doodle', 'upload', label, value);
             const doodle = doodles.current();
             const data: GistData = doodleToGist(doodle, options);
-            const userId = doodle.userId;
-            const repoId = doodle.repoId;
+            const owner = doodle.userId;
+            const repo = doodle.repoId;
             const gistId = doodle.gistId;
             if (FEATURE_GIST_ENABLED && gistId) {
                 github.patchGist(gistId, data, function(err: any, response: PatchGistResponse, status: number) {
@@ -391,8 +394,123 @@ export default class WorkspaceController implements WorkspaceMixin {
                     }
                 });
             }
-            else if (FEATURE_REPO_ENABLED && userId && repoId) {
-                console.log(`OK. Let's make a commit for user ${userId} to the ${repoId} repo!`)
+            else if (FEATURE_REPO_ENABLED && owner && repo) {
+                const ref = 'heads/master'
+                github.getReference(owner, repo, ref).then(function(response) {
+                    const reference = response.data
+                    if (reference.object.type === 'commit') {
+                        const commitSHA = reference.object.sha;
+                        github.getCommit(owner, repo, commitSHA).then(function(response) {
+                            const commit = response.data
+                            const treeSHA = commit.tree.sha;
+                            // Let's create blobs for ALL our files!
+                            const blobs: ng.IHttpPromise<BlobKey>[] = []
+                            const paths = Object.keys(doodle.files)
+                            for (let p = 0; p < paths.length; p++) {
+                                const path = paths[p]
+                                const file = doodle.files[path]
+                                const encoded = base64.encode(file.content)
+                                blobs.push(github.createBlob(owner, repo, encoded, 'base64'))
+                            }
+                            const data: TreeArg = { base_tree: treeSHA, tree: [] }
+                            $q.all(blobs).then(function(promiseValue) {
+                                for (let p = 0; p < paths.length; p++) {
+                                    const prom = promiseValue[p]
+                                    const blobSHA = prom.data.sha
+                                    data.tree.push({
+                                        path: paths[p],
+                                        mode: '100644',
+                                        type: 'blob',
+                                        sha: blobSHA
+                                    })
+                                }
+                                github.createTree(owner, repo, data).then(function(response) {
+                                    const treeKey = response.data
+                                    const commit: CommitArg = {
+                                        message: "Hello",
+                                        parents: [commitSHA],
+                                        tree: treeKey.sha
+                                    }
+                                    github.createCommit(owner, repo, commit).then(function(response) {
+                                        const commitKey = response.data
+                                        const data: ReferenceData = {
+                                            sha: commitKey.sha,
+                                            force: false
+                                        };
+                                        github.updateReference(owner, repo, ref, data).then(function(response) {
+                                            const status = response.status
+                                            console.log(`status => ${status}`) // 200
+                                            console.log(`statusText => ${response.statusText}`) // OK
+                                            const headers = response.headers
+                                            console.log(`X-RateLimit-Limit => ${headers('X-RateLimit-Limit')}`) // 5000
+                                            console.log(`X-RateLimit-Remaining => ${headers('X-RateLimit-Remaining')}`) // 4999
+                                            const reference = response.data
+                                            console.log(JSON.stringify(reference, null, 2))
+                                        }).catch(function(reason) {
+                                            console.warn(`Unable to update reference ${ref} because ${JSON.stringify(reason)}.`)
+                                        })
+                                    }).catch(function(reason) {
+                                        console.warn(`Unable to create commit because ${JSON.stringify(reason)}.`)
+                                    })
+                                }).catch(function(reason) {
+                                    console.warn(`Unable to create tree because ${JSON.stringify(reason)}.`)
+                                })
+                            }).catch(function(reason) {
+                                console.warn(`Unable to create blobs because ${JSON.stringify(reason)}.`)
+                            })
+                            // We don't really need to get the tree!
+                            /*
+                            github.getTree(owner, repo, treeSHA).then(function(response) {
+                                const tree = response.data
+                                for (let i = 0; i < tree.tree.length; i++) {
+                                    const child = tree.tree[i];
+                                    const path = child.path;
+                                    switch (child.type) {
+                                        case 'blob': {
+                                            github.getBlob(owner, repo, child.sha).then(function(response) {
+                                                // const status = response.status
+                                                // console.log(`status => ${status}`) // 200
+                                                // console.log(`statusText => ${response.statusText}`) // OK
+                                                // const headers = response.headers
+                                                // console.log(`X-RateLimit-Limit => ${headers('X-RateLimit-Limit')}`) // 5000
+                                                // console.log(`X-RateLimit-Remaining => ${headers('X-RateLimit-Remaining')}`) // 4999
+                                                const blob = response.data;
+                                                switch (blob.encoding) {
+                                                    case 'base64': {
+                                                        const content = base64.decode(blob.content);
+                                                        console.log(child.path)
+                                                        console.log(content)
+                                                        break;
+                                                    }
+                                                    default: {
+                                                        console.warn(`Expecting blob.encoding for '${path}', was ${blob.encoding}.`)
+                                                    }
+                                                }
+                                            }).catch(function(reason) {
+                                                console.warn(`Unable to get blob because ${JSON.stringify(reason)}.`)
+                                            })
+                                            break;
+                                        }
+                                        default: {
+                                            console.warn(`Expecting child '${path}' to be a blob, but was ${child.type}.`)
+                                        }
+                                    }
+                                }
+
+                            }).catch(function(reason) {
+                                console.warn(`Unable to get tree '${treeSHA}' because ${JSON.stringify(reason)}.`)
+                            })
+                            */
+                        }).catch(function(reason) {
+                            console.warn(`Unable to get commit '${commitSHA}' because ${JSON.stringify(reason)}.`)
+                        })
+                    }
+                    else {
+                        console.warn(`Expecting reference '${ref}' to be for a commit, but was ${reference.object.type}.`)
+                    }
+                }).catch(function(reason) {
+                    console.warn(`Unable to get reference '${ref}' because ${JSON.stringify(reason)}.`)
+                })
             }
             else {
                 if (FEATURE_GIST_ENABLED) {

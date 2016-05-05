@@ -1,6 +1,6 @@
 import app from '../../app';
 import Doodle from '../doodles/Doodle';
-import GetGistResponse from '../github/GetGistResponse';
+import Gist from '../github/Gist';
 import GitHubService from '../github/GitHubService';
 import ICloud from './ICloud';
 import IOptionManager from '../options/IOptionManager';
@@ -24,7 +24,7 @@ app.factory('cloud', [
 
         const cloud: ICloud = {
             downloadGist: function(gistId: string, callback: (err, doodle?: Doodle) => void) {
-                github.getGist(gistId, function(err: any, gist: GetGistResponse) {
+                github.getGist(gistId, function(err: any, gist: Gist) {
                     if (!err) {
                         const doodle = new Doodle(options)
                         doodle.gistId = gistId

@@ -27,14 +27,13 @@ export default class GitHubAccountController {
      * @return {void}
      */
     $onInit(): void {
-        this.gitHub.getUser((err: any, user: User) => {
-            if (!err) {
-                this.$scope.user = user
-            }
-            else {
-                this.$scope.user = { name: "", login: "", avatar_url: void 0 }
-            }
+
+        this.gitHub.getUser().then((response) => {
+            this.$scope.user = response.data
+        }).catch((reason) => {
+            this.$scope.user = <User>{ name: "", login: "", avatar_url: void 0 }
         })
+
         this.gitHub.getUserRepos((err: any, repos: Repo[]) => {
             if (!err) {
                 this.$scope.repos = repos

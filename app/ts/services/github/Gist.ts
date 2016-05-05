@@ -1,15 +1,31 @@
 import GistFile from './GistFile';
 
-export default class Gist {
+interface Gist {
+    url: string;
+    forks_url: string;
+    commits_url: string;
     id: string;
     description: string;
+    public: boolean;
+    owner: {
+        login: string;
+        id: number;
+        avatar_url: string;
+        gravatar_id: string;
+        // More... 
+    };
     files: { [name: string]: GistFile };
-    html_url: string;
-    constructor(id: string, description: string, isPublic: boolean, files: { [name: string]: GistFile }, html_url: string) {
-        this.id = id;
-        this.description = description;
-        this["public"] = isPublic;
-        this.files = files;
-        this.html_url = html_url;
-    }
+    truncated: boolean;
+    comments: number;
+    comments_url: string;
+    created_at: string;
+    updated_at: string;
+    forks: {
+
+    }[];
+    history: {
+
+    }[];
 }
+
+export default Gist;

@@ -59,7 +59,8 @@ function vendorPath(packageFolder: string, fileName: string): string {
     return VENDOR_FOLDER_MARKER + '/' + packageFolder + '/' + fileName;
 }
 
-app.constant('version', '2.0.0-beta.47');
+// The application version for use by scopes.
+app.constant('version', '2.0.0-beta.48');
 
 // Feature flags (boolean)
 app.constant('FEATURE_DASHBOARD_ENABLED', false);
@@ -71,8 +72,10 @@ app.constant('FEATURE_REPO_ENABLED', false);
 // githubKey stores the key of the item in local storage for maintaining GitHub OAuth data.
 // Remark: This value is duplicated in views/github_callback.jade
 app.constant('githubKey', makeKey('github'));
+
 // com.stemcstudio.doodles is the local storage key for doodles.
 app.constant('doodlesKey', makeKey('doodles'));
+
 // com.stemcstudio.config is the local storage key for configuration.
 app.constant('configKey', makeKey('config'));
 
@@ -105,9 +108,15 @@ app.constant('LIBS_MARKER', '// LIBS-MARKER');
 // All access should be through the service wrapper.
 app.constant('NAMESPACE_GOOGLE_ANALYTICS', 'googleAnalytics');
 app.constant('UNIVERSAL_ANALYTICS_TRACKING_ID', 'UA-41504069-5');
+
 // This twitter widget namespace is a symbolic constant. It cannot be changed.
 app.constant('NAMESPACE_TWITTER_WIDGETS', 'twttr');
+
+// The token that we receive for OAuth.
 app.constant('GITHUB_TOKEN_COOKIE_NAME', 'github-token');
+
+// Cache the user.login once we have received the token in this cookie.
+app.constant('GITHUB_LOGIN_COOKIE_NAME', 'github-login');
 
 // Names of routing states.
 // WARNING: Changing state names can break ui-sref directives.
@@ -119,6 +128,7 @@ app.constant('STATE_REPO', 'repo');
 
 // The TypeScript d.ts library provides the type checking of global JavaScript types.
 app.constant('FILENAME_TYPESCRIPT_CURRENT_LIB_DTS', vendorPath('typescript@1.4.1.3', 'lib.d.ts'))
+
 // The MathScript js library provides operator overloading at runtime.
 app.constant('FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS', vendorPath('davinci-mathscript@1.0.8', 'dist/davinci-mathscript.min.js'))
 
@@ -150,7 +160,6 @@ app.config([
         STATE_GIST: string,
         STATE_REPO: string
     ) {
-
         $stateProvider
             .state('home', {
                 url: '/',
