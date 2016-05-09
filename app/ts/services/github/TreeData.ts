@@ -1,4 +1,4 @@
-interface TreeArg {
+interface TreeData {
     /**
      * The SHA1 of the tree you want to update with new data.
      * If you don't set this, the commit will be created on top of everything.
@@ -44,4 +44,4 @@ interface TreeArg {
     }[];
 }
 
-export default TreeArg;
+export default TreeData;

@@ -24,7 +24,6 @@ export default class RepoController extends AbstractPageController {
         ga: UniversalAnalytics.ga,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string) {
         super($scope, $window, authManager, ga, UNIVERSAL_ANALYTICS_TRACKING_ID, 'hidden')
-        console.log("RepoController.constructor()")
     }
     $onInit(): void {
         // This will not be called because this is a routing controller.

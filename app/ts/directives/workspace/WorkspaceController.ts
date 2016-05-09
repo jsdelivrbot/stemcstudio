@@ -11,18 +11,25 @@ import Doodle from '../../services/doodles/Doodle';
 import fileContent from './fileContent';
 import fileExists from './fileExists';
 import IDoodleManager from '../../services/doodles/IDoodleManager';
+// import RepoData from '../../services/github/RepoData';
+import GitHubReason from '../../services/github/GitHubReason';
 import GitHubService from '../../services/github/GitHubService';
 import IGitHubAuthManager from '../../services/gham/IGitHubAuthManager';
 import IOption from '../../services/options/IOption';
 import IOptionManager from '../../services/options/IOptionManager';
+import isNumber from '../../utils/isNumber';
 import ChangeHandler from './ChangeHandler';
 import OutputFileHandler from './OutputFileHandler';
 import doodleGroom from '../../utils/doodleGroom';
-import PatchGistResponse from '../../services/github/PatchGistResponse';
-import PostGistResponse from '../../services/github/PostGistResponse';
 import readMeHTML from './readMeHTML';
 import StringSet from '../../utils/StringSet';
 import mathscript from 'davinci-mathscript';
+import Method from './Method';
+import ModalDialog from '../../services/modalService/ModalDialog';
+import PromptOptions from '../../services/modalService/PromptOptions';
+import RepoData from '../../services/github/RepoData';
+import FlowService from '../../services/flow/FlowService';
+import UploadFacts from './UploadFacts';
 import WorkspaceScope from '../../scopes/WorkspaceScope';
 import WorkspaceMixin from '../editor/WorkspaceMixin';
 import Workspace from '../../services/workspace/Workspace';
@@ -36,7 +43,7 @@ import {LANGUAGE_MARKDOWN} from '../../languages/modes';
 import {LANGUAGE_TYPE_SCRIPT} from '../../languages/modes';
 import {LANGUAGE_TEXT} from '../../languages/modes';
 
-import BootstrapDialog from 'bootstrap-dialog';
+// import BootstrapDialog from 'bootstrap-dialog';
 
 const FSLASH_STAR = '/*'
 const STAR_FSLASH = '*/'
@@ -200,8 +207,10 @@ export default class WorkspaceController implements WorkspaceMixin {
         'GitHubAuthManager',
         'cloud',
         'templates',
+        'flow',
         'ga',
         'doodles',
+        'modalService',
         'options',
         'FEATURE_GIST_ENABLED',
         'FEATURE_REPO_ENABLED',
@@ -271,8 +280,10 @@ export default class WorkspaceController implements WorkspaceMixin {
         authManager: IGitHubAuthManager,
         private cloud: CloudService,
         templates: Doodle[],
+        private flowService: FlowService,
         ga: UniversalAnalytics.ga,
         private doodles: IDoodleManager,
+        private modalDialog: ModalDialog,
         private options: IOptionManager,
         private FEATURE_GIST_ENABLED: boolean,
         private FEATURE_REPO_ENABLED: boolean,
@@ -337,98 +348,336 @@ export default class WorkspaceController implements WorkspaceMixin {
             this.updateReadmeView(WAIT_NO_MORE)
         }
 
-        $scope.doUpload = function(label?: string, value?: number) {
+        $scope.doUpload = (label?: string, value?: number) => {
             ga('send', 'event', 'doodle', 'upload', label, value);
-            const doodle = doodles.current();
-            const owner = doodle.userId;
-            const repo = doodle.repoId;
-            const gistId = doodle.gistId;
-            if (FEATURE_GIST_ENABLED && gistId) {
-                cloud.updateGist(doodle, gistId, function(err: any, response: PatchGistResponse, status: number) {
-                    if (err) {
-                        if (status === 404) {
-                            if (confirm("The Gist associated with your doodle no longer exists.\nWould you like me to disassociate your doodle so that you can create a new Gist?")) {
-                                doodle.gistId = undefined;
-                                doodles.updateStorage();
+
+            /**
+             * The tile of the flow that will provide context in any dialogs.
+             */
+            const title = "Upload";
+            const doodle = this.doodles.current()
+
+            const flow = this.flowService.createFlow<UploadFacts>(title)
+
+            flow.rule("Commit Message", {},
+                (facts) => {
+                    return facts.canAskForCommitMessage();
+                },
+                (facts, session, next) => {
+                    this.cloud.commitMessage(`${title}`).then((commitMessage) => {
+                        facts.commitMessage.resolve(commitMessage)
+                        next()
+                    }, (reason) => {
+                        facts.commitMessage.reject(reason)
+                        next(reason)
+                    })
+                })
+
+            flow.rule("Choose Gist or Repo", {},
+                (facts) => {
+                    return facts.canAskToChooseGistOrRepo()
+                },
+                (facts, session, next) => {
+                    cloud.chooseGistOrRepo(title).then((storage) => {
+                        facts.storage.resolve(storage);
+                        next()
+                    }, (reason) => {
+                        facts.storage.reject(reason);
+                        next(reason)
+                    })
+                })
+
+            flow.rule("Create Gist", {},
+                (facts) => {
+                    return facts.canCreateGist();
+                },
+                (facts, session, next) => {
+                    this.cloud.createGist(doodle)
+                        .then((http) => {
+                            const status = http.status;
+                            facts.status.resolve(status)
+                            facts.statusText.resolve(http.statusText)
+                            switch (status) {
+                                case 201: {
+                                    const data = http.data
+                                    facts.gistId.resolve(data.id)
+                                    facts.uploadedAt.resolve(data.created_at)
+                                    facts.redirect.resolve(true)
+                                    facts.uploadMessage.resolve(`Your doodle was successfully uploaded and associated with a new Gist.`)
+
+                                    doodle.gistId = data.id;
+                                    doodle.created_at = data.created_at;
+                                    doodle.updated_at = data.updated_at;
+
+                                    doodles.updateStorage();
+
+                                    next()
+                                    break;
+                                }
+                                default: {
+                                    const reason = `Unexpected HTTP status (${status})`;
+                                    facts.uploadedAt.reject(reason);
+                                    next(reason)
+                                }
+                            }
+                        })
+                        .catch((reason) => {
+                            facts.uploadedAt.reject(reason)
+                            next(reason)
+                        })
+                })
+
+            flow.rule("Update Gist", {},
+                (facts) => {
+                    return facts.canUpdateGist()
+                },
+                (facts, session, next) => {
+                    this.cloud.updateGist(doodle, doodle.gistId)
+                        .then((http) => {
+                            const status = http.status
+                            const statusText = http.statusText
+                            facts.status.resolve(status)
+                            facts.statusText.resolve(statusText)
+                            switch (status) {
+                                case 200: {
+                                    const data = http.data;
+                                    facts.uploadedAt.resolve(data.updated_at)
+                                    facts.uploadMessage.resolve(`${statusText}. Your doodle was successfully uploaded and patched the existing Gist.`)
+                                    doodle.emptyTrash();
+                                    doodle.updated_at = data.updated_at;
+                                    doodles.updateStorage();
+                                    next()
+                                    break;
+                                }
+                                case 404: {
+                                    // The Gist no longer exists on GitHub
+                                    // TODO: Test this we may end up down in the catch.
+                                    doodle.gistId = void 0
+                                    facts.gistId.reset()
+                                    doodles.updateStorage();
+                                    next();
+                                    break;
+                                }
+                                default: {
+                                    const reason = `Unexpected HTTP status (${status})`;
+                                    facts.uploadedAt.reject(reason);
+                                    next(reason);
+                                }
+                            }
+                        })
+                        .catch((reason) => {
+                            facts.uploadedAt.reject(reason)
+                            next(reason)
+                        })
+                })
+
+            flow.rule("Prompt for repository name", {},
+                (facts) => {
+                    return facts.canAskForRepoName()
+                },
+                (facts, session, next) => {
+                    const message = "Please enter the name of the repository that you would like to upload to."
+                    const options: PromptOptions = { title, message, text: '', placeholder: 'my-repository' }
+                    this.modalDialog.prompt(options)
+                        .then((repo) => {
+                            facts.repo.resolve(repo)
+                            next();
+                        })
+                        .catch((reason) => {
+                            next(reason)
+                        })
+                })
+
+            flow.rule("Determine whether repository exists", {},
+                (facts) => {
+                    return facts.canDetermineRepoExists()
+                },
+                (facts, session, next) => {
+                    this.github.getRepo(facts.userLogin.value, facts.repo.value)
+                        .then((http) => {
+                            const status = http.status
+                            facts.status.resolve(status)
+                            facts.statusText.resolve(http.statusText)
+                            switch (status) {
+                                case 404: {
+                                    console.warn("HERE 1")
+                                    facts.repoExists.resolve(false)
+                                    next();
+                                    break;
+                                }
+                                case 200: {
+                                    facts.repoExists.resolve(true);
+                                    const repo = http.data
+                                    facts.repoId.resolve(repo.id)
+                                    next();
+                                    break;
+                                }
+                                default: {
+                                    const reason = `Unexpected HTTP status (${status})`;
+                                    facts.uploadedAt.reject(reason);
+                                    next(reason);
+                                }
+                            }
+                        })
+                        .catch((reason) => {
+                            if (isNumber(reason.status)) {
+                                const status: number = reason.status
+                                switch (status) {
+                                    case 404: {
+                                        console.warn("HERE 1")
+                                        facts.repoExists.resolve(false)
+                                        next();
+                                        break;
+                                    }
+                                    default: {
+                                        const reason = `Unexpected HTTP status (${status})`;
+                                        facts.uploadedAt.reject(reason);
+                                        next(reason);
+                                    }
+                                }
+                            }
+                            else {
+                                console.warn("HERE 2")
+                                facts.repoExists.reject(reason)
+                                next(reason);
+                            }
+                        })
+                })
+
+            flow.rule("Prompt for repository data", {},
+                (facts) => {
+                    return facts.canAskForRepoData()
+                },
+                (facts, session, next) => {
+                    const defaults: RepoData = { name: '' };
+                    defaults.auto_init = true;
+                    this.cloud.repoData(title, defaults)
+                        .then((repoData) => {
+                            facts.repoData.resolve(repoData)
+                            next()
+                        })
+                        .catch((reason) => {
+                            facts.repoData.reject(reason)
+                            next(reason)
+                        })
+                })
+
+            flow.rule("Create Repo", {},
+                (facts) => {
+                    return facts.canCreateRepo()
+                },
+                (facts, session, next) => {
+                    this.cloud.createRepo(facts.repoData.value)
+                        .then((http) => {
+                            const status = http.status;
+                            facts.status.resolve(status)
+                            facts.statusText.resolve(http.statusText)
+                            const repository = http.data;
+                            facts.repoId.resolve(repository.id);
+                            facts.repo.resolve(repository.name)
+                            facts.repoExists.resolve(true)
+                            facts.owner.resolve(repository.owner.login)
+                            facts.ref.resolve('heads/master')
+                            next()
+                        })
+                        .catch((reason: GitHubReason) => {
+                            facts.status.resolve(reason.status)
+                            facts.statusText.resolve(reason.statusText)
+                            switch (reason.status) {
+                                case 422: {
+                                    // It already exists. We didn't learn anything about the repository
+                                    // other than that it exists.
+                                    facts.repoExists.resolve(true)
+                                    // FIXME: There's some duplication here in the repo name.
+                                    facts.repo.resolve(facts.repoData.value.name)
+                                    // Change our strategy to perform an update.
+                                    facts.method.resolve(Method.Update)
+                                    facts.owner.resolve(facts.userLogin.value)
+                                    facts.ref.resolve('heads/master')
+                                    next()
+                                    break;
+                                }
+                                default: {
+                                    next(reason)
+                                }
+                            }
+                        })
+                })
+
+            flow.rule("Upload to Repo", {},
+                (facts) => {
+                    return facts.canUploadToRepo()
+                },
+                (facts, session, next) => {
+                    const owner = facts.owner.value;
+                    const repo = facts.repo.value;
+                    const ref = facts.ref.value;
+                    const commitMessage = facts.commitMessage.value;
+                    this.cloud.uploadToRepo(doodle, owner, repo, ref, commitMessage, (err, details) => {
+                        if (!err) {
+                            if (details.refUpdate.isResolved()) {
+                                doodle.owner = owner;
+                                doodle.repo = repo;
+                                // doodle.ref = ref;
+                                facts.uploadMessage.resolve("Your doodle was successfully uploaded.")
+                            }
+                            else {
+                                facts.uploadMessage.resolve("Your doodle didn't make it to GitHub!")
                             }
                         }
                         else {
-                            // If the status is 404 then the Gist no longer exists on GitHub.
-                            // We might as well set the gistId to undefined and let the user try to POST.
-                            alert("status: " + JSON.stringify(status));
-                            alert("err: " + JSON.stringify(err));
-                            alert("response: " + JSON.stringify(response));
+                            facts.uploadMessage.reject(err)
+                        }
+                        next(err)
+                    })
+                })
+
+            const facts = new UploadFacts()
+
+            facts.gistId.resolve(doodle.gistId)
+            facts.repo.resolve(doodle.repo)
+            facts.owner.resolve(doodle.owner)
+            facts.userLogin.resolve($scope.userLogin())
+            if (facts.gistId.isResolved()) {
+                facts.storage.resolve('gist')
+            }
+            if (facts.repo.isResolved()) {
+                facts.storage.resolve('repo')
+                facts.ref.resolve('heads/master')
+                facts.repoExists.resolve(true)
+            }
+            if (facts.gistId.isUndefined() && facts.repo.isUndefined()) {
+                facts.method.resolve(Method.Create)
+            }
+            else {
+                facts.method.resolve(Method.Update)
+            }
+
+            const session = flow.createSession(facts);
+            session.execute((reason: any, facts: UploadFacts) => {
+                if (reason) {
+                    this.modalDialog.alert({ title, message: `The upload was aborted because of ${JSON.stringify(reason, null, 2)}.` })
+                }
+                else {
+                    if (facts.uploadMessage.isResolved()) {
+                        this.modalDialog.alert({ title, message: facts.uploadMessage.value })
+                        if (facts.redirect.isResolved()) {
+                            if (facts.gistId.isResolved()) {
+                                this.$state.go(this.STATE_GIST, { gistId: doodle.gistId })
+                            }
+                            else if (facts.owner.isResolved() && facts.repo.isResolved()) {
+                                this.$state.go(this.STATE_REPO, { owner: doodle.owner, repo: doodle.repo })
+                            }
+                            else {
+                                // FIXME: redirect should contain it's own instructions.
+                            }
                         }
                     }
                     else {
-                        doodle.emptyTrash();
-                        doodle.updated_at = response.updated_at;
-
-                        doodles.updateStorage();
-
-                        BootstrapDialog.show({
-                            type: BootstrapDialog.TYPE_SUCCESS,
-                            title: $("<h3>Upload complete</h3>"),
-                            message: "Your doodle was successfully uploaded and patched the existing Gist.",
-                            buttons: [{
-                                label: "Close",
-                                cssClass: 'btn btn-primary',
-                                action: function(dialog: IBootstrapDialog) {
-                                    $state.go(STATE_GIST, { gistId: gistId });
-                                    dialog.close();
-                                }
-                            }]
-                        });
+                        this.modalDialog.alert({ title, message: `Apologies, the upload was not completed because of a system error.` })
                     }
-                });
-            }
-            else if (FEATURE_REPO_ENABLED && owner && repo) {
-                const ref = 'heads/master'
-                cloud.uploadToRepo(doodle, owner, repo, ref)
-            }
-            else {
-                // TODO: Need to ask user whether they want to create a Gist or a Repo.
-                if (FEATURE_GIST_ENABLED) {
-                    cloud.createGist(doodle, function(err: any, response: PostGistResponse) {
-                        if (err) {
-                            // TODO: Use a modal alert service.
-                            BootstrapDialog.show({
-                                type: BootstrapDialog.TYPE_DANGER,
-                                title: $("<h3>Upload failed</h3>"),
-                                message: "Unable to post your Gist at this time.",
-                                buttons: [{
-                                    label: "Close",
-                                    cssClass: 'btn btn-primary',
-                                    action: function(dialog: IBootstrapDialog) {
-                                        dialog.close();
-                                    }
-                                }]
-                            });
-                        }
-                        else {
-                            doodle.gistId = response.id;
-                            doodle.created_at = response.created_at;
-                            doodle.updated_at = response.updated_at;
-
-                            doodles.updateStorage();
-
-                            BootstrapDialog.show({
-                                type: BootstrapDialog.TYPE_SUCCESS,
-                                title: $("<h3>Upload complete</h3>"),
-                                message: "Your doodle was successfully uploaded and associated with a new Gist.",
-                                buttons: [{
-                                    label: "Close",
-                                    cssClass: 'btn btn-primary',
-                                    action: function(dialog: IBootstrapDialog) {
-                                        $state.go(STATE_GIST, { gistId: doodles.current().gistId });
-                                        dialog.close();
-                                    }
-                                }]
-                            });
-                        }
-                    });
                 }
-            }
+            })
         };
     }
 
@@ -467,13 +716,13 @@ export default class WorkspaceController implements WorkspaceMixin {
         // Now that things have settled down...
         doodles.updateStorage();
 
-        const owner: string = this.$stateParams['userId'];
-        const repo: string = this.$stateParams['repoId'];
-        const gistId: string = this.$stateParams['gistId'];
+        const owner: string = this.$stateParams['owner'];
+        const repo: string = this.$stateParams['repo'];
+        const gistId: string = this.$stateParams['gistId']; // OK
 
         const matches = doodles.filter(function(doodle: Doodle) {
             if (typeof owner === 'string' && typeof repo === 'string') {
-                return doodle.userId === owner && doodle.repoId === repo
+                return doodle.owner === owner && doodle.repo === repo
             }
             else if (typeof gistId === 'string') {
                 return doodle.gistId === gistId
@@ -492,16 +741,16 @@ export default class WorkspaceController implements WorkspaceMixin {
         }
         else {
             if (owner && repo) {
-                this.cloud.downloadRepo(owner, repo, (err: any, doodle: Doodle) => {
-                    if (!err) {
+                this.cloud.downloadTree(owner, repo, 'heads/master')
+                    .then((doodle) => {
                         doodles.unshift(doodle);
                         doodles.updateStorage();
                         this.onInitDoodle(doodle)
-                    }
-                    else {
-                        this.$scope.alert(err);
-                    }
-                })
+                    }, (reason) => {
+                        this.$scope.alert("Error attempting to download Repository");
+                    }, function(state) {
+                        // The state is {doneCount: number; todoCount: number}
+                    })
             }
             else if (gistId) {
                 this.cloud.downloadGist(gistId, (err: any, doodle: Doodle) => {
@@ -521,8 +770,8 @@ export default class WorkspaceController implements WorkspaceMixin {
                 if (this.FEATURE_GIST_ENABLED && doodle.gistId) {
                     this.$state.go(this.STATE_GIST, { gistId: doodle.gistId })
                 }
-                else if (this.FEATURE_REPO_ENABLED && doodle.userId && doodle.repoId) {
-                    this.$state.go(this.STATE_REPO, { userId: doodle.userId, repoId: doodle.repoId })
+                else if (this.FEATURE_REPO_ENABLED && doodle.owner && doodle.repo) {
+                    this.$state.go(this.STATE_REPO, { owner: doodle.owner, repo: doodle.repo })
                 }
                 else {
                     this.onInitDoodle(doodle)
@@ -1013,7 +1262,6 @@ export default class WorkspaceController implements WorkspaceMixin {
             }
             else {
                 // This can happen if we use ng-if to kill the element entirely, which we do.
-                // console.warn(`There is no element with id '${elementId}'.`)
             }
         }
         catch (e) {

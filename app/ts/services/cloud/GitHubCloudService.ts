@@ -1,36 +1,50 @@
 import * as ng from 'angular';
+import * as uib from 'angular-bootstrap';
 import Base64Service from '../base64/Base64Service';
 import BlobKey from '../github/BlobKey';
-import CommitArg from '../github/CommitArg';
+import CommitData from '../github/CommitData';
+import ChooseGistOrRepoOptions from './ChooseGistOrRepoOptions';
+import CommitMessageOptions from './CommitMessageOptions';
 import CloudService from './CloudService';
 import Doodle from '../doodles/Doodle';
 import doodleToGist from '../cloud/doodleToGist';
-import Gist from '../github/Gist';
-import GistData from '../gist/GistData';
+import FlowService from '../flow/FlowService';
+import GistData from '../github/GistData';
+import GistKey from '../github/GistKey';
+import GitHubReason from '../github/GitHubReason';
 import GitHubService from '../github/GitHubService';
+import isString from '../../utils/isString';
 import IOptionManager from '../options/IOptionManager';
 import gistFilesToDoodleFiles from './gistFilesToDoodleFiles';
 import hyphenate from '../../utils/hyphenate';
 import PathContents from '../github/PathContents';
 import PatchGistResponse from '../github/PatchGistResponse';
-import PostGistResponse from '../github/PostGistResponse';
-import ReferenceData from '../github/ReferenceData';
+import ReferenceUpdateData from '../github/ReferenceUpdateData';
+import RepoData from '../github/RepoData';
+import RepoKey from '../github/RepoKey';
+import RepoDataOptions from './RepoDataOptions';
 import RepoElement from '../github/RepoElement';
-import TreeArg from '../github/TreeArg';
+import TreeData from '../github/TreeData';
+import TreeKey from '../github/TreeKey';
+import UploadToRepoFacts from './UploadToRepoFacts';
 
 const LEGACY_META = 'doodle.json';
 
 export default class GitHubCloudService implements CloudService {
     public static $inject: string[] = [
         '$q',
+        '$uibModal',
         'base64',
+        'flow',
         'GitHub',
         'FILENAME_META',
         'options'
     ];
     constructor(
         private $q: ng.IQService,
+        private $uibModal: uib.IModalService,
         private base64: Base64Service,
+        private flow: FlowService,
         private github: GitHubService,
         private FILENAME_META: string,
         private options: IOptionManager) {
@@ -38,9 +52,9 @@ export default class GitHubCloudService implements CloudService {
     }
 
     downloadGist(gistId: string, callback: (reason: any, doodle: Doodle) => void) {
-        // TODO: Upgrade GitHub API to propagate IHttpPromise
-        this.github.getGist(gistId, (err: any, gist: Gist) => {
-            if (!err) {
+        this.github.getGist(gistId)
+            .then((http) => {
+                const gist = http.data
                 const doodle = new Doodle(this.options)
                 doodle.gistId = gistId
                 doodle.description = gist.description
@@ -65,19 +79,21 @@ export default class GitHubCloudService implements CloudService {
                     }
                 }
                 callback(undefined, doodle);
-            }
-            else {
-                callback(err, void 0);
-            }
-        });
+            })
+            .catch((reason) => {
+                callback(reason, void 0);
+            })
     }
 
+    /**
+     * TODO: This method does not let me specify a commit/branch/tag name but the underlying API does.
+     */
     downloadRepo(owner: string, repo: string, callback: (reason: any, doodle: Doodle) => void) {
         this.github.getRepoContents(owner, repo, (err: any, contents: RepoElement[]) => {
             if (!err) {
                 const doodle = new Doodle(this.options)
-                doodle.userId = owner
-                doodle.repoId = repo
+                doodle.owner = owner
+                doodle.repo = repo
                 doodle.gistId = void 0
                 const promises: ng.IPromise<PathContents>[] = [];
                 for (let c = 0; c < contents.length; c++) {
@@ -114,148 +130,441 @@ export default class GitHubCloudService implements CloudService {
         })
     }
 
-    createGist(doodle: Doodle, callback: (err: any, response: PostGistResponse) => any) {
-        const data: GistData = doodleToGist(doodle, this.options);
-        this.github.postGist(data, function(err: any, response: PostGistResponse) {
-            if (err) {
-                callback(new Error(`Unable to post your Gist at this time because ${err}.`), void 0)
-            }
-            else {
-                callback(void 0, response)
-            }
-        });
-    }
-
-    updateGist(doodle: Doodle, gistId: string, callback: (err: any, response: PatchGistResponse, status: number) => any) {
-        const data: GistData = doodleToGist(doodle, this.options);
-        this.github.patchGist(gistId, data, function(err: any, response: PatchGistResponse, status: number) {
-            if (err) {
-                callback(err, response, status)
-            }
-            else {
-                callback(err, response, status)
-            }
-        });
-    }
-
-    uploadToRepo(doodle: Doodle, owner: string, repo: string, ref: string): void {
+    /**
+     * This method may be used to download a repository.
+     * It using the Git Trees API, which has the advantage of supporting an arbitray number of files for a directory.
+     * It also naturally deals with different kinds of references.
+     * 
+     * The implementation challenge will be to do the recursive tree fetch and callback (or promise update).
+     */
+    downloadTree(owner: string, repo: string, ref: string): ng.IPromise<Doodle> {
+        const deferred = this.$q.defer<Doodle>();
         const github = this.github;
         const base64 = this.base64;
-        const $q = this.$q;
-        github.getReference(owner, repo, ref).then(function(response) {
-            const reference = response.data
-            if (reference.object.type === 'commit') {
-                const commitSHA = reference.object.sha;
-                github.getCommit(owner, repo, commitSHA).then(function(response) {
-                    const commit = response.data
-                    const treeSHA = commit.tree.sha;
-                    // Let's create blobs for ALL our files!
-                    const blobs: ng.IHttpPromise<BlobKey>[] = []
-                    const paths = Object.keys(doodle.files)
-                    for (let p = 0; p < paths.length; p++) {
-                        const path = paths[p]
-                        const file = doodle.files[path]
-                        const encoded = base64.encode(file.content)
-                        blobs.push(github.createBlob(owner, repo, encoded, 'base64'))
-                    }
-                    const data: TreeArg = { base_tree: treeSHA, tree: [] }
-                    $q.all(blobs).then(function(promiseValue) {
-                        for (let p = 0; p < paths.length; p++) {
-                            const prom = promiseValue[p]
-                            const blobSHA = prom.data.sha
-                            data.tree.push({
-                                path: paths[p],
-                                mode: '100644',
-                                type: 'blob',
-                                sha: blobSHA
-                            })
-                        }
-                        github.createTree(owner, repo, data).then(function(response) {
-                            const treeKey = response.data
-                            const commit: CommitArg = {
-                                message: "Hello",
-                                parents: [commitSHA],
-                                tree: treeKey.sha
+
+        let todoCount = 0
+        let doneCount = 0
+        function state() {
+            return { doneCount, todoCount }
+        }
+
+        todoCount++;
+        deferred.notify(state())
+        github.getReference(owner, repo, ref)
+            .then((response) => {
+                doneCount++
+                // Now seems like a good time to start building the Doodle.
+                // If we move this any deeper we may have to deal with commit/branch/tag differences.
+                // And as we go deeper we may use (recursion or) a stack to build our tree.
+                const doodle = new Doodle(this.options)
+                doodle.owner = owner
+                doodle.repo = repo
+                doodle.gistId = void 0
+                const reference = response.data
+                if (reference.object.type === 'commit') {
+                    const commitSHA = reference.object.sha;
+                    todoCount++
+                    deferred.notify(state())
+                    github.getCommit(owner, repo, commitSHA).then((response) => {
+                        doneCount++
+
+                        const commit = response.data
+                        const treeSHA = commit.tree.sha;
+
+                        todoCount++
+                        deferred.notify(state())
+                        github.getTree(owner, repo, treeSHA).then((response) => {
+                            doneCount++
+                            const tree = response.data
+                            for (let i = 0; i < tree.tree.length; i++) {
+                                const child = tree.tree[i];
+                                const path = child.path;
+                                switch (child.type) {
+                                    case 'blob': {
+                                        todoCount++
+                                        deferred.notify(state())
+                                        github.getBlob(owner, repo, child.sha).then(function(response) {
+                                            doneCount++
+                                            const blob = response.data;
+                                            switch (blob.encoding) {
+                                                case 'base64': {
+                                                    const content = base64.decode(blob.content);
+                                                    const file = doodle.newFile(child.path);
+                                                    file.content = content
+                                                    file.sha = blob.sha
+                                                    break;
+                                                }
+                                                default: {
+                                                    deferred.notify(state())
+                                                    deferred.reject(`Expecting blob.encoding for '${path}', was ${blob.encoding}.`)
+                                                }
+                                            }
+                                            if (doneCount === todoCount) {
+                                                deferred.notify(state())
+                                                deferred.resolve(doodle)
+                                            }
+                                        }).catch(function(reason) {
+                                            doneCount++
+                                            deferred.notify(state())
+                                            deferred.reject(`Unable to get blob because ${JSON.stringify(reason)}.`)
+                                        })
+                                        break;
+                                    }
+                                    default: {
+                                        deferred.notify(state())
+                                        deferred.reject(`Expecting child '${path}' to be a blob, but was ${child.type}.`)
+                                    }
+                                }
                             }
-                            github.createCommit(owner, repo, commit).then(function(response) {
-                                const commitKey = response.data
-                                const data: ReferenceData = {
-                                    sha: commitKey.sha,
-                                    force: false
-                                };
-                                github.updateReference(owner, repo, ref, data).then(function(response) {
-                                    const status = response.status
-                                    console.log(`status => ${status}`) // 200
-                                    console.log(`statusText => ${response.statusText}`) // OK
-                                    const headers = response.headers
-                                    console.log(`X-RateLimit-Limit => ${headers('X-RateLimit-Limit')}`) // 5000
-                                    console.log(`X-RateLimit-Remaining => ${headers('X-RateLimit-Remaining')}`) // 4999
-                                    const reference = response.data
-                                    console.log(JSON.stringify(reference, null, 2))
-                                }).catch(function(reason) {
-                                    console.warn(`Unable to update reference ${ref} because ${JSON.stringify(reason)}.`)
-                                })
-                            }).catch(function(reason) {
-                                console.warn(`Unable to create commit because ${JSON.stringify(reason)}.`)
-                            })
+
                         }).catch(function(reason) {
-                            console.warn(`Unable to create tree because ${JSON.stringify(reason)}.`)
+                            doneCount++
+                            deferred.notify(state())
+                            deferred.reject(`Unable to get tree '${treeSHA}' because ${JSON.stringify(reason)}.`)
                         })
                     }).catch(function(reason) {
-                        console.warn(`Unable to create blobs because ${JSON.stringify(reason)}.`)
+                        doneCount++
+                        deferred.notify(state())
+                        deferred.reject(`Unable to get commit '${commitSHA}' because ${JSON.stringify(reason)}.`)
                     })
-                    // We don't really need to get the tree!
-                    /*
-                    github.getTree(owner, repo, treeSHA).then(function(response) {
-                        const tree = response.data
-                        for (let i = 0; i < tree.tree.length; i++) {
-                            const child = tree.tree[i];
-                            const path = child.path;
-                            switch (child.type) {
-                                case 'blob': {
-                                    github.getBlob(owner, repo, child.sha).then(function(response) {
-                                        // const status = response.status
-                                        // console.log(`status => ${status}`) // 200
-                                        // console.log(`statusText => ${response.statusText}`) // OK
-                                        // const headers = response.headers
-                                        // console.log(`X-RateLimit-Limit => ${headers('X-RateLimit-Limit')}`) // 5000
-                                        // console.log(`X-RateLimit-Remaining => ${headers('X-RateLimit-Remaining')}`) // 4999
-                                        const blob = response.data;
-                                        switch (blob.encoding) {
-                                            case 'base64': {
-                                                const content = base64.decode(blob.content);
-                                                console.log(child.path)
-                                                console.log(content)
-                                                break;
-                                            }
-                                            default: {
-                                                console.warn(`Expecting blob.encoding for '${path}', was ${blob.encoding}.`)
-                                            }
-                                        }
-                                    }).catch(function(reason) {
-                                        console.warn(`Unable to get blob because ${JSON.stringify(reason)}.`)
-                                    })
-                                    break;
-                                }
-                                default: {
-                                    console.warn(`Expecting child '${path}' to be a blob, but was ${child.type}.`)
-                                }
+                }
+                else {
+                    deferred.notify(state())
+                    deferred.reject(`Expecting reference '${ref}' to be for a commit, but was ${reference.object.type}.`)
+                }
+            })
+            .catch(function(reason) {
+                doneCount++
+                deferred.notify(state())
+                deferred.reject(`Unable to get reference '${ref}' because ${JSON.stringify(reason)}.`)
+            })
+        return deferred.promise;
+    }
+
+    createGist(doodle: Doodle): ng.IHttpPromise<GistKey> {
+        const data: GistData = doodleToGist(doodle, this.options);
+        return this.github.createGist(data);
+    }
+
+    updateGist(doodle: Doodle, gistId: string): ng.IHttpPromise<PatchGistResponse> {
+        const data: GistData = doodleToGist(doodle, this.options);
+        return this.github.updateGist(gistId, data);
+    }
+
+    createRepo(data: RepoData): ng.IHttpPromise<RepoKey> {
+        return this.github.createRepo(data);
+    }
+
+    createBlobsInRepo(doodle: Doodle, owner: string, repo: string, paths: string[]): ng.IHttpPromise<BlobKey>[] {
+        const blobs: ng.IHttpPromise<BlobKey>[] = []
+        for (let p = 0; p < paths.length; p++) {
+            const path = paths[p];
+            const file = doodle.files[path];
+            const content = this.base64.encode(file.content);
+            const encoding = 'base64';
+            blobs.push(this.github.createBlob(owner, repo, { content, encoding }))
+        }
+        return blobs;
+    }
+
+    createTreeInRepo(blobs: ng.IHttpPromise<BlobKey>[], paths: string[], treeSHA: string, owner: string, repo: string): ng.IPromise<TreeKey> {
+        const deferred = this.$q.defer<TreeKey>();
+        const treeData: TreeData = { base_tree: treeSHA, tree: [] }
+        this.$q.all(blobs)
+            .then((promiseValue) => {
+                for (let p = 0; p < paths.length; p++) {
+                    const prom = promiseValue[p]
+                    const blobSHA = prom.data.sha
+                    treeData.tree.push({
+                        path: paths[p],
+                        mode: '100644',
+                        type: 'blob',
+                        sha: blobSHA
+                    })
+                }
+                this.github.createTree(owner, repo, treeData)
+                    .then(function(response) {
+                        const treeKey = response.data
+                        deferred.resolve(treeKey);
+                    })
+                    .catch(function(reason: GitHubReason) {
+                        deferred.reject(`Unable to create tree because ${reason.data.message}.`)
+                    })
+            })
+            .catch(function(reason: GitHubReason) {
+                deferred.reject(`Unable to create blobs because ${reason.data.message}.`)
+            })
+        return deferred.promise
+    }
+
+    uploadToRepo(doodle: Doodle, owner: string, repo: string, ref: string, commitMessage: string, callback: (reason: any, facts: UploadToRepoFacts) => any): void {
+        if (!isString(owner)) {
+            throw new TypeError("owner must be a string");
+        }
+        if (!isString(repo)) {
+            throw new TypeError("repo must be a string");
+        }
+        if (!isString(commitMessage)) {
+            throw new TypeError("commitMessage must be a string");
+        }
+
+        const flow = this.flow.createFlow<UploadToRepoFacts>('uploadToRepo')
+
+        flow.rule("Get Reference", {},
+            (facts) => {
+                return facts.refInitial.isUndefined() && facts.refMissing.value !== true;
+            },
+            (facts, session, next) => {
+                this.github.getReference(owner, repo, ref)
+                    .then((response) => {
+
+                        facts.status.resolve(response.status)
+                        facts.statusText.resolve(response.statusText)
+                        facts.refMissing.resolve(false);
+
+                        const reference = response.data
+                        if (reference.object.type === 'commit') {
+                            facts.refInitial.resolve(reference)
+                            next()
+                        }
+                        else {
+                            const reason = `Expecting reference '${ref}' to be for a commit, but was ${reference.object.type}.`
+                            facts.refInitial.reject(reason)
+                            next(reason)
+                        }
+                    })
+                    .catch(function(reason: GitHubReason) {
+
+                        facts.status.resolve(reason.status)
+                        facts.statusText.resolve(reason.statusText)
+
+                        switch (reason.status) {
+                            case 409: {
+                                // GitHub warns that this can happen.
+                                // In our case we suspect that the repository is simply empty.
+                                // I'm going to use null as the sentinel for there being no reference.
+                                facts.refInitial.reject(reason.data.message)
+                                facts.refMissing.resolve(true);
+                                // But this is not an error.
+                                next();
+                                break;
+                            }
+                            default: {
+                                console.warn("Getting Reference Failed")
+                                console.warn(JSON.stringify(reason, null, 2))
+                                facts.refInitial.reject(reason)
+                                facts.refMissing.reject(reason);
+                                next(reason)
                             }
                         }
-
-                    }).catch(function(reason) {
-                        console.warn(`Unable to get tree '${treeSHA}' because ${JSON.stringify(reason)}.`)
                     })
-                    */
-                }).catch(function(reason) {
-                    console.warn(`Unable to get commit '${commitSHA}' because ${JSON.stringify(reason)}.`)
-                })
+            }
+        )
+
+        flow.rule("Get Base Commit", {},
+            (facts) => {
+                return facts.refInitial.isResolved() && facts.baseCommit.isUndefined()
+            },
+            (facts, session, next) => {
+                const commitSHA = facts.refInitial.value.object.sha;
+                this.github.getCommit(owner, repo, commitSHA)
+                    .then((response) => {
+                        const commit = response.data
+                        facts.baseCommit.resolve(commit)
+                        next()
+                    })
+                    .catch(function(reason) {
+                        facts.baseCommit.reject(reason)
+                        next(`Unable to get commit '${commitSHA}' because ${JSON.stringify(reason)}.`)
+                    })
+            }
+        )
+
+        flow.rule("Create Tree", {},
+            (facts) => {
+                // There may not be a base tree, bit we should not allow our tree to be created
+                // util the base tree has been established either way.
+                if (facts.tree.isUndefined()) {
+                    if (facts.refMissing.value === true) {
+                        return true;
+                    }
+                    else {
+                        return facts.baseCommit.isDefined();
+                    }
+                }
+                else {
+                    return false;
+                }
+            },
+            (facts, session, next) => {
+                const paths = Object.keys(doodle.files)
+                const blobs = this.createBlobsInRepo(doodle, owner, repo, paths)
+                const baseTreeSHA = facts.baseCommit.isResolved() ? facts.baseCommit.value.tree.sha : void 0;
+                this.createTreeInRepo(blobs, paths, baseTreeSHA, owner, repo)
+                    .then((treeKey) => {
+                        facts.tree.resolve(treeKey)
+                        next()
+                    })
+                    .catch((reason: GitHubReason) => {
+                        switch (reason.status) {
+                            case 409: {
+                                break;
+                            }
+                        }
+                        facts.tree.reject(reason)
+                        next(`Unable to create tree because ${JSON.stringify(reason)}.`)
+                    })
+            }
+        )
+
+        flow.rule("Create Commit", {},
+            (facts) => {
+                return facts.tree.isResolved() && facts.commit.isUndefined()
+            },
+            (facts, session, next) => {
+                const commit: CommitData = {
+                    message: commitMessage,
+                    parents: [facts.baseCommit.value.sha],
+                    tree: facts.tree.value.sha
+                }
+                this.github.createCommit(owner, repo, commit)
+                    .then(function(response) {
+                        facts.commit.resolve(response.data)
+                        next()
+                    })
+                    .catch(function(reason) {
+                        facts.commit.reject(reason)
+                        next(`Unable to create commit because ${JSON.stringify(reason)}.`)
+                    })
+            }
+        )
+        flow.rule("Update Reference", {},
+            (facts) => {
+                return facts.commit.isResolved() && facts.refUpdate.isUndefined()
+            },
+            (facts, session, next) => {
+                const data: ReferenceUpdateData = {
+                    sha: facts.commit.value.sha,
+                    force: false
+                };
+                this.github.updateReference(owner, repo, ref, data)
+                    .then(function(response) {
+                        facts.status.resolve(response.status)
+                        facts.statusText.resolve(response.statusText)
+                        facts.refUpdate.resolve(response.data)
+                        next()
+                    })
+                    .catch(function(reason: GitHubReason) {
+                        facts.refUpdate.reject(reason)
+                        next(`Unable to update reference ${ref} because ${JSON.stringify(reason)}.`)
+                    })
+            }
+        )
+        const facts = new UploadToRepoFacts()
+
+        const session = flow.createSession(facts)
+
+        session.execute((err, facts) => {
+            if (!err) {
+                callback(void 0, facts)
             }
             else {
-                console.warn(`Expecting reference '${ref}' to be for a commit, but was ${reference.object.type}.`)
+                callback(err, void 0)
             }
-        }).catch(function(reason) {
-            console.warn(`Unable to get reference '${ref}' because ${JSON.stringify(reason)}.`)
         })
+    }
+
+    /**
+     *
+     */
+    chooseGistOrRepo(title: string): ng.IPromise<string> {
+        const settings: uib.IModalSettings = {
+            backdrop: 'static',
+            controller: 'ChooseGistOrRepoController',
+            templateUrl: 'choose-gist-or-repo-modal.html'
+        }
+
+        const message = "Please specify whether you would like a Gist or a Repository."
+
+        const options: ChooseGistOrRepoOptions = {
+            title,
+            message,
+            cancelButtonText: 'Cancel',
+            gistButtonText: 'Gist',
+            repoButtonText: 'Repository'
+        }
+
+        settings.resolve = {
+            options: function() {
+                return options
+            }
+        }
+
+        // How do we ensure that the result promiseValue is a string?
+        // We just have to trust that the controller will do the right thing!
+        return this.$uibModal.open(settings).result;
+    }
+
+    /**
+     *
+     */
+    repoData(title: string, data: RepoData): ng.IPromise<RepoData> {
+        const settings: uib.IModalSettings = {
+            backdrop: 'static',
+            controller: 'RepoDataController',
+            templateUrl: 'repo-data-modal.html'
+        }
+
+        const message = "Please specify how you would like to create the Repository."
+
+        const options: RepoDataOptions = {
+            title,
+            message,
+            cancelButtonText: 'Cancel',
+            actionButtonText: 'Create'
+        }
+
+        settings.resolve = {
+            options: function() {
+                return options
+            },
+            data: function() {
+                return data;
+            }
+        }
+
+        return this.$uibModal.open(settings).result;
+    }
+
+    /**
+     *
+     */
+    commitMessage(title: string): ng.IPromise<string> {
+        const settings: uib.IModalSettings = {
+            backdrop: 'static',
+            controller: 'CommitMessageController',
+            templateUrl: 'commit-message-modal.html'
+        }
+
+        const message = "Please enter the commit message for your changes, an empty message aborts the commit."
+
+        const options: CommitMessageOptions = {
+            title,
+            message,
+            text: '',
+            placeholder: '',
+            cancelButtonText: 'Cancel',
+            actionButtonText: 'Commit changes'
+        }
+
+        settings.resolve = {
+            options: function() {
+                return options
+            }
+        }
+
+        // How do we ensure that the result promiseValue is a string?
+        // We just have to trust that the controller will do the right thing!
+        return this.$uibModal.open(settings).result;
     }
 }

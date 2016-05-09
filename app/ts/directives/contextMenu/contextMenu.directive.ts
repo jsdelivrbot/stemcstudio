@@ -219,7 +219,6 @@ function factory($q: ng.IQService) {
                         // Prevent the default context menu from popping up.
                         event.preventDefault()
                         const menu: ContextMenuItem[] = $scope.$eval(iAttrs.contextMenu)
-                        // console.log(`menu => ${JSON.stringify(menu, null, 2)}`)
                         if (menu instanceof Array) {
                             renderContextMenu($scope, contextMenuEvent, menu)
                         }
@@ -231,7 +230,6 @@ function factory($q: ng.IQService) {
                 }
                 function onDestroyScope() {
                     iElem.off('contextmenu', contextMenuEventHandler)
-                    // console.log(`contextmenu scope destroy handler called.`)
                     removeContextMenus()
                 }
                 iElem.on('contextmenu', contextMenuEventHandler)

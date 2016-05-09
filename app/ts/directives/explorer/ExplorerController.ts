@@ -24,7 +24,7 @@ export default class ExplorerController implements IExplorer {
    * @param doodles {IDoodleManager}
    */
   constructor(private doodles: IDoodleManager) {
-    // console.log(`ExplorerController.constructor new => ${this instanceof ExplorerController}`)
+      // Do nothing
   }
 
   /**
@@ -34,7 +34,7 @@ export default class ExplorerController implements IExplorer {
    * @return {void}
    */
   $onInit(): void {
-    // console.log("ExplorerController.$onInit");
+    // Do nothing
   }
 
   /**
@@ -42,7 +42,7 @@ export default class ExplorerController implements IExplorer {
    * @return {void}
    */
   $onDestroy(): void {
-    // console.log("ExplorerController.$onDestroy");
+    // Do nothing
   }
 
   /**
@@ -59,7 +59,6 @@ export default class ExplorerController implements IExplorer {
    * @return {void}
    */
   openFile(name: string): void {
-    // console.log(`ExplorerController.openFile(${JSON.stringify(name)})`)
     // I think the right thing to do now is to talk to a service that returns a promise.
     // We can make an optimistic local change (maybe) (adjusting the scope?), and wait for the
     // promise to resolve.
@@ -69,13 +68,11 @@ export default class ExplorerController implements IExplorer {
   }
 
   closeFile(name: string): void {
-    // console.log(`ExplorerController.closeFile(${JSON.stringify(name)})`)
     const doodle: IDoodle = this.doodles.current()
     doodle.closeFile(name)
   }
 
   selectFile(name: string): void {
-    // console.log(`ExplorerController.selectFile(${JSON.stringify(name)})`)
     // I think the right thing to do now is to talk to a service that returns a promise.
     // We can make an optimistic local change (maybe) (adjusting the scope?), and wait for the
     // promise to resolve.

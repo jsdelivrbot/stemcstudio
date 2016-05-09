@@ -16,8 +16,6 @@ import errorHandler = require('errorhandler');
 
 const npm = require('./package.json');
 
-// console.log(`npm.version => ${npm.version}`);
-
 const cfg = require('./configure');
 
 const clientId = nconf.get("GITHUB_APPLICATION_CLIENT_ID");
@@ -98,7 +96,6 @@ const authenticate = (code, cb) => {
 // Forward stemcstudio.herokuapp.com to www.stemcstudio.com
 // Notice that we use HTTP status 301 Moved Permanently (best for SEO purposes).
 app.get("/*", (req: express.Request, res, next) => {
-    console.log(`host => ${req.headers['host']}`)
     if (req.headers['host'].match(/^stemcstudio.herokuapp.com/)) {
       res.redirect(`https://www.stemcstudio.com${req.url}`, 301);
     }

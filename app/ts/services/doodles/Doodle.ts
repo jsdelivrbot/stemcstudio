@@ -8,8 +8,14 @@ import IOptionManager from '../options/IOptionManager'
 const FILENAME_META = 'package.json'
 
 export default class Doodle {
-    public userId: string;
-    public repoId: string;
+    /**
+     * The owner's login.
+     */
+    public owner: string;
+    /**
+     * The repository name property.
+     */
+    public repo: string;
     public gistId: string;
     public isCodeVisible: boolean;
     public isViewVisible: boolean;
@@ -152,18 +158,15 @@ export default class Doodle {
      * @return {void}
      */
     closeFile(name: string): void {
-        // console.log(`Doodle.closeFile(${name})`)
         const file = this.findFileByName(name)
         if (file) {
             // We assume someone is watching this property, ready to pounce.
             // TODO: Replace with openPending flag?
             file.isOpen = false
             file.selected = false
-            // console.log(`${name} => isOpen is now true`)
         }
         else {
             // Do nothing
-            console.log(`${name} => was not found`)
         }
         // Select the first open file that we find.
         this.deselectAll()
@@ -306,7 +309,6 @@ export default class Doodle {
      * @return {void}
      */
     private moveFileToTrash(name: string): void {
-        // console.log(`moveFileToTrash ${name}`)
         const unwantedFile = this.files[name]
         if (unwantedFile) {
             // Notice that the conflict could be with a TRASHED file.
@@ -403,22 +405,18 @@ export default class Doodle {
      * @return {void}
      */
     openFile(name: string): void {
-        // console.log(`Doodle.openFile(${name})`)
         const file = this.findFileByName(name)
         if (file) {
             // We assume someone is watching this property, ready to pounce.
             // TODO: Replace with openPending flag?
             file.isOpen = true
-            // console.log(`${name} => isOpen is now true`)
         }
         else {
             // Do nothing
-            console.log(`${name} => was not found`)
         }
     }
 
     renameFile(oldName: string, newName: string): void {
-        // console.log(`renameFile ${oldName} to ${newName}`)
         const mode = modeFromName(newName)
         if (!mode) {
             throw new Error(`${newName} is not a recognized language.`)
@@ -468,7 +466,6 @@ export default class Doodle {
      * @return {void}
      */
     selectFile(name: string): void {
-        // console.log(`Doodle.selectFile(${name})`)
         const file = this.findFileByName(name)
         if (file && file.isOpen) {
             const names = Object.keys(this.files)
@@ -477,13 +474,11 @@ export default class Doodle {
                 const file = this.files[names[i]]
                 if (file.isOpen) {
                     file.selected = names[i] === name
-                    // console.log(`${name}.selected => ${file.selected}, ${names[i]}, ${name}`)
                 }
             }
         }
         else {
             // Do nothing
-            console.log(`${name} => was not found or is not open`)
         }
     }
 
@@ -505,7 +500,6 @@ export default class Doodle {
         }
         else {
             // Do nothing
-            console.log(`${name} => was not found or is not open`)
         }
     }
 }

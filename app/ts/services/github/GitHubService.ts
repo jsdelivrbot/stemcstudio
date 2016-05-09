@@ -1,22 +1,34 @@
 import * as ng from 'angular';
+
 import Blob from './Blob';
+import BlobData from './BlobData';
 import BlobKey from './BlobKey';
+
 import Commit from './Commit';
-import CommitArg from './CommitArg';
+import CommitData from './CommitData';
 import CommitKey from './CommitKey';
-import GistData from '../gist/GistData';
+
 import Gist from './Gist';
+import GistData from './GistData';
+import GistKey from './GistKey';
+
 import PatchGistResponse from './PatchGistResponse';
 import PathContents from './PathContents';
-import PostGistResponse from './PostGistResponse';
 import PutFileResponse from './PutFileResponse';
+
 import Reference from './Reference';
-import ReferenceData from './ReferenceData';
+import ReferenceCreateData from './ReferenceCreateData';
+import ReferenceUpdateData from './ReferenceUpdateData';
+
 import Repo from './Repo';
+import RepoData from './RepoData';
 import RepoElement from './RepoElement';
+import RepoKey from './RepoKey';
+
 import Tree from './Tree';
-import TreeArg from './TreeArg';
+import TreeData from './TreeData';
 import TreeKey from './TreeKey';
+
 import User from './User';
 
 /**
@@ -28,21 +40,23 @@ import User from './User';
  */
 interface GitHubService {
     deleteFile(owner: string, repo: string, path: string, message: string, sha: string, done: (err: any, response) => any);
-    deleteGist(owner: string, gist: string, done: (err: any, response) => any);
     deleteRepo(owner: string, repo: string, done: (err: any, response) => any);
-    getGist(gist: string, done: (err: any, gist: Gist) => any);
+
     /**
      *
      */
     getGists(done: (err: any, gists: Gist[], status: number, headers: ng.IHttpHeadersGetter) => any);
+
     /**
      * Used for pafination of Gists.
      */
     getGistsPage(href: string, done: (err: any, gists: Gist[], status: number, headers: ng.IHttpHeadersGetter) => any);
+
     /**
      * Returns the contents of a file or directory in the repository.
      */
     getPathContents(owner: string, repo: string, path: string): ng.IPromise<PathContents>;
+
     /**
      * 
      */
@@ -50,22 +64,64 @@ interface GitHubService {
     getUser(): ng.IHttpPromise<User>;
     getUserGists(user: string, done: (err: any, response) => any);
     getUserRepos(done: (err: any, repos: Repo[]) => any);
-    patchGist(gistId: string, data: GistData, done: (err: any, response: PatchGistResponse, status: number) => any);
-    postGist(data: GistData, done: (err: any, response: PostGistResponse) => any);
-    postRepo(name: string, description: string, priv: boolean, autoInit: boolean, done: (err: any, response) => any);
+
+    getGist(gist: string): ng.IHttpPromise<Gist>;
+    createGist(data: GistData): ng.IHttpPromise<GistKey>;
+    updateGist(gistId: string, data: GistData): ng.IHttpPromise<PatchGistResponse>;
+    deleteGist(gistId: string, done: (err: any, response) => any);
+
+    /**
+     * 
+     */
+    getRepo(owner: string, repo: string): ng.IHttpPromise<Repo>;
+
+    /**
+     * 
+     */
+    createRepo(data: RepoData): ng.IHttpPromise<RepoKey>;
+
     putFile(owner: string, repo: string, path: string, message: string, content: string, sha: string): ng.IHttpPromise<PutFileResponse>;
+
+    /**
+     * Get a Blob
+     * The content in the response will always be Base64 encoded.
+     * This API supports blobs up to 100 megabytes in size.
+     */
+    getBlob(owner: string, repo: string, sha: string): ng.IHttpPromise<Blob>;
+
+    /**
+     * Create a Blob
+     */
+    createBlob(owner: string, repo: string, data: BlobData): ng.IHttpPromise<BlobKey>;
+
+    /**
+     * 
+     */
+    getTree(owner: string, repo: string, sha: string): ng.IHttpPromise<Tree>;
+
+    /**
+     * 
+     */
+    createTree(owner: string, repo: string, tree: TreeData): ng.IHttpPromise<TreeKey>;
+
+    /**
+     * 
+     */
+    getCommit(owner: string, repo: string, sha: string): ng.IHttpPromise<Commit>;
+
+    /**
+     * 
+     */
+    createCommit(owner: string, repo: string, commit: CommitData): ng.IHttpPromise<CommitKey>;
 
     /**
      * The ref must be formatted as 'heads/branch', not just 'branch'.
      */
     getReference(owner: string, repo: string, ref: string): ng.IHttpPromise<Reference>;
-    getCommit(owner: string, repo: string, sha: string): ng.IHttpPromise<Commit>;
-    getTree(owner: string, repo: string, sha: string): ng.IHttpPromise<Tree>;
-    getBlob(owner: string, repo: string, sha: string): ng.IHttpPromise<Blob>;
-    createBlob(owner: string, repo: string, content: string, encoding: string): ng.IHttpPromise<BlobKey>;
-    createTree(owner: string, repo: string, tree: TreeArg): ng.IHttpPromise<TreeKey>;
-    createCommit(owner: string, repo: string, commit: CommitArg): ng.IHttpPromise<CommitKey>;
-    updateReference(owner: string, repo: string, ref: string, data: ReferenceData): ng.IHttpPromise<Reference>;
+
+    createReference(owner: string, repo: string, data: ReferenceCreateData): ng.IHttpPromise<Reference>;
+
+    updateReference(owner: string, repo: string, ref: string, data: ReferenceUpdateData): ng.IHttpPromise<Reference>;
 }
 
 export default GitHubService;

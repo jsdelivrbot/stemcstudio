@@ -1,3 +1,6 @@
+/**
+ * This appears to extend RepoElement by adding content and encoding.
+ */
 interface PathContents {
     name: string;
     path: string;
@@ -8,9 +11,12 @@ interface PathContents {
     git_url: string;
     download_url: string;
     /**
-     * 'file'
+     * 'file' or 'dir'
      */
     type: string;
+    /**
+     * Encoded content...
+     */
     content: string;
     /**
      * 'base64'

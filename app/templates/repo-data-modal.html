@@ -1,0 +1,13 @@
+<div class="modal-header" style="clear: both">
+    <h3 class='modal-title' style="float: left;"><logo-text version='{{version}}'/></h3>
+    <h3 class='modal-title' style="float: right;">{{options.title}}</h3>
+</div>
+<div class="modal-body">
+    <p>{{options.message}}</p>
+    <label>Name</label>
+    <input ng-model='data.name' type='text'></input>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-secondary" type="button" data-ng-click="cancel()">{{options.cancelButtonText}}</button>
+    <button class="btn btn-primary" type="button" data-ng-click="ok();">{{options.actionButtonText}}</button>
+</div>

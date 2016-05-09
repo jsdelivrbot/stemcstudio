@@ -2,8 +2,19 @@ import IDoodleFile from './IDoodleFile';
 
 interface IDoodleDS {
 
-    userId: string;
-    repoId: string;
+    /**
+     * The owner login.
+     */
+    owner: string;
+
+    /**
+     * The repository name.
+     */
+    repo: string;
+
+    /**
+     * The gist identifier.
+     */
     gistId: string;
 
     /**

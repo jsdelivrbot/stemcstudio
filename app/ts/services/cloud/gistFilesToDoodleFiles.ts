@@ -15,7 +15,6 @@ export default function gistFilesToDoodleFiles(gFiles: { [gName: string]: GistFi
         const gName = gNames[i]
         if (excludes.indexOf(gName) < 0) {
             const gFile = gFiles[gName]
-            // console.log(`gFile => ${JSON.stringify(gFile, null, 2)}`)
             const dFile: DoodleFile = new DoodleFile()
             dFile.content = gFile.content
             dFile.language = modeFromName(gName)

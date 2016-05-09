@@ -236,11 +236,7 @@ export default class TextHighlightRules implements HighlightRules {
                 }
             }
         }
-        // console.log("OLD RULES");
-        // console.log(JSON.stringify(rules, null, 2));
         Object.keys(rules).forEach(processState, this);
-        // console.log("NEW RULES");
-        // console.log(JSON.stringify(rules, null, 2));
     }
 
     createKeywordMapper(map: { [key: string]: string }, defaultToken: string, ignoreCase?: boolean, splitChar?: string): (value: string) => string {

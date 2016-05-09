@@ -34,7 +34,7 @@ const DEFAULT_PROMPT_OPTIONS: PromptOptions = {
 /**
  *
  */
-export default class ModalService implements ModalDialog {
+export default class ModalServiceClazz implements ModalDialog {
     public static $inject: string[] = ['$uibModal']
 
     /**

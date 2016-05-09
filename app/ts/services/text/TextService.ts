@@ -23,7 +23,6 @@ export default class TextService implements ITextService {
     // Do nothing (yet).
     // Does AngularJS use the new operator when creating a service? YES
     // const isConstructor = this instanceof TextService
-    // console.log(`TextService isConstructor? => ${isConstructor}`)
   }
 
   /**

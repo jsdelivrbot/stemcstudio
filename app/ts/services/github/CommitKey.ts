@@ -1,24 +1,26 @@
 interface CommitKey {
     sha: string;
     url: string;
+    html_url: string;
     author: {
-        date: string;
         name: string;
         email: string;
+        date: string;
     };
     committer: {
-        date: string;
         name: string;
         email: string;
+        date: string;
     };
     message: string;
     tree: {
-        url: string;
         sha: string;
+        url: string;
     };
     parents: {
         url: string;
         sha: string;
+        html_url: string;
     }[];
 }
 

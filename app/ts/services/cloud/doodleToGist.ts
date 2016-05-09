@@ -1,5 +1,5 @@
 import IDoodle from '../doodles/IDoodle';
-import GistData from '../gist/GistData';
+import GistData from '../github/GistData';
 import IOptionManager from '../options/IOptionManager';
 import doodleFilesToGistFiles from './doodleFilesToGistFiles';
 

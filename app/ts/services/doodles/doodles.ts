@@ -52,9 +52,9 @@ function deserializeDoodles(doodles: IDoodleDS[], options: IOptionManager): Dood
             d.files[FILENAME_LESS].language = modeFromName(FILENAME_LESS)
         }
         // FIXME: DRY by copying keys both directions.
-        d.gistId = inDoodle.gistId
-        d.userId = inDoodle.userId
-        d.repoId = inDoodle.repoId
+        d.gistId = inDoodle.gistId;
+        d.owner = inDoodle.owner;
+        d.repo = inDoodle.repo;
         d.lastKnownJs = inDoodle.lastKnownJs
         ds.push(d)
     }

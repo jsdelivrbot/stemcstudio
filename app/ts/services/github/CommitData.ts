@@ -1,4 +1,4 @@
-interface CommitArg {
+interface CommitData {
     message: string;
     author?: {
         name: string;
@@ -14,4 +14,4 @@ interface CommitArg {
     tree: string;
 }
 
-export default CommitArg;
+export default CommitData;

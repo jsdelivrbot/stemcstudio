@@ -4,6 +4,8 @@
 import app from './app';
 import * as angular from 'angular';
 import Base64 from './services/base64/Base64';
+import ChooseGistOrRepoController from './services/cloud/ChooseGistOrRepoController';
+import CommitMessageController from './services/cloud/CommitMessageController';
 import contextMenu from './directives/contextMenu/contextMenu.directive';
 import contiguous from './filters/contiguous';
 import DashboardController from './controllers/DashboardController';
@@ -19,8 +21,11 @@ import logoText from './directives/logoText/logoText';
 import AlertController from './services/modalService/AlertController';
 import ConfirmController from './services/modalService/ConfirmController';
 import PromptController from './services/modalService/PromptController';
-import ModalService from './services/modalService/ModalService';
+import ModalDialogService from './services/modalService/ModalDialogService';
+import NaiveFlowSessionService from './services/flow/NaiveFlowSessionService';
+import ReteFlowService from './services/flow/ReteFlowService';
 import RepoController from './controllers/RepoController';
+import RepoDataController from './services/cloud/RepoDataController';
 import resizable from './directives/resizable/resizable';
 import TextService from './services/text/TextService';
 import DefaultThemeManager from './services/themes/DefaultThemeManager';
@@ -43,9 +48,17 @@ app.controller('GitHubAccountController', GitHubAccountController)
 app.controller('home-controller', HomeController)
 
 app.controller('ExplorerFilesController', ExplorerFilesController)
+
+// Controllers for standard modal dialogs.
 app.controller('AlertController', AlertController)
 app.controller('ConfirmController', ConfirmController)
 app.controller('PromptController', PromptController)
+
+// Controllers for cloud service modal dialogs.
+app.controller('ChooseGistOrRepoController', ChooseGistOrRepoController)
+app.controller('CommitMessageController', CommitMessageController)
+app.controller('RepoDataController', RepoDataController)
+
 app.controller('RepoController', RepoController)
 import './controllers/AboutController';
 import './controllers/BodyController';
@@ -79,7 +92,11 @@ import './services/tw/tw';
 import './services/uuid/UuidService';
 app.service('base64', Base64)
 app.service('cloud', GitHubCloudService)
-app.service('modalService', ModalService)
+app.service('modalService', ModalDialogService)
+
+app.service('flow', ReteFlowService)
+app.service('flowSessionService', NaiveFlowSessionService)
+
 app.service('textService', TextService)
 app.service('themeManager', DefaultThemeManager);
 app.service('workspaceFactory', WorkspaceFactoryService)

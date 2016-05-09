@@ -60,14 +60,15 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version for use by scopes.
-app.constant('version', '2.0.0-beta.49');
+app.constant('version', '2.0.0-beta.50');
 
 // Feature flags (boolean)
-app.constant('FEATURE_DASHBOARD_ENABLED', false);
+const exposeWorkInProgress = true;
+app.constant('FEATURE_DASHBOARD_ENABLED', exposeWorkInProgress);
 app.constant('FEATURE_EXAMPLES_ENABLED', true);
 app.constant('FEATURE_LOGIN_ENABLED', true);
 app.constant('FEATURE_GIST_ENABLED', true);
-app.constant('FEATURE_REPO_ENABLED', false);
+app.constant('FEATURE_REPO_ENABLED', exposeWorkInProgress);
 
 // githubKey stores the key of the item in local storage for maintaining GitHub OAuth data.
 // Remark: This value is duplicated in views/github_callback.jade
@@ -237,7 +238,7 @@ app.config([
 
         if (FEATURE_REPO_ENABLED) {
             $stateProvider.state(STATE_REPO, {
-                url: '/users/{userId}/repos/{repoId}',
+                url: '/users/{owner}/repos/{repo}',
                 templateUrl: 'doodle.html',
                 controller: 'DoodleController'
             })
@@ -301,7 +302,7 @@ app.run([
         };
 
         $rootScope.log = function(thing) {
-            console.log(thing);
+            console.warn(thing);
         };
 
         $rootScope.alert = function(thing) {

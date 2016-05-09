@@ -21,6 +21,38 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
   );
 
 
+  $templateCache.put('choose-gist-or-repo-modal.html',
+    "<div class=\"modal-header\" style=\"clear: both\">\n" +
+    "    <h3 class='modal-title' style=\"float: left;\"><logo-text version='{{version}}'/></h3>\n" +
+    "    <h3 class='modal-title' style=\"float: right;\">{{options.title}}</h3>\n" +
+    "</div>\n" +
+    "<div class=\"modal-body\">\n" +
+    "    <p>{{options.message}}</p>\n" +
+    "</div>\n" +
+    "<div class=\"modal-footer\">\n" +
+    "    <button class=\"btn btn-secondary\" type=\"button\" data-ng-click=\"cancel()\">{{options.cancelButtonText}}</button>\n" +
+    "    <button class=\"btn btn-primary\" type=\"button\" data-ng-click=\"gist();\">{{options.gistButtonText}}</button>\n" +
+    "    <button class=\"btn btn-primary\" type=\"button\" data-ng-click=\"repo();\">{{options.repoButtonText}}</button>\n" +
+    "</div>"
+  );
+
+
+  $templateCache.put('commit-message-modal.html',
+    "<div class=\"modal-header\" style=\"clear: both\">\n" +
+    "    <h3 class='modal-title' style=\"float: left;\"><logo-text version='{{version}}'/></h3>\n" +
+    "    <h3 class='modal-title' style=\"float: right;\">{{options.title}}</h3>\n" +
+    "</div>\n" +
+    "<div class=\"modal-body\">\n" +
+    "    <p>{{options.message}}</p>\n" +
+    "    <input ng-model='options.text' type='text' placeholder='{{options.placeholder}}'></input>\n" +
+    "</div>\n" +
+    "<div class=\"modal-footer\">\n" +
+    "    <button class=\"btn btn-secondary\" type=\"button\" data-ng-click=\"cancel()\">{{options.cancelButtonText}}</button>\n" +
+    "    <button class=\"btn btn-primary\" type=\"button\" data-ng-click=\"ok();\">{{options.actionButtonText}}</button>\n" +
+    "</div>"
+  );
+
+
   $templateCache.put('confirm-modal.html',
     "<div class=\"modal-header\" style=\"clear: both\">\n" +
     "    <h3 class='modal-title' style=\"float: left;\"><logo-text version='{{version}}'/></h3>\n" +
@@ -684,6 +716,23 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "    <button class='btn' ng-click='doCancel()'>Cancel</button>\n" +
     "  </div>\n" +
     "</div>\n"
+  );
+
+
+  $templateCache.put('repo-data-modal.html',
+    "<div class=\"modal-header\" style=\"clear: both\">\n" +
+    "    <h3 class='modal-title' style=\"float: left;\"><logo-text version='{{version}}'/></h3>\n" +
+    "    <h3 class='modal-title' style=\"float: right;\">{{options.title}}</h3>\n" +
+    "</div>\n" +
+    "<div class=\"modal-body\">\n" +
+    "    <p>{{options.message}}</p>\n" +
+    "    <label>Name</label>\n" +
+    "    <input ng-model='data.name' type='text'></input>\n" +
+    "</div>\n" +
+    "<div class=\"modal-footer\">\n" +
+    "    <button class=\"btn btn-secondary\" type=\"button\" data-ng-click=\"cancel()\">{{options.cancelButtonText}}</button>\n" +
+    "    <button class=\"btn btn-primary\" type=\"button\" data-ng-click=\"ok();\">{{options.actionButtonText}}</button>\n" +
+    "</div>"
   );
 
 }]);
