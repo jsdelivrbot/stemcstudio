@@ -63,7 +63,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 app.constant('version', '2.0.0-beta.50');
 
 // Feature flags (boolean)
-const exposeWorkInProgress = true;
+const exposeWorkInProgress = false;
 app.constant('FEATURE_DASHBOARD_ENABLED', exposeWorkInProgress);
 app.constant('FEATURE_EXAMPLES_ENABLED', true);
 app.constant('FEATURE_LOGIN_ENABLED', true);
@@ -299,14 +299,6 @@ app.run([
             else {
                 return void 0
             }
-        };
-
-        $rootScope.log = function(thing) {
-            console.warn(thing);
-        };
-
-        $rootScope.alert = function(thing) {
-            alert(thing);
         };
 
         $rootScope.login = function(label?: string, value?: number) {

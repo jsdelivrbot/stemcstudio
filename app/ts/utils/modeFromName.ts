@@ -12,6 +12,7 @@ const fileNameToMode: { [fileName: string]: string } = {}
 
 // extensionToMode['coffee'] = 'CoffeeScript'
 extensionToMode['css'] = LANGUAGE_CSS
+extensionToMode['gitignore'] = LANGUAGE_TEXT
 extensionToMode['html'] = LANGUAGE_HTML
 extensionToMode['js'] = LANGUAGE_JAVA_SCRIPT
 extensionToMode['json'] = LANGUAGE_JSON
@@ -20,8 +21,10 @@ extensionToMode['md'] = LANGUAGE_MARKDOWN
 // extensionToMode['py'] = 'Python'
 // extensionToMode['sass'] = 'SASS'
 extensionToMode['ts'] = LANGUAGE_TYPE_SCRIPT
+extensionToMode['txt'] = LANGUAGE_TEXT
 
 fileNameToMode['LICENSE'] = LANGUAGE_TEXT
+fileNameToMode['.gitignore'] = LANGUAGE_TEXT
 
 /**
  * Given a file name, determines the language (mode).

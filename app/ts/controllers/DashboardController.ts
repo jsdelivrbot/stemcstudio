@@ -2,6 +2,7 @@ import * as angular from 'angular';
 import AbstractPageController from './AbstractPageController';
 import ExamplesScope from '../scopes/ExamplesScope';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
+import ModalDialog from '../services/modalService/ModalDialog';
 
 /**
  * The examples are currently not data-driven and not very pretty!
@@ -20,6 +21,7 @@ export default class DashboardController extends AbstractPageController {
         '$window',
         'GitHubAuthManager',
         'ga',
+        'modalDialog',
         'UNIVERSAL_ANALYTICS_TRACKING_ID',
     ];
 
@@ -33,9 +35,10 @@ export default class DashboardController extends AbstractPageController {
         $window: angular.IWindowService,
         authManager: IGitHubAuthManager,
         ga: UniversalAnalytics.ga,
+        modalDialog: ModalDialog,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string
     ) {
-        super($scope, $window, authManager, ga, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto')
+        super($scope, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto')
 
         $scope.examples = [
             {

@@ -4,6 +4,7 @@ import IDoodleManager from '../services/doodles/IDoodleManager';
 import DoodleScope from '../scopes/DoodleScope';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
 import ITemplate from '../services/templates/ITemplate';
+import ModalDialog from '../services/modalService/ModalDialog';
 
 /**
  * This class could probably be merged with the WorkspaceController?
@@ -19,6 +20,7 @@ export default class DoodleController extends AbstractPageController {
         'GitHubAuthManager',
         'templates',
         'ga',
+        'modalDialog',
         'doodles',
         'UNIVERSAL_ANALYTICS_TRACKING_ID']
     constructor(
@@ -28,10 +30,11 @@ export default class DoodleController extends AbstractPageController {
         authManager: IGitHubAuthManager,
         templates: ITemplate[],
         ga: UniversalAnalytics.ga,
+        modalDialog: ModalDialog,
         doodles: IDoodleManager,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string) {
 
-        super($scope, $window, authManager, ga, UNIVERSAL_ANALYTICS_TRACKING_ID, 'hidden')
+        super($scope, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'hidden')
 
         // ExplorerMixin implementation.
         $scope.isExplorerVisible = true

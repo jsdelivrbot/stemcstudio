@@ -92,7 +92,7 @@ import './services/tw/tw';
 import './services/uuid/UuidService';
 app.service('base64', Base64)
 app.service('cloud', GitHubCloudService)
-app.service('modalService', ModalDialogService)
+app.service('modalDialog', ModalDialogService)
 
 app.service('flow', ReteFlowService)
 app.service('flowSessionService', NaiveFlowSessionService)

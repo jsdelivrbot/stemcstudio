@@ -373,9 +373,6 @@ export default class Doodle {
      */
     newFile(path: string): DoodleFile {
         const mode = modeFromName(path)
-        if (!mode) {
-            throw new Error(`${path} is not a recognized language.`)
-        }
         const conflictFile = this.findFileByName(path)
         if (!conflictFile) {
             const trashedFile = this.trash[path]

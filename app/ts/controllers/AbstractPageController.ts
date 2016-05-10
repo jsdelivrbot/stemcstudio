@@ -1,5 +1,6 @@
 import * as angular from 'angular';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
+import ModalDialog from '../services/modalService/ModalDialog';
 import AppScope from '../scopes/AppScope';
 
 /**
@@ -24,13 +25,14 @@ export default class AbstractPageController {
         $window: angular.IWindowService,
         authManager: IGitHubAuthManager,
         ga: UniversalAnalytics.ga,
+        modalDialog: ModalDialog,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string,
         overflow: string) {
 
         // Our main reponsibility is handling the GitHub OAuth callback.
         authManager.handleGitHubLoginCallback(function(err, token: string) {
             if (err) {
-                $scope.alert(err.message);
+                modalDialog.alert({ title: 'Login', message: err.message });
             }
         });
 

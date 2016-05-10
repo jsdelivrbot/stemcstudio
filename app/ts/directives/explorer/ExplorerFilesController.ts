@@ -17,7 +17,7 @@ export default class ExplorerFilesController {
      * @type string[]
      * @static
      */
-    public static $inject: string[] = ['$scope', 'doodles', 'modalService']
+    public static $inject: string[] = ['$scope', 'doodles', 'modalDialog']
 
     /**
      * @class ExplorerFilesController

@@ -11,13 +11,13 @@ import Doodle from '../../services/doodles/Doodle';
 import fileContent from './fileContent';
 import fileExists from './fileExists';
 import IDoodleManager from '../../services/doodles/IDoodleManager';
-// import RepoData from '../../services/github/RepoData';
 import GitHubReason from '../../services/github/GitHubReason';
 import GitHubService from '../../services/github/GitHubService';
 import IGitHubAuthManager from '../../services/gham/IGitHubAuthManager';
 import IOption from '../../services/options/IOption';
 import IOptionManager from '../../services/options/IOptionManager';
 import isNumber from '../../utils/isNumber';
+import isString from '../../utils/isString';
 import ChangeHandler from './ChangeHandler';
 import OutputFileHandler from './OutputFileHandler';
 import doodleGroom from '../../utils/doodleGroom';
@@ -61,6 +61,7 @@ const SCRIPT_TARGET_ES5 = 'es5';
 function namesToOptions(names: string[], options: IOptionManager): IOption[] {
     return options.filter(function(option) { return names.indexOf(option.name) >= 0; });
 }
+
 function optionsToNames(options: IOption[]): string[] {
     return options.map(function(option: IOption) { return option.name });
 }
@@ -210,7 +211,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         'flow',
         'ga',
         'doodles',
-        'modalService',
+        'modalDialog',
         'options',
         'FEATURE_GIST_ENABLED',
         'FEATURE_REPO_ENABLED',
@@ -361,7 +362,12 @@ export default class WorkspaceController implements WorkspaceMixin {
 
             flow.rule("Commit Message", {},
                 (facts) => {
-                    return facts.canAskForCommitMessage();
+                    if (this.FEATURE_REPO_ENABLED) {
+                        return facts.canAskForCommitMessage();
+                    }
+                    else {
+                        return false;
+                    }
                 },
                 (facts, session, next) => {
                     this.cloud.commitMessage(`${title}`).then((commitMessage) => {
@@ -375,7 +381,12 @@ export default class WorkspaceController implements WorkspaceMixin {
 
             flow.rule("Choose Gist or Repo", {},
                 (facts) => {
-                    return facts.canAskToChooseGistOrRepo()
+                    if (this.FEATURE_GIST_ENABLED && this.FEATURE_REPO_ENABLED) {
+                        return facts.canAskToChooseGistOrRepo();
+                    }
+                    else {
+                        return false;
+                    }
                 },
                 (facts, session, next) => {
                     cloud.chooseGistOrRepo(title).then((storage) => {
@@ -389,7 +400,12 @@ export default class WorkspaceController implements WorkspaceMixin {
 
             flow.rule("Create Gist", {},
                 (facts) => {
-                    return facts.canCreateGist();
+                    if (this.FEATURE_GIST_ENABLED) {
+                        return facts.canCreateGist();
+                    }
+                    else {
+                        return false;
+                    }
                 },
                 (facts, session, next) => {
                     this.cloud.createGist(doodle)
@@ -403,7 +419,7 @@ export default class WorkspaceController implements WorkspaceMixin {
                                     facts.gistId.resolve(data.id)
                                     facts.uploadedAt.resolve(data.created_at)
                                     facts.redirect.resolve(true)
-                                    facts.uploadMessage.resolve(`Your doodle was successfully uploaded and associated with a new Gist.`)
+                                    facts.uploadMessage.resolve(`Your project was successfully uploaded and associated with a new Gist.`)
 
                                     doodle.gistId = data.id;
                                     doodle.created_at = data.created_at;
@@ -429,7 +445,12 @@ export default class WorkspaceController implements WorkspaceMixin {
 
             flow.rule("Update Gist", {},
                 (facts) => {
-                    return facts.canUpdateGist()
+                    if (this.FEATURE_GIST_ENABLED) {
+                        return facts.canUpdateGist()
+                    }
+                    else {
+                        return false;
+                    }
                 },
                 (facts, session, next) => {
                     this.cloud.updateGist(doodle, doodle.gistId)
@@ -442,7 +463,7 @@ export default class WorkspaceController implements WorkspaceMixin {
                                 case 200: {
                                     const data = http.data;
                                     facts.uploadedAt.resolve(data.updated_at)
-                                    facts.uploadMessage.resolve(`${statusText}. Your doodle was successfully uploaded and patched the existing Gist.`)
+                                    facts.uploadMessage.resolve(`Your project was successfully uploaded and patched the existing Gist.`)
                                     doodle.emptyTrash();
                                     doodle.updated_at = data.updated_at;
                                     doodles.updateStorage();
@@ -473,7 +494,12 @@ export default class WorkspaceController implements WorkspaceMixin {
 
             flow.rule("Prompt for repository name", {},
                 (facts) => {
-                    return facts.canAskForRepoName()
+                    if (this.FEATURE_REPO_ENABLED) {
+                        return facts.canAskForRepoName();
+                    }
+                    else {
+                        return false;
+                    }
                 },
                 (facts, session, next) => {
                     const message = "Please enter the name of the repository that you would like to upload to."
@@ -490,7 +516,12 @@ export default class WorkspaceController implements WorkspaceMixin {
 
             flow.rule("Determine whether repository exists", {},
                 (facts) => {
-                    return facts.canDetermineRepoExists()
+                    if (this.FEATURE_REPO_ENABLED) {
+                        return facts.canDetermineRepoExists();
+                    }
+                    else {
+                        return false;
+                    }
                 },
                 (facts, session, next) => {
                     this.github.getRepo(facts.userLogin.value, facts.repo.value)
@@ -500,7 +531,6 @@ export default class WorkspaceController implements WorkspaceMixin {
                             facts.statusText.resolve(http.statusText)
                             switch (status) {
                                 case 404: {
-                                    console.warn("HERE 1")
                                     facts.repoExists.resolve(false)
                                     next();
                                     break;
@@ -524,7 +554,6 @@ export default class WorkspaceController implements WorkspaceMixin {
                                 const status: number = reason.status
                                 switch (status) {
                                     case 404: {
-                                        console.warn("HERE 1")
                                         facts.repoExists.resolve(false)
                                         next();
                                         break;
@@ -537,7 +566,6 @@ export default class WorkspaceController implements WorkspaceMixin {
                                 }
                             }
                             else {
-                                console.warn("HERE 2")
                                 facts.repoExists.reject(reason)
                                 next(reason);
                             }
@@ -546,7 +574,12 @@ export default class WorkspaceController implements WorkspaceMixin {
 
             flow.rule("Prompt for repository data", {},
                 (facts) => {
-                    return facts.canAskForRepoData()
+                    if (this.FEATURE_REPO_ENABLED) {
+                        return facts.canAskForRepoData();
+                    }
+                    else {
+                        return false;
+                    }
                 },
                 (facts, session, next) => {
                     const defaults: RepoData = { name: '' };
@@ -564,7 +597,12 @@ export default class WorkspaceController implements WorkspaceMixin {
 
             flow.rule("Create Repo", {},
                 (facts) => {
-                    return facts.canCreateRepo()
+                    if (this.FEATURE_REPO_ENABLED) {
+                        return facts.canCreateRepo()
+                    }
+                    else {
+                        return false;
+                    }
                 },
                 (facts, session, next) => {
                     this.cloud.createRepo(facts.repoData.value)
@@ -606,7 +644,12 @@ export default class WorkspaceController implements WorkspaceMixin {
 
             flow.rule("Upload to Repo", {},
                 (facts) => {
-                    return facts.canUploadToRepo()
+                    if (this.FEATURE_REPO_ENABLED) {
+                        return facts.canUploadToRepo();
+                    }
+                    else {
+                        return false;
+                    }
                 },
                 (facts, session, next) => {
                     const owner = facts.owner.value;
@@ -619,10 +662,10 @@ export default class WorkspaceController implements WorkspaceMixin {
                                 doodle.owner = owner;
                                 doodle.repo = repo;
                                 // doodle.ref = ref;
-                                facts.uploadMessage.resolve("Your doodle was successfully uploaded.")
+                                facts.uploadMessage.resolve("Your project was successfully uploaded.")
                             }
                             else {
-                                facts.uploadMessage.resolve("Your doodle didn't make it to GitHub!")
+                                facts.uploadMessage.resolve("Your project didn't make it to GitHub!")
                             }
                         }
                         else {
@@ -638,13 +681,29 @@ export default class WorkspaceController implements WorkspaceMixin {
             facts.repo.resolve(doodle.repo)
             facts.owner.resolve(doodle.owner)
             facts.userLogin.resolve($scope.userLogin())
-            if (facts.gistId.isResolved()) {
-                facts.storage.resolve('gist')
+            if (this.FEATURE_GIST_ENABLED) {
+                if (this.FEATURE_REPO_ENABLED) {
+                    if (facts.gistId.isResolved()) {
+                        facts.storage.resolve('gist')
+                    }
+                    if (facts.repo.isResolved()) {
+                        facts.storage.resolve('repo')
+                        facts.ref.resolve('heads/master')
+                        facts.repoExists.resolve(true)
+                    }
+                }
+                else {
+                    facts.storage.resolve('gist')
+                }
             }
-            if (facts.repo.isResolved()) {
-                facts.storage.resolve('repo')
-                facts.ref.resolve('heads/master')
-                facts.repoExists.resolve(true)
+            else {
+                if (this.FEATURE_REPO_ENABLED) {
+                    facts.storage.resolve('repo')
+                    facts.ref.resolve('heads/master')
+                }
+                else {
+                    // Do nothing.
+                }
             }
             if (facts.gistId.isUndefined() && facts.repo.isUndefined()) {
                 facts.method.resolve(Method.Create)
@@ -721,10 +780,10 @@ export default class WorkspaceController implements WorkspaceMixin {
         const gistId: string = this.$stateParams['gistId']; // OK
 
         const matches = doodles.filter(function(doodle: Doodle) {
-            if (typeof owner === 'string' && typeof repo === 'string') {
+            if (isString(owner) && isString(repo)) {
                 return doodle.owner === owner && doodle.repo === repo
             }
-            else if (typeof gistId === 'string') {
+            else if (isString(gistId)) {
                 return doodle.gistId === gistId
             }
             else {
@@ -747,7 +806,9 @@ export default class WorkspaceController implements WorkspaceMixin {
                         doodles.updateStorage();
                         this.onInitDoodle(doodle)
                     }, (reason) => {
-                        this.$scope.alert("Error attempting to download Repository");
+                        this.modalDialog.alert({
+                            title: 'Error downloading Repository',
+                            message: `Error attempting to download repository '${repo}'. Cause:  ${reason}` })
                     }, function(state) {
                         // The state is {doneCount: number; todoCount: number}
                     })
@@ -760,7 +821,9 @@ export default class WorkspaceController implements WorkspaceMixin {
                         this.onInitDoodle(doodle)
                     }
                     else {
-                        this.$scope.alert("Error attempting to download Gist");
+                        this.modalDialog.alert({
+                            title: 'Error downloading Gist',
+                             message: `Error attempting to download gist '${gistId}'. Cause:  ${err}` })
                     }
                 });
             }
@@ -1192,7 +1255,7 @@ export default class WorkspaceController implements WorkspaceMixin {
                         const content: Document = this.$scope.previewIFrame.contentDocument || this.$scope.previewIFrame.contentWindow.document;
 
                         let html: string = fileContent(bestFile, doodle)
-                        if (typeof html === 'string') {
+                        if (isString(html)) {
 
                             const selOpts: IOption[] = this.options.filter((option: IOption, index: number, array: IOption[]) => {
                                 return doodle.dependencies.indexOf(option.name) > -1;

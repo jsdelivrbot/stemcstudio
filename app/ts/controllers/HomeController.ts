@@ -2,6 +2,7 @@ import * as angular from 'angular';
 import AbstractPageController from './AbstractPageController';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
 import HomeScope from '../scopes/HomeScope';
+import ModalDialog from '../services/modalService/ModalDialog';
 
 /**
  * @class HomeController
@@ -15,6 +16,7 @@ export default class HomeController extends AbstractPageController {
         '$window',
         'GitHubAuthManager',
         'ga',
+        'modalDialog',
         'FEATURE_DASHBOARD_ENABLED',
         'FEATURE_EXAMPLES_ENABLED',
         'NAMESPACE_TWITTER_WIDGETS',
@@ -31,6 +33,7 @@ export default class HomeController extends AbstractPageController {
         $window: angular.IWindowService,
         authManager: IGitHubAuthManager,
         ga: UniversalAnalytics.ga,
+        modalDialog: ModalDialog,
         FEATURE_DASHBOARD_ENABLED: boolean,
         FEATURE_EXAMPLES_ENABLED: boolean,
         NAMESPACE_TWITTER_WIDGETS: string,
@@ -39,7 +42,7 @@ export default class HomeController extends AbstractPageController {
         STATE_EXAMPLES: string,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string
     ) {
-        super($scope, $window, authManager, ga, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto')
+        super($scope, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto')
 
         $scope.FEATURE_DASHBOARD_ENABLED = FEATURE_DASHBOARD_ENABLED
         $scope.FEATURE_EXAMPLES_ENABLED = FEATURE_EXAMPLES_ENABLED
