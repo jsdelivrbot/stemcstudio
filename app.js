@@ -10,6 +10,7 @@ var https = require('https');
 var qs = require('querystring');
 var bodyParser = require('body-parser');
 var errorHandler = require('errorhandler');
+var hits = require('./server/routes/hits');
 var npm = require('./package.json');
 var cfg = require('./configure');
 var clientId = nconf.get("GITHUB_APPLICATION_CLIENT_ID");
@@ -85,6 +86,8 @@ app.get("/github_callback", function (req, res, next) {
         npm: npm
     });
 });
+app.get('/hits', hits.count);
+app.post('/hit', hits.registerHit);
 app.get("/*", function (req, res, next) {
     var clientId = nconf.get("GITHUB_APPLICATION_CLIENT_ID");
     res.cookie('stemcstudio-github-application-client-id', nconf.get("GITHUB_APPLICATION_CLIENT_ID"));

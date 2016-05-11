@@ -15,6 +15,7 @@ import DoodleController from './controllers/DoodleController';
 import ExamplesController from './controllers/ExamplesController';
 import GitHubAccountController from './controllers/GitHubAccountController';
 import GitHubCloudService from './services/cloud/GitHubCloudService';
+import HitService from './services/hits/HitService';
 import HomeController from './controllers/HomeController';
 import editor from './directives/editor/editor.component';
 import explorer from './directives/explorer/explorer.component';
@@ -93,7 +94,7 @@ import './services/github/GitHub';
 import './services/options/options';
 import './services/settings/settings';
 import './services/templates/templates';
-import './services/tw/tw';
+// import './services/tw/tw';
 import './services/uuid/UuidService';
 app.service('base64', Base64)
 app.service('cloud', GitHubCloudService)
@@ -101,6 +102,8 @@ app.service('modalDialog', ModalDialogService)
 
 app.service('flow', ReteFlowService)
 app.service('flowSessionService', NaiveFlowSessionService)
+
+app.service('hits', HitService);
 
 app.service('textService', TextService)
 app.service('themeManager', DefaultThemeManager);

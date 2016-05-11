@@ -61,7 +61,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version for use by scopes.
-app.constant('version', '2.0.0-beta.51');
+app.constant('version', '2.0.0-beta.52');
 
 // Feature flags (boolean)
 app.constant('FEATURE_DASHBOARD_ENABLED', false);
@@ -108,11 +108,12 @@ app.constant('LIBS_MARKER', '// LIBS-MARKER');
 
 // We can change the global namespace used by Google's Universal Analytics.
 // All access should be through the service wrapper.
-app.constant('NAMESPACE_GOOGLE_ANALYTICS', 'googleAnalytics');
+// We won't be fancy here, leave it as 'ga' as in views/layout.jade
+app.constant('NAMESPACE_GOOGLE_ANALYTICS', 'ga');
 app.constant('UNIVERSAL_ANALYTICS_TRACKING_ID', 'UA-41504069-5');
 
 // This twitter widget namespace is a symbolic constant. It cannot be changed.
-app.constant('NAMESPACE_TWITTER_WIDGETS', 'twttr');
+// app.constant('NAMESPACE_TWITTER_WIDGETS', 'twttr');
 
 // The token that we receive for OAuth.
 app.constant('GITHUB_TOKEN_COOKIE_NAME', 'github-token');
@@ -284,6 +285,7 @@ app.run([
     'githubKey',
     'version',
     'FEATURE_LOGIN_ENABLED',
+    'UNIVERSAL_ANALYTICS_TRACKING_ID',
     function(
         $rootScope: AppScope,
         $state: angular.ui.IStateService,
@@ -294,9 +296,9 @@ app.run([
         ga: UniversalAnalytics.ga,
         githubKey: string,
         version: string,
-        FEATURE_LOGIN_ENABLED: boolean
+        FEATURE_LOGIN_ENABLED: boolean,
+        UNIVERSAL_ANALYTICS_TRACKING_ID: string
     ) {
-
         // The name of this cookie must correspond with the cookie sent back from the server.
         const GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME = 'stemcstudio-github-application-client-id';
         const GITHUB_TOKEN_COOKIE_NAME = 'github-token';

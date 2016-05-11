@@ -36,10 +36,7 @@ export default class AbstractPageController {
             }
         });
 
-        // Google Universal Analytics.
-        // Reminder: Do not create multiple trackers in this (single page) app.
-        ga('create', UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
-        ga('send', 'pageview');
+        // ga('send', 'pageview');
 
         // We don't use a scrollbar on the editing page to avoid double scrollbars
         // which is very annoying. However, that means that we must be careful to put

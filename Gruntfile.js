@@ -636,7 +636,7 @@ module.exports = function(grunt) {
 
     ts: {
       app: {
-        tsconfig: './tsconfig.json',
+        tsconfig: './tsconfig.app.json',
         options: {
           fast: 'never'
         }

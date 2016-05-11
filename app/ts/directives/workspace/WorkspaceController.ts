@@ -927,7 +927,6 @@ export default class WorkspaceController implements WorkspaceMixin {
         this.$scope.isViewVisible = false
         // No such issue with the README.md
         this.$scope.isReadMeVisible = true
-        this.$window.document.title = doodle.description
 
         // FIXME: Some work to do in getting all the async work done right.
         this.updateWorkspace()

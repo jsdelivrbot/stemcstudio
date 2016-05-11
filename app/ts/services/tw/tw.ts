@@ -4,7 +4,6 @@ function twitterFactory(
     $window: angular.IWindowService,
     NAMESPACE_TWITTER_WIDGETS: string
 ) {
-
     // Load the widgets.js file asynchronously. 
     $window[NAMESPACE_TWITTER_WIDGETS] = (function(tagName: string, id: string) {
         var js: HTMLScriptElement;

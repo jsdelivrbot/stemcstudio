@@ -1,6 +1,7 @@
 import * as angular from 'angular';
 import AbstractPageController from './AbstractPageController';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
+import HitService from '../services/hits/HitService';
 import HomeScope from '../scopes/HomeScope';
 import ModalDialog from '../services/modalService/ModalDialog';
 
@@ -12,14 +13,13 @@ export default class HomeController extends AbstractPageController {
     public static $inject: string[] = [
         '$scope',
         '$state',
-        '$twitter',
         '$window',
         'GitHubAuthManager',
         'ga',
+        'hits',
         'modalDialog',
         'FEATURE_DASHBOARD_ENABLED',
         'FEATURE_EXAMPLES_ENABLED',
-        'NAMESPACE_TWITTER_WIDGETS',
         'STATE_DASHBOARD',
         'STATE_DOODLE',
         'STATE_EXAMPLES',
@@ -29,14 +29,13 @@ export default class HomeController extends AbstractPageController {
     constructor(
         $scope: HomeScope,
         $state: angular.ui.IStateService,
-        $twitter: Twitter,
         $window: angular.IWindowService,
         authManager: IGitHubAuthManager,
         ga: UniversalAnalytics.ga,
+        hits: HitService,
         modalDialog: ModalDialog,
         FEATURE_DASHBOARD_ENABLED: boolean,
         FEATURE_EXAMPLES_ENABLED: boolean,
-        NAMESPACE_TWITTER_WIDGETS: string,
         STATE_DASHBOARD: string,
         STATE_DOODLE: string,
         STATE_EXAMPLES: string,
@@ -47,6 +46,7 @@ export default class HomeController extends AbstractPageController {
         $scope.FEATURE_DASHBOARD_ENABLED = FEATURE_DASHBOARD_ENABLED
         $scope.FEATURE_EXAMPLES_ENABLED = FEATURE_EXAMPLES_ENABLED
 
+        /*
         if ($window[NAMESPACE_TWITTER_WIDGETS] && $window[NAMESPACE_TWITTER_WIDGETS].widgets) {
             $window[NAMESPACE_TWITTER_WIDGETS].widgets.load();
         }
@@ -57,6 +57,7 @@ export default class HomeController extends AbstractPageController {
         }
 
         $scope.twitterShareText = "STEMCstudio · Learning Science and Mathematics through Computational Modeling.";
+        */
 
         $scope.goDashboard = function() {
             if (FEATURE_DASHBOARD_ENABLED) {

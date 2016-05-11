@@ -7,7 +7,10 @@ app.factory('ga', [
     $window: angular.IWindowService,
     NAMESPACE_GOOGLE_ANALYTICS
   ) {
-
+      //
+      // Experimenting with putting this directly in the HTML.
+      //
+/*
     (
       function(
         i,
@@ -29,9 +32,9 @@ app.factory('ga', [
       $window,
       document,
       'script',
-      '//www.google-analytics.com/analytics.js',
+      'https://www.google-analytics.com/analytics.js',
       NAMESPACE_GOOGLE_ANALYTICS);
-
+*/
     // FIXME: Might be better here to get an interface. 
     const service = function() {
       if (angular.isArray(arguments[0])) {

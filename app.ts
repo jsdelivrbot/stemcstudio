@@ -14,6 +14,8 @@ import * as bodyParser from 'body-parser';
 import multer = require('multer');
 import errorHandler = require('errorhandler');
 
+import * as hits from './server/routes/hits'
+
 const npm = require('./package.json');
 
 const cfg = require('./configure');
@@ -21,12 +23,12 @@ const cfg = require('./configure');
 const clientId = nconf.get("GITHUB_APPLICATION_CLIENT_ID");
 
 const isProductionMode = () => {
-  switch(process.env.NODE_ENV || 'development') {
-    case 'development':
-      return false;
-    default:
-      return true;
-  }
+    switch (process.env.NODE_ENV || 'development') {
+        case 'development':
+            return false;
+        default:
+            return true;
+    }
 };
 
 const app = express()
@@ -40,99 +42,102 @@ app.set('view engine', 'jade');
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(methodOverride());
 // TODO session
 
 // Serve out of dist or generated, depending upon the environment.
 const folder = `${isProductionMode() ? 'dist' : 'generated'}`;
-app.use("/font", lactate.static(`${__dirname}/${folder}/img`, {"max age": "one week"}));
-app.use(lactate.static(`${__dirname}/${folder}`, {"max age": "one week"}));
+app.use("/font", lactate.static(`${__dirname}/${folder}/img`, { "max age": "one week" }));
+app.use(lactate.static(`${__dirname}/${folder}`, { "max age": "one week" }));
 
 // Something rotten about the following line.
 // app.use multer()
 
 // Convenience for allowing CORS on routes - GET only
-app.all('*', (req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  next();
+app.all('*', (req: express.Request, res: express.Response, next: Function) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
 });
 
-const authenticate = (code, cb) => {
+const authenticate = (code, cb: (err: any, data?: any) => any) => {
 
-  // This is step two in the GitHub Web Application Flow and occurs
-  // after GitHub redirects back to the site (assuming user accepts request).
-  // The following step exchanges the temporary code for an access token.
-  // POST https://github.com/login/oauth/access_token
-  const data = qs.stringify({
-    client_id: nconf.get("GITHUB_APPLICATION_CLIENT_ID"),
-    client_secret: nconf.get("GITHUB_APPLICATION_CLIENT_SECRET"),
-    code: code
+    // This is step two in the GitHub Web Application Flow and occurs
+    // after GitHub redirects back to the site (assuming user accepts request).
+    // The following step exchanges the temporary code for an access token.
+    // POST https://github.com/login/oauth/access_token
+    const data = qs.stringify({
+        client_id: nconf.get("GITHUB_APPLICATION_CLIENT_ID"),
+        client_secret: nconf.get("GITHUB_APPLICATION_CLIENT_SECRET"),
+        code: code
     });
 
-  const options = {
-    host: nconf.get("GITHUB_HOST"),     // github.com
-    port: nconf.get("GITHUB_PORT"),     // 443
-    path: nconf.get("GITHUB_PATH"),     // /login/oath/access_token
-    method: nconf.get("GITHUB_METHOD"), // POST
-    headers: {'content-length': data.length}
-  };
+    const options = {
+        host: nconf.get("GITHUB_HOST"),     // github.com
+        port: nconf.get("GITHUB_PORT"),     // 443
+        path: nconf.get("GITHUB_PATH"),     // /login/oath/access_token
+        method: nconf.get("GITHUB_METHOD"), // POST
+        headers: { 'content-length': data.length }
+    };
 
-  let body = "";
-  const req = https.request(options, (res) => {
-    res.setEncoding('utf8');
-    res.on('data', (chunk) => {body += chunk;});
-    res.on('end', () => {cb(null, qs.parse(body).access_token);});
-  });
+    let body = "";
+    const req = https.request(options, (res) => {
+        res.setEncoding('utf8');
+        res.on('data', (chunk) => { body += chunk; });
+        res.on('end', () => { cb(null, qs.parse(body).access_token); });
+    });
 
-  req.write(data);
-  req.end();
-  req.on('error', (e) => {cb(e.message)});
+    req.write(data);
+    req.end();
+    req.on('error', (e) => { cb(e.message) });
 };
 
 // Forward stemcstudio.herokuapp.com to www.stemcstudio.com
 // Notice that we use HTTP status 301 Moved Permanently (best for SEO purposes).
-app.get("/*", (req: express.Request, res, next) => {
+app.get("/*", (req: express.Request, res: express.Response, next: Function) => {
     if (req.headers['host'].match(/^stemcstudio.herokuapp.com/)) {
-      res.redirect(`https://www.stemcstudio.com${req.url}`, 301);
+        res.redirect(`https://www.stemcstudio.com${req.url}`, 301);
     }
     else {
-      next()
+        next()
     }
 });
 
 // Exchange the session code for an access token.
-app.get('/authenticate/:code', (req, res) => {
-  authenticate(req.params.code, (err, token) => {
-    if (err) {
-      return res.json(err);
-    }
-    else {
-      res.json(token ? {"token": token} : {"error": "bad_code"});
-    }
-  });
+app.get('/authenticate/:code', (req: express.Request, res: express.Response) => {
+    authenticate(req.params.code, (err, token) => {
+        if (err) {
+            return res.json(err);
+        }
+        else {
+            res.json(token ? { "token": token } : { "error": "bad_code" });
+        }
+    });
 });
 
-app.get("/github_callback", (req, res, next) => {
-  // Set a cookie to communicate the GitHub Client ID back to the client.
-  res.cookie('stemcstudio-github-application-client-id', nconf.get("GITHUB_APPLICATION_CLIENT_ID"));
-  res.render("github_callback", {
-    npm: npm
-  });
+app.get("/github_callback", (req: express.Request, res: express.Response, next) => {
+    // Set a cookie to communicate the GitHub Client ID back to the client.
+    res.cookie('stemcstudio-github-application-client-id', nconf.get("GITHUB_APPLICATION_CLIENT_ID"));
+    res.render("github_callback", {
+        npm: npm
+    });
 });
 
-app.get("/*", (req, res, next) => {
-  // Set a cookie to communicate the GitHub Client ID back to the client.
-  const clientId = nconf.get("GITHUB_APPLICATION_CLIENT_ID");
-  res.cookie('stemcstudio-github-application-client-id', nconf.get("GITHUB_APPLICATION_CLIENT_ID"));
-  res.render("index", {
-    css: `/css/app.css?version=${npm.version}`,
-    js:  `/js/app.js?version=${npm.version}`,
-    npm: npm
-  });
+app.get('/hits', hits.count)
+app.post('/hit', hits.registerHit)
+
+app.get("/*", (req: express.Request, res: express.Response, next) => {
+    // Set a cookie to communicate the GitHub Client ID back to the client.
+    const clientId = nconf.get("GITHUB_APPLICATION_CLIENT_ID");
+    res.cookie('stemcstudio-github-application-client-id', nconf.get("GITHUB_APPLICATION_CLIENT_ID"));
+    res.render("index", {
+        css: `/css/app.css?version=${npm.version}`,
+        js: `/js/app.js?version=${npm.version}`,
+        npm: npm
+    });
 });
 
 // error handling middleware should be loaded after loading the routes
