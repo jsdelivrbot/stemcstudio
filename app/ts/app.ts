@@ -31,6 +31,7 @@ import AppScope from './scopes/AppScope';
 import CookieService from './services/cookie/CookieService';
 import IGitHubItem from './services/gham/IGitHubItem';
 import IUuidService from './services/uuid/IUuidService';
+import ITranslateProvider from './modules/translate/ITranslateProvider';
 
 //
 // Create 'app' module and declare its Angular module dependencies.
@@ -60,15 +61,15 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version for use by scopes.
-app.constant('version', '2.0.0-beta.50');
+app.constant('version', '2.0.0-beta.51');
 
 // Feature flags (boolean)
-const exposeWorkInProgress = false;
-app.constant('FEATURE_DASHBOARD_ENABLED', exposeWorkInProgress);
+app.constant('FEATURE_DASHBOARD_ENABLED', false);
 app.constant('FEATURE_EXAMPLES_ENABLED', true);
 app.constant('FEATURE_LOGIN_ENABLED', true);
 app.constant('FEATURE_GIST_ENABLED', true);
-app.constant('FEATURE_REPO_ENABLED', exposeWorkInProgress);
+app.constant('FEATURE_I18N_ENABLED', true);
+app.constant('FEATURE_REPO_ENABLED', false);
 
 // githubKey stores the key of the item in local storage for maintaining GitHub OAuth data.
 // Remark: This value is duplicated in views/github_callback.jade
@@ -138,6 +139,7 @@ app.constant('FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS', vendorPath('davinci-maths
 //
 app.config([
     '$stateProvider',
+    '$translateProvider',
     '$urlRouterProvider',
     'FEATURE_DASHBOARD_ENABLED',
     'FEATURE_EXAMPLES_ENABLED',
@@ -150,6 +152,7 @@ app.config([
     'STATE_REPO',
     function(
         $stateProvider: angular.ui.IStateProvider,
+        $translateProvider: ITranslateProvider,
         $urlRouterProvider: angular.ui.IUrlRouterProvider,
         FEATURE_DASHBOARD_ENABLED: boolean,
         FEATURE_EXAMPLES_ENABLED: boolean,
@@ -248,6 +251,22 @@ app.config([
         }
 
         $urlRouterProvider.otherwise('/');
+
+        $translateProvider
+            .translations('en', {
+                APP_NAME: 'STEMCstudio',
+                BUTTON_TEXT_EN: 'english',
+                BUTTON_TEXT_DE: 'german'
+            })
+            .translations('de', {
+                APP_NAME: 'STEMCstudio',
+                BUTTON_TEXT_EN: 'englisch',
+                BUTTON_TEXT_DE: 'deutsch'
+            });
+
+        $translateProvider.preferredLanguage = 'en';
+        $translateProvider.useLocalStorage();
+
     }]);
 
 

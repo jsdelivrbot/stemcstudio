@@ -22,6 +22,11 @@ interface AppScope extends angular.IRootScopeService {
      * 
      */
     FEATURE_LOGIN_ENABLED: boolean;
+
+    /**
+     * 
+     */
+    FEATURE_I18N_ENABLED: boolean;
 }
 
 export default AppScope;

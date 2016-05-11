@@ -437,7 +437,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "    <div class='row'>\n" +
     "        <div class='col-md-9' role='main'>\n" +
     "            <div class='md-docs-section'>\n" +
-    "                <h1 id='overview' class='page-header'>STEMCstudio Overview</h1>\n" +
+    "                <h1 id='overview' class='page-header'>{{ 'APP_NAME' | translate }} Overview</h1>\n" +
     "                <p class='lead'>\n" +
     "                    The principle behind STEMCstudio is to provide a learning environment in which the student can verify personal understanding\n" +
     "                    and conceptual models by constructing a working software model. This learning environment takes the form\n" +
@@ -521,49 +521,50 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                        <dt>VPython-like capability</dt>\n" +
     "                        <dd>\n" +
     "                            VPython creates a simple programming experience by using a high-level graphics library called <i>visual</i>.\n" +
-    "                            STEMCstudio achieves the same degree of simplicity through a library called <i>EIGHT</i>.\n" +
-    "                            The graphics abstractions in this library are similar to the popular 3D WebGL library called <i>THREE</i>.\n" +
-    "                            The name EIGHT alludes to 2<sup>3</sup>, which is the number of basis elements in the corresponding geometric space.\n" +
+    "                            STEMCstudio achieves the same degree of simplicity through a library called <i>EIGHT</i>. The\n" +
+    "                            graphics abstractions in this library are similar to the popular 3D WebGL library called <i>THREE</i>.\n" +
+    "                            The name EIGHT alludes to 2<sup>3</sup>, which is the number of basis elements in the corresponding\n" +
+    "                            geometric space.\n" +
     "                        </dd>\n" +
     "                        <dt>Geometric Algebra Library</dt>\n" +
     "                        <dd>\n" +
-    "                            STEMCstudio provides a library, <i>EIGHT</i> for performing Geometric Algebra computations in 2D and 3D Euclidean\n" +
-    "                            geometries.\n" +
+    "                            STEMCstudio provides a library, <i>EIGHT</i> for performing Geometric Algebra computations in\n" +
+    "                            2D and 3D Euclidean geometries.\n" +
     "                        </dd>\n" +
     "                        <dt>WebGL Mathematical Computer Graphics Library</dt>\n" +
     "                        <dd>\n" +
-    "                            STEMCstudio provides a library <i>EIGHT</i> that helps to manage the complexity of WebGL shader programs\n" +
-    "                            rather than trying to hide it. This is important for high-performance graphics and mathematical\n" +
+    "                            STEMCstudio provides a library <i>EIGHT</i> that helps to manage the complexity of WebGL shader\n" +
+    "                            programs rather than trying to hide it. This is important for high-performance graphics and mathematical\n" +
     "                            flexibility.\n" +
     "                        </dd>\n" +
     "                        <dt>Units of Measure</dt>\n" +
     "                        <dd>\n" +
-    "                            STEMCstudio incorporates a library <i>EIGHT</i> that combines geometric quantities with units to create\n" +
-    "                            measures. Students can explore dimensional analysis and the S.I. system of units. Calculations\n" +
+    "                            STEMCstudio incorporates a library <i>EIGHT</i> that combines geometric quantities with units\n" +
+    "                            to create measures. Students can explore dimensional analysis and the S.I. system of units. Calculations\n" +
     "                            may be performed without units or by carrying through units.\n" +
     "                        </dd>\n" +
     "                        <dt>ES6 Modules</dt>\n" +
     "                        <dd>\n" +
-    "                            Even small authentic problems can require hundreds or thousands of lines of code.\n" +
-    "                            Professionals avoid the comprehension issues inherent in large monolithic code bases by employing modular decomposition.\n" +
-    "                            STEMCstudio allows you to break down your application into multiple re-usable files,\n" +
-    "                            and re-compose them automatically into an application through the ES6 module loader.\n" +
+    "                            Even small authentic problems can require hundreds or thousands of lines of code. Professionals avoid the comprehension issues\n" +
+    "                            inherent in large monolithic code bases by employing modular decomposition. STEMCstudio allows\n" +
+    "                            you to break down your application into multiple re-usable files, and re-compose them automatically\n" +
+    "                            into an application through the ES6 module loader.\n" +
     "                        </dd>\n" +
     "                        <dt>Unit Testing</dt>\n" +
     "                        <dd>\n" +
-    "                            A unit testing framework enables the practice of test-driven development.\n" +
-    "                            It also ensures that the critical parts of your code work according to specifications.\n" +
-    "                            Automated unit testing is supported through the popular Jasmine framework and an HTML reporter.\n" +
-    "                            This allows you to run repeatable test on your code and see the results in the browser.\n" +
+    "                            A unit testing framework enables the practice of test-driven development. It also ensures that the critical parts of your\n" +
+    "                            code work according to specifications. Automated unit testing is supported through the popular\n" +
+    "                            Jasmine framework and an HTML reporter. This allows you to run repeatable test on your code and\n" +
+    "                            see the results in the browser.\n" +
     "                        </dd>\n" +
     "                        <dt>\n" +
     "                            README Documentation and LATEX support.\n" +
     "                        </dt>\n" +
     "                        <dd>\n" +
-    "                            A README (Markdown) file is an invaluable adjunct to any coding project.\n" +
-    "                            It may describe any aspect of the project and is a standard file in a GitHub repository.\n" +
-    "                            STEMCstudio supports the README markdown file format and performs automatic real-time translation to HTML in the browser.\n" +
-    "                            Additionally, STEMCstudio supports mathematical LATEX markup using MathJax.\n" +
+    "                            A README (Markdown) file is an invaluable adjunct to any coding project. It may describe any aspect of the project and is\n" +
+    "                            a standard file in a GitHub repository. STEMCstudio supports the README markdown file format\n" +
+    "                            and performs automatic real-time translation to HTML in the browser. Additionally, STEMCstudio\n" +
+    "                            supports mathematical LATEX markup using MathJax.\n" +
     "                        </dd>\n" +
     "                    </dl>\n" +
     "                </p>\n" +

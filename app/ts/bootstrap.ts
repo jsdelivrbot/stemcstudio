@@ -2,6 +2,8 @@
 // We import the app so that we can bootstrap.
 //
 import app from './app';
+import translateFilter from './modules/translate/filter/translate';
+import TranslateProvider from './modules/translate/service/TranslateProvider';
 import * as angular from 'angular';
 import Base64 from './services/base64/Base64';
 import ChooseGistOrRepoController from './services/cloud/ChooseGistOrRepoController';
@@ -28,6 +30,7 @@ import RepoController from './controllers/RepoController';
 import RepoDataController from './services/cloud/RepoDataController';
 import resizable from './directives/resizable/resizable';
 import TextService from './services/text/TextService';
+import TranslateController from './controllers/TranslateController';
 import DefaultThemeManager from './services/themes/DefaultThemeManager';
 import workspace from './directives/workspace/workspace.component';
 import WorkspaceFactoryService from './services/workspace/WorkspaceFactoryService';
@@ -46,6 +49,7 @@ app.controller('DoodleController', DoodleController)
 app.controller('examples-controller', ExamplesController)
 app.controller('GitHubAccountController', GitHubAccountController)
 app.controller('home-controller', HomeController)
+app.controller('translate-controller', TranslateController)
 
 app.controller('ExplorerFilesController', ExplorerFilesController)
 
@@ -78,6 +82,7 @@ app.directive('resizable', resizable);
 app.directive('workspace', workspace);
 
 app.filter('contiguous', contiguous);
+app.filter('translate', translateFilter);
 
 import './fugly/ga/ga';
 
@@ -99,6 +104,7 @@ app.service('flowSessionService', NaiveFlowSessionService)
 
 app.service('textService', TextService)
 app.service('themeManager', DefaultThemeManager);
+app.provider('$translate', new TranslateProvider())
 app.service('workspaceFactory', WorkspaceFactoryService)
 
 import './template-cache';
