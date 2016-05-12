@@ -11,9 +11,14 @@
         <div class='collapse navbar-collapse' id='navbar-header-collapse'>
             <button type="button" class="btn btn-primary navbar-btn" ng-click='goDoodle()'>Code Now!</button>
             <button ng-if='FEATURE_EXAMPLES_ENABLED' type="button" class="btn btn-secondary navbar-btn" ng-click='goExamples()'>Browse Examples</button>
-            <button ng-if='FEATURE_LOGIN_ENABLED' type="button" class="btn btn-default navbar-btn" ng-click='logout()' ng-show='isLoggedIn()'>Log out {{userLogin()}}</button>
-            <button ng-if='FEATURE_LOGIN_ENABLED' type="button" class="btn btn-default navbar-btn" ng-click='login()' ng-hide='isLoggedIn()'>Log In</button>
+            <button ng-if='FEATURE_LOGIN_ENABLED' type="button" class="btn btn-default navbar-btn" ng-click='login()' ng-hide='isLoggedIn()'>Sign in with GitHub</button>
+            <button ng-if='FEATURE_LOGIN_ENABLED' type="button" class="btn btn-default navbar-btn" ng-click='logout()' ng-show='isLoggedIn()'>GitHub Sign Out {{userLogin()}}</button>
             <button ng-if='FEATURE_DASHBOARD_ENABLED' type="button" class="btn btn-secondary navbar-btn" ng-click='goDashboard()' ng-show='isLoggedIn()'>Dashboard</button>
+            <!--
+            <button ng-if='FEATURE_GOOGLE_API_ENABLED' type="button" class="btn btn-default navbar-btn" ng-hide='googleUser' ng-click='googleSignIn()'>Google Sign In</button>
+            <button ng-if='FEATURE_GOOGLE_API_ENABLED' type="button" class="btn btn-default navbar-btn" ng-show='googleUser' ng-click='googleSignOut()'>Google Sign out</button>
+            -->
+            <!-- google-sign-in-button ng-if='FEATURE_GOOGLE_API_ENABLED' button-id="uniqueid" options="options"></google-sign-in-button -->
         </div>
     </div>
 </header>

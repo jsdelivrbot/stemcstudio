@@ -1,14 +1,14 @@
 {
-  "compilerOptions": {
-    "module": "commonjs",
-    "sourceMap": false,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
-  },
-  "files": [
-    "./typings/main.d.ts",
-    "./app.ts",
-    "./configure.ts",
-    "./web.ts"
-  ]
+    "compilerOptions": {
+        "module": "commonjs",
+        "sourceMap": false,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true
+    },
+    "files": [
+        "./typings/main.d.ts",
+        "./app.ts",
+        "./configure.ts",
+        "./web.ts"
+    ]
 }

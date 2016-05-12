@@ -11,6 +11,7 @@ html(lang='en')
     meta(name="copyright", content="David Geo Holmes")
     meta(name="keywords", content="education, computation, modeling, inquiry, TypeScript, JavaScript, CoffeeScript, Python, programming, free, online, physics, math, geometry, geometric, algebra, units, vectors, functions, webgl")
     meta(name="description", content="")
+    meta(name="google-signin-client_id" content="54406425322-nv10ri5f0p6vl3i2nrkbhv8mv9pmb4r1.apps.googleusercontent.com")
     link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600")
     link(rel="stylesheet", href=css, media="all")
     <!-- Google Analytics -->
@@ -20,5 +21,8 @@ html(lang='en')
         ga('send', 'pageview');
     script(async src='https://www.google-analytics.com/analytics.js')
     <!-- End Google Analytics -->
+    <!-- Google Sign-In -->
+    script(async defer src='https://apis.google.com/js/platform.js')
+    <!-- End Google sign-In -->
   body(ng-controller='body-controller')
     block content

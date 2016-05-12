@@ -20,6 +20,7 @@ export default class HomeController extends AbstractPageController {
         'modalDialog',
         'FEATURE_DASHBOARD_ENABLED',
         'FEATURE_EXAMPLES_ENABLED',
+        'FEATURE_GOOGLE_API_ENABLED',
         'STATE_DASHBOARD',
         'STATE_DOODLE',
         'STATE_EXAMPLES',
@@ -36,6 +37,7 @@ export default class HomeController extends AbstractPageController {
         modalDialog: ModalDialog,
         FEATURE_DASHBOARD_ENABLED: boolean,
         FEATURE_EXAMPLES_ENABLED: boolean,
+        FEATURE_GOOGLE_API_ENABLED: boolean,
         STATE_DASHBOARD: string,
         STATE_DOODLE: string,
         STATE_EXAMPLES: string,
@@ -43,8 +45,9 @@ export default class HomeController extends AbstractPageController {
     ) {
         super($scope, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto')
 
-        $scope.FEATURE_DASHBOARD_ENABLED = FEATURE_DASHBOARD_ENABLED
-        $scope.FEATURE_EXAMPLES_ENABLED = FEATURE_EXAMPLES_ENABLED
+        $scope.FEATURE_DASHBOARD_ENABLED = FEATURE_DASHBOARD_ENABLED;
+        $scope.FEATURE_EXAMPLES_ENABLED = FEATURE_EXAMPLES_ENABLED;
+        $scope.FEATURE_GOOGLE_API_ENABLED = FEATURE_GOOGLE_API_ENABLED;
 
         /*
         if ($window[NAMESPACE_TWITTER_WIDGETS] && $window[NAMESPACE_TWITTER_WIDGETS].widgets) {
@@ -58,6 +61,32 @@ export default class HomeController extends AbstractPageController {
 
         $scope.twitterShareText = "STEMCstudio · Learning Science and Mathematics through Computational Modeling.";
         */
+
+        // for more options visit https://developers.google.com/identity/sign-in/web/reference#gapisignin2renderwzxhzdk114idwzxhzdk115_wzxhzdk116optionswzxhzdk117
+        $scope.options = {
+            scope: 'profile email',
+            width: 240,
+            height: 34, // The height of the buttons in the toolbar.
+            longtitle: true,
+            theme: 'dark',
+            onsuccess: function(googleUser: gapi.auth2.GoogleUser) {
+                // const profile: gapi.auth2.BasicProfile = googleUser.getBasicProfile();
+
+                /**
+                 * https://developers.google.com/identity/sign-in/web/backend-auth
+                 */
+                // const authResponse = googleUser.getAuthResponse();
+                // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+                // console.log('Full Name: ' + profile.getName());
+                // console.log('Given Name: ' + profile.getGivenName());
+                // console.log('Familty Name: ' + profile.getFamilyName());
+                // console.log('Image URL: ' + profile.getImageUrl());
+                // console.log('Email: ' + profile.getEmail());
+            },
+            onfailure: function(error: any) {
+                console.warn(error)
+            }
+        }
 
         $scope.goDashboard = function() {
             if (FEATURE_DASHBOARD_ENABLED) {

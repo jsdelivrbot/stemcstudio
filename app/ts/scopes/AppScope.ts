@@ -13,10 +13,19 @@ interface AppScope extends angular.IRootScopeService {
     logout(): void;
     userLogin(): string;
 
+    googleSignIn(): void;
+    googleSignOut(): void;
+    googleUser: gapi.auth2.GoogleUser;
+
     /**
      * The version of the application.
      */
     version: string;
+
+    /**
+     * 
+     */
+    FEATURE_GOOGLE_API_ENABLED: boolean;
 
     /**
      * 

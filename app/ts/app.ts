@@ -61,12 +61,13 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version for use by scopes.
-app.constant('version', '2.0.0-beta.52');
+app.constant('version', '2.0.0-beta.53');
 
 // Feature flags (boolean)
 app.constant('FEATURE_DASHBOARD_ENABLED', false);
 app.constant('FEATURE_EXAMPLES_ENABLED', true);
 app.constant('FEATURE_LOGIN_ENABLED', true);
+app.constant('FEATURE_GOOGLE_API_ENABLED', true);
 app.constant('FEATURE_GIST_ENABLED', true);
 app.constant('FEATURE_I18N_ENABLED', true);
 app.constant('FEATURE_REPO_ENABLED', false);
@@ -145,6 +146,7 @@ app.config([
     'FEATURE_DASHBOARD_ENABLED',
     'FEATURE_EXAMPLES_ENABLED',
     'FEATURE_GIST_ENABLED',
+    'FEATURE_GOOGLE_API_ENABLED',
     'FEATURE_REPO_ENABLED',
     'STATE_DASHBOARD',
     'STATE_DOODLE',
@@ -158,6 +160,7 @@ app.config([
         FEATURE_DASHBOARD_ENABLED: boolean,
         FEATURE_EXAMPLES_ENABLED: boolean,
         FEATURE_GIST_ENABLED: boolean,
+        FEATURE_GOOGLE_API_ENABLED: boolean,
         FEATURE_REPO_ENABLED: boolean,
         STATE_DASHBOARD: string,
         STATE_DOODLE: string,
@@ -284,6 +287,7 @@ app.run([
     'ga',
     'githubKey',
     'version',
+    'FEATURE_GOOGLE_API_ENABLED',
     'FEATURE_LOGIN_ENABLED',
     'UNIVERSAL_ANALYTICS_TRACKING_ID',
     function(
@@ -296,6 +300,7 @@ app.run([
         ga: UniversalAnalytics.ga,
         githubKey: string,
         version: string,
+        FEATURE_GOOGLE_API_ENABLED: boolean,
         FEATURE_LOGIN_ENABLED: boolean,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string
     ) {
@@ -304,6 +309,22 @@ app.run([
         const GITHUB_TOKEN_COOKIE_NAME = 'github-token';
         const GITHUB_LOGIN_COOKIE_NAME = 'github-login';
         const GITHUB_GET_LOGIN_OAUTH_AUTHORIZE = "https://github.com/login/oauth/authorize";
+
+        // Initialize the GoogleAuth object, but don't sign in yet.
+        if (FEATURE_GOOGLE_API_ENABLED) {
+            gapi.load('auth2', function() {
+                const auth2 = gapi.auth2.init({
+                    client_id: '54406425322-nv10ri5f0p6vl3i2nrkbhv8mv9pmb4r1.apps.googleusercontent.com',
+                    fetch_basic_profile: true,  // affects getBasicProfile() on GoogleUser.
+                    scope: 'profile'
+                });
+                auth2.then(function onInit() {
+                    // Do nothing.
+                }, function onFailure(reason: any) {
+                    console.warn(`gapi.auth2.init failed because ${reason}`)
+                })
+            })
+        }
 
         // It's very handy to add references to $state and $stateParams to the $rootScope
         // so that you can access them from any scope (HTML template) within the application.
@@ -378,6 +399,31 @@ app.run([
                 return void 0
             }
         };
+
+        if (FEATURE_GOOGLE_API_ENABLED) {
+            $rootScope.googleSignIn = function() {
+                const auth2 = gapi.auth2.getAuthInstance();
+                auth2.currentUser.listen(function(googleUser) {
+                    // console.log(`The googleUser changed.`)
+                })
+                auth2.signIn().then(function() {
+                    // console.log(`auth2.currentUser.get().getId() => ${JSON.stringify(auth2.currentUser.get().getId(), null, 2)}`)
+                    // console.log(`auth2.currentUser.get() => ${JSON.stringify(auth2.currentUser.get(), null, 2)}`)
+                    // console.log(`auth2.currentUser.get().getBasicProfile() => ${JSON.stringify(auth2.currentUser.get().getBasicProfile(), null, 2)}`)
+                    $rootScope.googleUser = auth2.currentUser.get()
+                })
+            }
+        }
+
+        if (FEATURE_GOOGLE_API_ENABLED) {
+            $rootScope.googleSignOut = function() {
+                const auth2 = gapi.auth2.getAuthInstance();
+                auth2.signOut().then(function() {
+                    // console.log("Use has signed out of the application, but not Google.")
+                    $rootScope.googleUser = void 0;
+                })
+            }
+        }
 
     }]);
 
