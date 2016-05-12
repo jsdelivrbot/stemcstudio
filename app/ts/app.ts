@@ -61,13 +61,14 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version for use by scopes.
-app.constant('version', '2.0.0-beta.53');
+app.constant('version', '2.0.0-beta.54');
 
 // Feature flags (boolean)
+app.constant('FEATURE_AWS_ENABLED', false);
 app.constant('FEATURE_DASHBOARD_ENABLED', false);
 app.constant('FEATURE_EXAMPLES_ENABLED', true);
 app.constant('FEATURE_LOGIN_ENABLED', true);
-app.constant('FEATURE_GOOGLE_API_ENABLED', true);
+app.constant('FEATURE_GOOGLE_API_ENABLED', false);
 app.constant('FEATURE_GIST_ENABLED', true);
 app.constant('FEATURE_I18N_ENABLED', true);
 app.constant('FEATURE_REPO_ENABLED', false);
@@ -131,10 +132,10 @@ app.constant('STATE_GIST', 'gist');
 app.constant('STATE_REPO', 'repo');
 
 // The TypeScript d.ts library provides the type checking of global JavaScript types.
-app.constant('FILENAME_TYPESCRIPT_CURRENT_LIB_DTS', vendorPath('typescript@1.4.1.3', 'lib.d.ts'))
+app.constant('FILENAME_TYPESCRIPT_CURRENT_LIB_DTS', vendorPath('typescript@1.4.1.3', 'lib.d.ts'));
 
 // The MathScript js library provides operator overloading at runtime.
-app.constant('FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS', vendorPath('davinci-mathscript@1.0.8', 'dist/davinci-mathscript.min.js'))
+app.constant('FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS', vendorPath('davinci-mathscript@1.0.8', 'dist/davinci-mathscript.min.js'));
 
 //
 // Register work which needs to be performed on module loading.
@@ -215,7 +216,7 @@ app.config([
                 url: '/dashboard',
                 templateUrl: 'dashboard.html',
                 controller: 'DashboardController'
-            })
+            });
         }
         else {
             // TODO: Recognize the url but go to a no droids here.
@@ -226,7 +227,7 @@ app.config([
                 url: '/examples',
                 templateUrl: 'examples.html',
                 controller: 'examples-controller'
-            })
+            });
         }
         else {
             // TODO: Recognize the url but go to a no droids here.
@@ -237,7 +238,7 @@ app.config([
                 url: '/gists/{gistId}',
                 templateUrl: 'doodle.html',
                 controller: 'DoodleController'
-            })
+            });
         }
         else {
             // TODO: Recognize the url but go to a no droids here.
@@ -248,7 +249,7 @@ app.config([
                 url: '/users/{owner}/repos/{repo}',
                 templateUrl: 'doodle.html',
                 controller: 'DoodleController'
-            })
+            });
         }
         else {
             // TODO: Recognize the url but go to a no droids here.
@@ -287,8 +288,10 @@ app.run([
     'ga',
     'githubKey',
     'version',
+    'FEATURE_GIST_ENABLED',
     'FEATURE_GOOGLE_API_ENABLED',
     'FEATURE_LOGIN_ENABLED',
+    'FEATURE_REPO_ENABLED',
     'UNIVERSAL_ANALYTICS_TRACKING_ID',
     function(
         $rootScope: AppScope,
@@ -300,8 +303,10 @@ app.run([
         ga: UniversalAnalytics.ga,
         githubKey: string,
         version: string,
+        FEATURE_GIST_ENABLED: boolean,
         FEATURE_GOOGLE_API_ENABLED: boolean,
         FEATURE_LOGIN_ENABLED: boolean,
+        FEATURE_REPO_ENABLED: boolean,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string
     ) {
         // The name of this cookie must correspond with the cookie sent back from the server.
@@ -321,9 +326,9 @@ app.run([
                 auth2.then(function onInit() {
                     // Do nothing.
                 }, function onFailure(reason: any) {
-                    console.warn(`gapi.auth2.init failed because ${reason}`)
-                })
-            })
+                    console.warn(`gapi.auth2.init failed because ${reason}`);
+                });
+            });
         }
 
         // It's very handy to add references to $state and $stateParams to the $rootScope
@@ -339,7 +344,7 @@ app.run([
                 return cookie.getItem(GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME);
             }
             else {
-                return void 0
+                return void 0;
             }
         };
 
@@ -350,11 +355,27 @@ app.run([
                 // The API now allows us to specify an unguessable random string called 'state'.
                 // This 'state' string is used to protect against cross-site request forgery attacks.
 
+                /**
+                 * The scopes that we will need from GitHub.
+                 */
+                const scopes: string[] = [];
+                scopes.push('user');
+                if (FEATURE_GIST_ENABLED) {
+                    scopes.push('gist');
+                }
+                if (FEATURE_REPO_ENABLED) {
+                    scopes.push('repo');
+                }
+
+                /**
+                 * This little string provides a bit more security - the unguessable random string.
+                 */
                 const pending = uuid4.generate();
-                const githubURL = GITHUB_GET_LOGIN_OAUTH_AUTHORIZE +
-                    "?client_id=" + $rootScope.clientId() +
-                    "&amp;scope=gist,repo,user" +
-                    "&amp;state=" + pending;
+
+                /**
+                 * The GitHub OAuth2 endpoint URL.
+                 */
+                const githubURL = `${GITHUB_GET_LOGIN_OAUTH_AUTHORIZE}?client_id=${$rootScope.clientId()}&amp;scope=${scopes.join(',')}&amp;state=${pending}`;
 
                 // We effectively reset the GitHub property.
                 const github: IGitHubItem = { oauth: { pending: pending } };
@@ -365,18 +386,18 @@ app.run([
                 $window.location.href = githubURL;
             }
             else {
-                console.warn(`FEATURE_LOGIN_ENABLED => ${FEATURE_LOGIN_ENABLED}`)
+                console.warn(`FEATURE_LOGIN_ENABLED => ${FEATURE_LOGIN_ENABLED}`);
             }
         };
 
         $rootScope.logout = function(label?: string, value?: number) {
             if (FEATURE_LOGIN_ENABLED) {
-                ga('send', 'event', 'GitHub', 'logout', label, value)
-                cookie.removeItem(GITHUB_TOKEN_COOKIE_NAME)
-                cookie.removeItem(GITHUB_LOGIN_COOKIE_NAME)
+                ga('send', 'event', 'GitHub', 'logout', label, value);
+                cookie.removeItem(GITHUB_TOKEN_COOKIE_NAME);
+                cookie.removeItem(GITHUB_LOGIN_COOKIE_NAME);
             }
             else {
-                console.warn(`FEATURE_LOGIN_ENABLED => ${FEATURE_LOGIN_ENABLED}`)
+                console.warn(`FEATURE_LOGIN_ENABLED => ${FEATURE_LOGIN_ENABLED}`);
             }
         };
 
@@ -385,8 +406,8 @@ app.run([
                 return cookie.hasItem(GITHUB_TOKEN_COOKIE_NAME);
             }
             else {
-                console.warn(`FEATURE_LOGIN_ENABLED => ${FEATURE_LOGIN_ENABLED}`)
-                return false
+                console.warn(`FEATURE_LOGIN_ENABLED => ${FEATURE_LOGIN_ENABLED}`);
+                return false;
             }
         };
 
@@ -395,8 +416,8 @@ app.run([
                 return cookie.getItem(GITHUB_LOGIN_COOKIE_NAME);
             }
             else {
-                console.warn(`FEATURE_LOGIN_ENABLED => ${FEATURE_LOGIN_ENABLED}`)
-                return void 0
+                console.warn(`FEATURE_LOGIN_ENABLED => ${FEATURE_LOGIN_ENABLED}`);
+                return void 0;
             }
         };
 
@@ -405,26 +426,56 @@ app.run([
                 const auth2 = gapi.auth2.getAuthInstance();
                 auth2.currentUser.listen(function(googleUser) {
                     // console.log(`The googleUser changed.`)
-                })
+                });
                 auth2.signIn().then(function() {
-                    // console.log(`auth2.currentUser.get().getId() => ${JSON.stringify(auth2.currentUser.get().getId(), null, 2)}`)
-                    // console.log(`auth2.currentUser.get() => ${JSON.stringify(auth2.currentUser.get(), null, 2)}`)
-                    // console.log(`auth2.currentUser.get().getBasicProfile() => ${JSON.stringify(auth2.currentUser.get().getBasicProfile(), null, 2)}`)
-                    $rootScope.googleUser = auth2.currentUser.get()
-                })
-            }
+                    $rootScope.$apply(function() {
+                        // console.log(`auth2.currentUser.get().getId() => ${JSON.stringify(auth2.currentUser.get().getId(), null, 2)}`)
+                        // console.log(`auth2.currentUser.get() => ${JSON.stringify(auth2.currentUser.get(), null, 2)}`)
+                        // console.log(`auth2.currentUser.get().getBasicProfile() => ${JSON.stringify(auth2.currentUser.get().getBasicProfile(), null, 2)}`)
+                        $rootScope.googleUser = auth2.currentUser.get();
+                    });
+                });
+            };
         }
 
         if (FEATURE_GOOGLE_API_ENABLED) {
             $rootScope.googleSignOut = function() {
                 const auth2 = gapi.auth2.getAuthInstance();
                 auth2.signOut().then(function() {
-                    // console.log("Use has signed out of the application, but not Google.")
-                    $rootScope.googleUser = void 0;
-                })
-            }
+                    $rootScope.$apply(function() {
+                        // console.log("Use has signed out of the application, but not Google.")
+                        $rootScope.googleUser = void 0;
+                    });
+                });
+            };
         }
 
+        if (FEATURE_GOOGLE_API_ENABLED) {
+            $rootScope.isGoogleSignedIn = function() {
+                if (gapi.auth2) {
+                    const auth2 = gapi.auth2.getAuthInstance();
+                    return auth2.isSignedIn.get();
+                }
+                else {
+                    return false;
+                }
+            };
+        }
+
+        // Amazon Cognito, unauthenticated credentials
+        AWS.config.region = 'us-east-1';
+        AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+            IdentityPoolId: 'us-east-1:b419a8b6-2753-4af4-a76b-41a451eb2278',
+            Logins: {}
+        });
+
+        /* Web Identity Federation
+        AWS.config.credentials = new AWS.WebIdentityCredentials({
+            RoleArn: 'arn:aws:iam::<AWS_ACCOUNT_ID>:role/<WEB_IDENTITY_ROLE_NAME>',
+            ProviderId: 'graph.facebook.com|www.amazon.com', // this is null for Google
+            WebIdentityToken: ''
+        });
+        */
     }]);
 
 export default app;

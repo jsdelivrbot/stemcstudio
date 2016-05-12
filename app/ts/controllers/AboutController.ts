@@ -20,11 +20,11 @@ app.controller('about-controller', [
             if (appCache.status === $window.applicationCache.UPDATEREADY) {
                 appCache.swapCache();
             }
-        }
+        };
 
         $scope.doClose = function() {
             $state.transitionTo('doodle');
-        }
+        };
 
     }
 ]);

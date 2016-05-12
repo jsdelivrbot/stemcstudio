@@ -46,26 +46,26 @@ import WorkspaceFactoryService from './services/workspace/WorkspaceFactoryServic
 //
 // The (3) top-level controllers that participate in the routing.
 //
-app.controller('DashboardController', DashboardController)
-app.controller('DoodleController', DoodleController)
-app.controller('examples-controller', ExamplesController)
-app.controller('GitHubAccountController', GitHubAccountController)
-app.controller('home-controller', HomeController)
-app.controller('translate-controller', TranslateController)
+app.controller('DashboardController', DashboardController);
+app.controller('DoodleController', DoodleController);
+app.controller('examples-controller', ExamplesController);
+app.controller('GitHubAccountController', GitHubAccountController);
+app.controller('home-controller', HomeController);
+app.controller('translate-controller', TranslateController);
 
-app.controller('ExplorerFilesController', ExplorerFilesController)
+app.controller('ExplorerFilesController', ExplorerFilesController);
 
 // Controllers for standard modal dialogs.
-app.controller('AlertController', AlertController)
-app.controller('ConfirmController', ConfirmController)
-app.controller('PromptController', PromptController)
+app.controller('AlertController', AlertController);
+app.controller('ConfirmController', ConfirmController);
+app.controller('PromptController', PromptController);
 
 // Controllers for cloud service modal dialogs.
-app.controller('ChooseGistOrRepoController', ChooseGistOrRepoController)
-app.controller('CommitMessageController', CommitMessageController)
-app.controller('RepoDataController', RepoDataController)
+app.controller('ChooseGistOrRepoController', ChooseGistOrRepoController);
+app.controller('CommitMessageController', CommitMessageController);
+app.controller('RepoDataController', RepoDataController);
 
-app.controller('RepoController', RepoController)
+app.controller('RepoController', RepoController);
 import './controllers/AboutController';
 import './controllers/BodyController';
 import './controllers/CopyController';
@@ -98,19 +98,19 @@ import './services/settings/settings';
 import './services/templates/templates';
 // import './services/tw/tw';
 import './services/uuid/UuidService';
-app.service('base64', Base64)
-app.service('cloud', GitHubCloudService)
-app.service('modalDialog', ModalDialogService)
+app.service('base64', Base64);
+app.service('cloud', GitHubCloudService);
+app.service('modalDialog', ModalDialogService);
 
-app.service('flow', ReteFlowService)
-app.service('flowSessionService', NaiveFlowSessionService)
+app.service('flow', ReteFlowService);
+app.service('flowSessionService', NaiveFlowSessionService);
 
 app.service('hits', HitService);
 
-app.service('textService', TextService)
+app.service('textService', TextService);
 app.service('themeManager', DefaultThemeManager);
-app.provider('$translate', new TranslateProvider())
-app.service('workspaceFactory', WorkspaceFactoryService)
+app.provider('$translate', new TranslateProvider());
+app.service('workspaceFactory', WorkspaceFactoryService);
 
 import './template-cache';
 

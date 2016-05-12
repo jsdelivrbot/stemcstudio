@@ -4,9 +4,9 @@ import Workspace from '../../widgets/editor/workspace/Workspace';
 import * as ng from 'angular';
 import PromiseManager from './PromiseManager';
 
-const systemImports: string[] = ['/jspm_packages/system.js', '/jspm.config.js']
-const workerImports: string[] = systemImports.concat(['/js/ace-workers.js'])
-const typescriptServices = ['/js/typescriptServices.js']
+const systemImports: string[] = ['/jspm_packages/system.js', '/jspm.config.js'];
+const workerImports: string[] = systemImports.concat(['/js/ace-workers.js']);
+const typescriptServices = ['/js/typescriptServices.js'];
 
 enum WorkspaceState {
     CONSTRUCTED,
@@ -40,7 +40,7 @@ export default class WorkspaceService implements WorkspaceLocal {
     constructor(private $q: ng.IQService) {
         this.workspace = new Workspace('/js/worker.js', workerImports.concat(typescriptServices));
         this.workspace.trace = false;
-        this.state = WorkspaceState.CONSTRUCTED
+        this.state = WorkspaceState.CONSTRUCTED;
         this.promises = new PromiseManager($q);
     }
 
@@ -50,35 +50,35 @@ export default class WorkspaceService implements WorkspaceLocal {
      */
     initialize(): void {
         if (this.promises.length) {
-            console.warn(`outstanding promises prior to reset: ${this.promises.length}, ${JSON.stringify(this.promises.getOutstandingPurposes(), null, 2)}`)
+            console.warn(`outstanding promises prior to reset: ${this.promises.length}, ${JSON.stringify(this.promises.getOutstandingPurposes(), null, 2)}`);
         }
-        this.promises.reset()
-        const deferred = this.promises.defer('init')
-        this.state = WorkspaceState.INIT_PENDING
+        this.promises.reset();
+        const deferred = this.promises.defer('init');
+        this.state = WorkspaceState.INIT_PENDING;
         this.workspace.init((err: any) => {
             if (err) {
-                console.warn(`init() => ${err}`)
-                this.state = WorkspaceState.INIT_FAILED
-                this.promises.reject(deferred, err)
+                console.warn(`init() => ${err}`);
+                this.state = WorkspaceState.INIT_FAILED;
+                this.promises.reject(deferred, err);
             }
             else {
-                this.state = WorkspaceState.OPERATIONAL
-                this.promises.resolve(deferred)
+                this.state = WorkspaceState.OPERATIONAL;
+                this.promises.resolve(deferred);
             }
-        })
+        });
     }
 
     synchronize(): ng.IPromise<any> {
         const deferred: ng.IDeferred<any> = this.$q.defer<any>();
         this.promises.synchronize()
             .then(() => {
-                deferred.resolve()
+                deferred.resolve();
             })
             .catch((err) => {
-                console.warn(`synchronize failed ${err}.`)
-                deferred.reject()
-            })
-        return deferred.promise
+                console.warn(`synchronize failed ${err}.`);
+                deferred.reject();
+            });
+        return deferred.promise;
     }
 
     /**
@@ -86,8 +86,8 @@ export default class WorkspaceService implements WorkspaceLocal {
      * @return {void}
      */
     terminate(): void {
-        this.detachEditors()
-        this.removeScripts()
+        this.detachEditors();
+        this.removeScripts();
         this.synchronize().then(() => {
             this.state = WorkspaceState.TERM_PENDING;
             this.workspace.terminate((err: any) => {
@@ -96,10 +96,10 @@ export default class WorkspaceService implements WorkspaceLocal {
                 }
                 else {
                     this.state = WorkspaceState.TERM_FAILED;
-                    console.warn(`terminate() => ${err}`)
+                    console.warn(`terminate() => ${err}`);
                 }
-            })
-        })
+            });
+        });
     }
 
     /**
@@ -110,39 +110,39 @@ export default class WorkspaceService implements WorkspaceLocal {
     setDefaultLibrary(url: string): void {
         switch (this.state) {
             case WorkspaceState.OPERATIONAL: {
-                const deferred = this.promises.defer('setDefaultLibrary')
+                const deferred = this.promises.defer('setDefaultLibrary');
                 this.workspace.setDefaultLibrary(url, (err: any) => {
                     if (err) {
-                        console.warn(`setDefaultLibrary(${url}) => ${err}`)
-                        this.promises.reject(deferred, err)
+                        console.warn(`setDefaultLibrary(${url}) => ${err}`);
+                        this.promises.reject(deferred, err);
                     }
                     else {
-                        this.promises.resolve(deferred, true)
+                        this.promises.resolve(deferred, true);
                     }
-                })
-                break
+                });
+                break;
             }
             case WorkspaceState.INIT_PENDING: {
                 this.synchronize()
                     .then(() => {
-                        this.state = WorkspaceState.OPERATIONAL
+                        this.state = WorkspaceState.OPERATIONAL;
                         // Using recursion allows me to avoid creating a stack of commands.
                         // Of course, the approaches are equivalent.
-                        this.setDefaultLibrary(url)
+                        this.setDefaultLibrary(url);
                     })
                     .catch((reason: any) => {
-                        this.state = WorkspaceState.INIT_FAILED
-                    })
-                break
+                        this.state = WorkspaceState.INIT_FAILED;
+                    });
+                break;
             }
             case WorkspaceState.CONSTRUCTED: {
-                throw new Error("TODO: setDefaultLibrary while CONSTRUCTED")
+                throw new Error("TODO: setDefaultLibrary while CONSTRUCTED");
             }
             case WorkspaceState.INIT_FAILED: {
-                throw new Error("TODO: setDefaultLibrary while INIT_FAILED")
+                throw new Error("TODO: setDefaultLibrary while INIT_FAILED");
             }
             default: {
-                throw new Error("TODO: setDefaultLibrary before OPERATIONAL")
+                throw new Error("TODO: setDefaultLibrary before OPERATIONAL");
             }
         }
     }
@@ -150,112 +150,112 @@ export default class WorkspaceService implements WorkspaceLocal {
     setModuleKind(moduleKind: string): void {
         switch (this.state) {
             case WorkspaceState.OPERATIONAL: {
-                const deferred = this.promises.defer('setModuleKind')
+                const deferred = this.promises.defer('setModuleKind');
                 this.workspace.setModuleKind(moduleKind, (err: any) => {
                     if (err) {
-                        console.warn(`setModuleKind('${moduleKind}') => ${err}`)
-                        this.promises.reject(deferred, err)
+                        console.warn(`setModuleKind('${moduleKind}') => ${err}`);
+                        this.promises.reject(deferred, err);
                     }
                     else {
-                        this.promises.resolve(deferred, moduleKind)
+                        this.promises.resolve(deferred, moduleKind);
                     }
-                })
-                break
+                });
+                break;
             }
             case WorkspaceState.INIT_PENDING: {
                 this.synchronize()
                     .then(() => {
                         // TODO: DRY
-                        this.state = WorkspaceState.OPERATIONAL
+                        this.state = WorkspaceState.OPERATIONAL;
                         // Using recursion allows me to avoid creating a stack of commands.
                         // Of course, the approaches are equivalent.
-                        this.setModuleKind(moduleKind)
+                        this.setModuleKind(moduleKind);
                     })
                     .catch((reason: any) => {
-                        this.state = WorkspaceState.INIT_FAILED
-                    })
-                break
+                        this.state = WorkspaceState.INIT_FAILED;
+                    });
+                break;
             }
             default: {
-                throw new Error("TODO: setModuleKind before OPERATIONAL")
+                throw new Error("TODO: setModuleKind before OPERATIONAL");
             }
         }
     }
 
     setScriptTarget(scriptTarget: string): void {
-        const deferred = this.promises.defer('setScriptTarget')
+        const deferred = this.promises.defer('setScriptTarget');
         this.workspace.setScriptTarget(scriptTarget, (err: any) => {
             if (err) {
-                console.warn(`setScriptTarget('${scriptTarget}') => ${err}`)
-                this.promises.reject(deferred, err)
+                console.warn(`setScriptTarget('${scriptTarget}') => ${err}`);
+                this.promises.reject(deferred, err);
             }
             else {
-                this.promises.resolve(deferred, scriptTarget)
+                this.promises.resolve(deferred, scriptTarget);
             }
-        })
+        });
     }
 
     setTrace(trace: boolean): void {
-        const deferred = this.promises.defer('setTrace')
+        const deferred = this.promises.defer('setTrace');
         this.workspace.setTrace(trace, (err: any) => {
             if (err) {
-                console.warn(`setTrace('${trace}') => ${err}`)
-                this.promises.reject(deferred, err)
+                console.warn(`setTrace('${trace}') => ${err}`);
+                this.promises.reject(deferred, err);
             }
             else {
-                this.promises.resolve(deferred, trace)
+                this.promises.resolve(deferred, trace);
             }
-        })
+        });
     }
 
     attachEditor(fileName: string, editor: Editor): void {
-        const deferred = this.promises.defer(`attachEditor('${fileName}')`)
+        const deferred = this.promises.defer(`attachEditor('${fileName}')`);
         this.workspace.attachEditor(fileName, editor, (err: any) => {
             if (!err) {
-                this.promises.resolve(deferred, fileName)
+                this.promises.resolve(deferred, fileName);
             }
             else {
-                console.warn(`attachEditor('${fileName}') => ${err}`)
-                this.promises.reject(deferred, err)
+                console.warn(`attachEditor('${fileName}') => ${err}`);
+                this.promises.reject(deferred, err);
             }
-        })
+        });
     }
 
     detachEditor(fileName: string, editor: Editor): void {
-        const deferred = this.promises.defer(`detachEditor('${fileName}')`)
+        const deferred = this.promises.defer(`detachEditor('${fileName}')`);
         this.workspace.detachEditor(fileName, editor, (err: any) => {
             if (!err) {
-                this.promises.resolve(deferred, fileName)
+                this.promises.resolve(deferred, fileName);
             }
             else {
-                console.warn(`detachEditor('${fileName}') => ${err}`)
-                this.promises.reject(deferred, err)
+                console.warn(`detachEditor('${fileName}') => ${err}`);
+                this.promises.reject(deferred, err);
             }
-        })
+        });
     }
 
     ensureScript(fileName: string, content: string): void {
-        const deferred = this.promises.defer(`ensureScript('${fileName}')`)
+        const deferred = this.promises.defer(`ensureScript('${fileName}')`);
         this.workspace.ensureScript(fileName, content, (err: any) => {
             if (err) {
                 this.promises.reject(deferred, err);
             }
             else {
-                this.promises.resolve(deferred)
+                this.promises.resolve(deferred);
             }
-        })
+        });
     }
 
     removeScript(fileName: string): void {
-        const deferred = this.promises.defer(`removeScript('${fileName}')`)
+        const deferred = this.promises.defer(`removeScript('${fileName}')`);
         this.workspace.removeScript(fileName, (err: any) => {
             if (err) {
                 this.promises.reject(deferred, err);
             }
             else {
-                this.promises.resolve(deferred)
+                this.promises.resolve(deferred);
             }
-        })
+        });
     }
 
     detachEditors(): void {
@@ -270,6 +270,6 @@ export default class WorkspaceService implements WorkspaceLocal {
      *
      */
     outputFiles(): void {
-        this.workspace.outputFiles()
+        this.workspace.outputFiles();
     }
 }

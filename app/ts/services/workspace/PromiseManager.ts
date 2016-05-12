@@ -15,46 +15,46 @@ export default class PromiseManager {
     }
     public defer(purpose: string): number {
         const deferred: ng.IDeferred<any> = this.$q.defer<any>();
-        return this.captureDeferred(deferred, purpose)
+        return this.captureDeferred(deferred, purpose);
     }
     public reject(deferId: number, reason: any) {
-        const deferred = this.releaseDeferred(deferId)
-        deferred.reject(reason)
+        const deferred = this.releaseDeferred(deferId);
+        deferred.reject(reason);
     }
     public resolve(deferId: number, value?: any) {
-        const deferred = this.releaseDeferred(deferId)
-        deferred.resolve(value)
+        const deferred = this.releaseDeferred(deferId);
+        deferred.resolve(value);
     }
     public getOutstandingPurposes(): string[] {
         const outstanding: string[] = [];
         for (let p = 0; p < this.pLength; p++) {
-            const candidate = this.purposes[p]
+            const candidate = this.purposes[p];
             if (candidate) {
-                outstanding.push(candidate)
+                outstanding.push(candidate);
             }
         }
-        return outstanding
+        return outstanding;
     }
     public synchronize(): ng.IPromise<any> {
         const deferred: ng.IDeferred<any> = this.$q.defer<any>();
         this.$q.all(this.getOutstandingPromises())
             .then(() => {
-                deferred.resolve()
+                deferred.resolve();
             })
             .catch((err) => {
-                deferred.reject()
-            })
-        return deferred.promise
+                deferred.reject();
+            });
+        return deferred.promise;
     }
     private getOutstandingPromises(): ng.IPromise<any>[] {
         const outstanding: ng.IPromise<any>[] = [];
         for (let p = 0; p < this.pLength; p++) {
-            const candidate = this.promises[p]
+            const candidate = this.promises[p];
             if (candidate) {
-                outstanding.push(candidate)
+                outstanding.push(candidate);
             }
         }
-        return outstanding
+        return outstanding;
     }
     private captureDeferred(deferred: ng.IDeferred<any>, purpose: string): number {
         const deferId = this.pLength;
@@ -79,13 +79,13 @@ export default class PromiseManager {
             return deferred;
         }
         else {
-            throw new Error(`deferId (${deferId}) must be...`)
+            throw new Error(`deferId (${deferId}) must be...`);
         }
     }
     public reset(): void {
-        this.deferals = []
-        this.promises = []
-        this.purposes = []
+        this.deferals = [];
+        this.promises = [];
+        this.purposes = [];
         this.outstanding = 0;
         this.pLength = 0;
     }
@@ -95,7 +95,7 @@ export default class PromiseManager {
             this.pLength = 0;
         }
         else {
-            throw new Error(`outstanding (${this.outstanding}) must be zero for housekeeping.`)
+            throw new Error(`outstanding (${this.outstanding}) must be zero for housekeeping.`);
         }
     }
     get length(): number {

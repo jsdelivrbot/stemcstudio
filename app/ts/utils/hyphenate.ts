@@ -3,7 +3,7 @@
  */
 export default function hyphenate(phrase: string): string {
     if (typeof phrase === 'string') {
-        return phrase.replace(' ', '-')
+        return phrase.replace(' ', '-');
     }
     else {
         return phrase;

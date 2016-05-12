@@ -40,9 +40,10 @@
         "app/ts/utils/StringSet.spec.ts",
         "app/ts/template-cache.ts",
         "typings/browser.d.ts",
+        "typings-manual/browser/ambients/AWS/AWS.d.ts",
         "typings-manual/bootstrap-dialog/bootstrap-dialog.d.ts",
         "typings-manual/davinci-mathscript/davinci-mathscript.d.ts",
-        "typings-manual/gapi/gapi.d.ts",
+        "typings-manual/browser/ambients/gapi/gapi.d.ts",
         "typings-manual/showdown/showdown.d.ts",
         "./node_modules/typescript/lib/lib.dom.d.ts"
     ]

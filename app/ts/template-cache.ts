@@ -419,11 +419,11 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "            <button ng-if='FEATURE_LOGIN_ENABLED' type=\"button\" class=\"btn btn-default navbar-btn\" ng-click='login()' ng-hide='isLoggedIn()'>Sign in with GitHub</button>\n" +
     "            <button ng-if='FEATURE_LOGIN_ENABLED' type=\"button\" class=\"btn btn-default navbar-btn\" ng-click='logout()' ng-show='isLoggedIn()'>GitHub Sign Out {{userLogin()}}</button>\n" +
     "            <button ng-if='FEATURE_DASHBOARD_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goDashboard()' ng-show='isLoggedIn()'>Dashboard</button>\n" +
-    "            <!--\n" +
-    "            <button ng-if='FEATURE_GOOGLE_API_ENABLED' type=\"button\" class=\"btn btn-default navbar-btn\" ng-hide='googleUser' ng-click='googleSignIn()'>Google Sign In</button>\n" +
-    "            <button ng-if='FEATURE_GOOGLE_API_ENABLED' type=\"button\" class=\"btn btn-default navbar-btn\" ng-show='googleUser' ng-click='googleSignOut()'>Google Sign out</button>\n" +
-    "            -->\n" +
-    "            <!-- google-sign-in-button ng-if='FEATURE_GOOGLE_API_ENABLED' button-id=\"uniqueid\" options=\"options\"></google-sign-in-button -->\n" +
+    "\n" +
+    "            <button ng-if='FEATURE_GOOGLE_API_ENABLED' type=\"button\" class=\"btn btn-default navbar-btn\" ng-hide='isGoogleSignedIn()' ng-click='googleSignIn()'>Google Sign In</button>\n" +
+    "            <button ng-if='FEATURE_GOOGLE_API_ENABLED' type=\"button\" class=\"btn btn-default navbar-btn\" ng-show='isGoogleSignedIn()' ng-click='googleSignOut()'>Google Sign out</button>\n" +
+    "\n" +
+    "            <google-sign-in-button ng-if='FEATURE_GOOGLE_API_ENABLED' button-id=\"uniqueid\" options=\"options\"></google-sign-in-button>\n" +
     "        </div>\n" +
     "    </div>\n" +
     "</header>\n" +

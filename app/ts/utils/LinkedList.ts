@@ -15,8 +15,8 @@ export default class LinkedList<T> {
     }
 
     push(data: T): Link<T> {
-        const tail = this.tail
-        const head = this.head
+        const tail = this.tail;
+        const head = this.head;
         const node: Link<T> = { data: data, prev: tail, next: null };
         if (tail) {
             this.tail.next = node;

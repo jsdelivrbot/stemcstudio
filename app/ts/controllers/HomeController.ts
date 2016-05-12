@@ -70,18 +70,34 @@ export default class HomeController extends AbstractPageController {
             longtitle: true,
             theme: 'dark',
             onsuccess: function(googleUser: gapi.auth2.GoogleUser) {
-                // const profile: gapi.auth2.BasicProfile = googleUser.getBasicProfile();
+                $scope.$apply(function() {
+                    const profile: gapi.auth2.BasicProfile = googleUser.getBasicProfile();
 
-                /**
-                 * https://developers.google.com/identity/sign-in/web/backend-auth
-                 */
-                // const authResponse = googleUser.getAuthResponse();
-                // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-                // console.log('Full Name: ' + profile.getName());
-                // console.log('Given Name: ' + profile.getGivenName());
-                // console.log('Familty Name: ' + profile.getFamilyName());
-                // console.log('Image URL: ' + profile.getImageUrl());
-                // console.log('Email: ' + profile.getEmail());
+                    /**
+                     * https://developers.google.com/identity/sign-in/web/backend-auth
+                     */
+                    const id_token = googleUser.getAuthResponse().id_token;
+                    // Get AWS Credentials.
+                    // (The unauthenticated part could be done in app.run)
+                    AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+                        IdentityPoolId: 'us-east-1:b419a8b6-2753-4af4-a76b-41a451eb2278',
+                        Logins: {
+                            'accounts.google.com': id_token
+                        }
+                    });
+
+                    // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+                    console.log('Full Name: ' + profile.getName());
+                    // console.log('Given Name: ' + profile.getGivenName());
+                    // console.log('Familty Name: ' + profile.getFamilyName());
+                    // console.log('Image URL: ' + profile.getImageUrl());
+                    // console.log('Email: ' + profile.getEmail());
+                    const db = new AWS.DynamoDB();
+                    db.listTables({}, function(err, data) {
+                        if (err) console.log(err, err.stack); // an error occurred
+                        else console.log(JSON.stringify(data.TableNames, null, 2));           // successful response
+                    });
+                })
             },
             onfailure: function(error: any) {
                 console.warn(error)

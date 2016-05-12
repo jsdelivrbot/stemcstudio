@@ -12,71 +12,71 @@ app.factory('options', [
         VENDOR_FOLDER_MARKER
     ) {
 
-        const VERSION_ANGULARJS = '1.5.3'
-        // const VERSION_ASYNC = '1.4.2'
-        const VERSION_DAT_GUI = '0.5.0'
-        const VERSION_DECKJS = '1.1.0'
-        const VERSION_DOMREADY = '1.0.0'
-        const VERSION_D3 = '3.5.5'
-        const VERSION_EIGHT = '2.102.0'
-        const VERSION_GLMATRIX = '2.3.2'
-        const VERSION_JASMINE = '2.4.1'
-        const VERSION_JQUERY = '2.1.4'
-        const VERSION_JSXGRAPH = '0.99.3'
-        const VERSION_PLOTLY = '1.5.2'
-        // const VERSION_REQUIREJS = '2.1.9'
-        const VERSION_STATSJS = '0.0.14'
-        // const VERSION_SYSTEMJS = '0.19.26'
-        const VERSION_THREEJS = '0.72.0'
-        const VERSION_TWO = '0.5.0'
-        // const VERSION_UNDERSCORE = '1.8.3'
+        const VERSION_ANGULARJS = '1.5.3';
+        // const VERSION_ASYNC = '1.4.2';
+        const VERSION_DAT_GUI = '0.5.0';
+        const VERSION_DECKJS = '1.1.0';
+        const VERSION_DOMREADY = '1.0.0';
+        const VERSION_D3 = '3.5.5';
+        const VERSION_EIGHT = '2.102.0';
+        const VERSION_GLMATRIX = '2.3.2';
+        const VERSION_JASMINE = '2.4.1';
+        const VERSION_JQUERY = '2.1.4';
+        const VERSION_JSXGRAPH = '0.99.3';
+        const VERSION_PLOTLY = '1.5.2';
+        // const VERSION_REQUIREJS = '2.1.9';
+        const VERSION_STATSJS = '0.0.14';
+        // const VERSION_SYSTEMJS = '0.19.26';
+        const VERSION_THREEJS = '0.72.0';
+        const VERSION_TWO = '0.5.0';
+        // const VERSION_UNDERSCORE = '1.8.3';
 
         // FIXME: DRY This function is defined in constants.ts?
         function vendorFolder(packageFolder: string, version: string, subFolder: string, fileName: string): string {
-            const steps: string[] = []
-            steps.push(VENDOR_FOLDER_MARKER)
-            steps.push('/')
-            steps.push(packageFolder)
-            steps.push('@')
-            steps.push(version)
-            steps.push('/')
+            const steps: string[] = [];
+            steps.push(VENDOR_FOLDER_MARKER);
+            steps.push('/');
+            steps.push(packageFolder);
+            steps.push('@');
+            steps.push(version);
+            steps.push('/');
             if (subFolder) {
-                steps.push(subFolder)
-                steps.push('/')
+                steps.push(subFolder);
+                steps.push('/');
             }
-            steps.push(fileName)
-            return steps.join('')
+            steps.push(fileName);
+            return steps.join('');
         }
 
         // Functions defining the name of the folder and version being used.
         function angular(fileName: string): string {
-            return vendorFolder('angular', VERSION_ANGULARJS, void 0, fileName)
+            return vendorFolder('angular', VERSION_ANGULARJS, void 0, fileName);
         }
         /*
         function async(fileName: string): string {
-          return vendorFolder('async', VERSION_ASYNC, void 0, fileName)
+          return vendorFolder('async', VERSION_ASYNC, void 0, fileName);
         }
         */
         function datGUI(fileName: string): string {
-            return vendorFolder('dat-gui', VERSION_DAT_GUI, void 0, fileName)
+            return vendorFolder('dat-gui', VERSION_DAT_GUI, void 0, fileName);
         }
         function deck(fileName: string): string {
-            return vendorFolder('deck.js', VERSION_DECKJS, 'core', fileName)
+            return vendorFolder('deck.js', VERSION_DECKJS, 'core', fileName);
         }
         function domready(fileName: string): string {
-            return vendorFolder('domready', VERSION_DOMREADY, void 0, fileName)
+            return vendorFolder('domready', VERSION_DOMREADY, void 0, fileName);
         }
         function d3(fileName: string): string {
-            return vendorFolder('d3', VERSION_D3, void 0, fileName)
+            return vendorFolder('d3', VERSION_D3, void 0, fileName);
         }
         function eight(subFolder: string, fileName: string): string {
-            return vendorFolder('davinci-eight', VERSION_EIGHT, subFolder, fileName)
+            return vendorFolder('davinci-eight', VERSION_EIGHT, subFolder, fileName);
         }
         function glMatrix(fileName: string): string {
           return vendorFolder('gl-matrix', VERSION_GLMATRIX, void 0, fileName);
         }
         function jasmine(fileName: string): string {
-            return vendorFolder('jasmine', VERSION_JASMINE, 'lib', fileName)
+            return vendorFolder('jasmine', VERSION_JASMINE, 'lib', fileName);
         }
         function jquery(fileName: string): string {
             return vendorFolder('jquery', VERSION_JQUERY, 'dist', fileName);
@@ -85,7 +85,7 @@ app.factory('options', [
             return vendorFolder('jsxgraph', VERSION_JSXGRAPH, void 0, fileName);
         }
         function plotly(fileName: string): string {
-            return vendorFolder('plotly', VERSION_PLOTLY, void 0, fileName)
+            return vendorFolder('plotly', VERSION_PLOTLY, void 0, fileName);
         }
         /*
         function requirejs(fileName: string): string {
@@ -101,10 +101,10 @@ app.factory('options', [
         }
         */
         function threejs(fileName: string): string {
-            return vendorFolder('threejs', VERSION_THREEJS, 'build', fileName)
+            return vendorFolder('threejs', VERSION_THREEJS, 'build', fileName);
         }
         function two(fileName: string): string {
-            return vendorFolder('two', VERSION_TWO, void 0, fileName)
+            return vendorFolder('two', VERSION_TWO, void 0, fileName);
         }
         /*
         function underscore(fileName: string): string {

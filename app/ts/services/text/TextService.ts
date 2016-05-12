@@ -13,7 +13,7 @@ export default class TextService implements ITextService {
    *
    * @property $inject
    */
-  public static $inject: string[] = []
+  public static $inject: string[] = [];
 
   /**
    * @class TextService
@@ -32,12 +32,12 @@ export default class TextService implements ITextService {
    */
   normalizeWhitespace(str: string): string {
     // Strip an initial blank whitespace caused from having text nested inside an html tag.
-    const stripped = str.replace(/^\n/, '')
+    const stripped = str.replace(/^\n/, '');
     if (stripped.length > 0) {
       // Find the first text with an indent and get the length of the indent.
-      const firstIndentLength = new RegExp("(?:^|\n)([ \t\r]+)").exec(stripped)[1].length
+      const firstIndentLength = new RegExp("(?:^|\n)([ \t\r]+)").exec(stripped)[1].length;
       // Use the first indent length as a baseline and normalize all other lines.
-      return stripped.replace(new RegExp("(^|\n)[ \t\r]{" + firstIndentLength + "}", 'g'), "$1")
+      return stripped.replace(new RegExp("(^|\n)[ \t\r]{" + firstIndentLength + "}", 'g'), "$1");
     }
     else {
       return stripped;

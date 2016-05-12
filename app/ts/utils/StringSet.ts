@@ -27,7 +27,7 @@ export default class StringSet {
    * @return {number}
    */
   size(): number {
-    return Object.keys(this.data).length
+    return Object.keys(this.data).length;
   }
 
   each(callback: (member: string) => void) {

@@ -132,6 +132,19 @@ declare module gapi {
          */
         interface GoogleAuth {
             currentUser: CurrentUser;
+            isSignedIn: {
+                /**
+                 * Returns whether the current user is currently signed in.
+                 */
+                get(): boolean;
+                /**
+                 * Listen for changes in the current user's sign-in state.
+                 * 
+                 * @method listen
+                 * @param listener {(direction)=>any} direction is true when user signs in, false when user signs out.
+                 */
+                listen(listener: (direction: boolean) => any)
+            }
             /**
              * 
              */

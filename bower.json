@@ -1,6 +1,6 @@
 {
     "name": "stemcstudio",
-    "version": "2.0.0-beta.53",
+    "version": "2.0.0-beta.54",
     "description": "Learning Mathematics and Geometric Physics through Computational Modeling",
     "homepage": "https://github.com/geometryzen/STEMCstudio",
     "authors": [
@@ -32,6 +32,7 @@
         "angular-uuid4": "^0.3.0",
         "angular": "^1.5.5",
         "async": "~1.5.0",
+        "aws-sdk-js": "^2.3.10",
         "bootstrap": "~3.3.6",
         "bootstrap3-dialog": "~1.35.0",
         "davinci-blade": "~1.7.2",
