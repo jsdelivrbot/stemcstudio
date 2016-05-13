@@ -45,12 +45,12 @@ interface GitHubService {
     /**
      *
      */
-    getGists(done: (err: any, gists: Gist[], status: number, headers: ng.IHttpHeadersGetter) => any);
+    getGists(): ng.IHttpPromise<Gist[]>;
 
     /**
-     * Used for pafination of Gists.
+     * Used for pagination of Gists.
      */
-    getGistsPage(href: string, done: (err: any, gists: Gist[], status: number, headers: ng.IHttpHeadersGetter) => any);
+    getGistsPage(href: string): ng.IHttpPromise<Gist[]>;
 
     /**
      * Returns the contents of a file or directory in the repository.

@@ -2,7 +2,6 @@ import app from '../app';
 import BodyScope from '../scopes/BodyScope';
 import BootstrapDialog from 'bootstrap-dialog';
 import IDoodleManager from '../services/doodles/IDoodleManager';
-import Gist from '../services/github/Gist';
 import GitHubService from '../services/github/GitHubService';
 import linkToMap from '../utils/linkToMap';
 
@@ -30,18 +29,25 @@ app.controller('body-controller', [
 
         $scope.clickDownload = function(label?: string, value?: number) {
             ga('send', 'event', 'doodle', 'download', label, value);
-            github.getGists(function(err: any, gists: Gist[], status: number, headers: (name: string) => string) {
-                if (!err) {
+            github.getGists()
+                .then(function(promiseValue) {
+                    const gists = promiseValue.data;
+                    const headers = promiseValue.headers;
                     $scope.gists = gists;
-                    $scope.links = linkToMap(headers('link'));
+                    if (headers['link']) {
+                        $scope.links = linkToMap(headers('link'));
+                    }
+                    else {
+                        $scope.links = {};
+                    }
                     $state.go('download');
-                }
-                else {
+                })
+                .catch(function(reason: any) {
                     BootstrapDialog.show({
                         type: BootstrapDialog.TYPE_DANGER,
                         // FIXME: Why does jQuery get defined globally and does a module import fail?
                         title: $("<h3>Download failed</h3>"),
-                        message: `Unable to download Gists. Cause: ${err} ${status}`,
+                        message: `Unable to download Gists. Cause: ${reason} ${status}`,
                         buttons: [{
                             label: "Close",
                             cssClass: 'btn btn-primary',
@@ -50,8 +56,8 @@ app.controller('body-controller', [
                             }
                         }]
                     });
-                }
-            });
+
+                })
         };
     }
 ]);

@@ -74,21 +74,6 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
             }
             return headers
         }
-        function getGistsPage(url: string, done: (err: any, response: Gist[], status: number, headers) => any) {
-            return $http({ method: HTTP_METHOD_GET, url: url, headers: requestHeaders() })
-                .success(function(gists: Gist[], status: number, headers, config) {
-                    return done(null, gists, status, headers);
-                })
-                .error(function(response, status: number, headers, config) {
-                    if (response && response.message) {
-                        return done(new Error(response.message), response, status, headers);
-                    }
-                    else {
-                        return done(new Error("Invalid response from GitHub."), response, status, headers);
-                    }
-                });
-        }
-
         return {
             getUser: function(): ng.IHttpPromise<User> {
                 const method = HTTP_METHOD_GET;
@@ -247,12 +232,12 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
                     return done(new Error(response.message), response, status, headers, config);
                 });
             },
-            getGists: function(done: (err: any, response: Gist[], status: number, headers) => any) {
+            getGists: function() {
                 const url = `${gitHub()}/gists`;
-                return getGistsPage(url, done);
+                return $http<Gist[]>({ method: HTTP_METHOD_GET, url: url, headers: requestHeaders() });
             },
-            getGistsPage: function(url: string, done: (err: any, response: Gist[], status: number, headers) => any) {
-                return getGistsPage(url, done);
+            getGistsPage: function(url: string) {
+                return $http<Gist[]>({ method: HTTP_METHOD_GET, url: url, headers: requestHeaders() });
             },
             getReference: function(owner: string, repo: string, ref: string): ng.IHttpPromise<Reference> {
                 const method = HTTP_METHOD_GET

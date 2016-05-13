@@ -1,7 +1,6 @@
 import app from '../app';
 import IDoodleManager from '../services/doodles/IDoodleManager';
 import DownloadScope from '../scopes/DownloadScope';
-import Gist from '../services/github/Gist';
 import GitHubService from '../services/github/GitHubService';
 import linkToMap from '../utils/linkToMap';
 
@@ -49,18 +48,25 @@ app.controller('download-controller', [
                 return;
             }
             const href = $scope.links[rel];
-            github.getGistsPage(href, function(err: any, gists: Gist[], status: number, headers: (name: string) => string) {
-                if (!err) {
+            github.getGistsPage(href)
+                .then(function(promiseValue) {
+                    const gists = promiseValue.data;
+                    const headers = promiseValue.headers;
                     $scope.gists = gists;
-                    $scope.links = linkToMap(headers('link'));
+                    if (headers['link']) {
+                        $scope.links = linkToMap(headers('link'));
+                    }
+                    else {
+                        $scope.links = {};
+                    }
                     $state.go('download');
-                }
-                else {
+                })
+                .catch(function(reason: any) {
                     BootstrapDialog.show({
                         type: BootstrapDialog.TYPE_DANGER,
                         // FIXME: Why does jQuery get defined globally and does a module import fail?
                         title: $("<h3>Download failed</h3>"),
-                        message: `Unable to download Gists. Cause: ${err} ${status}`,
+                        message: `Unable to download Gists. Cause: ${reason} ${status}`,
                         buttons: [{
                             label: "Close",
                             cssClass: 'btn btn-primary',
@@ -69,8 +75,7 @@ app.controller('download-controller', [
                             }
                         }]
                     });
-                }
-            });
+                })
         }
 
         $scope.doPageF = function(): void {
