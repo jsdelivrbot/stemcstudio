@@ -8,6 +8,6 @@ export default function doodleToGist(doodle: IDoodle, options: IOptionManager): 
         description: doodle.description,
         public: true,
         files: doodleFilesToGistFiles(doodle.files, doodle.trash)
-    }
-    return gist
+    };
+    return gist;
 }

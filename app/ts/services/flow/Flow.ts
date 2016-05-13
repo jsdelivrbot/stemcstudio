@@ -18,7 +18,7 @@ export default class Flow<T> extends EventBus<Flow<T>> implements Session<T> {
         this.conflictResolutionStrategy = conflictResolutionStrategy;
         this.workingMemory = new WorkingMemory();
         this.agenda = new AgendaTree(this, conflictResolutionStrategy);
-        this.rootNode = new RootNode(this.workingMemory, this.agenda)
+        this.rootNode = new RootNode(this.workingMemory, this.agenda);
     }
     assert(fact: any) {
         throw new Error('Flow.assert');
@@ -33,7 +33,7 @@ export default class Flow<T> extends EventBus<Flow<T>> implements Session<T> {
         return [];
     }
     execute(callback: (reason: any) => any): void {
-        this.executionStrategy = new ExecutionStrategy(this)
+        this.executionStrategy = new ExecutionStrategy(this);
         return this.executionStrategy.execute();
     }
     matchUntilHalt(): void {

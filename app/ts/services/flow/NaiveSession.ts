@@ -9,7 +9,7 @@ export default class NaiveSession<T> implements Session<T> {
         private conflictResolutionStrategy: ConflictResolutionStrategy<T>,
         private facts: T) {
         if (!conflictResolutionStrategy) {
-            throw new Error("conflictResolutionStrategy must be defined")
+            throw new Error("conflictResolutionStrategy must be defined");
         }
     }
     execute(callback: (reason: any, facts: T) => any): void {
@@ -19,33 +19,33 @@ export default class NaiveSession<T> implements Session<T> {
             for (let r = 0; r < rLen; r++) {
                 const rule = this.rules[r];
                 if (rule.pattern(this.facts)) {
-                    const match: Match<T> = { name: rule.name, hashCode: 0, rule, counter: 0, recency: 0, match: { recency: [] } }
+                    const match: Match<T> = { name: rule.name, hashCode: 0, rule, counter: 0, recency: 0, match: { recency: [] } };
                     matching.push(match);
                 }
             }
             let winner: Match<T> = null;
             if (matching.length === 1) {
-                winner = matching[0]
+                winner = matching[0];
             }
             else {
-                matching.sort(this.conflictResolutionStrategy)
-                winner = matching[0]
+                matching.sort(this.conflictResolutionStrategy);
+                winner = matching[0];
             }
             if (winner) {
                 winner.rule.action(this.facts, this, (reason: any) => {
                     if (reason) {
-                        callback(reason, this.facts)
+                        callback(reason, this.facts);
                     }
                     else {
                         // Recurse.
-                        advance()
+                        advance();
                     }
-                })
+                });
             }
             else {
-                callback(void 0, this.facts)
+                callback(void 0, this.facts);
             }
-        }
-        advance()
+        };
+        advance();
     }
 }

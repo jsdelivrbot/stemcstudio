@@ -26,14 +26,14 @@ export default class RepoController extends AbstractPageController {
         ga: UniversalAnalytics.ga,
         modalDialog: ModalDialog,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string) {
-        super($scope, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'hidden')
+        super($scope, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'hidden');
     }
     $onInit(): void {
         // This will not be called because this is a routing controller.
-        console.warn("RepoController.$onDestroy()")
+        console.warn("RepoController.$onDestroy()");
     }
     $onDestroy(): void {
         // This will not be called because this is a routing controller.
-        console.warn("RepoController.$onDestroy()")
+        console.warn("RepoController.$onDestroy()");
     }
 }

@@ -11,69 +11,69 @@ import doodlesToString from './doodlesToString';
 
 function deserializeDoodles(doodles: IDoodleDS[], options: IOptionManager): Doodle[] {
     // Version 1.x used a fixed set of four files with properties that were strings.
-    const FILENAME_HTML = 'index.html'
-    const PROPERTY_HTML = 'html'
+    const FILENAME_HTML = 'index.html';
+    const PROPERTY_HTML = 'html';
 
-    const FILENAME_CODE = 'script.ts'
-    const PROPERTY_CODE = 'code'
+    const FILENAME_CODE = 'script.ts';
+    const PROPERTY_CODE = 'code';
 
-    const FILENAME_LIBS = 'extras.ts'
-    const PROPERTY_LIBS = 'libs'
+    const FILENAME_LIBS = 'extras.ts';
+    const PROPERTY_LIBS = 'libs';
 
-    const FILENAME_LESS = 'style.less'
-    const PROPERTY_LESS = 'less'
+    const FILENAME_LESS = 'style.less';
+    const PROPERTY_LESS = 'less';
 
-    const ds: Doodle[] = []
-    const iLen = doodles.length
+    const ds: Doodle[] = [];
+    const iLen = doodles.length;
     for (let i = 0; i < iLen; i++) {
-        const inDoodle = doodles[i]
-        const d = new Doodle(options)
+        const inDoodle = doodles[i];
+        const d = new Doodle(options);
         // The existence of the files property indicates that this is probably a modern version.
         if (inDoodle.files) {
-            d.files = copyFiles(inDoodle.files)
+            d.files = copyFiles(inDoodle.files);
         }
         else {
-            d.files = {}
+            d.files = {};
 
-            d.files[FILENAME_HTML] = new DoodleFile()
-            d.files[FILENAME_HTML].content = inDoodle[PROPERTY_HTML]
-            d.files[FILENAME_HTML].language = modeFromName(FILENAME_HTML)
+            d.files[FILENAME_HTML] = new DoodleFile();
+            d.files[FILENAME_HTML].content = inDoodle[PROPERTY_HTML];
+            d.files[FILENAME_HTML].language = modeFromName(FILENAME_HTML);
 
-            d.files[FILENAME_CODE] = new DoodleFile()
-            d.files[FILENAME_CODE].content = inDoodle[PROPERTY_CODE]
-            d.files[FILENAME_CODE].language = modeFromName(FILENAME_CODE)
+            d.files[FILENAME_CODE] = new DoodleFile();
+            d.files[FILENAME_CODE].content = inDoodle[PROPERTY_CODE];
+            d.files[FILENAME_CODE].language = modeFromName(FILENAME_CODE);
 
-            d.files[FILENAME_LIBS] = new DoodleFile()
-            d.files[FILENAME_LIBS].content = inDoodle[PROPERTY_LIBS]
-            d.files[FILENAME_LIBS].language = modeFromName(FILENAME_LIBS)
+            d.files[FILENAME_LIBS] = new DoodleFile();
+            d.files[FILENAME_LIBS].content = inDoodle[PROPERTY_LIBS];
+            d.files[FILENAME_LIBS].language = modeFromName(FILENAME_LIBS);
 
-            d.files[FILENAME_LESS] = new DoodleFile()
-            d.files[FILENAME_LESS].content = inDoodle[PROPERTY_LESS]
-            d.files[FILENAME_LESS].language = modeFromName(FILENAME_LESS)
+            d.files[FILENAME_LESS] = new DoodleFile();
+            d.files[FILENAME_LESS].content = inDoodle[PROPERTY_LESS];
+            d.files[FILENAME_LESS].language = modeFromName(FILENAME_LESS);
         }
         // FIXME: DRY by copying keys both directions.
         d.gistId = inDoodle.gistId;
         d.owner = inDoodle.owner;
         d.repo = inDoodle.repo;
-        d.lastKnownJs = inDoodle.lastKnownJs
-        ds.push(d)
+        d.lastKnownJs = inDoodle.lastKnownJs;
+        ds.push(d);
     }
-    return ds
+    return ds;
 }
 
 function copyFiles(inFiles: { [name: string]: IDoodleFile }): { [name: string]: DoodleFile } {
-    const outFiles: { [name: string]: DoodleFile } = {}
-    const names: string[] = Object.keys(inFiles)
-    const iLen: number = names.length
+    const outFiles: { [name: string]: DoodleFile } = {};
+    const names: string[] = Object.keys(inFiles);
+    const iLen: number = names.length;
     for (let i = 0; i < iLen; i++) {
-        const name = names[i]
-        const inFile = inFiles[name]
-        const outFile: DoodleFile = new DoodleFile()
-        outFile.content = inFile.content
-        outFile.language = inFile.language
-        outFiles[name] = outFile
+        const name = names[i];
+        const inFile = inFiles[name];
+        const outFile: DoodleFile = new DoodleFile();
+        outFile.content = inFile.content;
+        outFile.language = inFile.language;
+        outFiles[name] = outFile;
     }
-    return outFiles
+    return outFiles;
 }
 
 app.factory('doodles', [
@@ -139,20 +139,20 @@ app.factory('doodles', [
                 if (!description) {
                     description = suggestName();
                 }
-                const doodle: Doodle = new Doodle(options)
+                const doodle: Doodle = new Doodle(options);
 
                 // Initialize the files property first so that updates to name, ...
                 // are not written over.
-                doodle.files = copyFiles(template.files)
+                doodle.files = copyFiles(template.files);
 
                 // The following updates will impact the package.json file.
-                doodle.name = description.replace(' ', '-').toLowerCase()
-                doodle.version = "0.1.0"
-                doodle.description = description
-                doodle.dependencies = template.dependencies.slice() // make a copy
-                doodle.operatorOverloading = template.operatorOverloading
+                doodle.name = description.replace(' ', '-').toLowerCase();
+                doodle.version = "0.1.0";
+                doodle.description = description;
+                doodle.dependencies = template.dependencies.slice(); // make a copy
+                doodle.operatorOverloading = template.operatorOverloading;
 
-                _doodles.unshift(doodle)
+                _doodles.unshift(doodle);
             },
 
             makeCurrent: function(dude: Doodle): void {

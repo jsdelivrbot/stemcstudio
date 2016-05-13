@@ -12,28 +12,36 @@ export default class HitService {
     constructor(private $q: angular.IQService, private $http: angular.IHttpService) {
         // Do nothing.
     }
+
+    /**
+     * 
+     */
     count(): ng.IPromise<number> {
         const d = this.$q.defer<number>();
         this.$http.get<HitResponse>('/hits')
             .then(function(promiseValue) {
-                const data = promiseValue.data
-                d.resolve(data.hits)
+                const data = promiseValue.data;
+                d.resolve(data.hits);
             })
             .catch(function(reason) {
-                d.reject(reason)
-            })
+                d.reject(reason);
+            });
         return d.promise;
     }
+
+    /**
+     * 
+     */
     registerHit(): ng.IPromise<number> {
         const d = this.$q.defer<number>();
         this.$http.post<HitResponse>('/hit', {})
             .then(function(promiseValue) {
-                const data = promiseValue.data
-                d.resolve(data.hits)
+                const data = promiseValue.data;
+                d.resolve(data.hits);
             })
             .catch(function(reason) {
-                d.reject(reason)
-            })
+                d.reject(reason);
+            });
         return d.promise;
     }
 }

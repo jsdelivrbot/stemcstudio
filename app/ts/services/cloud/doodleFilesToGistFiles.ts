@@ -8,23 +8,23 @@ import ensureFileContent from './ensureFileContent';
  * This is done by including a mapping from filename to null.
  */
 export default function doodleFilesToGistFiles(dFiles: { [dName: string]: IDoodleFile }, trash: { [dName: string]: IDoodleFile }): { [gName: string]: { content: string } } {
-    const gFiles: { [gName: string]: { content: string } } = {}
+    const gFiles: { [gName: string]: { content: string } } = {};
 
-    const dNames = Object.keys(dFiles)
-    const iLen = dNames.length
+    const dNames = Object.keys(dFiles);
+    const iLen = dNames.length;
     for (let i = 0; i < iLen; i++) {
-        const dName = dNames[i]
-        const dFile: IDoodleFile = dFiles[dName]
-        const gFile: { content: string } = { content: ensureFileContent(dName, dFile.content) }
-        gFiles[dName] = gFile
+        const dName = dNames[i];
+        const dFile: IDoodleFile = dFiles[dName];
+        const gFile: { content: string } = { content: ensureFileContent(dName, dFile.content) };
+        gFiles[dName] = gFile;
     }
 
-    const trashNames = Object.keys(trash)
-    const jLen = trashNames.length
+    const trashNames = Object.keys(trash);
+    const jLen = trashNames.length;
     for (let j = 0; j < jLen; j++) {
-        const name = trashNames[j]
+        const name = trashNames[j];
         // Deletes are performed by including a filename with a null object.
-        gFiles[name] = null
+        gFiles[name] = null;
     }
-    return gFiles
+    return gFiles;
 }

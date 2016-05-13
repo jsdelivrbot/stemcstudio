@@ -44,51 +44,51 @@ function factory(
         const systemImports: string[] = ['/jspm_packages/system.js', '/jspm.config.js'];
         const workerImports: string[] = systemImports.concat(['/js/ace-workers.js']);
 
-        const ngModel: ng.INgModelController = controllers[0]
-        const workspace: WorkspaceMixin = controllers[1]
+        const ngModel: ng.INgModelController = controllers[0];
+        const workspace: WorkspaceMixin = controllers[1];
 
-        const container: HTMLElement = element[0]
-        const editor: Editor = edit(container)
+        const container: HTMLElement = element[0];
+        const editor: Editor = edit(container);
 
         const themeEventHandler = function(event: ThemeManagerEvent) {
-            editor.setThemeCss(event.cssClass, event.href)
-            editor.setThemeDark(event.isDark)
-        }
-        themeManager.addEventListener(currentTheme, themeEventHandler)
+            editor.setThemeCss(event.cssClass, event.href);
+            editor.setThemeDark(event.isDark);
+        };
+        themeManager.addEventListener(currentTheme, themeEventHandler);
 
         // The following are starting to look very similar!
         switch ($scope.mode) {
             case LANGUAGE_JAVA_SCRIPT: {
                 editor.setLanguageMode(createJavaScriptMode('/js/worker.js', workerImports), function(err: any) {
                     if (err) {
-                        console.warn(`${$scope.mode} => ${err}`)
+                        console.warn(`${$scope.mode} => ${err}`);
                     }
-                })
-                break
+                });
+                break;
             }
             case LANGUAGE_TYPE_SCRIPT: {
                 editor.setLanguageMode(createTypeScriptMode('/js/worker.js', workerImports), function(err: any) {
                     if (err) {
-                        console.warn(`${$scope.mode} => ${err}`)
+                        console.warn(`${$scope.mode} => ${err}`);
                     }
-                })
-                break
+                });
+                break;
             }
             case LANGUAGE_HTML: {
                 editor.setLanguageMode(new HtmlMode('/js/worker.js', workerImports), function(err: any) {
                     if (err) {
-                        console.warn(`${$scope.mode} => ${err}`)
+                        console.warn(`${$scope.mode} => ${err}`);
                     }
-                })
-                break
+                });
+                break;
             }
             case LANGUAGE_JSON: {
                 editor.setLanguageMode(new JsonMode('/js/worker.js', workerImports), function(err: any) {
                     if (err) {
-                        console.warn(`${$scope.mode} => ${err}`)
+                        console.warn(`${$scope.mode} => ${err}`);
                     }
-                })
-                break
+                });
+                break;
             }
             case LANGUAGE_CSS:
             case LANGUAGE_LESS: {
@@ -96,77 +96,77 @@ function factory(
                 editor.getSession().setUseWorker(false);
                 editor.setLanguageMode(createCssMode('/js/worker.js', workerImports), function(err: any) {
                     if (err) {
-                        console.warn(`${$scope.mode} => ${err}`)
+                        console.warn(`${$scope.mode} => ${err}`);
                     }
-                })
-                break
+                });
+                break;
             }
             case LANGUAGE_MARKDOWN: {
-                editor.getSession().setUseWrapMode(true)
-                editor.setWrapBehavioursEnabled(true)
+                editor.getSession().setUseWrapMode(true);
+                editor.setWrapBehavioursEnabled(true);
                 editor.setLanguageMode(createMarkdownMode('/js/worker.js', workerImports), function(err: any) {
                     if (err) {
-                        console.warn(`${$scope.mode} => ${err}`)
+                        console.warn(`${$scope.mode} => ${err}`);
                     }
-                })
-                break
+                });
+                break;
             }
             case LANGUAGE_TEXT: {
                 editor.setLanguageMode(new TextMode('/js/worker.js', workerImports), function(err: any) {
                     if (err) {
-                        console.warn(`${$scope.mode} => ${err}`)
+                        console.warn(`${$scope.mode} => ${err}`);
                     }
-                })
-                break
+                });
+                break;
             }
             default: {
-                console.warn(`Unrecognized mode => ${$scope.mode}`)
+                console.warn(`Unrecognized mode => ${$scope.mode}`);
             }
         }
-        editor.setThemeDark(true)
-        editor.setPadding(4)
-        editor.setShowInvisibles(settings.showInvisibles)
-        editor.setFontSize(settings.fontSize)
-        editor.setShowPrintMargin(settings.showPrintMargin)
-        editor.setDisplayIndentGuides(settings.displayIndentGuides)
-        editor.getSession().setTabSize(2)
-        editor.getSession().setUseSoftTabs(true)
+        editor.setThemeDark(true);
+        editor.setPadding(4);
+        editor.setShowInvisibles(settings.showInvisibles);
+        editor.setFontSize(settings.fontSize);
+        editor.setShowPrintMargin(settings.showPrintMargin);
+        editor.setDisplayIndentGuides(settings.displayIndentGuides);
+        editor.getSession().setTabSize(2);
+        editor.getSession().setUseSoftTabs(true);
 
         attrs.$observe<boolean>('readonly', function(readOnly: boolean) {
-            editor.setReadOnly(readOnly)
-        })
+            editor.setReadOnly(readOnly);
+        });
 
         /**
          * When the editor changes, propagate back to the model.
          */
         function onEditorChange(event: Delta, source: Editor) {
-            const viewValue: string = editor.getValue()
-            ngModel.$setViewValue(viewValue)
+            const viewValue: string = editor.getValue();
+            ngModel.$setViewValue(viewValue);
         }
 
         // formatters update the viewValue from the modelValue
         ngModel.$formatters.push(function(modelValue: string) {
             if (ng.isUndefined(modelValue) || modelValue === null) {
-                return void 0
+                return void 0;
             }
             // We are returning the viewValue. We could make an object literal here.
             // It should then match other usages of $viewValue.
             // We keep it simple by simply returning the string.
-            return modelValue
-        })
+            return modelValue;
+        });
 
         // parsers update the modelValue from the viewValue
         // This is how it is done prior to AngularJs 1.3
         ngModel.$parsers.push(function(viewValue: string) {
-            ngModel.$setValidity('yadda', true)
-            return viewValue
-        })
+            ngModel.$setValidity('yadda', true);
+            return viewValue;
+        });
 
         // In Angular 1.3+ we have the $validators pipeline.
         // We don't need to set validation states because we have an object, not an array.
         ngModel.$validators['foo'] = function(modelValue: string, viewValue: string): boolean {
-            return true
-        }
+            return true;
+        };
 
         // The basic idea here is to set the $render callback function that will be used to take
         // the model value and use it to update the view (editor).
@@ -174,42 +174,42 @@ function factory(
         // I'm not sure why, but wrapping seems to break things!
         //      $timeout(function() {
         ngModel.$render = function() {
-            const viewValue: string = ngModel.$viewValue
+            const viewValue: string = ngModel.$viewValue;
             if (typeof viewValue === 'string') {
-                editor.off('change', onEditorChange)
-                editor.setValue(viewValue, -1)
-                editor.on('change', onEditorChange)
+                editor.off('change', onEditorChange);
+                editor.setValue(viewValue, -1);
+                editor.on('change', onEditorChange);
             }
             else {
-                console.warn(`$render: Expecting typeof ngModel.$viewValue => '${typeof viewValue}' to be 'string'.`)
+                console.warn(`$render: Expecting typeof ngModel.$viewValue => '${typeof viewValue}' to be 'string'.`);
             }
             $timeout(function() {
                 resizeEditor();
-                editor.gotoLine(0, 0)
-            })
-        }
+                editor.gotoLine(0, 0);
+            });
+        };
 
         // We use the transclude function to manually handle the placement of the contents.
         // We take any text and apply it to the editor.
         if (transclude) {
             transclude($scope, function(clonedElement: JQuery) {
                 // We set the initial text on the editor before listening to change events.
-                const initialText = textService.normalizeWhitespace(clonedElement.text())
-                editor.setValue(initialText, -1)
+                const initialText = textService.normalizeWhitespace(clonedElement.text());
+                editor.setValue(initialText, -1);
 
                 // FIXME: This is a bit dubious...
                 if (initialText && !ngModel.$viewValue) {
-                    const viewValue: string = initialText
-                    ngModel.$setViewValue(viewValue)
+                    const viewValue: string = initialText;
+                    ngModel.$setViewValue(viewValue);
                 }
-            })
+            });
         }
         else {
             // If the transclude option is not set then we can't suck in text contained in the element.
-            console.warn("The transclude option is not set to true")
+            console.warn("The transclude option is not set to true");
         }
 
-        editor.on('change', onEditorChange)
+        editor.on('change', onEditorChange);
 
         // Handle movements of the resizable grabber.
         /*
@@ -228,40 +228,40 @@ function factory(
             // tick of the event-loop. We'll use $timeout to do this in the
             // next tick.
             if (newShowing) {
-                resizeEditorNextTick()
+                resizeEditorNextTick();
             }
-        })
+        });
 
         function resizeEditorNextTick() {
-            $timeout(function() { resizeEditor() }, 0, /* No delay. */ false /* Don't trigger a digest. */)
+            $timeout(function() { resizeEditor(); }, 0, /* No delay. */ false /* Don't trigger a digest. */);
         }
 
         function resizeEditor() {
-            editor.resize(true)
-            editor.renderer.updateFull()
+            editor.resize(true);
+            editor.renderer.updateFull();
         }
 
         // Both the scope and the element receive '$destroy' events, but the scope is called first.
         // It's probably also the more consistent place to release non-AngularJS resources allocated for the scope.
         function onDestroyScope() {
-            unregisterWatchNgShow()
-            workspace.detachEditor($scope.id, $scope.mode, editor)
+            unregisterWatchNgShow();
+            workspace.detachEditor($scope.id, $scope.mode, editor);
             // Interestingly, there is no $off function, so assume Angular will handle the unhook.
             // editorsController.removeEditor(scope)
-            editor.off('change', onEditorChange)
+            editor.off('change', onEditorChange);
 
-            themeManager.removeEventListener(currentTheme, themeEventHandler)
+            themeManager.removeEventListener(currentTheme, themeEventHandler);
 
             // What about stopping the worker?
-            editor.destroy()
+            editor.destroy();
         }
 
         // We can hook both the scope and the element '$destroy' event.
         // However, the scope event is probably the Best Practice.
         // The scope event also happens before the element event.
-        $scope.$on('$destroy', onDestroyScope)
+        $scope.$on('$destroy', onDestroyScope);
 
-        workspace.attachEditor($scope.id, $scope.mode, editor)
+        workspace.attachEditor($scope.id, $scope.mode, editor);
     }
 
     const directive: ng.IDirective = {
@@ -287,10 +287,10 @@ function factory(
          * The link function is used for DOM manipulation.
          */
         link: link
-    }
-    return directive
+    };
+    return directive;
 }
 
-factory.$inject = ['$timeout', 'settings', 'textService', 'themeManager']
+factory.$inject = ['$timeout', 'settings', 'textService', 'themeManager'];
 
-export default factory
+export default factory;

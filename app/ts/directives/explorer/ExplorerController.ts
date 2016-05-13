@@ -1,6 +1,6 @@
 import IExplorer from './IExplorer';
-import IDoodle from '../../services/doodles/IDoodle'
-import IDoodleManager from '../../services/doodles/IDoodleManager'
+import IDoodle from '../../services/doodles/IDoodle';
+import IDoodleManager from '../../services/doodles/IDoodleManager';
 
 /**
  * @class ExplorerController
@@ -16,7 +16,7 @@ export default class ExplorerController implements IExplorer {
    * @type string[]
    * @static
    */
-  public static $inject: string[] = ['doodles']
+  public static $inject: string[] = ['doodles'];
 
   /**
    * @class ExplorerController
@@ -62,21 +62,21 @@ export default class ExplorerController implements IExplorer {
     // I think the right thing to do now is to talk to a service that returns a promise.
     // We can make an optimistic local change (maybe) (adjusting the scope?), and wait for the
     // promise to resolve.
-    const doodle: IDoodle = this.doodles.current()
-    doodle.openFile(name)
-    doodle.selectFile(name)
+    const doodle: IDoodle = this.doodles.current();
+    doodle.openFile(name);
+    doodle.selectFile(name);
   }
 
   closeFile(name: string): void {
-    const doodle: IDoodle = this.doodles.current()
-    doodle.closeFile(name)
+    const doodle: IDoodle = this.doodles.current();
+    doodle.closeFile(name);
   }
 
   selectFile(name: string): void {
     // I think the right thing to do now is to talk to a service that returns a promise.
     // We can make an optimistic local change (maybe) (adjusting the scope?), and wait for the
     // promise to resolve.
-    const doodle: IDoodle = this.doodles.current()
-    doodle.selectFile(name)
+    const doodle: IDoodle = this.doodles.current();
+    doodle.selectFile(name);
   }
 }

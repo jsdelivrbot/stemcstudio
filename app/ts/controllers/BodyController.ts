@@ -57,7 +57,7 @@ app.controller('body-controller', [
                         }]
                     });
 
-                })
+                });
         };
     }
 ]);

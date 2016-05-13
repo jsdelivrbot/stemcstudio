@@ -17,7 +17,7 @@ app.controller('copy-controller', [
 
         $scope.description = doodles.suggestName();
 
-        const copySource = doodles.current()
+        const copySource = doodles.current();
 
         const template: ITemplate = {
             description: copySource.description,

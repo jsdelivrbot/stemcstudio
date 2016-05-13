@@ -6,15 +6,17 @@ function factory() {
     function link($scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes, controllers: {}, transclude: ng.ITranscludeFunction) {
         // Do nothing.
     }
+
     const directive: angular.IDirective = {
         require: [],
         restrict: 'E',
         controller,
         link: link
-    }
-    return directive
+    };
+
+    return directive;
 }
 
-factory.$inject = []
+factory.$inject = [];
 
-export default factory
+export default factory;

@@ -45,8 +45,8 @@ import {LANGUAGE_TEXT} from '../../languages/modes';
 
 // import BootstrapDialog from 'bootstrap-dialog';
 
-const FSLASH_STAR = '/*'
-const STAR_FSLASH = '*/'
+const FSLASH_STAR = '/*';
+const STAR_FSLASH = '*/';
 
 const WAIT_NO_MORE = 0;
 const WAIT_FOR_MORE_CODE_KEYSTROKES = 1500;
@@ -63,7 +63,7 @@ function namesToOptions(names: string[], options: IOptionManager): IOption[] {
 }
 
 function optionsToNames(options: IOption[]): string[] {
-    return options.map(function(option: IOption) { return option.name });
+    return options.map(function(option: IOption) { return option.name; });
 }
 
 /**
@@ -126,7 +126,7 @@ function currentJavaScript(fileName: string, doodle: Doodle): string {
  * This lightweight function is adapted from MDN.
  */
 function startsWith(sourceString: string, searchString: string, position = 0): boolean {
-    return sourceString.indexOf(searchString, position) === position
+    return sourceString.indexOf(searchString, position) === position;
 }
 
 /**
@@ -138,11 +138,11 @@ function startsWith(sourceString: string, searchString: string, position = 0): b
 function scriptURL(domain: string, fileName: string, VENDOR_FOLDER_MARKER: string): string {
     if (startsWith(fileName, VENDOR_FOLDER_MARKER)) {
         // fileName(s) should be defined as VENDOR_FOLDER_MARKER + '/package/**/*.js'
-        return domain + '/vendor' + fileName.substring(VENDOR_FOLDER_MARKER.length)
+        return domain + '/vendor' + fileName.substring(VENDOR_FOLDER_MARKER.length);
     }
     else {
         // TODO: While we migrate options, everything is still local.
-        return domain + '/js/' + fileName
+        return domain + '/js/' + fileName;
     }
 }
 
@@ -151,18 +151,18 @@ function scriptURL(domain: string, fileName: string, VENDOR_FOLDER_MARKER: strin
 // resize the output widow. This function
 function bubbleIframeMouseMove(iframe: HTMLIFrameElement) {
     // Save any previous onmousemove handler.
-    const existingOnMouseMove = iframe.contentWindow.onmousemove
+    const existingOnMouseMove = iframe.contentWindow.onmousemove;
 
     // Attach a new onmousemove listener.
     iframe.contentWindow.onmousemove = function(e: MouseEvent) {
         // Fire any existing onmousemove listener.
-        if (existingOnMouseMove) existingOnMouseMove(e)
+        if (existingOnMouseMove) existingOnMouseMove(e);
 
         // Create a new event for the this window.
-        const evt: MouseEvent = document.createEvent("MouseEvents")
+        const evt: MouseEvent = document.createEvent("MouseEvents");
 
         // We'll need this to offset the mouse move appropriately.
-        const boundingClientRect = iframe.getBoundingClientRect()
+        const boundingClientRect = iframe.getBoundingClientRect();
 
         // Initialize the event, copying exiting event values (most of them).
         evt.initMouseEvent(
@@ -181,11 +181,11 @@ function bubbleIframeMouseMove(iframe: HTMLIFrameElement) {
             e.metaKey,
             e.button,
             null // no related element
-        )
+        );
 
         // Dispatch the mousemove event on the iframe element.
-        iframe.dispatchEvent(evt)
-    }
+        iframe.dispatchEvent(evt);
+    };
 }
 
 /**
@@ -229,26 +229,26 @@ export default class WorkspaceController implements WorkspaceMixin {
         'CODE_MARKER',
         'LIBS_MARKER',
         'VENDOR_FOLDER_MARKER',
-        'workspaceFactory']
+        'workspaceFactory'];
 
     /**
      * Keep track of the dependencies that are loaded in the workspace.
      */
     private olds: string[] = [];
 
-    private outputFilesEventHandlers: { [name: string]: OutputFileHandler } = {}
-    private changeHandlers: { [name: string]: ChangeHandler } = {}
+    private outputFilesEventHandlers: { [name: string]: OutputFileHandler } = {};
+    private changeHandlers: { [name: string]: ChangeHandler } = {};
 
     /**
      * Promise to update the README view for throttling.
      */
-    private readmePromise: angular.IPromise<void>
+    private readmePromise: angular.IPromise<void>;
     /**
      * Keep track of the README handlers that are registered for cleanup.
      */
-    private readmeChangeHandlers: { [name: string]: ChangeHandler } = {}
+    private readmeChangeHandlers: { [name: string]: ChangeHandler } = {};
 
-    private editors: { [name: string]: Editor } = {}
+    private editors: { [name: string]: Editor } = {};
     private resizeListener: (unused: UIEvent) => any;
 
     /**
@@ -304,50 +304,50 @@ export default class WorkspaceController implements WorkspaceMixin {
         private VENDOR_FOLDER_MARKER: string,
         private workspaceFactory: WorkspaceFactory) {
 
-        let rebuildPromise: angular.IPromise<void>
+        let rebuildPromise: angular.IPromise<void>;
         $scope.updatePreview = (delay: number) => {
             if (rebuildPromise) { $timeout.cancel(rebuildPromise); }
-            rebuildPromise = $timeout(() => { this.rebuildPreview(); rebuildPromise = undefined; }, delay)
-        }
+            rebuildPromise = $timeout(() => { this.rebuildPreview(); rebuildPromise = undefined; }, delay);
+        };
 
         $scope.doView = (name: string): void => {
-            const doodle = doodles.current()
-            const file = doodle.findFileByName(name)
+            const doodle = doodles.current();
+            const file = doodle.findFileByName(name);
             if (file) {
-                doodle.setPreviewFile(name)
+                doodle.setPreviewFile(name);
                 // The user probably wants to see the view, so make sure the view is visible.
-                $scope.isViewVisible = true
-                $scope.updatePreview(WAIT_NO_MORE)
+                $scope.isViewVisible = true;
+                $scope.updatePreview(WAIT_NO_MORE);
             }
-        }
+        };
 
         $scope.toggleMode = function(label?: string, value?: number) {
             // Is this dead code?
-            ga('send', 'event', 'doodle', 'toggleMode', label, value)
-            $scope.isEditMode = !$scope.isEditMode
+            ga('send', 'event', 'doodle', 'toggleMode', label, value);
+            $scope.isEditMode = !$scope.isEditMode;
             // Ensure the preview is running when going away from editing.
             if (!$scope.isEditMode) {
-                $scope.isViewVisible = true
-                $scope.updatePreview(WAIT_NO_MORE)
+                $scope.isViewVisible = true;
+                $scope.updatePreview(WAIT_NO_MORE);
             }
             else {
                 if ($scope.isViewVisible) {
-                    $scope.updatePreview(WAIT_NO_MORE)
+                    $scope.updatePreview(WAIT_NO_MORE);
                 }
             }
-        }
+        };
 
         $scope.toggleView = function(label?: string, value?: number) {
-            ga('send', 'event', 'doodle', 'toggleView', label, value)
-            $scope.isViewVisible = !$scope.isViewVisible
-            $scope.updatePreview(WAIT_NO_MORE)
-        }
+            ga('send', 'event', 'doodle', 'toggleView', label, value);
+            $scope.isViewVisible = !$scope.isViewVisible;
+            $scope.updatePreview(WAIT_NO_MORE);
+        };
 
         $scope.toggleReadMeVisible = (label?: string, value?: number) => {
-            ga('send', 'event', 'doodle', 'toggleReadMeVisible', label, value)
-            $scope.isReadMeVisible = !$scope.isReadMeVisible
-            this.updateReadmeView(WAIT_NO_MORE)
-        }
+            ga('send', 'event', 'doodle', 'toggleReadMeVisible', label, value);
+            $scope.isReadMeVisible = !$scope.isReadMeVisible;
+            this.updateReadmeView(WAIT_NO_MORE);
+        };
 
         $scope.doUpload = (label?: string, value?: number) => {
             ga('send', 'event', 'doodle', 'upload', label, value);
@@ -356,9 +356,9 @@ export default class WorkspaceController implements WorkspaceMixin {
              * The tile of the flow that will provide context in any dialogs.
              */
             const title = "Upload";
-            const doodle = this.doodles.current()
+            const doodle = this.doodles.current();
 
-            const flow = this.flowService.createFlow<UploadFacts>(title)
+            const flow = this.flowService.createFlow<UploadFacts>(title);
 
             flow.rule("Commit Message", {},
                 (facts) => {
@@ -371,13 +371,13 @@ export default class WorkspaceController implements WorkspaceMixin {
                 },
                 (facts, session, next) => {
                     this.cloud.commitMessage(`${title}`).then((commitMessage) => {
-                        facts.commitMessage.resolve(commitMessage)
-                        next()
+                        facts.commitMessage.resolve(commitMessage);
+                        next();
                     }, (reason) => {
-                        facts.commitMessage.reject(reason)
-                        next(reason)
-                    })
-                })
+                        facts.commitMessage.reject(reason);
+                        next(reason);
+                    });
+                });
 
             flow.rule("Choose Gist or Repo", {},
                 (facts) => {
@@ -391,12 +391,12 @@ export default class WorkspaceController implements WorkspaceMixin {
                 (facts, session, next) => {
                     cloud.chooseGistOrRepo(title).then((storage) => {
                         facts.storage.resolve(storage);
-                        next()
+                        next();
                     }, (reason) => {
                         facts.storage.reject(reason);
-                        next(reason)
-                    })
-                })
+                        next(reason);
+                    });
+                });
 
             flow.rule("Create Gist", {},
                 (facts) => {
@@ -411,15 +411,15 @@ export default class WorkspaceController implements WorkspaceMixin {
                     this.cloud.createGist(doodle)
                         .then((http) => {
                             const status = http.status;
-                            facts.status.resolve(status)
-                            facts.statusText.resolve(http.statusText)
+                            facts.status.resolve(status);
+                            facts.statusText.resolve(http.statusText);
                             switch (status) {
                                 case 201: {
-                                    const data = http.data
-                                    facts.gistId.resolve(data.id)
-                                    facts.uploadedAt.resolve(data.created_at)
-                                    facts.redirect.resolve(true)
-                                    facts.uploadMessage.resolve(`Your project was successfully uploaded and associated with a new Gist.`)
+                                    const data = http.data;
+                                    facts.gistId.resolve(data.id);
+                                    facts.uploadedAt.resolve(data.created_at);
+                                    facts.redirect.resolve(true);
+                                    facts.uploadMessage.resolve(`Your project was successfully uploaded and associated with a new Gist.`);
 
                                     doodle.gistId = data.id;
                                     doodle.created_at = data.created_at;
@@ -427,26 +427,26 @@ export default class WorkspaceController implements WorkspaceMixin {
 
                                     doodles.updateStorage();
 
-                                    next()
+                                    next();
                                     break;
                                 }
                                 default: {
                                     const reason = `Unexpected HTTP status (${status})`;
                                     facts.uploadedAt.reject(reason);
-                                    next(reason)
+                                    next(reason);
                                 }
                             }
                         })
                         .catch((reason) => {
-                            facts.uploadedAt.reject(reason)
-                            next(reason)
-                        })
-                })
+                            facts.uploadedAt.reject(reason);
+                            next(reason);
+                        });
+                });
 
             flow.rule("Update Gist", {},
                 (facts) => {
                     if (this.FEATURE_GIST_ENABLED) {
-                        return facts.canUpdateGist()
+                        return facts.canUpdateGist();
                     }
                     else {
                         return false;
@@ -455,26 +455,26 @@ export default class WorkspaceController implements WorkspaceMixin {
                 (facts, session, next) => {
                     this.cloud.updateGist(doodle, doodle.gistId)
                         .then((http) => {
-                            const status = http.status
-                            const statusText = http.statusText
-                            facts.status.resolve(status)
-                            facts.statusText.resolve(statusText)
+                            const status = http.status;
+                            const statusText = http.statusText;
+                            facts.status.resolve(status);
+                            facts.statusText.resolve(statusText);
                             switch (status) {
                                 case 200: {
                                     const data = http.data;
-                                    facts.uploadedAt.resolve(data.updated_at)
-                                    facts.uploadMessage.resolve(`Your project was successfully uploaded and patched the existing Gist.`)
+                                    facts.uploadedAt.resolve(data.updated_at);
+                                    facts.uploadMessage.resolve(`Your project was successfully uploaded and patched the existing Gist.`);
                                     doodle.emptyTrash();
                                     doodle.updated_at = data.updated_at;
                                     doodles.updateStorage();
-                                    next()
+                                    next();
                                     break;
                                 }
                                 case 404: {
                                     // The Gist no longer exists on GitHub
                                     // TODO: Test this we may end up down in the catch.
-                                    doodle.gistId = void 0
-                                    facts.gistId.reset()
+                                    doodle.gistId = void 0;
+                                    facts.gistId.reset();
                                     doodles.updateStorage();
                                     next();
                                     break;
@@ -501,8 +501,8 @@ export default class WorkspaceController implements WorkspaceMixin {
                                     next(reason.statusText);
                                 }
                             }
-                        })
-                })
+                        });
+                });
 
             flow.rule("Prompt for repository name", {},
                 (facts) => {
@@ -514,17 +514,17 @@ export default class WorkspaceController implements WorkspaceMixin {
                     }
                 },
                 (facts, session, next) => {
-                    const message = "Please enter the name of the repository that you would like to upload to."
-                    const options: PromptOptions = { title, message, text: '', placeholder: 'my-repository' }
+                    const message = "Please enter the name of the repository that you would like to upload to.";
+                    const options: PromptOptions = { title, message, text: '', placeholder: 'my-repository' };
                     this.modalDialog.prompt(options)
                         .then((repo) => {
-                            facts.repo.resolve(repo)
+                            facts.repo.resolve(repo);
                             next();
                         })
                         .catch((reason) => {
-                            next(reason)
-                        })
-                })
+                            next(reason);
+                        });
+                });
 
             flow.rule("Determine whether repository exists", {},
                 (facts) => {
@@ -538,19 +538,19 @@ export default class WorkspaceController implements WorkspaceMixin {
                 (facts, session, next) => {
                     this.github.getRepo(facts.userLogin.value, facts.repo.value)
                         .then((http) => {
-                            const status = http.status
-                            facts.status.resolve(status)
-                            facts.statusText.resolve(http.statusText)
+                            const status = http.status;
+                            facts.status.resolve(status);
+                            facts.statusText.resolve(http.statusText);
                             switch (status) {
                                 case 404: {
-                                    facts.repoExists.resolve(false)
+                                    facts.repoExists.resolve(false);
                                     next();
                                     break;
                                 }
                                 case 200: {
                                     facts.repoExists.resolve(true);
-                                    const repo = http.data
-                                    facts.repoId.resolve(repo.id)
+                                    const repo = http.data;
+                                    facts.repoId.resolve(repo.id);
                                     next();
                                     break;
                                 }
@@ -563,10 +563,10 @@ export default class WorkspaceController implements WorkspaceMixin {
                         })
                         .catch((reason) => {
                             if (isNumber(reason.status)) {
-                                const status: number = reason.status
+                                const status: number = reason.status;
                                 switch (status) {
                                     case 404: {
-                                        facts.repoExists.resolve(false)
+                                        facts.repoExists.resolve(false);
                                         next();
                                         break;
                                     }
@@ -578,11 +578,11 @@ export default class WorkspaceController implements WorkspaceMixin {
                                 }
                             }
                             else {
-                                facts.repoExists.reject(reason)
+                                facts.repoExists.reject(reason);
                                 next(reason);
                             }
-                        })
-                })
+                        });
+                });
 
             flow.rule("Prompt for repository data", {},
                 (facts) => {
@@ -598,19 +598,19 @@ export default class WorkspaceController implements WorkspaceMixin {
                     defaults.auto_init = true;
                     this.cloud.repoData(title, defaults)
                         .then((repoData) => {
-                            facts.repoData.resolve(repoData)
-                            next()
+                            facts.repoData.resolve(repoData);
+                            next();
                         })
                         .catch((reason) => {
-                            facts.repoData.reject(reason)
-                            next(reason)
-                        })
-                })
+                            facts.repoData.reject(reason);
+                            next(reason);
+                        });
+                });
 
             flow.rule("Create Repo", {},
                 (facts) => {
                     if (this.FEATURE_REPO_ENABLED) {
-                        return facts.canCreateRepo()
+                        return facts.canCreateRepo();
                     }
                     else {
                         return false;
@@ -620,39 +620,39 @@ export default class WorkspaceController implements WorkspaceMixin {
                     this.cloud.createRepo(facts.repoData.value)
                         .then((http) => {
                             const status = http.status;
-                            facts.status.resolve(status)
-                            facts.statusText.resolve(http.statusText)
+                            facts.status.resolve(status);
+                            facts.statusText.resolve(http.statusText);
                             const repository = http.data;
                             facts.repoId.resolve(repository.id);
-                            facts.repo.resolve(repository.name)
-                            facts.repoExists.resolve(true)
-                            facts.owner.resolve(repository.owner.login)
-                            facts.ref.resolve('heads/master')
-                            next()
+                            facts.repo.resolve(repository.name);
+                            facts.repoExists.resolve(true);
+                            facts.owner.resolve(repository.owner.login);
+                            facts.ref.resolve('heads/master');
+                            next();
                         })
                         .catch((reason: GitHubReason) => {
-                            facts.status.resolve(reason.status)
-                            facts.statusText.resolve(reason.statusText)
+                            facts.status.resolve(reason.status);
+                            facts.statusText.resolve(reason.statusText);
                             switch (reason.status) {
                                 case 422: {
                                     // It already exists. We didn't learn anything about the repository
                                     // other than that it exists.
-                                    facts.repoExists.resolve(true)
+                                    facts.repoExists.resolve(true);
                                     // FIXME: There's some duplication here in the repo name.
-                                    facts.repo.resolve(facts.repoData.value.name)
+                                    facts.repo.resolve(facts.repoData.value.name);
                                     // Change our strategy to perform an update.
-                                    facts.method.resolve(Method.Update)
-                                    facts.owner.resolve(facts.userLogin.value)
-                                    facts.ref.resolve('heads/master')
-                                    next()
+                                    facts.method.resolve(Method.Update);
+                                    facts.owner.resolve(facts.userLogin.value);
+                                    facts.ref.resolve('heads/master');
+                                    next();
                                     break;
                                 }
                                 default: {
-                                    next(reason)
+                                    next(reason);
                                 }
                             }
-                        })
-                })
+                        });
+                });
 
             flow.rule("Upload to Repo", {},
                 (facts) => {
@@ -674,70 +674,70 @@ export default class WorkspaceController implements WorkspaceMixin {
                                 doodle.owner = owner;
                                 doodle.repo = repo;
                                 // doodle.ref = ref;
-                                facts.uploadMessage.resolve("Your project was successfully uploaded.")
+                                facts.uploadMessage.resolve("Your project was successfully uploaded.");
                             }
                             else {
-                                facts.uploadMessage.resolve("Your project didn't make it to GitHub!")
+                                facts.uploadMessage.resolve("Your project didn't make it to GitHub!");
                             }
                         }
                         else {
-                            facts.uploadMessage.reject(err)
+                            facts.uploadMessage.reject(err);
                         }
-                        next(err)
-                    })
-                })
+                        next(err);
+                    });
+                });
 
-            const facts = new UploadFacts()
+            const facts = new UploadFacts();
 
-            facts.gistId.resolve(doodle.gistId)
-            facts.repo.resolve(doodle.repo)
-            facts.owner.resolve(doodle.owner)
-            facts.userLogin.resolve($scope.userLogin())
+            facts.gistId.resolve(doodle.gistId);
+            facts.repo.resolve(doodle.repo);
+            facts.owner.resolve(doodle.owner);
+            facts.userLogin.resolve($scope.userLogin());
             if (this.FEATURE_GIST_ENABLED) {
                 if (this.FEATURE_REPO_ENABLED) {
                     if (facts.gistId.isResolved()) {
-                        facts.storage.resolve('gist')
+                        facts.storage.resolve('gist');
                     }
                     if (facts.repo.isResolved()) {
-                        facts.storage.resolve('repo')
-                        facts.ref.resolve('heads/master')
-                        facts.repoExists.resolve(true)
+                        facts.storage.resolve('repo');
+                        facts.ref.resolve('heads/master');
+                        facts.repoExists.resolve(true);
                     }
                 }
                 else {
-                    facts.storage.resolve('gist')
+                    facts.storage.resolve('gist');
                 }
             }
             else {
                 if (this.FEATURE_REPO_ENABLED) {
-                    facts.storage.resolve('repo')
-                    facts.ref.resolve('heads/master')
+                    facts.storage.resolve('repo');
+                    facts.ref.resolve('heads/master');
                 }
                 else {
                     // Do nothing.
                 }
             }
             if (facts.gistId.isUndefined() && facts.repo.isUndefined()) {
-                facts.method.resolve(Method.Create)
+                facts.method.resolve(Method.Create);
             }
             else {
-                facts.method.resolve(Method.Update)
+                facts.method.resolve(Method.Update);
             }
 
             const session = flow.createSession(facts);
             session.execute((reason: any, facts: UploadFacts) => {
                 if (reason) {
-                    this.modalDialog.alert({ title, message: `The upload was aborted because of ${JSON.stringify(reason, null, 2)}.` })
+                    this.modalDialog.alert({ title, message: `The upload was aborted because of ${JSON.stringify(reason, null, 2)}.` });
                 }
                 else {
                     if (facts.uploadMessage.isResolved()) {
-                        this.modalDialog.alert({ title, message: facts.uploadMessage.value })
+                        this.modalDialog.alert({ title, message: facts.uploadMessage.value });
                         if (facts.redirect.isResolved()) {
                             if (facts.gistId.isResolved()) {
-                                this.$state.go(this.STATE_GIST, { gistId: doodle.gistId })
+                                this.$state.go(this.STATE_GIST, { gistId: doodle.gistId });
                             }
                             else if (facts.owner.isResolved() && facts.repo.isResolved()) {
-                                this.$state.go(this.STATE_REPO, { owner: doodle.owner, repo: doodle.repo })
+                                this.$state.go(this.STATE_REPO, { owner: doodle.owner, repo: doodle.repo });
                             }
                             else {
                                 // FIXME: redirect should contain it's own instructions.
@@ -745,10 +745,10 @@ export default class WorkspaceController implements WorkspaceMixin {
                         }
                     }
                     else {
-                        this.modalDialog.alert({ title, message: `Apologies, the upload was not completed because of a system error.` })
+                        this.modalDialog.alert({ title, message: `Apologies, the upload was not completed because of a system error.` });
                     }
                 }
-            })
+            });
         };
     }
 
@@ -762,10 +762,10 @@ export default class WorkspaceController implements WorkspaceMixin {
      */
     $onInit(): void {
         // WARNING: Make sure that workspace create and release are balanced across $onInit and $onDestroy.
-        this.workspace = this.workspaceFactory.createWorkspace()
-        // this.workspace.trace = true
-        // this.workspace.setTrace(true)
-        this.workspace.setDefaultLibrary('/typings/lib.es6.d.ts')
+        this.workspace = this.workspaceFactory.createWorkspace();
+        // this.workspace.trace = true;
+        // this.workspace.setTrace(true);
+        this.workspace.setDefaultLibrary('/typings/lib.es6.d.ts');
 
 
         const doodles = this.doodles;
@@ -793,22 +793,22 @@ export default class WorkspaceController implements WorkspaceMixin {
 
         const matches = doodles.filter(function(doodle: Doodle) {
             if (isString(owner) && isString(repo)) {
-                return doodle.owner === owner && doodle.repo === repo
+                return doodle.owner === owner && doodle.repo === repo;
             }
             else if (isString(gistId)) {
-                return doodle.gistId === gistId
+                return doodle.gistId === gistId;
             }
             else {
-                return false
+                return false;
             }
-        })
+        });
         if (matches.length > 0) {
             // We certainly don't want to overwrite anything in local storage.
             // The use should be advised ant then may delete manually from local storage.
-            const match = matches[0]
-            doodles.makeCurrent(match)
+            const match = matches[0];
+            doodles.makeCurrent(match);
             // We can also assume that we are already in the correct state.
-            this.onInitDoodle(match)
+            this.onInitDoodle(match);
         }
         else {
             if (owner && repo) {
@@ -816,26 +816,26 @@ export default class WorkspaceController implements WorkspaceMixin {
                     .then((doodle) => {
                         doodles.unshift(doodle);
                         doodles.updateStorage();
-                        this.onInitDoodle(doodle)
+                        this.onInitDoodle(doodle);
                     }, (reason) => {
                         this.modalDialog.alert({
                             title: 'Error downloading Repository',
-                            message: `Error attempting to download repository '${repo}'. Cause:  ${reason}` })
+                            message: `Error attempting to download repository '${repo}'. Cause:  ${reason}` });
                     }, function(state) {
                         // The state is {doneCount: number; todoCount: number}
-                    })
+                    });
             }
             else if (gistId) {
                 this.cloud.downloadGist(gistId, (err: any, doodle: Doodle) => {
                     if (!err) {
                         doodles.unshift(doodle);
                         doodles.updateStorage();
-                        this.onInitDoodle(doodle)
+                        this.onInitDoodle(doodle);
                     }
                     else {
                         this.modalDialog.alert({
                             title: 'Error downloading Gist',
-                             message: `Error attempting to download gist '${gistId}'. Cause:  ${err}` })
+                             message: `Error attempting to download gist '${gistId}'. Cause:  ${err}` });
                     }
                 });
             }
@@ -843,26 +843,26 @@ export default class WorkspaceController implements WorkspaceMixin {
                 // We don't need to load anything, but are we in the correct state for the Doodle?
                 // We end up here, e.g., when user presses Cancel from New dialog.
                 if (this.FEATURE_GIST_ENABLED && doodle.gistId) {
-                    this.$state.go(this.STATE_GIST, { gistId: doodle.gistId })
+                    this.$state.go(this.STATE_GIST, { gistId: doodle.gistId });
                 }
                 else if (this.FEATURE_REPO_ENABLED && doodle.owner && doodle.repo) {
-                    this.$state.go(this.STATE_REPO, { owner: doodle.owner, repo: doodle.repo })
+                    this.$state.go(this.STATE_REPO, { owner: doodle.owner, repo: doodle.repo });
                 }
                 else {
-                    this.onInitDoodle(doodle)
+                    this.onInitDoodle(doodle);
                 }
             }
         }
 
         this.watches.push(this.$scope.$watch('isViewVisible', (newVal: boolean, oldVal, unused: angular.IScope) => {
-            doodles.current().isViewVisible = this.$scope.isViewVisible
-            doodles.updateStorage()
-        }))
+            doodles.current().isViewVisible = this.$scope.isViewVisible;
+            doodles.updateStorage();
+        }));
 
         this.watches.push(this.$scope.$watch('isEditMode', (newVal: boolean, oldVal, unused: angular.IScope) => {
-            doodles.current().isCodeVisible = this.$scope.isEditMode
-            doodles.updateStorage()
-        }))
+            doodles.current().isCodeVisible = this.$scope.isEditMode;
+            doodles.updateStorage();
+        }));
     }
 
     /**
@@ -884,8 +884,8 @@ export default class WorkspaceController implements WorkspaceMixin {
 
         // Cancel all of the watches.
         for (let w = 0; w < this.watches.length; w++) {
-            const watch = this.watches[w]
-            watch()
+            const watch = this.watches[w];
+            watch();
         }
 
         // This method is called BEFORE the child directives make their detachEditor calls.
@@ -893,9 +893,9 @@ export default class WorkspaceController implements WorkspaceMixin {
         // the detach callback.
         // TODO: Maybe implement something along the lines of refrence counting because the
         // workspace is shared?
-        this.workspace.terminate()
+        this.workspace.terminate();
 
-        this.$window.removeEventListener('resize', this.resizeListener)
+        this.$window.removeEventListener('resize', this.resizeListener);
     }
 
     /**
@@ -904,21 +904,21 @@ export default class WorkspaceController implements WorkspaceMixin {
     private onInitDoodle(doodle: Doodle): void {
 
         this.resizeListener = (unused: UIEvent) => {
-            this.resize()
-        }
+            this.resize();
+        };
 
         this.$window.addEventListener('resize', this.resizeListener);
 
         // Event generated by the grabbar when resize starts.
         this.$scope.$on('angular-resizable.resizeStart', (event: ng.IAngularEvent, data) => {
             // Do nothing.
-        })
+        });
 
         // Event generated by the grabbar while resize is happening.
         this.$scope.$on('angular-resizable.resizing', (event: ng.IAngularEvent, data) => {
             // Do nothing to make the sizing smoother.
             // The resize will happen at the end.
-        })
+        });
 
         // Event generated by the grabbar when resize ends.
         this.$scope.$on('angular-resizable.resizeEnd', (event: ng.IAngularEvent, data) => {
@@ -926,53 +926,53 @@ export default class WorkspaceController implements WorkspaceMixin {
             // that the editor knows where its boundaries are. If we don't do this,
             // placing the mouse cursor can cause the editor to jump because it thinks
             // the cursor is not visible.
-            this.resize()
-        })
+            this.resize();
+        });
 
-        this.resize()
+        this.resize();
 
-        this.$scope.doodleLoaded = true
+        this.$scope.doodleLoaded = true;
 
         // Bit of a smell here. Should we be updating the scope?
-        this.$scope.isEditMode = doodle.isCodeVisible
+        this.$scope.isEditMode = doodle.isCodeVisible;
         // Don't start in Playing mode in case the user has a looping program (give chance to fix the code).
-        this.$scope.isViewVisible = false
+        this.$scope.isViewVisible = false;
         // No such issue with the README.md
-        this.$scope.isReadMeVisible = true
+        this.$scope.isReadMeVisible = true;
 
         // FIXME: Some work to do in getting all the async work done right.
-        this.updateWorkspace()
+        this.updateWorkspace();
 
         // Set the module kind for transpilation consistent with the version.
-        const moduleKind = detect1x(doodle) ? MODULE_KIND_NONE : MODULE_KIND_SYSTEM
-        this.workspace.setModuleKind(moduleKind)
+        const moduleKind = detect1x(doodle) ? MODULE_KIND_NONE : MODULE_KIND_SYSTEM;
+        this.workspace.setModuleKind(moduleKind);
 
         // Set the script target for transpilation consistent with the version.
-        const scriptTarget = detect1x(doodle) ? SCRIPT_TARGET_ES5 : SCRIPT_TARGET_ES5
-        this.workspace.setScriptTarget(scriptTarget)
+        const scriptTarget = detect1x(doodle) ? SCRIPT_TARGET_ES5 : SCRIPT_TARGET_ES5;
+        this.workspace.setScriptTarget(scriptTarget);
 
         this.workspace.synchronize()
             .then(() => {
                 // FIXME: Need a callback here...
-                this.workspace.outputFiles()
-                this.$scope.workspaceLoaded = true
-                this.$scope.updatePreview(WAIT_NO_MORE)
+                this.workspace.outputFiles();
+                this.$scope.workspaceLoaded = true;
+                this.$scope.updatePreview(WAIT_NO_MORE);
             })
             .catch((reason: any) => {
-                console.warn(`Unable to synchronize the workspace because ${reason}.`)
-            })
+                console.warn(`Unable to synchronize the workspace because ${reason}.`);
+            });
     }
 
     /**
      * Doe what needs to be done when the window is resized.
      */
     private resize(): void {
-        const fileNames = Object.keys(this.editors)
-        const iLen = fileNames.length
+        const fileNames = Object.keys(this.editors);
+        const iLen = fileNames.length;
         for (let i = 0; i < iLen; i++) {
-            const fileName = fileNames[i]
-            const editor = this.editors[fileName]
-            editor.resize(true)
+            const fileName = fileNames[i];
+            const editor = this.editors[fileName];
+            editor.resize(true);
         }
     }
 
@@ -986,35 +986,35 @@ export default class WorkspaceController implements WorkspaceMixin {
     attachEditor(filename: string, mode: string, editor: Editor): void {
         switch (mode) {
             case LANGUAGE_TYPE_SCRIPT: {
-                this.workspace.attachEditor(filename, editor)
+                this.workspace.attachEditor(filename, editor);
                 editor.getSession().on('outputFiles', this.createOutputFilesEventHandler(filename));
                 break;
             }
             case LANGUAGE_JAVA_SCRIPT: {
                 // TODO: We probably don't get anything for JavaScript.
-                this.workspace.attachEditor(filename, editor)
-                editor.getSession().on('outputFiles', this.createOutputFilesEventHandler(filename))
-                break
+                this.workspace.attachEditor(filename, editor);
+                editor.getSession().on('outputFiles', this.createOutputFilesEventHandler(filename));
+                break;
             }
             case LANGUAGE_CSS:
             case LANGUAGE_JSON:
             case LANGUAGE_HTML:
             case LANGUAGE_LESS:
             case LANGUAGE_TEXT: {
-                editor.getSession().on('change', this.createChangeHandler(filename))
-                break
+                editor.getSession().on('change', this.createChangeHandler(filename));
+                break;
             }
             case LANGUAGE_MARKDOWN: {
-                this.addReadmeChangeHandler(filename, editor)
-                break
+                this.addReadmeChangeHandler(filename, editor);
+                break;
             }
             default: {
-                console.warn(`attachEditor(mode => ${mode}) is being ignored.`)
+                console.warn(`attachEditor(mode => ${mode}) is being ignored.`);
             }
         }
-        this.editors[filename] = editor
+        this.editors[filename] = editor;
         // The editors are attached after $onInit and so we miss the initial resize.
-        editor.resize(true)
+        editor.resize(true);
     }
 
     /**
@@ -1028,81 +1028,81 @@ export default class WorkspaceController implements WorkspaceMixin {
     private createOutputFilesEventHandler(filename: string): OutputFileHandler {
         const handler = (event: { data: OutputFile[] }, session: EditSession) => {
             // It's OK to capture the current Doodle here, but not outside the handler!
-            const doodle = this.doodles.current()
-            const outputFiles = event.data
+            const doodle = this.doodles.current();
+            const outputFiles = event.data;
             outputFiles.forEach((outputFile: OutputFile) => {
                 if (typeof doodle.lastKnownJs !== 'object') {
-                    doodle.lastKnownJs = {}
+                    doodle.lastKnownJs = {};
                 }
                 // TODO: The output files could be both JavaScript and d.ts
                 // We should be sure to only select the JavaScript file. 
                 if (doodle.lastKnownJs[filename] !== outputFile.text) {
                     // if (this.cascade) {
-                    doodle.lastKnownJs[filename] = outputFile.text
-                    this.doodles.updateStorage()
-                    this.$scope.updatePreview(WAIT_FOR_MORE_CODE_KEYSTROKES)
+                    doodle.lastKnownJs[filename] = outputFile.text;
+                    this.doodles.updateStorage();
+                    this.$scope.updatePreview(WAIT_FOR_MORE_CODE_KEYSTROKES);
                     // }
                 }
-            })
-        }
-        this.outputFilesEventHandlers[filename] = handler
-        return handler
+            });
+        };
+        this.outputFilesEventHandlers[filename] = handler;
+        return handler;
     }
 
     private deleteOutputFileHandler(filename) {
-        delete this.outputFilesEventHandlers[filename]
+        delete this.outputFilesEventHandlers[filename];
     }
 
     private createChangeHandler(filename: string): ChangeHandler {
         const handler = (delta: Delta, session: EditSession) => {
             if (this.doodles.current()) {
-                this.doodles.updateStorage()
-                this.$scope.updatePreview(WAIT_FOR_MORE_OTHER_KEYSTROKES)
+                this.doodles.updateStorage();
+                this.$scope.updatePreview(WAIT_FOR_MORE_OTHER_KEYSTROKES);
             }
-        }
-        this.changeHandlers[filename] = handler
-        return handler
+        };
+        this.changeHandlers[filename] = handler;
+        return handler;
     }
 
     private createReadmeChangeHandler(filename: string): ChangeHandler {
         const handler = (delta: Delta, session: EditSession) => {
             if (this.doodles.current()) {
-                this.doodles.updateStorage()
-                this.updateReadmeView(WAIT_FOR_MORE_README_KEYSTROKES)
+                this.doodles.updateStorage();
+                this.updateReadmeView(WAIT_FOR_MORE_README_KEYSTROKES);
             }
-        }
-        this.readmeChangeHandlers[filename] = handler
-        return handler
+        };
+        this.readmeChangeHandlers[filename] = handler;
+        return handler;
     }
 
     private updateReadmeView(delay: number) {
         // Throttle the requests to update the README view.
         if (this.readmePromise) { this.$timeout.cancel(this.readmePromise); }
-        this.readmePromise = this.$timeout(() => { this.rebuildReadmeView(); this.readmePromise = undefined; }, delay)
+        this.readmePromise = this.$timeout(() => { this.rebuildReadmeView(); this.readmePromise = undefined; }, delay);
     }
 
     private deleteChangeHandler(filename: string): void {
-        delete this.changeHandlers[filename]
+        delete this.changeHandlers[filename];
     }
 
     private addReadmeChangeHandler(filename: string, editor: Editor): void {
         if (this.readmeChangeHandlers[filename]) {
-            console.warn(`NOT Expecting to find a README change handler for file ${filename}.`)
-            return
+            console.warn(`NOT Expecting to find a README change handler for file ${filename}.`);
+            return;
         }
-        const handler = this.createReadmeChangeHandler(filename)
-        editor.getSession().on('change', handler)
-        this.readmeChangeHandlers[filename] = handler
+        const handler = this.createReadmeChangeHandler(filename);
+        editor.getSession().on('change', handler);
+        this.readmeChangeHandlers[filename] = handler;
     }
 
     private removeReadmeChangeHandler(filename: string, editor: Editor): void {
-        const handler = this.readmeChangeHandlers[filename]
+        const handler = this.readmeChangeHandlers[filename];
         if (handler) {
-            editor.getSession().off('change', handler)
-            delete this.readmeChangeHandlers[filename]
+            editor.getSession().off('change', handler);
+            delete this.readmeChangeHandlers[filename];
         }
         else {
-            console.warn(`Expecting to find a README change handler for file ${filename}.`)
+            console.warn(`Expecting to find a README change handler for file ${filename}.`);
         }
     }
 
@@ -1116,38 +1116,38 @@ export default class WorkspaceController implements WorkspaceMixin {
     detachEditor(filename: string, mode: string, editor: Editor): void {
         switch (mode) {
             case LANGUAGE_TYPE_SCRIPT: {
-                const handler = this.outputFilesEventHandlers[filename]
-                editor.getSession().off('outputFiles', handler)
-                this.deleteOutputFileHandler(filename)
-                this.workspace.detachEditor(filename, editor)
-                break
+                const handler = this.outputFilesEventHandlers[filename];
+                editor.getSession().off('outputFiles', handler);
+                this.deleteOutputFileHandler(filename);
+                this.workspace.detachEditor(filename, editor);
+                break;
             }
             case LANGUAGE_JAVA_SCRIPT: {
-                const handler = this.outputFilesEventHandlers[filename]
-                editor.getSession().off('outputFiles', handler)
-                this.deleteOutputFileHandler(filename)
-                this.workspace.detachEditor(filename, editor)
-                break
+                const handler = this.outputFilesEventHandlers[filename];
+                editor.getSession().off('outputFiles', handler);
+                this.deleteOutputFileHandler(filename);
+                this.workspace.detachEditor(filename, editor);
+                break;
             }
             case LANGUAGE_CSS:
             case LANGUAGE_HTML:
             case LANGUAGE_JSON:
             case LANGUAGE_LESS:
             case LANGUAGE_TEXT: {
-                const handler = this.changeHandlers[filename]
-                editor.getSession().off('change', handler)
-                this.deleteChangeHandler(filename)
-                break
+                const handler = this.changeHandlers[filename];
+                editor.getSession().off('change', handler);
+                this.deleteChangeHandler(filename);
+                break;
             }
             case LANGUAGE_MARKDOWN: {
-                this.removeReadmeChangeHandler(filename, editor)
-                break
+                this.removeReadmeChangeHandler(filename, editor);
+                break;
             }
             default: {
-                console.warn(`detachEditor(mode => ${mode}) is being ignored.`)
+                console.warn(`detachEditor(mode => ${mode}) is being ignored.`);
             }
         }
-        delete this.editors[filename]
+        delete this.editors[filename];
     }
 
     /**
@@ -1189,7 +1189,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         const addOpts: IOption[] = namesToOptions(adds, this.options);
 
         // TODO: Optimize so that we don't keep loading `lib`.
-        let addUnits: { name: string; fileName: string }[] = addOpts.map(function(option) { return { name: option.name, fileName: option.dts }; })
+        let addUnits: { name: string; fileName: string }[] = addOpts.map(function(option) { return { name: option.name, fileName: option.dts }; });
 
         // Ensure that the TypeScript ambient type definitions are present.
         if (this.olds.indexOf('lib') < 0) {
@@ -1206,15 +1206,15 @@ export default class WorkspaceController implements WorkspaceMixin {
         const DOMAIN = this.$location.protocol() + ':' + FWD_SLASH + FWD_SLASH + this.$location.host() + ":" + this.$location.port();
 
         const readFile = (fileName: string, callback: (err, data?) => void) => {
-            const url = scriptURL(DOMAIN, fileName, this.VENDOR_FOLDER_MARKER)
+            const url = scriptURL(DOMAIN, fileName, this.VENDOR_FOLDER_MARKER);
             this.$http.get(url)
                 .success(function(data, status: number, headers, config) {
-                    callback(null, data)
+                    callback(null, data);
                 })
                 .error(function(data, status: number, headers, config) {
                     callback(new Error("Unable to wrangle #{fileName}."));
-                })
-        }
+                });
+        };
 
         rmvUnits.forEach((rmvUnit) => {
             this.workspace.removeScript(rmvUnit.fileName);
@@ -1243,15 +1243,15 @@ export default class WorkspaceController implements WorkspaceMixin {
         try {
             // Kill any existing frames.
             this.$scope.previewIFrame = undefined;
-            const elementId = 'output'
-            const preview = this.$window.document.getElementById(elementId)
+            const elementId = 'output';
+            const preview = this.$window.document.getElementById(elementId);
             if (preview) {
                 while (preview.children.length > 0) {
                     preview.removeChild(preview.firstChild);
                 }
-                const doodle: Doodle = this.doodles.current()
+                const doodle: Doodle = this.doodles.current();
                 if (doodle) {
-                    const bestFile: string = doodle.getPreviewFileOrBestAvailable()
+                    const bestFile: string = doodle.getPreviewFileOrBestAvailable();
                     if (bestFile && this.$scope.isViewVisible) {
 
                         this.$scope.previewIFrame = document.createElement('iframe');
@@ -1265,7 +1265,7 @@ export default class WorkspaceController implements WorkspaceMixin {
 
                         const content: Document = this.$scope.previewIFrame.contentDocument || this.$scope.previewIFrame.contentWindow.document;
 
-                        let html: string = fileContent(bestFile, doodle)
+                        let html: string = fileContent(bestFile, doodle);
                         if (isString(html)) {
 
                             const selOpts: IOption[] = this.options.filter((option: IOption, index: number, array: IOption[]) => {
@@ -1274,13 +1274,13 @@ export default class WorkspaceController implements WorkspaceMixin {
 
                             const closureOpts: IOption[] = closure(selOpts, this.options);
 
-                            const chosenCssFileNames: string[] = closureOpts.map(function(option: IOption) { return option.css; }).reduce(function(previousValue, currentValue) { return previousValue.concat(currentValue) }, []);
+                            const chosenCssFileNames: string[] = closureOpts.map(function(option: IOption) { return option.css; }).reduce(function(previousValue, currentValue) { return previousValue.concat(currentValue); }, []);
                             const stylesTags = chosenCssFileNames.map((fileName: string) => {
                                 return "<link rel='stylesheet' href='" + scriptURL(DOMAIN, fileName, this.VENDOR_FOLDER_MARKER) + "'></link>\n";
                             });
                             html = html.replace(this.STYLES_MARKER, stylesTags.join(""));
 
-                            const chosenJsFileNames: string[] = closureOpts.map(function(option: IOption) { return option.minJs; }).reduce(function(previousValue, currentValue) { return previousValue.concat(currentValue) }, []);
+                            const chosenJsFileNames: string[] = closureOpts.map(function(option: IOption) { return option.minJs; }).reduce(function(previousValue, currentValue) { return previousValue.concat(currentValue); }, []);
                             // TODO: We will later want to make operator overloading configurable for speed.
 
                             const scriptFileNames: string[] = this.doodles.current().operatorOverloading ? chosenJsFileNames.concat(this.FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS) : chosenJsFileNames;
@@ -1302,7 +1302,7 @@ export default class WorkspaceController implements WorkspaceMixin {
 
                             if (detect1x(doodle)) {
                                 // This code is for backwards compatibility only, now that we support ES6 modules.
-                                console.warn("Support for programs not using ES6 modules is deprecated. Please convert your program to use ES6 module loading.")
+                                console.warn("Support for programs not using ES6 modules is deprecated. Please convert your program to use ES6 module loading.");
                                 html = html.replace(this.LIBS_MARKER, currentJavaScript(this.FILENAME_LIBS, doodle));
                                 html = html.replace(this.CODE_MARKER, currentJavaScript(this.FILENAME_CODE, doodle));
                                 // For backwards compatibility (less than 1.x) ...
@@ -1310,26 +1310,26 @@ export default class WorkspaceController implements WorkspaceMixin {
                                 html = html.replace('<!-- CODE-MARKER -->', currentJavaScript(this.FILENAME_CODE, this.doodles.current()));
                             }
                             else {
-                                const modulesJs: string[] = []
-                                const names: string[] = Object.keys(doodle.lastKnownJs)
-                                const iLen: number = names.length
+                                const modulesJs: string[] = [];
+                                const names: string[] = Object.keys(doodle.lastKnownJs);
+                                const iLen: number = names.length;
                                 for (let i = 0; i < iLen; i++) {
-                                    const name = names[i]
-                                    const moduleJs = doodle.lastKnownJs[name]
-                                    const moduleMs = doodle.operatorOverloading ? mathscript.transpile(moduleJs) : moduleJs
-                                    modulesJs.push(moduleMs)
+                                    const name = names[i];
+                                    const moduleJs = doodle.lastKnownJs[name];
+                                    const moduleMs = doodle.operatorOverloading ? mathscript.transpile(moduleJs) : moduleJs;
+                                    modulesJs.push(moduleMs);
                                 }
                                 html = html.replace(this.CODE_MARKER, modulesJs.join('\n'));
                             }
 
-                            content.open()
-                            content.write(html)
-                            content.close()
+                            content.open();
+                            content.write(html);
+                            content.close();
 
-                            bubbleIframeMouseMove(this.$scope.previewIFrame)
+                            bubbleIframeMouseMove(this.$scope.previewIFrame);
                         }
                         else {
-                            console.warn(`bestFile => ${bestFile}`)
+                            console.warn(`bestFile => ${bestFile}`);
                         }
                     }
                 }
@@ -1348,41 +1348,41 @@ export default class WorkspaceController implements WorkspaceMixin {
      */
     rebuildReadmeView() {
         try {
-            const elementId = 'readme'
+            const elementId = 'readme';
             // Kill any existing frames.
-            const hostElement: HTMLElement = this.$window.document.getElementById(elementId)
+            const hostElement: HTMLElement = this.$window.document.getElementById(elementId);
             if (hostElement) {
                 while (hostElement.children.length > 0) {
-                    hostElement.removeChild(hostElement.firstChild)
+                    hostElement.removeChild(hostElement.firstChild);
                 }
-                const doodle: Doodle = this.doodles.current()
+                const doodle: Doodle = this.doodles.current();
                 if (doodle && this.$scope.isReadMeVisible) {
-                    const iframe: HTMLIFrameElement = document.createElement('iframe')
-                    iframe.style.width = '100%'
-                    iframe.style.height = '100%'
-                    iframe.style.border = '0'
-                    iframe.style.backgroundColor = '#ffffff'
+                    const iframe: HTMLIFrameElement = document.createElement('iframe');
+                    iframe.style.width = '100%';
+                    iframe.style.height = '100%';
+                    iframe.style.border = '0';
+                    iframe.style.backgroundColor = '#ffffff';
 
-                    hostElement.appendChild(iframe)
+                    hostElement.appendChild(iframe);
 
-                    let html = readMeHTML({})
+                    let html = readMeHTML({});
 
-                    const content = iframe.contentDocument || iframe.contentWindow.document
+                    const content = iframe.contentDocument || iframe.contentWindow.document;
                     if (fileExists(this.FILENAME_README, doodle)) {
-                        const markdown: string = fileContent(this.FILENAME_README, doodle)
-                        const converter: sd.Converter = new sd.Converter()
-                        const markdownHTML = converter.makeHtml(markdown)
-                        html = html.replace('// README.md', markdownHTML)
+                        const markdown: string = fileContent(this.FILENAME_README, doodle);
+                        const converter: sd.Converter = new sd.Converter();
+                        const markdownHTML = converter.makeHtml(markdown);
+                        html = html.replace('// README.md', markdownHTML);
                     }
                     if (fileExists('README.css', doodle)) {
-                        html = html.replace(`${FSLASH_STAR} README.css ${STAR_FSLASH}`, fileContent('README.css', doodle))
+                        html = html.replace(`${FSLASH_STAR} README.css ${STAR_FSLASH}`, fileContent('README.css', doodle));
                     }
 
-                    content.open()
-                    content.write(html)
-                    content.close()
+                    content.open();
+                    content.write(html);
+                    content.close();
 
-                    bubbleIframeMouseMove(iframe)
+                    bubbleIframeMouseMove(iframe);
                 }
             }
             else {
@@ -1391,7 +1391,7 @@ export default class WorkspaceController implements WorkspaceMixin {
             }
         }
         catch (e) {
-            console.warn(e)
+            console.warn(e);
         }
     }
 }

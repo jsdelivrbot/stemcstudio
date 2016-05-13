@@ -8,7 +8,7 @@ interface TreeKey {
         size: number;
         sha: string;
         url: string;
-    }[]
+    }[];
 }
 
 export default TreeKey;

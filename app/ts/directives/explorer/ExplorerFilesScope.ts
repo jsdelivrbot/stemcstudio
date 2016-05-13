@@ -8,7 +8,7 @@ import IDoodleFile from '../../services/doodles/IDoodleFile';
  * context-menu = 'menu(name, file)'
  */
 interface ExplorerFilesScope extends ng.IScope {
-    menu: (name: string, file: IDoodleFile) => ContextMenuItem[]
+    menu: (name: string, file: IDoodleFile) => ContextMenuItem[];
 }
 
 export default ExplorerFilesScope;

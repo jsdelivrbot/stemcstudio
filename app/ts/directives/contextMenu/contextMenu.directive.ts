@@ -21,15 +21,15 @@ function factory($q: ng.IQService) {
     /**
      * Our mutable state includes the currently displayed context menu.
      */
-    let currentContextMenu: ng.IAugmentedJQuery = void 0
+    let currentContextMenu: ng.IAugmentedJQuery = void 0;
 
     /**
      * 
      */
     function removeContextMenus() {
         if (currentContextMenu) {
-            currentContextMenu.remove()
-            currentContextMenu = void 0
+            currentContextMenu.remove();
+            currentContextMenu = void 0;
         }
     }
 
@@ -39,19 +39,19 @@ function factory($q: ng.IQService) {
     function handlePromises(ul: ng.IAugmentedJQuery, event: JQueryEventObject, promises: ng.IPromise<any>[]) {
         $q.all(promises).then(function() {
 
-            let topCoordinate = event.pageY
-            const menuHeight: number = ng.element(ul[0]).prop('offsetHeight')
+            let topCoordinate = event.pageY;
+            const menuHeight: number = ng.element(ul[0]).prop('offsetHeight');
             // TODO: What is view?
-            const winHeight: number = event['view'].innerHeight
+            const winHeight: number = event['view'].innerHeight;
             if (topCoordinate > menuHeight && winHeight - topCoordinate < menuHeight) {
-                topCoordinate = event.pageY - menuHeight
+                topCoordinate = event.pageY - menuHeight;
             }
 
-            let leftCoordinate = event.pageX
-            const menuWidth = angular.element(ul[0]).prop('offsetWidth')
-            const winWidth = event['view'].innerWidth
+            let leftCoordinate = event.pageX;
+            const menuWidth = angular.element(ul[0]).prop('offsetWidth');
+            const winWidth = event['view'].innerWidth;
             if (leftCoordinate > menuWidth && winWidth - leftCoordinate < menuWidth) {
-                leftCoordinate = event.pageX - menuWidth
+                leftCoordinate = event.pageX - menuWidth;
             }
 
             ul.css({
@@ -59,32 +59,32 @@ function factory($q: ng.IQService) {
                 position: 'absolute',
                 left: leftCoordinate + 'px',
                 top: topCoordinate + 'px'
-            })
-        })
+            });
+        });
     }
 
     function registerEventHandler($scope: ng.IScope, enabled: boolean, menuItem: ContextMenuItem, li: ng.IAugmentedJQuery, contextMenuEvent: JQueryEventObject) {
         if (enabled) {
             li.on('click', function(clickEvent: JQueryMouseEventObject) {
                 // WARNING: href='#' will drive us back to the home page if we don't prevent the default action for click.
-                clickEvent.preventDefault()
+                clickEvent.preventDefault();
                 $scope.$apply(function() {
-                    ng.element(contextMenuEvent.currentTarget).removeClass('context')
-                    removeContextMenus()
+                    ng.element(contextMenuEvent.currentTarget).removeClass('context');
+                    removeContextMenus();
                     if (ng.isFunction(menuItem.action)) {
-                        menuItem.action()
+                        menuItem.action();
                     }
                     else {
-                        console.warn(`ContextMenuItem[label=${menuItem.label}].action must be a function.`)
+                        console.warn(`ContextMenuItem[label=${menuItem.label}].action must be a function.`);
                     }
-                })
-            })
+                });
+            });
         }
         else {
             li.on('click', function(clickEvent: JQueryMouseEventObject) {
-                clickEvent.preventDefault()
-            })
-            li.addClass('disabled')
+                clickEvent.preventDefault();
+            });
+            li.addClass('disabled');
         }
     }
 
@@ -92,15 +92,15 @@ function factory($q: ng.IQService) {
      *
      */
     function processLabel(menuItem: ContextMenuItem, promises: ng.IPromise<string>[]): ng.IAugmentedJQuery {
-        const anchor = ng.element('<a>')
-        anchor.css('padding-right', '8px')
+        const anchor = ng.element('<a>');
+        anchor.css('padding-right', '8px');
         // href='#' makes the mouse cursor correct but we must prevent the default action when we register the event handler. 
-        anchor.attr({ tabIndex: '-1', href: '#' })
+        anchor.attr({ tabIndex: '-1', href: '#' });
 
-        const promise: ng.IPromise<string> = $q.when(menuItem.label)
+        const promise: ng.IPromise<string> = $q.when(menuItem.label);
         promise.then(function(text: string) {
-            anchor.text(text)
-        })
+            anchor.text(text);
+        });
         return anchor;
     }
 
@@ -108,10 +108,10 @@ function factory($q: ng.IQService) {
      *
      */
     function renderContextMenuItem($scope: ng.IScope, contextMenuEvent: JQueryEventObject, li: ng.IAugmentedJQuery, menuItem: ContextMenuItem, promises: ng.IPromise<string>[]): void {
-        const label: ng.IAugmentedJQuery = processLabel(menuItem, promises)
-        li.append(label)
+        const label: ng.IAugmentedJQuery = processLabel(menuItem, promises);
+        li.append(label);
 
-        registerEventHandler($scope, true, menuItem, li, contextMenuEvent)
+        registerEventHandler($scope, true, menuItem, li, contextMenuEvent);
     }
 
     /**
@@ -136,40 +136,40 @@ function factory($q: ng.IQService) {
         /**
          * TODO: Documentation
          */
-        const promises: ng.IPromise<string>[] = []
+        const promises: ng.IPromise<string>[] = [];
 
-        ng.element(event.currentTarget).addClass('context')
-        const contextMenu: ng.IAugmentedJQuery = ng.element('<div>')
+        ng.element(event.currentTarget).addClass('context');
+        const contextMenu: ng.IAugmentedJQuery = ng.element('<div>');
         currentContextMenu = contextMenu;
-        contextMenu.addClass('dropdown clearfix')
-        const ul: ng.IAugmentedJQuery = ng.element('<ul>')
-        ul.addClass('dropdown-menu')
-        ul.attr({ role: 'menu' })
+        contextMenu.addClass('dropdown clearfix');
+        const ul: ng.IAugmentedJQuery = ng.element('<ul>');
+        ul.addClass('dropdown-menu');
+        ul.attr({ role: 'menu' });
         ul.css({
             'display': 'block',
             'position': 'absolute',
             'left': contextMenuEvent.pageX + 'px',
             'top': contextMenuEvent.pageY + 'px',
             'z-index': 1000
-        })
+        });
 
         angular.forEach(menu, function(menuItem: ContextMenuItem) {
-            const li: ng.IAugmentedJQuery = ng.element('<li>')
-            ul.append(li)
+            const li: ng.IAugmentedJQuery = ng.element('<li>');
+            ul.append(li);
             if (menuItem === null) {
-                li.addClass('divider')
+                li.addClass('divider');
             }
             else {
-                renderContextMenuItem($scope, contextMenuEvent, li, menuItem, promises)
+                renderContextMenuItem($scope, contextMenuEvent, li, menuItem, promises);
             }
-        })
+        });
 
-        contextMenu.append(ul)
+        contextMenu.append(ul);
         const height = Math.max(
             document.body.scrollHeight, document.documentElement.scrollHeight,
             document.body.offsetHeight, document.documentElement.offsetHeight,
             document.body.clientHeight, document.documentElement.clientHeight
-        )
+        );
         contextMenu.css({
             width: '100%',
             height: height + 'px',
@@ -177,20 +177,20 @@ function factory($q: ng.IQService) {
             top: 0,
             left: 0,
             zIndex: 9999
-        })
-        ng.element(document).find('body').append(contextMenu)
+        });
+        ng.element(document).find('body').append(contextMenu);
 
         // Now that the menu has been built, we make some adjustments to the dimensions.
-        handlePromises(ul, contextMenuEvent, promises)
+        handlePromises(ul, contextMenuEvent, promises);
 
         contextMenu.on('mousedown', function(event: JQueryEventObject) {
             // The following code dismisses the context menu if a mousedown event
             // occurs outside of the menu items.
             if (ng.element(event.target).hasClass('dropdown')) {
-                ng.element(event.currentTarget).removeClass('context')
-                removeContextMenus()
+                ng.element(event.currentTarget).removeClass('context');
+                removeContextMenus();
             }
-        })
+        });
     }
 
     /**
@@ -214,28 +214,28 @@ function factory($q: ng.IQService) {
              */
             post: function($scope: ng.IScope, iElem: ng.IAugmentedJQuery, iAttrs: ContextMenuAttributes, controller: {}, transclude: ng.ITranscludeFunction) {
                 function contextMenuEventHandler(contextMenuEvent: JQueryEventObject) {
-                    event.stopPropagation()
+                    event.stopPropagation();
                     $scope.$apply(function() {
                         // Prevent the default context menu from popping up.
-                        event.preventDefault()
-                        const menu: ContextMenuItem[] = $scope.$eval(iAttrs.contextMenu)
+                        event.preventDefault();
+                        const menu: ContextMenuItem[] = $scope.$eval(iAttrs.contextMenu);
                         if (menu instanceof Array) {
-                            renderContextMenu($scope, contextMenuEvent, menu)
+                            renderContextMenu($scope, contextMenuEvent, menu);
                         }
                         else {
-                            const msg = "context-menu expression must evaluate to an array."
-                            console.warn(msg)
+                            const msg = "context-menu expression must evaluate to an array.";
+                            console.warn(msg);
                         }
-                    })
+                    });
                 }
                 function onDestroyScope() {
-                    iElem.off('contextmenu', contextMenuEventHandler)
-                    removeContextMenus()
+                    iElem.off('contextmenu', contextMenuEventHandler);
+                    removeContextMenus();
                 }
-                iElem.on('contextmenu', contextMenuEventHandler)
-                $scope.$on("$destroy", onDestroyScope)
+                iElem.on('contextmenu', contextMenuEventHandler);
+                $scope.$on("$destroy", onDestroyScope);
             }
-        }
+        };
     }
 
     /**
@@ -245,13 +245,13 @@ function factory($q: ng.IQService) {
         require: [],
         restrict: 'A',
         compile
-    }
-    return directive
+    };
+    return directive;
 }
 
 /**
  * Dependencies that will be injected into the factory function.
  */
-factory.$inject = ['$q']
+factory.$inject = ['$q'];
 
-export default factory
+export default factory;

@@ -26,7 +26,7 @@ interface PathContents {
         self: string;
         git: string;
         html: string;
-    }
+    };
 }
 
 export default PathContents;

@@ -9,6 +9,6 @@ export default class ReteFlowService implements FlowService {
         // TODO
     }
     createFlow<T>(name: string): FlowContainer<T> {
-        return new FlowContainer<T>(this.flowSessionService)
+        return new FlowContainer<T>(this.flowSessionService);
     }
 }

@@ -10,12 +10,12 @@ export default class EventBus<T> implements EventEmitter<T> {
         // TODO
     }
     on(eventName: string, cb: () => any): void {
-        throw new Error(`EventBus.on(${eventName})`)
+        throw new Error(`EventBus.on(${eventName})`);
     }
     removeListener(eventName: string, cb: () => any): void {
-        throw new Error(`EventBus.removeListener(${eventName})`)
+        throw new Error(`EventBus.removeListener(${eventName})`);
     }
     emit(eventName: string, data, source: T): void {
-        throw new Error(`EventBus.emit(${eventName})`)
+        throw new Error(`EventBus.emit(${eventName})`);
     }
 }

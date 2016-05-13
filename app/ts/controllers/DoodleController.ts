@@ -22,7 +22,7 @@ export default class DoodleController extends AbstractPageController {
         'ga',
         'modalDialog',
         'doodles',
-        'UNIVERSAL_ANALYTICS_TRACKING_ID']
+        'UNIVERSAL_ANALYTICS_TRACKING_ID'];
     constructor(
         $scope: DoodleScope,
         $state: angular.ui.IStateService,
@@ -34,13 +34,13 @@ export default class DoodleController extends AbstractPageController {
         doodles: IDoodleManager,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string) {
 
-        super($scope, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'hidden')
+        super($scope, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'hidden');
 
         // ExplorerMixin implementation.
-        $scope.isExplorerVisible = true
+        $scope.isExplorerVisible = true;
         $scope.toggleExplorer = function() {
-            $scope.isExplorerVisible = !$scope.isExplorerVisible
-        }
+            $scope.isExplorerVisible = !$scope.isExplorerVisible;
+        };
 
         $scope.templates = templates;
 

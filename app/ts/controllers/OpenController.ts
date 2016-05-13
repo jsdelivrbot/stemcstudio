@@ -18,11 +18,11 @@ app.controller('open-controller', [
         $scope.doOpen = function(doodle: Doodle) {
             doodles.makeCurrent(doodle);
             $state.go(STATE_DOODLE);
-        }
+        };
 
         $scope.doDelete = function(doodle: Doodle) {
             doodles.deleteDoodle(doodle);
-        }
+        };
 
         $scope.doClose = function() {
             $state.go(STATE_DOODLE);

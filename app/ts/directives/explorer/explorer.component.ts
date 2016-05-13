@@ -1,7 +1,7 @@
 import * as ng from 'angular';
-import controller from './ExplorerController'
-import ExplorerScope from './ExplorerScope'
-import IExplorerModel from './IExplorerModel'
+import controller from './ExplorerController';
+import ExplorerScope from './ExplorerScope';
+import IExplorerModel from './IExplorerModel';
 
 /**
  * interface for the DOM attributes.
@@ -82,46 +82,46 @@ const ddo: ng.IDirective = {
              * The preLink step always takes place from top to bottom in the DOM hierarchy.
              */
             pre: function(scope: ng.IScope, iElem: ng.IAugmentedJQuery, iAttrs: ExplorerAttributes, controller: {}, transclude: ng.ITranscludeFunction) {
-                const ngModel: ng.INgModelController = controller[0]
+                const ngModel: ng.INgModelController = controller[0];
                 ngModel.$formatters.push(function(modelValue: IExplorerModel) {
                     if (modelValue) {
-                        const viewValue: IViewValue = []
-                        const names = Object.keys(modelValue)
-                        const iLen = names.length
+                        const viewValue: IViewValue = [];
+                        const names = Object.keys(modelValue);
+                        const iLen = names.length;
                         for (let i = 0; i < iLen; i++) {
-                            const name = names[i]
-                            const file = modelValue[name]
-                            viewValue.push({ name, isOpen: file.isOpen, selected: file.selected })
+                            const name = names[i];
+                            const file = modelValue[name];
+                            viewValue.push({ name, isOpen: file.isOpen, selected: file.selected });
                         }
                         // It's a transformation, so we return a viewValue.
-                        return viewValue
+                        return viewValue;
                     }
                     else {
-                        return []
+                        return [];
                     }
-                })
+                });
                 ngModel.$parsers.push(function(viewValue: IViewValue) {
-                    ngModel.$setValidity('yadda', true)  // We passed the yadda test.
-                    return viewValue
-                })
+                    ngModel.$setValidity('yadda', true); // We passed the yadda test.
+                    return viewValue;
+                });
                 // In Angular 1.3+ we have the $validators pipeline.
                 // We don't need to set validation states because we have an object, not an array.
                 ngModel.$validators['foo'] = function(modelValue: IExplorerModel, viewValue: IViewValue): boolean {
-                    return true
-                }
+                    return true;
+                };
             },
             /**
              * The postLink step always takes place from bottom to top in the DOM hierarchy.
              */
             post: function($scope: ExplorerScope, iElem: ng.IAugmentedJQuery, iAttrs: ExplorerAttributes, controller: {}, transclude: ng.ITranscludeFunction) {
-                const ngModel: ng.INgModelController = controller[0]
+                const ngModel: ng.INgModelController = controller[0];
 
                 // $render is the notification that the model has changed and so the view needs to be rendered.
                 // Furthermore, we are being asked to use $viewValue, which has been passed through our formatters.
                 // Recall the formatters return a $viewValue which is a denormalized $modelValue for easy presentation logic (HTML).
                 ngModel.$render = function() {
                     $scope.files = <IViewValue>ngModel.$viewValue;
-                }
+                };
 
                 // When the transclude property is true, we get access to the fifth parameter of the link function.
                 if (transclude) {
@@ -131,8 +131,8 @@ const ddo: ng.IDirective = {
                     });
                 }
             }
-        }
+        };
     }
-}
+};
 
-export default function() { return ddo }
+export default function() { return ddo; };

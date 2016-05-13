@@ -1,5 +1,5 @@
 interface GoogleSignInScope {
-    options: () => any
+    options: () => any;
 }
 
 export default GoogleSignInScope;

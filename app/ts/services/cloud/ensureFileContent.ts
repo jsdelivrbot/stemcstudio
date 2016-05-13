@@ -8,7 +8,7 @@ import {LANGUAGE_MARKDOWN} from '../../languages/modes';
 import {LANGUAGE_TYPE_SCRIPT} from '../../languages/modes';
 
 export default function ensureFileContent(name: string, content: string): string {
-    const mode = modeFromName(name)
+    const mode = modeFromName(name);
     switch (mode) {
         case LANGUAGE_HTML: {
             if (stripWS(content).length > 0) {
@@ -49,7 +49,7 @@ export default function ensureFileContent(name: string, content: string): string
                 return content;
             }
             else {
-                console.warn(`${name} => ${mode}, ${stripWS(content).length}`)
+                console.warn(`${name} => ${mode}, ${stripWS(content).length}`);
                 return content;
             }
         }

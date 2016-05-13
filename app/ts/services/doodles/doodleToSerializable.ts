@@ -10,6 +10,6 @@ export default function doodleToSerializable(dude: Doodle): IDoodleDS {
         trash: dude.trash,
         created_at: dude.created_at,
         updated_at: dude.updated_at
-    }
+    };
     return data;
 }

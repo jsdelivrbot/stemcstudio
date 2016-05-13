@@ -1,3 +1,4 @@
+import * as angular from 'angular';
 import Flow from './Flow';
 import RootNode from './nodes/RootNode';
 
@@ -10,7 +11,7 @@ export default class ExecutionStrategy<T> {
     looping: boolean;
     matchUntilHalt: boolean;
     rootNode: RootNode;
-    agenda
+    agenda;
     private __halted: boolean;
     private assertHandler: () => void;
     private modifyHandler: () => void;
@@ -19,7 +20,7 @@ export default class ExecutionStrategy<T> {
     constructor(flow: Flow<T>, matchUnitilHalt?: boolean) {
         this.flow = flow;
         this.agenda = flow.agenda;
-        this.matchUntilHalt = !!matchUnitilHalt
+        this.matchUntilHalt = !!matchUnitilHalt;
     }
 
     private onAlter() {
@@ -33,24 +34,24 @@ export default class ExecutionStrategy<T> {
         const flow = this.flow;
         this.rootNode.resetCounter();
 
-        const assertHandler = () => { this.onAlter() }
-        flow.on("assert", assertHandler)
-        this.assertHandler = assertHandler
+        const assertHandler = () => { this.onAlter(); };
+        flow.on("assert", assertHandler);
+        this.assertHandler = assertHandler;
 
-        const modifyHandler = () => { this.onAlter() }
-        flow.on("modify", modifyHandler)
-        this.modifyHandler = modifyHandler
+        const modifyHandler = () => { this.onAlter(); };
+        flow.on("modify", modifyHandler);
+        this.modifyHandler = modifyHandler;
 
-        const retractHandler = () => { this.onAlter() }
-        flow.on("retract", retractHandler)
-        this.retractHandler = retractHandler
+        const retractHandler = () => { this.onAlter(); };
+        flow.on("retract", retractHandler);
+        this.retractHandler = retractHandler;
     }
 
     tearDown() {
-        const flow = this.flow
+        const flow = this.flow;
         if (this.assertHandler) {
-            flow.removeListener("assert", this.assertHandler)
-            this.assertHandler = void 0
+            flow.removeListener("assert", this.assertHandler);
+            this.assertHandler = void 0;
         }
         if (this.modifyHandler) {
             flow.removeListener("modify", this.modifyHandler);
@@ -62,7 +63,7 @@ export default class ExecutionStrategy<T> {
         }
     }
 
-    __handleAsyncNext(next: ng.IPromise<any>): void {
+    __handleAsyncNext(next: angular.IPromise<any>): void {
         return next.then((promiseValue) => {
             this.looping = false;
             if (!this.agenda.isEmpty()) {
@@ -83,7 +84,7 @@ export default class ExecutionStrategy<T> {
 
     callback() {
         this.tearDown();
-        throw new Error('ExecutionStrategy.callback()')
+        throw new Error('ExecutionStrategy.callback()');
     }
 
     callNext(): void {

@@ -10,7 +10,7 @@ interface Reference {
         sha: string;
         type: string;
         url: string;
-    }
+    };
 }
 
 export default Reference;

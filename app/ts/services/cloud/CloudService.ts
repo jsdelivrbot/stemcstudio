@@ -4,7 +4,7 @@ import PatchGistResponse from '../github/PatchGistResponse';
 import GistKey from '../github/GistKey';
 import RepoData from '../github/RepoData';
 import RepoKey from '../github/RepoKey';
-import UploadToRepoFacts from './UploadToRepoFacts'
+import UploadToRepoFacts from './UploadToRepoFacts';
 
 /**
  * A high-level API for managing Doodle(s) in the cloud.
@@ -35,7 +35,7 @@ interface CloudService {
      * @param data {RepoData}
      * @return {IHttpPromise<RepoKey>}
      */
-    createRepo(data: RepoData): ng.IHttpPromise<RepoKey>
+    createRepo(data: RepoData): ng.IHttpPromise<RepoKey>;
 
     /**
      * TODO: Why is there no specification of the branch (commit).
@@ -61,20 +61,20 @@ interface CloudService {
      * @method chooseGistOrRepo
      * @param title {string} Provides the title and human readable context for the modal dialog.
      */
-    chooseGistOrRepo(title: string): ng.IPromise<string>
+    chooseGistOrRepo(title: string): ng.IPromise<string>;
 
     /**
      * @method repoData
      * @param title {string} Provides the title and human readable context for the modal dialog.
      * @param data {RepoData} Provides the defaults.
      */
-    repoData(title: string, data: RepoData): ng.IPromise<RepoData>
+    repoData(title: string, data: RepoData): ng.IPromise<RepoData>;
 
     /**
      * @method commitMessage
      * @param title {string} Provides the title and human readable context for the modal dialog.
      */
-    commitMessage(title: string): ng.IPromise<string>
+    commitMessage(title: string): ng.IPromise<string>;
 }
 
 export default CloudService;

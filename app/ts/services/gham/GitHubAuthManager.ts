@@ -36,12 +36,12 @@ app.service('GitHubAuthManager', [
                         const token = data.token;
                         cookie.setItem(GITHUB_TOKEN_COOKIE_NAME, token);
                         github.getUser().then(function(response) {
-                            const user = response.data
+                            const user = response.data;
                             cookie.setItem(GITHUB_LOGIN_COOKIE_NAME, user.login);
                             done(null, token);
                         }).catch(function(reason) {
                             done(new Error("Unable to retrieve your user information."));
-                        })
+                        });
                     })
                     .error(function(data, status, headers, config) {
                         done(new Error("Unable to retrieve your authentication token."));
@@ -61,12 +61,12 @@ app.service('GitHubAuthManager', [
                         const token = data.token;
                         cookie.setItem(GITHUB_TOKEN_COOKIE_NAME, token);
                         github.getUser().then(function(response) {
-                            const user = response.data
+                            const user = response.data;
                             cookie.setItem(GITHUB_LOGIN_COOKIE_NAME, user.login);
                             done(null, token);
                         }).catch(function(reason) {
                             done(new Error(`Unable to retrieve your user information because ${JSON.stringify(reason)} .`));
-                        })
+                        });
                     })
                     .error(function(data, status, headers, config) {
                         done(new Error("Unable to retrieve your authentication token."));

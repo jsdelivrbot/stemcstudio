@@ -65,14 +65,14 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
             return `${gitHub()}/user/repos`;
         }
         function requestHeaders(): { 'Accept': string; 'Authorization'?: string } {
-            const token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME)
+            const token = cookie.getItem(GITHUB_TOKEN_COOKIE_NAME);
             const headers: { 'Accept': string; 'Authorization'?: string; } = {
                 Accept: ACCEPT_HEADER
-            }
+            };
             if (token) {
-                headers.Authorization = `token ${token}`
+                headers.Authorization = `token ${token}`;
             }
-            return headers
+            return headers;
         }
         return {
             getUser: function(): ng.IHttpPromise<User> {
@@ -109,8 +109,8 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
              * We're using this method in the GitHubCloudService to download a repo.
              */
             getRepoContents: function(owner: string, repo: string, done: (err: any, contents: RepoElement[]) => any) {
-                const method = HTTP_METHOD_GET
-                const url = `${GITHUB_PROTOCOL}://${GITHUB_DOMAIN}/repos/${owner}/${repo}/contents`
+                const method = HTTP_METHOD_GET;
+                const url = `${GITHUB_PROTOCOL}://${GITHUB_DOMAIN}/repos/${owner}/${repo}/contents`;
                 // TODO: The GitHUb v3 API lets us specify the name of the commit/branch/tag.
                 // The default is the repository default branch, usually master.
                 return $http({ method, url, headers: requestHeaders() })
@@ -127,15 +127,15 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
             getPathContents: function(owner: string, repo: string, path: string): ng.IPromise<PathContents> {
                 const method = HTTP_METHOD_GET;
                 const url = `${GITHUB_PROTOCOL}://${GITHUB_DOMAIN}/repos/${owner}/${repo}/contents/${path}`;
-                const deferred = $q.defer<PathContents>()
+                const deferred = $q.defer<PathContents>();
                 // TODO: The GitHUb v3 API lets us specify the name of the commit/branch/tag.
                 // The default is the repository default branch, usually master.
                 $http({ method, url, headers: requestHeaders() })
                     .success(function(response: PathContents, status, headers, config) {
-                        deferred.resolve(response)
+                        deferred.resolve(response);
                     })
                     .error(function(response, status, headers, config) {
-                        deferred.reject(new Error(response.message))
+                        deferred.reject(new Error(response.message));
                     });
                 return deferred.promise;
             },
@@ -147,10 +147,10 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
             determines whether the intention is to create a new file or update an existing one.
             */
             putFile: function(owner: string, repo: string, path: string, message: string, content: string, sha: string): ng.IHttpPromise<PutFileResponse> {
-                const method = HTTP_METHOD_PUT
-                const url = `${gitHub()}/repos/${owner}/${repo}/contents/${path}`
-                const data = { message, content, sha }
-                const headers = requestHeaders()
+                const method = HTTP_METHOD_PUT;
+                const url = `${gitHub()}/repos/${owner}/${repo}/contents/${path}`;
+                const data = { message, content, sha };
+                const headers = requestHeaders();
                 return $http<PutFileResponse>({ method, url, data, headers });
             },
             deleteFile: function(owner: string, repo: string, path: string, message: string, sha: string, done: (err: any, response) => any) {
@@ -240,27 +240,27 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
                 return $http<Gist[]>({ method: HTTP_METHOD_GET, url: url, headers: requestHeaders() });
             },
             getReference: function(owner: string, repo: string, ref: string): ng.IHttpPromise<Reference> {
-                const method = HTTP_METHOD_GET
-                const url = `${gitHub()}/repos/${owner}/${repo}/git/refs/${ref}`
-                const headers = requestHeaders()
+                const method = HTTP_METHOD_GET;
+                const url = `${gitHub()}/repos/${owner}/${repo}/git/refs/${ref}`;
+                const headers = requestHeaders();
                 return $http<Reference>({ method, url, headers });
             },
             getCommit: function(owner: string, repo: string, sha: string): ng.IHttpPromise<Commit> {
-                const method = HTTP_METHOD_GET
-                const url = `${gitHub()}/repos/${owner}/${repo}/git/commits/${sha}`
-                const headers = requestHeaders()
+                const method = HTTP_METHOD_GET;
+                const url = `${gitHub()}/repos/${owner}/${repo}/git/commits/${sha}`;
+                const headers = requestHeaders();
                 return $http<Commit>({ method, url, headers });
             },
             getTree: function(owner: string, repo: string, sha: string): ng.IHttpPromise<Tree> {
-                const method = HTTP_METHOD_GET
-                const url = `${gitHub()}/repos/${owner}/${repo}/git/trees/${sha}`
-                const headers = requestHeaders()
+                const method = HTTP_METHOD_GET;
+                const url = `${gitHub()}/repos/${owner}/${repo}/git/trees/${sha}`;
+                const headers = requestHeaders();
                 return $http<Tree>({ method, url, headers });
             },
             getBlob: function(owner: string, repo: string, sha: string): ng.IHttpPromise<Blob> {
-                const method = HTTP_METHOD_GET
-                const url = `${gitHub()}/repos/${owner}/${repo}/git/blobs/${sha}`
-                const headers = requestHeaders()
+                const method = HTTP_METHOD_GET;
+                const url = `${gitHub()}/repos/${owner}/${repo}/git/blobs/${sha}`;
+                const headers = requestHeaders();
                 return $http<Blob>({ method, url, headers });
             },
             createBlob(owner: string, repo: string, data: BlobData): ng.IHttpPromise<BlobKey> {

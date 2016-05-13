@@ -3,13 +3,13 @@ import AlertScope from './AlertScope';
 import AlertOptions from './AlertOptions';
 
 export default class AlertController {
-    public static $inject: string[] = ['$scope', '$uibModalInstance', 'options']
+    public static $inject: string[] = ['$scope', '$uibModalInstance', 'options'];
     constructor($scope: AlertScope, $uibModalInstance: uib.IModalServiceInstance, options: AlertOptions) {
 
-        $scope.options = options
+        $scope.options = options;
 
         $scope.close = function() {
             $uibModalInstance.close(true);
-        }
+        };
     }
 }

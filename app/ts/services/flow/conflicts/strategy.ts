@@ -13,7 +13,7 @@ const strategies: { [name: string]: ConflictResolutionStrategy<any> } = {
 };
 
 export default function strategy<T>(strategyNames: string[]) {
-    const strats = strategyNames.map(function(name) { return strategies[name] })
+    const strats = strategyNames.map(function(name) { return strategies[name]; });
     const stratsLength = strats.length;
 
     return function(a: Match<T>, b: Match<T>) {

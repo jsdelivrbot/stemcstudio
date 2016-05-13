@@ -37,14 +37,14 @@ app.controller('properties-controller', [
         options: IOptionManager,
         STATE_DOODLE: string
     ) {
-        const dude = doodles.current()
+        const dude = doodles.current();
 
         // We make a copy of the current doodle so that we can Cancel the modal dialog.
         $scope.zombie = {
             description: dude.description,
             dependencies: dude.dependencies,
             operatorOverloading: dude.operatorOverloading
-        }
+        };
         $scope.options = options.filter(function(option: IOption) { return option.visible; });
 
         /**
@@ -61,13 +61,13 @@ app.controller('properties-controller', [
             else {
                 $scope.zombie.dependencies.push(name);
             }
-        }
+        };
 
         $scope.doOK = function() {
             dude.description = $scope.zombie.description;
             // Perform some clanup, while we map dependencies.
             if ($scope.zombie.dependencies) {
-                dude.dependencies = $scope.zombie.dependencies.filter(function(name) { return options.filter(function(option) { return option.visible && option.name === name }).length > 0 });
+                dude.dependencies = $scope.zombie.dependencies.filter(function(name) { return options.filter(function(option) { return option.visible && option.name === name; }).length > 0; });
             }
             dude.operatorOverloading = $scope.zombie.operatorOverloading;
             $state.go(STATE_DOODLE);

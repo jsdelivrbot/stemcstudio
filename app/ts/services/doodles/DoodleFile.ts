@@ -26,10 +26,10 @@ export default class DoodleFile implements IDoodleFile {
      * @constructor
      */
     constructor() {
-        this.content = ""
-        this.isOpen = true
-        this.preview = false
-        this.selected = false
+        this.content = "";
+        this.isOpen = true;
+        this.preview = false;
+        this.selected = false;
     }
 
     /**
@@ -37,15 +37,15 @@ export default class DoodleFile implements IDoodleFile {
      * @return {DoodleFile}
      */
     clone(): DoodleFile {
-        const copy = new DoodleFile()
-        copy.content = this.content
-        copy.isOpen = this.isOpen
-        copy.language = this.language
-        copy.raw_url = this.raw_url
-        copy.selected = this.selected
-        copy.size = this.size
-        copy.truncated = this.truncated
-        copy.type = this.type
-        return copy
+        const copy = new DoodleFile();
+        copy.content = this.content;
+        copy.isOpen = this.isOpen;
+        copy.language = this.language;
+        copy.raw_url = this.raw_url;
+        copy.selected = this.selected;
+        copy.size = this.size;
+        copy.truncated = this.truncated;
+        copy.type = this.type;
+        return copy;
     }
 }

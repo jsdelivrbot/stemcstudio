@@ -10,7 +10,7 @@ export default class GitHubAccountController {
     public static $inject: string[] = [
         '$scope',
         'GitHub'
-    ]
+    ];
     /**
      * @class GitHubAccountScope
      * @constructor
@@ -29,19 +29,19 @@ export default class GitHubAccountController {
     $onInit(): void {
 
         this.gitHub.getUser().then((response) => {
-            this.$scope.user = response.data
+            this.$scope.user = response.data;
         }).catch((reason) => {
-            this.$scope.user = <User>{ name: "", login: "", avatar_url: void 0 }
-        })
+            this.$scope.user = <User>{ name: "", login: "", avatar_url: void 0 };
+        });
 
         this.gitHub.getUserRepos((err: any, repos: Repo[]) => {
             if (!err) {
-                this.$scope.repos = repos
+                this.$scope.repos = repos;
             }
             else {
-                this.$scope.repos = []
+                this.$scope.repos = [];
             }
-        })
+        });
     }
 
     /**

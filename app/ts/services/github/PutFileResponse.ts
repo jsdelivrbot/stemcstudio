@@ -14,7 +14,7 @@ interface PutFileResponse {
             git: string;
             html: string;
         }
-    }
+    };
     commit: {
         sha: string;
         url: string;
@@ -39,7 +39,7 @@ interface PutFileResponse {
             url: string;
             html_url: string;
         }[];
-    }
+    };
 }
 
 export default PutFileResponse;

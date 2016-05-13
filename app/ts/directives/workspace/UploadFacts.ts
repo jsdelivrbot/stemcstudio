@@ -7,35 +7,35 @@ export default class UploadFacts {
     /**
      * The commit message for a Repository commit.
      */
-    public commitMessage: Fuzzy<string> = new Fuzzy<string>()
+    public commitMessage: Fuzzy<string> = new Fuzzy<string>();
 
     /**
      * Indicates the response to a question about the storage kind.
      * This question need to be asked if the gistId or repo are
      * 'gist' or 'repo'
      */
-    public storage: Fuzzy<string> = new Fuzzy<string>()
+    public storage: Fuzzy<string> = new Fuzzy<string>();
 
     /**
      * 
      */
     public method: Fuzzy<Method> = new Fuzzy<Method>();
 
-    public gistId: Fuzzy<string> = new Fuzzy<string>()
-    public gistExists: Fuzzy<boolean> = new Fuzzy<boolean>()
+    public gistId: Fuzzy<string> = new Fuzzy<string>();
+    public gistExists: Fuzzy<boolean> = new Fuzzy<boolean>();
     /**
      * The repository id indicates the existence of the repository.
      */
-    public repoId: Fuzzy<number> = new Fuzzy<number>()
-    public repo: Fuzzy<string> = new Fuzzy<string>()
-    public repoData: Fuzzy<RepoData> = new Fuzzy<RepoData>()
-    public repoExists: Fuzzy<boolean> = new Fuzzy<boolean>()
-    public owner: Fuzzy<string> = new Fuzzy<string>()
-    public userLogin: Fuzzy<string> = new Fuzzy<string>()
+    public repoId: Fuzzy<number> = new Fuzzy<number>();
+    public repo: Fuzzy<string> = new Fuzzy<string>();
+    public repoData: Fuzzy<RepoData> = new Fuzzy<RepoData>();
+    public repoExists: Fuzzy<boolean> = new Fuzzy<boolean>();
+    public owner: Fuzzy<string> = new Fuzzy<string>();
+    public userLogin: Fuzzy<string> = new Fuzzy<string>();
     /**
      * The reference pointing to a commit.
      */
-    public ref: Fuzzy<string> = new Fuzzy<string>()
+    public ref: Fuzzy<string> = new Fuzzy<string>();
 
     public uploadedAt: Fuzzy<string> = new Fuzzy<string>();
 
@@ -55,7 +55,7 @@ export default class UploadFacts {
         // Do nothing.
     }
     canAskForCommitMessage(): boolean {
-        return this.commitMessage.isUndefined() && this.repoExists.isResolved()
+        return this.commitMessage.isUndefined() && this.repoExists.isResolved();
     }
     canAskForRepoName(): boolean {
         // No. We're doing an upload whuch is either a create or an update.
@@ -66,7 +66,7 @@ export default class UploadFacts {
     canAskForRepoData(): boolean {
         return (this.storage.value === 'repo') &&
             this.repoData.isUndefined() &&
-            this.method.isResolved && this.method.value === Method.Create
+            this.method.isResolved && this.method.value === Method.Create;
     }
     canAskToChooseGistOrRepo(): boolean {
         if (this.gistId.isResolved()) {
@@ -78,15 +78,15 @@ export default class UploadFacts {
             return false;
         }
         // We can ask the question if it has not been asked.
-        return this.storage.isUndefined()
+        return this.storage.isUndefined();
     }
     canCreateGist(): boolean {
-        return (this.storage.value === 'gist') && this.gistId.isUndefined() && this.uploadedAt.isUndefined()
+        return (this.storage.value === 'gist') && this.gistId.isUndefined() && this.uploadedAt.isUndefined();
     }
     canDetermineRepoExists(): boolean {
         if (this.repoExists.isUndefined()) {
             if (this.storage.value === 'repo') {
-                return this.repo.isResolved()
+                return this.repo.isResolved();
             }
             else {
                 return false;
@@ -97,7 +97,7 @@ export default class UploadFacts {
         }
     }
     canUpdateGist(): boolean {
-        return this.gistId.isResolved() && this.uploadedAt.isUndefined()
+        return this.gistId.isResolved() && this.uploadedAt.isUndefined();
     }
     canCreateRepo(): boolean {
         // Is this consistent with our goals?
@@ -124,6 +124,6 @@ export default class UploadFacts {
             this.repoExists.isResolved && this.repoExists.value === true &&
             this.commitMessage.isResolved() &&
             this.ref.isResolved() &&
-            this.uploadMessage.isUndefined()
+            this.uploadMessage.isUndefined();
     }
 }

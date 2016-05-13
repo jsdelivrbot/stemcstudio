@@ -3,9 +3,9 @@ import IDoodleConfig from './IDoodleConfig';
 import modeFromName from '../../utils/modeFromName';
 import dependencyNames from './dependencyNames';
 import dependenciesMap from './dependenciesMap';
-import IOptionManager from '../options/IOptionManager'
+import IOptionManager from '../options/IOptionManager';
 
-const FILENAME_META = 'package.json'
+const FILENAME_META = 'package.json';
 
 export default class Doodle {
     /**
@@ -27,65 +27,65 @@ export default class Doodle {
     public updated_at: string;
 
     constructor(private options: IOptionManager) {
-        // this.description = ""
-        this.isCodeVisible = true
-        this.isViewVisible = false
-        this.lastKnownJs = {}
-        // this.operatorOverloading = true
-        // this.dependencies = []
+        // this.description = "";
+        this.isCodeVisible = true;
+        this.isViewVisible = false;
+        this.lastKnownJs = {};
+        // this.operatorOverloading = true;
+        // this.dependencies = [];
     }
 
     get packageInfo(): IDoodleConfig {
         try {
-            const file = this.ensurePackageJson()
-            return JSON.parse(file.content)
+            const file = this.ensurePackageJson();
+            return JSON.parse(file.content);
         }
         catch (e) {
-            return void 0
+            return void 0;
         }
     }
 
     get name(): string {
         if (this.existsPackageJson()) {
-            const info = this.packageInfo
+            const info = this.packageInfo;
             if (info) {
-                return info.name
+                return info.name;
             }
             else {
-                return void 0
+                return void 0;
             }
         }
         else {
-            return void 0
+            return void 0;
         }
     }
 
     set name(name: string) {
-        const file = this.ensurePackageJson()
+        const file = this.ensurePackageJson();
         const metaInfo: IDoodleConfig = JSON.parse(file.content);
-        metaInfo.name = name
-        file.content = JSON.stringify(metaInfo, null, 2)
+        metaInfo.name = name;
+        file.content = JSON.stringify(metaInfo, null, 2);
     }
 
     get version(): string {
         if (this.existsPackageJson()) {
-            return this.packageInfo.version
+            return this.packageInfo.version;
         }
         else {
-            return void 0
+            return void 0;
         }
     }
 
     set version(version: string) {
-        const file = this.ensurePackageJson()
+        const file = this.ensurePackageJson();
         const metaInfo: IDoodleConfig = JSON.parse(file.content);
-        metaInfo.version = version
-        file.content = JSON.stringify(metaInfo, null, 2)
+        metaInfo.version = version;
+        file.content = JSON.stringify(metaInfo, null, 2);
     }
 
     get description(): string {
         if (this.existsPackageJson()) {
-            return this.packageInfo.description
+            return this.packageInfo.description;
         }
         else {
             return void 0;
@@ -93,26 +93,26 @@ export default class Doodle {
     }
 
     set description(description: string) {
-        const file = this.ensurePackageJson()
+        const file = this.ensurePackageJson();
         const metaInfo: IDoodleConfig = JSON.parse(file.content);
-        metaInfo.description = description
-        file.content = JSON.stringify(metaInfo, null, 2)
+        metaInfo.description = description;
+        file.content = JSON.stringify(metaInfo, null, 2);
     }
 
     get operatorOverloading(): boolean {
         if (this.existsPackageJson()) {
-            return this.packageInfo.operatorOverloading ? true : false
+            return this.packageInfo.operatorOverloading ? true : false;
         }
         else {
-            return false
+            return false;
         }
     }
 
     set operatorOverloading(operatorOverloading: boolean) {
-        const file = this.ensurePackageJson()
+        const file = this.ensurePackageJson();
         const metaInfo: IDoodleConfig = JSON.parse(file.content);
-        metaInfo.operatorOverloading = operatorOverloading
-        file.content = JSON.stringify(metaInfo, null, 2)
+        metaInfo.operatorOverloading = operatorOverloading;
+        file.content = JSON.stringify(metaInfo, null, 2);
     }
 
     get dependencies(): string[] {
@@ -121,15 +121,15 @@ export default class Doodle {
             return dependencyNames(dependencyMap);
         }
         else {
-            return []
+            return [];
         }
     }
 
     set dependencies(dependencies: string[]) {
-        const file = this.ensurePackageJson()
+        const file = this.ensurePackageJson();
         const metaInfo: IDoodleConfig = JSON.parse(file.content);
         metaInfo.dependencies = dependenciesMap(dependencies, this.options);
-        file.content = JSON.stringify(metaInfo, null, 2)
+        file.content = JSON.stringify(metaInfo, null, 2);
     }
 
     private existsPackageJson(): boolean {
@@ -137,18 +137,18 @@ export default class Doodle {
     }
 
     private ensurePackageJson(): DoodleFile {
-        return this.ensureFile(FILENAME_META, '{}')
+        return this.ensureFile(FILENAME_META, '{}');
     }
 
     private ensureFile(name: string, content: string): DoodleFile {
         if (!this.existsFile(name)) {
-            const file = this.newFile(name)
-            file.content = content
-            file.language = modeFromName(name)
-            return file
+            const file = this.newFile(name);
+            file.content = content;
+            file.language = modeFromName(name);
+            return file;
         }
         else {
-            return this.findFileByName(name)
+            return this.findFileByName(name);
         }
     }
 
@@ -158,27 +158,27 @@ export default class Doodle {
      * @return {void}
      */
     closeFile(name: string): void {
-        const file = this.findFileByName(name)
+        const file = this.findFileByName(name);
         if (file) {
             // We assume someone is watching this property, ready to pounce.
             // TODO: Replace with openPending flag?
-            file.isOpen = false
-            file.selected = false
+            file.isOpen = false;
+            file.selected = false;
         }
         else {
             // Do nothing
         }
         // Select the first open file that we find.
-        this.deselectAll()
+        this.deselectAll();
 
-        const names = Object.keys(this.files)
-        const iLen = names.length
+        const names = Object.keys(this.files);
+        const iLen = names.length;
         for (let i = 0; i < iLen; i++) {
-            const name = names[i]
-            const file = this.files[name]
+            const name = names[i];
+            const file = this.files[name];
             if (file.isOpen) {
-                file.selected = true
-                return
+                file.selected = true;
+                return;
             }
         }
     }
@@ -189,31 +189,31 @@ export default class Doodle {
      * @return {void}
      */
     deleteFile(name: string): void {
-        const file = this.findFileByName(name)
+        const file = this.findFileByName(name);
         if (file) {
             // Determine whether the file exists in GitHub so that we can delete it upon upload.
             // Use the raw_url as the sentinel. Keep it in trash for later deletion.
             if (file.raw_url) {
-                this.moveFileToTrash(name)
+                this.moveFileToTrash(name);
             }
             else {
                 // It's a file that does not exist on GitHub.
-                delete this.files[name]
-                delete this.lastKnownJs[name]
+                delete this.files[name];
+                delete this.lastKnownJs[name];
             }
         }
         else {
-            console.warn(`deleteFile(${name}), ${name} was not found.`)
+            console.warn(`deleteFile(${name}), ${name} was not found.`);
         }
     }
 
     private deselectAll() {
-        const names = Object.keys(this.files)
-        const iLen = names.length
+        const names = Object.keys(this.files);
+        const iLen = names.length;
         for (let i = 0; i < iLen; i++) {
-            const name = names[i]
-            const file = this.files[name]
-            file.selected = false
+            const name = names[i];
+            const file = this.files[name];
+            file.selected = false;
         }
     }
 
@@ -224,7 +224,7 @@ export default class Doodle {
      * @return {void}
      */
     emptyTrash(): void {
-        this.trash = {}
+        this.trash = {};
     }
 
     /**
@@ -233,7 +233,7 @@ export default class Doodle {
      * @return {boolean}
      */
     existsFile(name: string): boolean {
-        return this.findFileByName(name) ? true : false
+        return this.findFileByName(name) ? true : false;
     }
 
     /**
@@ -242,7 +242,7 @@ export default class Doodle {
      * @return {boolean}
      */
     existsFileInTrash(name: string): boolean {
-        return this.trash[name] ? true : false
+        return this.trash[name] ? true : false;
     }
 
     /**
@@ -250,15 +250,15 @@ export default class Doodle {
      * @return {string}
      */
     getPreviewFile(): string {
-        const names = Object.keys(this.files)
-        const iLen = names.length
+        const names = Object.keys(this.files);
+        const iLen = names.length;
         for (let i = 0; i < iLen; i++) {
-            const name = names[i]
+            const name = names[i];
             if (this.files[name].preview) {
-                return name
+                return name;
             }
         }
-        return void 0
+        return void 0;
     }
 
     /**
@@ -270,26 +270,26 @@ export default class Doodle {
      * @return {string}
      */
     getPreviewFileOrBestAvailable(): string {
-        const previewFile = this.getPreviewFile()
+        const previewFile = this.getPreviewFile();
         if (previewFile) {
             return previewFile;
         }
         else {
             let bestFile: string;
-            const names = Object.keys(this.files)
-            const iLen = names.length
+            const names = Object.keys(this.files);
+            const iLen = names.length;
             for (let i = 0; i < iLen; i++) {
-                const name = names[i]
-                const mode = modeFromName(name)
+                const name = names[i];
+                const mode = modeFromName(name);
                 if (mode === 'HTML') {
                     if (name === 'index.html') {
-                        return name
+                        return name;
                     }
                     else if (name.toLowerCase() === 'specrunner.html') {
-                        bestFile = name
+                        bestFile = name;
                     }
                     else if (typeof bestFile === 'undefined') {
-                        bestFile = name
+                        bestFile = name;
                     }
                     else {
                         // Ignore the file.
@@ -299,7 +299,7 @@ export default class Doodle {
                     // We don't consider other file types for now.
                 }
             }
-            return bestFile
+            return bestFile;
         }
     }
 
@@ -309,24 +309,24 @@ export default class Doodle {
      * @return {void}
      */
     private moveFileToTrash(name: string): void {
-        const unwantedFile = this.files[name]
+        const unwantedFile = this.files[name];
         if (unwantedFile) {
             // Notice that the conflict could be with a TRASHED file.
-            const conflictFile = this.trash[name]
+            const conflictFile = this.trash[name];
             if (!conflictFile) {
                 // There is no conflict, proceed with the move.
-                this.trash[name] = unwantedFile
-                delete this.files[name]
+                this.trash[name] = unwantedFile;
+                delete this.files[name];
                 if (this.existsFile(name)) {
-                    throw new Error(`${name} was not physically deleted from files.`)
+                    throw new Error(`${name} was not physically deleted from files.`);
                 }
             }
             else {
-                throw new Error(`${name} cannot be moved to trash because of a naming conflict with an existing file.`)
+                throw new Error(`${name} cannot be moved to trash because of a naming conflict with an existing file.`);
             }
         }
         else {
-            throw new Error(`${name} cannot be moved to trash because it does not exist.`)
+            throw new Error(`${name} cannot be moved to trash because it does not exist.`);
         }
     }
 
@@ -336,19 +336,19 @@ export default class Doodle {
      * @return {void}
      */
     private restoreFileFromTrash(name: string): void {
-        const wantedFile = this.trash[name]
+        const wantedFile = this.trash[name];
         if (wantedFile) {
-            const conflictFile = this.files[name]
+            const conflictFile = this.files[name];
             if (!conflictFile) {
-                delete this.trash[name]
-                this.files[name] = wantedFile
+                delete this.trash[name];
+                this.files[name] = wantedFile;
             }
             else {
-                throw new Error(`${name} cannot be restored from trash because of a naming conflict with an existing file.`)
+                throw new Error(`${name} cannot be restored from trash because of a naming conflict with an existing file.`);
             }
         }
         else {
-            throw new Error(`${name} cannot be restored from trash because it does not exist.`)
+            throw new Error(`${name} cannot be restored from trash because it does not exist.`);
         }
     }
 
@@ -359,10 +359,10 @@ export default class Doodle {
      */
     findFileByName(name: string): DoodleFile {
         if (this.files) {
-            return this.files[name]
+            return this.files[name];
         }
         else {
-            return void 0
+            return void 0;
         }
     }
 
@@ -372,27 +372,27 @@ export default class Doodle {
      * @return {DoodleFile}
      */
     newFile(path: string): DoodleFile {
-        const mode = modeFromName(path)
-        const conflictFile = this.findFileByName(path)
+        const mode = modeFromName(path);
+        const conflictFile = this.findFileByName(path);
         if (!conflictFile) {
-            const trashedFile = this.trash[path]
+            const trashedFile = this.trash[path];
             if (!trashedFile) {
-                const file = new DoodleFile()
-                file.language = mode
+                const file = new DoodleFile();
+                file.language = mode;
                 if (!this.files) {
-                    this.files = {}
+                    this.files = {};
                 }
-                this.files[path] = file
-                return file
+                this.files[path] = file;
+                return file;
             }
             else {
-                this.restoreFileFromTrash(path)
-                trashedFile.language = mode
-                return trashedFile
+                this.restoreFileFromTrash(path);
+                trashedFile.language = mode;
+                return trashedFile;
             }
         }
         else {
-            throw new Error(`${path} already exists. The path must be unique.`)
+            throw new Error(`${path} already exists. The path must be unique.`);
         }
     }
 
@@ -402,11 +402,11 @@ export default class Doodle {
      * @return {void}
      */
     openFile(name: string): void {
-        const file = this.findFileByName(name)
+        const file = this.findFileByName(name);
         if (file) {
             // We assume someone is watching this property, ready to pounce.
             // TODO: Replace with openPending flag?
-            file.isOpen = true
+            file.isOpen = true;
         }
         else {
             // Do nothing
@@ -414,46 +414,46 @@ export default class Doodle {
     }
 
     renameFile(oldName: string, newName: string): void {
-        const mode = modeFromName(newName)
+        const mode = modeFromName(newName);
         if (!mode) {
-            throw new Error(`${newName} is not a recognized language.`)
+            throw new Error(`${newName} is not a recognized language.`);
         }
         // Make sure that the file we want to rename really does exist.
-        const oldFile = this.findFileByName(oldName)
+        const oldFile = this.findFileByName(oldName);
         if (oldFile) {
             if (!this.existsFile(newName)) {
                 // Determine whether we can recycle a file from trash or must create a new file.
                 if (!this.existsFileInTrash(newName)) {
                     // We must create a new file.
-                    const newFile = oldFile.clone()
+                    const newFile = oldFile.clone();
 
                     // Make it clear that this file did not come from GitHub.
-                    newFile.raw_url = void 0
-                    newFile.size = void 0
-                    newFile.truncated = void 0
-                    newFile.type = void 0
+                    newFile.raw_url = void 0;
+                    newFile.size = void 0;
+                    newFile.truncated = void 0;
+                    newFile.type = void 0;
 
                     // Initialize properties that depend upon the new name.
-                    newFile.language = mode
+                    newFile.language = mode;
 
-                    this.files[newName] = newFile
+                    this.files[newName] = newFile;
                 }
                 else {
                     // We can recycle a file from trash.
-                    this.restoreFileFromTrash(newName)
-                    const theFile = this.findFileByName(newName)
+                    this.restoreFileFromTrash(newName);
+                    const theFile = this.findFileByName(newName);
                     // Initialize properties that depend upon the new name.
-                    theFile.language = mode
+                    theFile.language = mode;
                 }
                 // Delete the file by the old name.
-                this.deleteFile(oldName)
+                this.deleteFile(oldName);
             }
             else {
-                throw new Error(`${newName} already exists. The new name must be unique.`)
+                throw new Error(`${newName} already exists. The new name must be unique.`);
             }
         }
         else {
-            throw new Error(`${oldName} does not exist. The old name must be the name of an existing file.`)
+            throw new Error(`${oldName} does not exist. The old name must be the name of an existing file.`);
         }
     }
 
@@ -463,14 +463,14 @@ export default class Doodle {
      * @return {void}
      */
     selectFile(name: string): void {
-        const file = this.findFileByName(name)
+        const file = this.findFileByName(name);
         if (file && file.isOpen) {
-            const names = Object.keys(this.files)
-            const iLen = names.length
+            const names = Object.keys(this.files);
+            const iLen = names.length;
             for (let i = 0; i < iLen; i++) {
-                const file = this.files[names[i]]
+                const file = this.files[names[i]];
                 if (file.isOpen) {
-                    file.selected = names[i] === name
+                    file.selected = names[i] === name;
                 }
             }
         }
@@ -485,15 +485,15 @@ export default class Doodle {
      * @return {void}
      */
     setPreviewFile(name: string): void {
-        const file = this.findFileByName(name)
+        const file = this.findFileByName(name);
         if (file) {
-            const names = Object.keys(this.files)
-            const iLen = names.length
+            const names = Object.keys(this.files);
+            const iLen = names.length;
             for (let i = 0; i < iLen; i++) {
-                const name = names[i]
-                this.files[name].preview = false
+                const name = names[i];
+                this.files[name].preview = false;
             }
-            file.preview = true
+            file.preview = true;
         }
         else {
             // Do nothing

@@ -39,7 +39,7 @@ export default class ExamplesController extends AbstractPageController {
         modalDialog: ModalDialog,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string
     ) {
-        super($scope, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto')
+        super($scope, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
 
         $scope.examples = [
             {

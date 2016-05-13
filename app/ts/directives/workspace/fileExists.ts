@@ -11,9 +11,9 @@ import Doodle from '../../services/doodles/Doodle';
 export default function fileExists(fileName: string, doodle: Doodle): boolean {
     const file = doodle.files[fileName];
     if (file) {
-        return true
+        return true;
     }
     else {
-        return false
+        return false;
     }
 }

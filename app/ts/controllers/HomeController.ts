@@ -43,7 +43,7 @@ export default class HomeController extends AbstractPageController {
         STATE_EXAMPLES: string,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string
     ) {
-        super($scope, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto')
+        super($scope, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
 
         $scope.FEATURE_DASHBOARD_ENABLED = FEATURE_DASHBOARD_ENABLED;
         $scope.FEATURE_EXAMPLES_ENABLED = FEATURE_EXAMPLES_ENABLED;
@@ -97,33 +97,33 @@ export default class HomeController extends AbstractPageController {
                         if (err) console.log(err, err.stack); // an error occurred
                         else console.log(JSON.stringify(data.TableNames, null, 2));           // successful response
                     });
-                })
+                });
             },
             onfailure: function(error: any) {
-                console.warn(error)
+                console.warn(error);
             }
-        }
+        };
 
         $scope.goDashboard = function() {
             if (FEATURE_DASHBOARD_ENABLED) {
                 $state.go(STATE_DASHBOARD);
             }
             else {
-                console.warn(`FEATURE_DASHBOARD_ENABLED => ${FEATURE_DASHBOARD_ENABLED}`)
+                console.warn(`FEATURE_DASHBOARD_ENABLED => ${FEATURE_DASHBOARD_ENABLED}`);
             }
-        }
+        };
 
         $scope.goDoodle = function() {
             $state.go(STATE_DOODLE);
-        }
+        };
 
         $scope.goExamples = function() {
             if (FEATURE_EXAMPLES_ENABLED) {
                 $state.go(STATE_EXAMPLES);
             }
             else {
-                console.warn(`FEATURE_EXAMPLES_ENABLED => ${FEATURE_EXAMPLES_ENABLED}`)
+                console.warn(`FEATURE_EXAMPLES_ENABLED => ${FEATURE_EXAMPLES_ENABLED}`);
             }
-        }
+        };
     }
 }

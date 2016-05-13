@@ -16,6 +16,6 @@ export default class TranslateController {
 
         $scope.changeLanguage = function(langKey: string) {
             $translate.uses(langKey);
-        }
+        };
     }
 }

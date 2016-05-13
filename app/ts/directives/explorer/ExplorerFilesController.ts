@@ -17,7 +17,7 @@ export default class ExplorerFilesController {
      * @type string[]
      * @static
      */
-    public static $inject: string[] = ['$scope', 'doodles', 'modalDialog']
+    public static $inject: string[] = ['$scope', 'doodles', 'modalDialog'];
 
     /**
      * @class ExplorerFilesController
@@ -29,12 +29,12 @@ export default class ExplorerFilesController {
         // Define the context menu used by the files.
         $scope.menu = (name: string, file: IDoodleFile) => {
             return [
-                { label: "Open", action: () => { this.openFile(name) } },
+                { label: "Open", action: () => { this.openFile(name); } },
                 null,   // divider
-                { label: "Rename", action: () => { this.renameFile(name) } },
-                { label: "Delete", action: () => { this.deleteFile(name) } },
-            ]
-        }
+                { label: "Rename", action: () => { this.renameFile(name); } },
+                { label: "Delete", action: () => { this.deleteFile(name); } },
+            ];
+        };
     }
 
     /**
@@ -51,25 +51,25 @@ export default class ExplorerFilesController {
         };
         this.modalService.prompt(options)
             .then((name) => {
-                const doodle = this.doodles.current()
+                const doodle = this.doodles.current();
                 if (doodle) {
                     try {
-                        doodle.newFile(name)
-                        doodle.selectFile(name)
-                        this.doodles.updateStorage()
+                        doodle.newFile(name);
+                        doodle.selectFile(name);
+                        this.doodles.updateStorage();
                     }
                     catch (e) {
-                        const alertOptions: AlertOptions = { title: "Error", message: e.toString() }
-                        this.modalService.alert(alertOptions)
+                        const alertOptions: AlertOptions = { title: "Error", message: e.toString() };
+                        this.modalService.alert(alertOptions);
                     }
                 }
                 else {
-                    console.warn(`newFile(${name})`)
+                    console.warn(`newFile(${name})`);
                 }
             })
             .catch(function(reason: any) {
                 // Do nothing.
-            })
+            });
     }
 
     /**
@@ -78,13 +78,13 @@ export default class ExplorerFilesController {
      * @return {void}
      */
     public openFile(name: string): void {
-        const doodle = this.doodles.current()
+        const doodle = this.doodles.current();
         if (doodle) {
-            doodle.openFile(name)
-            doodle.selectFile(name)
+            doodle.openFile(name);
+            doodle.selectFile(name);
         }
         else {
-            console.warn(`openFile(${name})`)
+            console.warn(`openFile(${name})`);
         }
     }
 
@@ -103,23 +103,23 @@ export default class ExplorerFilesController {
         };
         this.modalService.prompt(options)
             .then((newName) => {
-                const doodle = this.doodles.current()
+                const doodle = this.doodles.current();
                 if (doodle) {
                     try {
-                        doodle.renameFile(oldName, newName)
-                        this.doodles.updateStorage()
+                        doodle.renameFile(oldName, newName);
+                        this.doodles.updateStorage();
                     }
                     catch (e) {
-                        this.modalService.alert({ title: "Error", message: e.toString() })
+                        this.modalService.alert({ title: "Error", message: e.toString() });
                     }
                 }
                 else {
-                    console.warn(`renameFile(${oldName}, ${newName})`)
+                    console.warn(`renameFile(${oldName}, ${newName})`);
                 }
             })
             .catch(function(reason: any) {
                 // Do nothing.
-            })
+            });
     }
 
     /**
@@ -135,17 +135,17 @@ export default class ExplorerFilesController {
         };
         this.modalService.confirm(options)
             .then((result) => {
-                const doodle = this.doodles.current()
+                const doodle = this.doodles.current();
                 if (doodle) {
-                    doodle.deleteFile(name)
-                    this.doodles.updateStorage()
+                    doodle.deleteFile(name);
+                    this.doodles.updateStorage();
                 }
                 else {
-                    console.warn(`deleteFile(${name})`)
+                    console.warn(`deleteFile(${name})`);
                 }
             })
             .catch(function(reason: any) {
                 // Do nothing.
-            })
+            });
     }
 }
