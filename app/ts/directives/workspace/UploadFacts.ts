@@ -22,6 +22,7 @@ export default class UploadFacts {
     public method: Fuzzy<Method> = new Fuzzy<Method>();
 
     public gistId: Fuzzy<string> = new Fuzzy<string>()
+    public gistExists: Fuzzy<boolean> = new Fuzzy<boolean>()
     /**
      * The repository id indicates the existence of the repository.
      */

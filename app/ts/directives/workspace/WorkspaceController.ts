@@ -486,9 +486,21 @@ export default class WorkspaceController implements WorkspaceMixin {
                                 }
                             }
                         })
-                        .catch((reason) => {
-                            facts.uploadedAt.reject(reason)
-                            next(reason)
+                        .catch((reason: GitHubReason) => {
+                            switch (reason.status) {
+                                case 404: {
+                                    // The Gist no longer exists on GitHub.
+                                    // More likely the  case that the user does not have authority to update someone else's Gist. 
+                                    facts.gistExists.resolve(false);
+                                    facts.uploadedAt.reject(reason.statusText);
+                                    next(reason.statusText);
+                                    break;
+                                }
+                                default: {
+                                    facts.uploadedAt.reject(reason.statusText);
+                                    next(reason.statusText);
+                                }
+                            }
                         })
                 })
 

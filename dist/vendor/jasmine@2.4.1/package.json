@@ -1,6 +1,0 @@
-{
-    "name": "jasmine",
-    "version": "2.4.1",
-    "main": "./lib/jasmine.js",
-    "typings": "./lib/jasmine.d.ts"
-}
