@@ -415,15 +415,15 @@ export default class WorkspaceController implements WorkspaceMixin {
                             facts.statusText.resolve(http.statusText);
                             switch (status) {
                                 case 201: {
-                                    const data = http.data;
-                                    facts.gistId.resolve(data.id);
-                                    facts.uploadedAt.resolve(data.created_at);
+                                    const gist = http.data;
+                                    facts.gistId.resolve(gist.id);
+                                    facts.uploadedAt.resolve(gist.created_at);
                                     facts.redirect.resolve(true);
                                     facts.uploadMessage.resolve(`Your project was successfully uploaded and associated with a new Gist.`);
 
-                                    doodle.gistId = data.id;
-                                    doodle.created_at = data.created_at;
-                                    doodle.updated_at = data.updated_at;
+                                    doodle.gistId = gist.id;
+                                    doodle.created_at = gist.created_at;
+                                    doodle.updated_at = gist.updated_at;
 
                                     doodles.updateStorage();
 
@@ -461,11 +461,12 @@ export default class WorkspaceController implements WorkspaceMixin {
                             facts.statusText.resolve(statusText);
                             switch (status) {
                                 case 200: {
-                                    const data = http.data;
-                                    facts.uploadedAt.resolve(data.updated_at);
+                                    const gist = http.data;
+                                    // console.log(JSON.stringify(gist, null, 2));
+                                    facts.uploadedAt.resolve(gist.updated_at);
                                     facts.uploadMessage.resolve(`Your project was successfully uploaded and patched the existing Gist.`);
                                     doodle.emptyTrash();
-                                    doodle.updated_at = data.updated_at;
+                                    doodle.updated_at = gist.updated_at;
                                     doodles.updateStorage();
                                     next();
                                     break;
@@ -674,7 +675,7 @@ export default class WorkspaceController implements WorkspaceMixin {
                                 doodle.owner = owner;
                                 doodle.repo = repo;
                                 // doodle.ref = ref;
-                                facts.uploadMessage.resolve("Your project was successfully uploaded.");
+                                facts.uploadMessage.resolve("Your project was successfully uploaded to GitHub.");
                             }
                             else {
                                 facts.uploadMessage.resolve("Your project didn't make it to GitHub!");
@@ -686,6 +687,23 @@ export default class WorkspaceController implements WorkspaceMixin {
                         next(err);
                     });
                 });
+
+            flow.rule("Update Index", {},
+            (facts) => {
+                // console.log(JSON.stringify(facts, null, 2));
+                return false;
+            },
+            (facts, session, next) => {
+                    const db = new AWS.DynamoDB();
+                    db.listTables({}, function(err, data) {
+                        if (!err) {
+                            console.log(JSON.stringify(data.TableNames, null, 2));
+                        }
+                        else {
+                            console.warn(err, err.stack);
+                        }
+                    });
+            });
 
             const facts = new UploadFacts();
 

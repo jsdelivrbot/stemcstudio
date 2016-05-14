@@ -1,7 +1,6 @@
 import * as ng from 'angular';
 import Doodle from '../doodles/Doodle';
-import PatchGistResponse from '../github/PatchGistResponse';
-import GistKey from '../github/GistKey';
+import Gist from '../github/Gist';
 import RepoData from '../github/RepoData';
 import RepoKey from '../github/RepoKey';
 import UploadToRepoFacts from './UploadToRepoFacts';
@@ -19,12 +18,12 @@ interface CloudService {
     /**
      * @method createGist
      */
-    createGist(doodle: Doodle): ng.IHttpPromise<GistKey>;
+    createGist(doodle: Doodle): ng.IHttpPromise<Gist>;
 
     /**
      * @method updateGist
      */
-    updateGist(doodle: Doodle, gistId: string): ng.IHttpPromise<PatchGistResponse>;
+    updateGist(doodle: Doodle, gistId: string): ng.IHttpPromise<Gist>;
 
     /**
      * @method deleteGist

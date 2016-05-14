@@ -13,6 +13,7 @@ import ModalDialog from '../services/modalService/ModalDialog';
 export default class RepoController extends AbstractPageController {
     public static $inject: string[] = [
         '$scope',
+        '$state',
         '$window',
         'GitHubAuthManager',
         'ga',
@@ -21,12 +22,13 @@ export default class RepoController extends AbstractPageController {
     ];
     constructor(
         $scope: AppScope,
+        $state: angular.ui.IStateService,
         $window: angular.IWindowService,
         authManager: IGitHubAuthManager,
         ga: UniversalAnalytics.ga,
         modalDialog: ModalDialog,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string) {
-        super($scope, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'hidden');
+        super($scope, $state, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'hidden');
     }
     $onInit(): void {
         // This will not be called because this is a routing controller.

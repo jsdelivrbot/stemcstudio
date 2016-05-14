@@ -34,7 +34,7 @@ export default class DoodleController extends AbstractPageController {
         doodles: IDoodleManager,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string) {
 
-        super($scope, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'hidden');
+        super($scope, $state, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'hidden');
 
         // ExplorerMixin implementation.
         $scope.isExplorerVisible = true;
@@ -44,29 +44,20 @@ export default class DoodleController extends AbstractPageController {
 
         $scope.templates = templates;
 
-        $scope.doNew = function(label?: string, value?: number) {
-            ga('send', 'event', 'doodle', 'new', label, value);
-            $state.go('new');
+        $scope.doNew = (label?: string, value?: number) => {
+            this.navigateTo('new');
         };
 
-        $scope.doOpen = function(label?: string, value?: number) {
-            ga('send', 'event', 'doodle', 'open', label, value);
-            $state.go('open');
+        $scope.doOpen = (label?: string, value?: number) => {
+            this.navigateTo('open');
         };
 
-        $scope.doCopy = function(label?: string, value?: number) {
-            ga('send', 'event', 'doodle', 'copy', label, value);
-            $state.go('copy');
+        $scope.doCopy = (label?: string, value?: number) => {
+            this.navigateTo('copy');
         };
 
-        $scope.doProperties = function(label?: string, value?: number) {
-            ga('send', 'event', 'doodle', 'properties', label, value);
-            $state.go('properties', { doodle: doodles.current() });
-        };
-
-        $scope.goHome = function(label?: string, value?: number) {
-            ga('send', 'event', 'doodle', 'goHome', label, value);
-            $state.go('home');
+        $scope.doProperties = (label?: string, value?: number) => {
+            this.navigateTo('properties');
         };
 
         $scope.doHelp = function() {

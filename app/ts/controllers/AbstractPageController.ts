@@ -22,6 +22,7 @@ export default class AbstractPageController {
      */
     constructor(
         $scope: AppScope,
+        private $state: angular.ui.IStateService,
         $window: angular.IWindowService,
         authManager: IGitHubAuthManager,
         ga: UniversalAnalytics.ga,
@@ -42,5 +43,41 @@ export default class AbstractPageController {
         // which is very annoying. However, that means that we must be careful to put
         // them back on the other pages.
         $window.document.body.style.overflow = overflow;
+
+        $scope.goHome = (label?: string, value?: number) => {
+            const destination = 'home';
+            this.navigateTo(destination, void 0, void 0, label, value)
+                .then(function(promiseValue: any) {
+                    // console.log(`navigateTo('${destination}') completed.`);
+                })
+                .catch(function(reason: any) {
+                    console.warn(`navigateTo('${destination}') failed.`);
+                });
+        };
+
+        $scope.goLogin = (label?: string, value?: number) => {
+            const destination = 'login';
+            this.navigateTo(destination, void 0, void 0, label, value)
+                .then(function(promiseValue: any) {
+                    // console.log(`navigateTo('${destination}') completed.`);
+                })
+                .catch(function(reason: any) {
+                    console.warn(`navigateTo('${destination}') failed.`);
+                });
+        };
+    }
+
+    /**
+     * @method navigateTo
+     * @param to {string}
+     * @param [params] {}
+     * @param [options] {IStateOptions}
+     * @param [label] {string} Contextual information from UI.
+     * @param [value] {string} Contextual information from UI.
+     * @return {IPromise}
+     */
+    protected navigateTo(to: string, params?: {}, options?: angular.ui.IStateOptions, label?: string, value?: number): angular.IPromise<any> {
+        ga('send', 'event', 'navigateTo', to, label, value);
+        return this.$state.go(to, params, options);
     }
 }

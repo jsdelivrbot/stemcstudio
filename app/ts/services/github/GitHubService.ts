@@ -10,9 +10,7 @@ import CommitKey from './CommitKey';
 
 import Gist from './Gist';
 import GistData from './GistData';
-import GistKey from './GistKey';
 
-import PatchGistResponse from './PatchGistResponse';
 import PathContents from './PathContents';
 import PutFileResponse from './PutFileResponse';
 
@@ -29,7 +27,7 @@ import Tree from './Tree';
 import TreeData from './TreeData';
 import TreeKey from './TreeKey';
 
-import User from './User';
+import GitHubUser from './GitHubUser';
 
 /**
  * The GItHub v3 API.
@@ -61,13 +59,13 @@ interface GitHubService {
      * 
      */
     getRepoContents(owner: string, repo: string, done: (err: any, contents: RepoElement[]) => any);
-    getUser(): ng.IHttpPromise<User>;
+    getUser(): ng.IHttpPromise<GitHubUser>;
     getUserGists(user: string, done: (err: any, response) => any);
     getUserRepos(done: (err: any, repos: Repo[]) => any);
 
     getGist(gist: string): ng.IHttpPromise<Gist>;
-    createGist(data: GistData): ng.IHttpPromise<GistKey>;
-    updateGist(gistId: string, data: GistData): ng.IHttpPromise<PatchGistResponse>;
+    createGist(data: GistData): ng.IHttpPromise<Gist>;
+    updateGist(gistId: string, data: GistData): ng.IHttpPromise<Gist>;
     deleteGist(gistId: string, done: (err: any, response) => any);
 
     /**

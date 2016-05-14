@@ -1,7 +1,15 @@
 //
 // We import the app so that we can bootstrap.
 //
+
+/**
+ * app is the top-level angular.IModule.
+ */
 import app from './app';
+//
+// The remainder of this module defines various AngularJS components for the application.
+// The very last few lines in this file bootstrap the app module.
+//
 import translateFilter from './modules/translate/filter/translate';
 import TranslateProvider from './modules/translate/service/TranslateProvider';
 import * as angular from 'angular';
@@ -20,7 +28,6 @@ import HomeController from './controllers/HomeController';
 import editor from './directives/editor/editor.component';
 import explorer from './directives/explorer/explorer.component';
 import ExplorerFilesController from './directives/explorer/ExplorerFilesController';
-import googleSignInButton from './directives/googleSignIn/googleSignInButton';
 import logoText from './directives/logoText/logoText';
 import AlertController from './services/modalService/AlertController';
 import ConfirmController from './services/modalService/ConfirmController';
@@ -48,6 +55,11 @@ import WorkspaceFactoryService from './services/workspace/WorkspaceFactoryServic
 //
 app.controller('DashboardController', DashboardController);
 app.controller('DoodleController', DoodleController);
+/**
+ * This is the entry point for the application.
+ * It will be loaded by a System.import(...) call.
+ * This is currently done using a Jade template.
+ */
 app.controller('examples-controller', ExamplesController);
 app.controller('GitHubAccountController', GitHubAccountController);
 app.controller('home-controller', HomeController);
@@ -79,7 +91,6 @@ import './controllers/PropertiesController';
 app.directive('contextMenu', contextMenu);
 app.directive('editor', editor);
 app.directive('explorer', explorer);
-app.directive('googleSignInButton', googleSignInButton);
 app.directive('logoText', logoText);
 app.directive('resizable', resizable);
 app.directive('workspace', workspace);

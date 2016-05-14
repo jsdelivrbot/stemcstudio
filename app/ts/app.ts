@@ -29,9 +29,15 @@ import 'angular-ui-router';
 //
 import AppScope from './scopes/AppScope';
 import CookieService from './services/cookie/CookieService';
-import IGitHubItem from './services/gham/IGitHubItem';
+import githubSignInButton from './directives/githubSignIn/githubSignInButton';
+import googleSignInButton from './directives/googleSignIn/googleSignInButton';
 import IUuidService from './services/uuid/IUuidService';
 import ITranslateProvider from './modules/translate/ITranslateProvider';
+import LoginController from './controllers/LoginController';
+
+import FacebookLoginController from './controllers/login/facebook/FacebookLoginController';
+import GitHubLoginController from './controllers/login/github/GitHubLoginController';
+import TwitterLoginController from './controllers/login/twitter/TwitterLoginController';
 
 //
 // Create 'app' module and declare its Angular module dependencies.
@@ -61,17 +67,22 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version for use by scopes.
-app.constant('version', '2.0.0-beta.57');
+app.constant('version', '2.0.0-beta.58');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
 app.constant('FEATURE_DASHBOARD_ENABLED', false);
 app.constant('FEATURE_EXAMPLES_ENABLED', true);
 app.constant('FEATURE_LOGIN_ENABLED', true);
-app.constant('FEATURE_GOOGLE_API_ENABLED', false);
 app.constant('FEATURE_GIST_ENABLED', true);
 app.constant('FEATURE_I18N_ENABLED', true);
 app.constant('FEATURE_REPO_ENABLED', false);
+// Features for authentication.
+app.constant('FEATURE_AMAZON_SIGNIN_ENABLED', false);
+app.constant('FEATURE_GITHUB_SIGNIN_ENABLED', true);
+app.constant('FEATURE_GOOGLE_SIGNIN_ENABLED', true);
+app.constant('FEATURE_TWITTER_SIGNIN_ENABLED', false);
+app.constant('FEATURE_FACEBOOK_SIGNIN_ENABLED', false);
 
 // githubKey stores the key of the item in local storage for maintaining GitHub OAuth data.
 // Remark: This value is duplicated in views/github_callback.jade
@@ -137,6 +148,22 @@ app.constant('FILENAME_TYPESCRIPT_CURRENT_LIB_DTS', vendorPath('typescript@1.4.1
 // The MathScript js library provides operator overloading at runtime.
 app.constant('FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS', vendorPath('davinci-mathscript@1.0.8', 'dist/davinci-mathscript.min.js'));
 
+/**
+ * The LoginController is part of the routing system.
+ */
+const LOGIN_CONTROLLER_NAME = 'LoginController';
+app.controller(LOGIN_CONTROLLER_NAME, LoginController);
+
+/**
+ * The following controllers will be referenced from a template.
+ */
+app.controller('facebook-login-controller', FacebookLoginController);
+app.controller('github-login-controller', GitHubLoginController);
+app.controller('twitter-login-controller', TwitterLoginController);
+
+app.directive('githubSignInButton', githubSignInButton);
+app.directive('googleSignInButton', googleSignInButton);
+
 //
 // Register work which needs to be performed on module loading.
 //
@@ -147,7 +174,7 @@ app.config([
     'FEATURE_DASHBOARD_ENABLED',
     'FEATURE_EXAMPLES_ENABLED',
     'FEATURE_GIST_ENABLED',
-    'FEATURE_GOOGLE_API_ENABLED',
+    'FEATURE_GOOGLE_SIGNIN_ENABLED',
     'FEATURE_REPO_ENABLED',
     'STATE_DASHBOARD',
     'STATE_DOODLE',
@@ -161,7 +188,7 @@ app.config([
         FEATURE_DASHBOARD_ENABLED: boolean,
         FEATURE_EXAMPLES_ENABLED: boolean,
         FEATURE_GIST_ENABLED: boolean,
-        FEATURE_GOOGLE_API_ENABLED: boolean,
+        FEATURE_GOOGLE_SIGNIN_ENABLED: boolean,
         FEATURE_REPO_ENABLED: boolean,
         STATE_DASHBOARD: string,
         STATE_DOODLE: string,
@@ -169,11 +196,17 @@ app.config([
         STATE_GIST: string,
         STATE_REPO: string
     ) {
+        // FIXME: Some of the states should be replaced by modal dialogs.
         $stateProvider
             .state('home', {
                 url: '/',
                 templateUrl: 'home.html',
                 controller: 'home-controller'
+            })
+            .state('login', {
+                url: '/login',
+                templateUrl: 'login.html',
+                controller: LOGIN_CONTROLLER_NAME
             })
             .state(STATE_DOODLE, {
                 url: '/doodle',
@@ -289,9 +322,11 @@ app.run([
     'githubKey',
     'version',
     'FEATURE_GIST_ENABLED',
-    'FEATURE_GOOGLE_API_ENABLED',
+    'FEATURE_GOOGLE_SIGNIN_ENABLED',
     'FEATURE_LOGIN_ENABLED',
     'FEATURE_REPO_ENABLED',
+    'GITHUB_LOGIN_COOKIE_NAME',
+    'GITHUB_TOKEN_COOKIE_NAME',
     'UNIVERSAL_ANALYTICS_TRACKING_ID',
     function(
         $rootScope: AppScope,
@@ -304,19 +339,18 @@ app.run([
         githubKey: string,
         version: string,
         FEATURE_GIST_ENABLED: boolean,
-        FEATURE_GOOGLE_API_ENABLED: boolean,
+        FEATURE_GOOGLE_SIGNIN_ENABLED: boolean,
         FEATURE_LOGIN_ENABLED: boolean,
         FEATURE_REPO_ENABLED: boolean,
+        GITHUB_LOGIN_COOKIE_NAME: string,
+        GITHUB_TOKEN_COOKIE_NAME: string,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string
     ) {
         // The name of this cookie must correspond with the cookie sent back from the server.
         const GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME = 'stemcstudio-github-application-client-id';
-        const GITHUB_TOKEN_COOKIE_NAME = 'github-token';
-        const GITHUB_LOGIN_COOKIE_NAME = 'github-login';
-        const GITHUB_GET_LOGIN_OAUTH_AUTHORIZE = "https://github.com/login/oauth/authorize";
 
         // Initialize the GoogleAuth object, but don't sign in yet.
-        if (FEATURE_GOOGLE_API_ENABLED) {
+        if (FEATURE_GOOGLE_SIGNIN_ENABLED) {
             gapi.load('auth2', function() {
                 const auth2 = gapi.auth2.init({
                     client_id: '54406425322-nv10ri5f0p6vl3i2nrkbhv8mv9pmb4r1.apps.googleusercontent.com',
@@ -348,60 +382,7 @@ app.run([
             }
         };
 
-        $rootScope.login = function(label?: string, value?: number) {
-            if (FEATURE_LOGIN_ENABLED) {
-                ga('send', 'event', 'GitHub', 'login', label, value);
-                // This is the beginning of the Web Application Flow for GitHub OAuth2.
-                // The API now allows us to specify an unguessable random string called 'state'.
-                // This 'state' string is used to protect against cross-site request forgery attacks.
-
-                /**
-                 * The scopes that we will need from GitHub.
-                 */
-                const scopes: string[] = [];
-                scopes.push('user');
-                if (FEATURE_GIST_ENABLED) {
-                    scopes.push('gist');
-                }
-                if (FEATURE_REPO_ENABLED) {
-                    scopes.push('repo');
-                }
-
-                /**
-                 * This little string provides a bit more security - the unguessable random string.
-                 */
-                const pending = uuid4.generate();
-
-                /**
-                 * The GitHub OAuth2 endpoint URL.
-                 */
-                const githubURL = `${GITHUB_GET_LOGIN_OAUTH_AUTHORIZE}?client_id=${$rootScope.clientId()}&amp;scope=${scopes.join(',')}&amp;state=${pending}`;
-
-                // We effectively reset the GitHub property.
-                const github: IGitHubItem = { oauth: { pending: pending } };
-                $window.localStorage.setItem(githubKey, JSON.stringify(github));
-                // Begin the GET request to GitHub.
-                // Changing the browser URL appears to take you away from the app,
-                // but the login redirects back to the server.
-                $window.location.href = githubURL;
-            }
-            else {
-                console.warn(`FEATURE_LOGIN_ENABLED => ${FEATURE_LOGIN_ENABLED}`);
-            }
-        };
-
-        $rootScope.logout = function(label?: string, value?: number) {
-            if (FEATURE_LOGIN_ENABLED) {
-                ga('send', 'event', 'GitHub', 'logout', label, value);
-                cookie.removeItem(GITHUB_TOKEN_COOKIE_NAME);
-                cookie.removeItem(GITHUB_LOGIN_COOKIE_NAME);
-            }
-            else {
-                console.warn(`FEATURE_LOGIN_ENABLED => ${FEATURE_LOGIN_ENABLED}`);
-            }
-        };
-
-        $rootScope.isLoggedIn = function() {
+        $rootScope.isGitHubSignedIn = function() {
             if (FEATURE_LOGIN_ENABLED) {
                 return cookie.hasItem(GITHUB_TOKEN_COOKIE_NAME);
             }
@@ -421,7 +402,8 @@ app.run([
             }
         };
 
-        if (FEATURE_GOOGLE_API_ENABLED) {
+        /*
+        if (FEATURE_GOOGLE_SIGNIN_ENABLED) {
             $rootScope.googleSignIn = function() {
                 const auth2 = gapi.auth2.getAuthInstance();
                 auth2.currentUser.listen(function(googleUser) {
@@ -437,8 +419,10 @@ app.run([
                 });
             };
         }
+        */
 
-        if (FEATURE_GOOGLE_API_ENABLED) {
+        /*
+        if (FEATURE_GOOGLE_SIGNIN_ENABLED) {
             $rootScope.googleSignOut = function() {
                 const auth2 = gapi.auth2.getAuthInstance();
                 auth2.signOut().then(function() {
@@ -449,8 +433,9 @@ app.run([
                 });
             };
         }
+        */
 
-        if (FEATURE_GOOGLE_API_ENABLED) {
+        if (FEATURE_GOOGLE_SIGNIN_ENABLED) {
             $rootScope.isGoogleSignedIn = function() {
                 if (gapi.auth2) {
                     const auth2 = gapi.auth2.getAuthInstance();

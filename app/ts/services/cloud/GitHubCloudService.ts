@@ -9,8 +9,8 @@ import CloudService from './CloudService';
 import Doodle from '../doodles/Doodle';
 import doodleToGist from '../cloud/doodleToGist';
 import FlowService from '../flow/FlowService';
+import Gist from '../github/Gist';
 import GistData from '../github/GistData';
-import GistKey from '../github/GistKey';
 import GitHubReason from '../github/GitHubReason';
 import GitHubService from '../github/GitHubService';
 import isString from '../../utils/isString';
@@ -18,7 +18,6 @@ import IOptionManager from '../options/IOptionManager';
 import gistFilesToDoodleFiles from './gistFilesToDoodleFiles';
 import hyphenate from '../../utils/hyphenate';
 import PathContents from '../github/PathContents';
-import PatchGistResponse from '../github/PatchGistResponse';
 import ReferenceUpdateData from '../github/ReferenceUpdateData';
 import RepoData from '../github/RepoData';
 import RepoKey from '../github/RepoKey';
@@ -241,12 +240,12 @@ export default class GitHubCloudService implements CloudService {
         return deferred.promise;
     }
 
-    createGist(doodle: Doodle): ng.IHttpPromise<GistKey> {
+    createGist(doodle: Doodle): ng.IHttpPromise<Gist> {
         const data: GistData = doodleToGist(doodle, this.options);
         return this.github.createGist(data);
     }
 
-    updateGist(doodle: Doodle, gistId: string): ng.IHttpPromise<PatchGistResponse> {
+    updateGist(doodle: Doodle, gistId: string): ng.IHttpPromise<Gist> {
         const data: GistData = doodleToGist(doodle, this.options);
         return this.github.updateGist(gistId, data);
     }

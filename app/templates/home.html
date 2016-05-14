@@ -10,15 +10,9 @@
         </div>
         <div class='collapse navbar-collapse' id='navbar-header-collapse'>
             <button type="button" class="btn btn-primary navbar-btn" ng-click='goDoodle()'>Code Now!</button>
-            <button ng-if='FEATURE_EXAMPLES_ENABLED' type="button" class="btn btn-secondary navbar-btn" ng-click='goExamples()'>Browse Examples</button>
-            <button ng-if='FEATURE_LOGIN_ENABLED' type="button" class="btn btn-default navbar-btn" ng-click='login()' ng-hide='isLoggedIn()'>Sign in with GitHub</button>
-            <button ng-if='FEATURE_LOGIN_ENABLED' type="button" class="btn btn-default navbar-btn" ng-click='logout()' ng-show='isLoggedIn()'>GitHub Sign Out {{userLogin()}}</button>
-            <button ng-if='FEATURE_DASHBOARD_ENABLED' type="button" class="btn btn-secondary navbar-btn" ng-click='goDashboard()' ng-show='isLoggedIn()'>Dashboard</button>
-
-            <button ng-if='FEATURE_GOOGLE_API_ENABLED' type="button" class="btn btn-default navbar-btn" ng-hide='isGoogleSignedIn()' ng-click='googleSignIn()'>Google Sign In</button>
-            <button ng-if='FEATURE_GOOGLE_API_ENABLED' type="button" class="btn btn-default navbar-btn" ng-show='isGoogleSignedIn()' ng-click='googleSignOut()'>Google Sign out</button>
-
-            <google-sign-in-button ng-if='FEATURE_GOOGLE_API_ENABLED' button-id="uniqueid" options="options"></google-sign-in-button>
+            <button ng-if='FEATURE_EXAMPLES_ENABLED' type="button" class="btn btn-secondary navbar-btn" ng-click='goExamples()'>Examples</button>
+            <button ng-if='FEATURE_DASHBOARD_ENABLED' type="button" class="btn btn-secondary navbar-btn" ng-click='goDashboard()' ng-show='isGitHubSignedIn()'>Dashboard</button>
+            <button ng-if='FEATURE_LOGIN_ENABLED' type="button" class="btn btn-secondary navbar-btn" ng-click='goLogin()'>Sign In</button>
         </div>
     </div>
 </header>
@@ -27,8 +21,7 @@
     <div class='container'>
         <h1><logo-text version='{{version}}'/></h1>
         <p>
-            Learning Mathematics and Geometric Physics
-            <br/>through Computational Modeling.
+            Learning STEM through Computational Modeling.
         </p>
     </div>
 </div>
@@ -173,7 +166,7 @@
             <div class='md-docs-section'>
                 <h1 id='curriculum' class='page-header'>A STEM Curriculum for the 21st Century</h1>
                 <p class='lead'>
-                    Learning Geometric Algebra through Computational Modeling and Computer Graphics.
+                    Learning STEM through Computational Modeling.
                 </p>
                 <p>
                     I am frequently asked whether there is a curriculum for learning Geometric Algebra at the middle and high-school level using

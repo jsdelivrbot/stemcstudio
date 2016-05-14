@@ -175,7 +175,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                            </li>\n" +
     "                        </ul>\n" +
     "                    </li>\n" +
-    "                    <li ng-if='FEATURE_LOGIN_ENABLED' uib-dropdown ng-show='isEditMode &amp;&amp; isLoggedIn()'>\n" +
+    "                    <li ng-if='FEATURE_LOGIN_ENABLED' uib-dropdown ng-show='isEditMode &amp;&amp; isGitHubSignedIn()'>\n" +
     "                        <a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"GitHub Menu\" tooltip-placement='left'>\n" +
     "                            <ng-md-icon icon='cloud' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'><ng-md-icon>\n" +
     "                        </a>\n" +
@@ -322,7 +322,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                    <!-- Games -->\n" +
     "                    <div class='md-docs-section'>\n" +
     "\n" +
-    "                        <h1 class='page-header'>Integrated Learning through Game Development Projects</h1>\n" +
+    "                        <h1 class='page-header'>Game Development Projects</h1>\n" +
     "\n" +
     "                        <div ng-repeat='example in examples | filter : {category : \"Games\"}'>\n" +
     "                            <p class='lead'>\n" +
@@ -415,15 +415,9 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "        </div>\n" +
     "        <div class='collapse navbar-collapse' id='navbar-header-collapse'>\n" +
     "            <button type=\"button\" class=\"btn btn-primary navbar-btn\" ng-click='goDoodle()'>Code Now!</button>\n" +
-    "            <button ng-if='FEATURE_EXAMPLES_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goExamples()'>Browse Examples</button>\n" +
-    "            <button ng-if='FEATURE_LOGIN_ENABLED' type=\"button\" class=\"btn btn-default navbar-btn\" ng-click='login()' ng-hide='isLoggedIn()'>Sign in with GitHub</button>\n" +
-    "            <button ng-if='FEATURE_LOGIN_ENABLED' type=\"button\" class=\"btn btn-default navbar-btn\" ng-click='logout()' ng-show='isLoggedIn()'>GitHub Sign Out {{userLogin()}}</button>\n" +
-    "            <button ng-if='FEATURE_DASHBOARD_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goDashboard()' ng-show='isLoggedIn()'>Dashboard</button>\n" +
-    "\n" +
-    "            <button ng-if='FEATURE_GOOGLE_API_ENABLED' type=\"button\" class=\"btn btn-default navbar-btn\" ng-hide='isGoogleSignedIn()' ng-click='googleSignIn()'>Google Sign In</button>\n" +
-    "            <button ng-if='FEATURE_GOOGLE_API_ENABLED' type=\"button\" class=\"btn btn-default navbar-btn\" ng-show='isGoogleSignedIn()' ng-click='googleSignOut()'>Google Sign out</button>\n" +
-    "\n" +
-    "            <google-sign-in-button ng-if='FEATURE_GOOGLE_API_ENABLED' button-id=\"uniqueid\" options=\"options\"></google-sign-in-button>\n" +
+    "            <button ng-if='FEATURE_EXAMPLES_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goExamples()'>Examples</button>\n" +
+    "            <button ng-if='FEATURE_DASHBOARD_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goDashboard()' ng-show='isGitHubSignedIn()'>Dashboard</button>\n" +
+    "            <button ng-if='FEATURE_LOGIN_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goLogin()'>Sign In</button>\n" +
     "        </div>\n" +
     "    </div>\n" +
     "</header>\n" +
@@ -432,8 +426,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "    <div class='container'>\n" +
     "        <h1><logo-text version='{{version}}'/></h1>\n" +
     "        <p>\n" +
-    "            Learning Mathematics and Geometric Physics\n" +
-    "            <br/>through Computational Modeling.\n" +
+    "            Learning STEM through Computational Modeling.\n" +
     "        </p>\n" +
     "    </div>\n" +
     "</div>\n" +
@@ -578,7 +571,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "            <div class='md-docs-section'>\n" +
     "                <h1 id='curriculum' class='page-header'>A STEM Curriculum for the 21st Century</h1>\n" +
     "                <p class='lead'>\n" +
-    "                    Learning Geometric Algebra through Computational Modeling and Computer Graphics.\n" +
+    "                    Learning STEM through Computational Modeling.\n" +
     "                </p>\n" +
     "                <p>\n" +
     "                    I am frequently asked whether there is a curriculum for learning Geometric Algebra at the middle and high-school level using\n" +
@@ -647,6 +640,90 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "  -->\n" +
     "    </div>\n" +
     "</footer>"
+  );
+
+
+  $templateCache.put('login.html',
+    "<div id='login-page'>\n" +
+    "    <header>\n" +
+    "        <nav id='toolbar' class='navbar navbar-inverse'>\n" +
+    "            <div class='navbar-header'>\n" +
+    "                <a role='button' class='navbar-brand' ng-click='goHome()'>\n" +
+    "                    <logo-text version='{{version}}' />\n" +
+    "                </a>\n" +
+    "            </div>\n" +
+    "            <div class='ignore-collapse ignore-navbar-collapse'>\n" +
+    "                <ul class='nav navbar-nav'>\n" +
+    "                </ul>\n" +
+    "            </div>\n" +
+    "        </nav>\n" +
+    "    </header>\n" +
+    "    <div class='login-container'>\n" +
+    "        <div class='container md-docs-container'>\n" +
+    "            <div class='row'>\n" +
+    "                <div class='col-md-9' role='main'>\n" +
+    "                    <div class='md-docs-section'>\n" +
+    "                        <h1 class='page-header'>Source Management</h1>\n" +
+    "                        <p class='lead'>\n" +
+    "                            Save your work to your personal GitHub account.\n" +
+    "                        </p>\n" +
+    "                        <div class='login-provider-buttons'>\n" +
+    "                            <div ng-controller='github-login-controller as github' ng-if='FEATURE_GITHUB_SIGNIN_ENABLED' button-id=\"github-button-id\"\n" +
+    "                            options=\"options\" class='login-provider-button-container'>\n" +
+    "                                <div style=\"height:34px;width:240px;\" class=\"stemcButton stemcButtonGray\">\n" +
+    "                                    <div class=\"stemcButtonContentWrapper\" ng-click=\"github.login()\">\n" +
+    "                                        <div class=\"stemcButtonIcon\" style=\"padding:7px;\">\n" +
+    "                                            <ng-md-icon icon=\"github-circle\" size='18' />\n" +
+    "                                        </div>\n" +
+    "                                        <span style=\"font-size:13px;line-height:32px;\" class=\"stemcButtonContents\">\n" +
+    "                                            <span ng-hide='isGitHubSignedIn()'>Sign in with GitHub</span>\n" +
+    "                                            <span ng-show='isGitHubSignedIn()'>Signed in with GitHub</span>\n" +
+    "                                        </span>\n" +
+    "                                    </div>\n" +
+    "                                </div>\n" +
+    "                            </div>\n" +
+    "                        </div>\n" +
+    "                    </div>\n" +
+    "                    <div class='md-docs-section'>\n" +
+    "                        <h1 class='page-header'>{{ 'APP_NAME' | translate }} Platform</h1>\n" +
+    "                        <p class='lead'>\n" +
+    "                            Publish your work, and gain access to other platform features.\n" +
+    "                        </p>\n" +
+    "                        <div class='login-provider-buttons'>\n" +
+    "                            <div ng-if='FEATURE_GOOGLE_SIGNIN_ENABLED' class='login-provider-button-container'>\n" +
+    "                                <google-sign-in-button ng-if='FEATURE_GOOGLE_SIGNIN_ENABLED' button-id=\"google-button-id\" options=\"googleSignInOptions\"></google-sign-in-button>\n" +
+    "                            </div>\n" +
+    "                            <div ng-controller='twitter-login-controller as twitter' ng-if='FEATURE_TWITTER_SIGNIN_ENABLED' button-id=\"github-button-id\" options=\"options\" class='login-provider-button-container'>\n" +
+    "                                <div style=\"height:34px;width:240px;\" class=\"stemcButton stemcButtonTwitter\">\n" +
+    "                                    <div class=\"stemcButtonContentWrapper\" ng-click=\"twitter.login()\">\n" +
+    "                                        <div class=\"stemcButtonIcon\" style=\"padding:7px;\">\n" +
+    "                                            <ng-md-icon icon=\"twitter\" size='18' />\n" +
+    "                                        </div>\n" +
+    "                                        <span style=\"font-size:13px;line-height:32px;\" class=\"stemcButtonContents\">\n" +
+    "                                            <span>Sign in with Twitter</span>\n" +
+    "                                        </span>\n" +
+    "                                    </div>\n" +
+    "                                </div>\n" +
+    "                            </div>\n" +
+    "                            <div ng-controller='facebook-login-controller as facebook' ng-if='FEATURE_FACEBOOK_SIGNIN_ENABLED' button-id=\"github-button-id\" options=\"options\" class='login-provider-button-container'>\n" +
+    "                                <div style=\"height:34px;width:240px;\" class=\"stemcButton stemcButtonFacebook\">\n" +
+    "                                    <div class=\"stemcButtonContentWrapper\" ng-click=\"facebook.login()\">\n" +
+    "                                        <div class=\"stemcButtonIcon\" style=\"padding:7px;\">\n" +
+    "                                            <ng-md-icon icon=\"facebook\" size='18' />\n" +
+    "                                        </div>\n" +
+    "                                        <span style=\"font-size:13px;line-height:32px;\" class=\"stemcButtonContents\">\n" +
+    "                                            <span>Sign in with Facebook</span>\n" +
+    "                                        </span>\n" +
+    "                                    </div>\n" +
+    "                                </div>\n" +
+    "                            </div>\n" +
+    "                        </div>\n" +
+    "                    </div>\n" +
+    "                </div>\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "    </div>\n" +
+    "</div>"
   );
 
 

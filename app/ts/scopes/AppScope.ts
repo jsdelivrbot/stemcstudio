@@ -7,15 +7,29 @@ interface AppScope extends angular.IRootScopeService {
     $state: angular.ui.IStateService;
     $stateParams: angular.ui.IStateParamsService;
 
+    /**
+     * This is the GitHub client id for OAuth2.
+     * It's value depends on whether we are in production or localhost:8080, so we get it from the server as a cookie.
+     */
     clientId: () => string;
-    isLoggedIn(): boolean;
-    login(): void;
-    logout(): void;
+
+    /**
+     * (GitHub)
+     */
+    isGitHubSignedIn(): boolean;
+
+    /**
+     * (GitHub)
+     */
     userLogin(): string;
 
-    googleSignIn(): void;
-    googleSignOut(): void;
+    /**
+     * (Google)
+     */
     googleUser: gapi.auth2.GoogleUser;
+    /**
+     * (Google)
+     */
     isGoogleSignedIn(): boolean;
 
     /**
@@ -26,7 +40,7 @@ interface AppScope extends angular.IRootScopeService {
     /**
      * 
      */
-    FEATURE_GOOGLE_API_ENABLED: boolean;
+    FEATURE_GOOGLE_SIGNIN_ENABLED: boolean;
 
     /**
      * 
@@ -37,6 +51,16 @@ interface AppScope extends angular.IRootScopeService {
      * 
      */
     FEATURE_I18N_ENABLED: boolean;
+
+    /**
+     * Navigate to the Home page.
+     */
+    goHome(): void;
+
+    /**
+     * Navigate to the Log In page.
+     */
+    goLogin(): void;
 }
 
 export default AppScope;

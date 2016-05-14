@@ -1,9 +1,9 @@
 import AppScope from '../scopes/AppScope';
-import User from '../services/github/User';
+import GitHubUser from '../services/github/GitHubUser';
 import Repo from '../services/github/Repo';
 
 interface GitHubAccountScope extends AppScope {
-    user: User;
+    user: GitHubUser;
     repos: Repo[];
 }
 

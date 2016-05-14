@@ -1,8 +1,8 @@
 {
   "name": "stemcstudio",
-  "version": "2.0.0-beta.57",
+  "version": "2.0.0-beta.58",
   "private": true,
-  "description": "Learning Mathematics and Geometric Physics through Computational Modeling",
+  "description": "Learning STEM through Computational Modeling",
   "engines": {
     "node": "0.12.0"
   },

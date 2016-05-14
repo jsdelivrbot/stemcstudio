@@ -8,12 +8,15 @@ import GoogleSignInScope from './GoogleSignInScope';
 export default function(): ng.IDirective {
     return {
         scope: {
+            /**
+             * The button-id property sets the id property on the created div element.
+             */
             buttonId: '@',
             options: '&'
         },
         template: '<div></div>',
         link: function(scope: GoogleSignInScope, element: angular.IAugmentedJQuery, attrs: angular.IAttributes) {
-            const div = element.find('div')[0];
+            const div = <HTMLDivElement>element.find('div')[0];
             div.id = attrs['buttonId'];
             gapi.signin2.render(div.id, scope.options());
         }

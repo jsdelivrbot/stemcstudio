@@ -8,7 +8,6 @@ import CommitData from './CommitData';
 import CommitKey from './CommitKey';
 import Gist from './Gist';
 import GistData from './GistData';
-import GistKey from './GistKey';
 import isString from '../../utils/isString';
 import Repo from './Repo';
 import RepoData from './RepoData';
@@ -16,7 +15,6 @@ import RepoElement from './RepoElement';
 import RepoKey from './RepoKey';
 import GitHubService from './GitHubService';
 import CookieService from '../cookie/CookieService';
-import PatchGistResponse from './PatchGistResponse';
 import PathContents from './PathContents';
 import PutFileResponse from './PutFileResponse';
 import Reference from './Reference';
@@ -25,7 +23,7 @@ import ReferenceUpdateData from './ReferenceUpdateData';
 import Tree from './Tree';
 import TreeData from './TreeData';
 import TreeKey from './TreeKey';
-import User from './User';
+import GitHubUser from './GitHubUser';
 // TODO: Get rid of the underscore dependency.
 import * as _ from 'underscore';
 
@@ -75,11 +73,11 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
             return headers;
         }
         return {
-            getUser: function(): ng.IHttpPromise<User> {
+            getUser: function(): ng.IHttpPromise<GitHubUser> {
                 const method = HTTP_METHOD_GET;
                 const url = `${gitHub()}/user`;
                 const headers = requestHeaders();
-                return $http<User>({ method, url, headers });
+                return $http<GitHubUser>({ method, url, headers });
             },
             getUserRepos: function(done: (err: any, repo: Repo[]) => any) {
                 return $http({
@@ -194,13 +192,13 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
                 const headers = requestHeaders();
                 return $http({ method, url, headers });
             },
-            createGist: function(data: GistData): ng.IHttpPromise<GistKey> {
+            createGist: function(data: GistData): ng.IHttpPromise<Gist> {
                 const url = gists();
                 const method = HTTP_METHOD_POST;
                 const headers = requestHeaders();
                 return $http({ method, url, data, headers });
             },
-            updateGist: function(gistId: string, data: GistData): ng.IHttpPromise<PatchGistResponse> {
+            updateGist: function(gistId: string, data: GistData): ng.IHttpPromise<Gist> {
                 const url = `${gists()}/${gistId}`;
                 const method = HTTP_METHOD_PATCH;
                 const headers = requestHeaders();

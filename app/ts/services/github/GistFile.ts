@@ -5,6 +5,9 @@ interface GistFile {
     raw_url: string;
     size: number;
     truncated: boolean;
+    /**
+     * The content comes down unencoded.
+     */
     content: string;
 }
 

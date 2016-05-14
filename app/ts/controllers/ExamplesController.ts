@@ -39,7 +39,7 @@ export default class ExamplesController extends AbstractPageController {
         modalDialog: ModalDialog,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string
     ) {
-        super($scope, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
+        super($scope, $state, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
 
         $scope.examples = [
             {
@@ -141,10 +141,5 @@ export default class ExamplesController extends AbstractPageController {
                 category: 'Physics'
             }
         ];
-
-        $scope.goHome = function(label?: string, value?: number) {
-            ga('send', 'event', 'examples', 'goHome', label, value);
-            $state.go('home');
-        };
     }
 }

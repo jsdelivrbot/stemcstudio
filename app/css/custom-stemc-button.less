@@ -1,0 +1,186 @@
+/*
+The styles originated from the Google Sign In Button.
+*/
+.stemcButton {
+    -webkit-border-radius:1px;
+    border-radius:1px;
+    -webkit-box-shadow: 0 2px 4px 0px rgba(0,0,0,.25);
+    box-shadow:0 2px 4px 0 rgba(0,0,0,.25);
+    -webkit-box-sizing:border-box;box-sizing:border-box;
+    -webkit-transition:background-color .218s,border-color .218s,box-shadow .218s;transition:background-color .218s,border-color .218s,box-shadow .218s;
+    -webkit-user-select:none;-webkit-appearance:none;
+    background-color:#fff;
+    background-image:none;
+    color:#262626;
+    cursor:pointer;
+    outline:none;
+    overflow:hidden;
+    position:relative;
+    text-align:center;
+    vertical-align:middle;
+    white-space:nowrap;
+    width:auto
+}
+
+.stemcButton:hover {
+    -webkit-box-shadow:0 0 3px 3px rgba(66,133,244,.3);
+    box-shadow:0 0 3px 3px rgba(66,133,244,.3)
+}
+.stemcButtonRed, .stemcButtonBlue, .stemcButtonGray, .stemcButtonTwitter, .stemcButtonFacebook {
+    border:none;
+    color:#fff;
+}
+/*
+Buttons define a standard, hover and active colors.
+The Google standard is for the hover color to be the same as standard.
+The active color is a bit darker.
+*/
+
+/*
+Red
+*/
+.stemcButtonRed{
+    background-color:#dc4e41
+}
+.stemcButtonRed:active {
+    background-color:#c53829
+}
+/*
+Blue (Google)
+*/
+.stemcButtonBlue {
+    background-color:#4285f4
+}
+.stemcButtonBlue:hover {
+    background-color:#4285f4
+}
+.stemcButtonBlue:active {
+    background-color:#3367d6
+}
+/*
+Facebook
+*/
+.stemcButtonFacebook {
+    background-color: #4464A2
+}
+.stemcButtonFacebook:hover {
+    background-color: #4464A2
+}
+.stemcButtonFacebook:active {
+    background-color: #4464A2
+}
+
+/*
+Gray (GitHub)
+*/
+.stemcButtonGray {
+    background-color: #757575
+}
+.stemcButtonGray:hover {
+    background-color: #757575
+}
+.stemcButtonGray:active {
+    background-color:#6d6d6d
+}
+/*
+Twitter
+*/
+.stemcButtonTwitter {
+    background-color: #60B5F0
+}
+.stemcButtonTwitter:hover {
+    background-color: #60B5F0
+}
+.stemcButtonTwitter:active {
+    background-color: #60B5F0
+}
+/*
+White
+*/
+.stemcButtonWhite {
+    background-color:#fff;
+    color:#dc4e41
+}
+.stemcButtonWhite:active {
+    background-color:#eee
+}
+.stemcButtonWhite path {
+    fill:#dc4e41
+}
+.stemcButtonIcon {
+    float:left;
+    background-color:#fff;
+    -webkit-border-radius:1px;
+    border-radius:1px
+}
+.stemcButtonBlue .stemcButtonIcon {
+    background-color:#fff;
+    -webkit-border-radius:1px;
+    border-radius:1px
+}
+.stemcButtonSvg{
+    display:block
+}
+.stemcButtonContents{
+    font-family:Roboto,arial,sans-serif;
+    font-size:14px;
+    font-weight:500;
+    letter-spacing:.21px;
+    margin-left:6px;
+    margin-right:6px;
+    vertical-align:top
+}
+.stemcButtonContentWrapper {
+    height:100%;width:100%
+}
+.stemcButtonGreen .stemcButtonContentWrapper,.stemcButtonRed .stemcButtonContentWrapper,.stemcButtonBlue .stemcButtonContentWrapper,.stemcButtonDarkGray .stemcButtonContentWrapper,.stemcButtonGrayedOut .stemcButtonContentWrapper{
+    border:1px solid transparent
+}
+.stemcButtonErrorWrapper,.stemcButtonWorkingWrapper {
+    display:none;height:100%;width:100%
+}
+.stemcButtonErrorIcon,.stemcButtonWorkingIcon {
+    margin-left:auto;
+    margin-right:auto
+}
+.stemcButtonErrorState,.stemcButtonWorkingState {
+    border:1px solid #d5d5d5;
+    border:1px solid rgba(0,0,0,.17);
+    -webkit-box-shadow:0 1px 0 rgba(0,0,0,.05);
+    box-shadow:0 1px 0 rgba(0,0,0,.05);
+    color:#262626
+}
+.stemcButtonErrorState:hover,.stemcButtonWorkingState:hover {
+    border:1px solid #aaa;
+    border:1px solid rgba(0,0,0,.25);
+    -webkit-box-shadow:0 1px 0 rgba(0,0,0,.1);
+    box-shadow:0 1px 0 rgba(0,0,0,.1)
+}
+.stemcButtonErrorState:active,.stemcButtonWorkingState:active {
+    border:1px solid #aaa;
+    border:1px solid rgba(0,0,0,.25);
+    -webkit-box-shadow:inset 0 1px 0 #ddd;
+    box-shadow:inset 0 1px 0 #ddd;color:#262626
+}
+.stemcButtonWorkingState,.stemcButtonWorkingState:hover {
+    background-color:#f5f5f5
+}
+.stemcButtonWorkingState:active {
+    background-color:#e5e5e5
+}
+.stemcButtonErrorState,.stemcButtonErrorState:hover {
+    background-color:#fff
+}
+.stemcButtonErrorState:active {
+    background-color:#e5e5e5
+}
+.stemcButtonWorkingState .stemcButtonWorkingWrapper,.stemcButtonErrorState .stemcButtonErrorWrapper {
+    display:block
+}
+.stemcButtonErrorState .stemcButtonContentWrapper,.stemcButtonWorkingState .stemcButtonContentWrapper,.stemcButtonErrorState .stemcButtonWorkingWrapper {
+    display:none
+}
+.-webkit-keyframes stemcButtonWorkingIconPathSpinKeyframes {
+    transform:0%;
+    -webkit-transform:rotate(0)
+}

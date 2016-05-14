@@ -1,3 +1,3 @@
 # STEMCstudio
 
-Learning Mathematics and Geometric Physics through Computational Modeling.
+Learning STEM through Computational Modeling.

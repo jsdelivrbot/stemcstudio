@@ -1,6 +1,6 @@
 import GitHubAccountScope from '../scopes/GitHubAccountScope';
 import GitHubService from '../services/github/GitHubService';
-import User from '../services/github/User';
+import GitHubUser from '../services/github/GitHubUser';
 import Repo from '../services/github/Repo';
 
 /**
@@ -31,7 +31,7 @@ export default class GitHubAccountController {
         this.gitHub.getUser().then((response) => {
             this.$scope.user = response.data;
         }).catch((reason) => {
-            this.$scope.user = <User>{ name: "", login: "", avatar_url: void 0 };
+            this.$scope.user = <GitHubUser>{ name: "", login: "", avatar_url: void 0 };
         });
 
         this.gitHub.getUserRepos((err: any, repos: Repo[]) => {
