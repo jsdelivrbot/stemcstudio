@@ -34,6 +34,7 @@ import googleSignInButton from './directives/googleSignIn/googleSignInButton';
 import IUuidService from './services/uuid/IUuidService';
 import ITranslateProvider from './modules/translate/ITranslateProvider';
 import LoginController from './controllers/LoginController';
+import SearchController from './controllers/search/SearchController';
 
 import FacebookLoginController from './controllers/login/facebook/FacebookLoginController';
 import GitHubLoginController from './controllers/login/github/GitHubLoginController';
@@ -153,6 +154,8 @@ app.constant('FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS', vendorPath('davinci-maths
  */
 const LOGIN_CONTROLLER_NAME = 'LoginController';
 app.controller(LOGIN_CONTROLLER_NAME, LoginController);
+const SEARCH_CONTROLLER_NAME = 'SearchController';
+app.controller(SEARCH_CONTROLLER_NAME, SearchController);
 
 /**
  * The following controllers will be referenced from a template.
@@ -207,6 +210,11 @@ app.config([
                 url: '/login',
                 templateUrl: 'login.html',
                 controller: LOGIN_CONTROLLER_NAME
+            })
+            .state('search', {
+                url: '/search',
+                templateUrl: 'search.html',
+                controller: SEARCH_CONTROLLER_NAME
             })
             .state(STATE_DOODLE, {
                 url: '/doodle',
@@ -349,22 +357,6 @@ app.run([
         // The name of this cookie must correspond with the cookie sent back from the server.
         const GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME = 'stemcstudio-github-application-client-id';
 
-        // Initialize the GoogleAuth object, but don't sign in yet.
-        if (FEATURE_GOOGLE_SIGNIN_ENABLED) {
-            gapi.load('auth2', function() {
-                const auth2 = gapi.auth2.init({
-                    client_id: '54406425322-nv10ri5f0p6vl3i2nrkbhv8mv9pmb4r1.apps.googleusercontent.com',
-                    fetch_basic_profile: true,  // affects getBasicProfile() on GoogleUser.
-                    scope: 'profile'
-                });
-                auth2.then(function onInit() {
-                    // Do nothing.
-                }, function onFailure(reason: any) {
-                    console.warn(`gapi.auth2.init failed because ${reason}`);
-                });
-            });
-        }
-
         // It's very handy to add references to $state and $stateParams to the $rootScope
         // so that you can access them from any scope (HTML template) within the application.
         $rootScope.$state = $state;
@@ -450,9 +442,33 @@ app.run([
         // Amazon Cognito, unauthenticated credentials
         AWS.config.region = 'us-east-1';
         AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+            // This identifier comes from looking at the generated sample code for
+            // the identity provider called STEMCstudio for the JavaScript platform.
+            // It can also be seen by "Edit identity pool".
             IdentityPoolId: 'us-east-1:b419a8b6-2753-4af4-a76b-41a451eb2278',
             Logins: {}
         });
+
+        // Initialize the GoogleAuth object, but don't sign in yet.
+        if (FEATURE_GOOGLE_SIGNIN_ENABLED) {
+            gapi.load('auth2', function() {
+                const auth2 = gapi.auth2.init({
+                    client_id: '54406425322-nv10ri5f0p6vl3i2nrkbhv8mv9pmb4r1.apps.googleusercontent.com',
+                    fetch_basic_profile: true,  // affects getBasicProfile() on GoogleUser.
+                    scope: 'profile'
+                });
+                auth2.then(function onInit() {
+                    auth2.currentUser.listen(function(googleUser: gapi.auth2.GoogleUser) {
+                        console.log(`The googleUser changed.`);
+                        const id_token = googleUser.getAuthResponse().id_token;
+                        console.log(`id_token => ${id_token}`);
+                    });
+                    // Do nothing.
+                }, function onFailure(reason: any) {
+                    console.warn(`gapi.auth2.init failed because ${reason}`);
+                });
+            });
+        }
 
         /* Web Identity Federation
         AWS.config.credentials = new AWS.WebIdentityCredentials({

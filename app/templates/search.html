@@ -1,0 +1,47 @@
+<div id='search-page'>
+    <header>
+        <nav id='toolbar' class='navbar navbar-inverse'>
+            <div class='navbar-header'>
+                <a role='button' class='navbar-brand' ng-click='goHome()'>
+                    <logo-text version='{{version}}' />
+                </a>
+            </div>
+            <div class='ignore-collapse ignore-navbar-collapse'>
+                <ul class='nav navbar-nav'>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div class='search-container'>
+        <div class='container md-docs-container'>
+            <div class='row'>
+                <div class='col-md-9' role='main'>
+                    <div class='md-docs-section'>
+                        <h1 class='page-header'>Search</h1>
+                        <!-- p class='lead'></p -->
+                        <div>
+                            <div button-id="search-button-id" options="options">
+                                <div style="height:34px;width:240px;" class="stemcButton stemcButtonGray">
+                                    <div class="stemcButtonContentWrapper" ng-click="query()">
+                                        <div class="stemcButtonIcon" style="padding:7px;">
+                                            <ng-md-icon icon="search" size='18' />
+                                        </div>
+                                        <span style="font-size:13px;line-height:32px;" class="stemcButtonContents">
+                                            <span>Go</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='md-docs-section'>
+                        <div ng-repeat='doodle in doodleRefs'>
+                            <a ng-href='/#/gists/{{doodle.gistId}}'>{{doodle.description}}</a>
+                            <div>{{doodle.owner}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

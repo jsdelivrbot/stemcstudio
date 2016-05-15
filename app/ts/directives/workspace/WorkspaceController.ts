@@ -1,5 +1,6 @@
 import * as ng from 'angular';
 import Base64Service from '../../services/base64/Base64Service';
+import bubbleIframeMouseMove from './bubbleIframeMouseMove';
 import Delta from '../../widgets/editor/Delta';
 import Editor from '../../widgets/editor/Editor';
 import EditSession from '../../widgets/editor/EditSession';
@@ -13,6 +14,7 @@ import fileExists from './fileExists';
 import IDoodleManager from '../../services/doodles/IDoodleManager';
 import GitHubReason from '../../services/github/GitHubReason';
 import GitHubService from '../../services/github/GitHubService';
+import HackingFacts from './HackingFacts';
 import IGitHubAuthManager from '../../services/gham/IGitHubAuthManager';
 import IOption from '../../services/options/IOption';
 import IOptionManager from '../../services/options/IOptionManager';
@@ -144,48 +146,6 @@ function scriptURL(domain: string, fileName: string, VENDOR_FOLDER_MARKER: strin
         // TODO: While we migrate options, everything is still local.
         return domain + '/js/' + fileName;
     }
-}
-
-
-// The iframe will capture the mouse events that we need to
-// resize the output widow. This function
-function bubbleIframeMouseMove(iframe: HTMLIFrameElement) {
-    // Save any previous onmousemove handler.
-    const existingOnMouseMove = iframe.contentWindow.onmousemove;
-
-    // Attach a new onmousemove listener.
-    iframe.contentWindow.onmousemove = function(e: MouseEvent) {
-        // Fire any existing onmousemove listener.
-        if (existingOnMouseMove) existingOnMouseMove(e);
-
-        // Create a new event for the this window.
-        const evt: MouseEvent = document.createEvent("MouseEvents");
-
-        // We'll need this to offset the mouse move appropriately.
-        const boundingClientRect = iframe.getBoundingClientRect();
-
-        // Initialize the event, copying exiting event values (most of them).
-        evt.initMouseEvent(
-            "mousemove",
-            true, // bubbles
-            false, // not cancelable 
-            window,
-            e.detail,
-            e.screenX,
-            e.screenY,
-            e.clientX + boundingClientRect.left,
-            e.clientY + boundingClientRect.top,
-            e.ctrlKey,
-            e.altKey,
-            e.shiftKey,
-            e.metaKey,
-            e.button,
-            null // no related element
-        );
-
-        // Dispatch the mousemove event on the iframe element.
-        iframe.dispatchEvent(evt);
-    };
 }
 
 /**
@@ -347,6 +307,130 @@ export default class WorkspaceController implements WorkspaceMixin {
             ga('send', 'event', 'doodle', 'toggleReadMeVisible', label, value);
             $scope.isReadMeVisible = !$scope.isReadMeVisible;
             this.updateReadmeView(WAIT_NO_MORE);
+        };
+
+        $scope.doHacking = () => {
+
+            const doodle = this.doodles.current();
+            console.log(`owner => ${doodle.owner}`);
+            console.log(`gistId => ${doodle.gistId}`);
+            console.log(`description => ${doodle.description}`);
+            const flow = this.flowService.createFlow<HackingFacts>("Hacking");
+
+            flow.rule("Google Sign-In", {},
+            (facts) => {
+                return facts.id_token.isUndefined();
+            },
+            (facts, session, next) => {
+                const options = new gapi.auth2.SigninOptionsBuilder({
+                    scope: 'profile'
+                });
+                const googleUser = gapi.auth2.getAuthInstance().currentUser.get();
+                googleUser.grant(options).then(
+                    function(success) {
+                        const id_token = googleUser.getAuthResponse().id_token;
+                        facts.id_token.resolve(id_token);
+                        console.log(JSON.stringify({message: "success", value: success}));
+                        next();
+                    },
+                    function(fail) {
+                        facts.id_token.reject(fail);
+                        alert(JSON.stringify({message: "fail", value: fail}));
+                        next(fail);
+                    });
+            });
+
+            flow.rule("DynamoDB", {},
+            (facts) => {
+                return facts.id_token.isResolved() && facts.indexed.isUndefined() && facts.owner.isResolved();
+            },
+            (facts, session, next) => {
+                AWS.config.region = 'us-east-1';
+                AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+                    IdentityPoolId: 'us-east-1:b419a8b6-2753-4af4-a76b-41a451eb2278',
+                    Logins: {
+                        'accounts.google.com': facts.id_token.value
+                    }
+                });
+                const db = new AWS.DynamoDB();
+                /*
+                db.listTables({}, function(err, data) {
+                    if (!err) {
+                        console.log(JSON.stringify(data, null, 2));
+                    }
+                    else {
+                        console.warn(err, err.stack);
+                    }
+                });
+                */
+                /*
+                db.describeTable({TableName: 'Doodle'}, function(err, data) {
+                    if (!err) {
+                        console.log(JSON.stringify(data, null, 2));
+                    }
+                    else {
+                        console.warn(err, err.stack);
+                    }
+                });
+                */
+                db.putItem(
+                    {
+                        TableName: 'Doodle',
+                        Item: {
+                            'owner': {S: facts.owner.value},
+                            'resource': {S: doodle.gistId},
+                            'type': {S: 'Gist'},
+                            'description': {S: doodle.description}
+                        }
+                    },
+                    function(err, data) {
+                        if (!err) {
+                            facts.indexed.resolve(true);
+                            console.log("SUCCESS!");
+                            console.log(JSON.stringify(data, null, 2));
+                        }
+                        else {
+                            facts.indexed.reject(err);
+                            console.warn(err, err.stack);
+                        }
+                        next(err);
+                    });
+            });
+
+            const facts = new HackingFacts();
+            // If we can find an id_token that we can use for the AWS credentials then
+            // we can get the rule engine to skip the Sign-In step.
+            const googleUser = gapi.auth2.getAuthInstance().currentUser.get();
+            console.log(`userLogin => ${$scope.userLogin()}`);
+            if ($scope.isGitHubSignedIn()) {
+                facts.owner.resolve($scope.userLogin());
+            }
+            if (googleUser) {
+                const response = googleUser.getAuthResponse();
+                if (response) {
+                    const id_token = googleUser.getAuthResponse().id_token;
+                    if (id_token) {
+                        facts.id_token.resolve(id_token);
+                    }
+                }
+                else {
+                    throw new Error("response");
+                }
+            }
+            else {
+                throw new Error("googleUser");
+            }
+
+            const session = flow.createSession(facts);
+
+            session.execute((err: any, data: HackingFacts) => {
+                if (!err) {
+                    console.log(JSON.stringify(data, null, 2));
+                }
+                else {
+                    console.log(JSON.stringify(err, null, 2));
+                }
+            });
         };
 
         $scope.doUpload = (label?: string, value?: number) => {
@@ -694,15 +778,7 @@ export default class WorkspaceController implements WorkspaceMixin {
                 return false;
             },
             (facts, session, next) => {
-                    const db = new AWS.DynamoDB();
-                    db.listTables({}, function(err, data) {
-                        if (!err) {
-                            console.log(JSON.stringify(data.TableNames, null, 2));
-                        }
-                        else {
-                            console.warn(err, err.stack);
-                        }
-                    });
+                // Do nothing yet.
             });
 
             const facts = new UploadFacts();

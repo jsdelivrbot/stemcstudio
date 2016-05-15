@@ -22,6 +22,11 @@ interface WorkspaceScope extends DoodleScope {
     toggleReadMeVisible: () => void;
 
     /**
+     * Hacking
+     */
+    doHacking(): void;
+
+    /**
      * Upload
      */
     doUpload(): void;

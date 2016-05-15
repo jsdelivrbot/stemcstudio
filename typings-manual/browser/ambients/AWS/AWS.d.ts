@@ -39,14 +39,116 @@ declare module AWS {
     class APIGateway extends Service {
 
     }
+    interface AttributeValue { [name: string]: any }
+    interface CreateTableParams {
+        TableName: string;
+        KeySchema: {
+            AttributeName: string;
+            /**
+             * 'HASH' for Primary Key.
+             * 'RANGE' for Sort Key.
+             */
+            KeyType: string;
+        }[];
+        AttributeDefinitions: {
+            AttributeName: string;
+            /**
+             * 'S'
+             */
+            AttributeType: string;
+        }[];
+        ProvisionedThroughput: {
+            ReadCapacityUnits: number;
+            WriteCapacityUnits: number;
+        };
+    }
+    interface DescribeTableParams {
+        TableName: string;
+    }
+    interface ListTablesParams {
+    }
+    interface Table {
+        TableDescription: {
+            TableName: string;
+            KeySchema: {
+                AttributeName: string;
+                KeyType: string;
+            }[];
+            AttributeDefinitions: {
+                AttributeName: string;
+                AttributeType: string;
+            }[];
+            /**
+             * 'ACTIVE'
+             */
+            TableStatus: string;
+            /**
+             * <YYYY-MM-DD> + 'T' + <HH:MM:SS.SSS> + 'Z'
+             */
+            CreationDateTime: string;
+            ProvisionedThroughput: {
+                LastIncreaseDateTime: string;
+                LastDecreaseDateTime: string;
+                NumberOfDecreasesToday: number;
+                ReadCapacityUnits: number;
+                WriteCapacityUnits: number;
+            };
+            TableSizeBytes: number;
+            ItemCount: number;
+            TableArn: string;
+        };
+    }
+    interface PutItemParams {
+        Item: { [AttributeName: string]: AttributeValue };
+        TableName: string;
+        ConditionalExpression?: string;
+        /**
+         * 'AND' or 'OR'
+         */
+        ConditionalOperator?: string;
+    }
+    interface QueryParams {
+        TableName: string;
+        IndexName?: string;
+        ConditionalOperator?: string;
+        ConsistentRead?: boolean;
+        ExclusiveStartKey?: { [someKey: string]: AttributeValue };
+        ExpressionAttributeNames?: { [someKey: string]: string };
+        ExpressionAttributeValues?: { [someKey: string]: AttributeValue };
+        FilterExpression?: string;
+        KeyConditionExpression: string;
+        Limit?: number;
+        ProjectionExpression?: string;
+        ScanIndexForward?: boolean;
+        /**
+         * 'ALL_ATTRIBUTES' | 'ALL_PROJECTED_ATTRIBUTES' | 'SPECIFIC_ATTRIBUTES' | 'COUNT'
+         */
+        Select?: string;
+    }
+    interface QueryResult {
+        Items: { [name: string]: AttributeValue }[];
+        Count: number;
+        ScannedCount: number;
+        LastEvaluatedKey: { [name: string]: { [name: string]: AttributeValue } }
+    }
     class DynamoDB extends Service {
         endpoint: Endpoint;
         constructor(options?: {
             apiVersion?: string;
         });
-        batchGetItem(params: {}, callback): Request;
+        // Control Plan
+        createTable(params: CreateTableParams, callback: (err: any, data) => any): Request;
+        deleteTable(params: { TableName: string }, callback: (err: any, data: any) => any): Request;
+        describeTable(params: DescribeTableParams, callback: (err: any, data: { Table: Table }) => any): Request;
+        listTables(params: ListTablesParams, callback: (err, data: { TableNames: string[] }) => any): Request;
+        // Data Plane
+        putItem(params: PutItemParams, callback: (err, data: any) => any): Request;
         batchWriteItem(params: {}, callback): Request;
-        listTables(params: {}, callback: (err, data) => any): Request;
+        // Reading data
+        batchGetItem(params: {}, callback): Request;
+        query(params: QueryParams, callback: (err: any, data: QueryResult) => any): Request;
+        // Updating data
+        // Deleting Data
     }
     /////////////////////////////////////////////////////////
     // Identity and Access Management

@@ -61,6 +61,11 @@ interface AppScope extends angular.IRootScopeService {
      * Navigate to the Log In page.
      */
     goLogin(): void;
+
+    /**
+     * Navigate to the Search page.
+     */
+    goSearch(): void;
 }
 
 export default AppScope;

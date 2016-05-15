@@ -186,6 +186,9 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                            <li>\n" +
     "                                <a ng-click='doUpload()' role='button'>Upload</a>\n" +
     "                            </li>\n" +
+    "                            <li>\n" +
+    "                                <a ng-click='doHacking()' role='button'>Hacking</a>\n" +
+    "                            </li>\n" +
     "                        </ul>\n" +
     "                    </li>\n" +
     "                    <!--\n" +
@@ -418,6 +421,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "            <button ng-if='FEATURE_EXAMPLES_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goExamples()'>Examples</button>\n" +
     "            <button ng-if='FEATURE_DASHBOARD_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goDashboard()' ng-show='isGitHubSignedIn()'>Dashboard</button>\n" +
     "            <button ng-if='FEATURE_LOGIN_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goLogin()'>Sign In</button>\n" +
+    "            <button type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goSearch()'>Search</button>\n" +
     "        </div>\n" +
     "    </div>\n" +
     "</header>\n" +
@@ -831,6 +835,57 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "<div class=\"modal-footer\">\n" +
     "    <button class=\"btn btn-secondary\" type=\"button\" data-ng-click=\"cancel()\">{{options.cancelButtonText}}</button>\n" +
     "    <button class=\"btn btn-primary\" type=\"button\" data-ng-click=\"ok();\">{{options.actionButtonText}}</button>\n" +
+    "</div>"
+  );
+
+
+  $templateCache.put('search.html',
+    "<div id='search-page'>\n" +
+    "    <header>\n" +
+    "        <nav id='toolbar' class='navbar navbar-inverse'>\n" +
+    "            <div class='navbar-header'>\n" +
+    "                <a role='button' class='navbar-brand' ng-click='goHome()'>\n" +
+    "                    <logo-text version='{{version}}' />\n" +
+    "                </a>\n" +
+    "            </div>\n" +
+    "            <div class='ignore-collapse ignore-navbar-collapse'>\n" +
+    "                <ul class='nav navbar-nav'>\n" +
+    "                </ul>\n" +
+    "            </div>\n" +
+    "        </nav>\n" +
+    "    </header>\n" +
+    "    <div class='search-container'>\n" +
+    "        <div class='container md-docs-container'>\n" +
+    "            <div class='row'>\n" +
+    "                <div class='col-md-9' role='main'>\n" +
+    "                    <div class='md-docs-section'>\n" +
+    "                        <h1 class='page-header'>Search</h1>\n" +
+    "                        <!-- p class='lead'></p -->\n" +
+    "                        <div>\n" +
+    "                            <div button-id=\"search-button-id\" options=\"options\">\n" +
+    "                                <div style=\"height:34px;width:240px;\" class=\"stemcButton stemcButtonGray\">\n" +
+    "                                    <div class=\"stemcButtonContentWrapper\" ng-click=\"query()\">\n" +
+    "                                        <div class=\"stemcButtonIcon\" style=\"padding:7px;\">\n" +
+    "                                            <ng-md-icon icon=\"search\" size='18' />\n" +
+    "                                        </div>\n" +
+    "                                        <span style=\"font-size:13px;line-height:32px;\" class=\"stemcButtonContents\">\n" +
+    "                                            <span>Go</span>\n" +
+    "                                        </span>\n" +
+    "                                    </div>\n" +
+    "                                </div>\n" +
+    "                            </div>\n" +
+    "                        </div>\n" +
+    "                    </div>\n" +
+    "                    <div class='md-docs-section'>\n" +
+    "                        <div ng-repeat='doodle in doodleRefs'>\n" +
+    "                            <a ng-href='/#/gists/{{doodle.gistId}}'>{{doodle.description}}</a>\n" +
+    "                            <div>{{doodle.owner}}</div>\n" +
+    "                        </div>\n" +
+    "                    </div>\n" +
+    "                </div>\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "    </div>\n" +
     "</div>"
   );
 

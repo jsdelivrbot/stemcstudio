@@ -117,7 +117,7 @@ declare module gapi {
              */
             isSignedIn(): boolean;
             signIn(options): any;
-            grant(options): any;
+            grant(options: SigninOptionsBuilder): Promise<any>;
             grantOfflineAccess(scopes): any;
             /**
              * Revokes all of the scopes that the user granted.
@@ -160,9 +160,10 @@ declare module gapi {
              * @method attachClickHandler
              * @param container {string | HTMLDivElement}
              * @param options {} See signIn
-             * @param onsuccess
+             * @param onSuccess Handles successful sign-ins.
+             * @param onFailure Handles sign-in failures.
              */
-            attachClickHandler(container: string | HTMLDivElement, options, onsuccess: (googleUser: auth2.GoogleUser) => any, onfailure: () => any)
+            attachClickHandler(container: string | HTMLDivElement, options, onsuccess: (googleUser: auth2.GoogleUser) => any, onfailure: (error: any) => any)
         }
 
         /**
@@ -188,7 +189,9 @@ declare module gapi {
         export function getAuthInstance(): GoogleAuth;
 
         class SigninOptionsBuilder {
-            constructor();
+            constructor(options: {
+                scope: string;
+            });
             setAppPackageName(name: string): void;
             setFetchBasicProfile(fetchBasicProfile: boolean): void;
             setPrompt(prompt: string): void;
