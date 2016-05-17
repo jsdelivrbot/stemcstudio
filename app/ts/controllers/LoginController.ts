@@ -65,7 +65,7 @@ export default class LoginController extends AbstractPageController {
             theme: 'dark',
             onsuccess: function(googleUser: gapi.auth2.GoogleUser) {
                 $scope.$apply(function() {
-                    const profile: gapi.auth2.BasicProfile = googleUser.getBasicProfile();
+                    // const profile: gapi.auth2.BasicProfile = googleUser.getBasicProfile();
 
                     /**
                      * https://developers.google.com/identity/sign-in/web/backend-auth
@@ -81,7 +81,7 @@ export default class LoginController extends AbstractPageController {
                     });
 
                     // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-                    console.log('Full Name: ' + profile.getName());
+                    // console.log('Full Name: ' + profile.getName());
                     // console.log('Given Name: ' + profile.getGivenName());
                     // console.log('Familty Name: ' + profile.getFamilyName());
                     // console.log('Image URL: ' + profile.getImageUrl());

@@ -1,0 +1,22 @@
+<!-- Using a name on the form puts the controller on the scope with a property of the same name -->
+<form name='labelForm' ng-submit='ok()'>
+    <fieldset>
+        <!-- legend>Labels and Keywords</legend -->
+        <div class="modal-header" style="clear: both">
+            <h3 class='modal-title' style="float: left;"><logo-text version='{{version}}'/></h3>
+            <h3 class='modal-title' style="float: right;">Labels and Tags</h3>
+        </div>
+        <div id='label-modal-body' class="modal-body">
+            <label>Title</label><br/>
+            <input type='text' placeholder="Title" style="min-width: 500px;" name="title" ng-model="f.t" /><br/>
+            <label>Author</label><br/>
+            <input type='text' placeholder="Your Full Name" style="min-width: 500px;" name="author" ng-model="f.a" /><br/>
+            <label>Keywords</label><br/>
+            <input type='text' placeholder="Keyword1, Keyword2, ..., KeywordN" style="min-width: 500px;" name="keywords" ng-model="f.k" /><br/>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-ng-click="cancel()">Cancel</button>
+            <button class="btn btn-primary" type="submit">OK</button>
+        </div>
+    </fieldset>
+</form>

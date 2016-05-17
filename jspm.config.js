@@ -14,6 +14,7 @@ System.config({
     "angular-animate": "github:angular/bower-angular-animate@1.5.5",
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.2",
     "angular-material-icons": "npm:angular-material-icons@0.7.0",
+    "angular-sanitize": "github:angular/bower-angular-sanitize@1.5.5",
     "angular-ui-router": "github:angular-ui/ui-router@0.2.18",
     "angular2": "npm:angular2@2.0.0-beta.17",
     "bootstrap": "vendor/bootstrap/dist/js/npm",
@@ -21,12 +22,16 @@ System.config({
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.0.11",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.0.11",
     "jquery": "npm:jquery@2.2.3",
-    "showdown": "npm:showdown@1.3.0",
+    "showdown": "npm:showdown@1.4.0",
+    "ui-select": "npm:ui-select@0.17.0",
     "underscore": "npm:underscore@1.8.3",
     "github:angular-ui/ui-router@0.2.18": {
       "angular": "github:angular/bower-angular@1.5.5"
     },
     "github:angular/bower-angular-animate@1.5.5": {
+      "angular": "github:angular/bower-angular@1.5.5"
+    },
+    "github:angular/bower-angular-sanitize@1.5.5": {
       "angular": "github:angular/bower-angular@1.5.5"
     },
     "github:jspm/nodelibs-assert@0.1.0": {
@@ -39,7 +44,7 @@ System.config({
       "path-browserify": "npm:path-browserify@0.0.0"
     },
     "github:jspm/nodelibs-process@0.1.2": {
-      "process": "npm:process@0.11.2"
+      "process": "npm:process@0.11.3"
     },
     "github:jspm/nodelibs-tty@0.1.0": {
       "tty-browserify": "npm:tty-browserify@0.0.0"
@@ -99,7 +104,7 @@ System.config({
     "npm:path-browserify@0.0.0": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:process@0.11.2": {
+    "npm:process@0.11.3": {
       "assert": "github:jspm/nodelibs-assert@0.1.0"
     },
     "npm:reflect-metadata@0.1.2": {
@@ -111,7 +116,7 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2",
       "symbol-observable": "npm:symbol-observable@0.2.4"
     },
-    "npm:showdown@1.3.0": {
+    "npm:showdown@1.4.0": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2",
@@ -124,6 +129,10 @@ System.config({
     },
     "npm:strip-ansi@3.0.1": {
       "ansi-regex": "npm:ansi-regex@2.0.0"
+    },
+    "npm:ui-select@0.17.0": {
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:util@0.10.3": {
       "inherits": "npm:inherits@2.0.1",

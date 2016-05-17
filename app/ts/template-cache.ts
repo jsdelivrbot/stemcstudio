@@ -130,20 +130,28 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                <ul class='nav navbar-nav'>\n" +
     "                    <li>\n" +
     "                        <a role='button' ng-click='toggleExplorer()'>\n" +
-    "                            <ng-md-icon icon=\"{{isExplorerVisible ? 'flip_to_back' : 'flip_to_front'}}\" style=\"fill: {{isExplorerVisible ? '#ffffff' : '#ffffff'}}\" size='24' aria-hidden='true' uib-tooltip=\"{{isExplorerVisible ? 'Hide Code' : 'Show Code'}}\" tooltip-placement='left'><ng-md-icon>\n" +
+    "                            <ng-md-icon icon=\"{{isExplorerVisible ? 'flip_to_back' : 'flip_to_front'}}\" style=\"fill: {{isExplorerVisible ? '#ffffff' : '#ffffff'}}\"\n" +
+    "                            size='24' aria-hidden='true' uib-tooltip=\"{{isExplorerVisible ? 'Hide Code' : 'Show Code'}}\"\n" +
+    "                            tooltip-placement='left'>\n" +
+    "                                <ng-md-icon>\n" +
     "                        </a>\n" +
     "                    </li>\n" +
     "                    <li>\n" +
     "                        <a role='button' ng-click='toggleView()' ng-hide='isViewVisible'>\n" +
-    "                            <ng-md-icon icon='launch' style=\"fill: {{true ? '#00ff00' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"Launch Program\" tooltip-placement='left'><ng-md-icon>\n" +
+    "                            <ng-md-icon icon='launch' style=\"fill: {{true ? '#00ff00' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"Launch Program\"\n" +
+    "                            tooltip-placement='left'>\n" +
+    "                                <ng-md-icon>\n" +
     "                        </a>\n" +
     "                        <a role='button' ng-click='toggleView()' ng-show='isViewVisible'>\n" +
-    "                            <ng-md-icon icon='cancel' style=\"fill: {{true ? '#ff0000' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"Cancel Program\" tooltip-placement='left'><ng-md-icon>\n" +
+    "                            <ng-md-icon icon='cancel' style=\"fill: {{true ? '#ff0000' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"Cancel Program\"\n" +
+    "                            tooltip-placement='left'>\n" +
+    "                                <ng-md-icon>\n" +
     "                        </a>\n" +
     "                    </li>\n" +
     "                    <li uib-dropdown ng-show='isEditMode'>\n" +
     "                        <a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"Choose Program\" tooltip-placement='left'>\n" +
-    "                            <ng-md-icon icon='playlist_add_check' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'><ng-md-icon>\n" +
+    "                            <ng-md-icon icon='playlist_add_check' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'>\n" +
+    "                                <ng-md-icon>\n" +
     "                        </a>\n" +
     "                        <ul class='dropdown-menu' uib-dropdown-menu role='menu'>\n" +
     "                            <li role='button' ng-repeat='(name, file) in currentDoodle().files' ng-if='name.indexOf(\".html\") &gt; 0'>\n" +
@@ -155,13 +163,17 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                    </li>\n" +
     "                    <li ng-show='isEditMode'>\n" +
     "                        <a role='button' ng-click='toggleReadMeVisible()'>\n" +
-    "                            <ng-md-icon icon='description' style=\"fill: {{isReadMeVisible ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"{{isReadMeVisible ?  'Hide README.md' : 'Show README.md'}}\" tooltip-placement='left'><ng-md-icon>\n" +
+    "                            <ng-md-icon icon='description' style=\"fill: {{isReadMeVisible ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"{{isReadMeVisible ?  'Hide README.md' : 'Show README.md'}}\"\n" +
+    "                            tooltip-placement='left'>\n" +
+    "                                <ng-md-icon>\n" +
     "                        </a>\n" +
     "                    </li>\n" +
     "                    <li uib-dropdown ng-show='isEditMode'>\n" +
     "                        <a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"Project Menu\" tooltip-placement='left'>\n" +
-    "                            <ng-md-icon icon='folder' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'><ng-md-icon>\n" +
-    "                            <ng-md-icon icon='arrow_drop_down' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'><ng-md-icon>\n" +
+    "                            <ng-md-icon icon='folder' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'>\n" +
+    "                                <ng-md-icon>\n" +
+    "                                    <ng-md-icon icon='arrow_drop_down' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'>\n" +
+    "                                        <ng-md-icon>\n" +
     "                        </a>\n" +
     "                        <ul uib-dropdown-menu role='menu'>\n" +
     "                            <li>\n" +
@@ -177,7 +189,8 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                    </li>\n" +
     "                    <li ng-if='FEATURE_LOGIN_ENABLED' uib-dropdown ng-show='isEditMode &amp;&amp; isGitHubSignedIn()'>\n" +
     "                        <a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"GitHub Menu\" tooltip-placement='left'>\n" +
-    "                            <ng-md-icon icon='cloud' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'><ng-md-icon>\n" +
+    "                            <ng-md-icon icon='cloud' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'>\n" +
+    "                                <ng-md-icon>\n" +
     "                        </a>\n" +
     "                        <ul uib-dropdown-menu role=\"menu\">\n" +
     "                            <li>\n" +
@@ -187,18 +200,14 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                                <a ng-click='doUpload()' role='button'>Upload</a>\n" +
     "                            </li>\n" +
     "                            <li>\n" +
-    "                                <a ng-click='doHacking()' role='button'>Hacking</a>\n" +
+    "                                <a ng-click='doPublish()' role='button'>Publish</a>\n" +
     "                            </li>\n" +
     "                        </ul>\n" +
     "                    </li>\n" +
-    "                    <!--\n" +
-    "                    <li ng-show='isEditMode'>\n" +
-    "                        <a role='button' ng-click='doSettings()'>\n" +
-    "                            <ng-md-icon icon='settings' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"Settings\" tooltip-placement='left'><ng-md-icon>\n" +
-    "                        </a>\n" +
-    "                    </li>\n" +
-    "                    -->\n" +
     "                </ul>\n" +
+    "            </div>\n" +
+    "            <div class='navbar-header'>\n" +
+    "                <span class='md-logo-text-math navbar-brand'>{{ currentDoodle().description }}</span>\n" +
     "            </div>\n" +
     "        </nav>\n" +
     "        <div id='doodle-container'>\n" +
@@ -374,22 +383,26 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "    <div class='explorer-section' ng-controller='ExplorerFilesController as filesController'>\n" +
     "        <div class='explorer-section-header'>\n" +
     "            <div class='navbar navbar-inverse explorer-section-box'>\n" +
-    "                <div>\n" +
-    "                    <span class='md-logo-text-math'>{{ currentDoodle().name | contiguous | uppercase }}</span>\n" +
-    "                </div>\n" +
-    "                <ul class='nav navbar-nav'>\n" +
+    "                <ul class='nav navbar-nav' style=\"display: flex; flex-direction: row;\">\n" +
     "                    <li>\n" +
     "                        <a role='button' ng-click='doProperties()'>\n" +
-    "                            <ng-md-icon icon='settings' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"Package Properties\" tooltip-placement='right'><ng-md-icon>\n" +
+    "                            <ng-md-icon icon='settings' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"Settings\"\n" +
+    "                            tooltip-placement='right'>\n" +
+    "                                <ng-md-icon>\n" +
     "                        </a>\n" +
     "                    </li>\n" +
-    "                </ul>\n" +
-    "            </div>\n" +
-    "            <div class='navbar navbar-inverse explorer-section-box'>\n" +
-    "                <ul class='nav navbar-nav'>\n" +
+    "                    <li>\n" +
+    "                        <a role='button' ng-click='doLabel()'>\n" +
+    "                            <ng-md-icon icon='label' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"Labels and Tags\"\n" +
+    "                            tooltip-placement='right'>\n" +
+    "                                <ng-md-icon>\n" +
+    "                        </a>\n" +
+    "                    </li>\n" +
     "                    <li>\n" +
     "                        <a role='button' ng-click='filesController.newFile()'>\n" +
-    "                            <ng-md-icon icon='add_box' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"New File\" tooltip-placement='left'><ng-md-icon>\n" +
+    "                            <ng-md-icon icon='add_box' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"New File\"\n" +
+    "                            tooltip-placement='left'>\n" +
+    "                                <ng-md-icon>\n" +
     "                        </a>\n" +
     "                    </li>\n" +
     "                </ul>\n" +
@@ -397,7 +410,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "        </div>\n" +
     "        <ul class='files'>\n" +
     "            <li ng-repeat='(name, file) in currentDoodle().files' ng-class='{selected: file.selected}' context-menu='menu(name, file)'>\n" +
-    "                <a href ng-click='$ctrl.selectFile(name)' ng-dblclick='$ctrl.openFile(name)'>{{name}}</a>\n" +
+    "                <a href ng-click='$ctrl.selectFile(name)' ng-dblclick='$ctrl.openFile(name)'>{{name | limitTo:24}}</a>\n" +
     "            </li>\n" +
     "        </ul>\n" +
     "    </div>\n" +
@@ -647,6 +660,32 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
   );
 
 
+  $templateCache.put('label-modal.html',
+    "<!-- Using a name on the form puts the controller on the scope with a property of the same name -->\n" +
+    "<form name='labelForm' ng-submit='ok()'>\n" +
+    "    <fieldset>\n" +
+    "        <!-- legend>Labels and Keywords</legend -->\n" +
+    "        <div class=\"modal-header\" style=\"clear: both\">\n" +
+    "            <h3 class='modal-title' style=\"float: left;\"><logo-text version='{{version}}'/></h3>\n" +
+    "            <h3 class='modal-title' style=\"float: right;\">Labels and Tags</h3>\n" +
+    "        </div>\n" +
+    "        <div id='label-modal-body' class=\"modal-body\">\n" +
+    "            <label>Title</label><br/>\n" +
+    "            <input type='text' placeholder=\"Title\" style=\"min-width: 500px;\" name=\"title\" ng-model=\"f.t\" /><br/>\n" +
+    "            <label>Author</label><br/>\n" +
+    "            <input type='text' placeholder=\"Your Full Name\" style=\"min-width: 500px;\" name=\"author\" ng-model=\"f.a\" /><br/>\n" +
+    "            <label>Keywords</label><br/>\n" +
+    "            <input type='text' placeholder=\"Keyword1, Keyword2, ..., KeywordN\" style=\"min-width: 500px;\" name=\"keywords\" ng-model=\"f.k\" /><br/>\n" +
+    "        </div>\n" +
+    "        <div class=\"modal-footer\">\n" +
+    "            <button class=\"btn btn-secondary\" type=\"button\" data-ng-click=\"cancel()\">Cancel</button>\n" +
+    "            <button class=\"btn btn-primary\" type=\"submit\">OK</button>\n" +
+    "        </div>\n" +
+    "    </fieldset>\n" +
+    "</form>"
+  );
+
+
   $templateCache.put('login.html',
     "<div id='login-page'>\n" +
     "    <header>\n" +
@@ -793,7 +832,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "  </div>\n" +
     "  <div class='modal-body'>\n" +
     "    <label>Description</label>\n" +
-    "    <input type='text' ng-model='zombie.description' placeholder=\"Enter description\" autofocus/>\n" +
+    "    <input type='text' ng-model='zombie.description' style='min-width: 400px;' placeholder=\"Enter description\" autofocus/>\n" +
     "    <br/>\n" +
     "    <label class='checkbox-inline'>\n" +
     "      <input type='checkbox' ng-model='zombie.operatorOverloading'>Operator Overloading</input>\n" +
@@ -819,6 +858,57 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "    <button class='btn' ng-click='doCancel()'>Cancel</button>\n" +
     "  </div>\n" +
     "</div>\n"
+  );
+
+
+  $templateCache.put('publish-modal.html',
+    "<div class=\"modal-header\" style=\"clear: both\">\n" +
+    "    <h3 class='modal-title' style=\"float: left;\"><logo-text version='{{version}}'/></h3>\n" +
+    "    <h3 class='modal-title' style=\"float: right;\">Publish Settings</h3>\n" +
+    "</div>\n" +
+    "<div id='publish-modal-body' class=\"modal-body\">\n" +
+    "    <h3>Subject</h3>\n" +
+    "    <ui-select ng-model=\"selected.category\" theme=\"select2\" on-select='onCategorySelect($item, $model)' ng-disabled=\"!categoriesEnabled\"\n" +
+    "    style=\"min-width: 200px;\" title=\"Choose a Category\">\n" +
+    "        <ui-select-match placeholder=\"Select a category in the list or search...\">{{$select.selected.title}}</ui-select-match>\n" +
+    "        <!-- $item is the category, $model is category.code -->\n" +
+    "        <ui-select-choices repeat=\"category.code as category in categories | propsFilter: {title: $select.search} track by category.code\">\n" +
+    "            <div ng-bind-html=\"category.title | highlight: $select.search\"></div>\n" +
+    "        </ui-select-choices>\n" +
+    "    </ui-select>\n" +
+    "    <h3>Book</h3>\n" +
+    "    <ui-select ng-model=\"selected.book\" theme=\"select2\" on-select='onBookSelect($item, $model)' ng-disabled=\"!booksEnabled\" style=\"min-width: 200px;\" title=\"Choose a Book\">\n" +
+    "        <ui-select-match placeholder=\"Select a book in the list or search...\">{{$select.selected.title}}</ui-select-match>\n" +
+    "        <ui-select-choices repeat=\"book.code as book in books | propsFilter: {title: $select.search} track by book.code\">\n" +
+    "            <div ng-bind-html=\"book.title | highlight: $select.search\"></div>\n" +
+    "        </ui-select-choices>\n" +
+    "    </ui-select>\n" +
+    "    <h3>Chapter</h3>\n" +
+    "    <ui-select ng-model=\"selected.chapter\" theme=\"select2\" on-select='onChapterSelect($item, $model)' ng-disabled=\"!chaptersEnabled\" style=\"min-width: 200px;\" title=\"Choose a Chapter\">\n" +
+    "        <ui-select-match placeholder=\"Select a chapter in the list or search...\">{{$select.selected.title}}</ui-select-match>\n" +
+    "        <ui-select-choices repeat=\"chapter.code as chapter in chapters | propsFilter: {title: $select.search}\">\n" +
+    "            <div ng-bind-html=\"chapter.title | highlight: $select.search\"></div>\n" +
+    "        </ui-select-choices>\n" +
+    "    </ui-select>\n" +
+    "    <h3>Topic</h3>\n" +
+    "    <ui-select ng-model=\"selected.topic\" theme=\"select2\" on-select='onTopicSelect($item, $model)' ng-disabled=\"!topicsEnabled\" style=\"min-width: 200px;\" title=\"Choose a Topic\">\n" +
+    "        <ui-select-match placeholder=\"Select a topic in the list or search...\">{{$select.selected.title}}</ui-select-match>\n" +
+    "        <ui-select-choices repeat=\"topic.title as topic in topics | propsFilter: {title: $select.search}\">\n" +
+    "            <div ng-bind-html=\"topic.title | highlight: $select.search\"></div>\n" +
+    "        </ui-select-choices>\n" +
+    "    </ui-select>\n" +
+    "    <h3>Level</h3>\n" +
+    "    <ui-select ng-model=\"ctrl.level.selected\" theme=\"select2\" style=\"min-width: 200px;\" title=\"Choose a Level\">\n" +
+    "        <ui-select-match placeholder=\"Select a level in the list or search...\">{{$select.selected.name}}</ui-select-match>\n" +
+    "        <ui-select-choices repeat=\"level.name as level in levels | propsFilter: {name: $select.search}\">\n" +
+    "            <div ng-bind-html=\"level.name | highlight: $select.search\"></div>\n" +
+    "        </ui-select-choices>\n" +
+    "    </ui-select>\n" +
+    "</div>\n" +
+    "<div class=\"modal-footer\">\n" +
+    "    <button class=\"btn btn-secondary\" type=\"button\" data-ng-click=\"cancel()\">Cancel</button>\n" +
+    "    <button class=\"btn btn-primary\" type=\"button\" data-ng-click=\"ok()\">Publish</button>\n" +
+    "</div>"
   );
 
 

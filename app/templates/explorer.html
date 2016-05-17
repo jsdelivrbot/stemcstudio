@@ -2,22 +2,26 @@
     <div class='explorer-section' ng-controller='ExplorerFilesController as filesController'>
         <div class='explorer-section-header'>
             <div class='navbar navbar-inverse explorer-section-box'>
-                <div>
-                    <span class='md-logo-text-math'>{{ currentDoodle().name | contiguous | uppercase }}</span>
-                </div>
-                <ul class='nav navbar-nav'>
+                <ul class='nav navbar-nav' style="display: flex; flex-direction: row;">
                     <li>
                         <a role='button' ng-click='doProperties()'>
-                            <ng-md-icon icon='settings' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="Package Properties" tooltip-placement='right'><ng-md-icon>
+                            <ng-md-icon icon='settings' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="Settings"
+                            tooltip-placement='right'>
+                                <ng-md-icon>
                         </a>
                     </li>
-                </ul>
-            </div>
-            <div class='navbar navbar-inverse explorer-section-box'>
-                <ul class='nav navbar-nav'>
+                    <li>
+                        <a role='button' ng-click='doLabel()'>
+                            <ng-md-icon icon='label' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="Labels and Tags"
+                            tooltip-placement='right'>
+                                <ng-md-icon>
+                        </a>
+                    </li>
                     <li>
                         <a role='button' ng-click='filesController.newFile()'>
-                            <ng-md-icon icon='add_box' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="New File" tooltip-placement='left'><ng-md-icon>
+                            <ng-md-icon icon='add_box' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="New File"
+                            tooltip-placement='left'>
+                                <ng-md-icon>
                         </a>
                     </li>
                 </ul>
@@ -25,7 +29,7 @@
         </div>
         <ul class='files'>
             <li ng-repeat='(name, file) in currentDoodle().files' ng-class='{selected: file.selected}' context-menu='menu(name, file)'>
-                <a href ng-click='$ctrl.selectFile(name)' ng-dblclick='$ctrl.openFile(name)'>{{name}}</a>
+                <a href ng-click='$ctrl.selectFile(name)' ng-dblclick='$ctrl.openFile(name)'>{{name | limitTo:24}}</a>
             </li>
         </ul>
     </div>

@@ -81,3 +81,8 @@ git remote add heroku git@heroku.com:STEMCstudio.git
 ```
 git push -f heroku master
 ```
+
+## JSPM
+
+This application uses JSPM for module loading.
+For AngularJS modules, you must both modify `jspm.config.js` and `app.ts`.

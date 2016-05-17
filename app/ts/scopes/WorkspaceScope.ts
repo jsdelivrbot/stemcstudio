@@ -22,9 +22,14 @@ interface WorkspaceScope extends DoodleScope {
     toggleReadMeVisible: () => void;
 
     /**
-     * Hacking
+     * Label the project with a title, description, keywords, and license.
      */
-    doHacking(): void;
+    doLabel(): void;
+
+    /**
+     * Publish
+     */
+    doPublish(): void;
 
     /**
      * Upload

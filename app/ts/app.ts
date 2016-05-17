@@ -4,8 +4,13 @@
 //
 import * as angular from 'angular';
 
+//
+// The following imports are to be found in the jspm.config.js file.
+// The module name that we require may be different.
+//
+
 // 
-// Module that provides the 'ngMdIcons' (Angular Material Icons) module.
+// Module that provides the 'ngMdIcons' module.
 //
 import 'angular-material-icons';
 
@@ -15,14 +20,24 @@ import 'angular-material-icons';
 import 'angular-animate';
 
 //
-// Module that provides the 'ui.bootstrap' (Angular) module.
+// Module that provides the 'ui.bootstrap' module.
 //
 import 'angular-bootstrap';
 
 //
-// Module that provides the 'ui.router' (Angular) module.
+// Module that provides the 'ngSanitize' module.
+//
+import 'angular-sanitize';
+
+//
+// Module that provides the 'ui.router' module.
 //
 import 'angular-ui-router';
+
+//
+// Module that provides the 'ui.select' module.
+//
+import 'ui-select';
 
 //
 // Interfaces required for designtime TypeScript compilation.
@@ -40,14 +55,24 @@ import FacebookLoginController from './controllers/login/facebook/FacebookLoginC
 import GitHubLoginController from './controllers/login/github/GitHubLoginController';
 import TwitterLoginController from './controllers/login/twitter/TwitterLoginController';
 
+import LabelDialogService from './modules/publish/LabelDialogService';
+import LabelModalController from './modules/publish/LabelModalController';
+
+import PublishDialogService from './modules/publish/PublishDialogService';
+import PublishModalController from './modules/publish/PublishModalController';
+
+import propsFilter from './filters/propsFilter';
+
 //
 // Create 'app' module and declare its Angular module dependencies.
 //
 const app: angular.IModule = angular.module('app', [
     'ngMdIcons',
+    'ngSanitize',
     'ui.bootstrap',
     'ui.bootstrap.modal',
-    'ui.router'
+    'ui.router',
+    'ui.select'
 ]);
 
 /**
@@ -166,6 +191,14 @@ app.controller('twitter-login-controller', TwitterLoginController);
 
 app.directive('githubSignInButton', githubSignInButton);
 app.directive('googleSignInButton', googleSignInButton);
+
+app.filter('propsFilter', propsFilter);
+
+app.service('labelDialog', LabelDialogService);
+app.controller('LabelModalController', LabelModalController);
+
+app.service('publishDialog', PublishDialogService);
+app.controller('PublishModalController', PublishModalController);
 
 //
 // Register work which needs to be performed on module loading.
@@ -394,39 +427,6 @@ app.run([
             }
         };
 
-        /*
-        if (FEATURE_GOOGLE_SIGNIN_ENABLED) {
-            $rootScope.googleSignIn = function() {
-                const auth2 = gapi.auth2.getAuthInstance();
-                auth2.currentUser.listen(function(googleUser) {
-                    // console.log(`The googleUser changed.`)
-                });
-                auth2.signIn().then(function() {
-                    $rootScope.$apply(function() {
-                        // console.log(`auth2.currentUser.get().getId() => ${JSON.stringify(auth2.currentUser.get().getId(), null, 2)}`)
-                        // console.log(`auth2.currentUser.get() => ${JSON.stringify(auth2.currentUser.get(), null, 2)}`)
-                        // console.log(`auth2.currentUser.get().getBasicProfile() => ${JSON.stringify(auth2.currentUser.get().getBasicProfile(), null, 2)}`)
-                        $rootScope.googleUser = auth2.currentUser.get();
-                    });
-                });
-            };
-        }
-        */
-
-        /*
-        if (FEATURE_GOOGLE_SIGNIN_ENABLED) {
-            $rootScope.googleSignOut = function() {
-                const auth2 = gapi.auth2.getAuthInstance();
-                auth2.signOut().then(function() {
-                    $rootScope.$apply(function() {
-                        // console.log("Use has signed out of the application, but not Google.")
-                        $rootScope.googleUser = void 0;
-                    });
-                });
-            };
-        }
-        */
-
         if (FEATURE_GOOGLE_SIGNIN_ENABLED) {
             $rootScope.isGoogleSignedIn = function() {
                 if (gapi.auth2) {
@@ -459,9 +459,7 @@ app.run([
                 });
                 auth2.then(function onInit() {
                     auth2.currentUser.listen(function(googleUser: gapi.auth2.GoogleUser) {
-                        console.log(`The googleUser changed.`);
-                        const id_token = googleUser.getAuthResponse().id_token;
-                        console.log(`id_token => ${id_token}`);
+                        // const id_token = googleUser.getAuthResponse().id_token;
                     });
                     // Do nothing.
                 }, function onFailure(reason: any) {
@@ -469,14 +467,6 @@ app.run([
                 });
             });
         }
-
-        /* Web Identity Federation
-        AWS.config.credentials = new AWS.WebIdentityCredentials({
-            RoleArn: 'arn:aws:iam::<AWS_ACCOUNT_ID>:role/<WEB_IDENTITY_ROLE_NAME>',
-            ProviderId: 'graph.facebook.com|www.amazon.com', // this is null for Google
-            WebIdentityToken: ''
-        });
-        */
     }]);
 
 export default app;

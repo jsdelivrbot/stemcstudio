@@ -99,6 +99,38 @@ export default class Doodle {
         file.content = JSON.stringify(metaInfo, null, 2);
     }
 
+    get author(): string {
+        if (this.existsPackageJson()) {
+            return this.packageInfo.author;
+        }
+        else {
+            return void 0;
+        }
+    }
+
+    set author(author: string) {
+        const file = this.ensurePackageJson();
+        const metaInfo: IDoodleConfig = JSON.parse(file.content);
+        metaInfo.author = author;
+        file.content = JSON.stringify(metaInfo, null, 2);
+    }
+
+    get keywords(): string[] {
+        if (this.existsPackageJson()) {
+            return this.packageInfo.keywords;
+        }
+        else {
+            return void 0;
+        }
+    }
+
+    set keywords(keywords: string[]) {
+        const file = this.ensurePackageJson();
+        const metaInfo: IDoodleConfig = JSON.parse(file.content);
+        metaInfo.keywords = keywords;
+        file.content = JSON.stringify(metaInfo, null, 2);
+    }
+
     get operatorOverloading(): boolean {
         if (this.existsPackageJson()) {
             return this.packageInfo.operatorOverloading ? true : false;

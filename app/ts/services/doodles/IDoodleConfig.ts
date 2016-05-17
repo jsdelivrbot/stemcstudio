@@ -5,8 +5,10 @@ interface IDoodleConfig {
   name: string;
   version: string;
   description?: string;
+  author?: string;
   dependencies: { [key: string]: string };
   operatorOverloading: boolean;
+  keywords: string[];
 }
 
 export default IDoodleConfig;
