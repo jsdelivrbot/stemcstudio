@@ -2,17 +2,15 @@ import * as ng from 'angular';
 
 /**
  * Directive Definition Factory
- * Usage <logo-text version='{{version}}'>
+ * Usage <brand />
  */
 export default function(): ng.IDirective {
     return {
         restrict: 'E',
-        scope: { version: '@' },
+        scope: {},
         template: [
             "<span class='md-logo-text-stem'>STEM</span>",
             "<span class='md-logo-text-math'>C</span>",
-            "<span class='md-logo-text-studio'>studio</span>",
-            "<span class='md-logo-text-domain'>.com</span>",
-            "<span class='md-logo-text-version'><sup>{{version}}</sup></span>"].join('')
+            "<span class='md-logo-text-studio'>studio</span>"].join('')
     };
 }

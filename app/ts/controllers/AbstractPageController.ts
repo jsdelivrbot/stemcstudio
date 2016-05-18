@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
 import ModalDialog from '../services/modalService/ModalDialog';
-import AppScope from '../scopes/AppScope';
+import BodyScope from '../scopes/BodyScope';
 
 /**
  * This class is intended to serve as an abstract base, not as a concrete controller.
@@ -14,18 +14,18 @@ export default class AbstractPageController {
     /**
      * @class AbstractPageController
      * @constructor
-     * @param $scopr {AppScope}
+     * @param $scope {BodyScope}
      * @param $window {IWindowService}
      * @param authManager {IGitHubAuthManager}
      * @param UNIVERSAL_ANALYTICS_TRACKING_ID {string}
      * @param overflow {string} 'hidden' or 'auto' to control scrollbars on the page.
      */
     constructor(
-        $scope: AppScope,
+        $scope: BodyScope,
         private $state: angular.ui.IStateService,
         $window: angular.IWindowService,
         authManager: IGitHubAuthManager,
-        ga: UniversalAnalytics.ga,
+        private ga: UniversalAnalytics.ga,
         modalDialog: ModalDialog,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string,
         overflow: string) {
@@ -43,17 +43,6 @@ export default class AbstractPageController {
         // which is very annoying. However, that means that we must be careful to put
         // them back on the other pages.
         $window.document.body.style.overflow = overflow;
-
-        $scope.goHome = (label?: string, value?: number) => {
-            const destination = 'home';
-            this.navigateTo(destination, void 0, void 0, label, value)
-                .then(function(promiseValue: any) {
-                    // console.log(`navigateTo('${destination}') completed.`);
-                })
-                .catch(function(reason: any) {
-                    console.warn(`navigateTo('${destination}') failed.`);
-                });
-        };
 
         $scope.goLogin = (label?: string, value?: number) => {
             const destination = 'login';
@@ -79,6 +68,7 @@ export default class AbstractPageController {
     }
 
     /**
+     * DRY This also exists in BodyController.
      * @method navigateTo
      * @param to {string}
      * @param [params] {}
@@ -88,7 +78,7 @@ export default class AbstractPageController {
      * @return {IPromise}
      */
     protected navigateTo(to: string, params?: {}, options?: angular.ui.IStateOptions, label?: string, value?: number): angular.IPromise<any> {
-        ga('send', 'event', 'navigateTo', to, label, value);
+        this.ga('send', 'event', 'navigateTo', to, label, value);
         return this.$state.go(to, params, options);
     }
 }

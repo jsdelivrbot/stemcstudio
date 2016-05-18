@@ -1,5 +1,5 @@
 import * as angular from 'angular';
-import AppScope from '../scopes/AppScope';
+import BodyScope from '../scopes/BodyScope';
 import AbstractPageController from './AbstractPageController';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
 import ModalDialog from '../services/modalService/ModalDialog';
@@ -21,7 +21,7 @@ export default class RepoController extends AbstractPageController {
         'UNIVERSAL_ANALYTICS_TRACKING_ID'
     ];
     constructor(
-        $scope: AppScope,
+        $scope: BodyScope,
         $state: angular.ui.IStateService,
         $window: angular.IWindowService,
         authManager: IGitHubAuthManager,

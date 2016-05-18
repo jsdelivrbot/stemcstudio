@@ -42,12 +42,15 @@ import 'ui-select';
 //
 // Interfaces required for designtime TypeScript compilation.
 //
+import AmazonLoginsService from './services/amazonLogins/AmazonLoginsService';
 import AppScope from './scopes/AppScope';
 import CookieService from './services/cookie/CookieService';
 import githubSignInButton from './directives/githubSignIn/githubSignInButton';
 import googleSignInButton from './directives/googleSignIn/googleSignInButton';
 import IUuidService from './services/uuid/IUuidService';
 import ITranslateProvider from './modules/translate/ITranslateProvider';
+import BodyController from './controllers/BodyController';
+import AboutController from './controllers/AboutController';
 import LoginController from './controllers/LoginController';
 import SearchController from './controllers/search/SearchController';
 
@@ -60,6 +63,10 @@ import LabelModalController from './modules/publish/LabelModalController';
 
 import PublishDialogService from './modules/publish/PublishDialogService';
 import PublishModalController from './modules/publish/PublishModalController';
+import brand from './directives/brand/brand';
+import domain from './directives/domain/domain';
+import logoText from './directives/logoText/logoText';
+import pageTitle from './directives/pageTitle/pageTitle';
 
 import propsFilter from './filters/propsFilter';
 
@@ -175,8 +182,16 @@ app.constant('FILENAME_TYPESCRIPT_CURRENT_LIB_DTS', vendorPath('typescript@1.4.1
 app.constant('FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS', vendorPath('davinci-mathscript@1.0.8', 'dist/davinci-mathscript.min.js'));
 
 /**
- * The LoginController is part of the routing system.
+ * The BodyController exists for the lifetime of the application.
+ * It is referenced from layout.jade Jade template.
  */
+app.controller('body-controller', BodyController);
+
+/**
+ * Page controllers.
+ */
+const ABOUT_CONTROLLER_NAME = 'AboutController';
+app.controller(ABOUT_CONTROLLER_NAME, AboutController);
 const LOGIN_CONTROLLER_NAME = 'LoginController';
 app.controller(LOGIN_CONTROLLER_NAME, LoginController);
 const SEARCH_CONTROLLER_NAME = 'SearchController';
@@ -189,10 +204,17 @@ app.controller('facebook-login-controller', FacebookLoginController);
 app.controller('github-login-controller', GitHubLoginController);
 app.controller('twitter-login-controller', TwitterLoginController);
 
+app.directive('brand', brand);
+app.directive('domain', domain);
+app.directive('logoText', logoText);
+app.directive('pageTitle', pageTitle);
+
 app.directive('githubSignInButton', githubSignInButton);
 app.directive('googleSignInButton', googleSignInButton);
 
 app.filter('propsFilter', propsFilter);
+
+app.service('amazonLogins', AmazonLoginsService);
 
 app.service('labelDialog', LabelDialogService);
 app.controller('LabelModalController', LabelModalController);
@@ -282,7 +304,7 @@ app.config([
             .state('about', {
                 url: '/about',
                 templateUrl: 'about.html',
-                controller: 'about-controller'
+                controller: ABOUT_CONTROLLER_NAME
             });
 
         if (FEATURE_DASHBOARD_ENABLED) {
@@ -357,6 +379,7 @@ app.run([
     '$state',
     '$stateParams',
     '$window',
+    'amazonLogins',
     'cookie',
     'uuid4',
     'ga',
@@ -374,6 +397,7 @@ app.run([
         $state: angular.ui.IStateService,
         $stateParams: angular.ui.IStateParamsService,
         $window: Window,
+        amazonLogins: AmazonLoginsService,
         cookie: CookieService,
         uuid4: IUuidService,
         ga: UniversalAnalytics.ga,
@@ -389,6 +413,9 @@ app.run([
     ) {
         // The name of this cookie must correspond with the cookie sent back from the server.
         const GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME = 'stemcstudio-github-application-client-id';
+
+        // Establish the Amazon Cognito unauthorized credential.
+        amazonLogins.initialize();
 
         // It's very handy to add references to $state and $stateParams to the $rootScope
         // so that you can access them from any scope (HTML template) within the application.
@@ -437,35 +464,6 @@ app.run([
                     return false;
                 }
             };
-        }
-
-        // Amazon Cognito, unauthenticated credentials
-        AWS.config.region = 'us-east-1';
-        AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-            // This identifier comes from looking at the generated sample code for
-            // the identity provider called STEMCstudio for the JavaScript platform.
-            // It can also be seen by "Edit identity pool".
-            IdentityPoolId: 'us-east-1:b419a8b6-2753-4af4-a76b-41a451eb2278',
-            Logins: {}
-        });
-
-        // Initialize the GoogleAuth object, but don't sign in yet.
-        if (FEATURE_GOOGLE_SIGNIN_ENABLED) {
-            gapi.load('auth2', function() {
-                const auth2 = gapi.auth2.init({
-                    client_id: '54406425322-nv10ri5f0p6vl3i2nrkbhv8mv9pmb4r1.apps.googleusercontent.com',
-                    fetch_basic_profile: true,  // affects getBasicProfile() on GoogleUser.
-                    scope: 'profile'
-                });
-                auth2.then(function onInit() {
-                    auth2.currentUser.listen(function(googleUser: gapi.auth2.GoogleUser) {
-                        // const id_token = googleUser.getAuthResponse().id_token;
-                    });
-                    // Do nothing.
-                }, function onFailure(reason: any) {
-                    console.warn(`gapi.auth2.init failed because ${reason}`);
-                });
-            });
         }
     }]);
 

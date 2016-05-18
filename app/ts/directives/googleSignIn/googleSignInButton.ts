@@ -15,10 +15,16 @@ export default function(): ng.IDirective {
             options: '&'
         },
         template: '<div></div>',
-        link: function(scope: GoogleSignInScope, element: angular.IAugmentedJQuery, attrs: angular.IAttributes) {
+        link: function($scope: GoogleSignInScope, element: angular.IAugmentedJQuery, attrs: angular.IAttributes) {
             const div = <HTMLDivElement>element.find('div')[0];
             div.id = attrs['buttonId'];
-            gapi.signin2.render(div.id, scope.options());
+            gapi.signin2.render(div.id, $scope.options());
+
+            function onDestroyScope() {
+                console.log("The Google Button $scope is going away...");
+            }
+
+            $scope.$on('$destroy', onDestroyScope);
         }
     };
 }

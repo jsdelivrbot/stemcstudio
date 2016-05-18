@@ -1,30 +1,30 @@
 import * as angular from 'angular';
-import app from '../app';
 import AboutScope from '../scopes/AboutScope';
+import AbstractPageController from './AbstractPageController';
+import IDoodleManager from '../services/doodles/IDoodleManager';
+import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
+import ModalDialog from '../services/modalService/ModalDialog';
 
-app.controller('about-controller', [
-    '$scope',
-    '$state',
-    '$window',
-    function(
+export default class AboutController extends AbstractPageController {
+    public static $inject: string[] = [
+        '$scope',
+        '$state',
+        '$window',
+        'GitHubAuthManager',
+        'ga',
+        'modalDialog',
+        'doodles',
+        'UNIVERSAL_ANALYTICS_TRACKING_ID'];
+    constructor(
         $scope: AboutScope,
         $state: angular.ui.IStateService,
-        $window: angular.IWindowService
-    ) {
+        $window: angular.IWindowService,
+        authManager: IGitHubAuthManager,
+        ga: UniversalAnalytics.ga,
+        modalDialog: ModalDialog,
+        doodles: IDoodleManager,
+        UNIVERSAL_ANALYTICS_TRACKING_ID: string) {
 
-        $scope.doCheckForUpdates = function() {
-            var appCache: ApplicationCache = $window.applicationCache;
-
-            appCache.update();
-
-            if (appCache.status === $window.applicationCache.UPDATEREADY) {
-                appCache.swapCache();
-            }
-        };
-
-        $scope.doClose = function() {
-            $state.transitionTo('doodle');
-        };
-
+        super($scope, $state, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'hidden');
     }
-]);
+}

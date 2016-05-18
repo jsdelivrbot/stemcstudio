@@ -1,6 +1,12 @@
 import DoodleScope from './DoodleScope';
+import Doodle from '../services/doodles/Doodle';
 
 interface WorkspaceScope extends DoodleScope {
+
+    /**
+     * 
+     */
+    currentDoodle(): Doodle;
 
     /**
      * The doodle is loaded when it has been loaded from GitHub or Local Storage.

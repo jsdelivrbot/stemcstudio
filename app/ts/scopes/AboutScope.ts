@@ -1,8 +1,7 @@
 import * as angular from 'angular';
+import BodyScope from './BodyScope';
 
-interface AboutScope extends angular.IScope {
-    doCheckForUpdates(): void;
-    doClose(): void;
+interface AboutScope extends BodyScope {
 }
 
 export default AboutScope;

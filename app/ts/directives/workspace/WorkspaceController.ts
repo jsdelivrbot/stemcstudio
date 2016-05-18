@@ -1,31 +1,24 @@
 import * as ng from 'angular';
+import AmazonLoginsService from '../../services/amazonLogins/AmazonLoginsService';
 import Base64Service from '../../services/base64/Base64Service';
-import bubbleIframeMouseMove from './bubbleIframeMouseMove';
 import Delta from '../../widgets/editor/Delta';
 import Editor from '../../widgets/editor/Editor';
 import EditSession from '../../widgets/editor/EditSession';
 import OutputFile from '../../widgets/editor/workspace/OutputFile';
-import sd from 'showdown';
 import CloudService from '../../services/cloud/CloudService';
 import detect1x from './detect1x';
 import Doodle from '../../services/doodles/Doodle';
-import fileContent from './fileContent';
-import fileExists from './fileExists';
 import IDoodleManager from '../../services/doodles/IDoodleManager';
 import GitHubService from '../../services/github/GitHubService';
 import LabelDialog from '../../modules/publish/LabelDialog';
 import LabelFlow from './LabelFlow';
 import PublishFlow from './PublishFlow';
 import IGitHubAuthManager from '../../services/gham/IGitHubAuthManager';
-import IOption from '../../services/options/IOption';
 import IOptionManager from '../../services/options/IOptionManager';
 import isString from '../../utils/isString';
 import ChangeHandler from './ChangeHandler';
 import OutputFileHandler from './OutputFileHandler';
 import doodleGroom from '../../utils/doodleGroom';
-import readMeHTML from './readMeHTML';
-import StringSet from '../../utils/StringSet';
-import mathscript from 'davinci-mathscript';
 import ModalDialog from '../../services/modalService/ModalDialog';
 import PublishDialog from '../../modules/publish/PublishDialog';
 import FlowService from '../../services/flow/FlowService';
@@ -42,11 +35,11 @@ import {LANGUAGE_LESS} from '../../languages/modes';
 import {LANGUAGE_MARKDOWN} from '../../languages/modes';
 import {LANGUAGE_TYPE_SCRIPT} from '../../languages/modes';
 import {LANGUAGE_TEXT} from '../../languages/modes';
+import updateWorkspace from './updateWorkspace';
+import rebuildPreview from './rebuildPreview';
+import rebuildReadmeView from './rebuildReadmeView';
 
 // import BootstrapDialog from 'bootstrap-dialog';
-
-const FSLASH_STAR = '/*';
-const STAR_FSLASH = '*/';
 
 const WAIT_NO_MORE = 0;
 const WAIT_FOR_MORE_CODE_KEYSTROKES = 1500;
@@ -57,94 +50,6 @@ const WAIT_FOR_MORE_README_KEYSTROKES = 1000;
 const MODULE_KIND_NONE = 'none';
 const MODULE_KIND_SYSTEM = 'system';
 const SCRIPT_TARGET_ES5 = 'es5';
-
-function namesToOptions(names: string[], options: IOptionManager): IOption[] {
-    return options.filter(function(option) { return names.indexOf(option.name) >= 0; });
-}
-
-function optionsToNames(options: IOption[]): string[] {
-    return options.map(function(option: IOption) { return option.name; });
-}
-
-/**
- * Compute the closure of the options.
- */
-function closure(options: IOption[], manager: IOptionManager): IOption[] {
-    const nameSet = new StringSet();
-    options.forEach(function(option) {
-        nameSet.add(option.name);
-    });
-    let done = false;
-    while (!done) {
-        const size = nameSet.size();
-        // TODO: This only computes the closure. It does not sort into for dependencies.
-        namesToOptions(nameSet.toArray(), manager).forEach(function(option: IOption) {
-            for (let name in option.dependencies) {
-                if (option.dependencies.hasOwnProperty(name)) {
-                    nameSet.add(name);
-                }
-            }
-        });
-
-        done = size === nameSet.size();
-    }
-    return namesToOptions(nameSet.toArray(), manager);
-}
-
-/**
- * Returns the JavaScript to be inserted into the HTML script element.
- * This may involve further modifying the JavaScript emitted by the
- * TypeScript compiler by, for example, introducing operator overloading. 
- */
-function currentJavaScript(fileName: string, doodle: Doodle): string {
-    const code = doodle.lastKnownJs[fileName];
-    if (code) {
-        if (doodle.operatorOverloading) {
-            try {
-                // In this location we are transpiling the code.
-                return mathscript.transpile(code);
-            }
-            catch (e) {
-                // We might end up here if there is an error in the source code.
-                // TODO: Distinguish errors in transpile from errors in source code.
-                console.warn(e);
-                return code;
-            }
-        }
-        else {
-            return code;
-        }
-    }
-    else {
-        return "";
-    }
-}
-
-/**
- * This will be a String method in ECMAScript 6.
- * More robust implementations exist.
- * This lightweight function is adapted from MDN.
- */
-function startsWith(sourceString: string, searchString: string, position = 0): boolean {
-    return sourceString.indexOf(searchString, position) === position;
-}
-
-/**
- * Computes the URL for a script tag by examining the `fileName`.
- * Files that begin with the special VENDOR_FOLDER_MARKER constant
- * are assumed to be located in the local `vendor` folder of the domain.
- * Otherwise, the fileName is considered to be the URL of a remote server.
- */
-function scriptURL(domain: string, fileName: string, VENDOR_FOLDER_MARKER: string): string {
-    if (startsWith(fileName, VENDOR_FOLDER_MARKER)) {
-        // fileName(s) should be defined as VENDOR_FOLDER_MARKER + '/package/**/*.js'
-        return domain + '/vendor' + fileName.substring(VENDOR_FOLDER_MARKER.length);
-    }
-    else {
-        // TODO: While we migrate options, everything is still local.
-        return domain + '/js/' + fileName;
-    }
-}
 
 /**
  * @class WorkspaceController
@@ -161,6 +66,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         '$location',
         '$timeout',
         '$window',
+        'amazonLogins',
         'base64',
         'GitHub',
         'GitHubAuthManager',
@@ -236,6 +142,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         private $location: angular.ILocationService,
         private $timeout: angular.ITimeoutService,
         private $window: angular.IWindowService,
+        private amazonLogins: AmazonLoginsService,
         private base64: Base64Service,
         private github: GitHubService,
         authManager: IGitHubAuthManager,
@@ -269,7 +176,26 @@ export default class WorkspaceController implements WorkspaceMixin {
         let rebuildPromise: angular.IPromise<void>;
         $scope.updatePreview = (delay: number) => {
             if (rebuildPromise) { $timeout.cancel(rebuildPromise); }
-            rebuildPromise = $timeout(() => { this.rebuildPreview(); rebuildPromise = undefined; }, delay);
+            rebuildPromise = $timeout(() => { rebuildPreview(
+                doodles.current(),
+                this.options,
+                this.$scope,
+                this.$location,
+                this.$window,
+                this.CODE_MARKER,
+                this.FILENAME_CODE,
+                this.FILENAME_LESS,
+                this.FILENAME_LIBS,
+                this.FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS,
+                this.LIBS_MARKER,
+                this.SCRIPTS_MARKER,
+                this.STYLE_MARKER,
+                this.STYLES_MARKER,
+                this.VENDOR_FOLDER_MARKER); rebuildPromise = undefined; }, delay);
+        };
+
+        $scope.currentDoodle = function() {
+            return doodles.current();
         };
 
         $scope.doView = (name: string): void => {
@@ -319,7 +245,7 @@ export default class WorkspaceController implements WorkspaceMixin {
 
         $scope.doPublish = (label?: string, value?: number) => {
             ga('send', 'event', 'doodle', 'upload', label, value);
-            const publishFlow = new PublishFlow($scope.userLogin(), this.doodles,this.flowService,this.publishDialog);
+            const publishFlow = new PublishFlow($scope.userLogin(), this.doodles,this.flowService,this.publishDialog, this.amazonLogins);
             publishFlow.execute();
         };
 
@@ -519,7 +445,15 @@ export default class WorkspaceController implements WorkspaceMixin {
         this.$scope.isReadMeVisible = true;
 
         // FIXME: Some work to do in getting all the async work done right.
-        this.updateWorkspace();
+        updateWorkspace(
+            this.workspace,
+            this.doodles.current(),
+            this.options,
+            this.olds,
+            this.FILENAME_TYPESCRIPT_CURRENT_LIB_DTS,
+            this.$http,
+            this.$location,
+            this.VENDOR_FOLDER_MARKER);
 
         // Set the module kind for transpilation consistent with the version.
         const moduleKind = detect1x(doodle) ? MODULE_KIND_NONE : MODULE_KIND_SYSTEM;
@@ -656,7 +590,12 @@ export default class WorkspaceController implements WorkspaceMixin {
     private updateReadmeView(delay: number) {
         // Throttle the requests to update the README view.
         if (this.readmePromise) { this.$timeout.cancel(this.readmePromise); }
-        this.readmePromise = this.$timeout(() => { this.rebuildReadmeView(); this.readmePromise = undefined; }, delay);
+        this.readmePromise = this.$timeout(() => { rebuildReadmeView(
+            this.doodles.current(),
+            this.FILENAME_README,
+            this.$scope,
+            this.$window
+        ); this.readmePromise = undefined; }, delay);
     }
 
     private deleteChangeHandler(filename: string): void {
@@ -726,250 +665,5 @@ export default class WorkspaceController implements WorkspaceMixin {
             }
         }
         delete this.editors[filename];
-    }
-
-    /**
-     * Update the scripts that the workspace uses to type-check the code.
-     * This involves comparing the dependencies of the doodle to the
-     * units that are already loaded. We compute those that must be added
-     * and those that must be removed from the workspace in order to minimize
-     * network traffic and to ensure that the doodle defines the correct dependencies.
-     */
-    updateWorkspace() {
-        // Load the wokspace with the appropriate TypeScript definitions.
-        const news: string[] = optionsToNames(closure(namesToOptions(this.doodles.current().dependencies, this.options), this.options));
-
-        // Determine what we need to add and remove from the workspace.
-        //
-        // We must add what we need if it doesn't already exist in the workspace.
-        // We must remove those things in the workspace that are no longer needed.
-        /**
-         * The things that we need to add to the workspace.
-         */
-        const adds: string[] = news.filter((dep) => { return this.olds.indexOf(dep) < 0; });
-        /**
-         * The things that we need to remove from the workspace.
-         */
-        const rmvs: string[] = this.olds.filter(function(dep) { return news.indexOf(dep) < 0; });
-
-        // The following is not essential, as `lib` is not an option, it's always there.
-        // TODO: This code is currently not being exercised because dependency changes cause a page reload.
-        // In future, dependency changes will not cause a page reload.
-        if (rmvs.indexOf('lib') >= 0) {
-            // By removing it from the list, we will keep the 'lib' in the workspace and save an unload/load cycle.
-            rmvs.splice(rmvs.indexOf('lib'), 1);
-        }
-
-        const rmvOpts: IOption[] = namesToOptions(rmvs, this.options);
-
-        const rmvUnits: { name: string; fileName: string }[] = rmvOpts.map(function(option) { return { name: option.name, fileName: option.dts }; });
-
-        const addOpts: IOption[] = namesToOptions(adds, this.options);
-
-        // TODO: Optimize so that we don't keep loading `lib`.
-        let addUnits: { name: string; fileName: string }[] = addOpts.map(function(option) { return { name: option.name, fileName: option.dts }; });
-
-        // Ensure that the TypeScript ambient type definitions are present.
-        if (this.olds.indexOf('lib') < 0) {
-            addUnits = addUnits.concat({ name: 'lib', fileName: this.FILENAME_TYPESCRIPT_CURRENT_LIB_DTS });
-        }
-
-        /**
-         * The domain on which we are running. e.g., `https://www.stemcstudio.com` or `localhost:8080`.
-         * We determine this dynamically in order to access files in known locations on our server.
-         * Current usage is for JavaScript files, TypeScript d.ts files, and paths to gists.
-         * TODO: JavaScript and TypeScript to come from external repos.
-         */
-        const FWD_SLASH = '/';
-        const DOMAIN = this.$location.protocol() + ':' + FWD_SLASH + FWD_SLASH + this.$location.host() + ":" + this.$location.port();
-
-        const readFile = (fileName: string, callback: (err, data?) => void) => {
-            const url = scriptURL(DOMAIN, fileName, this.VENDOR_FOLDER_MARKER);
-            this.$http.get(url)
-                .success(function(data, status: number, headers, config) {
-                    callback(null, data);
-                })
-                .error(function(data, status: number, headers, config) {
-                    callback(new Error("Unable to wrangle #{fileName}."));
-                });
-        };
-
-        rmvUnits.forEach((rmvUnit) => {
-            this.workspace.removeScript(rmvUnit.fileName);
-            this.olds.splice(this.olds.indexOf(rmvUnit.name), 1);
-        });
-
-        addUnits.forEach((addUnit) => {
-            readFile(addUnit.fileName, (err, content) => {
-                if (!err) {
-                    this.workspace.ensureScript(addUnit.fileName, content.replace(/\r\n?/g, '\n'));
-                    this.olds.unshift(addUnit.name);
-                }
-            });
-        });
-    }
-
-    rebuildPreview() {
-        /**
-         * The domain on which we are running. e.g., `https://www.stemcstudio.com` or `localhost:8080`.
-         * We determine this dynamically in order to access files in known locations on our server.
-         * Current usage is for JavaScript files, TypeScript d.ts files, and paths to gists.
-         * TODO: JavaScript and TypeScript to come from external repos.
-         */
-        const FWD_SLASH = '/';
-        const DOMAIN = this.$location.protocol() + ':' + FWD_SLASH + FWD_SLASH + this.$location.host() + ":" + this.$location.port();
-        try {
-            // Kill any existing frames.
-            this.$scope.previewIFrame = undefined;
-            const elementId = 'output';
-            const preview = this.$window.document.getElementById(elementId);
-            if (preview) {
-                while (preview.children.length > 0) {
-                    preview.removeChild(preview.firstChild);
-                }
-                const doodle: Doodle = this.doodles.current();
-                if (doodle) {
-                    const bestFile: string = doodle.getPreviewFileOrBestAvailable();
-                    if (bestFile && this.$scope.isViewVisible) {
-
-                        this.$scope.previewIFrame = document.createElement('iframe');
-                        // Let's not change any more styles than we have to. 
-                        this.$scope.previewIFrame.style.width = '100%';
-                        this.$scope.previewIFrame.style.height = '100%';
-                        this.$scope.previewIFrame.style.border = '0';
-                        this.$scope.previewIFrame.style.backgroundColor = '#ffffff';
-
-                        preview.appendChild(this.$scope.previewIFrame);
-
-                        const content: Document = this.$scope.previewIFrame.contentDocument || this.$scope.previewIFrame.contentWindow.document;
-
-                        let html: string = fileContent(bestFile, doodle);
-                        if (isString(html)) {
-
-                            const selOpts: IOption[] = this.options.filter((option: IOption, index: number, array: IOption[]) => {
-                                return doodle.dependencies.indexOf(option.name) > -1;
-                            });
-
-                            const closureOpts: IOption[] = closure(selOpts, this.options);
-
-                            const chosenCssFileNames: string[] = closureOpts.map(function(option: IOption) { return option.css; }).reduce(function(previousValue, currentValue) { return previousValue.concat(currentValue); }, []);
-                            const stylesTags = chosenCssFileNames.map((fileName: string) => {
-                                return "<link rel='stylesheet' href='" + scriptURL(DOMAIN, fileName, this.VENDOR_FOLDER_MARKER) + "'></link>\n";
-                            });
-                            html = html.replace(this.STYLES_MARKER, stylesTags.join(""));
-
-                            const chosenJsFileNames: string[] = closureOpts.map(function(option: IOption) { return option.minJs; }).reduce(function(previousValue, currentValue) { return previousValue.concat(currentValue); }, []);
-                            // TODO: We will later want to make operator overloading configurable for speed.
-
-                            const scriptFileNames: string[] = this.doodles.current().operatorOverloading ? chosenJsFileNames.concat(this.FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS) : chosenJsFileNames;
-                            // TOOD: Don't fix the location of the JavaScript here.
-                            const scriptTags = scriptFileNames.map((fileName: string) => {
-                                return "<script src='" + scriptURL(DOMAIN, fileName, this.VENDOR_FOLDER_MARKER) + "'></script>\n";
-                            });
-
-                            html = html.replace(this.SCRIPTS_MARKER, scriptTags.join(""));
-
-                            // TODO: It would be nice to have a more flexible way to define stylesheet imports.
-                            // TODO: We should then be able to move away from symbolic constants for the stylesheet file name.
-                            if (fileExists('style.css', doodle)) {
-                                html = html.replace(this.STYLE_MARKER, [fileContent('style.css', doodle)].join(""));
-                            }
-                            else if (fileExists(this.FILENAME_LESS, doodle)) {
-                                html = html.replace(this.STYLE_MARKER, [fileContent(this.FILENAME_LESS, doodle)].join(""));
-                            }
-
-                            if (detect1x(doodle)) {
-                                // This code is for backwards compatibility only, now that we support ES6 modules.
-                                console.warn("Support for programs not using ES6 modules is deprecated. Please convert your program to use ES6 module loading.");
-                                html = html.replace(this.LIBS_MARKER, currentJavaScript(this.FILENAME_LIBS, doodle));
-                                html = html.replace(this.CODE_MARKER, currentJavaScript(this.FILENAME_CODE, doodle));
-                                // For backwards compatibility (less than 1.x) ...
-                                html = html.replace('<!-- STYLE-MARKER -->', ['<style>', fileContent(this.FILENAME_LESS, doodle), '</style>'].join(""));
-                                html = html.replace('<!-- CODE-MARKER -->', currentJavaScript(this.FILENAME_CODE, this.doodles.current()));
-                            }
-                            else {
-                                const modulesJs: string[] = [];
-                                const names: string[] = Object.keys(doodle.lastKnownJs);
-                                const iLen: number = names.length;
-                                for (let i = 0; i < iLen; i++) {
-                                    const name = names[i];
-                                    const moduleJs = doodle.lastKnownJs[name];
-                                    const moduleMs = doodle.operatorOverloading ? mathscript.transpile(moduleJs) : moduleJs;
-                                    modulesJs.push(moduleMs);
-                                }
-                                html = html.replace(this.CODE_MARKER, modulesJs.join('\n'));
-                            }
-
-                            content.open();
-                            content.write(html);
-                            content.close();
-
-                            bubbleIframeMouseMove(this.$scope.previewIFrame);
-                        }
-                        else {
-                            console.warn(`bestFile => ${bestFile}`);
-                        }
-                    }
-                }
-            }
-            else {
-                // This can happen if we use ng-if to kill the element entirely, which we do.
-            }
-        }
-        catch (e) {
-            console.warn(e);
-        }
-    }
-
-    /**
-     * 
-     */
-    rebuildReadmeView() {
-        try {
-            const elementId = 'readme';
-            // Kill any existing frames.
-            const hostElement: HTMLElement = this.$window.document.getElementById(elementId);
-            if (hostElement) {
-                while (hostElement.children.length > 0) {
-                    hostElement.removeChild(hostElement.firstChild);
-                }
-                const doodle: Doodle = this.doodles.current();
-                if (doodle && this.$scope.isReadMeVisible) {
-                    const iframe: HTMLIFrameElement = document.createElement('iframe');
-                    iframe.style.width = '100%';
-                    iframe.style.height = '100%';
-                    iframe.style.border = '0';
-                    iframe.style.backgroundColor = '#ffffff';
-
-                    hostElement.appendChild(iframe);
-
-                    let html = readMeHTML({});
-
-                    const content = iframe.contentDocument || iframe.contentWindow.document;
-                    if (fileExists(this.FILENAME_README, doodle)) {
-                        const markdown: string = fileContent(this.FILENAME_README, doodle);
-                        const converter: sd.Converter = new sd.Converter();
-                        const markdownHTML = converter.makeHtml(markdown);
-                        html = html.replace('// README.md', markdownHTML);
-                    }
-                    if (fileExists('README.css', doodle)) {
-                        html = html.replace(`${FSLASH_STAR} README.css ${STAR_FSLASH}`, fileContent('README.css', doodle));
-                    }
-
-                    content.open();
-                    content.write(html);
-                    content.close();
-
-                    bubbleIframeMouseMove(iframe);
-                }
-            }
-            else {
-                // This can happen if we use ng-if to kill the element entirely, which we do.
-                // console.warn(`There is no element with id '${elementId}'.`)
-            }
-        }
-        catch (e) {
-            console.warn(e);
-        }
     }
 }

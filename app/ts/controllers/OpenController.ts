@@ -15,6 +15,10 @@ app.controller('open-controller', [
         STATE_DOODLE: string
     ) {
 
+        $scope.doodles = function() {
+            return doodles.filter(function() { return true; });
+        };
+
         $scope.doOpen = function(doodle: Doodle) {
             doodles.makeCurrent(doodle);
             $state.go(STATE_DOODLE);

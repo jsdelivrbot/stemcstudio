@@ -1,7 +1,9 @@
 interface DoodleRef {
     owner: string;
     gistId: string;
-    description: string;
+    title: string;
+    author: string;
+    keywords: string[];
 }
 
 export default DoodleRef;

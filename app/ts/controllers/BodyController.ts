@@ -1,32 +1,36 @@
-import app from '../app';
 import BodyScope from '../scopes/BodyScope';
-import BootstrapDialog from 'bootstrap-dialog';
-import IDoodleManager from '../services/doodles/IDoodleManager';
-import GitHubService from '../services/github/GitHubService';
-import linkToMap from '../utils/linkToMap';
 
-app.controller('body-controller', [
-    '$scope',
-    '$state',
-    'doodles',
-    'ga',
-    'GitHub',
-    function(
-        $scope: BodyScope,
-        $state: angular.ui.IStateService,
-        doodles: IDoodleManager,
-        ga: UniversalAnalytics.ga,
-        github: GitHubService
+/**
+ * The controller for the <body> tag.
+ * The controller is referred to as 'body-controller' in layout.jade.
+ *
+ * @class BodyController
+ */
+export default class BodyController {
+    public static $inject: string[] = [
+        '$scope',
+        '$state',
+        'ga'
+    ];
+    constructor(
+        private $scope: BodyScope,
+        private $state: angular.ui.IStateService,
+        private ga: UniversalAnalytics.ga
     ) {
 
-        $scope.currentDoodle = function() {
-            return doodles.current();
+        $scope.goHome = (label?: string, value?: number) => {
+            const destination = 'home';
+            this.navigateTo(destination, void 0, void 0, label, value)
+                .then(function(promiseValue: any) {
+                    // console.log(`navigateTo('${destination}') completed.`);
+                })
+                .catch(function(reason: any) {
+                    console.warn(`navigateTo('${destination}') failed.`);
+                });
         };
 
-        $scope.doodles = function() {
-            return doodles.filter(function() { return true; });
-        };
 
+        /*
         $scope.clickDownload = function(label?: string, value?: number) {
             ga('send', 'event', 'doodle', 'download', label, value);
             github.getGists()
@@ -59,5 +63,37 @@ app.controller('body-controller', [
 
                 });
         };
+        */
     }
-]);
+
+    /**
+     * @method $onInit
+     * @return {void}
+     */
+    $onInit() {
+        // This method IS called when the application loads.
+    }
+
+    /**
+     * @method $onDestroy
+     * @return {void}
+     */
+    $onDestroy() {
+        // I don't think that this method is called.
+        console.warn("BodyController.$onDestroy()");
+    }
+
+    /**
+     * @method navigateTo
+     * @param to {string}
+     * @param [params] {}
+     * @param [options] {IStateOptions}
+     * @param [label] {string} Contextual information from UI.
+     * @param [value] {string} Contextual information from UI.
+     * @return {IPromise}
+     */
+    protected navigateTo(to: string, params?: {}, options?: angular.ui.IStateOptions, label?: string, value?: number): angular.IPromise<any> {
+        this.ga('send', 'event', 'navigateTo', to, label, value);
+        return this.$state.go(to, params, options);
+    }
+}

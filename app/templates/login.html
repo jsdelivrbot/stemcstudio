@@ -1,17 +1,14 @@
 <div id='login-page'>
-    <header>
-        <nav id='toolbar' class='navbar navbar-inverse'>
-            <div class='navbar-header'>
-                <a role='button' class='navbar-brand' ng-click='goHome()'>
-                    <logo-text version='{{version}}' />
-                </a>
-            </div>
-            <div class='ignore-collapse ignore-navbar-collapse'>
-                <ul class='nav navbar-nav'>
-                </ul>
-            </div>
-        </nav>
-    </header>
+    <nav id='toolbar' class='navbar navbar-inverse'>
+        <div class='navbar-header'>
+            <a role='button' class='navbar-brand' ng-click='goHome()'>
+                <brand />
+            </a>
+        </div>
+        <div class='navbar-header'>
+            <span class='md-logo-text-math navbar-brand'>Sign In</span>
+        </div>
+    </nav>
     <div class='login-container'>
         <div class='container md-docs-container'>
             <div class='row'>
@@ -31,7 +28,7 @@
                                         </div>
                                         <span style="font-size:13px;line-height:32px;" class="stemcButtonContents">
                                             <span ng-hide='isGitHubSignedIn()'>Sign in with GitHub</span>
-                                            <span ng-show='isGitHubSignedIn()'>Signed in with GitHub</span>
+                                        <span ng-show='isGitHubSignedIn()'>Signed in with GitHub</span>
                                         </span>
                                     </div>
                                 </div>
@@ -47,7 +44,8 @@
                             <div ng-if='FEATURE_GOOGLE_SIGNIN_ENABLED' class='login-provider-button-container'>
                                 <google-sign-in-button ng-if='FEATURE_GOOGLE_SIGNIN_ENABLED' button-id="google-button-id" options="googleSignInOptions"></google-sign-in-button>
                             </div>
-                            <div ng-controller='twitter-login-controller as twitter' ng-if='FEATURE_TWITTER_SIGNIN_ENABLED' button-id="github-button-id" options="options" class='login-provider-button-container'>
+                            <div ng-controller='twitter-login-controller as twitter' ng-if='FEATURE_TWITTER_SIGNIN_ENABLED' button-id="github-button-id"
+                            options="options" class='login-provider-button-container'>
                                 <div style="height:34px;width:240px;" class="stemcButton stemcButtonTwitter">
                                     <div class="stemcButtonContentWrapper" ng-click="twitter.login()">
                                         <div class="stemcButtonIcon" style="padding:7px;">
@@ -59,7 +57,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div ng-controller='facebook-login-controller as facebook' ng-if='FEATURE_FACEBOOK_SIGNIN_ENABLED' button-id="github-button-id" options="options" class='login-provider-button-container'>
+                            <div ng-controller='facebook-login-controller as facebook' ng-if='FEATURE_FACEBOOK_SIGNIN_ENABLED' button-id="github-button-id"
+                            options="options" class='login-provider-button-container'>
                                 <div style="height:34px;width:240px;" class="stemcButton stemcButtonFacebook">
                                     <div class="stemcButtonContentWrapper" ng-click="facebook.login()">
                                         <div class="stemcButtonIcon" style="padding:7px;">

@@ -1,6 +1,15 @@
 declare module AWS {
     /////////////////////////////////////////////////////////
     // Bits and Pieces
+    interface Reason {
+        message: string;
+        code: string;
+        time: string;
+        requestId: string;
+        statusCode: number;
+        retryable: boolean;
+        retryDelay: number;
+    }
     export class Endpoint {
         constructor(endpoint: string);
 

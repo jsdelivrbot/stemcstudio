@@ -28,7 +28,6 @@ import HomeController from './controllers/HomeController';
 import editor from './directives/editor/editor.component';
 import explorer from './directives/explorer/explorer.component';
 import ExplorerFilesController from './directives/explorer/ExplorerFilesController';
-import logoText from './directives/logoText/logoText';
 import AlertController from './services/modalService/AlertController';
 import ConfirmController from './services/modalService/ConfirmController';
 import PromptController from './services/modalService/PromptController';
@@ -91,7 +90,6 @@ import './controllers/PropertiesController';
 app.directive('contextMenu', contextMenu);
 app.directive('editor', editor);
 app.directive('explorer', explorer);
-app.directive('logoText', logoText);
 app.directive('resizable', resizable);
 app.directive('workspace', workspace);
 

@@ -1,8 +1,9 @@
+import AmazonLoginsService from '../../services/amazonLogins/AmazonLoginsService';
 import FlowService from '../../services/flow/FlowService';
 import PublishDialog from '../../modules/publish/PublishDialog';
 import PublishFacts from './PublishFacts';
-import PublishSettings from '../../modules/publish/PublishSettings';
 import IDoodleManager from '../../services/doodles/IDoodleManager';
+import putDoodleRef from './putDoodleRef';
 
 /**
  * @class PublishFlow
@@ -13,13 +14,15 @@ export default class PublishFlow {
         private owner: string,
         private doodles: IDoodleManager,
         private flowService: FlowService,
-        private publishDialog: PublishDialog
+        private publishDialog: PublishDialog,
+        private amazonLogins: AmazonLoginsService
     ) {
         // Do nothing.
     }
     execute() {
 
         const doodle = this.doodles.current();
+        doodle.owner = this.owner;
         const flow = this.flowService.createFlow<PublishFacts>("Publish");
 
         flow.rule("Google Sign-In", {},
@@ -32,32 +35,18 @@ export default class PublishFlow {
                 });
                 const googleUser = gapi.auth2.getAuthInstance().currentUser.get();
                 googleUser.grant(options).then(
-                    function(success) {
+                    (success) => {
                         const id_token = googleUser.getAuthResponse().id_token;
+                        this.amazonLogins.googleSignIn(id_token);
                         facts.id_token.resolve(id_token);
                         console.log(JSON.stringify({ message: "success", value: success }));
                         next();
                     },
-                    function(fail) {
+                    (fail: any) => {
+                        this.amazonLogins.googleSignIn(void 0);
                         facts.id_token.reject(fail);
                         alert(JSON.stringify({ message: "fail", value: fail }));
                         next(fail);
-                    });
-            });
-
-        flow.rule("Settings", {},
-            (facts) => {
-                return facts.settings.isUndefined();
-            },
-            (facts, session, next) => {
-                this.publishDialog.open()
-                    .then((settings: PublishSettings) => {
-                        facts.settings.resolve(settings);
-                        next();
-                    })
-                    .catch((reason: any) => {
-                        facts.settings.reject(reason);
-                        next(reason);
                     });
             });
 
@@ -66,34 +55,16 @@ export default class PublishFlow {
                 return facts.id_token.isResolved() && facts.indexed.isUndefined() && facts.owner.isResolved();
             },
             (facts, session, next) => {
-                AWS.config.region = 'us-east-1';
-                AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-                    IdentityPoolId: 'us-east-1:b419a8b6-2753-4af4-a76b-41a451eb2278',
-                    Logins: {
-                        'accounts.google.com': facts.id_token.value
+                putDoodleRef(doodle, function(err: AWS.Reason) {
+                    if (!err) {
+                        facts.indexed.resolve(true);
                     }
+                    else {
+                        facts.indexed.reject(err);
+                        console.warn(err);
+                    }
+                    next(err);
                 });
-                const db = new AWS.DynamoDB();
-                db.putItem(
-                    {
-                        TableName: 'Doodle',
-                        Item: {
-                            'owner': { S: facts.owner.value },
-                            'resource': { S: doodle.gistId },
-                            'type': { S: 'Gist' },
-                            'description': { S: doodle.description }
-                        }
-                    },
-                    function(err, data) {
-                        if (!err) {
-                            facts.indexed.resolve(true);
-                        }
-                        else {
-                            facts.indexed.reject(err);
-                            console.warn(err, err.stack);
-                        }
-                        next(err);
-                    });
             });
 
         const facts = new PublishFacts();

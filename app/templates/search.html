@@ -1,17 +1,14 @@
 <div id='search-page'>
-    <header>
-        <nav id='toolbar' class='navbar navbar-inverse'>
-            <div class='navbar-header'>
-                <a role='button' class='navbar-brand' ng-click='goHome()'>
-                    <logo-text version='{{version}}' />
-                </a>
-            </div>
-            <div class='ignore-collapse ignore-navbar-collapse'>
-                <ul class='nav navbar-nav'>
-                </ul>
-            </div>
-        </nav>
-    </header>
+    <nav id='toolbar' class='navbar navbar-inverse'>
+        <div class='navbar-header'>
+            <a role='button' class='navbar-brand' ng-click='goHome()'>
+                <brand />
+            </a>
+        </div>
+        <div class='navbar-header'>
+            <span class='md-logo-text-math navbar-brand'>Search</span>
+        </div>
+    </nav>
     <div class='search-container'>
         <div class='container md-docs-container'>
             <div class='row'>
@@ -36,8 +33,9 @@
                     </div>
                     <div class='md-docs-section'>
                         <div ng-repeat='doodle in doodleRefs'>
-                            <a ng-href='/#/gists/{{doodle.gistId}}'>{{doodle.description}}</a>
-                            <div>{{doodle.owner}}</div>
+                            <a ng-href='/#/gists/{{doodle.gistId}}'>{{doodle.title}}</a>
+                            <div>{{doodle.author}}</div>
+                            <div>{{doodle.keywords.join(', ')}}</div>
                         </div>
                     </div>
                 </div>

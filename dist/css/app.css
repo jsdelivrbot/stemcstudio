@@ -1,3 +1,6 @@
+/**
+ * We're getting bootstrap at about 3.3.6 and this brings in a bunch of stuff.
+ */
 /*!
  * Bootstrap v3.3.6 (http://getbootstrap.com)
  * Copyright 2011-2015 Twitter, Inc.
@@ -7916,10 +7919,13 @@ span.glyphicon-off {
 html {
   height: 100%;
 }
+.md-logo-text-stem {
+  color: #999;
+}
 .md-logo-text-math {
   color: #fff;
 }
-.md-logo-text-doodle {
+.md-logo-text-studio {
   color: #ff9900;
 }
 .md-logo-text-domain {

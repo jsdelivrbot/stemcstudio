@@ -5,6 +5,8 @@ import HitService from '../../services/hits/HitService';
 import SearchScope from '../../scopes/SearchScope';
 import ModalDialog from '../../services/modalService/ModalDialog';
 import queryToDoodleRefs from './queryToDoodleRefs';
+import {TableName} from './DoodleRefTable';
+import {OWNER_KEY} from './DoodleRefTable';
 
 /**
  * @class SearchController
@@ -56,22 +58,38 @@ export default class SearchController extends AbstractPageController {
             const db = new AWS.DynamoDB();
             db.query(
                 {
-                    TableName: 'Doodle',
+                    TableName,
                     KeyConditionExpression: "#P = :ghOwner",
                     ExpressionAttributeNames: {
-                        '#P': 'owner',
+                        '#P': OWNER_KEY,
                     },
                     ExpressionAttributeValues: {
-                        ':ghOwner': { S: 'mathdoodle' }
+                        ':ghOwner': { S: $scope.userLogin() }
                     }
-                }, (err, data) => {
+                }, (err: AWS.Reason, data) => {
                     if (!err) {
+                        // console.log(JSON.stringify(data, null, 2));
                         $scope.$apply(function() {
                             $scope.doodleRefs = queryToDoodleRefs(data);
+                            // console.log(JSON.stringify($scope.doodleRefs, null, 2));
                         });
                     }
                     else {
-                        console.warn(JSON.stringify(err, null, 2));
+                        switch (err.statusCode) {
+                            case 400: {
+                                modalDialog.alert({ title: 'Search', message: "I'm sorry Dave, I can't let you do that." })
+                                    .then(function() {
+                                        // Do nothing
+                                    })
+                                    .catch(function(err: any) {
+                                        console.warn(JSON.stringify(err, null, 2));
+                                    });
+                                break;
+                            }
+                            default: {
+                                console.warn(JSON.stringify(err, null, 2));
+                            }
+                        }
                     }
                 });
         };
