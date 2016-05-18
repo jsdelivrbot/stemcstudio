@@ -675,8 +675,18 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "            </div>\n" +
     "            <!-- id is the data-target of the button above -->\n" +
     "            <div class='collapse navbar-collapse' id='navbar-header-collapse'>\n" +
-    "                <!-- navbar_left or navbar-right floats-->\n" +
-    "                <!-- p class='navbar-text navbar-right'>Signed in as {{userLogin()}}</p -->\n" +
+    "                <a ng-show='github.isLoggedIn()' ng-controller='github-login-controller as github' role='button' ng-click='github.toggleLogin()' class='navbar-brand navbar-right'>\n" +
+    "                    <ng-md-icon icon='github-box' style=\"fill: #ffffff;\" size='24' aria-hidden='true' uib-tooltip=\"Sign out from GitHub\"\n" +
+    "                    tooltip-placement='bottom'>\n" +
+    "                    <ng-md-icon>\n" +
+    "                </a>\n" +
+    "                <!-- navbar-btn centers vertically by setting margin-top and margin-bottom -->\n" +
+    "                <!-- navbar-btn centers vertically by setting margin-top and margin-bottom -->\n" +
+    "                <button ng-hide='github.isLoggedIn()' ng-controller='github-login-controller as github' type=\"button\" class=\"btn btn-github navbar-btn navbar-right\" ng-click='github.toggleLogin()'>\n" +
+    "                    <span ng-hide='github.isLoggedIn()'>Sign in to GitHub</span>\n" +
+    "                    <span ng-show='github.isLoggedIn()'>Signed in as {{userLogin()}}</span>\n" +
+    "                </button>\n" +
+    "                <!--\n" +
     "                <div ng-controller='github-login-controller as github' button-id=\"github-button-id\" class='navbar-btn navbar-right login-provider-button-container'>\n" +
     "                    <div style=\"height:34px;width:240px;\" class=\"stemcButton stemcButtonGray\">\n" +
     "                        <div class=\"stemcButtonContentWrapper\" ng-click=\"github.login()\">\n" +
@@ -684,12 +694,13 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                                <ng-md-icon icon=\"github-circle\" size='18' />\n" +
     "                            </div>\n" +
     "                            <span style=\"font-size:13px;line-height:32px;\" class=\"stemcButtonContents\">\n" +
-    "                                            <span ng-hide='isGitHubSignedIn()'>Sign in with GitHub</span>\n" +
+    "                             <span ng-hide='isGitHubSignedIn()'>Sign in with GitHub</span>\n" +
     "                            <span ng-show='isGitHubSignedIn()'>Signed in with GitHub</span>\n" +
     "                            </span>\n" +
     "                        </div>\n" +
     "                    </div>\n" +
     "                </div>\n" +
+    "                -->\n" +
     "            </div>\n" +
     "        </div>\n" +
     "    </nav>\n" +

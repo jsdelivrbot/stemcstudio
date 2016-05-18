@@ -3,12 +3,19 @@ import GitHubLoginScope from './GitHubLoginScope';
 import IGitHubItem from '../../../services/gham/IGitHubItem';
 import IUuidService from '../../../services/uuid/IUuidService';
 
+//
+// TODO: DRY & refactor so that there is a GitHub service.
+//
+
 /**
  * The GitHub OAuth2 endpoint.
  * Nobody else needs to know this except this module.
  */
 const GITHUB_GET_LOGIN_OAUTH_AUTHORIZE = "https://github.com/login/oauth/authorize";
 
+/**
+ * @class GitHubLoginController
+ */
 export default class GitHubLoginController {
     public static $inject: string[] = [
         '$scope',
@@ -22,6 +29,15 @@ export default class GitHubLoginController {
         'GITHUB_LOGIN_COOKIE_NAME',
         'GITHUB_TOKEN_COOKIE_NAME'
     ];
+    /**
+     * @class GitHubLoginController
+     * @constructor
+     * @param $scope
+     * @param $window
+     * @param cookie
+     * @param gitHubKey {string}
+     * @param uuid4 {IUuidService} Use to generate a unique string for extra security.
+     */
     constructor(
         private $scope: GitHubLoginScope,
         private $window: angular.IWindowService,
@@ -113,6 +129,35 @@ export default class GitHubLoginController {
         }
         else {
             console.warn(`FEATURE_GITHUB_SIGNIN_ENABLED => ${this.FEATURE_GITHUB_SIGNIN_ENABLED}`);
+        }
+    }
+
+    /**
+     * @method isLoggedIn
+     * @return {boolean}
+     */
+    isLoggedIn(): boolean {
+        if (this.FEATURE_GITHUB_SIGNIN_ENABLED) {
+            return this.cookie.hasItem(this.GITHUB_TOKEN_COOKIE_NAME);
+        }
+        else {
+            console.warn(`FEATURE_GITHUB_SIGNIN_ENABLED => ${this.FEATURE_GITHUB_SIGNIN_ENABLED}`);
+            return false;
+        }
+    }
+
+    /**
+     * Convenience method for the user interface.
+     *
+     * @method toggleLogin
+     * @return {void}
+     */
+    toggleLogin(): void {
+        if (this.isLoggedIn()) {
+            this.logout();
+        }
+        else {
+            this.login();
         }
     }
 }

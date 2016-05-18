@@ -1,4 +1,4 @@
-import AmazonLoginsService from '../../services/amazonLogins/AmazonLoginsService';
+import CredentialsService from '../../services/credentials/CredentialsService';
 import FlowService from '../../services/flow/FlowService';
 import PublishDialog from '../../modules/publish/PublishDialog';
 import PublishFacts from './PublishFacts';
@@ -15,7 +15,7 @@ export default class PublishFlow {
         private doodles: IDoodleManager,
         private flowService: FlowService,
         private publishDialog: PublishDialog,
-        private amazonLogins: AmazonLoginsService
+        private credentials: CredentialsService
     ) {
         // Do nothing.
     }
@@ -37,13 +37,13 @@ export default class PublishFlow {
                 googleUser.grant(options).then(
                     (success) => {
                         const id_token = googleUser.getAuthResponse().id_token;
-                        this.amazonLogins.googleSignIn(id_token);
+                        this.credentials.googleSignIn(id_token);
                         facts.id_token.resolve(id_token);
                         console.log(JSON.stringify({ message: "success", value: success }));
                         next();
                     },
                     (fail: any) => {
-                        this.amazonLogins.googleSignIn(void 0);
+                        this.credentials.googleSignIn(void 0);
                         facts.id_token.reject(fail);
                         alert(JSON.stringify({ message: "fail", value: fail }));
                         next(fail);

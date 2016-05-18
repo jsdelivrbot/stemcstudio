@@ -42,7 +42,7 @@ import 'ui-select';
 //
 // Interfaces required for designtime TypeScript compilation.
 //
-import AmazonLoginsService from './services/amazonLogins/AmazonLoginsService';
+import CredentialsService from './services/credentials/CredentialsService';
 import AppScope from './scopes/AppScope';
 import CookieService from './services/cookie/CookieService';
 import githubSignInButton from './directives/githubSignIn/githubSignInButton';
@@ -214,7 +214,7 @@ app.directive('googleSignInButton', googleSignInButton);
 
 app.filter('propsFilter', propsFilter);
 
-app.service('amazonLogins', AmazonLoginsService);
+app.service('credentials', CredentialsService);
 
 app.service('labelDialog', LabelDialogService);
 app.controller('LabelModalController', LabelModalController);
@@ -379,7 +379,7 @@ app.run([
     '$state',
     '$stateParams',
     '$window',
-    'amazonLogins',
+    'credentials',
     'cookie',
     'uuid4',
     'ga',
@@ -397,7 +397,7 @@ app.run([
         $state: angular.ui.IStateService,
         $stateParams: angular.ui.IStateParamsService,
         $window: Window,
-        amazonLogins: AmazonLoginsService,
+        credentials: CredentialsService,
         cookie: CookieService,
         uuid4: IUuidService,
         ga: UniversalAnalytics.ga,
@@ -414,8 +414,8 @@ app.run([
         // The name of this cookie must correspond with the cookie sent back from the server.
         const GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME = 'stemcstudio-github-application-client-id';
 
-        // Establish the Amazon Cognito unauthorized credential.
-        amazonLogins.initialize();
+        // Establish the unauthorized credential.
+        credentials.initialize();
 
         // It's very handy to add references to $state and $stateParams to the $rootScope
         // so that you can access them from any scope (HTML template) within the application.

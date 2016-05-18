@@ -1,6 +1,6 @@
 import * as angular from 'angular';
 import AbstractPageController from './AbstractPageController';
-import AmazonLoginsService from '../services/amazonLogins/AmazonLoginsService';
+import CredentialsService from '../services/credentials/CredentialsService';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
 import HitService from '../services/hits/HitService';
 import LoginScope from '../scopes/LoginScope';
@@ -15,7 +15,7 @@ export default class LoginController extends AbstractPageController {
         '$scope',
         '$state',
         '$window',
-        'amazonLogins',
+        'credentials',
         'GitHubAuthManager',
         'ga',
         'hits',
@@ -36,7 +36,7 @@ export default class LoginController extends AbstractPageController {
         $scope: LoginScope,
         $state: angular.ui.IStateService,
         $window: angular.IWindowService,
-        amazonLogins: AmazonLoginsService,
+        credentials: CredentialsService,
         authManager: IGitHubAuthManager,
         ga: UniversalAnalytics.ga,
         hits: HitService,
@@ -68,11 +68,11 @@ export default class LoginController extends AbstractPageController {
             onsuccess: function(googleUser: gapi.auth2.GoogleUser) {
                 $scope.$apply(function() {
                     const id_token = googleUser.getAuthResponse().id_token;
-                    amazonLogins.googleSignIn(id_token);
+                    credentials.googleSignIn(id_token);
                 });
             },
             onfailure: function(error: any) {
-                amazonLogins.googleSignIn(void 0);
+                credentials.googleSignIn(void 0);
                 console.warn(error);
             }
         };

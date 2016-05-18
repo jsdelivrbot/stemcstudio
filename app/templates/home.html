@@ -20,8 +20,18 @@
             </div>
             <!-- id is the data-target of the button above -->
             <div class='collapse navbar-collapse' id='navbar-header-collapse'>
-                <!-- navbar_left or navbar-right floats-->
-                <!-- p class='navbar-text navbar-right'>Signed in as {{userLogin()}}</p -->
+                <a ng-show='github.isLoggedIn()' ng-controller='github-login-controller as github' role='button' ng-click='github.toggleLogin()' class='navbar-brand navbar-right'>
+                    <ng-md-icon icon='github-box' style="fill: #ffffff;" size='24' aria-hidden='true' uib-tooltip="Sign out from GitHub"
+                    tooltip-placement='bottom'>
+                    <ng-md-icon>
+                </a>
+                <!-- navbar-btn centers vertically by setting margin-top and margin-bottom -->
+                <!-- navbar-btn centers vertically by setting margin-top and margin-bottom -->
+                <button ng-hide='github.isLoggedIn()' ng-controller='github-login-controller as github' type="button" class="btn btn-github navbar-btn navbar-right" ng-click='github.toggleLogin()'>
+                    <span ng-hide='github.isLoggedIn()'>Sign in to GitHub</span>
+                    <span ng-show='github.isLoggedIn()'>Signed in as {{userLogin()}}</span>
+                </button>
+                <!--
                 <div ng-controller='github-login-controller as github' button-id="github-button-id" class='navbar-btn navbar-right login-provider-button-container'>
                     <div style="height:34px;width:240px;" class="stemcButton stemcButtonGray">
                         <div class="stemcButtonContentWrapper" ng-click="github.login()">
@@ -29,12 +39,13 @@
                                 <ng-md-icon icon="github-circle" size='18' />
                             </div>
                             <span style="font-size:13px;line-height:32px;" class="stemcButtonContents">
-                                            <span ng-hide='isGitHubSignedIn()'>Sign in with GitHub</span>
+                             <span ng-hide='isGitHubSignedIn()'>Sign in with GitHub</span>
                             <span ng-show='isGitHubSignedIn()'>Signed in with GitHub</span>
                             </span>
                         </div>
                     </div>
                 </div>
+                -->
             </div>
         </div>
     </nav>

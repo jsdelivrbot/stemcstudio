@@ -1,5 +1,5 @@
 import * as ng from 'angular';
-import AmazonLoginsService from '../../services/amazonLogins/AmazonLoginsService';
+import CredentialsService from '../../services/credentials/CredentialsService';
 import Base64Service from '../../services/base64/Base64Service';
 import Delta from '../../widgets/editor/Delta';
 import Editor from '../../widgets/editor/Editor';
@@ -66,7 +66,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         '$location',
         '$timeout',
         '$window',
-        'amazonLogins',
+        'credentials',
         'base64',
         'GitHub',
         'GitHubAuthManager',
@@ -142,7 +142,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         private $location: angular.ILocationService,
         private $timeout: angular.ITimeoutService,
         private $window: angular.IWindowService,
-        private amazonLogins: AmazonLoginsService,
+        private credentials: CredentialsService,
         private base64: Base64Service,
         private github: GitHubService,
         authManager: IGitHubAuthManager,
@@ -245,7 +245,7 @@ export default class WorkspaceController implements WorkspaceMixin {
 
         $scope.doPublish = (label?: string, value?: number) => {
             ga('send', 'event', 'doodle', 'upload', label, value);
-            const publishFlow = new PublishFlow($scope.userLogin(), this.doodles,this.flowService,this.publishDialog, this.amazonLogins);
+            const publishFlow = new PublishFlow($scope.userLogin(), this.doodles,this.flowService,this.publishDialog, this.credentials);
             publishFlow.execute();
         };
 
