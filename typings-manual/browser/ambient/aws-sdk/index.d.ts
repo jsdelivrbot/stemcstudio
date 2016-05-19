@@ -140,6 +140,40 @@ declare module AWS {
         ScannedCount: number;
         LastEvaluatedKey: { [name: string]: { [name: string]: AttributeValue } }
     }
+    class CloudSearchDomain extends Service {
+        endpoint: Endpoint;
+        constructor(options: {
+            endpoint: string,
+            apiVersion?: string
+        });
+        /**
+         * Retrieves a list of documents that match the specified search criteria.
+         */
+        search(params: {
+            query: string;
+            cursor?: string;
+            expr?: string;
+            facet?: string;
+            filterQuery?: string;
+            highlight?: string;
+            partial?: boolean;
+            queryOptions?: string;
+            queryParser?: string;
+            return?: string;
+            size?: number;
+            sort?: string;
+            start?: number;
+            stats?: string;
+        }, callback: (err: any, data) => any): Request;
+        /**
+         * Retrieves autocomplete suggestions for a partial query string.
+         */
+        suggest(params: {}, callback: (err: any, data) => any): Request;
+        /**
+         * Posts a batch of documents to a search domain for indexing.
+         */
+        uploadDocuments(params: {}, callback: (err: any, data) => any): Request;
+    }
     class DynamoDB extends Service {
         endpoint: Endpoint;
         constructor(options?: {

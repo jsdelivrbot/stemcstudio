@@ -14,7 +14,7 @@ import * as bodyParser from 'body-parser';
 import multer = require('multer');
 import errorHandler = require('errorhandler');
 
-import * as hits from './server/routes/hits'
+import * as cloudSearch from './server/routes/search'
 
 const npm = require('./package.json');
 
@@ -126,8 +126,7 @@ app.get("/github_callback", (req: express.Request, res: express.Response, next) 
     });
 });
 
-app.get('/hits', hits.count)
-app.post('/hit', hits.registerHit)
+app.post('/search', cloudSearch.search)
 
 app.get("/*", (req: express.Request, res: express.Response, next) => {
     // Set a cookie to communicate the GitHub Client ID back to the client.

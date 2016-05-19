@@ -40,11 +40,14 @@
         "app/ts/utils/StringSet.spec.ts",
         "app/ts/template-cache.ts",
         "typings/browser.d.ts",
-        "typings-manual/browser/ambients/AWS/AWS.d.ts",
-        "typings-manual/bootstrap-dialog/bootstrap-dialog.d.ts",
-        "typings-manual/davinci-mathscript/davinci-mathscript.d.ts",
-        "typings-manual/browser/ambients/gapi/gapi.d.ts",
-        "typings-manual/showdown/showdown.d.ts",
+        "typings-manual/browser.d.ts",
+
+        "typings-manual/browser/ambient/aws-sdk/index.d.ts",
+        "typings-manual/browser/ambient/bootstrap-dialog/index.d.ts",
+        "typings-manual/browser/ambient/davinci-mathscript/index.d.ts",
+        "typings-manual/browser/ambient/gapi/index.d.ts",
+        "typings-manual/browser/ambient/showdown/index.d.ts",
+
         "./node_modules/typescript/lib/lib.dom.d.ts"
     ]
 }

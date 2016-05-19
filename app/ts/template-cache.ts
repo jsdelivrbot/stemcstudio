@@ -1002,10 +1002,11 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                    <div class='md-docs-section'>\n" +
     "                        <h1 class='page-header'>Search</h1>\n" +
     "                        <!-- p class='lead'></p -->\n" +
+    "                        <input type='text' ng-model='params.query' required='1' />\n" +
     "                        <div>\n" +
     "                            <div button-id=\"search-button-id\" options=\"options\">\n" +
     "                                <div style=\"height:34px;width:240px;\" class=\"stemcButton stemcButtonGray\">\n" +
-    "                                    <div class=\"stemcButtonContentWrapper\" ng-click=\"query()\">\n" +
+    "                                    <div class=\"stemcButtonContentWrapper\" ng-click=\"search()\">\n" +
     "                                        <div class=\"stemcButtonIcon\" style=\"padding:7px;\">\n" +
     "                                            <ng-md-icon icon=\"search\" size='18' />\n" +
     "                                        </div>\n" +

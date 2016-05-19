@@ -6,6 +6,7 @@
         "experimentalDecorators": true
     },
     "files": [
+        "./typings-manual/main.d.ts",
         "./typings/main.d.ts",
         "./app.ts",
         "./configure.ts",

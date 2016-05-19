@@ -1,12 +1,12 @@
 import * as angular from 'angular';
 import AbstractPageController from '../AbstractPageController';
 import IGitHubAuthManager from '../../services/gham/IGitHubAuthManager';
-import HitService from '../../services/hits/HitService';
+import SearchService from '../../services/search/SearchService';
 import SearchScope from '../../scopes/SearchScope';
 import ModalDialog from '../../services/modalService/ModalDialog';
-import queryToDoodleRefs from './queryToDoodleRefs';
-import {TableName} from './DoodleRefTable';
-import {OWNER_KEY} from './DoodleRefTable';
+// import queryToDoodleRefs from './queryToDoodleRefs';
+// import {TableName} from './DoodleRefTable';
+// import {OWNER_KEY} from './DoodleRefTable';
 
 /**
  * @class SearchController
@@ -19,8 +19,8 @@ export default class SearchController extends AbstractPageController {
         '$window',
         'GitHubAuthManager',
         'ga',
-        'hits',
         'modalDialog',
+        'search',
         'FEATURE_DASHBOARD_ENABLED',
         'FEATURE_EXAMPLES_ENABLED',
         'FEATURE_GITHUB_SIGNIN_ENABLED',
@@ -39,8 +39,8 @@ export default class SearchController extends AbstractPageController {
         $window: angular.IWindowService,
         authManager: IGitHubAuthManager,
         ga: UniversalAnalytics.ga,
-        hits: HitService,
         modalDialog: ModalDialog,
+        search: SearchService,
         FEATURE_DASHBOARD_ENABLED: boolean,
         FEATURE_EXAMPLES_ENABLED: boolean,
         FEATURE_GITHUB_SIGNIN_ENABLED: boolean,
@@ -54,7 +54,18 @@ export default class SearchController extends AbstractPageController {
     ) {
         super($scope, $state, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
 
-        $scope.query = () => {
+        $scope.params = { query: '' };
+
+        $scope.search = () => {
+            search.search({ query: $scope.params.query })
+                .then((promiseValue) => {
+                    // console.log(JSON.stringify(promiseValue, null, 2));
+                    $scope.doodleRefs = promiseValue.refs;
+                })
+                .catch((err: any) => {
+                    console.warn(JSON.stringify(err, null, 2));
+                });
+            /*
             const db = new AWS.DynamoDB();
             db.query(
                 {
@@ -92,6 +103,7 @@ export default class SearchController extends AbstractPageController {
                         }
                     }
                 });
+            */
         };
     }
 
