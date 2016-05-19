@@ -9,7 +9,8 @@ export default class AlertController {
         $scope.options = options;
 
         $scope.close = function() {
-            $uibModalInstance.close(true);
+            const result = null;
+            $uibModalInstance.close(result);
         };
     }
 }

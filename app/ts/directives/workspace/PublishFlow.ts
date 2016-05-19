@@ -3,6 +3,7 @@ import FlowService from '../../services/flow/FlowService';
 import PublishDialog from '../../modules/publish/PublishDialog';
 import PublishFacts from './PublishFacts';
 import IDoodleManager from '../../services/doodles/IDoodleManager';
+import ModalDialog from '../../services/modalService/ModalDialog';
 import putDoodleRef from './putDoodleRef';
 
 /**
@@ -14,12 +15,17 @@ export default class PublishFlow {
         private owner: string,
         private doodles: IDoodleManager,
         private flowService: FlowService,
+        private modalDialog: ModalDialog,
         private publishDialog: PublishDialog,
         private credentials: CredentialsService
     ) {
         // Do nothing.
     }
     execute() {
+        /**
+         * The tile of the flow that will provide context in any dialogs.
+         */
+        const title = "Publish";
 
         const doodle = this.doodles.current();
         doodle.owner = this.owner;
@@ -30,6 +36,7 @@ export default class PublishFlow {
                 return facts.id_token.isUndefined();
             },
             (facts, session, next) => {
+                console.log("Google Sign-In Action");
                 const options = new gapi.auth2.SigninOptionsBuilder({
                     scope: 'profile'
                 });
@@ -58,8 +65,10 @@ export default class PublishFlow {
                 putDoodleRef(doodle, function(err: AWS.Reason) {
                     if (!err) {
                         facts.indexed.resolve(true);
+                        facts.completionMessage.resolve("Your project was successfully received for publishing! Please allow 10 minutes for it to be searchable.");
                     }
                     else {
+                        facts.completionMessage.resolve("We're sorry, your project cannot be accepted at this time. Please try again later.");
                         facts.indexed.reject(err);
                         console.warn(err);
                     }
@@ -92,10 +101,16 @@ export default class PublishFlow {
 
         session.execute((err: any, data: PublishFacts) => {
             if (!err) {
-                // console.log(JSON.stringify(data, null, 2));
+                if (facts.completionMessage.isResolved()) {
+                    this.modalDialog.alert({ title, message: facts.completionMessage.value });
+                }
+                else {
+                    this.modalDialog.alert({ title, message: `Apologies, the publish was not completed because of a system error.` });
+                    console.warn(err);
+                }
             }
             else {
-                console.warn(JSON.stringify(err, null, 2));
+                this.modalDialog.alert({ title, message: `The publish was aborted because of ${JSON.stringify(err, null, 2)}.` });
             }
         });
     }

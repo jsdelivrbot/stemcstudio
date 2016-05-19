@@ -20,14 +20,19 @@
             </div>
             <!-- id is the data-target of the button above -->
             <div class='collapse navbar-collapse' id='navbar-header-collapse'>
-                <a ng-show='github.isLoggedIn()' ng-controller='github-login-controller as github' role='button' ng-click='github.toggleLogin()' class='navbar-brand navbar-right'>
+                <a ng-show='github.isLoggedIn()' ng-controller='github-login-controller as github' role='button' ng-click='github.toggleLogin()'
+                class='navbar-brand navbar-right'>
+                    <!--
                     <ng-md-icon icon='github-box' style="fill: #ffffff;" size='24' aria-hidden='true' uib-tooltip="Sign out from GitHub"
                     tooltip-placement='bottom'>
                     <ng-md-icon>
+                    -->
+                    <span ng-show='github.isLoggedIn()' uib-tooltip="Sign out from GitHub" tooltip-placement='bottom'>{{userLogin()}}</span>
                 </a>
                 <!-- navbar-btn centers vertically by setting margin-top and margin-bottom -->
                 <!-- navbar-btn centers vertically by setting margin-top and margin-bottom -->
-                <button ng-hide='github.isLoggedIn()' ng-controller='github-login-controller as github' type="button" class="btn btn-github navbar-btn navbar-right" ng-click='github.toggleLogin()'>
+                <button ng-hide='github.isLoggedIn()' ng-controller='github-login-controller as github' type="button" class="btn btn-github navbar-btn navbar-right"
+                ng-click='github.toggleLogin()' uib-tooltip="Signing in to GitHub allows you to save your projects to your personal GitHub account (Recommended)" tooltip-placement='bottom'>
                     <span ng-hide='github.isLoggedIn()'>Sign in to GitHub</span>
                     <span ng-show='github.isLoggedIn()'>Signed in as {{userLogin()}}</span>
                 </button>

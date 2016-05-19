@@ -46,6 +46,7 @@ export default class UploadFacts {
      * The variable that determines whether the flow has completed.
      */
     public uploadMessage: Fuzzy<string> = new Fuzzy<string>();
+
     /**
      * An instruction that we need to redirect.
      */

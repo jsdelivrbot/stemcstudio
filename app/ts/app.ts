@@ -62,7 +62,6 @@ import LabelDialogService from './modules/publish/LabelDialogService';
 import LabelModalController from './modules/publish/LabelModalController';
 
 import PublishDialogService from './modules/publish/PublishDialogService';
-import PublishModalController from './modules/publish/PublishModalController';
 import brand from './directives/brand/brand';
 import domain from './directives/domain/domain';
 import logoText from './directives/logoText/logoText';
@@ -220,7 +219,6 @@ app.service('labelDialog', LabelDialogService);
 app.controller('LabelModalController', LabelModalController);
 
 app.service('publishDialog', PublishDialogService);
-app.controller('PublishModalController', PublishModalController);
 
 //
 // Register work which needs to be performed on module loading.

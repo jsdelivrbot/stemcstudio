@@ -675,14 +675,19 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "            </div>\n" +
     "            <!-- id is the data-target of the button above -->\n" +
     "            <div class='collapse navbar-collapse' id='navbar-header-collapse'>\n" +
-    "                <a ng-show='github.isLoggedIn()' ng-controller='github-login-controller as github' role='button' ng-click='github.toggleLogin()' class='navbar-brand navbar-right'>\n" +
+    "                <a ng-show='github.isLoggedIn()' ng-controller='github-login-controller as github' role='button' ng-click='github.toggleLogin()'\n" +
+    "                class='navbar-brand navbar-right'>\n" +
+    "                    <!--\n" +
     "                    <ng-md-icon icon='github-box' style=\"fill: #ffffff;\" size='24' aria-hidden='true' uib-tooltip=\"Sign out from GitHub\"\n" +
     "                    tooltip-placement='bottom'>\n" +
     "                    <ng-md-icon>\n" +
+    "                    -->\n" +
+    "                    <span ng-show='github.isLoggedIn()' uib-tooltip=\"Sign out from GitHub\" tooltip-placement='bottom'>{{userLogin()}}</span>\n" +
     "                </a>\n" +
     "                <!-- navbar-btn centers vertically by setting margin-top and margin-bottom -->\n" +
     "                <!-- navbar-btn centers vertically by setting margin-top and margin-bottom -->\n" +
-    "                <button ng-hide='github.isLoggedIn()' ng-controller='github-login-controller as github' type=\"button\" class=\"btn btn-github navbar-btn navbar-right\" ng-click='github.toggleLogin()'>\n" +
+    "                <button ng-hide='github.isLoggedIn()' ng-controller='github-login-controller as github' type=\"button\" class=\"btn btn-github navbar-btn navbar-right\"\n" +
+    "                ng-click='github.toggleLogin()' uib-tooltip=\"Signing in to GitHub allows you to save your projects to your personal GitHub account (Recommended)\" tooltip-placement='bottom'>\n" +
     "                    <span ng-hide='github.isLoggedIn()'>Sign in to GitHub</span>\n" +
     "                    <span ng-show='github.isLoggedIn()'>Signed in as {{userLogin()}}</span>\n" +
     "                </button>\n" +

@@ -31,6 +31,7 @@ export default function putDoodleRef(doodle: Doodle, next: (err: any) => any) {
     const params = { TableName, Item };
     db.putItem(params, function(err, data) {
         if (!err) {
+            // There is nothing to see in the data.
             next(void 0);
         }
         else {
@@ -38,6 +39,5 @@ export default function putDoodleRef(doodle: Doodle, next: (err: any) => any) {
             console.warn(JSON.stringify(params, null, 2));
             next(err);
         }
-        next(err);
     });
 }

@@ -245,7 +245,7 @@ export default class WorkspaceController implements WorkspaceMixin {
 
         $scope.doPublish = (label?: string, value?: number) => {
             ga('send', 'event', 'doodle', 'upload', label, value);
-            const publishFlow = new PublishFlow($scope.userLogin(), this.doodles,this.flowService,this.publishDialog, this.credentials);
+            const publishFlow = new PublishFlow($scope.userLogin(), this.doodles,this.flowService,this.modalDialog, this.publishDialog, this.credentials);
             publishFlow.execute();
         };
 

@@ -6,9 +6,6 @@ import Chapter from './Chapter';
 import Topic from './Topic';
 import LabelModalScope from './LabelModalScope';
 import LabelSettings from './LabelSettings';
-import mathematics from './mathematics/category';
-import physics from './physics/category';
-import compsci from './compsci/category';
 
 export default class LabelModalController {
     public static $inject: string[] = ['$scope', '$uibModalInstance', 'options'];
