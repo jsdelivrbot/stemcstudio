@@ -657,7 +657,6 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "    <nav id='toolbar' class='navbar navbar-inverse'>\n" +
     "        <div class='container-fluid'>\n" +
     "            <div class='navbar-header'>\n" +
-    "                <!-- button -->\n" +
     "                <button type='button' class='navbar-toggle collapsed' data-toggle='collapse' data-target='#navbar-header-collapse'>\n" +
     "                    <span class=\"sr-only\">Toggle navigation</span>\n" +
     "                    <span class=\"icon-bar\"></span>\n" +
@@ -667,53 +666,51 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                <a role='button' class='navbar-brand' ng-click='goHome()'>\n" +
     "                    <brand />\n" +
     "                </a>\n" +
-    "                <!-- navbar-btn centers vertically outside of forms -->\n" +
     "                <button type=\"button\" class=\"btn btn-primary navbar-btn\" ng-click='goDoodle()'>Code Now!</button>\n" +
     "                <button ng-if='FEATURE_EXAMPLES_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goExamples()'>Examples</button>\n" +
     "                <button ng-if='FEATURE_DASHBOARD_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goDashboard()' ng-show='isGitHubSignedIn()'>Dashboard</button>\n" +
-    "                <button type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goSearch()'>Search</button>\n" +
+    "                <form class=\"navbar-search pull-right\" ng-submit='doSearch()'>\n" +
+    "                    <input type=\"text\" class=\"search-query\" placeholder=\"Search\" required='required'>\n" +
+    "                </form>\n" +
     "            </div>\n" +
-    "            <!-- id is the data-target of the button above -->\n" +
     "            <div class='collapse navbar-collapse' id='navbar-header-collapse'>\n" +
     "                <a ng-show='github.isLoggedIn()' ng-controller='github-login-controller as github' role='button' ng-click='github.toggleLogin()'\n" +
     "                class='navbar-brand navbar-right'>\n" +
-    "                    <!--\n" +
-    "                    <ng-md-icon icon='github-box' style=\"fill: #ffffff;\" size='24' aria-hidden='true' uib-tooltip=\"Sign out from GitHub\"\n" +
-    "                    tooltip-placement='bottom'>\n" +
-    "                    <ng-md-icon>\n" +
-    "                    -->\n" +
     "                    <span ng-show='github.isLoggedIn()' uib-tooltip=\"Sign out from GitHub\" tooltip-placement='bottom'>{{userLogin()}}</span>\n" +
     "                </a>\n" +
-    "                <!-- navbar-btn centers vertically by setting margin-top and margin-bottom -->\n" +
-    "                <!-- navbar-btn centers vertically by setting margin-top and margin-bottom -->\n" +
     "                <button ng-hide='github.isLoggedIn()' ng-controller='github-login-controller as github' type=\"button\" class=\"btn btn-github navbar-btn navbar-right\"\n" +
-    "                ng-click='github.toggleLogin()' uib-tooltip=\"Signing in to GitHub allows you to save your projects to your personal GitHub account (Recommended)\" tooltip-placement='bottom'>\n" +
+    "                ng-click='github.toggleLogin()' uib-tooltip=\"Signing in to GitHub allows you to save your projects to your personal GitHub account (Recommended)\"\n" +
+    "                tooltip-placement='bottom'>\n" +
     "                    <span ng-hide='github.isLoggedIn()'>Sign in to GitHub</span>\n" +
     "                    <span ng-show='github.isLoggedIn()'>Signed in as {{userLogin()}}</span>\n" +
     "                </button>\n" +
-    "                <!--\n" +
-    "                <div ng-controller='github-login-controller as github' button-id=\"github-button-id\" class='navbar-btn navbar-right login-provider-button-container'>\n" +
-    "                    <div style=\"height:34px;width:240px;\" class=\"stemcButton stemcButtonGray\">\n" +
-    "                        <div class=\"stemcButtonContentWrapper\" ng-click=\"github.login()\">\n" +
-    "                            <div class=\"stemcButtonIcon\" style=\"padding:7px;\">\n" +
-    "                                <ng-md-icon icon=\"github-circle\" size='18' />\n" +
-    "                            </div>\n" +
-    "                            <span style=\"font-size:13px;line-height:32px;\" class=\"stemcButtonContents\">\n" +
-    "                             <span ng-hide='isGitHubSignedIn()'>Sign in with GitHub</span>\n" +
-    "                            <span ng-show='isGitHubSignedIn()'>Signed in with GitHub</span>\n" +
-    "                            </span>\n" +
-    "                        </div>\n" +
-    "                    </div>\n" +
-    "                </div>\n" +
-    "                -->\n" +
     "            </div>\n" +
     "        </div>\n" +
     "    </nav>\n" +
-    "\n" +
     "    <div class='md-docs-header'>\n" +
     "        <div class='container'>\n" +
     "            <h1><logo-text version='{{version}}'/></h1>\n" +
-    "            <p>Learning STEM through Computational Modeling</p>\n" +
+    "            <!-- p>Learning STEM through Computational Modeling</p -->\n" +
+    "            <p>STEM + Computational Modeling = Mastery</p>\n" +
+    "        </div>\n" +
+    "    </div>\n" +
+    "    <div class='container md-docs-container'>\n" +
+    "        <div class='row'>\n" +
+    "            <div class='col-md-9' role='main'>\n" +
+    "                <div class='md-docs-section'>\n" +
+    "                    <div class=\"thumbnails\">\n" +
+    "                        <article class=\"thumbnail\" ng-repeat='doodle in doodleRefs'>\n" +
+    "                            <header>\n" +
+    "                                <h1 class='title'><a  ng-href='/#/gists/{{doodle.gistId}}'>{{ doodle.title | uppercase }}</a></h1>\n" +
+    "                                <p class='author'>{{doodle.author}}</p>\n" +
+    "                                <p class='keyword' ng-repeat='keyword in doodle.keywords'>{{keyword}}</p>\n" +
+    "                            </header>\n" +
+    "                            <footer>\n" +
+    "                            </footer>\n" +
+    "                        </article>\n" +
+    "                    </div>\n" +
+    "                </div>\n" +
+    "            </div>\n" +
     "        </div>\n" +
     "    </div>\n" +
     "</div>"

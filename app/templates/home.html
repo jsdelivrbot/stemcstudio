@@ -2,7 +2,6 @@
     <nav id='toolbar' class='navbar navbar-inverse'>
         <div class='container-fluid'>
             <div class='navbar-header'>
-                <!-- button -->
                 <button type='button' class='navbar-toggle collapsed' data-toggle='collapse' data-target='#navbar-header-collapse'>
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
@@ -12,53 +11,51 @@
                 <a role='button' class='navbar-brand' ng-click='goHome()'>
                     <brand />
                 </a>
-                <!-- navbar-btn centers vertically outside of forms -->
                 <button type="button" class="btn btn-primary navbar-btn" ng-click='goDoodle()'>Code Now!</button>
                 <button ng-if='FEATURE_EXAMPLES_ENABLED' type="button" class="btn btn-secondary navbar-btn" ng-click='goExamples()'>Examples</button>
                 <button ng-if='FEATURE_DASHBOARD_ENABLED' type="button" class="btn btn-secondary navbar-btn" ng-click='goDashboard()' ng-show='isGitHubSignedIn()'>Dashboard</button>
-                <button type="button" class="btn btn-secondary navbar-btn" ng-click='goSearch()'>Search</button>
+                <form class="navbar-search pull-right" ng-submit='doSearch()'>
+                    <input type="text" class="search-query" placeholder="Search" required='required'>
+                </form>
             </div>
-            <!-- id is the data-target of the button above -->
             <div class='collapse navbar-collapse' id='navbar-header-collapse'>
                 <a ng-show='github.isLoggedIn()' ng-controller='github-login-controller as github' role='button' ng-click='github.toggleLogin()'
                 class='navbar-brand navbar-right'>
-                    <!--
-                    <ng-md-icon icon='github-box' style="fill: #ffffff;" size='24' aria-hidden='true' uib-tooltip="Sign out from GitHub"
-                    tooltip-placement='bottom'>
-                    <ng-md-icon>
-                    -->
                     <span ng-show='github.isLoggedIn()' uib-tooltip="Sign out from GitHub" tooltip-placement='bottom'>{{userLogin()}}</span>
                 </a>
-                <!-- navbar-btn centers vertically by setting margin-top and margin-bottom -->
-                <!-- navbar-btn centers vertically by setting margin-top and margin-bottom -->
                 <button ng-hide='github.isLoggedIn()' ng-controller='github-login-controller as github' type="button" class="btn btn-github navbar-btn navbar-right"
-                ng-click='github.toggleLogin()' uib-tooltip="Signing in to GitHub allows you to save your projects to your personal GitHub account (Recommended)" tooltip-placement='bottom'>
+                ng-click='github.toggleLogin()' uib-tooltip="Signing in to GitHub allows you to save your projects to your personal GitHub account (Recommended)"
+                tooltip-placement='bottom'>
                     <span ng-hide='github.isLoggedIn()'>Sign in to GitHub</span>
                     <span ng-show='github.isLoggedIn()'>Signed in as {{userLogin()}}</span>
                 </button>
-                <!--
-                <div ng-controller='github-login-controller as github' button-id="github-button-id" class='navbar-btn navbar-right login-provider-button-container'>
-                    <div style="height:34px;width:240px;" class="stemcButton stemcButtonGray">
-                        <div class="stemcButtonContentWrapper" ng-click="github.login()">
-                            <div class="stemcButtonIcon" style="padding:7px;">
-                                <ng-md-icon icon="github-circle" size='18' />
-                            </div>
-                            <span style="font-size:13px;line-height:32px;" class="stemcButtonContents">
-                             <span ng-hide='isGitHubSignedIn()'>Sign in with GitHub</span>
-                            <span ng-show='isGitHubSignedIn()'>Signed in with GitHub</span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                -->
             </div>
         </div>
     </nav>
-
     <div class='md-docs-header'>
         <div class='container'>
             <h1><logo-text version='{{version}}'/></h1>
-            <p>Learning STEM through Computational Modeling</p>
+            <!-- p>Learning STEM through Computational Modeling</p -->
+            <p>STEM + Computational Modeling = Mastery</p>
+        </div>
+    </div>
+    <div class='container md-docs-container'>
+        <div class='row'>
+            <div class='col-md-9' role='main'>
+                <div class='md-docs-section'>
+                    <div class="thumbnails">
+                        <article class="thumbnail" ng-repeat='doodle in doodleRefs'>
+                            <header>
+                                <h1 class='title'><a  ng-href='/#/gists/{{doodle.gistId}}'>{{ doodle.title | uppercase }}</a></h1>
+                                <p class='author'>{{doodle.author}}</p>
+                                <p class='keyword' ng-repeat='keyword in doodle.keywords'>{{keyword}}</p>
+                            </header>
+                            <footer>
+                            </footer>
+                        </article>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

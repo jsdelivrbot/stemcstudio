@@ -4,16 +4,19 @@
 
 /**
  * We're getting bootstrap at about 3.3.6 and this brings in a bunch of stuff.
+ * It might be a good idea to bring in only what we need.
  */
 @import '../../node_modules/bootstrap/less/bootstrap.less';
-@import 'autocomplete';
+@import '../../node_modules/bootstrap/less/thumbnails.less';
+
 //
 // From the ui-select dist folder...
 //
-@import 'select';
+@import 'custom-ui-select';
 
 @import 'custom-variables';
-@import 'custom-stemc-button';
+@import 'custom-ace';
+@import 'custom-autocomplete';
 @import 'custom-code';
 @import 'custom-body';
 @import 'custom-bootstrap-dialog';
@@ -24,22 +27,24 @@
 @import 'custom-doodle';
 @import 'custom-dropdown';
 @import 'custom-explorer';
-@import 'editor';
 @import 'custom-editor';
 @import 'custom-glyphicon';
 @import 'custom-html';
 @import 'custom-logo';
 @import 'custom-login';
 @import 'custom-login-provider-button';
+@import 'custom-navbar-search';
 @import 'custom-output';
 @import 'custom-publish-modal';
 @import 'custom-readme';
 @import 'custom-resizable';
 @import 'custom-select';
+@import 'custom-stemc-button';
 @import 'custom-toolbar';
+@import 'custom-thumbnails';
 @import 'custom-viewbar';
 @import 'custom-workspace';
 @import 'custom-menu';
 @import 'custom-dialog';
 @import 'custom-modals';
-@import '../../node_modules/bootstrap/less/utilities.less';
+// @import '../../node_modules/bootstrap/less/utilities.less';

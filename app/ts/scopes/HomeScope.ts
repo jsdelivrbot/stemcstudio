@@ -1,6 +1,7 @@
 import BodyScope from './BodyScope';
+import ThumbnailsScope from './ThumbnailsScope';
 
-export interface HomeScope extends BodyScope {
+export interface HomeScope extends BodyScope, ThumbnailsScope {
     FEATURE_DASHBOARD_ENABLED: boolean;
     FEATURE_EXAMPLES_ENABLED: boolean;
 

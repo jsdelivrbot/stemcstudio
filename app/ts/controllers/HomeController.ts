@@ -1,5 +1,6 @@
 import * as angular from 'angular';
 import AbstractPageController from './AbstractPageController';
+import IDoodleManager from '../services/doodles/IDoodleManager';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
 import HitService from '../services/hits/HitService';
 import HomeScope from '../scopes/HomeScope';
@@ -14,6 +15,7 @@ export default class HomeController extends AbstractPageController {
         '$scope',
         '$state',
         '$window',
+        'doodles',
         'GitHubAuthManager',
         'ga',
         'hits',
@@ -27,10 +29,15 @@ export default class HomeController extends AbstractPageController {
         'UNIVERSAL_ANALYTICS_TRACKING_ID',
     ];
 
+    /**
+     * @class HomeController
+     * @constructor
+     */
     constructor(
         $scope: HomeScope,
         $state: angular.ui.IStateService,
         $window: angular.IWindowService,
+        doodles: IDoodleManager,
         authManager: IGitHubAuthManager,
         ga: UniversalAnalytics.ga,
         hits: HitService,
@@ -48,19 +55,6 @@ export default class HomeController extends AbstractPageController {
         $scope.FEATURE_DASHBOARD_ENABLED = FEATURE_DASHBOARD_ENABLED;
         $scope.FEATURE_EXAMPLES_ENABLED = FEATURE_EXAMPLES_ENABLED;
         $scope.FEATURE_GOOGLE_SIGNIN_ENABLED = FEATURE_GOOGLE_SIGNIN_ENABLED;
-
-        /*
-        if ($window[NAMESPACE_TWITTER_WIDGETS] && $window[NAMESPACE_TWITTER_WIDGETS].widgets) {
-            $window[NAMESPACE_TWITTER_WIDGETS].widgets.load();
-        }
-        else {
-            // We'll probably end up here the first time because the script load is asynchronous.
-            // But that doesn't matter because the widgets will be initialized by the script itself.
-            // On subsequent reloading of the home template, when the controller is invoked, it triggers a load.
-        }
-
-        $scope.twitterShareText = "STEMCstudio · Learning STEM through Computational Modeling.";
-        */
 
         $scope.goDashboard = () => {
             if (FEATURE_DASHBOARD_ENABLED) {
@@ -83,5 +77,37 @@ export default class HomeController extends AbstractPageController {
                 console.warn(`FEATURE_EXAMPLES_ENABLED => ${FEATURE_EXAMPLES_ENABLED}`);
             }
         };
+
+        //
+        // The thumbnails are initially populated from local storage (the doodle manager).
+        //
+        $scope.doodleRefs = doodles.filter(function(doodle, index) {
+            return true;
+        }).map(function(doodle) {
+            return {
+                owner: doodle.owner,
+                gistId: doodle.gistId,
+                // description comes from package.json and it should be short so it corresponds to a title in a publication.
+                title: doodle.description,
+                author: doodle.author,
+                keywords: doodle.keywords
+            };
+        });
+    }
+
+    /**
+     * @method $onInit
+     * @return {void}
+     */
+    $onInit(): void {
+        console.warn("HomeController.$onInit");
+    }
+
+    /**
+     * @method $onDestroy
+     * @return {void}
+     */
+    $onDestroy(): void {
+        console.warn("HomeController.$onDestroy");
     }
 }
