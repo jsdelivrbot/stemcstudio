@@ -6,6 +6,12 @@ export interface SearchScope extends BodyScope {
         query: string;
     };
     search(): void;
+    found: number;
+    start: number;
+    /**
+     * The previous query string.
+     */
+    query: string;
     doodleRefs: DoodleRef[];
 }
 

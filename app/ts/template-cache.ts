@@ -670,7 +670,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                <button ng-if='FEATURE_EXAMPLES_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goExamples()'>Examples</button>\n" +
     "                <button ng-if='FEATURE_DASHBOARD_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goDashboard()' ng-show='isGitHubSignedIn()'>Dashboard</button>\n" +
     "                <form class=\"navbar-search pull-right\" ng-submit='doSearch()'>\n" +
-    "                    <input type=\"text\" class=\"search-query\" placeholder=\"Search\" required='required'>\n" +
+    "                    <input type=\"text\" ng-model='params.query' class=\"search-query\" placeholder=\"Search\">\n" +
     "                </form>\n" +
     "            </div>\n" +
     "            <div class='collapse navbar-collapse' id='navbar-header-collapse'>\n" +
@@ -691,13 +691,14 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "        <div class='container'>\n" +
     "            <h1><logo-text version='{{version}}'/></h1>\n" +
     "            <!-- p>Learning STEM through Computational Modeling</p -->\n" +
-    "            <p>STEM + Computational Modeling = Mastery</p>\n" +
+    "            <p>(STEM, Computation) => Mastery</p>\n" +
     "        </div>\n" +
     "    </div>\n" +
     "    <div class='container md-docs-container'>\n" +
     "        <div class='row'>\n" +
     "            <div class='col-md-9' role='main'>\n" +
     "                <div class='md-docs-section'>\n" +
+    "                    <!-- h1 id='overview' class='page-header'>{{}}</h1 -->\n" +
     "                    <div class=\"thumbnails\">\n" +
     "                        <article class=\"thumbnail\" ng-repeat='doodle in doodleRefs'>\n" +
     "                            <header>\n" +
@@ -708,6 +709,16 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                            <footer>\n" +
     "                            </footer>\n" +
     "                        </article>\n" +
+    "                    </div>\n" +
+    "                    <div ng-if='found === 0 && params.query === query'>\n" +
+    "                        <p>Your search - <b>{{query}}</b> - did not match any documents.</p>\n" +
+    "                        <p>Suggestions:</p>\n" +
+    "                        <ul>\n" +
+    "                            <li>Make sure all words are spelled correctly.</li>\n" +
+    "                            <li>Try different keywords.</li>\n" +
+    "                            <li>Try more general keywords.</li>\n" +
+    "                            <li>Try fewer keywords.</li>\n" +
+    "                        </ul>\n" +
     "                    </div>\n" +
     "                </div>\n" +
     "            </div>\n" +

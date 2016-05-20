@@ -4,9 +4,6 @@ import IGitHubAuthManager from '../../services/gham/IGitHubAuthManager';
 import SearchService from '../../services/search/SearchService';
 import SearchScope from '../../scopes/SearchScope';
 import ModalDialog from '../../services/modalService/ModalDialog';
-// import queryToDoodleRefs from './queryToDoodleRefs';
-// import {TableName} from './DoodleRefTable';
-// import {OWNER_KEY} from './DoodleRefTable';
 
 /**
  * @class SearchController

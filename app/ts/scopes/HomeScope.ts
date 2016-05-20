@@ -1,7 +1,8 @@
 import BodyScope from './BodyScope';
+import SearchScope from './SearchScope';
 import ThumbnailsScope from './ThumbnailsScope';
 
-export interface HomeScope extends BodyScope, ThumbnailsScope {
+export interface HomeScope extends BodyScope, SearchScope, ThumbnailsScope {
     FEATURE_DASHBOARD_ENABLED: boolean;
     FEATURE_EXAMPLES_ENABLED: boolean;
 
@@ -23,14 +24,9 @@ export interface HomeScope extends BodyScope, ThumbnailsScope {
     goExamples(): void;
 
     /**
-     * Navigate to the Log In page.
+     *
      */
-    goLogin(): void;
-
-    /**
-     * @deprecated
-     */
-    twitterShareText: string;
+    doSearch(): void;
 }
 
 export default HomeScope;
