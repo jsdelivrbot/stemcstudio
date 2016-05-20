@@ -15,6 +15,8 @@ import LabelFlow from './LabelFlow';
 import PublishFlow from './PublishFlow';
 import IGitHubAuthManager from '../../services/gham/IGitHubAuthManager';
 import IOptionManager from '../../services/options/IOptionManager';
+import isHtmlFilePath from '../../utils/isHtmlFilePath';
+import isMarkdownFilePath from '../../utils/isMarkdownFilePath';
 import isString from '../../utils/isString';
 import ChangeHandler from './ChangeHandler';
 import OutputFileHandler from './OutputFileHandler';
@@ -196,6 +198,30 @@ export default class WorkspaceController implements WorkspaceMixin {
 
         $scope.currentDoodle = function() {
             return doodles.current();
+        };
+
+        $scope.htmlFileCount = function() {
+            const doodle = doodles.current();
+            if (doodle) {
+                const files = doodle.files;
+                const paths = Object.keys(files);
+                return paths.filter(function(path) { return isHtmlFilePath(path); }).length;
+            }
+            else {
+                return 0;
+            }
+        };
+
+        $scope.markdownFileCount = function() {
+            const doodle = doodles.current();
+            if (doodle) {
+                const files = doodle.files;
+                const paths = Object.keys(files);
+                return paths.filter(function(path) { return isMarkdownFilePath(path); }).length;
+            }
+            else {
+                return 0;
+            }
         };
 
         $scope.doView = (name: string): void => {

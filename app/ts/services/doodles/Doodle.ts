@@ -30,29 +30,29 @@ export default class Doodle {
     public updated_at: string;
 
     constructor(private options: IOptionManager) {
-        // this.description = "";
         this.isCodeVisible = true;
         this.isViewVisible = false;
         this.lastKnownJs = {};
-        // this.operatorOverloading = true;
-        // this.dependencies = [];
     }
 
     get packageInfo(): IDoodleConfig {
         try {
+            // Beware: We could have a package.json that doesn't parse.
+            // We must ensure that the user can recover the situation.
             const file = this.ensurePackageJson();
             return JSON.parse(file.content);
         }
         catch (e) {
+            console.warn(`Unable to parse file '${FILENAME_META}' as JSON.`);
             return void 0;
         }
     }
 
     get name(): string {
         if (this.existsPackageJson()) {
-            const info = this.packageInfo;
-            if (info) {
-                return info.name;
+            const pkgInfo = this.packageInfo;
+            if (pkgInfo) {
+                return pkgInfo.name;
             }
             else {
                 return void 0;
@@ -65,9 +65,14 @@ export default class Doodle {
 
     set name(name: string) {
         const file = this.ensurePackageJson();
-        const metaInfo: IDoodleConfig = JSON.parse(file.content);
-        metaInfo.name = name;
-        file.content = JSON.stringify(metaInfo, null, 2);
+        try {
+            const metaInfo: IDoodleConfig = JSON.parse(file.content);
+            metaInfo.name = name;
+            file.content = JSON.stringify(metaInfo, null, 2);
+        }
+        catch (e) {
+            console.warn(`Unable to set name property in file '${FILENAME_META}'.`);
+        }
     }
 
     get version(): string {
@@ -87,10 +92,22 @@ export default class Doodle {
     }
 
     get author(): string {
-        if (this.existsPackageJson()) {
-            return this.packageInfo.author;
+        try {
+            if (this.existsPackageJson()) {
+                const pkgInfo = this.packageInfo;
+                if (pkgInfo) {
+                    return pkgInfo.author;
+                }
+                else {
+                    return void 0;
+                }
+            }
+            else {
+                return void 0;
+            }
         }
-        else {
+        catch (e) {
+            console.warn(e);
             return void 0;
         }
     }
@@ -103,10 +120,22 @@ export default class Doodle {
     }
 
     get description(): string {
-        if (this.existsPackageJson()) {
-            return this.packageInfo.description;
+        try {
+            if (this.existsPackageJson()) {
+                const pkgInfo = this.packageInfo;
+                if (pkgInfo) {
+                    return pkgInfo.description;
+                }
+                else {
+                    return void 0;
+                }
+            }
+            else {
+                return void 0;
+            }
         }
-        else {
+        catch (e) {
+            console.warn(e);
             return void 0;
         }
     }
@@ -119,11 +148,23 @@ export default class Doodle {
     }
 
     get keywords(): string[] {
-        if (this.existsPackageJson()) {
-            return this.packageInfo.keywords;
+        try {
+            if (this.existsPackageJson()) {
+                const pkgInfo = this.packageInfo;
+                if (pkgInfo) {
+                    return this.packageInfo.keywords;
+                }
+                else {
+                    return [];
+                }
+            }
+            else {
+                return [];
+            }
         }
-        else {
-            return void 0;
+        catch (e) {
+            console.warn(e);
+            return [];
         }
     }
 
@@ -136,7 +177,13 @@ export default class Doodle {
 
     get operatorOverloading(): boolean {
         if (this.existsPackageJson()) {
-            return this.packageInfo.operatorOverloading ? true : false;
+            const pkgInfo = this.packageInfo;
+            if (pkgInfo) {
+                return pkgInfo.operatorOverloading ? true : false;
+            }
+            else {
+                return false;
+            }
         }
         else {
             return false;
@@ -144,27 +191,49 @@ export default class Doodle {
     }
 
     set operatorOverloading(operatorOverloading: boolean) {
-        const file = this.ensurePackageJson();
-        const metaInfo: IDoodleConfig = JSON.parse(file.content);
-        setOptionalBooleanProperty('operatorOverloading', operatorOverloading, metaInfo);
-        file.content = JSON.stringify(metaInfo, null, 2);
+        try {
+            const file = this.ensurePackageJson();
+            const metaInfo: IDoodleConfig = JSON.parse(file.content);
+            setOptionalBooleanProperty('operatorOverloading', operatorOverloading, metaInfo);
+            file.content = JSON.stringify(metaInfo, null, 2);
+        }
+        catch (e) {
+            console.warn(`Unable to set operatorOverloading property in file '${FILENAME_META}'.`);
+        }
     }
 
     get dependencies(): string[] {
-        if (this.existsPackageJson()) {
-            const dependencyMap = this.packageInfo.dependencies;
-            return dependencyNames(dependencyMap);
+        try {
+            if (this.existsPackageJson()) {
+                const pkgInfo = this.packageInfo;
+                if (pkgInfo) {
+                    const dependencyMap = this.packageInfo.dependencies;
+                    return dependencyNames(dependencyMap);
+                }
+                else {
+                    return [];
+                }
+            }
+            else {
+                return [];
+            }
         }
-        else {
+        catch (e) {
+            console.warn(e);
             return [];
         }
     }
 
     set dependencies(dependencies: string[]) {
-        const file = this.ensurePackageJson();
-        const metaInfo: IDoodleConfig = JSON.parse(file.content);
-        metaInfo.dependencies = dependenciesMap(dependencies, this.options);
-        file.content = JSON.stringify(metaInfo, null, 2);
+        try {
+            const file = this.ensurePackageJson();
+            const metaInfo: IDoodleConfig = JSON.parse(file.content);
+            metaInfo.dependencies = dependenciesMap(dependencies, this.options);
+            file.content = JSON.stringify(metaInfo, null, 2);
+        }
+        catch (e) {
+            console.warn(`Unable to set dependencies property in file '${FILENAME_META}'.`);
+        }
     }
 
     private existsPackageJson(): boolean {

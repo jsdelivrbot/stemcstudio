@@ -368,24 +368,24 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                        <a role='button' ng-click='toggleExplorer()'>\n" +
     "                            <ng-md-icon icon=\"{{isExplorerVisible ? 'flip_to_back' : 'flip_to_front'}}\" style=\"fill: {{isExplorerVisible ? '#ffffff' : '#ffffff'}}\"\n" +
     "                            size='24' aria-hidden='true' uib-tooltip=\"{{isExplorerVisible ? 'Hide Code' : 'Show Code'}}\"\n" +
-    "                            tooltip-placement='left'>\n" +
+    "                            tooltip-placement='bottom'>\n" +
     "                                <ng-md-icon>\n" +
     "                        </a>\n" +
     "                    </li>\n" +
-    "                    <li>\n" +
+    "                    <li ng-if='htmlFileCount() > 0'>\n" +
     "                        <a role='button' ng-click='toggleView()' ng-hide='isViewVisible'>\n" +
     "                            <ng-md-icon icon='launch' style=\"fill: {{true ? '#00ff00' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"Launch Program\"\n" +
-    "                            tooltip-placement='left'>\n" +
+    "                            tooltip-placement='bottom'>\n" +
     "                                <ng-md-icon>\n" +
     "                        </a>\n" +
     "                        <a role='button' ng-click='toggleView()' ng-show='isViewVisible'>\n" +
     "                            <ng-md-icon icon='cancel' style=\"fill: {{true ? '#ff0000' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"Cancel Program\"\n" +
-    "                            tooltip-placement='left'>\n" +
+    "                            tooltip-placement='bottom'>\n" +
     "                                <ng-md-icon>\n" +
     "                        </a>\n" +
     "                    </li>\n" +
-    "                    <li uib-dropdown ng-show='isEditMode'>\n" +
-    "                        <a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"Choose Program\" tooltip-placement='left'>\n" +
+    "                    <li uib-dropdown ng-show='isEditMode' ng-if='htmlFileCount() > 1'>\n" +
+    "                        <a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"Choose Program\" tooltip-placement='bottom'>\n" +
     "                            <ng-md-icon icon='playlist_add_check' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'>\n" +
     "                                <ng-md-icon>\n" +
     "                        </a>\n" +
@@ -397,15 +397,15 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                            </li>\n" +
     "                        </ul>\n" +
     "                    </li>\n" +
-    "                    <li ng-show='isEditMode'>\n" +
+    "                    <li ng-show='isEditMode' ng-if='markdownFileCount() > 0'>\n" +
     "                        <a role='button' ng-click='toggleReadMeVisible()'>\n" +
     "                            <ng-md-icon icon='description' style=\"fill: {{isReadMeVisible ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"{{isReadMeVisible ?  'Hide README.md' : 'Show README.md'}}\"\n" +
-    "                            tooltip-placement='left'>\n" +
+    "                            tooltip-placement='bottom'>\n" +
     "                                <ng-md-icon>\n" +
     "                        </a>\n" +
     "                    </li>\n" +
     "                    <li uib-dropdown ng-show='isEditMode'>\n" +
-    "                        <a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"Project Menu\" tooltip-placement='left'>\n" +
+    "                        <a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"Project Menu\" tooltip-placement='bottom'>\n" +
     "                            <ng-md-icon icon='folder' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'>\n" +
     "                                <ng-md-icon>\n" +
     "                                    <ng-md-icon icon='arrow_drop_down' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'>\n" +
@@ -424,7 +424,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                        </ul>\n" +
     "                    </li>\n" +
     "                    <li ng-if='FEATURE_LOGIN_ENABLED' uib-dropdown ng-show='isEditMode &amp;&amp; isGitHubSignedIn()'>\n" +
-    "                        <a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"GitHub Menu\" tooltip-placement='left'>\n" +
+    "                        <a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"GitHub Menu\" tooltip-placement='bottom'>\n" +
     "                            <ng-md-icon icon='cloud' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'>\n" +
     "                                <ng-md-icon>\n" +
     "                        </a>\n" +
@@ -621,21 +621,21 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                    <li>\n" +
     "                        <a role='button' ng-click='doProperties()'>\n" +
     "                            <ng-md-icon icon='settings' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"Settings\"\n" +
-    "                            tooltip-placement='right'>\n" +
+    "                            tooltip-placement='bottom'>\n" +
     "                                <ng-md-icon>\n" +
     "                        </a>\n" +
     "                    </li>\n" +
     "                    <li>\n" +
     "                        <a role='button' ng-click='doLabel()'>\n" +
     "                            <ng-md-icon icon='label' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"Labels and Tags\"\n" +
-    "                            tooltip-placement='right'>\n" +
+    "                            tooltip-placement='bottom'>\n" +
     "                                <ng-md-icon>\n" +
     "                        </a>\n" +
     "                    </li>\n" +
     "                    <li>\n" +
     "                        <a role='button' ng-click='filesController.newFile()'>\n" +
     "                            <ng-md-icon icon='add_box' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"New File\"\n" +
-    "                            tooltip-placement='left'>\n" +
+    "                            tooltip-placement='bottom'>\n" +
     "                                <ng-md-icon>\n" +
     "                        </a>\n" +
     "                    </li>\n" +
@@ -701,7 +701,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                    <div class=\"thumbnails\">\n" +
     "                        <article class=\"thumbnail\" ng-repeat='doodle in doodleRefs'>\n" +
     "                            <header>\n" +
-    "                                <h1 class='title'><a  ng-href='/#/gists/{{doodle.gistId}}'>{{ doodle.title | uppercase }}</a></h1>\n" +
+    "                                <h1 class='title'><a  ng-href='/#/gists/{{doodle.gistId}}'>{{ (doodle.title ? doodle.title : 'Untitled') | uppercase }}</a></h1>\n" +
     "                                <p class='author'>{{doodle.author}}</p>\n" +
     "                                <p class='keyword' ng-repeat='keyword in doodle.keywords'>{{keyword}}</p>\n" +
     "                            </header>\n" +

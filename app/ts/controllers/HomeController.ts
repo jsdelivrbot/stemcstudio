@@ -9,7 +9,15 @@ import SearchService from '../services/search/SearchService';
 
 function localDoodleRefs(doodles: IDoodleManager) {
     return doodles.filter(function(doodle, index) {
-        return true;
+        if (doodle.gistId) {
+            return true;
+        }
+        else {
+            // We cannot currently navigate without a gistId.
+            // Users will have to use the Open dialog in the Workspace.
+            // But notice that we do have an index, so that could be used.
+            return false;
+        }
     }).map(function(doodle) {
         return {
             owner: doodle.owner,

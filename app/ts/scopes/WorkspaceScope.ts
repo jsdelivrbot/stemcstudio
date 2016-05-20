@@ -14,6 +14,16 @@ interface WorkspaceScope extends DoodleScope {
     doodleLoaded: boolean;
 
     /**
+     * HTML files determine the applications that can be viewed.
+     */
+    htmlFileCount(): number;
+
+    /**
+     * HTML files determine the applications that can be viewed.
+     */
+    markdownFileCount(): number;
+
+    /**
      * The workspace is loaded when it has all the file content, and compiler settings.
      */
     workspaceLoaded: boolean;

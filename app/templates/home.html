@@ -46,7 +46,7 @@
                     <div class="thumbnails">
                         <article class="thumbnail" ng-repeat='doodle in doodleRefs'>
                             <header>
-                                <h1 class='title'><a  ng-href='/#/gists/{{doodle.gistId}}'>{{ doodle.title | uppercase }}</a></h1>
+                                <h1 class='title'><a  ng-href='/#/gists/{{doodle.gistId}}'>{{ (doodle.title ? doodle.title : 'Untitled') | uppercase }}</a></h1>
                                 <p class='author'>{{doodle.author}}</p>
                                 <p class='keyword' ng-repeat='keyword in doodle.keywords'>{{keyword}}</p>
                             </header>
