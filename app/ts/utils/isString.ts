@@ -1,3 +1,3 @@
-export default function isString(value: string): boolean {
+export default function(value: string): boolean {
     return typeof value === 'string';
 }

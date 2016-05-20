@@ -59,10 +59,6 @@ export default class DoodleController extends AbstractPageController {
         $scope.doProperties = (label?: string, value?: number) => {
             this.navigateTo('properties');
         };
-
-        $scope.doHelp = function() {
-            // Do nothing.
-        };
     }
 
     $onInit(): void {

@@ -1,33 +1,33 @@
 <div class="modal-content">
-  <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal" aria-hidden='true' ng-click='doCancel()'>&times;</button>
-    <h3>Project Properties</h3>
-  </div>
-  <div class='modal-body'>
-    <label>Description</label>
-    <input type='text' ng-model='zombie.description' style='min-width: 400px;' placeholder="Enter description" autofocus/>
-    <br/>
-    <label class='checkbox-inline'>
-      <input type='checkbox' ng-model='zombie.operatorOverloading'>Operator Overloading</input>
-    </label>
-    <h4>Dependencies</h4>
-    <table>
-      <tbody>
-        <tr ng-repeat='option in options track by option.name'>
-          <td>
-            <label class='checkbox-inline'>
-              <input type='checkbox' ng-checked='zombie.dependencies.indexOf(option.name) > -1' ng-click='toggleDependency(option.name)'>{{option.moniker}}</input>
-              </label>
-          </td>
-          <td>{{option.description}}</td>
-          <td>{{option.version}}</td>
-          <td><a href='{{option.homepage}}' target='_blank'>{{option.homepage}}</a></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="modal-footer" style="display: block;">
-    <button class='btn btn-primary' ng-click='doOK()'>OK</button>
-    <button class='btn' ng-click='doCancel()'>Cancel</button>
-  </div>
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden='true' ng-click='doCancel()'>&times;</button>
+        <h3>Project Properties</h3>
+    </div>
+    <div class='modal-body'>
+        <label>Name</label>
+        <input type='text' ng-model='zombie.name' style='min-width: 400px;' placeholder="my-package-name" autofocus/>
+        <br/>
+        <label class='checkbox-inline'>
+            <input type='checkbox' ng-model='zombie.operatorOverloading'>Operator Overloading</input>
+        </label>
+        <h4>Dependencies</h4>
+        <table>
+            <tbody>
+                <tr ng-repeat='option in options track by option.name'>
+                    <td>
+                        <label class='checkbox-inline'>
+                            <input type='checkbox' ng-checked='zombie.dependencies.indexOf(option.name) > -1' ng-click='toggleDependency(option.name)'>{{option.moniker}}</input>
+                        </label>
+                    </td>
+                    <td>{{option.description}}</td>
+                    <td>{{option.version}}</td>
+                    <td><a href='{{option.homepage}}' target='_blank'>{{option.homepage}}</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer" style="display: block;">
+        <button class='btn btn-primary' ng-click='doOK()'>OK</button>
+        <button class='btn' ng-click='doCancel()'>Cancel</button>
+    </div>
 </div>

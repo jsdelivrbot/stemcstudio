@@ -6,6 +6,7 @@ import Chapter from './Chapter';
 import Topic from './Topic';
 import LabelModalScope from './LabelModalScope';
 import LabelSettings from './LabelSettings';
+import splitStringToKeywords from './splitStringToKeywords';
 
 export default class LabelModalController {
     public static $inject: string[] = ['$scope', '$uibModalInstance', 'options'];
@@ -20,7 +21,7 @@ export default class LabelModalController {
         $scope.ok = function() {
             options.title = $scope.f.t;
             options.author = $scope.f.a;
-            options.keywords = $scope.f.k.split(',').map(function(s) { return s.trim(); });
+            options.keywords = splitStringToKeywords(',', $scope.f.k);
             $uibModalInstance.close(options);
         };
         $scope.cancel = function() {

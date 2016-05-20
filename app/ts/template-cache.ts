@@ -892,38 +892,38 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
 
   $templateCache.put('properties.html',
     "<div class=\"modal-content\">\n" +
-    "  <div class=\"modal-header\">\n" +
-    "      <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden='true' ng-click='doCancel()'>&times;</button>\n" +
-    "    <h3>Project Properties</h3>\n" +
-    "  </div>\n" +
-    "  <div class='modal-body'>\n" +
-    "    <label>Description</label>\n" +
-    "    <input type='text' ng-model='zombie.description' style='min-width: 400px;' placeholder=\"Enter description\" autofocus/>\n" +
-    "    <br/>\n" +
-    "    <label class='checkbox-inline'>\n" +
-    "      <input type='checkbox' ng-model='zombie.operatorOverloading'>Operator Overloading</input>\n" +
-    "    </label>\n" +
-    "    <h4>Dependencies</h4>\n" +
-    "    <table>\n" +
-    "      <tbody>\n" +
-    "        <tr ng-repeat='option in options track by option.name'>\n" +
-    "          <td>\n" +
-    "            <label class='checkbox-inline'>\n" +
-    "              <input type='checkbox' ng-checked='zombie.dependencies.indexOf(option.name) > -1' ng-click='toggleDependency(option.name)'>{{option.moniker}}</input>\n" +
-    "              </label>\n" +
-    "          </td>\n" +
-    "          <td>{{option.description}}</td>\n" +
-    "          <td>{{option.version}}</td>\n" +
-    "          <td><a href='{{option.homepage}}' target='_blank'>{{option.homepage}}</a></td>\n" +
-    "        </tr>\n" +
-    "      </tbody>\n" +
-    "    </table>\n" +
-    "  </div>\n" +
-    "  <div class=\"modal-footer\" style=\"display: block;\">\n" +
-    "    <button class='btn btn-primary' ng-click='doOK()'>OK</button>\n" +
-    "    <button class='btn' ng-click='doCancel()'>Cancel</button>\n" +
-    "  </div>\n" +
-    "</div>\n"
+    "    <div class=\"modal-header\">\n" +
+    "        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden='true' ng-click='doCancel()'>&times;</button>\n" +
+    "        <h3>Project Properties</h3>\n" +
+    "    </div>\n" +
+    "    <div class='modal-body'>\n" +
+    "        <label>Name</label>\n" +
+    "        <input type='text' ng-model='zombie.name' style='min-width: 400px;' placeholder=\"my-package-name\" autofocus/>\n" +
+    "        <br/>\n" +
+    "        <label class='checkbox-inline'>\n" +
+    "            <input type='checkbox' ng-model='zombie.operatorOverloading'>Operator Overloading</input>\n" +
+    "        </label>\n" +
+    "        <h4>Dependencies</h4>\n" +
+    "        <table>\n" +
+    "            <tbody>\n" +
+    "                <tr ng-repeat='option in options track by option.name'>\n" +
+    "                    <td>\n" +
+    "                        <label class='checkbox-inline'>\n" +
+    "                            <input type='checkbox' ng-checked='zombie.dependencies.indexOf(option.name) > -1' ng-click='toggleDependency(option.name)'>{{option.moniker}}</input>\n" +
+    "                        </label>\n" +
+    "                    </td>\n" +
+    "                    <td>{{option.description}}</td>\n" +
+    "                    <td>{{option.version}}</td>\n" +
+    "                    <td><a href='{{option.homepage}}' target='_blank'>{{option.homepage}}</a></td>\n" +
+    "                </tr>\n" +
+    "            </tbody>\n" +
+    "        </table>\n" +
+    "    </div>\n" +
+    "    <div class=\"modal-footer\" style=\"display: block;\">\n" +
+    "        <button class='btn btn-primary' ng-click='doOK()'>OK</button>\n" +
+    "        <button class='btn' ng-click='doCancel()'>Cancel</button>\n" +
+    "    </div>\n" +
+    "</div>"
   );
 
 

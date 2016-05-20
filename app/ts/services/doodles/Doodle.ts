@@ -4,6 +4,9 @@ import modeFromName from '../../utils/modeFromName';
 import dependencyNames from './dependencyNames';
 import dependenciesMap from './dependenciesMap';
 import IOptionManager from '../options/IOptionManager';
+import setOptionalBooleanProperty from './setOptionalBooleanProperty';
+import setOptionalStringProperty from './setOptionalStringProperty';
+import setOptionalStringArrayProperty from './setOptionalStringArrayProperty';
 
 const FILENAME_META = 'package.json';
 
@@ -83,22 +86,6 @@ export default class Doodle {
         file.content = JSON.stringify(metaInfo, null, 2);
     }
 
-    get description(): string {
-        if (this.existsPackageJson()) {
-            return this.packageInfo.description;
-        }
-        else {
-            return void 0;
-        }
-    }
-
-    set description(description: string) {
-        const file = this.ensurePackageJson();
-        const metaInfo: IDoodleConfig = JSON.parse(file.content);
-        metaInfo.description = description;
-        file.content = JSON.stringify(metaInfo, null, 2);
-    }
-
     get author(): string {
         if (this.existsPackageJson()) {
             return this.packageInfo.author;
@@ -111,7 +98,23 @@ export default class Doodle {
     set author(author: string) {
         const file = this.ensurePackageJson();
         const metaInfo: IDoodleConfig = JSON.parse(file.content);
-        metaInfo.author = author;
+        setOptionalStringProperty('author', author, metaInfo);
+        file.content = JSON.stringify(metaInfo, null, 2);
+    }
+
+    get description(): string {
+        if (this.existsPackageJson()) {
+            return this.packageInfo.description;
+        }
+        else {
+            return void 0;
+        }
+    }
+
+    set description(description: string) {
+        const file = this.ensurePackageJson();
+        const metaInfo: IDoodleConfig = JSON.parse(file.content);
+        setOptionalStringProperty('description', description, metaInfo);
         file.content = JSON.stringify(metaInfo, null, 2);
     }
 
@@ -127,7 +130,7 @@ export default class Doodle {
     set keywords(keywords: string[]) {
         const file = this.ensurePackageJson();
         const metaInfo: IDoodleConfig = JSON.parse(file.content);
-        metaInfo.keywords = keywords;
+        setOptionalStringArrayProperty('keywords', keywords, metaInfo);
         file.content = JSON.stringify(metaInfo, null, 2);
     }
 
@@ -143,7 +146,7 @@ export default class Doodle {
     set operatorOverloading(operatorOverloading: boolean) {
         const file = this.ensurePackageJson();
         const metaInfo: IDoodleConfig = JSON.parse(file.content);
-        metaInfo.operatorOverloading = operatorOverloading;
+        setOptionalBooleanProperty('operatorOverloading', operatorOverloading, metaInfo);
         file.content = JSON.stringify(metaInfo, null, 2);
     }
 

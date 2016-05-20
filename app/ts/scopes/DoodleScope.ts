@@ -26,11 +26,6 @@ interface DoodleScope extends BodyScope, ExplorerMixin {
      */
     doProperties(): void;
 
-    /**
-     *
-     */
-    doHelp: () => void;
-
     templates: ITemplate[];
 }
 

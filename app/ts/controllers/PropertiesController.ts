@@ -6,9 +6,11 @@ import IOptionManager from '../services/options/IOptionManager';
 
 /**
  * The things that we want to maintain.
+ * This is not the full set of properties in package.json.
+ * Other properties such as description, author and keywords are handled elsewhere.
  */
 interface Zombie {
-    description: string;
+    name: string;
     dependencies: string[];
     operatorOverloading: boolean;
 }
@@ -41,7 +43,7 @@ app.controller('properties-controller', [
 
         // We make a copy of the current doodle so that we can Cancel the modal dialog.
         $scope.zombie = {
-            description: dude.description,
+            name: dude.name,
             dependencies: dude.dependencies,
             operatorOverloading: dude.operatorOverloading
         };
@@ -64,8 +66,8 @@ app.controller('properties-controller', [
         };
 
         $scope.doOK = function() {
-            dude.description = $scope.zombie.description;
-            // Perform some clanup, while we map dependencies.
+            dude.name = $scope.zombie.name;
+            // Perform some cleanup, while we map dependencies.
             if ($scope.zombie.dependencies) {
                 dude.dependencies = $scope.zombie.dependencies.filter(function(name) { return options.filter(function(option) { return option.visible && option.name === name; }).length > 0; });
             }
