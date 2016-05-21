@@ -51,8 +51,6 @@ import IUuidService from './services/uuid/IUuidService';
 import ITranslateProvider from './modules/translate/ITranslateProvider';
 import BodyController from './controllers/BodyController';
 import AboutController from './controllers/AboutController';
-import LoginController from './controllers/LoginController';
-import SearchController from './controllers/search/SearchController';
 
 import FacebookLoginController from './controllers/login/facebook/FacebookLoginController';
 import GitHubLoginController from './controllers/login/github/GitHubLoginController';
@@ -72,6 +70,11 @@ import pageTitle from './directives/pageTitle/pageTitle';
 
 import propsFilter from './filters/propsFilter';
 
+// Local (AngularJS) modules.
+// Import them and then use their name as app module dependencies.
+import stemcArXiv from './modules/stemcArXiv/index';
+import translate from './modules/translate/index';
+
 //
 // Create 'app' module and declare its Angular module dependencies.
 //
@@ -81,7 +84,9 @@ const app: angular.IModule = angular.module('app', [
     'ui.bootstrap',
     'ui.bootstrap.modal',
     'ui.router',
-    'ui.select'
+    'ui.select',
+    stemcArXiv.name,
+    translate.name
 ]);
 
 /**
@@ -102,7 +107,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version for use by scopes.
-app.constant('version', '2.0.4');
+app.constant('version', '2.0.5');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -194,10 +199,6 @@ app.controller('body-controller', BodyController);
  */
 const ABOUT_CONTROLLER_NAME = 'AboutController';
 app.controller(ABOUT_CONTROLLER_NAME, AboutController);
-const LOGIN_CONTROLLER_NAME = 'LoginController';
-app.controller(LOGIN_CONTROLLER_NAME, LoginController);
-const SEARCH_CONTROLLER_NAME = 'SearchController';
-app.controller(SEARCH_CONTROLLER_NAME, SearchController);
 
 /**
  * The following controllers will be referenced from a template.
@@ -256,22 +257,14 @@ app.config([
         STATE_GIST: string,
         STATE_REPO: string
     ) {
+        // console.log(`${app.name}.config(...)`);
+
         // FIXME: Some of the states should be replaced by modal dialogs.
         $stateProvider
             .state('home', {
                 url: '/',
                 templateUrl: 'home.html',
                 controller: 'home-controller'
-            })
-            .state('login', {
-                url: '/login',
-                templateUrl: 'login.html',
-                controller: LOGIN_CONTROLLER_NAME
-            })
-            .state('search', {
-                url: '/search',
-                templateUrl: 'search.html',
-                controller: SEARCH_CONTROLLER_NAME
             })
             .state(STATE_DOODLE, {
                 url: '/doodle',
@@ -292,11 +285,6 @@ app.config([
                 url: '/copy',
                 templateUrl: 'copy.html',
                 controller: 'copy-controller'
-            })
-            .state('properties', {
-                url: '/properties',
-                templateUrl: 'properties.html',
-                controller: 'properties-controller'
             })
             .state('download', {
                 url: '/download',
@@ -413,6 +401,8 @@ app.run([
         GITHUB_TOKEN_COOKIE_NAME: string,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string
     ) {
+        // console.log(`${app.name}.run(...)`);
+
         // The name of this cookie must correspond with the cookie sent back from the server.
         const GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME = 'stemcstudio-github-application-client-id';
 

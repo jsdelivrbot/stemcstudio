@@ -10,8 +10,6 @@ import app from './app';
 // The remainder of this module defines various AngularJS components for the application.
 // The very last few lines in this file bootstrap the app module.
 //
-import translateFilter from './modules/translate/filter/translate';
-import TranslateProvider from './modules/translate/service/TranslateProvider';
 import * as angular from 'angular';
 import Base64 from './services/base64/Base64';
 import ChooseGistOrRepoController from './services/cloud/ChooseGistOrRepoController';
@@ -37,9 +35,7 @@ import ReteFlowService from './services/flow/ReteFlowService';
 import RepoController from './controllers/RepoController';
 import RepoDataController from './services/cloud/RepoDataController';
 import resizable from './directives/resizable/resizable';
-import SearchService from './services/search/SearchService';
 import TextService from './services/text/TextService';
-import TranslateController from './controllers/TranslateController';
 import DefaultThemeManager from './services/themes/DefaultThemeManager';
 import workspace from './directives/workspace/workspace.component';
 import WorkspaceFactoryService from './services/workspace/WorkspaceFactoryService';
@@ -63,7 +59,6 @@ app.controller('DoodleController', DoodleController);
 app.controller('examples-controller', ExamplesController);
 app.controller('GitHubAccountController', GitHubAccountController);
 app.controller('home-controller', HomeController);
-app.controller('translate-controller', TranslateController);
 
 app.controller('ExplorerFilesController', ExplorerFilesController);
 
@@ -78,6 +73,7 @@ app.controller('CommitMessageController', CommitMessageController);
 app.controller('RepoDataController', RepoDataController);
 
 app.controller('RepoController', RepoController);
+// FIXME: Don't like this style of import.
 import './controllers/AboutController';
 import './controllers/BodyController';
 import './controllers/CopyController';
@@ -86,7 +82,6 @@ import './controllers/ExamplesController';
 import './controllers/HomeController';
 import './controllers/NewController';
 import './controllers/OpenController';
-import './controllers/PropertiesController';
 
 app.directive('contextMenu', contextMenu);
 app.directive('editor', editor);
@@ -95,10 +90,10 @@ app.directive('resizable', resizable);
 app.directive('workspace', workspace);
 
 app.filter('contiguous', contiguous);
-app.filter('translate', translateFilter);
 
 import './fugly/ga/ga';
 
+// FIXME: Don't like this style of import.
 import './services/cookie/cookie';
 import './services/doodles/doodles';
 import './services/gham/GitHubAuthManager';
@@ -116,11 +111,9 @@ app.service('flow', ReteFlowService);
 app.service('flowSessionService', NaiveFlowSessionService);
 
 app.service('hits', HitService);
-app.service('search', SearchService);
 
 app.service('textService', TextService);
 app.service('themeManager', DefaultThemeManager);
-app.provider('$translate', new TranslateProvider());
 app.service('workspaceFactory', WorkspaceFactoryService);
 
 import './template-cache';

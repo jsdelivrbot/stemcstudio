@@ -5,7 +5,7 @@ import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
 import HitService from '../services/hits/HitService';
 import HomeScope from '../scopes/HomeScope';
 import ModalDialog from '../services/modalService/ModalDialog';
-import SearchService from '../services/search/SearchService';
+import StemcArXiv from '../modules/stemcArXiv/StemcArXiv';
 
 function localDoodleRefs(doodles: IDoodleManager) {
     return doodles.filter(function(doodle, index) {
@@ -44,7 +44,7 @@ export default class HomeController extends AbstractPageController {
         'ga',
         'hits',
         'modalDialog',
-        'search',
+        'stemcArXiv',
         'FEATURE_DASHBOARD_ENABLED',
         'FEATURE_EXAMPLES_ENABLED',
         'FEATURE_GOOGLE_SIGNIN_ENABLED',
@@ -67,7 +67,7 @@ export default class HomeController extends AbstractPageController {
         ga: UniversalAnalytics.ga,
         hits: HitService,
         modalDialog: ModalDialog,
-        search: SearchService,
+        stemcArXiv: StemcArXiv,
         FEATURE_DASHBOARD_ENABLED: boolean,
         FEATURE_EXAMPLES_ENABLED: boolean,
         FEATURE_GOOGLE_SIGNIN_ENABLED: boolean,
@@ -118,7 +118,7 @@ export default class HomeController extends AbstractPageController {
             $scope.found = void 0;
             $scope.start = void 0;
             if ($scope.params.query) {
-                search.search({ query: $scope.params.query }).then((promiseValue) => {
+                stemcArXiv.search({ query: $scope.params.query }).then((promiseValue) => {
                     $scope.found = promiseValue.found;
                     $scope.start = promiseValue.start;
                     $scope.doodleRefs = promiseValue.refs;

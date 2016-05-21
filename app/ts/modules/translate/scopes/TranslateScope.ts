@@ -1,7 +1,9 @@
 import * as angular from 'angular';
-import AppScope from './AppScope';
 
-interface TranslateScope extends AppScope {
+/**
+ * Mixin when using the TranslateController.
+ */
+interface TranslateScope extends angular.IScope {
     changeLanguage(langKey: string): void;
 }
 

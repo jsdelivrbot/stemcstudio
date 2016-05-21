@@ -23,7 +23,6 @@
         "app/ts/controllers/HomeController.ts",
         "app/ts/controllers/NewController.ts",
         "app/ts/controllers/OpenController.ts",
-        "app/ts/controllers/PropertiesController.ts",
         "app/ts/fugly/ga/ga.ts",
         "app/ts/services/cookie/cookie.ts",
         "app/ts/services/doodles/doodles.ts",

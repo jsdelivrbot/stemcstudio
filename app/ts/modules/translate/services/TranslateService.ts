@@ -17,8 +17,12 @@ export default class TranslateService implements ITranslateService {
      * 
      */
     instant(translationId: string, interpolateParams?: any, interpolationId?: string, forceLanguage?: boolean): string {
+        // Just a few to prove that it all works.
         if (translationId === 'APP_NAME') {
             return 'STEMCstudio';
+        }
+        else if (translationId === 'SEARCH') {
+            return 'Search';
         }
         else {
             return translationId;

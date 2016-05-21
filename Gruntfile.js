@@ -707,7 +707,6 @@ module.exports = function(grunt) {
                 tasks: ['ngtemplates']
             }
         }
-
     });
 
     grunt.loadNpmTasks('grunt-contrib-clean');
@@ -744,12 +743,12 @@ module.exports = function(grunt) {
             });
     });
 
-    grunt.registerTask('app', ['copy:app']);
-    grunt.registerTask('web', ['copy:web']);
+    grunt.registerTask('app', "Set up environment for front-end development.", ['copy:app']);
+    grunt.registerTask('web', "Set up environment for back-end development.", ['copy:web']);
 
-    grunt.registerTask('dev', ['clean', 'ngtemplates', 'ts:app', 'tslint', 'copy:dev', 'less:dev']);
+    grunt.registerTask('dev', "Development build.", ['clean', 'ngtemplates', 'ts:app', 'tslint', 'copy:dev', 'less:dev']);
 
-    grunt.registerTask('prod', ['dev', 'ts:web', 'tslint', 'copy:prod', 'bundle']);
+    grunt.registerTask('prod', "Production build", ['dev', 'ts:web', 'tslint', 'copy:prod', 'bundle']);
 
     grunt.registerTask('default', ['prod']);
 

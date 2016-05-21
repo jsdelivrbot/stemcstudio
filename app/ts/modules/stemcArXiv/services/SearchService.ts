@@ -1,0 +1,26 @@
+import * as angular from 'angular';
+import ISearchParams from '../SearchParams';
+import ISearchResponse from '../SearchResponse';
+import IStemcArXiv from '../StemcArXiv';
+
+export default class SearchService implements IStemcArXiv {
+
+    public static $inject: string[] = ['$q', '$http'];
+
+    constructor(private $q: angular.IQService, private $http: angular.IHttpService) {
+        // Do nothing.
+    }
+
+    search(params: ISearchParams): ng.IPromise<ISearchResponse> {
+        const d = this.$q.defer<ISearchResponse>();
+        this.$http.post<ISearchResponse>('/search', params)
+            .then(function(promiseValue) {
+                const data = promiseValue.data;
+                d.resolve(data);
+            })
+            .catch(function(reason: { data: string; status: number; statusText: string }) {
+                d.reject(reason);
+            });
+        return d.promise;
+    }
+}
