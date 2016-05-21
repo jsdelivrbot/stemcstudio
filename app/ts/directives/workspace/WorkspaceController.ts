@@ -25,6 +25,7 @@ import OutputFileHandler from './OutputFileHandler';
 import doodleGroom from '../../utils/doodleGroom';
 import ModalDialog from '../../services/modalService/ModalDialog';
 import PublishDialog from '../../modules/publish/PublishDialog';
+import StemcArXiv from '../../modules/stemcArXiv/StemcArXiv';
 import FlowService from '../../services/flow/FlowService';
 import UploadFlow from './UploadFlow';
 import WorkspaceScope from '../../scopes/WorkspaceScope';
@@ -84,6 +85,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         'options',
         'propertiesDialog',
         'publishDialog',
+        'stemcArXiv',
         'FEATURE_GIST_ENABLED',
         'FEATURE_REPO_ENABLED',
         'FILENAME_README',
@@ -161,6 +163,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         private options: IOptionManager,
         private propertiesDialog: PropertiesDialog,
         private publishDialog: PublishDialog,
+        private stemcArXiv: StemcArXiv,
         private FEATURE_GIST_ENABLED: boolean,
         private FEATURE_REPO_ENABLED: boolean,
         private FILENAME_README: string,
@@ -309,7 +312,8 @@ export default class WorkspaceController implements WorkspaceMixin {
                 this.flowService,
                 this.modalDialog,
                 this.publishDialog,
-                this.credentials);
+                this.credentials,
+                this.stemcArXiv);
             publishFlow.execute();
         };
 

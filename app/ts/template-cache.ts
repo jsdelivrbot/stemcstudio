@@ -670,7 +670,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                <button ng-if='FEATURE_EXAMPLES_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goExamples()'>Examples</button>\n" +
     "                <button ng-if='FEATURE_DASHBOARD_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goDashboard()' ng-show='isGitHubSignedIn()'>Dashboard</button>\n" +
     "                <form class=\"navbar-search pull-right\" ng-submit='doSearch()'>\n" +
-    "                    <input type=\"text\" ng-model='params.query' class=\"search-query\" placeholder=\"{{ 'SEARCH' | translate }}\">\n" +
+    "                    <input type=\"text\" ng-model='params.query' class=\"search-query\" placeholder=\"{{ 'Search STEMC arXiv' | translate }}\">\n" +
     "                </form>\n" +
     "            </div>\n" +
     "            <div class='collapse navbar-collapse' id='navbar-header-collapse'>\n" +

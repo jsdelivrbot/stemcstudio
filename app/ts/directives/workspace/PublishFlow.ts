@@ -4,7 +4,8 @@ import PublishDialog from '../../modules/publish/PublishDialog';
 import PublishFacts from './PublishFacts';
 import IDoodleManager from '../../services/doodles/IDoodleManager';
 import ModalDialog from '../../services/modalService/ModalDialog';
-import putDoodleRef from './putDoodleRef';
+import StemcArXiv from '../../modules/stemcArXiv/StemcArXiv';
+import SubmitParams from '../../modules/stemcArXiv/SubmitParams';
 
 /**
  * @class PublishFlow
@@ -17,7 +18,8 @@ export default class PublishFlow {
         private flowService: FlowService,
         private modalDialog: ModalDialog,
         private publishDialog: PublishDialog,
-        private credentials: CredentialsService
+        private credentialsService: CredentialsService,
+        private stemcArXiv: StemcArXiv
     ) {
         // Do nothing.
     }
@@ -44,34 +46,41 @@ export default class PublishFlow {
                 googleUser.grant(options).then(
                     (success) => {
                         const id_token = googleUser.getAuthResponse().id_token;
-                        this.credentials.googleSignIn(id_token);
+                        this.credentialsService.googleSignIn(id_token);
                         facts.id_token.resolve(id_token);
                         console.log(JSON.stringify({ message: "success", value: success }));
                         next();
                     },
                     (fail: any) => {
-                        this.credentials.googleSignIn(void 0);
+                        this.credentialsService.googleSignIn(void 0);
                         facts.id_token.reject(fail);
                         alert(JSON.stringify({ message: "fail", value: fail }));
                         next(fail);
                     });
             });
 
-        flow.rule("DynamoDB", {},
+        flow.rule("Submit to STEMCarXiv", {},
             (facts) => {
                 return facts.id_token.isResolved() && facts.indexed.isUndefined() && facts.owner.isResolved();
             },
             (facts, session, next) => {
-                putDoodleRef(doodle, function(err: AWS.Reason) {
-                    if (!err) {
-                        facts.indexed.resolve(true);
-                        facts.completionMessage.resolve("Your project was successfully received for publishing! Please allow 10 minutes for it to be searchable.");
-                    }
-                    else {
-                        facts.completionMessage.resolve("We're sorry, your project cannot be accepted at this time. Please try again later.");
-                        facts.indexed.reject(err);
-                        console.warn(err);
-                    }
+                const params: SubmitParams = {
+                    owner: doodle.owner,
+                    gistId: doodle.gistId,
+                    repo: doodle.repo,
+                    title: doodle.description,
+                    author: doodle.author,
+                    keywords: doodle.keywords,
+                    credentials: this.credentialsService.credentials
+                };
+                this.stemcArXiv.submit(params).then((response) => {
+                    facts.indexed.resolve(true);
+                    facts.completionMessage.resolve("Your project was successfully received for publishing! Please allow 10 minutes for it to be searchable.");
+                    next();
+                }).catch((err) => {
+                    facts.completionMessage.resolve("We're sorry, your project cannot be accepted at this time. Please try again later.");
+                    facts.indexed.reject(err);
+                    console.warn(err);
                     next(err);
                 });
             });

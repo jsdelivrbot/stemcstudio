@@ -1,4 +1,4 @@
-import isUndefined from './isUndefined';
+import isUndefined from '../utils/isUndefined';
 
 export default class Fuzzy<T> {
     private _value: T;

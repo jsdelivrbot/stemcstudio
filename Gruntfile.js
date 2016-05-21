@@ -681,6 +681,7 @@ module.exports = function(grunt) {
                 "app/ts/templates/**/*.ts",
                 "app/ts/utils/**/*.ts",
                 "app/ts/*.ts",
+                "server/**/*.ts"
             ],
             options: {
                 configuration: 'tslint.json'
@@ -746,9 +747,9 @@ module.exports = function(grunt) {
     grunt.registerTask('app', "Set up environment for front-end development.", ['copy:app']);
     grunt.registerTask('web', "Set up environment for back-end development.", ['copy:web']);
 
-    grunt.registerTask('dev', "Development build.", ['clean', 'ngtemplates', 'ts:app', 'tslint', 'copy:dev', 'less:dev']);
+    grunt.registerTask('dev', "Build for development.", ['clean', 'ngtemplates', 'ts:app', 'tslint', 'copy:dev', 'less:dev']);
 
-    grunt.registerTask('prod', "Production build", ['dev', 'ts:web', 'tslint', 'copy:prod', 'bundle']);
+    grunt.registerTask('prod', "Build for production.", ['dev', 'ts:web', 'tslint', 'copy:prod', 'bundle']);
 
     grunt.registerTask('default', ['prod']);
 

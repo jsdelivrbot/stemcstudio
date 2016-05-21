@@ -10,7 +10,7 @@ var https = require('https');
 var qs = require('querystring');
 var bodyParser = require('body-parser');
 var errorHandler = require('errorhandler');
-var cloudSearch = require('./server/routes/search');
+var stemcArXiv = require('./server/routes/stemcArXiv/index');
 var npm = require('./package.json');
 var cfg = require('./configure');
 var clientId = nconf.get("GITHUB_APPLICATION_CLIENT_ID");
@@ -86,7 +86,8 @@ app.get("/github_callback", function (req, res, next) {
         npm: npm
     });
 });
-app.post('/search', cloudSearch.search);
+app.post('/search', stemcArXiv.search);
+app.post('/submit', stemcArXiv.submit);
 app.get("/*", function (req, res, next) {
     var clientId = nconf.get("GITHUB_APPLICATION_CLIENT_ID");
     res.cookie('stemcstudio-github-application-client-id', nconf.get("GITHUB_APPLICATION_CLIENT_ID"));

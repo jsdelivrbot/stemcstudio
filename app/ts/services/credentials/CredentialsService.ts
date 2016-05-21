@@ -5,7 +5,7 @@ const PROVIDER_NAME_GOOGLE_PLUS = 'accounts.google.com';
  */
 export default class CredentialsService {
     public static $inject: string[] = [];
-    private Logins: { [provideName: string]: string } = {};
+    private _Logins: { [provideName: string]: string } = {};
     /**
      * @class CredentialsService
      * @constructor
@@ -77,7 +77,7 @@ export default class CredentialsService {
             // the identity provider called STEMCstudio for the JavaScript platform.
             // It can also be seen by "Edit identity pool".
             IdentityPoolId: 'us-east-1:b419a8b6-2753-4af4-a76b-41a451eb2278',
-            Logins: this.Logins
+            Logins: this._Logins
         });
     }
 
@@ -86,13 +86,18 @@ export default class CredentialsService {
      */
     googleSignIn(token: string): void {
         if (token) {
-            this.Logins[PROVIDER_NAME_GOOGLE_PLUS] = token;
+            this._Logins[PROVIDER_NAME_GOOGLE_PLUS] = token;
         }
         else {
-            if (this.Logins[PROVIDER_NAME_GOOGLE_PLUS]) {
-                delete this.Logins[PROVIDER_NAME_GOOGLE_PLUS];
+            if (this._Logins[PROVIDER_NAME_GOOGLE_PLUS]) {
+                delete this._Logins[PROVIDER_NAME_GOOGLE_PLUS];
             }
         }
         this.updateCredentials();
+    }
+
+    get credentials(): { [identityProviderName: string]: string } {
+        // TODO: Would be good idea to make a copy.
+        return this._Logins;
     }
 }

@@ -14,7 +14,7 @@ import * as bodyParser from 'body-parser';
 import multer = require('multer');
 import errorHandler = require('errorhandler');
 
-import * as cloudSearch from './server/routes/search'
+import * as stemcArXiv from './server/routes/stemcArXiv/index';
 
 const npm = require('./package.json');
 
@@ -126,7 +126,8 @@ app.get("/github_callback", (req: express.Request, res: express.Response, next) 
     });
 });
 
-app.post('/search', cloudSearch.search)
+app.post('/search', stemcArXiv.search);
+app.post('/submit', stemcArXiv.submit);
 
 app.get("/*", (req: express.Request, res: express.Response, next) => {
     // Set a cookie to communicate the GitHub Client ID back to the client.
