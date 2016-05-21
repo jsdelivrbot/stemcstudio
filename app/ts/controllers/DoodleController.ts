@@ -55,10 +55,6 @@ export default class DoodleController extends AbstractPageController {
         $scope.doCopy = (label?: string, value?: number) => {
             this.navigateTo('copy');
         };
-
-        $scope.doProperties = (label?: string, value?: number) => {
-            this.navigateTo('properties');
-        };
     }
 
     $onInit(): void {

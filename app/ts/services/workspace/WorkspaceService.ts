@@ -267,6 +267,13 @@ export default class WorkspaceService implements WorkspaceLocal {
     }
 
     /**
+     * 
+     */
+    semanticDiagnostics(): void {
+        this.workspace.semanticDiagnostics();
+    }
+
+    /**
      *
      */
     outputFiles(): void {

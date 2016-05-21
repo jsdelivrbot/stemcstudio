@@ -737,12 +737,19 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "            <h3 class='modal-title' style=\"float: right;\">Labels and Tags</h3>\n" +
     "        </div>\n" +
     "        <div id='label-modal-body' class=\"modal-body\">\n" +
-    "            <label>Title</label><br/>\n" +
-    "            <input type='text' placeholder=\"Title\" style=\"min-width: 500px;\" name=\"title\" ng-model=\"f.t\" /><br/>\n" +
-    "            <label>Author</label><br/>\n" +
-    "            <input type='text' placeholder=\"Your Full Name\" style=\"min-width: 500px;\" name=\"author\" ng-model=\"f.a\" /><br/>\n" +
-    "            <label>Keywords</label><br/>\n" +
-    "            <input type='text' placeholder=\"Keyword1, Keyword2, ..., KeywordN\" style=\"min-width: 500px;\" name=\"keywords\" ng-model=\"f.k\" /><br/>\n" +
+    "            <label>Title</label>\n" +
+    "            <br/>\n" +
+    "            <input type='text' placeholder=\"Title\" style=\"min-width: 500px;\" name=\"title\" ng-model=\"f.t\" />\n" +
+    "            <br/>\n" +
+    "            <label>Author</label>\n" +
+    "            <br/>\n" +
+    "            <input type='text' placeholder=\"Your Full Name\" style=\"min-width: 500px;\" name=\"author\" ng-model=\"f.a\" />\n" +
+    "            <br/>\n" +
+    "            <label>Keywords</label>\n" +
+    "            <br/>\n" +
+    "            <input type='text' placeholder=\"Keyword1, Keyword2, ..., KeywordN\" style=\"min-width: 500px;\" name=\"keywords\" ng-model=\"f.k\"\n" +
+    "            />\n" +
+    "            <br/>\n" +
     "        </div>\n" +
     "        <div class=\"modal-footer\">\n" +
     "            <button class=\"btn btn-secondary\" type=\"button\" data-ng-click=\"cancel()\">Cancel</button>\n" +
@@ -887,6 +894,52 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "    <button class=\"btn btn-secondary\" type=\"button\" data-ng-click=\"cancel()\">{{options.cancelButtonText}}</button>\n" +
     "    <button class=\"btn btn-primary\" type=\"button\" data-ng-click=\"ok();\">{{options.actionButtonText}}</button>\n" +
     "</div>"
+  );
+
+
+  $templateCache.put('properties-modal.html',
+    "<!-- Using a name on the form puts the controller on the scope with a property of the same name -->\n" +
+    "<form name='labelForm' ng-submit='ok()'>\n" +
+    "    <fieldset>\n" +
+    "        <!-- legend>Labels and Keywords</legend -->\n" +
+    "        <div class=\"modal-header\" style=\"clear: both\">\n" +
+    "            <h3 class='modal-title' style=\"float: left;\"><logo-text version='{{version}}'/></h3>\n" +
+    "            <h3 class='modal-title' style=\"float: right;\">Project Properties</h3>\n" +
+    "        </div>\n" +
+    "        <div id='properties-modal-body' class=\"modal-body\">\n" +
+    "            <label>Name</label>\n" +
+    "            <br/>\n" +
+    "            <input type='text' placeholder=\"project-name\" style=\"min-width: 500px;\" name=\"title\" ng-model=\"f.n\" />\n" +
+    "            <br/>\n" +
+    "            <label>Version</label>\n" +
+    "            <br/>\n" +
+    "            <input type='text' placeholder=\"1.0.0\" style=\"min-width: 500px;\" name=\"version\" ng-model=\"f.v\" />\n" +
+    "            <br/>\n" +
+    "            <label class='checkbox-inline'>\n" +
+    "                <input type='checkbox' ng-model='f.o'>Operator Overloading</input>\n" +
+    "            </label>\n" +
+    "            <h4>Dependencies</h4>\n" +
+    "            <table>\n" +
+    "                <tbody>\n" +
+    "                    <tr ng-repeat='option in options track by option.name'>\n" +
+    "                        <td>\n" +
+    "                            <label class='checkbox-inline'>\n" +
+    "                                <input type='checkbox' ng-checked='f.dependencies.indexOf(option.name) > -1' ng-click='toggleDependency(option.name)'>{{option.moniker}}</input>\n" +
+    "                            </label>\n" +
+    "                        </td>\n" +
+    "                        <!-- td>{{option.description}}</td -->\n" +
+    "                        <!-- td>{{option.version}}</td -->\n" +
+    "                        <!-- td><a href='{{option.homepage}}' target='_blank'>{{option.homepage}}</a></td -->\n" +
+    "                    </tr>\n" +
+    "                </tbody>\n" +
+    "            </table>\n" +
+    "        </div>\n" +
+    "        <div class=\"modal-footer\">\n" +
+    "            <button class=\"btn btn-secondary\" type=\"button\" data-ng-click=\"cancel()\">Cancel</button>\n" +
+    "            <button class=\"btn btn-primary\" type=\"submit\">OK</button>\n" +
+    "        </div>\n" +
+    "    </fieldset>\n" +
+    "</form>"
   );
 
 

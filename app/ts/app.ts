@@ -61,6 +61,9 @@ import TwitterLoginController from './controllers/login/twitter/TwitterLoginCont
 import LabelDialogService from './modules/publish/LabelDialogService';
 import LabelModalController from './modules/publish/LabelModalController';
 
+import PropertiesDialogService from './modules/properties/PropertiesDialogService';
+import PropertiesModalController from './modules/properties/PropertiesModalController';
+
 import PublishDialogService from './modules/publish/PublishDialogService';
 import brand from './directives/brand/brand';
 import domain from './directives/domain/domain';
@@ -99,7 +102,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version for use by scopes.
-app.constant('version', '2.0.3');
+app.constant('version', '2.0.4');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -217,7 +220,8 @@ app.service('credentials', CredentialsService);
 
 app.service('labelDialog', LabelDialogService);
 app.controller('LabelModalController', LabelModalController);
-
+app.service('propertiesDialog', PropertiesDialogService);
+app.controller('PropertiesModalController', PropertiesModalController);
 app.service('publishDialog', PublishDialogService);
 
 //

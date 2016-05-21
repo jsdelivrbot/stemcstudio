@@ -1,0 +1,42 @@
+<!-- Using a name on the form puts the controller on the scope with a property of the same name -->
+<form name='labelForm' ng-submit='ok()'>
+    <fieldset>
+        <!-- legend>Labels and Keywords</legend -->
+        <div class="modal-header" style="clear: both">
+            <h3 class='modal-title' style="float: left;"><logo-text version='{{version}}'/></h3>
+            <h3 class='modal-title' style="float: right;">Project Properties</h3>
+        </div>
+        <div id='properties-modal-body' class="modal-body">
+            <label>Name</label>
+            <br/>
+            <input type='text' placeholder="project-name" style="min-width: 500px;" name="title" ng-model="f.n" />
+            <br/>
+            <label>Version</label>
+            <br/>
+            <input type='text' placeholder="1.0.0" style="min-width: 500px;" name="version" ng-model="f.v" />
+            <br/>
+            <label class='checkbox-inline'>
+                <input type='checkbox' ng-model='f.o'>Operator Overloading</input>
+            </label>
+            <h4>Dependencies</h4>
+            <table>
+                <tbody>
+                    <tr ng-repeat='option in options track by option.name'>
+                        <td>
+                            <label class='checkbox-inline'>
+                                <input type='checkbox' ng-checked='f.dependencies.indexOf(option.name) > -1' ng-click='toggleDependency(option.name)'>{{option.moniker}}</input>
+                            </label>
+                        </td>
+                        <!-- td>{{option.description}}</td -->
+                        <!-- td>{{option.version}}</td -->
+                        <!-- td><a href='{{option.homepage}}' target='_blank'>{{option.homepage}}</a></td -->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-ng-click="cancel()">Cancel</button>
+            <button class="btn btn-primary" type="submit">OK</button>
+        </div>
+    </fieldset>
+</form>

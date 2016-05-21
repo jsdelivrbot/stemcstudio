@@ -405,7 +405,10 @@ export default class Workspace {
         });
     }
 
-    private semanticDiagnostics() {
+    /**
+     * TODO: This is exactly the function we would like to call to refresh the editor semantic annotations.
+     */
+    public semanticDiagnostics() {
         const fileNames = Object.keys(this.editors);
         for (let i = 0; i < fileNames.length; i++) {
             const fileName = fileNames[i];

@@ -43,6 +43,11 @@ interface WorkspaceScope extends DoodleScope {
     doLabel(): void;
 
     /**
+     * 
+     */
+    doProperties(): void;
+
+    /**
      * Publish
      */
     doPublish(): void;

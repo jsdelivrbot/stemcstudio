@@ -11,7 +11,13 @@ function optionsToNames(options: IOption[]): string[] {
     return options.map(function(option: IOption) { return option.name; });
 }
 
-export default function updateWorkspace(
+/**
+ * Computes the delta of files additions and removals and calls ensureScript or removeScript accordingly.
+ * The additions require HTTP requests to fetch the file contents to be added.
+ * This function does NOT trigger semantic validation.
+ * Not worrying about callback right now - this will be re-written.
+ */
+export default function(
     workspace: Workspace,
     doodle: Doodle,
     options: IOptionManager,
@@ -19,7 +25,8 @@ export default function updateWorkspace(
     FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
     $http: angular.IHttpService,
     $location: angular.ILocationService,
-    VENDOR_FOLDER_MARKER: string
+    VENDOR_FOLDER_MARKER: string,
+    callback: () => any
 ) {
     // Load the wokspace with the appropriate TypeScript definitions.
     const news: string[] = optionsToNames(closure(namesToOptions(doodle.dependencies, options), options));
@@ -68,6 +75,7 @@ export default function updateWorkspace(
     const FWD_SLASH = '/';
     const DOMAIN = $location.protocol() + ':' + FWD_SLASH + FWD_SLASH + $location.host() + ":" + $location.port();
 
+    // We're loading d.ts files here. Why don't we cache them so that we don't need the HTTP request?
     const readFile = (fileName: string, callback: (err, data?) => void) => {
         const url = scriptURL(DOMAIN, fileName, VENDOR_FOLDER_MARKER);
         $http.get(url)
@@ -84,12 +92,29 @@ export default function updateWorkspace(
         olds.splice(olds.indexOf(rmvUnit.name), 1);
     });
 
-    addUnits.forEach((addUnit) => {
-        readFile(addUnit.fileName, (err, content) => {
-            if (!err) {
-                workspace.ensureScript(addUnit.fileName, content.replace(/\r\n?/g, '\n'));
-                olds.unshift(addUnit.name);
-            }
-        });
-    });
+    // Make sure that the callback gets called, even when adding no files.
+    // TODO: Optimize when there are no changes.
+    const names = Object.keys(addUnits);
+    const iLen = names.length;
+    if (iLen > 0) {
+        let inFlightCount = 0;
+        for (let i = 0; i < iLen; i++) {
+            const name = names[i];
+            const addUnit = addUnits[name];
+            inFlightCount++;
+            readFile(addUnit.fileName, (err, content) => {
+                if (!err) {
+                    workspace.ensureScript(addUnit.fileName, content.replace(/\r\n?/g, '\n'));
+                    olds.unshift(addUnit.name);
+                }
+                inFlightCount--;
+                if (0 === inFlightCount) {
+                    callback();
+                }
+            });
+        }
+    }
+    else {
+        callback();
+    }
 }
