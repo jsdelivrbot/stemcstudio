@@ -38,6 +38,7 @@ import {LANGUAGE_JSON} from '../../languages/modes';
 import {LANGUAGE_JAVA_SCRIPT} from '../../languages/modes';
 import {LANGUAGE_LESS} from '../../languages/modes';
 import {LANGUAGE_MARKDOWN} from '../../languages/modes';
+import {LANGUAGE_PYTHON} from '../../languages/modes';
 import {LANGUAGE_TYPE_SCRIPT} from '../../languages/modes';
 import {LANGUAGE_TEXT} from '../../languages/modes';
 import updateWorkspaceTypings from './updateWorkspaceTypings';
@@ -618,6 +619,13 @@ export default class WorkspaceController implements WorkspaceMixin {
         // const startTime = performance.now();
 
         switch (mode) {
+            case LANGUAGE_PYTHON: {
+                // TODO:
+                // editor.getSession().on('change', this.createChangeHandler(filename));
+                this.workspace.attachEditor(filename, editor);
+                editor.getSession().on('outputFiles', this.createOutputFilesEventHandler(filename));
+                break;
+            }
             case LANGUAGE_TYPE_SCRIPT: {
                 this.workspace.attachEditor(filename, editor);
                 editor.getSession().on('outputFiles', this.createOutputFilesEventHandler(filename));
@@ -766,6 +774,13 @@ export default class WorkspaceController implements WorkspaceMixin {
                 break;
             }
             case LANGUAGE_JAVA_SCRIPT: {
+                const handler = this.outputFilesEventHandlers[filename];
+                editor.getSession().off('outputFiles', handler);
+                this.deleteOutputFileHandler(filename);
+                this.workspace.detachEditor(filename, editor);
+                break;
+            }
+            case LANGUAGE_PYTHON: {
                 const handler = this.outputFilesEventHandlers[filename];
                 editor.getSession().off('outputFiles', handler);
                 this.deleteOutputFileHandler(filename);

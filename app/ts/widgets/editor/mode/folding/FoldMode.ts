@@ -61,10 +61,10 @@ export default class FoldMode {
      * @method indentationBlock
      * @param session {EditSession}
      * @param row {number}
-     * @param column {number}
+     * @param [column] {number}
      * @return {Range}
      */
-    indentationBlock(session: EditSession, row: number, column: number): Range {
+    indentationBlock(session: EditSession, row: number, column?: number): Range {
         const re = /\S/;
         const line = session.getLine(row);
         const startLevel = line.search(re);

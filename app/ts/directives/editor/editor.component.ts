@@ -1,9 +1,10 @@
 import * as ng from 'angular';
-import createJavaScriptMode from '../../widgets/editor/mode/createJavaScriptMode';
-import createTypeScriptMode from '../../widgets/editor/mode/createTypeScriptMode';
 import HtmlMode from '../../widgets/editor/mode/HtmlMode';
+import JavaScriptMode from '../../widgets/editor/mode/JavaScriptMode';
 import JsonMode from '../../widgets/editor/mode/JsonMode';
+import PythonMode from '../../widgets/editor/mode/PythonMode';
 import TextMode from '../../widgets/editor/mode/TextMode';
+import TypeScriptMode from '../../widgets/editor/mode/TypeScriptMode';
 import createCssMode from '../../widgets/editor/mode/createCssMode';
 import createMarkdownMode from '../../widgets/editor/mode/createMarkdownMode';
 import Delta from '../../widgets/editor/Delta';
@@ -22,6 +23,7 @@ import {LANGUAGE_JSON} from '../../languages/modes';
 import {LANGUAGE_JAVA_SCRIPT} from '../../languages/modes';
 import {LANGUAGE_LESS} from '../../languages/modes';
 import {LANGUAGE_MARKDOWN} from '../../languages/modes';
+import {LANGUAGE_PYTHON} from '../../languages/modes';
 import {LANGUAGE_TYPE_SCRIPT} from '../../languages/modes';
 import {LANGUAGE_TEXT} from '../../languages/modes';
 
@@ -58,8 +60,17 @@ function factory(
 
         // The following are starting to look very similar!
         switch ($scope.mode) {
+            case LANGUAGE_PYTHON: {
+                editor.getSession().setUseWorker(false);
+                editor.setLanguageMode(new PythonMode('/js/worker.js', workerImports), function(err: any) {
+                    if (err) {
+                        console.warn(`${$scope.mode} => ${err}`);
+                    }
+                });
+                break;
+            }
             case LANGUAGE_JAVA_SCRIPT: {
-                editor.setLanguageMode(createJavaScriptMode('/js/worker.js', workerImports), function(err: any) {
+                editor.setLanguageMode(new JavaScriptMode('/js/worker.js', workerImports), function(err: any) {
                     if (err) {
                         console.warn(`${$scope.mode} => ${err}`);
                     }
@@ -67,7 +78,7 @@ function factory(
                 break;
             }
             case LANGUAGE_TYPE_SCRIPT: {
-                editor.setLanguageMode(createTypeScriptMode('/js/worker.js', workerImports), function(err: any) {
+                editor.setLanguageMode(new TypeScriptMode('/js/worker.js', workerImports), function(err: any) {
                     if (err) {
                         console.warn(`${$scope.mode} => ${err}`);
                     }
