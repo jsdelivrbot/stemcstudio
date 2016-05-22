@@ -22,7 +22,7 @@ export default class BodyController {
             const destination = 'home';
             this.navigateTo(destination, void 0, void 0, label, value)
                 .then(function(promiseValue: any) {
-                    // console.log(`navigateTo('${destination}') completed.`);
+                    // console.lg(`navigateTo('${destination}') completed.`);
                 })
                 .catch(function(reason: any) {
                     console.warn(`navigateTo('${destination}') failed.`);

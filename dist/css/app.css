@@ -7647,6 +7647,7 @@ body > div {
   display: flex;
   flex-direction: row;
   height: 100%;
+  background-color: #232323;
 }
 #editors {
   display: flex;
@@ -7795,6 +7796,24 @@ article.ace_dts code {
   color: #555;
   margin: 0;
   padding: 0;
+}
+#gist-comments {
+  padding-top: 4px;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-bottom: 4px;
+  background-color: #232323;
+}
+.gist-comment {
+  padding-top: 6px;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+  background-color: #232323;
+  color: #999;
+  border: 1px solid #999;
+  border-radius: 4px;
 }
 span.glyphicon {
   font-size: 1.3em;

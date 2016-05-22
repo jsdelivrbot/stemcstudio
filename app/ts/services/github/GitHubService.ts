@@ -9,6 +9,7 @@ import CommitData from './CommitData';
 import CommitKey from './CommitKey';
 
 import Gist from './Gist';
+import GistComment from './GistComment';
 import GistData from './GistData';
 
 import PathContents from './PathContents';
@@ -63,10 +64,11 @@ interface GitHubService {
     getUserGists(user: string, done: (err: any, response) => any);
     getUserRepos(done: (err: any, repos: Repo[]) => any);
 
-    getGist(gist: string): ng.IHttpPromise<Gist>;
+    getGist(gistId: string): ng.IHttpPromise<Gist>;
     createGist(data: GistData): ng.IHttpPromise<Gist>;
     updateGist(gistId: string, data: GistData): ng.IHttpPromise<Gist>;
     deleteGist(gistId: string, done: (err: any, response) => any);
+    getGistComments(gistId: string): ng.IHttpPromise<GistComment[]>;
 
     /**
      * 

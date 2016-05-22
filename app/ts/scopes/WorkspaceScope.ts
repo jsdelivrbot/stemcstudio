@@ -34,8 +34,12 @@ interface WorkspaceScope extends DoodleScope {
     isViewVisible: boolean;
     toggleView: () => void;
 
+    comments: { type: string; msg: string }[];
+    isCommentsVisible: boolean;
+    toggleCommentsVisible(): void;
+
     isReadMeVisible: boolean;
-    toggleReadMeVisible: () => void;
+    toggleReadMeVisible(): void;
 
     /**
      * Label the project with a title, description, keywords, and license.

@@ -54,6 +54,7 @@ export default class GitHubCloudService implements CloudService {
         this.github.getGist(gistId)
             .then((http) => {
                 const gist = http.data;
+                // console.lg(`gist => ${JSON.stringify(gist, null, 2)}`);
                 const doodle = new Doodle(this.options);
                 doodle.gistId = gistId;
                 doodle.description = gist.description;

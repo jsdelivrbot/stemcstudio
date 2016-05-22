@@ -267,9 +267,31 @@ export default class WorkspaceController implements WorkspaceMixin {
             $scope.updatePreview(WAIT_NO_MORE);
         };
 
+        $scope.comments = [];
+
+        $scope.toggleCommentsVisible = (label?: string, value?: number) => {
+            ga('send', 'event', 'doodle', 'toggleCommentsVisible', label, value);
+            $scope.isCommentsVisible = !$scope.isCommentsVisible;
+            if ($scope.isCommentsVisible) {
+                // Experimenting with making these mutually exclusive.
+                $scope.isReadMeVisible = false;
+                github.getGistComments(doodles.current().gistId).then((httpResponse) => {
+                    const comments = httpResponse.data;
+                    $scope.comments = comments.map(function(comment) {
+                        return {type: 'info', msg: comment.body};
+                    });
+                }).catch((reason) => {
+                    console.warn("Something is rotten in Denmark");
+                });
+            }
+        };
+
         $scope.toggleReadMeVisible = (label?: string, value?: number) => {
             ga('send', 'event', 'doodle', 'toggleReadMeVisible', label, value);
             $scope.isReadMeVisible = !$scope.isReadMeVisible;
+            if ($scope.isReadMeVisible) {
+                $scope.isCommentsVisible = false;
+            }
             this.updateReadmeView(WAIT_NO_MORE);
         };
 
@@ -530,6 +552,8 @@ export default class WorkspaceController implements WorkspaceMixin {
         this.$scope.isEditMode = doodle.isCodeVisible;
         // Don't start in Playing mode in case the user has a looping program (give chance to fix the code).
         this.$scope.isViewVisible = false;
+        // Don't display comments initially to keep things clean.
+        this.$scope.isCommentsVisible = false;
         // No such issue with the README.md
         this.$scope.isReadMeVisible = true;
 

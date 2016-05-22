@@ -7,6 +7,7 @@ import Commit from './Commit';
 import CommitData from './CommitData';
 import CommitKey from './CommitKey';
 import Gist from './Gist';
+import GistComment from './GistComment';
 import GistData from './GistData';
 import isString from '../../utils/isString';
 import Repo from './Repo';
@@ -186,8 +187,8 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
                     return done(new Error(response.message), response);
                 });
             },
-            getGist: function(id: string): ng.IHttpPromise<Gist> {
-                const url = `${gists()}/${id}`;
+            getGist: function(gistId: string): ng.IHttpPromise<Gist> {
+                const url = `${gists()}/${gistId}`;
                 const method = HTTP_METHOD_GET;
                 const headers = requestHeaders();
                 return $http({ method, url, headers });
@@ -215,6 +216,12 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
                     .error(function(response, status, headers, config) {
                         return done(new Error(response.message), response);
                     });
+            },
+            getGistComments: function(gistId: string): ng.IHttpPromise<GistComment[]> {
+                const url = `${gists()}/${gistId}/comments`;
+                const method = HTTP_METHOD_GET;
+                const headers = requestHeaders();
+                return $http({ method, url, headers });
             },
             getUserGists: function(user: string, done) {
                 return $http({

@@ -21,7 +21,7 @@ export default function(): ng.IDirective {
             gapi.signin2.render(div.id, $scope.options());
 
             function onDestroyScope() {
-                console.log("The Google Button $scope is going away...");
+                // console.lg("The Google Button $scope is going away...");
             }
 
             $scope.$on('$destroy', onDestroyScope);

@@ -404,6 +404,13 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                                <ng-md-icon>\n" +
     "                        </a>\n" +
     "                    </li>\n" +
+    "                    <li>\n" +
+    "                        <a role='button' ng-click='toggleCommentsVisible()'>\n" +
+    "                            <ng-md-icon icon='comment' style=\"fill: {{isCommentsVisible ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"{{isCommentsVisible ?  'Hide Comments' : 'Show Comments'}}\"\n" +
+    "                            tooltip-placement='bottom'>\n" +
+    "                                <ng-md-icon>\n" +
+    "                        </a>\n" +
+    "                    </li>\n" +
     "                    <li uib-dropdown ng-show='isEditMode'>\n" +
     "                        <a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"Project Menu\" tooltip-placement='bottom'>\n" +
     "                            <ng-md-icon icon='folder' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'>\n" +
@@ -440,6 +447,12 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                            </li>\n" +
     "                        </ul>\n" +
     "                    </li>\n" +
+    "                    <li ng-hide='isGitHubSignedIn()'>\n" +
+    "                        <a role='button'>\n" +
+    "                            <ng-md-icon icon='cloud_off' style=\"fill: #ffffff\" size='24' aria-hidden='true' uib-tooltip=\"\" tooltip-placement='bottom'>\n" +
+    "                                <ng-md-icon>\n" +
+    "                        </a>\n" +
+    "                    </li>\n" +
     "                </ul>\n" +
     "            </div>\n" +
     "            <div class='navbar-header'>\n" +
@@ -454,6 +467,9 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "            </div>\n" +
     "            <div id='output' ng-if='isViewVisible'></div>\n" +
     "            <div id='readme' ng-if='isReadMeVisible'></div>\n" +
+    "            <div id='gist-comments' ng-if='isCommentsVisible && comments.length > 0'>\n" +
+    "                <div ng-repeat=\"comment in comments\" class='gist-comment'><span>{{comment.msg}}</span></div>\n" +
+    "            </div>\n" +
     "        </div>\n" +
     "    </workspace>\n" +
     "</div>"
@@ -648,6 +664,13 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "            </li>\n" +
     "        </ul>\n" +
     "    </div>\n" +
+    "</div>"
+  );
+
+
+  $templateCache.put('gist-comment.html',
+    "<div class=\"alert gist-comment\" role=\"alert\">\n" +
+    "    <div ng-transclude></div>\n" +
     "</div>"
   );
 

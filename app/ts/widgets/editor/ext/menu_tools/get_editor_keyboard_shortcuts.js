@@ -56,7 +56,7 @@ var keys = require("../../lib/keys");
  *  shortcuts for the given editor.
  * @example
  * var getKbShortcuts = require('./get_keyboard_shortcuts');
- * console.log(getKbShortcuts(editor));
+ * console.lg(getKbShortcuts(editor));
  * // [
  * //     {'command' : aCommand, 'key' : 'Control-d'},
  * //     {'command' : aCommand, 'key' : 'Control-d'}

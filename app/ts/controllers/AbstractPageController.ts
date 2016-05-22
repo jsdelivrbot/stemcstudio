@@ -48,7 +48,7 @@ export default class AbstractPageController {
             const destination = 'login';
             this.navigateTo(destination, void 0, void 0, label, value)
                 .then(function(promiseValue: any) {
-                    // console.log(`navigateTo('${destination}') completed.`);
+                    // console.lg(`navigateTo('${destination}') completed.`);
                 })
                 .catch(function(reason: any) {
                     console.warn(`navigateTo('${destination}') failed.`);
@@ -59,7 +59,7 @@ export default class AbstractPageController {
             const destination = 'search';
             this.navigateTo(destination, void 0, void 0, label, value)
                 .then(function(promiseValue: any) {
-                    // console.log(`navigateTo('${destination}') completed.`);
+                    // console.lg(`navigateTo('${destination}') completed.`);
                 })
                 .catch(function(reason: any) {
                     console.warn(`navigateTo('${destination}') failed.`);

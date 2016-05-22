@@ -34,7 +34,7 @@ export default class CredentialsService {
 
             // Listen for sign-in state changes.
             auth2.isSignedIn.listen((direction: boolean) => {
-                // console.log('Signin state changed to ', direction);
+                // console.lg('Signin state changed to ', direction);
             });
 
             // I don't think we have to wait for the init outcome to hook up the listeners.
@@ -61,7 +61,7 @@ export default class CredentialsService {
                 auth2.currentUser.listen((googleUser: gapi.auth2.GoogleUser) => {
                     const id_token = googleUser.getAuthResponse().id_token;
                     this.googleSignIn(id_token);
-                    // console.log("GoogleUser changed!");
+                    // console.lg("GoogleUser changed!");
                 });
                 // Do nothing.
             }, (reason: any) => {
@@ -70,7 +70,7 @@ export default class CredentialsService {
         });
     }
     private updateCredentials(): void {
-        // console.log(`updateCredentials() with providers ${JSON.stringify(Object.keys(this.Logins), null, 2)}`);
+        // console.lg(`updateCredentials() with providers ${JSON.stringify(Object.keys(this.Logins), null, 2)}`);
         AWS.config.region = 'us-east-1';
         AWS.config.credentials = new AWS.CognitoIdentityCredentials({
             // This identifier comes from looking at the generated sample code for

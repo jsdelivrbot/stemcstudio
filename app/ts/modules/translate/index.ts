@@ -11,11 +11,11 @@ translate.filter('translate', translateFilter);
 translate.provider('$translate', new TranslateProvider());
 
 translate.config([function() {
-    // console.log(`${translate.name}.config(...)`);
+    // console.lg(`${translate.name}.config(...)`);
 }]);
 
 translate.run([function() {
-    // console.log(`${translate.name}.run(...)`);
+    // console.lg(`${translate.name}.run(...)`);
 }]);
 
 export default translate;

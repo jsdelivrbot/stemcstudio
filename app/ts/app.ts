@@ -107,7 +107,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version for use by scopes.
-app.constant('version', '2.0.6');
+app.constant('version', '2.0.7');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -257,7 +257,7 @@ app.config([
         STATE_GIST: string,
         STATE_REPO: string
     ) {
-        // console.log(`${app.name}.config(...)`);
+        // console.lg(`${app.name}.config(...)`);
 
         // FIXME: Some of the states should be replaced by modal dialogs.
         $stateProvider
@@ -401,7 +401,7 @@ app.run([
         GITHUB_TOKEN_COOKIE_NAME: string,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string
     ) {
-        // console.log(`${app.name}.run(...)`);
+        // console.lg(`${app.name}.run(...)`);
 
         // The name of this cookie must correspond with the cookie sent back from the server.
         const GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME = 'stemcstudio-github-application-client-id';

@@ -7,11 +7,11 @@ const search: angular.IModule = angular.module('stemcArXiv', []);
 search.service('stemcArXiv', SearchService);
 
 search.config([function() {
-    // console.log(`${search.name}.config(...)`);
+    // console.lg(`${search.name}.config(...)`);
 }]);
 
 search.run([function() {
-    // console.log(`${search.name}.run(...)`);
+    // console.lg(`${search.name}.run(...)`);
 }]);
 
 export default search;

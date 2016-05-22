@@ -38,7 +38,6 @@ export default class PublishFlow {
                 return facts.id_token.isUndefined();
             },
             (facts, session, next) => {
-                console.log("Google Sign-In Action");
                 const options = new gapi.auth2.SigninOptionsBuilder({
                     scope: 'profile'
                 });
@@ -48,7 +47,6 @@ export default class PublishFlow {
                         const id_token = googleUser.getAuthResponse().id_token;
                         this.credentialsService.googleSignIn(id_token);
                         facts.id_token.resolve(id_token);
-                        console.log(JSON.stringify({ message: "success", value: success }));
                         next();
                     },
                     (fail: any) => {
