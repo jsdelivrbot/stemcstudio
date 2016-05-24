@@ -719,13 +719,15 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "    <div class='container md-docs-container'>\n" +
     "        <div class='row'>\n" +
     "            <div class='col-md-9' role='main'>\n" +
-    "                <div class='md-docs-section'>\n" +
-    "                    <!-- h1 id='overview' class='page-header'>{{}}</h1 -->\n" +
+    "                <div class='md-docs-section' ng-if='params.query'>\n" +
+    "                    <!-- Search -->\n" +
+    "                    <h1 id='overview' class='page-header'>STEMC arXiv</h1>\n" +
     "                    <div class=\"thumbnails\">\n" +
     "                        <article class=\"thumbnail\" ng-repeat='doodle in doodleRefs'>\n" +
     "                            <header>\n" +
-    "                                <h1 class='title'><a  ng-href='/#/gists/{{doodle.gistId}}'>{{ (doodle.title ? doodle.title : 'Untitled') | uppercase }}</a></h1>\n" +
-    "                                <p class='author'>{{doodle.author}}</p>\n" +
+    "                                <!-- The DoodleRef has the title property -->\n" +
+    "                                <h1 class='title'><a role='button' ng-href='/#/gists/{{doodle.gistId}}'>{{ (doodle.title ? doodle.title : 'Untitled') }}</a></h1>\n" +
+    "                                <p class='author'>{{doodle.author ? doodle.author : 'Anonymous' }}</p>\n" +
     "                                <p class='keyword' ng-repeat='keyword in doodle.keywords'>{{keyword}}</p>\n" +
     "                            </header>\n" +
     "                            <footer>\n" +
@@ -740,6 +742,34 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                            <li>Try different keywords.</li>\n" +
     "                            <li>Try more general keywords.</li>\n" +
     "                            <li>Try fewer keywords.</li>\n" +
+    "                        </ul>\n" +
+    "                    </div>\n" +
+    "                </div>\n" +
+    "                <div class='md-docs-section'>\n" +
+    "                    <!-- Local Storage -->\n" +
+    "                    <h1 id='overview' class='page-header'>Local Storage</h1>\n" +
+    "                    <div class=\"thumbnails\">\n" +
+    "                        <article class=\"thumbnail\" ng-repeat='doodle in doodles()'>\n" +
+    "                            <header>\n" +
+    "                                <!-- The Doodle has the description property -->\n" +
+    "                                <h1 class='title'>\n" +
+    "                                    <a role='button' ng-click='doDelete(doodle)' class='delete' uib-tooltip=\"Delete...\" tooltop-placement='bottom'>&times;</a>\n" +
+    "                                    <a role='button' ng-click='doOpen(doodle)'>{{ (doodle.description ? doodle.description : 'Untitled') }}</a>\n" +
+    "                                </h1>\n" +
+    "                                <p class='author'>{{doodle.author ? doodle.author : 'Anonymous' }}</p>\n" +
+    "                                <p class='keyword' ng-repeat='keyword in doodle.keywords'>{{keyword}}</p>\n" +
+    "                            </header>\n" +
+    "                            <footer>\n" +
+    "                            </footer>\n" +
+    "                        </article>\n" +
+    "                    </div>\n" +
+    "                    <div ng-if='doodles().length === 0'>\n" +
+    "                        <p>Your do not have any documents in your Local Storage.</p>\n" +
+    "                        <p>Suggestions:</p>\n" +
+    "                        <ul>\n" +
+    "                            <li>Code Now!</li>\n" +
+    "                            <li>Take a look at some of the Examples.</li>\n" +
+    "                            <li>Search the STEMC arXiv.</li>\n" +
     "                        </ul>\n" +
     "                    </div>\n" +
     "                </div>\n" +
@@ -893,7 +923,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "  </div>\n" +
     "  <div class='modal-body'>\n" +
     "    <p ng-repeat='doodle in doodles()'>\n" +
-    "      <a role='button' ng-click='doDelete(doodle)' class='delete'>&times;</a>\n" +
+    "      <a role='button' ng-click='doDelete(doodle)' class='delete' uib-tooltip=\"Delete...\" tooltop-placement='bottom'>&times;</a>\n" +
     "      <a role='button' ng-click='doOpen(doodle)'>{{doodle.description}}</a>\n" +
     "    </p>\n" +
     "  </div>\n" +

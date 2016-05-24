@@ -41,13 +41,15 @@
     <div class='container md-docs-container'>
         <div class='row'>
             <div class='col-md-9' role='main'>
-                <div class='md-docs-section'>
-                    <!-- h1 id='overview' class='page-header'>{{}}</h1 -->
+                <div class='md-docs-section' ng-if='params.query'>
+                    <!-- Search -->
+                    <h1 id='overview' class='page-header'>STEMC arXiv</h1>
                     <div class="thumbnails">
                         <article class="thumbnail" ng-repeat='doodle in doodleRefs'>
                             <header>
-                                <h1 class='title'><a  ng-href='/#/gists/{{doodle.gistId}}'>{{ (doodle.title ? doodle.title : 'Untitled') | uppercase }}</a></h1>
-                                <p class='author'>{{doodle.author}}</p>
+                                <!-- The DoodleRef has the title property -->
+                                <h1 class='title'><a role='button' ng-href='/#/gists/{{doodle.gistId}}'>{{ (doodle.title ? doodle.title : 'Untitled') }}</a></h1>
+                                <p class='author'>{{doodle.author ? doodle.author : 'Anonymous' }}</p>
                                 <p class='keyword' ng-repeat='keyword in doodle.keywords'>{{keyword}}</p>
                             </header>
                             <footer>
@@ -62,6 +64,34 @@
                             <li>Try different keywords.</li>
                             <li>Try more general keywords.</li>
                             <li>Try fewer keywords.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class='md-docs-section'>
+                    <!-- Local Storage -->
+                    <h1 id='overview' class='page-header'>Local Storage</h1>
+                    <div class="thumbnails">
+                        <article class="thumbnail" ng-repeat='doodle in doodles()'>
+                            <header>
+                                <!-- The Doodle has the description property -->
+                                <h1 class='title'>
+                                    <a role='button' ng-click='doDelete(doodle)' class='delete' uib-tooltip="Delete..." tooltop-placement='bottom'>&times;</a>
+                                    <a role='button' ng-click='doOpen(doodle)'>{{ (doodle.description ? doodle.description : 'Untitled') }}</a>
+                                </h1>
+                                <p class='author'>{{doodle.author ? doodle.author : 'Anonymous' }}</p>
+                                <p class='keyword' ng-repeat='keyword in doodle.keywords'>{{keyword}}</p>
+                            </header>
+                            <footer>
+                            </footer>
+                        </article>
+                    </div>
+                    <div ng-if='doodles().length === 0'>
+                        <p>Your do not have any documents in your Local Storage.</p>
+                        <p>Suggestions:</p>
+                        <ul>
+                            <li>Code Now!</li>
+                            <li>Take a look at some of the Examples.</li>
+                            <li>Search the STEMC arXiv.</li>
                         </ul>
                     </div>
                 </div>

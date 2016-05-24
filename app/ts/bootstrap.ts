@@ -74,14 +74,11 @@ app.controller('RepoDataController', RepoDataController);
 
 app.controller('RepoController', RepoController);
 // FIXME: Don't like this style of import.
-import './controllers/AboutController';
 import './controllers/BodyController';
 import './controllers/CopyController';
 import './controllers/DownloadController';
 import './controllers/ExamplesController';
-import './controllers/HomeController';
 import './controllers/NewController';
-import './controllers/OpenController';
 
 app.directive('contextMenu', contextMenu);
 app.directive('editor', editor);

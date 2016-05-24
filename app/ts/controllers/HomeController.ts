@@ -1,34 +1,12 @@
 import * as angular from 'angular';
 import AbstractPageController from './AbstractPageController';
+import Doodle from '../services/doodles/Doodle';
 import IDoodleManager from '../services/doodles/IDoodleManager';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
 import HitService from '../services/hits/HitService';
 import HomeScope from '../scopes/HomeScope';
 import ModalDialog from '../services/modalService/ModalDialog';
 import StemcArXiv from '../modules/stemcArXiv/StemcArXiv';
-
-function localDoodleRefs(doodles: IDoodleManager) {
-    return doodles.filter(function(doodle, index) {
-        if (doodle.gistId) {
-            return true;
-        }
-        else {
-            // We cannot currently navigate without a gistId.
-            // Users will have to use the Open dialog in the Workspace.
-            // But notice that we do have an index, so that could be used.
-            return false;
-        }
-    }).map(function(doodle) {
-        return {
-            owner: doodle.owner,
-            gistId: doodle.gistId,
-            // description comes from package.json and it should be short so that it corresponds to a title in a publication.
-            title: doodle.description,
-            author: doodle.author,
-            keywords: doodle.keywords
-        };
-    });
-}
 
 /**
  * @class HomeController
@@ -51,6 +29,7 @@ export default class HomeController extends AbstractPageController {
         'STATE_DASHBOARD',
         'STATE_DOODLE',
         'STATE_EXAMPLES',
+        'STATE_GIST',
         'UNIVERSAL_ANALYTICS_TRACKING_ID',
     ];
 
@@ -74,6 +53,7 @@ export default class HomeController extends AbstractPageController {
         STATE_DASHBOARD: string,
         STATE_DOODLE: string,
         STATE_EXAMPLES: string,
+        STATE_GIST: string,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string
     ) {
         super($scope, $state, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
@@ -105,9 +85,13 @@ export default class HomeController extends AbstractPageController {
         };
 
         //
-        // The thumbnails are initially populated from local storage (the doodle manager).
+        // We keep the search results and Local Storage doodles distinct.
+        // This should be useful for 'dragging' search results to Local Storage. 
         //
-        $scope.doodleRefs = localDoodleRefs(doodles);
+        $scope.doodleRefs = [];
+        $scope.doodles = function() {
+            return doodles.filter(function() { return true; });
+        };
 
         $scope.params = { query: '' };
 
@@ -128,8 +112,39 @@ export default class HomeController extends AbstractPageController {
                 });
             }
             else {
-                $scope.doodleRefs = localDoodleRefs(doodles);
+                $scope.doodleRefs = [];
             }
+        };
+
+        $scope.doOpen = (doodle: Doodle) => {
+            // We know that the Doodle is in Local Storage, but we can avoid
+            // a state change by going to the correct state the first time.
+            doodles.makeCurrent(doodle);
+            if (doodle.gistId) {
+                this.navigateTo(STATE_GIST, { gistId: doodle.gistId });
+            }
+            else {
+                this.navigateTo(STATE_DOODLE);
+            }
+        };
+
+        $scope.doDelete = function(doodle: Doodle) {
+            // TODO: DRY. This code also exists in the OpenController.
+            modalDialog.confirm({ title: 'Delete', message: `Are you sure you want to delete '${doodle.description}' from your Local Storage?` }).then(function(promiseValue) {
+                doodles.deleteDoodle(doodle);
+                doodles.updateStorage();
+            }).catch(function(reason) {
+                switch (reason) {
+                    case 'cancel click':
+                    case 'escape key press': {
+                        // Do nothing.
+                        break;
+                    }
+                    default: {
+                        console.warn(JSON.stringify(reason, null, 2));
+                    }
+                }
+            });
         };
     }
 

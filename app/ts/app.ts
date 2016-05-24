@@ -51,6 +51,8 @@ import IUuidService from './services/uuid/IUuidService';
 import ITranslateProvider from './modules/translate/ITranslateProvider';
 import BodyController from './controllers/BodyController';
 import AboutController from './controllers/AboutController';
+import HomeController from './controllers/HomeController';
+import OpenController from './controllers/OpenController';
 
 import FacebookLoginController from './controllers/login/facebook/FacebookLoginController';
 import GitHubLoginController from './controllers/login/github/GitHubLoginController';
@@ -107,7 +109,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version for use by scopes.
-app.constant('version', '2.0.8');
+app.constant('version', '2.0.9');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -200,6 +202,12 @@ app.controller('body-controller', BodyController);
 const ABOUT_CONTROLLER_NAME = 'AboutController';
 app.controller(ABOUT_CONTROLLER_NAME, AboutController);
 
+const HOME_CONTROLLER_NAME = 'HomeController';
+app.controller(HOME_CONTROLLER_NAME, HomeController);
+
+const OPEN_CONTROLLER_NAME = 'OpenController';
+app.controller(OPEN_CONTROLLER_NAME, OpenController);
+
 /**
  * The following controllers will be referenced from a template.
  */
@@ -264,7 +272,7 @@ app.config([
             .state('home', {
                 url: '/',
                 templateUrl: 'home.html',
-                controller: 'home-controller'
+                controller: HOME_CONTROLLER_NAME
             })
             .state(STATE_DOODLE, {
                 url: '/doodle',
@@ -279,7 +287,7 @@ app.config([
             .state('open', {
                 url: '/open',
                 templateUrl: 'open.html',
-                controller: 'open-controller'
+                controller: OPEN_CONTROLLER_NAME
             })
             .state('copy', {
                 url: '/copy',

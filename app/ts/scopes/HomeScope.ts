@@ -1,4 +1,5 @@
 import BodyScope from './BodyScope';
+import Doodle from '../services/doodles/Doodle';
 import SearchScope from './SearchScope';
 import ThumbnailsScope from './ThumbnailsScope';
 
@@ -22,6 +23,13 @@ export interface HomeScope extends BodyScope, SearchScope, ThumbnailsScope {
      * Navigate to the Examples page.
      */
     goExamples(): void;
+
+    /**
+     *
+     */
+    doodles(): Doodle[];
+    doOpen(doodle: Doodle): void;
+    doDelete(doodle: Doodle): void;
 
     /**
      *
