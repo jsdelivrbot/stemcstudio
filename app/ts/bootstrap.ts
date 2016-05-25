@@ -119,5 +119,5 @@ import './template-cache';
 // Nothing happens unless we bootstrap the application.
 //
 angular.element(document).ready(function() {
-    angular.bootstrap(document.documentElement, [app.name], { strictDi: true });
+    angular.bootstrap(document.documentElement, [app.name], { strictDi: true, debugInfoEnabled: true });
 });

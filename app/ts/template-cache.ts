@@ -686,12 +686,14 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                    <span class=\"icon-bar\"></span>\n" +
     "                    <span class=\"icon-bar\"></span>\n" +
     "                </button>\n" +
-    "                <a role='button' class='navbar-brand' ng-click='goHome()'>\n" +
+    "                <div class='navbar-brand'>\n" +
     "                    <brand />\n" +
-    "                </a>\n" +
+    "                </div>\n" +
     "                <button type=\"button\" class=\"btn btn-primary navbar-btn\" ng-click='goDoodle()'>Code Now!</button>\n" +
     "                <button ng-if='FEATURE_EXAMPLES_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goExamples()'>Examples</button>\n" +
     "                <button ng-if='FEATURE_DASHBOARD_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goDashboard()' ng-show='isGitHubSignedIn()'>Dashboard</button>\n" +
+    "                <a role=\"button\" class=\"btn btn-secondary navbar-btn\" ng-href='https://github.com/stemcstudio/stemcstudio/wiki' target='_blank'>Wiki</a>\n" +
+    "                <a role=\"button\" class=\"btn btn-secondary navbar-btn\" ng-href='https://github.com/stemcstudio/stemcstudio/issues' target='_blank'>Issues</a>\n" +
     "                <form class=\"navbar-search pull-right\" ng-submit='doSearch()'>\n" +
     "                    <input type=\"text\" ng-model='params.query' class=\"search-query\" placeholder=\"{{ 'Search STEMC arXiv' | translate }}\">\n" +
     "                </form>\n" +
@@ -699,7 +701,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "            <div class='collapse navbar-collapse' id='navbar-header-collapse'>\n" +
     "                <a ng-show='github.isLoggedIn()' ng-controller='github-login-controller as github' role='button' ng-click='github.toggleLogin()'\n" +
     "                class='navbar-brand navbar-right'>\n" +
-    "                    <span ng-show='github.isLoggedIn()' uib-tooltip=\"Sign out from GitHub\" tooltip-placement='bottom'>{{userLogin()}}</span>\n" +
+    "                    <span ng-show='github.isLoggedIn()' uib-tooltip=\"Sign out from GitHub\" tooltip-placement='bottom'>{{ userLogin() ? userLogin() : 'Unknown' }}</span>\n" +
     "                </a>\n" +
     "                <button ng-hide='github.isLoggedIn()' ng-controller='github-login-controller as github' type=\"button\" class=\"btn btn-github navbar-btn navbar-right\"\n" +
     "                ng-click='github.toggleLogin()' uib-tooltip=\"Signing in to GitHub allows you to save your projects to your personal GitHub account (Recommended)\"\n" +
