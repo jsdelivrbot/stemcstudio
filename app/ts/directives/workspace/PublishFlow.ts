@@ -106,18 +106,35 @@ export default class PublishFlow {
 
         const session = flow.createSession(facts);
 
-        session.execute((err: any, data: PublishFacts) => {
+        session.execute((err: { data: AWS.Reason }, data: PublishFacts) => {
             if (!err) {
                 if (facts.completionMessage.isResolved()) {
                     this.modalDialog.alert({ title, message: facts.completionMessage.value });
                 }
                 else {
                     this.modalDialog.alert({ title, message: `Apologies, the publish was not completed because of a system error.` });
-                    console.warn(err);
+                    console.warn(JSON.stringify(err, null, 2));
                 }
             }
             else {
-                this.modalDialog.alert({ title, message: `The publish was aborted because of ${JSON.stringify(err, null, 2)}.` });
+                const reason = err.data;
+                switch (reason.statusCode) {
+                    case 400: {
+                        if (!doodle.gistId) {
+                            // TODO: Detect documents not in GitHub before allowing submissions.
+                            this.modalDialog.alert({ title, message: `Please upload your document to GitHub before submitting it for publishing.` });
+                        }
+                        else {
+                            console.warn(JSON.stringify(err, null, 2));
+                            this.modalDialog.alert({ title, message: `The publish was aborted because of ${JSON.stringify(reason.message, null, 2)}.` });
+                        }
+                        break;
+                    }
+                    default: {
+                        console.warn(JSON.stringify(err, null, 2));
+                        this.modalDialog.alert({ title, message: `The publish was aborted because of ${JSON.stringify(reason.message, null, 2)}.` });
+                    }
+                }
             }
         });
     }

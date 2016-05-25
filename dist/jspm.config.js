@@ -12,7 +12,7 @@ System.config({
     "ace2ts/ace-workers": "github:ace2ts/ace-workers@0.1.67",
     "angular": "github:angular/bower-angular@1.5.5",
     "angular-animate": "github:angular/bower-angular-animate@1.5.5",
-    "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.2",
+    "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.3",
     "angular-material-icons": "npm:angular-material-icons@0.7.0",
     "angular-sanitize": "github:angular/bower-angular-sanitize@1.5.5",
     "angular-ui-router": "github:angular-ui/ui-router@0.2.18",
@@ -21,9 +21,9 @@ System.config({
     "bootstrap-dialog": "npm:bootstrap-dialog@1.34.6",
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.0.11",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.0.11",
-    "jquery": "npm:jquery@2.2.3",
-    "showdown": "npm:showdown@1.4.0",
-    "ui-select": "npm:ui-select@0.17.0",
+    "jquery": "npm:jquery@2.2.4",
+    "showdown": "npm:showdown@1.4.1",
+    "ui-select": "npm:ui-select@0.17.1",
     "underscore": "npm:underscore@1.8.3",
     "github:angular-ui/ui-router@0.2.18": {
       "angular": "github:angular/bower-angular@1.5.5"
@@ -35,7 +35,7 @@ System.config({
       "angular": "github:angular/bower-angular@1.5.5"
     },
     "github:jspm/nodelibs-assert@0.1.0": {
-      "assert": "npm:assert@1.3.0"
+      "assert": "npm:assert@1.4.0"
     },
     "github:jspm/nodelibs-buffer@0.1.0": {
       "buffer": "npm:buffer@3.6.0"
@@ -60,15 +60,22 @@ System.config({
     },
     "npm:angular2@2.0.0-beta.17": {
       "reflect-metadata": "npm:reflect-metadata@0.1.2",
-      "rxjs": "npm:rxjs@5.0.0-beta.7",
+      "rxjs": "npm:rxjs@5.0.0-beta.8",
       "zone.js": "npm:zone.js@0.6.12"
     },
-    "npm:assert@1.3.0": {
+    "npm:assert@1.4.0": {
+      "assert": "github:jspm/nodelibs-assert@0.1.0",
+      "buffer": "github:jspm/nodelibs-buffer@0.1.0",
+      "buffer-shims": "npm:buffer-shims@1.0.0",
+      "process": "github:jspm/nodelibs-process@0.1.2",
       "util": "npm:util@0.10.3"
     },
     "npm:bootstrap-dialog@1.34.6": {
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:buffer-shims@1.0.0": {
+      "buffer": "github:jspm/nodelibs-buffer@0.1.0"
     },
     "npm:buffer@3.6.0": {
       "base64-js": "npm:base64-js@0.0.8",
@@ -111,12 +118,12 @@ System.config({
       "assert": "github:jspm/nodelibs-assert@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:rxjs@5.0.0-beta.7": {
+    "npm:rxjs@5.0.0-beta.8": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "symbol-observable": "npm:symbol-observable@0.2.4"
     },
-    "npm:showdown@1.4.0": {
+    "npm:showdown@1.4.1": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2",
@@ -130,7 +137,7 @@ System.config({
     "npm:strip-ansi@3.0.1": {
       "ansi-regex": "npm:ansi-regex@2.0.0"
     },
-    "npm:ui-select@0.17.0": {
+    "npm:ui-select@0.17.1": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },

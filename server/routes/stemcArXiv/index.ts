@@ -64,13 +64,13 @@ export function submit(request: express.Request, response: express.Response): vo
         Logins: params.credentials
     });
 
-    putDoodleRef(params, (err) => {
+    putDoodleRef(params, (err: AWS.Reason) => {
         if (!err) {
             const body: ISubmitResponse = {};
             response.status(200).send(body);
         }
         else {
-            response.status(200).send(err);
+            response.status(err.statusCode).send(err);
         }
     });
 }

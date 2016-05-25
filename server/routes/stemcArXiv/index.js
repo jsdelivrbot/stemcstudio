@@ -51,7 +51,7 @@ function submit(request, response) {
             response.status(200).send(body);
         }
         else {
-            response.status(200).send(err);
+            response.status(err.statusCode).send(err);
         }
     });
 }

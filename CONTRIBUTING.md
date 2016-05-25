@@ -59,6 +59,8 @@ Update versions in
 ```
 npm install
 npm update
+bower install
+bower update
 jspm install
 jspm update
 ``` 
