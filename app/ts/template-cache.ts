@@ -982,9 +982,9 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                                <input type='checkbox' ng-checked='f.dependencies.indexOf(option.name) > -1' ng-click='toggleDependency(option.name)'>{{option.moniker}}</input>\n" +
     "                            </label>\n" +
     "                        </td>\n" +
-    "                        <!-- td>{{option.description}}</td -->\n" +
+    "                        <td>{{option.description}}</td>\n" +
     "                        <!-- td>{{option.version}}</td -->\n" +
-    "                        <!-- td><a href='{{option.homepage}}' target='_blank'>{{option.homepage}}</a></td -->\n" +
+    "                        <td><a href='{{option.homepage}}' target='_blank'>{{option.homepage}}</a></td>\n" +
     "                    </tr>\n" +
     "                </tbody>\n" +
     "            </table>\n" +
