@@ -1,56 +1,3 @@
-/* ***** BEGIN LICENSE BLOCK *****
- * The MIT License (MIT)
- *
- * Copyright (c) 2014-2016 David Geo Holmes <david.geo.holmes@gmail.com>
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- * ***** END LICENSE BLOCK ***** */
-/* ***** BEGIN LICENSE BLOCK *****
- * Distributed under the BSD license:
- *
- * Copyright (c) 2010, Ajax.org B.V.
- * All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *     * Redistributions of source code must retain the above copyright
- *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of Ajax.org B.V. nor the
- *       names of its contributors may be used to endorse or promote products
- *       derived from this software without specific prior written permission.
- * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL AJAX.ORG B.V. BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * ***** END LICENSE BLOCK ***** */
-
 import Range from "./Range";
 import EditSession from "./EditSession";
 import comparePoints from "./comparePoints";
@@ -80,6 +27,7 @@ export default class RangeList {
      * @constructor
      */
     constructor() {
+        // Do nothing.
     }
 
     /**
@@ -161,7 +109,7 @@ export default class RangeList {
             if (cmp < 0)
                 continue;
 
-            if (cmp == 0 && !range.isEmpty() && !next.isEmpty())
+            if (cmp === 0 && !range.isEmpty() && !next.isEmpty())
                 continue;
 
             if (comparePoints(range.end, next.end) < 0) {
@@ -244,7 +192,7 @@ export default class RangeList {
 
     private $onChange(e, session: EditSession) {
         var changeRange: Range = e.data.range;
-        if (e.data.action[0] == "i") {
+        if (e.data.action[0] === "i") {
             var start = changeRange.start;
             var end = changeRange.end;
         }
@@ -268,8 +216,8 @@ export default class RangeList {
                 break;
             }
 
-            if (r.start.row == startRow && r.start.column >= start.column) {
-                if (r.start.column == start.column && this['$insertRight']) {
+            if (r.start.row === startRow && r.start.column >= start.column) {
+                if (r.start.column === start.column && this['$insertRight']) {
                     // do nothing
                 }
                 else {
@@ -277,13 +225,13 @@ export default class RangeList {
                     r.start.row += lineDif;
                 }
             }
-            if (r.end.row == startRow && r.end.column >= start.column) {
-                if (r.end.column == start.column && this['$insertRight']) {
+            if (r.end.row === startRow && r.end.column >= start.column) {
+                if (r.end.column === start.column && this['$insertRight']) {
                     continue;
                 }
                 // special handling for the case when two ranges share an edge
-                if (r.end.column == start.column && colDiff > 0 && i < n - 1) {
-                    if (r.end.column > r.start.column && r.end.column == ranges[i + 1].start.column) {
+                if (r.end.column === start.column && colDiff > 0 && i < n - 1) {
+                    if (r.end.column > r.start.column && r.end.column === ranges[i + 1].start.column) {
                         r.end.column -= colDiff;
                     }
                 }
@@ -292,9 +240,9 @@ export default class RangeList {
             }
         }
 
-        if (lineDif != 0 && i < n) {
+        if (lineDif !== 0 && i < n) {
             for (; i < n; i++) {
-                var r = ranges[i];
+                const r = ranges[i];
                 r.start.row += lineDif;
                 r.end.row += lineDif;
             }

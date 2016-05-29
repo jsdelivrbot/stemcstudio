@@ -1,57 +1,3 @@
-/* ***** BEGIN LICENSE BLOCK *****
- * The MIT License (MIT)
- *
- * Copyright (c) 2014-2016 David Geo Holmes <david.geo.holmes@gmail.com>
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- * ***** END LICENSE BLOCK ***** */
-/* ***** BEGIN LICENSE BLOCK *****
- * Distributed under the BSD license:
- *
- * Copyright (c) 2010, Ajax.org B.V.
- * All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *     * Redistributions of source code must retain the above copyright
- *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of Ajax.org B.V. nor the
- *       names of its contributors may be used to endorse or promote products
- *       derived from this software without specific prior written permission.
- * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL AJAX.ORG B.V. BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * ***** END LICENSE BLOCK ***** */
-"use strict";
-
 import Range from "./Range";
 import Fold from "./Fold";
 
@@ -60,7 +6,7 @@ import Fold from "./Fold";
  * @class FoldLine
  */
 export default class FoldLine {
-    foldData
+    foldData;
     folds: Fold[];
     range: Range;
     start: { row: number; column: number };
@@ -80,7 +26,7 @@ export default class FoldLine {
             this.folds = folds;
         }
         else {
-            throw new Error("folds must have type Fold[]")
+            throw new Error("folds must have type Fold[]");
         }
 
         var last: Fold = folds[folds.length - 1];
@@ -88,10 +34,7 @@ export default class FoldLine {
         this.start = this.range.start;
         this.end = this.range.end;
 
-        this.folds.forEach(function(fold) {
-            fold.setFoldLine(this);
-        }, this);
-    }
+        this.folds.forEach(fold => { fold.setFoldLine(this); }); }
 
     /**
      * Note: This doesn't update wrapData!
@@ -130,12 +73,12 @@ export default class FoldLine {
                 this.start.column = fold.start.column;
             }
         }
-        else if (fold.start.row == this.end.row) {
+        else if (fold.start.row === this.end.row) {
             this.folds.push(fold);
             this.end.row = fold.end.row;
             this.end.column = fold.end.column;
         }
-        else if (fold.end.row == this.start.row) {
+        else if (fold.end.row === this.start.row) {
             this.folds.unshift(fold);
             this.start.row = fold.start.row;
             this.start.column = fold.start.column;
@@ -163,27 +106,26 @@ export default class FoldLine {
      * @return {void}
      */
     walk(callback: (placeholder, row, column, end, isNewRow?) => any, endRow: number, endColumn: number): void {
-        var lastEnd = 0,
-            folds = this.folds,
-            fold,
-            cmp, stop, isNewRow = true;
+        let lastEnd = 0;
+        let folds = this.folds;
+        let isNewRow = true;
 
         if (endRow == null) {
             endRow = this.end.row;
             endColumn = this.end.column;
         }
 
-        for (var i = 0; i < folds.length; i++) {
-            fold = folds[i];
+        for (let i = 0; i < folds.length; i++) {
+            const fold = folds[i];
 
-            cmp = fold.range.compareStart(endRow, endColumn);
+            const cmp = fold.range.compareStart(endRow, endColumn);
             // This fold is after the endRow/Column.
-            if (cmp == -1) {
+            if (cmp === -1) {
                 callback(null, endRow, endColumn, lastEnd, isNewRow);
                 return;
             }
 
-            stop = callback(null, fold.start.row, fold.start.column, lastEnd, isNewRow);
+            let stop = callback(null, fold.start.row, fold.start.column, lastEnd, isNewRow);
             stop = !stop && callback(fold.placeholder, fold.start.row, fold.start.column, lastEnd);
 
             // If the user requested to stop the walk or endRow/endColumn is
@@ -201,12 +143,10 @@ export default class FoldLine {
     }
 
     getNextFoldTo(row: number, column: number): { fold: Fold; kind: string } {
-        var fold: Fold;
-        var cmp: number;
-        for (var i = 0; i < this.folds.length; i++) {
-            fold = this.folds[i];
-            cmp = fold.range.compareEnd(row, column);
-            if (cmp == -1) {
+        for (let i = 0; i < this.folds.length; i++) {
+            const fold = this.folds[i];
+            const cmp = fold.range.compareEnd(row, column);
+            if (cmp === -1) {
                 return {
                     fold: fold,
                     kind: "after"
@@ -228,14 +168,12 @@ export default class FoldLine {
 
         if (ret) {
             fold = ret.fold;
-            if (ret.kind === "inside"
-                && fold.start.column !== column
-                && fold.start.row !== row) {
-                //throwing here breaks whole editor
-                //TODO: properly handle this
-                window.console && window.console.warn(row, column, fold);
+            if (ret.kind === "inside" && fold.start.column !== column && fold.start.row !== row) {
+                // throwing here breaks whole editor
+                // TODO: properly handle this
+                // window.console && window.console.warn(row, column, fold);
             }
-            else if (fold.start.row == row) {
+            else if (fold.start.row === row) {
                 folds = this.folds;
                 var i = folds.indexOf(fold);
                 if (i === 0) {
@@ -257,7 +195,7 @@ export default class FoldLine {
     split(row, column) {
         var pos = this.getNextFoldTo(row, column);
 
-        if (!pos || pos.kind == "inside")
+        if (!pos || pos.kind === "inside")
             return null;
 
         var fold = pos.fold;

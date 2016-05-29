@@ -77,6 +77,8 @@ import propsFilter from './filters/propsFilter';
 import stemcArXiv from './modules/stemcArXiv/index';
 import translate from './modules/translate/index';
 
+import Iso8601 from './services/iso8601/Iso8601';
+
 //
 // Create 'app' module and declare its Angular module dependencies.
 //
@@ -109,7 +111,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version for use by scopes.
-app.constant('version', '2.0.14');
+app.constant('version', '2.0.15');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -232,6 +234,8 @@ app.controller('LabelModalController', LabelModalController);
 app.service('propertiesDialog', PropertiesDialogService);
 app.controller('PropertiesModalController', PropertiesModalController);
 app.service('publishDialog', PublishDialogService);
+
+app.service('iso8601', Iso8601);
 
 //
 // Register work which needs to be performed on module loading.
