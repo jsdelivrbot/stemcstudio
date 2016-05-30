@@ -1,6 +1,6 @@
 import Anchor from "./Anchor";
 import {mixin} from "./lib/oop";
-import {computedStyle, hasCssClass, setCssClass} from "./lib/dom";
+import {computedStyle, hasCssClass} from "./lib/dom";
 import createDelayedCall from './lib/lang/createDelayedCall';
 import DelayedCall from './lib/lang/DelayedCall';
 import {stringRepeat} from "./lib/lang";
@@ -19,7 +19,6 @@ import Position from "./Position";
 import Range from "./Range";
 import RangeList from './RangeList';
 import TextAndSelection from "./TextAndSelection";
-import CursorRange from './CursorRange';
 import EventBus from "./EventBus";
 import EventEmitterClass from "./lib/EventEmitterClass";
 import Command from "./commands/Command";
@@ -40,7 +39,6 @@ import SnippetManager from './SnippetManager';
 import {addListener, addMouseWheelListener, addMultiMouseDownListener, capture, getButton, preventDefault, stopEvent, stopPropagation} from "./lib/event";
 import {touchManager} from './touch/touch';
 import TabstopManager from './TabstopManager';
-import ThemeLink from "./ThemeLink";
 import Tooltip from "./Tooltip";
 import EditorChangeSessionEvent from './events/EditorChangeSessionEvent';
 import SessionChangeEditorEvent from './events/SessionChangeEditorEvent';
@@ -51,7 +49,8 @@ import SelectionRemoveRangeEvent from './events/SelectionRemoveRangeEvent';
 import SelectionMultiSelectEvent from './events/SelectionMultiSelectEvent';
 import SelectionSingleSelectEvent from './events/SelectionSingleSelectEvent';
 
-var search = new Search();
+const search = new Search();
+const DRAG_OFFSET = 0; // pixels
 
 function find(session: EditSession, needle: string | RegExp, dir: number): Range {
     search.$options.wrap = true;
@@ -148,8 +147,8 @@ export default class Editor implements EventBus<any, Editor> {
     private $highlightSelectedWord: boolean;
     private $highlightTagPending: boolean;
     private $mergeUndoDeltas;
-    public $readOnly;
-    private $scrollAnchor;
+    public $readOnly: boolean;
+    private $scrollAnchor: HTMLDivElement;
     private $search: Search;
     private _$emitInputEvent: DelayedCall;
 
@@ -1734,24 +1733,6 @@ export default class Editor implements EventBus<any, Editor> {
     }
 
     /**
-     * Returns the string of text currently highlighted.
-     * @return {String}
-     * @deprecated Use getSelectedText instead.
-     * @private
-     */
-    private getCopyText(): string {
-        const text = this.getSelectedText();
-        /**
-         * Emitted when text is copied.
-         * @event copy
-         * @param {String} text The copied text
-         *
-         */
-        this.eventBus._signal("copy", text);
-        return text;
-    }
-
-    /**
      * Called whenever a text "copy" happens.
      *
      * @method onCopy
@@ -2577,21 +2558,20 @@ export default class Editor implements EventBus<any, Editor> {
      * @return {void}
      */
     blockOutdent(): void {
-        var selection = this.session.getSelection();
+        const selection = this.session.getSelection();
         this.session.outdentRows(selection.getRange());
     }
 
     // TODO: move out of core when we have good mechanism for managing extensions.
     /**
-     * @method sortLines
-     * @return {void}
+     *
      */
     sortLines(): void {
-        var rows = this.$getSelectedRows();
-        var session = this.session;
+        const rows: FirstAndLast = this.$getSelectedRows();
+        const session = this.session;
 
-        var lines = [];
-        for (i = rows.first; i <= rows.last; i++)
+        const lines: string[] = [];
+        for (let i = rows.first; i <= rows.last; i++)
             lines.push(session.getLine(i));
 
         lines.sort(function(a, b) {
@@ -2600,9 +2580,9 @@ export default class Editor implements EventBus<any, Editor> {
             return 0;
         });
 
-        var deleteRange = new Range(0, 0, 0, 0);
-        for (var i = rows.first; i <= rows.last; i++) {
-            var line = session.getLine(i);
+        const deleteRange = new Range(0, 0, 0, 0);
+        for (let i = rows.first; i <= rows.last; i++) {
+            const line = session.getLine(i);
             deleteRange.start.row = i;
             deleteRange.end.row = i;
             deleteRange.end.column = line.length;
@@ -4438,8 +4418,6 @@ class EditorMouseEvent {
     getAccelKey = isMac ? function() { return this.domEvent.metaKey; } : function() { return this.domEvent.ctrlKey; };
 }
 
-var DRAG_OFFSET = 0; // pixels
-
 function makeMouseDownHandler(editor: Editor, mouseHandler: MouseHandler) {
     return function(ev: EditorMouseEvent) {
         const inSelection = ev.inSelection();
@@ -4591,7 +4569,7 @@ function calcDistance(ax: number, ay: number, bx: number, by: number) {
 }
 
 function calcRangeOrientation(range: Range, cursor: { row: number; column: number }): { cursor: { row: number; column: number }; anchor: { row: number; column: number } } {
-    if (range.start.row == range.end.row) {
+    if (range.start.row === range.end.row) {
         var cmp = 2 * cursor.column - range.start.column - range.end.column;
     }
     else if (range.start.row === range.end.row - 1 && !range.start.column && !range.end.column) {

@@ -1,57 +1,3 @@
-/* ***** BEGIN LICENSE BLOCK *****
- * The MIT License (MIT)
- *
- * Copyright (c) 2014-2016 David Geo Holmes <david.geo.holmes@gmail.com>
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- * ***** END LICENSE BLOCK ***** */
-/* ***** BEGIN LICENSE BLOCK *****
- * Distributed under the BSD license:
- *
- * Copyright (c) 2010, Ajax.org B.V.
- * All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *     * Redistributions of source code must retain the above copyright
- *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of Ajax.org B.V. nor the
- *       names of its contributors may be used to endorse or promote products
- *       derived from this software without specific prior written permission.
- * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL AJAX.ORG B.V. BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * ***** END LICENSE BLOCK ***** */
-"use strict";
-
 import { copyObject, escapeRegExp, getMatchOffsets } from "./lib/lang";
 import { mixin } from "./lib/oop";
 import Range from "./Range";
@@ -111,7 +57,7 @@ export default class Search {
     getOptions(): SearchOptions {
         return copyObject(this.$options);
     }
-    
+
     /**
      * Sets the search options via the `options` parameter.
      *
@@ -188,14 +134,14 @@ export default class Search {
         //      var re = options.re;
         if (options.$isMultiLine) {
             // When multiLine, re is an array of RegExp.
-            let re = <RegExp[]>options.re
+            let re = <RegExp[]>options.re;
             var len = re.length;
             var maxRow = lines.length - len;
             var prevRange: Range;
             // TODO: What is this offset property?
             outer: for (var row = re['offset'] || 0; row <= maxRow; row++) {
                 for (var j = 0; j < len; j++)
-                    if (lines[row + j].search(re[j]) == -1)
+                    if (lines[row + j].search(re[j]) === -1)
                         continue outer;
 
                 var startLine = lines[row];
@@ -215,7 +161,7 @@ export default class Search {
         }
         else {
             // TODO: How did we eliminate the case when options.re is false (boolean)?
-            let re = <RegExp>options.re
+            let re = <RegExp>options.re;
             for (var i = 0; i < lines.length; i++) {
                 var matches = getMatchOffsets(lines[i], re);
                 for (var j = 0; j < matches.length; j++) {
@@ -229,10 +175,10 @@ export default class Search {
             var startColumn = range.start.column;
             var endColumn = range.start.column;
             var i = 0, j = ranges.length - 1;
-            while (i < j && ranges[i].start.column < startColumn && ranges[i].start.row == range.start.row)
+            while (i < j && ranges[i].start.column < startColumn && ranges[i].start.row === range.start.row)
                 i++;
 
-            while (i < j && ranges[j].end.column > endColumn && ranges[j].end.row == range.end.row)
+            while (i < j && ranges[j].end.column > endColumn && ranges[j].end.row === range.end.row)
                 j--;
 
             ranges = ranges.slice(i, j + 1);
@@ -279,7 +225,7 @@ export default class Search {
             var parts: string[] = replacement.split("");
             for (var i = Math.min(input.length, input.length); i--;) {
                 var ch = input[i];
-                if (ch && ch.toLowerCase() != ch)
+                if (ch && ch.toLowerCase() !== ch)
                     parts[i] = parts[i].toUpperCase();
                 else
                     parts[i] = parts[i].toLowerCase();
@@ -304,11 +250,11 @@ export default class Search {
             var len = (<RegExp[]>re).length;
             var matchIterator = function(line: string, row: number, offset: number) {
                 var startIndex = line.search(re[0]);
-                if (startIndex == -1)
+                if (startIndex === -1)
                     return;
                 for (var i = 1; i < len; i++) {
                     line = session.getLine(row + i);
-                    if (line.search(re[i]) == -1)
+                    if (line.search(re[i]) === -1)
                         return;
                 }
 
@@ -316,7 +262,7 @@ export default class Search {
 
                 var range = new Range(row, startIndex, row + len - 1, endIndex);
                 // FIXME: What's going on here?
-                if ((<RegExp[]>re)['offset'] == 1) {
+                if ((<RegExp[]>re)['offset'] === 1) {
                     range.start.row--;
                     range.start.column = Number.MAX_VALUE;
                 }
@@ -418,11 +364,11 @@ export default class Search {
     }
 
     private $lineIterator(session: EditSession, options: SearchOptions) {
-        var backwards = options.backwards == true;
-        var skipCurrent = options.skipCurrent != false;
+        const backwards = options.backwards === true;
+        const skipCurrent = options.skipCurrent !== false;
 
-        var range = options.range;
-        var start = options.start;
+        const range = options.range;
+        let start = options.start;
 
         if (!start) {
             if (range) {
@@ -448,7 +394,7 @@ export default class Search {
                 if (callback(session.getLine(row), row))
                     return;
 
-            if (options.wrap == false)
+            if (options.wrap === false)
                 return;
 
             for (row = lastRow, firstRow = start.row; row >= firstRow; row--)
@@ -465,7 +411,7 @@ export default class Search {
                 if (callback(session.getLine(row), row))
                     return;
 
-            if (options.wrap == false)
+            if (options.wrap === false)
                 return;
 
             for (row = firstRow, lastRow = start.row; row <= lastRow; row++)

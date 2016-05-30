@@ -1,15 +1,9 @@
-import createDelayedCall from './lib/lang/createDelayedCall';
-import ensureHTMLStyleElement from "./dom/ensureHTMLStyleElement";
 import EventEmitterClass from "./lib/EventEmitterClass";
 import {escapeRegExp} from "./lib/lang";
-import comparePoints from "./comparePoints"
-import Anchor from "./Anchor";
-import KeyboardHandler from "./keyboard/KeyboardHandler";
 import Tokenizer from "./Tokenizer";
 import Editor from './Editor';
 import EditSession from './EditSession';
 import EventBus from './EventBus';
-import Delta from "./Delta";
 import Position from "./Position";
 import Range from "./Range";
 import Snippet from "./Snippet";
@@ -98,23 +92,23 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
                 regex: /\\./,
                 onMatch: function(value: string, state: string, stack): string[] | { changeCase: string; local: boolean }[] {
                     var ch = value[1];
-                    if (ch == "}" && stack.length) {
+                    if (ch === "}" && stack.length) {
                         return [ch];
                     }
-                    else if ("`$\\".indexOf(ch) != -1) {
+                    else if ("`$\\".indexOf(ch) !== -1) {
                         return [ch];
                     }
                     else if (stack.inFormatString) {
-                        if (ch == "n")
+                        if (ch === "n")
                             return ["\n"];
-                        else if (ch == "t")
+                        else if (ch === "t")
                             return ["\n"];
-                        else if ("ulULE".indexOf(ch) != -1) {
+                        else if ("ulULE".indexOf(ch) !== -1) {
                             return [{ changeCase: ch, local: ch > "a" }];
                         }
                     }
                     else {
-                        return [value]
+                        return [value];
                     }
                 }
             },
@@ -296,7 +290,7 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
                     fmtParts[i] = "";
                     if (ch.changeCase && ch.local) {
                         var next = fmtParts[i + 1];
-                        if (next && typeof next == "string") {
+                        if (next && typeof next === "string") {
                             if (ch.changeCase === "u")
                                 fmtParts[i] = next[0].toUpperCase();
                             else
@@ -327,14 +321,14 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
      * @param editor {Editor}
      * @return {any[]}
      */
-    private resolveVariables(snippet: any, editor: Editor): any[] {
-        var result = [];
+    private resolveVariables(snippet: any[], editor: Editor): any[] {
+        var result: any[] = [];
         for (var i = 0; i < snippet.length; i++) {
             var ch = snippet[i];
-            if (typeof ch == "string") {
+            if (typeof ch === "string") {
                 result.push(ch);
             }
-            else if (typeof ch != "object") {
+            else if (typeof ch !== "object") {
                 continue;
             }
             else if (ch.skip) {
@@ -369,8 +363,8 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
             }
         }
         function gotoNext(ch) {
-            var i1 = snippet.indexOf(ch, i + 1);
-            if (i1 != -1)
+            const i1 = snippet.indexOf(ch, i + 1);
+            if (i1 !== -1)
                 i = i1;
         }
         return result;
@@ -399,7 +393,7 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
         tokens = this.resolveVariables(tokens, editor);
         // indent
         tokens = tokens.map(function(x: /* string | Token*/any) {
-            if (x == "\n") {
+            if (x === "\n") {
                 return x + indentString;
             }
             if (typeof x === "string") {
@@ -411,7 +405,7 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
         // tabstop values
         var tabstops: Tabstop[] = [];
         tokens.forEach(function(p: any, i: number) {
-            if (typeof p != "object")
+            if (typeof p !== "object")
                 return;
             var id = p.tabstopId;
             var ts = tabstops[id];
@@ -429,7 +423,7 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
                 return;
 
             var value = tokens.slice(i + 1, i1);
-            var isNested = value.some(function(t) { return typeof t === "object" });
+            var isNested = value.some(function(t) { return typeof t === "object"; });
             if (isNested && !ts.value) {
                 // TODO: Don't know why we need the cast.
                 ts.value = <any>value;
@@ -440,7 +434,7 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
         });
 
         // expand tabstop values
-        tabstops.forEach(function(ts) { ts.length = 0 });
+        tabstops.forEach(function(ts) { ts.length = 0; });
         var expanding = {};
         function copyValue(val: any[]) {
             var copy = [];
@@ -556,11 +550,11 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
                 state = state[0];
             }
             if (state.substring) {
-                if (state.substring(0, 3) == "js-")
+                if (state.substring(0, 3) === "js-")
                     scope = "javascript";
-                else if (state.substring(0, 4) == "css-")
+                else if (state.substring(0, 4) === "css-")
                     scope = "css";
-                else if (state.substring(0, 4) == "php-")
+                else if (state.substring(0, 4) === "php-")
                     scope = "php";
             }
         }
@@ -709,11 +703,11 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
             guard = wrapRegexp(guard);
             if (opening) {
                 re = guard + re;
-                if (re && re[re.length - 1] != "$")
+                if (re && re[re.length - 1] !== "$")
                     re = re + "$";
             } else {
                 re = re + guard;
-                if (re && re[0] != "^")
+                if (re && re[0] !== "^")
                     re = "^" + re;
             }
             return new RegExp(re);
@@ -755,7 +749,7 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
             snippets.forEach(addSnippet);
         }
         else {
-            throw new TypeError("snippets must be an array of Snippet.")
+            throw new TypeError("snippets must be an array of Snippet.");
         }
 
         /**
@@ -789,7 +783,7 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
             snippets.forEach(removeSnippet);
         }
         else {
-            throw new TypeError("snippets must be an array of Snippet.")
+            throw new TypeError("snippets must be an array of Snippet.");
         }
     }
 
@@ -824,7 +818,7 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
                     list.push(snippet);
                 }
                 catch (e) {
-
+                    // Ignore.
                 }
             }
             if (m[4]) {
@@ -862,13 +856,9 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
     }
 
     /**
-     * @method getSnippetByName
-     * @param name {string}
-     * @param editor {Editor}
-     * @return {Snippet}
-     * @private
+     *
      */
-    private getSnippetByName(name: string, editor: Editor): Snippet {
+    public getSnippetByName(name: string, editor: Editor): Snippet {
         var snippet: Snippet;
         this.getActiveScopes(editor).some((scope: string) => {
             var snippets: { [sname: string]: Snippet } = this.snippetNameMap[scope];

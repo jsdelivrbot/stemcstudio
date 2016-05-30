@@ -5,9 +5,6 @@ import ScrollBarEvent from './events/ScrollBarEvent';
 
 /**
  * A horizontal scroll bar.
- *
- * @class HScrollBar
- * @extends ScrollBar
  */
 export default class HScrollBar extends ScrollBar {
 
@@ -16,10 +13,8 @@ export default class HScrollBar extends ScrollBar {
     /**
      * Creates a new `HScrollBar`. `parent` is the owner of the scroll bar.
      *
-     * @class HScrollBar
-     * @constructor
-     * @param parent {HTMLElement} A DOM element.
-     * @param renderer {Renderer} An editor renderer.
+     * @param parent A DOM element.
+     * @param renderer An editor renderer.
      */
     constructor(parent: HTMLElement, renderer: Renderer) {
         super(parent, '-h');
@@ -37,9 +32,6 @@ export default class HScrollBar extends ScrollBar {
 
     /**
      * Emitted when the scroll bar, well, scrolls.
-     * 
-     * @method onScroll
-     * @return {void}
      */
     onScroll(): void {
         if (!this.skipEvent) {
@@ -56,45 +48,38 @@ export default class HScrollBar extends ScrollBar {
 
     /**
      * Returns the height of the scroll bar.
-     * @return {Number}
-     **/
+     */
     get height(): number {
         return this.isVisible ? this._height : 0;
     }
 
     /**
      * Sets the width of the scroll bar, in pixels.
-     * @param {Number} width The new width
-     **/
+     * 
+     * @param width The new width
+     */
     setWidth(width: number): void {
         this.element.style.width = width + "px";
     }
 
     /**
-     * Sets the inner width of the scroll bar, in pixels.
-     * @param {Number} width The new inner width
-     * @deprecated Use setScrollWidth instead
-     **/
-    setInnerWidth(width: number) {
-        this.inner.style.width = width + "px";
-    }
-
-    /**
      * Sets the scroll width of the scroll bar, in pixels.
-     * @param {Number} width The new scroll width
-     **/
+     * 
+     * @param width The new scroll width
+     */
     setScrollWidth(width: number) {
         this.inner.style.width = width + "px";
     }
 
     /**
      * Sets the scroll left of the scroll bar.
-     * @param {Number} scrollTop The new scroll left
-     **/
+     *
+     * @param scrollLeft The new scroll left
+     */
     // on chrome 17+ for small zoom levels after calling this function
     // this.element.scrollTop != scrollTop which makes page to scroll up.
     setScrollLeft(scrollLeft: number) {
-        if (this._scrollLeft != scrollLeft) {
+        if (this._scrollLeft !== scrollLeft) {
             this.skipEvent = true;
             this._scrollLeft = this.element.scrollLeft = scrollLeft;
         }

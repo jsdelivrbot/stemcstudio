@@ -1,61 +1,5 @@
-/* ***** BEGIN LICENSE BLOCK *****
- * The MIT License (MIT)
- *
- * Copyright (c) 2014-2016 David Geo Holmes <david.geo.holmes@gmail.com>
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- * ***** END LICENSE BLOCK ***** */
-/* ***** BEGIN LICENSE BLOCK *****
- * Distributed under the BSD license:
- *
- * Copyright (c) 2010, Ajax.org B.V.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *     * Redistributions of source code must retain the above copyright
- *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of Ajax.org B.V. nor the
- *       names of its contributors may be used to endorse or promote products
- *       derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL AJAX.ORG B.V. BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * ***** END LICENSE BLOCK ***** */
-"use strict";
-
 import {addCssClass, createElement} from "./lib/dom";
 import Delta from "./Delta";
-import Position from "./Position";
-import Range from "./Range";
 import Editor from "./Editor";
 import EditSession from "./EditSession";
 import Renderer from "./Renderer";
@@ -137,10 +81,10 @@ export default class LineWidgetManager {
      * @return {void}
      */
     attach(editor: Editor): void {
-        if (editor && editor.widgetManager && editor.widgetManager != this)
+        if (editor && editor.widgetManager && editor.widgetManager !== this)
             editor.widgetManager.detach();
 
-        if (this.editor == editor)
+        if (this.editor === editor)
             return;
 
         this.detach();
@@ -168,13 +112,15 @@ export default class LineWidgetManager {
 
         editor.renderer.off("beforeRender", this.measureWidgets);
         editor.renderer.off("afterRender", this.renderWidgets);
-        var lineWidgets = this.session.lineWidgets;
-        lineWidgets && lineWidgets.forEach(function(w: LineWidget) {
-            if (w && w.el && w.el.parentNode) {
-                w._inDocument = false;
-                w.el.parentNode.removeChild(w.el);
-            }
-        });
+        const lineWidgets = this.session.lineWidgets;
+        if (lineWidgets) {
+            lineWidgets.forEach(function(w: LineWidget) {
+                if (w && w.el && w.el.parentNode) {
+                    w._inDocument = false;
+                    w.el.parentNode.removeChild(w.el);
+                }
+            });
+        }
     }
 
     /**
@@ -190,7 +136,7 @@ export default class LineWidgetManager {
         var fold = e.data;
         var start = fold.start.row;
         var end = fold.end.row;
-        var hide = e.action == "add";
+        var hide = e.action === "add";
         for (var i = start + 1; i < end; i++) {
             if (lineWidgets[i])
                 lineWidgets[i].hidden = hide;
@@ -202,7 +148,7 @@ export default class LineWidgetManager {
                 else
                     lineWidgets[end].hidden = hide;
             } else {
-                if (lineWidgets[start] == lineWidgets[end])
+                if (lineWidgets[start] === lineWidgets[end])
                     lineWidgets[start] = undefined;
                 lineWidgets[end].hidden = hide;
             }
@@ -216,24 +162,26 @@ export default class LineWidgetManager {
      * @return {void}
      */
     updateOnChange(delta: Delta, session: EditSession): void {
-        var lineWidgets = this.session.lineWidgets;
+        const lineWidgets = this.session.lineWidgets;
         if (!lineWidgets) return;
 
-        var startRow = delta.start.row;
-        var len = delta.end.row - startRow;
+        const startRow = delta.start.row;
+        const len = delta.end.row - startRow;
 
         if (len === 0) {
             // return
         }
         else if (delta.action === 'remove') {
-            var removed = lineWidgets.splice(startRow + 1, len);
-            removed.forEach(function(w) {
-                w && this.removeLineWidget(w);
-            }, this);
+            const removed = lineWidgets.splice(startRow + 1, len);
+            removed.forEach((w) => {
+                if (w) {
+                    this.removeLineWidget(w);
+                }
+            });
             this.$updateRows();
         }
         else {
-            var args = new Array(len);
+            const args = new Array(len);
             args.unshift(startRow, 0);
             lineWidgets.splice.apply(lineWidgets, args);
             this.$updateRows();
@@ -241,9 +189,9 @@ export default class LineWidgetManager {
     }
 
     private $updateRows() {
-        var lineWidgets = this.session.lineWidgets;
+        const lineWidgets = this.session.lineWidgets;
         if (!lineWidgets) return;
-        var noWidgets = true;
+        let noWidgets = true;
         lineWidgets.forEach(function(w: LineWidget, i: number) {
             if (w) {
                 noWidgets = false;
@@ -308,7 +256,7 @@ export default class LineWidgetManager {
         w.$fold = fold;
         if (fold) {
             var lineWidgets = this.session.lineWidgets;
-            if (w.row == fold.end.row && !lineWidgets[fold.start.row])
+            if (w.row === fold.end.row && !lineWidgets[fold.start.row])
                 lineWidgets[fold.start.row] = w;
             else
                 w.hidden = true;
@@ -334,16 +282,18 @@ export default class LineWidgetManager {
             w.el.parentNode.removeChild(w.el);
         if (w.editor && w.editor.destroy) try {
             w.editor.destroy();
-        } catch (e) { }
+        } catch (e) {
+            // Ignore.
+        }
         if (this.session.lineWidgets) {
-            var w1 = this.session.lineWidgets[w.row]
-            if (w1 == w) {
+            var w1 = this.session.lineWidgets[w.row];
+            if (w1 === w) {
                 this.session.lineWidgets[w.row] = w.$oldWidget;
                 if (w.$oldWidget)
                     this.onWidgetChanged(w.$oldWidget);
             } else {
                 while (w1) {
-                    if (w1.$oldWidget == w) {
+                    if (w1.$oldWidget === w) {
                         w1.$oldWidget = w.$oldWidget;
                         break;
                     }
@@ -378,7 +328,9 @@ export default class LineWidgetManager {
      */
     private onWidgetChanged(w: LineWidget): void {
         this.session._changedWidgets.push(w);
-        this.editor && this.editor.renderer.updateFull();
+        if (this.editor) {
+            this.editor.renderer.updateFull();
+        }
     }
 
     /**
@@ -399,9 +351,9 @@ export default class LineWidgetManager {
         for (var i = 0; i < changedWidgets.length; i++) {
             var w = changedWidgets[i];
             if (!w || !w.el) continue;
-            if (w.session != this.session) continue;
+            if (w.session !== this.session) continue;
             if (!w._inDocument) {
-                if (this.session.lineWidgets[w.row] != w)
+                if (this.session.lineWidgets[w.row] !== w)
                     continue;
                 w._inDocument = true;
                 renderer.container.appendChild(w.el);
@@ -420,13 +372,13 @@ export default class LineWidgetManager {
                 if (rowCount < 0)
                     rowCount = 0;
             }
-            if (w.rowCount != rowCount) {
+            if (w.rowCount !== rowCount) {
                 w.rowCount = rowCount;
                 if (w.row < min)
                     min = w.row;
             }
         }
-        if (min != Infinity) {
+        if (min !== Infinity) {
             this.session._emit("changeFold", { data: { start: { row: min } } });
             this.session.lineWidgetWidth = null;
         }

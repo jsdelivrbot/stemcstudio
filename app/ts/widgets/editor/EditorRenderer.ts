@@ -2,7 +2,7 @@ import Annotation from "./Annotation";
 import Position from "./Position";
 
 /**
- * @class EditorRenderer
+ *
  */
 // TODO: The HTML nature is leaky.
 interface EditorRenderer {
@@ -10,35 +10,26 @@ interface EditorRenderer {
     $maxLines: number;
     scroller: HTMLDivElement;
     /**
-     * @property scrollTop
-     * @type number
+     *
      */
     scrollTop: number;
     textarea: HTMLTextAreaElement;
 
     /**
      * Returns the root element containing this renderer.
-     *
-     * @method getContainerElement
-     * @return {HTMLElement}
      */
     getContainerElement(): HTMLElement;
 
     /**
      * Move text input over the cursor.
      * Required for iOS and IME.
-     *
-     * @method $moveTextAreaToCursor
-     * @return {void}
-     * @private
      */
     $moveTextAreaToCursor(): void;
+
     /**
      * Sets annotations for the gutter.
      *
-     * @method setAnnotations
-     * @param {Annotation[]} annotations An array containing annotations.
-     * @return {void}
+     * @param annotations An array containing annotations.
      */
     setAnnotations(annotations: Annotation[]): void;
 
@@ -47,9 +38,7 @@ interface EditorRenderer {
     /**
      * Identifies whether you want to show the gutter or not.
      *
-     * @method setShowGutter
-     * @param showGutter {boolean} Set to `true` to show the gutter
-     * @return {void}
+     * @param showGutter Set to `true` to show the gutter.
      */
     setShowGutter(showGutter: boolean): void;
 
@@ -58,10 +47,8 @@ interface EditorRenderer {
     /**
      * Scrolls the editor across both x- and y-axes.
      *
-     * @method scrollBy
-     * @param deltaX {number} The x value to scroll by
-     * @param deltaY {number} The y value to scroll by
-     * @return {void}
+     * @param deltaX The x value to scroll by.
+     * @param deltaY The y value to scroll by.
      */
     scrollBy(deltaX: number, deltaY: number): void;
 

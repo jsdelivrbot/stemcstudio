@@ -5,56 +5,44 @@ import EditSession from './EditSession';
 import Range from './Range';
 
 /**
- * @class Marker
+ *
  */
 interface Marker {
 
-  /**
-   * @property clazz
-   * @type string
-   */
-  clazz: string;
+    /**
+     *
+     */
+    clazz: string;
 
-  /**
-   * @property id
-   * @type number
-   * @optional
-   */
-  id?: number;
+    /**
+     *
+     */
+    id?: number;
 
-  /**
-   * @property inFront
-   * @type boolean
-   * @optional
-   */
-  inFront?: boolean;
+    /**
+     *
+     */
+    inFront?: boolean;
 
-  /**
-   * @property range
-   * @type Range
-   */
-  range?: Range;
+    /**
+     *
+     */
+    range?: Range;
 
-  /**
-   * @property renderer
-   * @type MarkerRenderer
-   */
-  renderer?: MarkerRenderer;
+    /**
+     *
+     */
+    renderer?: MarkerRenderer;
 
-  /**
-   * One of "fullLine", "line", "text", or "screenLine".
-   *
-   * @property type
-   * @type string
-   */
-  type: string;
+    /**
+     * One of "fullLine", "line", "text", or "screenLine".
+     */
+    type: string;
 
-  /**
-   * @property update
-   * @type (html: (number | string)[], markerLayer: MarkerLayer, session: EditSession, config: MarkerConfig) => void
-   * @optional
-   */
-  update?: (html: (number | string)[], markerLayer: MarkerLayer, session: EditSession, config: MarkerConfig) => void;
+    /**
+     *
+     */
+    update?: (html: (number | string)[], markerLayer: MarkerLayer, session: EditSession, config: MarkerConfig) => void;
 }
 
 export default Marker;

@@ -1,7 +1,5 @@
-import EditorAction from "./keyboard/EditorAction";
-import comparePoints from "./comparePoints"
+import comparePoints from "./comparePoints";
 import createDelayedCall from "./lib/lang/createDelayedCall";
-import {escapeRegExp} from "./lib/lang";
 import Delta from "./Delta";
 
 import Command from './commands/Command';
@@ -12,16 +10,26 @@ import Range from "./Range";
 import Selection from "./Selection";
 import Tabstop from './Tabstop';
 
+function movePoint(point: Position, diff: Position) {
+    if (point.row === 0) {
+        point.column += diff.column;
+    }
+    point.row += diff.row;
+}
+
+function moveRelative(point: Position, start: Position) {
+    if (point.row === start.row) {
+        point.column -= start.column;
+    }
+    point.row -= start.row;
+}
+
 /**
- * @class TabstopManager
+ *
  */
 export default class TabstopManager {
     /**
      * The current tabstop index.
-     *
-     * @property index
-     * @type number
-     * @private
      */
     private index: number;
     private ranges: Range[];
@@ -37,9 +45,8 @@ export default class TabstopManager {
     private $inChange: boolean;
 
     /**
-     * @class TabstopManager
-     * @constructor
-     * @param editor {Editor}
+     *
+     * @param editor
      */
     constructor(editor: Editor) {
 
@@ -383,23 +390,10 @@ export default class TabstopManager {
         this.editor.session.removeMarker(range.markerId);
         if (!range.tabstop.length) {
             i = this.tabstops.indexOf(range.tabstop);
-            if (i != -1)
+            if (i !== -1)
                 this.tabstops.splice(i, 1);
             if (!this.tabstops.length)
                 this.detach();
         }
     }
 }
-
-
-var movePoint = function(point: Position, diff: Position) {
-    if (point.row === 0)
-        point.column += diff.column;
-    point.row += diff.row;
-};
-
-var moveRelative = function(point: Position, start: Position) {
-    if (point.row == start.row)
-        point.column -= start.column;
-    point.row -= start.row;
-};

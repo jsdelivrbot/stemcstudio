@@ -37,7 +37,7 @@ export default class VScrollBar extends ScrollBar {
      * Emitted when the scroll bar, well, scrolls.
      * @event scroll
      * @param {Object} e Contains one property, `"data"`, which indicates the current scroll top position
-     **/
+     */
     onScroll() {
         if (!this.skipEvent) {
             this._scrollTop = this.element.scrollTop;
@@ -54,7 +54,7 @@ export default class VScrollBar extends ScrollBar {
     /**
      * Returns the width of the scroll bar.
      * @return {Number}
-     **/
+     */
     get width(): number {
         return this.isVisible ? this._width : 0;
     }
@@ -62,24 +62,15 @@ export default class VScrollBar extends ScrollBar {
     /**
      * Sets the height of the scroll bar, in pixels.
      * @param {Number} height The new height
-     **/
+     */
     setHeight(height: number) {
         this.element.style.height = height + "px";
     }
 
     /**
-     * Sets the inner height of the scroll bar, in pixels.
-     * @param {Number} height The new inner height
-     * @deprecated Use setScrollHeight instead
-     **/
-    setInnerHeight(height: number) {
-        this.inner.style.height = height + "px";
-    }
-
-    /**
      * Sets the scroll height of the scroll bar, in pixels.
      * @param {Number} height The new scroll height
-     **/
+     */
     setScrollHeight(height: number) {
         this.inner.style.height = height + "px";
     }
@@ -87,11 +78,11 @@ export default class VScrollBar extends ScrollBar {
     /**
      * Sets the scroll top of the scroll bar.
      * @param {Number} scrollTop The new scroll top
-     **/
+     */
     // on chrome 17+ for small zoom levels after calling this function
     // this.element.scrollTop != scrollTop which makes page to scroll up.
     setScrollTop(scrollTop: number) {
-        if (this._scrollTop != scrollTop) {
+        if (this._scrollTop !== scrollTop) {
             this.skipEvent = true;
             this._scrollTop = this.element.scrollTop = scrollTop;
         }

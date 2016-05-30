@@ -78,4 +78,4 @@ export default class ScrollBar implements EventBus<ScrollBarEvent, ScrollBar> {
         this.isVisible = isVisible;
         return this;
     }
-} 
+}

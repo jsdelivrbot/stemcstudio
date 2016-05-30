@@ -687,6 +687,7 @@ module.exports = function(grunt) {
                 "app/ts/widgets/editor/Range.ts",
                 "app/ts/widgets/editor/RangeBasic.ts",
                 "app/ts/widgets/editor/RangeList.ts",
+                // "app/ts/widgets/editor/*.ts",
                 "app/ts/*.ts",
                 "server/**/*.ts"
             ],
