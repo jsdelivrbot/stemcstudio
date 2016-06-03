@@ -368,107 +368,117 @@ export default class WorkspaceController implements WorkspaceMixin {
         // const startTime = performance.now();
 
         // WARNING: Make sure that workspace create and release are balanced across $onInit and $onDestroy.
-        this.missionControl.workspace = this.workspaceFactory.createWorkspace();
-        // this.workspace.trace = true;
-        // this.workspace.setTrace(true);
-        this.missionControl.workspace.setDefaultLibrary('/typings/lib.es6.d.ts');
+        // TODO: This method could have a callback, which means that editors may be attaching themselves
+        // before the workspace thread is ready.
+        this.workspaceFactory.createWorkspace((err, workspace) => {
+            if (!err) {
+                console.log("The workspace is now ready!");
+                this.missionControl.workspace = workspace;
+                // this.workspace.trace = true;
+                // this.workspace.setTrace(true);
+                this.missionControl.workspace.setDefaultLibrary('/typings/lib.es6.d.ts');
+                const doodles = this.doodles;
+                // Ensure that there is a current doodle i.e. doodles.current() exists.
+                if (doodles.length === 0) {
+                    // If there is no document, construct one based upon the first template.
+                    // FIXME: Bit of a smell here. $scope.templates is from a different controller.
+                    doodles.createDoodle(this.$scope.templates[0], "STEMCstudio");
+                }
 
+                // Perform conversions required for doodle evolution.
+                const doodle = doodleGroom(doodles.current());
 
-        const doodles = this.doodles;
-        // Ensure that there is a current doodle i.e. doodles.current() exists.
-        if (doodles.length === 0) {
-            // If there is no document, construct one based upon the first template.
-            // FIXME: Bit of a smell here. $scope.templates is from a different controller.
-            doodles.createDoodle(this.$scope.templates[0], "STEMCstudio");
-        }
+                // Following a browser refresh, show the code so that it refreshes correctly (bug).
+                // This also side-steps the issue of the time it takes to restart the preview.
+                // Ideally we remove this line and use the cached `lastKnownJs` to provide the preview.
+                doodle.isCodeVisible = true;
 
-        // Perform conversions required for doodle evolution.
-        const doodle = doodleGroom(doodles.current());
+                // Now that things have settled down...
+                doodles.updateStorage();
 
-        // Following a browser refresh, show the code so that it refreshes correctly (bug).
-        // This also side-steps the issue of the time it takes to restart the preview.
-        // Ideally we remove this line and use the cached `lastKnownJs` to provide the preview.
-        doodle.isCodeVisible = true;
+                const owner: string = this.$stateParams['owner'];
+                const repo: string = this.$stateParams['repo'];
+                const gistId: string = this.$stateParams['gistId']; // OK
 
-        // Now that things have settled down...
-        doodles.updateStorage();
-
-        const owner: string = this.$stateParams['owner'];
-        const repo: string = this.$stateParams['repo'];
-        const gistId: string = this.$stateParams['gistId']; // OK
-
-        const matches = doodles.filter(function(doodle: Doodle) {
-            if (isString(owner) && isString(repo)) {
-                return doodle.owner === owner && doodle.repo === repo;
-            }
-            else if (isString(gistId)) {
-                return doodle.gistId === gistId;
-            }
-            else {
-                return false;
-            }
-        });
-        if (matches.length > 0) {
-            // We certainly don't want to overwrite anything in local storage.
-            // The use should be advised ant then may delete manually from local storage.
-            const match = matches[0];
-            doodles.makeCurrent(match);
-            // We can also assume that we are already in the correct state.
-            this.onInitDoodle(match);
-        }
-        else {
-            if (owner && repo) {
-                this.cloud.downloadTree(owner, repo, 'heads/master')
-                    .then((doodle) => {
-                        doodles.unshift(doodle);
-                        doodles.updateStorage();
-                        this.onInitDoodle(doodle);
-                    }, (reason) => {
-                        this.modalDialog.alert({
-                            title: 'Error downloading Repository',
-                            message: `Error attempting to download repository '${repo}'. Cause:  ${reason}` });
-                    }, function(state) {
-                        // The state is {doneCount: number; todoCount: number}
-                    });
-            }
-            else if (gistId) {
-                this.cloud.downloadGist(gistId, (err: any, doodle: Doodle) => {
-                    if (!err) {
-                        doodles.unshift(doodle);
-                        doodles.updateStorage();
-                        this.onInitDoodle(doodle);
+                const matches = doodles.filter(function(doodle: Doodle) {
+                    if (isString(owner) && isString(repo)) {
+                        return doodle.owner === owner && doodle.repo === repo;
+                    }
+                    else if (isString(gistId)) {
+                        return doodle.gistId === gistId;
                     }
                     else {
-                        this.modalDialog.alert({
-                            title: 'Error downloading Gist',
-                             message: `Error attempting to download gist '${gistId}'. Cause:  ${err}` });
+                        return false;
                     }
                 });
-            }
-            else {
-                // We don't need to load anything, but are we in the correct state for the Doodle?
-                // We end up here, e.g., when user presses Cancel from New dialog.
-                if (this.FEATURE_GIST_ENABLED && doodle.gistId) {
-                    this.$state.go(this.STATE_GIST, { gistId: doodle.gistId });
-                }
-                else if (this.FEATURE_REPO_ENABLED && doodle.owner && doodle.repo) {
-                    this.$state.go(this.STATE_REPO, { owner: doodle.owner, repo: doodle.repo });
+                if (matches.length > 0) {
+                    // We certainly don't want to overwrite anything in local storage.
+                    // The use should be advised ant then may delete manually from local storage.
+                    const match = matches[0];
+                    doodles.makeCurrent(match);
+                    // We can also assume that we are already in the correct state.
+                    this.onInitDoodle(match);
                 }
                 else {
-                    this.onInitDoodle(doodle);
+                    if (owner && repo) {
+                        this.cloud.downloadTree(owner, repo, 'heads/master')
+                            .then((doodle) => {
+                                doodles.unshift(doodle);
+                                doodles.updateStorage();
+                                this.onInitDoodle(doodle);
+                            }, (reason) => {
+                                this.modalDialog.alert({
+                                    title: 'Error downloading Repository',
+                                    message: `Error attempting to download repository '${repo}'. Cause:  ${reason}` });
+                            }, function(state) {
+                                // The state is {doneCount: number; todoCount: number}
+                            });
+                    }
+                    else if (gistId) {
+                        this.cloud.downloadGist(gistId, (err: any, doodle: Doodle) => {
+                            if (!err) {
+                                doodles.unshift(doodle);
+                                doodles.updateStorage();
+                                this.onInitDoodle(doodle);
+                            }
+                            else {
+                                this.modalDialog.alert({
+                                    title: 'Error downloading Gist',
+                                    message: `Error attempting to download gist '${gistId}'. Cause:  ${err}` });
+                            }
+                        });
+                    }
+                    else {
+                        // We don't need to load anything, but are we in the correct state for the Doodle?
+                        // We end up here, e.g., when user presses Cancel from New dialog.
+                        if (this.FEATURE_GIST_ENABLED && doodle.gistId) {
+                            this.$state.go(this.STATE_GIST, { gistId: doodle.gistId });
+                        }
+                        else if (this.FEATURE_REPO_ENABLED && doodle.owner && doodle.repo) {
+                            this.$state.go(this.STATE_REPO, { owner: doodle.owner, repo: doodle.repo });
+                        }
+                        else {
+                            this.onInitDoodle(doodle);
+                        }
+                    }
                 }
+
+                this.watches.push(this.$scope.$watch('isViewVisible', (newVal: boolean, oldVal, unused: angular.IScope) => {
+                    doodles.current().isViewVisible = this.$scope.isViewVisible;
+                    doodles.updateStorage();
+                }));
+
+                this.watches.push(this.$scope.$watch('isEditMode', (newVal: boolean, oldVal, unused: angular.IScope) => {
+                    doodles.current().isCodeVisible = this.$scope.isEditMode;
+                    doodles.updateStorage();
+                }));
             }
-        }
+            else {
+                console.warn("Something is rotten in Denmark! Workspace failed to initialize");
+            }
+        });
 
-        this.watches.push(this.$scope.$watch('isViewVisible', (newVal: boolean, oldVal, unused: angular.IScope) => {
-            doodles.current().isViewVisible = this.$scope.isViewVisible;
-            doodles.updateStorage();
-        }));
 
-        this.watches.push(this.$scope.$watch('isEditMode', (newVal: boolean, oldVal, unused: angular.IScope) => {
-            doodles.current().isCodeVisible = this.$scope.isEditMode;
-            doodles.updateStorage();
-        }));
 
         // const endTime = performance.now();
         // console.lg(`Workspace.$onInit took ${endTime - startTime} ms.`);
@@ -503,7 +513,12 @@ export default class WorkspaceController implements WorkspaceMixin {
         // the detach callback.
         // TODO: Maybe implement something along the lines of refrence counting because the
         // workspace is shared?
-        this.missionControl.workspace.terminate();
+
+        // The workspace may not have initialized, so we don't assume that it exists.
+        const workspace = this.missionControl.workspace;
+        if (workspace) {
+            workspace.terminate();
+        }
 
         this.$window.removeEventListener('resize', this.resizeListener);
 

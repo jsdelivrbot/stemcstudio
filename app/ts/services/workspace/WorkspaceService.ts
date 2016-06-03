@@ -45,10 +45,9 @@ export default class WorkspaceService implements WorkspaceLocal {
     }
 
     /**
-     * @method initialize
-     * @return {void}
+     *
      */
-    initialize(): void {
+    initialize(callback: (err: any) => any): void {
         if (this.promises.length) {
             console.warn(`outstanding promises prior to reset: ${this.promises.length}, ${JSON.stringify(this.promises.getOutstandingPurposes(), null, 2)}`);
         }
@@ -60,10 +59,12 @@ export default class WorkspaceService implements WorkspaceLocal {
                 console.warn(`init() => ${err}`);
                 this.state = WorkspaceState.INIT_FAILED;
                 this.promises.reject(deferred, err);
+                callback(err);
             }
             else {
                 this.state = WorkspaceState.OPERATIONAL;
                 this.promises.resolve(deferred);
+                callback(void 0);
             }
         });
     }

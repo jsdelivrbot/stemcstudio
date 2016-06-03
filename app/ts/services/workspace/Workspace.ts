@@ -8,7 +8,7 @@ import Editor from '../../widgets/editor/Editor';
  */
 interface Workspace {
     trace: boolean;
-    initialize(): void;
+    initialize(callback: (err: any) => any): void;
     terminate(): void;
     synchronize(): ng.IPromise<any>;
     setDefaultLibrary(url: string): void;
