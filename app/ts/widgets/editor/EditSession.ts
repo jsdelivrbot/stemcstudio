@@ -1199,22 +1199,17 @@ export default class EditSession implements EventBus<any, EditSession> {
      * This method also emits the `'changeMode'` event.
      * If a [[BackgroundTokenizer `BackgroundTokenizer`]] is set, the `'tokenizerUpdate'` event is also emitted.
      *
-     * @method setLanguageMode
-     * @param mode {LanguageMode} Set a new language mode instance or module name.
-     * @param callback {(err: any) => any}
-     * @return {void}
+     * @param mode Set a new language mode instance or module name.
+     * @param callback
      */
     public setLanguageMode(mode: LanguageMode, callback: (err: any) => any): void {
         return this.$onChangeMode(mode, false, callback);
     }
 
     /**
-     * @method $onChangeMode
-     * @param mode {LanguageMode}
-     * @param isPlaceholder {boolean}
-     * @param callback {(err: any) => any}
-     * @return {void}
-     * @private
+     * @param mode
+     * @param isPlaceholder
+     * @param callback
      */
     private $onChangeMode(mode: LanguageMode, isPlaceholder: boolean, callback: (err: any) => any): void {
 
@@ -1300,9 +1295,7 @@ export default class EditSession implements EventBus<any, EditSession> {
     }
 
     /**
-     * @method $startWorker
-     * @return {void}
-     * @private
+     *
      */
     private $startWorker(callback: (err: any) => any): void {
         try {
@@ -3872,6 +3865,8 @@ defineOptions(EditSession.prototype, "session", {
 
             this.$stopWorker();
             if (useWorker) {
+                // FIXME: This is BAD. Where is the callback.
+                // This intyped defineOptions has to go...
                 this.$startWorker();
             }
         },

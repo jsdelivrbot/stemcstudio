@@ -14,6 +14,8 @@ export default class CallbackManager {
     }
 
     /**
+     * Trades the incoming callback function for a number.
+     *
      * @method captureCallback
      * @param callback {(err: any) => any}
      * @return {number}
@@ -25,6 +27,8 @@ export default class CallbackManager {
     }
 
     /**
+     * Trades the incomind number for a callback function.
+     * 
      * @method releaseCallback
      * @param callbackId {number}
      * @return {(err: any) => any}

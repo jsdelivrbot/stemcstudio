@@ -105,6 +105,7 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
 
         const workerUrl = qualifyURL(this.workerUrl);
         try {
+            // The worker thread will not be started until we post a message to it (below).
             this.worker = new Worker(workerUrl);
         }
         catch (e) {
@@ -127,7 +128,10 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
         // Notice the bind.
         this.worker.onmessage = this.onMessage;
 
+        // We want the worker thread to call the callback function when it has completed initialization.
+        // That will mean that it is safe to start posting more messages to the thread.
         const callbackId = this.callbackManager.captureCallback(callback);
+
         // Sending a postMessage starts the worker.
         this.worker.postMessage({ init: true, scriptImports, moduleName, className, callbackId });
     }
