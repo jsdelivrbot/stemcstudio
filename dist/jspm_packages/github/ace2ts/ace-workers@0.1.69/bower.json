@@ -1,6 +1,6 @@
 {
     "name": "ace-workers",
-    "version": "0.1.68",
+    "version": "0.1.69",
     "description": "Workers for Ace2ts Editor.",
     "author": {
         "name": "David Holmes",

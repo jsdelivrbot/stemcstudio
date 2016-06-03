@@ -52,7 +52,6 @@
             }
         }
         else if (msg.init) {
-            console.log(`Importing scripts into worker thread: ${msg.scriptImports}.`);
             if (msg.scriptImports) {
                 for (let i = 0; i < msg.scriptImports.length; i++) {
                     const scriptImport = msg.scriptImports[i];
@@ -60,16 +59,11 @@
                 }
             }
             if (scope['System']) {
-                console.log(`Importing module '${msg.moduleName}' using System.`);
                 System.import(msg.moduleName).then(function(m: ImportedModule) {
-                    console.log(`Creating new Sender...`);
                     sender = new m.default.Sender(scope);
-                    console.log(`Creating new ${msg.className}...`);
                     main = new m.default[msg.className](sender);
-                    console.log("Emitting 'init' message to sender.")
                     sender.emit('init', { callbackId: msg.callbackId });
                 }).catch(function(err) {
-                    console.warn(`init. Cause: ${err}`);
                     sender.emit('init', { err: "" + err, callbackId: msg.callbackId });
                 });
             }

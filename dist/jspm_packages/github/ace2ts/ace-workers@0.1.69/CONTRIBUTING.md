@@ -13,18 +13,21 @@ Install NPM dependencies (most of build).
 
 ```
 npm install
+npm update
 ```
 
 Install Bower dependencies (use of r.js for AMD packaging).
 
 ```
 bower install
+bower update
 ```
 
 Not currently using JSPM, so this isn't required
 
 ```
 jspm install
+jspm update
 ```
 
 Clone and compile the TypeScript repository and copy the following into ace-workers/typings

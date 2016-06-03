@@ -372,11 +372,11 @@ export default class WorkspaceController implements WorkspaceMixin {
         // before the workspace thread is ready.
         this.workspaceFactory.createWorkspace((err, workspace) => {
             if (!err) {
-                console.log("The workspace is now ready!");
                 this.missionControl.workspace = workspace;
                 // this.workspace.trace = true;
                 // this.workspace.setTrace(true);
                 this.missionControl.workspace.setDefaultLibrary('/typings/lib.es6.d.ts');
+
                 const doodles = this.doodles;
                 // Ensure that there is a current doodle i.e. doodles.current() exists.
                 if (doodles.length === 0) {
@@ -474,7 +474,7 @@ export default class WorkspaceController implements WorkspaceMixin {
                 }));
             }
             else {
-                console.warn("Something is rotten in Denmark! Workspace failed to initialize");
+                console.warn(`The workspace failed to initialize. Cause ${err}`);
             }
         });
 

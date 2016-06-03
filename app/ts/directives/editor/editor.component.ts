@@ -66,10 +66,6 @@ function factory(
                     if (err) {
                         console.warn(`${$scope.mode} => ${err}`);
                     }
-                    else {
-                        console.log(`${LANGUAGE_PYTHON} mode is ready.`);
-                    }
-                    console.log(`Attaching editor to the workspace, id => ${$scope.id}, mode => ${$scope.mode}`);
                     workspace.attachEditor($scope.id, $scope.mode, editor);
                 });
                 break;
@@ -79,10 +75,6 @@ function factory(
                     if (err) {
                         console.warn(`${$scope.mode} => ${err}`);
                     }
-                    else {
-                        console.log(`${LANGUAGE_JAVA_SCRIPT} mode is ready.`);
-                    }
-                    console.log(`Attaching editor to the workspace, id => ${$scope.id}, mode => ${$scope.mode}`);
                     workspace.attachEditor($scope.id, $scope.mode, editor);
                 });
                 break;
@@ -92,10 +84,6 @@ function factory(
                     if (err) {
                         console.warn(`${$scope.mode} => ${err}`);
                     }
-                    else {
-                        console.log(`${LANGUAGE_TYPE_SCRIPT} mode is ready.`);
-                    }
-                    console.log(`Attaching editor to the workspace, id => ${$scope.id}, mode => ${$scope.mode}`);
                     workspace.attachEditor($scope.id, $scope.mode, editor);
                 });
                 break;
@@ -105,10 +93,6 @@ function factory(
                     if (err) {
                         console.warn(`${$scope.mode} => ${err}`);
                     }
-                    else {
-                        console.log(`${LANGUAGE_HTML} mode is ready.`);
-                    }
-                    console.log(`Attaching editor to the workspace, id => ${$scope.id}, mode => ${$scope.mode}`);
                     workspace.attachEditor($scope.id, $scope.mode, editor);
                 });
                 break;
@@ -118,10 +102,6 @@ function factory(
                     if (err) {
                         console.warn(`${$scope.mode} => ${err}`);
                     }
-                    else {
-                        console.log(`${LANGUAGE_JSON} mode is ready.`);
-                    }
-                    console.log(`Attaching editor to the workspace, id => ${$scope.id}, mode => ${$scope.mode}`);
                     workspace.attachEditor($scope.id, $scope.mode, editor);
                 });
                 break;
@@ -134,10 +114,6 @@ function factory(
                     if (err) {
                         console.warn(`${$scope.mode} => ${err}`);
                     }
-                    else {
-                        console.log(`${LANGUAGE_CSS} mode is ready.`);
-                    }
-                    console.log(`Attaching editor to the workspace, id => ${$scope.id}, mode => ${$scope.mode}`);
                     workspace.attachEditor($scope.id, $scope.mode, editor);
                 });
                 break;
@@ -149,10 +125,6 @@ function factory(
                     if (err) {
                         console.warn(`${$scope.mode} => ${err}`);
                     }
-                    else {
-                        console.log(`${LANGUAGE_MARKDOWN} mode is ready.`);
-                    }
-                    console.log(`Attaching editor to the workspace, id => ${$scope.id}, mode => ${$scope.mode}`);
                     workspace.attachEditor($scope.id, $scope.mode, editor);
                 });
                 break;
@@ -162,10 +134,6 @@ function factory(
                     if (err) {
                         console.warn(`${$scope.mode} => ${err}`);
                     }
-                    else {
-                        console.log(`${LANGUAGE_TEXT} mode is ready.`);
-                    }
-                    console.log(`Attaching editor to the workspace, id => ${$scope.id}, mode => ${$scope.mode}`);
                     workspace.attachEditor($scope.id, $scope.mode, editor);
                 });
                 break;
@@ -313,10 +281,6 @@ function factory(
         // However, the scope event is probably the Best Practice.
         // The scope event also happens before the element event.
         $scope.$on('$destroy', onDestroyScope);
-
-        // TODO: Maybe we should wait until the language mode is ready?
-        // console.log(`Attaching editor to the workspace, id => ${$scope.id}, mode => ${$scope.mode}`);
-        // workspace.attachEditor($scope.id, $scope.mode, editor);
     }
 
     const directive: ng.IDirective = {
