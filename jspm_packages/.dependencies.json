@@ -129,16 +129,8 @@
   "npm:inherits@2.0.1": {
     "util": "github:jspm/nodelibs-util@^0.1.0"
   },
-  "github:ace2ts/ace-workers@0.1.67": {},
   "npm:process@0.11.3": {
     "assert": "github:jspm/nodelibs-assert@^0.1.0"
-  },
-  "npm:assert@1.4.0": {
-    "buffer-shims": "npm:buffer-shims@1.0.0",
-    "util": "npm:util@0.10.3",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
-    "assert": "github:jspm/nodelibs-assert@^0.1.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0"
   },
   "npm:buffer-shims@1.0.0": {
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
@@ -578,28 +570,12 @@
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
     "events": "github:jspm/nodelibs-events@^0.1.1"
   },
-  "npm:elliptic@6.2.7": {
-    "bn.js": "npm:bn.js@^4.0.0",
-    "brorand": "npm:brorand@^1.0.1",
-    "hash.js": "npm:hash.js@^1.0.0",
-    "inherits": "npm:inherits@^2.0.1",
-    "systemjs-json": "github:systemjs/plugin-json@^0.1.0"
-  },
   "npm:Base64@0.2.1": {},
   "npm:timers-browserify@1.4.2": {
     "process": "npm:process@~0.11.0"
   },
   "npm:bn.js@4.11.3": {
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
-  },
-  "npm:asn1.js@4.6.0": {
-    "bn.js": "npm:bn.js@^4.0.0",
-    "inherits": "npm:inherits@^2.0.1",
-    "minimalistic-assert": "npm:minimalistic-assert@^1.0.0",
-    "vm": "github:jspm/nodelibs-vm@^0.1.0",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
-    "assert": "github:jspm/nodelibs-assert@^0.1.0",
-    "fs": "github:jspm/nodelibs-fs@^0.1.0"
   },
   "npm:json3@3.2.6": {},
   "npm:url@0.10.3": {
@@ -677,5 +653,28 @@
     "angular": "jspm:angular@^1.3.0"
   },
   "github:angular/bower-angular@1.5.6": {},
-  "npm:angular@1.5.6": {}
+  "npm:angular@1.5.6": {},
+  "github:ace2ts/ace-workers@0.1.68": {},
+  "npm:assert@1.4.1": {
+    "util": "npm:util@0.10.3",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
+    "assert": "github:jspm/nodelibs-assert@^0.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:elliptic@6.2.8": {
+    "bn.js": "npm:bn.js@^4.0.0",
+    "brorand": "npm:brorand@^1.0.1",
+    "hash.js": "npm:hash.js@^1.0.0",
+    "inherits": "npm:inherits@^2.0.1",
+    "systemjs-json": "github:systemjs/plugin-json@^0.1.0"
+  },
+  "npm:asn1.js@4.6.2": {
+    "bn.js": "npm:bn.js@^4.0.0",
+    "inherits": "npm:inherits@^2.0.1",
+    "minimalistic-assert": "npm:minimalistic-assert@^1.0.0",
+    "vm": "github:jspm/nodelibs-vm@^0.1.0",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
+    "assert": "github:jspm/nodelibs-assert@^0.1.0",
+    "fs": "github:jspm/nodelibs-fs@^0.1.0"
+  }
 }
