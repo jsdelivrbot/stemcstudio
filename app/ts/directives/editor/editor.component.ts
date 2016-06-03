@@ -69,6 +69,8 @@ function factory(
                     else {
                         console.log(`${LANGUAGE_PYTHON} mode is ready.`);
                     }
+                    console.log(`Attaching editor to the workspace, id => ${$scope.id}, mode => ${$scope.mode}`);
+                    workspace.attachEditor($scope.id, $scope.mode, editor);
                 });
                 break;
             }
@@ -80,6 +82,8 @@ function factory(
                     else {
                         console.log(`${LANGUAGE_JAVA_SCRIPT} mode is ready.`);
                     }
+                    console.log(`Attaching editor to the workspace, id => ${$scope.id}, mode => ${$scope.mode}`);
+                    workspace.attachEditor($scope.id, $scope.mode, editor);
                 });
                 break;
             }
@@ -91,6 +95,8 @@ function factory(
                     else {
                         console.log(`${LANGUAGE_TYPE_SCRIPT} mode is ready.`);
                     }
+                    console.log(`Attaching editor to the workspace, id => ${$scope.id}, mode => ${$scope.mode}`);
+                    workspace.attachEditor($scope.id, $scope.mode, editor);
                 });
                 break;
             }
@@ -102,6 +108,8 @@ function factory(
                     else {
                         console.log(`${LANGUAGE_HTML} mode is ready.`);
                     }
+                    console.log(`Attaching editor to the workspace, id => ${$scope.id}, mode => ${$scope.mode}`);
+                    workspace.attachEditor($scope.id, $scope.mode, editor);
                 });
                 break;
             }
@@ -113,6 +121,8 @@ function factory(
                     else {
                         console.log(`${LANGUAGE_JSON} mode is ready.`);
                     }
+                    console.log(`Attaching editor to the workspace, id => ${$scope.id}, mode => ${$scope.mode}`);
+                    workspace.attachEditor($scope.id, $scope.mode, editor);
                 });
                 break;
             }
@@ -127,6 +137,8 @@ function factory(
                     else {
                         console.log(`${LANGUAGE_CSS} mode is ready.`);
                     }
+                    console.log(`Attaching editor to the workspace, id => ${$scope.id}, mode => ${$scope.mode}`);
+                    workspace.attachEditor($scope.id, $scope.mode, editor);
                 });
                 break;
             }
@@ -140,6 +152,8 @@ function factory(
                     else {
                         console.log(`${LANGUAGE_MARKDOWN} mode is ready.`);
                     }
+                    console.log(`Attaching editor to the workspace, id => ${$scope.id}, mode => ${$scope.mode}`);
+                    workspace.attachEditor($scope.id, $scope.mode, editor);
                 });
                 break;
             }
@@ -151,6 +165,8 @@ function factory(
                     else {
                         console.log(`${LANGUAGE_TEXT} mode is ready.`);
                     }
+                    console.log(`Attaching editor to the workspace, id => ${$scope.id}, mode => ${$scope.mode}`);
+                    workspace.attachEditor($scope.id, $scope.mode, editor);
                 });
                 break;
             }
@@ -280,6 +296,8 @@ function factory(
         // It's probably also the more consistent place to release non-AngularJS resources allocated for the scope.
         function onDestroyScope() {
             unregisterWatchNgShow();
+            // TODO: Since we only attach the editor after its thread has started and has been initialized,
+            // should we only stop the thread after it has been detached?
             workspace.detachEditor($scope.id, $scope.mode, editor);
             // Interestingly, there is no $off function, so assume Angular will handle the unhook.
             // editorsController.removeEditor(scope)
@@ -297,8 +315,8 @@ function factory(
         $scope.$on('$destroy', onDestroyScope);
 
         // TODO: Maybe we should wait until the language mode is ready?
-        console.log(`Attaching editor to the workspace, id => ${$scope.id}, mode => ${$scope.mode}`);
-        workspace.attachEditor($scope.id, $scope.mode, editor);
+        // console.log(`Attaching editor to the workspace, id => ${$scope.id}, mode => ${$scope.mode}`);
+        // workspace.attachEditor($scope.id, $scope.mode, editor);
     }
 
     const directive: ng.IDirective = {
