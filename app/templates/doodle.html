@@ -30,7 +30,7 @@
                                 <ng-md-icon>
                         </a>
                     </li>
-                    <li uib-dropdown ng-show='isEditMode' ng-if='htmlFileCount() > 1'>
+                    <li uib-dropdown ng-if='htmlFileCount() > 1'>
                         <a uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="Choose Program" tooltip-placement='bottom'>
                             <ng-md-icon icon='playlist_add_check' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true'>
                                 <ng-md-icon>
@@ -43,7 +43,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li ng-show='isEditMode' ng-if='markdownFileCount() > 0'>
+                    <li ng-if='markdownFileCount() > 0'>
                         <a role='button' ng-click='toggleReadMeVisible()'>
                             <ng-md-icon icon='description' style="fill: {{isReadMeVisible ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="{{isReadMeVisible ?  'Hide README.md' : 'Show README.md'}}"
                             tooltip-placement='bottom'>
@@ -57,7 +57,7 @@
                                 <ng-md-icon>
                         </a>
                     </li>
-                    <li uib-dropdown ng-show='isEditMode'>
+                    <li uib-dropdown>
                         <a uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="Project Menu" tooltip-placement='bottom'>
                             <ng-md-icon icon='folder' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true'>
                                 <ng-md-icon>
@@ -76,7 +76,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li ng-if='FEATURE_LOGIN_ENABLED' uib-dropdown ng-show='isEditMode &amp;&amp; isGitHubSignedIn()'>
+                    <li ng-if='FEATURE_LOGIN_ENABLED' uib-dropdown ng-show='isGitHubSignedIn()'>
                         <a uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="GitHub Menu" tooltip-placement='bottom'>
                             <ng-md-icon icon='cloud' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true'>
                                 <ng-md-icon>
@@ -98,6 +98,26 @@
                             <ng-md-icon icon='cloud_off' style="fill: #ffffff" size='24' aria-hidden='true' uib-tooltip="" tooltip-placement='bottom'>
                                 <ng-md-icon>
                         </a>
+                    </li>
+                    <li ng-if='FEATURE_SYNC_ENABLED' uib-dropdown ng-show='isGitHubSignedIn()' ng-controller='rooms-controller as rooms'>
+                        <a uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="Collaboration Menu" tooltip-placement='bottom'>
+                            <ng-md-icon icon='group' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true'>
+                                <ng-md-icon>
+                        </a>
+                        <ul uib-dropdown-menu role="menu">
+                            <li>
+                                <a ng-click='rooms.createRoom()()' role='button'>Set Up Room</a>
+                            </li>
+                            <li>
+                                <a ng-click='rooms.joinRoom()' role='button'>Join Room</a>
+                            </li>
+                            <li>
+                                <a ng-click='rooms.leaveRoom()' role='button'>Leave Room</a>
+                            </li>
+                            <li>
+                                <a ng-click='rooms.destroyRoom()' role='button'>Tear Down Room</a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </div>

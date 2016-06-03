@@ -1,7 +1,9 @@
 import * as cookieParser from 'cookie-parser';
 import * as express from 'express';
 import * as path from 'path';
-import favicon = require('serve-favicon');
+// Uncomment after placing favicon in /public
+// import favicon = require('serve-favicon');
+// Do we need to require jade for a side-effect?
 import jade = require('jade');
 const lactate = require('lactate');
 import logger = require('morgan');
@@ -14,13 +16,16 @@ import * as bodyParser from 'body-parser';
 import multer = require('multer');
 import errorHandler = require('errorhandler');
 
+// Temporary disable rooms to prevent Redis from loading.
+// import * as rooms from './server/routes/rooms/index';
 import * as stemcArXiv from './server/routes/stemcArXiv/index';
 
 const npm = require('./package.json');
-
 const cfg = require('./configure');
 
-const clientId = nconf.get("GITHUB_APPLICATION_CLIENT_ID");
+const GITHUB_APPLICATION_CLIENT_ID_KEY = 'GITHUB_APPLICATION_CLIENT_ID';
+const clientId = nconf.get(GITHUB_APPLICATION_CLIENT_ID_KEY);
+console.log(`${GITHUB_APPLICATION_CLIENT_ID_KEY} => ${clientId}`);
 
 const isProductionMode = () => {
     switch (process.env.NODE_ENV || 'development') {
@@ -31,14 +36,14 @@ const isProductionMode = () => {
     }
 };
 
-const app = express()
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 // app.set("view options", {layout: false});
 
-// uncomment after placing your favicon in /public
+// Uncomment after placing your favicon in /public
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -70,7 +75,7 @@ const authenticate = (code, cb: (err: any, data?: any) => any) => {
     // The following step exchanges the temporary code for an access token.
     // POST https://github.com/login/oauth/access_token
     const data = qs.stringify({
-        client_id: nconf.get("GITHUB_APPLICATION_CLIENT_ID"),
+        client_id: clientId,
         client_secret: nconf.get("GITHUB_APPLICATION_CLIENT_SECRET"),
         code: code
     });
@@ -92,7 +97,7 @@ const authenticate = (code, cb: (err: any, data?: any) => any) => {
 
     req.write(data);
     req.end();
-    req.on('error', (e) => { cb(e.message) });
+    req.on('error', (e) => { cb(e.message); });
 };
 
 // Forward stemcstudio.herokuapp.com to www.stemcstudio.com
@@ -102,7 +107,7 @@ app.get("/*", (req: express.Request, res: express.Response, next: Function) => {
         res.redirect(`https://www.stemcstudio.com${req.url}`, 301);
     }
     else {
-        next()
+        next();
     }
 });
 
@@ -120,19 +125,22 @@ app.get('/authenticate/:code', (req: express.Request, res: express.Response) => 
 
 app.get("/github_callback", (req: express.Request, res: express.Response, next) => {
     // Set a cookie to communicate the GitHub Client ID back to the client.
-    res.cookie('stemcstudio-github-application-client-id', nconf.get("GITHUB_APPLICATION_CLIENT_ID"));
+    res.cookie('stemcstudio-github-application-client-id', clientId);
     res.render("github_callback", {
         npm: npm
     });
 });
 
+// Temporary disable rooms to prevent Redis from loading.
+// app.post('/rooms', rooms.createRoom);
+// app.get('/rooms/:id', rooms.getRoom);
+
 app.post('/search', stemcArXiv.search);
-app.post('/submit', stemcArXiv.submit);
+app.post('/submissions', stemcArXiv.submit);
 
 app.get("/*", (req: express.Request, res: express.Response, next) => {
     // Set a cookie to communicate the GitHub Client ID back to the client.
-    const clientId = nconf.get("GITHUB_APPLICATION_CLIENT_ID");
-    res.cookie('stemcstudio-github-application-client-id', nconf.get("GITHUB_APPLICATION_CLIENT_ID"));
+    res.cookie('stemcstudio-github-application-client-id', clientId);
     res.render("index", {
         css: `/css/app.css?version=${npm.version}`,
         js: `/js/app.js?version=${npm.version}`,
@@ -141,6 +149,6 @@ app.get("/*", (req: express.Request, res: express.Response, next) => {
 });
 
 // error handling middleware should be loaded after loading the routes
-app.use(errorHandler())
+app.use(errorHandler());
 
 export default app;

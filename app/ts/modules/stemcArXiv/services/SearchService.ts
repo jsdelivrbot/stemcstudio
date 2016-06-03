@@ -28,7 +28,7 @@ export default class SearchService implements IStemcArXiv {
 
     submit(params: ISubmitParams): ng.IPromise<ISubmitResponse> {
         const d = this.$q.defer<ISubmitResponse>();
-        this.$http.post<ISubmitResponse>('/submit', params)
+        this.$http.post<ISubmitResponse>('/submissions', params)
             .then(function(promiseValue) {
                 const data = promiseValue.data;
                 d.resolve(data);

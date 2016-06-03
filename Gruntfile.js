@@ -689,7 +689,8 @@ module.exports = function(grunt) {
                 "app/ts/widgets/editor/RangeList.ts",
                 // "app/ts/widgets/editor/*.ts",
                 "app/ts/*.ts",
-                "server/**/*.ts"
+                "server/**/*.ts",
+                "./sockets.ts"
             ],
             options: {
                 configuration: 'tslint.json'

@@ -6,6 +6,11 @@ interface WorkspaceScope extends DoodleScope {
     /**
      * 
      */
+    FEATURE_SYNC_ENABLED: boolean;
+
+    /**
+     * 
+     */
     currentDoodle(): Doodle;
 
     /**

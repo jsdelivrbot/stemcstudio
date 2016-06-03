@@ -23,6 +23,16 @@ interface Workspace {
     removeScript(fileName: string): void;
 
     /**
+     * Enumerate the names of the files that have editors in the workspace.
+     */
+    getEditorFileNames(): string[];
+
+    /**
+     * @returns A reference to the editor associated with the specified file name.
+     */
+    getEditor(fileName: string): Editor;
+
+    /**
      * Perform semantic analysis and update the appropriate editors.
      */
     semanticDiagnostics(): void;

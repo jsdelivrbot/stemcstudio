@@ -23,6 +23,7 @@ import isString from '../../utils/isString';
 import ChangeHandler from './ChangeHandler';
 import OutputFileHandler from './OutputFileHandler';
 import doodleGroom from '../../utils/doodleGroom';
+import MissionControl from '../../services/mission/MissionControl';
 import ModalDialog from '../../services/modalService/ModalDialog';
 import PublishDialog from '../../modules/publish/PublishDialog';
 import StemcArXiv from '../../modules/stemcArXiv/StemcArXiv';
@@ -30,7 +31,6 @@ import FlowService from '../../services/flow/FlowService';
 import UploadFlow from './UploadFlow';
 import WorkspaceScope from '../../scopes/WorkspaceScope';
 import WorkspaceMixin from '../editor/WorkspaceMixin';
-import Workspace from '../../services/workspace/Workspace';
 import WorkspaceFactory from '../../services/workspace/WorkspaceFactory';
 import {LANGUAGE_CSS} from '../../languages/modes';
 import {LANGUAGE_HTML} from '../../languages/modes';
@@ -82,6 +82,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         'ga',
         'doodles',
         'labelDialog',
+        'missionControl',
         'modalDialog',
         'options',
         'propertiesDialog',
@@ -89,6 +90,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         'stemcArXiv',
         'FEATURE_GIST_ENABLED',
         'FEATURE_REPO_ENABLED',
+        'FEATURE_SYNC_ENABLED',
         'FILENAME_README',
         'FILENAME_CODE',
         'FILENAME_LIBS',
@@ -131,13 +133,6 @@ export default class WorkspaceController implements WorkspaceMixin {
     private watches: (() => any)[] = [];
 
     /**
-     * The workspace lives within the lifetime of the controller.
-     * We create it during $onInit and release it during $onDestroy using the injected WorkspaceFactory.
-     * By bounding the lifetime we ensure proper thread termination.
-     */
-    private workspace: Workspace;
-
-    /**
      * @class WorkspaceController
      * @constructor
      * @param $scope {WorkspaceScope}
@@ -160,6 +155,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         ga: UniversalAnalytics.ga,
         private doodles: IDoodleManager,
         private labelDialog: LabelDialog,
+        private missionControl: MissionControl,
         private modalDialog: ModalDialog,
         private options: IOptionManager,
         private propertiesDialog: PropertiesDialog,
@@ -167,6 +163,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         private stemcArXiv: StemcArXiv,
         private FEATURE_GIST_ENABLED: boolean,
         private FEATURE_REPO_ENABLED: boolean,
+        private FEATURE_SYNC_ENABLED: boolean,
         private FILENAME_README: string,
         private FILENAME_CODE: string,
         private FILENAME_LIBS: string,
@@ -184,6 +181,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         private workspaceFactory: WorkspaceFactory) {
 
         // const startTime = performance.now();
+        $scope.FEATURE_SYNC_ENABLED = FEATURE_SYNC_ENABLED;
 
         let rebuildPromise: angular.IPromise<void>;
         $scope.updatePreview = (delay: number) => {
@@ -312,7 +310,7 @@ export default class WorkspaceController implements WorkspaceMixin {
             ga('send', 'event', 'doodle', 'properties', label, value);
             // TODO: This really needs some refactoring.
             const propertiesFlow = new PropertiesFlow(
-                this.workspace,
+                this.missionControl.workspace,
                 $scope.userLogin(),
                 this.doodles,
                 this.options,
@@ -370,10 +368,10 @@ export default class WorkspaceController implements WorkspaceMixin {
         // const startTime = performance.now();
 
         // WARNING: Make sure that workspace create and release are balanced across $onInit and $onDestroy.
-        this.workspace = this.workspaceFactory.createWorkspace();
+        this.missionControl.workspace = this.workspaceFactory.createWorkspace();
         // this.workspace.trace = true;
         // this.workspace.setTrace(true);
-        this.workspace.setDefaultLibrary('/typings/lib.es6.d.ts');
+        this.missionControl.workspace.setDefaultLibrary('/typings/lib.es6.d.ts');
 
 
         const doodles = this.doodles;
@@ -505,7 +503,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         // the detach callback.
         // TODO: Maybe implement something along the lines of refrence counting because the
         // workspace is shared?
-        this.workspace.terminate();
+        this.missionControl.workspace.terminate();
 
         this.$window.removeEventListener('resize', this.resizeListener);
 
@@ -561,7 +559,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         // FIXME: Some work to do in getting all the async work done right.
         // TOOD: This needs a flow to manage the nesting and sequencing.
         updateWorkspaceTypings(
-            this.workspace,
+            this.missionControl.workspace,
             this.doodles.current(),
             this.options,
             this.olds,
@@ -572,17 +570,17 @@ export default class WorkspaceController implements WorkspaceMixin {
 
                 // Set the module kind for transpilation consistent with the version.
                 const moduleKind = detect1x(doodle) ? MODULE_KIND_NONE : MODULE_KIND_SYSTEM;
-                this.workspace.setModuleKind(moduleKind);
+                this.missionControl.workspace.setModuleKind(moduleKind);
 
                 // Set the script target for transpilation consistent with the version.
                 const scriptTarget = detect1x(doodle) ? SCRIPT_TARGET_ES5 : SCRIPT_TARGET_ES5;
-                this.workspace.setScriptTarget(scriptTarget);
+                this.missionControl.workspace.setScriptTarget(scriptTarget);
 
-                this.workspace.synchronize()
+                this.missionControl.workspace.synchronize()
                     .then(() => {
                         // FIXME: Need a callback here...
-                        this.workspace.semanticDiagnostics();
-                        this.workspace.outputFiles();
+                        this.missionControl.workspace.semanticDiagnostics();
+                        this.missionControl.workspace.outputFiles();
                         this.$scope.workspaceLoaded = true;
                         this.$scope.updatePreview(WAIT_NO_MORE);
                     })
@@ -622,18 +620,18 @@ export default class WorkspaceController implements WorkspaceMixin {
             case LANGUAGE_PYTHON: {
                 // TODO:
                 // editor.getSession().on('change', this.createChangeHandler(filename));
-                this.workspace.attachEditor(filename, editor);
+                this.missionControl.workspace.attachEditor(filename, editor);
                 editor.getSession().on('outputFiles', this.createOutputFilesEventHandler(filename));
                 break;
             }
             case LANGUAGE_TYPE_SCRIPT: {
-                this.workspace.attachEditor(filename, editor);
+                this.missionControl.workspace.attachEditor(filename, editor);
                 editor.getSession().on('outputFiles', this.createOutputFilesEventHandler(filename));
                 break;
             }
             case LANGUAGE_JAVA_SCRIPT: {
                 // TODO: We probably don't get anything for JavaScript.
-                this.workspace.attachEditor(filename, editor);
+                this.missionControl.workspace.attachEditor(filename, editor);
                 editor.getSession().on('outputFiles', this.createOutputFilesEventHandler(filename));
                 break;
             }
@@ -770,21 +768,21 @@ export default class WorkspaceController implements WorkspaceMixin {
                 const handler = this.outputFilesEventHandlers[filename];
                 editor.getSession().off('outputFiles', handler);
                 this.deleteOutputFileHandler(filename);
-                this.workspace.detachEditor(filename, editor);
+                this.missionControl.workspace.detachEditor(filename, editor);
                 break;
             }
             case LANGUAGE_JAVA_SCRIPT: {
                 const handler = this.outputFilesEventHandlers[filename];
                 editor.getSession().off('outputFiles', handler);
                 this.deleteOutputFileHandler(filename);
-                this.workspace.detachEditor(filename, editor);
+                this.missionControl.workspace.detachEditor(filename, editor);
                 break;
             }
             case LANGUAGE_PYTHON: {
                 const handler = this.outputFilesEventHandlers[filename];
                 editor.getSession().off('outputFiles', handler);
                 this.deleteOutputFileHandler(filename);
-                this.workspace.detachEditor(filename, editor);
+                this.missionControl.workspace.detachEditor(filename, editor);
                 break;
             }
             case LANGUAGE_CSS:

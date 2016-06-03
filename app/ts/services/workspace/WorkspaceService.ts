@@ -266,6 +266,14 @@ export default class WorkspaceService implements WorkspaceLocal {
         // Do nothing.
     }
 
+    getEditorFileNames(): string[] {
+        return this.workspace.getEditorFileNames();
+    }
+
+    getEditor(fileName: string): Editor {
+        return this.workspace.getEditor(fileName);
+    }
+
     /**
      * 
      */

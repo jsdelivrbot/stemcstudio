@@ -1,29 +1,25 @@
 import * as nconf from "nconf";
 import * as http from "http";
-const debug = require('debug')('stemcstudio:server');
 import app from "./app";
-import * as socketIO from 'socket.io';
+// import sockets from "./sockets";
 
 const port: number = normalizePort(nconf.get("PORT") || 8080);
 app.set('port', port);
 
+//
+// This is how the server is created at https://github.com/socketio/socket.io
+//
+// TODO: Review importing https for 
 const server = http.createServer(app);
-const io = socketIO(server);
 
-io.on('connection', function(socket: SocketIO.Socket) {
-  console.log('User connected');
-  socket.on('test', function(msg) {
-    console.log('message: ' + msg);
-    io.emit('foo', msg);
-  });
-  socket.on('disconnect', function() {
-    console.log('User disconnected');
-  });
-});
+//
+// Initialize the sockets part of our application.
+//
+// sockets(app, server);
 
-server.listen(port);
+server.listen(port, onListening);
+
 server.on('error', onError);
-server.on('listening', onListening);
 
 /**
  * Normalize a port into a number, string, or false.
@@ -79,5 +75,12 @@ function onListening(): void {
     const bind = typeof addr === 'string'
         ? 'pipe ' + addr
         : 'port ' + addr.port;
-    debug('Listening on ' + bind);
+    console.log('STEMCstudio HTTP server is listening on ' + bind);
 }
+
+//
+// Log uncaught exceptions.
+//
+process.on('uncaughtException', function(err) {
+    console.log('Exception: ' + err.stack);
+});

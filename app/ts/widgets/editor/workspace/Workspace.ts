@@ -406,6 +406,21 @@ export default class Workspace {
     }
 
     /**
+     * @returns The names of files that have an associated editor.
+     */
+    public getEditorFileNames(): string[] {
+        return Object.keys(this.editors);
+    }
+
+    /**
+     * @param fileName
+     * @returns The editor for the specified file name.
+     */
+    public getEditor(fileName: string): Editor {
+        return this.editors[fileName];
+    }
+
+    /**
      * TODO: This is exactly the function we would like to call to refresh the editor semantic annotations.
      */
     public semanticDiagnostics() {

@@ -74,10 +74,12 @@ import propsFilter from './filters/propsFilter';
 
 // Local (AngularJS) modules.
 // Import them and then use their name as app module dependencies.
+import rooms from './modules/rooms/index';
 import stemcArXiv from './modules/stemcArXiv/index';
 import translate from './modules/translate/index';
 
 import Iso8601 from './services/iso8601/Iso8601';
+import MissionControl from './services/mission/MissionControl';
 
 //
 // Create 'app' module and declare its Angular module dependencies.
@@ -89,6 +91,7 @@ const app: angular.IModule = angular.module('app', [
     'ui.bootstrap.modal',
     'ui.router',
     'ui.select',
+    rooms.name,
     stemcArXiv.name,
     translate.name
 ]);
@@ -111,7 +114,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version for use by scopes.
-app.constant('version', '2.0.16');
+app.constant('version', '2.0.17');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -121,6 +124,7 @@ app.constant('FEATURE_LOGIN_ENABLED', true);
 app.constant('FEATURE_GIST_ENABLED', true);
 app.constant('FEATURE_I18N_ENABLED', true);
 app.constant('FEATURE_REPO_ENABLED', false);
+app.constant('FEATURE_SYNC_ENABLED', false);
 // Features for authentication.
 app.constant('FEATURE_AMAZON_SIGNIN_ENABLED', false);
 app.constant('FEATURE_GITHUB_SIGNIN_ENABLED', true);
@@ -236,6 +240,7 @@ app.controller('PropertiesModalController', PropertiesModalController);
 app.service('publishDialog', PublishDialogService);
 
 app.service('iso8601', Iso8601);
+app.service('missionControl', MissionControl);
 
 //
 // Register work which needs to be performed on module loading.

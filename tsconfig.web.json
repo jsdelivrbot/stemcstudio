@@ -8,8 +8,10 @@
     "files": [
         "./typings-manual/main.d.ts",
         "./typings/main.d.ts",
+        "./typings/modules/redis/index.d.ts",
         "./app.ts",
         "./configure.ts",
+        "./sockets.ts",
         "./web.ts"
     ]
 }

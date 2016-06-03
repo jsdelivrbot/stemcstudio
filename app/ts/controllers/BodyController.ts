@@ -17,7 +17,6 @@ export default class BodyController {
         private $state: angular.ui.IStateService,
         private ga: UniversalAnalytics.ga
     ) {
-
         $scope.goHome = (label?: string, value?: number) => {
             const destination = 'home';
             this.navigateTo(destination, void 0, void 0, label, value)

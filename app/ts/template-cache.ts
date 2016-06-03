@@ -384,7 +384,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                                <ng-md-icon>\n" +
     "                        </a>\n" +
     "                    </li>\n" +
-    "                    <li uib-dropdown ng-show='isEditMode' ng-if='htmlFileCount() > 1'>\n" +
+    "                    <li uib-dropdown ng-if='htmlFileCount() > 1'>\n" +
     "                        <a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"Choose Program\" tooltip-placement='bottom'>\n" +
     "                            <ng-md-icon icon='playlist_add_check' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'>\n" +
     "                                <ng-md-icon>\n" +
@@ -397,7 +397,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                            </li>\n" +
     "                        </ul>\n" +
     "                    </li>\n" +
-    "                    <li ng-show='isEditMode' ng-if='markdownFileCount() > 0'>\n" +
+    "                    <li ng-if='markdownFileCount() > 0'>\n" +
     "                        <a role='button' ng-click='toggleReadMeVisible()'>\n" +
     "                            <ng-md-icon icon='description' style=\"fill: {{isReadMeVisible ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"{{isReadMeVisible ?  'Hide README.md' : 'Show README.md'}}\"\n" +
     "                            tooltip-placement='bottom'>\n" +
@@ -411,7 +411,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                                <ng-md-icon>\n" +
     "                        </a>\n" +
     "                    </li>\n" +
-    "                    <li uib-dropdown ng-show='isEditMode'>\n" +
+    "                    <li uib-dropdown>\n" +
     "                        <a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"Project Menu\" tooltip-placement='bottom'>\n" +
     "                            <ng-md-icon icon='folder' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'>\n" +
     "                                <ng-md-icon>\n" +
@@ -430,7 +430,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                            </li>\n" +
     "                        </ul>\n" +
     "                    </li>\n" +
-    "                    <li ng-if='FEATURE_LOGIN_ENABLED' uib-dropdown ng-show='isEditMode &amp;&amp; isGitHubSignedIn()'>\n" +
+    "                    <li ng-if='FEATURE_LOGIN_ENABLED' uib-dropdown ng-show='isGitHubSignedIn()'>\n" +
     "                        <a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"GitHub Menu\" tooltip-placement='bottom'>\n" +
     "                            <ng-md-icon icon='cloud' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'>\n" +
     "                                <ng-md-icon>\n" +
@@ -452,6 +452,26 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                            <ng-md-icon icon='cloud_off' style=\"fill: #ffffff\" size='24' aria-hidden='true' uib-tooltip=\"\" tooltip-placement='bottom'>\n" +
     "                                <ng-md-icon>\n" +
     "                        </a>\n" +
+    "                    </li>\n" +
+    "                    <li ng-if='FEATURE_SYNC_ENABLED' uib-dropdown ng-show='isGitHubSignedIn()' ng-controller='rooms-controller as rooms'>\n" +
+    "                        <a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"Collaboration Menu\" tooltip-placement='bottom'>\n" +
+    "                            <ng-md-icon icon='group' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'>\n" +
+    "                                <ng-md-icon>\n" +
+    "                        </a>\n" +
+    "                        <ul uib-dropdown-menu role=\"menu\">\n" +
+    "                            <li>\n" +
+    "                                <a ng-click='rooms.createRoom()()' role='button'>Set Up Room</a>\n" +
+    "                            </li>\n" +
+    "                            <li>\n" +
+    "                                <a ng-click='rooms.joinRoom()' role='button'>Join Room</a>\n" +
+    "                            </li>\n" +
+    "                            <li>\n" +
+    "                                <a ng-click='rooms.leaveRoom()' role='button'>Leave Room</a>\n" +
+    "                            </li>\n" +
+    "                            <li>\n" +
+    "                                <a ng-click='rooms.destroyRoom()' role='button'>Tear Down Room</a>\n" +
+    "                            </li>\n" +
+    "                        </ul>\n" +
     "                    </li>\n" +
     "                </ul>\n" +
     "            </div>\n" +

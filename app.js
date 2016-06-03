@@ -13,7 +13,9 @@ var errorHandler = require('errorhandler');
 var stemcArXiv = require('./server/routes/stemcArXiv/index');
 var npm = require('./package.json');
 var cfg = require('./configure');
-var clientId = nconf.get("GITHUB_APPLICATION_CLIENT_ID");
+var GITHUB_APPLICATION_CLIENT_ID_KEY = 'GITHUB_APPLICATION_CLIENT_ID';
+var clientId = nconf.get(GITHUB_APPLICATION_CLIENT_ID_KEY);
+console.log(GITHUB_APPLICATION_CLIENT_ID_KEY + " => " + clientId);
 var isProductionMode = function () {
     switch (process.env.NODE_ENV || 'development') {
         case 'development':
@@ -41,7 +43,7 @@ app.all('*', function (req, res, next) {
 });
 var authenticate = function (code, cb) {
     var data = qs.stringify({
-        client_id: nconf.get("GITHUB_APPLICATION_CLIENT_ID"),
+        client_id: clientId,
         client_secret: nconf.get("GITHUB_APPLICATION_CLIENT_SECRET"),
         code: code
     });
@@ -81,16 +83,15 @@ app.get('/authenticate/:code', function (req, res) {
     });
 });
 app.get("/github_callback", function (req, res, next) {
-    res.cookie('stemcstudio-github-application-client-id', nconf.get("GITHUB_APPLICATION_CLIENT_ID"));
+    res.cookie('stemcstudio-github-application-client-id', clientId);
     res.render("github_callback", {
         npm: npm
     });
 });
 app.post('/search', stemcArXiv.search);
-app.post('/submit', stemcArXiv.submit);
+app.post('/submissions', stemcArXiv.submit);
 app.get("/*", function (req, res, next) {
-    var clientId = nconf.get("GITHUB_APPLICATION_CLIENT_ID");
-    res.cookie('stemcstudio-github-application-client-id', nconf.get("GITHUB_APPLICATION_CLIENT_ID"));
+    res.cookie('stemcstudio-github-application-client-id', clientId);
     res.render("index", {
         css: "/css/app.css?version=" + npm.version,
         js: "/js/app.js?version=" + npm.version,

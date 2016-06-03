@@ -1,6 +1,15 @@
 import * as angular from 'angular';
 import ResizableScope from './ResizableScope';
 
+//
+// TODO: I separated the mouse handling from touch handling in order to avoid the instanceof TouchEvent test.
+// Why? Firefox doesn't know TouchEvent giving the console error 'ReferenceError: TouchEvent is not defined'.
+// It also breaks the resizer in Firefox.
+// This could be fixed by an existence check of window['TouchEvent'] but that may not be optimal.
+// DRY: This leaves some duplicate code. When removing this technical debt, be wary of making common code out
+// of logic that is superficially similar. For example, try to take advantage of the differences between mouse and
+// touch handling rather than forcing them to do the same thing.
+//
 export default function() {
     var toCall: () => any;
 
@@ -103,29 +112,19 @@ export default function() {
                 info.id = element[0].id;
             };
 
-            const getClientX = function(e: MouseEvent | TouchEvent) {
-                if (e instanceof TouchEvent) {
-                    return e.touches[0].clientX;
-                }
-                else {
-                    return e.clientX;
-                }
+            const getTouchClientX = function(e: TouchEvent) {
+                return e.touches[0].clientX;
             };
 
-            const getClientY = function(e: MouseEvent | TouchEvent) {
-                if (e instanceof TouchEvent) {
-                    return e.touches[0].clientY;
-                }
-                else {
-                    return e.clientY;
-                }
+            const getTouchClientY = function(e: TouchEvent) {
+                return e.touches[0].clientY;
             };
 
-            const dragging = function(e: MouseEvent | TouchEvent) {
+            const draggingMouse = function(e: MouseEvent) {
                 /**
                  * `offset` holds the movement (in pixels) since dragStart in the appropriate axis.
                  */
-                var offset = axis === 'x' ? start - getClientX(e) : start - getClientY(e);
+                var offset = axis === 'x' ? start - e.clientX : start - e.clientY;
                 switch (dragDir) {
                     case 'top':
                         if (scope.rFlex) {
@@ -172,26 +171,81 @@ export default function() {
                 }
             };
 
-            const dragEnd = function(e: MouseEvent | TouchEvent) {
+            const draggingTouch = function(e: TouchEvent) {
+                /**
+                 * `offset` holds the movement (in pixels) since dragStart in the appropriate axis.
+                 */
+                var offset = axis === 'x' ? start - getTouchClientX(e) : start - getTouchClientY(e);
+                switch (dragDir) {
+                    case 'top':
+                        if (scope.rFlex) {
+                            element[0].style.flexBasis = h + (offset * vy) + 'px';
+                        }
+                        else {
+                            element[0].style.height = h + (offset * vy) + 'px';
+                        }
+                        break;
+                    case 'right':
+                        if (scope.rFlex) {
+                            element[0].style.flexGrow = '0';
+                            element[0].style.flexBasis = w - (offset * vx) + 'px';
+                        }
+                        else {
+                            element[0].style.width = w - (offset * vx) + 'px';
+                        }
+                        break;
+                    case 'bottom':
+                        if (scope.rFlex) {
+                            element[0].style.flexBasis = h - (offset * vy) + 'px';
+                        }
+                        else {
+                            element[0].style.height = h - (offset * vy) + 'px';
+                        }
+                        break;
+                    case 'left':
+                        if (scope.rFlex) {
+                            element[0].style.flexBasis = w + (offset * vx) + 'px';
+                        }
+                        else {
+                            element[0].style.width = w + (offset * vx) + 'px';
+                        }
+                        break;
+                }
+                updateInfo();
+                function resizingEmit() {
+                    scope.$emit('angular-resizable.resizing', info);
+                }
+                if (scope.rNoThrottle) {
+                    resizingEmit();
+                } else {
+                    throttle(resizingEmit);
+                }
+            };
+
+            const dragMouseEnd = function(e: MouseEvent) {
                 updateInfo();
                 // Dispatch the event upwards through the scope hierarchy.
                 scope.$emit("angular-resizable.resizeEnd", info);
                 scope.$apply();
-                document.removeEventListener('mouseup', dragEnd, false);
-                document.removeEventListener('mousemove', dragging, false);
-                document.removeEventListener('touchend', dragEnd, false);
-                document.removeEventListener('touchmove', dragging, false);
+                document.removeEventListener('mouseup', dragMouseEnd, false);
+                document.removeEventListener('mousemove', draggingMouse, false);
                 element.removeClass('no-transition');
             };
 
-            /**
-             * The dragStart function adds listeners for mousemove and mouseup.
-             * The dragStart function handles a mousedown event.
-             */
-            const dragStart = function(e: MouseEvent | TouchEvent, direction: string) {
+            const dragTouchEnd = function(e: TouchEvent) {
+                updateInfo();
+                // Dispatch the event upwards through the scope hierarchy.
+                scope.$emit("angular-resizable.resizeEnd", info);
+                scope.$apply();
+                document.removeEventListener('touchend', dragTouchEnd, false);
+                document.removeEventListener('touchmove', draggingTouch, false);
+                element.removeClass('no-transition');
+            };
+
+            const dragMouseStart = function(e: MouseEvent, direction: string) {
                 dragDir = direction;
                 axis = (dragDir === 'left' || dragDir === 'right') ? 'x' : 'y';
-                start = (axis === 'x') ? getClientX(e) : getClientY(e);
+                start = (axis === 'x') ? e.clientX : e.clientY;
 
                 w = parseInt(style.getPropertyValue("width"), 10);
                 h = parseInt(style.getPropertyValue("height"), 10);
@@ -199,10 +253,8 @@ export default function() {
                 // Prevent transition while dragging.
                 element.addClass('no-transition');
 
-                document.addEventListener('mouseup', dragEnd, false);
-                document.addEventListener('mousemove', dragging, false);
-                document.addEventListener('touchend', dragEnd, false);
-                document.addEventListener('touchmove', dragging, false);
+                document.addEventListener('mouseup', dragMouseEnd, false);
+                document.addEventListener('mousemove', draggingMouse, false);
 
                 // Disable highlighting while dragging.
                 if (e.stopPropagation) {
@@ -220,7 +272,37 @@ export default function() {
                 scope.$apply();
             };
 
-            for (var i = 0, iLength = dir.length; i < iLength; i++) {
+            const dragTouchStart = function(e: TouchEvent, direction: string) {
+                dragDir = direction;
+                axis = (dragDir === 'left' || dragDir === 'right') ? 'x' : 'y';
+                start = (axis === 'x') ? getTouchClientX(e) : getTouchClientY(e);
+
+                w = parseInt(style.getPropertyValue("width"), 10);
+                h = parseInt(style.getPropertyValue("height"), 10);
+
+                // Prevent transition while dragging.
+                element.addClass('no-transition');
+
+                document.addEventListener('touchend', dragTouchEnd, false);
+                document.addEventListener('touchmove', draggingTouch, false);
+
+                // Disable highlighting while dragging.
+                if (e.stopPropagation) {
+                    e.stopPropagation();
+                }
+                if (e.preventDefault) {
+                    e.preventDefault();
+                }
+                e.cancelBubble = true;
+                e.returnValue = false;
+
+                updateInfo();
+
+                scope.$emit("angular-resizable.resizeStart", info);
+                scope.$apply();
+            };
+
+            for (let i = 0, iLength = dir.length; i < iLength; i++) {
                 (function() {
                     const grabber = document.createElement('div');
                     const direction = dir[i];
@@ -232,13 +314,13 @@ export default function() {
                     const mouseDown = function(e: MouseEvent) {
                         const disabled = (scope.rDisabled === 'true');
                         if (!disabled && (e.which === 1)) {
-                            dragStart(e, direction);
+                            dragMouseStart(e, direction);
                         }
                     };
                     const touchStart = function(e: TouchEvent) {
                         const disabled = (scope.rDisabled === 'true');
                         if (!disabled && (e.touches)) {
-                            dragStart(e, direction);
+                            dragTouchStart(e, direction);
                         }
                     };
                     grabber.ondragstart = function(e: DragEvent) { return false; };
