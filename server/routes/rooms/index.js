@@ -5,7 +5,7 @@ var isNumber_1 = require('../../utils/isNumber');
 var isString_1 = require('../../utils/isString');
 var ServerWorkspace_1 = require('./ServerWorkspace');
 var uniqueId_1 = require('./uniqueId');
-var MwNode_1 = require('../../synchronization/MwNode');
+var MwUnit_1 = require('../../synchronization/MwUnit');
 var client = redis.createClient();
 client.on('ready', function (err) {
     console.log("Redis connection has been established.");
@@ -35,8 +35,11 @@ function createRoom(request, response) {
     params.expire = isNumber_1.default(params.expire) ? params.expire : 600;
     var roomId = uniqueId_1.default();
     var roomKey = createRoomKey(roomId);
-    var sNode = new MwNode_1.default(roomId, new ServerWorkspace_1.default());
-    var value = sNode.dehydrate();
+    var value = {
+        description: params.description,
+        public: params.public,
+        units: {}
+    };
     client.set(roomKey, JSON.stringify(value), function (err, reply) {
         if (!err) {
             client.expire(roomKey, params.expire, function (err, reply) {
@@ -64,10 +67,11 @@ function getRoom(request, response) {
     var roomKey = createRoomKey(roomId);
     client.get(roomKey, function (err, reply) {
         if (!err) {
+            var value = JSON.parse(reply);
             var room = {
                 id: roomId,
-                description: "",
-                public: true
+                description: value.description,
+                public: value.public
             };
             response.status(200).send(room);
         }
@@ -78,31 +82,27 @@ function getRoom(request, response) {
     });
 }
 exports.getRoom = getRoom;
-function setEdits(edits, callback) {
-    var iLen = edits.length;
-    var _loop_1 = function(i) {
-        var edit = edits[i];
-        var roomId = edit.t;
-        var roomKey = createRoomKey(roomId);
-        client.get(roomKey, function (err, reply) {
-            if (!err) {
-                var before = JSON.parse(reply);
-                var sNode = new MwNode_1.default(roomId, new ServerWorkspace_1.default());
-                sNode.rehydrate(before);
-                sNode.setEdits(edits);
-                var broadcast_1 = sNode.getBroadcast();
-                var after = sNode.dehydrate();
-                client.set(roomKey, JSON.stringify(after), function (err, reply) {
-                    callback(err, broadcast_1);
-                });
+function setEdits(fromId, roomId, fileName, edits, callback) {
+    console.log("setEdits('" + roomId + "', '" + fileName + "'), from '" + fromId + "'.");
+    var roomKey = createRoomKey(roomId);
+    client.get(roomKey, function (err, reply) {
+        if (!err) {
+            var room = JSON.parse(reply);
+            var unit = new MwUnit_1.default(new ServerWorkspace_1.default());
+            var frozen = room.units[fileName];
+            if (frozen) {
+                unit.rehydrate(frozen);
             }
-            else {
-                callback(err, void 0);
-            }
-        });
-    };
-    for (var i = 0; i < iLen; i++) {
-        _loop_1(i);
-    }
+            unit.setEdits(fromId, edits);
+            var broadcast_1 = unit.getBroadcast();
+            room.units[fileName] = unit.dehydrate();
+            client.set(roomKey, JSON.stringify(room), function (err, reply) {
+                callback(err, { roomId: roomId, fileName: fileName, broadcast: broadcast_1 });
+            });
+        }
+        else {
+            callback(err, void 0);
+        }
+    });
 }
 exports.setEdits = setEdits;

@@ -10,12 +10,13 @@ var https = require('https');
 var qs = require('querystring');
 var bodyParser = require('body-parser');
 var errorHandler = require('errorhandler');
+var rooms = require('./server/routes/rooms/index');
 var stemcArXiv = require('./server/routes/stemcArXiv/index');
 var npm = require('./package.json');
 var cfg = require('./configure');
 var GITHUB_APPLICATION_CLIENT_ID_KEY = 'GITHUB_APPLICATION_CLIENT_ID';
 var clientId = nconf.get(GITHUB_APPLICATION_CLIENT_ID_KEY);
-console.log(GITHUB_APPLICATION_CLIENT_ID_KEY + " => " + clientId);
+console.log(GITHUB_APPLICATION_CLIENT_ID_KEY + " is '" + clientId + "'.");
 var isProductionMode = function () {
     switch (process.env.NODE_ENV || 'development') {
         case 'development':
@@ -88,6 +89,8 @@ app.get("/github_callback", function (req, res, next) {
         npm: npm
     });
 });
+app.post('/rooms', rooms.createRoom);
+app.get('/rooms/:id', rooms.getRoom);
 app.post('/search', stemcArXiv.search);
 app.post('/submissions', stemcArXiv.submit);
 app.get("/*", function (req, res, next) {

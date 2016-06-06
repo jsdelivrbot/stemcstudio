@@ -6,11 +6,6 @@ import MwAction from './MwAction';
 interface MwChange {
 
     /**
-     * TODO: This could be the path of the file.
-     */
-    f: string;
-
-    /**
      * remote version, if we know it from last receive.
      */
     m: number;

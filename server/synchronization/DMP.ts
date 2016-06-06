@@ -201,7 +201,7 @@ export default class DMP {
         let i = longtext.indexOf(shorttext);
         if (i !== -1) {
             // Shorter text is inside the longer text (speedup).
-            const diffs = [[DIFF_INSERT, longtext.substring(0, i)],
+            const diffs: Diff[] = [[DIFF_INSERT, longtext.substring(0, i)],
                 [DIFF_EQUAL, shorttext],
                 [DIFF_INSERT, longtext.substring(i + shorttext.length)]];
             // Swap insertions for deletions if diff is reversed.
@@ -219,8 +219,8 @@ export default class DMP {
 
         // Check to see if the problem can be split in two.
         const hm = this.diff_halfMatch_(text1, text2);
-        let diffs_a;
-        let diffs_b;
+        let diffs_a: Diff[];
+        let diffs_b: Diff[];
         if (hm) {
             // A half-match was found, sort out the return data.
             const text1_a = hm[0];
@@ -328,8 +328,8 @@ export default class DMP {
         let max_d = Math.ceil((text1_length + text2_length) / 2);
         let v_offset = max_d;
         let v_length = 2 * max_d;
-        let v1 = new Array(v_length);
-        let v2 = new Array(v_length);
+        let v1 = new Array<number>(v_length);
+        let v2 = new Array<number>(v_length);
         // Setting all elements to -1 is faster in Chrome & Firefox than mixing
         // integers and undefined.
         for (let x = 0; x < v_length; x++) {
@@ -444,14 +444,14 @@ export default class DMP {
      * @private
      */
     private diff_bisectSplit_(text1: string, text2: string, x: number, y: number, deadline: number): Diff[] {
-        var text1a = text1.substring(0, x);
-        var text2a = text2.substring(0, y);
-        var text1b = text1.substring(x);
-        var text2b = text2.substring(y);
+        const text1a = text1.substring(0, x);
+        const text2a = text2.substring(0, y);
+        const text1b = text1.substring(x);
+        const text2b = text2.substring(y);
 
         // Compute both diffs serially.
-        var diffs = this.diff_main(text1a, text2a, false, deadline);
-        var diffsb = this.diff_main(text1b, text2b, false, deadline);
+        const diffs = this.diff_main(text1a, text2a, false, deadline);
+        const diffsb = this.diff_main(text1b, text2b, false, deadline);
 
         return diffs.concat(diffsb);
     }
@@ -469,8 +469,8 @@ export default class DMP {
      * @private
      */
     public diff_linesToChars_(text1: string, text2: string): LinesToCharsResult {
-        var lineArray = [];  // e.g. lineArray[4] === 'Hello\n'
-        var lineHash = {};   // e.g. lineHash['Hello\n'] === 4
+        const lineArray: string[] = [];                  // e.g. lineArray[4] === 'Hello\n'
+        const lineHash: { [text: string]: number } = {}; // e.g. lineHash['Hello\n'] === 4
 
         // '\x00' is a valid character, but various debuggers don't like it.
         // So we'll insert a junk entry to avoid generating a null character.
@@ -484,7 +484,7 @@ export default class DMP {
          * @return {string} Encoded string.
          * @private
          */
-        function diff_linesToCharsMunge_(text) {
+        function diff_linesToCharsMunge_(text: string): string {
             let chars = "";
             // Walk the text, pulling out a substring for each line.
             // text.split('\n') would would temporarily double our memory footprint.
@@ -532,10 +532,10 @@ export default class DMP {
      * @private
      */
     public diff_charsToLines_(diffs: Diff[], lineArray: string[]): void {
-        for (var x = 0; x < diffs.length; x++) {
-            var chars = <string>diffs[x][1];
-            var text = [];
-            for (var y = 0; y < chars.length; y++) {
+        for (let x = 0; x < diffs.length; x++) {
+            const chars = <string>diffs[x][1];
+            const text: string[] = [];
+            for (let y = 0; y < chars.length; y++) {
                 text[y] = lineArray[chars.charCodeAt(y)];
             }
             diffs[x][1] = text.join('');
@@ -561,7 +561,7 @@ export default class DMP {
         var text2_length = text2.length;
         var max_d = text1_length + text2_length - 1;
         var doubleEnd = this.Diff_DualThreshold * 2 < max_d;
-        var v_map1 = [];
+        var v_map1: {}[] = [];
         var v_map2 = [];
         var v1 = {};
         var v2 = {};
@@ -694,12 +694,12 @@ export default class DMP {
      * @private
      */
     private diff_path1(v_map: {}[], text1: string, text2: string): Diff[] {
-        var path = [];
-        var x = text1.length;
-        var y = text2.length;
+        const path: Diff[] = [];
+        let x = text1.length;
+        let y = text2.length;
         /** @type {number?} */
-        var last_op = null;
-        for (var d = v_map.length - 2; d >= 0; d--) {
+        let last_op: number = null;
+        for (let d = v_map.length - 2; d >= 0; d--) {
             while (1) {
                 if (v_map[d].hasOwnProperty ? v_map[d].hasOwnProperty((x - 1) + ',' + y) :
                     (v_map[d][(x - 1) + ',' + y] !== undefined)) {
@@ -752,7 +752,7 @@ export default class DMP {
      * @private
      */
     private diff_path2(v_map: {}[], text1: string, text2: string): Diff[] {
-        var path = [];
+        const path: Diff[] = [];
         var pathLength = 0;
         var x = text1.length;
         var y = text2.length;

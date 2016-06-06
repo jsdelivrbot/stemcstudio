@@ -20,6 +20,7 @@ var MwShadow = (function () {
         this.text = value.t;
         this.happy = value.h;
         this.merge = value.g;
+        return this;
     };
     MwShadow.prototype.dehydrate = function () {
         var value = {
@@ -36,15 +37,21 @@ var MwShadow = (function () {
         this.merge = void 0;
         return value;
     };
-    MwShadow.prototype.createDiffTextChange = function (text, fileId) {
+    MwShadow.prototype.createDiffTextChange = function (text) {
         var action = this.diffAndTagWithLocalVersion(text);
         this.updateTextAndIncrementLocalVersion(text);
-        return this.createFileChange(fileId, action);
+        return this.createFileChange(action);
     };
-    MwShadow.prototype.createFullTextChange = function (text, fileId, overwrite) {
+    MwShadow.prototype.createFullTextChange = function (text, overwrite) {
+        if (typeof text !== 'string') {
+            throw new TypeError("text must be a string");
+        }
+        if (typeof overwrite !== 'boolean') {
+            throw new TypeError("overwrite must be a boolean");
+        }
         this.updateTextAndIncrementLocalVersion(text);
         var action = this.createRawAction(overwrite);
-        return this.createFileChange(fileId, action);
+        return this.createFileChange(action);
     };
     MwShadow.prototype.updateRaw = function (text, remoteVersion) {
         this.updateTextAndIncrementLocalVersion(text);
@@ -60,8 +67,8 @@ var MwShadow = (function () {
             this.n = INITIAL_VERSION;
         }
     };
-    MwShadow.prototype.createFileChange = function (fileId, action) {
-        return { f: fileId, m: this.m, a: action };
+    MwShadow.prototype.createFileChange = function (action) {
+        return { m: this.m, a: action };
     };
     MwShadow.prototype.createRawAction = function (overwrite) {
         return { c: overwrite ? 'R' : 'r', n: this.n, x: encodeURI(this.text).replace(/%20/g, ' ') };

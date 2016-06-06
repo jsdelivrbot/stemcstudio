@@ -66,6 +66,28 @@ function decodeWorkspaceState(state: WorkspaceState): string {
 }
 
 /**
+ * Determines whether the file is appropriate for the language service.
+ * All editors (files) are loaded in the workspace but only TypeScript
+ * files are offered to the language service.
+ */
+function isTypeScript(fileName: string): boolean {
+    const period = fileName.lastIndexOf('.');
+    if (period >= 0) {
+        const extension = fileName.substring(period + 1);
+        switch (extension) {
+            case 'ts': {
+                return true;
+            }
+            default: {
+                return false;
+            }
+        }
+    }
+    console.warn(`isTypeScript('${fileName}') can't figure that one out.`);
+    return false;
+}
+
+/**
  * @class Workspace
  */
 export default class Workspace {
@@ -87,6 +109,9 @@ export default class Workspace {
      */
     private state: WorkspaceState;
 
+    /**
+     *
+     */
     private editors: { [fileName: string]: Editor } = {};
     private quickin: { [fileName: string]: QuickInfoTooltip } = {};
     private annotationHandlers: { [fileName: string]: (event: any) => any } = {};
@@ -273,48 +298,50 @@ export default class Workspace {
             this.editors[fileName] = editor;
         }
 
-        const changeHandler = (delta: Delta, source: Editor) => {
-            this.inFlight++;
-            this.languageServiceProxy.applyDelta(fileName, delta, (err: any) => {
-                this.inFlight--;
-                if (!err) {
-                    this.updateMarkerModels(fileName, delta);
+        if (isTypeScript(fileName)) {
+            const changeHandler = (delta: Delta, source: Editor) => {
+                this.inFlight++;
+                this.languageServiceProxy.applyDelta(fileName, delta, (err: any) => {
+                    this.inFlight--;
+                    if (!err) {
+                        this.updateMarkerModels(fileName, delta);
+                    }
+                    else {
+                        console.warn(`applyDelta ${delta} to '${fileName}' failed because ${err}. Marker models will not be updated.`);
+                    }
+                });
+            };
+            editor.on('change', changeHandler);
+            this.changeHandlers[fileName] = changeHandler;
+
+            // When the LanguageMode has completed syntax analysis, it emits annotations.
+            // This is our cue to begin semantic analysis and make use of transpiled files.
+            const annotationsHandler = (event: { data: Annotation[]; type: string }) => {
+                if (this.inFlight === 0) {
+                    this.semanticDiagnostics();
+                    this.outputFiles();
                 }
                 else {
-                    console.warn(`applyDelta ${delta} to '${fileName}' failed because ${err}. Marker models will not e updated.`);
+                    // console.warn(`Ignoring 'annotations' event because inFlight => ${this.inFlight}`);
                 }
-            });
-        };
-        editor.on('change', changeHandler);
-        this.changeHandlers[fileName] = changeHandler;
+            };
+            editor.session.on('annotations', annotationsHandler);
+            this.annotationHandlers[fileName] = annotationsHandler;
 
-        // When the LanguageMode has completed syntax analysis, it emits annotations.
-        // This is our cue to begin semantic analysis and make use of transpiled files.
-        const annotationsHandler = (event: { data: Annotation[]; type: string }) => {
-            if (this.inFlight === 0) {
-                this.semanticDiagnostics();
-                this.outputFiles();
-            }
-            else {
-                // console.warn(`Ignoring 'annotations' event because inFlight => ${this.inFlight}`);
-            }
-        };
-        editor.session.on('annotations', annotationsHandler);
-        this.annotationHandlers[fileName] = annotationsHandler;
+            // Enable auto completion using the Workspace.
+            // The command seems to be required on order to enable method completion.
+            // However, it has the side-effect of enabling global completions (Ctrl-Space, etc).
+            editor.commands.addCommand(new AutoCompleteCommand());
+            editor.completers.push(new WorkspaceCompleter(fileName, this));
 
-        // Enable auto completion using the Workspace.
-        // The command seems to be required on order to enable method completion.
-        // However, it has the side-effect of enabling global completions (Ctrl-Space, etc).
-        editor.commands.addCommand(new AutoCompleteCommand());
-        editor.completers.push(new WorkspaceCompleter(fileName, this));
+            // Finally, enable QuickInfo.
+            const quickInfo = new QuickInfoTooltip(fileName, editor, this);
+            quickInfo.init();
+            this.quickin[fileName] = quickInfo;
 
-        // Finally, enable QuickInfo.
-        const quickInfo = new QuickInfoTooltip(fileName, editor, this);
-        quickInfo.init();
-        this.quickin[fileName] = quickInfo;
-
-        // Ensure the script in the language service.
-        this.ensureScript(fileName, editor.getValue(), callback);
+            // Ensure the script in the language service.
+            this.ensureScript(fileName, editor.getValue(), callback);
+        }
     }
 
     /**
@@ -340,23 +367,25 @@ export default class Workspace {
             delete this.editors[fileName];
         }
 
-        // Remove QuickInfo
-        const quickInfo = this.quickin[fileName];
-        quickInfo.terminate();
-        delete this.quickin[fileName];
+        if (isTypeScript(fileName)) {
+            // Remove QuickInfo
+            const quickInfo = this.quickin[fileName];
+            quickInfo.terminate();
+            delete this.quickin[fileName];
 
-        // Remove Annotation Handlers.
-        const annotationHandler = this.annotationHandlers[fileName];
-        editor.session.off('annotations', annotationHandler);
-        delete this.annotationHandlers[fileName];
+            // Remove Annotation Handlers.
+            const annotationHandler = this.annotationHandlers[fileName];
+            editor.session.off('annotations', annotationHandler);
+            delete this.annotationHandlers[fileName];
 
-        // Remove Change Handlers.
-        const changeHandler = this.changeHandlers[fileName];
-        editor.off('change', changeHandler);
-        delete this.changeHandlers[fileName];
+            // Remove Change Handlers.
+            const changeHandler = this.changeHandlers[fileName];
+            editor.off('change', changeHandler);
+            delete this.changeHandlers[fileName];
 
-        // Remove the script from the language service.
-        this.removeScript(fileName, callback);
+            // Remove the script from the language service.
+            this.removeScript(fileName, callback);
+        }
     }
 
     /**
@@ -427,8 +456,10 @@ export default class Workspace {
         const fileNames = Object.keys(this.editors);
         for (let i = 0; i < fileNames.length; i++) {
             const fileName = fileNames[i];
-            const editor = this.editors[fileName];
-            this.semanticDiagnosticsForEditor(fileName, editor);
+            if (isTypeScript(fileName)) {
+                const editor = this.editors[fileName];
+                this.semanticDiagnosticsForEditor(fileName, editor);
+            }
         }
     }
 
@@ -493,8 +524,10 @@ export default class Workspace {
         const fileNames = Object.keys(this.editors);
         for (let i = 0; i < fileNames.length; i++) {
             const fileName = fileNames[i];
-            const editor = this.editors[fileName];
-            this.outputFilesForEditor(fileName, editor);
+            if (isTypeScript(fileName)) {
+                const editor = this.editors[fileName];
+                this.outputFilesForEditor(fileName, editor);
+            }
         }
     }
 

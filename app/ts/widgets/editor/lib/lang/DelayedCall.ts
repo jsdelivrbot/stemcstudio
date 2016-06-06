@@ -5,7 +5,7 @@
  * @class DelayedCall
  */
 interface DelayedCall {
-    // TODO: This multiple way of doing things just makes the imlementation more tricky
+    // TODO: This multiple way of doing things just makes the implementation more tricky
     // and does not add to the API. A pure functional constructor of an object seems better.
     (timeout: number): void;
     delay(timeout: number): void;

@@ -4,12 +4,14 @@ import DMP from './DMP';
 import MwAction from './MwAction';
 // import MwEditor from './MwEditor';
 import MwChange from './MwChange';
+import FzSerializable from './ds/FzSerializable';
+import FzShadow from './ds/FzShadow';
 
 const INITIAL_VERSION = 1;
 
 const dmp = new DMP();
 
-export default class MwShadow {
+export default class MwShadow implements FzSerializable<FzShadow> {
 
     /**
      * The local version number of the shadow document.
@@ -61,23 +63,54 @@ export default class MwShadow {
         this.merge = other.merge;
     }
 
+    rehydrate(value: FzShadow): MwShadow {
+        this.n = value.n;
+        this.m = value.m;
+        this.text = value.t;
+        this.happy = value.h;
+        this.merge = value.g;
+        return this;
+    }
+
+    dehydrate(): FzShadow {
+        const value: FzShadow = {
+            n: this.n,
+            m: this.m,
+            t: this.text,
+            h: this.happy,
+            g: this.merge
+        };
+        this.n = void 0;
+        this.m = void 0;
+        this.text = void 0;
+        this.happy = void 0;
+        this.merge = void 0;
+        return value;
+    }
+
     /**
      * Diffs the text against this shadow and tags the changes with the local version number.
      * Updates the shadow text and increments the local version number.
      * @returns The file change containing the ack
      */
-    public createDiffTextChange(text: string, fileId: string): MwChange {
+    public createDiffTextChange(text: string): MwChange {
         const action = this.diffAndTagWithLocalVersion(text);
         // Notice that updating the shadow text happens AFTER.
         this.updateTextAndIncrementLocalVersion(text);
-        return this.createFileChange(fileId, action);
+        return this.createFileChange(action);
 
     }
 
-    public createFullTextChange(text: string, fileId: string, overwrite: boolean): MwChange {
+    public createFullTextChange(text: string, overwrite: boolean): MwChange {
+        if (typeof text !== 'string') {
+            throw new TypeError("text must be a string");
+        }
+        if (typeof overwrite !== 'boolean') {
+            throw new TypeError("overwrite must be a boolean");
+        }
         this.updateTextAndIncrementLocalVersion(text);
         const action = this.createRawAction(overwrite);
-        return this.createFileChange(fileId, action);
+        return this.createFileChange(action);
     }
 
     /**
@@ -110,8 +143,8 @@ export default class MwShadow {
      * Encapsulates the rule that the file change acknowledges by providing
      * the remote version number.
      */
-    private createFileChange(fileId: string, action: MwAction): MwChange {
-        return { f: fileId, m: this.m, a: action };
+    private createFileChange(action: MwAction): MwChange {
+        return { m: this.m, a: action };
     }
 
     /**

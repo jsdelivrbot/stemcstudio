@@ -31,7 +31,6 @@ export default class RoomsController {
         }
         this.roomsService.createRoom(roomParams).then((room: RoomAgent) => {
             this.missionControl.room = room;
-            // The room handoff to mission control has happened, it's OK to release the local room reference.
             room.release();
             this.missionControl.connectWorkspaceToRoom();
             this.missionControl.uploadWorkspaceToRoom();
@@ -45,9 +44,10 @@ export default class RoomsController {
      */
     joinRoom(): void {
         this.modalDialog.prompt({ title: "Join Room", message: "Please enter the name of the room you would like to join.", text: "", placeholder: "r1234567" }).then((roomId) => {
-            this.roomsService.getRoom(roomId).then(function(room: RoomAgent) {
-                console.log(`So you'd like to join the '${JSON.stringify(room, null, 2)}'?`);
+            this.roomsService.getRoom(roomId).then((room: RoomAgent) => {
+                this.missionControl.room = room;
                 room.release();
+                this.missionControl.connectWorkspaceToRoom();
             }).catch(function(reason) {
                 console.warn(`Sorry, we could not get that room!`);
             });

@@ -7,10 +7,11 @@ import RoomParams from './RoomParams';
 import Room from './Room';
 import ServerWorkspace from './ServerWorkspace';
 import uniqueId from './uniqueId';
+import RoomValue from './RoomValue';
 import MwBroadcast from '../../synchronization/MwBroadcast';
-import MwEdit from '../../synchronization/MwEdit';
-import MwNode from '../../synchronization/MwNode';
-import FzNode from '../../synchronization/ds/FzNode';
+import MwEdits from '../../synchronization/MwEdits';
+import MwUnit from '../../synchronization/MwUnit';
+// import FzNode from '../../synchronization/ds/FzNode';
 
 const client = redis.createClient();
 
@@ -66,11 +67,17 @@ export function createRoom(request: express.Request, response: express.Response)
     // Create a node and then persist it to redis.
     // Every time we want to interact with the room we hydrate the node from redis.
     //
-    const sNode = new MwNode(roomId, new ServerWorkspace());
+    // const sNode = new MwNode(roomId, new ServerWorkspace());
     // We could set a few other bits of information (description, public, expire, created_at, updated_at)
-    // We don't literally shrink the node down to nothing, but we do get a JSON stringable form.
-    // Idea: Use JSON.stringify(this, null, 2) to elucidate the interfaces?
-    const value: FzNode = sNode.dehydrate();
+
+    // TODO: It might be cheaper, CPU-wise, to operate directly on the FzNode using functional
+    // programming rather than creating mutable objects. It might also be worth considering
+    // computations that can be suspended until the next tick.
+    const value: RoomValue = {
+        description: params.description,
+        public: params.public,
+        units: {}
+    };
 
     client.set(roomKey, JSON.stringify(value), function(err: Error, reply: any) {
         if (!err) {
@@ -99,16 +106,18 @@ export function getRoom(request: express.Request, response: express.Response): v
     // console.log(`getRoom GET ${JSON.stringify(params, null, 2)}`);
     const roomId = params.id;
     const roomKey = createRoomKey(roomId);
-    client.get(roomKey, function(err, reply) {
+    client.get(roomKey, function(err, reply: string) {
         if (!err) {
-            // const value: FzNode = JSON.parse(reply);
+            // TODO: Do we use more fine-grained objects in redis
+            // to reduce the CPU cost or parsing and serializing?
+            const value: RoomValue = JSON.parse(reply);
             // The value part does not have the id property, so we patch that in.
             // const sNode = new MwNode(roomId, new ServerWorkspace());
             // sNode.rehydrate(value);
             const room: Room = {
                 id: roomId,
-                description: "",
-                public: true
+                description: value.description,
+                public: value.public
             };
             response.status(200).send(room);
         }
@@ -119,33 +128,38 @@ export function getRoom(request: express.Request, response: express.Response): v
     });
 }
 
-export function setEdits(edits: MwEdit[], callback: (err: any, broadcast: MwBroadcast) => any) {
-    // console.log(`setEdits(edits: MwEdit[]), edits = ${JSON.stringify(edits, null, 2)}`);
-    // TODO: Create envelope for the edits so that we don't need to loop?
-    const iLen = edits.length;
-    for (let i = 0; i < iLen; i++) {
-        const edit = edits[i];
-        // const nodeId = edit.s;
-        const roomId = edit.t;
-        const roomKey = createRoomKey(roomId);
-        client.get(roomKey, function(err, reply) {
-            if (!err) {
-                const before: FzNode = JSON.parse(reply);
-                // console.log(`BEFORE: ${nodeId} => ${JSON.stringify(before, null, 2)}`);
-                const sNode = new MwNode(roomId, new ServerWorkspace());
-                sNode.rehydrate(before);
-                sNode.setEdits(edits);
-                // Create response messages for all clients.
-                const broadcast: MwBroadcast = sNode.getBroadcast();
-                const after: FzNode = sNode.dehydrate();
-                // console.log(`AFTER: ${nodeId} => ${JSON.stringify(after, null, 2)}`);
-                client.set(roomKey, JSON.stringify(after), function(err: Error, reply: any) {
-                    callback(err, broadcast);
-                });
+/**
+ * Setting edits on a pre-file basis.
+ * @param fromId The identifier of the room that the edits came from.
+ * @param roomId The identifier of the room that the edits are going to.
+ * @param fileName
+ */
+export function setEdits(fromId: string, roomId: string, fileName: string, edits: MwEdits, callback: (err: any, data: { roomId: string; fileName: string; broadcast: MwBroadcast }) => any) {
+    console.log(`setEdits('${roomId}', '${fileName}'), from '${fromId}'.`);
+    // TODO: Move towards more granular objects on Redis?
+    // The roomId selects the correct room here on the server in Redis.
+    const roomKey = createRoomKey(roomId);
+    client.get(roomKey, function(err, reply: string) {
+        if (!err) {
+            const room: RoomValue = JSON.parse(reply);
+            // console.log(`BEFORE: ${roomId} => ${JSON.stringify(room, null, 2)}`);
+            const unit = new MwUnit(new ServerWorkspace());
+            const frozen = room.units[fileName];
+            if (frozen) {
+                unit.rehydrate(frozen);
             }
-            else {
-                callback(err, void 0);
-            }
-        });
-    }
+            // The fromId lets the unit know where these edits came from.
+            unit.setEdits(fromId, edits);
+            const broadcast = unit.getBroadcast();
+            room.units[fileName] = unit.dehydrate();
+            // console.log(`AFTER: ${roomId} => ${JSON.stringify(room, null, 2)}`);
+            client.set(roomKey, JSON.stringify(room), function(err: Error, reply: any) {
+                // The roomId parameter is the `from` room because the broadcast contains all the `to` rooms.
+                callback(err, { roomId, fileName, broadcast });
+            });
+        }
+        else {
+            callback(err, void 0);
+        }
+    });
 }

@@ -1,136 +1,149 @@
 import Diff from './Diff';
 import DMP from './DMP';
 import isChanged from './isChanged';
+import MwBroadcast from './MwBroadcast';
 import MwChange from './MwChange';
-import MwEdit from './MwEdit';
+import MwEdits from './MwEdits';
 import MwEditor from './MwEditor';
 import MwShadow from './MwShadow';
+import FzRemote from './ds/FzRemote';
+import FzSerializable from './ds/FzSerializable';
 
 const dmp = new DMP();
 
-/**
- * This is where the shadowTexts are kept.
- * It may be useful to subclass MwLink in order to maintain connection information?
- */
-export default class MwLink {
+export default class MwRemote implements FzSerializable<FzRemote> {
+    /**
+     * 
+     */
+    shadow: MwShadow;
+
+    /**
+     * Backup Shadow may be maintained by a Server for guaranteed delivery.
+     */
+    backup: MwShadow;
+
+    /**
+     * The edits by destination node identifier.
+     */
+    private edits: MwBroadcast = {};
 
     /**
      * 
      */
-    shadows: { [fileId: string]: MwShadow } = {};
+    constructor() {
+        // Do nothing.
+    }
+
+    getEdits(nodeId: string): MwEdits {
+        return this.edits[nodeId];
+    }
 
     /**
-     * Backup Shadows may be maintained by a Server for guaranteed delivery.
+     * @param nodeId
+     * @param change
      */
-    backups: { [fileId: string]: MwShadow } = {};
+    addChange(nodeId: string, change: MwChange) {
+        const edit = this.edits[nodeId];
+        if (!edit) {
+            this.edits[nodeId] = { x: [] };
+        }
+        this.edits[nodeId].x.push(change);
+    }
+
+    containsRawAction(nodeId: string, text: string): boolean {
+        const edits = this.getEdits(nodeId);
+        const changes = edits.x;
+        if (changes.length === 1) {
+            const change = changes[0];
+            const action = change.a;
+            if (action && action.c === 'R' && action.x === text) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        else {
+            return false;
+        }
+    }
+
+    dehydrate(): FzRemote {
+        const value: FzRemote = {
+            s: this.shadow ? this.shadow.dehydrate() : void 0,
+            b: this.backup ? this.backup.dehydrate() : void 0,
+            e: this.edits
+        };
+        return value;
+    }
+
+    rehydrate(value: FzRemote): void {
+        this.shadow = value.s ? new MwShadow().rehydrate(value.s) : void 0;
+        this.backup = value.b ? new MwShadow().rehydrate(value.b) : void 0;
+        this.edits = value.e;
+    }
 
     /**
-     *
+     * 
      */
-    edits: MwEdit[] = [];
+    ensureShadow(): MwShadow {
+        if (!this.shadow) {
+            this.shadow = new MwShadow();
+            this.backup = new MwShadow();
+        }
+        return this.shadow;
+    }
 
     /**
      * We're looking to purge actions for a specified file based upon the action (local) version.
      * TODO: Rename to reflect the local nature of the version parameter.
-     * @param filename
+     * 
+     * @param The target node identifier.
+     * @param fileId
      * @param version
      */
-    discardActionsLe(filename: string, version: number) {
+    discardActionsLe(nodeId: string, version: number) {
         // console.log(`discardActionsLe(${filename}, ${version})`);
-        const edits = this.edits;
-        for (let i = 0; i < edits.length; i++) {
-            const edit = this.edits[i];
-            const changes = edit.x;
+        const edits = this.edits[nodeId];
+        if (edits) {
+            const changes = edits.x;
             // Care! The length of the changes may change in the body of the loop,
             // so check the length each iteration.
             for (let j = 0; j < changes.length; j++) {
                 const change = changes[j];
-                if (change.f === filename) {
-                    const action = change.a;
-                    if (action && action.n <= version) {
-                        changes.splice(j, 1);
-                        j--;
-                    }
-                }
-            }
-            if (changes.length === 0) {
-                edits.splice(i, 1);
-                i--;
-            }
-        }
-    }
-
-    discardFileChanges(fileId: string) {
-        const edits = this.edits;
-        for (let i = 0; i < edits.length; i++) {
-            const edit = edits[i];
-            const changes = edit.x;
-            // Care! The length of the changes may change in the body of the loop,
-            // so check the length each iteration.
-            for (let j = 0; j < changes.length; j++) {
-                if (changes[j].f === fileId) {
+                const action = change.a;
+                if (action && action.n <= version) {
                     changes.splice(j, 1);
                     j--;
                 }
             }
-            /*
             if (changes.length === 0) {
-                edits.splice(i, 1);
-                i--;
+                delete this.edits[nodeId];
             }
-            */
         }
     }
 
-    ensureShadow(fileId: string): MwShadow {
-        const existing = this.shadows[fileId];
-        if (!existing) {
-            const shadow = new MwShadow();
-            this.shadows[fileId] = shadow;
-            const backup = new MwShadow();
-            this.backups[fileId] = backup;
-            return shadow;
-        }
-        else {
-            return existing;
-        }
-    }
-
-    getShadow(fileId): MwShadow {
-        const shadow = this.shadows[fileId];
-        if (shadow) {
-            return shadow;
-        }
-        else {
-            throw new Error(`Missing shadow for file '${fileId}'.`);
-        }
-    }
-
-    getBackup(fileId): MwShadow {
-        const backup = this.backups[fileId];
-        if (backup) {
-            return backup;
-        }
-        else {
-            // We don't always have a backup.
-            return void 0;
-        }
+    /**
+     * @param nodeId The target node identifier.
+     */
+    discardChanges(nodeId: string) {
+        delete this.edits[nodeId];
     }
     /**
      * Converts the delta to a Diff[] using the shadow text.
      * Increments the remote version number.
      * Applies the patch to the editor.
      *
-     * @param fileId 
+     * @param nodeId The target node identifier.
      * @param editor
      * @param code
      * @param delta The encoded differences.
      * @param localVersion This comes from the File change.
      * @param remoteVersion This comes from the Delta change.
      */
-    patchDelta(fileId: string, editor: MwEditor, code: string, delta: string[], localVersion: number, remoteVersion: number) {
-        const shadow = this.getShadow(fileId);
-        const backup = this.getBackup(fileId);
+    patchDelta(nodeId: string, editor: MwEditor, code: string, delta: string[], localVersion: number, remoteVersion: number) {
+        const shadow = this.shadow;
+        const backup = this.backup;
         // The server offers a compressed delta of changes to be applied.
         // Handle the case where one party initiates with a Raw message and other party acknowledges with a Delta.
         if (typeof shadow.m !== 'number') {
@@ -139,7 +152,7 @@ export default class MwLink {
         if (localVersion !== shadow.n) {
             if (backup && localVersion === backup.n) {
                 // The previous response must have been lost.
-                this.discardFileChanges(fileId);
+                this.discardChanges(nodeId);
                 shadow.copy(backup);
                 shadow.happy = true;
             }
@@ -215,18 +228,17 @@ export default class MwLink {
      * Removes the shadow and backup for the specified file.
      * @returns The nullify change for incorporation into the edits.
      */
-    removeFile(fileId: string): MwChange {
+    removeFile(): MwChange {
         const change: MwChange = {
-            f: fileId,
-            m: this.getShadow(fileId).m,
+            m: this.shadow.m,
             a: {
                 c: 'N',
                 n: void 0,
                 x: void 0
             }
         };
-        delete this.shadows[fileId];
-        delete this.backups[fileId];
+        this.shadow = void 0;
+        this.backup = void 0;
         return change;
     }
 }

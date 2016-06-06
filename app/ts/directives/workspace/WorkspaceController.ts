@@ -630,23 +630,21 @@ export default class WorkspaceController implements WorkspaceMixin {
      */
     attachEditor(filename: string, mode: string, editor: Editor): void {
         // const startTime = performance.now();
+        this.missionControl.workspace.attachEditor(filename, editor);
 
         switch (mode) {
             case LANGUAGE_PYTHON: {
                 // TODO:
                 // editor.getSession().on('change', this.createChangeHandler(filename));
-                this.missionControl.workspace.attachEditor(filename, editor);
                 editor.getSession().on('outputFiles', this.createOutputFilesEventHandler(filename));
                 break;
             }
             case LANGUAGE_TYPE_SCRIPT: {
-                this.missionControl.workspace.attachEditor(filename, editor);
                 editor.getSession().on('outputFiles', this.createOutputFilesEventHandler(filename));
                 break;
             }
             case LANGUAGE_JAVA_SCRIPT: {
                 // TODO: We probably don't get anything for JavaScript.
-                this.missionControl.workspace.attachEditor(filename, editor);
                 editor.getSession().on('outputFiles', this.createOutputFilesEventHandler(filename));
                 break;
             }
@@ -783,21 +781,18 @@ export default class WorkspaceController implements WorkspaceMixin {
                 const handler = this.outputFilesEventHandlers[filename];
                 editor.getSession().off('outputFiles', handler);
                 this.deleteOutputFileHandler(filename);
-                this.missionControl.workspace.detachEditor(filename, editor);
                 break;
             }
             case LANGUAGE_JAVA_SCRIPT: {
                 const handler = this.outputFilesEventHandlers[filename];
                 editor.getSession().off('outputFiles', handler);
                 this.deleteOutputFileHandler(filename);
-                this.missionControl.workspace.detachEditor(filename, editor);
                 break;
             }
             case LANGUAGE_PYTHON: {
                 const handler = this.outputFilesEventHandlers[filename];
                 editor.getSession().off('outputFiles', handler);
                 this.deleteOutputFileHandler(filename);
-                this.missionControl.workspace.detachEditor(filename, editor);
                 break;
             }
             case LANGUAGE_CSS:
@@ -818,6 +813,7 @@ export default class WorkspaceController implements WorkspaceMixin {
                 console.warn(`detachEditor(mode => ${mode}) is being ignored.`);
             }
         }
+        this.missionControl.workspace.detachEditor(filename, editor);
         delete this.editors[filename];
 
         // const endTime = performance.now();

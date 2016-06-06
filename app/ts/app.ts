@@ -124,7 +124,7 @@ app.constant('FEATURE_LOGIN_ENABLED', true);
 app.constant('FEATURE_GIST_ENABLED', true);
 app.constant('FEATURE_I18N_ENABLED', true);
 app.constant('FEATURE_REPO_ENABLED', false);
-app.constant('FEATURE_SYNC_ENABLED', false);
+app.constant('FEATURE_SYNC_ENABLED', true);
 // Features for authentication.
 app.constant('FEATURE_AMAZON_SIGNIN_ENABLED', false);
 app.constant('FEATURE_GITHUB_SIGNIN_ENABLED', true);

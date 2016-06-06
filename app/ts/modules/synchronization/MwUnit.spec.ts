@@ -3,19 +3,16 @@ import DMP from './DMP';
 import Patch from './Patch';
 import MwEditor from './MwEditor';
 import MwWorkspace from './MwWorkspace';
-import MwNode from './MwNode';
+import MwUnit from './MwUnit';
 import ServerObj from './ServerObj';
-import uniqueId from './uniqueId';
 
 function inspect<T>(message: string, value: T): T { console.log(`${message}\n${JSON.stringify(value, null, 2)}`); return value; }
 
 const dmp = new DMP();
 
-const aId = 'Alice';
-const bId = 'Bobby';
-const sId = 'Server';
-
-const fileX = 'X.file';
+const aRoomId = 'Alice';
+const bRoomId = 'Bobby';
+const sRoomId = 'Steve';
 
 /**
  * 
@@ -77,51 +74,63 @@ const sff = new ServerFileFactory();
 /**
  * Utility function to perform synchronization between two nodes one way.
  */
-function syncFromTo(from: MwNode, to: MwNode, peek?: boolean) {
+function syncFromTo(from: MwUnit, fromRoomId: string, to: MwUnit, toRoomId: string, peek?: boolean) {
     if (peek) {
-        inspect(from.id, from);
-        inspect(to.id, to);
+        inspect(fromRoomId, from);
+        inspect(toRoomId, to);
     }
-    const edits = from.getEdits(to.id);
+    const edits = from.getEdits(toRoomId);
     if (peek) {
-        inspect(`Create message ${from.id} => ${to.id}`, edits);
+        inspect(`Create message ${fromRoomId} => ${toRoomId}`, edits);
     }
     if (peek) {
         // The from node will change in creation of th message.
-        inspect(from.id, from);
+        inspect(fromRoomId, from);
     }
     if (peek) {
-        inspect(`Send message ${from.id} => ${to.id}`, edits);
+        inspect(`Send message ${fromRoomId} => ${toRoomId}`, edits);
     }
-    to.setEdits(edits);
+    to.setEdits(fromRoomId, edits);
     if (peek) {
         // The to node will change upon receipt of the message.
-        inspect(`Receiver: ${to.id}`, to);
+        inspect(`Receiver: ${toRoomId}`, to);
     }
 }
 
-describe("MwNode", function() {
+function broadcastFrom(from: MwUnit, fromRoomId: string, targets: { [nodeId: string]: MwUnit }) {
+    const broadcast = from.getBroadcast();
+    const nodeIds = Object.keys(broadcast);
+    for (let i = 0; i < nodeIds.length; i++) {
+        const nodeId = nodeIds[i];
+        const edits = broadcast[nodeId];
+        const target = targets[nodeId];
+        target.setEdits(fromRoomId, edits);
+    }
+
+}
+
+describe("MwUnit", function() {
     describe("Alice synchronizes with server one way", function() {
         it("should add the file to Server room", function() {
             const initialString = "Macs had the original point and click UI.";
             const aString = "Macintoshes had the original point and click UI.";
 
-            const sNode = new MwNode(sId, sff);
-            const aNode = new MwNode(aId, eff);
+            const sNode = new MwUnit(sff);
+            const aNode = new MwUnit(eff);
 
             const aEditor = new EditorFile();
             aEditor.setText(initialString);
-            aNode.addEditor(fileX, aEditor);
+            aNode.setEditor(aEditor);
 
-            syncFromTo(aNode, sNode);
+            syncFromTo(aNode, aRoomId, sNode, sRoomId);
 
-            const sEditor = sNode.getEditor(fileX);
+            const sEditor = sNode.getEditor();
 
             expect(sEditor.getText()).toBe(initialString);
 
             aEditor.setText(aString);
 
-            syncFromTo(aNode, sNode);
+            syncFromTo(aNode, aRoomId, sNode, sRoomId);
 
             expect(sEditor.getText()).toBe(aString);
         });
@@ -131,49 +140,49 @@ describe("MwNode", function() {
             const initialString = "Macs had the original point and click UI.";
             const aString = "Macintoshes had the original point and click UI.";
 
-            const sNode = new MwNode(sId, sff);
-            const aNode = new MwNode(aId, eff);
+            const sNode = new MwUnit(sff);
+            const aNode = new MwUnit(eff);
 
             const editor = new EditorFile();
             editor.setText(initialString);
-            aNode.addEditor(fileX, editor);
+            aNode.setEditor(editor);
 
-            syncFromTo(aNode, sNode);
+            syncFromTo(aNode, aRoomId, sNode, sRoomId);
 
-            syncFromTo(sNode, aNode);
+            syncFromTo(sNode, sRoomId, aNode, aRoomId);
 
-            const serverFile = sNode.getEditor(fileX);
+            const serverFile = sNode.getEditor();
 
             expect(serverFile.getText()).toBe(initialString);
 
             editor.setText(aString);
 
-            syncFromTo(aNode, sNode);
+            syncFromTo(aNode, aRoomId, sNode, sRoomId);
 
             expect(serverFile.getText()).toBe(aString);
         });
     });
     describe("Bob joins the room", function() {
 
-        const sNode = new MwNode(sId, sff);
-        const aNode = new MwNode(aId, eff);
+        const sNode = new MwUnit(sff);
+        const aNode = new MwUnit(eff);
 
         // Alice add a file.
         const aEditor = new EditorFile();
         aEditor.setText("The quick brown fox jumped over the lazy dogs.");
-        aNode.addEditor(fileX, aEditor);
+        aNode.setEditor(aEditor);
 
         // Alice synchronizes the file to the server.
-        sNode.setEdits(aNode.getEdits(sNode.id));
+        sNode.setEdits(aRoomId, aNode.getEdits(sRoomId));
 
         // Server synchronizes the file back to Alice.
-        aNode.setEdits(sNode.getEdits(aNode.id));
+        aNode.setEdits(sRoomId, sNode.getEdits(aRoomId));
 
-        const bNode = new MwNode(bId, eff);
+        const bNode = new MwUnit(eff);
 
-        syncFromTo(sNode, bNode);
+        syncFromTo(sNode, sRoomId, bNode, bRoomId);
 
-        const bEditor = bNode.getEditor(fileX);
+        const bEditor = bNode.getEditor();
 
         it("should add the file to Bob's room", function() {
             expect(bEditor.getText()).toBe(aEditor.getText());
@@ -182,29 +191,29 @@ describe("MwNode", function() {
     describe("Alice makes an update, Bob does nothing", function() {
         const initialString = "Macs had the original point and click UI.";
         const aString = "Macintoshes had the original point and click UI.";
-        const sNode = new MwNode(sId, sff);
-        const aNode = new MwNode(aId, eff);
+        const sNode = new MwUnit(sff);
+        const aNode = new MwUnit(eff);
 
         const aFile = new EditorFile();
         aFile.setText(initialString);
-        aNode.addEditor(fileX, aFile);
+        aNode.setEditor(aFile);
 
         // Alice pushes.
-        sNode.setEdits(aNode.getEdits(sNode.id));
+        sNode.setEdits(aRoomId, aNode.getEdits(sRoomId));
         // Server later acks.
-        aNode.setEdits(sNode.getEdits(aNode.id));
+        aNode.setEdits(sRoomId, sNode.getEdits(aRoomId));
 
-        const bNode = new MwNode(bId, eff);
-        bNode.setEdits(sNode.getEdits(bNode.id));
+        const bNode = new MwUnit(eff);
+        bNode.setEdits(sRoomId, sNode.getEdits(bRoomId));
         // Bob acks back to the server.
-        sNode.setEdits(bNode.getEdits(sNode.id));
+        sNode.setEdits(bRoomId, bNode.getEdits(sRoomId));
         // const bFile = bNode.getFile(fileId);
 
         // Alice makes her editor change...
         aFile.setText(aString);
-        sNode.setEdits(aNode.getEdits(sNode.id));
+        sNode.setEdits(aRoomId, aNode.getEdits(sRoomId));
 
-        bNode.setEdits(sNode.getEdits(bNode.id));
+        bNode.setEdits(sRoomId, sNode.getEdits(bRoomId));
 
         it("should add the file to Bob's room", function() {
             expect(true).toBeTruthy();
@@ -215,31 +224,30 @@ describe("MwNode", function() {
         const initialString = "Macs had the original point and click UI.";
         const aString = "Macintoshes had the original point and click UI.";
 
-        const sNode = new MwNode(sId, sff);
-        const aNode = new MwNode(aId, eff);
+        const sNode = new MwUnit(sff);
+        const aNode = new MwUnit(eff);
 
-        const fileId = uniqueId();
         const aFile = new EditorFile();
         aFile.setText(initialString);
-        aNode.addEditor(fileId, aFile);
+        aNode.setEditor(aFile);
 
         // Alice pushes.
-        const m1 = aNode.getEdits(sNode.id);
-        sNode.setEdits(m1);
+        const m1 = aNode.getEdits(sRoomId);
+        sNode.setEdits(aRoomId, m1);
         // Server later acks, or maybe not.
         // aNode.setEdits(sNode.getEdits('A', false));
 
-        const bNode = new MwNode(bId, eff);
+        const bNode = new MwUnit(eff);
 
-        bNode.setEdits(sNode.getEdits(bNode.id));
+        bNode.setEdits(sRoomId, sNode.getEdits(bRoomId));
         // Bob acks back to the server.
-        sNode.setEdits(bNode.getEdits(sNode.id));
+        sNode.setEdits(bRoomId, bNode.getEdits(sRoomId));
         // const bFile = bNode.getFile(fileId);
 
         // Alice makes her editor change...
         aFile.setText(aString);
-        sNode.setEdits(aNode.getEdits(sNode.id));
-        bNode.setEdits(sNode.getEdits(bNode.id));
+        sNode.setEdits(aRoomId, aNode.getEdits(sRoomId));
+        bNode.setEdits(sRoomId, sNode.getEdits(bRoomId));
 
         it("should add the file to Bob's room", function() {
             expect(true).toBeTruthy();
@@ -252,50 +260,49 @@ describe("MwNode", function() {
         const bString = "Smith & Wesson had the original point and click UI.";
         const comboString = "Smith & Wesson had the original point and click interface.";
 
-        const sNode = new MwNode(sId, sff);
-        const aNode = new MwNode(aId, eff);
+        const sNode = new MwUnit(sff);
+        const aNode = new MwUnit(eff);
 
         // Alice adds a file to the room.
-        const fileId = "file.ext";
         const aFile = new EditorFile();
         aFile.setText(initialString);
-        aNode.addEditor(fileId, aFile);
+        aNode.setEditor(aFile);
 
         // Alice pushes to the server.
-        const msg01 = aNode.getEdits(sNode.id);
+        const msg01 = aNode.getEdits(sRoomId);
         // inspect("A => S", msg01);
-        sNode.setEdits(msg01);
+        sNode.setEdits(aRoomId, msg01);
 
         // Server acks back to Alice (or may be delayed).
-        const msg02 = sNode.getEdits(aNode.id);
-        aNode.setEdits(msg02);
+        const msg02 = sNode.getEdits(aRoomId);
+        aNode.setEdits(sRoomId, msg02);
 
         // Bob joins the room.
-        const bNode = new MwNode(bId, eff);
+        const bNode = new MwUnit(eff);
 
         // Bob receives synch message from server.
-        const msg03 = sNode.getEdits(bNode.id);
-        bNode.setEdits(msg03);
+        const msg03 = sNode.getEdits(bRoomId);
+        bNode.setEdits(sRoomId, msg03);
         // Bob acks back to server (or may be delayed).
-        const msg04 = bNode.getEdits(sNode.id);
-        sNode.setEdits(msg04);
-        const bFile = bNode.getEditor(fileId);
+        const msg04 = bNode.getEdits(sRoomId);
+        sNode.setEdits(bRoomId, msg04);
+        const bFile = bNode.getEditor();
 
         aFile.setText(aString);
         bFile.setText(bString);
 
         // Bob's updates get to the server first.
-        const msg05 = bNode.getEdits(sNode.id);
-        sNode.setEdits(msg05);
+        const msg05 = bNode.getEdits(sRoomId);
+        sNode.setEdits(bRoomId, msg05);
         // Alice's update get to the server last.
-        const msg06 = aNode.getEdits(sNode.id);
-        sNode.setEdits(msg06);
+        const msg06 = aNode.getEdits(sRoomId);
+        sNode.setEdits(aRoomId, msg06);
 
         // Server sends sync messages back to Alice and Bob.
-        const msg07 = sNode.getEdits(bNode.id);
-        bNode.setEdits(msg07);
-        const msg08 = sNode.getEdits(aNode.id);
-        aNode.setEdits(msg08);
+        const msg07 = sNode.getEdits(bRoomId);
+        bNode.setEdits(sRoomId, msg07);
+        const msg08 = sNode.getEdits(aRoomId);
+        aNode.setEdits(sRoomId, msg08);
 
         it("Alice has the combined message", function() {
             expect(aFile.getText()).toBe(comboString);
@@ -309,30 +316,29 @@ describe("MwNode", function() {
             const initialString = "Macs had the original point and click UI.";
             const aString = "Macintoshes had the original point and click UI.";
 
-            const sNode = new MwNode(sId, sff);
-            const aNode = new MwNode(aId, eff);
+            const sNode = new MwUnit(sff);
+            const aNode = new MwUnit(eff);
 
-            const fileId = "file.ext";
             const editor = new EditorFile();
             editor.setText(initialString);
-            aNode.addEditor(fileId, editor);
+            aNode.setEditor(editor);
 
-            const msg01 = aNode.getEdits(sNode.id);
-            sNode.setEdits(msg01);
+            const msg01 = aNode.getEdits(sRoomId);
+            sNode.setEdits(aRoomId, msg01);
 
-            const msg02 = sNode.getEdits(aNode.id);
-            aNode.setEdits(msg02);
+            const msg02 = sNode.getEdits(aRoomId);
+            aNode.setEdits(sRoomId, msg02);
 
-            const serverFile = sNode.getEditor(fileId);
+            const serverFile = sNode.getEditor();
             expect(serverFile.getText()).toBe(initialString);
 
             editor.setText(aString);
-            const msg03 = aNode.getEdits(sNode.id);
-            sNode.setEdits(msg03);
+            const msg03 = aNode.getEdits(sRoomId);
+            sNode.setEdits(aRoomId, msg03);
             expect(serverFile.getText()).toBe(aString);
 
             // Send msg03 twice
-            sNode.setEdits(msg03);
+            sNode.setEdits(aRoomId, msg03);
             expect(serverFile.getText()).toBe(aString);
         });
     });
@@ -341,33 +347,32 @@ describe("MwNode", function() {
             const initialString = "Macs had the original point and click UI.";
             const aString = "Macintoshes had the original point and click UI.";
 
-            const sNode = new MwNode(sId, sff);
-            const aNode = new MwNode(aId, eff);
+            const sNode = new MwUnit(sff);
+            const aNode = new MwUnit(eff);
 
-            const fileId = "file.ext";
             const editor = new EditorFile();
             editor.setText(initialString);
-            aNode.addEditor(fileId, editor);
+            aNode.setEditor(editor);
 
-            const msg01 = aNode.getEdits(sNode.id);
-            sNode.setEdits(msg01);
+            const msg01 = aNode.getEdits(sRoomId);
+            sNode.setEdits(aRoomId, msg01);
 
-            const msg02 = sNode.getEdits(aNode.id);
-            aNode.setEdits(msg02);
+            const msg02 = sNode.getEdits(aRoomId);
+            aNode.setEdits(sRoomId, msg02);
 
-            const serverFile = sNode.getEditor(fileId);
+            const serverFile = sNode.getEditor();
             expect(serverFile.getText()).toBe(initialString);
 
             editor.setText(aString);
-            aNode.getEdits(sNode.id);
+            aNode.getEdits(sRoomId);
             expect(serverFile.getText()).toBe(initialString);
-            aNode.getEdits(sNode.id);
+            aNode.getEdits(sRoomId);
             expect(serverFile.getText()).toBe(initialString);
 
-            const msg03 = aNode.getEdits(sNode.id);
-            sNode.setEdits(msg03);
+            const msg03 = aNode.getEdits(sRoomId);
+            sNode.setEdits(aRoomId, msg03);
             expect(serverFile.getText()).toBe(aString);
-            aNode.setEdits(sNode.getEdits(aNode.id));
+            aNode.setEdits(sRoomId, sNode.getEdits(aRoomId));
         });
     });
     describe("Lost return packet", function() {
@@ -378,111 +383,92 @@ describe("MwNode", function() {
             const cString = "Smith & Wesson had the original point and click interface.";
             const endString = "Smith & Wesson had the original point and click interface!";
 
-            const sNode = new MwNode(sId, sff);
-            const aNode = new MwNode(aId, eff);
+            const sNode = new MwUnit(sff);
+            const aNode = new MwUnit(eff);
 
-            const fileId = "file.ext";
             const aEditor = new EditorFile();
             aEditor.setText(initialString);
-            aNode.addEditor(fileId, aEditor);
+            aNode.setEditor(aEditor);
 
-            const msg01 = aNode.getEdits(sNode.id);
-            sNode.setEdits(msg01);
-            const msg02 = sNode.getEdits(aNode.id);
-            aNode.setEdits(msg02);
+            const msg01 = aNode.getEdits(sRoomId);
+            sNode.setEdits(aRoomId, msg01);
+            const msg02 = sNode.getEdits(aRoomId);
+            aNode.setEdits(sRoomId, msg02);
 
-            const sEditor = sNode.getEditor(fileId);
+            const sEditor = sNode.getEditor();
             expect(sEditor.getText()).toBe(initialString);
 
             aEditor.setText(aString);
-            const msg03 = aNode.getEdits(sNode.id);
-            sNode.setEdits(msg03);
+            const msg03 = aNode.getEdits(sRoomId);
+            sNode.setEdits(aRoomId, msg03);
             expect(sEditor.getText()).toBe(aString);
 
             // The server creates a return packet but it gets lost.
             sEditor.setText(cString);
-            sNode.getEdits(aNode.id);
+            sNode.getEdits(aRoomId);
 
             // Now the problem begins.
             // The message Alice sends has an ack version which is behind the server shadow version.
             // However, it does match the backup version. 
             aEditor.setText(bString);
-            const msg04 = aNode.getEdits(sNode.id);
-            sNode.setEdits(msg04);
+            const msg04 = aNode.getEdits(sRoomId);
+            sNode.setEdits(aRoomId, msg04);
             expect(sEditor.getText()).toBe(endString);
 
-            aNode.setEdits(sNode.getEdits(aNode.id));
+            aNode.setEdits(sRoomId, sNode.getEdits(aRoomId));
             expect(aEditor.getText()).toBe(endString);
         });
     });
     describe("Delete File on Server", function() {
         it("The server should create appropriate edits for all nodes", function() {
             const xString = "The contents of file X";
-            const yString = "The contents of file Y";
 
-            const sNode = new MwNode(sId, sff);
-            const aNode = new MwNode(aId, eff);
-            const bNode = new MwNode(bId, eff);
+            const sNode = new MwUnit(sff);
+            const aNode = new MwUnit(eff);
+            const bNode = new MwUnit(eff);
 
-            const fileX = "fileX";
             const axEditor = new EditorFile();
             axEditor.setText(xString);
-            aNode.addEditor(fileX, axEditor);
+            aNode.setEditor(axEditor);
 
-            const fileY = "fileY";
-            const ayEditor = new EditorFile();
-            ayEditor.setText(yString);
-            aNode.addEditor(fileY, ayEditor);
+            syncFromTo(aNode, aRoomId, sNode, sRoomId);
+            syncFromTo(sNode, sRoomId, aNode, aRoomId);
+            syncFromTo(sNode, sRoomId, bNode, bRoomId);
 
-            const msg01 = aNode.getEdits(sNode.id);
-            sNode.setEdits(msg01);
+            sNode.removeEditor();
+            expect(sNode.getEditor()).toBeUndefined();
 
-            aNode.setEdits(sNode.getEdits(aNode.id));
-            bNode.setEdits(sNode.getEdits(bNode.id));
+            syncFromTo(sNode, sRoomId, aNode, aRoomId);
+            syncFromTo(sNode, sRoomId, bNode, bRoomId);
 
-            expect(Object.keys(aNode.editors).length).toBe(2);
-            expect(Object.keys(bNode.editors).length).toBe(2);
-            expect(Object.keys(sNode.editors).length).toBe(2);
-
-            sNode.removeEditor(fileY);
-
-            expect(Object.keys(sNode.editors).length).toBe(1);
-
-            aNode.setEdits(sNode.getEdits(aNode.id));
-            expect(Object.keys(aNode.editors).length).toBe(1);
-
-            bNode.setEdits(sNode.getEdits(bNode.id));
-            expect(Object.keys(bNode.editors).length).toBe(1);
+            expect(aNode.getEditor()).toBeUndefined();
+            expect(bNode.getEditor()).toBeUndefined();
         });
     });
     describe("Edits for an unknown node", function() {
         it("nodes should lazily create their internal structures", function() {
             const initialString = "Macs had the original point and click UI.";
 
-            const sNode = new MwNode(sId, sff);
-            const aNode = new MwNode(aId, eff);
+            const sNode = new MwUnit(sff);
+            const aNode = new MwUnit(eff);
 
-            const fileId = "file.ext";
             const editor = new EditorFile();
             editor.setText(initialString);
-            aNode.addEditor(fileId, editor);
+            aNode.setEditor(editor);
 
             // Alice pushes changes to the Server.
-            sNode.setEdits(aNode.getEdits(sNode.id));
+            sNode.setEdits(aRoomId, aNode.getEdits(sRoomId));
 
             // Server acks Alice.
-            aNode.setEdits(sNode.getEdits(aNode.id));
+            aNode.setEdits(sRoomId, sNode.getEdits(aRoomId));
 
             // Request edits for a node the server does not know about.
-            const bEdits = sNode.getEdits(bId);
-            expect(bEdits.length).toBe(1);
-            const edit = bEdits[0];
-            expect(edit.s).toBe(sNode.id);
-            expect(edit.t).toBe(bId);
-            const changes = edit.x;
+            const edits = sNode.getEdits(bRoomId);
+            expect(edits).toBeDefined();
+            expect(edits.x).toBeDefined();
+            const changes = edits.x;
             expect(changes.length).toBe(1);
             const change = changes[0];
-            expect(change.f).toBe(fileId);
             expect(change.m).toBeUndefined();
             expect(change.a).toBeDefined();
             const action = change.a;
@@ -491,10 +477,73 @@ describe("MwNode", function() {
             expect(action.x).toBe(initialString);
 
             // Set edits on Bobby that it does not know about.
-            const bNode = new MwNode(bId, eff);
-            bNode.setEdits(bEdits);
+            const bNode = new MwUnit(eff);
+            bNode.setEdits(sRoomId, edits);
+        });
+    });
+    describe("Serialization", function() {
+        it("should add the file to Bob's room", function() {
+            const sNode = new MwUnit(sff);
+            const aNode = new MwUnit(eff);
 
-            expect(Object.keys(bNode.editors).length).toBe(1);
+            // Alice add a file.
+            const aEditor = new EditorFile();
+            aEditor.setText("The quick brown fox jumped over the lazy dogs.");
+            aNode.setEditor(aEditor);
+
+            // Alice synchronizes the file to the server.
+            sNode.setEdits(aRoomId, aNode.getEdits(sRoomId));
+
+            // Simulate hydration cycle.
+            const value = sNode.dehydrate();
+            const tNode = new MwUnit(sff);
+            tNode.rehydrate(value);
+
+            // Use tNode from now on.
+
+            // Server synchronizes the file back to Alice.
+            aNode.setEdits(sRoomId, tNode.getEdits(aRoomId));
+
+            const bNode = new MwUnit(eff);
+
+            syncFromTo(tNode, sRoomId, bNode, bRoomId);
+
+            const bEditor = bNode.getEditor();
+
+            expect(bEditor.getText()).toBe(aEditor.getText());
+        });
+    });
+    describe("Broadcast", function() {
+        it("should add the file to Bob's room", function() {
+            const initialString = "Macs had the original point and click UI.";
+            const aString = "Macintoshes had the original point and click UI.";
+
+            const sNode = new MwUnit(sff);
+            const clients: { [nodeId: string]: MwUnit } = {};
+            clients[aRoomId] = new MwUnit(eff);
+
+            const aEditor = new EditorFile();
+            aEditor.setText(initialString);
+            clients[aRoomId].setEditor(aEditor);
+
+            // Alice pushes.
+            syncFromTo(clients[aRoomId], aRoomId, sNode, sRoomId);
+            // Server later acks to all clients.
+            broadcastFrom(sNode, sRoomId, clients);
+
+            clients[bRoomId] = new MwUnit(eff);
+            syncFromTo(sNode, sRoomId, clients[bRoomId], bRoomId);
+            // Bob acks back to the server.
+            syncFromTo(clients[bRoomId], bRoomId, sNode, sRoomId);
+            const bEditor = clients[bRoomId].getEditor();
+
+            // Alice makes her editor change...
+            aEditor.setText(aString);
+            syncFromTo(clients[aRoomId], aRoomId, sNode, sRoomId);
+            broadcastFrom(sNode, sRoomId, clients);
+
+            expect(bEditor.getText()).toBe(aEditor.getText());
+            expect(bEditor.getText()).toBe(aString);
         });
     });
 });

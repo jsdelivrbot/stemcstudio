@@ -17,7 +17,7 @@ import multer = require('multer');
 import errorHandler = require('errorhandler');
 
 // Temporary disable rooms to prevent Redis from loading.
-// import * as rooms from './server/routes/rooms/index';
+import * as rooms from './server/routes/rooms/index';
 import * as stemcArXiv from './server/routes/stemcArXiv/index';
 
 const npm = require('./package.json');
@@ -25,7 +25,7 @@ const cfg = require('./configure');
 
 const GITHUB_APPLICATION_CLIENT_ID_KEY = 'GITHUB_APPLICATION_CLIENT_ID';
 const clientId = nconf.get(GITHUB_APPLICATION_CLIENT_ID_KEY);
-console.log(`${GITHUB_APPLICATION_CLIENT_ID_KEY} => ${clientId}`);
+console.log(`${GITHUB_APPLICATION_CLIENT_ID_KEY} is '${clientId}'.`);
 
 const isProductionMode = () => {
     switch (process.env.NODE_ENV || 'development') {
@@ -132,8 +132,8 @@ app.get("/github_callback", (req: express.Request, res: express.Response, next) 
 });
 
 // Temporary disable rooms to prevent Redis from loading.
-// app.post('/rooms', rooms.createRoom);
-// app.get('/rooms/:id', rooms.getRoom);
+app.post('/rooms', rooms.createRoom);
+app.get('/rooms/:id', rooms.getRoom);
 
 app.post('/search', stemcArXiv.search);
 app.post('/submissions', stemcArXiv.submit);
