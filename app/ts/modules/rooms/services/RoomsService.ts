@@ -60,7 +60,6 @@ export default class RoomsService {
         const d = this.$q.defer<boolean>();
         this.$http.delete<boolean>(`/rooms/${roomId}`)
             .then(function(promiseValue) {
-                console.log(`destroyRoom(${roomId}) => ${promiseValue}`);
                 d.resolve(true);
             })
             .catch(function(reason: { data: string; status: number; statusText: string }) {

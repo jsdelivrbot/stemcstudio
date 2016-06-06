@@ -1,4 +1,5 @@
 interface ModalDialogOptions {
+
     /**
      * Every dialog should have a title giving the context of the modality.
      */

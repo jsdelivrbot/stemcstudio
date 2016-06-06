@@ -26,10 +26,14 @@ import HomeController from './controllers/HomeController';
 import editor from './directives/editor/editor.component';
 import explorer from './directives/explorer/explorer.component';
 import ExplorerFilesController from './directives/explorer/ExplorerFilesController';
+
+// FIXME: This should be an internal module.
 import AlertController from './services/modalService/AlertController';
 import ConfirmController from './services/modalService/ConfirmController';
 import PromptController from './services/modalService/PromptController';
+import ShareController from './services/modalService/ShareController';
 import ModalDialogService from './services/modalService/ModalDialogService';
+
 import NaiveFlowSessionService from './services/flow/NaiveFlowSessionService';
 import ReteFlowService from './services/flow/ReteFlowService';
 import RepoController from './controllers/RepoController';
@@ -66,6 +70,7 @@ app.controller('ExplorerFilesController', ExplorerFilesController);
 app.controller('AlertController', AlertController);
 app.controller('ConfirmController', ConfirmController);
 app.controller('PromptController', PromptController);
+app.controller('ShareController', ShareController);
 
 // Controllers for cloud service modal dialogs.
 app.controller('ChooseGistOrRepoController', ChooseGistOrRepoController);

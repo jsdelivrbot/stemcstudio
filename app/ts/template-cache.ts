@@ -1172,4 +1172,24 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "</div>"
   );
 
+
+  $templateCache.put('share-modal.html',
+    "<div class=\"modal-header\" style=\"clear: both\">\n" +
+    "    <h3 class='modal-title' style=\"float: left;\"><logo-text version='{{version}}'/></h3>\n" +
+    "    <h3 class='modal-title' style=\"float: right;\">{{options.title}}</h3>\n" +
+    "</div>\n" +
+    "<div class=\"modal-body\">\n" +
+    "    <p>{{options.message}}</p>\n" +
+    "    <!-- Target -->\n" +
+    "    <input id='share' ng-model='options.text' type='text' readonly='readonly'></input>\n" +
+    "    <!-- Trigger -->\n" +
+    "    <button class=\"btn btn-primary\" data-clipboard-target=\"#share\" type=\"button\">\n" +
+    "        {{options.actionButtonText}}\n" +
+    "    </button>\n" +
+    "</div>\n" +
+    "<div class=\"modal-footer\">\n" +
+    "    <button class=\"btn btn-secondary\" type=\"button\" data-ng-click=\"close()\">{{options.closeButtonText}}</button>\n" +
+    "</div>"
+  );
+
 }]);

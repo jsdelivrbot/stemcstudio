@@ -1,0 +1,1 @@
+module.exports = require("npm:good-listener@1.1.7/src/listen.js");

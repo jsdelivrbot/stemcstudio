@@ -19,6 +19,7 @@ System.config({
     "angular2": "npm:angular2@2.0.0-beta.17",
     "bootstrap": "vendor/bootstrap/dist/js/npm",
     "bootstrap-dialog": "npm:bootstrap-dialog@1.34.6",
+    "clipboard": "npm:clipboard@1.5.10",
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.0.11",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.0.11",
     "jquery": "npm:jquery@2.2.4",
@@ -62,16 +63,6 @@ System.config({
     "github:jspm/nodelibs-https@0.1.0": {
       "https-browserify": "npm:https-browserify@0.0.0"
     },
-    "github:jspm/nodelibs-net@0.1.2": {
-      "buffer": "github:jspm/nodelibs-buffer@0.1.0",
-      "crypto": "github:jspm/nodelibs-crypto@0.1.0",
-      "http": "github:jspm/nodelibs-http@1.7.1",
-      "net": "github:jspm/nodelibs-net@0.1.2",
-      "process": "github:jspm/nodelibs-process@0.1.2",
-      "stream": "github:jspm/nodelibs-stream@0.1.0",
-      "timers": "github:jspm/nodelibs-timers@0.1.0",
-      "util": "github:jspm/nodelibs-util@0.1.0"
-    },
     "github:jspm/nodelibs-path@0.1.0": {
       "path-browserify": "npm:path-browserify@0.0.0"
     },
@@ -86,9 +77,6 @@ System.config({
     },
     "github:jspm/nodelibs-string_decoder@0.1.0": {
       "string_decoder": "npm:string_decoder@0.10.31"
-    },
-    "github:jspm/nodelibs-timers@0.1.0": {
-      "timers-browserify": "npm:timers-browserify@1.4.2"
     },
     "github:jspm/nodelibs-tty@0.1.0": {
       "tty-browserify": "npm:tty-browserify@0.0.0"
@@ -237,10 +225,18 @@ System.config({
       "stream": "github:jspm/nodelibs-stream@0.1.0",
       "string_decoder": "github:jspm/nodelibs-string_decoder@0.1.0"
     },
+    "npm:clipboard@1.5.10": {
+      "good-listener": "npm:good-listener@1.1.7",
+      "select": "npm:select@1.0.6",
+      "tiny-emitter": "npm:tiny-emitter@1.0.2"
+    },
     "npm:cliui@3.2.0": {
       "string-width": "npm:string-width@1.0.1",
       "strip-ansi": "npm:strip-ansi@3.0.1",
       "wrap-ansi": "npm:wrap-ansi@2.0.0"
+    },
+    "npm:closest@0.0.1": {
+      "matches-selector": "npm:matches-selector@0.0.1"
     },
     "npm:code-point-at@1.0.0": {
       "number-is-nan": "npm:number-is-nan@1.0.0"
@@ -290,12 +286,10 @@ System.config({
       "tty": "github:jspm/nodelibs-tty@0.1.0"
     },
     "npm:debug@2.2.0": {
-      "fs": "github:jspm/nodelibs-fs@0.1.2",
-      "ms": "npm:ms@0.7.1",
-      "net": "github:jspm/nodelibs-net@0.1.2",
-      "process": "github:jspm/nodelibs-process@0.1.2",
-      "tty": "github:jspm/nodelibs-tty@0.1.0",
-      "util": "github:jspm/nodelibs-util@0.1.0"
+      "ms": "npm:ms@0.7.1"
+    },
+    "npm:delegate@3.0.1": {
+      "closest": "npm:closest@0.0.1"
     },
     "npm:des.js@1.0.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
@@ -359,6 +353,9 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "create-hash": "npm:create-hash@1.1.2",
       "crypto": "github:jspm/nodelibs-crypto@0.1.0"
+    },
+    "npm:good-listener@1.1.7": {
+      "delegate": "npm:delegate@3.0.1"
     },
     "npm:has-binary@0.1.6": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
@@ -579,9 +576,6 @@ System.config({
     },
     "npm:strip-ansi@3.0.1": {
       "ansi-regex": "npm:ansi-regex@2.0.0"
-    },
-    "npm:timers-browserify@1.4.2": {
-      "process": "npm:process@0.11.3"
     },
     "npm:ui-select@0.17.1": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",

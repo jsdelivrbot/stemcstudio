@@ -4,6 +4,7 @@ import ModalDialog from './ModalDialog';
 import AlertOptions from './AlertOptions';
 import ConfirmOptions from './ConfirmOptions';
 import PromptOptions from './PromptOptions';
+import ShareOptions from './ShareOptions';
 
 const DEFAULT_MODAL_SETTINGS: uib.IModalSettings = {
     backdrop: true,
@@ -29,6 +30,14 @@ const DEFAULT_PROMPT_OPTIONS: PromptOptions = {
     placeholder: '',
     actionButtonText: 'OK',
     cancelButtonText: 'Cancel'
+};
+
+const DEFAULT_SHARE_OPTIONS: ShareOptions = {
+    title: 'Share',
+    message: '',
+    text: '',
+    actionButtonText: 'Copy to clipboard',
+    closeButtonText: 'Close'
 };
 
 /**
@@ -107,6 +116,30 @@ export default class ModalServiceClazz implements ModalDialog {
 
         const mergedOptions: PromptOptions = { title: '', message: '', text: '', placeholder: '' };
         ng.extend(mergedOptions, DEFAULT_PROMPT_OPTIONS, options);
+        settings.resolve = {
+            options: function() {
+                return mergedOptions;
+            }
+        };
+
+        return this.$uibModal.open(settings).result;
+    }
+
+    /**
+     *
+     */
+    share(options: PromptOptions): ng.IPromise<string> {
+
+        const settings: uib.IModalSettings = {
+            backdrop: 'static',
+            controller: 'ShareController',
+            templateUrl: 'share-modal.html'
+        };
+
+        ng.extend(settings, DEFAULT_MODAL_SETTINGS);
+
+        const mergedOptions: ShareOptions = { title: '', message: '', text: '' };
+        ng.extend(mergedOptions, DEFAULT_SHARE_OPTIONS, options);
         settings.resolve = {
             options: function() {
                 return mergedOptions;

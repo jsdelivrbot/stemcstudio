@@ -1,0 +1,1 @@
+module.exports = require("npm:select@1.0.6/src/select.js");

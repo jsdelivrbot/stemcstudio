@@ -1,0 +1,16 @@
+<div class="modal-header" style="clear: both">
+    <h3 class='modal-title' style="float: left;"><logo-text version='{{version}}'/></h3>
+    <h3 class='modal-title' style="float: right;">{{options.title}}</h3>
+</div>
+<div class="modal-body">
+    <p>{{options.message}}</p>
+    <!-- Target -->
+    <input id='share' ng-model='options.text' type='text' readonly='readonly'></input>
+    <!-- Trigger -->
+    <button class="btn btn-primary" data-clipboard-target="#share" type="button">
+        {{options.actionButtonText}}
+    </button>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-secondary" type="button" data-ng-click="close()">{{options.closeButtonText}}</button>
+</div>

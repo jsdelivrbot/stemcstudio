@@ -1,0 +1,1 @@
+module.exports = require("npm:delegate@3.0.1/src/delegate.js");

@@ -211,12 +211,7 @@
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
   "npm:debug@2.2.0": {
-    "ms": "npm:ms@0.7.1",
-    "tty": "github:jspm/nodelibs-tty@^0.1.0",
-    "util": "github:jspm/nodelibs-util@^0.1.0",
-    "fs": "github:jspm/nodelibs-fs@^0.1.0",
-    "net": "github:jspm/nodelibs-net@^0.1.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0"
+    "ms": "npm:ms@0.7.1"
   },
   "npm:callsite@1.0.0": {},
   "npm:yeast@0.1.2": {},
@@ -456,16 +451,6 @@
   "github:jspm/nodelibs-string_decoder@0.1.0": {
     "string_decoder": "npm:string_decoder@^0.10.31"
   },
-  "github:jspm/nodelibs-net@0.1.2": {
-    "net": "github:jspm/nodelibs-net@^0.1.0",
-    "crypto": "github:jspm/nodelibs-crypto@^0.1.0",
-    "stream": "github:jspm/nodelibs-stream@^0.1.0",
-    "util": "github:jspm/nodelibs-util@^0.1.0",
-    "timers": "github:jspm/nodelibs-timers@^0.1.0",
-    "http": "github:jspm/nodelibs-http@^1.7.0",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0"
-  },
   "npm:minimalistic-assert@1.0.0": {},
   "github:jspm/nodelibs-events@0.1.1": {
     "events": "npm:events@1.0.2"
@@ -571,9 +556,6 @@
     "events": "github:jspm/nodelibs-events@^0.1.1"
   },
   "npm:Base64@0.2.1": {},
-  "npm:timers-browserify@1.4.2": {
-    "process": "npm:process@~0.11.0"
-  },
   "npm:bn.js@4.11.3": {
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
   },
@@ -634,9 +616,6 @@
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "github:jspm/nodelibs-timers@0.1.0": {
-    "timers-browserify": "npm:timers-browserify@^1.1.0"
-  },
   "github:jspm/nodelibs-https@0.1.0": {
     "https-browserify": "npm:https-browserify@0.0.0"
   },
@@ -676,5 +655,22 @@
     "assert": "github:jspm/nodelibs-assert@^0.1.0",
     "fs": "github:jspm/nodelibs-fs@^0.1.0"
   },
-  "github:ace2ts/ace-workers@0.1.69": {}
+  "github:ace2ts/ace-workers@0.1.69": {},
+  "npm:clipboard@1.5.10": {
+    "good-listener": "npm:good-listener@^1.1.6",
+    "select": "npm:select@^1.0.6",
+    "tiny-emitter": "npm:tiny-emitter@^1.0.0"
+  },
+  "npm:tiny-emitter@1.0.2": {},
+  "npm:good-listener@1.1.7": {
+    "delegate": "npm:delegate@^3.0.0"
+  },
+  "npm:select@1.0.6": {},
+  "npm:delegate@3.0.1": {
+    "closest": "npm:closest@0.0.1"
+  },
+  "npm:closest@0.0.1": {
+    "matches-selector": "npm:matches-selector@0.0.1"
+  },
+  "npm:matches-selector@0.0.1": {}
 }

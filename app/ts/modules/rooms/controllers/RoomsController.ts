@@ -31,6 +31,21 @@ export default class RoomsController {
         }
         this.roomsService.createRoom(roomParams).then((room: RoomAgent) => {
             this.missionControl.room = room;
+            // This could use a flow.
+            // Share dialog...
+            // 1. OK button only
+            // 2. readonly input
+            // 3. No placeholder needed.
+            // 4. Label
+            this.modalDialog.share({
+                title: 'Share Room',
+                message: 'Please share the following room name so that others can join you.',
+                text: room.id
+            }).then((value) => {
+                // Do nothing.
+            }).catch((reason) => {
+                // 
+            });
             room.release();
             this.missionControl.connectWorkspaceToRoom();
             this.missionControl.uploadWorkspaceToRoom();
@@ -80,9 +95,14 @@ export default class RoomsController {
         const room = this.missionControl.room;
         if (room) {
             this.missionControl.disconnectWorkspaceFromRoom();
-            this.missionControl.room = void 0;
-            this.roomsService.destroyRoom(room.id);
-            room.release();
+            this.roomsService.destroyRoom(room.id).then(() => {
+                this.missionControl.room = void 0;
+                this.modalDialog.alert({ title: 'Destroy Room', message: `The room ${room.id} is no longer available.` });
+                room.release();
+            }).catch((reason) => {
+                this.modalDialog.alert({ title: 'Destroy Room', message: `The room ${room.id} could not be destroyed: ${reason}` });
+                room.release();
+            });
         }
     }
 }
