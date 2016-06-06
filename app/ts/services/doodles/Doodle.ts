@@ -44,6 +44,8 @@ export default class Doodle {
         }
         catch (e) {
             console.warn(`Unable to parse file '${FILENAME_META}' as JSON.`);
+            const file = this.ensurePackageJson();
+            console.warn(file.content);
             return void 0;
         }
     }

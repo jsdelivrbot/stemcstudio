@@ -88,6 +88,7 @@ export default class RoomAgent implements Shareable {
             // Having the roomId sent back seems a bit redundant since this room agent already knows it.
             // We can use it as either a safety check or to future proof for multiple client rooms per socket.
             const {fromId, roomId, fileName, edits} = data;
+            console.log(`RoomAgent receiving edits for file ${fileName}: ${JSON.stringify(edits, null, 2)}`);
             if (fromId === this.roomId && roomId == this.nodeId) {
                 for (let i = 0; i < this.roomListeners.length; i++) {
                     const roomListener = this.roomListeners[i];
@@ -107,7 +108,7 @@ export default class RoomAgent implements Shareable {
         this._socket.emit('node', this.nodeId, () => {
             // console.lg(`RoomAgent has identified itself as node ${this.nodeId}.`);
         });
-        this._socket.emit('join', this.roomId, () => {
+        this._socket.emit('join', { fromId: this.nodeId, roomId: this.roomId }, () => {
             // console.lg(`RoomAgent has joined the ${this.roomId} room.`);
         });
         // this._socket.disconnect()

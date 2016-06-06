@@ -26,38 +26,38 @@ export default function sockets(app: express.Express, server: http.Server) {
 
     io.on('connection', function(socket: SocketIO.Socket) {
         console.log('A socket connected.');
-        // The handshake data structure provides headers, time, address, xdomain, secure, issued, url, query.
-        // I've seen other apps use it to store custom properties.
-        // const hs = socket.handshake;
-        // const address: string = hs.address;
-        // const issued: number = hs.issued;
 
         socket.on('node', function(nodeId: string, ack: () => any) {
             console.log(`node(${nodeId}) request received.`);
             ack();
         });
 
-        socket.on('join', function(roomId: string, ack: () => any) {
-            console.log(`join(${roomId}) request received.`);
-            // const rooms: {[id: string]: string} = socket.rooms;
+        socket.on('join', function(data: { fromId: string, roomId: string }, ack: () => any) {
+            const {fromId, roomId} = data;
+            console.log(`join(${roomId}) request received from ${fromId}.`);
+            socketByNodeId[fromId] = socket;
+
             socket.leaveAll();
+
             socket.join(roomId, function(err) {
-                // Ignore
-                // The rooms map appears to be a set (i.e. with values the same as the keys).
-                console.log(JSON.stringify(socket.rooms));
+                ack();
+                rooms.getEdits(fromId, roomId, function(err, data: { fromId: string; roomId: string; files: { [fileName: string]: MwEdits } }) {
+                    const {fromId, roomId, files} = data;
+                    const fileNames = Object.keys(files);
+                    for (let i = 0; i < fileNames.length; i++) {
+                        const fileName = fileNames[i];
+                        const edits = files[fileName];
+                        socket.emit('edits', { fromId, roomId, fileName, edits });
+                    }
+                });
             });
-            ack();
         });
-
-
-        // The connection does not reveal who the user actually is.
-        // That can be done with another custom message.
 
         socket.on('edits', function(data: { fromId: string; roomId: string; fileName: string, edits: MwEdits }, ack: () => any) {
             const {fromId, roomId, fileName, edits} = data;
             socketByNodeId[fromId] = socket;
+            // TODO; Track the inverse mapping so that when a socket disconnects, we can clean up.
             rooms.setEdits(fromId, roomId, fileName, edits, function(err: any, data: { roomId: string; fileName: string; broadcast: MwBroadcast }) {
-                // We'll ack first but it seems we haven't conveyed what happened to the edits.
                 ack();
                 const {roomId, fileName, broadcast} = data;
                 if (!err) {
@@ -66,8 +66,8 @@ export default function sockets(app: express.Express, server: http.Server) {
                         for (let i = 0; i < nodeIds.length; i++) {
                             const nodeId = nodeIds[i];
                             const edits = broadcast[nodeId];
-                            console.log(`edits from ${roomId} ready for broadcast to room ${nodeId}`);
-                            // I'm not going to be doing a room broadcast here because the responses are specific to each client.
+                            console.log(`edits for ${fileName} from ${roomId} going to room ${nodeId}`);
+                            console.log(JSON.stringify(edits, null, 2));
                             const target = socketByNodeId[nodeId];
                             if (target) {
                                 target.emit('edits', { fromId: roomId, roomId: nodeId, fileName, edits });
@@ -84,7 +84,6 @@ export default function sockets(app: express.Express, server: http.Server) {
 
         socket.on('disconnect', function() {
             console.log('A socket disconnected.');
-            // io.sockets.emit('chat', 'SERVER', "User has left the building.");
         });
     });
 }

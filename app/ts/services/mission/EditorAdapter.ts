@@ -63,6 +63,8 @@ export default class EditorAdapter implements MwEditor {
         return this.editor.getValue();
     }
     setText(text: string): void {
+        console.log(`EditorAdapter.setText(...)`);
+        console.log(text);
         this.editor.setValue(text/*, cursorPos*/);
     }
     patch(patches: Patch[]): boolean[] {

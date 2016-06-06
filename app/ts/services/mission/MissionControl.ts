@@ -43,9 +43,6 @@ export default class MissionControl {
 
     private _room: RoomAgent;
     private _roomListener: RoomListener;
-    /**
-     * The node is the counterpart to the workspace for synchronization.
-     */
     private units: { [fileId: string]: MwUnit } = {};
     private _workspace: Workspace;
 
@@ -84,7 +81,7 @@ export default class MissionControl {
      */
     connectWorkspaceToRoom() {
         if (this._workspace && this._room) {
-
+            const workspace = new WorkspaceAdapter(this._workspace);
             // Enumerate the editors in the workspace and add them to the node.
             // This will enable the node to get/set the editor value, diff and apply patches.
             const fileNames = this._workspace.getEditorFileNames();
@@ -93,13 +90,13 @@ export default class MissionControl {
                 const editor = this.workspace.getEditor(fileName);
                 // Create the synchronization node associated with the workspace.
                 // This will enable the node to create and destroy editors.
-                const unit = new MwUnit(new WorkspaceAdapter(this._workspace));
+                const unit = new MwUnit(workspace);
                 unit.setEditor(new EditorAdapter(editor));
                 this.units[fileName] = unit;
             }
 
             // Add a listener to the room agent so that edits broadcast from the room are sent to the node.
-            this._roomListener = new UnitListener(this.units);
+            this._roomListener = new UnitListener(this.units, workspace);
             this._room.addListener(this._roomListener);
 
             // Add listeners for editor changes. These will begin the flow of diffs to the server.
@@ -141,6 +138,14 @@ export default class MissionControl {
                 const edits: MwEdits = unit.getEdits(this._room.id);
                 this._room.setEdits(fileId, edits);
             }
+        }
+        else {
+            console.warn("We appear to be missing a node and a room");
+        }
+    }
+    downloadWorkspaceFromRoom() {
+        if (this.units && this._room) {
+            console.log("TODO: downloadWorkspaceFromRoom");
         }
         else {
             console.warn("We appear to be missing a node and a room");

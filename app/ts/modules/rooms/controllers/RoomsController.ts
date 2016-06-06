@@ -63,6 +63,7 @@ export default class RoomsController {
                 this.missionControl.room = room;
                 room.release();
                 this.missionControl.connectWorkspaceToRoom();
+                this.missionControl.downloadWorkspaceFromRoom();
             }).catch(function(reason) {
                 console.warn(`Sorry, we could not get that room!`);
             });

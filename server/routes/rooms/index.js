@@ -28,6 +28,26 @@ client.on('end', function (err) {
 function createRoomKey(roomId) {
     return "room:" + roomId;
 }
+function inspectUnit(fileName, unit) {
+    console.log(fileName);
+    var frozen = unit.dehydrate();
+    var remotes = frozen.k;
+    var nodeIds = Object.keys(remotes);
+    for (var i = 0; i < nodeIds.length; i++) {
+        var nodeId = nodeIds[i];
+        var remote = remotes[nodeId];
+        var edits = remote.e;
+        var shadow = remote.s;
+        var n = shadow.n;
+        var m = shadow.m;
+        var text = shadow.t;
+        var happy = shadow.h;
+        console.log("Remote " + nodeId);
+        console.log("n: " + n + ", m: " + m + ", happy: " + happy + ", text: " + text);
+        console.log("edits: " + JSON.stringify(edits, null, 2));
+    }
+    unit.rehydrate(frozen);
+}
 function createRoom(request, response) {
     var params = request.body;
     params.description = isString_1.default(params.description) ? params.description : "";
@@ -93,8 +113,11 @@ function setEdits(fromId, roomId, fileName, edits, callback) {
             if (frozen) {
                 unit.rehydrate(frozen);
             }
+            inspectUnit(fileName, unit);
             unit.setEdits(fromId, edits);
+            inspectUnit(fileName, unit);
             var broadcast_1 = unit.getBroadcast();
+            inspectUnit(fileName, unit);
             room.units[fileName] = unit.dehydrate();
             client.set(roomKey, JSON.stringify(room), function (err, reply) {
                 callback(err, { roomId: roomId, fileName: fileName, broadcast: broadcast_1 });
@@ -106,6 +129,34 @@ function setEdits(fromId, roomId, fileName, edits, callback) {
     });
 }
 exports.setEdits = setEdits;
+function getEdits(fromId, roomId, callback) {
+    var roomKey = createRoomKey(roomId);
+    client.get(roomKey, function (err, reply) {
+        if (!err) {
+            var files_1 = {};
+            var room = JSON.parse(reply);
+            var fileNames = Object.keys(room.units);
+            for (var i = 0; i < fileNames.length; i++) {
+                var fileName = fileNames[i];
+                var unit = new MwUnit_1.default(new ServerWorkspace_1.default());
+                var frozen = room.units[fileName];
+                if (frozen) {
+                    unit.rehydrate(frozen);
+                }
+                var edits = unit.getEdits(fromId);
+                files_1[fileName] = edits;
+                room.units[fileName] = unit.dehydrate();
+            }
+            client.set(roomKey, JSON.stringify(room), function (err, reply) {
+                callback(err, { fromId: roomId, roomId: fromId, files: files_1 });
+            });
+        }
+        else {
+            callback(err, void 0);
+        }
+    });
+}
+exports.getEdits = getEdits;
 function destroyRoom(request, response) {
     var params = request.params;
     console.log("destroyRoom(" + JSON.stringify(params, null, 2) + ")");

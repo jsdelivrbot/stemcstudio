@@ -43,6 +43,28 @@ function createRoomKey(roomId: string): string {
     return `room:${roomId}`;
 }
 
+function inspectUnit(fileName: string, unit: MwUnit) {
+    console.log(fileName);
+    const frozen = unit.dehydrate();
+    const remotes = frozen.k;
+    const nodeIds = Object.keys(remotes);
+    for (let i = 0; i < nodeIds.length; i++) {
+        const nodeId = nodeIds[i];
+        const remote = remotes[nodeId];
+        const edits = remote.e;
+        const shadow = remote.s;
+        // const backup = remote.b;
+        const n = shadow.n;
+        const m = shadow.m;
+        const text = shadow.t;
+        const happy = shadow.h;
+        console.log(`Remote ${nodeId}`);
+        console.log(`n: ${n}, m: ${m}, happy: ${happy}, text: ${text}`);
+        console.log(`edits: ${JSON.stringify(edits, null, 2)}`);
+    }
+    unit.rehydrate(frozen);
+}
+
 /**
  * Creates a room for collaborating.
  */
@@ -149,8 +171,11 @@ export function setEdits(fromId: string, roomId: string, fileName: string, edits
                 unit.rehydrate(frozen);
             }
             // The fromId lets the unit know where these edits came from.
+            inspectUnit(fileName, unit);
             unit.setEdits(fromId, edits);
+            inspectUnit(fileName, unit);
             const broadcast = unit.getBroadcast();
+            inspectUnit(fileName, unit);
             room.units[fileName] = unit.dehydrate();
             // console.log(`AFTER: ${roomId} => ${JSON.stringify(room, null, 2)}`);
             client.set(roomKey, JSON.stringify(room), function(err: Error, reply: any) {
@@ -162,6 +187,40 @@ export function setEdits(fromId: string, roomId: string, fileName: string, edits
             callback(err, void 0);
         }
     });
+}
+
+/**
+ * After a user (remote room) has joined the room, they will require the edits that generate their workspace.
+ */
+export function getEdits(fromId: string, roomId: string, callback: (err, data: { fromId: string, roomId: string, files: { [fileName: string]: MwEdits } }) => any) {
+
+    const roomKey = createRoomKey(roomId);
+    client.get(roomKey, function(err, reply: string) {
+        if (!err) {
+            const files: { [fileName: string]: MwEdits } = {};
+            const room: RoomValue = JSON.parse(reply);
+            const fileNames = Object.keys(room.units);
+            for (let i = 0; i < fileNames.length; i++) {
+                const fileName = fileNames[i];
+                const unit = new MwUnit(new ServerWorkspace());
+                const frozen = room.units[fileName];
+                if (frozen) {
+                    unit.rehydrate(frozen);
+                }
+                const edits: MwEdits = unit.getEdits(fromId);
+                files[fileName] = edits;
+                room.units[fileName] = unit.dehydrate();
+            }
+            client.set(roomKey, JSON.stringify(room), function(err: Error, reply: any) {
+                // The roomId parameter is the `from` room because the broadcast contains all the `to` rooms.
+                callback(err, { fromId: roomId, roomId: fromId, files });
+            });
+        }
+        else {
+            callback(err, void 0);
+        }
+    });
+
 }
 
 /**
