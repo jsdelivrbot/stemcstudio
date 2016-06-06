@@ -1271,18 +1271,19 @@ export default class Selection implements EventBus<any, Selection> {
             range.cursor = range.end;
         }
 
-        var removed = this.rangeList.add(range);
+        const removed = this.rangeList.add(range);
 
         this.$onAddRange(range);
 
-        if (removed.length)
+        if (removed.length) {
             this.$onRemoveRange(removed);
+        }
 
         if (this.rangeCount > 1 && !this.inMultiSelectMode) {
             this.eventBus._signal("multiSelect");
             this.inMultiSelectMode = true;
             this.session.$undoSelect = false;
-            this.rangeList.attach(this.session);
+            this.rangeList.attachXYZ(this.session);
         }
 
         return $blockChangeEvents || this.fromOrientedRange(range);
@@ -1327,7 +1328,7 @@ export default class Selection implements EventBus<any, Selection> {
             this.inMultiSelectMode = false;
             this.eventBus._signal("singleSelect");
             this.session.$undoSelect = true;
-            this.rangeList.detach();
+            this.rangeList.detachXYZ();
         }
 
         lastRange = lastRange || this.ranges[0];

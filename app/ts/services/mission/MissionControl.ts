@@ -1,6 +1,9 @@
 import Delta from '../../widgets/editor/Delta';
 import Editor from '../../widgets/editor/Editor';
 import EditorAdapter from './EditorAdapter';
+// import Doodle from '../../services/doodles/Doodle';
+import IDoodleManager from '../../services/doodles/IDoodleManager';
+import ITemplate from '../../services/templates/ITemplate';
 import UnitListener from './UnitListener';
 import RoomAgent from '../../modules/rooms/services/RoomAgent';
 import RoomListener from '../../modules/rooms/services/RoomListener';
@@ -8,6 +11,9 @@ import Workspace from '../workspace/Workspace';
 import MwEdits from '../../modules/synchronization/MwEdits';
 import MwUnit from '../../modules/synchronization/MwUnit';
 import WorkspaceAdapter from './WorkspaceAdapter';
+import allEditsRaw from './allEditsRaw';
+import addMissingFilesToDoodle from './addMissingFilesToDoodle';
+import removeUnwantedFilesFromDoodle from './removeUnwantedFilesFromDoodle';
 
 const DEBOUNCE_DURATION_MILLISECONDS = 100;
 
@@ -37,13 +43,16 @@ function uploadFileEditsToRoom(fileId: string, units: { [fileId: string]: MwUnit
 }
 
 export default class MissionControl {
-    public static $inject: string[] = [
-        // Nothing yet.
-    ];
+    public static $inject: string[] = ['doodles'];
 
     private _room: RoomAgent;
     private _roomListener: RoomListener;
     private units: { [fileId: string]: MwUnit } = {};
+    /**
+     * The edits received during the download.
+     * These will be applied to editors as they come online.
+     */
+    private files: { [fileName: string]: MwEdits } = {};
     private _workspace: Workspace;
 
     /**
@@ -51,7 +60,7 @@ export default class MissionControl {
      */
     private changeHandlers: { [fileName: string]: (delta: Delta, editor: Editor) => any } = {};
 
-    constructor() {
+    constructor(private doodles: IDoodleManager) {
         // Nothing to see here.
     }
     get room(): RoomAgent {
@@ -146,6 +155,30 @@ export default class MissionControl {
     downloadWorkspaceFromRoom() {
         if (this.units && this._room) {
             console.log("TODO: downloadWorkspaceFromRoom");
+            // This could also be done through the rooms service.
+            this._room.download((err, files: { [fileName: string]: MwEdits }) => {
+                if (!err) {
+                    // Verify that all of the edits are Raw to begin with.
+                    if (allEditsRaw(files)) {
+                        // We make a new Doodle to accept the downloaded workspace.
+                        const template: ITemplate = { description: "", files: {}, dependencies: [], operatorOverloading: false };
+                        this.doodles.createDoodle(template, "Description could come from the room");
+                        const doodle = this.doodles.current();
+                        addMissingFilesToDoodle(doodle, files);
+                        // This will not be required since we are starting with a new Doodle.
+                        removeUnwantedFilesFromDoodle(doodle, files);
+                        // Save the downloaded edits for when the editors come online.
+                        this.files = files;
+                    }
+                    else {
+                        console.warn(JSON.stringify(files, null, 2));
+                    }
+                }
+                else {
+                    console.warn(`Unable to download workspace: ${err}`);
+                }
+            });
+            // doodle.files
         }
         else {
             console.warn("We appear to be missing a node and a room");

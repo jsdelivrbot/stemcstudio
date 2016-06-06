@@ -104,14 +104,11 @@ export default class RoomAgent implements Shareable {
         });
         // We'd rather connect outside the constructor, but OK for now.
         this._socket.connect();
-        // A custom message is used to tell the server that we want to join or leave a room.
-        this._socket.emit('node', this.nodeId, () => {
-            // console.lg(`RoomAgent has identified itself as node ${this.nodeId}.`);
-        });
-        this._socket.emit('join', { fromId: this.nodeId, roomId: this.roomId }, () => {
-            // console.lg(`RoomAgent has joined the ${this.roomId} room.`);
-        });
-        // this._socket.disconnect()
+        // const joinMessage = { fromId: this.nodeId, roomId: this.roomId };
+        // console.log(`joinMessage => ${JSON.stringify(joinMessage, null, 2)}`);
+        // this._socket.emit('join', joinMessage, () => {
+        // console.lg(`RoomAgent has joined the ${this.roomId} room.`);
+        //});
     }
     addRef(): number {
         if (this.refCount > 0) {
@@ -149,6 +146,18 @@ export default class RoomAgent implements Shareable {
     get id(): string {
         return this.roomId;
     }
+
+    /**
+     * Initiate a download of the remote room.
+     */
+    download(callback: (err, files: { [fileName: string]: MwEdits }) => any) {
+        const params = { fromId: this.nodeId, roomId: this.roomId };
+        console.log(`params => ${JSON.stringify(params, null, 2)}`);
+        this._socket.emit('download', params, (err: any, files: { [fileName: string]: MwEdits }) => {
+            callback(err, files);
+        });
+    }
+
     /**
      * fileName corresponds 1:1 with the edits.s, which is the MwUnit unique identifier.
      */

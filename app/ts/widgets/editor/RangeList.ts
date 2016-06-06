@@ -171,9 +171,12 @@ export default class RangeList {
         return this.ranges.splice(0, this.ranges.length);
     }
 
-    attach(session: EditSession) {
+    /**
+     * FIXME: Remove this coupling.
+     */
+    attachXYZ(session: EditSession) {
         if (this.session) {
-            this.detach();
+            this.detachXYZ();
         }
 
         this.session = session;
@@ -182,7 +185,10 @@ export default class RangeList {
         this.session.on('change', this.onChange);
     }
 
-    detach() {
+    /**
+     * FIXME: Remove this coupling.
+     */
+    detachXYZ() {
         if (!this.session) {
             return;
         }
@@ -190,6 +196,11 @@ export default class RangeList {
         this.session = null;
     }
 
+    /**
+     * FIXME: The session appears to be unused. This is a strange coupling.
+     * @param e
+     * @param session
+     */
     private $onChange(e, session: EditSession) {
         var changeRange: Range = e.data.range;
         if (e.data.action[0] === "i") {

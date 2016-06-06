@@ -2755,7 +2755,7 @@ export default class Editor implements EventBus<any, Editor> {
      */
     moveLinesUp(): void {
         // FIXME: Return type is broken.
-        this.$moveLines(function(firstRow, lastRow) {
+        this.$moveLines((firstRow, lastRow) => {
             return this.session.moveLinesUp(firstRow, lastRow);
         });
     }
@@ -2781,7 +2781,7 @@ export default class Editor implements EventBus<any, Editor> {
      */
     copyLinesUp(): void {
         // FIXME: The return types are broken.
-        this.$moveLines(function(firstRow, lastRow) {
+        this.$moveLines((firstRow, lastRow) => {
             this.session.duplicateLines(firstRow, lastRow);
             return 0;
         });
@@ -2795,7 +2795,7 @@ export default class Editor implements EventBus<any, Editor> {
      */
     copyLinesDown(): void {
         // FIXME: The return types are broken.
-        this.$moveLines(function(firstRow, lastRow) {
+        this.$moveLines((firstRow, lastRow) => {
             return this.session.duplicateLines(firstRow, lastRow);
         });
     }
@@ -2809,23 +2809,23 @@ export default class Editor implements EventBus<any, Editor> {
      * @private
      */
     private $moveLines(mover: (firstRow: number, lastRow: number) => any): void {
-        var selection = this.selection;
-        if (!selection['inMultiSelectMode'] || this.inVirtualSelectionMode) {
-            var range = selection.toOrientedRange();
-            var selectedRows: { first: number; last: number } = this.$getSelectedRows();
-            var linesMoved = mover.call(this, selectedRows.first, selectedRows.last);
+        const selection = this.selection;
+        if (!selection.inMultiSelectMode || this.inVirtualSelectionMode) {
+            const range = selection.toOrientedRange();
+            const selectedRows: { first: number; last: number } = this.$getSelectedRows();
+            const linesMoved = mover.call(this, selectedRows.first, selectedRows.last);
             range.moveBy(linesMoved, 0);
             selection.fromOrientedRange(range);
         }
         else {
-            var ranges = selection.rangeList.ranges;
-            selection.rangeList.detach();
+            const ranges = selection.rangeList.ranges;
+            selection.rangeList.detachXYZ();
 
-            for (var i = ranges.length; i--;) {
-                var rangeIndex = i;
-                var collapsedRows = ranges[i].collapseRows();
-                var last = collapsedRows.end.row;
-                var first = collapsedRows.start.row;
+            for (let i = ranges.length; i--;) {
+                let rangeIndex = i;
+                let collapsedRows = ranges[i].collapseRows();
+                const last = collapsedRows.end.row;
+                let first = collapsedRows.start.row;
                 while (i--) {
                     collapsedRows = ranges[i].collapseRows();
                     if (first - collapsedRows.end.row <= 1)
@@ -2835,14 +2835,14 @@ export default class Editor implements EventBus<any, Editor> {
                 }
                 i++;
 
-                var linesMoved = mover.call(this, first, last);
+                const linesMoved = mover.call(this, first, last);
                 while (rangeIndex >= i) {
                     ranges[rangeIndex].moveBy(linesMoved, 0);
                     rangeIndex--;
                 }
             }
             selection.fromOrientedRange(selection.ranges[0]);
-            selection.rangeList.attach(this.session);
+            selection.rangeList.attachXYZ(this.session);
         }
     }
 

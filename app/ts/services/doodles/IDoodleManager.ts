@@ -9,7 +9,10 @@ interface IDoodleManager {
     makeCurrent(doodle: Doodle): void;
     deleteDoodle(doodle: Doodle): void;
     updateStorage(): void;
-    createDoodle(template: ITemplate, description?: string);
+    /**
+     * Creates a new Doodle from the specified template and makes it the current doodle.
+     */
+    createDoodle(template: ITemplate, description?: string): void;
     suggestName(): string;
 }
 

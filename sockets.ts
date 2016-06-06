@@ -27,11 +27,26 @@ export default function sockets(app: express.Express, server: http.Server) {
     io.on('connection', function(socket: SocketIO.Socket) {
         console.log('A socket connected.');
 
-        socket.on('node', function(nodeId: string, ack: () => any) {
-            console.log(`node(${nodeId}) request received.`);
-            ack();
+        //
+        //
+        //
+        socket.on('download', function(data: { fromId: string, roomId: string }, ack: (err, data) => any) {
+            const {fromId, roomId} = data;
+            console.log(`download(${roomId}) request received from ${fromId}.`);
+            rooms.getEdits(fromId, roomId, function(err, data: { fromId: string; roomId: string; files: { [fileName: string]: MwEdits } }) {
+                if (!err) {
+                    const {files} = data;
+                    ack(err, files);
+                }
+                else {
+                    ack(err, void 0);
+                }
+            });
         });
 
+        //
+        // @deprecated
+        //
         socket.on('join', function(data: { fromId: string, roomId: string }, ack: () => any) {
             const {fromId, roomId} = data;
             console.log(`join(${roomId}) request received from ${fromId}.`);

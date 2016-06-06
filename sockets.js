@@ -6,9 +6,18 @@ function sockets(app, server) {
     var io = sio(server, {});
     io.on('connection', function (socket) {
         console.log('A socket connected.');
-        socket.on('node', function (nodeId, ack) {
-            console.log("node(" + nodeId + ") request received.");
-            ack();
+        socket.on('download', function (data, ack) {
+            var fromId = data.fromId, roomId = data.roomId;
+            console.log("download(" + roomId + ") request received from " + fromId + ".");
+            rooms.getEdits(fromId, roomId, function (err, data) {
+                if (!err) {
+                    var files = data.files;
+                    ack(err, files);
+                }
+                else {
+                    ack(err, void 0);
+                }
+            });
         });
         socket.on('join', function (data, ack) {
             var fromId = data.fromId, roomId = data.roomId;
