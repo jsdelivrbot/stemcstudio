@@ -134,6 +134,7 @@ app.get("/github_callback", (req: express.Request, res: express.Response, next) 
 // Temporary disable rooms to prevent Redis from loading.
 app.post('/rooms', rooms.createRoom);
 app.get('/rooms/:id', rooms.getRoom);
+app.delete('/rooms/:id', rooms.destroyRoom);
 
 app.post('/search', stemcArXiv.search);
 app.post('/submissions', stemcArXiv.submit);

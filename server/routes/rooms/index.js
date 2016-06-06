@@ -106,3 +106,20 @@ function setEdits(fromId, roomId, fileName, edits, callback) {
     });
 }
 exports.setEdits = setEdits;
+function destroyRoom(request, response) {
+    var params = request.params;
+    console.log("destroyRoom(" + JSON.stringify(params, null, 2) + ")");
+    var roomId = params.id;
+    var roomKey = createRoomKey(roomId);
+    client.del(roomKey, function (err, reply) {
+        if (!err) {
+            console.log(reply);
+            response.status(200).send({});
+        }
+        else {
+            console.log(err);
+            response.status(404).send({});
+        }
+    });
+}
+exports.destroyRoom = destroyRoom;

@@ -163,3 +163,23 @@ export function setEdits(fromId: string, roomId: string, fileName: string, edits
         }
     });
 }
+
+/**
+ * Destrot the room by removing the (roomKey, value) pair from Redis.
+ */
+export function destroyRoom(request: express.Request, response: express.Response): void {
+    const params: Room = request.params;
+    console.log(`destroyRoom(${JSON.stringify(params, null, 2)})`);
+    const roomId = params.id;
+    const roomKey = createRoomKey(roomId);
+    client.del(roomKey, function(err, reply) {
+        if (!err) {
+            console.log(reply);
+            response.status(200).send({});
+        }
+        else {
+            console.log(err);
+            response.status(404).send({});
+        }
+    });
+}

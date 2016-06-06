@@ -55,4 +55,17 @@ export default class RoomsService {
             });
         return d.promise;
     }
+
+    destroyRoom(roomId: string): ng.IPromise<boolean> {
+        const d = this.$q.defer<boolean>();
+        this.$http.delete<boolean>(`/rooms/${roomId}`)
+            .then(function(promiseValue) {
+                console.log(`destroyRoom(${roomId}) => ${promiseValue}`);
+                d.resolve(true);
+            })
+            .catch(function(reason: { data: string; status: number; statusText: string }) {
+                d.reject(reason);
+            });
+        return d.promise;
+    }
 }

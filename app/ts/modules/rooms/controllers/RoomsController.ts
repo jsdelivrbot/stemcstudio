@@ -77,6 +77,12 @@ export default class RoomsController {
      * 
      */
     destroyRoom(): void {
-        this.missionControl.room = void 0;
+        const room = this.missionControl.room;
+        if (room) {
+            this.missionControl.disconnectWorkspaceFromRoom();
+            this.missionControl.room = void 0;
+            this.roomsService.destroyRoom(room.id);
+            room.release();
+        }
     }
 }
