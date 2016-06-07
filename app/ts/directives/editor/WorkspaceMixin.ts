@@ -1,4 +1,4 @@
-import Editor from '../../widgets/editor/Editor';
+import Editor from '../../editor/Editor';
 
 interface WorkspaceMixin {
     attachEditor(filename: string, mode: string, editor: Editor): void;

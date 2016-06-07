@@ -1,6 +1,6 @@
 import Doodle from '../../services/doodles/Doodle';
 // import DoodleFile from '../../services/doodles/DoodleFile';
-import MwEdits from '../../modules/synchronization/MwEdits';
+import MwEdits from '../../synchronization/MwEdits';
 
 /**
  * @param slave The doodle that must conform to the master.

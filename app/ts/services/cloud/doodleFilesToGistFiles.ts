@@ -1,4 +1,4 @@
-import IDoodleFile from '../doodles/IDoodleFile';
+import DoodleFile from '../doodles/DoodleFile';
 import ensureFileContent from './ensureFileContent';
 
 /**
@@ -7,15 +7,15 @@ import ensureFileContent from './ensureFileContent';
  * The trash files represent files that are known to exist in GitHub and must be physically deleted.
  * This is done by including a mapping from filename to null.
  */
-export default function doodleFilesToGistFiles(dFiles: { [dName: string]: IDoodleFile }, trash: { [dName: string]: IDoodleFile }): { [gName: string]: { content: string } } {
+export default function doodleFilesToGistFiles(dFiles: { [dName: string]: DoodleFile }, trash: { [dName: string]: DoodleFile }): { [gName: string]: { content: string } } {
     const gFiles: { [gName: string]: { content: string } } = {};
 
     const dNames = Object.keys(dFiles);
     const iLen = dNames.length;
     for (let i = 0; i < iLen; i++) {
         const dName = dNames[i];
-        const dFile: IDoodleFile = dFiles[dName];
-        const gFile: { content: string } = { content: ensureFileContent(dName, dFile.content) };
+        const dFile: DoodleFile = dFiles[dName];
+        const gFile: { content: string } = { content: ensureFileContent(dName, dFile.document.getValue()) };
         gFiles[dName] = gFile;
     }
 

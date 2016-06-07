@@ -1,8 +1,4 @@
-import createDocument from './createDocument';
-import createEditor from './createEditor';
-import createEditSession from './createEditSession';
-import createRenderer from './createRenderer';
-import createUndoManager from './createUndoManager';
+import UndoManager from './UndoManager';
 import Document from './Document';
 import Editor from './Editor';
 import EditSession from './EditSession';
@@ -25,11 +21,11 @@ export default function edit(container: HTMLElement): Editor {
         container.innerHTML = "";
     }
 
-    const doc: Document = createDocument(text);
-    const session: EditSession = createEditSession(doc);
-    const renderer: Renderer = createRenderer(container);
-    const editor: Editor = createEditor(renderer, session);
-    const undoManager = createUndoManager();
+    const doc: Document = new Document(text);
+    const session: EditSession = new EditSession(doc);
+    const renderer: Renderer = new Renderer(container);
+    const editor: Editor = new Editor(renderer, session);
+    const undoManager = new UndoManager();
     editor.getSession().setUndoManager(undoManager);
     return editor;
 }

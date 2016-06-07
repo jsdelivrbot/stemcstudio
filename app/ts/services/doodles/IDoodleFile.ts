@@ -59,12 +59,6 @@ interface IDoodleFile {
      * (Gist)
      */
     type: string;
-
-    /**
-     * @method clone
-     * @return {IDoodleFile}
-     */
-    clone(): IDoodleFile;
 }
 
 export default IDoodleFile;

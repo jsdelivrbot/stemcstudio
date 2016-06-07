@@ -1,15 +1,16 @@
 import * as ng from 'angular';
-import HtmlMode from '../../widgets/editor/mode/HtmlMode';
-import JavaScriptMode from '../../widgets/editor/mode/JavaScriptMode';
-import JsonMode from '../../widgets/editor/mode/JsonMode';
-import PythonMode from '../../widgets/editor/mode/PythonMode';
-import TextMode from '../../widgets/editor/mode/TextMode';
-import TypeScriptMode from '../../widgets/editor/mode/TypeScriptMode';
-import createCssMode from '../../widgets/editor/mode/createCssMode';
-import createMarkdownMode from '../../widgets/editor/mode/createMarkdownMode';
-import Delta from '../../widgets/editor/Delta';
-import edit from '../../widgets/editor/edit';
-import Editor from '../../widgets/editor/Editor';
+import HtmlMode from '../../editor/mode/HtmlMode';
+import JavaScriptMode from '../../editor/mode/JavaScriptMode';
+import JsonMode from '../../editor/mode/JsonMode';
+import PythonMode from '../../editor/mode/PythonMode';
+import TextMode from '../../editor/mode/TextMode';
+import TypeScriptMode from '../../editor/mode/TypeScriptMode';
+import createCssMode from '../../editor/mode/createCssMode';
+import createMarkdownMode from '../../editor/mode/createMarkdownMode';
+import Document from '../../editor/Document';
+// import Delta from '../../editor/Delta';
+import edit from '../../editor/edit';
+import Editor from '../../editor/Editor';
 import EditorScope from './EditorScope';
 import ISettingsService from '../../services/settings/ISettingsService';
 import ITextService from '../../services/text/ITextService';
@@ -158,10 +159,12 @@ function factory(
         /**
          * When the editor changes, propagate back to the model.
          */
+        /*
         function onEditorChange(event: Delta, source: Editor) {
             const viewValue: string = editor.getValue();
             ngModel.$setViewValue(viewValue);
         }
+        */
 
         // formatters update the viewValue from the modelValue
         ngModel.$formatters.push(function(modelValue: string) {
@@ -193,14 +196,16 @@ function factory(
         // I'm not sure why, but wrapping seems to break things!
         //      $timeout(function() {
         ngModel.$render = function() {
-            const viewValue: string = ngModel.$viewValue;
-            if (typeof viewValue === 'string') {
-                editor.off('change', onEditorChange);
-                editor.setValue(viewValue, -1);
-                editor.on('change', onEditorChange);
+            console.log(`ngModel.$render function is being called.`);
+            const document: Document = ngModel.$viewValue;
+            if (document instanceof Document) {
+                // editor.off('change', onEditorChange);
+                // TODO: You can set a session but not a document.
+                editor.setValue(document.getValue(), -1);
+                // editor.on('change', onEditorChange);
             }
             else {
-                console.warn(`$render: Expecting typeof ngModel.$viewValue => '${typeof viewValue}' to be 'string'.`);
+                console.warn(`$render: ng-model (ngModel.$viewValue) must be a Document.`);
             }
             $timeout(function() {
                 resizeEditor();
@@ -219,7 +224,7 @@ function factory(
                 // FIXME: This is a bit dubious...
                 if (initialText && !ngModel.$viewValue) {
                     const viewValue: string = initialText;
-                    ngModel.$setViewValue(viewValue);
+                    ngModel.$setViewValue(new Document(viewValue));
                 }
             });
         }
@@ -228,7 +233,7 @@ function factory(
             console.warn("The transclude option is not set to true");
         }
 
-        editor.on('change', onEditorChange);
+        // editor.on('change', onEditorChange);
 
         // Handle movements of the resizable grabber.
         /*
@@ -269,7 +274,7 @@ function factory(
             workspace.detachEditor($scope.id, $scope.mode, editor);
             // Interestingly, there is no $off function, so assume Angular will handle the unhook.
             // editorsController.removeEditor(scope)
-            editor.off('change', onEditorChange);
+            // editor.off('change', onEditorChange);
 
             themeManager.removeEventListener(currentTheme, themeEventHandler);
 

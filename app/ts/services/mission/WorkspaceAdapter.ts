@@ -1,5 +1,5 @@
-import MwEditor from '../../modules/synchronization/MwEditor';
-import MwWorkspace from '../../modules/synchronization/MwWorkspace';
+import MwEditor from '../../synchronization/MwEditor';
+import MwWorkspace from '../../synchronization/MwWorkspace';
 import Workspace from '../workspace/Workspace';
 
 export default class WorkspaceAdapter implements MwWorkspace {

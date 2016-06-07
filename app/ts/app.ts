@@ -48,7 +48,7 @@ import CookieService from './services/cookie/CookieService';
 import githubSignInButton from './directives/githubSignIn/githubSignInButton';
 import googleSignInButton from './directives/googleSignIn/googleSignInButton';
 import IUuidService from './services/uuid/IUuidService';
-import ITranslateProvider from './modules/translate/ITranslateProvider';
+import ITranslateProvider from './translate/ITranslateProvider';
 import BodyController from './controllers/BodyController';
 import AboutController from './controllers/AboutController';
 import HomeController from './controllers/HomeController';
@@ -75,8 +75,8 @@ import propsFilter from './filters/propsFilter';
 // Local (AngularJS) modules.
 // Import them and then use their name as app module dependencies.
 import rooms from './modules/rooms/index';
-import stemcArXiv from './modules/stemcArXiv/index';
-import translate from './modules/translate/index';
+import stemcArXiv from './stemcArXiv/index';
+import translate from './translate/index';
 
 import Iso8601 from './services/iso8601/Iso8601';
 import MissionControl from './services/mission/MissionControl';

@@ -1,8 +1,8 @@
-import Delta from '../../widgets/editor/Delta';
-import EditSession from '../../widgets/editor/EditSession';
+import Delta from '../../editor/Delta';
+import EditSession from '../../editor/EditSession';
 
 /**
- * TODO: This could be an ACE interface.
+ * TODO: This could be an ACE interface?
  */
 interface ChangeHandler {
     (delta: Delta, session: EditSession): any;

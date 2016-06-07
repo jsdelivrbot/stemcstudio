@@ -1,5 +1,4 @@
 import app from '../../app';
-import Doodle from '../doodles/Doodle';
 import IOptionManager from '../options/IOptionManager';
 import ITemplate from './ITemplate';
 
@@ -13,6 +12,10 @@ import MINIMAL_SPEC_RUNNER from './MINIMAL_SPEC_RUNNER';
 import MINIMAL_EXTEND from './MINIMAL_EXTEND';
 import MINIMAL_VECTOR from './MINIMAL_VECTOR';
 import MINIMAL_VECTOR_SPEC from './MINIMAL_VECTOR_SPEC';
+import {LANGUAGE_HTML} from '../../languages/modes';
+import {LANGUAGE_TYPE_SCRIPT} from '../../languages/modes';
+import {LANGUAGE_CSS} from '../../languages/modes';
+import {LANGUAGE_MARKDOWN} from '../../languages/modes';
 
 /**
  * The `templates` service provides starting point doodles.
@@ -44,24 +47,25 @@ app.factory('templates', [
 
         // We really don't need a full Doodle here.
         // But maybe that won't save much?
-        const T0: Doodle = new Doodle(options);
-        T0.files = {};
-        T0.newFile(FILENAME_HTML).content = MINIMAL_HTML();
-        T0.newFile('index.ts').content = MINIMAL_BOOTSTRAP();
-        T0.newFile('greeting.ts').content = MINIMAL_GREETING();
-        T0.newFile('style.css').content = MINIMAL_CSS();
-        T0.newFile('README.md').content = MINIMAL_README();
-        T0.newFile('tests.html').content = MINIMAL_SPEC_RUNNER_HTML();
-        T0.newFile('tests.ts').content = MINIMAL_SPEC_RUNNER();
-        T0.newFile('extend.ts').content = MINIMAL_EXTEND();
-        T0.newFile('Vector.ts').content = MINIMAL_VECTOR();
-        T0.newFile('Vector.spec.ts').content = MINIMAL_VECTOR_SPEC();
-        // The following should trigger the creation of the package.json file.
-        T0.name = "getting-started";
-        T0.version = "0.1.0";
-        T0.description = "Getting Started with STEMCstudio";
-        T0.dependencies = ['DomReady', 'jasmine'];
-        T0.operatorOverloading = false;
+        const T0: ITemplate = {
+            description: "Getting Started with STEMCstudio",
+            files: {},
+            dependencies: ['DomReady', 'jasmine'],
+            operatorOverloading: false
+        };
+        T0.files[FILENAME_HTML] = { content: MINIMAL_HTML(), language: LANGUAGE_HTML };
+        T0.files['index.ts'] = { content: MINIMAL_BOOTSTRAP(), language: LANGUAGE_TYPE_SCRIPT };
+        T0.files['greeting.ts'] = { content: MINIMAL_GREETING(), language: LANGUAGE_TYPE_SCRIPT };
+        T0.files['style.css'] = { content: MINIMAL_CSS(), language: LANGUAGE_CSS };
+        T0.files['README.md'] = { content: MINIMAL_README(), language: LANGUAGE_MARKDOWN };
+        T0.files['tests.html'] = { content: MINIMAL_SPEC_RUNNER_HTML(), language: LANGUAGE_HTML };
+        T0.files['tests.ts'] = { content: MINIMAL_SPEC_RUNNER(), language: LANGUAGE_TYPE_SCRIPT };
+        T0.files['extend.ts'] = { content: MINIMAL_EXTEND(), language: LANGUAGE_TYPE_SCRIPT };
+        T0.files['Vector.ts'] = { content: MINIMAL_VECTOR(), language: LANGUAGE_TYPE_SCRIPT };
+        T0.files['Vector.spec.ts'] = { content: MINIMAL_VECTOR_SPEC(), language: LANGUAGE_TYPE_SCRIPT };
+        // TODO: The following should trigger the creation of the package.json file.
+        // T0.name = "getting-started";
+        // T0.version = "0.1.0";
 
         return [T0];
     }]);

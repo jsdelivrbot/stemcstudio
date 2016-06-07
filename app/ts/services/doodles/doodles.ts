@@ -1,10 +1,12 @@
 import app from '../../app';
+// TODO: Decouple from editor.
+import Document from '../../editor/Document';
 import Doodle from './Doodle';
 import DoodleFile from './DoodleFile';
-import IDoodle from './IDoodle';
 import IDoodleDS from './IDoodleDS';
-import IDoodleFile from './IDoodleFile';
 import IDoodleManager from './IDoodleManager';
+import ITemplate from '../templates/ITemplate';
+import ITemplateFile from '../templates/ITemplateFile';
 import IOptionManager from '../options/IOptionManager';
 import modeFromName from '../../utils/modeFromName';
 import doodlesToString from './doodlesToString';
@@ -36,19 +38,19 @@ function deserializeDoodles(doodles: IDoodleDS[], options: IOptionManager): Dood
             d.files = {};
 
             d.files[FILENAME_HTML] = new DoodleFile();
-            d.files[FILENAME_HTML].content = inDoodle[PROPERTY_HTML];
+            d.files[FILENAME_HTML].document = new Document(inDoodle[PROPERTY_HTML]);
             d.files[FILENAME_HTML].language = modeFromName(FILENAME_HTML);
 
             d.files[FILENAME_CODE] = new DoodleFile();
-            d.files[FILENAME_CODE].content = inDoodle[PROPERTY_CODE];
+            d.files[FILENAME_CODE].document = new Document(inDoodle[PROPERTY_CODE]);
             d.files[FILENAME_CODE].language = modeFromName(FILENAME_CODE);
 
             d.files[FILENAME_LIBS] = new DoodleFile();
-            d.files[FILENAME_LIBS].content = inDoodle[PROPERTY_LIBS];
+            d.files[FILENAME_LIBS].document = new Document(inDoodle[PROPERTY_LIBS]);
             d.files[FILENAME_LIBS].language = modeFromName(FILENAME_LIBS);
 
             d.files[FILENAME_LESS] = new DoodleFile();
-            d.files[FILENAME_LESS].content = inDoodle[PROPERTY_LESS];
+            d.files[FILENAME_LESS].document = new Document(inDoodle[PROPERTY_LESS]);
             d.files[FILENAME_LESS].language = modeFromName(FILENAME_LESS);
         }
         // FIXME: DRY by copying keys both directions.
@@ -61,7 +63,7 @@ function deserializeDoodles(doodles: IDoodleDS[], options: IOptionManager): Dood
     return ds;
 }
 
-function copyFiles(inFiles: { [name: string]: IDoodleFile }): { [name: string]: DoodleFile } {
+function copyFiles(inFiles: { [name: string]: ITemplateFile }): { [name: string]: DoodleFile } {
     const outFiles: { [name: string]: DoodleFile } = {};
     const names: string[] = Object.keys(inFiles);
     const iLen: number = names.length;
@@ -69,7 +71,7 @@ function copyFiles(inFiles: { [name: string]: IDoodleFile }): { [name: string]: 
         const name = names[i];
         const inFile = inFiles[name];
         const outFile: DoodleFile = new DoodleFile();
-        outFile.content = inFile.content;
+        outFile.document = new Document(inFile.content);
         outFile.language = inFile.language;
         outFiles[name] = outFile;
     }
@@ -97,10 +99,10 @@ app.factory('doodles', [
             function compareNumbers(a: number, b: number) {
                 return b - a;
             }
-            const nums: number[] = _doodles.filter(function(doodle: IDoodle) {
+            const nums: number[] = _doodles.filter(function(doodle: Doodle) {
                 return typeof doodle.description.match(new RegExp(UNTITLED)) !== 'null';
             }).
-                map(function(doodle: IDoodle) {
+                map(function(doodle: Doodle) {
                     return parseInt(doodle.description.replace(UNTITLED + ' ', '').trim(), 10);
                 }).
                 filter(function(num) {
@@ -122,7 +124,7 @@ app.factory('doodles', [
                 return _doodles.length;
             },
 
-            filter: function(callback: (doodle: IDoodle, index: number, array: IDoodle[]) => boolean): Doodle[] {
+            filter: function(callback: (doodle: Doodle, index: number, array: Doodle[]) => boolean): Doodle[] {
                 return _doodles.filter(callback);
             },
 
@@ -135,7 +137,7 @@ app.factory('doodles', [
                 }
             },
 
-            createDoodle: function(template: Doodle, description?: string): void {
+            createDoodle: function(template: ITemplate, description?: string): void {
                 if (!description) {
                     description = suggestName();
                 }

@@ -1,3 +1,5 @@
+// TODO: Decouple from editor.
+import Document from '../editor/Document';
 import Doodle from '../services/doodles/Doodle';
 import DoodleFile from '../services/doodles/DoodleFile';
 import modeFromName from './modeFromName';
@@ -27,22 +29,22 @@ function migrate1xTo2x(doodle: Doodle): Doodle {
         doodle.files = {};
 
         doodle.files[FILENAME_HTML] = new DoodleFile();
-        doodle.files[FILENAME_HTML].content = doodle[PROPERTY_HTML];
+        doodle.files[FILENAME_HTML].document = new Document(doodle[PROPERTY_HTML]);
         doodle.files[FILENAME_HTML].language = modeFromName(FILENAME_HTML);
         delete doodle[PROPERTY_HTML];
 
         doodle.files[FILENAME_CODE] = new DoodleFile();
-        doodle.files[FILENAME_CODE].content = doodle[PROPERTY_CODE];
+        doodle.files[FILENAME_CODE].document = new Document(doodle[PROPERTY_CODE]);
         doodle.files[FILENAME_CODE].language = modeFromName(FILENAME_CODE);
         delete doodle[PROPERTY_CODE];
 
         doodle.files[FILENAME_LIBS] = new DoodleFile();
-        doodle.files[FILENAME_LIBS].content = doodle[PROPERTY_LIBS];
+        doodle.files[FILENAME_LIBS].document = new Document(doodle[PROPERTY_LIBS]);
         doodle.files[FILENAME_LIBS].language = modeFromName(FILENAME_LIBS);
         delete doodle[PROPERTY_LIBS];
 
         doodle.files[FILENAME_LESS] = new DoodleFile();
-        doodle.files[FILENAME_LESS].content = doodle[PROPERTY_LESS];
+        doodle.files[FILENAME_LESS].document = new Document(doodle[PROPERTY_LESS]);
         doodle.files[FILENAME_LESS].language = modeFromName(FILENAME_LESS);
         delete doodle[PROPERTY_LESS];
     }

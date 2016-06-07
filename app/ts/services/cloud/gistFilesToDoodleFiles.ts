@@ -16,7 +16,7 @@ export default function gistFilesToDoodleFiles(gFiles: { [gName: string]: GistFi
         if (excludes.indexOf(gName) < 0) {
             const gFile = gFiles[gName];
             const dFile: DoodleFile = new DoodleFile();
-            dFile.content = gFile.content;
+            dFile.document.setValue(gFile.content);
             dFile.language = modeFromName(gName);
             dFile.raw_url = gFile.raw_url;
             dFile.size = gFile.size;

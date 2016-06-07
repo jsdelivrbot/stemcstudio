@@ -1,11 +1,11 @@
-import MwEditor from '../../modules/synchronization/MwEditor';
-import Patch from '../../modules/synchronization/Patch';
-import DIFF_EQUAL from '../../modules/synchronization/DIFF_EQUAL';
-import DIFF_DELETE from '../../modules/synchronization/DIFF_DELETE';
-import DIFF_INSERT from '../../modules/synchronization/DIFF_INSERT';
-import Editor from '../../widgets/editor/Editor';
-import Document from '../../widgets/editor/Document';
-import Range from '../../widgets/editor/Range';
+import MwEditor from '../../synchronization/MwEditor';
+import Patch from '../../synchronization/Patch';
+import DIFF_EQUAL from '../../synchronization/DIFF_EQUAL';
+import DIFF_DELETE from '../../synchronization/DIFF_DELETE';
+import DIFF_INSERT from '../../synchronization/DIFF_INSERT';
+import Editor from '../../editor/Editor';
+import Document from '../../editor/Document';
+import Range from '../../editor/Range';
 
 /**
  * Applies a patch to a document.

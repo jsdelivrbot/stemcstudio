@@ -1,5 +1,5 @@
 import app from '../app';
-import Doodle from '../services/doodles/Doodle';
+import ITemplate from '../services/templates/ITemplate';
 import IDoodleManager from '../services/doodles/IDoodleManager';
 import NewScope from '../scopes/NewScope';
 import * as ng from 'angular';
@@ -14,7 +14,7 @@ app.controller('new-controller', [
         $scope: NewScope,
         $state: ng.ui.IStateService,
         doodles: IDoodleManager,
-        templates: Doodle[],
+        templates: ITemplate[],
         STATE_DOODLE: string
     ) {
 

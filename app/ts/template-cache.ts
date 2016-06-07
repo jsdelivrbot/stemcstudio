@@ -482,7 +482,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "        <div id='doodle-container'>\n" +
     "            <explorer ng-model='currentDoodle().files' class='explorer' ng-show='isExplorerVisible'></explorer>\n" +
     "            <div id='editors' resizable r-directions=\"['right']\" r-flex='true' ng-if='doodleLoaded' ng-show='isExplorerVisible'>\n" +
-    "                <div editor ng-repeat='(name, file) in currentDoodle().files' ng-model='file.content' id='{{name}}' mode='{{file.language}}'\n" +
+    "                <div editor ng-repeat='(name, file) in currentDoodle().files' ng-model='file.document' id='{{name}}' mode='{{file.language}}'\n" +
     "                ng-show='isEditMode &amp;&amp; file.selected'></div>\n" +
     "            </div>\n" +
     "            <div id='output' ng-if='isViewVisible'></div>\n" +

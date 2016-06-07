@@ -1,6 +1,6 @@
 import WorkspaceLocal from './Workspace';
-import Editor from '../../widgets/editor/Editor';
-import Workspace from '../../widgets/editor/workspace/Workspace';
+import Editor from '../../editor/Editor';
+import Workspace from '../../editor/workspace/Workspace';
 import * as ng from 'angular';
 import PromiseManager from './PromiseManager';
 

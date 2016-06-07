@@ -1,10 +1,15 @@
-import IDoodleFile from './IDoodleFile';
+// TODO: Decouple from editor.
+import Document from '../../editor/Document';
 
 /**
- * @class DoodleFile
+ *
  */
-export default class DoodleFile implements IDoodleFile {
-    public content: string;
+export default class DoodleFile {
+    /**
+     * 
+     */
+    public document: Document;
+    // public content: string;
     /**
      * The file is open for editing.
      */
@@ -26,7 +31,8 @@ export default class DoodleFile implements IDoodleFile {
      * @constructor
      */
     constructor() {
-        this.content = "";
+        this.document = new Document("");
+        // this.content = "";
         this.isOpen = true;
         this.preview = false;
         this.selected = false;
@@ -38,7 +44,8 @@ export default class DoodleFile implements IDoodleFile {
      */
     clone(): DoodleFile {
         const copy = new DoodleFile();
-        copy.content = this.content;
+        copy.document = new Document(this.document.getValue());
+        // copy.content = this.content;
         copy.isOpen = this.isOpen;
         copy.language = this.language;
         copy.raw_url = this.raw_url;

@@ -1,5 +1,5 @@
-import MwChange from '../../modules/synchronization/MwChange';
-import MwEdits from '../../modules/synchronization/MwEdits';
+import MwChange from '../../synchronization/MwChange';
+import MwEdits from '../../synchronization/MwEdits';
 
 /**
  * Determines whether all of the edits in this workspace are Raw.

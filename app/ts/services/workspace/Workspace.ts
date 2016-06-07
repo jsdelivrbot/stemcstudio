@@ -1,5 +1,5 @@
 import * as ng from 'angular';
-import Editor from '../../widgets/editor/Editor';
+import Editor from '../../editor/Editor';
 
 /**
  * TODO: The concept of workspace needs to be separated from editors

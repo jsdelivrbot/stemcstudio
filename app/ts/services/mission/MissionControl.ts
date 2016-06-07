@@ -1,5 +1,5 @@
-import Delta from '../../widgets/editor/Delta';
-import Editor from '../../widgets/editor/Editor';
+import Delta from '../../editor/Delta';
+import Editor from '../../editor/Editor';
 import EditorAdapter from './EditorAdapter';
 // import Doodle from '../../services/doodles/Doodle';
 import IDoodleManager from '../../services/doodles/IDoodleManager';
@@ -8,8 +8,8 @@ import UnitListener from './UnitListener';
 import RoomAgent from '../../modules/rooms/services/RoomAgent';
 import RoomListener from '../../modules/rooms/services/RoomListener';
 import Workspace from '../workspace/Workspace';
-import MwEdits from '../../modules/synchronization/MwEdits';
-import MwUnit from '../../modules/synchronization/MwUnit';
+import MwEdits from '../../synchronization/MwEdits';
+import MwUnit from '../../synchronization/MwUnit';
 import WorkspaceAdapter from './WorkspaceAdapter';
 import allEditsRaw from './allEditsRaw';
 import addMissingFilesToDoodle from './addMissingFilesToDoodle';

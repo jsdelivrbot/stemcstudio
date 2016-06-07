@@ -1,10 +1,10 @@
 import * as ng from 'angular';
 import CredentialsService from '../../services/credentials/CredentialsService';
 import Base64Service from '../../services/base64/Base64Service';
-import Delta from '../../widgets/editor/Delta';
-import Editor from '../../widgets/editor/Editor';
-import EditSession from '../../widgets/editor/EditSession';
-import OutputFile from '../../widgets/editor/workspace/OutputFile';
+import Delta from '../../editor/Delta';
+import Editor from '../../editor/Editor';
+import EditSession from '../../editor/EditSession';
+import OutputFile from '../../editor/workspace/OutputFile';
 import CloudService from '../../services/cloud/CloudService';
 import detect1x from './detect1x';
 import Doodle from '../../services/doodles/Doodle';
@@ -26,7 +26,7 @@ import doodleGroom from '../../utils/doodleGroom';
 import MissionControl from '../../services/mission/MissionControl';
 import ModalDialog from '../../services/modalService/ModalDialog';
 import PublishDialog from '../../modules/publish/PublishDialog';
-import StemcArXiv from '../../modules/stemcArXiv/StemcArXiv';
+import StemcArXiv from '../../stemcArXiv/StemcArXiv';
 import FlowService from '../../services/flow/FlowService';
 import UploadFlow from './UploadFlow';
 import WorkspaceScope from '../../scopes/WorkspaceScope';
@@ -280,7 +280,7 @@ export default class WorkspaceController implements WorkspaceMixin {
                         return {type: 'info', msg: comment.body};
                     });
                 }).catch((reason) => {
-                    console.warn("Something is rotten in Denmark");
+                    console.warn(`getGistComments(${doodles.current().gistId}) failed: ${reason}`);
                 });
             }
         };

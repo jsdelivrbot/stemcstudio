@@ -128,7 +128,7 @@
         <div id='doodle-container'>
             <explorer ng-model='currentDoodle().files' class='explorer' ng-show='isExplorerVisible'></explorer>
             <div id='editors' resizable r-directions="['right']" r-flex='true' ng-if='doodleLoaded' ng-show='isExplorerVisible'>
-                <div editor ng-repeat='(name, file) in currentDoodle().files' ng-model='file.content' id='{{name}}' mode='{{file.language}}'
+                <div editor ng-repeat='(name, file) in currentDoodle().files' ng-model='file.document' id='{{name}}' mode='{{file.language}}'
                 ng-show='isEditMode &amp;&amp; file.selected'></div>
             </div>
             <div id='output' ng-if='isViewVisible'></div>

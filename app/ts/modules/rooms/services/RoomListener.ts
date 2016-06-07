@@ -1,4 +1,4 @@
-import MwEdits from '../../../modules/synchronization/MwEdits';
+import MwEdits from '../../../synchronization/MwEdits';
 
 interface RoomListener {
     /**

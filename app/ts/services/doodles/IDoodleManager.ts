@@ -1,6 +1,9 @@
 import Doodle from './Doodle';
 import ITemplate from '../templates/ITemplate';
 
+/**
+ * TODO: Move this towards being an API for LocalStorage.
+ */
 interface IDoodleManager {
     unshift(doodle: Doodle): void;
     length: number;

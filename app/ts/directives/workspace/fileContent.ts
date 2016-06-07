@@ -7,7 +7,7 @@ import Doodle from '../../services/doodles/Doodle';
 export default function fileContent(fileName: string, doodle: Doodle): string {
     const file = doodle.files[fileName];
     if (file) {
-        return file.content;
+        return file.document.getValue();
     }
     else {
         console.warn(`fileContent(${fileName}), ${fileName} does not exist.`);

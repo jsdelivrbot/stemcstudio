@@ -10,7 +10,7 @@ import Workspace from './Workspace';
 import EditorPosition from './EditorPosition';
 
 /**
- * @class TextCompleter
+ *
  */
 export default class WorkspaceCompleter implements Completer {
 

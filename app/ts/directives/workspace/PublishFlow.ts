@@ -4,8 +4,8 @@ import PublishDialog from '../../modules/publish/PublishDialog';
 import PublishFacts from './PublishFacts';
 import IDoodleManager from '../../services/doodles/IDoodleManager';
 import ModalDialog from '../../services/modalService/ModalDialog';
-import StemcArXiv from '../../modules/stemcArXiv/StemcArXiv';
-import SubmitParams from '../../modules/stemcArXiv/SubmitParams';
+import StemcArXiv from '../../stemcArXiv/StemcArXiv';
+import SubmitParams from '../../stemcArXiv/SubmitParams';
 
 /**
  * @class PublishFlow

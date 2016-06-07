@@ -1,7 +1,27 @@
 import app from '../app';
 import CopyScope from '../scopes/CopyScope';
+import DoodleFile from '../services/doodles/DoodleFile';
 import IDoodleManager from '../services/doodles/IDoodleManager';
 import ITemplate from '../services/templates/ITemplate';
+import ITemplateFile from '../services/templates/ITemplateFile';
+
+function mapDoodleFileToTemplateFile(doodleFile: DoodleFile): ITemplateFile {
+    const result: ITemplateFile = {
+        content: doodleFile.document.getValue(),
+        language: doodleFile.language
+    };
+    return result;
+}
+
+function mapDoodleFilesToTemplateFiles(doodleFiles: { [path: string]: DoodleFile }): { [path: string]: ITemplateFile } {
+    const result: { [path: string]: ITemplateFile } = {};
+    const paths = Object.keys(doodleFiles);
+    for (let i = 0; i < paths.length; i++) {
+        const path = paths[i];
+        result[path] = mapDoodleFileToTemplateFile(doodleFiles[path]);
+    }
+    return result;
+}
 
 app.controller('copy-controller', [
     '$scope',
@@ -21,7 +41,7 @@ app.controller('copy-controller', [
 
         const template: ITemplate = {
             description: copySource.description,
-            files: copySource.files,
+            files: mapDoodleFilesToTemplateFiles(copySource.files),
             dependencies: copySource.dependencies,
             operatorOverloading: copySource.operatorOverloading
         };

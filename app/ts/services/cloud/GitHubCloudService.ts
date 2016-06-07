@@ -112,7 +112,7 @@ export default class GitHubCloudService implements CloudService {
                         // The encoding will usually be 'base64'.
                         const fileContent = this.base64.decode(repoFile.content);
                         const file = doodle.newFile(repoFile.path);
-                        file.content = fileContent;
+                        file.document.setValue(fileContent);
                         // The sha is needed in order to perform an update.
                         file.sha = repoFile.sha;
                     }
@@ -190,7 +190,7 @@ export default class GitHubCloudService implements CloudService {
                                                 case 'base64': {
                                                     const content = base64.decode(blob.content);
                                                     const file = doodle.newFile(child.path);
-                                                    file.content = content;
+                                                    file.document.setValue(content);
                                                     file.sha = blob.sha;
                                                     break;
                                                 }
@@ -260,7 +260,7 @@ export default class GitHubCloudService implements CloudService {
         for (let p = 0; p < paths.length; p++) {
             const path = paths[p];
             const file = doodle.files[path];
-            const content = this.base64.encode(file.content);
+            const content = this.base64.encode(file.document.getValue());
             const encoding = 'base64';
             blobs.push(this.github.createBlob(owner, repo, { content, encoding }));
         }

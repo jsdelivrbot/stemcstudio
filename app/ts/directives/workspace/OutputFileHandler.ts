@@ -1,5 +1,5 @@
-import EditSession from '../../widgets/editor/EditSession';
-import OutputFile from '../../widgets/editor/workspace/OutputFile';
+import EditSession from '../../editor/EditSession';
+import OutputFile from '../../editor/workspace/OutputFile';
 
 /**
  * TODO: This could be an ACE interface?

@@ -6,7 +6,7 @@ import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
 import HitService from '../services/hits/HitService';
 import HomeScope from '../scopes/HomeScope';
 import ModalDialog from '../services/modalService/ModalDialog';
-import StemcArXiv from '../modules/stemcArXiv/StemcArXiv';
+import StemcArXiv from '../stemcArXiv/StemcArXiv';
 
 /**
  * @class HomeController

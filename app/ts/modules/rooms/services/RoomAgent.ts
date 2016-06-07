@@ -2,10 +2,10 @@ import io from 'socket.io-client';
 import Room from './Room';
 import RoomListener from './RoomListener';
 import Shareable from '../../../utils/Shareable';
-import MwAction from '../../../modules/synchronization/MwAction';
-import MwChange from '../../../modules/synchronization/MwChange';
-import MwEdits from '../../../modules/synchronization/MwEdits';
-import uniqueId from '../../../modules/synchronization/uniqueId';
+import MwAction from '../../../synchronization/MwAction';
+import MwChange from '../../../synchronization/MwChange';
+import MwEdits from '../../../synchronization/MwEdits';
+import uniqueId from '../../../synchronization/uniqueId';
 
 function peek(edits: MwEdits) {
     return edits.x.map((change: MwChange) => {

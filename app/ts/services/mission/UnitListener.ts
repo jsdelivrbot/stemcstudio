@@ -1,8 +1,8 @@
 import RoomListener from '../../modules/rooms/services/RoomListener';
-import MwEdits from '../../modules/synchronization/MwEdits';
-import MwEditor from '../../modules/synchronization/MwEditor';
-import MwUnit from '../../modules/synchronization/MwUnit';
-import MwWorkspace from '../../modules/synchronization/MwWorkspace';
+import MwEdits from '../../synchronization/MwEdits';
+import MwEditor from '../../synchronization/MwEditor';
+import MwUnit from '../../synchronization/MwUnit';
+import MwWorkspace from '../../synchronization/MwWorkspace';
 
 /**
  * Adapter that listens to the RoomAgent and sends syncronization messages to the node.

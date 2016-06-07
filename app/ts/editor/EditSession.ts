@@ -97,9 +97,9 @@ export default class EditSession implements EventBus<any, EditSession> {
      */
     public $undoSelect = true;
 
-    private $deltas;
+    private $deltas: { group: string; deltas: Delta[] | {}[] }[];
     private $deltasDoc: Delta[];
-    private $deltasFold;
+    private $deltasFold: {}[];
     private $fromUndo: boolean;
 
     public widgetManager: LineWidgetManager;
@@ -240,7 +240,7 @@ export default class EditSession implements EventBus<any, EditSession> {
     public lineWidgets: LineWidget[] = null;
     private lineWidgetsWidth: number;
     public lineWidgetWidth: number;
-    public $getWidgetScreenLength;
+    public $getWidgetScreenLength: () => number;
     /**
      * This is a marker identifier.
      */
@@ -590,36 +590,34 @@ export default class EditSession implements EventBus<any, EditSession> {
             this.$informUndoManager.cancel();
 
         if (undoManager) {
-            var self = this;
+            this.$syncInformUndoManager = () => {
+                this.$informUndoManager.cancel();
 
-            this.$syncInformUndoManager = function() {
-                self.$informUndoManager.cancel();
-
-                if (self.$deltasFold.length) {
-                    self.$deltas.push({
+                if (this.$deltasFold.length) {
+                    this.$deltas.push({
                         group: "fold",
-                        deltas: self.$deltasFold
+                        deltas: this.$deltasFold
                     });
-                    self.$deltasFold = [];
+                    this.$deltasFold = [];
                 }
 
-                if (self.$deltasDoc.length) {
-                    self.$deltas.push({
+                if (this.$deltasDoc.length) {
+                    this.$deltas.push({
                         group: "doc",
-                        deltas: self.$deltasDoc
+                        deltas: this.$deltasDoc
                     });
-                    self.$deltasDoc = [];
+                    this.$deltasDoc = [];
                 }
 
-                if (self.$deltas.length > 0) {
+                if (this.$deltas.length > 0) {
                     undoManager.execute({
                         action: "aceupdate",
-                        args: [self.$deltas, self],
-                        merge: self.mergeUndoDeltas
+                        args: [this.$deltas, self],
+                        merge: this.mergeUndoDeltas
                     });
                 }
-                self.mergeUndoDeltas = false;
-                self.$deltas = [];
+                this.mergeUndoDeltas = false;
+                this.$deltas = [];
             };
             this.$informUndoManager = createDelayedCall(this.$syncInformUndoManager);
         }
@@ -1306,7 +1304,6 @@ export default class EditSession implements EventBus<any, EditSession> {
                     callback(void 0);
                 }
                 else {
-                    // Something is rotten in Denmark.
                     callback(err);
                 }
             });
