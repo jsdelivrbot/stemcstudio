@@ -1090,33 +1090,12 @@ export default class Editor implements EventBus<any, Editor> {
     }
 
     /**
-     * This is a shortcut for the same method on the EitSession.
-     *
-     * @method setLanguageMode
-     * @param mode {LanguageMode}
-     * @param callback {(err: any) => any}
-     * @return {void}
-     */
-    setLanguageMode(mode: LanguageMode, callback: (err: any) => any): void {
-        return this.session.setLanguageMode(mode, callback);
-    }
-
-    /**
      * @method setPadding
      * @param padding {number}
      * @return {void}
      */
     setPadding(padding: number): void {
         return this.renderer.setPadding(padding);
-    }
-
-    /**
-     * @method setTabSize
-     * @param tabSize {number}
-     * @return {void}
-     */
-    setTabSize(tabSize: number): void {
-        return this.session.setTabSize(tabSize);
     }
 
     /**
@@ -1493,9 +1472,9 @@ export default class Editor implements EventBus<any, Editor> {
         this.$updateHighlightActiveLine();
     }
 
-    private onTokenizerUpdate(event, session: EditSession) {
-        var rows = event.data;
-        this.renderer.updateLines(rows.first, rows.last);
+    private onTokenizerUpdate(event: { data: FirstAndLast }, session: EditSession) {
+        const {first, last} = event.data;
+        this.renderer.updateLines(first, last);
     }
 
 
@@ -1736,7 +1715,7 @@ export default class Editor implements EventBus<any, Editor> {
      * @return {void} 
      */
     public onCopy(): void {
-        let copyCommand = this.commands.getCommandByName("copy");
+        const copyCommand = this.commands.getCommandByName("copy");
         if (copyCommand) {
             this.commands.exec(copyCommand, this);
         }
@@ -1749,7 +1728,7 @@ export default class Editor implements EventBus<any, Editor> {
      * @return {void}
      */
     public onCut(): void {
-        let cutCommand = this.commands.getCommandByName("cut");
+        const cutCommand = this.commands.getCommandByName("cut");
         if (cutCommand) {
             this.commands.exec(cutCommand, this);
         }
@@ -2463,13 +2442,13 @@ export default class Editor implements EventBus<any, Editor> {
      * @return {void}
      */
     toLowerCase(): void {
-        var originalRange = this.getSelectionRange();
+        const originalRange = this.getSelectionRange();
         if (this.selection.isEmpty()) {
             this.selection.selectWord();
         }
 
-        var range = this.getSelectionRange();
-        var text = this.session.getTextRange(range);
+        const range = this.getSelectionRange();
+        const text = this.session.getTextRange(range);
         this.session.replace(range, text.toLowerCase());
         this.selection.setSelectionRange(originalRange);
     }
@@ -2481,13 +2460,13 @@ export default class Editor implements EventBus<any, Editor> {
      * @return {void}
      */
     toUpperCase(): void {
-        var originalRange = this.getSelectionRange();
+        const originalRange = this.getSelectionRange();
         if (this.selection.isEmpty()) {
             this.selection.selectWord();
         }
 
-        var range = this.getSelectionRange();
-        var text = this.session.getTextRange(range);
+        const range = this.getSelectionRange();
+        const text = this.session.getTextRange(range);
         this.session.replace(range, text.toUpperCase());
         this.selection.setSelectionRange(originalRange);
     }
@@ -2542,7 +2521,7 @@ export default class Editor implements EventBus<any, Editor> {
      * @return {void}
      */
     blockIndent(): void {
-        var rows = this.$getSelectedRows();
+        const rows = this.$getSelectedRows();
         this.session.indentRows(rows.first, rows.last, "\t");
     }
 
@@ -2592,8 +2571,8 @@ export default class Editor implements EventBus<any, Editor> {
      * @return {void}
      */
     toggleCommentLines(): void {
-        var state = this.session.getState(this.getCursorPosition().row);
-        var rows = this.$getSelectedRows();
+        const state = this.session.getState(this.getCursorPosition().row);
+        const rows = this.$getSelectedRows();
         this.session.getMode().toggleCommentLines(state, this.session, rows.first, rows.last);
     }
 
@@ -2602,9 +2581,9 @@ export default class Editor implements EventBus<any, Editor> {
      * @return {void}
      */
     toggleBlockComment(): void {
-        var cursor = this.getCursorPosition();
-        var state = this.session.getState(cursor.row);
-        var range = this.getSelectionRange();
+        const cursor = this.getCursorPosition();
+        const state = this.session.getState(cursor.row);
+        const range = this.getSelectionRange();
         this.session.getMode().toggleBlockComment(state, this.session, range, cursor);
     }
 
@@ -2691,8 +2670,8 @@ export default class Editor implements EventBus<any, Editor> {
      * @return {void}
      */
     removeLines(): void {
-        var rows = this.$getSelectedRows();
-        var range;
+        const rows = this.$getSelectedRows();
+        let range;
         if (rows.first === 0 || rows.last + 1 < this.session.getLength())
             range = new Range(rows.first, 0, rows.last + 1, 0);
         else
@@ -2709,17 +2688,17 @@ export default class Editor implements EventBus<any, Editor> {
      * @return {void}
      */
     duplicateSelection(): void {
-        var selection = this.selection;
-        var session = this.session;
-        var range = selection.getRange();
-        var reverse = selection.isBackwards();
+        const selection = this.selection;
+        const session = this.session;
+        const range = selection.getRange();
+        const reverse = selection.isBackwards();
         if (range.isEmpty()) {
-            var row = range.start.row;
+            const row = range.start.row;
             session.duplicateLines(row, row);
         }
         else {
-            var point = reverse ? range.start : range.end;
-            var endPoint = session.insert(point, session.getTextRange(range));
+            const point = reverse ? range.start : range.end;
+            const endPoint = session.insert(point, session.getTextRange(range));
             range.start = point;
             range.end = endPoint;
 
@@ -3053,8 +3032,8 @@ export default class Editor implements EventBus<any, Editor> {
      * @return {void}
      */
     centerSelection(): void {
-        var range = this.getSelectionRange();
-        var pos = {
+        const range = this.getSelectionRange();
+        const pos = {
             row: Math.floor(range.start.row + (range.end.row - range.start.row) / 2),
             column: Math.floor(range.start.column + (range.end.column - range.start.column) / 2)
         };

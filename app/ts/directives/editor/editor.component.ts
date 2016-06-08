@@ -69,8 +69,8 @@ function factory(
         // This event listener gets removed in onDestroyScope
         themeManager.addEventListener(currentTheme, themeEventHandler);
 
-        // The following are starting to look very similar!
-        // We must 
+        // Set properties that pertain to rendering.
+        // Don't set session attributes here!
         editor.setThemeDark(true);
         editor.setPadding(4);
         editor.setShowInvisibles(settings.showInvisibles);
@@ -80,16 +80,6 @@ function factory(
         attrs.$observe<boolean>('readonly', function(readOnly: boolean) {
             editor.setReadOnly(readOnly);
         });
-
-        /**
-         * When the editor changes, propagate back to the model.
-         */
-        /*
-        function onEditorChange(event: Delta, source: Editor) {
-            const viewValue: string = editor.getValue();
-            ngModel.$setViewValue(viewValue);
-        }
-        */
 
         // formatters update the viewValue from the modelValue
         ngModel.$formatters.push(function(modelValue: string) {
@@ -117,27 +107,21 @@ function factory(
 
         // The basic idea here is to set the $render callback function that will be used to take
         // the model value and use it to update the view (editor).
-        // An 'improvement' is to wrap this inside a $timeout in order to delay the handling of changes.
-        // I'm not sure why, but wrapping seems to break things!
-        //      $timeout(function() {
         ngModel.$render = function() {
             const editSession: EditSession = ngModel.$viewValue;
             if (editSession instanceof EditSession) {
+                editor.setSession(editSession);
                 const undoManager = new UndoManager();
                 editSession.setUndoManager(undoManager);
-                // editor.off('change', onEditorChange);
-                // FIXME: Delay the creation of the editor so that we don't create two EditSession(s).
-                editor.setSession(editSession);
-                // TODO: Perhaps these setting don't need to be applied here?
-                editor.getSession().setTabSize(2);
-                editor.getSession().setUseSoftTabs(true);
+                editSession.setTabSize(2);
+                editSession.setUseSoftTabs(true);
                 // Setting displayIndentGuides requires an editSession.
                 editor.setDisplayIndentGuides(settings.displayIndentGuides);
                 // We must wait for the $render function to be called so that we have a session.
                 switch ($scope.mode) {
                     case LANGUAGE_PYTHON: {
-                        editor.getSession().setUseWorker(false);
-                        editor.setLanguageMode(new PythonMode('/js/worker.js', workerImports), function(err: any) {
+                        editSession.setUseWorker(false);
+                        editSession.setLanguageMode(new PythonMode('/js/worker.js', workerImports), function(err: any) {
                             if (err) {
                                 console.warn(`${$scope.mode} => ${err}`);
                             }
@@ -146,7 +130,7 @@ function factory(
                         break;
                     }
                     case LANGUAGE_JAVA_SCRIPT: {
-                        editor.setLanguageMode(new JavaScriptMode('/js/worker.js', workerImports), function(err: any) {
+                        editSession.setLanguageMode(new JavaScriptMode('/js/worker.js', workerImports), function(err: any) {
                             if (err) {
                                 console.warn(`${$scope.mode} => ${err}`);
                             }
@@ -155,7 +139,7 @@ function factory(
                         break;
                     }
                     case LANGUAGE_TYPE_SCRIPT: {
-                        editor.setLanguageMode(new TypeScriptMode('/js/worker.js', workerImports), function(err: any) {
+                        editSession.setLanguageMode(new TypeScriptMode('/js/worker.js', workerImports), function(err: any) {
                             if (err) {
                                 console.warn(`${$scope.mode} => ${err}`);
                             }
@@ -164,7 +148,7 @@ function factory(
                         break;
                     }
                     case LANGUAGE_HTML: {
-                        editor.setLanguageMode(new HtmlMode('/js/worker.js', workerImports), function(err: any) {
+                        editSession.setLanguageMode(new HtmlMode('/js/worker.js', workerImports), function(err: any) {
                             if (err) {
                                 console.warn(`${$scope.mode} => ${err}`);
                             }
@@ -173,7 +157,7 @@ function factory(
                         break;
                     }
                     case LANGUAGE_JSON: {
-                        editor.setLanguageMode(new JsonMode('/js/worker.js', workerImports), function(err: any) {
+                        editSession.setLanguageMode(new JsonMode('/js/worker.js', workerImports), function(err: any) {
                             if (err) {
                                 console.warn(`${$scope.mode} => ${err}`);
                             }
@@ -184,8 +168,8 @@ function factory(
                     case LANGUAGE_CSS:
                     case LANGUAGE_LESS: {
                         // If we don't use the worker then we don't get a confirmation.
-                        editor.getSession().setUseWorker(false);
-                        editor.setLanguageMode(createCssMode('/js/worker.js', workerImports), function(err: any) {
+                        editSession.setUseWorker(false);
+                        editSession.setLanguageMode(createCssMode('/js/worker.js', workerImports), function(err: any) {
                             if (err) {
                                 console.warn(`${$scope.mode} => ${err}`);
                             }
@@ -194,9 +178,9 @@ function factory(
                         break;
                     }
                     case LANGUAGE_MARKDOWN: {
-                        editor.getSession().setUseWrapMode(true);
+                        editSession.setUseWrapMode(true);
                         editor.setWrapBehavioursEnabled(true);
-                        editor.setLanguageMode(createMarkdownMode('/js/worker.js', workerImports), function(err: any) {
+                        editSession.setLanguageMode(createMarkdownMode('/js/worker.js', workerImports), function(err: any) {
                             if (err) {
                                 console.warn(`${$scope.mode} => ${err}`);
                             }
@@ -205,7 +189,7 @@ function factory(
                         break;
                     }
                     case LANGUAGE_TEXT: {
-                        editor.setLanguageMode(new TextMode('/js/worker.js', workerImports), function(err: any) {
+                        editSession.setLanguageMode(new TextMode('/js/worker.js', workerImports), function(err: any) {
                             if (err) {
                                 console.warn(`${$scope.mode} => ${err}`);
                             }
@@ -217,7 +201,6 @@ function factory(
                         console.warn(`Unrecognized mode => ${$scope.mode}`);
                     }
                 }
-                // editor.on('change', onEditorChange);
             }
             else {
                 console.warn(`$render: ng-model (ngModel.$viewValue) must be an EditSession.`);

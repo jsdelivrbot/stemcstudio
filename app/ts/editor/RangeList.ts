@@ -172,7 +172,7 @@ export default class RangeList {
     }
 
     /**
-     * FIXME: Remove this coupling.
+     * FIXME: Remove this coupling?
      */
     attachXYZ(session: EditSession) {
         if (this.session) {
@@ -186,7 +186,7 @@ export default class RangeList {
     }
 
     /**
-     * FIXME: Remove this coupling.
+     * FIXME: Remove this coupling?
      */
     detachXYZ() {
         if (!this.session) {

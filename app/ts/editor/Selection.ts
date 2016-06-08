@@ -23,6 +23,7 @@ import SelectionRemoveRangeEvent from "./events/SelectionRemoveRangeEvent";
 export default class Selection implements EventBus<any, Selection> {
     private session: EditSession;
     // FIXME: Maybe Selection should only couple to the EditSession?
+    // FIXME: This appears to be cached for convenience. Replace with a private getter?
     private doc: Document;
 
     /**
@@ -111,6 +112,7 @@ export default class Selection implements EventBus<any, Selection> {
         this.lead = this.selectionLead = new Anchor(this.doc, 0, 0);
         this.anchor = this.selectionAnchor = new Anchor(this.doc, 0, 0);
 
+        // FIXME: This isn't removed.
         this.lead.on("change", (event: AnchorChangeEvent, source: Anchor) => {
             /**
              * @event changeCursor
@@ -127,6 +129,7 @@ export default class Selection implements EventBus<any, Selection> {
             }
         });
 
+        // FIXME: This isn't removed.
         this.selectionAnchor.on("change", (event: AnchorChangeEvent, source: Anchor) => {
             if (!this.$isEmpty) {
                 /**
