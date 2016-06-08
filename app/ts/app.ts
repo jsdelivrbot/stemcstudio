@@ -77,6 +77,7 @@ import propsFilter from './filters/propsFilter';
 import rooms from './modules/rooms/index';
 import stemcArXiv from './stemcArXiv/index';
 import translate from './translate/index';
+import wsmodel from './wsmodel/module';
 
 import Iso8601 from './services/iso8601/Iso8601';
 import MissionControl from './services/mission/MissionControl';
@@ -93,7 +94,8 @@ const app: angular.IModule = angular.module('app', [
     'ui.select',
     rooms.name,
     stemcArXiv.name,
-    translate.name
+    translate.name,
+    wsmodel.name
 ]);
 
 /**

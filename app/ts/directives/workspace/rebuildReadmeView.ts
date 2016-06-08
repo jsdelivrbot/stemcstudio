@@ -1,11 +1,11 @@
 import * as angular from 'angular';
 import bubbleIframeMouseMove from './bubbleIframeMouseMove';
-import Doodle from '../../services/doodles/Doodle';
 import fileContent from './fileContent';
 import fileExists from './fileExists';
 import readMeHTML from './readMeHTML';
 import sd from 'showdown';
 import WorkspaceScope from '../../scopes/WorkspaceScope';
+import WsModel from '../../wsmodel/services/WsModel';
 
 const FSLASH_STAR = '/*';
 const STAR_FSLASH = '*/';
@@ -14,7 +14,7 @@ const STAR_FSLASH = '*/';
  * 
  */
 export default function rebuildReadmeView(
-    doodle: Doodle,
+    doodle: WsModel,
     FILENAME_README: string,
     $scope: WorkspaceScope,
     $window: angular.IWindowService

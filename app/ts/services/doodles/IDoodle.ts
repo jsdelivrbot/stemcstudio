@@ -33,11 +33,6 @@ interface IDoodle {
     isViewVisible: boolean;
 
     /**
-     * The `focusEditor` property contains the fileName of the editor which has focus.
-     */
-    focusEditor: string;
-
-    /**
      * The last known generated JavaScript file. This is cached to improve startup.
      * This is a mapping from the fileName to the JavaScript text.
      */

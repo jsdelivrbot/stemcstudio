@@ -1,5 +1,7 @@
 import DoodleScope from './DoodleScope';
 import Doodle from '../services/doodles/Doodle';
+import WsModel from '../wsmodel/services/WsModel';
+import WsFile from '../wsmodel/services/WsFile';
 
 interface WorkspaceScope extends DoodleScope {
 
@@ -11,7 +13,12 @@ interface WorkspaceScope extends DoodleScope {
     /**
      * 
      */
-    currentDoodle(): Doodle;
+    workspace: WsModel;
+
+    /**
+     * The files in the workspace organized as a map.
+     */
+    files(): { [path: string]: WsFile };
 
     /**
      * The doodle is loaded when it has been loaded from GitHub or Local Storage.

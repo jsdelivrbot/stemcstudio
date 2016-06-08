@@ -2,10 +2,10 @@ import CredentialsService from '../../services/credentials/CredentialsService';
 import FlowService from '../../services/flow/FlowService';
 import PublishDialog from '../../modules/publish/PublishDialog';
 import PublishFacts from './PublishFacts';
-import IDoodleManager from '../../services/doodles/IDoodleManager';
 import ModalDialog from '../../services/modalService/ModalDialog';
 import StemcArXiv from '../../stemcArXiv/StemcArXiv';
 import SubmitParams from '../../stemcArXiv/SubmitParams';
+import WsModel from '../../wsmodel/services/WsModel';
 
 /**
  * @class PublishFlow
@@ -14,12 +14,12 @@ export default class PublishFlow {
     constructor(
         // FIXME: Make this a service.
         private owner: string,
-        private doodles: IDoodleManager,
         private flowService: FlowService,
         private modalDialog: ModalDialog,
         private publishDialog: PublishDialog,
         private credentialsService: CredentialsService,
-        private stemcArXiv: StemcArXiv
+        private stemcArXiv: StemcArXiv,
+        private wsModel: WsModel
     ) {
         // Do nothing.
     }
@@ -29,8 +29,7 @@ export default class PublishFlow {
          */
         const title = "Publish";
 
-        const doodle = this.doodles.current();
-        doodle.owner = this.owner;
+        this.wsModel.owner = this.owner;
         const flow = this.flowService.createFlow<PublishFacts>("Publish");
 
         flow.rule("Google Sign-In", {},
@@ -63,12 +62,12 @@ export default class PublishFlow {
             },
             (facts, session, next) => {
                 const params: SubmitParams = {
-                    owner: doodle.owner,
-                    gistId: doodle.gistId,
-                    repo: doodle.repo,
-                    title: doodle.description,
-                    author: doodle.author,
-                    keywords: doodle.keywords,
+                    owner: this.wsModel.owner,
+                    gistId: this.wsModel.gistId,
+                    repo: this.wsModel.repo,
+                    title: this.wsModel.description,
+                    author: this.wsModel.author,
+                    keywords: this.wsModel.keywords,
                     credentials: this.credentialsService.credentials
                 };
                 this.stemcArXiv.submit(params).then((response) => {
@@ -120,7 +119,7 @@ export default class PublishFlow {
                 const reason = err.data;
                 switch (reason.statusCode) {
                     case 400: {
-                        if (!doodle.gistId) {
+                        if (!this.wsModel.gistId) {
                             // TODO: Detect documents not in GitHub before allowing submissions.
                             this.modalDialog.alert({ title, message: `Please upload your document to GitHub before submitting it for publishing.` });
                         }

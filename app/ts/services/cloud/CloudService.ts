@@ -4,6 +4,7 @@ import Gist from '../github/Gist';
 import RepoData from '../github/RepoData';
 import RepoKey from '../github/RepoKey';
 import UploadToRepoFacts from './UploadToRepoFacts';
+import WsModel from '../../wsmodel/services/WsModel';
 
 /**
  * A high-level API for managing Doodle(s) in the cloud.
@@ -18,12 +19,12 @@ interface CloudService {
     /**
      * @method createGist
      */
-    createGist(doodle: Doodle): ng.IHttpPromise<Gist>;
+    createGist(workspace: WsModel): ng.IHttpPromise<Gist>;
 
     /**
-     * @method updateGist
+     *
      */
-    updateGist(doodle: Doodle, gistId: string): ng.IHttpPromise<Gist>;
+    updateGist(workspace: WsModel, gistId: string): ng.IHttpPromise<Gist>;
 
     /**
      * @method deleteGist
@@ -46,15 +47,13 @@ interface CloudService {
      * TODO: This is currently fire-and-forget.
      * TODO: Use an ng.IPromise to provide progress.
      *
-     * @method uploadToRepo
-     * @param doodle {Doodle}
-     * @param owner {string}
-     * @param repo {string}
-     * @param ref {string} e.g. 'heads/master'
-     * @param commitMessage {string}
-     * @return {void}
+     * @param doodle
+     * @param owner
+     * @param repo
+     * @param ref e.g. 'heads/master'
+     * @param commitMessage
      */
-    uploadToRepo(doodle: Doodle, owner: string, repo: string, ref: string, commitMessage: string, callback: (reason: any, facts: UploadToRepoFacts) => any): void;
+    uploadToRepo(workspace: WsModel, owner: string, repo: string, ref: string, commitMessage: string, callback: (reason: any, facts: UploadToRepoFacts) => any): void;
 
     /**
      * @method chooseGistOrRepo

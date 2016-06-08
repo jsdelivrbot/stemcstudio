@@ -36,7 +36,7 @@
                                 <ng-md-icon>
                         </a>
                         <ul class='dropdown-menu' uib-dropdown-menu role='menu'>
-                            <li role='button' ng-repeat='(name, file) in currentDoodle().files' ng-if='name.indexOf(".html") &gt; 0'>
+                            <li role='button' ng-repeat='(name, file) in files()' ng-if='name.indexOf(".html") &gt; 0'>
                                 <a ng-click='doView(name, file)'>{{name}}&nbsp;
                                     <ng-md-icon icon='done' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' ng-if='file.preview'><ng-md-icon>
                                 </a>
@@ -122,14 +122,13 @@
                 </ul>
             </div>
             <div class='navbar-header'>
-                <span class='md-logo-text-math navbar-brand'>{{ currentDoodle().description }}</span>
+                <span class='md-logo-text-math navbar-brand'>{{ workspace.description }}</span>
             </div>
         </nav>
         <div id='doodle-container'>
-            <explorer ng-model='currentDoodle().files' class='explorer' ng-show='isExplorerVisible'></explorer>
+            <explorer ng-model='workspace' class='explorer' ng-show='isExplorerVisible'></explorer>
             <div id='editors' resizable r-directions="['right']" r-flex='true' ng-if='doodleLoaded' ng-show='isExplorerVisible'>
-                <div editor ng-repeat='(name, file) in currentDoodle().files' ng-model='file.document' id='{{name}}' mode='{{file.language}}'
-                ng-show='isEditMode &amp;&amp; file.selected'></div>
+                <div editor ng-repeat='(name, file) in files()' ng-model='file.document' id='{{name}}' mode='{{file.language}}' ng-show='isEditMode &amp;&amp; file.selected'></div>
             </div>
             <div id='output' ng-if='isViewVisible'></div>
             <div id='readme' ng-if='isReadMeVisible'></div>

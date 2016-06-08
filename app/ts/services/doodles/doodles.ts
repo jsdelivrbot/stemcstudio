@@ -5,7 +5,6 @@ import Doodle from './Doodle';
 import DoodleFile from './DoodleFile';
 import IDoodleDS from './IDoodleDS';
 import IDoodleManager from './IDoodleManager';
-import ITemplate from '../templates/ITemplate';
 import ITemplateFile from '../templates/ITemplateFile';
 import IOptionManager from '../options/IOptionManager';
 import modeFromName from '../../utils/modeFromName';
@@ -135,26 +134,6 @@ app.factory('doodles', [
                 else {
                     return undefined;
                 }
-            },
-
-            createDoodle: function(template: ITemplate, description?: string): void {
-                if (!description) {
-                    description = suggestName();
-                }
-                const doodle: Doodle = new Doodle(options);
-
-                // Initialize the files property first so that updates to name, ...
-                // are not written over.
-                doodle.files = copyFiles(template.files);
-
-                // The following updates will impact the package.json file.
-                doodle.name = description.replace(' ', '-').toLowerCase();
-                doodle.version = "0.1.0";
-                doodle.description = description;
-                doodle.dependencies = template.dependencies.slice(); // make a copy
-                doodle.operatorOverloading = template.operatorOverloading;
-
-                _doodles.unshift(doodle);
             },
 
             makeCurrent: function(dude: Doodle): void {

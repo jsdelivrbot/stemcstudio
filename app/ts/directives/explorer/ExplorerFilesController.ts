@@ -6,6 +6,7 @@ import ModalDialog from '../../services/modalService/ModalDialog';
 import AlertOptions from '../../services/modalService/AlertOptions';
 import ConfirmOptions from '../../services/modalService/ConfirmOptions';
 import PromptOptions from '../../services/modalService/PromptOptions';
+import WsModel from '../../wsmodel/services/WsModel';
 
 /**
  * @class ExplorerFilesController
@@ -17,7 +18,7 @@ export default class ExplorerFilesController {
      * @type string[]
      * @static
      */
-    public static $inject: string[] = ['$scope', 'doodles', 'modalDialog'];
+    public static $inject: string[] = ['$scope', 'doodles', 'modalDialog', 'wsModel'];
 
     /**
      * @class ExplorerFilesController
@@ -25,7 +26,7 @@ export default class ExplorerFilesController {
      * @param $scope {ExplorerFilesScope}
      * @param doodles {IDoodleManager}
      */
-    constructor($scope: ExplorerFilesScope, private doodles: IDoodleManager, private modalService: ModalDialog) {
+    constructor($scope: ExplorerFilesScope, private doodles: IDoodleManager, private modalService: ModalDialog, private wsModel: WsModel) {
         // Define the context menu used by the files.
         $scope.menu = (name: string, file: IDoodleFile) => {
             return [
@@ -51,20 +52,14 @@ export default class ExplorerFilesController {
         };
         this.modalService.prompt(options)
             .then((name) => {
-                const doodle = this.doodles.current();
-                if (doodle) {
-                    try {
-                        doodle.newFile(name);
-                        doodle.selectFile(name);
-                        this.doodles.updateStorage();
-                    }
-                    catch (e) {
-                        const alertOptions: AlertOptions = { title: "Error", message: e.toString() };
-                        this.modalService.alert(alertOptions);
-                    }
+                try {
+                    this.wsModel.newFile(name);
+                    this.wsModel.selectFile(name);
+                    this.doodles.updateStorage();
                 }
-                else {
-                    console.warn(`newFile(${name})`);
+                catch (e) {
+                    const alertOptions: AlertOptions = { title: "Error", message: e.toString() };
+                    this.modalService.alert(alertOptions);
                 }
             })
             .catch(function(reason: any) {
@@ -78,14 +73,8 @@ export default class ExplorerFilesController {
      * @return {void}
      */
     public openFile(name: string): void {
-        const doodle = this.doodles.current();
-        if (doodle) {
-            doodle.openFile(name);
-            doodle.selectFile(name);
-        }
-        else {
-            console.warn(`openFile(${name})`);
-        }
+        this.wsModel.openFile(name);
+        this.wsModel.selectFile(name);
     }
 
     /**
@@ -103,18 +92,12 @@ export default class ExplorerFilesController {
         };
         this.modalService.prompt(options)
             .then((newName) => {
-                const doodle = this.doodles.current();
-                if (doodle) {
-                    try {
-                        doodle.renameFile(oldName, newName);
-                        this.doodles.updateStorage();
-                    }
-                    catch (e) {
-                        this.modalService.alert({ title: "Error", message: e.toString() });
-                    }
+                try {
+                    this.wsModel.renameFile(oldName, newName);
+                    this.doodles.updateStorage();
                 }
-                else {
-                    console.warn(`renameFile(${oldName}, ${newName})`);
+                catch (e) {
+                    this.modalService.alert({ title: "Error", message: e.toString() });
                 }
             })
             .catch(function(reason: any) {
@@ -135,14 +118,8 @@ export default class ExplorerFilesController {
         };
         this.modalService.confirm(options)
             .then((result) => {
-                const doodle = this.doodles.current();
-                if (doodle) {
-                    doodle.deleteFile(name);
-                    this.doodles.updateStorage();
-                }
-                else {
-                    console.warn(`deleteFile(${name})`);
-                }
+                this.wsModel.deleteFile(name);
+                this.doodles.updateStorage();
             })
             .catch(function(reason: any) {
                 // Do nothing.

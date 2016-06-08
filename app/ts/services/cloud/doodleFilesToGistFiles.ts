@@ -1,5 +1,6 @@
-import DoodleFile from '../doodles/DoodleFile';
 import ensureFileContent from './ensureFileContent';
+import StringShareableMap from '../../collections/StringShareableMap';
+import WsFile from '../../wsmodel/services/WsFile';
 
 /**
  * Converts the doodle files into the files required for the Gist.
@@ -7,19 +8,19 @@ import ensureFileContent from './ensureFileContent';
  * The trash files represent files that are known to exist in GitHub and must be physically deleted.
  * This is done by including a mapping from filename to null.
  */
-export default function doodleFilesToGistFiles(dFiles: { [dName: string]: DoodleFile }, trash: { [dName: string]: DoodleFile }): { [gName: string]: { content: string } } {
+export default function doodleFilesToGistFiles(dFiles: StringShareableMap<WsFile>, trash: StringShareableMap<WsFile>): { [gName: string]: { content: string } } {
     const gFiles: { [gName: string]: { content: string } } = {};
 
-    const dNames = Object.keys(dFiles);
+    const dNames: string[] = dFiles.keys;
     const iLen = dNames.length;
     for (let i = 0; i < iLen; i++) {
-        const dName = dNames[i];
-        const dFile: DoodleFile = dFiles[dName];
+        const dName: string = dNames[i];
+        const dFile: WsFile = dFiles.getWeakRef(dName);
         const gFile: { content: string } = { content: ensureFileContent(dName, dFile.document.getValue()) };
         gFiles[dName] = gFile;
     }
 
-    const trashNames = Object.keys(trash);
+    const trashNames: string[] = trash.keys;
     const jLen = trashNames.length;
     for (let j = 0; j < jLen; j++) {
         const name = trashNames[j];

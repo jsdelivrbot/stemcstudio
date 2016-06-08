@@ -1,7 +1,6 @@
 import * as angular from 'angular';
 import FlowService from '../../services/flow/FlowService';
 import UploadFacts from './UploadFacts';
-import IDoodleManager from '../../services/doodles/IDoodleManager';
 import ModalDialog from '../../services/modalService/ModalDialog';
 import CloudService from '../../services/cloud/CloudService';
 import GitHubReason from '../../services/github/GitHubReason';
@@ -10,6 +9,7 @@ import PromptOptions from '../../services/modalService/PromptOptions';
 import RepoData from '../../services/github/RepoData';
 import isNumber from '../../utils/isNumber';
 import Method from './Method';
+import WsModel from '../../wsmodel/services/WsModel';
 
 const FEATURE_GIST_ENABLED = true;
 const FEATURE_REPO_ENABLED = false;
@@ -20,11 +20,11 @@ export default class UploadFlow {
     constructor(
         private owner: string,
         private $state: angular.ui.IStateService,
-        private doodles: IDoodleManager,
         private flowService: FlowService,
         private modalDialog: ModalDialog,
         private cloud: CloudService,
-        private github: GitHubService
+        private github: GitHubService,
+        private wsModel: WsModel
     ) {
         // Do nothing.
     }
@@ -33,7 +33,6 @@ export default class UploadFlow {
          * The tile of the flow that will provide context in any dialogs.
          */
         const title = "Upload";
-        const doodle = this.doodles.current();
 
         const flow = this.flowService.createFlow<UploadFacts>(title);
 
@@ -70,7 +69,7 @@ export default class UploadFlow {
                 return facts.canCreateGist();
             },
             (facts, session, next) => {
-                this.cloud.createGist(doodle)
+                this.cloud.createGist(this.wsModel)
                     .then((http) => {
                         const status = http.status;
                         facts.status.resolve(status);
@@ -83,11 +82,11 @@ export default class UploadFlow {
                                 facts.redirect.resolve(true);
                                 facts.uploadMessage.resolve(`Your project was successfully uploaded and associated with a new Gist.`);
 
-                                doodle.gistId = gist.id;
-                                doodle.created_at = gist.created_at;
-                                doodle.updated_at = gist.updated_at;
+                                this.wsModel.gistId = gist.id;
+                                this.wsModel.created_at = gist.created_at;
+                                this.wsModel.updated_at = gist.updated_at;
 
-                                this.doodles.updateStorage();
+                                this.wsModel.updateStorage();
 
                                 next();
                                 break;
@@ -110,7 +109,7 @@ export default class UploadFlow {
                 return facts.canUpdateGist();
             },
             (facts, session, next) => {
-                this.cloud.updateGist(doodle, doodle.gistId)
+                this.cloud.updateGist(this.wsModel, this.wsModel.gistId)
                     .then((http) => {
                         const status = http.status;
                         const statusText = http.statusText;
@@ -122,18 +121,18 @@ export default class UploadFlow {
                                 // console.lg(JSON.stringify(gist, null, 2));
                                 facts.uploadedAt.resolve(gist.updated_at);
                                 facts.uploadMessage.resolve(`Your project was successfully uploaded and patched the existing Gist.`);
-                                doodle.emptyTrash();
-                                doodle.updated_at = gist.updated_at;
-                                this.doodles.updateStorage();
+                                this.wsModel.emptyTrash();
+                                this.wsModel.updated_at = gist.updated_at;
+                                this.wsModel.updateStorage();
                                 next();
                                 break;
                             }
                             case 404: {
                                 // The Gist no longer exists on GitHub
                                 // TODO: Test this we may end up down in the catch.
-                                doodle.gistId = void 0;
+                                this.wsModel.gistId = void 0;
                                 facts.gistId.reset();
-                                this.doodles.updateStorage();
+                                this.wsModel.updateStorage();
                                 next();
                                 break;
                             }
@@ -301,11 +300,11 @@ export default class UploadFlow {
                 const repo = facts.repo.value;
                 const ref = facts.ref.value;
                 const commitMessage = facts.commitMessage.value;
-                this.cloud.uploadToRepo(doodle, owner, repo, ref, commitMessage, (err, details) => {
+                this.cloud.uploadToRepo(this.wsModel, owner, repo, ref, commitMessage, (err, details) => {
                     if (!err) {
                         if (details.refUpdate.isResolved()) {
-                            doodle.owner = owner;
-                            doodle.repo = repo;
+                            this.wsModel.owner = owner;
+                            this.wsModel.repo = repo;
                             // doodle.ref = ref;
                             facts.uploadMessage.resolve("Your project was successfully uploaded to GitHub.");
                         }
@@ -331,9 +330,9 @@ export default class UploadFlow {
 
         const facts = new UploadFacts();
 
-        facts.gistId.resolve(doodle.gistId);
-        facts.repo.resolve(doodle.repo);
-        facts.owner.resolve(doodle.owner);
+        facts.gistId.resolve(this.wsModel.gistId);
+        facts.repo.resolve(this.wsModel.repo);
+        facts.owner.resolve(this.wsModel.owner);
         facts.userLogin.resolve(this.owner);
         if (FEATURE_GIST_ENABLED) {
             if (FEATURE_REPO_ENABLED) {
@@ -376,10 +375,10 @@ export default class UploadFlow {
                     this.modalDialog.alert({ title, message: facts.uploadMessage.value });
                     if (facts.redirect.isResolved()) {
                         if (facts.gistId.isResolved()) {
-                            this.$state.go(STATE_GIST, { gistId: doodle.gistId });
+                            this.$state.go(STATE_GIST, { gistId: this.wsModel.gistId });
                         }
                         else if (facts.owner.isResolved() && facts.repo.isResolved()) {
-                            this.$state.go(STATE_REPO, { owner: doodle.owner, repo: doodle.repo });
+                            this.$state.go(STATE_REPO, { owner: this.wsModel.owner, repo: this.wsModel.repo });
                         }
                         else {
                             // FIXME: redirect should contain it's own instructions.

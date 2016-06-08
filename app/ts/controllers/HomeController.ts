@@ -7,6 +7,8 @@ import HitService from '../services/hits/HitService';
 import HomeScope from '../scopes/HomeScope';
 import ModalDialog from '../services/modalService/ModalDialog';
 import StemcArXiv from '../stemcArXiv/StemcArXiv';
+import WsModel from '../wsmodel/services/WsModel';
+import copyDoodleToWorkspace from '../mappings/copyDoodleToWorkspace';
 
 /**
  * @class HomeController
@@ -31,6 +33,7 @@ export default class HomeController extends AbstractPageController {
         'STATE_EXAMPLES',
         'STATE_GIST',
         'UNIVERSAL_ANALYTICS_TRACKING_ID',
+        'wsModel'
     ];
 
     /**
@@ -54,7 +57,8 @@ export default class HomeController extends AbstractPageController {
         STATE_DOODLE: string,
         STATE_EXAMPLES: string,
         STATE_GIST: string,
-        UNIVERSAL_ANALYTICS_TRACKING_ID: string
+        UNIVERSAL_ANALYTICS_TRACKING_ID: string,
+        wsModel: WsModel
     ) {
         super($scope, $state, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
 
@@ -116,12 +120,20 @@ export default class HomeController extends AbstractPageController {
             }
         };
 
+        /**
+         * Opening a doodle from Local Storage.
+         */
         $scope.doOpen = (doodle: Doodle) => {
             // We know that the Doodle is in Local Storage, but we can avoid
             // a state change by going to the correct state the first time.
-            doodles.makeCurrent(doodle);
-            if (doodle.gistId) {
-                this.navigateTo(STATE_GIST, { gistId: doodle.gistId });
+
+            wsModel.dispose();
+            wsModel.recycle();
+
+            copyDoodleToWorkspace(doodle, wsModel);
+
+            if (wsModel.gistId) {
+                this.navigateTo(STATE_GIST, { gistId: wsModel.gistId });
             }
             else {
                 this.navigateTo(STATE_DOODLE);

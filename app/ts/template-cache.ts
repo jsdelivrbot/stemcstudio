@@ -390,7 +390,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                                <ng-md-icon>\n" +
     "                        </a>\n" +
     "                        <ul class='dropdown-menu' uib-dropdown-menu role='menu'>\n" +
-    "                            <li role='button' ng-repeat='(name, file) in currentDoodle().files' ng-if='name.indexOf(\".html\") &gt; 0'>\n" +
+    "                            <li role='button' ng-repeat='(name, file) in files()' ng-if='name.indexOf(\".html\") &gt; 0'>\n" +
     "                                <a ng-click='doView(name, file)'>{{name}}&nbsp;\n" +
     "                                    <ng-md-icon icon='done' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' ng-if='file.preview'><ng-md-icon>\n" +
     "                                </a>\n" +
@@ -476,14 +476,13 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                </ul>\n" +
     "            </div>\n" +
     "            <div class='navbar-header'>\n" +
-    "                <span class='md-logo-text-math navbar-brand'>{{ currentDoodle().description }}</span>\n" +
+    "                <span class='md-logo-text-math navbar-brand'>{{ workspace.description }}</span>\n" +
     "            </div>\n" +
     "        </nav>\n" +
     "        <div id='doodle-container'>\n" +
-    "            <explorer ng-model='currentDoodle().files' class='explorer' ng-show='isExplorerVisible'></explorer>\n" +
+    "            <explorer ng-model='workspace' class='explorer' ng-show='isExplorerVisible'></explorer>\n" +
     "            <div id='editors' resizable r-directions=\"['right']\" r-flex='true' ng-if='doodleLoaded' ng-show='isExplorerVisible'>\n" +
-    "                <div editor ng-repeat='(name, file) in currentDoodle().files' ng-model='file.document' id='{{name}}' mode='{{file.language}}'\n" +
-    "                ng-show='isEditMode &amp;&amp; file.selected'></div>\n" +
+    "                <div editor ng-repeat='(name, file) in files()' ng-model='file.document' id='{{name}}' mode='{{file.language}}' ng-show='isEditMode &amp;&amp; file.selected'></div>\n" +
     "            </div>\n" +
     "            <div id='output' ng-if='isViewVisible'></div>\n" +
     "            <div id='readme' ng-if='isReadMeVisible'></div>\n" +
@@ -679,8 +678,9 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "            </div>\n" +
     "        </div>\n" +
     "        <ul class='files'>\n" +
-    "            <li ng-repeat='(name, file) in currentDoodle().files' ng-class='{selected: file.selected}' context-menu='menu(name, file)'>\n" +
-    "                <a href ng-click='$ctrl.selectFile(name)' ng-dblclick='$ctrl.openFile(name)'>{{name | limitTo:24}}</a>\n" +
+    "            <!-- filesByPath is set on the scope by the explorer component -->\n" +
+    "            <li ng-repeat='(path, file) in filesByPath' ng-class='{selected: file.selected}' context-menu='menu(path, file)'>\n" +
+    "                <a href ng-click='$ctrl.selectFile(path)' ng-dblclick='$ctrl.openFile(path)'>{{path | limitTo:24}}</a>\n" +
     "            </li>\n" +
     "        </ul>\n" +
     "    </div>\n" +

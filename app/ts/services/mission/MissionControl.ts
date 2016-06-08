@@ -1,9 +1,6 @@
 import Delta from '../../editor/Delta';
 import Editor from '../../editor/Editor';
 import EditorAdapter from './EditorAdapter';
-// import Doodle from '../../services/doodles/Doodle';
-import IDoodleManager from '../../services/doodles/IDoodleManager';
-import ITemplate from '../../services/templates/ITemplate';
 import UnitListener from './UnitListener';
 import RoomAgent from '../../modules/rooms/services/RoomAgent';
 import RoomListener from '../../modules/rooms/services/RoomListener';
@@ -12,8 +9,9 @@ import MwEdits from '../../synchronization/MwEdits';
 import MwUnit from '../../synchronization/MwUnit';
 import WorkspaceAdapter from './WorkspaceAdapter';
 import allEditsRaw from './allEditsRaw';
-import addMissingFilesToDoodle from './addMissingFilesToDoodle';
-import removeUnwantedFilesFromDoodle from './removeUnwantedFilesFromDoodle';
+import addMissingFilesToWorkspace from './addMissingFilesToWorkspace';
+import removeUnwantedFilesFromWorkspace from './removeUnwantedFilesFromWorkspace';
+import WsModel from '../../wsmodel/services/WsModel';
 
 const DEBOUNCE_DURATION_MILLISECONDS = 100;
 
@@ -43,7 +41,7 @@ function uploadFileEditsToRoom(fileId: string, units: { [fileId: string]: MwUnit
 }
 
 export default class MissionControl {
-    public static $inject: string[] = ['doodles'];
+    public static $inject: string[] = ['wsModel'];
 
     private _room: RoomAgent;
     private _roomListener: RoomListener;
@@ -60,7 +58,7 @@ export default class MissionControl {
      */
     private changeHandlers: { [fileName: string]: (delta: Delta, editor: Editor) => any } = {};
 
-    constructor(private doodles: IDoodleManager) {
+    constructor(private wsModel: WsModel) {
         // Nothing to see here.
     }
     get room(): RoomAgent {
@@ -161,12 +159,11 @@ export default class MissionControl {
                     // Verify that all of the edits are Raw to begin with.
                     if (allEditsRaw(files)) {
                         // We make a new Doodle to accept the downloaded workspace.
-                        const template: ITemplate = { description: "", files: {}, dependencies: [], operatorOverloading: false };
-                        this.doodles.createDoodle(template, "Description could come from the room");
-                        const doodle = this.doodles.current();
-                        addMissingFilesToDoodle(doodle, files);
+                        this.wsModel.dispose();
+                        this.wsModel.recycle();
+                        addMissingFilesToWorkspace(this.wsModel, files);
                         // This will not be required since we are starting with a new Doodle.
-                        removeUnwantedFilesFromDoodle(doodle, files);
+                        removeUnwantedFilesFromWorkspace(this.wsModel, files);
                         // Save the downloaded edits for when the editors come online.
                         this.files = files;
                     }

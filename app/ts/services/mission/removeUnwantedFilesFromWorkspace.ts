@@ -1,12 +1,12 @@
-import Doodle from '../../services/doodles/Doodle';
 import MwEdits from '../../synchronization/MwEdits';
+import WsModel from '../../wsmodel/services/WsModel';
 
 /**
  * @param slave The doodle that must conform to the master.
  * @param master A map containing fileNames as the key.
  */
-export default function removeUnwantedFilesFromDoodle(slave: Doodle, master: { [fileName: string]: MwEdits }) {
-    const fileNames = Object.keys(slave.files);
+export default function removeUnwantedFilesFromWorkspace(slave: WsModel, master: { [fileName: string]: MwEdits }) {
+    const fileNames = slave.files.keys;
     for (let i = 0; i < fileNames.length; i++) {
         const fileName = fileNames[i];
         if (fileName in master) {

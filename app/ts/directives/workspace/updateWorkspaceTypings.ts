@@ -1,11 +1,11 @@
 import * as angular from 'angular';
 import closure from './closure';
-import Doodle from '../../services/doodles/Doodle';
 import IOption from '../../services/options/IOption';
 import IOptionManager from '../../services/options/IOptionManager';
 import namesToOptions from './namesToOptions';
 import scriptURL from './scriptURL';
 import Workspace from '../../services/workspace/Workspace';
+import WsModel from '../../wsmodel/services/WsModel';
 
 function optionsToNames(options: IOption[]): string[] {
     return options.map(function(option: IOption) { return option.name; });
@@ -19,7 +19,7 @@ function optionsToNames(options: IOption[]): string[] {
  */
 export default function(
     workspace: Workspace,
-    doodle: Doodle,
+    wsModel: WsModel,
     options: IOptionManager,
     olds: string[],
     FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
@@ -29,7 +29,7 @@ export default function(
     callback: () => any
 ) {
     // Load the wokspace with the appropriate TypeScript definitions.
-    const news: string[] = optionsToNames(closure(namesToOptions(doodle.dependencies, options), options));
+    const news: string[] = optionsToNames(closure(namesToOptions(wsModel.dependencies, options), options));
 
     // Determine what we need to add and remove from the workspace.
     //

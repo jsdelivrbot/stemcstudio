@@ -28,8 +28,9 @@
             </div>
         </div>
         <ul class='files'>
-            <li ng-repeat='(name, file) in currentDoodle().files' ng-class='{selected: file.selected}' context-menu='menu(name, file)'>
-                <a href ng-click='$ctrl.selectFile(name)' ng-dblclick='$ctrl.openFile(name)'>{{name | limitTo:24}}</a>
+            <!-- filesByPath is set on the scope by the explorer component -->
+            <li ng-repeat='(path, file) in filesByPath' ng-class='{selected: file.selected}' context-menu='menu(path, file)'>
+                <a href ng-click='$ctrl.selectFile(path)' ng-dblclick='$ctrl.openFile(path)'>{{path | limitTo:24}}</a>
             </li>
         </ul>
     </div>

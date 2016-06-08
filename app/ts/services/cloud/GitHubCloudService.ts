@@ -7,7 +7,7 @@ import ChooseGistOrRepoOptions from './ChooseGistOrRepoOptions';
 import CommitMessageOptions from './CommitMessageOptions';
 import CloudService from './CloudService';
 import Doodle from '../doodles/Doodle';
-import doodleToGist from '../cloud/doodleToGist';
+import workspaceToGistData from '../cloud/workspaceToGistData';
 import FlowService from '../flow/FlowService';
 import Gist from '../github/Gist';
 import GistData from '../github/GistData';
@@ -26,6 +26,7 @@ import RepoElement from '../github/RepoElement';
 import TreeData from '../github/TreeData';
 import TreeKey from '../github/TreeKey';
 import UploadToRepoFacts from './UploadToRepoFacts';
+import WsModel from '../../wsmodel/services/WsModel';
 
 const LEGACY_META = 'doodle.json';
 
@@ -241,13 +242,13 @@ export default class GitHubCloudService implements CloudService {
         return deferred.promise;
     }
 
-    createGist(doodle: Doodle): ng.IHttpPromise<Gist> {
-        const data: GistData = doodleToGist(doodle, this.options);
+    createGist(workspace: WsModel): ng.IHttpPromise<Gist> {
+        const data: GistData = workspaceToGistData(workspace, this.options);
         return this.github.createGist(data);
     }
 
-    updateGist(doodle: Doodle, gistId: string): ng.IHttpPromise<Gist> {
-        const data: GistData = doodleToGist(doodle, this.options);
+    updateGist(workspace: WsModel, gistId: string): ng.IHttpPromise<Gist> {
+        const data: GistData = workspaceToGistData(workspace, this.options);
         return this.github.updateGist(gistId, data);
     }
 
@@ -255,11 +256,11 @@ export default class GitHubCloudService implements CloudService {
         return this.github.createRepo(data);
     }
 
-    createBlobsInRepo(doodle: Doodle, owner: string, repo: string, paths: string[]): ng.IHttpPromise<BlobKey>[] {
+    createBlobsInRepo(workspace: WsModel, owner: string, repo: string, paths: string[]): ng.IHttpPromise<BlobKey>[] {
         const blobs: ng.IHttpPromise<BlobKey>[] = [];
         for (let p = 0; p < paths.length; p++) {
             const path = paths[p];
-            const file = doodle.files[path];
+            const file = workspace.files.getWeakRef(path);
             const content = this.base64.encode(file.document.getValue());
             const encoding = 'base64';
             blobs.push(this.github.createBlob(owner, repo, { content, encoding }));
@@ -297,7 +298,7 @@ export default class GitHubCloudService implements CloudService {
         return deferred.promise;
     }
 
-    uploadToRepo(doodle: Doodle, owner: string, repo: string, ref: string, commitMessage: string, callback: (reason: any, facts: UploadToRepoFacts) => any): void {
+    uploadToRepo(workspace: WsModel, owner: string, repo: string, ref: string, commitMessage: string, callback: (reason: any, facts: UploadToRepoFacts) => any): void {
         if (!isString(owner)) {
             throw new TypeError("owner must be a string");
         }
@@ -397,8 +398,8 @@ export default class GitHubCloudService implements CloudService {
                 }
             },
             (facts, session, next) => {
-                const paths = Object.keys(doodle.files);
-                const blobs = this.createBlobsInRepo(doodle, owner, repo, paths);
+                const paths = workspace.files.keys;
+                const blobs = this.createBlobsInRepo(workspace, owner, repo, paths);
                 const baseTreeSHA = facts.baseCommit.isResolved() ? facts.baseCommit.value.tree.sha : void 0;
                 this.createTreeInRepo(blobs, paths, baseTreeSHA, owner, repo)
                     .then((treeKey) => {

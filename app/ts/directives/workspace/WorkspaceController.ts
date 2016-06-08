@@ -6,6 +6,7 @@ import Editor from '../../editor/Editor';
 import EditSession from '../../editor/EditSession';
 import OutputFile from '../../editor/workspace/OutputFile';
 import CloudService from '../../services/cloud/CloudService';
+import copyDoodleToWorkspace from '../../mappings/copyDoodleToWorkspace';
 import detect1x from './detect1x';
 import Doodle from '../../services/doodles/Doodle';
 import IDoodleManager from '../../services/doodles/IDoodleManager';
@@ -22,7 +23,6 @@ import isMarkdownFilePath from '../../utils/isMarkdownFilePath';
 import isString from '../../utils/isString';
 import ChangeHandler from './ChangeHandler';
 import OutputFileHandler from './OutputFileHandler';
-import doodleGroom from '../../utils/doodleGroom';
 import MissionControl from '../../services/mission/MissionControl';
 import ModalDialog from '../../services/modalService/ModalDialog';
 import PublishDialog from '../../modules/publish/PublishDialog';
@@ -32,6 +32,8 @@ import UploadFlow from './UploadFlow';
 import WorkspaceScope from '../../scopes/WorkspaceScope';
 import WorkspaceMixin from '../editor/WorkspaceMixin';
 import WorkspaceFactory from '../../services/workspace/WorkspaceFactory';
+import WsFile from '../../wsmodel/services/WsFile';
+import WsModel from '../../wsmodel/services/WsModel';
 import {LANGUAGE_CSS} from '../../languages/modes';
 import {LANGUAGE_HTML} from '../../languages/modes';
 import {LANGUAGE_JSON} from '../../languages/modes';
@@ -77,10 +79,10 @@ export default class WorkspaceController implements WorkspaceMixin {
         'GitHub',
         'GitHubAuthManager',
         'cloud',
+        'doodles',
         'templates',
         'flow',
         'ga',
-        'doodles',
         'labelDialog',
         'missionControl',
         'modalDialog',
@@ -105,7 +107,9 @@ export default class WorkspaceController implements WorkspaceMixin {
         'CODE_MARKER',
         'LIBS_MARKER',
         'VENDOR_FOLDER_MARKER',
-        'workspaceFactory'];
+        'workspaceFactory',
+        'wsModel'
+    ];
 
     /**
      * Keep track of the dependencies that are loaded in the workspace.
@@ -150,10 +154,10 @@ export default class WorkspaceController implements WorkspaceMixin {
         private github: GitHubService,
         authManager: IGitHubAuthManager,
         private cloud: CloudService,
+        private doodles: IDoodleManager,
         templates: Doodle[],
         private flowService: FlowService,
         ga: UniversalAnalytics.ga,
-        private doodles: IDoodleManager,
         private labelDialog: LabelDialog,
         private missionControl: MissionControl,
         private modalDialog: ModalDialog,
@@ -178,7 +182,8 @@ export default class WorkspaceController implements WorkspaceMixin {
         private CODE_MARKER: string,
         private LIBS_MARKER: string,
         private VENDOR_FOLDER_MARKER: string,
-        private workspaceFactory: WorkspaceFactory) {
+        private workspaceFactory: WorkspaceFactory,
+        private wsModel: WsModel) {
 
         // const startTime = performance.now();
         $scope.FEATURE_SYNC_ENABLED = FEATURE_SYNC_ENABLED;
@@ -187,7 +192,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         $scope.updatePreview = (delay: number) => {
             if (rebuildPromise) { $timeout.cancel(rebuildPromise); }
             rebuildPromise = $timeout(() => { rebuildPreview(
-                doodles.current(),
+                this.wsModel,
                 this.options,
                 this.$scope,
                 this.$location,
@@ -204,16 +209,23 @@ export default class WorkspaceController implements WorkspaceMixin {
                 this.VENDOR_FOLDER_MARKER); rebuildPromise = undefined; }, delay);
         };
 
-        $scope.currentDoodle = function() {
-            // TODO: Decouple the current doodle from the list so that we don't get the jank.
-            return doodles.current();
+        $scope.workspace = wsModel;
+
+        $scope.files = function() {
+            const fs: {[path: string]: WsFile} = {};
+            const paths = wsModel.files.keys;
+            for (let i = 0; i < paths.length; i++) {
+                const path = paths[i];
+                const file = wsModel.files.getWeakRef(path);
+                fs[path] = file;
+            }
+            return fs;
         };
 
         $scope.htmlFileCount = function() {
-            const doodle = doodles.current();
-            if (doodle) {
-                const files = doodle.files;
-                const paths = Object.keys(files);
+            if (wsModel) {
+                const files = wsModel.files;
+                const paths = files.keys;
                 return paths.filter(function(path) { return isHtmlFilePath(path); }).length;
             }
             else {
@@ -222,10 +234,9 @@ export default class WorkspaceController implements WorkspaceMixin {
         };
 
         $scope.markdownFileCount = function() {
-            const doodle = doodles.current();
-            if (doodle) {
-                const files = doodle.files;
-                const paths = Object.keys(files);
+            if (wsModel) {
+                const files = wsModel.files;
+                const paths = files.keys;
                 return paths.filter(function(path) { return isMarkdownFilePath(path); }).length;
             }
             else {
@@ -234,10 +245,9 @@ export default class WorkspaceController implements WorkspaceMixin {
         };
 
         $scope.doView = (name: string): void => {
-            const doodle = doodles.current();
-            const file = doodle.findFileByName(name);
+            const file = wsModel.findFileByName(name);
             if (file) {
-                doodle.setPreviewFile(name);
+                wsModel.setPreviewFile(name);
                 // The user probably wants to see the view, so make sure the view is visible.
                 $scope.isViewVisible = true;
                 $scope.updatePreview(WAIT_NO_MORE);
@@ -274,13 +284,13 @@ export default class WorkspaceController implements WorkspaceMixin {
             if ($scope.isCommentsVisible) {
                 // Experimenting with making these mutually exclusive.
                 $scope.isReadMeVisible = false;
-                github.getGistComments(doodles.current().gistId).then((httpResponse) => {
+                github.getGistComments(wsModel.gistId).then((httpResponse) => {
                     const comments = httpResponse.data;
                     $scope.comments = comments.map(function(comment) {
                         return {type: 'info', msg: comment.body};
                     });
                 }).catch((reason) => {
-                    console.warn(`getGistComments(${doodles.current().gistId}) failed: ${reason}`);
+                    console.warn(`getGistComments(${wsModel.gistId}) failed: ${reason}`);
                 });
             }
         };
@@ -300,9 +310,9 @@ export default class WorkspaceController implements WorkspaceMixin {
             // TODO: If execute() is to take no parameters then everything must be based on service state.
             const labelFlow = new LabelFlow(
                 $scope.userLogin(),
-                this.doodles,
                 this.flowService,
-                this.labelDialog);
+                this.labelDialog,
+                wsModel);
             labelFlow.execute();
         };
 
@@ -312,7 +322,6 @@ export default class WorkspaceController implements WorkspaceMixin {
             const propertiesFlow = new PropertiesFlow(
                 this.missionControl.workspace,
                 $scope.userLogin(),
-                this.doodles,
                 this.options,
                 this.olds,
                 this.FILENAME_TYPESCRIPT_CURRENT_LIB_DTS,
@@ -320,7 +329,8 @@ export default class WorkspaceController implements WorkspaceMixin {
                 this.$location,
                 this.VENDOR_FOLDER_MARKER,
                 this.flowService,
-                this.propertiesDialog);
+                this.propertiesDialog,
+                wsModel);
             propertiesFlow.execute();
         };
 
@@ -329,12 +339,12 @@ export default class WorkspaceController implements WorkspaceMixin {
             // TODO: This really needs some refactoring.
             const publishFlow = new PublishFlow(
                 $scope.userLogin(),
-                this.doodles,
                 this.flowService,
                 this.modalDialog,
                 this.publishDialog,
                 this.credentials,
-                this.stemcArXiv);
+                this.stemcArXiv,
+                wsModel);
             publishFlow.execute();
         };
 
@@ -344,11 +354,11 @@ export default class WorkspaceController implements WorkspaceMixin {
             const uploadFlow = new UploadFlow(
                 $scope.userLogin(),
                 this.$state,
-                this.doodles,
                 this.flowService,
                 this.modalDialog,
                 this.cloud,
-                this.github);
+                this.github,
+                wsModel);
             uploadFlow.execute();
         };
 
@@ -366,6 +376,7 @@ export default class WorkspaceController implements WorkspaceMixin {
      */
     $onInit(): void {
         // const startTime = performance.now();
+        this.wsModel.recycle();
 
         // WARNING: Make sure that workspace create and release are balanced across $onInit and $onDestroy.
         // TODO: This method could have a callback, which means that editors may be attaching themselves
@@ -377,30 +388,19 @@ export default class WorkspaceController implements WorkspaceMixin {
                 // this.workspace.setTrace(true);
                 this.missionControl.workspace.setDefaultLibrary('/typings/lib.es6.d.ts');
 
-                const doodles = this.doodles;
-                // Ensure that there is a current doodle i.e. doodles.current() exists.
-                if (doodles.length === 0) {
-                    // If there is no document, construct one based upon the first template.
-                    // FIXME: Bit of a smell here. $scope.templates is from a different controller.
-                    doodles.createDoodle(this.$scope.templates[0], "STEMCstudio");
-                }
-
-                // Perform conversions required for doodle evolution.
-                const doodle = doodleGroom(doodles.current());
-
                 // Following a browser refresh, show the code so that it refreshes correctly (bug).
                 // This also side-steps the issue of the time it takes to restart the preview.
                 // Ideally we remove this line and use the cached `lastKnownJs` to provide the preview.
-                doodle.isCodeVisible = true;
+                this.wsModel.isCodeVisible = true;
 
                 // Now that things have settled down...
-                doodles.updateStorage();
+                this.wsModel.updateStorage();
 
                 const owner: string = this.$stateParams['owner'];
                 const repo: string = this.$stateParams['repo'];
                 const gistId: string = this.$stateParams['gistId']; // OK
 
-                const matches = doodles.filter(function(doodle: Doodle) {
+                const matches = this.doodles.filter(function(doodle: Doodle) {
                     if (isString(owner) && isString(repo)) {
                         return doodle.owner === owner && doodle.repo === repo;
                     }
@@ -413,19 +413,19 @@ export default class WorkspaceController implements WorkspaceMixin {
                 });
                 if (matches.length > 0) {
                     // We certainly don't want to overwrite anything in local storage.
-                    // The use should be advised ant then may delete manually from local storage.
+                    // The user should be advised and then may delete manually from local storage.
                     const match = matches[0];
-                    doodles.makeCurrent(match);
+                    copyDoodleToWorkspace(match, this.wsModel);
                     // We can also assume that we are already in the correct state.
-                    this.onInitDoodle(match);
+                    this.onInitDoodle();
                 }
                 else {
                     if (owner && repo) {
                         this.cloud.downloadTree(owner, repo, 'heads/master')
                             .then((doodle) => {
-                                doodles.unshift(doodle);
-                                doodles.updateStorage();
-                                this.onInitDoodle(doodle);
+                                copyDoodleToWorkspace(doodle, this.wsModel);
+                                this.wsModel.updateStorage();
+                                this.onInitDoodle();
                             }, (reason) => {
                                 this.modalDialog.alert({
                                     title: 'Error downloading Repository',
@@ -437,9 +437,9 @@ export default class WorkspaceController implements WorkspaceMixin {
                     else if (gistId) {
                         this.cloud.downloadGist(gistId, (err: any, doodle: Doodle) => {
                             if (!err) {
-                                doodles.unshift(doodle);
-                                doodles.updateStorage();
-                                this.onInitDoodle(doodle);
+                                copyDoodleToWorkspace(doodle, this.wsModel);
+                                this.wsModel.updateStorage();
+                                this.onInitDoodle();
                             }
                             else {
                                 this.modalDialog.alert({
@@ -451,26 +451,26 @@ export default class WorkspaceController implements WorkspaceMixin {
                     else {
                         // We don't need to load anything, but are we in the correct state for the Doodle?
                         // We end up here, e.g., when user presses Cancel from New dialog.
-                        if (this.FEATURE_GIST_ENABLED && doodle.gistId) {
-                            this.$state.go(this.STATE_GIST, { gistId: doodle.gistId });
+                        if (this.FEATURE_GIST_ENABLED && this.wsModel.gistId) {
+                            this.$state.go(this.STATE_GIST, { gistId: this.wsModel.gistId });
                         }
-                        else if (this.FEATURE_REPO_ENABLED && doodle.owner && doodle.repo) {
-                            this.$state.go(this.STATE_REPO, { owner: doodle.owner, repo: doodle.repo });
+                        else if (this.FEATURE_REPO_ENABLED && this.wsModel.owner && this.wsModel.repo) {
+                            this.$state.go(this.STATE_REPO, { owner: this.wsModel.owner, repo: this.wsModel.repo });
                         }
                         else {
-                            this.onInitDoodle(doodle);
+                            this.onInitDoodle();
                         }
                     }
                 }
 
                 this.watches.push(this.$scope.$watch('isViewVisible', (newVal: boolean, oldVal, unused: angular.IScope) => {
-                    doodles.current().isViewVisible = this.$scope.isViewVisible;
-                    doodles.updateStorage();
+                    this.wsModel.isViewVisible = this.$scope.isViewVisible;
+                    this.wsModel.updateStorage();
                 }));
 
                 this.watches.push(this.$scope.$watch('isEditMode', (newVal: boolean, oldVal, unused: angular.IScope) => {
-                    doodles.current().isCodeVisible = this.$scope.isEditMode;
-                    doodles.updateStorage();
+                    this.wsModel.isCodeVisible = this.$scope.isEditMode;
+                    this.wsModel.updateStorage();
                 }));
             }
             else {
@@ -522,6 +522,8 @@ export default class WorkspaceController implements WorkspaceMixin {
 
         this.$window.removeEventListener('resize', this.resizeListener);
 
+        this.wsModel.dispose();
+
         // const endTime = performance.now();
         // console.lg(`Workspace.$onDestroy took ${endTime - startTime} ms.`);
     }
@@ -529,7 +531,7 @@ export default class WorkspaceController implements WorkspaceMixin {
     /**
      * 
      */
-    private onInitDoodle(doodle: Doodle): void {
+    private onInitDoodle(): void {
         // const startTime = performance.now();
 
         this.resizeListener = (unused: UIEvent) => {
@@ -563,7 +565,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         this.$scope.doodleLoaded = true;
 
         // Bit of a smell here. Should we be updating the scope?
-        this.$scope.isEditMode = doodle.isCodeVisible;
+        this.$scope.isEditMode = this.wsModel.isCodeVisible;
         // Don't start in Playing mode in case the user has a looping program (give chance to fix the code).
         this.$scope.isViewVisible = false;
         // Don't display comments initially to keep things clean.
@@ -575,7 +577,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         // TOOD: This needs a flow to manage the nesting and sequencing.
         updateWorkspaceTypings(
             this.missionControl.workspace,
-            this.doodles.current(),
+            this.wsModel,
             this.options,
             this.olds,
             this.FILENAME_TYPESCRIPT_CURRENT_LIB_DTS,
@@ -584,11 +586,11 @@ export default class WorkspaceController implements WorkspaceMixin {
             this.VENDOR_FOLDER_MARKER, () => {
 
                 // Set the module kind for transpilation consistent with the version.
-                const moduleKind = detect1x(doodle) ? MODULE_KIND_NONE : MODULE_KIND_SYSTEM;
+                const moduleKind = detect1x(this.wsModel) ? MODULE_KIND_NONE : MODULE_KIND_SYSTEM;
                 this.missionControl.workspace.setModuleKind(moduleKind);
 
                 // Set the script target for transpilation consistent with the version.
-                const scriptTarget = detect1x(doodle) ? SCRIPT_TARGET_ES5 : SCRIPT_TARGET_ES5;
+                const scriptTarget = detect1x(this.wsModel) ? SCRIPT_TARGET_ES5 : SCRIPT_TARGET_ES5;
                 this.missionControl.workspace.setScriptTarget(scriptTarget);
 
                 this.missionControl.workspace.synchronize()
@@ -683,18 +685,17 @@ export default class WorkspaceController implements WorkspaceMixin {
     private createOutputFilesEventHandler(filename: string): OutputFileHandler {
         const handler = (event: { data: OutputFile[] }, session: EditSession) => {
             // It's OK to capture the current Doodle here, but not outside the handler!
-            const doodle = this.doodles.current();
             const outputFiles = event.data;
             outputFiles.forEach((outputFile: OutputFile) => {
-                if (typeof doodle.lastKnownJs !== 'object') {
-                    doodle.lastKnownJs = {};
+                if (typeof this.wsModel.lastKnownJs !== 'object') {
+                    this.wsModel.lastKnownJs = {};
                 }
                 // TODO: The output files could be both JavaScript and d.ts
                 // We should be sure to only select the JavaScript file. 
-                if (doodle.lastKnownJs[filename] !== outputFile.text) {
+                if (this.wsModel.lastKnownJs[filename] !== outputFile.text) {
                     // if (this.cascade) {
-                    doodle.lastKnownJs[filename] = outputFile.text;
-                    this.doodles.updateStorage();
+                    this.wsModel.lastKnownJs[filename] = outputFile.text;
+                    this.wsModel.updateStorage();
                     this.$scope.updatePreview(WAIT_FOR_MORE_CODE_KEYSTROKES);
                     // }
                 }
@@ -710,8 +711,8 @@ export default class WorkspaceController implements WorkspaceMixin {
 
     private createChangeHandler(filename: string): ChangeHandler {
         const handler = (delta: Delta, session: EditSession) => {
-            if (this.doodles.current()) {
-                this.doodles.updateStorage();
+            if (this.wsModel) {
+                this.wsModel.updateStorage();
                 this.$scope.updatePreview(WAIT_FOR_MORE_OTHER_KEYSTROKES);
             }
         };
@@ -721,8 +722,8 @@ export default class WorkspaceController implements WorkspaceMixin {
 
     private createReadmeChangeHandler(filename: string): ChangeHandler {
         const handler = (delta: Delta, session: EditSession) => {
-            if (this.doodles.current()) {
-                this.doodles.updateStorage();
+            if (this.wsModel) {
+                this.wsModel.updateStorage();
                 this.updateReadmeView(WAIT_FOR_MORE_README_KEYSTROKES);
             }
         };
@@ -734,7 +735,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         // Throttle the requests to update the README view.
         if (this.readmePromise) { this.$timeout.cancel(this.readmePromise); }
         this.readmePromise = this.$timeout(() => { rebuildReadmeView(
-            this.doodles.current(),
+            this.wsModel,
             this.FILENAME_README,
             this.$scope,
             this.$window

@@ -3,16 +3,15 @@ import FlowService from '../../services/flow/FlowService';
 import PropertiesDialog from '../../modules/properties/PropertiesDialog';
 import PropertiesFacts from './PropertiesFacts';
 import PropertiesSettings from '../../modules/properties/PropertiesSettings';
-import IDoodleManager from '../../services/doodles/IDoodleManager';
 import IOptionManager from '../../services/options/IOptionManager';
 import updateWorkspaceTypings from './updateWorkspaceTypings';
 import Workspace from '../../services/workspace/Workspace';
+import WsModel from '../../wsmodel/services/WsModel';
 
 export default class PropertiesFlow {
     constructor(
         private workspace: Workspace,
         private owner: string,
-        private doodles: IDoodleManager,
         private options: IOptionManager,
         private olds: string[],
         private FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
@@ -20,12 +19,12 @@ export default class PropertiesFlow {
         private $location: angular.ILocationService,
         private VENDOR_FOLDER_MARKER: string,
         private flowService: FlowService,
-        private propertiesDialog: PropertiesDialog
+        private propertiesDialog: PropertiesDialog,
+        private wsModel: WsModel
     ) {
         // Do nothing.
     }
     execute(): void {
-        const doodle = this.doodles.current();
         const flow = this.flowService.createFlow<PropertiesFacts>("Properties");
         flow.rule("Settings", {},
             (facts) => {
@@ -33,10 +32,10 @@ export default class PropertiesFlow {
             },
             (facts, session, next) => {
                 const defaults = {
-                    name: doodle.name,
-                    version: doodle.version,
-                    operatorOverloading: doodle.operatorOverloading,
-                    dependencies: doodle.dependencies
+                    name: this.wsModel.name,
+                    version: this.wsModel.version,
+                    operatorOverloading: this.wsModel.operatorOverloading,
+                    dependencies: this.wsModel.dependencies
                 };
                 this.propertiesDialog.open(defaults)
                     .then((settings: PropertiesSettings) => {
@@ -55,14 +54,14 @@ export default class PropertiesFlow {
 
         session.execute((err: any, facts: PropertiesFacts) => {
             if (!err) {
-                doodle.name = facts.settings.value.name;
-                doodle.version = facts.settings.value.version;
-                doodle.operatorOverloading = facts.settings.value.operatorOverloading;
-                doodle.dependencies = facts.settings.value.dependencies;
+                this.wsModel.name = facts.settings.value.name;
+                this.wsModel.version = facts.settings.value.version;
+                this.wsModel.operatorOverloading = facts.settings.value.operatorOverloading;
+                this.wsModel.dependencies = facts.settings.value.dependencies;
                 // TODO: Break out more rules to remove the nesting.
                 updateWorkspaceTypings(
                     this.workspace,
-                    doodle,
+                    this.wsModel,
                     this.options,
                     this.olds,
                     this.FILENAME_TYPESCRIPT_CURRENT_LIB_DTS,

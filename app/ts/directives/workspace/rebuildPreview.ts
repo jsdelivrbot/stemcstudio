@@ -8,13 +8,13 @@ import IOption from '../../services/options/IOption';
 import IOptionManager from '../../services/options/IOptionManager';
 import currentJavaScript from './currentJavaScript';
 import detect1x from './detect1x';
-import Doodle from '../../services/doodles/Doodle';
 import scriptURL from './scriptURL';
 import WorkspaceScope from '../../scopes/WorkspaceScope';
+import WsModel from '../../wsmodel/services/WsModel';
 import mathscript from 'davinci-mathscript';
 
 export default function rebuildPreview(
-    doodle: Doodle,
+    workspace: WsModel,
     options: IOptionManager,
     $scope: WorkspaceScope,
     $location: angular.ILocationService,
@@ -47,8 +47,8 @@ export default function rebuildPreview(
             while (preview.children.length > 0) {
                 preview.removeChild(preview.firstChild);
             }
-            if (doodle) {
-                const bestFile: string = doodle.getPreviewFileOrBestAvailable();
+            if (workspace) {
+                const bestFile: string = workspace.getPreviewFileOrBestAvailable();
                 if (bestFile && $scope.isViewVisible) {
 
                     $scope.previewIFrame = document.createElement('iframe');
@@ -62,11 +62,11 @@ export default function rebuildPreview(
 
                     const content: Document = $scope.previewIFrame.contentDocument || $scope.previewIFrame.contentWindow.document;
 
-                    let html: string = fileContent(bestFile, doodle);
+                    let html: string = fileContent(bestFile, workspace);
                     if (isString(html)) {
 
                         const selOpts: IOption[] = options.filter((option: IOption, index: number, array: IOption[]) => {
-                            return doodle.dependencies.indexOf(option.name) > -1;
+                            return workspace.dependencies.indexOf(option.name) > -1;
                         });
 
                         const closureOpts: IOption[] = closure(selOpts, options);
@@ -80,7 +80,7 @@ export default function rebuildPreview(
                         const chosenJsFileNames: string[] = closureOpts.map(function(option: IOption) { return option.minJs; }).reduce(function(previousValue, currentValue) { return previousValue.concat(currentValue); }, []);
                         // TODO: We will later want to make operator overloading configurable for speed.
 
-                        const scriptFileNames: string[] = doodle.operatorOverloading ? chosenJsFileNames.concat(FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS) : chosenJsFileNames;
+                        const scriptFileNames: string[] = workspace.operatorOverloading ? chosenJsFileNames.concat(FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS) : chosenJsFileNames;
                         // TOOD: Don't fix the location of the JavaScript here.
                         const scriptTags = scriptFileNames.map((fileName: string) => {
                             return "<script src='" + scriptURL(DOMAIN, fileName, VENDOR_FOLDER_MARKER) + "'></script>\n";
@@ -90,30 +90,30 @@ export default function rebuildPreview(
 
                         // TODO: It would be nice to have a more flexible way to define stylesheet imports.
                         // TODO: We should then be able to move away from symbolic constants for the stylesheet file name.
-                        if (fileExists('style.css', doodle)) {
-                            html = html.replace(STYLE_MARKER, [fileContent('style.css', doodle)].join(""));
+                        if (fileExists('style.css', workspace)) {
+                            html = html.replace(STYLE_MARKER, [fileContent('style.css', workspace)].join(""));
                         }
-                        else if (fileExists(FILENAME_LESS, doodle)) {
-                            html = html.replace(STYLE_MARKER, [fileContent(FILENAME_LESS, doodle)].join(""));
+                        else if (fileExists(FILENAME_LESS, workspace)) {
+                            html = html.replace(STYLE_MARKER, [fileContent(FILENAME_LESS, workspace)].join(""));
                         }
 
-                        if (detect1x(doodle)) {
+                        if (detect1x(workspace)) {
                             // code is for backwards compatibility only, now that we support ES6 modules.
                             console.warn("Support for programs not using ES6 modules is deprecated. Please convert your program to use ES6 module loading.");
-                            html = html.replace(LIBS_MARKER, currentJavaScript(FILENAME_LIBS, doodle));
-                            html = html.replace(CODE_MARKER, currentJavaScript(FILENAME_CODE, doodle));
+                            html = html.replace(LIBS_MARKER, currentJavaScript(FILENAME_LIBS, workspace));
+                            html = html.replace(CODE_MARKER, currentJavaScript(FILENAME_CODE, workspace));
                             // For backwards compatibility (less than 1.x) ...
-                            html = html.replace('<!-- STYLE-MARKER -->', ['<style>', fileContent(FILENAME_LESS, doodle), '</style>'].join(""));
-                            html = html.replace('<!-- CODE-MARKER -->', currentJavaScript(FILENAME_CODE, doodle));
+                            html = html.replace('<!-- STYLE-MARKER -->', ['<style>', fileContent(FILENAME_LESS, workspace), '</style>'].join(""));
+                            html = html.replace('<!-- CODE-MARKER -->', currentJavaScript(FILENAME_CODE, workspace));
                         }
                         else {
                             const modulesJs: string[] = [];
-                            const names: string[] = Object.keys(doodle.lastKnownJs);
+                            const names: string[] = Object.keys(workspace.lastKnownJs);
                             const iLen: number = names.length;
                             for (let i = 0; i < iLen; i++) {
                                 const name = names[i];
-                                const moduleJs = doodle.lastKnownJs[name];
-                                const moduleMs = doodle.operatorOverloading ? mathscript.transpile(moduleJs) : moduleJs;
+                                const moduleJs = workspace.lastKnownJs[name];
+                                const moduleMs = workspace.operatorOverloading ? mathscript.transpile(moduleJs) : moduleJs;
                                 modulesJs.push(moduleMs);
                             }
                             html = html.replace(CODE_MARKER, modulesJs.join('\n'));

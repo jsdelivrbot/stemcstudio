@@ -14,7 +14,7 @@ const FILENAME_META = 'package.json';
 
 export default class Doodle {
     /**
-     * The owner's login.
+     * The owner's login name.
      */
     public owner: string;
     /**
@@ -24,7 +24,6 @@ export default class Doodle {
     public gistId: string;
     public isCodeVisible: boolean;
     public isViewVisible: boolean;
-    public focusEditor: string;
     public lastKnownJs: { [name: string]: string };
     public files: { [path: string]: DoodleFile };
     public trash: { [path: string]: DoodleFile } = {};
