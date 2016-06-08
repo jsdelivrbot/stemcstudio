@@ -1,6 +1,4 @@
 import app from '../../app';
-// TODO: Decouple from editor.
-import Document from '../../editor/Document';
 import Doodle from './Doodle';
 import DoodleFile from './DoodleFile';
 import IDoodleDS from './IDoodleDS';
@@ -37,19 +35,19 @@ function deserializeDoodles(doodles: IDoodleDS[], options: IOptionManager): Dood
             d.files = {};
 
             d.files[FILENAME_HTML] = new DoodleFile();
-            d.files[FILENAME_HTML].document = new Document(inDoodle[PROPERTY_HTML]);
+            d.files[FILENAME_HTML].content = inDoodle[PROPERTY_HTML];
             d.files[FILENAME_HTML].language = modeFromName(FILENAME_HTML);
 
             d.files[FILENAME_CODE] = new DoodleFile();
-            d.files[FILENAME_CODE].document = new Document(inDoodle[PROPERTY_CODE]);
+            d.files[FILENAME_CODE].content = inDoodle[PROPERTY_CODE];
             d.files[FILENAME_CODE].language = modeFromName(FILENAME_CODE);
 
             d.files[FILENAME_LIBS] = new DoodleFile();
-            d.files[FILENAME_LIBS].document = new Document(inDoodle[PROPERTY_LIBS]);
+            d.files[FILENAME_LIBS].content = inDoodle[PROPERTY_LIBS];
             d.files[FILENAME_LIBS].language = modeFromName(FILENAME_LIBS);
 
             d.files[FILENAME_LESS] = new DoodleFile();
-            d.files[FILENAME_LESS].document = new Document(inDoodle[PROPERTY_LESS]);
+            d.files[FILENAME_LESS].content = inDoodle[PROPERTY_LESS];
             d.files[FILENAME_LESS].language = modeFromName(FILENAME_LESS);
         }
         // FIXME: DRY by copying keys both directions.
@@ -70,7 +68,7 @@ function copyFiles(inFiles: { [name: string]: ITemplateFile }): { [name: string]
         const name = names[i];
         const inFile = inFiles[name];
         const outFile: DoodleFile = new DoodleFile();
-        outFile.document = new Document(inFile.content);
+        outFile.content = inFile.content;
         outFile.language = inFile.language;
         outFiles[name] = outFile;
     }

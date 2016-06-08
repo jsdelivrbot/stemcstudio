@@ -1,4 +1,5 @@
 import Document from '../editor/Document';
+import EditSession from '../editor/EditSession';
 import Doodle from '../services/doodles/Doodle';
 import DoodleFile from '../services/doodles/DoodleFile';
 import StringShareableMap from '../collections/StringShareableMap';
@@ -13,7 +14,7 @@ function copyDoodleFilesToWorkspace(dudeFiles: { [path: string]: DoodleFile }, w
     for (let i = 0; i < paths.length; i++) {
         const path = paths[i];
         const dudeFile = dudeFiles[path];
-        const wsFile = new WsFile(dudeFile.document);
+        const wsFile = new WsFile(new EditSession(new Document(dudeFile.content)));
         // FIXME: Some of these properties are a bit unreliable and could be dropped on the DoodleFile. 
         // wsFile.isOpen = dudeFile.isOpen;
         wsFile.language = dudeFile.language;

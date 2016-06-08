@@ -1,15 +1,13 @@
-// TODO: Decouple from editor.
-import Document from '../../editor/Document';
-
 /**
  *
  */
 export default class DoodleFile {
+
     /**
-     * 
+     * The text content of the file, unencoded.
      */
-    public document: Document;
-    // public content: string;
+    public content: string;
+
     /**
      * The file is open for editing.
      */
@@ -27,12 +25,10 @@ export default class DoodleFile {
     public type: string;
 
     /**
-     * @class DoodleFile
-     * @constructor
+     *
      */
     constructor() {
-        this.document = new Document("");
-        // this.content = "";
+        this.content = "";
         this.isOpen = true;
         this.preview = false;
         this.selected = false;
@@ -44,8 +40,7 @@ export default class DoodleFile {
      */
     clone(): DoodleFile {
         const copy = new DoodleFile();
-        copy.document = new Document(this.document.getValue());
-        // copy.content = this.content;
+        copy.content = this.content;
         copy.isOpen = this.isOpen;
         copy.language = this.language;
         copy.raw_url = this.raw_url;

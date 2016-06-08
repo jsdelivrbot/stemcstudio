@@ -1,5 +1,3 @@
-// TODO: Decouple from editor now that we are putting the functionality into the workspace.
-import Document from '../../editor/Document';
 import DoodleFile from './DoodleFile';
 import IDoodleConfig from './IDoodleConfig';
 import modeFromName from '../../utils/modeFromName';
@@ -41,12 +39,12 @@ export default class Doodle {
             // Beware: We could have a package.json that doesn't parse.
             // We must ensure that the user can recover the situation.
             const file = this.ensurePackageJson();
-            return JSON.parse(file.document.getValue());
+            return JSON.parse(file.content);
         }
         catch (e) {
             console.warn(`Unable to parse file '${FILENAME_META}' as JSON.`);
             const file = this.ensurePackageJson();
-            console.warn(file.document.getValue());
+            console.warn(file.content);
             return void 0;
         }
     }
@@ -69,9 +67,9 @@ export default class Doodle {
     set name(name: string) {
         const file = this.ensurePackageJson();
         try {
-            const metaInfo: IDoodleConfig = JSON.parse(file.document.getValue());
+            const metaInfo: IDoodleConfig = JSON.parse(file.content);
             metaInfo.name = name;
-            file.document.setValue(JSON.stringify(metaInfo, null, 2));
+            file.content = JSON.stringify(metaInfo, null, 2);
         }
         catch (e) {
             console.warn(`Unable to set name property in file '${FILENAME_META}'.`);
@@ -89,9 +87,9 @@ export default class Doodle {
 
     set version(version: string) {
         const file = this.ensurePackageJson();
-        const metaInfo: IDoodleConfig = JSON.parse(file.document.getValue());
+        const metaInfo: IDoodleConfig = JSON.parse(file.content);
         metaInfo.version = version;
-        file.document.setValue(JSON.stringify(metaInfo, null, 2));
+        file.content = JSON.stringify(metaInfo, null, 2);
     }
 
     get author(): string {
@@ -117,9 +115,9 @@ export default class Doodle {
 
     set author(author: string) {
         const file = this.ensurePackageJson();
-        const metaInfo: IDoodleConfig = JSON.parse(file.document.getValue());
+        const metaInfo: IDoodleConfig = JSON.parse(file.content);
         setOptionalStringProperty('author', author, metaInfo);
-        file.document.setValue(JSON.stringify(metaInfo, null, 2));
+        file.content = JSON.stringify(metaInfo, null, 2);
     }
 
     get description(): string {
@@ -145,9 +143,9 @@ export default class Doodle {
 
     set description(description: string) {
         const file = this.ensurePackageJson();
-        const metaInfo: IDoodleConfig = JSON.parse(file.document.getValue());
+        const metaInfo: IDoodleConfig = JSON.parse(file.content);
         setOptionalStringProperty('description', description, metaInfo);
-        file.document.setValue(JSON.stringify(metaInfo, null, 2));
+        file.content = JSON.stringify(metaInfo, null, 2);
     }
 
     get keywords(): string[] {
@@ -173,9 +171,9 @@ export default class Doodle {
 
     set keywords(keywords: string[]) {
         const file = this.ensurePackageJson();
-        const metaInfo: IDoodleConfig = JSON.parse(file.document.getValue());
+        const metaInfo: IDoodleConfig = JSON.parse(file.content);
         setOptionalStringArrayProperty('keywords', keywords, metaInfo);
-        file.document.setValue(JSON.stringify(metaInfo, null, 2));
+        file.content = JSON.stringify(metaInfo, null, 2);
     }
 
     get operatorOverloading(): boolean {
@@ -196,9 +194,9 @@ export default class Doodle {
     set operatorOverloading(operatorOverloading: boolean) {
         try {
             const file = this.ensurePackageJson();
-            const metaInfo: IDoodleConfig = JSON.parse(file.document.getValue());
+            const metaInfo: IDoodleConfig = JSON.parse(file.content);
             setOptionalBooleanProperty('operatorOverloading', operatorOverloading, metaInfo);
-            file.document.setValue(JSON.stringify(metaInfo, null, 2));
+            file.content = JSON.stringify(metaInfo, null, 2);
         }
         catch (e) {
             console.warn(`Unable to set operatorOverloading property in file '${FILENAME_META}'.`);
@@ -230,9 +228,9 @@ export default class Doodle {
     set dependencies(dependencies: string[]) {
         try {
             const file = this.ensurePackageJson();
-            const metaInfo: IDoodleConfig = JSON.parse(file.document.getValue());
+            const metaInfo: IDoodleConfig = JSON.parse(file.content);
             metaInfo.dependencies = dependenciesMap(dependencies, this.options);
-            file.document.setValue(JSON.stringify(metaInfo, null, 2));
+            file.content = JSON.stringify(metaInfo, null, 2);
         }
         catch (e) {
             console.warn(`Unable to set dependencies property in file '${FILENAME_META}'.`);
@@ -250,7 +248,7 @@ export default class Doodle {
     private ensureFile(name: string, content: string): DoodleFile {
         if (!this.existsFile(name)) {
             const file = this.newFile(name);
-            file.document = new Document(content);
+            file.content = content;
             file.language = modeFromName(name);
             return file;
         }

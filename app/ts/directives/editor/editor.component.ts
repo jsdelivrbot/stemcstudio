@@ -7,9 +7,9 @@ import TextMode from '../../editor/mode/TextMode';
 import TypeScriptMode from '../../editor/mode/TypeScriptMode';
 import createCssMode from '../../editor/mode/createCssMode';
 import createMarkdownMode from '../../editor/mode/createMarkdownMode';
-import Document from '../../editor/Document';
-// import Delta from '../../editor/Delta';
-import edit from '../../editor/edit';
+import EditSession from '../../editor/EditSession';
+import Renderer from '../../editor/Renderer';
+import UndoManager from '../../editor/UndoManager';
 import Editor from '../../editor/Editor';
 import EditorScope from './EditorScope';
 import ISettingsService from '../../services/settings/ISettingsService';
@@ -28,18 +28,25 @@ import {LANGUAGE_PYTHON} from '../../languages/modes';
 import {LANGUAGE_TYPE_SCRIPT} from '../../languages/modes';
 import {LANGUAGE_TEXT} from '../../languages/modes';
 
+/**
+ * Factory for the editor (attribute) directive.
+ * This directive turns an HTMLElement into a container for an Editor.
+ * The EditSession for the Editor is injected using the ng-model directive.
+ * 
+ * When changing the parameters to this function, be sure to update the $inject property.
+ */
 function factory(
     $timeout: ng.ITimeoutService,
     settings: ISettingsService,
     textService: ITextService,
-    themeManager: ThemeManager) {
+    themeManager: ThemeManager): ng.IDirective {
 
     /**
-     * @param $scope {IScope} Used to monitor $onDestroy and support transclude.
+     * @param $scope Used to monitor $onDestroy and support transclude.
      * @param element
      * @param attrs
      * @param controllers
-     * @param transclude {ITranscludeFunction} This parameter will only be set if we set the transclude option to true.
+     * @param transclude This parameter will only be set if we set the transclude option to true.
      */
     function link($scope: EditorScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes, controllers: {}, transclude: ng.ITranscludeFunction) {
 
@@ -51,106 +58,24 @@ function factory(
         const workspace: WorkspaceMixin = controllers[1];
 
         const container: HTMLElement = element[0];
-        const editor: Editor = edit(container);
+        // Experiment with creating an Editor without an EditSession, which is injected later.
+        const renderer: Renderer = new Renderer(container);
+        const editor: Editor = new Editor(renderer, void 0);
 
         const themeEventHandler = function(event: ThemeManagerEvent) {
             editor.setThemeCss(event.cssClass, event.href);
             editor.setThemeDark(event.isDark);
         };
+        // This event listener gets removed in onDestroyScope
         themeManager.addEventListener(currentTheme, themeEventHandler);
 
         // The following are starting to look very similar!
-        switch ($scope.mode) {
-            case LANGUAGE_PYTHON: {
-                editor.getSession().setUseWorker(false);
-                editor.setLanguageMode(new PythonMode('/js/worker.js', workerImports), function(err: any) {
-                    if (err) {
-                        console.warn(`${$scope.mode} => ${err}`);
-                    }
-                    workspace.attachEditor($scope.id, $scope.mode, editor);
-                });
-                break;
-            }
-            case LANGUAGE_JAVA_SCRIPT: {
-                editor.setLanguageMode(new JavaScriptMode('/js/worker.js', workerImports), function(err: any) {
-                    if (err) {
-                        console.warn(`${$scope.mode} => ${err}`);
-                    }
-                    workspace.attachEditor($scope.id, $scope.mode, editor);
-                });
-                break;
-            }
-            case LANGUAGE_TYPE_SCRIPT: {
-                editor.setLanguageMode(new TypeScriptMode('/js/worker.js', workerImports), function(err: any) {
-                    if (err) {
-                        console.warn(`${$scope.mode} => ${err}`);
-                    }
-                    workspace.attachEditor($scope.id, $scope.mode, editor);
-                });
-                break;
-            }
-            case LANGUAGE_HTML: {
-                editor.setLanguageMode(new HtmlMode('/js/worker.js', workerImports), function(err: any) {
-                    if (err) {
-                        console.warn(`${$scope.mode} => ${err}`);
-                    }
-                    workspace.attachEditor($scope.id, $scope.mode, editor);
-                });
-                break;
-            }
-            case LANGUAGE_JSON: {
-                editor.setLanguageMode(new JsonMode('/js/worker.js', workerImports), function(err: any) {
-                    if (err) {
-                        console.warn(`${$scope.mode} => ${err}`);
-                    }
-                    workspace.attachEditor($scope.id, $scope.mode, editor);
-                });
-                break;
-            }
-            case LANGUAGE_CSS:
-            case LANGUAGE_LESS: {
-                // If we don't use the worker then we don't get a confirmation.
-                editor.getSession().setUseWorker(false);
-                editor.setLanguageMode(createCssMode('/js/worker.js', workerImports), function(err: any) {
-                    if (err) {
-                        console.warn(`${$scope.mode} => ${err}`);
-                    }
-                    workspace.attachEditor($scope.id, $scope.mode, editor);
-                });
-                break;
-            }
-            case LANGUAGE_MARKDOWN: {
-                editor.getSession().setUseWrapMode(true);
-                editor.setWrapBehavioursEnabled(true);
-                editor.setLanguageMode(createMarkdownMode('/js/worker.js', workerImports), function(err: any) {
-                    if (err) {
-                        console.warn(`${$scope.mode} => ${err}`);
-                    }
-                    workspace.attachEditor($scope.id, $scope.mode, editor);
-                });
-                break;
-            }
-            case LANGUAGE_TEXT: {
-                editor.setLanguageMode(new TextMode('/js/worker.js', workerImports), function(err: any) {
-                    if (err) {
-                        console.warn(`${$scope.mode} => ${err}`);
-                    }
-                    workspace.attachEditor($scope.id, $scope.mode, editor);
-                });
-                break;
-            }
-            default: {
-                console.warn(`Unrecognized mode => ${$scope.mode}`);
-            }
-        }
+        // We must 
         editor.setThemeDark(true);
         editor.setPadding(4);
         editor.setShowInvisibles(settings.showInvisibles);
         editor.setFontSize(settings.fontSize);
         editor.setShowPrintMargin(settings.showPrintMargin);
-        editor.setDisplayIndentGuides(settings.displayIndentGuides);
-        editor.getSession().setTabSize(2);
-        editor.getSession().setUseSoftTabs(true);
 
         attrs.$observe<boolean>('readonly', function(readOnly: boolean) {
             editor.setReadOnly(readOnly);
@@ -196,26 +121,126 @@ function factory(
         // I'm not sure why, but wrapping seems to break things!
         //      $timeout(function() {
         ngModel.$render = function() {
-            console.log(`ngModel.$render function is being called.`);
-            const document: Document = ngModel.$viewValue;
-            if (document instanceof Document) {
+            const editSession: EditSession = ngModel.$viewValue;
+            if (editSession instanceof EditSession) {
+                const undoManager = new UndoManager();
+                editSession.setUndoManager(undoManager);
                 // editor.off('change', onEditorChange);
-                // TODO: You can set a session but not a document.
-                editor.setValue(document.getValue(), -1);
+                // FIXME: Delay the creation of the editor so that we don't create two EditSession(s).
+                editor.setSession(editSession);
+                // TODO: Perhaps these setting don't need to be applied here?
+                editor.getSession().setTabSize(2);
+                editor.getSession().setUseSoftTabs(true);
+                // Setting displayIndentGuides requires an editSession.
+                editor.setDisplayIndentGuides(settings.displayIndentGuides);
+                // We must wait for the $render function to be called so that we have a session.
+                switch ($scope.mode) {
+                    case LANGUAGE_PYTHON: {
+                        editor.getSession().setUseWorker(false);
+                        editor.setLanguageMode(new PythonMode('/js/worker.js', workerImports), function(err: any) {
+                            if (err) {
+                                console.warn(`${$scope.mode} => ${err}`);
+                            }
+                            workspace.attachEditor($scope.id, $scope.mode, editor);
+                        });
+                        break;
+                    }
+                    case LANGUAGE_JAVA_SCRIPT: {
+                        editor.setLanguageMode(new JavaScriptMode('/js/worker.js', workerImports), function(err: any) {
+                            if (err) {
+                                console.warn(`${$scope.mode} => ${err}`);
+                            }
+                            workspace.attachEditor($scope.id, $scope.mode, editor);
+                        });
+                        break;
+                    }
+                    case LANGUAGE_TYPE_SCRIPT: {
+                        editor.setLanguageMode(new TypeScriptMode('/js/worker.js', workerImports), function(err: any) {
+                            if (err) {
+                                console.warn(`${$scope.mode} => ${err}`);
+                            }
+                            workspace.attachEditor($scope.id, $scope.mode, editor);
+                        });
+                        break;
+                    }
+                    case LANGUAGE_HTML: {
+                        editor.setLanguageMode(new HtmlMode('/js/worker.js', workerImports), function(err: any) {
+                            if (err) {
+                                console.warn(`${$scope.mode} => ${err}`);
+                            }
+                            workspace.attachEditor($scope.id, $scope.mode, editor);
+                        });
+                        break;
+                    }
+                    case LANGUAGE_JSON: {
+                        editor.setLanguageMode(new JsonMode('/js/worker.js', workerImports), function(err: any) {
+                            if (err) {
+                                console.warn(`${$scope.mode} => ${err}`);
+                            }
+                            workspace.attachEditor($scope.id, $scope.mode, editor);
+                        });
+                        break;
+                    }
+                    case LANGUAGE_CSS:
+                    case LANGUAGE_LESS: {
+                        // If we don't use the worker then we don't get a confirmation.
+                        editor.getSession().setUseWorker(false);
+                        editor.setLanguageMode(createCssMode('/js/worker.js', workerImports), function(err: any) {
+                            if (err) {
+                                console.warn(`${$scope.mode} => ${err}`);
+                            }
+                            workspace.attachEditor($scope.id, $scope.mode, editor);
+                        });
+                        break;
+                    }
+                    case LANGUAGE_MARKDOWN: {
+                        editor.getSession().setUseWrapMode(true);
+                        editor.setWrapBehavioursEnabled(true);
+                        editor.setLanguageMode(createMarkdownMode('/js/worker.js', workerImports), function(err: any) {
+                            if (err) {
+                                console.warn(`${$scope.mode} => ${err}`);
+                            }
+                            workspace.attachEditor($scope.id, $scope.mode, editor);
+                        });
+                        break;
+                    }
+                    case LANGUAGE_TEXT: {
+                        editor.setLanguageMode(new TextMode('/js/worker.js', workerImports), function(err: any) {
+                            if (err) {
+                                console.warn(`${$scope.mode} => ${err}`);
+                            }
+                            workspace.attachEditor($scope.id, $scope.mode, editor);
+                        });
+                        break;
+                    }
+                    default: {
+                        console.warn(`Unrecognized mode => ${$scope.mode}`);
+                    }
+                }
                 // editor.on('change', onEditorChange);
             }
             else {
-                console.warn(`$render: ng-model (ngModel.$viewValue) must be a Document.`);
+                console.warn(`$render: ng-model (ngModel.$viewValue) must be an EditSession.`);
             }
             $timeout(function() {
                 resizeEditor();
+                // The resize event appears to happen AFTER a session is injected.
+                // If it did not happen that way, the following line would blow up.
+                // TODO: Maybe this should be guarded by an EditSession check in order
+                // to be more fault-tolerant?
                 editor.gotoLine(0, 0);
             });
         };
 
+        // TODO: If we use transclude to load embedded text then it defeats the ng-model directive
+        // which delays the injection of an EditSession. Bottom line is that you should not
+        // try to do both. The code below will blow up when we call setValue because the
+        // Editor does not have an EditSession. The fix would be to define an EditSession on a
+        // first-wins basis.
         // We use the transclude function to manually handle the placement of the contents.
         // We take any text and apply it to the editor.
         if (transclude) {
+            /*
             transclude($scope, function(clonedElement: JQuery) {
                 // We set the initial text on the editor before listening to change events.
                 const initialText = textService.normalizeWhitespace(clonedElement.text());
@@ -227,10 +252,11 @@ function factory(
                     ngModel.$setViewValue(new Document(viewValue));
                 }
             });
+            */
         }
         else {
             // If the transclude option is not set then we can't suck in text contained in the element.
-            console.warn("The transclude option is not set to true");
+            // console.warn("The transclude option is not set to true");
         }
 
         // editor.on('change', onEditorChange);
@@ -245,12 +271,16 @@ function factory(
         }, true)
         */
 
+        /**
+         * Since the default $animate service is adding and removing the
+         * ng-hide class in the $$postDigest phase, we need to resize
+         * AFTER that happens, which would be in the next
+         * tick of the event-loop. We'll use $timeout to do this in the
+         * next tick.
+         * 
+         * This $watch is cancelled on onDestroyScope.
+         */
         const unregisterWatchNgShow = $scope.$watch('ngShow'/*attrs['ngShow']*/, function(newShowing: boolean, oldShowing: boolean) {
-            // Since the default $animate service is adding and removing the
-            // ng-hide class in the $$postDigest phase, we need to resize
-            // AFTER that happens, which would be in the next
-            // tick of the event-loop. We'll use $timeout to do this in the
-            // next tick.
             if (newShowing) {
                 resizeEditorNextTick();
             }
@@ -306,7 +336,7 @@ function factory(
          * Make the transclude function available in the link functions and manually perform the inclusion because
          * the text node has to go into the editor itself (we don't actually use this feature).
          */
-        transclude: true,
+        transclude: false,
         /**
          * The link function is used for DOM manipulation.
          */

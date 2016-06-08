@@ -962,16 +962,14 @@ export default class Editor implements EventBus<any, Editor> {
      * Sets a new EditSession to use.
      * This method also emits the `'changeSession'` event.
      *
-     * @method setSession
-     * @param session {EditSession} The new session to use.
-     * @return {void}
+     * @param session The new session to use.
      */
     setSession(session: EditSession): void {
         if (this.session === session) {
             return;
         }
 
-        var oldSession = this.session;
+        const oldSession = this.session;
         if (oldSession) {
             this.session.off("change", this.$onDocumentChange);
             this.session.off("changeMode", this.$onChangeMode);
@@ -1141,12 +1139,12 @@ export default class Editor implements EventBus<any, Editor> {
     }
 
     /**
-     * Sets the current document to `text`.
+     * Sets the current session to `text`.
+     * This has other side effects that generally reset the session.
+     * The other effect of this method is to move the cursor.
      *
-     * @method setValue
-     * @param text {string} The new value to set for the document
-     * @param [cursorPos] {number} Where to set the new value.`undefined` or 0 is selectAll, -1 is at the document start, and +1 is at the end
-     * @return {void}
+     * @param text The new value to set for the document
+     * @param cursorPos Where to set the new value.`undefined` or 0 is selectAll, -1 is at the document start, and +1 is at the end.
      */
     setValue(text: string, cursorPos?: number): void {
 
@@ -1154,8 +1152,7 @@ export default class Editor implements EventBus<any, Editor> {
             this.session.setValue(text);
         }
         else {
-            console.warn("session is missing for Editor");
-            return;
+            throw new Error(`setValue('...', ${cursorPos}); Editor must have an EditSession before calling setValue.`);
         }
 
         if (!cursorPos) {
@@ -2497,39 +2494,37 @@ export default class Editor implements EventBus<any, Editor> {
 
     /**
      * Inserts an indentation into the current cursor position or indents the selected lines.
-     *
-     * @method indent
-     * @return {void}
      */
     indent(): void {
-        var session = this.session;
-        var range = this.getSelectionRange();
+        const session = this.session;
+        const range = this.getSelectionRange();
 
         if (range.start.row < range.end.row) {
-            var rows = this.$getSelectedRows();
-            session.indentRows(rows.first, rows.last, "\t");
+            const {first, last} = this.$getSelectedRows();
+            session.indentRows(first, last, "\t");
             return;
         }
         else if (range.start.column < range.end.column) {
-            var text = session.getTextRange(range);
+            const text = session.getTextRange(range);
             if (!/^\s+$/.test(text)) {
-                var rows = this.$getSelectedRows();
-                session.indentRows(rows.first, rows.last, "\t");
+                const {first, last} = this.$getSelectedRows();
+                session.indentRows(first, last, "\t");
                 return;
             }
         }
 
-        var line = session.getLine(range.start.row);
-        var position = range.start;
-        var size = session.getTabSize();
-        var column = session.documentToScreenColumn(position.row, position.column);
+        const line = session.getLine(range.start.row);
+        const position = range.start;
+        const size = session.getTabSize();
+        const column = session.documentToScreenColumn(position.row, position.column);
 
+        let indentString: string;
         if (this.session.getUseSoftTabs()) {
-            var count = (size - column % size);
-            var indentString = stringRepeat(" ", count);
+            const count = (size - column % size);
+            indentString = stringRepeat(" ", count);
         }
         else {
-            var count = column % size;
+            let count = column % size;
             while (line[range.start.column] === " " && count) {
                 range.start.column--;
                 count--;
@@ -3317,11 +3312,9 @@ export default class Editor implements EventBus<any, Editor> {
     /**
      * Moves the cursor to the specified line number, and also into the indiciated column.
      *
-     * @method gotoLine
-     * @param lineNumber {number} The line number to go to
-     * @param [column] {number} A column number to go to
-     * @param [animate] {boolean} If `true` animates scolling
-     * @return {void}
+     * @param lineNumber The line number to go to.
+     * @param column A column number to go to.
+     * @param animate If `true` animates scolling.
      */
     gotoLine(lineNumber: number, column?: number, animate?: boolean): void {
         this.selection.clearSelection();

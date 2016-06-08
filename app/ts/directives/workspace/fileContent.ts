@@ -7,7 +7,7 @@ import WsModel from '../../wsmodel/services/WsModel';
 export default function fileContent(path: string, workspace: WsModel): string {
     const file = workspace.files.getWeakRef(path);
     if (file) {
-        return file.document.getValue();
+        return file.editSession.getValue();
     }
     else {
         console.warn(`fileContent(${path}), path ${path} does not exist.`);

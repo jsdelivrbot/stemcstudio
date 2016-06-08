@@ -1,6 +1,7 @@
 import app from '../app';
 import CopyScope from '../scopes/CopyScope';
 import Document from '../editor/Document';
+import EditSession from '../editor/EditSession';
 import IDoodleManager from '../services/doodles/IDoodleManager';
 import ITemplate from '../services/templates/ITemplate';
 import ITemplateFile from '../services/templates/ITemplateFile';
@@ -8,10 +9,10 @@ import StringShareableMap from '../collections/StringShareableMap';
 import WsModel from '../wsmodel/services/WsModel';
 import WsFile from '../wsmodel/services/WsFile';
 
-function mapDoodleFileToTemplateFile(doodleFile: WsFile): ITemplateFile {
+function mapWorkspaceFileToTemplateFile(wsFile: WsFile): ITemplateFile {
     const result: ITemplateFile = {
-        content: doodleFile.document.getValue(),
-        language: doodleFile.language
+        content: wsFile.editSession.getValue(),
+        language: wsFile.language
     };
     return result;
 }
@@ -21,7 +22,7 @@ function mapDoodleFilesToTemplateFiles(doodleFiles: StringShareableMap<WsFile>):
     const paths: string[] = doodleFiles.keys;
     for (let i = 0; i < paths.length; i++) {
         const path = paths[i];
-        result[path] = mapDoodleFileToTemplateFile(doodleFiles.getWeakRef(path));
+        result[path] = mapWorkspaceFileToTemplateFile(doodleFiles.getWeakRef(path));
     }
     return result;
 }
@@ -65,7 +66,7 @@ app.controller('copy-controller', [
             for (let i = 0; i < paths.length; i++) {
                 const path = paths[i];
                 const templateFile = $scope.template.files[path];
-                const wsFile = new WsFile(new Document(templateFile.content));
+                const wsFile = new WsFile(new EditSession(new Document(templateFile.content)));
                 wsFile.language = templateFile.language;
                 wsModel.files.putWeakRef(path, wsFile);
             }

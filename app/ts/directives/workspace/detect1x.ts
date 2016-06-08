@@ -29,7 +29,7 @@ export default function detect1x(workspace: WsModel): boolean {
         // It MAY be a 1.x project, but 2.x migrated projects may use the same file names as 1.x.
         // Look for the LIBS-MARKER (which exists in 1.x and is removed for 2.x and above).
         const indexFile: WsFile = workspace.files.getWeakRef('index.html');
-        return indexFile.document.getValue().indexOf("// LIBS-MARKER") >= 0;
+        return indexFile.editSession.getValue().indexOf("// LIBS-MARKER") >= 0;
     }
     else {
         // It's definitely not a 1.x project.

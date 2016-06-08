@@ -3,6 +3,7 @@ import dependenciesMap from '../../services/doodles/dependenciesMap';
 import dependencyNames from '../../services/doodles/dependencyNames';
 import Disposable from '../../base/Disposable';
 import Document from '../../editor/Document';
+import EditSession from '../../editor/EditSession';
 // FIXME: Code Organization.
 import IDoodleConfig from '../../services/doodles/IDoodleConfig';
 import IOptionManager from '../../services/options/IOptionManager';
@@ -107,9 +108,9 @@ export default class WsModel implements Disposable {
     }
     set author(author: string) {
         const file = this.ensurePackageJson();
-        const metaInfo: IDoodleConfig = JSON.parse(file.document.getValue());
+        const metaInfo: IDoodleConfig = JSON.parse(file.editSession.getValue());
         setOptionalStringProperty('author', author, metaInfo);
-        file.document.setValue(JSON.stringify(metaInfo, null, 2));
+        file.editSession.setValue(JSON.stringify(metaInfo, null, 2));
     }
     get dependencies(): string[] {
         try {
@@ -135,9 +136,9 @@ export default class WsModel implements Disposable {
     set dependencies(dependencies: string[]) {
         try {
             const file = this.ensurePackageJson();
-            const metaInfo: IDoodleConfig = JSON.parse(file.document.getValue());
+            const metaInfo: IDoodleConfig = JSON.parse(file.editSession.getValue());
             metaInfo.dependencies = dependenciesMap(dependencies, this.options);
-            file.document.setValue(JSON.stringify(metaInfo, null, 2));
+            file.editSession.setValue(JSON.stringify(metaInfo, null, 2));
         }
         catch (e) {
             console.warn(`Unable to set dependencies property in file '${FILENAME_META}'.`);
@@ -165,9 +166,9 @@ export default class WsModel implements Disposable {
     }
     set description(description: string) {
         const file = this.ensurePackageJson();
-        const metaInfo: IDoodleConfig = JSON.parse(file.document.getValue());
+        const metaInfo: IDoodleConfig = JSON.parse(file.editSession.getValue());
         setOptionalStringProperty('description', description, metaInfo);
-        file.document.setValue(JSON.stringify(metaInfo, null, 2));
+        file.editSession.setValue(JSON.stringify(metaInfo, null, 2));
     }
     get keywords(): string[] {
         try {
@@ -191,9 +192,9 @@ export default class WsModel implements Disposable {
     }
     set keywords(keywords: string[]) {
         const file = this.ensurePackageJson();
-        const metaInfo: IDoodleConfig = JSON.parse(file.document.getValue());
+        const metaInfo: IDoodleConfig = JSON.parse(file.editSession.getValue());
         setOptionalStringArrayProperty('keywords', keywords, metaInfo);
-        file.document.setValue(JSON.stringify(metaInfo, null, 2));
+        file.editSession.setValue(JSON.stringify(metaInfo, null, 2));
     }
     get name(): string {
         if (this.existsPackageJson()) {
@@ -212,9 +213,9 @@ export default class WsModel implements Disposable {
     set name(name: string) {
         const file = this.ensurePackageJson();
         try {
-            const metaInfo: IDoodleConfig = JSON.parse(file.document.getValue());
+            const metaInfo: IDoodleConfig = JSON.parse(file.editSession.getValue());
             metaInfo.name = name;
-            file.document.setValue(JSON.stringify(metaInfo, null, 2));
+            file.editSession.setValue(JSON.stringify(metaInfo, null, 2));
         }
         catch (e) {
             console.warn(`Unable to set name property in file '${FILENAME_META}'.`);
@@ -237,9 +238,9 @@ export default class WsModel implements Disposable {
     set operatorOverloading(operatorOverloading: boolean) {
         try {
             const file = this.ensurePackageJson();
-            const metaInfo: IDoodleConfig = JSON.parse(file.document.getValue());
+            const metaInfo: IDoodleConfig = JSON.parse(file.editSession.getValue());
             setOptionalBooleanProperty('operatorOverloading', operatorOverloading, metaInfo);
-            file.document.setValue(JSON.stringify(metaInfo, null, 2));
+            file.editSession.setValue(JSON.stringify(metaInfo, null, 2));
         }
         catch (e) {
             console.warn(`Unable to set operatorOverloading property in file '${FILENAME_META}'.`);
@@ -255,9 +256,9 @@ export default class WsModel implements Disposable {
     }
     set version(version: string) {
         const file = this.ensurePackageJson();
-        const metaInfo: IDoodleConfig = JSON.parse(file.document.getValue());
+        const metaInfo: IDoodleConfig = JSON.parse(file.editSession.getValue());
         metaInfo.version = version;
-        file.document.setValue(JSON.stringify(metaInfo, null, 2));
+        file.editSession.setValue(JSON.stringify(metaInfo, null, 2));
     }
     protected destructor(): void {
         // This may never be called when this class is deployed as a singleton service.
@@ -267,14 +268,16 @@ export default class WsModel implements Disposable {
         const mode = modeFromName(path);
         const conflictFile = this.findFileByName(path);
         if (!conflictFile) {
-            const trashedFile = this.trash[path];
+            const trashedFile = this.trash.getWeakRef(path);
             if (!trashedFile) {
-                const file = new WsFile(new Document(""));
+                const file = new WsFile(new EditSession(new Document("")));
                 file.language = mode;
                 if (!this.files) {
                     this.files = new StringShareableMap<WsFile>();
                 }
-                this.files[path] = file;
+                // The file is captured by the files collection (incrementing the reference count).
+                this.files.put(path, file);
+                // We return the other reference.
                 return file;
             }
             else {
@@ -348,7 +351,7 @@ export default class WsModel implements Disposable {
                     // Initialize properties that depend upon the new path.
                     newFile.language = mode;
 
-                    this.files[newName] = newFile;
+                    this.files.putWeakRef(newName, newFile);
                 }
                 else {
                     // We can recycle a file from trash.
@@ -518,12 +521,12 @@ export default class WsModel implements Disposable {
             // Beware: We could have a package.json that doesn't parse.
             // We must ensure that the user can recover the situation.
             const file = this.ensurePackageJson();
-            return JSON.parse(file.document.getValue());
+            return JSON.parse(file.editSession.getValue());
         }
         catch (e) {
             console.warn(`Unable to parse file '${FILENAME_META}' as JSON.`);
             const file = this.ensurePackageJson();
-            console.warn(file.document.getValue());
+            console.warn(file.editSession.getValue());
             return void 0;
         }
     }
@@ -541,10 +544,13 @@ export default class WsModel implements Disposable {
         return this.ensureFile(FILENAME_META, '{}');
     }
 
+    /**
+     *
+     */
     private ensureFile(path: string, content: string): WsFile {
         if (!this.existsFile(path)) {
             const file = this.newFile(path);
-            file.document = new Document(content);
+            file.editSession.setValue(content);
             file.language = modeFromName(path);
             return file;
         }

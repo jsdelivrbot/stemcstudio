@@ -1,15 +1,17 @@
 import Document from '../../editor/Document';
+import EditSession from '../../editor/EditSession';
 import Shareable from '../../base/Shareable';
 
 export default class WsFile implements Shareable {
 
     /**
-     * TODO: This will probably get replaced by an EditSession (but not an Editor).
+     *
      */
-    document: Document;
+    editSession: EditSession;
 
     /**
      * This might equally well be called the 'mode' because we don't change the language easily.
+     * Note that the editSession contains a $mode: LanguageMode.
      * TODO: Rename to 'mode'.
      * TODO: Eventually, we would like the mode to be extensible.
      */
@@ -40,17 +42,18 @@ export default class WsFile implements Shareable {
      */
     private refCount = 1;
 
-    constructor(document: Document) {
+    constructor(editSession: EditSession) {
         // console.lg("WsFile.constructor");
-        if (!(document instanceof Document)) {
-            throw new TypeError("document must be a Document");
+        if (!(editSession instanceof EditSession)) {
+            throw new TypeError("editSession must be an EditSession");
         }
-        this.document = document;
+        this.editSession = editSession;
     }
 
     clone(): WsFile {
-        const copy = new WsFile(new Document(this.document.getValue()));
-        // copy.content = this.content;
+        // There is currently no clone() method on an EditSession so we lose information.
+        const editSession = new EditSession(new Document(this.editSession.getValue()));
+        const copy = new WsFile(editSession);
         copy.isOpen = this.isOpen;
         copy.language = this.language;
         copy.raw_url = this.raw_url;

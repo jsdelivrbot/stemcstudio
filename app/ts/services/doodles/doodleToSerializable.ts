@@ -5,7 +5,7 @@ import IDoodleFile from './IDoodleFile';
 
 function mapDoodleFileToIDoodleFile(doodleFile: DoodleFile): IDoodleFile {
     const result: IDoodleFile = {
-        content: doodleFile.document.getValue(),
+        content: doodleFile.content,
         sha: doodleFile.sha,
         language: doodleFile.language,
         preview: doodleFile.preview,

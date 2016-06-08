@@ -447,9 +447,10 @@ export default class EditSession implements EventBus<any, EditSession> {
 
     /**
      * Sets the session text.
-     * @method setValue
-     * @param text {string} The new text to place.
-     * @return {void}
+     * In addition to setting the text in the underlying document, this method
+     * resets many aspects of the session.
+     *
+     * @param text The new text to place in the document.
      */
     public setValue(text: string): void {
         this.doc.setValue(text);
@@ -476,10 +477,7 @@ export default class EditSession implements EventBus<any, EditSession> {
 
     /**
      * Returns the current Document as a string.
-     *
-     * @method getValue
-     * @return {string}
-     * @alias EditSession.toString
+     * This method is a direct pass-through to the underlying document with no other side-effects.
      */
     public getValue(): string {
         return this.doc.getValue();

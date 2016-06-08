@@ -16,7 +16,7 @@ export default function doodleFilesToGistFiles(dFiles: StringShareableMap<WsFile
     for (let i = 0; i < iLen; i++) {
         const dName: string = dNames[i];
         const dFile: WsFile = dFiles.getWeakRef(dName);
-        const gFile: { content: string } = { content: ensureFileContent(dName, dFile.document.getValue()) };
+        const gFile: { content: string } = { content: ensureFileContent(dName, dFile.editSession.getValue()) };
         gFiles[dName] = gFile;
     }
 

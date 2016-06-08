@@ -128,7 +128,8 @@
         <div id='doodle-container'>
             <explorer ng-model='workspace' class='explorer' ng-show='isExplorerVisible'></explorer>
             <div id='editors' resizable r-directions="['right']" r-flex='true' ng-if='doodleLoaded' ng-show='isExplorerVisible'>
-                <div editor ng-repeat='(name, file) in files()' ng-model='file.document' id='{{name}}' mode='{{file.language}}' ng-show='isEditMode &amp;&amp; file.selected'></div>
+                <!-- We only need the editSession here. Would passing in the full WsFile be better? -->
+                <div editor ng-repeat='(name, file) in files()' ng-model='file.editSession' id='{{name}}' mode='{{file.language}}' ng-show='isEditMode &amp;&amp; file.selected'></div>
             </div>
             <div id='output' ng-if='isViewVisible'></div>
             <div id='readme' ng-if='isReadMeVisible'></div>
