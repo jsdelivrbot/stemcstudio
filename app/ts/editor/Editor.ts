@@ -2793,7 +2793,7 @@ export default class Editor implements EventBus<any, Editor> {
         }
         else {
             const ranges = selection.rangeList.ranges;
-            selection.rangeList.detachXYZ();
+            selection.rangeList.detach();
 
             for (let i = ranges.length; i--;) {
                 let rangeIndex = i;
@@ -2816,7 +2816,7 @@ export default class Editor implements EventBus<any, Editor> {
                 }
             }
             selection.fromOrientedRange(selection.ranges[0]);
-            selection.rangeList.attachXYZ(this.session);
+            selection.rangeList.attach(this.session);
         }
     }
 

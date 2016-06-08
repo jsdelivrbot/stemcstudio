@@ -6,6 +6,7 @@ import Fold from "./Fold";
  * @class FoldLine
  */
 export default class FoldLine {
+    // FIXME: Typing.
     foldData;
     folds: Fold[];
     range: Range;

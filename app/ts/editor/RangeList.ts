@@ -1,3 +1,4 @@
+import Change from './Change';
 import Range from "./Range";
 import EditSession from "./EditSession";
 import comparePoints from "./comparePoints";
@@ -174,9 +175,9 @@ export default class RangeList {
     /**
      * FIXME: Remove this coupling?
      */
-    attachXYZ(session: EditSession) {
+    attach(session: EditSession) {
         if (this.session) {
-            this.detachXYZ();
+            this.detach();
         }
 
         this.session = session;
@@ -188,7 +189,7 @@ export default class RangeList {
     /**
      * FIXME: Remove this coupling?
      */
-    detachXYZ() {
+    detach() {
         if (!this.session) {
             return;
         }
@@ -201,7 +202,7 @@ export default class RangeList {
      * @param e
      * @param session
      */
-    private $onChange(e, session: EditSession) {
+    private $onChange(e: { data: { action: string; range: Range } }, unused: EditSession) {
         var changeRange: Range = e.data.range;
         if (e.data.action[0] === "i") {
             var start = changeRange.start;

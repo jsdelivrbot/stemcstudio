@@ -4,6 +4,7 @@ import {stringRepeat} from "./lib/lang";
 import {defineOptions, resetOptions} from "./config";
 import Annotation from './Annotation';
 import Delta from "./Delta";
+import DeltaGroup from './DeltaGroup';
 import Marker from "./Marker";
 import MarkerRenderer from "./layer/MarkerRenderer";
 import EventBus from "./EventBus";
@@ -97,9 +98,9 @@ export default class EditSession implements EventBus<any, EditSession> {
      */
     public $undoSelect = true;
 
-    private $deltas: { group: string; deltas: Delta[] | {}[] }[];
+    private $deltas: { group: ('doc' | 'fold'); deltas: Delta[] | { action: string; folds: Fold[] }[] }[];
     private $deltasDoc: Delta[];
-    private $deltasFold: {}[];
+    private $deltasFold: { action: string; folds: Fold[] }[];
     private $fromUndo: boolean;
 
     public widgetManager: LineWidgetManager;
@@ -422,7 +423,7 @@ export default class EditSession implements EventBus<any, EditSession> {
 
         this.$resetRowCache(delta.start.row);
 
-        var removedFolds = this.$updateInternalDataOnChange(delta);
+        const removedFolds = this.$updateInternalDataOnChange(delta);
         if (!this.$fromUndo && this.$undoManager && !delta.ignore) {
             this.$deltasDoc.push(delta);
             if (removedFolds && removedFolds.length !== 0) {
@@ -584,11 +585,13 @@ export default class EditSession implements EventBus<any, EditSession> {
         this.$deltasDoc = [];
         this.$deltasFold = [];
 
-        if (this.$informUndoManager)
+        if (this.$informUndoManager) {
             this.$informUndoManager.cancel();
+        }
 
         if (undoManager) {
             this.$syncInformUndoManager = () => {
+
                 this.$informUndoManager.cancel();
 
                 if (this.$deltasFold.length) {
@@ -608,11 +611,7 @@ export default class EditSession implements EventBus<any, EditSession> {
                 }
 
                 if (this.$deltas.length > 0) {
-                    undoManager.execute({
-                        action: "aceupdate",
-                        args: [this.$deltas, self],
-                        merge: this.mergeUndoDeltas
-                    });
+                    undoManager.execute({ action: "aceupdate", args: [this.$deltas, this], merge: this.mergeUndoDeltas });
                 }
                 this.mergeUndoDeltas = false;
                 this.$deltas = [];
@@ -1527,19 +1526,17 @@ export default class EditSession implements EventBus<any, EditSession> {
     /**
      * Reverts previous changes to your document.
      *
-     * @method undoChanges
-     * @param deltas {Delta[]} An array of previous changes.
-     * @param {Boolean} dontSelect [If `true`, doesn't select the range of where the change occured]{: #dontSelect}
-     * @return {Range}
+     * @param deltaSets An array of previous changes.
+     * @param dontSelect If `true`, doesn't select the range of where the change occured.
      */
-    public undoChanges(deltas: Delta[], dontSelect?: boolean): Range {
-        if (!deltas.length)
+    public undoChanges(deltaSets: DeltaGroup[], dontSelect?: boolean): Range {
+        if (!deltaSets.length)
             return;
 
         this.$fromUndo = true;
         let lastUndoRange: Range = null;
-        for (let i = deltas.length - 1; i !== -1; i--) {
-            const delta = deltas[i];
+        for (let i = deltaSets.length - 1; i !== -1; i--) {
+            const delta = deltaSets[i];
             if (delta.group === "doc") {
                 this.doc.revertDeltas(delta.deltas);
                 lastUndoRange = this.$getUndoSelection(delta.deltas, true, lastUndoRange);
@@ -1560,23 +1557,21 @@ export default class EditSession implements EventBus<any, EditSession> {
     /**
      * Re-implements a previously undone change to your document.
      *
-     * @method redoChanges
-     * @param deltas {Delta[]} An array of previous changes
-     * @param [dontSelect] {boolean}
-     * @return {Range}
+     * @param deltaSets An array of previous changes
+     * @param dontSelect
      */
-    public redoChanges(deltas: Delta[], dontSelect?: boolean): Range {
-        if (!deltas.length)
+    public redoChanges(deltaSets: DeltaGroup[], dontSelect?: boolean): Range {
+        if (!deltaSets.length) {
             return;
+        }
 
         this.$fromUndo = true;
-        var lastUndoRange: Range = null;
-        for (var i = 0; i < deltas.length; i++) {
-            var delta = deltas[i];
+        let lastUndoRange: Range = null;
+        for (let i = 0; i < deltaSets.length; i++) {
+            const delta = deltaSets[i];
             if (delta.group === "doc") {
                 this.doc.applyDeltas(delta.deltas);
-                lastUndoRange =
-                    this.$getUndoSelection(delta.deltas, false, lastUndoRange);
+                lastUndoRange = this.$getUndoSelection(delta.deltas, false, lastUndoRange);
             }
         }
         this.$fromUndo = false;
@@ -3424,10 +3419,9 @@ export default class EditSession implements EventBus<any, EditSession> {
             endColumn = this.getLine(endRow).length;
 
         // Build the textline using the FoldLine walker.
-        var self = this;
-        var textLine = "";
+        let textLine = "";
 
-        foldLine.walk(function(placeholder: string, row: number, column: number, lastColumn: number) {
+        foldLine.walk((placeholder: string, row: number, column: number, lastColumn: number) => {
             if (row < startRow)
                 return;
             if (row === startRow) {
@@ -3439,7 +3433,7 @@ export default class EditSession implements EventBus<any, EditSession> {
             if (placeholder != null) {
                 textLine += placeholder;
             } else {
-                textLine += self.getLine(row).substring(lastColumn, column);
+                textLine += this.getLine(row).substring(lastColumn, column);
             }
         }, endRow, endColumn);
         return textLine;

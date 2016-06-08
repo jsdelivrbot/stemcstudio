@@ -1286,7 +1286,7 @@ export default class Selection implements EventBus<any, Selection> {
             this.eventBus._signal("multiSelect");
             this.inMultiSelectMode = true;
             this.session.$undoSelect = false;
-            this.rangeList.attachXYZ(this.session);
+            this.rangeList.attach(this.session);
         }
 
         return $blockChangeEvents || this.fromOrientedRange(range);
@@ -1331,7 +1331,7 @@ export default class Selection implements EventBus<any, Selection> {
             this.inMultiSelectMode = false;
             this.eventBus._signal("singleSelect");
             this.session.$undoSelect = true;
-            this.rangeList.detachXYZ();
+            this.rangeList.detach();
         }
 
         lastRange = lastRange || this.ranges[0];
