@@ -612,7 +612,7 @@ export default class Workspace {
                 lineCount = -delta.lines.length;
             }
             else {
-                console.warn(`updateMarkerModels(${fileName}, ${JSON.stringify(delta)})`);
+                throw new Error(`updateMarkerModels(${fileName}, ${JSON.stringify(delta)})`);
             }
             if (lineCount !== 0) {
                 const markerUpdate = function(markerId: number) {
@@ -628,7 +628,7 @@ export default class Workspace {
                 };
                 this.errorMarkerIds.forEach(markerUpdate);
                 this.refMarkers.forEach(markerUpdate);
-                editor.updateFrontMarkers();
+                editor.renderer.updateFrontMarkers();
             }
         }
     }

@@ -258,40 +258,6 @@ var defaultOptions = {};
 /*
  * option {name, value, initialValue, setterName, set, get }
  */
-export function defineOptions(obj, path: string, options) {
-    if (!obj.$options) {
-        defaultOptions[path] = obj.$options = {};
-    }
-
-    Object.keys(options).forEach(function(key) {
-        var opt = options[key];
-        if (typeof opt === "string") {
-            opt = { forwardTo: opt };
-        }
-
-        if (!opt.name) {
-            opt.name = key;
-        }
-        obj.$options[opt.name] = opt;
-        if ("initialValue" in opt) {
-            obj["$" + opt.name] = opt.initialValue;
-        }
-    });
-
-    // implement option provider interface
-    implement(obj, optionsProvider);
-
-    return this;
-}
-
-export function resetOptions(obj) {
-    Object.keys(obj.$options).forEach(function(key) {
-        var opt = obj.$options[key];
-        if ("value" in opt) {
-            obj.setOption(key, opt.value);
-        }
-    });
-}
 
 export function setDefaultValue(path, name, value) {
     var opts = defaultOptions[path] || (defaultOptions[path] = {});

@@ -89,8 +89,8 @@ export default class ListViewPopup implements ListView {
 
             renderer.content.style.cursor = "default";
             renderer.setStyle("ace_autocomplete");
-            renderer.$cursorLayer.restartTimer = noop;
-            renderer.$cursorLayer.element.style.opacity = "0";
+            renderer.cursorLayer.restartTimer = noop;
+            renderer.cursorLayer.element.style.opacity = "0";
             renderer.$maxLines = 8;
             renderer.$keepTextAreaAtCursor = false;
 
@@ -103,8 +103,8 @@ export default class ListViewPopup implements ListView {
             editor.renderer.setShowGutter(false);
             editor.renderer.setHighlightGutterLine(false);
 
-            editor.setOption("displayIndentGuides", false);
-            editor.setOption("dragDelay", 150);
+            editor.setDisplayIndentGuides(false);
+            editor.setDragDelay(150);
 
             editor.focus = noop;
             editor.$isFocused = true;
@@ -166,9 +166,9 @@ export default class ListViewPopup implements ListView {
             }
         });
         this.editor.renderer.on("afterRender", () => {
-            var row = this.getRow();
-            var t = this.editor.renderer.$textLayer;
-            var selected = <HTMLElement>t.element.childNodes[row - t.config.firstRow];
+            const row = this.getRow();
+            const t = this.editor.renderer.textLayer;
+            const selected = <HTMLElement>t.element.childNodes[row - t.config.firstRow];
             if (selected === t.selectedNode)
                 return;
             if (t.selectedNode)
@@ -268,7 +268,7 @@ export default class ListViewPopup implements ListView {
         }
 
         el.style.display = "";
-        renderer.$textLayer.checkForSizeChanges();
+        renderer.textLayer.checkForSizeChanges();
 
         var left = pos.left;
         if (left + el.offsetWidth > screenWidth) {
@@ -312,7 +312,7 @@ export default class ListViewPopup implements ListView {
         return this.data[row];
     }
 
-    on(eventName: string, callback: (event, ee: Editor) => any, capturing?: boolean): void {
+    on(eventName: string, callback: (event, ee: Editor) => any, capturing?: boolean): () => void {
         return this.editor.on(eventName, callback, capturing);
     }
 

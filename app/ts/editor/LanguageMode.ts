@@ -14,38 +14,37 @@ import FoldMode from "./mode/folding/FoldMode";
 interface LanguageMode {
 
     /**
-     * @property $id
-     * @type string
+     *
      */
     $id: string;
 
     /**
-     * @property indentWithTabs
-     * @type boolean
+     * 
+     */
+    wrap: 'code' | 'text' | 'auto';
+
+    /**
+     *
      */
     $indentWithTabs: boolean;
 
     /**
-     * @property foldingRules
-     * @type FoldMode
+     *
      */
     foldingRules: FoldMode;
 
     /**
-     * @property modes
-     * @type LanguageMode[]
+     *
      */
     modes: LanguageMode[];
 
     /**
-     * @property nonTokenRe
-     * @type RegExp;
+     *
      */
     nonTokenRe: RegExp;
 
     /**
-     * @property tokenRe
-     * @type RegExp;
+     *
      */
     tokenRe: RegExp;
 

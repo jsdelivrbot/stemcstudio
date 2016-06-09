@@ -1,8 +1,8 @@
 import {addCssClass, createElement, removeCssClass, setCssClass} from "./lib/dom";
 import appendHTMLLinkElement from './dom/appendHTMLLinkElement';
+import Disposable from '../base/Disposable';
 import ensureHTMLStyleElement from './dom/ensureHTMLStyleElement';
 import hasHTMLLinkElement from './dom/hasHTMLLinkElement';
-import {defineOptions, resetOptions} from "./config";
 import {isOldIE} from "./lib/useragent";
 import Annotation from './Annotation';
 
@@ -67,7 +67,7 @@ function changesToString(changes: number): string {
  *
  * @class Renderer
  */
-export default class Renderer implements EventBus<any, Renderer>, EditorRenderer, OptionsProvider {
+export default class Renderer implements Disposable, EventBus<any, Renderer>, EditorRenderer, OptionsProvider {
     public textarea: HTMLTextAreaElement;
     public container: HTMLElement;
     public scrollLeft = 0;
@@ -90,10 +90,9 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
     public $minLines: number;
 
     /**
-     * @property $cursorLayer
-     * @type CursorLayer
+     * FIXME: Leaky. ListViewPopup uses this property.
      */
-    public $cursorLayer: CursorLayer;
+    public cursorLayer: CursorLayer;
 
     /**
      * @property $gutterLayer
@@ -114,10 +113,9 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
     private $markerBack: MarkerLayer;
 
     /**
-     * @property $textLayer
-     * @type TextLayer
+     * FIXME: Leaky. ListViewPopup uses this property.
      */
-    public $textLayer: TextLayer;
+    public textLayer: TextLayer;
 
     /**
      * @property $padding
@@ -156,7 +154,7 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
     public scrollBarV: VScrollBar;
 
     /**
-     * @property $scrollAnimation
+     *
      */
     public $scrollAnimation: { from: number; to: number; steps: number[] };
 
@@ -173,9 +171,18 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
         h: 0
     };
 
-    private $fontMetrics: FontMetrics;
-    private $allowBoldFonts;
-    private cursorPos;
+    /**
+     * 
+     */
+    private fontMetrics: FontMetrics;
+
+    /**
+     * A function that removes the changeCharacterSize handler.
+     */
+    private removeChangeCharacterSizeHandler: () => void;
+
+    private $allowBoldFonts: boolean;
+    private cursorPos: Position;
 
     /**
      * A cache of various sizes TBA.
@@ -183,9 +190,9 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
     public $size: { height: number; width: number; scrollerHeight: number; scrollerWidth; $dirty: boolean };
 
     private $loop: RenderLoop;
-    private $changedLines;
+    private $changedLines: { firstRow: number; lastRow: number; };
     private $changes = 0;
-    private resizing;
+    private resizing: number;
     private $gutterLineHighlight;
     // FIXME: Why do we have two?
     public gutterWidth: number;
@@ -195,11 +202,8 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
      * TODO: Create a PrintMarginLayer class in the layer folder.
      */
     private $printMarginEl: HTMLDivElement;
-    private $printMarginColumn;
+    private $printMarginColumn = 80;
     private $showPrintMargin: boolean;
-
-    private getOption;
-    private setOption;
 
     /**
      * @property characterWidth
@@ -215,11 +219,12 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
 
     private $extraHeight: number;
     private $composition: { keepTextAreaAtCursor: boolean; cssText: string };
-    private $hScrollBarAlwaysVisible: boolean;
-    private $vScrollBarAlwaysVisible: boolean;
-    private $showGutter;
-    private showInvisibles;
-    private $animatedScroll: boolean;
+    private $hScrollBarAlwaysVisible = false;
+    private $vScrollBarAlwaysVisible = false;
+    private $showGutter = true;
+    private showInvisibles = false;
+    private animatedScroll = false;
+    private fadeFoldWidgets = false;
     private $scrollPastEnd: number;
     private $highlightGutterLine;
     private desiredHeight: number;
@@ -227,11 +232,10 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
     /**
      * Constructs a new `Renderer` within the `container` specified.
      *
-     * @class Renderer
-     * @constructor
-     * @param container {HTMLElement} The root element of the editor.
+     * @param container The root element of the editor.
      */
     constructor(container: HTMLElement) {
+        console.log("Renderer.constructor");
         this.eventBus = new EventEmitterClass<any, Renderer>(this);
 
         this.container = container || <HTMLDivElement>createElement("div");
@@ -262,12 +266,12 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
 
         this.$markerBack = new MarkerLayer(this.content);
 
-        var textLayer = this.$textLayer = new TextLayer(this.content);
-        this.canvas = textLayer.element;
+        this.textLayer = new TextLayer(this.content);
+        this.canvas = this.textLayer.element;
 
         this.$markerFront = new MarkerLayer(this.content);
 
-        this.$cursorLayer = new CursorLayer(this.content);
+        this.cursorLayer = new CursorLayer(this.content);
 
         // Indicates whether the horizontal scrollbar is visible
         this.$horizScroll = false;
@@ -291,9 +295,11 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
             column: 0
         };
 
-        this.$fontMetrics = new FontMetrics(this.container, 500);
-        this.$textLayer.$setFontMetrics(this.$fontMetrics);
-        this.$textLayer.on("changeCharacterSize", (event, text: TextLayer) => {
+        this.fontMetrics = new FontMetrics(this.container, 500);
+
+        this.textLayer.$setFontMetrics(this.fontMetrics);
+
+        this.removeChangeCharacterSizeHandler = this.textLayer.on("changeCharacterSize", (event, text: TextLayer) => {
             this.updateCharacterSize();
             this.onResize(true, this.gutterWidth, this.$size.width, this.$size.height);
             /**
@@ -315,26 +321,40 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
 
         this.updateCharacterSize();
         this.setPadding(4);
-        resetOptions(this);
+        this.setFontSize("12px");
+        this.setShowFoldWidgets(true);
         // Why do Editor and EditSession signal while this emits?
         // this.eventBus._emit("renderer", this);
     }
 
     /**
-     * @method on
-     * @param eventName {string}
-     * @param callback {(event, source: Renderer) => any}
-     * @return {void}
+     * Destroys the text and cursor layers for this renderer.
      */
-    on(eventName: string, callback: (event: any, source: Renderer) => any): void {
-        this.eventBus.on(eventName, callback, false);
+    dispose(): void {
+        console.log("Renderer.dispose");
+        this.removeChangeCharacterSizeHandler();
+        this.removeChangeCharacterSizeHandler = void 0;
+        this.fontMetrics.release();
+        this.fontMetrics = void 0;
+        this.textLayer.destroy();
+        this.cursorLayer.destroy();
     }
 
     /**
-     * @method off
-     * @param eventName {string}
-     * @param callback {(event, source: Renderer) => any}
-     * @return {void}
+     * @param eventName
+     * @param callback
+     * @returns A function that may be used to remove the callback.
+     */
+    on(eventName: string, callback: (event: any, source: Renderer) => any): () => void {
+        this.eventBus.on(eventName, callback, false);
+        return () => {
+            this.eventBus.off(eventName, callback);
+        }
+    }
+
+    /**
+     * @param eventName
+     * @param callback
      */
     off(eventName: string, callback: (event: any, source: Renderer) => any): void {
         this.eventBus.off(eventName, callback);
@@ -373,9 +393,9 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
      * @return {void}
      */
     setCursorLayerOff(): void {
-        var noop = function() {/* Do nothing.*/ };
-        this.$cursorLayer.restartTimer = noop;
-        this.$cursorLayer.element.style.opacity = "0";
+        const noop = function() {/* Do nothing.*/ };
+        this.cursorLayer.restartTimer = noop;
+        this.cursorLayer.element.style.opacity = "0";
     }
 
     /**
@@ -384,13 +404,13 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
      */
     updateCharacterSize(): void {
         // FIXME: DGH allowBoldFonts does not exist on TextLayer
-        if (this.$textLayer['allowBoldFonts'] !== this.$allowBoldFonts) {
-            this.$allowBoldFonts = this.$textLayer['allowBoldFonts'];
+        if (this.textLayer.allowBoldFonts !== this.$allowBoldFonts) {
+            this.$allowBoldFonts = this.textLayer.allowBoldFonts;
             this.setStyle("ace_nobold", !this.$allowBoldFonts);
         }
 
-        this.layerConfig.characterWidth = this.characterWidth = this.$textLayer.getCharacterWidth();
-        this.layerConfig.lineHeight = this.lineHeight = this.$textLayer.getLineHeight();
+        this.layerConfig.characterWidth = this.characterWidth = this.textLayer.getCharacterWidth();
+        this.layerConfig.lineHeight = this.lineHeight = this.textLayer.getLineHeight();
         this.$updatePrintMargin();
     }
 
@@ -415,13 +435,12 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
             session.setScrollTop(-this.scrollMargin.top);
         }
 
-        this.$cursorLayer.setSession(session);
+        this.cursorLayer.setSession(session);
         this.$markerBack.setSession(session);
         this.$markerFront.setSession(session);
         this.$gutterLayer.setSession(session);
-        this.$textLayer.setSession(session);
+        this.textLayer.setSession(session);
         this.$loop.schedule(CHANGE_FULL);
-        this.session.$setFontMetrics(this.$fontMetrics);
 
         this.onChangeNewLineMode = this.onChangeNewLineMode.bind(this);
         this.onChangeNewLineMode();
@@ -481,7 +500,7 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
      */
     private onChangeNewLineMode(): void {
         this.$loop.schedule(CHANGE_TEXT);
-        this.$textLayer.updateEolChar();
+        this.textLayer.updateEolChar();
     }
 
     /**
@@ -494,9 +513,9 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
                 this.$loop.schedule(CHANGE_TEXT | CHANGE_MARKER);
             }
         }
-        if (this.$textLayer) {
-            if (this.$textLayer.onChangeTabSize) {
-                this.$textLayer.onChangeTabSize();
+        if (this.textLayer) {
+            if (this.textLayer.onChangeTabSize) {
+                this.textLayer.onChangeTabSize();
             }
         }
     }
@@ -532,7 +551,7 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
      * @return {void}
      */
     updateFontSize(): void {
-        this.$textLayer.checkForSizeChanges();
+        this.textLayer.checkForSizeChanges();
     }
 
     /**
@@ -678,22 +697,17 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
     /**
      * Identifies whether you want to have an animated scroll or not.
      *
-     * @method setAnimatedScroll
-     * @param animatedScroll {boolean} Set to `true` to show animated scrolls.
-     * @return {void}
+     * @param animatedScroll Set to `true` to show animated scrolls.
      */
     setAnimatedScroll(animatedScroll: boolean): void {
-        this.setOption("animatedScroll", animatedScroll);
+        this.animatedScroll = animatedScroll;
     }
 
     /**
      * Returns whether an animated scroll happens or not.
-     *
-     * @method getAnimatedScroll
-     * @return {Boolean}
      */
     getAnimatedScroll() {
-        return this.$animatedScroll;
+        return this.animatedScroll;
     }
 
     /**
@@ -703,34 +717,26 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
      * @param {Boolean} showInvisibles Set to `true` to show invisibles
      */
     setShowInvisibles(showInvisibles: boolean): void {
-        this.setOption("showInvisibles", showInvisibles);
+        if (this.textLayer.setShowInvisibles(showInvisibles)) {
+            this.$loop.schedule(CHANGE_TEXT);
+        }
     }
 
     /**
      * Returns whether invisible characters are being shown or not.
-     *
-     * @method getShowInvisibles
-     * @return {boolean}
      */
     getShowInvisibles(): boolean {
-        return this.getOption("showInvisibles");
+        return this.textLayer.getShowInvisibles();
     }
 
-    /**
-     * @method getDisplayIndentGuides
-     * @return {boolean}
-     */
     getDisplayIndentGuides(): boolean {
-        return this.getOption("displayIndentGuides");
+        return this.textLayer.getDisplayIndentGuides();
     }
 
-    /**
-     * @method setDisplayIndentGuides
-     * @param displayIndentGuides {boolean}
-     * @return {void}
-     */
     setDisplayIndentGuides(displayIndentGuides: boolean): void {
-        this.setOption("displayIndentGuides", displayIndentGuides);
+        if (this.textLayer.setDisplayIndentGuides(displayIndentGuides)) {
+            this.$loop.schedule(CHANGE_TEXT);
+        }
     }
 
     /**
@@ -741,17 +747,15 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
      * @return {void}
      */
     setShowPrintMargin(showPrintMargin: boolean): void {
-        this.setOption("showPrintMargin", showPrintMargin);
+        this.$showPrintMargin = showPrintMargin;
+        this.$updatePrintMargin();
     }
 
     /**
      * Returns whether the print margin is being shown or not.
-     *
-     * @method getShowPrintMargin
-     * @return {boolean}
      */
     getShowPrintMargin(): boolean {
-        return this.getOption("showPrintMargin");
+        return this.$showPrintMargin;
     }
 
     /**
@@ -762,7 +766,8 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
      * @return {void}
      */
     setPrintMarginColumn(printMarginColumn: number): void {
-        this.setOption("printMarginColumn", printMarginColumn);
+        this.$printMarginColumn = printMarginColumn;
+        this.$updatePrintMargin()
     }
 
     /**
@@ -772,61 +777,80 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
      * @return {number}
      */
     getPrintMarginColumn(): number {
-        return this.getOption("printMarginColumn");
+        return this.$printMarginColumn;
     }
 
     /**
      * Returns `true` if the gutter is being shown.
-     *
-     * @method getShowGutter
-     * @return {boolean}
      */
     getShowGutter(): boolean {
-        return this.getOption("showGutter");
+        return this.$showGutter;
     }
 
     /**
      * Identifies whether you want to show the gutter or not.
      *
-     * @method setShowGutter
-     * @param showGutter {boolean} Set to `true` to show the gutter
-     * @return {void}
+     * @param showGutter Set to `true` to show the gutter.
      */
     setShowGutter(showGutter: boolean): void {
-        return this.setOption("showGutter", showGutter);
+        this.$showGutter = showGutter;
+        this.$gutter.style.display = showGutter ? "block" : "none";
+        this.$loop.schedule(CHANGE_FULL);
+        this.onGutterResize();
     }
 
     /**
-     * @method getFadeFoldWidgets
-     * @return {boolean}
+     *
      */
     getFadeFoldWidgets(): boolean {
-        return this.getOption("fadeFoldWidgets");
+        return this.fadeFoldWidgets;
     }
 
     /**
-     * @method setFadeFoldWidgets
-     * @param fadeFoldWidgets {boolean}
-     * @return {void}
+     *
      */
     setFadeFoldWidgets(fadeFoldWidgets: boolean): void {
-        this.setOption("fadeFoldWidgets", fadeFoldWidgets);
+        setCssClass(this.$gutter, "ace_fade-fold-widgets", fadeFoldWidgets);
+    }
+
+    getFontSize(): string {
+        return this.container.style.fontSize;
+    }
+
+    /**
+     * Defaults to "12px"
+     */
+    setFontSize(fontSize: string) {
+        this.container.style.fontSize = fontSize;
+        this.updateFontSize();
     }
 
     setHighlightGutterLine(highlightGutterLine: boolean): void {
-        this.setOption("highlightGutterLine", highlightGutterLine);
+        this.$highlightGutterLine = highlightGutterLine;
+        if (!this.$gutterLineHighlight) {
+            this.$gutterLineHighlight = createElement("div");
+            this.$gutterLineHighlight.className = "ace_gutter-active-line";
+            this.$gutter.appendChild(this.$gutterLineHighlight);
+            return;
+        }
+
+        this.$gutterLineHighlight.style.display = highlightGutterLine ? "" : "none";
+        // if cursorlayer have never been updated there's nothing on screen to update
+        if (this.cursorLayer.$pixelPos) {
+            this.$updateGutterLineHighlight();
+        }
     }
 
     getHighlightGutterLine() {
-        return this.getOption("highlightGutterLine");
+        return this.$highlightGutterLine;
     }
 
     getPixelPosition(position: Position, onScreen: boolean): PixelPosition {
-        return this.$cursorLayer.getPixelPosition(position, onScreen);
+        return this.cursorLayer.getPixelPosition(position, onScreen);
     }
 
     $updateGutterLineHighlight() {
-        var pos = this.$cursorLayer.$pixelPos;
+        var pos = this.cursorLayer.$pixelPos;
         var height = this.layerConfig.lineHeight;
         if (this.session.getUseWrapMode()) {
             var cursor = this.session.getSelection().getCursor();
@@ -903,22 +927,22 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
         if (!this.$keepTextAreaAtCursor) {
             return;
         }
-        var config = this.layerConfig;
+        const config = this.layerConfig;
 
-        if (!this.$cursorLayer.$pixelPos) {
+        if (!this.cursorLayer.$pixelPos) {
             console.warn("moveTextAreaToCursor bypassed because cursor layer is not working.");
             return;
         }
 
-        var posTop = this.$cursorLayer.$pixelPos.top;
-        var posLeft = this.$cursorLayer.$pixelPos.left;
+        let posTop = this.cursorLayer.$pixelPos.top;
+        let posLeft = this.cursorLayer.$pixelPos.left;
         posTop -= config.offset;
 
-        var h = this.lineHeight;
+        let h = this.lineHeight;
         if (posTop < 0 || posTop > config.height - h)
             return;
 
-        var w = this.characterWidth;
+        let w = this.characterWidth;
         if (this.$composition) {
             var val = this.textarea.value.replace(/^\x01+/, "");
             w *= (this.session.$getStringScreenWidth(val)[0] + 2);
@@ -1002,8 +1026,8 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
             throw new TypeError("padding must be a number");
         }
         this.$padding = padding;
-        this.$textLayer.setPadding(padding);
-        this.$cursorLayer.setPadding(padding);
+        this.textLayer.setPadding(padding);
+        this.cursorLayer.setPadding(padding);
         this.$markerFront.setPadding(padding);
         this.$markerBack.setPadding(padding);
         this.$loop.schedule(CHANGE_FULL);
@@ -1030,7 +1054,6 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
      * @return {boolean}
      */
     getHScrollBarAlwaysVisible(): boolean {
-        // FIXME?
         return this.$hScrollBarAlwaysVisible;
     }
 
@@ -1042,7 +1065,10 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
      * @return {void}
      */
     setHScrollBarAlwaysVisible(hScrollBarAlwaysVisible: boolean) {
-        this.setOption("hScrollBarAlwaysVisible", hScrollBarAlwaysVisible);
+        this.$hScrollBarAlwaysVisible = hScrollBarAlwaysVisible;
+        if (!this.$hScrollBarAlwaysVisible || !this.$horizScroll) {
+            this.$loop.schedule(CHANGE_SCROLL);
+        }
     }
 
     /**
@@ -1060,8 +1086,17 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
      * @param {Boolean} alwaysVisible Set to `true` to make the vertical scroll bar visible
      */
     setVScrollBarAlwaysVisible(alwaysVisible: boolean) {
-        this.setOption("vScrollBarAlwaysVisible", alwaysVisible);
+        this.$vScrollBarAlwaysVisible = alwaysVisible;
+        if (!this.$vScrollBarAlwaysVisible || !this.$vScroll) {
+            this.$loop.schedule(CHANGE_SCROLL);
+        }
     }
+
+    setShowLineNumber(showLineNumbers: boolean) {
+        this.$gutterLayer.setShowLineNumbers(showLineNumbers);
+        this.$loop.schedule(CHANGE_GUTTER);
+    }
+
 
     private $updateScrollBarV(): void {
         var scrollHeight = this.layerConfig.maxHeight;
@@ -1112,7 +1147,7 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
             return this.onResize(true);
         }
         if (!this.lineHeight) {
-            this.$textLayer.checkForSizeChanges();
+            this.textLayer.checkForSizeChanges();
         }
 
         /**
@@ -1159,13 +1194,13 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
 
         // full
         if (changes & CHANGE_FULL) {
-            this.$textLayer.update(config);
+            this.textLayer.update(config);
             if (this.$showGutter) {
                 this.$gutterLayer.update(config);
             }
             this.$markerBack.update(config);
             this.$markerFront.update(config);
-            this.$cursorLayer.update(config);
+            this.cursorLayer.update(config);
             this.$moveTextAreaToCursor();
             if (this.$highlightGutterLine) {
                 this.$updateGutterLineHighlight();
@@ -1182,15 +1217,15 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
         // scrolling
         if (changes & CHANGE_SCROLL) {
             if (changes & CHANGE_TEXT || changes & CHANGE_LINES)
-                this.$textLayer.update(config);
+                this.textLayer.update(config);
             else
-                this.$textLayer.scrollLines(config);
+                this.textLayer.scrollLines(config);
 
             if (this.$showGutter)
                 this.$gutterLayer.update(config);
             this.$markerBack.update(config);
             this.$markerFront.update(config);
-            this.$cursorLayer.update(config);
+            this.cursorLayer.update(config);
             if (this.$highlightGutterLine) {
                 this.$updateGutterLineHighlight();
             }
@@ -1203,7 +1238,7 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
         }
 
         if (changes & CHANGE_TEXT) {
-            this.$textLayer.update(config);
+            this.textLayer.update(config);
             if (this.$showGutter)
                 this.$gutterLayer.update(config);
         }
@@ -1217,7 +1252,7 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
         }
 
         if (changes & CHANGE_CURSOR) {
-            this.$cursorLayer.update(config);
+            this.cursorLayer.update(config);
             this.$moveTextAreaToCursor();
             if (this.$highlightGutterLine) {
                 this.$updateGutterLineHighlight();
@@ -1379,12 +1414,12 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
         if (lastRow === Infinity) {
             if (this.$showGutter)
                 this.$gutterLayer.update(layerConfig);
-            this.$textLayer.update(layerConfig);
+            this.textLayer.update(layerConfig);
             return;
         }
 
         // else update only the changed rows
-        this.$textLayer.updateLines(layerConfig, firstRow, lastRow);
+        this.textLayer.updateLines(layerConfig, firstRow, lastRow);
         return true;
     }
 
@@ -1451,14 +1486,14 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
      * Hides the cursor icon.
      */
     hideCursor(): void {
-        this.$cursorLayer.hideCursor();
+        this.cursorLayer.hideCursor();
     }
 
     /**
      * Shows the cursor icon.
      */
     showCursor() {
-        this.$cursorLayer.showCursor();
+        this.cursorLayer.showCursor();
     }
 
     /**
@@ -1630,7 +1665,7 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
      */
     animateScrolling(fromValue: number, callback?: () => any): void {
         let toValue = this.scrollTop;
-        if (!this.$animatedScroll) {
+        if (!this.animatedScroll) {
             return;
         }
 
@@ -1852,6 +1887,15 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
         this.$composition = null;
     }
 
+    getShowFoldWidgets(): boolean {
+        return this.$gutterLayer.getShowFoldWidgets();
+    }
+
+    setShowFoldWidgets(showFoldWidgets: boolean) {
+        this.$gutterLayer.setShowFoldWidgets(showFoldWidgets);
+    }
+
+
     /**
      * Sets a new theme for the editor.
      * This is a synchronous method.
@@ -1975,29 +2019,19 @@ export default class Renderer implements EventBus<any, Renderer>, EditorRenderer
     }
 
     /**
-     * @param {String} cursorStyle A css cursor style
+     * @param cursorStyle A css cursor style. 'crosshair'.
      */
     setMouseCursor(cursorStyle: string): void {
         this.content.style.cursor = cursorStyle;
     }
-
-    /**
-     * Destroys the text and cursor layers for this renderer.
-     */
-    destroy(): void {
-        this.$textLayer.destroy();
-        this.$cursorLayer.destroy();
-    }
 }
-
+/*
 defineOptions(Renderer.prototype, "renderer", {
-    animatedScroll: { initialValue: false },
     showInvisibles: {
         set: function(value) {
             if (this.$textLayer.setShowInvisibles(value))
                 this.$loop.schedule(this.CHANGE_TEXT);
         },
-        initialValue: false
     },
     showPrintMargin: {
         set: function() { this.$updatePrintMargin(); },
@@ -2018,76 +2052,9 @@ defineOptions(Renderer.prototype, "renderer", {
             return this.$showPrintMargin && this.$printMarginColumn;
         }
     },
-    showGutter: {
-        set: function(show) {
-            this.$gutter.style.display = show ? "block" : "none";
-            this.$loop.schedule(this.CHANGE_FULL);
-            this.onGutterResize();
-        },
-        initialValue: true
-    },
-    fadeFoldWidgets: {
-        set: function(show: boolean) {
-            setCssClass(this.$gutter, "ace_fade-fold-widgets", show);
-        },
-        initialValue: false
-    },
     showFoldWidgets: {
         set: function(show) { this.$gutterLayer.setShowFoldWidgets(show); },
         initialValue: true
-    },
-    showLineNumbers: {
-        set: function(show) {
-            this.$gutterLayer.setShowLineNumbers(show);
-            this.$loop.schedule(this.CHANGE_GUTTER);
-        },
-        initialValue: true
-    },
-    displayIndentGuides: {
-        set: function(show) {
-            if (this.$textLayer.setDisplayIndentGuides(show))
-                this.$loop.schedule(this.CHANGE_TEXT);
-        },
-        initialValue: true
-    },
-    highlightGutterLine: {
-        set: function(shouldHighlight) {
-            if (!this.$gutterLineHighlight) {
-                this.$gutterLineHighlight = createElement("div");
-                this.$gutterLineHighlight.className = "ace_gutter-active-line";
-                this.$gutter.appendChild(this.$gutterLineHighlight);
-                return;
-            }
-
-            this.$gutterLineHighlight.style.display = shouldHighlight ? "" : "none";
-            // if cursorlayer have never been updated there's nothing on screen to update
-            if (this.$cursorLayer.$pixelPos)
-                this.$updateGutterLineHighlight();
-        },
-        initialValue: false,
-        value: true
-    },
-    hScrollBarAlwaysVisible: {
-        set: function(val) {
-            if (!this.$hScrollBarAlwaysVisible || !this.$horizScroll)
-                this.$loop.schedule(this.CHANGE_SCROLL);
-        },
-        initialValue: false
-    },
-    vScrollBarAlwaysVisible: {
-        set: function(val) {
-            if (!this.$vScrollBarAlwaysVisible || !this.$vScroll)
-                this.$loop.schedule(this.CHANGE_SCROLL);
-        },
-        initialValue: false
-    },
-    fontSize: {
-        set: function(fontSize: string) {
-            var that: Renderer = this;
-            that.container.style.fontSize = fontSize;
-            that.updateFontSize();
-        },
-        initialValue: "12px"
     },
     fontFamily: {
         set: function(fontFamily: string) {
@@ -2130,3 +2097,4 @@ defineOptions(Renderer.prototype, "renderer", {
         handlesSet: true
     }
 });
+*/

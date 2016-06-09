@@ -1,7 +1,6 @@
 import createDelayedCall from './lib/lang/createDelayedCall';
 import DelayedCall from './lib/lang/DelayedCall';
 import {stringRepeat} from "./lib/lang";
-import {defineOptions, resetOptions} from "./config";
 import Annotation from './Annotation';
 import Delta from "./Delta";
 import DeltaGroup from './DeltaGroup';
@@ -12,10 +11,12 @@ import EventEmitterClass from "./lib/EventEmitterClass";
 import FoldLine from "./FoldLine";
 import Fold from "./Fold";
 import FoldEvent from "./FoldEvent";
+import GutterRenderer from './layer/GutterRenderer';
 import Selection from "./Selection";
 import LanguageMode from "./LanguageMode";
 import Range from "./Range";
 import RangeBasic from "./RangeBasic";
+import Shareable from './base/Shareable';
 import Token from "./Token";
 import Tokenizer from "./Tokenizer";
 import Document from "./Document";
@@ -85,7 +86,9 @@ function isFullWidth(c: number): boolean {
 /**
  * @class EditSession
  */
-export default class EditSession implements EventBus<any, EditSession> {
+export default class EditSession implements EventBus<any, EditSession>, Shareable {
+    public $firstLineNumber = 1;
+    public gutterRenderer: GutterRenderer;
     public $breakpoints: string[] = [];
     public $decorations: string[] = [];
     private $frontMarkers: { [id: number]: Marker } = {};
@@ -178,8 +181,6 @@ export default class EditSession implements EventBus<any, EditSession> {
     public $searchHighlight: SearchHighlight;
     private $annotations: Annotation[];
     private $autoNewLine: string;
-    // private getOption;
-    private setOption;
 
     /**
      * @property eventBus
@@ -190,12 +191,8 @@ export default class EditSession implements EventBus<any, EditSession> {
 
     /**
      * Determines whether the worker will be started.
-     *
-     * @property $useWorker
-     * @type {boolean}
-     * @private
      */
-    private $useWorker: boolean;
+    private $useWorker = true;
 
     /**
      *
@@ -217,12 +214,11 @@ export default class EditSession implements EventBus<any, EditSession> {
      * The worker corresponding to the mode (i.e. Language).
      */
     private $worker: WorkerClient;
-    private $options;
     public tokenRe: RegExp;
     public nonTokenRe: RegExp;
     public $scrollTop = 0;
     private $scrollLeft = 0;
-    // WRAPMODE
+    private $wrap: boolean | number | string;
     private $wrapAsCode: boolean;
     private $wrapLimit = 80;
     public $useWrapMode = false;
@@ -232,11 +228,11 @@ export default class EditSession implements EventBus<any, EditSession> {
     };
     public $updating: boolean;
     private $onChange = this.onChange.bind(this);
+    private removeDocumentChangeListener: () => void;
     private $syncInformUndoManager: () => void;
     public mergeUndoDeltas: boolean;
-    private $useSoftTabs: boolean;
-    private $tabSize: number;
-    private $wrapMethod;
+    private $useSoftTabs = true;
+    private $tabSize = 4;
     private screenWidth: number;
     public lineWidgets: LineWidget[] = null;
     private lineWidgetsWidth: number;
@@ -259,11 +255,10 @@ export default class EditSession implements EventBus<any, EditSession> {
      */
     public $selectionMarker: number = null;
     private $bracketMatcher = new BracketMatch(this);
+    private refCount = 1;
 
     /**
-     * @class EditSession
-     * @constructor
-     * @param doc {Document}
+     * @param doc
      */
     constructor(doc: Document) {
         if (!(doc instanceof Document)) {
@@ -282,7 +277,6 @@ export default class EditSession implements EventBus<any, EditSession> {
         this.setDocument(doc);
         this.selection = new Selection(this);
 
-        resetOptions(this);
         // FIXME: Can we avoid setting a "temporary mode".
         // The reason is that the worker can fail.
         this.setLanguageMode(new TextMode('', []), function(err: any) {
@@ -294,6 +288,23 @@ export default class EditSession implements EventBus<any, EditSession> {
             }
         });
         this.eventBus._signal("session", this);
+    }
+
+    protected destructor(): void {
+        // FIXME: TODO
+    }
+
+    addRef(): number {
+        this.refCount++;
+        return this.refCount;
+    }
+
+    release(): number {
+        this.refCount--;
+        if (this.refCount === 0) {
+            this.destructor();
+        }
+        return this.refCount;
     }
 
     /**
@@ -328,23 +339,30 @@ export default class EditSession implements EventBus<any, EditSession> {
      * Sets the `EditSession` to point to a new `Document`.
      * If a `BackgroundTokenizer` exists, it also points to `doc`.
      *
-     * @method setDocument
-     * @param doc {Document} The new `Document` to use.
-     * @return {void}
+     * @param doc The new `Document` to use.
      */
     private setDocument(doc: Document): void {
-        if (!(doc instanceof Document)) {
-            throw new Error("doc must be a Document");
+        if (this.doc === doc) {
+            console.warn("Wasting time setting the same document more than once!");
+            return;
         }
+
         if (this.doc) {
-            this.doc.removeChangeListener(this.$onChange);
+            this.removeDocumentChangeListener();
+            this.removeDocumentChangeListener = void 0;
+            this.doc = void 0;
         }
 
-        this.doc = doc;
-        this.doc.addChangeListener(this.$onChange);
+        if (doc) {
+            if (!(doc instanceof Document)) {
+                throw new Error("doc must be a Document");
+            }
+            this.doc = doc;
+            this.removeDocumentChangeListener = this.doc.addChangeListener(this.$onChange);
 
-        if (this.bgTokenizer) {
-            this.bgTokenizer.setDocument(this.getDocument());
+            if (this.bgTokenizer) {
+                this.bgTokenizer.setDocument(doc);
+            }
         }
 
         this.resetCaches();
@@ -669,7 +687,7 @@ export default class EditSession implements EventBus<any, EditSession> {
      * @chainable
      */
     public setUseSoftTabs(useSoftTabs: boolean): EditSession {
-        this.setOption("useSoftTabs", useSoftTabs);
+        this.$useSoftTabs = useSoftTabs;
         return this;
     }
 
@@ -688,13 +706,14 @@ export default class EditSession implements EventBus<any, EditSession> {
      * Set the number of spaces that define a soft tab.
      * For example, passing in `4` transforms the soft tabs to be equivalent to four spaces.
      * This function also emits the `changeTabSize` event.
-     *
-     * @method setTabSize
-     * @param tabSize {number} The new tab size.
-     * @return {void}
      */
     public setTabSize(tabSize: number): void {
-        this.setOption("tabSize", tabSize);
+        if (isNaN(tabSize) || this.$tabSize === tabSize) return;
+
+        this.$modified = true;
+        this.$rowLengthCache = [];
+        this.$tabSize = tabSize;
+        this._signal("changeTabSize");
     }
 
     /**
@@ -728,7 +747,8 @@ export default class EditSession implements EventBus<any, EditSession> {
      * @return {void}
      */
     public setOverwrite(overwrite: boolean): void {
-        this.setOption("overwrite", overwrite);
+        this.$overwrite = overwrite;
+        this._signal("changeOverwrite");
     }
 
     /**
@@ -1164,7 +1184,13 @@ export default class EditSession implements EventBus<any, EditSession> {
      * @return {void}
      */
     public setUseWorker(useWorker: boolean): void {
-        this.setOption("useWorker", useWorker);
+        this.$useWorker = useWorker;
+
+        this.$stopWorker();
+        if (useWorker) {
+            this.$startWorker(function(err) {
+            });
+        }
     }
 
     /**
@@ -1251,8 +1277,7 @@ export default class EditSession implements EventBus<any, EditSession> {
 
 
         if (!isPlaceholder) {
-            // FIXME: Untyped $options.
-            this.$options.wrapMethod.set.call(this, this.$wrapMethod);
+            this.setWrapType('auto');
             this.$setFolding(mode.foldingRules);
             this.bgTokenizer.start(0);
 
@@ -2027,6 +2052,18 @@ export default class EditSession implements EventBus<any, EditSession> {
      */
     public getWrapLimit(): number {
         return this.$wrapLimit;
+    }
+
+    public setWrapType(wrapType: 'auto' | 'code' | 'text') {
+        const value: boolean = (wrapType === 'auto') ? this.$mode.wrap !== 'text' : wrapType !== 'text';
+        if (value !== this.$wrapAsCode) {
+            this.$wrapAsCode = value;
+            if (this.$useWrapMode) {
+                this.$modified = true;
+                this.$resetRowCache(0);
+                this.$updateWrapData(0, this.getLength() - 1);
+            }
+        }
     }
 
     /**
@@ -2844,13 +2881,6 @@ export default class EditSession implements EventBus<any, EditSession> {
     }
 
     /**
-     * @private
-     */
-    public $setFontMetrics(fm: FontMetrics) {
-        // TODO?
-    }
-
-    /**
      * @method findMatchingBracket
      * @param position {Position}
      * @param [chr] {string}
@@ -3348,6 +3378,15 @@ export default class EditSession implements EventBus<any, EditSession> {
         }, this);
     }
 
+    getFirstLineNumber(): number {
+        return this.$firstLineNumber;
+    }
+
+    setFirstLineNumber(firstLineNumber: number) {
+        this.$firstLineNumber = firstLineNumber;
+        this._signal("changeBreakpoint");
+    }
+
     /**
      * @method unfold
      * @param [location] {number | Position | Range}
@@ -3751,7 +3790,7 @@ export default class EditSession implements EventBus<any, EditSession> {
     toggleFoldWidget(toggleParent?: boolean): void {
         let row: number = this.selection.getCursor().row;
         row = this.getRowFoldStart(row);
-        var range = this.$toggleFoldWidget(row, {});
+        let range = this.$toggleFoldWidget(row, {});
 
         if (range) {
             return;
@@ -3762,7 +3801,7 @@ export default class EditSession implements EventBus<any, EditSession> {
 
         if (range) {
             row = range.start.row;
-            var fold = this.getFoldAt(row, this.getLine(row).length, 1);
+            const fold = this.getFoldAt(row, this.getLine(row).length, 1);
 
             if (fold) {
                 this.removeFold(fold);
@@ -3774,8 +3813,8 @@ export default class EditSession implements EventBus<any, EditSession> {
     }
 
     updateFoldWidgets(delta: Delta, editSession: EditSession): void {
-        var firstRow = delta.start.row;
-        var len = delta.end.row - firstRow;
+        const firstRow = delta.start.row;
+        const len = delta.end.row - firstRow;
 
         if (len === 0) {
             this.foldWidgets[firstRow] = null;
@@ -3784,107 +3823,46 @@ export default class EditSession implements EventBus<any, EditSession> {
             this.foldWidgets.splice(firstRow, len + 1, null);
         }
         else {
-            var args = Array(len + 1);
+            const args = Array<number>(len + 1);
             args.unshift(firstRow, 1);
             this.foldWidgets.splice.apply(this.foldWidgets, args);
         }
+    }
+    setWrap(value: string) {
+        let val: boolean | number | string;
+        if (!value || value === "off")
+            val = false;
+        else if (value === "free")
+            val = true;
+        else if (value === "printMargin")
+            val = -1;
+        else if (typeof value === "string")
+            val = parseInt(value, 10) || false;
+        else
+            val = value
+
+        if (this.$wrap === val)
+            return;
+        if (!val) {
+            this.setUseWrapMode(false);
+        } else {
+            const col = typeof val === "number" ? val : null;
+            this.setWrapLimitRange(col, col);
+            this.setUseWrapMode(true);
+        }
+        this.$wrap = val;
+    }
+    getWrap(): boolean | string | number {
+        if (this.getUseWrapMode()) {
+            if (this.$wrap === -1)
+                return "printMargin";
+            if (!this.getWrapLimitRange().min)
+                return "free";
+            return this.$wrap;
+        }
+        return "off";
     }
 }
 
 // FIXME: Restore
 // Folding.call(EditSession.prototype);
-
-defineOptions(EditSession.prototype, "session", {
-    wrap: {
-        set: function(value) {
-            if (!value || value === "off")
-                value = false;
-            else if (value === "free")
-                value = true;
-            else if (value === "printMargin")
-                value = -1;
-            else if (typeof value === "string")
-                value = parseInt(value, 10) || false;
-
-            if (this.$wrap === value)
-                return;
-            if (!value) {
-                this.setUseWrapMode(false);
-            } else {
-                var col = typeof value === "number" ? value : null;
-                this.setWrapLimitRange(col, col);
-                this.setUseWrapMode(true);
-            }
-            this.$wrap = value;
-        },
-        get: function() {
-            if (this.getUseWrapMode()) {
-                if (this.$wrap === -1)
-                    return "printMargin";
-                if (!this.getWrapLimitRange().min)
-                    return "free";
-                return this.$wrap;
-            }
-            return "off";
-        },
-        handlesSet: true
-    },
-    wrapMethod: {
-        // code|text|auto
-        set: function(val: string) {
-            const value: boolean = (val === "auto") ? this.$mode.type !== "text" : val !== "text";
-            if (value !== this.$wrapAsCode) {
-                this.$wrapAsCode = value;
-                if (this.$useWrapMode) {
-                    this.$modified = true;
-                    this.$resetRowCache(0);
-                    this.$updateWrapData(0, this.getLength() - 1);
-                }
-            }
-        },
-        initialValue: "auto"
-    },
-    firstLineNumber: {
-        set: function() { this._signal("changeBreakpoint"); },
-        initialValue: 1
-    },
-    useWorker: {
-        set: function(useWorker: boolean) {
-            this.$useWorker = useWorker;
-
-            this.$stopWorker();
-            if (useWorker) {
-                // FIXME: This is BAD. Where is the callback.
-                // This intyped defineOptions has to go...
-                this.$startWorker();
-            }
-        },
-        initialValue: true
-    },
-    useSoftTabs: { initialValue: true },
-    tabSize: {
-        set: function(tabSize) {
-            if (isNaN(tabSize) || this.$tabSize === tabSize) return;
-
-            this.$modified = true;
-            this.$rowLengthCache = [];
-            this.$tabSize = tabSize;
-            this._signal("changeTabSize");
-        },
-        initialValue: 4,
-        handlesSet: true
-    },
-    overwrite: {
-        set: function(val) { this._signal("changeOverwrite"); },
-        initialValue: false
-    },
-    newLineMode: {
-        set: function(val) { this.doc.setNewLineMode(val); },
-        get: function() { return this.doc.getNewLineMode(); },
-        handlesSet: true
-    },
-    mode: {
-        set: function(val) { this.setMode(val); },
-        get: function() { return this.$modeId; }
-    }
-});

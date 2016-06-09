@@ -27,7 +27,7 @@ function validateDelta(docLines: string[], delta: Delta): void {
         throwDeltaError(delta, "delta.start/end must be an present");
 
     // Validate that the start point is contained in the document.
-    var start = delta.start;
+    const start = delta.start;
     if (!positionInDocument(docLines, delta.start))
         throwDeltaError(delta, "delta.start must be contained in document");
 
@@ -37,8 +37,8 @@ function validateDelta(docLines: string[], delta: Delta): void {
         throwDeltaError(delta, `delta.end ${JSON.stringify(end)} must be contained in document for 'remove' actions`);
 
     // Validate that the .range size matches the .lines size.
-    var numRangeRows = end.row - start.row;
-    var numRangeLastLineChars = (end.column - (numRangeRows === 0 ? start.column : 0));
+    const numRangeRows = end.row - start.row;
+    const numRangeLastLineChars = (end.column - (numRangeRows === 0 ? start.column : 0));
     if (numRangeRows !== delta.lines.length - 1 || delta.lines[numRangeRows].length !== numRangeLastLineChars)
         throwDeltaError(delta, "delta.range must match delta lines");
 }
@@ -51,17 +51,17 @@ export default function applyDelta(docLines: string[], delta: Delta, doNotValida
         validateDelta(docLines, delta);
     }
 
-    var row = delta.start.row;
-    var startColumn = delta.start.column;
-    var line = docLines[row] || "";
+    const row = delta.start.row;
+    const startColumn = delta.start.column;
+    const line = docLines[row] || "";
     switch (delta.action) {
         case "insert":
-            var lines = delta.lines;
+            const lines = delta.lines;
             if (lines.length === 1) {
                 docLines[row] = line.substring(0, startColumn) + delta.lines[0] + line.substring(startColumn);
             }
             else {
-                var args: any[] = [row, 1];
+                let args: any[] = [row, 1];
                 args = args.concat(delta.lines);
                 docLines.splice.apply(docLines, args);
                 docLines[row] = line.substring(0, startColumn) + docLines[row];
@@ -69,8 +69,8 @@ export default function applyDelta(docLines: string[], delta: Delta, doNotValida
             }
             break;
         case "remove":
-            var endColumn = delta.end.column;
-            var endRow = delta.end.row;
+            const endColumn = delta.end.column;
+            const endRow = delta.end.row;
             if (row === endRow) {
                 docLines[row] = line.substring(0, startColumn) + line.substring(endColumn);
             }

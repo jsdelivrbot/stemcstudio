@@ -23,10 +23,13 @@ import Rule from '../Rule';
 export default class TextMode implements LanguageMode {
     /**
      * Used when loading snippets for zero or more modes?
-     * @property modes
-     * @type LanguageMode[]
      */
     public modes: LanguageMode[];
+
+    /**
+     * 
+     */
+    public wrap: 'auto' | 'code' | 'text' = 'text';
 
     protected HighlightRules: any = TextHighlightRules;
 

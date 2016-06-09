@@ -9,28 +9,32 @@ import FontMetrics from "../layer/FontMetrics";
 import TextConfig from './TextConfig';
 import Token from "../Token";
 
+const EOF_CHAR = "\xB6";
+const EOL_CHAR_LF = "\xAC";
+const EOL_CHAR_CRLF = "\xa4";
+const TAB_CHAR = "\u2192"; // "\u21E5";
+const SPACE_CHAR = "\xB7";
+
 /**
- * @class TextLayer
- * @extends AbstractLayer
+ *
  */
 export default class TextLayer extends AbstractLayer implements EventBus<any, TextLayer> {
+    public allowBoldFonts = false;
     private $padding = 0;
-    private EOF_CHAR = "\xB6";
-    private EOL_CHAR_LF = "\xAC";
-    private EOL_CHAR_CRLF = "\xa4";
     private EOL_CHAR: string;
-    private TAB_CHAR = "\u2192"; // "\u21E5";
-    private SPACE_CHAR = "\xB7";
-    private $fontMetrics: FontMetrics;
+    private fontMetrics: FontMetrics;
     private session: EditSession;
     private $pollSizeChangesTimer: number;
     private showInvisibles = false;
-    private displayIndentGuides: boolean = true;
+    private displayIndentGuides = true;
     private $tabStrings: string[] = [];
     private $textToken = { "text": true, "rparen": true, "lparen": true };
     private tabSize: number;
     private $indentGuideRe: RegExp;
     public config: TextConfig;
+    /**
+     * TODO: I don't think that this is used.
+     */
     private $measureNode: Node;
     private eventBus: EventEmitterClass<any, TextLayer>;
     public selectedNode: HTMLElement;
@@ -42,8 +46,9 @@ export default class TextLayer extends AbstractLayer implements EventBus<any, Te
      */
     constructor(parent: HTMLElement) {
         super(parent, "ace_layer ace_text-layer");
+        console.log("TextLayer.constructor");
         this.eventBus = new EventEmitterClass<any, TextLayer>(this);
-        this.EOL_CHAR = this.EOL_CHAR_LF;
+        this.EOL_CHAR = EOL_CHAR_LF;
     }
 
     /**
@@ -51,9 +56,7 @@ export default class TextLayer extends AbstractLayer implements EventBus<any, Te
      * @return {boolean}
      */
     updateEolChar(): boolean {
-        var EOL_CHAR = this.session.doc.getNewLineCharacter() === "\n"
-            ? this.EOL_CHAR_LF
-            : this.EOL_CHAR_CRLF;
+        const EOL_CHAR = this.session.doc.getNewLineCharacter() === "\n" ? EOL_CHAR_LF : EOL_CHAR_CRLF;
         if (this.EOL_CHAR !== EOL_CHAR) {
             this.EOL_CHAR = EOL_CHAR;
             return true;
@@ -78,7 +81,7 @@ export default class TextLayer extends AbstractLayer implements EventBus<any, Te
      * @return {number}
      */
     public getLineHeight(): number {
-        return this.$fontMetrics.$characterSize.height || 0;
+        return this.fontMetrics.$characterSize.height || 0;
     }
 
     /**
@@ -86,17 +89,17 @@ export default class TextLayer extends AbstractLayer implements EventBus<any, Te
      * @return {number}
      */
     public getCharacterWidth(): number {
-        return this.$fontMetrics.$characterSize.width || 0;
+        return this.fontMetrics.$characterSize.width || 0;
     }
 
     /**
-     * @method $setFontMetrics
-     * @param measure {FontMetrics}
-     * @return {void}
+     * @param measure
      */
     public $setFontMetrics(measure: FontMetrics): void {
-        this.$fontMetrics = measure;
-        this.$fontMetrics.on("changeCharacterSize", (e) => {
+        this.fontMetrics = measure;
+        this.fontMetrics.addRef();
+        // TODO: Make sure off is called when fontMetrics are released
+        this.fontMetrics.on("changeCharacterSize", (e) => {
             /**
              * @event changeCharacterSize
              */
@@ -110,11 +113,11 @@ export default class TextLayer extends AbstractLayer implements EventBus<any, Te
      * @return {void}
      */
     public checkForSizeChanges(): void {
-        this.$fontMetrics.checkForSizeChanges();
+        this.fontMetrics.checkForSizeChanges();
     }
 
     private $pollSizeChanges() {
-        return this.$pollSizeChangesTimer = this.$fontMetrics.$pollSizeChanges();
+        return this.$pollSizeChangesTimer = this.fontMetrics.$pollSizeChanges();
     }
 
     /**
@@ -127,6 +130,10 @@ export default class TextLayer extends AbstractLayer implements EventBus<any, Te
         this.$computeTabString();
     }
 
+    public getShowInvisibles(): boolean {
+        return this.showInvisibles;
+    }
+
     public setShowInvisibles(showInvisibles: boolean) {
         if (this.showInvisibles === showInvisibles) {
             return false;
@@ -136,6 +143,10 @@ export default class TextLayer extends AbstractLayer implements EventBus<any, Te
             this.$computeTabString();
             return true;
         }
+    }
+
+    public getDisplayIndentGuides(): boolean {
+        return this.displayIndentGuides;
     }
 
     public setDisplayIndentGuides(displayIndentGuides: boolean): boolean {
@@ -150,20 +161,20 @@ export default class TextLayer extends AbstractLayer implements EventBus<any, Te
     }
 
     /**
-     * @method on
-     * @param eventName {string}
-     * @param callback {(event, source: TextLayer) => any}
-     * @return {void}
+     * @param eventName
+     * @param callback
+     * @returns A function that when called will remove the callback for the specified event.
      */
-    on(eventName: string, callback: (event: any, source: TextLayer) => any): void {
+    on(eventName: string, callback: (event: any, source: TextLayer) => any): () => void {
         this.eventBus.on(eventName, callback, false);
+        return () => {
+            this.eventBus.off(eventName, callback);
+        }
     }
 
     /**
-     * @method off
-     * @param eventName {string}
-     * @param callback {(event, source: TextLayer) => any}
-     * @return {void}
+     * @param eventName
+     * @param callback
      */
     off(eventName: string, callback: (event: any, source: TextLayer) => any): void {
         this.eventBus.off(eventName, callback);
@@ -176,13 +187,13 @@ export default class TextLayer extends AbstractLayer implements EventBus<any, Te
 
     //    this.onChangeTabSize =
     private $computeTabString(): void {
-        var tabSize = this.session.getTabSize();
+        const tabSize = this.session.getTabSize();
         this.tabSize = tabSize;
-        var tabStr = this.$tabStrings = ["0"];
+        const tabStr = this.$tabStrings = ["0"];
         for (var i = 1; i < tabSize + 1; i++) {
             if (this.showInvisibles) {
                 tabStr.push("<span class='ace_invisible ace_invisible_tab'>"
-                    + this.TAB_CHAR
+                    + TAB_CHAR
                     + stringRepeat("\xa0", i - 1)
                     + "</span>");
             } else {
@@ -198,8 +209,8 @@ export default class TextLayer extends AbstractLayer implements EventBus<any, Te
                 className += " ace_invisible";
                 spaceClass = " ace_invisible_space";
                 tabClass = " ace_invisible_tab";
-                var spaceContent = stringRepeat(this.SPACE_CHAR, this.tabSize);
-                var tabContent = this.TAB_CHAR + stringRepeat("\xa0", this.tabSize - 1);
+                var spaceContent = stringRepeat(SPACE_CHAR, this.tabSize);
+                var tabContent = TAB_CHAR + stringRepeat("\xa0", this.tabSize - 1);
             } else {
                 var spaceContent = stringRepeat("\xa0", this.tabSize);
                 var tabContent = spaceContent;
@@ -399,12 +410,11 @@ export default class TextLayer extends AbstractLayer implements EventBus<any, Te
 
 
     private $renderToken(stringBuilder: (number | string)[], screenColumn: number, token: Token, value: string): number {
-        var self = this;
         var replaceReg = /\t|&|<|( +)|([\x00-\x1f\x80-\xa0\u1680\u180E\u2000-\u200f\u2028\u2029\u202F\u205F\u3000\uFEFF])|[\u1100-\u115F\u11A3-\u11A7\u11FA-\u11FF\u2329-\u232A\u2E80-\u2E99\u2E9B-\u2EF3\u2F00-\u2FD5\u2FF0-\u2FFB\u3000-\u303E\u3041-\u3096\u3099-\u30FF\u3105-\u312D\u3131-\u318E\u3190-\u31BA\u31C0-\u31E3\u31F0-\u321E\u3220-\u3247\u3250-\u32FE\u3300-\u4DBF\u4E00-\uA48C\uA490-\uA4C6\uA960-\uA97C\uAC00-\uD7A3\uD7B0-\uD7C6\uD7CB-\uD7FB\uF900-\uFAFF\uFE10-\uFE19\uFE30-\uFE52\uFE54-\uFE66\uFE68-\uFE6B\uFF01-\uFF60\uFFE0-\uFFE6]/g;
-        var replaceFunc = function(c: string, a, b, tabIdx, idx4) {
+        var replaceFunc = (c: string, a, b, tabIdx, idx4) => {
             if (a) {
-                return self.showInvisibles ?
-                    "<span class='ace_invisible ace_invisible_space'>" + stringRepeat(self.SPACE_CHAR, c.length) + "</span>" :
+                return this.showInvisibles ?
+                    "<span class='ace_invisible ace_invisible_space'>" + stringRepeat(SPACE_CHAR, c.length) + "</span>" :
                     stringRepeat("\xa0", c.length);
             }
             else if (c === "&") {
@@ -414,26 +424,26 @@ export default class TextLayer extends AbstractLayer implements EventBus<any, Te
                 return "&#60;";
             }
             else if (c === "\t") {
-                var tabSize = self.session.getScreenTabSize(screenColumn + tabIdx);
+                const tabSize = this.session.getScreenTabSize(screenColumn + tabIdx);
                 screenColumn += tabSize - 1;
-                return self.$tabStrings[tabSize];
+                return this.$tabStrings[tabSize];
             }
             else if (c === "\u3000") {
                 // U+3000 is both invisible AND full-width, so must be handled uniquely
-                var classToUse = self.showInvisibles ? "ace_cjk ace_invisible ace_invisible_space" : "ace_cjk";
-                var space = self.showInvisibles ? self.SPACE_CHAR : "";
+                var classToUse = this.showInvisibles ? "ace_cjk ace_invisible ace_invisible_space" : "ace_cjk";
+                var space = this.showInvisibles ? SPACE_CHAR : "";
                 screenColumn += 1;
                 return "<span class='" + classToUse + "' style='width:" +
-                    (self.config.characterWidth * 2) +
+                    (this.config.characterWidth * 2) +
                     "px'>" + space + "</span>";
             }
             else if (b) {
-                return "<span class='ace_invisible ace_invisible_space ace_invalid'>" + self.SPACE_CHAR + "</span>";
+                return "<span class='ace_invisible ace_invisible_space ace_invalid'>" + SPACE_CHAR + "</span>";
             }
             else {
                 screenColumn += 1;
                 return "<span class='ace_cjk' style='width:" +
-                    (self.config.characterWidth * 2) +
+                    (this.config.characterWidth * 2) +
                     "px'>" + c + "</span>";
             }
         };
@@ -540,11 +550,7 @@ export default class TextLayer extends AbstractLayer implements EventBus<any, Te
             foldLine = this.session.getFoldLine(row);
         }
 
-        if (foldLine)
-            var tokens: Token[] = this.$getFoldLineTokens(row, <FoldLine>foldLine);
-        else
-            var tokens: Token[] = this.session.getTokens(row);
-
+        const tokens = foldLine ? this.$getFoldLineTokens(row, <FoldLine>foldLine) : this.session.getTokens(row);
 
         if (!onlyContents) {
             stringBuilder.push(
@@ -557,7 +563,7 @@ export default class TextLayer extends AbstractLayer implements EventBus<any, Te
 
         // We may not get tokens if there is no language mode.
         if (tokens && tokens.length) {
-            var splits: number[] = this.session.getRowSplitData(row);
+            const splits: number[] = this.session.getRowSplitData(row);
             if (splits && splits.length)
                 this.$renderWrappedLine(stringBuilder, tokens, splits, onlyContents);
             else
@@ -570,7 +576,7 @@ export default class TextLayer extends AbstractLayer implements EventBus<any, Te
 
             stringBuilder.push(
                 "<span class='ace_invisible ace_invisible_eol'>",
-                row === this.session.getLength() - 1 ? this.EOF_CHAR : this.EOL_CHAR,
+                row === this.session.getLength() - 1 ? EOF_CHAR : this.EOL_CHAR,
                 "</span>"
             );
         }
@@ -650,10 +656,15 @@ export default class TextLayer extends AbstractLayer implements EventBus<any, Te
     }
 
     /**
-     * @method destroy
-     * @return {void}
+     *
      */
     public destroy(): void {
+        console.log("TextLayer.destroy");
+        if (this.fontMetrics) {
+            // TODO: Remove the handler.
+            this.fontMetrics.release();
+            this.fontMetrics = void 0;
+        }
         clearInterval(this.$pollSizeChangesTimer);
         if (this.$measureNode) {
             this.$measureNode.parentNode.removeChild(this.$measureNode);

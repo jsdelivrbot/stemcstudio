@@ -197,37 +197,37 @@ export default class EventEmitterClass<E, T> implements EventBus<E, T> {
                 listeners.push(callback);
             }
         }
-        return callback;
+        return () => {
+            this.removeEventListener(eventName, callback, capturing);
+        }
     }
 
     /**
-     * @method on
-     * @param eventName {string}
-     * @param callback {(event; E, source: T) => any}
-     * @param [capturing] {boolean}
-     * @retutrn {void}
+     * @param eventName
+     * @param callback
+     * @param capturing
      */
-    on(eventName: string, callback: (event: E, source: T) => any, capturing?: boolean): void {
-        this.addEventListener(eventName, callback, capturing);
+    on(eventName: string, callback: (event: E, source: T) => any, capturing?: boolean): () => void {
+        return this.addEventListener(eventName, callback, capturing);
     }
 
     // Discourage usage.
-    private removeEventListener(eventName, callback: (event: E, source: T) => any) {
+    private removeEventListener(eventName, callback: (event: E, source: T) => any, capturing?: boolean) {
         this._eventRegistry = this._eventRegistry || {};
 
-        var listeners = this._eventRegistry[eventName];
+        const listeners = this._eventRegistry[eventName];
         if (!listeners)
             return;
 
-        var index = listeners.indexOf(callback);
+        const index = listeners.indexOf(callback);
         if (index !== -1) {
             listeners.splice(index, 1);
         }
     }
 
     // Discourage usage.
-    private removeListener(eventName: string, callback: (event: E, source: T) => any) {
-        return this.removeEventListener(eventName, callback);
+    private removeListener(eventName: string, callback: (event: E, source: T) => any, capturing?: boolean) {
+        return this.removeEventListener(eventName, callback, capturing);
     }
 
     /**

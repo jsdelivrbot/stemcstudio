@@ -358,12 +358,10 @@ export default class Document {
     }
 
     /**
-     * @method addChangeListener
-     * @param callback {(event: Delta, source: Document) => any}
-     * @return {void}
+     * @param callback
      */
-    public addChangeListener(callback: (event: Delta, source: Document) => any): void {
-        this._eventBus.on(CHANGE, callback, false);
+    public addChangeListener(callback: (event: Delta, source: Document) => any): () => void {
+        return this._eventBus.on(CHANGE, callback, false);
     }
 
     /**

@@ -3,6 +3,7 @@ import {mixin} from "./lib/oop";
 import {computedStyle, hasCssClass} from "./lib/dom";
 import createDelayedCall from './lib/lang/createDelayedCall';
 import DelayedCall from './lib/lang/DelayedCall';
+import Disposable from './base/Disposable';
 import {stringRepeat} from "./lib/lang";
 import {isIE, isMac, isMobile, isOldIE, isWebKit} from "./lib/useragent";
 import GutterLayer from "./layer/GutterLayer";
@@ -24,7 +25,7 @@ import EventEmitterClass from "./lib/EventEmitterClass";
 import Command from "./commands/Command";
 import CommandManager from "./commands/CommandManager";
 import defaultCommands from "./commands/default_commands";
-import {defineOptions, loadModule, resetOptions} from "./config";
+import {loadModule} from "./config";
 import TokenIterator from "./TokenIterator";
 import {COMMAND_NAME_AUTO_COMPLETE} from './editor_protocol';
 import {COMMAND_NAME_BACKSPACE} from './editor_protocol';
@@ -66,17 +67,15 @@ function find(session: EditSession, needle: string | RegExp, dir: number): Range
  *
  * @class Editor
  */
-export default class Editor implements EventBus<any, Editor> {
+export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
-     * @property renderer
-     * @type Renderer
+     *
      */
     public renderer: Renderer;
 
     /**
-     * @property session
-     * @type EditSession
+     *
      */
     public session: EditSession;
 
@@ -87,11 +86,7 @@ export default class Editor implements EventBus<any, Editor> {
      */
     private eventBus: EventEmitterClass<any, Editor>;
 
-    private $touchHandler: IGestureHandler;
     private $mouseHandler: IGestureHandler;
-    public getOption;
-    public setOption;
-    public setOptions;
     public $isFocused;
 
     /**
@@ -141,13 +136,15 @@ export default class Editor implements EventBus<any, Editor> {
     /**
      *
      */
+    private $behavioursEnabled = true;
+    private $wrapBehavioursEnabled = true;
     private $blockScrolling: number;
-    private $highlightActiveLine;
+    private $highlightActiveLine = true;
     private $highlightPending: boolean;
-    private $highlightSelectedWord: boolean;
+    private $highlightSelectedWord = true;
     private $highlightTagPending: boolean;
     private $mergeUndoDeltas;
-    public $readOnly: boolean;
+    public $readOnly = false;
     private $scrollAnchor: HTMLDivElement;
     private $search: Search;
     private _$emitInputEvent: DelayedCall;
@@ -160,9 +157,9 @@ export default class Editor implements EventBus<any, Editor> {
     private selections: Range[];
 
     /**
-     * May be 'line', or ...
+     *
      */
-    private $selectionStyle: string;
+    private $selectionStyle: 'line' | 'text' = 'line';
     private $opResetTimer: DelayedCall;
     private curOp;
     private prevOp: { command?; args?};
@@ -186,7 +183,15 @@ export default class Editor implements EventBus<any, Editor> {
     private $onCursorChange;
     private $onScrollTopChange;
     private $onScrollLeftChange;
-    public $onSelectionChange: (event, selection: Selection) => void;
+
+    /**
+     * 
+     */
+    private removeChangeSelectionHandler: () => void;
+
+    /**
+     * 
+     */
     public exitMultiSelectMode: () => any;
 
     /**
@@ -217,14 +222,7 @@ export default class Editor implements EventBus<any, Editor> {
         this.renderer.textarea = this.textInput.getElement();
         this.keyBinding = new KeyBinding(this);
 
-        if (isMobile) {
-            this.$touchHandler = touchManager(this);
-            this.$mouseHandler = new MouseHandler(this);
-        }
-        else {
-            this.$touchHandler = touchManager(this);
-            this.$mouseHandler = new MouseHandler(this);
-        }
+        this.$mouseHandler = new MouseHandler(this);
 
         new FoldHandler(this);
 
@@ -385,8 +383,21 @@ export default class Editor implements EventBus<any, Editor> {
         });
 
         this.setSession(session);
-        resetOptions(this);
-        // this._signal("editor", this);
+    }
+
+    /**
+     * Cleans up the entire editor.
+     */
+    dispose(): void {
+        this.renderer.dispose();
+        if (this.session) {
+            this.setSession(void 0);
+        }
+        /**
+         * @event destroy
+         * @param this {Editor}
+         */
+        this._signal("destroy", this);
     }
 
     /**
@@ -398,8 +409,7 @@ export default class Editor implements EventBus<any, Editor> {
     }
 
     /**
-     * @property selection
-     * @type Selection
+     *
      */
     get selection(): Selection {
         return this.session.getSelection();
@@ -926,21 +936,11 @@ export default class Editor implements EventBus<any, Editor> {
     /**
      * Sets a new key handler, such as "vim" or "windows".
      *
-     * @method setKeyboardHandler
-     * @param keyboardHandler {string | KeyboardHandler} The new key handler.
-     * @return {void}
+     * @param keyboardHandler The new key handler.
      */
-    setKeyboardHandler(keyboardHandler: string | KeyboardHandler): void {
+    setKeyboardHandler(keyboardHandler: KeyboardHandler): void {
         if (!keyboardHandler) {
             this.keyBinding.setKeyboardHandler(null);
-        }
-        else if (typeof keyboardHandler === "string") {
-            this.$keybindingId = keyboardHandler;
-            var _self = this;
-            loadModule(["keybinding", keyboardHandler], function(module) {
-                if (_self.$keybindingId === keyboardHandler)
-                    _self.keyBinding.setKeyboardHandler(module && module.handler);
-            }, this.container.ownerDocument);
         }
         else {
             this.$keybindingId = null;
@@ -988,7 +988,11 @@ export default class Editor implements EventBus<any, Editor> {
 
             var selection = this.session.getSelection();
             selection.off("changeCursor", this.$onCursorChange);
-            selection.off("changeSelection", this.$onSelectionChange);
+
+            if (this.removeChangeSelectionHandler) {
+                this.removeChangeSelectionHandler();
+                this.removeChangeSelectionHandler = void 0;
+            }
         }
 
         this.session = session;
@@ -1039,8 +1043,10 @@ export default class Editor implements EventBus<any, Editor> {
             this.selection = session.getSelection();
             this.selection.on("changeCursor", this.$onCursorChange);
 
-            this.$onSelectionChange = this.onSelectionChange.bind(this);
-            this.selection.on("changeSelection", this.$onSelectionChange);
+            const onSelectionChange = (unused: any, selection: Selection) => {
+                this.onSelectionChange(unused, selection)
+            }
+            this.removeChangeSelectionHandler = this.selection.on("changeSelection", onSelectionChange);
 
             this.onChangeMode(void 0, this.session);
 
@@ -1071,11 +1077,13 @@ export default class Editor implements EventBus<any, Editor> {
         if (oldSession) {
             let changeEditorEvent: SessionChangeEditorEvent = { oldEditor: this };
             oldSession._signal("changeEditor", changeEditorEvent);
+            oldSession.release();
         }
 
         if (session) {
             let changeEditorEvent: SessionChangeEditorEvent = { editor: this };
             session._signal("changeEditor", changeEditorEvent);
+            session.addRef();
         }
     }
 
@@ -1202,23 +1210,18 @@ export default class Editor implements EventBus<any, Editor> {
 
     /**
      * Gets the current font size of the editor text.
-     *
-     * @method getFontSize
-     * @return {string}
      */
     getFontSize(): string {
-        return this.getOption("fontSize") || computedStyle(this.container, "fontSize");
+        return this.renderer.getFontSize() || computedStyle(this.container, "fontSize").fontSize;
     }
 
     /**
      * Set a new font size (in pixels) for the editor text.
      *
-     * @method setFontSize
-     * @param fontSize {string} A font size, e.g. "12px")
-     * @return {void}
+     * @param fontSize A font size, e.g. "12px")
      */
     setFontSize(fontSize: string): void {
-        this.setOption("fontSize", fontSize);
+        this.renderer.setFontSize(fontSize);
     }
 
     /**
@@ -1623,14 +1626,6 @@ export default class Editor implements EventBus<any, Editor> {
      * @private
      */
     private onChangeFrontMarker(event, session: EditSession): void {
-        this.updateFrontMarkers();
-    }
-
-    /**
-     * @method updateFrontMarkers
-     * @return {void}
-     */
-    public updateFrontMarkers(): void {
         this.renderer.updateFrontMarkers();
     }
 
@@ -1642,14 +1637,6 @@ export default class Editor implements EventBus<any, Editor> {
      * @private
      */
     private onChangeBackMarker(event, session: EditSession): void {
-        this.renderer.updateBackMarkers();
-    }
-
-    /**
-     * @method updateBackMarkers
-     * @return {void}
-     */
-    public updateBackMarkers(): void {
         this.renderer.updateBackMarkers();
     }
 
@@ -1848,14 +1835,15 @@ export default class Editor implements EventBus<any, Editor> {
     }
 
     /**
-     * @method on
-     * @param eventName {string}
-     * @param callback {(event, editor) => any}
-     * @param [capturing] boolean
-     * @return {void}
+     * @param eventName
+     * @param callback
+     * @param capturing
      */
-    on(eventName: string, callback: (data: any, editor: Editor) => any, capturing?: boolean): void {
+    on(eventName: string, callback: (data: any, editor: Editor) => any, capturing?: boolean) {
         this.eventBus.on(eventName, callback, capturing);
+        return () => {
+            this.off(eventName, callback, capturing);
+        }
     }
 
     /**
@@ -1864,8 +1852,8 @@ export default class Editor implements EventBus<any, Editor> {
      * @param callback
      * @return {void}
      */
-    off(eventName: string, callback: (data: any, source: Editor) => any): void {
-        this.eventBus.off(eventName, callback);
+    off(eventName: string, callback: (data: any, source: Editor) => any, capturing?: boolean): void {
+        this.eventBus.off(eventName, callback/*, capturing*/);
     }
 
     setDefaultHandler(eventName: string, callback: (data: any, source: Editor) => any) {
@@ -1964,43 +1952,33 @@ export default class Editor implements EventBus<any, Editor> {
     /**
      * Sets how fast the mouse scrolling should do.
      *
-     * @method setScrollSpeed
-     * @param speed {number} A value indicating the new speed (in milliseconds).
-     * @return {void}
+     * @param speed A value indicating the new speed (in milliseconds).
      */
-    setScrollSpeed(speed: number): void {
-        this.setOption("scrollSpeed", speed);
+    setScrollSpeed(scrollSpeed: number): void {
+        this.$mouseHandler.$scrollSpeed = scrollSpeed;
     }
 
     /**
      * Returns the value indicating how fast the mouse scroll speed is (in milliseconds).
-     *
-     * @method getScrollSpeed
-     * @return {number}
      */
     getScrollSpeed(): number {
-        return this.getOption("scrollSpeed");
+        return this.$mouseHandler.$scrollSpeed;
     }
 
     /**
      * Sets the delay (in milliseconds) of the mouse drag.
      *
-     * @method setDragDelay
-     * @param dragDelay {number} A value indicating the new delay.
-     * @return {void}
+     * @param dragDelay A value indicating the new delay.
      */
     setDragDelay(dragDelay: number): void {
-        this.setOption("dragDelay", dragDelay);
+        this.$mouseHandler.$dragDelay = dragDelay;
     }
 
     /**
      * Returns the current mouse drag delay.
-     *
-     * @method getDragDelay
-     * @return {number}
      */
     getDragDelay(): number {
-        return this.getOption("dragDelay");
+        return this.$mouseHandler.$dragDelay;
     }
 
     /**
@@ -2008,78 +1986,64 @@ export default class Editor implements EventBus<any, Editor> {
      *
      * Default value is "line"
      *
-     * @method setSelectionStyle
-     * @param selectionStyle {string} The new selection style "line"|"text"
-     * @return {void}
+     * @param selectionStyle The new selection style "line"|"text".
      */
-    setSelectionStyle(selectionStyle: string): void {
-        this.setOption("selectionStyle", selectionStyle);
+    setSelectionStyle(selectionStyle: 'line' | 'text'): void {
+        this.$selectionStyle = selectionStyle;
+        this.onSelectionChange(void 0, this.selection);
+        this._signal("changeSelectionStyle", { data: selectionStyle });
     }
 
     /**
      * Returns the current selection style.
-     *
-     * @method getSelectionStyle
-     * @return {String}
      */
-    getSelectionStyle(): string {
-        return this.getOption("selectionStyle");
+    getSelectionStyle(): 'line' | 'text' {
+        return this.$selectionStyle;
     }
 
     /**
      * Determines whether or not the current line should be highlighted.
      *
-     * @method setHighlightActiveLine
-     * @param highlightActiveLine {boolean} Set to `true` to highlight the current line.
-     * @return {void}
+     * @param highlightActiveLine Set to `true` to highlight the current line.
      */
     setHighlightActiveLine(highlightActiveLine: boolean): void {
-        this.setOption("highlightActiveLine", highlightActiveLine);
+        this.$highlightActiveLine = highlightActiveLine;
+        this.$updateHighlightActiveLine();
     }
 
     /**
      * Returns `true` if current lines are always highlighted.
-     *
-     * @method getHighlightActiveLine
-     * @return {Boolean}
      */
     getHighlightActiveLine(): boolean {
-        return this.getOption("highlightActiveLine");
+        return this.$highlightActiveLine;
     }
 
     /**
-     * @method setHighlightGutterLine
-     * @param highlightGutterLine {boolean}
-     * @return {void}
+     *
      */
     setHighlightGutterLine(highlightGutterLine: boolean): void {
-        this.setOption("highlightGutterLine", highlightGutterLine);
+        this.renderer.setHighlightGutterLine(highlightGutterLine);
     }
 
     /**
-     * @method getHighlightGutterLine
-     * @return {boolean}
+     *
      */
     getHighlightGutterLine(): boolean {
-        return this.getOption("highlightGutterLine");
+        return this.renderer.getHighlightGutterLine();
     }
 
     /**
      * Determines if the currently selected word should be highlighted.
      *
-     * @method setHighlightSelectedWord
-     * @param highlightSelectedWord {boolean} Set to `true` to highlight the currently selected word
-     * @return {void}
+     * @param highlightSelectedWord Set to `true` to highlight the currently selected word.
      */
     setHighlightSelectedWord(highlightSelectedWord: boolean): void {
-        this.setOption("highlightSelectedWord", highlightSelectedWord);
+        this.$highlightSelectedWord = highlightSelectedWord;
+        this.onSelectionChange(void 0, this.selection);
     }
 
     /**
      * Returns `true` if currently highlighted words are to be highlighted.
-     *
-     * @method getHighlightSelectedWord
-     * @return {boolean}
      */
     getHighlightSelectedWord(): boolean {
         return this.$highlightSelectedWord;
@@ -2190,7 +2154,10 @@ export default class Editor implements EventBus<any, Editor> {
      * @return {void}
      */
     setReadOnly(readOnly: boolean): void {
-        this.setOption("readOnly", readOnly);
+        this.$readOnly = readOnly;
+        // disabled to not break vim mode!
+        this.textInput.setReadOnly(readOnly);
+        this.$resetCursorStyle();
     }
 
     /**
@@ -2200,7 +2167,7 @@ export default class Editor implements EventBus<any, Editor> {
      * @return {boolean}
      */
     getReadOnly(): boolean {
-        return this.getOption("readOnly");
+        return this.$readOnly;
     }
 
     /**
@@ -2208,82 +2175,58 @@ export default class Editor implements EventBus<any, Editor> {
      *
      * "Behaviors" in this case is the auto-pairing of special characters, like quotation marks, parenthesis, or brackets.
      *
-     * @method setBehavioursEnabled
-     * @param behavioursEnabled {boolean} Enables or disables behaviors
-     * @return {void}
+     * @param behavioursEnabled Enables or disables behaviors.
      */
     setBehavioursEnabled(behavioursEnabled: boolean): void {
-        this.setOption("behavioursEnabled", behavioursEnabled);
+        this.$behavioursEnabled = behavioursEnabled;
     }
 
     /**
-     * Returns `true` if the behaviors are currently enabled. {:BehaviorsDef}
-     *
-     * @method getBehavioursEnabled
-     * @return {boolean}
+     * Returns `true` if the behaviors are currently enabled.
      */
     getBehavioursEnabled(): boolean {
-        return this.getOption("behavioursEnabled");
+        return this.$behavioursEnabled;
     }
 
     /**
      * Specifies whether to use wrapping behaviors or not, i.e. automatically wrapping the selection with characters such as brackets
      * when such a character is typed in.
-     *
-     * @method setWrapBehavioursEnabled
-     * @param wrapBehavioursEnabled {boolean} Enables or disables wrapping behaviors
-     * @return {void}
+     
+     * @param wrapBehavioursEnabled Enables or disables wrapping behaviors.
      */
     setWrapBehavioursEnabled(wrapBehavioursEnabled: boolean): void {
-        this.setOption("wrapBehavioursEnabled", wrapBehavioursEnabled);
+        this.$wrapBehavioursEnabled = wrapBehavioursEnabled;
     }
 
     /**
      * Returns `true` if the wrapping behaviors are currently enabled.
-     *
-     * @method getWrapBehavioursEnabled
-     * @return {boolean}
      */
     getWrapBehavioursEnabled(): boolean {
-        return this.getOption("wrapBehavioursEnabled");
+        return this.$wrapBehavioursEnabled;
     }
 
     /**
      * Indicates whether the fold widgets should be shown or not.
      *
-     * @method setShowFoldWidgets
-     * @param showFoldWidgets {boolean} Specifies whether the fold widgets are shown,
-     * @return {void}
+     * @param showFoldWidgets Specifies whether the fold widgets are shown.
      */
     setShowFoldWidgets(showFoldWidgets: boolean): void {
-        this.setOption("showFoldWidgets", showFoldWidgets);
+        this.renderer.setShowFoldWidgets(showFoldWidgets);
     }
 
     /**
      * Returns `true` if the fold widgets are shown.
-     *
-     * @method getShowFoldWidgets
-     * @return {boolean}
      */
     getShowFoldWidgets(): boolean {
-        return this.getOption("showFoldWidgets");
+        return this.renderer.getShowFoldWidgets();
     }
 
-    /**
-     * @method setFadeFoldWidgets
-     * @param fadeFoldWidgets {boolean}
-     * @return {void}
-     */
     setFadeFoldWidgets(fadeFoldWidgets: boolean): void {
-        this.setOption("fadeFoldWidgets", fadeFoldWidgets);
+        this.renderer.setFadeFoldWidgets(fadeFoldWidgets);
     }
 
-    /**
-     * @method getFadeFoldWidgets
-     * @return {boolean}
-     */
     getFadeFoldWidgets(): boolean {
-        return this.getOption("fadeFoldWidgets");
+        return this.renderer.getFadeFoldWidgets();
     }
 
     /**
@@ -3718,50 +3661,33 @@ export default class Editor implements EventBus<any, Editor> {
     }
 
     /**
-     * Cleans up the entire editor.
-     *
-     * @method destroy
-     * @return {void}
-     */
-    destroy(): void {
-        this.renderer.destroy();
-        /**
-         * @event destroy
-         * @param this {Editor}
-         */
-        this._signal("destroy", this);
-    }
-
-    /**
      * Enables automatic scrolling of the cursor into view when editor itself is inside scrollable element.
      *
-     * @method setAutoScrollEditorIntoView
-     * @param enable {boolean} default true
-     * @return {void}
+     * @param enable
      */
     setAutoScrollEditorIntoView(enable: boolean): void {
-        if (!enable)
+        if (!enable) {
             return;
+        }
         var rect;
-        var self = this;
         var shouldScroll = false;
         if (!this.$scrollAnchor)
             this.$scrollAnchor = document.createElement("div");
         var scrollAnchor = this.$scrollAnchor;
         scrollAnchor.style.cssText = "position:absolute";
         this.container.insertBefore(scrollAnchor, this.container.firstChild);
-        var onChangeSelection = this.on("changeSelection", function() {
+        let onChangeSelection = this.on("changeSelection", function() {
             shouldScroll = true;
         });
         // needed to not trigger sync reflow
-        var onBeforeRender = this.renderer.on("beforeRender", function() {
+        let removeBeforeRenderHandler = this.renderer.on("beforeRender", () => {
             if (shouldScroll)
-                rect = self.renderer.container.getBoundingClientRect();
+                rect = this.renderer.container.getBoundingClientRect();
         });
-        var onAfterRender = this.renderer.on("afterRender", function() {
-            if (shouldScroll && rect && self.isFocused()) {
-                var renderer = self.renderer;
-                var pos = renderer.$cursorLayer.$pixelPos;
+        let removeAfterRenderHandler = this.renderer.on("afterRender", () => {
+            if (shouldScroll && rect && this.isFocused()) {
+                const renderer = this.renderer;
+                var pos = renderer.cursorLayer.$pixelPos;
                 var config = renderer.layerConfig;
                 var top = pos.top - config.offset;
                 if (pos.top >= 0 && top + rect.top < 0) {
@@ -3783,13 +3709,20 @@ export default class Editor implements EventBus<any, Editor> {
                 shouldScroll = rect = null;
             }
         });
-        this.setAutoScrollEditorIntoView = function(enable) {
+        this.setAutoScrollEditorIntoView = (enable) => {
             if (enable)
                 return;
+
             delete this.setAutoScrollEditorIntoView;
-            this.removeEventListener("changeSelection", onChangeSelection);
-            this.renderer.removeEventListener("afterRender", onAfterRender);
-            this.renderer.removeEventListener("beforeRender", onBeforeRender);
+
+            onChangeSelection();
+            onChangeSelection = void 0;
+
+            removeBeforeRenderHandler();
+            removeBeforeRenderHandler = void 0;
+
+            removeAfterRenderHandler();
+            removeAfterRenderHandler = void 0;
         };
     }
 
@@ -3799,7 +3732,7 @@ export default class Editor implements EventBus<any, Editor> {
      */
     public $resetCursorStyle(): void {
         var style = this.$cursorStyle || "ace";
-        var cursorLayer = this.renderer.$cursorLayer;
+        var cursorLayer = this.renderer.cursorLayer;
         if (!cursorLayer) {
             return;
         }
@@ -3808,38 +3741,8 @@ export default class Editor implements EventBus<any, Editor> {
         cursorLayer.setCssClass("ace_slim-cursors", /slim/.test(style));
     }
 }
-
-defineOptions(Editor.prototype, "editor", {
-    selectionStyle: {
-        set: function(style) {
-            var that: Editor = this;
-            that.$onSelectionChange(void 0, that.selection);
-            that._signal("changeSelectionStyle", { data: style });
-        },
-        initialValue: "line"
-    },
-    highlightActiveLine: {
-        set: function() {
-            var that: Editor = this;
-            that.$updateHighlightActiveLine();
-        },
-        initialValue: true
-    },
-    highlightSelectedWord: {
-        set: function(shouldHighlight) {
-            var that: Editor = this;
-            that.$onSelectionChange(void 0, that.selection);
-        },
-        initialValue: true
-    },
-    readOnly: {
-        set: function(readOnly) {
-            // disabled to not break vim mode!
-            // this.textInput.setReadOnly(readOnly);
-            this.$resetCursorStyle();
-        },
-        initialValue: false
-    },
+/*
+defOptions(Editor.prototype, "editor", {
     cursorStyle: {
         set: function(val) {
             var that: Editor = this;
@@ -3852,8 +3755,6 @@ defineOptions(Editor.prototype, "editor", {
         values: [false, true, "always"],
         initialValue: true
     },
-    behavioursEnabled: { initialValue: true },
-    wrapBehavioursEnabled: { initialValue: true },
     autoScrollEditorIntoView: {
         set: function(enable: boolean) {
             var that: Editor = this;
@@ -3863,7 +3764,6 @@ defineOptions(Editor.prototype, "editor", {
 
     hScrollBarAlwaysVisible: "renderer",
     vScrollBarAlwaysVisible: "renderer",
-    highlightGutterLine: "renderer",
     animatedScroll: "renderer",
     showInvisibles: "renderer",
     showPrintMargin: "renderer",
@@ -3898,6 +3798,7 @@ defineOptions(Editor.prototype, "editor", {
     foldStyle: "session",
     mode: "session"
 });
+*/
 
 class FoldHandler {
     constructor(editor: Editor) {
@@ -3968,13 +3869,15 @@ class FoldHandler {
 }
 
 interface IGestureHandler {
+    $dragDelay: number;
+    $scrollSpeed: number;
     cancelContextMenu(): void;
 }
 
-class MouseHandler {
+class MouseHandler implements IGestureHandler {
     public editor: Editor;
-    private $scrollSpeed: number = 2;
-    private $dragDelay: number = 0;
+    public $scrollSpeed: number = 2;
+    public $dragDelay: number = 0;
     private $dragEnabled: boolean = true;
     public $focusTimout: number = 0;
     public $tooltipFollowsMouse: boolean = true;
@@ -4251,14 +4154,15 @@ class MouseHandler {
     }
 
 }
-
-defineOptions(MouseHandler.prototype, "mouseHandler", {
+/*
+defOptions(MouseHandler.prototype, "mouseHandler", {
     scrollSpeed: { initialValue: 2 },
     dragDelay: { initialValue: (isMac ? 150 : 0) },
     dragEnabled: { initialValue: true },
     focusTimout: { initialValue: 0 },
     tooltipFollowsMouse: { initialValue: true }
 });
+*/
 
 // FIXME: This should be exposed so that users can be strongly typed. 
 /**
@@ -4732,33 +4636,5 @@ class GutterTooltip extends Tooltip {
             y -= 20 + height;
         }
         super.setPosition(x, y);
-    }
-}
-
-function addAltCursorListeners(editor: Editor) {
-    var el: HTMLTextAreaElement = editor.textInput.getElement();
-    var altCursor = false;
-    addListener(el, "keydown", function(e: KeyboardEvent) {
-        var altDown = (e.keyCode === 18) && !(e.ctrlKey || e.shiftKey || e.metaKey);
-        if (editor.$blockSelectEnabled && altDown) {
-            if (!altCursor) {
-                editor.renderer.setMouseCursor("crosshair");
-                altCursor = true;
-            }
-        }
-        else if (altCursor) {
-            reset();
-        }
-    });
-
-    addListener(el, "keyup", reset);
-    addListener(el, "blur", reset);
-    function reset() {
-        if (altCursor) {
-            editor.renderer.setMouseCursor("");
-            altCursor = false;
-            // TODO disable menu poping up
-            // e && e.preventDefault()
-        }
     }
 }

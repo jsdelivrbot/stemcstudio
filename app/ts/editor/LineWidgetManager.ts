@@ -280,10 +280,12 @@ export default class LineWidgetManager {
         w.session = null;
         if (w.el && w.el.parentNode)
             w.el.parentNode.removeChild(w.el);
-        if (w.editor && w.editor.destroy) try {
-            w.editor.destroy();
-        } catch (e) {
-            // Ignore.
+        if (w.editor) {
+            try {
+                w.editor.dispose();
+            } catch (e) {
+                // Ignore.
+            }
         }
         if (this.session.lineWidgets) {
             var w1 = this.session.lineWidgets[w.row];
@@ -395,13 +397,13 @@ export default class LineWidgetManager {
      * @return {void}
      */
     renderWidgets(event: any, renderer: Renderer): void {
-        var config = renderer.layerConfig;
-        var lineWidgets = this.session.lineWidgets;
+        const config = renderer.layerConfig;
+        const lineWidgets = this.session.lineWidgets;
         if (!lineWidgets) {
             return;
         }
-        var first = Math.min(this.firstRow, config.firstRow);
-        var last = Math.max(this.lastRow, config.lastRow, lineWidgets.length);
+        let first = Math.min(this.firstRow, config.firstRow);
+        const last = Math.max(this.lastRow, config.lastRow, lineWidgets.length);
 
         while (first > 0 && !lineWidgets[first]) {
             first--;
@@ -410,9 +412,9 @@ export default class LineWidgetManager {
         this.firstRow = config.firstRow;
         this.lastRow = config.lastRow;
 
-        renderer.$cursorLayer.config = config;
-        for (var i = first; i <= last; i++) {
-            var w = lineWidgets[i];
+        renderer.cursorLayer.config = config;
+        for (let i = first; i <= last; i++) {
+            const w = lineWidgets[i];
             if (!w || !w.el) continue;
             if (w.hidden) {
                 w.el.style.top = -100 - (w.pixelHeight || 0) + "px";
@@ -422,13 +424,13 @@ export default class LineWidgetManager {
                 w._inDocument = true;
                 renderer.container.appendChild(w.el);
             }
-            var top: number = renderer.getPixelPosition({ row: i, column: 0 }, true).top;
+            let top: number = renderer.getPixelPosition({ row: i, column: 0 }, true).top;
             if (!w.coverLine) {
                 top += config.lineHeight * this.session.getRowLineCount(w.row);
             }
             w.el.style.top = top - config.offset + "px";
 
-            var left = w.coverGutter ? 0 : renderer.gutterWidth;
+            let left = w.coverGutter ? 0 : renderer.gutterWidth;
             if (!w.fixedWidth) {
                 left -= renderer.scrollLeft;
             }

@@ -146,23 +146,23 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
      * @return {void}
      */
     update(config: GutterConfig): void {
-        var session = this.session;
-        var firstRow = config.firstRow;
-        var lastRow = Math.min(config.lastRow + config.gutterOffset,  // needed to compensate for hor scollbar
-            session.getLength() - 1);
-        var fold = session.getNextFoldLine(firstRow);
-        var foldStart = fold ? fold.start.row : Infinity;
-        var foldWidgets = this.$showFoldWidgets && session.foldWidgets;
-        var breakpoints = session.$breakpoints;
-        var decorations = session.$decorations;
-        var firstLineNumber = session['$firstLineNumber'];
+        const session = this.session;
+        const firstRow = config.firstRow;
+        // Compensate for horizontal scollbar.
+        const lastRow = Math.min(config.lastRow + config.gutterOffset, session.getLength() - 1);
+        let fold = session.getNextFoldLine(firstRow);
+        let foldStart = fold ? fold.start.row : Infinity;
+        const foldWidgets = this.$showFoldWidgets && session.foldWidgets;
+        const breakpoints = session.$breakpoints;
+        const decorations = session.$decorations;
+        const firstLineNumber = session.$firstLineNumber;
         var lastLineNumber = 0;
 
-        const gutterRenderer: GutterRenderer = session['gutterRenderer'] || this.$renderer;
+        const gutterRenderer: GutterRenderer = session.gutterRenderer || this.$renderer;
 
         let cell: GutterCell = null;
-        var index = -1;
-        var row: number = firstRow;
+        let index = -1;
+        let row: number = firstRow;
         while (true) {
             if (row > foldStart) {
                 row = fold.end.row + 1;
@@ -187,7 +187,7 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
                 this.$cells[index] = cell;
             }
 
-            var className = "ace_gutter-cell ";
+            let className = "ace_gutter-cell ";
             if (breakpoints[row])
                 className += breakpoints[row];
             if (decorations[row])
@@ -197,7 +197,7 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
             if (cell.element.className !== className)
                 cell.element.className = className;
 
-            var height = session.getRowLength(row) * config.lineHeight + "px";
+            const height = session.getRowLength(row) * config.lineHeight + "px";
             if (height !== cell.element.style.height)
                 cell.element.style.height = height;
 
@@ -213,7 +213,7 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
                     cell.foldWidget = <HTMLSpanElement>createElement("span");
                     cell.element.appendChild(cell.foldWidget);
                 }
-                var className = "ace_fold-widget ace_" + c;
+                let className = "ace_fold-widget ace_" + c;
                 if (c === "start" && row === foldStart && row < fold.end.row)
                     className += " ace_closed";
                 else
@@ -221,7 +221,7 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
                 if (cell.foldWidget.className !== className)
                     cell.foldWidget.className = className;
 
-                var height = config.lineHeight + "px";
+                const height = config.lineHeight + "px";
                 if (cell.foldWidget.style.height !== height)
                     cell.foldWidget.style.height = height;
             } else {
@@ -231,11 +231,11 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
                 }
             }
 
-            var text = lastLineNumber = gutterRenderer
-                ? gutterRenderer.getText(session, row)
-                : row + firstLineNumber;
-            if (text !== cell.textNode.data)
+            lastLineNumber = row + firstLineNumber;
+            const text: string = gutterRenderer ? gutterRenderer.getText(session, row) : lastLineNumber.toString();
+            if (text !== cell.textNode.data) {
                 cell.textNode.data = text;
+            }
 
             row++;
         }

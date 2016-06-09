@@ -1130,13 +1130,15 @@ export default class Selection implements EventBus<any, Selection> {
     }
 
     /**
-     * @method on
-     * @param eventName {string}
-     * @param callback {(event, source: Selection) => any}
-     * @return {void}
+     * @param eventName
+     * @param callback
+     * @returns a function that may be used to remove the callback.
      */
-    on(eventName: string, callback: (event: any, source: Selection) => any): void {
+    on(eventName: string, callback: (event: any, source: Selection) => any): () => void {
         this.eventBus.on(eventName, callback, false);
+        return () => {
+            this.off(eventName, callback);
+        }
     }
 
     /**

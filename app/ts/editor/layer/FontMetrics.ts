@@ -3,13 +3,14 @@ import { stringRepeat } from "../lib/lang";
 import { isIE } from "../lib/useragent";
 import EventBus from "../EventBus";
 import EventEmitterClass from "../lib/EventEmitterClass";
+import Shareable from '../base/Shareable';
 
 let CHAR_COUNT = 0;
 
 /**
- * @class FontMetrics
+ *
  */
-export default class FontMetrics implements EventBus<any, FontMetrics> {
+export default class FontMetrics implements EventBus<any, FontMetrics>, Shareable {
     private el: HTMLDivElement;
     private $main: HTMLDivElement;
     private $measureNode: HTMLDivElement;
@@ -18,16 +19,15 @@ export default class FontMetrics implements EventBus<any, FontMetrics> {
     private allowBoldFonts: boolean;
     private $pollSizeChangesTimer: number;
     private eventBus: EventEmitterClass<any, FontMetrics>;
+    private refCount = 1;
 
     /**
-     * @class FontMetrics
-     * @constructor
-     * @param parent {HTMLElement}
-     * @param pollingInterval {number}
+     * @param parent
+     * @param pollingInterval
      */
     // FIXME: The interval should be being used to configure the polling interval (normally 500ms)
     constructor(parent: HTMLElement, pollingInterval: number) {
-
+        console.log("FontMetrics.constructor");
         this.eventBus = new EventEmitterClass<any, FontMetrics>(this);
 
         this.el = <HTMLDivElement>createElement("div");
@@ -52,21 +52,40 @@ export default class FontMetrics implements EventBus<any, FontMetrics> {
         this.checkForSizeChanges();
     }
 
+    protected destructor(): void {
+        console.log("FontMetrics.destructor")
+        clearInterval(this.$pollSizeChangesTimer);
+        if (this.el && this.el.parentNode) {
+            this.el.parentNode.removeChild(this.el);
+        }
+    }
+
+    addRef(): number {
+        this.refCount++;
+        console.log(`FontMetrics.addRef => ${this.refCount}`);
+        return this.refCount;
+    }
+
+    release(): number {
+        this.refCount--;
+        if (this.refCount === 0) {
+            this.destructor();
+        }
+        console.log(`FontMetrics.release => ${this.refCount}`);
+        return this.refCount;
+    }
+
     /**
-     * @method on
-     * @param eventName {string}
-     * @param callback {(event, source: FontMetrics) => any}
-     * @return {void}
+     * @param eventName
+     * @param callback
      */
     on(eventName: string, callback: (event: any, source: FontMetrics) => any): void {
         this.eventBus.on(eventName, callback, false);
     }
 
     /**
-     * @method off
-     * @param eventName {string}
-     * @param callback {(event, source: FontMetrics) => any}
-     * @return {void}
+     * @param eventName
+     * @param callback
      */
     off(eventName: string, callback: (event: any, source: FontMetrics) => any): void {
         this.eventBus.off(eventName, callback);
@@ -176,12 +195,5 @@ export default class FontMetrics implements EventBus<any, FontMetrics> {
             w = this.charSizes[ch] = this.$measureCharWidth(ch) / this.$characterSize.width;
         }
         return w;
-    }
-
-    public destroy(): void {
-        clearInterval(this.$pollSizeChangesTimer);
-        if (this.el && this.el.parentNode) {
-            this.el.parentNode.removeChild(this.el);
-        }
     }
 }

@@ -215,45 +215,6 @@ function factory(
             });
         };
 
-        // TODO: If we use transclude to load embedded text then it defeats the ng-model directive
-        // which delays the injection of an EditSession. Bottom line is that you should not
-        // try to do both. The code below will blow up when we call setValue because the
-        // Editor does not have an EditSession. The fix would be to define an EditSession on a
-        // first-wins basis.
-        // We use the transclude function to manually handle the placement of the contents.
-        // We take any text and apply it to the editor.
-        if (transclude) {
-            /*
-            transclude($scope, function(clonedElement: JQuery) {
-                // We set the initial text on the editor before listening to change events.
-                const initialText = textService.normalizeWhitespace(clonedElement.text());
-                editor.setValue(initialText, -1);
-
-                // FIXME: This is a bit dubious...
-                if (initialText && !ngModel.$viewValue) {
-                    const viewValue: string = initialText;
-                    ngModel.$setViewValue(new Document(viewValue));
-                }
-            });
-            */
-        }
-        else {
-            // If the transclude option is not set then we can't suck in text contained in the element.
-            // console.warn("The transclude option is not set to true");
-        }
-
-        // editor.on('change', onEditorChange);
-
-        // Handle movements of the resizable grabber.
-        /*
-        $scope.$watch(function() {
-            return [container.offsetWidth, container.offsetHeight]
-        }, function() {
-            editor.resize(true)
-            editor.renderer.updateFull()
-        }, true)
-        */
-
         /**
          * Since the default $animate service is adding and removing the
          * ng-hide class in the $$postDigest phase, we need to resize
@@ -292,7 +253,7 @@ function factory(
             themeManager.removeEventListener(currentTheme, themeEventHandler);
 
             // What about stopping the worker?
-            editor.destroy();
+            editor.dispose();
         }
 
         // We can hook both the scope and the element '$destroy' event.
