@@ -4,7 +4,6 @@ import IOption from '../../services/options/IOption';
 import IOptionManager from '../../services/options/IOptionManager';
 import namesToOptions from './namesToOptions';
 import scriptURL from './scriptURL';
-import Workspace from '../../services/workspace/Workspace';
 import WsModel from '../../wsmodel/services/WsModel';
 
 function optionsToNames(options: IOption[]): string[] {
@@ -18,7 +17,6 @@ function optionsToNames(options: IOption[]): string[] {
  * Not worrying about callback right now - this will be re-written.
  */
 export default function(
-    workspace: Workspace,
     wsModel: WsModel,
     options: IOptionManager,
     olds: string[],
@@ -88,7 +86,7 @@ export default function(
     };
 
     rmvUnits.forEach((rmvUnit) => {
-        workspace.removeScript(rmvUnit.fileName);
+        wsModel.removeScript(rmvUnit.fileName);
         olds.splice(olds.indexOf(rmvUnit.name), 1);
     });
 
@@ -104,7 +102,7 @@ export default function(
             inFlightCount++;
             readFile(addUnit.fileName, (err, content) => {
                 if (!err) {
-                    workspace.ensureScript(addUnit.fileName, content.replace(/\r\n?/g, '\n'));
+                    wsModel.ensureScript(addUnit.fileName, content.replace(/\r\n?/g, '\n'));
                     olds.unshift(addUnit.name);
                 }
                 inFlightCount--;

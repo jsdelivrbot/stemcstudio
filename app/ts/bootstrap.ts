@@ -42,7 +42,6 @@ import resizable from './directives/resizable/resizable';
 import TextService from './services/text/TextService';
 import DefaultThemeManager from './services/themes/DefaultThemeManager';
 import workspace from './directives/workspace/workspace.component';
-import WorkspaceFactoryService from './services/workspace/WorkspaceFactoryService';
 
 //
 // We import other Angular services that are needed by the Angular 'app' module.
@@ -116,7 +115,6 @@ app.service('hits', HitService);
 
 app.service('textService', TextService);
 app.service('themeManager', DefaultThemeManager);
-app.service('workspaceFactory', WorkspaceFactoryService);
 
 import './template-cache';
 

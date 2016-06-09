@@ -261,7 +261,7 @@ export default class GitHubCloudService implements CloudService {
         for (let p = 0; p < paths.length; p++) {
             const path = paths[p];
             const file = workspace.files.getWeakRef(path);
-            const content = this.base64.encode(file.editSession.getValue());
+            const content = this.base64.encode(file.getText());
             const encoding = 'base64';
             blobs.push(this.github.createBlob(owner, repo, { content, encoding }));
         }

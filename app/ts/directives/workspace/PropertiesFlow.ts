@@ -5,12 +5,10 @@ import PropertiesFacts from './PropertiesFacts';
 import PropertiesSettings from '../../modules/properties/PropertiesSettings';
 import IOptionManager from '../../services/options/IOptionManager';
 import updateWorkspaceTypings from './updateWorkspaceTypings';
-import Workspace from '../../services/workspace/Workspace';
 import WsModel from '../../wsmodel/services/WsModel';
 
 export default class PropertiesFlow {
     constructor(
-        private workspace: Workspace,
         private owner: string,
         private options: IOptionManager,
         private olds: string[],
@@ -60,7 +58,6 @@ export default class PropertiesFlow {
                 this.wsModel.dependencies = facts.settings.value.dependencies;
                 // TODO: Break out more rules to remove the nesting.
                 updateWorkspaceTypings(
-                    this.workspace,
                     this.wsModel,
                     this.options,
                     this.olds,
@@ -68,7 +65,7 @@ export default class PropertiesFlow {
                     this.$http,
                     this.$location,
                     this.VENDOR_FOLDER_MARKER, () => {
-                        this.workspace.semanticDiagnostics();
+                        this.wsModel.semanticDiagnostics();
                     });
             }
             else {

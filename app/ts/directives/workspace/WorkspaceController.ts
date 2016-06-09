@@ -31,7 +31,6 @@ import FlowService from '../../services/flow/FlowService';
 import UploadFlow from './UploadFlow';
 import WorkspaceScope from '../../scopes/WorkspaceScope';
 import WorkspaceMixin from '../editor/WorkspaceMixin';
-import WorkspaceFactory from '../../services/workspace/WorkspaceFactory';
 import WsFile from '../../wsmodel/services/WsFile';
 import WsModel from '../../wsmodel/services/WsModel';
 import {LANGUAGE_CSS} from '../../languages/modes';
@@ -107,7 +106,6 @@ export default class WorkspaceController implements WorkspaceMixin {
         'CODE_MARKER',
         'LIBS_MARKER',
         'VENDOR_FOLDER_MARKER',
-        'workspaceFactory',
         'wsModel'
     ];
 
@@ -182,7 +180,6 @@ export default class WorkspaceController implements WorkspaceMixin {
         private CODE_MARKER: string,
         private LIBS_MARKER: string,
         private VENDOR_FOLDER_MARKER: string,
-        private workspaceFactory: WorkspaceFactory,
         private wsModel: WsModel) {
 
         // const startTime = performance.now();
@@ -320,7 +317,6 @@ export default class WorkspaceController implements WorkspaceMixin {
             ga('send', 'event', 'doodle', 'properties', label, value);
             // TODO: This really needs some refactoring.
             const propertiesFlow = new PropertiesFlow(
-                this.missionControl.workspace,
                 $scope.userLogin(),
                 this.options,
                 this.olds,
@@ -378,15 +374,11 @@ export default class WorkspaceController implements WorkspaceMixin {
         // const startTime = performance.now();
         this.wsModel.recycle();
 
-        // WARNING: Make sure that workspace create and release are balanced across $onInit and $onDestroy.
-        // TODO: This method could have a callback, which means that editors may be attaching themselves
-        // before the workspace thread is ready.
-        this.workspaceFactory.createWorkspace((err, workspace) => {
+        this.wsModel.initialize((err) => {
             if (!err) {
-                this.missionControl.workspace = workspace;
                 // this.workspace.trace = true;
                 // this.workspace.setTrace(true);
-                this.missionControl.workspace.setDefaultLibrary('/typings/lib.es6.d.ts');
+                this.wsModel.setDefaultLibrary('/typings/lib.es6.d.ts');
 
                 // Following a browser refresh, show the code so that it refreshes correctly (bug).
                 // This also side-steps the issue of the time it takes to restart the preview.
@@ -514,14 +506,9 @@ export default class WorkspaceController implements WorkspaceMixin {
         // TODO: Maybe implement something along the lines of refrence counting because the
         // workspace is shared?
 
-        // The workspace may not have initialized, so we don't assume that it exists.
-        const workspace = this.missionControl.workspace;
-        if (workspace) {
-            workspace.terminate();
-        }
-
         this.$window.removeEventListener('resize', this.resizeListener);
 
+        this.wsModel.terminate();
         this.wsModel.dispose();
 
         // const endTime = performance.now();
@@ -576,7 +563,6 @@ export default class WorkspaceController implements WorkspaceMixin {
         // FIXME: Some work to do in getting all the async work done right.
         // TOOD: This needs a flow to manage the nesting and sequencing.
         updateWorkspaceTypings(
-            this.missionControl.workspace,
             this.wsModel,
             this.options,
             this.olds,
@@ -587,17 +573,17 @@ export default class WorkspaceController implements WorkspaceMixin {
 
                 // Set the module kind for transpilation consistent with the version.
                 const moduleKind = detect1x(this.wsModel) ? MODULE_KIND_NONE : MODULE_KIND_SYSTEM;
-                this.missionControl.workspace.setModuleKind(moduleKind);
+                this.wsModel.setModuleKind(moduleKind);
 
                 // Set the script target for transpilation consistent with the version.
                 const scriptTarget = detect1x(this.wsModel) ? SCRIPT_TARGET_ES5 : SCRIPT_TARGET_ES5;
-                this.missionControl.workspace.setScriptTarget(scriptTarget);
+                this.wsModel.setScriptTarget(scriptTarget);
 
-                this.missionControl.workspace.synchronize()
+                this.wsModel.synchronize()
                     .then(() => {
                         // FIXME: Need a callback here...
-                        this.missionControl.workspace.semanticDiagnostics();
-                        this.missionControl.workspace.outputFiles();
+                        this.wsModel.semanticDiagnostics();
+                        this.wsModel.outputFiles();
                         this.$scope.workspaceLoaded = true;
                         this.$scope.updatePreview(WAIT_NO_MORE);
                     })
@@ -632,7 +618,7 @@ export default class WorkspaceController implements WorkspaceMixin {
      */
     attachEditor(filename: string, mode: string, editor: Editor): void {
         // const startTime = performance.now();
-        this.missionControl.workspace.attachEditor(filename, editor);
+        this.wsModel.attachEditor(filename, editor);
 
         switch (mode) {
             case LANGUAGE_PYTHON: {
@@ -768,32 +754,28 @@ export default class WorkspaceController implements WorkspaceMixin {
     }
 
     /**
-     * @method detachEditor
-     * @param filename {string}
-     * @param mode {string}
-     * @param editor {Editor}
-     * @return {void}
+     * 
      */
-    detachEditor(filename: string, mode: string, editor: Editor): void {
+    detachEditor(path: string, mode: string, editor: Editor): void {
         // const startTime = performance.now();
 
         switch (mode) {
             case LANGUAGE_TYPE_SCRIPT: {
-                const handler = this.outputFilesEventHandlers[filename];
+                const handler = this.outputFilesEventHandlers[path];
                 editor.getSession().off('outputFiles', handler);
-                this.deleteOutputFileHandler(filename);
+                this.deleteOutputFileHandler(path);
                 break;
             }
             case LANGUAGE_JAVA_SCRIPT: {
-                const handler = this.outputFilesEventHandlers[filename];
+                const handler = this.outputFilesEventHandlers[path];
                 editor.getSession().off('outputFiles', handler);
-                this.deleteOutputFileHandler(filename);
+                this.deleteOutputFileHandler(path);
                 break;
             }
             case LANGUAGE_PYTHON: {
-                const handler = this.outputFilesEventHandlers[filename];
+                const handler = this.outputFilesEventHandlers[path];
                 editor.getSession().off('outputFiles', handler);
-                this.deleteOutputFileHandler(filename);
+                this.deleteOutputFileHandler(path);
                 break;
             }
             case LANGUAGE_CSS:
@@ -801,23 +783,23 @@ export default class WorkspaceController implements WorkspaceMixin {
             case LANGUAGE_JSON:
             case LANGUAGE_LESS:
             case LANGUAGE_TEXT: {
-                const handler = this.changeHandlers[filename];
+                const handler = this.changeHandlers[path];
                 editor.getSession().off('change', handler);
-                this.deleteChangeHandler(filename);
+                this.deleteChangeHandler(path);
                 break;
             }
             case LANGUAGE_MARKDOWN: {
-                this.removeReadmeChangeHandler(filename, editor);
+                this.removeReadmeChangeHandler(path, editor);
                 break;
             }
             default: {
                 console.warn(`detachEditor(mode => ${mode}) is being ignored.`);
             }
         }
-        this.missionControl.workspace.detachEditor(filename, editor);
-        delete this.editors[filename];
+        this.wsModel.detachEditor(path, editor);
+        delete this.editors[path];
 
         // const endTime = performance.now();
-        // console.lg(`Workspace.detachEditor(${filename}) ${endTime - startTime} ms.`);
+        // console.lg(`Workspace.detachEditor(${path}) ${endTime - startTime} ms.`);
     }
 }

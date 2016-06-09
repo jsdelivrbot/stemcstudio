@@ -1,13 +1,20 @@
+import applyPatchToDocument from './applyPatchToDocument';
 import Document from '../../editor/Document';
 import EditSession from '../../editor/EditSession';
 import Shareable from '../../base/Shareable';
+import MwUnit from '../../synchronization/MwUnit';
+import MwEditor from '../../synchronization/MwEditor';
+import Patch from '../../synchronization/Patch';
 
-export default class WsFile implements Shareable {
+export default class WsFile implements MwEditor, Shareable {
 
     /**
-     *
+     * The editSession is (almost) an implementation detail except:
+     * 1. It is bound to an ng-model.
+     * 2. It's used in MissionControl
      */
-    editSession: EditSession;
+    public editSession: EditSession;
+    public unit: MwUnit;
 
     /**
      * This might equally well be called the 'mode' because we don't change the language easily.
@@ -42,18 +49,44 @@ export default class WsFile implements Shareable {
      */
     private refCount = 1;
 
-    constructor(editSession: EditSession) {
-        // console.lg("WsFile.constructor");
-        if (!(editSession instanceof EditSession)) {
-            throw new TypeError("editSession must be an EditSession");
+    /**
+     *
+     */
+    constructor() {
+        // Do nothing yet.
+        console.log("WsFile.constructor");
+    }
+
+    /**
+     * 
+     */
+    protected destructor(): void {
+        console.log("WsFile.destructor");
+        this.setSession(void 0);
+    }
+
+    public setSession(editSession: EditSession) {
+        if (this.editSession === editSession) {
+            return;
         }
-        this.editSession = editSession;
+        if (this.editSession) {
+            this.editSession.release();
+            this.editSession = void 0;
+        }
+        if (editSession) {
+            // console.lg("WsFile.constructor");
+            if (!(editSession instanceof EditSession)) {
+                throw new TypeError("editSession must be an EditSession");
+            }
+            this.editSession = editSession;
+            this.editSession.addRef();
+        }
     }
 
     clone(): WsFile {
         // There is currently no clone() method on an EditSession so we lose information.
-        const editSession = new EditSession(new Document(this.editSession.getValue()));
-        const copy = new WsFile(editSession);
+        const copy = new WsFile();
+        copy.setText(this.getText())
         copy.isOpen = this.isOpen;
         copy.language = this.language;
         copy.raw_url = this.raw_url;
@@ -77,13 +110,54 @@ export default class WsFile implements Shareable {
      */
     release(): number {
         this.refCount--;
+        if (this.refCount === 0) {
+            this.destructor();
+        }
+        else if (this.refCount < 0) {
+            throw new Error("refCount has dropped below zero.");
+        }
         return this.refCount;
     }
 
-    /**
-     * 
-     */
-    protected destructor(): void {
-        console.log("WsFile.destructor");
+    getText(): string {
+        if (this.editSession) {
+            return this.editSession.getValue();
+        }
+        else {
+            console.warn("WsFile.getValue() called when editSession is not defined.");
+            return void 0;
+        }
+    }
+
+    setText(text: string): void {
+        if (typeof text === 'string') {
+            if (this.editSession) {
+                this.editSession.setValue(text);
+            }
+            else {
+                const session = new EditSession(new Document(text));
+                // const unit = new MwUnit();
+                this.setSession(session);
+                session.release();
+            }
+        }
+        else {
+            throw new TypeError("text must be a string.");
+        }
+    }
+
+    patch(patches: Patch[]): boolean[] {
+        const document = this.editSession.getDocument();
+        for (let i = 0; i < patches.length; i++) {
+            const patch = patches[i];
+            /* const {start, length, applied} = */ applyPatchToDocument(patch, document);
+            // The results of aplying the patch as a collection of diffs.
+        }
+        // this.editor.
+        return [];
+    }
+
+    onSentDiff() {
+        // Ignore.
     }
 }

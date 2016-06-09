@@ -1,16 +1,17 @@
+import Document from '../../editor/Document';
+import EditSession from '../../editor/EditSession';
+import Shareable from '../../base/Shareable';
+import MwUnit from '../../synchronization/MwUnit';
 import MwEditor from '../../synchronization/MwEditor';
 import Patch from '../../synchronization/Patch';
-import DIFF_EQUAL from '../../synchronization/DIFF_EQUAL';
 import DIFF_DELETE from '../../synchronization/DIFF_DELETE';
+import DIFF_EQUAL from '../../synchronization/DIFF_EQUAL';
 import DIFF_INSERT from '../../synchronization/DIFF_INSERT';
-import Editor from '../../editor/Editor';
-import Document from '../../editor/Document';
 import Range from '../../editor/Range';
-
 /**
  * Applies a patch to a document.
  */
-function applyPatchToDocument(patch: Patch, doc: Document) {
+export default function applyPatchToDocument(patch: Patch, doc: Document) {
     const start = patch.start1;
     let offset = start;
     const diffs = patch.diffs;
@@ -52,35 +53,4 @@ function applyPatchToDocument(patch: Patch, doc: Document) {
         }
     }
     return { start, length: offset - start, applied };
-}
-
-
-export default class EditorAdapter implements MwEditor {
-    constructor(public editor: Editor) {
-        // Do nothing yet.
-    }
-    getText(): string {
-        return this.editor.getValue();
-    }
-    setText(text: string): void {
-        console.log(`EditorAdapter.setText(...)`);
-        console.log(text);
-        this.editor.setValue(text/*, cursorPos*/);
-    }
-    patch(patches: Patch[]): boolean[] {
-        const document = this.editor.getSession().getDocument();
-        for (let i = 0; i < patches.length; i++) {
-            const patch = patches[i];
-            /* const {start, length, applied} = */ applyPatchToDocument(patch, document);
-            // The results of aplying the patch as a collection of diffs.
-        }
-        // this.editor.
-        return [];
-    }
-    onSentDiff() {
-        // Ignore.
-    }
-    release(): number {
-        return 0;
-    }
 }

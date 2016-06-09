@@ -14,7 +14,8 @@ function copyDoodleFilesToWorkspace(dudeFiles: { [path: string]: DoodleFile }, w
     for (let i = 0; i < paths.length; i++) {
         const path = paths[i];
         const dudeFile = dudeFiles[path];
-        const wsFile = new WsFile(new EditSession(new Document(dudeFile.content)));
+        const wsFile = new WsFile();
+        wsFile.setText(dudeFile.content);
         // FIXME: Some of these properties are a bit unreliable and could be dropped on the DoodleFile. 
         // wsFile.isOpen = dudeFile.isOpen;
         wsFile.language = dudeFile.language;

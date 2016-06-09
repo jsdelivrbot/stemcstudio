@@ -7,6 +7,7 @@ import Document from '../Document';
 import getPosition from './getPosition';
 import Marker from '../Marker';
 import Editor from '../Editor';
+import EditSession from '../EditSession';
 import LanguageServiceProxy from './LanguageServiceProxy';
 import Position from '../Position';
 import OutputFile from './OutputFile';
@@ -31,8 +32,14 @@ function checkFileName(fileName: string): void {
 }
 
 function checkEditor(editor: Editor): void {
-    if (typeof editor !== 'object') {
-        throw new Error("editor must be an object.");
+    if (!(editor instanceof Editor)) {
+        throw new Error("editor must be an Editor.");
+    }
+}
+
+function checkSession(session: EditSession): void {
+    if (!(session instanceof EditSession)) {
+        throw new Error("session must be an EditSession.");
     }
 }
 
@@ -449,6 +456,10 @@ export default class Workspace {
         return this.editors[fileName];
     }
 
+    public getEditSession(path: string): EditSession {
+        return this.editors[path].getSession();
+    }
+
     /**
      * TODO: This is exactly the function we would like to call to refresh the editor semantic annotations.
      */
@@ -457,20 +468,19 @@ export default class Workspace {
         for (let i = 0; i < fileNames.length; i++) {
             const fileName = fileNames[i];
             if (isTypeScript(fileName)) {
-                const editor = this.editors[fileName];
-                this.semanticDiagnosticsForEditor(fileName, editor);
+                const session = this.editors[fileName].getSession();
+                this.semanticDiagnosticsForSession(fileName, session);
             }
         }
     }
 
-    private updateEditor(fileName: string, errors: Diagnostic[], editor: Editor): void {
-        checkEditor(editor);
+    private updateSession(fileName: string, errors: Diagnostic[], session: EditSession): void {
+        checkSession(session);
 
-        const session = editor.getSession();
         const doc = session.getDocument();
 
         const annotations = errors.map(function(error) {
-            return diagnosticToAnnotation(editor.getSession().getDocument(), error);
+            return diagnosticToAnnotation(doc, error);
         });
         session.setAnnotations(annotations);
 
@@ -489,7 +499,7 @@ export default class Workspace {
         });
     }
 
-    private semanticDiagnosticsForEditor(fileName: string, editor: Editor): void {
+    private semanticDiagnosticsForSession(fileName: string, session: EditSession): void {
         checkFileName(fileName);
 
         this.inFlight++;
@@ -499,7 +509,7 @@ export default class Workspace {
                 console.warn(`getSyntaxErrors(${fileName}) => ${err}`);
             }
             else {
-                this.updateEditor(fileName, syntaxErrors, editor);
+                this.updateSession(fileName, syntaxErrors, session);
                 if (syntaxErrors.length === 0) {
                     this.inFlight++;
                     this.languageServiceProxy.getSemanticErrors(fileName, (err: any, semanticErrors: Diagnostic[]) => {
@@ -508,7 +518,7 @@ export default class Workspace {
                             console.warn(`getSemanticErrors(${fileName}) => ${err}`);
                         }
                         else {
-                            this.updateEditor(fileName, semanticErrors, editor);
+                            this.updateSession(fileName, semanticErrors, session);
                         }
                     });
                 }
@@ -526,16 +536,14 @@ export default class Workspace {
             const fileName = fileNames[i];
             if (isTypeScript(fileName)) {
                 const editor = this.editors[fileName];
-                this.outputFilesForEditor(fileName, editor);
+                this.outputFilesForSession(fileName, editor.getSession());
             }
         }
     }
 
-    private outputFilesForEditor(fileName: string, editor: Editor): void {
+    private outputFilesForSession(fileName: string, session: EditSession): void {
         checkFileName(fileName);
-        checkEditor(editor);
-
-        const session = editor.getSession();
+        checkSession(session);
 
         this.inFlight++;
         this.languageServiceProxy.getOutputFiles(fileName, (err: any, outputFiles: OutputFile[]) => {
@@ -598,6 +606,10 @@ export default class Workspace {
         });
     }
 
+    /**
+     * This appears to be the only function that requires full access to the Editor
+     * because it need to call the updateFrontMarkers method or the Renderer.
+     */
     private updateMarkerModels(fileName: string, delta: Delta): void {
         checkFileName(fileName);
         const editor = this.editors[fileName];

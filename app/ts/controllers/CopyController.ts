@@ -1,7 +1,5 @@
 import app from '../app';
 import CopyScope from '../scopes/CopyScope';
-import Document from '../editor/Document';
-import EditSession from '../editor/EditSession';
 import IDoodleManager from '../services/doodles/IDoodleManager';
 import ITemplate from '../services/templates/ITemplate';
 import ITemplateFile from '../services/templates/ITemplateFile';
@@ -11,7 +9,7 @@ import WsFile from '../wsmodel/services/WsFile';
 
 function mapWorkspaceFileToTemplateFile(wsFile: WsFile): ITemplateFile {
     const result: ITemplateFile = {
-        content: wsFile.editSession.getValue(),
+        content: wsFile.getText(),
         language: wsFile.language
     };
     return result;
@@ -66,7 +64,8 @@ app.controller('copy-controller', [
             for (let i = 0; i < paths.length; i++) {
                 const path = paths[i];
                 const templateFile = $scope.template.files[path];
-                const wsFile = new WsFile(new EditSession(new Document(templateFile.content)));
+                const wsFile = new WsFile();
+                wsFile.setText(templateFile.content);
                 wsFile.language = templateFile.language;
                 wsModel.files.putWeakRef(path, wsFile);
             }
