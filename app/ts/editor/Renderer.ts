@@ -235,7 +235,6 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
      * @param container The root element of the editor.
      */
     constructor(container: HTMLElement) {
-        console.log("Renderer.constructor");
         this.eventBus = new EventEmitterClass<any, Renderer>(this);
 
         this.container = container || <HTMLDivElement>createElement("div");
@@ -297,7 +296,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
 
         this.fontMetrics = new FontMetrics(this.container, 500);
 
-        this.textLayer.$setFontMetrics(this.fontMetrics);
+        this.textLayer.setFontMetrics(this.fontMetrics);
 
         this.removeChangeCharacterSizeHandler = this.textLayer.on("changeCharacterSize", (event, text: TextLayer) => {
             this.updateCharacterSize();
@@ -323,21 +322,22 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         this.setPadding(4);
         this.setFontSize("12px");
         this.setShowFoldWidgets(true);
-        // Why do Editor and EditSession signal while this emits?
-        // this.eventBus._emit("renderer", this);
     }
 
     /**
-     * Destroys the text and cursor layers for this renderer.
+     * Destroys the font metrics, text, and cursor layers for this renderer.
      */
     dispose(): void {
-        console.log("Renderer.dispose");
-        this.removeChangeCharacterSizeHandler();
-        this.removeChangeCharacterSizeHandler = void 0;
+        if (this.removeChangeCharacterSizeHandler) {
+            this.removeChangeCharacterSizeHandler();
+            this.removeChangeCharacterSizeHandler = void 0;
+        }
+
         this.fontMetrics.release();
         this.fontMetrics = void 0;
-        this.textLayer.destroy();
-        this.cursorLayer.destroy();
+
+        this.textLayer.dispose();
+        this.cursorLayer.dispose();
     }
 
     /**
@@ -613,7 +613,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         height -= (this.$extraHeight || 0);
         var changes = 0;
         var size = this.$size;
-        var oldSize = {
+        const oldSize = {
             width: size.width,
             height: size.height,
             scrollerHeight: size.scrollerHeight,
@@ -624,8 +624,9 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
             changes |= CHANGE_SIZE;
 
             size.scrollerHeight = size.height;
-            if (this.$horizScroll)
+            if (this.$horizScroll) {
                 size.scrollerHeight -= this.scrollBarH.height;
+            }
 
             this.scrollBarV.element.style.bottom = this.scrollBarH.height + "px";
 

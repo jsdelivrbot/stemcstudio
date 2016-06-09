@@ -1,6 +1,7 @@
 import {createElement} from "../lib/dom";
 import {stringRepeat} from "../lib/lang";
 import AbstractLayer from './AbstractLayer';
+import Disposable from '../base/Disposable';
 import EditSession from "../EditSession";
 import EventBus from "../EventBus";
 import EventEmitterClass from "../lib/EventEmitterClass";
@@ -18,11 +19,14 @@ const SPACE_CHAR = "\xB7";
 /**
  *
  */
-export default class TextLayer extends AbstractLayer implements EventBus<any, TextLayer> {
+export default class TextLayer extends AbstractLayer implements Disposable, EventBus<any, TextLayer> {
     public allowBoldFonts = false;
     private $padding = 0;
     private EOL_CHAR: string;
+
     private fontMetrics: FontMetrics;
+    private removeChangeCharacterSizeHandler: () => void;
+
     private session: EditSession;
     private $pollSizeChangesTimer: number;
     private showInvisibles = false;
@@ -46,9 +50,28 @@ export default class TextLayer extends AbstractLayer implements EventBus<any, Te
      */
     constructor(parent: HTMLElement) {
         super(parent, "ace_layer ace_text-layer");
-        console.log("TextLayer.constructor");
         this.eventBus = new EventEmitterClass<any, TextLayer>(this);
         this.EOL_CHAR = EOL_CHAR_LF;
+    }
+
+    /**
+     *
+     */
+    public dispose(): void {
+        if (this.removeChangeCharacterSizeHandler) {
+            this.removeChangeCharacterSizeHandler();
+            this.removeChangeCharacterSizeHandler = void 0;
+        }
+        if (this.fontMetrics) {
+            // TODO: Remove the handler.
+            this.fontMetrics.release();
+            this.fontMetrics = void 0;
+        }
+        clearInterval(this.$pollSizeChangesTimer);
+        if (this.$measureNode) {
+            this.$measureNode.parentNode.removeChild(this.$measureNode);
+        }
+        delete this.$measureNode;
     }
 
     /**
@@ -93,13 +116,13 @@ export default class TextLayer extends AbstractLayer implements EventBus<any, Te
     }
 
     /**
-     * @param measure
+     * @param fontMetrics
      */
-    public $setFontMetrics(measure: FontMetrics): void {
-        this.fontMetrics = measure;
+    public setFontMetrics(fontMetrics: FontMetrics): void {
+        this.fontMetrics = fontMetrics;
         this.fontMetrics.addRef();
         // TODO: Make sure off is called when fontMetrics are released
-        this.fontMetrics.on("changeCharacterSize", (e) => {
+        this.removeChangeCharacterSizeHandler = this.fontMetrics.on("changeCharacterSize", (e) => {
             /**
              * @event changeCharacterSize
              */
@@ -116,7 +139,7 @@ export default class TextLayer extends AbstractLayer implements EventBus<any, Te
         this.fontMetrics.checkForSizeChanges();
     }
 
-    private $pollSizeChanges() {
+    private $pollSizeChanges(): number {
         return this.$pollSizeChangesTimer = this.fontMetrics.$pollSizeChanges();
     }
 
@@ -653,22 +676,5 @@ export default class TextLayer extends AbstractLayer implements EventBus<any, Te
         // wrapped, this means we need to add a layer to the node hierarchy (tagged
         // with the class name ace_line_group).
         return this.session.getUseWrapMode();
-    }
-
-    /**
-     *
-     */
-    public destroy(): void {
-        console.log("TextLayer.destroy");
-        if (this.fontMetrics) {
-            // TODO: Remove the handler.
-            this.fontMetrics.release();
-            this.fontMetrics = void 0;
-        }
-        clearInterval(this.$pollSizeChangesTimer);
-        if (this.$measureNode) {
-            this.$measureNode.parentNode.removeChild(this.$measureNode);
-        }
-        delete this.$measureNode;
     }
 }

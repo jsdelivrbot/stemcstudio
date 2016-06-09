@@ -8,7 +8,9 @@ import Shareable from '../base/Shareable';
 let CHAR_COUNT = 0;
 
 /**
- *
+ * FontMetrics sets up a timer that repeatedly checks for changes in font sizes.
+ * It raises the event 'changeCharacterSize'.
+ * It is used by the Renderer and the TextLayer.
  */
 export default class FontMetrics implements EventBus<any, FontMetrics>, Shareable {
     private el: HTMLDivElement;
@@ -27,7 +29,6 @@ export default class FontMetrics implements EventBus<any, FontMetrics>, Shareabl
      */
     // FIXME: The interval should be being used to configure the polling interval (normally 500ms)
     constructor(parent: HTMLElement, pollingInterval: number) {
-        console.log("FontMetrics.constructor");
         this.eventBus = new EventEmitterClass<any, FontMetrics>(this);
 
         this.el = <HTMLDivElement>createElement("div");
@@ -53,7 +54,6 @@ export default class FontMetrics implements EventBus<any, FontMetrics>, Shareabl
     }
 
     protected destructor(): void {
-        console.log("FontMetrics.destructor")
         clearInterval(this.$pollSizeChangesTimer);
         if (this.el && this.el.parentNode) {
             this.el.parentNode.removeChild(this.el);
@@ -62,7 +62,6 @@ export default class FontMetrics implements EventBus<any, FontMetrics>, Shareabl
 
     addRef(): number {
         this.refCount++;
-        console.log(`FontMetrics.addRef => ${this.refCount}`);
         return this.refCount;
     }
 
@@ -71,16 +70,16 @@ export default class FontMetrics implements EventBus<any, FontMetrics>, Shareabl
         if (this.refCount === 0) {
             this.destructor();
         }
-        console.log(`FontMetrics.release => ${this.refCount}`);
         return this.refCount;
     }
 
     /**
      * @param eventName
      * @param callback
+     * @returns A function that will remove the event handler.
      */
-    on(eventName: string, callback: (event: any, source: FontMetrics) => any): void {
-        this.eventBus.on(eventName, callback, false);
+    on(eventName: string, callback: (event: any, source: FontMetrics) => any): () => void {
+        return this.eventBus.on(eventName, callback, false);
     }
 
     /**

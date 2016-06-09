@@ -1,5 +1,6 @@
 import {addCssClass, createElement, removeCssClass, setCssClass} from "../lib/dom";
 import AbstractLayer from './AbstractLayer';
+import Disposable from '../base/Disposable';
 import EditSession from '../EditSession';
 import Position from '../Position';
 import PixelPosition from '../PixelPosition';
@@ -9,11 +10,8 @@ var IE8;
 
 /**
  * This class is the HTML representation of the CursorLayer.
- *
- * @class CursorLayer
- * @extends AbstractLayer
  */
-export default class CursorLayer extends AbstractLayer {
+export default class CursorLayer extends AbstractLayer implements Disposable {
     private session: EditSession;
     private isVisible = false;
     public isBlinking = true;
@@ -44,6 +42,14 @@ export default class CursorLayer extends AbstractLayer {
         this.cursor = this.addCursor();
         addCssClass(this.element, "ace_hidden-cursors");
         this.$updateCursors = this.$updateVisibility.bind(this);
+    }
+
+    /**
+     *
+     */
+    public dispose(): void {
+        clearInterval(this.intervalId);
+        clearTimeout(this.timeoutId);
     }
 
     private $updateVisibility(visible: boolean): void {
@@ -115,7 +121,7 @@ export default class CursorLayer extends AbstractLayer {
     }
 
     private addCursor(): HTMLDivElement {
-        var cursor: HTMLDivElement = <HTMLDivElement>createElement("div");
+        const cursor: HTMLDivElement = <HTMLDivElement>createElement("div");
         cursor.className = "ace_cursor";
         this.element.appendChild(cursor);
         this.cursors.push(cursor);
@@ -124,7 +130,7 @@ export default class CursorLayer extends AbstractLayer {
 
     private removeCursor(): HTMLDivElement {
         if (this.cursors.length > 1) {
-            var cursor = this.cursors.pop();
+            const cursor = this.cursors.pop();
             cursor.parentNode.removeChild(cursor);
             return cursor;
         }
@@ -155,7 +161,7 @@ export default class CursorLayer extends AbstractLayer {
      * @return {void}
      */
     public restartTimer(): void {
-        var update = this.$updateCursors;
+        const update = this.$updateCursors;
         clearInterval(this.intervalId);
         clearTimeout(this.timeoutId);
         if (this.smoothBlinking) {
@@ -168,16 +174,16 @@ export default class CursorLayer extends AbstractLayer {
             return;
 
         if (this.smoothBlinking) {
-            setTimeout(function() {
+            setTimeout(() => {
                 addCssClass(this.element, "ace_smooth-blinking");
-            }.bind(this));
+            });
         }
 
-        var blink = function() {
-            this.timeoutId = setTimeout(function() {
+        const blink = () => {
+            this.timeoutId = setTimeout(() => {
                 update(false);
             }, 0.6 * this.blinkInterval);
-        }.bind(this);
+        };
 
         this.intervalId = setInterval(function() {
             update(true);
@@ -208,10 +214,10 @@ export default class CursorLayer extends AbstractLayer {
             position = this.session.getSelection().getCursor();
         }
 
-        var pos: Position = this.session.documentToScreenPosition(position.row, position.column);
+        const pos: Position = this.session.documentToScreenPosition(position.row, position.column);
 
-        var cursorLeft = this.$padding + pos.column * this.config.characterWidth;
-        var cursorTop = (pos.row - (onScreen ? this.config.firstRowScreen : 0)) * this.config.lineHeight;
+        const cursorLeft = this.$padding + pos.column * this.config.characterWidth;
+        const cursorTop = (pos.row - (onScreen ? this.config.firstRowScreen : 0)) * this.config.lineHeight;
 
         return { left: cursorLeft, top: cursorTop };
     }
@@ -271,14 +277,5 @@ export default class CursorLayer extends AbstractLayer {
             else
                 removeCssClass(this.element, "ace_overwrite-cursors");
         }
-    }
-
-    /**
-     * @method destroy
-     * @return {void}
-     */
-    public destroy(): void {
-        clearInterval(this.intervalId);
-        clearTimeout(this.timeoutId);
     }
 }

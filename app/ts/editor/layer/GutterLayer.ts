@@ -55,13 +55,15 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
     }
 
     /**
-     * @method on
-     * @param eventName {string}
-     * @param callback {(event, source: GutterLayer) => any}
-     * @return {void}
+     * @param eventName
+     * @param callback
+     * @returns A function for removing the callback.
      */
-    on(eventName: string, callback: (event: any, source: GutterLayer) => any): void {
+    on(eventName: string, callback: (event: any, source: GutterLayer) => any): () => void {
         this.eventBus.on(eventName, callback, false);
+        return () => {
+            this.eventBus.off(eventName, callback);
+        }
     }
 
     /**
