@@ -10,7 +10,7 @@ import WsFile from '../wsmodel/services/WsFile';
 function mapWorkspaceFileToTemplateFile(wsFile: WsFile): ITemplateFile {
     const result: ITemplateFile = {
         content: wsFile.getText(),
-        language: wsFile.language
+        language: wsFile.mode
     };
     return result;
 }
@@ -66,7 +66,7 @@ app.controller('copy-controller', [
                 const templateFile = $scope.template.files[path];
                 const wsFile = new WsFile();
                 wsFile.setText(templateFile.content);
-                wsFile.language = templateFile.language;
+                wsFile.mode = templateFile.language;
                 wsModel.files.putWeakRef(path, wsFile);
             }
 

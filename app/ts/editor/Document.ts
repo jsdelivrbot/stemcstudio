@@ -4,6 +4,7 @@ import EventEmitterClass from './lib/EventEmitterClass';
 import Position from './Position';
 import Range from './Range';
 import RangeBasic from './RangeBasic';
+import Shareable from './base/Shareable';
 
 var $split: (text: string) => string[] = (function() {
     function foo(text: string): string[] {
@@ -44,9 +45,9 @@ const CHANGE = 'change';
 const CHANGE_NEW_LINE_MODE = 'changeNewLineMode';
 
 /**
- * @class Document
+ *
  */
-export default class Document {
+export default class Document implements Shareable {
 
     /**
      * @property _lines
@@ -77,6 +78,11 @@ export default class Document {
     private _eventBus: EventEmitterClass<any, Document>;
 
     /**
+     * Maintains a count of the number of references to this instance of Document.
+     */
+    private _refCount = 1;
+
+    /**
      * Creates a new Document.
      * If text is included, the Document contains those strings; otherwise, it's empty.
      *
@@ -101,6 +107,26 @@ export default class Document {
         else {
             this.insert({ row: 0, column: 0 }, textOrLines);
         }
+    }
+
+    protected destructor(): void {
+        this._lines = void 0;
+    }
+
+    public addRef(): number {
+        this._refCount++;
+        return this._refCount;
+    }
+
+    public release(): number {
+        this._refCount--;
+        if (this._refCount === 0) {
+            this.destructor();
+        }
+        else if (this._refCount < 0) {
+            throw new Error();
+        }
+        return this._refCount;
     }
 
     /**

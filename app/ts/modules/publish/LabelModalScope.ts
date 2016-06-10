@@ -1,4 +1,3 @@
-import LabelSettings from './LabelSettings';
 import Level from './Level';
 
 interface LabelModalScope {

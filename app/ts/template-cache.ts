@@ -482,8 +482,8 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "        <div id='doodle-container'>\n" +
     "            <explorer ng-model='workspace' class='explorer' ng-show='isExplorerVisible'></explorer>\n" +
     "            <div id='editors' resizable r-directions=\"['right']\" r-flex='true' ng-if='doodleLoaded' ng-show='isExplorerVisible'>\n" +
-    "                <!-- We only need the editSession here. Would passing in the full WsFile be better? -->\n" +
-    "                <div editor ng-repeat='(name, file) in files()' ng-model='file.editSession' id='{{name}}' mode='{{file.language}}' ng-show='isEditMode &amp;&amp; file.selected'></div>\n" +
+    "                <!-- We only need the EditSession here. Would passing in the full WsFile be better? -->\n" +
+    "                <div editor ng-if='file.isOpen' ng-repeat='(path, file) in files()' ng-model='file' path='{{path}}' ng-show='isEditMode &amp;&amp; file.selected'></div>\n" +
     "            </div>\n" +
     "            <div id='output' ng-if='isViewVisible'></div>\n" +
     "            <div id='readme' ng-if='isReadMeVisible'></div>\n" +

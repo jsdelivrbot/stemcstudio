@@ -1,5 +1,3 @@
-import Document from '../editor/Document';
-import EditSession from '../editor/EditSession';
 import Doodle from '../services/doodles/Doodle';
 import DoodleFile from '../services/doodles/DoodleFile';
 import StringShareableMap from '../collections/StringShareableMap';
@@ -18,7 +16,7 @@ function copyDoodleFilesToWorkspace(dudeFiles: { [path: string]: DoodleFile }, w
         wsFile.setText(dudeFile.content);
         // FIXME: Some of these properties are a bit unreliable and could be dropped on the DoodleFile. 
         // wsFile.isOpen = dudeFile.isOpen;
-        wsFile.language = dudeFile.language;
+        wsFile.mode = dudeFile.language;
         // wsFile.preview = dudeFile.preview;
         // wsFile.raw_url = dudeFile.raw_url;
         // wsFile.selected = dudeFile.selected;

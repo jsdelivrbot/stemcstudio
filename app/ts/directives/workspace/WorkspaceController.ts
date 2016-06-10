@@ -5,8 +5,9 @@ import Delta from '../../editor/Delta';
 import Editor from '../../editor/Editor';
 import EditSession from '../../editor/EditSession';
 import OutputFile from '../../editor/workspace/OutputFile';
+import Background from '../../services/background/BackgroundService';
+import {BACKGROUND_UUID} from '../../services/background/Background';
 import CloudService from '../../services/cloud/CloudService';
-import copyDoodleToWorkspace from '../../mappings/copyDoodleToWorkspace';
 import detect1x from './detect1x';
 import Doodle from '../../services/doodles/Doodle';
 import IDoodleManager from '../../services/doodles/IDoodleManager';
@@ -20,7 +21,6 @@ import IGitHubAuthManager from '../../services/gham/IGitHubAuthManager';
 import IOptionManager from '../../services/options/IOptionManager';
 import isHtmlFilePath from '../../utils/isHtmlFilePath';
 import isMarkdownFilePath from '../../utils/isMarkdownFilePath';
-import isString from '../../utils/isString';
 import ChangeHandler from './ChangeHandler';
 import OutputFileHandler from './OutputFileHandler';
 import MissionControl from '../../services/mission/MissionControl';
@@ -74,6 +74,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         '$timeout',
         '$window',
         'credentials',
+        BACKGROUND_UUID,
         'base64',
         'GitHub',
         'GitHubAuthManager',
@@ -148,6 +149,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         private $timeout: angular.ITimeoutService,
         private $window: angular.IWindowService,
         private credentials: CredentialsService,
+        private background: Background,
         private base64: Base64Service,
         private github: GitHubService,
         authManager: IGitHubAuthManager,
@@ -241,13 +243,18 @@ export default class WorkspaceController implements WorkspaceMixin {
             }
         };
 
-        $scope.doView = (name: string): void => {
-            const file = wsModel.findFileByName(name);
+        $scope.doView = (path: string): void => {
+            const file = wsModel.findFileByPath(path);
             if (file) {
-                wsModel.setPreviewFile(name);
-                // The user probably wants to see the view, so make sure the view is visible.
-                $scope.isViewVisible = true;
-                $scope.updatePreview(WAIT_NO_MORE);
+                try {
+                    wsModel.setPreviewFile(path);
+                    // The user probably wants to see the view, so make sure the view is visible.
+                    $scope.isViewVisible = true;
+                    $scope.updatePreview(WAIT_NO_MORE);
+                }
+                finally {
+                    file.release();
+                }
             }
         };
 
@@ -366,13 +373,54 @@ export default class WorkspaceController implements WorkspaceMixin {
      * This lifecycle hook will be executed when all controllers on an element have been constructed,
      * and after their bindings are initialized. This hook is meant to be used for any kind of
      * initialization work of a controller.
-     *
-     * @method $onInit
-     * @return {void}
      */
     $onInit(): void {
-        // const startTime = performance.now();
+        console.log("WorkspaceController.$onInit");
+        // Let the works
         this.wsModel.recycle();
+
+        const owner: string = this.$stateParams['owner'];
+        const repo: string = this.$stateParams['repo'];
+        const gistId: string = this.$stateParams['gistId'];
+        // TODO: It's a bit wierd that this looks like it has a side effect on the workspace.
+        // If we had multiple workspace then the workspace would be a parameter.
+
+        // This flag prevents the editors from being being 
+        this.$scope.doodleLoaded = false;
+
+        this.background.loadWsModel(owner, repo, gistId, (err: Error) => {
+            console.log(`loadWsModel completed ${JSON.stringify(err, null, 2)}`);
+            if (!err) {
+                // We don't need to load anything, but are we in the correct state for the Doodle?
+                // We end up here, e.g., when user presses Cancel from New dialog.
+                if (gistId && this.FEATURE_GIST_ENABLED && !this.$state.is(this.STATE_GIST, { gistId })) {
+                    this.$state.go(this.STATE_GIST, { gistId: this.wsModel.gistId });
+                }
+                else if (owner && repo && this.FEATURE_REPO_ENABLED && !this.$state.is(this.STATE_REPO, { owner, repo })) {
+                    this.$state.go(this.STATE_REPO, { owner: this.wsModel.owner, repo: this.wsModel.repo });
+                }
+                else {
+                    // We are in the correct state.
+                    console.log("The workspace model has been loaded successfully.");
+                    this.$scope.doodleLoaded = true;
+                    this.startWorkspaceThread((err) => {
+                        if (!err) {
+                            this.afterWorkspaceStarted();
+                        }
+                        else {
+                            this.modalDialog.alert({title: "Start Workspace Error", message: err.message});
+                        }
+                    });
+                }
+            }
+            else {
+                this.modalDialog.alert({title: "Load Workspace Error", message: err.message});
+            }
+        });
+    }
+
+    private startWorkspaceThread(callback: (err: Error) => any): void {
+        // const startTime = performance.now();
 
         this.wsModel.initialize((err) => {
             if (!err) {
@@ -385,88 +433,17 @@ export default class WorkspaceController implements WorkspaceMixin {
                 // Ideally we remove this line and use the cached `lastKnownJs` to provide the preview.
                 this.wsModel.isCodeVisible = true;
 
-                // Now that things have settled down...
-                this.wsModel.updateStorage();
-
-                const owner: string = this.$stateParams['owner'];
-                const repo: string = this.$stateParams['repo'];
-                const gistId: string = this.$stateParams['gistId']; // OK
-
-                const matches = this.doodles.filter(function(doodle: Doodle) {
-                    if (isString(owner) && isString(repo)) {
-                        return doodle.owner === owner && doodle.repo === repo;
-                    }
-                    else if (isString(gistId)) {
-                        return doodle.gistId === gistId;
-                    }
-                    else {
-                        return false;
-                    }
-                });
-                if (matches.length > 0) {
-                    // We certainly don't want to overwrite anything in local storage.
-                    // The user should be advised and then may delete manually from local storage.
-                    const match = matches[0];
-                    copyDoodleToWorkspace(match, this.wsModel);
-                    // We can also assume that we are already in the correct state.
-                    this.onInitDoodle();
-                }
-                else {
-                    if (owner && repo) {
-                        this.cloud.downloadTree(owner, repo, 'heads/master')
-                            .then((doodle) => {
-                                copyDoodleToWorkspace(doodle, this.wsModel);
-                                this.wsModel.updateStorage();
-                                this.onInitDoodle();
-                            }, (reason) => {
-                                this.modalDialog.alert({
-                                    title: 'Error downloading Repository',
-                                    message: `Error attempting to download repository '${repo}'. Cause:  ${reason}` });
-                            }, function(state) {
-                                // The state is {doneCount: number; todoCount: number}
-                            });
-                    }
-                    else if (gistId) {
-                        this.cloud.downloadGist(gistId, (err: any, doodle: Doodle) => {
-                            if (!err) {
-                                copyDoodleToWorkspace(doodle, this.wsModel);
-                                this.wsModel.updateStorage();
-                                this.onInitDoodle();
-                            }
-                            else {
-                                this.modalDialog.alert({
-                                    title: 'Error downloading Gist',
-                                    message: `Error attempting to download gist '${gistId}'. Cause:  ${err}` });
-                            }
-                        });
-                    }
-                    else {
-                        // We don't need to load anything, but are we in the correct state for the Doodle?
-                        // We end up here, e.g., when user presses Cancel from New dialog.
-                        if (this.FEATURE_GIST_ENABLED && this.wsModel.gistId) {
-                            this.$state.go(this.STATE_GIST, { gistId: this.wsModel.gistId });
-                        }
-                        else if (this.FEATURE_REPO_ENABLED && this.wsModel.owner && this.wsModel.repo) {
-                            this.$state.go(this.STATE_REPO, { owner: this.wsModel.owner, repo: this.wsModel.repo });
-                        }
-                        else {
-                            this.onInitDoodle();
-                        }
-                    }
-                }
-
                 this.watches.push(this.$scope.$watch('isViewVisible', (newVal: boolean, oldVal, unused: angular.IScope) => {
                     this.wsModel.isViewVisible = this.$scope.isViewVisible;
-                    this.wsModel.updateStorage();
                 }));
 
                 this.watches.push(this.$scope.$watch('isEditMode', (newVal: boolean, oldVal, unused: angular.IScope) => {
                     this.wsModel.isCodeVisible = this.$scope.isEditMode;
-                    this.wsModel.updateStorage();
                 }));
+                callback(void 0);
             }
             else {
-                console.warn(`The workspace failed to initialize. Cause ${err}`);
+                callback(new Error(`The workspace failed to initialize: ${err}`));
             }
         });
 
@@ -477,21 +454,11 @@ export default class WorkspaceController implements WorkspaceMixin {
     }
 
     /**
-     * This hook allows us to react to changes of one-way bindings of a component.
-     * It is also called before $onInit the first time!
-     */
-    $onChanges(changes): void {
-        // Do nothing.
-    }
-
-    /**
-     * $onDestroy() is a hook that is called when its containing scope is destroyed.
+     * This lifecycle hook that is called when its containing scope is destroyed.
      * We can use this hook to release external resources, watches and event handlers.
-     *
-     * @method $onDestroy
-     * @return {void}
      */
     $onDestroy(): void {
+        console.log("WorkspaceController.$onDestroy");
         // const startTime = performance.now();
 
         // Cancel all of the watches.
@@ -505,8 +472,10 @@ export default class WorkspaceController implements WorkspaceMixin {
         // the detach callback.
         // TODO: Maybe implement something along the lines of refrence counting because the
         // workspace is shared?
-
-        this.$window.removeEventListener('resize', this.resizeListener);
+        if (this.resizeListener) {
+            this.$window.removeEventListener('resize', this.resizeListener);
+            this.resizeListener = void 0;
+        }
 
         this.wsModel.terminate();
         this.wsModel.dispose();
@@ -518,7 +487,7 @@ export default class WorkspaceController implements WorkspaceMixin {
     /**
      * 
      */
-    private onInitDoodle(): void {
+    private afterWorkspaceStarted(): void {
         // const startTime = performance.now();
 
         this.resizeListener = (unused: UIEvent) => {
@@ -548,8 +517,6 @@ export default class WorkspaceController implements WorkspaceMixin {
         });
 
         this.resize();
-
-        this.$scope.doodleLoaded = true;
 
         // Bit of a smell here. Should we be updating the scope?
         this.$scope.isEditMode = this.wsModel.isCodeVisible;
@@ -597,7 +564,7 @@ export default class WorkspaceController implements WorkspaceMixin {
     }
 
     /**
-     * Doe what needs to be done when the window is resized.
+     * Do what needs to be done when the window is resized.
      */
     private resize(): void {
         const fileNames = Object.keys(this.editors);
@@ -610,30 +577,28 @@ export default class WorkspaceController implements WorkspaceMixin {
     }
 
     /**
-     * @method attachEditor
-     * @param filename {string}
-     * @param mode {string}
-     * @param editor {Editor}
-     * @return {void}
+     * @param path
+     * @param mode
+     * @param editor
      */
-    attachEditor(filename: string, mode: string, editor: Editor): void {
+    attachEditor(path: string, mode: string, editor: Editor): () => void {
         // const startTime = performance.now();
-        this.wsModel.attachEditor(filename, editor);
+        this.wsModel.attachEditor(path, editor);
 
         switch (mode) {
             case LANGUAGE_PYTHON: {
                 // TODO:
-                // editor.getSession().on('change', this.createChangeHandler(filename));
-                editor.getSession().on('outputFiles', this.createOutputFilesEventHandler(filename));
+                // editor.getSession().on('change', this.createChangeHandler(path));
+                editor.getSession().on('outputFiles', this.createOutputFilesEventHandler(path));
                 break;
             }
             case LANGUAGE_TYPE_SCRIPT: {
-                editor.getSession().on('outputFiles', this.createOutputFilesEventHandler(filename));
+                editor.getSession().on('outputFiles', this.createOutputFilesEventHandler(path));
                 break;
             }
             case LANGUAGE_JAVA_SCRIPT: {
                 // TODO: We probably don't get anything for JavaScript.
-                editor.getSession().on('outputFiles', this.createOutputFilesEventHandler(filename));
+                editor.getSession().on('outputFiles', this.createOutputFilesEventHandler(path));
                 break;
             }
             case LANGUAGE_CSS:
@@ -641,23 +606,26 @@ export default class WorkspaceController implements WorkspaceMixin {
             case LANGUAGE_HTML:
             case LANGUAGE_LESS:
             case LANGUAGE_TEXT: {
-                editor.getSession().on('change', this.createChangeHandler(filename));
+                editor.getSession().on('change', this.createChangeHandler(path));
                 break;
             }
             case LANGUAGE_MARKDOWN: {
-                this.addReadmeChangeHandler(filename, editor);
+                this.addReadmeChangeHandler(path, editor);
                 break;
             }
             default: {
                 console.warn(`attachEditor(mode => ${mode}) is being ignored.`);
             }
         }
-        this.editors[filename] = editor;
+        this.editors[path] = editor;
         // The editors are attached after $onInit and so we miss the initial resize.
         editor.resize(true);
 
         // const endTime = performance.now();
         // console.lg(`Workspace.attachEditor(${filename}) ${endTime - startTime} ms.`);
+        return () => {
+            this.detachEditor(path, mode, editor);
+        };
     }
 
     /**
@@ -681,7 +649,6 @@ export default class WorkspaceController implements WorkspaceMixin {
                 if (this.wsModel.lastKnownJs[filename] !== outputFile.text) {
                     // if (this.cascade) {
                     this.wsModel.lastKnownJs[filename] = outputFile.text;
-                    this.wsModel.updateStorage();
                     this.$scope.updatePreview(WAIT_FOR_MORE_CODE_KEYSTROKES);
                     // }
                 }
@@ -698,7 +665,6 @@ export default class WorkspaceController implements WorkspaceMixin {
     private createChangeHandler(filename: string): ChangeHandler {
         const handler = (delta: Delta, session: EditSession) => {
             if (this.wsModel) {
-                this.wsModel.updateStorage();
                 this.$scope.updatePreview(WAIT_FOR_MORE_OTHER_KEYSTROKES);
             }
         };
@@ -709,7 +675,6 @@ export default class WorkspaceController implements WorkspaceMixin {
     private createReadmeChangeHandler(filename: string): ChangeHandler {
         const handler = (delta: Delta, session: EditSession) => {
             if (this.wsModel) {
-                this.wsModel.updateStorage();
                 this.updateReadmeView(WAIT_FOR_MORE_README_KEYSTROKES);
             }
         };

@@ -1,4 +1,3 @@
-import Change from './Change';
 import Range from "./Range";
 import EditSession from "./EditSession";
 import comparePoints from "./comparePoints";

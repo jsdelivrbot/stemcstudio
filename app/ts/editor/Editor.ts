@@ -1089,12 +1089,16 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Returns the current session being used.
-     *
-     * @method getSession
-     * @return {EditSession}
      */
     getSession(): EditSession {
         return this.session;
+    }
+
+    /**
+     * Determines whether this editor has an EditSession.
+     */
+    hasSession(): boolean {
+        return this.session ? true : false;
     }
 
     /**

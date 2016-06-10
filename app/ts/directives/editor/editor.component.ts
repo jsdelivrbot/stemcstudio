@@ -13,6 +13,7 @@ import UndoManager from '../../editor/UndoManager';
 import Editor from '../../editor/Editor';
 import EditorScope from './EditorScope';
 import ISettingsService from '../../services/settings/ISettingsService';
+// import isUndefined from '../../utils/isUndefined';
 import ITextService from '../../services/text/ITextService';
 import ThemeManager from '../../services/themes/ThemeManager';
 import ThemeManagerEvent from '../../services/themes/ThemeManagerEvent';
@@ -27,6 +28,7 @@ import {LANGUAGE_MARKDOWN} from '../../languages/modes';
 import {LANGUAGE_PYTHON} from '../../languages/modes';
 import {LANGUAGE_TYPE_SCRIPT} from '../../languages/modes';
 import {LANGUAGE_TEXT} from '../../languages/modes';
+import WsFile from '../../wsmodel/services/WsFile';
 
 /**
  * Factory for the editor (attribute) directive.
@@ -61,6 +63,7 @@ function factory(
         // Experiment with creating an Editor without an EditSession, which is injected later.
         const renderer: Renderer = new Renderer(container);
         const editor: Editor = new Editor(renderer, void 0);
+        let removeEditor: () => void;
 
         const themeEventHandler = function(event: ThemeManagerEvent) {
             editor.setThemeCss(event.cssClass, event.href);
@@ -108,111 +111,125 @@ function factory(
         // The basic idea here is to set the $render callback function that will be used to take
         // the model value and use it to update the view (editor).
         ngModel.$render = function() {
-            const editSession: EditSession = ngModel.$viewValue;
-            if (editSession instanceof EditSession) {
-                editor.setSession(editSession);
-                const undoManager = new UndoManager();
-                editSession.setUndoManager(undoManager);
-                editSession.setTabSize(2);
-                editSession.setUseSoftTabs(true);
-                // Setting displayIndentGuides requires an editSession.
-                editor.setDisplayIndentGuides(settings.displayIndentGuides);
-                // We must wait for the $render function to be called so that we have a session.
-                switch ($scope.mode) {
-                    case LANGUAGE_PYTHON: {
-                        editSession.setUseWorker(false);
-                        editSession.setLanguageMode(new PythonMode('/js/worker.js', workerImports), function(err: any) {
-                            if (err) {
-                                console.warn(`${$scope.mode} => ${err}`);
+            const file: WsFile = ngModel.$viewValue;
+            if (file instanceof WsFile) {
+                // If there is no a session, then the file should lazily create one.
+                const session: EditSession = file.getSession();
+                if (session) {
+                    try {
+                        // TODO: Crush this code down into an extensible mode-handling and session initializer?
+                        // Maye the WsFile can do some of the work?
+                        editor.setSession(session);
+                        const undoManager = new UndoManager();
+                        session.setUndoManager(undoManager);
+                        session.setTabSize(2);
+                        session.setUseSoftTabs(true);
+                        // Setting displayIndentGuides requires an editSession.
+                        editor.setDisplayIndentGuides(settings.displayIndentGuides);
+                        // We must wait for the $render function to be called so that we have a session.
+                        switch (file.mode) {
+                            case LANGUAGE_PYTHON: {
+                                session.setUseWorker(false);
+                                session.setLanguageMode(new PythonMode('/js/worker.js', workerImports), function(err: any) {
+                                    if (err) {
+                                        console.warn(`${file.mode} => ${err}`);
+                                    }
+                                    removeEditor = workspace.attachEditor($scope.path, file.mode, editor);
+                                });
+                                break;
                             }
-                            workspace.attachEditor($scope.id, $scope.mode, editor);
-                        });
-                        break;
-                    }
-                    case LANGUAGE_JAVA_SCRIPT: {
-                        editSession.setLanguageMode(new JavaScriptMode('/js/worker.js', workerImports), function(err: any) {
-                            if (err) {
-                                console.warn(`${$scope.mode} => ${err}`);
+                            case LANGUAGE_JAVA_SCRIPT: {
+                                session.setLanguageMode(new JavaScriptMode('/js/worker.js', workerImports), function(err: any) {
+                                    if (err) {
+                                        console.warn(`${file.mode} => ${err}`);
+                                    }
+                                    removeEditor = workspace.attachEditor($scope.path, file.mode, editor);
+                                });
+                                break;
                             }
-                            workspace.attachEditor($scope.id, $scope.mode, editor);
-                        });
-                        break;
-                    }
-                    case LANGUAGE_TYPE_SCRIPT: {
-                        editSession.setLanguageMode(new TypeScriptMode('/js/worker.js', workerImports), function(err: any) {
-                            if (err) {
-                                console.warn(`${$scope.mode} => ${err}`);
+                            case LANGUAGE_TYPE_SCRIPT: {
+                                session.setLanguageMode(new TypeScriptMode('/js/worker.js', workerImports), function(err: any) {
+                                    if (err) {
+                                        console.warn(`${file.mode} => ${err}`);
+                                    }
+                                    removeEditor = workspace.attachEditor($scope.path, file.mode, editor);
+                                });
+                                break;
                             }
-                            workspace.attachEditor($scope.id, $scope.mode, editor);
-                        });
-                        break;
-                    }
-                    case LANGUAGE_HTML: {
-                        editSession.setLanguageMode(new HtmlMode('/js/worker.js', workerImports), function(err: any) {
-                            if (err) {
-                                console.warn(`${$scope.mode} => ${err}`);
+                            case LANGUAGE_HTML: {
+                                session.setLanguageMode(new HtmlMode('/js/worker.js', workerImports), function(err: any) {
+                                    if (err) {
+                                        console.warn(`${file.mode} => ${err}`);
+                                    }
+                                    removeEditor = workspace.attachEditor($scope.path, file.mode, editor);
+                                });
+                                break;
                             }
-                            workspace.attachEditor($scope.id, $scope.mode, editor);
-                        });
-                        break;
-                    }
-                    case LANGUAGE_JSON: {
-                        editSession.setLanguageMode(new JsonMode('/js/worker.js', workerImports), function(err: any) {
-                            if (err) {
-                                console.warn(`${$scope.mode} => ${err}`);
+                            case LANGUAGE_JSON: {
+                                session.setLanguageMode(new JsonMode('/js/worker.js', workerImports), function(err: any) {
+                                    if (err) {
+                                        console.warn(`${file.mode} => ${err}`);
+                                    }
+                                    removeEditor = workspace.attachEditor($scope.path, file.mode, editor);
+                                });
+                                break;
                             }
-                            workspace.attachEditor($scope.id, $scope.mode, editor);
-                        });
-                        break;
-                    }
-                    case LANGUAGE_CSS:
-                    case LANGUAGE_LESS: {
-                        // If we don't use the worker then we don't get a confirmation.
-                        editSession.setUseWorker(false);
-                        editSession.setLanguageMode(createCssMode('/js/worker.js', workerImports), function(err: any) {
-                            if (err) {
-                                console.warn(`${$scope.mode} => ${err}`);
+                            case LANGUAGE_CSS:
+                            case LANGUAGE_LESS: {
+                                // If we don't use the worker then we don't get a confirmation.
+                                session.setUseWorker(false);
+                                session.setLanguageMode(createCssMode('/js/worker.js', workerImports), function(err: any) {
+                                    if (err) {
+                                        console.warn(`${file.mode} => ${err}`);
+                                    }
+                                    removeEditor = workspace.attachEditor($scope.path, file.mode, editor);
+                                });
+                                break;
                             }
-                            workspace.attachEditor($scope.id, $scope.mode, editor);
-                        });
-                        break;
-                    }
-                    case LANGUAGE_MARKDOWN: {
-                        editSession.setUseWrapMode(true);
-                        editor.setWrapBehavioursEnabled(true);
-                        editSession.setLanguageMode(createMarkdownMode('/js/worker.js', workerImports), function(err: any) {
-                            if (err) {
-                                console.warn(`${$scope.mode} => ${err}`);
+                            case LANGUAGE_MARKDOWN: {
+                                session.setUseWrapMode(true);
+                                editor.setWrapBehavioursEnabled(true);
+                                session.setLanguageMode(createMarkdownMode('/js/worker.js', workerImports), function(err: any) {
+                                    if (err) {
+                                        console.warn(`${file.mode} => ${err}`);
+                                    }
+                                    removeEditor = workspace.attachEditor($scope.path, file.mode, editor);
+                                });
+                                break;
                             }
-                            workspace.attachEditor($scope.id, $scope.mode, editor);
-                        });
-                        break;
-                    }
-                    case LANGUAGE_TEXT: {
-                        editSession.setLanguageMode(new TextMode('/js/worker.js', workerImports), function(err: any) {
-                            if (err) {
-                                console.warn(`${$scope.mode} => ${err}`);
+                            case LANGUAGE_TEXT: {
+                                session.setLanguageMode(new TextMode('/js/worker.js', workerImports), function(err: any) {
+                                    if (err) {
+                                        console.warn(`${file.mode} => ${err}`);
+                                    }
+                                    removeEditor = workspace.attachEditor($scope.path, file.mode, editor);
+                                });
+                                break;
                             }
-                            workspace.attachEditor($scope.id, $scope.mode, editor);
+                            default: {
+                                console.warn(`Unrecognized mode => ${file.mode}`);
+                            }
+                        }
+                        $timeout(function() {
+                            resizeEditor();
+                            // The resize event appears to happen AFTER a session is injected.
+                            // If it did not happen that way, the following line would blow up.
+                            // TODO: Maybe this should be guarded by an EditSession check in order
+                            // to be more fault-tolerant?
+                            editor.gotoLine(0, 0);
                         });
-                        break;
                     }
-                    default: {
-                        console.warn(`Unrecognized mode => ${$scope.mode}`);
+                    finally {
+                        session.release();
                     }
+                }
+                else {
+                    console.warn("file did not provide an EditSession.");
                 }
             }
             else {
-                console.warn(`$render: ng-model (ngModel.$viewValue) must be an EditSession.`);
+                console.warn(`ng-model in editor directive must be an EditSession: typeof ngModel.$viewValue => '${typeof ngModel.$viewValue}'.`);
             }
-            $timeout(function() {
-                resizeEditor();
-                // The resize event appears to happen AFTER a session is injected.
-                // If it did not happen that way, the following line would blow up.
-                // TODO: Maybe this should be guarded by an EditSession check in order
-                // to be more fault-tolerant?
-                editor.gotoLine(0, 0);
-            });
         };
 
         /**
@@ -245,7 +262,12 @@ function factory(
             unregisterWatchNgShow();
             // TODO: Since we only attach the editor after its thread has started and has been initialized,
             // should we only stop the thread after it has been detached?
-            workspace.detachEditor($scope.id, $scope.mode, editor);
+            if (editor) {
+                if (removeEditor) {
+                    removeEditor();
+                    removeEditor = void 0;
+                }
+            }
             // Interestingly, there is no $off function, so assume Angular will handle the unhook.
             // editorsController.removeEditor(scope)
             // editor.off('change', onEditorChange);
@@ -253,7 +275,9 @@ function factory(
             themeManager.removeEventListener(currentTheme, themeEventHandler);
 
             // What about stopping the worker?
-            editor.dispose();
+            if (editor) {
+                editor.dispose();
+            }
         }
 
         // We can hook both the scope and the element '$destroy' event.
@@ -272,8 +296,7 @@ function factory(
         priority: 1,
         restrict: 'A',
         scope: {
-            id: '@',
-            mode: '@',
+            path: '@',
             ngShow: '<'
         },
         /**

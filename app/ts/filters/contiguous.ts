@@ -1,6 +1,6 @@
-const nothing = ''
-const space = ' '
-const hypen = '-'
+const nothing = '';
+const space = ' ';
+const hypen = '-';
 
 /**
  * A filter for replacing hyphens and spaces with nothing.
@@ -8,9 +8,9 @@ const hypen = '-'
 function contiguous() {
     return function(input: string) {
         if (input) {
-            return input.replace(hypen, nothing).replace(space, nothing)
+            return input.replace(hypen, nothing).replace(space, nothing);
         }
-    }
+    };
 }
 
 contiguous['$inject'] = [];

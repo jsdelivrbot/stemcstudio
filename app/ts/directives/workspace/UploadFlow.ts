@@ -86,8 +86,6 @@ export default class UploadFlow {
                                 this.wsModel.created_at = gist.created_at;
                                 this.wsModel.updated_at = gist.updated_at;
 
-                                this.wsModel.updateStorage();
-
                                 next();
                                 break;
                             }
@@ -123,7 +121,6 @@ export default class UploadFlow {
                                 facts.uploadMessage.resolve(`Your project was successfully uploaded and patched the existing Gist.`);
                                 this.wsModel.emptyTrash();
                                 this.wsModel.updated_at = gist.updated_at;
-                                this.wsModel.updateStorage();
                                 next();
                                 break;
                             }
@@ -132,7 +129,6 @@ export default class UploadFlow {
                                 // TODO: Test this we may end up down in the catch.
                                 this.wsModel.gistId = void 0;
                                 facts.gistId.reset();
-                                this.wsModel.updateStorage();
                                 next();
                                 break;
                             }

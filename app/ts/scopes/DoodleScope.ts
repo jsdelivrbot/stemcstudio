@@ -1,7 +1,5 @@
 import BodyScope from './BodyScope';
 import ExplorerMixin from './ExplorerMixin';
-import Doodle from '../services/doodles/Doodle';
-import DoodleFile from '../services/doodles/DoodleFile';
 import ITemplate from '../services/templates/ITemplate';
 
 interface DoodleScope extends BodyScope, ExplorerMixin {

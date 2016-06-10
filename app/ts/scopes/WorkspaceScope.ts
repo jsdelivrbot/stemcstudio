@@ -1,5 +1,4 @@
 import DoodleScope from './DoodleScope';
-import Doodle from '../services/doodles/Doodle';
 import WsModel from '../wsmodel/services/WsModel';
 import WsFile from '../wsmodel/services/WsFile';
 

@@ -1,5 +1,4 @@
 import IOption from '../../services/options/IOption';
-import PropertiesSettings from './PropertiesSettings';
 
 interface PropertiesModalScope {
 

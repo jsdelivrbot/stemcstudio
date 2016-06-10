@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 import ITranslateService from '../ITranslateService';
 
-/**
+/*
    <example module="ngView">
     <file name="index.html">
       <div ng-controller="TranslateCtrl">

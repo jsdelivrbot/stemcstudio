@@ -79,6 +79,8 @@ import stemcArXiv from './stemcArXiv/index';
 import translate from './translate/index';
 import wsmodel from './wsmodel/module';
 
+import BackgroundService from './services/background/BackgroundService';
+import {BACKGROUND_UUID} from './services/background/Background';
 import Iso8601 from './services/iso8601/Iso8601';
 import MissionControl from './services/mission/MissionControl';
 
@@ -116,7 +118,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version for use by scopes.
-app.constant('version', '2.0.22');
+app.constant('version', '2.1.0');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -241,6 +243,7 @@ app.service('propertiesDialog', PropertiesDialogService);
 app.controller('PropertiesModalController', PropertiesModalController);
 app.service('publishDialog', PublishDialogService);
 
+app.service(BACKGROUND_UUID, BackgroundService);
 app.service('iso8601', Iso8601);
 app.service('missionControl', MissionControl);
 

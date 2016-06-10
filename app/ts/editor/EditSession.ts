@@ -370,9 +370,6 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     /**
      * Returns the `Document` associated with this session.
-     *
-     * @method getDocument
-     * @return {Document}
      */
     public getDocument(): Document {
         return this.doc;

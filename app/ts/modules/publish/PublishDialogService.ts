@@ -1,6 +1,5 @@
 import * as ng from 'angular';
 import * as uib from 'angular-bootstrap';
-import PublishDialog from './PublishDialog';
 import PublishSettings from './PublishSettings';
 
 export default class PublishDialogService {

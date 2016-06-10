@@ -1,9 +1,5 @@
 import * as angular from 'angular';
 import * as uib from 'angular-bootstrap';
-import Category from './Category';
-import Book from './Book';
-import Chapter from './Chapter';
-import Topic from './Topic';
 import LabelModalScope from './LabelModalScope';
 import LabelSettings from './LabelSettings';
 import splitStringToKeywords from './splitStringToKeywords';

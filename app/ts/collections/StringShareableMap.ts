@@ -1,24 +1,15 @@
 import Shareable from '../base/Shareable';
 
 /**
- *
+ * A map from string to a parameterized type that is shareable.
  */
 export default class StringShareableMap<V extends Shareable> implements Shareable {
 
-    /**
-     *
-     */
-    private elements: { [key: string]: V } = {};
-
-    /**
-     * 
-     */
+    private elements: { [key: string]: V };
     private refCount: number;
 
-    /**
-     * 
-     */
     constructor() {
+        this.elements = {};
         this.refCount = 1;
     }
 
@@ -30,18 +21,19 @@ export default class StringShareableMap<V extends Shareable> implements Shareabl
     release(): number {
         this.refCount--;
         if (this.refCount === 0) {
-
+            this.destructor();
+        }
+        else if (this.refCount < 0) {
+            throw new Error();
         }
         return this.refCount;
     }
 
-    /**
-     *
-     */
     protected destructor(): void {
         this.forEach((key: string) => {
-            this.putWeakRef(key, void 0)
-        })
+            this.putWeakRef(key, void 0);
+        });
+        this.elements = void 0;
     }
 
     /**
@@ -81,21 +73,21 @@ export default class StringShareableMap<V extends Shareable> implements Shareabl
      */
     public put(key: string, value: V): void {
         if (value) {
-            value.addRef()
+            value.addRef();
         }
-        this.putWeakRef(key, value)
+        this.putWeakRef(key, value);
     }
 
     /**
      *
      */
     public putWeakRef(key: string, value: V): void {
-        const elements = this.elements
-        const existing = elements[key]
+        const elements = this.elements;
+        const existing = elements[key];
         if (existing) {
-            existing.release()
+            existing.release();
         }
-        elements[key] = value
+        elements[key] = value;
     }
 
     /**
@@ -120,21 +112,21 @@ export default class StringShareableMap<V extends Shareable> implements Shareabl
      *
      */
     get values(): V[] {
-        const values: V[] = []
-        const keys: string[] = this.keys
+        const values: V[] = [];
+        const keys: string[] = this.keys;
         for (var i = 0, iLength = keys.length; i < iLength; i++) {
-            let key: string = keys[i]
-            values.push(this.elements[key])
+            let key: string = keys[i];
+            values.push(this.elements[key]);
         }
-        return values
+        return values;
     }
 
     /**
      *
      */
     public remove(key: string): V {
-        const value = this.elements[key]
-        delete this.elements[key]
-        return value
+        const value = this.elements[key];
+        delete this.elements[key];
+        return value;
     }
 }

@@ -1,23 +1,8 @@
 import io from 'socket.io-client';
-import Room from './Room';
 import RoomListener from './RoomListener';
 import Shareable from '../../../base/Shareable';
-import MwAction from '../../../synchronization/MwAction';
-import MwChange from '../../../synchronization/MwChange';
 import MwEdits from '../../../synchronization/MwEdits';
 import uniqueId from '../../../synchronization/uniqueId';
-
-function peek(edits: MwEdits) {
-    return edits.x.map((change: MwChange) => {
-        const action = change.a;
-        const kind = action.c;
-        const n = action.n;
-        const m = change.m;
-        return {
-            kind, n, m
-        }
-    })
-}
 
 /**
  * 
@@ -89,7 +74,7 @@ export default class RoomAgent implements Shareable {
             // We can use it as either a safety check or to future proof for multiple client rooms per socket.
             const {fromId, roomId, fileName, edits} = data;
             console.log(`RoomAgent receiving edits for file ${fileName}: ${JSON.stringify(edits, null, 2)}`);
-            if (fromId === this.roomId && roomId == this.nodeId) {
+            if (fromId === this.roomId && roomId === this.nodeId) {
                 for (let i = 0; i < this.roomListeners.length; i++) {
                     const roomListener = this.roomListeners[i];
                     roomListener.setEdits(fromId, fileName, edits);
@@ -108,7 +93,7 @@ export default class RoomAgent implements Shareable {
         // console.log(`joinMessage => ${JSON.stringify(joinMessage, null, 2)}`);
         // this._socket.emit('join', joinMessage, () => {
         // console.lg(`RoomAgent has joined the ${this.roomId} room.`);
-        //});
+        // });
     }
     addRef(): number {
         if (this.refCount > 0) {

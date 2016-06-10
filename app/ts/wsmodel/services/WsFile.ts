@@ -1,33 +1,69 @@
 import applyPatchToDocument from './applyPatchToDocument';
 import Document from '../../editor/Document';
 import EditSession from '../../editor/EditSession';
+import Editor from '../../editor/Editor';
 import Shareable from '../../base/Shareable';
 import MwUnit from '../../synchronization/MwUnit';
 import MwEditor from '../../synchronization/MwEditor';
 import Patch from '../../synchronization/Patch';
 
+/**
+ * This class corresponds to a file at a particular path in a workspace.
+ * It's members reflect the various states that a workspace file can be
+ * in, these states usually arising from performance considerations.
+ * 
+ * The lowest level of activation of the file uses a Document as the means
+ * to store the content. We don't use a string to avoid duplication of the
+ * data when a session is required.
+ * 
+ * The next level of activation is the EditSession. This provides undo/redo
+ * but there need not be a user interface. The EditSession is has a 
+ * Document property and automatically listens for Document changes.
+ * When the language mode is known, the session may start a worker thread to
+ * perform background syntax analysis. Syntax errors may be collected and displayed
+ * even if there is no corresponding Editor for the file.
+ * 
+ * The highest level of activation is the Editor. This provides a user interface.
+ * The Editor has a session property.
+ * 
+ * We lazily create the least costly representation required. However, the
+ * Editor is created in the user interface layer as part of an Angular directive.
+ * This directive informs its controller of the lifecycle of the editor and these
+ * events are forwarded to the workspace, allowing the editor property of this file
+ * to reflect the existence of an Editor in the user interface.
+ */
 export default class WsFile implements MwEditor, Shareable {
 
+    public editor: Editor;
     /**
-     * The editSession is (almost) an implementation detail except:
-     * 1. It is bound to an ng-model.
-     * 2. It's used in MissionControl
+     * The editSession is (almost) an implementation detail except that
+     * it is bound to an ng-model. In all other cases, calls to getSession
+     * will lazily create a session and the instance will be reference counted.
      */
-    public editSession: EditSession;
+    private session: EditSession;
+
+    /**
+     * The line-oriented textual content.
+     */
+    public doc: Document;
+
+    /**
+     * The synchronization data (shadow, backup, versions, etc).
+     */
     public unit: MwUnit;
 
     /**
-     * This might equally well be called the 'mode' because we don't change the language easily.
+     * The language mode name.
+     * This is called the 'mode' because we don't change the language easily.
      * Note that the editSession contains a $mode: LanguageMode.
-     * TODO: Rename to 'mode'.
      * TODO: Eventually, we would like the mode to be extensible.
      */
-    language: string;
+    mode: string;
 
     /**
      * The file is open for editing.
      */
-    public isOpen = true;
+    public isOpen = false;
 
     /**
      * 
@@ -65,30 +101,46 @@ export default class WsFile implements MwEditor, Shareable {
         this.setSession(void 0);
     }
 
-    public setSession(editSession: EditSession) {
-        if (this.editSession === editSession) {
+    public setSession(session: EditSession) {
+        if (this.session === session) {
             return;
         }
-        if (this.editSession) {
-            this.editSession.release();
-            this.editSession = void 0;
+        if (this.session) {
+            this.session.release();
+            this.session = void 0;
         }
-        if (editSession) {
-            // console.lg("WsFile.constructor");
-            if (!(editSession instanceof EditSession)) {
-                throw new TypeError("editSession must be an EditSession");
+        if (session) {
+            if (!(session instanceof EditSession)) {
+                throw new TypeError("session must be an EditSession.");
             }
-            this.editSession = editSession;
-            this.editSession.addRef();
+            this.session = session;
+            this.session.addRef();
+        }
+    }
+
+    private setDocument(doc: Document) {
+        if (this.doc === doc) {
+            return;
+        }
+        if (this.doc) {
+            this.doc.release();
+            this.doc = void 0;
+        }
+        if (doc) {
+            if (!(doc instanceof Document)) {
+                throw new TypeError("doc must be a Document.");
+            }
+            this.doc = doc;
+            this.doc.addRef();
         }
     }
 
     clone(): WsFile {
         // There is currently no clone() method on an EditSession so we lose information.
         const copy = new WsFile();
-        copy.setText(this.getText())
+        copy.setText(this.getText());
         copy.isOpen = this.isOpen;
-        copy.language = this.language;
+        copy.mode = this.mode;
         copy.raw_url = this.raw_url;
         copy.selected = this.selected;
         // copy.size = this.size;
@@ -102,6 +154,7 @@ export default class WsFile implements MwEditor, Shareable {
      */
     addRef(): number {
         this.refCount++;
+        // console.log(`WsFile.addRef() => ${this.refCount}`);
         return this.refCount;
     }
 
@@ -116,29 +169,57 @@ export default class WsFile implements MwEditor, Shareable {
         else if (this.refCount < 0) {
             throw new Error("refCount has dropped below zero.");
         }
+        // console.log(`WsFile.release() => ${this.refCount}`);
         return this.refCount;
     }
 
-    getText(): string {
-        if (this.editSession) {
-            return this.editSession.getValue();
+    /**
+     *
+     */
+    getSession(): EditSession {
+        if (this.session) {
+            this.session.addRef();
+            return this.session;
+        }
+        else if (this.doc) {
+            const session = new EditSession(this.doc);
+            // TODO: Do some mode-based session initialization here.
+            this.setSession(session);
+            return session;
         }
         else {
-            console.warn("WsFile.getValue() called when editSession is not defined.");
             return void 0;
         }
     }
 
+    getText(): string {
+        if (this.doc) {
+            return this.doc.getValue();
+        }
+        else {
+            console.warn("WsFile.getValue() called when text is not defined.");
+            return void 0;
+        }
+    }
+
+    /**
+     * Sets the text on the highest current level of activation (Editor, EditSession, Document).
+     */
     setText(text: string): void {
         if (typeof text === 'string') {
-            if (this.editSession) {
-                this.editSession.setValue(text);
+            if (this.editor) {
+                this.editor.setValue(text);
+            }
+            else if (this.session) {
+                this.session.setValue(text);
+            }
+            else if (this.doc) {
+                this.doc.setValue(text);
             }
             else {
-                const session = new EditSession(new Document(text));
-                // const unit = new MwUnit();
-                this.setSession(session);
-                session.release();
+                const doc = new Document(text);
+                this.setDocument(doc);
+                doc.release();
             }
         }
         else {
@@ -146,14 +227,16 @@ export default class WsFile implements MwEditor, Shareable {
         }
     }
 
+    /**
+     * Applies patches to this file.
+     * TODO: Implement boolean[] of return values.
+     */
     patch(patches: Patch[]): boolean[] {
-        const document = this.editSession.getDocument();
         for (let i = 0; i < patches.length; i++) {
             const patch = patches[i];
-            /* const {start, length, applied} = */ applyPatchToDocument(patch, document);
+            /* const {start, length, applied} = */ applyPatchToDocument(patch, this.doc);
             // The results of aplying the patch as a collection of diffs.
         }
-        // this.editor.
         return [];
     }
 

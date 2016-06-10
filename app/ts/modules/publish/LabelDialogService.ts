@@ -1,6 +1,5 @@
 import * as ng from 'angular';
 import * as uib from 'angular-bootstrap';
-import LabelDialog from './LabelDialog';
 import LabelSettings from './LabelSettings';
 import LabelModalController from './LabelModalController';
 

@@ -1,4 +1,3 @@
-import * as angular from 'angular';
 import * as uib from 'angular-bootstrap';
 import isBoolean from '../../utils/isBoolean';
 import isString from '../../utils/isString';

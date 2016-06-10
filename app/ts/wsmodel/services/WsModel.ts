@@ -6,7 +6,6 @@ import dependenciesMap from '../../services/doodles/dependenciesMap';
 import dependencyNames from '../../services/doodles/dependencyNames';
 import Delta from '../../editor/Delta';
 import Disposable from '../../base/Disposable';
-import Document from '../../editor/Document';
 import Editor from '../../editor/Editor';
 import EditSession from '../../editor/EditSession';
 import Workspace from '../../editor/workspace/Workspace';
@@ -122,12 +121,12 @@ export default class WsModel implements Disposable, MwWorkspace {
     /**
      * 
      */
-    public files: StringShareableMap<WsFile> = new StringShareableMap<WsFile>();
+    public files: StringShareableMap<WsFile>;
 
     /**
      * 
      */
-    public trash: StringShareableMap<WsFile> = new StringShareableMap<WsFile>();
+    public trash: StringShareableMap<WsFile>;
 
     public trace: boolean = false;
     private state: WorkspaceState;
@@ -154,11 +153,30 @@ export default class WsModel implements Disposable, MwWorkspace {
         this.promises = new PromiseManager($q);
     }
 
+    /**
+     * Informs the workspace that we want to reuse it.
+     * The workspace should have little work to do if it has just been constructed
+     * or if dispose has been called after the last use. This method does not consume
+     * any resources such as Web Workers.
+     */
     recycle(): void {
-        // console.lg("WsModel.recyle");
+        console.log("WsModel.recyle");
+        if (this.files || this.trash) {
+            console.warn("Make sure to call dispose()");
+        }
+        this.files = new StringShareableMap<WsFile>();
+        this.trash = new StringShareableMap<WsFile>();
     }
     dispose(): void {
-        /// console.lg("WsModel.dispose");
+        console.log("WsModel.dispose");
+        if (this.files) {
+            this.files.release();
+            this.files = void 0;
+        }
+        if (this.trash) {
+            this.trash.release();
+            this.trash = void 0;
+        }
     }
 
     /**
@@ -392,8 +410,8 @@ export default class WsModel implements Disposable, MwWorkspace {
         // Do nothing.
     }
 
-    getEditorFileNames(): string[] {
-        return this.workspace.getEditorFileNames();
+    getEditorPaths(): string[] {
+        return this.workspace.getEditorPaths();
     }
 
     getEditor(fileName: string): Editor {
@@ -435,10 +453,15 @@ export default class WsModel implements Disposable, MwWorkspace {
         }
     }
     set author(author: string) {
-        const file = this.ensurePackageJson();
-        const metaInfo: IDoodleConfig = JSON.parse(file.getText());
-        setOptionalStringProperty('author', author, metaInfo);
-        file.setText(JSON.stringify(metaInfo, null, 2));
+        const file = this.ensurePackageJsonXXX();
+        try {
+            const metaInfo: IDoodleConfig = JSON.parse(file.getText());
+            setOptionalStringProperty('author', author, metaInfo);
+            file.setText(JSON.stringify(metaInfo, null, 2));
+        }
+        finally {
+            file.release();
+        }
     }
     get dependencies(): string[] {
         try {
@@ -463,10 +486,15 @@ export default class WsModel implements Disposable, MwWorkspace {
     }
     set dependencies(dependencies: string[]) {
         try {
-            const file = this.ensurePackageJson();
-            const metaInfo: IDoodleConfig = JSON.parse(file.getText());
-            metaInfo.dependencies = dependenciesMap(dependencies, this.options);
-            file.setText(JSON.stringify(metaInfo, null, 2));
+            const file = this.ensurePackageJsonXXX();
+            try {
+                const metaInfo: IDoodleConfig = JSON.parse(file.getText());
+                metaInfo.dependencies = dependenciesMap(dependencies, this.options);
+                file.setText(JSON.stringify(metaInfo, null, 2));
+            }
+            finally {
+                file.release();
+            }
         }
         catch (e) {
             console.warn(`Unable to set dependencies property in file '${FILENAME_META}'.`);
@@ -493,10 +521,15 @@ export default class WsModel implements Disposable, MwWorkspace {
         }
     }
     set description(description: string) {
-        const file = this.ensurePackageJson();
-        const metaInfo: IDoodleConfig = JSON.parse(file.getText());
-        setOptionalStringProperty('description', description, metaInfo);
-        file.setText(JSON.stringify(metaInfo, null, 2));
+        const file = this.ensurePackageJsonXXX();
+        try {
+            const metaInfo: IDoodleConfig = JSON.parse(file.getText());
+            setOptionalStringProperty('description', description, metaInfo);
+            file.setText(JSON.stringify(metaInfo, null, 2));
+        }
+        finally {
+            file.release();
+        }
     }
     get keywords(): string[] {
         try {
@@ -519,10 +552,15 @@ export default class WsModel implements Disposable, MwWorkspace {
         }
     }
     set keywords(keywords: string[]) {
-        const file = this.ensurePackageJson();
-        const metaInfo: IDoodleConfig = JSON.parse(file.getText());
-        setOptionalStringArrayProperty('keywords', keywords, metaInfo);
-        file.setText(JSON.stringify(metaInfo, null, 2));
+        const file = this.ensurePackageJsonXXX();
+        try {
+            const metaInfo: IDoodleConfig = JSON.parse(file.getText());
+            setOptionalStringArrayProperty('keywords', keywords, metaInfo);
+            file.setText(JSON.stringify(metaInfo, null, 2));
+        }
+        finally {
+            file.release();
+        }
     }
     get name(): string {
         if (this.existsPackageJson()) {
@@ -539,7 +577,7 @@ export default class WsModel implements Disposable, MwWorkspace {
         }
     }
     set name(name: string) {
-        const file = this.ensurePackageJson();
+        const file = this.ensurePackageJsonXXX();
         try {
             const metaInfo: IDoodleConfig = JSON.parse(file.getText());
             metaInfo.name = name;
@@ -547,6 +585,9 @@ export default class WsModel implements Disposable, MwWorkspace {
         }
         catch (e) {
             console.warn(`Unable to set name property in file '${FILENAME_META}'.`);
+        }
+        finally {
+            file.release();
         }
     }
     get operatorOverloading(): boolean {
@@ -564,14 +605,17 @@ export default class WsModel implements Disposable, MwWorkspace {
         }
     }
     set operatorOverloading(operatorOverloading: boolean) {
+        const file = this.ensurePackageJsonXXX();
         try {
-            const file = this.ensurePackageJson();
             const metaInfo: IDoodleConfig = JSON.parse(file.getText());
             setOptionalBooleanProperty('operatorOverloading', operatorOverloading, metaInfo);
             file.setText(JSON.stringify(metaInfo, null, 2));
         }
         catch (e) {
             console.warn(`Unable to set operatorOverloading property in file '${FILENAME_META}'.`);
+        }
+        finally {
+            file.release();
         }
     }
     get version(): string {
@@ -583,10 +627,15 @@ export default class WsModel implements Disposable, MwWorkspace {
         }
     }
     set version(version: string) {
-        const file = this.ensurePackageJson();
-        const metaInfo: IDoodleConfig = JSON.parse(file.getText());
-        metaInfo.version = version;
-        file.setText(JSON.stringify(metaInfo, null, 2));
+        const file = this.ensurePackageJsonXXX();
+        try {
+            const metaInfo: IDoodleConfig = JSON.parse(file.getText());
+            metaInfo.version = version;
+            file.setText(JSON.stringify(metaInfo, null, 2));
+        }
+        finally {
+            file.release();
+        }
     }
     protected destructor(): void {
         // This may never be called when this class is deployed as a singleton service.
@@ -594,13 +643,13 @@ export default class WsModel implements Disposable, MwWorkspace {
     }
     newFile(path: string): WsFile {
         const mode = modeFromName(path);
-        const conflictFile = this.findFileByName(path);
+        const conflictFile = this.findFileByPath(path);
         if (!conflictFile) {
             const trashedFile = this.trash.getWeakRef(path);
             if (!trashedFile) {
                 const file = new WsFile();
                 file.setText("");
-                file.language = mode;
+                file.mode = mode;
                 if (!this.files) {
                     this.files = new StringShareableMap<WsFile>();
                 }
@@ -611,16 +660,17 @@ export default class WsModel implements Disposable, MwWorkspace {
             }
             else {
                 this.restoreFileFromTrash(path);
-                trashedFile.language = mode;
+                trashedFile.mode = mode;
                 return trashedFile;
             }
         }
         else {
+            conflictFile.release();
             throw new Error(`${path} already exists. The path must be unique.`);
         }
     }
     deleteFile(path: string): void {
-        const file = this.findFileByName(path);
+        const file = this.findFileByPath(path);
         if (file) {
             // Determine whether the file exists in GitHub so that we can delete it upon upload.
             // Use the raw_url as the sentinel. Keep it in trash for later deletion.
@@ -632,6 +682,7 @@ export default class WsModel implements Disposable, MwWorkspace {
                 this.files.remove(path).release();
                 delete this.lastKnownJs[path];
             }
+            file.release();
         }
         else {
             console.warn(`deleteFile(${path}), ${path} was not found.`);
@@ -639,15 +690,24 @@ export default class WsModel implements Disposable, MwWorkspace {
     }
 
     existsFile(path: string): boolean {
-        return this.findFileByName(path) ? true : false;
+        const file = this.findFileByPath(path);
+        if (file) {
+            file.release();
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     openFile(path: string): void {
-        const file = this.findFileByName(path);
+        const file = this.findFileByPath(path);
         if (file) {
-            // We assume someone is watching this property, ready to pounce.
-            // TODO: Replace with openPending flag?
+            // The UI should see this change, ng-if enabling the 'editor' directive which
+            // creates an Editor, which requests an EditSession, notifies the controller
+            // of its creation, eventually getting back to the workspace and the file.
             file.isOpen = true;
+            file.release();
         }
         else {
             // Do nothing
@@ -663,37 +723,43 @@ export default class WsModel implements Disposable, MwWorkspace {
             throw new Error(`${newName} is not a recognized language.`);
         }
         // Make sure that the file we want to re-path really does exist.
-        const oldFile = this.findFileByName(oldName);
+        const oldFile = this.findFileByPath(oldName);
         if (oldFile) {
-            if (!this.existsFile(newName)) {
-                // Determine whether we can recycle a file from trash or must create a new file.
-                if (!this.existsFileInTrash(newName)) {
-                    // We must create a new file.
-                    const newFile = oldFile.clone();
+            try {
+                if (!this.existsFile(newName)) {
+                    // Determine whether we can recycle a file from trash or must create a new file.
+                    if (!this.existsFileInTrash(newName)) {
+                        // We must create a new file.
+                        const newFile = oldFile.clone();
 
-                    // Make it clear that this file did not come from GitHub.
-                    newFile.raw_url = void 0;
-                    // newFile.size = void 0;
-                    // newFile.truncated = void 0;
-                    // newFile.type = void 0;
+                        // Make it clear that this file did not come from GitHub.
+                        newFile.raw_url = void 0;
+                        // newFile.size = void 0;
+                        // newFile.truncated = void 0;
+                        // newFile.type = void 0;
 
-                    // Initialize properties that depend upon the new path.
-                    newFile.language = mode;
+                        // Initialize properties that depend upon the new path.
+                        newFile.mode = mode;
 
-                    this.files.putWeakRef(newName, newFile);
+                        this.files.putWeakRef(newName, newFile);
+                    }
+                    else {
+                        // We can recycle a file from trash.
+                        this.restoreFileFromTrash(newName);
+                        const theFile = this.findFileByPath(newName);
+                        // Initialize properties that depend upon the new path.
+                        theFile.mode = mode;
+                        theFile.release();
+                    }
+                    // Delete the file by the old path.
+                    this.deleteFile(oldName);
                 }
                 else {
-                    // We can recycle a file from trash.
-                    this.restoreFileFromTrash(newName);
-                    const theFile = this.findFileByName(newName);
-                    // Initialize properties that depend upon the new path.
-                    theFile.language = mode;
+                    throw new Error(`${newName} already exists. The new path must be unique.`);
                 }
-                // Delete the file by the old path.
-                this.deleteFile(oldName);
             }
-            else {
-                throw new Error(`${newName} already exists. The new path must be unique.`);
+            finally {
+                oldFile.release();
             }
         }
         else {
@@ -701,28 +767,39 @@ export default class WsModel implements Disposable, MwWorkspace {
         }
     }
     selectFile(path: string): void {
-        const file = this.findFileByName(path);
-        if (file && file.isOpen) {
-            const paths = this.files.keys;
-            const iLen = paths.length;
-            for (let i = 0; i < iLen; i++) {
-                const file = this.files.getWeakRef(paths[i]);
+        const file = this.findFileByPath(path);
+        if (file) {
+            try {
                 if (file.isOpen) {
-                    file.selected = paths[i] === path;
+                    const paths = this.files.keys;
+                    const iLen = paths.length;
+                    for (let i = 0; i < iLen; i++) {
+                        const file = this.files.getWeakRef(paths[i]);
+                        if (file.isOpen) {
+                            file.selected = paths[i] === path;
+                        }
+                    }
                 }
+                else {
+                    // Do nothing
+                }
+            }
+            finally {
+                file.release();
             }
         }
         else {
-            // Do nothing
+            // Do nothing.
         }
     }
     closeFile(path: string): void {
-        const file = this.findFileByName(path);
+        const file = this.findFileByPath(path);
         if (file) {
             // We assume someone is watching this property, ready to pounce.
             // TODO: Replace with openPending flag?
             file.isOpen = false;
             file.selected = false;
+            file.release();
         }
         else {
             // Do nothing
@@ -804,7 +881,7 @@ export default class WsModel implements Disposable, MwWorkspace {
      *
      * @returns The file at the specified path.
      */
-    findFileByName(path: string): WsFile {
+    findFileByPath(path: string): WsFile {
         if (this.files) {
             return this.files.get(path);
         }
@@ -812,16 +889,17 @@ export default class WsModel implements Disposable, MwWorkspace {
             return void 0;
         }
     }
-    getEditSession(path: string): EditSession {
+    getFileSession(path: string): EditSession {
         if (this.files) {
-            return this.files.getWeakRef(path).editSession;
+            // TODO: Neet to implement getSession
+            return this.files.getWeakRef(path).getSession();
         }
         else {
             return void 0;
         }
     }
     setPreviewFile(path: string): void {
-        const file = this.findFileByName(path);
+        const file = this.findFileByPath(path);
         if (file) {
             const paths = this.files.keys;
             const iLen = paths.length;
@@ -829,6 +907,7 @@ export default class WsModel implements Disposable, MwWorkspace {
                 this.files.getWeakRef(paths[i]).preview = false;
             }
             file.preview = true;
+            file.release();
         }
         else {
             // Do nothing
@@ -838,10 +917,12 @@ export default class WsModel implements Disposable, MwWorkspace {
     /**
      * 
      */
+    /*
     updateStorage(): void {
         // FIXME: Let it go until we need to create stuff.
-        console.warn("TODO: WsModel.updateStorage");
+        throw new Error("TODO: WsModel.updateStorage");
     }
+    */
 
     /**
      * Determines whether this workspace has a package.json file.
@@ -857,13 +938,17 @@ export default class WsModel implements Disposable, MwWorkspace {
         try {
             // Beware: We could have a package.json that doesn't parse.
             // We must ensure that the user can recover the situation.
-            const file = this.ensurePackageJson();
-            return JSON.parse(file.getText());
+            const file = this.ensurePackageJsonXXX();
+            const text = file.getText();
+            file.release();
+            return JSON.parse(text);
         }
         catch (e) {
             console.warn(`Unable to parse file '${FILENAME_META}' as JSON.`);
-            const file = this.ensurePackageJson();
-            console.warn(file.getText());
+            const file = this.ensurePackageJsonXXX();
+            const text = file.getText();
+            file.release();
+            console.warn(text);
             return void 0;
         }
     }
@@ -877,22 +962,22 @@ export default class WsModel implements Disposable, MwWorkspace {
         }
     }
 
-    private ensurePackageJson(): WsFile {
-        return this.ensureFile(FILENAME_META, '{}');
+    private ensurePackageJsonXXX(): WsFile {
+        return this.ensureFileXXX(FILENAME_META, '{}');
     }
 
     /**
      *
      */
-    private ensureFile(path: string, content: string): WsFile {
+    private ensureFileXXX(path: string, content: string): WsFile {
         if (!this.existsFile(path)) {
             const file = this.newFile(path);
             file.setText(content);
-            file.language = modeFromName(path);
+            file.mode = modeFromName(path);
             return file;
         }
         else {
-            return this.findFileByName(path);
+            return this.findFileByPath(path);
         }
     }
 
@@ -941,12 +1026,12 @@ export default class WsModel implements Disposable, MwWorkspace {
             const fileNames = this.files.keys;
             for (let i = 0; i < fileNames.length; i++) {
                 const fileName = fileNames[i];
-                const session = this.getEditSession(fileName);
-                const file = this.findFileByName(fileName);
+                const file = this.findFileByPath(fileName);
                 // Create the synchronization node associated with the workspace.
                 // This will enable the node to create and destroy editors.
                 file.unit = new MwUnit(this);
                 file.unit.setEditor(file);
+                file.release();
             }
 
             // Add a listener to the room agent so that edits broadcast from the room are sent to the node.
@@ -957,10 +1042,13 @@ export default class WsModel implements Disposable, MwWorkspace {
             // We debounce the change events so that the diff is trggered when things go quiet for a second.
             for (let i = 0; i < fileNames.length; i++) {
                 const fileName = fileNames[i];
-                const session = this.getEditSession(fileName);
-                const file = this.findFileByName(fileName);
-                const changeHandler = debounce(uploadFileEditsToRoom(fileName, file.unit, room), DEBOUNCE_DURATION_MILLISECONDS);
+                const session = this.getFileSession(fileName);
+                const file = this.findFileByPath(fileName);
+                const unit = file.unit;
+                file.release();
+                const changeHandler = debounce(uploadFileEditsToRoom(fileName, unit, room), DEBOUNCE_DURATION_MILLISECONDS);
                 session.on('change', changeHandler);
+                session.release();
                 // Keep track of the handlers so that we can remove them later.
                 // FIXME: We can do better because the on method returns a function for the off method.
                 this.changeHandlers[fileName] = changeHandler;
@@ -975,9 +1063,10 @@ export default class WsModel implements Disposable, MwWorkspace {
         const fileNames = this.files.keys;
         for (let i = 0; i < fileNames.length; i++) {
             const fileName = fileNames[i];
-            const session = this.getEditSession(fileName);
+            const session = this.getFileSession(fileName);
             const changeHandler = this.changeHandlers[fileName];
             session.off('change', changeHandler);
+            session.release();
             delete this.changeHandlers[fileName];
         }
         // remove the listener on the room agent.
@@ -990,8 +1079,9 @@ export default class WsModel implements Disposable, MwWorkspace {
             const fileIds = this.files.keys;
             for (let i = 0; i < fileIds.length; i++) {
                 const fileId = fileIds[i];
-                const file = this.findFileByName(fileId);
+                const file = this.findFileByPath(fileId);
                 const unit = file.unit;
+                file.release();
                 const edits: MwEdits = unit.getEdits(room.id);
                 room.setEdits(fileId, edits);
             }
@@ -1031,5 +1121,4 @@ export default class WsModel implements Disposable, MwWorkspace {
             console.warn("We appear to be missing a room");
         }
     }
-
-} 
+}

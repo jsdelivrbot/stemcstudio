@@ -28,7 +28,7 @@ export default class RoomsController {
         const roomParams: RoomParams = {
             description: "My favorite room",
             public: true
-        }
+        };
         this.roomsService.createRoom(roomParams).then((room: RoomAgent) => {
             this.missionControl.room = room;
             // This could use a flow.

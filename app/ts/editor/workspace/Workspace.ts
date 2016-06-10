@@ -25,9 +25,9 @@ function diagnosticToAnnotation(doc: Document, diagnostic: Diagnostic): Annotati
     return { row: pos.row, column: pos.column, text: diagnostic.message, type: 'error' };
 }
 
-function checkFileName(fileName: string): void {
-    if (typeof fileName !== 'string') {
-        throw new Error("fileName must be a string.");
+function checkPath(path: string): void {
+    if (typeof path !== 'string') {
+        throw new Error("path must be a string.");
     }
 }
 
@@ -77,10 +77,10 @@ function decodeWorkspaceState(state: WorkspaceState): string {
  * All editors (files) are loaded in the workspace but only TypeScript
  * files are offered to the language service.
  */
-function isTypeScript(fileName: string): boolean {
-    const period = fileName.lastIndexOf('.');
+function isTypeScript(path: string): boolean {
+    const period = path.lastIndexOf('.');
     if (period >= 0) {
-        const extension = fileName.substring(period + 1);
+        const extension = path.substring(period + 1);
         switch (extension) {
             case 'ts': {
                 return true;
@@ -90,7 +90,7 @@ function isTypeScript(fileName: string): boolean {
             }
         }
     }
-    console.warn(`isTypeScript('${fileName}') can't figure that one out.`);
+    console.warn(`isTypeScript('${path}') can't figure that one out.`);
     return false;
 }
 
@@ -119,10 +119,10 @@ export default class Workspace {
     /**
      *
      */
-    private editors: { [fileName: string]: Editor } = {};
-    private quickin: { [fileName: string]: QuickInfoTooltip } = {};
-    private annotationHandlers: { [fileName: string]: (event: any) => any } = {};
-    private changeHandlers: { [fileName: string]: (event: any, source: Editor) => any } = {};
+    private editors: { [path: string]: Editor } = {};
+    private quickin: { [path: string]: QuickInfoTooltip } = {};
+    private annotationHandlers: { [path: string]: (event: any) => any } = {};
+    private changeHandlers: { [path: string]: (event: any, source: Editor) => any } = {};
 
     private refMarkers: number[] = [];
 
@@ -284,42 +284,41 @@ export default class Workspace {
 
     /**
      * @method attachEditor
-     * @param fileName {string}
-     * @param editor {Editor}
-     * @param callback {(err: any) => any}
-     * @return {void}
+     * @param path
+     * @param editor
+     * @param callback
      */
-    public attachEditor(fileName: string, editor: Editor, callback: (err: any) => any): void {
+    public attachEditor(path: string, editor: Editor, callback: (err: any) => any): void {
 
         // Check arguments.
-        checkFileName(fileName);
+        checkPath(path);
         checkEditor(editor);
         checkCallback(callback);
 
         // Idempotency.
-        if (this.editors[fileName]) {
+        if (this.editors[path]) {
             setTimeout(callback, 0);
             return;
         }
         else {
-            this.editors[fileName] = editor;
+            this.editors[path] = editor;
         }
 
-        if (isTypeScript(fileName)) {
+        if (isTypeScript(path)) {
             const changeHandler = (delta: Delta, source: Editor) => {
                 this.inFlight++;
-                this.languageServiceProxy.applyDelta(fileName, delta, (err: any) => {
+                this.languageServiceProxy.applyDelta(path, delta, (err: any) => {
                     this.inFlight--;
                     if (!err) {
-                        this.updateMarkerModels(fileName, delta);
+                        this.updateMarkerModels(path, delta);
                     }
                     else {
-                        console.warn(`applyDelta ${delta} to '${fileName}' failed because ${err}. Marker models will not be updated.`);
+                        console.warn(`applyDelta ${delta} to '${path}' failed because ${err}. Marker models will not be updated.`);
                     }
                 });
             };
             editor.on('change', changeHandler);
-            this.changeHandlers[fileName] = changeHandler;
+            this.changeHandlers[path] = changeHandler;
 
             // When the LanguageMode has completed syntax analysis, it emits annotations.
             // This is our cue to begin semantic analysis and make use of transpiled files.
@@ -333,65 +332,65 @@ export default class Workspace {
                 }
             };
             editor.session.on('annotations', annotationsHandler);
-            this.annotationHandlers[fileName] = annotationsHandler;
+            this.annotationHandlers[path] = annotationsHandler;
 
             // Enable auto completion using the Workspace.
             // The command seems to be required on order to enable method completion.
             // However, it has the side-effect of enabling global completions (Ctrl-Space, etc).
             editor.commands.addCommand(new AutoCompleteCommand());
-            editor.completers.push(new WorkspaceCompleter(fileName, this));
+            editor.completers.push(new WorkspaceCompleter(path, this));
 
             // Finally, enable QuickInfo.
-            const quickInfo = new QuickInfoTooltip(fileName, editor, this);
+            const quickInfo = new QuickInfoTooltip(path, editor, this);
             quickInfo.init();
-            this.quickin[fileName] = quickInfo;
+            this.quickin[path] = quickInfo;
 
             // Ensure the script in the language service.
-            this.ensureScript(fileName, editor.getValue(), callback);
+            this.ensureScript(path, editor.getValue(), callback);
         }
     }
 
     /**
      * @method detachEditor
-     * @param fileName {string}
+     * @param path {string}
      * @param editor {Editor}
      * @param callback {(err: any) => any}
      * @return {void}
      */
-    public detachEditor(fileName: string, editor: Editor, callback: (err: any) => any): void {
+    public detachEditor(path: string, editor: Editor, callback: (err: any) => any): void {
 
         // Check Arguments.
-        checkFileName(fileName);
+        checkPath(path);
         checkEditor(editor);
         checkCallback(callback);
 
         // Idempotency.
-        if (!this.editors[fileName]) {
+        if (!this.editors[path]) {
             setTimeout(callback, 0);
             return;
         }
         else {
-            delete this.editors[fileName];
+            delete this.editors[path];
         }
 
-        if (isTypeScript(fileName)) {
+        if (isTypeScript(path)) {
             // Remove QuickInfo
-            const quickInfo = this.quickin[fileName];
+            const quickInfo = this.quickin[path];
             quickInfo.terminate();
-            delete this.quickin[fileName];
+            delete this.quickin[path];
 
             // Remove Annotation Handlers.
-            const annotationHandler = this.annotationHandlers[fileName];
+            const annotationHandler = this.annotationHandlers[path];
             editor.session.off('annotations', annotationHandler);
-            delete this.annotationHandlers[fileName];
+            delete this.annotationHandlers[path];
 
             // Remove Change Handlers.
-            const changeHandler = this.changeHandlers[fileName];
+            const changeHandler = this.changeHandlers[path];
             editor.off('change', changeHandler);
-            delete this.changeHandlers[fileName];
+            delete this.changeHandlers[path];
 
             // Remove the script from the language service.
-            this.removeScript(fileName, callback);
+            this.removeScript(path, callback);
         }
     }
 
@@ -403,13 +402,13 @@ export default class Workspace {
     public detachEditors(callback: (err: any) => any): void {
         checkCallback(callback);
 
-        const fileNames = Object.keys(this.editors);
-        const iLength = fileNames.length;
+        const paths = Object.keys(this.editors);
+        const iLength = paths.length;
         let iCount = 0;
         for (let i = 0; i < iLength; i++) {
-            const fileName = fileNames[i];
-            const editor = this.editors[fileName];
-            this.detachEditor(fileName, editor, function(err: any) {
+            const path = paths[i];
+            const editor = this.editors[path];
+            this.detachEditor(path, editor, function(err: any) {
                 iCount++;
                 if (iCount === iLength) {
                     callback(void 0);
@@ -420,17 +419,17 @@ export default class Workspace {
 
     /**
      * @method ensureScript
-     * @param fileName {string}
+     * @param path {string}
      * @param content {string}
      * @param callback {(err: any) => any}
      * @return {void}
      */
-    public ensureScript(fileName: string, content: string, callback: (err: any) => any): void {
-        checkFileName(fileName);
+    public ensureScript(path: string, content: string, callback: (err: any) => any): void {
+        checkPath(path);
         checkCallback(callback);
 
         this.inFlight++;
-        this.languageServiceProxy.ensureScript(fileName, content, (err: any) => {
+        this.languageServiceProxy.ensureScript(path, content, (err: any) => {
             this.inFlight--;
             if (!err) {
                 callback(void 0);
@@ -444,16 +443,16 @@ export default class Workspace {
     /**
      * @returns The names of files that have an associated editor.
      */
-    public getEditorFileNames(): string[] {
+    public getEditorPaths(): string[] {
         return Object.keys(this.editors);
     }
 
     /**
-     * @param fileName
+     * @param path
      * @returns The editor for the specified file name.
      */
-    public getEditor(fileName: string): Editor {
-        return this.editors[fileName];
+    public getEditor(path: string): Editor {
+        return this.editors[path];
     }
 
     public getEditSession(path: string): EditSession {
@@ -464,17 +463,17 @@ export default class Workspace {
      * TODO: This is exactly the function we would like to call to refresh the editor semantic annotations.
      */
     public semanticDiagnostics() {
-        const fileNames = Object.keys(this.editors);
-        for (let i = 0; i < fileNames.length; i++) {
-            const fileName = fileNames[i];
-            if (isTypeScript(fileName)) {
-                const session = this.editors[fileName].getSession();
-                this.semanticDiagnosticsForSession(fileName, session);
+        const paths = Object.keys(this.editors);
+        for (let i = 0; i < paths.length; i++) {
+            const path = paths[i];
+            if (isTypeScript(path)) {
+                const session = this.editors[path].getSession();
+                this.semanticDiagnosticsForSession(path, session);
             }
         }
     }
 
-    private updateSession(fileName: string, errors: Diagnostic[], session: EditSession): void {
+    private updateSession(path: string, errors: Diagnostic[], session: EditSession): void {
         checkSession(session);
 
         const doc = session.getDocument();
@@ -499,26 +498,26 @@ export default class Workspace {
         });
     }
 
-    private semanticDiagnosticsForSession(fileName: string, session: EditSession): void {
-        checkFileName(fileName);
+    private semanticDiagnosticsForSession(path: string, session: EditSession): void {
+        checkPath(path);
 
         this.inFlight++;
-        this.languageServiceProxy.getSyntaxErrors(fileName, (err: any, syntaxErrors: Diagnostic[]) => {
+        this.languageServiceProxy.getSyntaxErrors(path, (err: any, syntaxErrors: Diagnostic[]) => {
             this.inFlight--;
             if (err) {
-                console.warn(`getSyntaxErrors(${fileName}) => ${err}`);
+                console.warn(`getSyntaxErrors(${path}) => ${err}`);
             }
             else {
-                this.updateSession(fileName, syntaxErrors, session);
+                this.updateSession(path, syntaxErrors, session);
                 if (syntaxErrors.length === 0) {
                     this.inFlight++;
-                    this.languageServiceProxy.getSemanticErrors(fileName, (err: any, semanticErrors: Diagnostic[]) => {
+                    this.languageServiceProxy.getSemanticErrors(path, (err: any, semanticErrors: Diagnostic[]) => {
                         this.inFlight--;
                         if (err) {
-                            console.warn(`getSemanticErrors(${fileName}) => ${err}`);
+                            console.warn(`getSemanticErrors(${path}) => ${err}`);
                         }
                         else {
-                            this.updateSession(fileName, semanticErrors, session);
+                            this.updateSession(path, semanticErrors, session);
                         }
                     });
                 }
@@ -531,55 +530,55 @@ export default class Workspace {
      * @return {void}
      */
     public outputFiles(): void {
-        const fileNames = Object.keys(this.editors);
-        for (let i = 0; i < fileNames.length; i++) {
-            const fileName = fileNames[i];
-            if (isTypeScript(fileName)) {
-                const editor = this.editors[fileName];
-                this.outputFilesForSession(fileName, editor.getSession());
+        const paths = Object.keys(this.editors);
+        for (let i = 0; i < paths.length; i++) {
+            const path = paths[i];
+            if (isTypeScript(path)) {
+                const editor = this.editors[path];
+                this.outputFilesForSession(path, editor.getSession());
             }
         }
     }
 
-    private outputFilesForSession(fileName: string, session: EditSession): void {
-        checkFileName(fileName);
+    private outputFilesForSession(path: string, session: EditSession): void {
+        checkPath(path);
         checkSession(session);
 
         this.inFlight++;
-        this.languageServiceProxy.getOutputFiles(fileName, (err: any, outputFiles: OutputFile[]) => {
+        this.languageServiceProxy.getOutputFiles(path, (err: any, outputFiles: OutputFile[]) => {
             this.inFlight--;
             if (!err) {
                 session._emit("outputFiles", { data: outputFiles });
             }
             else {
-                console.warn(`getOutputFiles(${fileName}) => ${err}`);
+                console.warn(`getOutputFiles(${path}) => ${err}`);
             }
         });
     }
 
     /**
      * @method getCompletionsAtPosition
-     * @param fileName {string}
+     * @param path {string}
      * @param position {number}
      * @param prefix {string}
      * @return {Promise} CompletionEntry[]
      */
-    getCompletionsAtPosition(fileName: string, position: number, prefix: string): Promise<CompletionEntry[]> {
-        checkFileName(fileName);
+    getCompletionsAtPosition(path: string, position: number, prefix: string): Promise<CompletionEntry[]> {
+        checkPath(path);
         // FIXME: Promises make it messy to hook for inFlight.
-        return this.languageServiceProxy.getCompletionsAtPosition(fileName, position, prefix);
+        return this.languageServiceProxy.getCompletionsAtPosition(path, position, prefix);
     }
 
     /**
      * @method getQuickInfoAtPosition
-     * @param fileName {string}
+     * @param path {string}
      * @param position {number}
      * @return {void}
      */
-    getQuickInfoAtPosition(fileName: string, position: number, callback: (err: any, quickInfo: QuickInfo) => any): void {
-        checkFileName(fileName);
+    getQuickInfoAtPosition(path: string, position: number, callback: (err: any, quickInfo: QuickInfo) => any): void {
+        checkPath(path);
         this.inFlight++;
-        return this.languageServiceProxy.getQuickInfoAtPosition(fileName, position, (err: any, quickInfo: QuickInfo) => {
+        return this.languageServiceProxy.getQuickInfoAtPosition(path, position, (err: any, quickInfo: QuickInfo) => {
             this.inFlight--;
             callback(err, quickInfo);
         });
@@ -587,15 +586,15 @@ export default class Workspace {
 
     /**
      * @method removeScript
-     * @param fileName {string}
+     * @param path {string}
      * @param callback {(err: any) => any}
      * @return {void}
      */
-    public removeScript(fileName: string, callback: (err: any) => any): void {
-        checkFileName(fileName);
+    public removeScript(path: string, callback: (err: any) => any): void {
+        checkPath(path);
         checkCallback(callback);
         this.inFlight++;
-        this.languageServiceProxy.removeScript(fileName, (err: any) => {
+        this.languageServiceProxy.removeScript(path, (err: any) => {
             this.inFlight--;
             if (!err) {
                 callback(void 0);
@@ -610,9 +609,9 @@ export default class Workspace {
      * This appears to be the only function that requires full access to the Editor
      * because it need to call the updateFrontMarkers method or the Renderer.
      */
-    private updateMarkerModels(fileName: string, delta: Delta): void {
-        checkFileName(fileName);
-        const editor = this.editors[fileName];
+    private updateMarkerModels(path: string, delta: Delta): void {
+        checkPath(path);
+        const editor = this.editors[path];
         if (editor) {
             const action = delta.action;
             const markers: { [id: number]: Marker } = editor.getSession().getMarkers(true);
@@ -624,7 +623,7 @@ export default class Workspace {
                 lineCount = -delta.lines.length;
             }
             else {
-                throw new Error(`updateMarkerModels(${fileName}, ${JSON.stringify(delta)})`);
+                throw new Error(`updateMarkerModels(${path}, ${JSON.stringify(delta)})`);
             }
             if (lineCount !== 0) {
                 const markerUpdate = function(markerId: number) {
