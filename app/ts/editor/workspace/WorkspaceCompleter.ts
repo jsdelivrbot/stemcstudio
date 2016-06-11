@@ -6,7 +6,7 @@ import CompletionEntry from './CompletionEntry';
 import Editor from '../Editor';
 import EditSession from "../EditSession";
 import Position from "../Position";
-import Workspace from './Workspace';
+import WorkspaceCompleterHost from './WorkspaceCompleterHost';
 import EditorPosition from './EditorPosition';
 
 /**
@@ -14,10 +14,10 @@ import EditorPosition from './EditorPosition';
  */
 export default class WorkspaceCompleter implements Completer {
 
-    private workspace: Workspace;
+    private workspace: WorkspaceCompleterHost;
     private fileName: string;
 
-    constructor(fileName: string, workspace: Workspace) {
+    constructor(fileName: string, workspace: WorkspaceCompleterHost) {
         this.fileName = fileName;
         this.workspace = workspace;
     }
@@ -58,5 +58,4 @@ export default class WorkspaceCompleter implements Completer {
                 callback(err);
             });
     }
-
 }

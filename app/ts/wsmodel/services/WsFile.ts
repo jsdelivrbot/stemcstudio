@@ -118,7 +118,7 @@ export default class WsFile implements MwEditor, Shareable {
         }
     }
 
-    private setDocument(doc: Document) {
+    public setDocument(doc: Document) {
         if (this.doc === doc) {
             return;
         }
@@ -176,6 +176,22 @@ export default class WsFile implements MwEditor, Shareable {
     /**
      *
      */
+    getEditor(): Editor {
+        if (this.editor) {
+            return this.editor;
+        }
+        else {
+            return void 0;
+        }
+    }
+
+    setEditor(editor: Editor) {
+        this.editor = editor;
+    }
+
+    /**
+     *
+     */
     getSession(): EditSession {
         if (this.session) {
             this.session.addRef();
@@ -190,6 +206,24 @@ export default class WsFile implements MwEditor, Shareable {
         else {
             return void 0;
         }
+    }
+
+    hasSession(): boolean {
+        return this.session ? true : false;
+    }
+
+    getDocument(): Document {
+        if (this.doc) {
+            this.doc.addRef();
+            return this.doc;
+        }
+        else {
+            return void 0;
+        }
+    }
+
+    hasDocument(): boolean {
+        return this.doc ? true : false;
     }
 
     getText(): string {

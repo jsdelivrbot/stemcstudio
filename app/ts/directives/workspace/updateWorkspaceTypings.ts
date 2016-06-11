@@ -86,8 +86,9 @@ export default function(
     };
 
     rmvUnits.forEach((rmvUnit) => {
-        wsModel.removeScript(rmvUnit.fileName);
-        olds.splice(olds.indexOf(rmvUnit.name), 1);
+        wsModel.removeScript(rmvUnit.fileName, (err) => {
+            olds.splice(olds.indexOf(rmvUnit.name), 1);
+        });
     });
 
     // Make sure that the callback gets called, even when adding no files.
@@ -102,8 +103,9 @@ export default function(
             inFlightCount++;
             readFile(addUnit.fileName, (err, content) => {
                 if (!err) {
-                    wsModel.ensureScript(addUnit.fileName, content.replace(/\r\n?/g, '\n'));
-                    olds.unshift(addUnit.name);
+                    wsModel.ensureScript(addUnit.fileName, content.replace(/\r\n?/g, '\n'), (err) => {
+                        olds.unshift(addUnit.name);
+                    });
                 }
                 inFlightCount--;
                 if (0 === inFlightCount) {

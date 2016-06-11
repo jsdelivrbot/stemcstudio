@@ -25,6 +25,7 @@ export default class BackgroundService implements Background {
     }
 
     /**
+     * Loads the contents of the WsModel from the specified repo, gist or Local Storage.
      * @param owner
      * @param repo
      * @param gistId

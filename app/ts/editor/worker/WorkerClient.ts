@@ -41,9 +41,6 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
 
     /**
      * The underlying Web Worker.
-     * @property $worker
-     * @type Worker
-     * @private
      */
     private worker: Worker;
 
@@ -197,8 +194,7 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
     }
 
     /**
-     * @method terminate
-     * @return {void}
+     * Calls the terminate method of the underlying Worker and sets the worker propert to undefined.
      */
     terminate(): void {
         // One a Web Worker has been terminated, there is no way to restart it.

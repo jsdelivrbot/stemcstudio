@@ -1,23 +1,38 @@
 import * as ng from 'angular';
 import addMissingFilesToWorkspace from './addMissingFilesToWorkspace';
 import allEditsRaw from './allEditsRaw';
+import Annotation from '../../editor/Annotation';
+import AutoCompleteCommand from '../../editor/autocomplete/AutoCompleteCommand';
+import CompletionEntry from '../../editor/workspace/CompletionEntry';
 // FIXME: Code Organization.
 import dependenciesMap from '../../services/doodles/dependenciesMap';
 import dependencyNames from '../../services/doodles/dependencyNames';
 import Delta from '../../editor/Delta';
+import Diagnostic from '../../editor/workspace/Diagnostic';
 import Disposable from '../../base/Disposable';
+import Document from '../../editor/Document';
 import Editor from '../../editor/Editor';
 import EditSession from '../../editor/EditSession';
-import Workspace from '../../editor/workspace/Workspace';
+// FIXME: Replace by $http
+import {get} from '../../editor/lib/net';
+import getPosition from '../../editor/workspace/getPosition';
+import LanguageServiceProxy from '../../editor/workspace/LanguageServiceProxy';
 // FIXME: Code Organization.
 import IDoodleConfig from '../../services/doodles/IDoodleConfig';
 import IOptionManager from '../../services/options/IOptionManager';
+import Position from '../../editor/Position';
 import PromiseManager from './PromiseManager';
+import Marker from '../../editor/Marker';
 import modeFromName from '../../utils/modeFromName';
 import MwEditor from '../../synchronization/MwEditor';
 import MwEdits from '../../synchronization/MwEdits';
 import MwUnit from '../../synchronization/MwUnit';
 import MwWorkspace from '../../synchronization/MwWorkspace';
+import OutputFile from '../../editor/workspace/OutputFile';
+import QuickInfo from '../../editor/workspace/QuickInfo';
+import QuickInfoTooltip from '../../editor/workspace/QuickInfoTooltip';
+import QuickInfoTooltipHost from '../../editor/workspace/QuickInfoTooltipHost';
+import Range from '../../editor/Range';
 import RoomAgent from '../../modules/rooms/services/RoomAgent';
 import StringShareableMap from '../../collections/StringShareableMap';
 import WsFile from './WsFile';
@@ -25,6 +40,8 @@ import setOptionalBooleanProperty from '../../services/doodles/setOptionalBoolea
 import setOptionalStringProperty from '../../services/doodles/setOptionalStringProperty';
 import setOptionalStringArrayProperty from '../../services/doodles/setOptionalStringArrayProperty';
 import UnitListener from './UnitListener';
+import WorkspaceCompleter from '../../editor/workspace/WorkspaceCompleter';
+import WorkspaceCompleterHost from '../../editor/workspace/WorkspaceCompleterHost';
 import removeUnwantedFilesFromWorkspace from './removeUnwantedFilesFromWorkspace';
 
 /**
@@ -36,6 +53,50 @@ const systemImports: string[] = ['/jspm_packages/system.js', '/jspm.config.js'];
 const workerImports: string[] = systemImports.concat(['/js/ace-workers.js']);
 const typescriptServices = ['/js/typescriptServices.js'];
 
+/**
+ * The worker implementation for the LanguageServiceProxy.
+ */
+const workerUrl = '/js/worker.js';
+/**
+ * The script imports for initializing the LanguageServiceProxy.
+ */
+const scriptImports = workerImports.concat(typescriptServices);
+function diagnosticToAnnotation(doc: Document, diagnostic: Diagnostic): Annotation {
+    const minChar = diagnostic.start;
+    const pos: Position = getPosition(doc, minChar);
+    return { row: pos.row, column: pos.column, text: diagnostic.message, type: 'error' };
+}
+
+function checkPath(path: string): void {
+    if (typeof path !== 'string') {
+        throw new Error("path must be a string.");
+    }
+}
+
+function checkEditor(editor: Editor): void {
+    if (!(editor instanceof Editor)) {
+        throw new Error("editor must be an Editor.");
+    }
+}
+
+function checkSession(session: EditSession): void {
+    if (!(session instanceof EditSession)) {
+        throw new Error("session must be an EditSession.");
+    }
+}
+
+function checkDocument(doc: Document): void {
+    if (!(doc instanceof Document)) {
+        throw new Error("doc must be a Document.");
+    }
+}
+
+function checkCallback(callback: (err: any) => any): void {
+    if (typeof callback !== 'function') {
+        throw new Error("callback must be a function.");
+    }
+}
+
 enum WorkspaceState {
     CONSTRUCTED,
     INIT_PENDING,
@@ -44,6 +105,28 @@ enum WorkspaceState {
     TERM_PENDING,
     TERM_FAILED,
     TERMINATED
+}
+
+/**
+ * Determines whether the file is appropriate for the language service.
+ * All editors (files) are loaded in the workspace but only TypeScript
+ * files are offered to the language service.
+ */
+function isTypeScript(path: string): boolean {
+    const period = path.lastIndexOf('.');
+    if (period >= 0) {
+        const extension = path.substring(period + 1);
+        switch (extension) {
+            case 'ts': {
+                return true;
+            }
+            default: {
+                return false;
+            }
+        }
+    }
+    console.warn(`isTypeScript('${path}') can't figure that one out.`);
+    return false;
 }
 
 const DEBOUNCE_DURATION_MILLISECONDS = 100;
@@ -55,7 +138,7 @@ function debounce(next: () => any, delay: number) {
      */
     let timer: number;
 
-    return function(delta: Delta, session: EditSession) {
+    return function(delta: Delta, doc: Document) {
         if (timer) {
             window.clearTimeout(timer);
         }
@@ -76,7 +159,7 @@ function uploadFileEditsToRoom(fileId: string, unit: MwUnit, room: RoomAgent) {
 /**
  * The workspace data model.
  */
-export default class WsModel implements Disposable, MwWorkspace {
+export default class WsModel implements Disposable, MwWorkspace, QuickInfoTooltipHost, WorkspaceCompleterHost {
 
     /**
      * The owner's login.
@@ -130,7 +213,31 @@ export default class WsModel implements Disposable, MwWorkspace {
 
     public trace: boolean = false;
     private state: WorkspaceState;
-    private workspace: Workspace;
+
+    /**
+     * Keep track of in-flight requests so that we can prevent cascading requests in an indeterminate state.
+     * Increment before an asynchronous call is made.
+     * Decrement when the response is received.
+     */
+    private inFlight: number = 0;
+
+    private quickin: { [path: string]: QuickInfoTooltip } = {};
+    private annotationHandlers: { [path: string]: (event: any) => any } = {};
+    // private changeHandlers: { [path: string]: (event: any, source: Editor) => any } = {};
+
+    private refMarkers: number[] = [];
+
+    /**
+     * The diagnostics allow us to place markers in the marker layer.
+     * This array keeps track of the marker identifiers so that we can
+     * remove the existing ones when the time comes to replace them.
+     *
+     * @property errorMarkerIds
+     * @type number[]
+     */
+    private errorMarkerIds: number[] = [];
+
+    private languageServiceProxy: LanguageServiceProxy;
 
     /**
      * 
@@ -138,17 +245,16 @@ export default class WsModel implements Disposable, MwWorkspace {
     private promises: PromiseManager;
 
     private roomListener: UnitListener;
-    /**
-     * Keep track of the change handlers so that we can remove them when we stop listening.
-     */
-    private changeHandlers: { [fileName: string]: (delta: Delta, session: EditSession) => any } = {};
+
+    private langDocumentChangeListenerRemovers: { [path: string]: () => void } = {};
+    private roomDocumentChangeListenerRemovers: { [path: string]: () => void } = {};
 
     public static $inject: string[] = ['options', '$q'];
 
     constructor(private options: IOptionManager, private $q: ng.IQService) {
         // This will be called once, lazily, when this class is deployed as a singleton service.
-        this.workspace = new Workspace('/js/worker.js', workerImports.concat(typescriptServices));
-        this.workspace.trace = false;
+        this.languageServiceProxy = new LanguageServiceProxy(workerUrl);
+        // this.languageServiceProxy.trace = false;
         this.state = WorkspaceState.CONSTRUCTED;
         this.promises = new PromiseManager($q);
     }
@@ -180,7 +286,7 @@ export default class WsModel implements Disposable, MwWorkspace {
     }
 
     /**
-     *
+     * Starts the workspace thread.
      */
     initialize(callback: (err: any) => any): void {
         if (this.promises.length) {
@@ -189,7 +295,9 @@ export default class WsModel implements Disposable, MwWorkspace {
         this.promises.reset();
         const deferred = this.promises.defer('init');
         this.state = WorkspaceState.INIT_PENDING;
-        this.workspace.init((err: any) => {
+        this.inFlight++;
+        this.languageServiceProxy.init(scriptImports, (err: any) => {
+            this.inFlight--;
             if (err) {
                 console.warn(`init() => ${err}`);
                 this.state = WorkspaceState.INIT_FAILED;
@@ -222,126 +330,79 @@ export default class WsModel implements Disposable, MwWorkspace {
      * @return {void}
      */
     terminate(): void {
+        // FIXME: How can we detachEditors? This should be a reaction.
         this.detachEditors();
         this.removeScripts();
         this.synchronize().then(() => {
             this.state = WorkspaceState.TERM_PENDING;
-            this.workspace.terminate((err: any) => {
-                if (!err) {
-                    this.state = WorkspaceState.TERMINATED;
-                }
-                else {
-                    this.state = WorkspaceState.TERM_FAILED;
-                    console.warn(`terminate() => ${err}`);
-                }
-            });
+            this.languageServiceProxy.terminate();
         });
     }
 
     /**
-     * @method setDefaultLibrary
-     * @param url {string}
-     * @return {void}
+     * @param url
+     * @pram callback
      */
-    setDefaultLibrary(url: string): void {
-        switch (this.state) {
-            case WorkspaceState.OPERATIONAL: {
-                const deferred = this.promises.defer('setDefaultLibrary');
-                this.workspace.setDefaultLibrary(url, (err: any) => {
-                    if (err) {
-                        console.warn(`setDefaultLibrary(${url}) => ${err}`);
-                        this.promises.reject(deferred, err);
-                    }
-                    else {
-                        this.promises.resolve(deferred, true);
-                    }
-                });
-                break;
-            }
-            case WorkspaceState.INIT_PENDING: {
-                this.synchronize()
-                    .then(() => {
-                        this.state = WorkspaceState.OPERATIONAL;
-                        // Using recursion allows me to avoid creating a stack of commands.
-                        // Of course, the approaches are equivalent.
-                        this.setDefaultLibrary(url);
-                    })
-                    .catch((reason: any) => {
-                        this.state = WorkspaceState.INIT_FAILED;
-                    });
-                break;
-            }
-            case WorkspaceState.CONSTRUCTED: {
-                throw new Error("TODO: setDefaultLibrary while CONSTRUCTED");
-            }
-            case WorkspaceState.INIT_FAILED: {
-                throw new Error("TODO: setDefaultLibrary while INIT_FAILED");
-            }
-            default: {
-                throw new Error("TODO: setDefaultLibrary before OPERATIONAL");
-            }
-        }
-    }
-
-    setModuleKind(moduleKind: string): void {
-        switch (this.state) {
-            case WorkspaceState.OPERATIONAL: {
-                const deferred = this.promises.defer('setModuleKind');
-                this.workspace.setModuleKind(moduleKind, (err: any) => {
-                    if (err) {
-                        console.warn(`setModuleKind('${moduleKind}') => ${err}`);
-                        this.promises.reject(deferred, err);
-                    }
-                    else {
-                        this.promises.resolve(deferred, moduleKind);
-                    }
-                });
-                break;
-            }
-            case WorkspaceState.INIT_PENDING: {
-                this.synchronize()
-                    .then(() => {
-                        // TODO: DRY
-                        this.state = WorkspaceState.OPERATIONAL;
-                        // Using recursion allows me to avoid creating a stack of commands.
-                        // Of course, the approaches are equivalent.
-                        this.setModuleKind(moduleKind);
-                    })
-                    .catch((reason: any) => {
-                        this.state = WorkspaceState.INIT_FAILED;
-                    });
-                break;
-            }
-            default: {
-                throw new Error("TODO: setModuleKind before OPERATIONAL");
-            }
-        }
-    }
-
-    setScriptTarget(scriptTarget: string): void {
-        const deferred = this.promises.defer('setScriptTarget');
-        this.workspace.setScriptTarget(scriptTarget, (err: any) => {
+    setDefaultLibrary(url: string, callback: (err: any) => any): void {
+        checkCallback(callback);
+        this.inFlight++;
+        get(url, (err: Error, sourceCode: string) => {
+            this.inFlight--;
             if (err) {
-                console.warn(`setScriptTarget('${scriptTarget}') => ${err}`);
-                this.promises.reject(deferred, err);
+                callback(err);
             }
             else {
-                this.promises.resolve(deferred, scriptTarget);
+                if (this.languageServiceProxy) {
+                    this.inFlight++;
+                    this.languageServiceProxy.setDefaultLibContent(sourceCode, (err: any) => {
+                        this.inFlight--;
+                        callback(err);
+                    });
+                }
+                else {
+                    callback(new Error("languageServiceProxy is not defined."));
+                }
             }
         });
     }
 
-    setTrace(trace: boolean): void {
-        const deferred = this.promises.defer('setTrace');
-        this.workspace.setTrace(trace, (err: any) => {
-            if (err) {
-                console.warn(`setTrace('${trace}') => ${err}`);
-                this.promises.reject(deferred, err);
-            }
-            else {
-                this.promises.resolve(deferred, trace);
-            }
-        });
+    setModuleKind(moduleKind: string, callback: (err) => any): void {
+        checkCallback(callback);
+        if (this.languageServiceProxy) {
+            this.inFlight++;
+            this.languageServiceProxy.setModuleKind(moduleKind, (err: any) => {
+                this.inFlight--;
+                callback(err);
+            });
+        }
+        else {
+            callback(new Error("moduleKind is not available."));
+        }
+    }
+
+    setScriptTarget(scriptTarget: string, callback: (err) => any): void {
+        checkCallback(callback);
+        if (this.languageServiceProxy) {
+            this.inFlight++;
+            this.languageServiceProxy.setScriptTarget(scriptTarget, (err: any) => {
+                this.inFlight--;
+                callback(err);
+            });
+        }
+        else {
+            callback(new Error("scriptTarget is not available."));
+        }
+    }
+
+    setTrace(trace: boolean, callback: (err) => any): void {
+        checkCallback(callback);
+        // We won't bother tracking inFlight for tracing.
+        if (this.languageServiceProxy) {
+            this.languageServiceProxy.setTrace(trace, callback);
+        }
+        else {
+            callback(new Error("trace is not available."));
+        }
     }
 
     createEditor(): MwEditor {
@@ -352,52 +413,199 @@ export default class WsModel implements Disposable, MwWorkspace {
         throw new Error("TODO: deleteEditor");
     }
 
-    attachEditor(fileName: string, editor: Editor): void {
-        const deferred = this.promises.defer(`attachEditor('${fileName}')`);
-        this.workspace.attachEditor(fileName, editor, (err: any) => {
+    attachEditor(path: string, editor: Editor, callback: (err) => any): void {
+
+        // Check arguments.
+        checkPath(path);
+        checkEditor(editor);
+        checkCallback(callback);
+
+        // Idempotency.
+        const existing = this.getFileEditor(path);
+        if (existing) {
+            // existing.release();
+            setTimeout(callback, 0);
+            return;
+        }
+        else {
+            this.setFileEditor(path, editor);
+        }
+
+        // This makes more sense; it is editor specific.
+        if (isTypeScript(path)) {
+            // Enable auto completion using the Workspace.
+            // The command seems to be required on order to enable method completion.
+            // However, it has the side-effect of enabling global completions (Ctrl-Space, etc).
+            editor.commands.addCommand(new AutoCompleteCommand());
+            editor.completers.push(new WorkspaceCompleter(path, this));
+
+            // Finally, enable QuickInfo.
+            const quickInfo = new QuickInfoTooltip(path, editor, this);
+            quickInfo.init();
+            this.quickin[path] = quickInfo;
+        }
+
+        // But this should have happened already...
+        this.attachSession(path, editor.getSession(), callback);
+    }
+
+    attachSession(path: string, session: EditSession, callback: (err) => any): void {
+        // Check arguments.
+        checkPath(path);
+        checkSession(session);
+        checkCallback(callback);
+
+        if (isTypeScript(path)) {
+            if (!this.annotationHandlers[path]) {
+                // When the LanguageMode has completed syntax analysis, it emits annotations.
+                // This is our cue to begin semantic analysis and make use of transpiled files.
+                const annotationsHandler = (event: { data: Annotation[]; type: string }) => {
+                    if (this.inFlight === 0) {
+                        this.semanticDiagnostics();
+                        this.outputFiles();
+                    }
+                    else {
+                        // console.warn(`Ignoring 'annotations' event because inFlight => ${this.inFlight}`);
+                    }
+                };
+                session.on('annotations', annotationsHandler);
+                this.annotationHandlers[path] = annotationsHandler;
+            }
+
+            this.attachDocument(path, session.getDocument(), callback);
+        }
+    }
+
+    attachDocument(path: string, doc: Document, callback: (err) => any): void {
+        // Check arguments.
+        checkPath(path);
+        checkDocument(doc);
+        checkCallback(callback);
+
+        if (isTypeScript(path)) {
+            if (!this.langDocumentChangeListenerRemovers[path]) {
+                const changeHandler = (delta: Delta, source: Document) => {
+                    this.inFlight++;
+                    this.languageServiceProxy.applyDelta(path, delta, (err: any) => {
+                        this.inFlight--;
+                        if (!err) {
+                            this.updateFileSessionMarkerModels(path, delta);
+                            this.updateFileEditorFrontMarkers(path);
+                        }
+                        else {
+                            console.warn(`applyDelta ${delta} to '${path}' failed because ${err}. Marker models will not be updated.`);
+                        }
+                    });
+                };
+
+                this.langDocumentChangeListenerRemovers[path] = doc.addChangeListener(changeHandler);
+            }
+
+            // Ensure the script in the language service.
+            this.ensureScript(path, doc.getValue(), callback);
+        }
+    }
+
+    detachEditor(path: string, editor: Editor, callback: (err) => any): void {
+
+        // Check Arguments.
+        checkPath(path);
+        checkEditor(editor);
+        checkCallback(callback);
+
+        // Idempotency.
+        if (!this.getFileEditor(path)) {
+            setTimeout(callback, 0);
+            return;
+        }
+        else {
+            delete this.setFileEditor(path, void 0);
+        }
+
+        if (isTypeScript(path)) {
+            // Remove QuickInfo
+            if (this.quickin[path]) {
+                const quickInfo = this.quickin[path];
+                quickInfo.terminate();
+                delete this.quickin[path];
+            }
+        }
+
+        this.detachSession(path, editor.getSession(), callback);
+    }
+
+    detachSession(path: string, session: EditSession, callback: (err) => any) {
+
+        // Check Arguments.
+        checkPath(path);
+        checkSession(session);
+        checkCallback(callback);
+
+        if (isTypeScript(path)) {
+            // Remove Annotation Handlers.
+            if (this.annotationHandlers[path]) {
+                const annotationHandler = this.annotationHandlers[path];
+                session.off('annotations', annotationHandler);
+                delete this.annotationHandlers[path];
+
+                this.removeScript(path, callback);
+            }
+            else {
+                setTimeout(callback, 0);
+            }
+        }
+        else {
+            setTimeout(callback, 0);
+        }
+    }
+
+    removeScript(path: string, callback: (err) => any) {
+        // Check Arguments.
+        checkPath(path);
+        checkCallback(callback);
+
+        const doc = this.getFileDocument(path);
+
+        checkDocument(doc);
+
+        if (isTypeScript(path)) {
+            if (this.langDocumentChangeListenerRemovers[path]) {
+                this.langDocumentChangeListenerRemovers[path]();
+                delete this.langDocumentChangeListenerRemovers[path];
+
+                // Remove the script from the language service.
+                this.inFlight++;
+                this.languageServiceProxy.removeScript(path, (err: any) => {
+                    this.inFlight--;
+                    if (!err) {
+                        callback(void 0);
+                    }
+                    else {
+                        callback(err);
+                    }
+                });
+            }
+            else {
+                setTimeout(callback, 0);
+            }
+        }
+        else {
+            setTimeout(callback, 0);
+        }
+    }
+
+    ensureScript(path: string, content: string, callback: (err) => any): void {
+        checkPath(path);
+        checkCallback(callback);
+
+        this.inFlight++;
+        this.languageServiceProxy.ensureScript(path, content, (err: any) => {
+            this.inFlight--;
             if (!err) {
-                this.promises.resolve(deferred, fileName);
+                callback(void 0);
             }
             else {
-                console.warn(`attachEditor('${fileName}') => ${err}`);
-                this.promises.reject(deferred, err);
-            }
-        });
-    }
-
-    detachEditor(fileName: string, editor: Editor): void {
-        const deferred = this.promises.defer(`detachEditor('${fileName}')`);
-        this.workspace.detachEditor(fileName, editor, (err: any) => {
-            if (!err) {
-                this.promises.resolve(deferred, fileName);
-            }
-            else {
-                console.warn(`detachEditor('${fileName}') => ${err}`);
-                this.promises.reject(deferred, err);
-            }
-        });
-    }
-
-    ensureScript(fileName: string, content: string): void {
-        const deferred = this.promises.defer(`ensureScript('${fileName}')`);
-        this.workspace.ensureScript(fileName, content, (err: any) => {
-            if (err) {
-                this.promises.reject(deferred, err);
-            }
-            else {
-                this.promises.resolve(deferred);
-            }
-        });
-    }
-
-    removeScript(fileName: string): void {
-        const deferred = this.promises.defer(`removeScript('${fileName}')`);
-        this.workspace.removeScript(fileName, (err: any) => {
-            if (err) {
-                this.promises.reject(deferred, err);
-            }
-            else {
-                this.promises.resolve(deferred);
+                callback(err);
             }
         });
     }
@@ -410,26 +618,121 @@ export default class WsModel implements Disposable, MwWorkspace {
         // Do nothing.
     }
 
+    /*
     getEditorPaths(): string[] {
         return this.workspace.getEditorPaths();
     }
-
+    */
+    /*
     getEditor(fileName: string): Editor {
         return this.workspace.getEditor(fileName);
     }
+    */
 
     /**
      * 
      */
-    semanticDiagnostics(): void {
-        this.workspace.semanticDiagnostics();
+    public semanticDiagnostics(): void {
+        const paths = this.getFileSessionPaths();
+        for (let i = 0; i < paths.length; i++) {
+            const path = paths[i];
+            if (isTypeScript(path)) {
+                const session = this.getFileSession(path);
+                try {
+                    this.semanticDiagnosticsForSession(path, session);
+                }
+                finally {
+                    session.release();
+                }
+            }
+        }
+    }
+
+    private updateSession(path: string, errors: Diagnostic[], session: EditSession): void {
+        checkSession(session);
+
+        const doc = session.getDocument();
+
+        const annotations = errors.map(function(error) {
+            return diagnosticToAnnotation(doc, error);
+        });
+        session.setAnnotations(annotations);
+
+        this.errorMarkerIds.forEach(function(markerId) { session.removeMarker(markerId); });
+
+        errors.forEach((error: { message: string; start: number; length: number }) => {
+            const minChar = error.start;
+            const limChar = minChar + error.length;
+            const start = getPosition(doc, minChar);
+            const end = getPosition(doc, limChar);
+            const range = new Range(start.row, start.column, end.row, end.column);
+            // Add a new marker to the given Range. The last argument (inFront) causes a
+            // front marker to be defined and the 'changeFrontMarker' event fires.
+            // The class parameter is a css stylesheet class so you must have it in your CSS.
+            this.errorMarkerIds.push(session.addMarker(range, "typescript-error", "text", null, true));
+        });
+    }
+
+    private semanticDiagnosticsForSession(path: string, session: EditSession): void {
+        checkPath(path);
+
+        this.inFlight++;
+        this.languageServiceProxy.getSyntaxErrors(path, (err: any, syntaxErrors: Diagnostic[]) => {
+            this.inFlight--;
+            if (err) {
+                console.warn(`getSyntaxErrors(${path}) => ${err}`);
+            }
+            else {
+                this.updateSession(path, syntaxErrors, session);
+                if (syntaxErrors.length === 0) {
+                    this.inFlight++;
+                    this.languageServiceProxy.getSemanticErrors(path, (err: any, semanticErrors: Diagnostic[]) => {
+                        this.inFlight--;
+                        if (err) {
+                            console.warn(`getSemanticErrors(${path}) => ${err}`);
+                        }
+                        else {
+                            this.updateSession(path, semanticErrors, session);
+                        }
+                    });
+                }
+            }
+        });
     }
 
     /**
      *
      */
-    outputFiles(): void {
-        this.workspace.outputFiles();
+    public outputFiles(): void {
+        const paths = this.getFileSessionPaths();
+        for (let i = 0; i < paths.length; i++) {
+            const path = paths[i];
+            if (isTypeScript(path)) {
+                const session = this.getFileSession(path);
+                try {
+                    this.outputFilesForSession(path, session);
+                }
+                finally {
+                    session.release();
+                }
+            }
+        }
+    }
+
+    private outputFilesForSession(path: string, session: EditSession): void {
+        checkPath(path);
+        checkSession(session);
+
+        this.inFlight++;
+        this.languageServiceProxy.getOutputFiles(path, (err: any, outputFiles: OutputFile[]) => {
+            this.inFlight--;
+            if (!err) {
+                session._emit("outputFiles", { data: outputFiles });
+            }
+            else {
+                console.warn(`getOutputFiles(${path}) => ${err}`);
+            }
+        });
     }
 
     get author(): string {
@@ -688,7 +991,6 @@ export default class WsModel implements Disposable, MwWorkspace {
             console.warn(`deleteFile(${path}), ${path} was not found.`);
         }
     }
-
     existsFile(path: string): boolean {
         const file = this.findFileByPath(path);
         if (file) {
@@ -699,7 +1001,6 @@ export default class WsModel implements Disposable, MwWorkspace {
             return false;
         }
     }
-
     openFile(path: string): void {
         const file = this.findFileByPath(path);
         if (file) {
@@ -889,13 +1190,115 @@ export default class WsModel implements Disposable, MwWorkspace {
             return void 0;
         }
     }
-    getFileSession(path: string): EditSession {
+    getFileEditor(path: string): Editor {
         if (this.files) {
             // TODO: Neet to implement getSession
-            return this.files.getWeakRef(path).getSession();
+            const file = this.files.get(path);
+            if (file) {
+                try {
+                    return file.getEditor();
+                }
+                finally {
+                    file.release();
+                }
+            }
+            else {
+                return void 0;
+            }
         }
         else {
             return void 0;
+        }
+    }
+    setFileEditor(path: string, editor: Editor): void {
+        if (this.files) {
+            const file = this.files.get(path);
+            if (file) {
+                try {
+                    file.setEditor(editor);
+                }
+                finally {
+                    file.release();
+                }
+            }
+        }
+    }
+    getFileSessionPaths(): string[] {
+        const all = this.files.keys;
+        return all.filter((path) => {
+            const file = this.findFileByPath(path);
+            try {
+                return file.hasSession();
+            }
+            finally {
+                file.release();
+            }
+        });
+    }
+    getFileSession(path: string): EditSession {
+        if (this.files) {
+            // TODO: Neet to implement getSession
+            const file = this.files.get(path);
+            if (file) {
+                try {
+                    return file.getSession();
+                }
+                finally {
+                    file.release();
+                }
+            }
+            else {
+                return void 0;
+            }
+        }
+        else {
+            return void 0;
+        }
+    }
+    setFileSession(path: string, session: EditSession) {
+        if (this.files) {
+            const file = this.files.get(path);
+            if (file) {
+                try {
+                    file.setSession(session);
+                }
+                finally {
+                    file.release();
+                }
+            }
+        }
+    }
+    getFileDocument(path: string): Document {
+        if (this.files) {
+            // TODO: Neet to implement getSession
+            const file = this.files.get(path);
+            if (file) {
+                try {
+                    return file.getDocument();
+                }
+                finally {
+                    file.release();
+                }
+            }
+            else {
+                return void 0;
+            }
+        }
+        else {
+            return void 0;
+        }
+    }
+    setFileDocument(path: string, doc: Document) {
+        if (this.files) {
+            const file = this.files.get(path);
+            if (file) {
+                try {
+                    file.setDocument(doc);
+                }
+                finally {
+                    file.release();
+                }
+            }
         }
     }
     setPreviewFile(path: string): void {
@@ -1042,16 +1445,17 @@ export default class WsModel implements Disposable, MwWorkspace {
             // We debounce the change events so that the diff is trggered when things go quiet for a second.
             for (let i = 0; i < fileNames.length; i++) {
                 const fileName = fileNames[i];
-                const session = this.getFileSession(fileName);
-                const file = this.findFileByPath(fileName);
-                const unit = file.unit;
-                file.release();
-                const changeHandler = debounce(uploadFileEditsToRoom(fileName, unit, room), DEBOUNCE_DURATION_MILLISECONDS);
-                session.on('change', changeHandler);
-                session.release();
-                // Keep track of the handlers so that we can remove them later.
-                // FIXME: We can do better because the on method returns a function for the off method.
-                this.changeHandlers[fileName] = changeHandler;
+                const doc = this.getFileDocument(fileName);
+                try {
+                    const file = this.findFileByPath(fileName);
+                    const unit = file.unit;
+                    file.release();
+                    const changeHandler = debounce(uploadFileEditsToRoom(fileName, unit, room), DEBOUNCE_DURATION_MILLISECONDS);
+                    this.roomDocumentChangeListenerRemovers[fileName] = doc.addChangeListener(changeHandler);
+                }
+                finally {
+                    doc.release();
+                }
             }
         }
         else {
@@ -1063,11 +1467,14 @@ export default class WsModel implements Disposable, MwWorkspace {
         const fileNames = this.files.keys;
         for (let i = 0; i < fileNames.length; i++) {
             const fileName = fileNames[i];
-            const session = this.getFileSession(fileName);
-            const changeHandler = this.changeHandlers[fileName];
-            session.off('change', changeHandler);
-            session.release();
-            delete this.changeHandlers[fileName];
+            const doc = this.getFileDocument(fileName);
+            try {
+                this.roomDocumentChangeListenerRemovers[fileName]();
+                delete this.roomDocumentChangeListenerRemovers[fileName];
+            }
+            finally {
+                doc.release();
+            }
         }
         // remove the listener on the room agent.
         room.removeListener(this.roomListener);
@@ -1120,5 +1527,86 @@ export default class WsModel implements Disposable, MwWorkspace {
         else {
             console.warn("We appear to be missing a room");
         }
+    }
+
+    /**
+     * This appears to be the only function that requires full access to the Editor
+     * because it need to call the updateFrontMarkers method or the Renderer.
+     */
+    private updateFileSessionMarkerModels(path: string, delta: Delta): void {
+        checkPath(path);
+        const session: EditSession = this.getFileSession(path);
+        if (session) {
+            try {
+                const action = delta.action;
+                const markers: { [id: number]: Marker } = session.getMarkers(true);
+                let lineCount = 0;
+                if (action === "insert") {
+                    lineCount = delta.lines.length;
+                }
+                else if (action === "remove") {
+                    lineCount = -delta.lines.length;
+                }
+                else {
+                    throw new Error(`updateMarkerModels(${path}, ${JSON.stringify(delta)})`);
+                }
+                if (lineCount !== 0) {
+                    const markerUpdate = function(markerId: number) {
+                        const marker: Marker = markers[markerId];
+                        let row = delta.start.row;
+                        if (lineCount > 0) {
+                            row = +1;
+                        }
+                        if (marker && marker.range.start.row > row) {
+                            marker.range.start.row += lineCount;
+                            marker.range.end.row += lineCount;
+                        }
+                    };
+                    this.errorMarkerIds.forEach(markerUpdate);
+                    this.refMarkers.forEach(markerUpdate);
+                }
+            }
+            finally {
+                session.release();
+            }
+        }
+        else {
+            // There is no editor (but there may be a session.)
+        }
+    }
+
+    updateFileEditorFrontMarkers(path: string) {
+        const editor = this.getFileEditor(path);
+        if (editor) {
+            editor.renderer.updateFrontMarkers();
+        }
+    }
+
+    /**
+     * @method getCompletionsAtPosition
+     * @param path {string}
+     * @param position {number}
+     * @param prefix {string}
+     * @return {Promise} CompletionEntry[]
+     */
+    getCompletionsAtPosition(path: string, position: number, prefix: string): Promise<CompletionEntry[]> {
+        checkPath(path);
+        // FIXME: Promises make it messy to hook for inFlight.
+        return this.languageServiceProxy.getCompletionsAtPosition(path, position, prefix);
+    }
+
+    /**
+     * @method getQuickInfoAtPosition
+     * @param path {string}
+     * @param position {number}
+     * @return {void}
+     */
+    getQuickInfoAtPosition(path: string, position: number, callback: (err: any, quickInfo: QuickInfo) => any): void {
+        checkPath(path);
+        this.inFlight++;
+        return this.languageServiceProxy.getQuickInfoAtPosition(path, position, (err: any, quickInfo: QuickInfo) => {
+            this.inFlight--;
+            callback(err, quickInfo);
+        });
     }
 }

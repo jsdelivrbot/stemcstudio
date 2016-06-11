@@ -3,9 +3,9 @@ import Editor from '../Editor';
 import EditorPosition from './EditorPosition';
 // import escapeHTML from "../lib/escapeHTML";
 import Tooltip from '../Tooltip';
-import Workspace from './Workspace';
 import Position from '../Position';
 import QuickInfo from './QuickInfo';
+import QuickInfoTooltipHost from './QuickInfoTooltipHost';
 
 function getDocumentPositionFromScreenOffset(editor: Editor, x: number, y: number): Position {
 
@@ -23,28 +23,25 @@ function getDocumentPositionFromScreenOffset(editor: Editor, x: number, y: numbe
 }
 
 /**
- * @class QuickInfoTooltip
- * @extends Tooltip
+ *
  */
 export default class QuickInfoTooltip extends Tooltip {
-    private fileName: string;
+    private path: string;
     private editor: Editor;
-    private workspace: Workspace;
+    private host: QuickInfoTooltipHost;
     private mouseHandler: (event: MouseEvent) => void;
     private mouseMoveTimer: number;
 
     /**
-     * @class QuickInfoTooltip
-     * @constructor
-     * @param fileName {string}
-     * @param editor {Editor}
-     * @param workspace {Workspace}
+     * @param path
+     * @param editor
+     * @param workspace
      */
-    constructor(fileName: string, editor: Editor, workspace: Workspace) {
+    constructor(path: string, editor: Editor, workspace: QuickInfoTooltipHost) {
         super(editor.container);
-        this.fileName = fileName;
+        this.path = path;
         this.editor = editor;
-        this.workspace = workspace;
+        this.host = workspace;
 
         this.mouseHandler = (event: MouseEvent) => {
 
@@ -58,7 +55,7 @@ export default class QuickInfoTooltip extends Tooltip {
 
                     const documentPosition = getDocumentPositionFromScreenOffset(this.editor, event.offsetX, event.offsetY);
                     const position: number = EditorPosition.getPositionChars(this.editor, documentPosition);
-                    this.workspace.getQuickInfoAtPosition(this.fileName, position, (err: any, quickInfo: QuickInfo) => {
+                    this.host.getQuickInfoAtPosition(this.path, position, (err: any, quickInfo: QuickInfo) => {
                         if (!err) {
                             if (quickInfo) {
                                 // The displayParts and documentation are tokenized according to TypeScript conventions.
@@ -87,16 +84,14 @@ export default class QuickInfoTooltip extends Tooltip {
     }
 
     /**
-     * @method init
-     * @return {void}
+     *
      */
-    init(): void {
+    init() {
         this.editor.container.addEventListener('mousemove', this.mouseHandler);
     }
 
     /**
-     * @method terminate
-     * @return {void}
+     *
      */
     terminate(): void {
         this.editor.container.removeEventListener('mousemove', this.mouseHandler);

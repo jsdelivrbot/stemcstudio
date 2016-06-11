@@ -375,8 +375,7 @@ export default class WorkspaceController implements WorkspaceMixin {
      * initialization work of a controller.
      */
     $onInit(): void {
-        console.log("WorkspaceController.$onInit");
-        // Let the works
+
         this.wsModel.recycle();
 
         const owner: string = this.$stateParams['owner'];
@@ -389,7 +388,6 @@ export default class WorkspaceController implements WorkspaceMixin {
         this.$scope.doodleLoaded = false;
 
         this.background.loadWsModel(owner, repo, gistId, (err: Error) => {
-            console.log(`loadWsModel completed ${JSON.stringify(err, null, 2)}`);
             if (!err) {
                 // We don't need to load anything, but are we in the correct state for the Doodle?
                 // We end up here, e.g., when user presses Cancel from New dialog.
@@ -401,7 +399,6 @@ export default class WorkspaceController implements WorkspaceMixin {
                 }
                 else {
                     // We are in the correct state.
-                    console.log("The workspace model has been loaded successfully.");
                     this.$scope.doodleLoaded = true;
                     this.startWorkspaceThread((err) => {
                         if (!err) {
@@ -426,21 +423,24 @@ export default class WorkspaceController implements WorkspaceMixin {
             if (!err) {
                 // this.workspace.trace = true;
                 // this.workspace.setTrace(true);
-                this.wsModel.setDefaultLibrary('/typings/lib.es6.d.ts');
+                // FIXME: This can happen in parallel with other d.ts fetching activities.
+                this.wsModel.setDefaultLibrary('/typings/lib.es6.d.ts', (err) => {
+                    if (!err) {
+                        // Following a browser refresh, show the code so that it refreshes correctly (bug).
+                        // This also side-steps the issue of the time it takes to restart the preview.
+                        // Ideally we remove this line and use the cached `lastKnownJs` to provide the preview.
+                        this.wsModel.isCodeVisible = true;
 
-                // Following a browser refresh, show the code so that it refreshes correctly (bug).
-                // This also side-steps the issue of the time it takes to restart the preview.
-                // Ideally we remove this line and use the cached `lastKnownJs` to provide the preview.
-                this.wsModel.isCodeVisible = true;
+                        this.watches.push(this.$scope.$watch('isViewVisible', (newVal: boolean, oldVal, unused: angular.IScope) => {
+                            this.wsModel.isViewVisible = this.$scope.isViewVisible;
+                        }));
 
-                this.watches.push(this.$scope.$watch('isViewVisible', (newVal: boolean, oldVal, unused: angular.IScope) => {
-                    this.wsModel.isViewVisible = this.$scope.isViewVisible;
-                }));
-
-                this.watches.push(this.$scope.$watch('isEditMode', (newVal: boolean, oldVal, unused: angular.IScope) => {
-                    this.wsModel.isCodeVisible = this.$scope.isEditMode;
-                }));
-                callback(void 0);
+                        this.watches.push(this.$scope.$watch('isEditMode', (newVal: boolean, oldVal, unused: angular.IScope) => {
+                            this.wsModel.isCodeVisible = this.$scope.isEditMode;
+                        }));
+                    }
+                    callback(void 0);
+                });
             }
             else {
                 callback(new Error(`The workspace failed to initialize: ${err}`));
@@ -458,7 +458,6 @@ export default class WorkspaceController implements WorkspaceMixin {
      * We can use this hook to release external resources, watches and event handlers.
      */
     $onDestroy(): void {
-        console.log("WorkspaceController.$onDestroy");
         // const startTime = performance.now();
 
         // Cancel all of the watches.
@@ -537,26 +536,21 @@ export default class WorkspaceController implements WorkspaceMixin {
             this.$http,
             this.$location,
             this.VENDOR_FOLDER_MARKER, () => {
-
                 // Set the module kind for transpilation consistent with the version.
                 const moduleKind = detect1x(this.wsModel) ? MODULE_KIND_NONE : MODULE_KIND_SYSTEM;
-                this.wsModel.setModuleKind(moduleKind);
+                this.wsModel.setModuleKind(moduleKind, (err) => {
 
                 // Set the script target for transpilation consistent with the version.
                 const scriptTarget = detect1x(this.wsModel) ? SCRIPT_TARGET_ES5 : SCRIPT_TARGET_ES5;
-                this.wsModel.setScriptTarget(scriptTarget);
 
-                this.wsModel.synchronize()
-                    .then(() => {
-                        // FIXME: Need a callback here...
-                        this.wsModel.semanticDiagnostics();
-                        this.wsModel.outputFiles();
-                        this.$scope.workspaceLoaded = true;
-                        this.$scope.updatePreview(WAIT_NO_MORE);
-                    })
-                    .catch((reason: any) => {
-                        console.warn(`Unable to synchronize the workspace because ${reason}.`);
-                    });
+                this.wsModel.setScriptTarget(scriptTarget, (err) => {
+                    // FIXME: Need a callback here...
+                    this.wsModel.semanticDiagnostics();
+                    this.wsModel.outputFiles();
+                    this.$scope.workspaceLoaded = true;
+                    this.$scope.updatePreview(WAIT_NO_MORE);
+                });
+                });
             });
 
         // const endTime = performance.now();
@@ -583,7 +577,11 @@ export default class WorkspaceController implements WorkspaceMixin {
      */
     attachEditor(path: string, mode: string, editor: Editor): () => void {
         // const startTime = performance.now();
-        this.wsModel.attachEditor(path, editor);
+        // FIXME: What is actually asynchronous here?
+        // FIXME: How does this affect what happens next?
+        this.wsModel.attachEditor(path, editor, (err) => {
+            // Do nothing yet.
+        });
 
         switch (mode) {
             case LANGUAGE_PYTHON: {
@@ -761,7 +759,10 @@ export default class WorkspaceController implements WorkspaceMixin {
                 console.warn(`detachEditor(mode => ${mode}) is being ignored.`);
             }
         }
-        this.wsModel.detachEditor(path, editor);
+        // FIXME: What do we do here?
+        this.wsModel.detachEditor(path, editor, (err) => {
+            // TODO
+        });
         delete this.editors[path];
 
         // const endTime = performance.now();

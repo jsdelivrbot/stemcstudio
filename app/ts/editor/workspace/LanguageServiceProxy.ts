@@ -54,14 +54,17 @@ export default class LanguageServiceProxy {
     private callbackId = 1;
 
     /**
-     * @class LanguageServiceProxy
-     * @constructor
-     * @param workerUrl {string}
+     * Creates the undelying WorkerClient and establishes listeners.
+     * This method DOES NOT start the thread.
+     *
+     * @param workerUrl The URL of the JavaScript file for the worker.
      */
     constructor(workerUrl: string) {
 
         this.worker = new WorkerClient(workerUrl);
 
+        // TODO. LanguageServiceProxy shoule be Shareable so that we can clean up
+        // the listeners in the destructor.
         this.worker.on(EVENT_APPLY_DELTA, (response: { data: WorkerClientData<any> }) => {
             const {err, callbackId} = response.data;
             const callback: (err: any) => void = this.releaseCallback(callbackId);
@@ -136,10 +139,12 @@ export default class LanguageServiceProxy {
     }
 
     /**
+     * Posts a message to the worker thread causing the thread to be started.
+     *
      * @method init
-     * @param scriptImports {string[]}
-     * @param callback {(err: any) => any}
-     * @return {void}
+     * @param scriptImports
+     * @param callback
+     * @return
      */
     init(scriptImports: string[], callback: (err: any) => any): void {
         this.worker.init(scriptImports, 'ace-workers.js', 'LanguageServiceWorker', callback);
@@ -147,7 +152,7 @@ export default class LanguageServiceProxy {
 
     /**
      * @method terminate
-     * @return {void}
+     * @return
      */
     terminate(): void {
         this.worker.terminate();
