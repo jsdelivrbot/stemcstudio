@@ -1,30 +1,59 @@
 import Doodle from '../services/doodles/Doodle';
 import DoodleFile from '../services/doodles/DoodleFile';
-import StringShareableMap from '../collections/StringShareableMap';
-import WsFile from '../wsmodel/services/WsFile';
 import WsModel from '../wsmodel/services/WsModel';
 
 /**
  * 
  */
-function copyDoodleFilesToWorkspace(dudeFiles: { [path: string]: DoodleFile }, wsFiles: StringShareableMap<WsFile>): void {
+function copyFilesToWorkspace(dudeFiles: { [path: string]: DoodleFile }, workspace: WsModel): void {
     const paths = Object.keys(dudeFiles);
     for (let i = 0; i < paths.length; i++) {
         const path = paths[i];
         const dudeFile = dudeFiles[path];
-        const wsFile = new WsFile();
-        wsFile.setText(dudeFile.content);
-        // FIXME: Some of these properties are a bit unreliable and could be dropped on the DoodleFile. 
-        // wsFile.isOpen = dudeFile.isOpen;
-        wsFile.mode = dudeFile.language;
-        // wsFile.preview = dudeFile.preview;
-        // wsFile.raw_url = dudeFile.raw_url;
-        // wsFile.selected = dudeFile.selected;
-        // wsFile.sha = dudeFile.sha;
-        // wsFile.size = dudeFile.size;
-        // wsFile.truncated = dudeFile.truncated;
-        // wsFile.type = dudeFile.type;
-        wsFiles.putWeakRef(path, wsFile);
+        const wsFile = workspace.newFile(path);
+        try {
+            wsFile.setText(dudeFile.content);
+            // Later we will remember which files are open.
+            wsFile.isOpen = false; // dudeFile.isOpen;
+            wsFile.mode = dudeFile.language;
+            wsFile.preview = dudeFile.preview;
+            wsFile.raw_url = dudeFile.raw_url;
+            wsFile.selected = dudeFile.selected;
+            // FIXME: Some of these properties are a bit unreliable and could be dropped on the DoodleFile. 
+            // wsFile.sha = dudeFile.sha;
+            // wsFile.size = dudeFile.size;
+            // wsFile.truncated = dudeFile.truncated;
+            // wsFile.type = dudeFile.type;
+        }
+        finally {
+            wsFile.release();
+        }
+    }
+}
+
+function copyTrashToWorkspace(dudeFiles: { [path: string]: DoodleFile }, workspace: WsModel): void {
+    const paths = Object.keys(dudeFiles);
+    for (let i = 0; i < paths.length; i++) {
+        const path = paths[i];
+        const dudeFile = dudeFiles[path];
+        const wsFile = workspace.newFile(path);
+        try {
+            wsFile.setText(dudeFile.content);
+            wsFile.isOpen = false;
+            wsFile.mode = dudeFile.language;
+            wsFile.preview = dudeFile.preview;
+            wsFile.raw_url = dudeFile.raw_url;
+            wsFile.selected = dudeFile.selected;
+            // FIXME: Some of these properties are a bit unreliable and could be dropped on the DoodleFile. 
+            // wsFile.sha = dudeFile.sha;
+            // wsFile.size = dudeFile.size;
+            // wsFile.truncated = dudeFile.truncated;
+            // wsFile.type = dudeFile.type;
+            workspace.deleteFile(path);
+        }
+        finally {
+            wsFile.release();
+        }
     }
 }
 
@@ -33,8 +62,8 @@ function copyDoodleFilesToWorkspace(dudeFiles: { [path: string]: DoodleFile }, w
  */
 export default function copyDoodleToWorkspace(doodle: Doodle, wsModel: WsModel): void {
 
-    copyDoodleFilesToWorkspace(doodle.files, wsModel.files);
-    copyDoodleFilesToWorkspace(doodle.trash, wsModel.trash);
+    copyFilesToWorkspace(doodle.files, wsModel);
+    copyTrashToWorkspace(doodle.trash, wsModel);
 
     // Ignore properties which are maintained in package.json and so do not need to be copied.
     // This includes 'author', 'dependencies', 'description', 'keywords', 'name', 'operatorOverloading', and 'version'.

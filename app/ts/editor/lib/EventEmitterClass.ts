@@ -237,8 +237,8 @@ export default class EventEmitterClass<E, T> implements EventBus<E, T> {
      * @param [capturing] {boolean}
      * @return {void}
      */
-    public off(eventName: string, callback: (event: E, source: T) => any): void {
-        return this.removeEventListener(eventName, callback);
+    public off(eventName: string, callback: (event: E, source: T) => any, capturing?: boolean): void {
+        return this.removeEventListener(eventName, callback, capturing);
     }
 
     removeAllListeners(eventName: string) {

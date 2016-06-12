@@ -260,7 +260,7 @@ export default class GitHubCloudService implements CloudService {
         const blobs: ng.IHttpPromise<BlobKey>[] = [];
         for (let p = 0; p < paths.length; p++) {
             const path = paths[p];
-            const file = workspace.files.getWeakRef(path);
+            const file = workspace.getFileWeakRef(path);
             const content = this.base64.encode(file.getText());
             const encoding = 'base64';
             blobs.push(this.github.createBlob(owner, repo, { content, encoding }));
@@ -398,7 +398,7 @@ export default class GitHubCloudService implements CloudService {
                 }
             },
             (facts, session, next) => {
-                const paths = workspace.files.keys;
+                const paths = workspace.getFileDocumentPaths();
                 const blobs = this.createBlobsInRepo(workspace, owner, repo, paths);
                 const baseTreeSHA = facts.baseCommit.isResolved() ? facts.baseCommit.value.tree.sha : void 0;
                 this.createTreeInRepo(blobs, paths, baseTreeSHA, owner, repo)

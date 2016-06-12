@@ -959,7 +959,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     }
 
     /**
-     * Sets a new EditSession to use.
+     * Sets the EditSession to use.
      * This method also emits the `'changeSession'` event.
      *
      * @param session The new session to use.

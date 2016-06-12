@@ -7,6 +7,7 @@ import EventBus from "../EventBus";
 import EventEmitterClass from '../lib/EventEmitterClass';
 import {get} from "../config";
 import CallbackManager from './CallbackManager';
+import Disposable from '../../base/Disposable';
 
 // FIXME: This class is begging to be written using the functional constructor
 // pattern in order to provide better encapsulation and avoid the `this` binding
@@ -37,7 +38,7 @@ import CallbackManager from './CallbackManager';
  *
  * @class WorkerClient
  */
-export default class WorkerClient implements EventBus<MessageEvent, WorkerClient> {
+export default class WorkerClient implements EventBus<MessageEvent, WorkerClient>, Disposable {
 
     /**
      * The underlying Web Worker.
@@ -84,13 +85,6 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
 
     /**
      * Posts a message to the worker thread causing the thread to be started.
-     *
-     * @method init
-     * @param scriptImports {string[]}
-     * @param moduleName {string}
-     * @param className {string}
-     * @param callback {(err: any) => any}
-     * @return {void}
      */
     init(scriptImports: string[], moduleName: string, className: string, callback: (err: any) => any): void {
 
@@ -196,7 +190,7 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
     /**
      * Calls the terminate method of the underlying Worker and sets the worker propert to undefined.
      */
-    terminate(): void {
+    dispose(): void {
         // One a Web Worker has been terminated, there is no way to restart it.
         // We also don't get any notification that it has shut down.
         if (this.worker) {
@@ -329,8 +323,11 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
      * @param callback {(event: MessageEvent, source: WorkerClient) => any}
      * @return {void}
      */
-    on(eventName: string, callback: (event: MessageEvent, source: WorkerClient) => any): void {
+    on(eventName: string, callback: (event: MessageEvent, source: WorkerClient) => any) {
         this.eventBus.on(eventName, callback, false);
+        return () => {
+            this.eventBus.off(eventName, callback, false)
+        }
     }
 
     /**

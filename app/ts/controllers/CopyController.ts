@@ -3,7 +3,6 @@ import CopyScope from '../scopes/CopyScope';
 import IDoodleManager from '../services/doodles/IDoodleManager';
 import ITemplate from '../services/templates/ITemplate';
 import ITemplateFile from '../services/templates/ITemplateFile';
-import StringShareableMap from '../collections/StringShareableMap';
 import WsModel from '../wsmodel/services/WsModel';
 import WsFile from '../wsmodel/services/WsFile';
 
@@ -15,12 +14,13 @@ function mapWorkspaceFileToTemplateFile(wsFile: WsFile): ITemplateFile {
     return result;
 }
 
-function mapDoodleFilesToTemplateFiles(doodleFiles: StringShareableMap<WsFile>): { [path: string]: ITemplateFile } {
+function mapDoodleFilesToTemplateFiles(wsModel: WsModel): { [path: string]: ITemplateFile } {
     const result: { [path: string]: ITemplateFile } = {};
-    const paths: string[] = doodleFiles.keys;
+    const paths: string[] = wsModel.getFileDocumentPaths();
     for (let i = 0; i < paths.length; i++) {
         const path = paths[i];
-        result[path] = mapWorkspaceFileToTemplateFile(doodleFiles.getWeakRef(path));
+        const file = wsModel.getFileWeakRef(path);
+            result[path] = mapWorkspaceFileToTemplateFile(file);
     }
     return result;
 }
@@ -45,7 +45,7 @@ app.controller('copy-controller', [
 
         const template: ITemplate = {
             description: copySource.description,
-            files: mapDoodleFilesToTemplateFiles(copySource.files),
+            files: mapDoodleFilesToTemplateFiles(wsModel),
             dependencies: copySource.dependencies,
             operatorOverloading: copySource.operatorOverloading
         };
@@ -54,9 +54,8 @@ app.controller('copy-controller', [
 
         $scope.doOK = function() {
 
-            wsModel.dispose();
-            wsModel.recycle();
-
+            // FIXME: Instead, we use the template to push a new doodle.
+            /*
             wsModel.description = $scope.description;
             wsModel.dependencies = $scope.template.dependencies;
             wsModel.operatorOverloading = $scope.template.operatorOverloading;
@@ -64,11 +63,12 @@ app.controller('copy-controller', [
             for (let i = 0; i < paths.length; i++) {
                 const path = paths[i];
                 const templateFile = $scope.template.files[path];
-                const wsFile = new WsFile();
+                const wsFile = wsModel.newFile(path);
                 wsFile.setText(templateFile.content);
                 wsFile.mode = templateFile.language;
                 wsModel.files.putWeakRef(path, wsFile);
             }
+            */
 
             // TODO: Persist the workspace to Local Storage (doodles) in a decoupled way.
             throw new Error("TODO: CopyController.doOK");

@@ -5,7 +5,7 @@ import WsModel from '../../wsmodel/services/WsModel';
  * If the file does not exits, a warning is logged to the console and we return undefined.
  */
 export default function fileContent(path: string, workspace: WsModel): string {
-    const file = workspace.files.getWeakRef(path);
+    const file = workspace.getFileWeakRef(path);
     if (file) {
         return file.getText();
     }

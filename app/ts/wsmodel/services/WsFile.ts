@@ -6,6 +6,7 @@ import Shareable from '../../base/Shareable';
 import MwUnit from '../../synchronization/MwUnit';
 import MwEditor from '../../synchronization/MwEditor';
 import Patch from '../../synchronization/Patch';
+import WsModel from './WsModel';
 
 /**
  * This class corresponds to a file at a particular path in a workspace.
@@ -86,19 +87,25 @@ export default class WsFile implements MwEditor, Shareable {
     private refCount = 1;
 
     /**
-     *
+     * A weak reference to the workspace that owns this file.
      */
-    constructor() {
-        // Do nothing yet.
-        console.log("WsFile.constructor");
+    private workspace: WsModel;
+
+    /**
+     * @param workspace
+     */
+    constructor(workspace: WsModel) {
+        // console.lg("WsFile.constructor");
+        this.workspace = workspace;
     }
 
     /**
      * 
      */
     protected destructor(): void {
-        console.log("WsFile.destructor");
+        // console.lg("WsFile.destructor");
         this.setSession(void 0);
+        this.workspace = void 0;
     }
 
     public setSession(session: EditSession) {
@@ -106,6 +113,8 @@ export default class WsFile implements MwEditor, Shareable {
             return;
         }
         if (this.session) {
+            // TODO: detachSession
+            // this.workspace.detachSession()
             this.session.release();
             this.session = void 0;
         }
@@ -115,6 +124,7 @@ export default class WsFile implements MwEditor, Shareable {
             }
             this.session = session;
             this.session.addRef();
+            // TODO: attachSession
         }
     }
 
@@ -135,26 +145,12 @@ export default class WsFile implements MwEditor, Shareable {
         }
     }
 
-    clone(): WsFile {
-        // There is currently no clone() method on an EditSession so we lose information.
-        const copy = new WsFile();
-        copy.setText(this.getText());
-        copy.isOpen = this.isOpen;
-        copy.mode = this.mode;
-        copy.raw_url = this.raw_url;
-        copy.selected = this.selected;
-        // copy.size = this.size;
-        // copy.truncated = this.truncated;
-        // copy.type = this.type;
-        return copy;
-    }
-
     /**
      * 
      */
     addRef(): number {
         this.refCount++;
-        // console.log(`WsFile.addRef() => ${this.refCount}`);
+        // console.lg(`WsFile.addRef() => ${this.refCount}`);
         return this.refCount;
     }
 
@@ -169,7 +165,7 @@ export default class WsFile implements MwEditor, Shareable {
         else if (this.refCount < 0) {
             throw new Error("refCount has dropped below zero.");
         }
-        // console.log(`WsFile.release() => ${this.refCount}`);
+        // console.lg(`WsFile.release() => ${this.refCount}`);
         return this.refCount;
     }
 
@@ -190,7 +186,7 @@ export default class WsFile implements MwEditor, Shareable {
     }
 
     /**
-     *
+     * FIXME: Really ensureSession
      */
     getSession(): EditSession {
         if (this.session) {
@@ -204,6 +200,8 @@ export default class WsFile implements MwEditor, Shareable {
             return session;
         }
         else {
+            // May be better to throw an exception here.
+            //
             return void 0;
         }
     }
@@ -218,6 +216,7 @@ export default class WsFile implements MwEditor, Shareable {
             return this.doc;
         }
         else {
+            // May be better to throw an exception here.
             return void 0;
         }
     }

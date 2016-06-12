@@ -1306,7 +1306,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      */
     private $stopWorker(): void {
         if (this.$worker) {
-            this.$worker.terminate();
+            this.$worker.dispose();
         }
         this.$worker = null;
     }

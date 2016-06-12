@@ -1,7 +1,6 @@
 import * as ng from 'angular';
 import controller from './ExplorerController';
 import ExplorerScope from './ExplorerScope';
-import WsFile from '../../wsmodel/services/WsFile';
 import WsModel from '../../wsmodel/services/WsModel';
 
 /**
@@ -9,10 +8,6 @@ import WsModel from '../../wsmodel/services/WsModel';
  */
 interface ExplorerAttributes extends ng.IAttributes {
 
-}
-
-interface IViewValue {
-    [path: string]: WsFile;
 }
 
 const ddo: ng.IDirective = {
@@ -33,36 +28,27 @@ const ddo: ng.IDirective = {
              */
             pre: function($scope: ExplorerScope, iElem: ng.IAugmentedJQuery, iAttrs: ExplorerAttributes, controller: {}, transclude: ng.ITranscludeFunction) {
                 const ngModel: ng.INgModelController = controller[0];
-                ngModel.$formatters.push(function(modelvalue: WsModel) {
-                    if (modelvalue) {
-                        if (modelvalue instanceof WsModel) {
-                            const viewValue: IViewValue = {};
-                            const paths = modelvalue.files.keys;
-                            const iLen = paths.length;
-                            for (let i = 0; i < iLen; i++) {
-                                const path = paths[i];
-                                const file: WsFile = modelvalue.files.getWeakRef(path);
-                                viewValue[path] = file;
-                            }
-                            // It's a transformation, so we return a viewValue.
-                            return viewValue;
+                ngModel.$formatters.push(function(modelValue: WsModel) {
+                    if (modelValue) {
+                        if (modelValue instanceof WsModel) {
+                            return modelValue;
                         }
                         else {
                             console.warn("modelvalue is not a WsModel");
-                            return [];
+                            return {};
                         }
                     }
                     else {
-                        return [];
+                        return {};
                     }
                 });
-                ngModel.$parsers.push(function(viewValue: IViewValue) {
+                ngModel.$parsers.push(function(viewValue: WsModel) {
                     ngModel.$setValidity('yadda', true); // We passed the yadda test.
                     return viewValue;
                 });
                 // In Angular 1.3+ we have the $validators pipeline.
                 // We don't need to set validation states because we have an object, not an array.
-                ngModel.$validators['foo'] = function(modelValue: WsModel, viewValue: IViewValue): boolean {
+                ngModel.$validators['foo'] = function(modelValue: WsModel, viewValue: WsModel): boolean {
                     return true;
                 };
             },
@@ -76,7 +62,7 @@ const ddo: ng.IDirective = {
                 // Furthermore, we are being asked to use $viewValue, which has been passed through our formatters.
                 // Recall the formatters return a $viewValue which is a denormalized $modelValue for easy presentation logic (HTML).
                 ngModel.$render = function() {
-                    $scope.filesByPath = <IViewValue>ngModel.$viewValue;
+                    $scope.workspace = <WsModel>ngModel.$viewValue;
                 };
 
                 // When the transclude property is true, we get access to the fifth parameter of the link function.

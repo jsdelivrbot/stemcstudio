@@ -212,19 +212,17 @@ export default class WorkspaceController implements WorkspaceMixin {
 
         $scope.files = function() {
             const fs: {[path: string]: WsFile} = {};
-            const paths = wsModel.files.keys;
+            const paths = wsModel.getFileDocumentPaths();
             for (let i = 0; i < paths.length; i++) {
                 const path = paths[i];
-                const file = wsModel.files.getWeakRef(path);
-                fs[path] = file;
+                fs[path] = wsModel.getFileWeakRef(path);
             }
             return fs;
         };
 
         $scope.htmlFileCount = function() {
             if (wsModel) {
-                const files = wsModel.files;
-                const paths = files.keys;
+                const paths = wsModel.getFileDocumentPaths();
                 return paths.filter(function(path) { return isHtmlFilePath(path); }).length;
             }
             else {
@@ -234,8 +232,7 @@ export default class WorkspaceController implements WorkspaceMixin {
 
         $scope.markdownFileCount = function() {
             if (wsModel) {
-                const files = wsModel.files;
-                const paths = files.keys;
+                const paths = wsModel.getFileDocumentPaths();
                 return paths.filter(function(path) { return isMarkdownFilePath(path); }).length;
             }
             else {
@@ -244,17 +241,12 @@ export default class WorkspaceController implements WorkspaceMixin {
         };
 
         $scope.doView = (path: string): void => {
-            const file = wsModel.findFileByPath(path);
+            const file = wsModel.getFileWeakRef(path);
             if (file) {
-                try {
-                    wsModel.setPreviewFile(path);
-                    // The user probably wants to see the view, so make sure the view is visible.
-                    $scope.isViewVisible = true;
-                    $scope.updatePreview(WAIT_NO_MORE);
-                }
-                finally {
-                    file.release();
-                }
+                wsModel.setPreviewFile(path);
+                // The user probably wants to see the view, so make sure the view is visible.
+                $scope.isViewVisible = true;
+                $scope.updatePreview(WAIT_NO_MORE);
             }
         };
 
@@ -376,8 +368,6 @@ export default class WorkspaceController implements WorkspaceMixin {
      */
     $onInit(): void {
 
-        this.wsModel.recycle();
-
         const owner: string = this.$stateParams['owner'];
         const repo: string = this.$stateParams['repo'];
         const gistId: string = this.$stateParams['gistId'];
@@ -387,43 +377,29 @@ export default class WorkspaceController implements WorkspaceMixin {
         // This flag prevents the editors from being being 
         this.$scope.doodleLoaded = false;
 
-        this.background.loadWsModel(owner, repo, gistId, (err: Error) => {
+        this.wsModel.recycle((err) => {
             if (!err) {
-                // We don't need to load anything, but are we in the correct state for the Doodle?
-                // We end up here, e.g., when user presses Cancel from New dialog.
-                if (gistId && this.FEATURE_GIST_ENABLED && !this.$state.is(this.STATE_GIST, { gistId })) {
-                    this.$state.go(this.STATE_GIST, { gistId: this.wsModel.gistId });
-                }
-                else if (owner && repo && this.FEATURE_REPO_ENABLED && !this.$state.is(this.STATE_REPO, { owner, repo })) {
-                    this.$state.go(this.STATE_REPO, { owner: this.wsModel.owner, repo: this.wsModel.repo });
-                }
-                else {
-                    // We are in the correct state.
-                    this.$scope.doodleLoaded = true;
-                    this.startWorkspaceThread((err) => {
-                        if (!err) {
-                            this.afterWorkspaceStarted();
+                this.background.loadWsModel(owner, repo, gistId, (err: Error) => {
+                    if (!err) {
+                        // We don't need to load anything, but are we in the correct state for the Doodle?
+                        // We end up here, e.g., when user presses Cancel from New dialog.
+                        if (gistId && this.FEATURE_GIST_ENABLED && !this.$state.is(this.STATE_GIST, { gistId })) {
+                            this.$state.go(this.STATE_GIST, { gistId: this.wsModel.gistId });
+                        }
+                        else if (owner && repo && this.FEATURE_REPO_ENABLED && !this.$state.is(this.STATE_REPO, { owner, repo })) {
+                            this.$state.go(this.STATE_REPO, { owner: this.wsModel.owner, repo: this.wsModel.repo });
                         }
                         else {
-                            this.modalDialog.alert({title: "Start Workspace Error", message: err.message});
+                            // We are in the correct state.
+                            this.$scope.doodleLoaded = true;
+                            this.afterWorkspaceLoaded();
                         }
-                    });
-                }
-            }
-            else {
-                this.modalDialog.alert({title: "Load Workspace Error", message: err.message});
-            }
-        });
-    }
+                    }
+                    else {
+                        this.modalDialog.alert({title: "Load Workspace Error", message: err.message});
+                    }
+                });
 
-    private startWorkspaceThread(callback: (err: Error) => any): void {
-        // const startTime = performance.now();
-
-        this.wsModel.initialize((err) => {
-            if (!err) {
-                // this.workspace.trace = true;
-                // this.workspace.setTrace(true);
-                // FIXME: This can happen in parallel with other d.ts fetching activities.
                 this.wsModel.setDefaultLibrary('/typings/lib.es6.d.ts', (err) => {
                     if (!err) {
                         // Following a browser refresh, show the code so that it refreshes correctly (bug).
@@ -439,18 +415,15 @@ export default class WorkspaceController implements WorkspaceMixin {
                             this.wsModel.isCodeVisible = this.$scope.isEditMode;
                         }));
                     }
-                    callback(void 0);
+                    else {
+                        this.modalDialog.alert({title: "Default Library Error", message: err.message});
+                    }
                 });
             }
             else {
-                callback(new Error(`The workspace failed to initialize: ${err}`));
+                this.modalDialog.alert({title: "Start Workspace Error", message: err.message});
             }
         });
-
-
-
-        // const endTime = performance.now();
-        // console.lg(`Workspace.$onInit took ${endTime - startTime} ms.`);
     }
 
     /**
@@ -476,7 +449,6 @@ export default class WorkspaceController implements WorkspaceMixin {
             this.resizeListener = void 0;
         }
 
-        this.wsModel.terminate();
         this.wsModel.dispose();
 
         // const endTime = performance.now();
@@ -486,7 +458,7 @@ export default class WorkspaceController implements WorkspaceMixin {
     /**
      * 
      */
-    private afterWorkspaceStarted(): void {
+    private afterWorkspaceLoaded(): void {
         // const startTime = performance.now();
 
         this.resizeListener = (unused: UIEvent) => {
@@ -577,11 +549,7 @@ export default class WorkspaceController implements WorkspaceMixin {
      */
     attachEditor(path: string, mode: string, editor: Editor): () => void {
         // const startTime = performance.now();
-        // FIXME: What is actually asynchronous here?
-        // FIXME: How does this affect what happens next?
-        this.wsModel.attachEditor(path, editor, (err) => {
-            // Do nothing yet.
-        });
+        this.wsModel.attachEditor(path, editor);
 
         switch (mode) {
             case LANGUAGE_PYTHON: {
@@ -759,10 +727,9 @@ export default class WorkspaceController implements WorkspaceMixin {
                 console.warn(`detachEditor(mode => ${mode}) is being ignored.`);
             }
         }
-        // FIXME: What do we do here?
-        this.wsModel.detachEditor(path, editor, (err) => {
-            // TODO
-        });
+
+        this.wsModel.detachEditor(path, editor);
+
         delete this.editors[path];
 
         // const endTime = performance.now();

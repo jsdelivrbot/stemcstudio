@@ -204,12 +204,12 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     /**
      * 
      */
-    public files: StringShareableMap<WsFile>;
+    private files: StringShareableMap<WsFile>;
 
     /**
      * 
      */
-    public trash: StringShareableMap<WsFile>;
+    private trash: StringShareableMap<WsFile>;
 
     public trace: boolean = false;
     private state: WorkspaceState;
@@ -223,7 +223,6 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
 
     private quickin: { [path: string]: QuickInfoTooltip } = {};
     private annotationHandlers: { [path: string]: (event: any) => any } = {};
-    // private changeHandlers: { [path: string]: (event: any, source: Editor) => any } = {};
 
     private refMarkers: number[] = [];
 
@@ -262,33 +261,15 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     /**
      * Informs the workspace that we want to reuse it.
      * The workspace should have little work to do if it has just been constructed
-     * or if dispose has been called after the last use. This method does not consume
-     * any resources such as Web Workers.
+     * or if dispose has been called after the last use.
+     * This method starts the workspace thread.
      */
-    recycle(): void {
-        console.log("WsModel.recyle");
+    recycle(callback: (err: any) => any): void {
         if (this.files || this.trash) {
             console.warn("Make sure to call dispose()");
         }
         this.files = new StringShareableMap<WsFile>();
         this.trash = new StringShareableMap<WsFile>();
-    }
-    dispose(): void {
-        console.log("WsModel.dispose");
-        if (this.files) {
-            this.files.release();
-            this.files = void 0;
-        }
-        if (this.trash) {
-            this.trash.release();
-            this.trash = void 0;
-        }
-    }
-
-    /**
-     * Starts the workspace thread.
-     */
-    initialize(callback: (err: any) => any): void {
         if (this.promises.length) {
             console.warn(`outstanding promises prior to reset: ${this.promises.length}, ${JSON.stringify(this.promises.getOutstandingPurposes(), null, 2)}`);
         }
@@ -296,7 +277,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         const deferred = this.promises.defer('init');
         this.state = WorkspaceState.INIT_PENDING;
         this.inFlight++;
-        this.languageServiceProxy.init(scriptImports, (err: any) => {
+        this.languageServiceProxy.initialize(scriptImports, (err: any) => {
             this.inFlight--;
             if (err) {
                 console.warn(`init() => ${err}`);
@@ -312,6 +293,26 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         });
     }
 
+    get filesByPath(): { [path: string]: WsFile } {
+        const files: { [path: string]: WsFile } = {};
+        const paths = this.files.keys;
+        for (let i = 0; i < paths.length; i++) {
+            const path = paths[i];
+            files[path] = this.files.getWeakRef(path);
+        }
+        return files;
+    }
+
+    get trashByPath(): { [path: string]: WsFile } {
+        const trash: { [path: string]: WsFile } = {};
+        const paths = this.trash.keys;
+        for (let i = 0; i < paths.length; i++) {
+            const path = paths[i];
+            trash[path] = this.trash.getWeakRef(path);
+        }
+        return trash;
+    }
+
     synchronize(): ng.IPromise<any> {
         const deferred: ng.IDeferred<any> = this.$q.defer<any>();
         this.promises.synchronize()
@@ -325,11 +326,15 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         return deferred.promise;
     }
 
-    /**
-     * @method terminate
-     * @return {void}
-     */
-    terminate(): void {
+    dispose(): void {
+        if (this.files) {
+            this.files.release();
+            this.files = void 0;
+        }
+        if (this.trash) {
+            this.trash.release();
+            this.trash = void 0;
+        }
         // FIXME: How can we detachEditors? This should be a reaction.
         this.detachEditors();
         this.removeScripts();
@@ -413,18 +418,18 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         throw new Error("TODO: deleteEditor");
     }
 
-    attachEditor(path: string, editor: Editor, callback: (err) => any): void {
-
+    /**
+     * Attaching the Editor to the workspace enables the IDE features.
+     */
+    attachEditor(path: string, editor: Editor): void {
         // Check arguments.
         checkPath(path);
         checkEditor(editor);
-        checkCallback(callback);
 
         // Idempotency.
         const existing = this.getFileEditor(path);
         if (existing) {
             // existing.release();
-            setTimeout(callback, 0);
             return;
         }
         else {
@@ -436,6 +441,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             // Enable auto completion using the Workspace.
             // The command seems to be required on order to enable method completion.
             // However, it has the side-effect of enabling global completions (Ctrl-Space, etc).
+            // FIXME: How do we remove these later?
             editor.commands.addCommand(new AutoCompleteCommand());
             editor.completers.push(new WorkspaceCompleter(path, this));
 
@@ -445,15 +451,42 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             this.quickin[path] = quickInfo;
         }
 
-        // But this should have happened already...
-        this.attachSession(path, editor.getSession(), callback);
+        this.attachSession(path, editor.getSession());
     }
 
-    attachSession(path: string, session: EditSession, callback: (err) => any): void {
+    /**
+     * Detaching the Editor from the workspace disables the IDE features.
+     */
+    detachEditor(path: string, editor: Editor): void {
+
+        // Check Arguments.
+        checkPath(path);
+        checkEditor(editor);
+
+        // Idempotency.
+        if (!this.getFileEditor(path)) {
+            return;
+        }
+        else {
+            delete this.setFileEditor(path, void 0);
+        }
+
+        if (isTypeScript(path)) {
+            // Remove QuickInfo
+            if (this.quickin[path]) {
+                const quickInfo = this.quickin[path];
+                quickInfo.terminate();
+                delete this.quickin[path];
+            }
+        }
+
+        this.detachSession(path, editor.getSession());
+    }
+
+    private attachSession(path: string, session: EditSession): void {
         // Check arguments.
         checkPath(path);
         checkSession(session);
-        checkCallback(callback);
 
         if (isTypeScript(path)) {
             if (!this.annotationHandlers[path]) {
@@ -471,75 +504,13 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
                 session.on('annotations', annotationsHandler);
                 this.annotationHandlers[path] = annotationsHandler;
             }
-
-            this.attachDocument(path, session.getDocument(), callback);
         }
     }
 
-    attachDocument(path: string, doc: Document, callback: (err) => any): void {
-        // Check arguments.
-        checkPath(path);
-        checkDocument(doc);
-        checkCallback(callback);
-
-        if (isTypeScript(path)) {
-            if (!this.langDocumentChangeListenerRemovers[path]) {
-                const changeHandler = (delta: Delta, source: Document) => {
-                    this.inFlight++;
-                    this.languageServiceProxy.applyDelta(path, delta, (err: any) => {
-                        this.inFlight--;
-                        if (!err) {
-                            this.updateFileSessionMarkerModels(path, delta);
-                            this.updateFileEditorFrontMarkers(path);
-                        }
-                        else {
-                            console.warn(`applyDelta ${delta} to '${path}' failed because ${err}. Marker models will not be updated.`);
-                        }
-                    });
-                };
-
-                this.langDocumentChangeListenerRemovers[path] = doc.addChangeListener(changeHandler);
-            }
-
-            // Ensure the script in the language service.
-            this.ensureScript(path, doc.getValue(), callback);
-        }
-    }
-
-    detachEditor(path: string, editor: Editor, callback: (err) => any): void {
-
-        // Check Arguments.
-        checkPath(path);
-        checkEditor(editor);
-        checkCallback(callback);
-
-        // Idempotency.
-        if (!this.getFileEditor(path)) {
-            setTimeout(callback, 0);
-            return;
-        }
-        else {
-            delete this.setFileEditor(path, void 0);
-        }
-
-        if (isTypeScript(path)) {
-            // Remove QuickInfo
-            if (this.quickin[path]) {
-                const quickInfo = this.quickin[path];
-                quickInfo.terminate();
-                delete this.quickin[path];
-            }
-        }
-
-        this.detachSession(path, editor.getSession(), callback);
-    }
-
-    detachSession(path: string, session: EditSession, callback: (err) => any) {
-
+    private detachSession(path: string, session: EditSession) {
         // Check Arguments.
         checkPath(path);
         checkSession(session);
-        checkCallback(callback);
 
         if (isTypeScript(path)) {
             // Remove Annotation Handlers.
@@ -547,59 +518,110 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
                 const annotationHandler = this.annotationHandlers[path];
                 session.off('annotations', annotationHandler);
                 delete this.annotationHandlers[path];
-
-                this.removeScript(path, callback);
             }
-            else {
-                setTimeout(callback, 0);
-            }
-        }
-        else {
-            setTimeout(callback, 0);
         }
     }
 
-    removeScript(path: string, callback: (err) => any) {
+    /**
+     * Ends monitoring the Document at the specified path for changes and removes the script from the LanguageService.
+     */
+    beginDocumentMonitoring(path: string, callback: (err) => any): void {
+        // Check arguments.
+        checkPath(path);
+        checkCallback(callback);
+
+        const doc = this.getFileDocument(path);
+        try {
+            checkDocument(doc);
+
+            if (isTypeScript(path)) {
+                if (!this.langDocumentChangeListenerRemovers[path]) {
+                    const changeHandler = (delta: Delta, source: Document) => {
+                        this.inFlight++;
+                        this.languageServiceProxy.applyDelta(path, delta, (err: any) => {
+                            this.inFlight--;
+                            if (!err) {
+                                this.updateFileSessionMarkerModels(path, delta);
+                                this.updateFileEditorFrontMarkers(path);
+                            }
+                            else {
+                                console.warn(`applyDelta ${JSON.stringify(delta, null, 2)} to '${path}' failed: ${err}`);
+                            }
+                        });
+                    };
+                    this.langDocumentChangeListenerRemovers[path] = doc.addChangeListener(changeHandler);
+                }
+
+                // Ensure the script in the language service.
+                this.ensureScript(path, doc.getValue(), callback);
+            }
+        }
+        finally {
+            doc.release();
+        }
+    }
+
+    /**
+     * Ends monitoring the Document at the specified path for changes and removes the script from the LanguageService.
+     */
+    endDocumentMonitoring(path: string, callback: (err) => any) {
         // Check Arguments.
         checkPath(path);
         checkCallback(callback);
 
         const doc = this.getFileDocument(path);
+        try {
+            checkDocument(doc);
 
-        checkDocument(doc);
+            if (isTypeScript(path)) {
+                if (this.langDocumentChangeListenerRemovers[path]) {
+                    this.langDocumentChangeListenerRemovers[path]();
+                    delete this.langDocumentChangeListenerRemovers[path];
 
-        if (isTypeScript(path)) {
-            if (this.langDocumentChangeListenerRemovers[path]) {
-                this.langDocumentChangeListenerRemovers[path]();
-                delete this.langDocumentChangeListenerRemovers[path];
-
-                // Remove the script from the language service.
-                this.inFlight++;
-                this.languageServiceProxy.removeScript(path, (err: any) => {
-                    this.inFlight--;
-                    if (!err) {
-                        callback(void 0);
-                    }
-                    else {
-                        callback(err);
-                    }
-                });
+                    // Remove the script from the language service.
+                    this.removeScript(path, callback);
+                }
+                else {
+                    setTimeout(callback, 0);
+                }
             }
             else {
                 setTimeout(callback, 0);
             }
         }
-        else {
-            setTimeout(callback, 0);
+        finally {
+            doc.release();
         }
     }
 
+    /**
+     * 
+     */
     ensureScript(path: string, content: string, callback: (err) => any): void {
         checkPath(path);
         checkCallback(callback);
 
         this.inFlight++;
         this.languageServiceProxy.ensureScript(path, content, (err: any) => {
+            this.inFlight--;
+            if (!err) {
+                callback(void 0);
+            }
+            else {
+                callback(err);
+            }
+        });
+    }
+
+    /**
+     * 
+     */
+    removeScript(path: string, callback: (err) => any) {
+        checkPath(path);
+        checkCallback(callback);
+
+        this.inFlight++;
+        this.languageServiceProxy.removeScript(path, (err: any) => {
             this.inFlight--;
             if (!err) {
                 callback(void 0);
@@ -756,7 +778,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         }
     }
     set author(author: string) {
-        const file = this.ensurePackageJsonXXX();
+        const file = this.ensurePackageJson();
         try {
             const metaInfo: IDoodleConfig = JSON.parse(file.getText());
             setOptionalStringProperty('author', author, metaInfo);
@@ -789,7 +811,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     }
     set dependencies(dependencies: string[]) {
         try {
-            const file = this.ensurePackageJsonXXX();
+            const file = this.ensurePackageJson();
             try {
                 const metaInfo: IDoodleConfig = JSON.parse(file.getText());
                 metaInfo.dependencies = dependenciesMap(dependencies, this.options);
@@ -824,7 +846,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         }
     }
     set description(description: string) {
-        const file = this.ensurePackageJsonXXX();
+        const file = this.ensurePackageJson();
         try {
             const metaInfo: IDoodleConfig = JSON.parse(file.getText());
             setOptionalStringProperty('description', description, metaInfo);
@@ -855,7 +877,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         }
     }
     set keywords(keywords: string[]) {
-        const file = this.ensurePackageJsonXXX();
+        const file = this.ensurePackageJson();
         try {
             const metaInfo: IDoodleConfig = JSON.parse(file.getText());
             setOptionalStringArrayProperty('keywords', keywords, metaInfo);
@@ -880,7 +902,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         }
     }
     set name(name: string) {
-        const file = this.ensurePackageJsonXXX();
+        const file = this.ensurePackageJson();
         try {
             const metaInfo: IDoodleConfig = JSON.parse(file.getText());
             metaInfo.name = name;
@@ -908,7 +930,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         }
     }
     set operatorOverloading(operatorOverloading: boolean) {
-        const file = this.ensurePackageJsonXXX();
+        const file = this.ensurePackageJson();
         try {
             const metaInfo: IDoodleConfig = JSON.parse(file.getText());
             setOptionalBooleanProperty('operatorOverloading', operatorOverloading, metaInfo);
@@ -930,7 +952,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         }
     }
     set version(version: string) {
-        const file = this.ensurePackageJsonXXX();
+        const file = this.ensurePackageJson();
         try {
             const metaInfo: IDoodleConfig = JSON.parse(file.getText());
             metaInfo.version = version;
@@ -946,11 +968,10 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     }
     newFile(path: string): WsFile {
         const mode = modeFromName(path);
-        const conflictFile = this.findFileByPath(path);
-        if (!conflictFile) {
-            const trashedFile = this.trash.getWeakRef(path);
+        if (!this.existsFile(path)) {
+            const trashedFile = this.trash.get(path);
             if (!trashedFile) {
-                const file = new WsFile();
+                const file = new WsFile(this);
                 file.setText("");
                 file.mode = mode;
                 if (!this.files) {
@@ -958,57 +979,55 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
                 }
                 // The file is captured by the files collection (incrementing the reference count).
                 this.files.put(path, file);
+                this.beginDocumentMonitoring(path, (err) => {
+                    // FIXME: We should be returning the file in the callback.
+                });
                 // We return the other reference.
                 return file;
             }
             else {
                 this.restoreFileFromTrash(path);
                 trashedFile.mode = mode;
+                this.beginDocumentMonitoring(path, (err) => {
+                    // FIXME: We should be returning the file in the callback.
+                });
                 return trashedFile;
             }
         }
         else {
-            conflictFile.release();
             throw new Error(`${path} already exists. The path must be unique.`);
         }
     }
     deleteFile(path: string): void {
-        const file = this.findFileByPath(path);
+        const file = this.files.getWeakRef(path);
         if (file) {
             // Determine whether the file exists in GitHub so that we can delete it upon upload.
             // Use the raw_url as the sentinel. Keep it in trash for later deletion.
-            if (file.raw_url) {
-                this.moveFileToTrash(path);
-            }
-            else {
-                // It's a file that does not exist on GitHub.
-                this.files.remove(path).release();
-                delete this.lastKnownJs[path];
-            }
-            file.release();
+            this.endDocumentMonitoring(path, (err) => {
+                if (file.raw_url) {
+                    this.moveFileToTrash(path);
+                }
+                else {
+                    // It's a file that does not exist on GitHub.
+                    this.files.remove(path).release();
+                    delete this.lastKnownJs[path];
+                }
+            });
         }
         else {
             console.warn(`deleteFile(${path}), ${path} was not found.`);
         }
     }
     existsFile(path: string): boolean {
-        const file = this.findFileByPath(path);
-        if (file) {
-            file.release();
-            return true;
-        }
-        else {
-            return false;
-        }
+        return this.files.exists(path);
     }
     openFile(path: string): void {
-        const file = this.findFileByPath(path);
+        const file = this.files.getWeakRef(path);
         if (file) {
             // The UI should see this change, ng-if enabling the 'editor' directive which
             // creates an Editor, which requests an EditSession, notifies the controller
             // of its creation, eventually getting back to the workspace and the file.
             file.isOpen = true;
-            file.release();
         }
         else {
             // Do nothing
@@ -1024,43 +1043,43 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             throw new Error(`${newName} is not a recognized language.`);
         }
         // Make sure that the file we want to re-path really does exist.
-        const oldFile = this.findFileByPath(oldName);
+        const oldFile = this.files.getWeakRef(oldName);
         if (oldFile) {
-            try {
-                if (!this.existsFile(newName)) {
-                    // Determine whether we can recycle a file from trash or must create a new file.
-                    if (!this.existsFileInTrash(newName)) {
-                        // We must create a new file.
-                        const newFile = oldFile.clone();
+            if (!this.existsFile(newName)) {
+                // Determine whether we can recycle a file from trash or must create a new file.
+                if (!this.existsFileInTrash(newName)) {
 
-                        // Make it clear that this file did not come from GitHub.
-                        newFile.raw_url = void 0;
-                        // newFile.size = void 0;
-                        // newFile.truncated = void 0;
-                        // newFile.type = void 0;
+                    // We must create a new file.
+                    const newFile = this.newFile(newName);
 
-                        // Initialize properties that depend upon the new path.
-                        newFile.mode = mode;
+                    // Initialize properties.
+                    newFile.setText(oldFile.getText());
+                    newFile.isOpen = oldFile.isOpen;
+                    newFile.selected = oldFile.selected;
 
-                        this.files.putWeakRef(newName, newFile);
-                    }
-                    else {
-                        // We can recycle a file from trash.
-                        this.restoreFileFromTrash(newName);
-                        const theFile = this.findFileByPath(newName);
-                        // Initialize properties that depend upon the new path.
-                        theFile.mode = mode;
-                        theFile.release();
-                    }
-                    // Delete the file by the old path.
-                    this.deleteFile(oldName);
+                    // Make it clear that this file did not come from GitHub.
+                    newFile.raw_url = void 0;
+                    // newFile.size = void 0;
+                    // newFile.truncated = void 0;
+                    // newFile.type = void 0;
+
+                    // Initialize properties that depend upon the new path.
+                    newFile.mode = mode;
+
+                    this.files.putWeakRef(newName, newFile);
                 }
                 else {
-                    throw new Error(`${newName} already exists. The new path must be unique.`);
+                    // We can recycle a file from trash.
+                    this.restoreFileFromTrash(newName);
+                    const theFile = this.files.getWeakRef(newName);
+                    // Initialize properties that depend upon the new path.
+                    theFile.mode = mode;
                 }
+                // Delete the file by the old path.
+                this.deleteFile(oldName);
             }
-            finally {
-                oldFile.release();
+            else {
+                throw new Error(`${newName} already exists. The new path must be unique.`);
             }
         }
         else {
@@ -1068,25 +1087,20 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         }
     }
     selectFile(path: string): void {
-        const file = this.findFileByPath(path);
+        const file = this.files.getWeakRef(path);
         if (file) {
-            try {
-                if (file.isOpen) {
-                    const paths = this.files.keys;
-                    const iLen = paths.length;
-                    for (let i = 0; i < iLen; i++) {
-                        const file = this.files.getWeakRef(paths[i]);
-                        if (file.isOpen) {
-                            file.selected = paths[i] === path;
-                        }
+            if (file.isOpen) {
+                const paths = this.files.keys;
+                const iLen = paths.length;
+                for (let i = 0; i < iLen; i++) {
+                    const file = this.files.getWeakRef(paths[i]);
+                    if (file.isOpen) {
+                        file.selected = paths[i] === path;
                     }
                 }
-                else {
-                    // Do nothing
-                }
             }
-            finally {
-                file.release();
+            else {
+                // Do nothing
             }
         }
         else {
@@ -1094,13 +1108,12 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         }
     }
     closeFile(path: string): void {
-        const file = this.findFileByPath(path);
+        const file = this.files.getWeakRef(path);
         if (file) {
             // We assume someone is watching this property, ready to pounce.
             // TODO: Replace with openPending flag?
             file.isOpen = false;
             file.selected = false;
-            file.release();
         }
         else {
             // Do nothing
@@ -1190,17 +1203,20 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             return void 0;
         }
     }
+    getFileWeakRef(path: string): WsFile {
+        if (this.files) {
+            return this.files.getWeakRef(path);
+        }
+        else {
+            return void 0;
+        }
+    }
     getFileEditor(path: string): Editor {
         if (this.files) {
             // TODO: Neet to implement getSession
-            const file = this.files.get(path);
+            const file = this.files.getWeakRef(path);
             if (file) {
-                try {
-                    return file.getEditor();
-                }
-                finally {
-                    file.release();
-                }
+                return file.getEditor();
             }
             else {
                 return void 0;
@@ -1212,40 +1228,25 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     }
     setFileEditor(path: string, editor: Editor): void {
         if (this.files) {
-            const file = this.files.get(path);
+            const file = this.files.getWeakRef(path);
             if (file) {
-                try {
-                    file.setEditor(editor);
-                }
-                finally {
-                    file.release();
-                }
+                file.setEditor(editor);
             }
         }
     }
     getFileSessionPaths(): string[] {
         const all = this.files.keys;
         return all.filter((path) => {
-            const file = this.findFileByPath(path);
-            try {
-                return file.hasSession();
-            }
-            finally {
-                file.release();
-            }
+            const file = this.files.getWeakRef(path);
+            return file.hasSession();
         });
     }
     getFileSession(path: string): EditSession {
         if (this.files) {
             // TODO: Neet to implement getSession
-            const file = this.files.get(path);
+            const file = this.files.getWeakRef(path);
             if (file) {
-                try {
-                    return file.getSession();
-                }
-                finally {
-                    file.release();
-                }
+                return file.getSession();
             }
             else {
                 return void 0;
@@ -1257,28 +1258,18 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     }
     setFileSession(path: string, session: EditSession) {
         if (this.files) {
-            const file = this.files.get(path);
+            const file = this.files.getWeakRef(path);
             if (file) {
-                try {
-                    file.setSession(session);
-                }
-                finally {
-                    file.release();
-                }
+                file.setSession(session);
             }
         }
     }
     getFileDocument(path: string): Document {
         if (this.files) {
             // TODO: Neet to implement getSession
-            const file = this.files.get(path);
+            const file = this.files.getWeakRef(path);
             if (file) {
-                try {
-                    return file.getDocument();
-                }
-                finally {
-                    file.release();
-                }
+                return file.getDocument();
             }
             else {
                 return void 0;
@@ -1290,19 +1281,21 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     }
     setFileDocument(path: string, doc: Document) {
         if (this.files) {
-            const file = this.files.get(path);
+            const file = this.files.getWeakRef(path);
             if (file) {
-                try {
-                    file.setDocument(doc);
-                }
-                finally {
-                    file.release();
-                }
+                file.setDocument(doc);
             }
         }
     }
+    getFileDocumentPaths(): string[] {
+        const all = this.files.keys;
+        return all.filter((path) => {
+            const file = this.files.getWeakRef(path);
+            return file.hasDocument();
+        });
+    }
     setPreviewFile(path: string): void {
-        const file = this.findFileByPath(path);
+        const file = this.files.getWeakRef(path);
         if (file) {
             const paths = this.files.keys;
             const iLen = paths.length;
@@ -1310,7 +1303,6 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
                 this.files.getWeakRef(paths[i]).preview = false;
             }
             file.preview = true;
-            file.release();
         }
         else {
             // Do nothing
@@ -1341,14 +1333,14 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         try {
             // Beware: We could have a package.json that doesn't parse.
             // We must ensure that the user can recover the situation.
-            const file = this.ensurePackageJsonXXX();
+            const file = this.ensurePackageJson();
             const text = file.getText();
             file.release();
             return JSON.parse(text);
         }
         catch (e) {
             console.warn(`Unable to parse file '${FILENAME_META}' as JSON.`);
-            const file = this.ensurePackageJsonXXX();
+            const file = this.ensurePackageJson();
             const text = file.getText();
             file.release();
             console.warn(text);
@@ -1365,14 +1357,14 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         }
     }
 
-    private ensurePackageJsonXXX(): WsFile {
-        return this.ensureFileXXX(FILENAME_META, '{}');
+    private ensurePackageJson(): WsFile {
+        return this.ensureFile(FILENAME_META, '{}');
     }
 
     /**
      *
      */
-    private ensureFileXXX(path: string, content: string): WsFile {
+    private ensureFile(path: string, content: string): WsFile {
         if (!this.existsFile(path)) {
             const file = this.newFile(path);
             file.setText(content);
@@ -1429,12 +1421,11 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             const fileNames = this.files.keys;
             for (let i = 0; i < fileNames.length; i++) {
                 const fileName = fileNames[i];
-                const file = this.findFileByPath(fileName);
+                const file = this.files.getWeakRef(fileName);
                 // Create the synchronization node associated with the workspace.
                 // This will enable the node to create and destroy editors.
                 file.unit = new MwUnit(this);
                 file.unit.setEditor(file);
-                file.release();
             }
 
             // Add a listener to the room agent so that edits broadcast from the room are sent to the node.
@@ -1447,9 +1438,8 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
                 const fileName = fileNames[i];
                 const doc = this.getFileDocument(fileName);
                 try {
-                    const file = this.findFileByPath(fileName);
+                    const file = this.files.getWeakRef(fileName);
                     const unit = file.unit;
-                    file.release();
                     const changeHandler = debounce(uploadFileEditsToRoom(fileName, unit, room), DEBOUNCE_DURATION_MILLISECONDS);
                     this.roomDocumentChangeListenerRemovers[fileName] = doc.addChangeListener(changeHandler);
                 }
@@ -1486,9 +1476,8 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             const fileIds = this.files.keys;
             for (let i = 0; i < fileIds.length; i++) {
                 const fileId = fileIds[i];
-                const file = this.findFileByPath(fileId);
+                const file = this.files.getWeakRef(fileId);
                 const unit = file.unit;
-                file.release();
                 const edits: MwEdits = unit.getEdits(room.id);
                 room.setEdits(fileId, edits);
             }
@@ -1499,20 +1488,21 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     }
     downloadFromRoom(room: RoomAgent) {
         if (room) {
-            console.log("TODO: downloadWorkspaceFromRoom");
             // This could also be done through the rooms service.
             room.download((err, files: { [fileName: string]: MwEdits }) => {
                 if (!err) {
                     // Verify that all of the edits are Raw to begin with.
                     if (allEditsRaw(files)) {
                         // We make a new Doodle to accept the downloaded workspace.
+                        // FIXME: Can we wait for the therad to stop?
                         this.dispose();
-                        this.recycle();
-                        addMissingFilesToWorkspace(this, files);
-                        // This will not be required since we are starting with a new Doodle.
-                        removeUnwantedFilesFromWorkspace(this, files);
-                        // Save the downloaded edits for when the editors come online?
-                        // this.files = files;
+                        this.recycle((err) => {
+                            addMissingFilesToWorkspace(this, files);
+                            // This will not be required since we are starting with a new Doodle.
+                            removeUnwantedFilesFromWorkspace(this, files);
+                            // Save the downloaded edits for when the editors come online?
+                            // this.files = files;
+                        });
                     }
                     else {
                         console.warn(JSON.stringify(files, null, 2));

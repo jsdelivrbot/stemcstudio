@@ -7,7 +7,7 @@ export default function(workspace: WsModel, options: IOptionManager): GistData {
     const gist: GistData = {
         description: workspace.description,
         public: true,
-        files: doodleFilesToGistFiles(workspace.files, workspace.trash)
+        files: doodleFilesToGistFiles(workspace.filesByPath, workspace.trashByPath)
     };
     return gist;
 }

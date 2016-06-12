@@ -27,34 +27,27 @@ interface WorkerClientData<T> {
 }
 
 /**
- * @class LanguageServiceProxy
+ *
  */
 export default class LanguageServiceProxy {
 
     /**
-     * @property worker
-     * @type WorkerClient
-     * @private
+     *
      */
     private worker: WorkerClient;
 
     /**
-     * @property callbacks
-     * @private
+     *
      */
     private callbacks: { [id: number]: (err: any, results?: any) => any } = {};
 
     /**
      * The identifier for the next callback.
-     *
-     * @property callbackId
-     * @type number
-     * @private
      */
     private callbackId = 1;
 
     /**
-     * Creates the undelying WorkerClient and establishes listeners.
+     * Creates the underlying WorkerClient and establishes listeners.
      * This method DOES NOT start the thread.
      *
      * @param workerUrl The URL of the JavaScript file for the worker.
@@ -138,40 +131,22 @@ export default class LanguageServiceProxy {
         });
     }
 
-    /**
-     * Posts a message to the worker thread causing the thread to be started.
-     *
-     * @method init
-     * @param scriptImports
-     * @param callback
-     * @return
-     */
-    init(scriptImports: string[], callback: (err: any) => any): void {
+    initialize(scriptImports: string[], callback: (err: any) => any): void {
+        // console.lg(`LanguageServiceProxy.initialize()`);
         this.worker.init(scriptImports, 'ace-workers.js', 'LanguageServiceWorker', callback);
     }
 
-    /**
-     * @method terminate
-     * @return
-     */
     terminate(): void {
-        this.worker.terminate();
+        // console.lg(`LanguageServiceProxy.terminate()`);
+        this.worker.dispose();
     }
 
-    /**
-     * @method setDefaultLibContent
-     * @param content {string}
-     * @return {void}
-     */
     setDefaultLibContent(content: string, callback: (err: any) => any): void {
         const callbackId = this.captureCallback(callback);
         const message = { data: { content, callbackId } };
         this.worker.emit(EVENT_DEFAULT_LIB_CONTENT, message);
     }
 
-    /**
-     *
-     */
     private captureCallback(callback: (err: any, results?: any) => any): number {
         if (callback) {
             const callbackId = this.callbackId++;
@@ -183,9 +158,6 @@ export default class LanguageServiceProxy {
         }
     }
 
-    /**
-     *
-     */
     private releaseCallback(callbackId: number) {
         if (typeof callbackId === 'number') {
             const callback = this.callbacks[callbackId];
@@ -197,126 +169,65 @@ export default class LanguageServiceProxy {
         }
     }
 
-    /**
-     * @method ensureScript
-     * @param fileName {string}
-     * @param content {string}
-     * @param callback {(err: any) => any}
-     * @return {void}
-     */
-    ensureScript(fileName: string, content: string, callback: (err: any) => any): void {
+    ensureScript(path: string, content: string, callback: (err: any) => any): void {
+        // console.lg(`LanguageServiceProxy.ensureScript(${path})`);
         const callbackId = this.captureCallback(callback);
         // content = content.replace(/\r\n?/g, '\n');
-        const message = { data: { fileName, content, callbackId } };
+        const message = { data: { fileName: path, content, callbackId } };
         this.worker.emit(EVENT_ENSURE_SCRIPT, message);
     }
 
-    /**
-     * @method applyDelta
-     * @param fileName {string}
-     * @param delta {Delta}
-     * @param callback {(err: any) => any}
-     * @return {void}
-     */
-    applyDelta(fileName: string, delta: Delta, callback: (err: any) => any): void {
+    applyDelta(path: string, delta: Delta, callback: (err: any) => any): void {
+        // console.lg(`LanguageServiceProxy.applyDelta(${path})`);
         const callbackId = this.captureCallback(callback);
-        const message = { data: { fileName, delta, callbackId } };
+        const message = { data: { fileName: path, delta, callbackId } };
         this.worker.emit(EVENT_APPLY_DELTA, message);
     }
 
-    /**
-     * @method removeScript
-     * @param fileName {string}
-     * @param callback {(err: any) => any}
-     * @return {void}
-     */
-    removeScript(fileName: string, callback: (err: any) => any): void {
+    removeScript(path: string, callback: (err: any) => any): void {
+        // console.lg(`LanguageServiceProxy.removeScript(${path})`);
         const callbackId = this.captureCallback(callback);
-        this.worker.emit(EVENT_REMOVE_SCRIPT, { data: { fileName, callbackId } });
+        this.worker.emit(EVENT_REMOVE_SCRIPT, { data: { fileName: path, callbackId } });
     }
 
-    /**
-     * @method setModuleKind
-     * @param moduleKind {string}
-     * @param callback {setModuleKindCallback}
-     * @return {void}
-     */
     public setModuleKind(moduleKind: string, callback: setModuleKindCallback): void {
+        // console.lg(`LanguageServiceProxy.setModuleKind(${moduleKind})`);
         const callbackId = this.captureCallback(callback);
         const message = { data: { moduleKind, callbackId } };
         this.worker.emit(EVENT_SET_MODULE_KIND, message);
     }
 
-    /**
-     * @method setScriptTarget
-     * @param scriptTarget {string}
-     * @param callback {setScriptTargetCallback}
-     * @return {void}
-     */
     public setScriptTarget(scriptTarget: string, callback: setScriptTargetCallback): void {
+        // console.lg(`LanguageServiceProxy.setScriptTarget(${scriptTarget})`);
         const callbackId = this.captureCallback(callback);
         const message = { data: { scriptTarget, callbackId } };
         this.worker.emit(EVENT_SET_SCRIPT_TARGET, message);
     }
 
-    /**
-     * @method setTrace
-     * @param trace {boolean}
-     * @param callback {setModuleKindCallback}
-     * @return {void}
-     */
     public setTrace(trace: boolean, callback: (err: any) => any): void {
         const callbackId = this.captureCallback(callback);
         const message = { data: { trace, callbackId } };
         this.worker.emit(EVENT_SET_TRACE, message);
     }
 
-    /**
-     * @method getSyntaxErrors
-     * @param fileName {string}
-     * @param callback {(err: any, results: Diagnostic[]) => void}
-     * @return {void}
-     */
     public getSyntaxErrors(fileName: string, callback: (err: any, results: Diagnostic[]) => void): void {
         const callbackId = this.captureCallback(callback);
         const message = { data: { fileName, callbackId } };
         this.worker.emit(EVENT_GET_SYNTAX_ERRORS, message);
     }
 
-    /**
-     * @method getSemanticErrors
-     * @param fileName {string}
-     * @param callback {(err: any, results: Diagnostic[]) => void}
-     * @return {void}
-     */
     public getSemanticErrors(fileName: string, callback: (err: any, results: Diagnostic[]) => void): void {
         const callbackId = this.captureCallback(callback);
         const message = { data: { fileName, callbackId } };
         this.worker.emit(EVENT_GET_SEMANTIC_ERRORS, message);
     }
 
-    /**
-     * @method _getCompletionsAtPosition
-     * @param fileName {string}
-     * @param position {number}
-     * @param prefix {string}
-     * @param callback {(err, completions) => any}
-     * @return {void}
-     * @private
-     */
     private _getCompletionsAtPosition(fileName: string, position: number, prefix: string, callback: (err: any, completions: CompletionEntry[]) => void): void {
         const callbackId = this.captureCallback(callback);
         const message = { data: { fileName, position, prefix, callbackId } };
         this.worker.emit(EVENT_GET_COMPLETIONS_AT_POSITION, message);
     }
 
-    /**
-     * @method getCompletionsAtPosition
-     * @param fileName {string}
-     * @param position {number}
-     * @param prefix {string}
-     * @return {Promise<CompletionEntry[]>} CompletionEntry[]
-     */
     getCompletionsAtPosition(fileName: string, position: number, prefix: string): Promise<CompletionEntry[]> {
         return new Promise<CompletionEntry[]>((resolve, reject) => {
             this._getCompletionsAtPosition(fileName, position, prefix, function(err: any, completions: CompletionEntry[]) {
@@ -330,25 +241,12 @@ export default class LanguageServiceProxy {
         });
     }
 
-    /**
-     * @method getQuickInfoAtPosition
-     * @param fileName {string}
-     * @param position {number}
-     * @param callback {(err, quickInfo: ExtendedQuickInfo) => any}
-     * @return {void}
-     */
     public getQuickInfoAtPosition(fileName: string, position: number, callback: (err: any, quickInfo: QuickInfo) => any): void {
         const callbackId = this.captureCallback(callback);
         const message = { data: { fileName, position, callbackId } };
         this.worker.emit(EVENT_GET_QUICK_INFO_AT_POSITION, message);
     }
 
-    /**
-     * @method getOutputFiles
-     * @param fileName {string}
-     * @param callback {(err: any, outputFiles: OutputFile[]) => any}
-     * @return {void}
-     */
     getOutputFiles(fileName: string, callback: (err: any, outputFiles: OutputFile[]) => any): void {
         const callbackId = this.captureCallback(callback);
         const message = { data: { fileName, callbackId } };

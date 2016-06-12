@@ -13,22 +13,17 @@ export default class UnitListener implements RoomListener {
         // Do something soon.
     }
     setEdits(nodeId: string, path: string, edits: MwEdits): void {
-        const file: WsFile = this.workspace.findFileByPath(path);
+        const file: WsFile = this.workspace.getFileWeakRef(path);
         if (file) {
-            try {
-                if (file.unit) {
-                    file.unit.setEdits(nodeId, edits);
-                }
-                else {
-                    const newbie = new MwUnit(this.workspace);
-                    const editor: MwEditor = this.workspace.createEditor();
-                    newbie.setEditor(editor);
-                    newbie.setEdits(nodeId, edits);
-                    // console.warn(`MwUnit not found for path ${path}.`);
-                }
+            if (file.unit) {
+                file.unit.setEdits(nodeId, edits);
             }
-            finally {
-                file.release();
+            else {
+                const newbie = new MwUnit(this.workspace);
+                const editor: MwEditor = this.workspace.createEditor();
+                newbie.setEditor(editor);
+                newbie.setEdits(nodeId, edits);
+                // console.warn(`MwUnit not found for path ${path}.`);
             }
         }
         else {

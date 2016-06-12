@@ -1,12 +1,12 @@
 import * as ng from 'angular';
-import WsFile from '../../wsmodel/services/WsFile';
+import WsModel from '../../wsmodel/services/WsModel';
 
 /**
  * This interface documents part of the contract between the directive code and the presentation logic.
  * The part of the contract that it documents is the model.
  */
 interface ExplorerScope extends ng.IScope {
-    filesByPath: { [path: string]: WsFile };
+    workspace: WsModel;
 }
 
 export default ExplorerScope;

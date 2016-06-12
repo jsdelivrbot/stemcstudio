@@ -680,7 +680,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "        </div>\n" +
     "        <ul class='files'>\n" +
     "            <!-- filesByPath is set on the scope by the explorer component -->\n" +
-    "            <li ng-repeat='(path, file) in filesByPath' ng-class='{selected: file.selected}' context-menu='menu(path, file)'>\n" +
+    "            <li ng-repeat='(path, file) in workspace.filesByPath' ng-class='{selected: file.selected}' context-menu='menu(path, file)'>\n" +
     "                <a href ng-click='$ctrl.selectFile(path)' ng-dblclick='$ctrl.openFile(path)'>{{path | limitTo:24}}</a>\n" +
     "            </li>\n" +
     "        </ul>\n" +

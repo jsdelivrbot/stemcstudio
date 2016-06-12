@@ -29,7 +29,7 @@
         </div>
         <ul class='files'>
             <!-- filesByPath is set on the scope by the explorer component -->
-            <li ng-repeat='(path, file) in filesByPath' ng-class='{selected: file.selected}' context-menu='menu(path, file)'>
+            <li ng-repeat='(path, file) in workspace.filesByPath' ng-class='{selected: file.selected}' context-menu='menu(path, file)'>
                 <a href ng-click='$ctrl.selectFile(path)' ng-dblclick='$ctrl.openFile(path)'>{{path | limitTo:24}}</a>
             </li>
         </ul>
