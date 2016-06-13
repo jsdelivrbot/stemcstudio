@@ -4,6 +4,7 @@ import allEditsRaw from './allEditsRaw';
 import Annotation from '../../editor/Annotation';
 import AutoCompleteCommand from '../../editor/autocomplete/AutoCompleteCommand';
 import CompletionEntry from '../../editor/workspace/CompletionEntry';
+import copyWorkspaceToDoodle from '../../mappings/copyWorkspaceToDoodle';
 // FIXME: Code Organization.
 import dependenciesMap from '../../services/doodles/dependenciesMap';
 import dependencyNames from '../../services/doodles/dependencyNames';
@@ -19,6 +20,7 @@ import getPosition from '../../editor/workspace/getPosition';
 import LanguageServiceProxy from '../../editor/workspace/LanguageServiceProxy';
 // FIXME: Code Organization.
 import IDoodleConfig from '../../services/doodles/IDoodleConfig';
+import IDoodleManager from '../../services/doodles/IDoodleManager';
 import IOptionManager from '../../services/options/IOptionManager';
 import Position from '../../editor/Position';
 import Marker from '../../editor/Marker';
@@ -97,6 +99,13 @@ function checkCallback(callback: (err: any) => any): void {
     }
 }
 
+/**
+ * Converts the metaInfo to a string using JSON.stringify and append a newline character.
+ */
+function stringifyInfo(metaInfo: IDoodleConfig): string {
+    return JSON.stringify(metaInfo, null, 2) + '\n';
+}
+
 enum WorkspaceState {
     CONSTRUCTED,
     INIT_PENDING,
@@ -129,7 +138,15 @@ function isTypeScript(path: string): boolean {
     return false;
 }
 
-const DEBOUNCE_DURATION_MILLISECONDS = 100;
+/**
+ * Synchronize after 0.25 seconds of inactivity.
+ */
+const SYNCH_DELAY_MILLISECONDS = 250;
+
+/**
+ * Persist to Local Storage after 2 seconds of inactivity.
+ */
+const STORE_DELAY_MILLISECONDS = 2000;
 
 function debounce(next: () => any, delay: number) {
 
@@ -236,8 +253,18 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
 
     private roomListener: UnitListener;
 
+    /**
+     * Listeners added to the document for the LanguageService.
+     */
     private langDocumentChangeListenerRemovers: { [path: string]: () => void } = {};
+    /**
+     * Listeners added to the document for Synchronization.
+     */
     private roomDocumentChangeListenerRemovers: { [path: string]: () => void } = {};
+    /**
+     * Listeners added to the Document for Local Storage.
+     */
+    private saveDocumentChangeListenerRemovers: { [path: string]: () => void } = {};
 
     /**
      * Slightly unusual reference counting because of:
@@ -246,9 +273,9 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      */
     private refCount = 0;
 
-    public static $inject: string[] = ['options', '$q'];
+    public static $inject: string[] = ['options', '$q', 'doodles'];
 
-    constructor(private options: IOptionManager, private $q: ng.IQService) {
+    constructor(private options: IOptionManager, private $q: ng.IQService, private doodles: IDoodleManager) {
         // This will be called once, lazily, when this class is deployed as a singleton service.
         // We do nothing. There is no destructor; it would never be called.
     }
@@ -310,6 +337,13 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             });
         }
         return this.refCount;
+    }
+
+    /**
+     * Determines whether this instance is still incapable of accepting method calls.
+     */
+    isZombie(): boolean {
+        return this.refCount === 0;
     }
 
     get filesByPath(): { [path: string]: WsFile } {
@@ -537,6 +571,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         try {
             checkDocument(doc);
 
+            // Monitoring for Language Analysis.
             if (isTypeScript(path)) {
                 if (!this.langDocumentChangeListenerRemovers[path]) {
                     const changeHandler = (delta: Delta, source: Document) => {
@@ -558,6 +593,10 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
                 // Ensure the script in the language service.
                 this.ensureScript(path, doc.getValue(), callback);
             }
+
+            // Monitoring for Local Storage.
+            const storageHandler = debounce(() => { this.updateStorage(); }, STORE_DELAY_MILLISECONDS);
+            this.saveDocumentChangeListenerRemovers[path] = doc.addChangeListener(storageHandler);
         }
         finally {
             doc.release();
@@ -576,6 +615,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         try {
             checkDocument(doc);
 
+            // Monitoring for Language Analysis.
             if (isTypeScript(path)) {
                 if (this.langDocumentChangeListenerRemovers[path]) {
                     this.langDocumentChangeListenerRemovers[path]();
@@ -590,6 +630,12 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             }
             else {
                 setTimeout(callback, 0);
+            }
+
+            // Monitoring for Local Storage.
+            if (this.saveDocumentChangeListenerRemovers[path]) {
+                this.saveDocumentChangeListenerRemovers[path]();
+                delete this.saveDocumentChangeListenerRemovers[path];
             }
         }
         finally {
@@ -788,7 +834,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         try {
             const metaInfo: IDoodleConfig = JSON.parse(file.getText());
             setOptionalStringProperty('author', author, metaInfo);
-            file.setText(JSON.stringify(metaInfo, null, 2));
+            file.setText(stringifyInfo(metaInfo));
         }
         finally {
             file.release();
@@ -821,7 +867,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             try {
                 const metaInfo: IDoodleConfig = JSON.parse(file.getText());
                 metaInfo.dependencies = dependenciesMap(dependencies, this.options);
-                file.setText(JSON.stringify(metaInfo, null, 2));
+                file.setText(stringifyInfo(metaInfo));
             }
             finally {
                 file.release();
@@ -856,7 +902,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         try {
             const metaInfo: IDoodleConfig = JSON.parse(file.getText());
             setOptionalStringProperty('description', description, metaInfo);
-            file.setText(JSON.stringify(metaInfo, null, 2));
+            file.setText(stringifyInfo(metaInfo));
         }
         finally {
             file.release();
@@ -887,7 +933,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         try {
             const metaInfo: IDoodleConfig = JSON.parse(file.getText());
             setOptionalStringArrayProperty('keywords', keywords, metaInfo);
-            file.setText(JSON.stringify(metaInfo, null, 2));
+            file.setText(stringifyInfo(metaInfo));
         }
         finally {
             file.release();
@@ -912,7 +958,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         try {
             const metaInfo: IDoodleConfig = JSON.parse(file.getText());
             metaInfo.name = name;
-            file.setText(JSON.stringify(metaInfo, null, 2));
+            file.setText(stringifyInfo(metaInfo));
         }
         catch (e) {
             console.warn(`Unable to set name property in file '${FILENAME_META}'.`);
@@ -940,7 +986,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         try {
             const metaInfo: IDoodleConfig = JSON.parse(file.getText());
             setOptionalBooleanProperty('operatorOverloading', operatorOverloading, metaInfo);
-            file.setText(JSON.stringify(metaInfo, null, 2));
+            file.setText(stringifyInfo(metaInfo));
         }
         catch (e) {
             console.warn(`Unable to set operatorOverloading property in file '${FILENAME_META}'.`);
@@ -962,7 +1008,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         try {
             const metaInfo: IDoodleConfig = JSON.parse(file.getText());
             metaInfo.version = version;
-            file.setText(JSON.stringify(metaInfo, null, 2));
+            file.setText(stringifyInfo(metaInfo));
         }
         finally {
             file.release();
@@ -1327,14 +1373,15 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     }
 
     /**
-     * 
+     * Updates Local Storage with this workspace as the current doodle.
      */
-    /*
     updateStorage(): void {
-        // FIXME: Let it go until we need to create stuff.
-        throw new Error("TODO: WsModel.updateStorage");
+        if (!this.isZombie()) {
+            const doodle = this.doodles.current();
+            copyWorkspaceToDoodle(this, doodle);
+            this.doodles.updateStorage();
+        }
     }
-    */
 
     /**
      * Determines whether this workspace has a package.json file.
@@ -1356,11 +1403,6 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             return JSON.parse(text);
         }
         catch (e) {
-            console.warn(`Unable to parse file '${FILENAME_META}' as JSON.`);
-            const file = this.ensurePackageJson();
-            const text = file.getText();
-            file.release();
-            console.warn(text);
             return void 0;
         }
     }
@@ -1449,7 +1491,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             this.roomListener = new UnitListener(this);
             room.addListener(this.roomListener);
 
-            // Add listeners for editor changes. These will begin the flow of diffs to the server.
+            // Add listeners for document changes. These will begin the flow of diffs to the server.
             // We debounce the change events so that the diff is trggered when things go quiet for a second.
             for (let i = 0; i < paths.length; i++) {
                 const path = paths[i];
@@ -1457,7 +1499,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
                 try {
                     const file = this.files.getWeakRef(path);
                     const unit = file.unit;
-                    const changeHandler = debounce(uploadFileEditsToRoom(path, unit, room), DEBOUNCE_DURATION_MILLISECONDS);
+                    const changeHandler = debounce(uploadFileEditsToRoom(path, unit, room), SYNCH_DELAY_MILLISECONDS);
                     this.roomDocumentChangeListenerRemovers[path] = doc.addChangeListener(changeHandler);
                 }
                 finally {

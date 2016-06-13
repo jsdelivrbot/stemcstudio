@@ -2,8 +2,11 @@ import * as ng from 'angular';
 import CredentialsService from '../../services/credentials/CredentialsService';
 import Base64Service from '../../services/base64/Base64Service';
 import Delta from '../../editor/Delta';
+import Document from '../../editor/Document';
+import DocumentChangeHandler from './DocumentChangeHandler';
 import Editor from '../../editor/Editor';
 import EditSession from '../../editor/EditSession';
+import EditSessionChangeHandler from './EditSessionChangeHandler';
 import OutputFile from '../../editor/workspace/OutputFile';
 import Background from '../../services/background/BackgroundService';
 import {BACKGROUND_UUID} from '../../services/background/Background';
@@ -21,7 +24,6 @@ import IGitHubAuthManager from '../../services/gham/IGitHubAuthManager';
 import IOptionManager from '../../services/options/IOptionManager';
 import isHtmlFilePath from '../../utils/isHtmlFilePath';
 import isMarkdownFilePath from '../../utils/isMarkdownFilePath';
-import ChangeHandler from './ChangeHandler';
 import OutputFileHandler from './OutputFileHandler';
 import MissionControl from '../../services/mission/MissionControl';
 import ModalDialog from '../../services/modalService/ModalDialog';
@@ -115,8 +117,8 @@ export default class WorkspaceController implements WorkspaceMixin {
      */
     private olds: string[] = [];
 
-    private outputFilesEventHandlers: { [name: string]: OutputFileHandler } = {};
-    private changeHandlers: { [name: string]: ChangeHandler } = {};
+    private outputFilesEventHandlers: { [path: string]: OutputFileHandler } = {};
+    private changeHandlers: { [path: string]: EditSessionChangeHandler } = {};
 
     /**
      * Promise to update the README view for throttling.
@@ -125,7 +127,7 @@ export default class WorkspaceController implements WorkspaceMixin {
     /**
      * Keep track of the README handlers that are registered for cleanup.
      */
-    private readmeChangeHandlers: { [name: string]: ChangeHandler } = {};
+    private readmeChangeHandlers: { [path: string]: DocumentChangeHandler } = {};
 
     private resizeListener: (unused: UIEvent) => any;
 
@@ -443,16 +445,12 @@ export default class WorkspaceController implements WorkspaceMixin {
             watch();
         }
 
-        // This method is called BEFORE the child directives make their detachEditor calls.
-        // That means that we cannot set this reference to undefined because it will break
-        // the detach callback.
-        // TODO: Maybe implement something along the lines of refrence counting because the
-        // workspace is shared?
         if (this.resizeListener) {
             this.$window.removeEventListener('resize', this.resizeListener);
             this.resizeListener = void 0;
         }
 
+        // This method is called BEFORE the child directives make their detachEditor calls!
         this.wsModel.dispose();
 
         // const endTime = performance.now();
@@ -580,7 +578,8 @@ export default class WorkspaceController implements WorkspaceMixin {
                 break;
             }
             case LANGUAGE_MARKDOWN: {
-                this.addReadmeChangeHandler(path, editor);
+                // FIXME: Move this to somewhere that only needs a Document.
+                this.addReadmeChangeHandler(path, editor.getSession().getDocument());
                 break;
             }
             default: {
@@ -632,23 +631,23 @@ export default class WorkspaceController implements WorkspaceMixin {
         delete this.outputFilesEventHandlers[filename];
     }
 
-    private createChangeHandler(filename: string): ChangeHandler {
+    private createChangeHandler(path: string): EditSessionChangeHandler {
         const handler = (delta: Delta, session: EditSession) => {
             if (this.wsModel) {
                 this.$scope.updatePreview(WAIT_FOR_MORE_OTHER_KEYSTROKES);
             }
         };
-        this.changeHandlers[filename] = handler;
+        this.changeHandlers[path] = handler;
         return handler;
     }
 
-    private createReadmeChangeHandler(filename: string): ChangeHandler {
-        const handler = (delta: Delta, session: EditSession) => {
+    private createReadmeChangeHandler(path: string): DocumentChangeHandler {
+        const handler = (delta: Delta, source: Document) => {
             if (this.wsModel) {
                 this.updateReadmeView(WAIT_FOR_MORE_README_KEYSTROKES);
             }
         };
-        this.readmeChangeHandlers[filename] = handler;
+        this.readmeChangeHandlers[path] = handler;
         return handler;
     }
 
@@ -667,20 +666,20 @@ export default class WorkspaceController implements WorkspaceMixin {
         delete this.changeHandlers[filename];
     }
 
-    private addReadmeChangeHandler(filename: string, editor: Editor): void {
-        if (this.readmeChangeHandlers[filename]) {
-            console.warn(`NOT Expecting to find a README change handler for file ${filename}.`);
+    private addReadmeChangeHandler(path: string, doc: Document): void {
+        if (this.readmeChangeHandlers[path]) {
+            console.warn(`NOT Expecting to find a README change handler for file ${path}.`);
             return;
         }
-        const handler = this.createReadmeChangeHandler(filename);
-        editor.getSession().on('change', handler);
-        this.readmeChangeHandlers[filename] = handler;
+        const handler = this.createReadmeChangeHandler(path);
+        doc.addChangeListener(handler);
+        this.readmeChangeHandlers[path] = handler;
     }
 
-    private removeReadmeChangeHandler(filename: string, editor: Editor): void {
+    private removeReadmeChangeHandler(filename: string, doc: Document): void {
         const handler = this.readmeChangeHandlers[filename];
         if (handler) {
-            editor.getSession().off('change', handler);
+            doc.removeChangeListener(handler);
             delete this.readmeChangeHandlers[filename];
         }
         else {
@@ -724,7 +723,8 @@ export default class WorkspaceController implements WorkspaceMixin {
                 break;
             }
             case LANGUAGE_MARKDOWN: {
-                this.removeReadmeChangeHandler(path, editor);
+                // FIXME: Move
+                this.removeReadmeChangeHandler(path, editor.getSession().getDocument());
                 break;
             }
             default: {

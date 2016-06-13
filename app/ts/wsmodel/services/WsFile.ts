@@ -245,17 +245,11 @@ export default class WsFile implements MwEditor, Shareable {
     }
 
     /**
-     * Sets the text on the highest current level of activation (Editor, EditSession, Document).
+     * Sets the text on the Document level.
      */
     setText(text: string): void {
         if (typeof text === 'string') {
-            if (this.editor) {
-                this.editor.setValue(text);
-            }
-            else if (this.session) {
-                this.session.setValue(text);
-            }
-            else if (this.doc) {
+            if (this.doc) {
                 this.doc.setValue(text);
             }
             else {

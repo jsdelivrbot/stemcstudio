@@ -14,7 +14,7 @@ const STAR_FSLASH = '*/';
  * 
  */
 export default function rebuildReadmeView(
-    doodle: WsModel,
+    workspace: WsModel,
     FILENAME_README: string,
     $scope: WorkspaceScope,
     $window: angular.IWindowService
@@ -27,7 +27,7 @@ export default function rebuildReadmeView(
             while (hostElement.children.length > 0) {
                 hostElement.removeChild(hostElement.firstChild);
             }
-            if (doodle && $scope.isReadMeVisible) {
+            if (workspace && $scope.isReadMeVisible) {
                 const iframe: HTMLIFrameElement = document.createElement('iframe');
                 iframe.style.width = '100%';
                 iframe.style.height = '100%';
@@ -39,14 +39,14 @@ export default function rebuildReadmeView(
                 let html = readMeHTML({});
 
                 const content = iframe.contentDocument || iframe.contentWindow.document;
-                if (fileExists(FILENAME_README, doodle)) {
-                    const markdown: string = fileContent(FILENAME_README, doodle);
+                if (fileExists(FILENAME_README, workspace)) {
+                    const markdown: string = fileContent(FILENAME_README, workspace);
                     const converter: sd.Converter = new sd.Converter();
                     const markdownHTML = converter.makeHtml(markdown);
                     html = html.replace('// README.md', markdownHTML);
                 }
-                if (fileExists('README.css', doodle)) {
-                    html = html.replace(`${FSLASH_STAR} README.css ${STAR_FSLASH}`, fileContent('README.css', doodle));
+                if (fileExists('README.css', workspace)) {
+                    html = html.replace(`${FSLASH_STAR} README.css ${STAR_FSLASH}`, fileContent('README.css', workspace));
                 }
 
                 content.open();
