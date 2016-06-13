@@ -367,6 +367,8 @@ export default class WorkspaceController implements WorkspaceMixin {
      */
     $onInit(): void {
 
+        // console.lg("WorkspaceController.$onInit");
+
         const owner: string = this.$stateParams['owner'];
         const repo: string = this.$stateParams['repo'];
         const gistId: string = this.$stateParams['gistId'];
@@ -430,6 +432,9 @@ export default class WorkspaceController implements WorkspaceMixin {
      * We can use this hook to release external resources, watches and event handlers.
      */
     $onDestroy(): void {
+
+        // console.lg("WorkspaceController.$onDestroy");
+
         // const startTime = performance.now();
 
         // Cancel all of the watches.

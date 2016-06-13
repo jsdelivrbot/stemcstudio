@@ -601,14 +601,19 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         const paths = Object.keys(this.langDocumentChangeListenerRemovers);
         const iLen = paths.length;
         let outstanding = iLen;
-        for (let i = 0; i < paths.length; i++) {
-            const path = paths[i];
-            this.endDocumentMonitoring(path, function(err) {
-                outstanding--;
-                if (outstanding === 0) {
-                    callback();
-                }
-            });
+        if (outstanding > 0) {
+            for (let i = 0; i < paths.length; i++) {
+                const path = paths[i];
+                this.endDocumentMonitoring(path, function(err) {
+                    outstanding--;
+                    if (outstanding === 0) {
+                        callback();
+                    }
+                });
+            }
+        }
+        else {
+            setTimeout(callback, 0);
         }
     }
 

@@ -31,7 +31,7 @@ export default class BackgroundService implements Background {
      * @param gistId
      */
     loadWsModel(owner: string, repo: string, gistId: string, callback: (err: Error) => any) {
-        // If there is a doodle in Local Storage withe the specified keys, we load that
+        // If there is a doodle in Local Storage with the specified keys, we load that
         // so as not to trample on any existing work.
         const matches = this.doodles.filter(function(doodle: Doodle) {
             if (isString(owner) && isString(repo)) {
@@ -76,6 +76,14 @@ export default class BackgroundService implements Background {
                 });
             }
             else {
+                if (this.doodles.length > 0) {
+                    const doodle = this.doodles.current();
+                    copyDoodleToWorkspace(doodle, this.wsModel);
+                }
+                else {
+                    // Do nothing yet.
+                    console.warn("BackgroundService.loadWsModel(): Nothing was loaded!");
+                }
                 setTimeout(callback, 0);
             }
         }

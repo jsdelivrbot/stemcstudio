@@ -52,6 +52,7 @@ import ITranslateProvider from './translate/ITranslateProvider';
 import BodyController from './controllers/BodyController';
 import AboutController from './controllers/AboutController';
 import HomeController from './controllers/HomeController';
+import NewController from './features/doodle/controllers/NewController';
 import OpenController from './controllers/OpenController';
 
 import FacebookLoginController from './controllers/login/facebook/FacebookLoginController';
@@ -215,6 +216,9 @@ app.controller(ABOUT_CONTROLLER_NAME, AboutController);
 const HOME_CONTROLLER_NAME = 'HomeController';
 app.controller(HOME_CONTROLLER_NAME, HomeController);
 
+const NEW_CONTROLLER_NAME = 'NewController';
+app.controller(NEW_CONTROLLER_NAME, NewController);
+
 const OPEN_CONTROLLER_NAME = 'OpenController';
 app.controller(OPEN_CONTROLLER_NAME, OpenController);
 
@@ -296,7 +300,7 @@ app.config([
             .state('new', {
                 url: '/new',
                 templateUrl: 'new.html',
-                controller: 'new-controller'
+                controller: NEW_CONTROLLER_NAME
             })
             .state('open', {
                 url: '/open',

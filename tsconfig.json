@@ -21,7 +21,6 @@
         "app/ts/controllers/DownloadController.ts",
         "app/ts/controllers/ExamplesController.ts",
         "app/ts/controllers/HomeController.ts",
-        "app/ts/controllers/NewController.ts",
         "app/ts/controllers/OpenController.ts",
         "app/ts/fugly/ga/ga.ts",
         "app/ts/services/cookie/cookie.ts",

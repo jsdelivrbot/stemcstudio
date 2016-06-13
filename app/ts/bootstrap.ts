@@ -82,7 +82,6 @@ import './controllers/BodyController';
 import './controllers/CopyController';
 import './controllers/DownloadController';
 import './controllers/ExamplesController';
-import './controllers/NewController';
 
 app.directive('contextMenu', contextMenu);
 app.directive('editor', editor);

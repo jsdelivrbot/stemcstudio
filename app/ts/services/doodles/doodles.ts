@@ -125,6 +125,10 @@ app.factory('doodles', [
                 return _doodles.filter(callback);
             },
 
+            createDoodle: function(): Doodle {
+                return new Doodle(options);
+            },
+
             current: function(): Doodle {
                 if (_doodles.length > 0) {
                     return _doodles[0];

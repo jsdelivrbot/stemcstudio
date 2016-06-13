@@ -4,24 +4,20 @@ import Doodle from './Doodle';
  * TODO: Move this towards being an API for LocalStorage.
  */
 interface IDoodleManager {
+    /**
+     * Inserts the doodle at the top of the list of doodles.
+     */
     unshift(doodle: Doodle): void;
     length: number;
     filter(callback: (doodle: Doodle, index: number, array: Doodle[]) => boolean): Doodle[];
-    /**
-     * @deprecated?
-     */
     current(): Doodle;
-    /**
-     * @deprecated?
-     */
     makeCurrent(doodle: Doodle): void;
     deleteDoodle(doodle: Doodle): void;
     updateStorage(): void;
     /**
-     * Creates a new Doodle from the specified template and makes it the current doodle.
-     * @deprecated
+     * Creates a standalone empty Doodle.
      */
-    // createDoodle(template: ITemplate, description?: string): void;
+    createDoodle(): Doodle;
     suggestName(): string;
 }
 
