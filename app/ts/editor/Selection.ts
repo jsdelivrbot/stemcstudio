@@ -1138,7 +1138,7 @@ export default class Selection implements EventBus<any, Selection> {
         this.eventBus.on(eventName, callback, false);
         return () => {
             this.off(eventName, callback);
-        }
+        };
     }
 
     /**

@@ -149,10 +149,10 @@ function debounce(next: () => any, delay: number) {
     };
 }
 
-function uploadFileEditsToRoom(fileId: string, unit: MwUnit, room: RoomAgent) {
+function uploadFileEditsToRoom(path: string, unit: MwUnit, room: RoomAgent) {
     return function() {
         const edits = unit.getEdits(room.id);
-        room.setEdits(fileId, edits);
+        room.setEdits(path, edits);
     };
 }
 
@@ -259,7 +259,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      * This is the counterpart of the dispose method.
      */
     recycle(callback: (err: any) => any): void {
-        console.log(`recycle(), refCount => ${this.refCount}`);
+        // console.lg(`recycle(), refCount => ${this.refCount}`);
         this.addRef();
         this.inFlight++;
         this.languageServiceProxy.initialize(scriptImports, (err: any) => {
@@ -296,16 +296,18 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     release(): number {
         this.refCount--;
         if (this.refCount === 0) {
-            this.languageServiceProxy.terminate();
-            this.languageServiceProxy = void 0;
-            if (this.files) {
-                this.files.release();
-                this.files = void 0;
-            }
-            if (this.trash) {
-                this.trash.release();
-                this.trash = void 0;
-            }
+            this.endMonitoring(() => {
+                this.languageServiceProxy.terminate();
+                this.languageServiceProxy = void 0;
+                if (this.files) {
+                    this.files.release();
+                    this.files = void 0;
+                }
+                if (this.trash) {
+                    this.trash.release();
+                    this.trash = void 0;
+                }
+            });
         }
         return this.refCount;
     }
@@ -412,7 +414,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
 
         this.addRef();
 
-        console.log(`WsModel.attachEditor(${path})`);
+        // console.lg(`WsModel.attachEditor(${path})`);
         // Check arguments.
         checkPath(path);
         checkEditor(editor);
@@ -420,7 +422,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         // Idempotency.
         const existing = this.getFileEditor(path);
         if (existing) {
-            console.log(`attachEditor ignored because existing => ${existing}`);
+            // console.lg(`attachEditor ignored because existing => ${existing}`);
             // existing.release();
             return;
         }
@@ -450,7 +452,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      * Detaching the Editor from the workspace disables the IDE features.
      */
     detachEditor(path: string, editor: Editor): void {
-        console.log(`WsModel.detachEditor(${path})`);
+        // console.lg(`WsModel.detachEditor(${path})`);
 
         // Check Arguments.
         checkPath(path);
@@ -458,7 +460,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
 
         // Idempotency.
         if (!this.getFileEditor(path)) {
-            console.log(`WsModel.detachEditor(${path}) ignored`);
+            // console.lg(`WsModel.detachEditor(${path}) ignored`);
             return;
         }
         else {
@@ -479,7 +481,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     }
 
     private attachSession(path: string, session: EditSession): void {
-        console.log("attachSession");
+        // console.lg("attachSession");
         checkPath(path);
         checkSession(session);
 
@@ -506,7 +508,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     }
 
     private detachSession(path: string, session: EditSession) {
-        console.log("detachSession");
+        // console.lg("detachSession");
         checkPath(path);
         checkSession(session);
 
@@ -527,7 +529,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      * Ends monitoring the Document at the specified path for changes and removes the script from the LanguageService.
      */
     beginDocumentMonitoring(path: string, callback: (err) => any): void {
-        console.log(`beginDocumentMonitoring(${path})`);
+        // console.lg(`beginDocumentMonitoring(${path})`);
         checkPath(path);
         checkCallback(callback);
 
@@ -566,7 +568,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      * Ends monitoring the Document at the specified path for changes and removes the script from the LanguageService.
      */
     endDocumentMonitoring(path: string, callback: (err) => any) {
-        console.log(`endDocumentMonitoring(${path})`);
+        // console.lg(`endDocumentMonitoring(${path})`);
         checkPath(path);
         checkCallback(callback);
 
@@ -595,11 +597,26 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         }
     }
 
+    private endMonitoring(callback: () => any) {
+        const paths = Object.keys(this.langDocumentChangeListenerRemovers);
+        const iLen = paths.length;
+        let outstanding = iLen;
+        for (let i = 0; i < paths.length; i++) {
+            const path = paths[i];
+            this.endDocumentMonitoring(path, function(err) {
+                outstanding--;
+                if (outstanding === 0) {
+                    callback();
+                }
+            });
+        }
+    }
+
     /**
      * 
      */
     ensureScript(path: string, content: string, callback: (err) => any): void {
-        console.log(`ensureScript(${path})`);
+        // console.lg(`ensureScript(${path})`);
         checkPath(path);
         checkCallback(callback);
 
@@ -619,7 +636,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      * 
      */
     removeScript(path: string, callback: (err) => any) {
-        console.log(`removeScript(${path})`);
+        // console.lg(`removeScript(${path})`);
         checkPath(path);
         checkCallback(callback);
 
@@ -1255,6 +1272,10 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             }
         }
     }
+
+    /**
+     * Return the Document for the specified file. This reference must be released when no longer required.
+     */
     getFileDocument(path: string): Document {
         if (this.files) {
             // TODO: Neet to implement getSession
@@ -1409,10 +1430,10 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         if (room) {
             // Enumerate the editors in the workspace and add them to the node.
             // This will enable the node to get/set the editor value, diff and apply patches.
-            const fileNames = this.files.keys;
-            for (let i = 0; i < fileNames.length; i++) {
-                const fileName = fileNames[i];
-                const file = this.files.getWeakRef(fileName);
+            const paths = this.files.keys;
+            for (let i = 0; i < paths.length; i++) {
+                const path = paths[i];
+                const file = this.files.getWeakRef(path);
                 // Create the synchronization node associated with the workspace.
                 // This will enable the node to create and destroy editors.
                 file.unit = new MwUnit(this);
@@ -1425,14 +1446,14 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
 
             // Add listeners for editor changes. These will begin the flow of diffs to the server.
             // We debounce the change events so that the diff is trggered when things go quiet for a second.
-            for (let i = 0; i < fileNames.length; i++) {
-                const fileName = fileNames[i];
-                const doc = this.getFileDocument(fileName);
+            for (let i = 0; i < paths.length; i++) {
+                const path = paths[i];
+                const doc = this.getFileDocument(path);
                 try {
-                    const file = this.files.getWeakRef(fileName);
+                    const file = this.files.getWeakRef(path);
                     const unit = file.unit;
-                    const changeHandler = debounce(uploadFileEditsToRoom(fileName, unit, room), DEBOUNCE_DURATION_MILLISECONDS);
-                    this.roomDocumentChangeListenerRemovers[fileName] = doc.addChangeListener(changeHandler);
+                    const changeHandler = debounce(uploadFileEditsToRoom(path, unit, room), DEBOUNCE_DURATION_MILLISECONDS);
+                    this.roomDocumentChangeListenerRemovers[path] = doc.addChangeListener(changeHandler);
                 }
                 finally {
                     doc.release();
@@ -1445,13 +1466,13 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     }
     disconnectFromRoom(room: RoomAgent) {
         // Remove listeners on the editor for changes.
-        const fileNames = this.files.keys;
-        for (let i = 0; i < fileNames.length; i++) {
-            const fileName = fileNames[i];
-            const doc = this.getFileDocument(fileName);
+        const paths = this.files.keys;
+        for (let i = 0; i < paths.length; i++) {
+            const path = paths[i];
+            const doc = this.getFileDocument(path);
             try {
-                this.roomDocumentChangeListenerRemovers[fileName]();
-                delete this.roomDocumentChangeListenerRemovers[fileName];
+                this.roomDocumentChangeListenerRemovers[path]();
+                delete this.roomDocumentChangeListenerRemovers[path];
             }
             finally {
                 doc.release();

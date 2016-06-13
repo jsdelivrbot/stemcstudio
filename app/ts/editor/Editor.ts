@@ -25,7 +25,6 @@ import EventEmitterClass from "./lib/EventEmitterClass";
 import Command from "./commands/Command";
 import CommandManager from "./commands/CommandManager";
 import defaultCommands from "./commands/default_commands";
-import {loadModule} from "./config";
 import TokenIterator from "./TokenIterator";
 import {COMMAND_NAME_AUTO_COMPLETE} from './editor_protocol';
 import {COMMAND_NAME_BACKSPACE} from './editor_protocol';

@@ -146,10 +146,10 @@ export default class RoomAgent implements Shareable {
     /**
      * fileName corresponds 1:1 with the edits.s, which is the MwUnit unique identifier.
      */
-    setEdits(fileName: string, edits: MwEdits) {
+    setEdits(path: string, edits: MwEdits) {
         // The roomId and the nodeId should not be required because of previous calls
         // that established those properties on the socket.
-        this._socket.emit('edits', { fromId: this.nodeId, roomId: this.roomId, fileName, edits }, () => {
+        this._socket.emit('edits', { fromId: this.nodeId, roomId: this.roomId, fileName: path, edits }, () => {
             // console.lg(`Room ${this.roomId} has acknowledged edits for file ${fileName}.`);
         });
     }

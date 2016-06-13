@@ -1,59 +1,4 @@
-/* ***** BEGIN LICENSE BLOCK *****
- * The MIT License (MIT)
- *
- * Copyright (c) 2014-2016 David Geo Holmes <david.geo.holmes@gmail.com>
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- * ***** END LICENSE BLOCK ***** */
-/* ***** BEGIN LICENSE BLOCK *****
- * Distributed under the BSD license:
- *
- * Copyright (c) 2010, Ajax.org B.V.
- * All rights reserved.
- * 
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *     * Redistributions of source code must retain the above copyright
- *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of Ajax.org B.V. nor the
- *       names of its contributors may be used to endorse or promote products
- *       derived from this software without specific prior written permission.
- * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL AJAX.ORG B.V. BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * ***** END LICENSE BLOCK ***** */
-"use strict";
-
 import {stringRepeat, stringTrimLeft, stringTrimRight} from "../lib/lang";
-import {loadModule} from "../config";
 import Range from "../Range";
 import Command from './Command';
 import Editor from '../Editor';
@@ -69,50 +14,20 @@ function bindKey(win: string, mac: string) {
     scrollIntoView: true|"cursor"|"center"|"selectionPart"
 */
 
-
-
-var commands: Command[] = [{
-    name: "showSettingsMenu",
-    bindKey: bindKey("Ctrl-,", "Command-,"),
-    exec: function(editor: Editor) {
-        loadModule("ace/ext/settings_menu", function(module) {
-            module.init(editor);
-            // 
-            // editor.showSettingsMenu();
-        });
-    },
-    readOnly: true
-}, {
-        name: "goToNextError",
-        bindKey: bindKey("Alt-E", "Ctrl-E"),
-        exec: function(editor: Editor) {
-            loadModule("ace/ext/error_marker", function(module) {
-                module.showErrorMarker(editor, 1);
-            });
-        },
-        scrollIntoView: "animate",
-        readOnly: true
-    }, {
-        name: "goToPreviousError",
-        bindKey: bindKey("Alt-Shift-E", "Ctrl-Shift-E"),
-        exec: function(editor: Editor) {
-            loadModule("ace/ext/error_marker", function(module) {
-                module.showErrorMarker(editor, -1);
-            });
-        },
-        scrollIntoView: "animate",
-        readOnly: true
-    }, {
+const commands: Command[] = [
+    {
         name: "selectall",
         bindKey: bindKey("Ctrl-A", "Command-A"),
         exec: function(editor: Editor) { editor.selectAll(); },
         readOnly: true
-    }, {
+    },
+    {
         name: "centerselection",
         bindKey: bindKey(null, "Ctrl-L"),
         exec: function(editor: Editor) { editor.centerSelection(); },
         readOnly: true
-    }, {
+    },
+    {
         name: "gotoline",
         bindKey: bindKey("Ctrl-L", "Command-L"),
         exec: function(editor: Editor) {
@@ -122,31 +37,36 @@ var commands: Command[] = [{
             }
         },
         readOnly: true
-    }, {
+    },
+    {
         name: "fold",
         bindKey: bindKey("Alt-L|Ctrl-F1", "Command-Alt-L|Command-F1"),
         exec: function(editor: Editor) { editor.getSession().toggleFold(false); },
         scrollIntoView: "center",
         readOnly: true
-    }, {
+    },
+    {
         name: "unfold",
         bindKey: bindKey("Alt-Shift-L|Ctrl-Shift-F1", "Command-Alt-Shift-L|Command-Shift-F1"),
         exec: function(editor: Editor) { editor.getSession().toggleFold(true); },
         scrollIntoView: "center",
         readOnly: true
-    }, {
+    },
+    {
         name: "toggleFoldWidget",
         bindKey: bindKey("F2", "F2"),
         exec: function(editor: Editor) { editor.getSession().toggleFoldWidget(); },
         scrollIntoView: "center",
         readOnly: true
-    }, {
+    },
+    {
         name: "toggleParentFoldWidget",
         bindKey: bindKey("Alt-F2", "Alt-F2"),
         exec: function(editor: Editor) { editor.getSession().toggleFoldWidget(true); },
         scrollIntoView: "center",
         readOnly: true
-    }, {
+    },
+    {
         name: "foldall",
         bindKey: bindKey("Ctrl-Alt-0", "Ctrl-Command-Option-0"),
         exec: function(editor: Editor) { editor.getSession().foldAll(); },
@@ -206,14 +126,8 @@ var commands: Command[] = [{
             }
         },
         readOnly: true
-    }, {
-        name: "find",
-        bindKey: bindKey("Ctrl-F", "Command-F"),
-        exec: function(editor: Editor) {
-            loadModule("ace/ext/searchbox", function(e) { e.Search(editor) });
-        },
-        readOnly: true
-    }, {
+    },
+    {
         name: "overwrite",
         bindKey: bindKey("Insert", "Insert"),
         exec: function(editor: Editor) { editor.toggleOverwrite(); },
@@ -498,13 +412,8 @@ var commands: Command[] = [{
         bindKey: bindKey("Ctrl-Shift-Down", "Alt-Shift-Down"),
         exec: function(editor: Editor) { editor.modifyNumber(-1); },
         multiSelectAction: "forEach"
-    }, {
-        name: "replace",
-        bindKey: bindKey("Ctrl-H", "Command-Option-F"),
-        exec: function(editor: Editor) {
-            loadModule("ace/ext/searchbox", function(e) { e.Search(editor, true) });
-        }
-    }, {
+    },
+    {
         name: "undo",
         bindKey: bindKey("Ctrl-Z", "Command-Z"),
         exec: function(editor: Editor) { editor.undo(); }

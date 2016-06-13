@@ -71,14 +71,19 @@ export default class CredentialsService {
     }
     private updateCredentials(): void {
         // console.lg(`updateCredentials() with providers ${JSON.stringify(Object.keys(this.Logins), null, 2)}`);
-        AWS.config.region = 'us-east-1';
-        AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-            // This identifier comes from looking at the generated sample code for
-            // the identity provider called STEMCstudio for the JavaScript platform.
-            // It can also be seen by "Edit identity pool".
-            IdentityPoolId: 'us-east-1:b419a8b6-2753-4af4-a76b-41a451eb2278',
-            Logins: this._Logins
-        });
+        if (window['AWS']) {
+            AWS.config.region = 'us-east-1';
+            AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+                // This identifier comes from looking at the generated sample code for
+                // the identity provider called STEMCstudio for the JavaScript platform.
+                // It can also be seen by "Edit identity pool".
+                IdentityPoolId: 'us-east-1:b419a8b6-2753-4af4-a76b-41a451eb2278',
+                Logins: this._Logins
+            });
+        }
+        else {
+            console.warn("Amazon Web Services is not available.");
+        }
     }
 
     /**

@@ -9,7 +9,7 @@ interface DeltaGroup {
     /**
      * 
      */
-    deltas: Delta[]
+    deltas: Delta[];
 }
 
 export default DeltaGroup;

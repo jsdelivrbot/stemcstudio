@@ -349,7 +349,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         this.eventBus.on(eventName, callback, false);
         return () => {
             this.eventBus.off(eventName, callback);
-        }
+        };
     }
 
     /**
@@ -768,7 +768,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
      */
     setPrintMarginColumn(printMarginColumn: number): void {
         this.$printMarginColumn = printMarginColumn;
-        this.$updatePrintMargin()
+        this.$updatePrintMargin();
     }
 
     /**

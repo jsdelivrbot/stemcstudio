@@ -25,7 +25,6 @@ import SearchHighlight from "./SearchHighlight";
 import BracketMatch from "./BracketMatch";
 import UndoManager from './UndoManager';
 import TokenIterator from './TokenIterator';
-import FontMetrics from "./layer/FontMetrics";
 import WorkerClient from "./worker/WorkerClient";
 import LineWidget from './LineWidget';
 import LineWidgetManager from './LineWidgetManager';
@@ -205,12 +204,6 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     public $mode: LanguageMode = null;
 
     /**
-     * LanguageMode(s) have a $id property which is set here.
-     * TODO: It doesn't seem to do very much.
-     */
-    private $modeId: string = null;
-
-    /**
      * The worker corresponding to the mode (i.e. Language).
      */
     private $worker: WorkerClient;
@@ -261,6 +254,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @param doc
      */
     constructor(doc: Document) {
+        // console.lg("EditSession.constructor")
         if (!(doc instanceof Document)) {
             throw new TypeError('doc must be an Document');
         }
@@ -292,6 +286,9 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     protected destructor(): void {
         // FIXME: TODO
+        // console.lg("EditSession.destructor");
+        this.$stopWorker();
+        this.setDocument(void 0);
     }
 
     addRef(): number {
@@ -303,6 +300,9 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         this.refCount--;
         if (this.refCount === 0) {
             this.destructor();
+        }
+        else if (this.refCount < 0) {
+            throw new Error("refCount is less than zero.");
         }
         return this.refCount;
     }
@@ -350,22 +350,29 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         if (this.doc) {
             this.removeDocumentChangeListener();
             this.removeDocumentChangeListener = void 0;
+            this.doc.release();
             this.doc = void 0;
+            if (this.bgTokenizer) {
+                this.bgTokenizer.stop();
+                this.bgTokenizer.setDocument(void 0);
+            }
         }
+
+        this.resetCaches();
 
         if (doc) {
             if (!(doc instanceof Document)) {
                 throw new Error("doc must be a Document");
             }
             this.doc = doc;
+            this.doc.addRef();
             this.removeDocumentChangeListener = this.doc.addChangeListener(this.$onChange);
 
             if (this.bgTokenizer) {
                 this.bgTokenizer.setDocument(doc);
+                this.bgTokenizer.start(0);
             }
         }
-
-        this.resetCaches();
     }
 
     /**
@@ -422,9 +429,6 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         this.$wrapData = [];
         this.$rowLengthCache = [];
         this.$resetRowCache(0);
-        if (this.bgTokenizer) {
-            this.bgTokenizer.start(0);
-        }
     }
 
     private onChangeFold(event: FoldEvent): void {
@@ -1186,6 +1190,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         this.$stopWorker();
         if (useWorker) {
             this.$startWorker(function(err) {
+                // Do nothing.
             });
         }
     }
@@ -1221,24 +1226,9 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @param callback
      */
     public setLanguageMode(mode: LanguageMode, callback: (err: any) => any): void {
-        return this.$onChangeMode(mode, false, callback);
-    }
-
-    /**
-     * @param mode
-     * @param isPlaceholder
-     * @param callback
-     */
-    private $onChangeMode(mode: LanguageMode, isPlaceholder: boolean, callback: (err: any) => any): void {
-
-        if (!isPlaceholder) {
-            this.$modeId = mode.$id;
-        }
 
         if (this.$mode === mode) {
-            if (!isPlaceholder) {
-                callback(void 0);
-            }
+            setTimeout(callback, 0);
             return;
         }
 
@@ -1256,6 +1246,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
         if (!this.bgTokenizer) {
             this.bgTokenizer = new BackgroundTokenizer(tokenizer, this);
+            // TODO: Remove this handler later.
             this.bgTokenizer.on("update", (event, bg: BackgroundTokenizer) => {
                 /**
                  * @event tokenizerUpdate
@@ -1273,30 +1264,27 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         this.nonTokenRe = mode.nonTokenRe;
 
 
-        if (!isPlaceholder) {
-            this.setWrapType('auto');
-            this.$setFolding(mode.foldingRules);
-            this.bgTokenizer.start(0);
+        this.setWrapType('auto');
+        this.$setFolding(mode.foldingRules);
+        this.bgTokenizer.start(0);
 
-            if (this.$useWorker) {
-                this.$startWorker((err: any) => {
-                    if (!err) {
-                        callback(void 0);
-                    }
-                    else {
-                        callback(err);
-                    }
-                });
-            }
-            else {
-                callback(void 0);
-            }
-            /**
-             * @event changeMode
-             */
-            this.eventBus._emit("changeMode");
+        if (this.$useWorker) {
+            this.$startWorker((err: any) => {
+                if (!err) {
+                    callback(void 0);
+                }
+                else {
+                    callback(err);
+                }
+            });
         }
-
+        else {
+            setTimeout(callback, 0);
+        }
+        /**
+         * @event changeMode
+         */
+        this.eventBus._emit("changeMode");
     }
 
     /**
@@ -3836,7 +3824,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         else if (typeof value === "string")
             val = parseInt(value, 10) || false;
         else
-            val = value
+            val = value;
 
         if (this.$wrap === val)
             return;

@@ -106,6 +106,7 @@ export default class WsFile implements MwEditor, Shareable {
     protected destructor(): void {
         // console.lg("WsFile.destructor");
         this.setSession(void 0);
+        this.setDocument(void 0);
         this.workspace = void 0;
     }
 
@@ -215,6 +216,9 @@ export default class WsFile implements MwEditor, Shareable {
         return this.session ? true : false;
     }
 
+    /**
+     * @returns The underlying document. This must be released when no longer required.
+     */
     getDocument(): Document {
         if (this.doc) {
             this.doc.addRef();

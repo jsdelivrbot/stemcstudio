@@ -5,13 +5,8 @@ import Delta from "../Delta";
 import Document from "../Document";
 import EventBus from "../EventBus";
 import EventEmitterClass from '../lib/EventEmitterClass';
-import {get} from "../config";
 import CallbackManager from './CallbackManager';
 import Disposable from '../../base/Disposable';
-
-// FIXME: This class is begging to be written using the functional constructor
-// pattern in order to provide better encapsulation and avoid the `this` binding
-// issues associated with the class pattern or class syntactic sugar.
 
 /**
  * <p>
@@ -35,8 +30,6 @@ import Disposable from '../../base/Disposable';
  * and receive events that originated in the worker thread.
  * </li>
  * </ul>
- *
- * @class WorkerClient
  */
 export default class WorkerClient implements EventBus<MessageEvent, WorkerClient>, Disposable {
 
@@ -48,33 +41,23 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
     /**
      * Changes in the Document are queued here so that they can
      * later be posted to the worker thread.
-     *
-     * @property deltaQueue
-     * @type Delta[]
-     * @private
      */
     private deltaQueue: Delta[];
 
     private callbackManager = new CallbackManager();
 
     /**
-     * @property editorDocument
-     * @type Document
-     * @private
+     * 
      */
     private $doc: Document;
 
     /**
-     * @property eventBus
-     * @type EventEmitterClass<WorkerClient>
-     * @private
+     *
      */
     private eventBus: EventEmitterClass<MessageEvent, WorkerClient>;
 
     /**
-     * @class WorkerClient
-     * @constructor
-     * @param workerUrl {string}
+     * @param workerUrl
      */
     constructor(private workerUrl: string) {
         this.eventBus = new EventEmitterClass<MessageEvent, WorkerClient>(this);
@@ -260,33 +243,38 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
     }
 
     /**
-     * @method attachToDocument
-     * @param doc {Document}
-     * @return {void}
+     * @param doc
      */
     public attachToDocument(doc: Document): void {
-        if (this.$doc) {
-            if (this.$doc === doc) {
-                return;
-            }
-            else {
-                this.detachFromDocument();
-            }
+
+        if (this.$doc === doc) {
+            return;
         }
-        this.$doc = doc;
-        this.call("setValue", [doc.getValue()], function(data: any) {
-            console.log(`setValue => ${data}`)
-        });
-        doc.addChangeListener(this.changeListener);
+
+        if (this.$doc) {
+            this.detachFromDocument();
+        }
+
+        if (doc instanceof Document) {
+            this.$doc = doc;
+            this.$doc.addRef();
+            this.call("setValue", [doc.getValue()], function(data: any) {
+                console.log(`setValue => ${data}`)
+            });
+            doc.addChangeListener(this.changeListener);
+        }
+        else {
+            throw new Error("doc must be a Document");
+        }
     }
 
     /**
-     * @method detachFromDocument
-     * @return {void}
+     *
      */
     public detachFromDocument(): void {
         if (this.$doc) {
             this.$doc.removeChangeListener(this.changeListener);
+            this.$doc.release();
             this.$doc = null;
         }
     }

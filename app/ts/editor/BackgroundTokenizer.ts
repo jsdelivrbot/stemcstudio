@@ -12,16 +12,11 @@ import TokenizedLine from './TokenizedLine';
  * Tokenizes an Document in the background, and caches the tokenized rows for future use. 
  * 
  * If a certain row is changed, everything below that row is re-tokenized.
- *
- * @class BackgroundTokenizer
  */
 export default class BackgroundTokenizer implements EventBus<any, BackgroundTokenizer> {
     /**
      * This is the value returned by setTimeout, so it's really a timer handle.
      * There are some conditionals looking for a falsey value, so we use zero where needed.
-     * @property running
-     * @type number
-     * @private
      */
     private running: number = 0;
 
@@ -46,12 +41,9 @@ export default class BackgroundTokenizer implements EventBus<any, BackgroundToke
     /**
      * Creates a new `BackgroundTokenizer` object.
      *
-     * @class BackgroundTokenizer
-     * @constructor
-     * @param tokenizer {Tokenizer} The tokenizer to use, supplied by the LanguageMode.
-     * @param session {EditSession}
+     * @param tokenizer The tokenizer to use, supplied by the LanguageMode.
      */
-    constructor(tokenizer: Tokenizer, session: EditSession) {
+    constructor(tokenizer: Tokenizer, unused?: EditSession) {
         this.eventBus = new EventEmitterClass<any, BackgroundTokenizer>(this);
         this.tokenizer = tokenizer;
 

@@ -6,7 +6,8 @@ import Token from './Token';
 let MAX_TOKEN_COUNT = 2000;
 
 /**
- * This class takes a set of highlighting rules, and creates a tokenizer out of them. For more information, see [the wiki on extending highlighters](https://github.com/ajaxorg/ace/wiki/Creating-or-Extending-an-Edit-Mode#wiki-extendingTheHighlighter).
+ * This class takes a set of highlighting rules, and creates a tokenizer out of them.
+ * For more information, see [the wiki on extending highlighters](https://github.com/ajaxorg/ace/wiki/Creating-or-Extending-an-Edit-Mode#wiki-extendingTheHighlighter).
  * @class Tokenizer
  */
 export default class Tokenizer {

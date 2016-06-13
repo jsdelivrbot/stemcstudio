@@ -80,17 +80,15 @@ export default class Document implements Shareable {
     /**
      * Maintains a count of the number of references to this instance of Document.
      */
-    private _refCount = 1;
+    private refCount = 1;
 
     /**
-     * Creates a new Document.
      * If text is included, the Document contains those strings; otherwise, it's empty.
      *
-     * @class Document
-     * @constructor
-     * @param textOrLines {string | Array<string>}
+     * @param textOrLines
      */
     constructor(textOrLines: string | Array<string>) {
+        // console.lg("Document.constructor");
 
         this._lines = [""];
 
@@ -110,31 +108,31 @@ export default class Document implements Shareable {
     }
 
     protected destructor(): void {
+        // console.lg("Document.destructor");
         this._lines = void 0;
+        this._eventBus = void 0;
     }
 
     public addRef(): number {
-        this._refCount++;
-        return this._refCount;
+        this.refCount++;
+        // console.lg(`Document.addRef => ${this.refCount}`);
+        return this.refCount;
     }
 
     public release(): number {
-        this._refCount--;
-        if (this._refCount === 0) {
+        this.refCount--;
+        // console.lg(`Document.release => ${this.refCount}`);
+        if (this.refCount === 0) {
             this.destructor();
         }
-        else if (this._refCount < 0) {
-            throw new Error();
+        else if (this.refCount < 0) {
+            throw new Error("Document refCount is negative.");
         }
-        return this._refCount;
+        return this.refCount;
     }
 
     /**
      * Replaces all the lines in the current `Document` with the value of `text`.
-     *
-     * @method setValue
-     * @param text {string} The text to use
-     * @return {void}
      */
     setValue(text: string): void {
         const row = this.getLength() - 1;
@@ -144,9 +142,6 @@ export default class Document implements Shareable {
 
     /**
      * Returns all the lines in the document as a single string, joined by the new line character.
-     *
-     * @method getValue
-     * @return {string}
      */
     getValue(): string {
         return this.getAllLines().join(this.getNewLineCharacter());
@@ -155,14 +150,9 @@ export default class Document implements Shareable {
     /** 
      * Determines the newline character that is present in the presented text
      * and caches the result in $autoNewLine.
-     *
-     * @method $detectNewLine
-     * @param {string} text The text to work with.
-     * @return {void}
-     * @private
      */
     private $detectNewLine(text: string): void {
-        var match = text.match(/^.*?(\r\n|\r|\n)/m);
+        const match = text.match(/^.*?(\r\n|\r|\n)/m);
         this._autoNewLine = match ? match[1] : "\n";
         /**
          * @event changeNewLineMode
@@ -175,9 +165,6 @@ export default class Document implements Shareable {
      *  If `newLineMode == windows`, `\r\n` is returned.  
      *  If `newLineMode == unix`, `\n` is returned.  
      *  If `newLineMode == auto`, the value of `autoNewLine` is returned.
-     *
-     * @method getNewLineCharacter
-     * @return {string}
      */
     getNewLineCharacter(): string {
         switch (this._newLineMode) {
@@ -193,9 +180,7 @@ export default class Document implements Shareable {
     /**
      * Sets the new line mode.
      *
-     * @method setNewLineMode
-     * @param newLineMode {string} The newline mode to use; can be either `windows`, `unix`, or `auto`.
-     * @return {void}
+     * @param newLineMode The newline mode to use; can be either `windows`, `unix`, or `auto`.
      */
     setNewLineMode(newLineMode: string): void {
         if (this._newLineMode === newLineMode) {
@@ -210,9 +195,6 @@ export default class Document implements Shareable {
 
     /**
      * Returns the type of newlines being used; either `windows`, `unix`, or `auto`.
-     *
-     * @method getNewLineMode
-     * @return {string}
      */
     getNewLineMode(): string {
         return this._newLineMode;
@@ -221,9 +203,7 @@ export default class Document implements Shareable {
     /**
      * Returns `true` if `text` is a newline character (either `\r\n`, `\r`, or `\n`).
      *
-     * @method isNewLine
-     * @param text {string} The text to check
-     * @return {boolean}
+     * @param text The text to check.
      */
     isNewLine(text: string): boolean {
         return (text === "\r\n" || text === "\r" || text === "\n");
@@ -232,9 +212,7 @@ export default class Document implements Shareable {
     /**
      * Returns a verbatim copy of the given line as it is in the document.
      *
-     * @method getLine
-     * @param row {Number} The row index to retrieve.
-     * @return {string}
+     * @param row The row index to retrieve.
      */
     getLine(row: number): string {
         return this._lines[row] || "";
@@ -244,10 +222,8 @@ export default class Document implements Shareable {
      * Returns an array of strings of the rows between `firstRow` and `lastRow`.
      * This function is inclusive of `lastRow`.
      *
-     * @method getLines
-     * @param [firstRow] {number} The first row index to retrieve
-     * @param [lastRow] {number} The final row index to retrieve
-     * @return {string[]}
+     * @param firstRow The first row index to retrieve.
+     * @param lastRow The final row index to retrieve.
      */
     getLines(firstRow?: number, lastRow?: number): string[] {
         return this._lines.slice(firstRow, lastRow + 1);
@@ -255,9 +231,6 @@ export default class Document implements Shareable {
 
     /**
      * Returns all lines in the document as string array.
-     *
-     * @method getAllLines()
-     * @return {string[]}
      */
     getAllLines(): string[] {
         return this.getLines(0, this.getLength());
@@ -265,9 +238,6 @@ export default class Document implements Shareable {
 
     /**
      * Returns the number of rows in the document.
-     *
-     * @method getLength
-     * @return {number}
      */
     getLength(): number {
         return this._lines.length;
@@ -276,9 +246,7 @@ export default class Document implements Shareable {
     /**
      * Given a range within the document, returns all the text within that range as a single string.
      *
-     * @method getTextRange
-     * @param range {Range} The range to work with.
-     * @return {string}
+     * @param range The range to work with.
      */
     getTextRange(range: Range): string {
         return this.getLinesForRange(range).join(this.getNewLineCharacter());
@@ -287,9 +255,7 @@ export default class Document implements Shareable {
     /**
      * Returns all the text within `range` as an array of lines.
      *
-     * @method getLinesForRange
-     * @param {Range} range The range to work with.
-     * @returns {Array}
+     * @param range The range to work with.
      */
     getLinesForRange(range: { start: Position; end: Position }): string[] {
         var lines: string[];
@@ -301,7 +267,7 @@ export default class Document implements Shareable {
             // Handle a multi-line range.
             lines = this.getLines(range.start.row, range.end.row);
             lines[0] = (lines[0] || "").substring(range.start.column);
-            var l = lines.length - 1;
+            const l = lines.length - 1;
             if (range.end.row - range.start.row === l) {
                 lines[l] = lines[l].substring(0, range.end.column);
             }
@@ -342,8 +308,8 @@ export default class Document implements Shareable {
      *     ```
      */
     insertInLine(position: Position, text: string): Position {
-        var start: Position = this.clippedPos(position.row, position.column);
-        var end: Position = this.pos(position.row, position.column + text.length);
+        const start: Position = this.clippedPos(position.row, position.column);
+        const end: Position = this.pos(position.row, position.column + text.length);
 
         this.applyDelta({
             start: start,
@@ -356,7 +322,7 @@ export default class Document implements Shareable {
     }
 
     clippedPos(row: number, column: number): Position {
-        var length = this.getLength();
+        const length = this.getLength();
         if (row === void 0) {
             row = length;
         }
