@@ -81,8 +81,10 @@ export default class BackgroundService implements Background {
                     copyDoodleToWorkspace(doodle, this.wsModel);
                 }
                 else {
-                    // Do nothing yet.
-                    console.warn("BackgroundService.loadWsModel(): Nothing was loaded!");
+                    const doodle = this.doodles.createDoodle();
+                    this.doodles.unshift(doodle);
+                    this.doodles.updateStorage();
+                    copyDoodleToWorkspace(doodle, this.wsModel);
                 }
                 setTimeout(callback, 0);
             }

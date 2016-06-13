@@ -54,6 +54,7 @@ import AboutController from './controllers/AboutController';
 import HomeController from './controllers/HomeController';
 import NewController from './features/doodle/controllers/NewController';
 import OpenController from './controllers/OpenController';
+import CopyController from './features/doodle/controllers/CopyController';
 
 import FacebookLoginController from './controllers/login/facebook/FacebookLoginController';
 import GitHubLoginController from './controllers/login/github/GitHubLoginController';
@@ -222,6 +223,9 @@ app.controller(NEW_CONTROLLER_NAME, NewController);
 const OPEN_CONTROLLER_NAME = 'OpenController';
 app.controller(OPEN_CONTROLLER_NAME, OpenController);
 
+const COPY_CONTROLLER_NAME = 'CopyController';
+app.controller(COPY_CONTROLLER_NAME, CopyController);
+
 /**
  * The following controllers will be referenced from a template.
  */
@@ -310,7 +314,7 @@ app.config([
             .state('copy', {
                 url: '/copy',
                 templateUrl: 'copy.html',
-                controller: 'copy-controller'
+                controller: COPY_CONTROLLER_NAME
             })
             .state('download', {
                 url: '/download',

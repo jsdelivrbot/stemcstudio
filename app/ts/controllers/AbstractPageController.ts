@@ -27,6 +27,8 @@ export default class AbstractPageController {
         authManager: IGitHubAuthManager,
         private ga: UniversalAnalytics.ga,
         modalDialog: ModalDialog,
+        private STATE_GIST: string,
+        private STATE_REPO: string,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string,
         overflow: string) {
 
@@ -65,6 +67,14 @@ export default class AbstractPageController {
                     console.warn(`navigateTo('${destination}') failed.`);
                 });
         };
+    }
+
+    protected navigateToRepo(owner: string, repo: string) {
+        return this.navigateTo(this.STATE_REPO, { owner, repo });
+    }
+
+    protected navigateToGist(gistId: string) {
+        return this.navigateTo(this.STATE_GIST, { gistId });
     }
 
     /**

@@ -22,6 +22,8 @@ export default class DashboardController extends AbstractPageController {
         'GitHubAuthManager',
         'ga',
         'modalDialog',
+        'STATE_GIST',
+        'STATE_REPO',
         'UNIVERSAL_ANALYTICS_TRACKING_ID',
     ];
 
@@ -36,8 +38,10 @@ export default class DashboardController extends AbstractPageController {
         authManager: IGitHubAuthManager,
         ga: UniversalAnalytics.ga,
         modalDialog: ModalDialog,
+        STATE_GIST: string,
+        STATE_REPO: string,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string
     ) {
-        super($scope, $state, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
+        super($scope, $state, $window, authManager, ga, modalDialog, STATE_GIST, STATE_REPO, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
     }
 }

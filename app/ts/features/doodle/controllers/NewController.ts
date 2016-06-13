@@ -27,6 +27,7 @@ export default class NewController {
         $scope.doOK = function() {
             const doodle = doodles.createDoodle();
             copyTemplateToDoodle($scope.template, doodle);
+            doodle.description = $scope.description;
             doodles.unshift(doodle);
             doodles.updateStorage();
             $state.go(STATE_DOODLE);

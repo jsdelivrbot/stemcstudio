@@ -22,6 +22,8 @@ export default class DoodleController extends AbstractPageController {
         'ga',
         'modalDialog',
         'doodles',
+        'STATE_GIST',
+        'STATE_REPO',
         'UNIVERSAL_ANALYTICS_TRACKING_ID'];
     constructor(
         $scope: DoodleScope,
@@ -32,9 +34,11 @@ export default class DoodleController extends AbstractPageController {
         ga: UniversalAnalytics.ga,
         modalDialog: ModalDialog,
         doodles: IDoodleManager,
+        STATE_GIST: string,
+        STATE_REPO: string,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string) {
 
-        super($scope, $state, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'hidden');
+        super($scope, $state, $window, authManager, ga, modalDialog, STATE_GIST, STATE_REPO, UNIVERSAL_ANALYTICS_TRACKING_ID, 'hidden');
 
         // ExplorerMixin implementation.
         $scope.isExplorerVisible = true;

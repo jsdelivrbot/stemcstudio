@@ -20,6 +20,7 @@ export default class OpenController extends AbstractPageController {
         'modalDialog',
         'STATE_DOODLE',
         'STATE_GIST',
+        'STATE_REPO',
         'UNIVERSAL_ANALYTICS_TRACKING_ID'
     ];
     constructor(
@@ -32,9 +33,10 @@ export default class OpenController extends AbstractPageController {
         modalDialog: ModalDialog,
         STATE_DOODLE: string,
         STATE_GIST: string,
+        STATE_REPO: string,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string
     ) {
-        super($scope, $state, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
+        super($scope, $state, $window, authManager, ga, modalDialog, STATE_GIST, STATE_REPO, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
 
         $scope.doodles = function() {
             return doodles.filter(function() { return true; });
@@ -46,8 +48,13 @@ export default class OpenController extends AbstractPageController {
         $scope.doOpen = (doodle: Doodle) => {
             // We know that the Doodle is in Local Storage, but we can avoid
             // a state change by going to the correct state the first time.
-            if (doodle.gistId) {
-                this.navigateTo(STATE_GIST, { gistId: doodle.gistId });
+            doodles.makeCurrent(doodle);
+            doodles.updateStorage();
+            if (doodle.owner && doodle.repo) {
+                this.navigateTo(STATE_REPO, { owner: doodle.owner, repo: doodle.repo });
+            }
+            else if (doodle.gistId) {
+                this.navigateToGist(doodle.gistId);
             }
             else {
                 this.navigateTo(STATE_DOODLE);

@@ -30,6 +30,7 @@ export default class HomeController extends AbstractPageController {
         'STATE_DOODLE',
         'STATE_EXAMPLES',
         'STATE_GIST',
+        'STATE_REPO',
         'UNIVERSAL_ANALYTICS_TRACKING_ID'
     ];
 
@@ -53,9 +54,10 @@ export default class HomeController extends AbstractPageController {
         STATE_DOODLE: string,
         STATE_EXAMPLES: string,
         STATE_GIST: string,
+        STATE_REPO: string,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string
     ) {
-        super($scope, $state, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
+        super($scope, $state, $window, authManager, ga, modalDialog, STATE_GIST, STATE_REPO, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
 
         $scope.FEATURE_DASHBOARD_ENABLED = FEATURE_DASHBOARD_ENABLED;
         $scope.FEATURE_EXAMPLES_ENABLED = FEATURE_EXAMPLES_ENABLED;
@@ -122,8 +124,11 @@ export default class HomeController extends AbstractPageController {
             doodles.makeCurrent(doodle);
             // We know that the Doodle is in Local Storage, but we can avoid
             // a state change by going to the correct state the first time.
-            if (doodle.gistId) {
-                this.navigateTo(STATE_GIST, { gistId: doodle.gistId });
+            if (doodle.owner && doodle.repo) {
+                this.navigateToRepo(doodle.owner, doodle.repo);
+            }
+            else if (doodle.gistId) {
+                this.navigateToGist(doodle.gistId);
             }
             else {
                 this.navigateTo(STATE_DOODLE);

@@ -79,7 +79,6 @@ app.controller('RepoDataController', RepoDataController);
 app.controller('RepoController', RepoController);
 // FIXME: Don't like this style of import.
 import './controllers/BodyController';
-import './controllers/CopyController';
 import './controllers/DownloadController';
 import './controllers/ExamplesController';
 
