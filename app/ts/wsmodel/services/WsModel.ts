@@ -21,7 +21,6 @@ import LanguageServiceProxy from '../../editor/workspace/LanguageServiceProxy';
 import IDoodleConfig from '../../services/doodles/IDoodleConfig';
 import IOptionManager from '../../services/options/IOptionManager';
 import Position from '../../editor/Position';
-import PromiseManager from './PromiseManager';
 import Marker from '../../editor/Marker';
 import modeFromName from '../../utils/modeFromName';
 import MwEditor from '../../synchronization/MwEditor';
@@ -34,6 +33,7 @@ import QuickInfoTooltip from '../../editor/workspace/QuickInfoTooltip';
 import QuickInfoTooltipHost from '../../editor/workspace/QuickInfoTooltipHost';
 import Range from '../../editor/Range';
 import RoomAgent from '../../modules/rooms/services/RoomAgent';
+import Shareable from '../../base/Shareable';
 import StringShareableMap from '../../collections/StringShareableMap';
 import WsFile from './WsFile';
 import setOptionalBooleanProperty from '../../services/doodles/setOptionalBooleanProperty';
@@ -159,7 +159,7 @@ function uploadFileEditsToRoom(fileId: string, unit: MwUnit, room: RoomAgent) {
 /**
  * The workspace data model.
  */
-export default class WsModel implements Disposable, MwWorkspace, QuickInfoTooltipHost, WorkspaceCompleterHost {
+export default class WsModel implements Disposable, MwWorkspace, QuickInfoTooltipHost, Shareable, WorkspaceCompleterHost {
 
     /**
      * The owner's login.
@@ -212,7 +212,6 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     private trash: StringShareableMap<WsFile>;
 
     public trace: boolean = false;
-    private state: WorkspaceState;
 
     /**
      * Keep track of in-flight requests so that we can prevent cascading requests in an indeterminate state.
@@ -230,67 +229,85 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      * The diagnostics allow us to place markers in the marker layer.
      * This array keeps track of the marker identifiers so that we can
      * remove the existing ones when the time comes to replace them.
-     *
-     * @property errorMarkerIds
-     * @type number[]
      */
     private errorMarkerIds: number[] = [];
 
     private languageServiceProxy: LanguageServiceProxy;
-
-    /**
-     * 
-     */
-    private promises: PromiseManager;
 
     private roomListener: UnitListener;
 
     private langDocumentChangeListenerRemovers: { [path: string]: () => void } = {};
     private roomDocumentChangeListenerRemovers: { [path: string]: () => void } = {};
 
+    /**
+     * Slightly unusual reference counting because of:
+     * 1) Operating as a service.
+     * 2) Handling lifetimes of Editors.
+     */
+    private refCount = 0;
+
     public static $inject: string[] = ['options', '$q'];
 
     constructor(private options: IOptionManager, private $q: ng.IQService) {
         // This will be called once, lazily, when this class is deployed as a singleton service.
-        this.languageServiceProxy = new LanguageServiceProxy(workerUrl);
-        // this.languageServiceProxy.trace = false;
-        this.state = WorkspaceState.CONSTRUCTED;
-        this.promises = new PromiseManager($q);
+        // We do nothing. There is no destructor; it would never be called.
     }
 
     /**
      * Informs the workspace that we want to reuse it.
-     * The workspace should have little work to do if it has just been constructed
-     * or if dispose has been called after the last use.
      * This method starts the workspace thread.
+     * This is the counterpart of the dispose method.
      */
     recycle(callback: (err: any) => any): void {
-        if (this.files || this.trash) {
-            console.warn("Make sure to call dispose()");
-        }
-        this.files = new StringShareableMap<WsFile>();
-        this.trash = new StringShareableMap<WsFile>();
-        if (this.promises.length) {
-            console.warn(`outstanding promises prior to reset: ${this.promises.length}, ${JSON.stringify(this.promises.getOutstandingPurposes(), null, 2)}`);
-        }
-        this.promises.reset();
-        const deferred = this.promises.defer('init');
-        this.state = WorkspaceState.INIT_PENDING;
+        console.log(`recycle(), refCount => ${this.refCount}`);
+        this.addRef();
         this.inFlight++;
         this.languageServiceProxy.initialize(scriptImports, (err: any) => {
             this.inFlight--;
-            if (err) {
-                console.warn(`init() => ${err}`);
-                this.state = WorkspaceState.INIT_FAILED;
-                this.promises.reject(deferred, err);
-                callback(err);
+            if (!err) {
+                this.languageServiceProxy.setTrace(false, callback);
             }
             else {
-                this.state = WorkspaceState.OPERATIONAL;
-                this.promises.resolve(deferred);
-                callback(void 0);
+                callback(err);
             }
         });
+    }
+
+    /**
+     * This is the counterpart of the recycle method.
+     */
+    dispose(): void {
+        this.release();
+    }
+
+    addRef(): number {
+        if (this.refCount === 0) {
+            if (this.files || this.trash) {
+                console.warn("Make sure to call dispose()");
+            }
+            this.files = new StringShareableMap<WsFile>();
+            this.trash = new StringShareableMap<WsFile>();
+            this.languageServiceProxy = new LanguageServiceProxy(workerUrl);
+        }
+        this.refCount++;
+        return this.refCount;
+    }
+
+    release(): number {
+        this.refCount--;
+        if (this.refCount === 0) {
+            this.languageServiceProxy.terminate();
+            this.languageServiceProxy = void 0;
+            if (this.files) {
+                this.files.release();
+                this.files = void 0;
+            }
+            if (this.trash) {
+                this.trash.release();
+                this.trash = void 0;
+            }
+        }
+        return this.refCount;
     }
 
     get filesByPath(): { [path: string]: WsFile } {
@@ -311,37 +328,6 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             trash[path] = this.trash.getWeakRef(path);
         }
         return trash;
-    }
-
-    synchronize(): ng.IPromise<any> {
-        const deferred: ng.IDeferred<any> = this.$q.defer<any>();
-        this.promises.synchronize()
-            .then(() => {
-                deferred.resolve();
-            })
-            .catch((err) => {
-                console.warn(`synchronize failed ${err}.`);
-                deferred.reject();
-            });
-        return deferred.promise;
-    }
-
-    dispose(): void {
-        if (this.files) {
-            this.files.release();
-            this.files = void 0;
-        }
-        if (this.trash) {
-            this.trash.release();
-            this.trash = void 0;
-        }
-        // FIXME: How can we detachEditors? This should be a reaction.
-        this.detachEditors();
-        this.removeScripts();
-        this.synchronize().then(() => {
-            this.state = WorkspaceState.TERM_PENDING;
-            this.languageServiceProxy.terminate();
-        });
     }
 
     /**
@@ -414,6 +400,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         // const editor = this.workspace.getEditor(fileName)
         throw new Error("TODO: createEditor");
     }
+
     deleteEditor(editor: MwEditor): void {
         throw new Error("TODO: deleteEditor");
     }
@@ -422,6 +409,10 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      * Attaching the Editor to the workspace enables the IDE features.
      */
     attachEditor(path: string, editor: Editor): void {
+
+        this.addRef();
+
+        console.log(`WsModel.attachEditor(${path})`);
         // Check arguments.
         checkPath(path);
         checkEditor(editor);
@@ -429,6 +420,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         // Idempotency.
         const existing = this.getFileEditor(path);
         if (existing) {
+            console.log(`attachEditor ignored because existing => ${existing}`);
             // existing.release();
             return;
         }
@@ -458,6 +450,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      * Detaching the Editor from the workspace disables the IDE features.
      */
     detachEditor(path: string, editor: Editor): void {
+        console.log(`WsModel.detachEditor(${path})`);
 
         // Check Arguments.
         checkPath(path);
@@ -465,10 +458,11 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
 
         // Idempotency.
         if (!this.getFileEditor(path)) {
+            console.log(`WsModel.detachEditor(${path}) ignored`);
             return;
         }
         else {
-            delete this.setFileEditor(path, void 0);
+            this.setFileEditor(path, void 0);
         }
 
         if (isTypeScript(path)) {
@@ -481,10 +475,11 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         }
 
         this.detachSession(path, editor.getSession());
+        this.release();
     }
 
     private attachSession(path: string, session: EditSession): void {
-        // Check arguments.
+        console.log("attachSession");
         checkPath(path);
         checkSession(session);
 
@@ -498,17 +493,20 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
                         this.outputFiles();
                     }
                     else {
-                        // console.warn(`Ignoring 'annotations' event because inFlight => ${this.inFlight}`);
+                        console.warn(`Ignoring 'annotations' event because inFlight => ${this.inFlight}`);
                     }
                 };
                 session.on('annotations', annotationsHandler);
                 this.annotationHandlers[path] = annotationsHandler;
             }
+            else {
+                console.warn("attachSession ignored");
+            }
         }
     }
 
     private detachSession(path: string, session: EditSession) {
-        // Check Arguments.
+        console.log("detachSession");
         checkPath(path);
         checkSession(session);
 
@@ -519,6 +517,9 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
                 session.off('annotations', annotationHandler);
                 delete this.annotationHandlers[path];
             }
+            else {
+                console.warn("detachSession ignored");
+            }
         }
     }
 
@@ -526,7 +527,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      * Ends monitoring the Document at the specified path for changes and removes the script from the LanguageService.
      */
     beginDocumentMonitoring(path: string, callback: (err) => any): void {
-        // Check arguments.
+        console.log(`beginDocumentMonitoring(${path})`);
         checkPath(path);
         checkCallback(callback);
 
@@ -565,7 +566,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      * Ends monitoring the Document at the specified path for changes and removes the script from the LanguageService.
      */
     endDocumentMonitoring(path: string, callback: (err) => any) {
-        // Check Arguments.
+        console.log(`endDocumentMonitoring(${path})`);
         checkPath(path);
         checkCallback(callback);
 
@@ -598,6 +599,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      * 
      */
     ensureScript(path: string, content: string, callback: (err) => any): void {
+        console.log(`ensureScript(${path})`);
         checkPath(path);
         checkCallback(callback);
 
@@ -617,6 +619,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      * 
      */
     removeScript(path: string, callback: (err) => any) {
+        console.log(`removeScript(${path})`);
         checkPath(path);
         checkCallback(callback);
 
@@ -631,25 +634,6 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             }
         });
     }
-
-    detachEditors(): void {
-        // Do nothing.
-    }
-
-    removeScripts(): void {
-        // Do nothing.
-    }
-
-    /*
-    getEditorPaths(): string[] {
-        return this.workspace.getEditorPaths();
-    }
-    */
-    /*
-    getEditor(fileName: string): Editor {
-        return this.workspace.getEditor(fileName);
-    }
-    */
 
     /**
      * 
@@ -1001,7 +985,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     deleteFile(path: string): void {
         const file = this.files.getWeakRef(path);
         if (file) {
-            // Determine whether the file exists in GitHub so that we can delete it upon upload.
+            // Determine whether the file exists in GitHub so that we can DELETE it upon upload.
             // Use the raw_url as the sentinel. Keep it in trash for later deletion.
             this.endDocumentMonitoring(path, (err) => {
                 if (file.raw_url) {
@@ -1226,6 +1210,13 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             return void 0;
         }
     }
+    getFileEditorPaths(): string[] {
+        const all = this.files.keys;
+        return all.filter((path) => {
+            const file = this.files.getWeakRef(path);
+            return file.hasEditor();
+        });
+    }
     setFileEditor(path: string, editor: Editor): void {
         if (this.files) {
             const file = this.files.getWeakRef(path);
@@ -1233,13 +1224,6 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
                 file.setEditor(editor);
             }
         }
-    }
-    getFileSessionPaths(): string[] {
-        const all = this.files.keys;
-        return all.filter((path) => {
-            const file = this.files.getWeakRef(path);
-            return file.hasSession();
-        });
     }
     getFileSession(path: string): EditSession {
         if (this.files) {
@@ -1255,6 +1239,13 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         else {
             return void 0;
         }
+    }
+    getFileSessionPaths(): string[] {
+        const all = this.files.keys;
+        return all.filter((path) => {
+            const file = this.files.getWeakRef(path);
+            return file.hasSession();
+        });
     }
     setFileSession(path: string, session: EditSession) {
         if (this.files) {
@@ -1279,6 +1270,13 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             return void 0;
         }
     }
+    getFileDocumentPaths(): string[] {
+        const all = this.files.keys;
+        return all.filter((path) => {
+            const file = this.files.getWeakRef(path);
+            return file.hasDocument();
+        });
+    }
     setFileDocument(path: string, doc: Document) {
         if (this.files) {
             const file = this.files.getWeakRef(path);
@@ -1286,13 +1284,6 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
                 file.setDocument(doc);
             }
         }
-    }
-    getFileDocumentPaths(): string[] {
-        const all = this.files.keys;
-        return all.filter((path) => {
-            const file = this.files.getWeakRef(path);
-            return file.hasDocument();
-        });
     }
     setPreviewFile(path: string): void {
         const file = this.files.getWeakRef(path);

@@ -36,6 +36,7 @@ import WsModel from './WsModel';
 export default class WsFile implements MwEditor, Shareable {
 
     public editor: Editor;
+
     /**
      * The editSession is (almost) an implementation detail except that
      * it is bound to an ng-model. In all other cases, calls to getSession
@@ -183,6 +184,10 @@ export default class WsFile implements MwEditor, Shareable {
 
     setEditor(editor: Editor) {
         this.editor = editor;
+    }
+
+    hasEditor(): boolean {
+        return this.editor ? true : false;
     }
 
     /**

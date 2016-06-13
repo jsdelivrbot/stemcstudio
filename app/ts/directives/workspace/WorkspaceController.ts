@@ -127,7 +127,6 @@ export default class WorkspaceController implements WorkspaceMixin {
      */
     private readmeChangeHandlers: { [name: string]: ChangeHandler } = {};
 
-    private editors: { [name: string]: Editor } = {};
     private resizeListener: (unused: UIEvent) => any;
 
     /**
@@ -533,11 +532,11 @@ export default class WorkspaceController implements WorkspaceMixin {
      * Do what needs to be done when the window is resized.
      */
     private resize(): void {
-        const fileNames = Object.keys(this.editors);
-        const iLen = fileNames.length;
+        const paths = this.wsModel.getFileEditorPaths();
+        const iLen = paths.length;
         for (let i = 0; i < iLen; i++) {
-            const fileName = fileNames[i];
-            const editor = this.editors[fileName];
+            const path = paths[i];
+            const editor = this.wsModel.getFileEditor(path);
             editor.resize(true);
         }
     }
@@ -583,7 +582,7 @@ export default class WorkspaceController implements WorkspaceMixin {
                 console.warn(`attachEditor(mode => ${mode}) is being ignored.`);
             }
         }
-        this.editors[path] = editor;
+
         // The editors are attached after $onInit and so we miss the initial resize.
         editor.resize(true);
 
@@ -729,8 +728,6 @@ export default class WorkspaceController implements WorkspaceMixin {
         }
 
         this.wsModel.detachEditor(path, editor);
-
-        delete this.editors[path];
 
         // const endTime = performance.now();
         // console.lg(`Workspace.detachEditor(${path}) ${endTime - startTime} ms.`);
