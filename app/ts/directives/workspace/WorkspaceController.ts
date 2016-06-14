@@ -48,13 +48,25 @@ import updateWorkspaceTypings from './updateWorkspaceTypings';
 import rebuildPreview from './rebuildPreview';
 import rebuildReadmeView from './rebuildReadmeView';
 
-// import BootstrapDialog from 'bootstrap-dialog';
-
+/**
+ * A delay of 0 (zero) second.
+ */
 const WAIT_NO_MORE = 0;
+
+/**
+ * A delay of 1.5 second.
+ */
 const WAIT_FOR_MORE_CODE_KEYSTROKES = 1500;
+
+/**
+ * A delay of 0.35 second.
+ */
 const WAIT_FOR_MORE_OTHER_KEYSTROKES = 350;
+
+/**
+ * A delay of 1 second.
+ */
 const WAIT_FOR_MORE_README_KEYSTROKES = 1000;
-// const WAIT_FOR_STATE_CHANGES = 100;
 
 const MODULE_KIND_NONE = 'none';
 const MODULE_KIND_SYSTEM = 'system';
@@ -118,7 +130,7 @@ export default class WorkspaceController implements WorkspaceMixin {
     private olds: string[] = [];
 
     private outputFilesEventHandlers: { [path: string]: OutputFileHandler } = {};
-    private changeHandlers: { [path: string]: EditSessionChangeHandler } = {};
+    private previewChangeHandlers: { [path: string]: EditSessionChangeHandler } = {};
 
     /**
      * Promise to update the README view for throttling.
@@ -404,21 +416,7 @@ export default class WorkspaceController implements WorkspaceMixin {
                 });
 
                 this.wsModel.setDefaultLibrary('/typings/lib.es6.d.ts', (err) => {
-                    if (!err) {
-                        // Following a browser refresh, show the code so that it refreshes correctly (bug).
-                        // This also side-steps the issue of the time it takes to restart the preview.
-                        // Ideally we remove this line and use the cached `lastKnownJs` to provide the preview.
-                        this.wsModel.isCodeVisible = true;
-
-                        this.watches.push(this.$scope.$watch('isViewVisible', (newVal: boolean, oldVal, unused: angular.IScope) => {
-                            this.wsModel.isViewVisible = this.$scope.isViewVisible;
-                        }));
-
-                        this.watches.push(this.$scope.$watch('isEditMode', (newVal: boolean, oldVal, unused: angular.IScope) => {
-                            this.wsModel.isCodeVisible = this.$scope.isEditMode;
-                        }));
-                    }
-                    else {
+                    if (err) {
                         this.modalDialog.alert({title: "Default Library Error", message: err.message});
                     }
                 });
@@ -443,6 +441,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         for (let w = 0; w < this.watches.length; w++) {
             const watch = this.watches[w];
             watch();
+            this.watches[w] = void 0;
         }
 
         if (this.resizeListener) {
@@ -491,6 +490,11 @@ export default class WorkspaceController implements WorkspaceMixin {
 
         this.resize();
 
+        // Following a browser refresh, show the code so that it refreshes correctly (bug).
+        // This also side-steps the issue of the time it takes to restart the preview.
+        // Ideally we remove this line and use the cached `lastKnownJs` to provide the preview.
+        this.wsModel.isCodeVisible = true;
+
         // Bit of a smell here. Should we be updating the scope?
         this.$scope.isEditMode = this.wsModel.isCodeVisible;
         // Don't start in Playing mode in case the user has a looping program (give chance to fix the code).
@@ -499,6 +503,53 @@ export default class WorkspaceController implements WorkspaceMixin {
         this.$scope.isCommentsVisible = false;
         // No such issue with the README.md
         this.$scope.isReadMeVisible = true;
+
+        this.watches.push(this.$scope.$watch('isViewVisible', (newVal: boolean, oldVal, unused: angular.IScope) => {
+            this.wsModel.isViewVisible = this.$scope.isViewVisible;
+        }));
+
+        this.watches.push(this.$scope.$watch('isEditMode', (newVal: boolean, oldVal, unused: angular.IScope) => {
+            this.wsModel.isCodeVisible = this.$scope.isEditMode;
+        }));
+
+        this.watches.push(this.$scope.$watch('isReadMeVisible', (isVisible: boolean, oldVal, unused: angular.IScope) => {
+            // Don't do anything if we don't have a README file.
+            if (this.wsModel.existsFile(this.FILENAME_README)) {
+                // Add the change handlers if the README viewer is visible.
+                if (isVisible  && !this.readmeChangeHandlers[this.FILENAME_README]) {
+                    const file = this.wsModel.findFileByPath(this.FILENAME_README);
+                    try {
+                        const doc = file.getDocument();
+                        try {
+                            this.addReadmeChangeHandler(this.FILENAME_README, doc);
+                            this.updateReadmeView(WAIT_NO_MORE);
+                        }
+                        finally {
+                            doc.release();
+                        }
+                    }
+                    finally {
+                        file.release();
+                    }
+                }
+                // Remove the change handlers if the README viewer is not visible.
+                if (!isVisible && this.readmeChangeHandlers[this.FILENAME_README]) {
+                    const file = this.wsModel.findFileByPath(this.FILENAME_README);
+                    try {
+                        const doc = file.getDocument();
+                        try {
+                            this.removeReadmeChangeHandler(this.FILENAME_README, doc);
+                        }
+                        finally {
+                            doc.release();
+                        }
+                    }
+                    finally {
+                        file.release();
+                    }
+                }
+            }
+        }));
 
         // FIXME: Some work to do in getting all the async work done right.
         // TOOD: This needs a flow to manage the nesting and sequencing.
@@ -574,12 +625,10 @@ export default class WorkspaceController implements WorkspaceMixin {
             case LANGUAGE_HTML:
             case LANGUAGE_LESS:
             case LANGUAGE_TEXT: {
-                editor.getSession().on('change', this.createChangeHandler(path));
+                editor.getSession().on('change', this.createPreviewChangeHandler(path));
                 break;
             }
             case LANGUAGE_MARKDOWN: {
-                // FIXME: Move this to somewhere that only needs a Document.
-                this.addReadmeChangeHandler(path, editor.getSession().getDocument());
                 break;
             }
             default: {
@@ -631,13 +680,13 @@ export default class WorkspaceController implements WorkspaceMixin {
         delete this.outputFilesEventHandlers[filename];
     }
 
-    private createChangeHandler(path: string): EditSessionChangeHandler {
+    private createPreviewChangeHandler(path: string): EditSessionChangeHandler {
         const handler = (delta: Delta, session: EditSession) => {
             if (this.wsModel) {
                 this.$scope.updatePreview(WAIT_FOR_MORE_OTHER_KEYSTROKES);
             }
         };
-        this.changeHandlers[path] = handler;
+        this.previewChangeHandlers[path] = handler;
         return handler;
     }
 
@@ -662,8 +711,8 @@ export default class WorkspaceController implements WorkspaceMixin {
         ); this.readmePromise = undefined; }, delay);
     }
 
-    private deleteChangeHandler(filename: string): void {
-        delete this.changeHandlers[filename];
+    private deletePreviewChangeHandler(path: string): void {
+        delete this.previewChangeHandlers[path];
     }
 
     private addReadmeChangeHandler(path: string, doc: Document): void {
@@ -676,14 +725,14 @@ export default class WorkspaceController implements WorkspaceMixin {
         this.readmeChangeHandlers[path] = handler;
     }
 
-    private removeReadmeChangeHandler(filename: string, doc: Document): void {
-        const handler = this.readmeChangeHandlers[filename];
+    private removeReadmeChangeHandler(path: string, doc: Document): void {
+        const handler = this.readmeChangeHandlers[path];
         if (handler) {
             doc.removeChangeListener(handler);
-            delete this.readmeChangeHandlers[filename];
+            delete this.readmeChangeHandlers[path];
         }
         else {
-            console.warn(`Expecting to find a README change handler for file ${filename}.`);
+            console.warn(`Expecting to find a README change handler for file ${path}.`);
         }
     }
 
@@ -717,14 +766,12 @@ export default class WorkspaceController implements WorkspaceMixin {
             case LANGUAGE_JSON:
             case LANGUAGE_LESS:
             case LANGUAGE_TEXT: {
-                const handler = this.changeHandlers[path];
+                const handler = this.previewChangeHandlers[path];
                 editor.getSession().off('change', handler);
-                this.deleteChangeHandler(path);
+                this.deletePreviewChangeHandler(path);
                 break;
             }
             case LANGUAGE_MARKDOWN: {
-                // FIXME: Move
-                this.removeReadmeChangeHandler(path, editor.getSession().getDocument());
                 break;
             }
             default: {
