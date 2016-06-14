@@ -534,9 +534,6 @@ export default class Doodle {
 
                     // Make it clear that this file did not come from GitHub.
                     newFile.raw_url = void 0;
-                    newFile.size = void 0;
-                    newFile.truncated = void 0;
-                    newFile.type = void 0;
 
                     // Initialize properties that depend upon the new name.
                     newFile.language = mode;

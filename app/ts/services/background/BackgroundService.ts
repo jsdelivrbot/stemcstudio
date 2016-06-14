@@ -13,22 +13,23 @@ import WsModel from '../../wsmodel/services/WsModel';
  */
 export default class BackgroundService implements Background {
     public static $inject: string[] = [
-        'doodles',
         'cloud',
+        'doodles',
         'wsModel'
     ];
     constructor(
-        private doodles: IDoodleManager,
         private cloud: CloudService,
+        private doodles: IDoodleManager,
         private wsModel: WsModel) {
         // Do nothing.
     }
 
     /**
-     * Loads the contents of the WsModel from the specified repo, gist or Local Storage.
-     * @param owner
-     * @param repo
-     * @param gistId
+     * Loads the contents of the WsModel from the specified repo, gist, or Local Storage.
+     * 
+     * @param owner The GitHub account name of the repository owner.
+     * @param repo The name of the GitHub repository.
+     * @param gistId The identifier of the GitHub Gist.
      */
     loadWsModel(owner: string, repo: string, gistId: string, callback: (err: Error) => any) {
         // If there is a doodle in Local Storage with the specified keys, we load that
@@ -48,6 +49,7 @@ export default class BackgroundService implements Background {
             // We certainly don't want to overwrite anything in local storage.
             // The user should be advised and then may delete manually from local storage.
             const match = matches[0];
+            this.doodles.makeCurrent(match);
             copyDoodleToWorkspace(match, this.wsModel);
             // We can also assume that we are already in the correct state.
             setTimeout(callback, 0);
@@ -56,22 +58,26 @@ export default class BackgroundService implements Background {
             if (owner && repo) {
                 this.cloud.downloadTree(owner, repo, 'heads/master')
                     .then((doodle) => {
+                        this.doodles.unshift(doodle);
+                        this.doodles.updateStorage();
                         copyDoodleToWorkspace(doodle, this.wsModel);
                         callback(void 0);
                     }, (reason) => {
-                        callback(new Error(`Error attempting to download repository '${repo}':  ${reason}`));
+                        callback(new Error(`Error attempting to download repository '${repo}':  ${JSON.stringify(reason, null, 2)}`));
                     }, function(state) {
                         // The state is {doneCount: number; todoCount: number}
                     });
             }
             else if (gistId) {
-                this.cloud.downloadGist(gistId, (err: any, doodle: Doodle) => {
-                    if (!err) {
+                this.cloud.downloadGist(gistId, (reason: any, doodle: Doodle) => {
+                    if (!reason) {
+                        this.doodles.unshift(doodle);
+                        this.doodles.updateStorage();
                         copyDoodleToWorkspace(doodle, this.wsModel);
                         callback(void 0);
                     }
                     else {
-                        callback(new Error(`Error attempting to download gist '${gistId}':  ${err}`));
+                        callback(new Error(`Error attempting to download gist '${gistId}':  ${JSON.stringify(reason, null, 2)}`));
                     }
                 });
             }

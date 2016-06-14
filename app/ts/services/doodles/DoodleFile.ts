@@ -19,10 +19,6 @@ export default class DoodleFile {
     public preview: boolean;
     public raw_url: string;
     public selected: boolean;
-    public sha: string;
-    public size: number;
-    public truncated: boolean;
-    public type: string;
 
     /**
      *
@@ -45,9 +41,6 @@ export default class DoodleFile {
         copy.language = this.language;
         copy.raw_url = this.raw_url;
         copy.selected = this.selected;
-        copy.size = this.size;
-        copy.truncated = this.truncated;
-        copy.type = this.type;
         return copy;
     }
 }

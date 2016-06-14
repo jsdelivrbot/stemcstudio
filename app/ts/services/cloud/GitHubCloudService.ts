@@ -114,8 +114,7 @@ export default class GitHubCloudService implements CloudService {
                         const fileContent = this.base64.decode(repoFile.content);
                         const file = doodle.newFile(repoFile.path);
                         file.content = fileContent;
-                        // The sha is needed in order to perform an update.
-                        file.sha = repoFile.sha;
+                        // The sha is needed in order to perform an update?
                     }
                     callback(void 0, doodle);
                     // doodles.unshift(doodle);
@@ -192,7 +191,6 @@ export default class GitHubCloudService implements CloudService {
                                                     const content = base64.decode(blob.content);
                                                     const file = doodle.newFile(child.path);
                                                     file.content = content;
-                                                    file.sha = blob.sha;
                                                     break;
                                                 }
                                                 default: {

@@ -6,13 +6,9 @@ import IDoodleFile from './IDoodleFile';
 function mapDoodleFileToIDoodleFile(doodleFile: DoodleFile): IDoodleFile {
     const result: IDoodleFile = {
         content: doodleFile.content,
-        sha: doodleFile.sha,
         language: doodleFile.language,
         preview: doodleFile.preview,
-        raw_url: doodleFile.raw_url,
-        size: doodleFile.size,
-        truncated: doodleFile.truncated,
-        type: doodleFile.type
+        raw_url: doodleFile.raw_url
     };
     return result;
 }
@@ -33,8 +29,8 @@ export default function doodleToSerializable(dude: Doodle): IDoodleDS {
         repo: dude.repo,
         gistId: dude.gistId,
         lastKnownJs: dude.lastKnownJs,
-        files: mapDoodleFilesToIDoodleFiles(dude.files),
-        trash: mapDoodleFilesToIDoodleFiles(dude.trash),
+        files: dude.files ? mapDoodleFilesToIDoodleFiles(dude.files) : void 0,
+        trash: dude.trash ? mapDoodleFilesToIDoodleFiles(dude.trash) : void 0,
         created_at: dude.created_at,
         updated_at: dude.updated_at
     };

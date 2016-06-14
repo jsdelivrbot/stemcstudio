@@ -85,6 +85,7 @@ export default class UploadFlow {
                                 this.wsModel.gistId = gist.id;
                                 this.wsModel.created_at = gist.created_at;
                                 this.wsModel.updated_at = gist.updated_at;
+                                this.wsModel.updateStorage();
 
                                 next();
                                 break;
@@ -119,15 +120,24 @@ export default class UploadFlow {
                                 // console.lg(JSON.stringify(gist, null, 2));
                                 facts.uploadedAt.resolve(gist.updated_at);
                                 facts.uploadMessage.resolve(`Your project was successfully uploaded and patched the existing Gist.`);
-                                this.wsModel.emptyTrash();
-                                this.wsModel.updated_at = gist.updated_at;
-                                next();
+                                try {
+                                    this.wsModel.emptyTrash();
+                                    this.wsModel.updated_at = gist.updated_at;
+                                    this.wsModel.updateStorage();
+                                    next();
+                                }
+                                catch (reason) {
+                                    console.warn(`reason => ${JSON.stringify(reason, null, 2)}`);
+                                    next(reason);
+                                }
                                 break;
                             }
                             case 404: {
                                 // The Gist no longer exists on GitHub
                                 // TODO: Test this we may end up down in the catch.
                                 this.wsModel.gistId = void 0;
+                                this.wsModel.updateStorage();
+
                                 facts.gistId.reset();
                                 next();
                                 break;
@@ -301,6 +311,7 @@ export default class UploadFlow {
                         if (details.refUpdate.isResolved()) {
                             this.wsModel.owner = owner;
                             this.wsModel.repo = repo;
+                            this.wsModel.updateStorage();
                             // doodle.ref = ref;
                             facts.uploadMessage.resolve("Your project was successfully uploaded to GitHub.");
                         }

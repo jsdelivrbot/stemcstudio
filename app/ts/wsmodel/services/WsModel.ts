@@ -219,16 +219,14 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     isViewVisible = false;
 
     /**
-     * 
+     * Files in the workspace.
      */
     private files: StringShareableMap<WsFile>;
 
     /**
-     * 
+     * Files that have been deleted (used to support updating a Gist)
      */
     private trash: StringShareableMap<WsFile>;
-
-    public trace: boolean = false;
 
     /**
      * Keep track of in-flight requests so that we can prevent cascading requests in an indeterminate state.
@@ -273,6 +271,11 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      */
     private refCount = 0;
 
+    /**
+     * 
+     */
+    private windingDown: ng.IPromise<any>;
+
     public static $inject: string[] = ['options', '$q', 'doodles'];
 
     constructor(private options: IOptionManager, private $q: ng.IQService, private doodles: IDoodleManager) {
@@ -287,17 +290,27 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      */
     recycle(callback: (err: any) => any): void {
         // console.lg(`recycle(), refCount => ${this.refCount}`);
-        this.addRef();
-        this.inFlight++;
-        this.languageServiceProxy.initialize(scriptImports, (err: any) => {
-            this.inFlight--;
-            if (!err) {
-                this.languageServiceProxy.setTrace(false, callback);
-            }
-            else {
-                callback(err);
-            }
-        });
+        if (this.windingDown) {
+            this.windingDown.then(() => {
+                this.windingDown = void 0;
+                this.recycle(callback);
+            }).catch((reason) => {
+                console.warn(`Big Trouble in Little STEMCstudio: ${JSON.stringify(reason)}`);
+            });
+        }
+        else {
+            this.addRef();
+            this.inFlight++;
+            this.languageServiceProxy.initialize(scriptImports, (err: any) => {
+                this.inFlight--;
+                if (!err) {
+                    this.languageServiceProxy.setTrace(false, callback);
+                }
+                else {
+                    callback(err);
+                }
+            });
+        }
     }
 
     /**
@@ -310,19 +323,22 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     addRef(): number {
         if (this.refCount === 0) {
             if (this.files || this.trash) {
-                console.warn("Make sure to call dispose()");
+                console.warn("Make sure to call dispose() or release()");
             }
             this.files = new StringShareableMap<WsFile>();
             this.trash = new StringShareableMap<WsFile>();
             this.languageServiceProxy = new LanguageServiceProxy(workerUrl);
         }
         this.refCount++;
+        // console.lg(`WsModel.addRef() refCount => ${this.refCount}`);
         return this.refCount;
     }
 
     release(): number {
         this.refCount--;
+        // console.lg(`WsModel.release() refCount => ${this.refCount}`);
         if (this.refCount === 0) {
+            const deferred = this.$q.defer();
             this.endMonitoring(() => {
                 this.languageServiceProxy.terminate();
                 this.languageServiceProxy = void 0;
@@ -334,7 +350,9 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
                     this.trash.release();
                     this.trash = void 0;
                 }
+                deferred.resolve();
             });
+            this.windingDown = deferred.promise;
         }
         return this.refCount;
     }
@@ -1186,7 +1204,13 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     }
 
     emptyTrash(): void {
-        throw new Error("TODO: WsModel.emptyTrash");
+        const paths = this.trash.keys;
+        const iLen = paths.length;
+        for (let i = 0; i < iLen; i++) {
+            const path = paths[i];
+            const file = this.trash.remove(path);
+            file.release();
+        }
     }
 
     existsFileInTrash(path: string): boolean {
@@ -1265,7 +1289,6 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     }
     getFileEditor(path: string): Editor {
         if (this.files) {
-            // TODO: Neet to implement getSession
             const file = this.files.getWeakRef(path);
             if (file) {
                 return file.getEditor();
@@ -1295,7 +1318,6 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     }
     getFileSession(path: string): EditSession {
         if (this.files) {
-            // TODO: Neet to implement getSession
             const file = this.files.getWeakRef(path);
             if (file) {
                 return file.getSession();
@@ -1329,7 +1351,6 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      */
     getFileDocument(path: string): Document {
         if (this.files) {
-            // TODO: Neet to implement getSession
             const file = this.files.getWeakRef(path);
             if (file) {
                 return file.getDocument();

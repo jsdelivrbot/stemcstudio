@@ -736,7 +736,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "    <div class='md-docs-header'>\n" +
     "        <div class='container'>\n" +
     "            <h1><logo-text version='{{version}}'/></h1>\n" +
-    "            <p>Learning STEM though Computational Modeling</p>\n" +
+    "            <p>Learning STEM through Computational Modeling</p>\n" +
     "        </div>\n" +
     "    </div>\n" +
     "    <div class='container md-docs-container'>\n" +

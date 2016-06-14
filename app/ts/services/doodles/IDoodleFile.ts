@@ -8,11 +8,6 @@ interface IDoodleFile {
     content: string;
 
     /**
-     * (Repo File)
-     */
-    sha: string;
-
-    /**
      * (Volatile)
      */
     isOpen?: boolean;
@@ -44,21 +39,6 @@ interface IDoodleFile {
      * (Volatile)
      */
     selected?: boolean;
-
-    /**
-     * (Gist)
-     */
-    size: number;
-
-    /**
-     * (Gist)
-     */
-    truncated: boolean;
-
-    /**
-     * (Gist)
-     */
-    type: string;
 }
 
 export default IDoodleFile;

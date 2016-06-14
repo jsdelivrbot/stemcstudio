@@ -13,11 +13,13 @@ function ensureDoodleFile(doodle: Doodle, path: string): DoodleFile {
 }
 
 function removeUnwantedFilesFromDoodle(workspace: WsModel, doodle: Doodle): void {
-    const paths = Object.keys(doodle.files);
-    for (let i = 0; i < paths.length; i++) {
-        const path = paths[i];
-        if (!workspace.existsFile(path)) {
-            doodle.deleteFile(path);
+    if (doodle.files) {
+        const paths = Object.keys(doodle.files);
+        for (let i = 0; i < paths.length; i++) {
+            const path = paths[i];
+            if (!workspace.existsFile(path)) {
+                doodle.deleteFile(path);
+            }
         }
     }
 }

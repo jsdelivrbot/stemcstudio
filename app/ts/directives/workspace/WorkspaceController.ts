@@ -299,7 +299,7 @@ export default class WorkspaceController implements WorkspaceMixin {
                         return {type: 'info', msg: comment.body};
                     });
                 }).catch((reason) => {
-                    console.warn(`getGistComments(${wsModel.gistId}) failed: ${reason}`);
+                    console.warn(`getGistComments(gistId='${wsModel.gistId}') failed: ${JSON.stringify(reason, null, 2)}`);
                 });
             }
         };
