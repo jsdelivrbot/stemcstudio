@@ -6,9 +6,11 @@ import IDoodleFile from './IDoodleFile';
 function mapDoodleFileToIDoodleFile(doodleFile: DoodleFile): IDoodleFile {
     const result: IDoodleFile = {
         content: doodleFile.content,
+        isOpen: doodleFile.isOpen,
         language: doodleFile.language,
         preview: doodleFile.preview,
-        raw_url: doodleFile.raw_url
+        raw_url: doodleFile.raw_url,
+        selected: doodleFile.selected
     };
     return result;
 }

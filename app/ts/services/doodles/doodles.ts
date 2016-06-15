@@ -3,7 +3,7 @@ import Doodle from './Doodle';
 import DoodleFile from './DoodleFile';
 import IDoodleDS from './IDoodleDS';
 import IDoodleManager from './IDoodleManager';
-import ITemplateFile from '../templates/ITemplateFile';
+import IDoodleFile from './IDoodleFile';
 import IOptionManager from '../options/IOptionManager';
 import modeFromName from '../../utils/modeFromName';
 import doodlesToString from './doodlesToString';
@@ -60,7 +60,7 @@ function deserializeDoodles(doodles: IDoodleDS[], options: IOptionManager): Dood
     return ds;
 }
 
-function copyFiles(inFiles: { [name: string]: ITemplateFile }): { [name: string]: DoodleFile } {
+function copyFiles(inFiles: { [name: string]: IDoodleFile }): { [name: string]: DoodleFile } {
     const outFiles: { [name: string]: DoodleFile } = {};
     const names: string[] = Object.keys(inFiles);
     const iLen: number = names.length;
@@ -69,7 +69,11 @@ function copyFiles(inFiles: { [name: string]: ITemplateFile }): { [name: string]
         const inFile = inFiles[name];
         const outFile: DoodleFile = new DoodleFile();
         outFile.content = inFile.content;
+        outFile.isOpen = inFile.isOpen;
         outFile.language = inFile.language;
+        outFile.preview = inFile.preview;
+        outFile.raw_url = inFile.raw_url;
+        outFile.selected = inFile.selected;
         outFiles[name] = outFile;
     }
     return outFiles;
@@ -97,21 +101,31 @@ app.factory('doodles', [
                 return b - a;
             }
             const nums: number[] = _doodles.filter(function(doodle: Doodle) {
-                return typeof doodle.description.match(new RegExp(UNTITLED)) !== 'null';
+                if (typeof doodle.description === 'string') {
+                    return typeof doodle.description.match(new RegExp(UNTITLED)) !== 'null';
+                }
+                else {
+                    // If it does not have a description, ignore it.
+                    return false;
+                }
             }).
                 map(function(doodle: Doodle) {
+                    // We know that the doodle has a description, try removing the word in the prefix
+                    // and then parse what's left as an integer. We may get NaN, but that's OK.
                     return parseInt(doodle.description.replace(UNTITLED + ' ', '').trim(), 10);
                 }).
                 filter(function(num) {
+                    // Throw away the description that did not parse to numbers.
                     return !isNaN(num);
                 });
 
+            // Sort the numbers so that the highest comes out first.
             nums.sort(compareNumbers);
 
             return UNTITLED + ' ' + (nums.length === 0 ? 1 : nums[0] + 1);
         };
 
-        var that: IDoodleManager = {
+        const that: IDoodleManager = {
 
             unshift: function(doodle: Doodle): number {
                 return _doodles.unshift(doodle);

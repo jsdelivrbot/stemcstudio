@@ -2,11 +2,9 @@
 var nconf = require("nconf");
 var http = require("http");
 var app_1 = require("./app");
-var sockets_1 = require("./sockets");
 var port = normalizePort(nconf.get("PORT") || 8080);
 app_1.default.set('port', port);
 var server = http.createServer(app_1.default);
-sockets_1.default(app_1.default, server);
 server.listen(port, onListening);
 server.on('error', onError);
 function normalizePort(value) {

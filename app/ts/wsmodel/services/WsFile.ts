@@ -76,12 +76,12 @@ export default class WsFile implements MwEditor, Shareable {
      * Let's us know if this file exists in GitHub.
      * When deleting files, this lets us know if we need to "nullify" the file.
      */
-    public raw_url: string;
+    public existsInGitHub = false;
 
     /**
      * 
      */
-    public selected: boolean = false;
+    public selected = false;
 
     /**
      * 

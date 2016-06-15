@@ -10,7 +10,11 @@ export default function copyDoodleToDoodle(doodleIn: Doodle, doodleOut: Doodle):
         const doodleFileIn = doodleIn.files[path];
         const doodleFile = doodleOut.newFile(path);
         doodleFile.content = doodleFileIn.content;
+        doodleFile.isOpen = doodleFileIn.isOpen;
         doodleFile.language = doodleFileIn.language;
+        doodleFile.preview = doodleFileIn.preview;
+        doodleFile.raw_url = doodleFileIn.raw_url;
+        doodleFile.selected = doodleFileIn.selected;
     }
 
     doodleOut.description = doodleIn.description;

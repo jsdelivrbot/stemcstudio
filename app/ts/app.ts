@@ -120,7 +120,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version for use by scopes.
-app.constant('version', '2.0.23');
+app.constant('version', '2.1.0');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -130,8 +130,8 @@ app.constant('FEATURE_LOGIN_ENABLED', true);
 app.constant('FEATURE_GIST_ENABLED', true);
 app.constant('FEATURE_I18N_ENABLED', true);
 app.constant('FEATURE_REPO_ENABLED', false);
-app.constant('FEATURE_ROOM_ENABLED', true);
-app.constant('FEATURE_SYNC_ENABLED', true);
+app.constant('FEATURE_ROOM_ENABLED', false);
+app.constant('FEATURE_SYNC_ENABLED', false);
 // Features for authentication.
 app.constant('FEATURE_AMAZON_SIGNIN_ENABLED', false);
 app.constant('FEATURE_GITHUB_SIGNIN_ENABLED', true);

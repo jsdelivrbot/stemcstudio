@@ -7701,8 +7701,11 @@ ul.files li a {
   text-decoration: none;
   margin: 5px;
 }
-ul.files li.selected a {
+ul.files li.open a {
   color: #fff;
+}
+ul.files li.selected a {
+  color: #ff9900;
 }
 div.ace_editor {
   flex: 1;

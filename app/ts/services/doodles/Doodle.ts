@@ -288,27 +288,22 @@ export default class Doodle {
         }
     }
 
-    /**
-     * @method deleteFile
-     * @param name {string}
-     * @return {void}
-     */
-    deleteFile(name: string): void {
-        const file = this.findFileByName(name);
+    deleteFile(path: string): void {
+        const file = this.findFileByName(path);
         if (file) {
             // Determine whether the file exists in GitHub so that we can delete it upon upload.
             // Use the raw_url as the sentinel. Keep it in trash for later deletion.
             if (file.raw_url) {
-                this.moveFileToTrash(name);
+                this.moveFileToTrash(path);
             }
             else {
                 // It's a file that does not exist on GitHub.
-                delete this.files[name];
-                delete this.lastKnownJs[name];
+                delete this.files[path];
+                delete this.lastKnownJs[path];
             }
         }
         else {
-            console.warn(`deleteFile(${name}), ${name} was not found.`);
+            console.warn(`deleteFile(${path}), ${path} was not found.`);
         }
     }
 

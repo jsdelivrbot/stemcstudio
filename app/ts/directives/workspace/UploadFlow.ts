@@ -122,7 +122,7 @@ export default class UploadFlow {
                                 facts.uploadedAt.resolve(gist.updated_at);
                                 facts.uploadMessage.resolve(`Your project was successfully uploaded and patched the existing Gist.`);
                                 try {
-                                    this.wsModel.markAllFilesAsInGitHub(gist);
+                                    this.wsModel.markAllFilesAsInGitHub();
                                     this.wsModel.emptyTrash();
                                     this.wsModel.updated_at = gist.updated_at;
                                     this.wsModel.updateStorage();

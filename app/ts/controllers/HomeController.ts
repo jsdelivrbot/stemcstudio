@@ -144,6 +144,7 @@ export default class HomeController extends AbstractPageController {
                 doodles.updateStorage();
             }).catch(function(reason) {
                 switch (reason) {
+                    case 'backdrop click':
                     case 'cancel click':
                     case 'escape key press': {
                         // Do nothing.

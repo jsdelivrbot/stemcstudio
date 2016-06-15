@@ -129,7 +129,7 @@ export default class WorkspaceController implements WorkspaceMixin {
      */
     private olds: string[] = [];
 
-    private outputFilesEventHandlers: { [path: string]: OutputFileHandler } = {};
+    private outputFilesWatchRemover: () => void;
     private previewChangeHandlers: { [path: string]: EditSessionChangeHandler } = {};
 
     /**
@@ -429,6 +429,8 @@ export default class WorkspaceController implements WorkspaceMixin {
                         this.modalDialog.alert({title: "Default Library Error", message: err.message});
                     }
                 });
+
+                this.outputFilesWatchRemover = this.wsModel.watch('outputFiles', this.createOutputFilesEventHandler());
             }
             else {
                 this.modalDialog.alert({title: "Start Workspace Error", message: err.message});
@@ -451,6 +453,11 @@ export default class WorkspaceController implements WorkspaceMixin {
             const watch = this.watches[w];
             watch();
             this.watches[w] = void 0;
+        }
+
+        if (this.outputFilesWatchRemover) {
+            this.outputFilesWatchRemover();
+            this.outputFilesWatchRemover = void 0;
         }
 
         if (this.resizeListener) {
@@ -625,19 +632,10 @@ export default class WorkspaceController implements WorkspaceMixin {
         this.wsModel.attachEditor(path, editor);
 
         switch (mode) {
-            case LANGUAGE_PYTHON: {
-                // TODO:
-                // editor.getSession().on('change', this.createChangeHandler(path));
-                editor.getSession().on('outputFiles', this.createOutputFilesEventHandler(path));
-                break;
-            }
-            case LANGUAGE_TYPE_SCRIPT: {
-                editor.getSession().on('outputFiles', this.createOutputFilesEventHandler(path));
-                break;
-            }
+            case LANGUAGE_PYTHON:
+            case LANGUAGE_TYPE_SCRIPT:
             case LANGUAGE_JAVA_SCRIPT: {
-                // TODO: We probably don't get anything for JavaScript.
-                editor.getSession().on('outputFiles', this.createOutputFilesEventHandler(path));
+                // Ignore.
                 break;
             }
             case LANGUAGE_CSS:
@@ -669,13 +667,9 @@ export default class WorkspaceController implements WorkspaceMixin {
     /**
      * Creates the handler function used to respond to (transpiled) 'outputFiles' events from the editor.
      * The handler function is cached so that it can be removed when the editor is detached from the workspace.
-     *
-     * @method createOutputFilesEventHandler
-     * @param filename {string}
-     * @return {OutputFilesHandler}
      */
-    private createOutputFilesEventHandler(filename: string): OutputFileHandler {
-        const handler = (event: { data: OutputFile[] }, session: EditSession) => {
+    private createOutputFilesEventHandler(): OutputFileHandler<WsModel> {
+        const handler = (event: { data: OutputFile[] }, unused: WsModel) => {
             // It's OK to capture the current Doodle here, but not outside the handler!
             const outputFiles = event.data;
             outputFiles.forEach((outputFile: OutputFile) => {
@@ -687,18 +681,13 @@ export default class WorkspaceController implements WorkspaceMixin {
                 }
                 // TODO: The output files could be both JavaScript and d.ts
                 // We should be sure to only select the JavaScript file. 
-                if (this.wsModel.lastKnownJs[filename] !== outputFile.text) {
-                    this.wsModel.lastKnownJs[filename] = outputFile.text;
+                if (this.wsModel.lastKnownJs[outputFile.name] !== outputFile.text) {
+                    this.wsModel.lastKnownJs[outputFile.name] = outputFile.text;
                     this.$scope.updatePreview(WAIT_FOR_MORE_CODE_KEYSTROKES);
                 }
             });
         };
-        this.outputFilesEventHandlers[filename] = handler;
         return handler;
-    }
-
-    private deleteOutputFileHandler(filename) {
-        delete this.outputFilesEventHandlers[filename];
     }
 
     private createPreviewChangeHandler(path: string): EditSessionChangeHandler {
@@ -767,22 +756,10 @@ export default class WorkspaceController implements WorkspaceMixin {
         }
 
         switch (mode) {
-            case LANGUAGE_TYPE_SCRIPT: {
-                const handler = this.outputFilesEventHandlers[path];
-                editor.getSession().off('outputFiles', handler);
-                this.deleteOutputFileHandler(path);
-                break;
-            }
-            case LANGUAGE_JAVA_SCRIPT: {
-                const handler = this.outputFilesEventHandlers[path];
-                editor.getSession().off('outputFiles', handler);
-                this.deleteOutputFileHandler(path);
-                break;
-            }
+            case LANGUAGE_TYPE_SCRIPT:
+            case LANGUAGE_JAVA_SCRIPT:
             case LANGUAGE_PYTHON: {
-                const handler = this.outputFilesEventHandlers[path];
-                editor.getSession().off('outputFiles', handler);
-                this.deleteOutputFileHandler(path);
+                // Ignore
                 break;
             }
             case LANGUAGE_CSS:

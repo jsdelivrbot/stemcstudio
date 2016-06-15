@@ -1,7 +1,7 @@
 import * as nconf from "nconf";
 import * as http from "http";
 import app from "./app";
-import sockets from "./sockets";
+// import sockets from "./sockets";
 
 const port: number = normalizePort(nconf.get("PORT") || 8080);
 app.set('port', port);
@@ -15,7 +15,7 @@ const server = http.createServer(app);
 //
 // Initialize the sockets part of our application.
 //
-sockets(app, server);
+// sockets(app, server);
 
 server.listen(port, onListening);
 
