@@ -273,9 +273,19 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     private refCount = 0;
 
     /**
-     * 
+     * This promise is defined once the refCount has reached zero.
+     * It is resolved when monitoring has ended on all documents.
      */
     private windingDown: ng.IPromise<any>;
+
+    /**
+     * This promise is defined once the reference count goes above zero
+     * and is resolved when it becomes zero again.
+     * It's a promise that the reference count will fall to zero, eventually.
+     * This is used to prevent re-initialization before all references have been dropped.
+     */
+    private zeroRefCount: ng.IPromise<any>;
+    private zeroRefCountDeferred: ng.IDeferred<any>;
 
     /**
      * 
@@ -295,17 +305,30 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      * This is the counterpart of the dispose method.
      */
     recycle(callback: (err: any) => any): void {
-        if (this.windingDown) {
-            // console.lg("windingDown...");
+        if (this.zeroRefCount) {
+            // console.lg("Waiting for workspace reference count to return to zero...");
+            this.zeroRefCount.then(() => {
+                this.zeroRefCount = void 0;
+                this.zeroRefCountDeferred = void 0;
+                this.recycle(callback);
+            }).catch((reason) => {
+                console.warn(`Error while waiting for references to return to zero: ${JSON.stringify(reason)}`);
+            });
+        }
+        else if (this.windingDown) {
+            // console.lg("Waiting for workspace to wind down...");
             this.windingDown.then(() => {
                 this.windingDown = void 0;
                 this.recycle(callback);
             }).catch((reason) => {
-                console.warn(`Big Trouble in Little STEMCstudio: ${JSON.stringify(reason)}`);
+                console.warn(`Error while waiting for workspace to wind down: ${JSON.stringify(reason)}`);
             });
         }
         else {
             // console.lg(`recycle(), refCount => ${this.refCount}`);
+            if (this.refCount > 0) {
+                console.warn("recycle happening while refCount non-zero.");
+            }
             this.addRef();
             this.inFlight++;
             this.languageServiceProxy.initialize(scriptImports, (err: any) => {
@@ -336,6 +359,8 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             this.trash = new StringShareableMap<WsFile>();
             this.languageServiceProxy = new LanguageServiceProxy(workerUrl);
             this.eventBus.reset();
+            this.zeroRefCountDeferred = this.$q.defer();
+            this.zeroRefCount = this.zeroRefCountDeferred.promise;
         }
         this.refCount++;
         // console.lg(`WsModel.addRef() refCount => ${this.refCount}`);
@@ -360,8 +385,17 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
                     this.trash = void 0;
                 }
                 deferred.resolve();
+                if (this.windingDown) {
+                    this.windingDown = void 0;
+                }
             });
+            // The winding down promise should be in place before we resolve the zero refCount promise.
             this.windingDown = deferred.promise;
+            if (this.zeroRefCountDeferred) {
+                this.zeroRefCountDeferred.resolve();
+                this.zeroRefCountDeferred = void 0;
+                this.zeroRefCount = void 0;
+            }
         }
         return this.refCount;
     }

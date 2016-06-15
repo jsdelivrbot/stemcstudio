@@ -10,16 +10,16 @@ System.config({
   map: {
     "@angular/router": "npm:@angular/router@0.2.0",
     "ace2ts/ace-workers": "github:ace2ts/ace-workers@0.1.69",
-    "angular": "github:angular/bower-angular@1.5.6",
-    "angular-animate": "github:angular/bower-angular-animate@1.5.6",
+    "angular": "github:angular/bower-angular@1.5.7",
+    "angular-animate": "github:angular/bower-angular-animate@1.5.7",
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.3",
     "angular-material-icons": "npm:angular-material-icons@0.7.0",
-    "angular-sanitize": "github:angular/bower-angular-sanitize@1.5.6",
+    "angular-sanitize": "github:angular/bower-angular-sanitize@1.5.7",
     "angular-ui-router": "github:angular-ui/ui-router@0.2.18",
     "angular2": "npm:angular2@2.0.0-beta.17",
     "bootstrap": "vendor/bootstrap/dist/js/npm",
     "bootstrap-dialog": "npm:bootstrap-dialog@1.34.6",
-    "clipboard": "npm:clipboard@1.5.10",
+    "clipboard": "npm:clipboard@1.5.12",
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.0.11",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.0.11",
     "jquery": "npm:jquery@2.2.4",
@@ -29,13 +29,13 @@ System.config({
     "ui-select": "npm:ui-select@0.17.1",
     "underscore": "npm:underscore@1.8.3",
     "github:angular-ui/ui-router@0.2.18": {
-      "angular": "github:angular/bower-angular@1.5.6"
+      "angular": "github:angular/bower-angular@1.5.7"
     },
-    "github:angular/bower-angular-animate@1.5.6": {
-      "angular": "github:angular/bower-angular@1.5.6"
+    "github:angular/bower-angular-animate@1.5.7": {
+      "angular": "github:angular/bower-angular@1.5.7"
     },
-    "github:angular/bower-angular-sanitize@1.5.6": {
-      "angular": "github:angular/bower-angular@1.5.6"
+    "github:angular/bower-angular-sanitize@1.5.7": {
+      "angular": "github:angular/bower-angular@1.5.7"
     },
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.4.1"
@@ -67,7 +67,7 @@ System.config({
       "path-browserify": "npm:path-browserify@0.0.0"
     },
     "github:jspm/nodelibs-process@0.1.2": {
-      "process": "npm:process@0.11.3"
+      "process": "npm:process@0.11.5"
     },
     "github:jspm/nodelibs-querystring@0.1.0": {
       "querystring": "npm:querystring@0.2.0"
@@ -101,11 +101,11 @@ System.config({
       "negotiator": "npm:negotiator@0.6.0"
     },
     "npm:angular-material-icons@0.7.0": {
-      "angular": "npm:angular@1.5.6"
+      "angular": "npm:angular@1.5.7"
     },
     "npm:angular2@2.0.0-beta.17": {
       "reflect-metadata": "npm:reflect-metadata@0.1.2",
-      "rxjs": "npm:rxjs@5.0.0-beta.8",
+      "rxjs": "npm:rxjs@5.0.0-beta.9",
       "zone.js": "npm:zone.js@0.6.12"
     },
     "npm:asn1.js@4.6.2": {
@@ -225,7 +225,7 @@ System.config({
       "stream": "github:jspm/nodelibs-stream@0.1.0",
       "string_decoder": "github:jspm/nodelibs-string_decoder@0.1.0"
     },
-    "npm:clipboard@1.5.10": {
+    "npm:clipboard@1.5.12": {
       "good-listener": "npm:good-listener@1.1.7",
       "select": "npm:select@1.0.6",
       "tiny-emitter": "npm:tiny-emitter@1.0.2"
@@ -445,8 +445,10 @@ System.config({
     "npm:process-nextick-args@1.0.7": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:process@0.11.3": {
-      "assert": "github:jspm/nodelibs-assert@0.1.0"
+    "npm:process@0.11.5": {
+      "assert": "github:jspm/nodelibs-assert@0.1.0",
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "vm": "github:jspm/nodelibs-vm@0.1.0"
     },
     "npm:public-encrypt@4.0.0": {
       "bn.js": "npm:bn.js@4.11.3",
@@ -495,7 +497,7 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:rxjs@5.0.0-beta.8": {
+    "npm:rxjs@5.0.0-beta.9": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "symbol-observable": "npm:symbol-observable@0.2.4"

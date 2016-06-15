@@ -129,9 +129,6 @@
   "npm:inherits@2.0.1": {
     "util": "github:jspm/nodelibs-util@^0.1.0"
   },
-  "npm:process@0.11.3": {
-    "assert": "github:jspm/nodelibs-assert@^0.1.0"
-  },
   "npm:buffer-shims@1.0.0": {
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
   },
@@ -146,11 +143,6 @@
     "process": "github:jspm/nodelibs-process@^0.1.0",
     "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
     "fs": "github:jspm/nodelibs-fs@^0.1.0"
-  },
-  "npm:rxjs@5.0.0-beta.8": {
-    "symbol-observable": "npm:symbol-observable@^0.2.4",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0"
   },
   "npm:isarray@0.0.1": {},
   "npm:indexof@0.0.1": {},
@@ -625,14 +617,6 @@
   "github:jspm/nodelibs-querystring@0.1.0": {
     "querystring": "npm:querystring@^0.2.0"
   },
-  "github:angular/bower-angular-sanitize@1.5.6": {
-    "angular": "jspm:angular@^1.3.0"
-  },
-  "github:angular/bower-angular-animate@1.5.6": {
-    "angular": "jspm:angular@^1.3.0"
-  },
-  "github:angular/bower-angular@1.5.6": {},
-  "npm:angular@1.5.6": {},
   "npm:assert@1.4.1": {
     "util": "npm:util@0.10.3",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
@@ -656,11 +640,6 @@
     "fs": "github:jspm/nodelibs-fs@^0.1.0"
   },
   "github:ace2ts/ace-workers@0.1.69": {},
-  "npm:clipboard@1.5.10": {
-    "good-listener": "npm:good-listener@^1.1.6",
-    "select": "npm:select@^1.0.6",
-    "tiny-emitter": "npm:tiny-emitter@^1.0.0"
-  },
   "npm:tiny-emitter@1.0.2": {},
   "npm:good-listener@1.1.7": {
     "delegate": "npm:delegate@^3.0.0"
@@ -672,5 +651,28 @@
   "npm:closest@0.0.1": {
     "matches-selector": "npm:matches-selector@0.0.1"
   },
-  "npm:matches-selector@0.0.1": {}
+  "npm:matches-selector@0.0.1": {},
+  "npm:process@0.11.5": {
+    "assert": "github:jspm/nodelibs-assert@^0.1.0",
+    "vm": "github:jspm/nodelibs-vm@^0.1.0",
+    "fs": "github:jspm/nodelibs-fs@^0.1.0"
+  },
+  "github:angular/bower-angular-sanitize@1.5.7": {
+    "angular": "jspm:angular@^1.3.0"
+  },
+  "npm:clipboard@1.5.12": {
+    "good-listener": "npm:good-listener@^1.1.6",
+    "select": "npm:select@^1.0.6",
+    "tiny-emitter": "npm:tiny-emitter@^1.0.0"
+  },
+  "github:angular/bower-angular-animate@1.5.7": {
+    "angular": "jspm:angular@^1.3.0"
+  },
+  "npm:angular@1.5.7": {},
+  "github:angular/bower-angular@1.5.7": {},
+  "npm:rxjs@5.0.0-beta.9": {
+    "symbol-observable": "npm:symbol-observable@0.2.4",
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
+  }
 }

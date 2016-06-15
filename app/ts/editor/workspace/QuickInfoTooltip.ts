@@ -7,6 +7,10 @@ import Position from '../Position';
 import QuickInfo from './QuickInfo';
 import QuickInfoTooltipHost from './QuickInfoTooltipHost';
 
+/**
+ * Returns the document position based upon the MouseEvent offset.
+ * If the Editor no longer has an EditSession, it returns undefined.
+ */
 function getDocumentPositionFromScreenOffset(editor: Editor, x: number, y: number): Position {
 
     const renderer = editor.renderer;
@@ -19,7 +23,13 @@ function getDocumentPositionFromScreenOffset(editor: Editor, x: number, y: numbe
     const row = Math.floor((y + renderer.scrollTop - correction) / renderer.lineHeight);
     const col = Math.round(offset);
 
-    return editor.getSession().screenToDocumentPosition(row, col);
+    const session = editor.getSession();
+    if (session) {
+        return session.screenToDocumentPosition(row, col);
+    }
+    else {
+        return void 0;
+    }
 }
 
 /**
@@ -52,32 +62,27 @@ export default class QuickInfoTooltip extends Tooltip {
             if (event.srcElement['className'] === 'ace_content') {
 
                 this.mouseMoveTimer = setTimeout(() => {
-
                     const documentPosition = getDocumentPositionFromScreenOffset(this.editor, event.offsetX, event.offsetY);
-                    const position: number = EditorPosition.getPositionChars(this.editor, documentPosition);
-                    this.host.getQuickInfoAtPosition(this.path, position, (err: any, quickInfo: QuickInfo) => {
-                        if (!err) {
-                            if (quickInfo) {
-                                // The displayParts and documentation are tokenized according to TypeScript conventions.
-                                // TODO: This information could be used to popup a syntax highlighted editor.
-                                let tip = `<b>${displayPartsToHtml(quickInfo.displayParts)}</b>`;
-                                if (quickInfo.documentation) {
-                                    tip += `<br/><i>${displayPartsToHtml(quickInfo.documentation)}</i>`;
-                                }
-                                if (tip.length > 0) {
-                                    this.setHtml(tip);
-                                    this.setPosition(event.x, event.y + 10);
-                                    this.show();
+                    if (documentPosition) {
+                        const position: number = EditorPosition.getPositionChars(this.editor, documentPosition);
+                        this.host.getQuickInfoAtPosition(this.path, position, (err: any, quickInfo: QuickInfo) => {
+                            if (!err) {
+                                if (quickInfo) {
+                                    // The displayParts and documentation are tokenized according to TypeScript conventions.
+                                    // TODO: This information could be used to popup a syntax highlighted editor.
+                                    let tip = `<b>${displayPartsToHtml(quickInfo.displayParts)}</b>`;
+                                    if (quickInfo.documentation) {
+                                        tip += `<br/><i>${displayPartsToHtml(quickInfo.documentation)}</i>`;
+                                    }
+                                    if (tip.length > 0) {
+                                        this.setHtml(tip);
+                                        this.setPosition(event.x, event.y + 10);
+                                        this.show();
+                                    }
                                 }
                             }
-                            else {
-                                // Do nothing
-                            }
-                        }
-                        else {
-                            // Do nothing
-                        }
-                    });
+                        });
+                    }
                 }, 800);
             }
         };
