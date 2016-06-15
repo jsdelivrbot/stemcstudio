@@ -57,7 +57,10 @@ function factory(
         const workerImports: string[] = systemImports.concat(['/js/ace-workers.js']);
 
         const ngModel: ng.INgModelController = controllers[0];
-        const workspace: WorkspaceMixin = controllers[1];
+        /**
+         * The controller that is a proxy for the workspace.
+         */
+        const control: WorkspaceMixin = controllers[1];
 
         const container: HTMLElement = element[0];
         // Experiment with creating an Editor without an EditSession, which is injected later.
@@ -118,7 +121,7 @@ function factory(
                 if (session) {
                     try {
                         // TODO: Crush this code down into an extensible mode-handling and session initializer?
-                        // Maye the WsFile can do some of the work?
+                        // Maybe the WsFile can do some of the work?
                         editor.setSession(session);
                         const undoManager = new UndoManager();
                         session.setUndoManager(undoManager);
@@ -134,7 +137,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = workspace.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = control.attachEditor($scope.path, file.mode, editor);
                                 });
                                 break;
                             }
@@ -143,7 +146,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = workspace.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = control.attachEditor($scope.path, file.mode, editor);
                                 });
                                 break;
                             }
@@ -152,7 +155,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = workspace.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = control.attachEditor($scope.path, file.mode, editor);
                                 });
                                 break;
                             }
@@ -161,7 +164,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = workspace.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = control.attachEditor($scope.path, file.mode, editor);
                                 });
                                 break;
                             }
@@ -170,7 +173,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = workspace.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = control.attachEditor($scope.path, file.mode, editor);
                                 });
                                 break;
                             }
@@ -182,7 +185,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = workspace.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = control.attachEditor($scope.path, file.mode, editor);
                                 });
                                 break;
                             }
@@ -193,7 +196,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = workspace.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = control.attachEditor($scope.path, file.mode, editor);
                                 });
                                 break;
                             }
@@ -202,7 +205,7 @@ function factory(
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
-                                    removeEditor = workspace.attachEditor($scope.path, file.mode, editor);
+                                    removeEditor = control.attachEditor($scope.path, file.mode, editor);
                                 });
                                 break;
                             }

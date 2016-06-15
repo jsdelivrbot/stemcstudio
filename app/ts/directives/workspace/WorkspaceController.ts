@@ -225,16 +225,18 @@ export default class WorkspaceController implements WorkspaceMixin {
 
         $scope.files = function() {
             const fs: {[path: string]: WsFile} = {};
-            const paths = wsModel.getFileDocumentPaths();
-            for (let i = 0; i < paths.length; i++) {
-                const path = paths[i];
-                fs[path] = wsModel.getFileWeakRef(path);
+            if (!wsModel.isZombie()) {
+                const paths = wsModel.getFileDocumentPaths();
+                for (let i = 0; i < paths.length; i++) {
+                    const path = paths[i];
+                    fs[path] = wsModel.getFileWeakRef(path);
+                }
             }
             return fs;
         };
 
         $scope.htmlFileCount = function() {
-            if (wsModel) {
+            if (wsModel && !wsModel.isZombie()) {
                 const paths = wsModel.getFileDocumentPaths();
                 return paths.filter(function(path) { return isHtmlFilePath(path); }).length;
             }
@@ -244,7 +246,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         };
 
         $scope.markdownFileCount = function() {
-            if (wsModel) {
+            if (wsModel && !wsModel.isZombie()) {
                 const paths = wsModel.getFileDocumentPaths();
                 return paths.filter(function(path) { return isMarkdownFilePath(path); }).length;
             }
@@ -254,12 +256,14 @@ export default class WorkspaceController implements WorkspaceMixin {
         };
 
         $scope.doView = (path: string): void => {
-            const file = wsModel.getFileWeakRef(path);
-            if (file) {
-                wsModel.setPreviewFile(path);
-                // The user probably wants to see the view, so make sure the view is visible.
-                $scope.isViewVisible = true;
-                $scope.updatePreview(WAIT_NO_MORE);
+            if (!wsModel.isZombie()) {
+                const file = wsModel.getFileWeakRef(path);
+                if (file) {
+                    wsModel.setPreviewFile(path);
+                    // The user probably wants to see the view, so make sure the view is visible.
+                    $scope.isViewVisible = true;
+                    $scope.updatePreview(WAIT_NO_MORE);
+                }
             }
         };
 
@@ -293,14 +297,16 @@ export default class WorkspaceController implements WorkspaceMixin {
             if ($scope.isCommentsVisible) {
                 // Experimenting with making these mutually exclusive.
                 $scope.isReadMeVisible = false;
-                github.getGistComments(wsModel.gistId).then((httpResponse) => {
-                    const comments = httpResponse.data;
-                    $scope.comments = comments.map(function(comment) {
-                        return {type: 'info', msg: comment.body};
+                if (wsModel.isZombie()) {
+                    github.getGistComments(wsModel.gistId).then((httpResponse) => {
+                        const comments = httpResponse.data;
+                        $scope.comments = comments.map(function(comment) {
+                            return { type: 'info', msg: comment.body };
+                        });
+                    }).catch((reason) => {
+                        console.warn(`getGistComments(gistId='${wsModel.gistId}') failed: ${JSON.stringify(reason, null, 2)}`);
                     });
-                }).catch((reason) => {
-                    console.warn(`getGistComments(gistId='${wsModel.gistId}') failed: ${JSON.stringify(reason, null, 2)}`);
-                });
+                }
             }
         };
 
@@ -314,20 +320,19 @@ export default class WorkspaceController implements WorkspaceMixin {
         };
 
         $scope.doLabel = (label?: string, value?: number) => {
+            if (wsModel.isZombie()) {
+                return;
+            }
             ga('send', 'event', 'doodle', 'label', label, value);
-            // TODO: This really needs some refactoring.
-            // TODO: If execute() is to take no parameters then everything must be based on service state.
-            const labelFlow = new LabelFlow(
-                $scope.userLogin(),
-                this.flowService,
-                this.labelDialog,
-                wsModel);
+            const labelFlow = new LabelFlow($scope.userLogin(), this.flowService, this.labelDialog, wsModel);
             labelFlow.execute();
         };
 
         $scope.doProperties = (label?: string, value?: number) => {
+            if (wsModel.isZombie()) {
+                return;
+            }
             ga('send', 'event', 'doodle', 'properties', label, value);
-            // TODO: This really needs some refactoring.
             const propertiesFlow = new PropertiesFlow(
                 $scope.userLogin(),
                 this.options,
@@ -343,8 +348,10 @@ export default class WorkspaceController implements WorkspaceMixin {
         };
 
         $scope.doPublish = (label?: string, value?: number) => {
+            if (wsModel.isZombie()) {
+                return;
+            }
             ga('send', 'event', 'doodle', 'upload', label, value);
-            // TODO: This really needs some refactoring.
             const publishFlow = new PublishFlow(
                 $scope.userLogin(),
                 this.flowService,
@@ -357,8 +364,10 @@ export default class WorkspaceController implements WorkspaceMixin {
         };
 
         $scope.doUpload = (label?: string, value?: number) => {
+            if (wsModel.isZombie()) {
+                return;
+            }
             ga('send', 'event', 'doodle', 'upload', label, value);
-            // TODO: This really needs some refactoring.
             const uploadFlow = new UploadFlow(
                 $scope.userLogin(),
                 this.$state,
@@ -505,14 +514,23 @@ export default class WorkspaceController implements WorkspaceMixin {
         this.$scope.isReadMeVisible = true;
 
         this.watches.push(this.$scope.$watch('isViewVisible', (newVal: boolean, oldVal, unused: angular.IScope) => {
+            if (this.wsModel.isZombie()) {
+                return;
+            }
             this.wsModel.isViewVisible = this.$scope.isViewVisible;
         }));
 
         this.watches.push(this.$scope.$watch('isEditMode', (newVal: boolean, oldVal, unused: angular.IScope) => {
+            if (this.wsModel.isZombie()) {
+                return;
+            }
             this.wsModel.isCodeVisible = this.$scope.isEditMode;
         }));
 
         this.watches.push(this.$scope.$watch('isReadMeVisible', (isVisible: boolean, oldVal, unused: angular.IScope) => {
+            if (this.wsModel.isZombie()) {
+                return;
+            }
             // Don't do anything if we don't have a README file.
             if (this.wsModel.existsFile(this.FILENAME_README)) {
                 // Add the change handlers if the README viewer is visible.
@@ -586,22 +604,24 @@ export default class WorkspaceController implements WorkspaceMixin {
      * Do what needs to be done when the window is resized.
      */
     private resize(): void {
-        const paths = this.wsModel.getFileEditorPaths();
-        const iLen = paths.length;
-        for (let i = 0; i < iLen; i++) {
-            const path = paths[i];
-            const editor = this.wsModel.getFileEditor(path);
-            editor.resize(true);
+        if (!this.wsModel.isZombie()) {
+            const paths = this.wsModel.getFileEditorPaths();
+            const iLen = paths.length;
+            for (let i = 0; i < iLen; i++) {
+                const path = paths[i];
+                const editor = this.wsModel.getFileEditor(path);
+                editor.resize(true);
+            }
         }
     }
 
-    /**
-     * @param path
-     * @param mode
-     * @param editor
-     */
     attachEditor(path: string, mode: string, editor: Editor): () => void {
         // const startTime = performance.now();
+        if (this.wsModel.isZombie()) {
+            return () => {
+                // Do nothing.
+            };
+        }
         this.wsModel.attachEditor(path, editor);
 
         switch (mode) {
@@ -659,16 +679,17 @@ export default class WorkspaceController implements WorkspaceMixin {
             // It's OK to capture the current Doodle here, but not outside the handler!
             const outputFiles = event.data;
             outputFiles.forEach((outputFile: OutputFile) => {
+                if (this.wsModel.isZombie()) {
+                    return;
+                }
                 if (typeof this.wsModel.lastKnownJs !== 'object') {
                     this.wsModel.lastKnownJs = {};
                 }
                 // TODO: The output files could be both JavaScript and d.ts
                 // We should be sure to only select the JavaScript file. 
                 if (this.wsModel.lastKnownJs[filename] !== outputFile.text) {
-                    // if (this.cascade) {
                     this.wsModel.lastKnownJs[filename] = outputFile.text;
                     this.$scope.updatePreview(WAIT_FOR_MORE_CODE_KEYSTROKES);
-                    // }
                 }
             });
         };
@@ -682,7 +703,7 @@ export default class WorkspaceController implements WorkspaceMixin {
 
     private createPreviewChangeHandler(path: string): EditSessionChangeHandler {
         const handler = (delta: Delta, session: EditSession) => {
-            if (this.wsModel) {
+            if (this.wsModel && !this.wsModel.isZombie()) {
                 this.$scope.updatePreview(WAIT_FOR_MORE_OTHER_KEYSTROKES);
             }
         };
@@ -692,7 +713,7 @@ export default class WorkspaceController implements WorkspaceMixin {
 
     private createReadmeChangeHandler(path: string): DocumentChangeHandler {
         const handler = (delta: Delta, source: Document) => {
-            if (this.wsModel) {
+            if (this.wsModel && !this.wsModel.isZombie()) {
                 this.updateReadmeView(WAIT_FOR_MORE_README_KEYSTROKES);
             }
         };
@@ -741,6 +762,9 @@ export default class WorkspaceController implements WorkspaceMixin {
      */
     detachEditor(path: string, mode: string, editor: Editor): void {
         // const startTime = performance.now();
+        if (this.wsModel.isZombie()) {
+            return;
+        }
 
         switch (mode) {
             case LANGUAGE_TYPE_SCRIPT: {

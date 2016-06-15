@@ -24,6 +24,7 @@ export default class DashboardController extends AbstractPageController {
         'modalDialog',
         'STATE_GIST',
         'STATE_REPO',
+        'STATE_ROOM',
         'UNIVERSAL_ANALYTICS_TRACKING_ID',
     ];
 
@@ -40,8 +41,8 @@ export default class DashboardController extends AbstractPageController {
         modalDialog: ModalDialog,
         STATE_GIST: string,
         STATE_REPO: string,
-        UNIVERSAL_ANALYTICS_TRACKING_ID: string
-    ) {
-        super($scope, $state, $window, authManager, ga, modalDialog, STATE_GIST, STATE_REPO, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
+        STATE_ROOM: string,
+        UNIVERSAL_ANALYTICS_TRACKING_ID: string) {
+        super($scope, $state, $window, authManager, ga, modalDialog, STATE_GIST, STATE_REPO, STATE_ROOM, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
     }
 }

@@ -21,6 +21,7 @@ export default class OpenController extends AbstractPageController {
         'STATE_DOODLE',
         'STATE_GIST',
         'STATE_REPO',
+        'STATE_ROOM',
         'UNIVERSAL_ANALYTICS_TRACKING_ID'
     ];
     constructor(
@@ -34,9 +35,10 @@ export default class OpenController extends AbstractPageController {
         STATE_DOODLE: string,
         STATE_GIST: string,
         STATE_REPO: string,
+        STATE_ROOM: string,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string
     ) {
-        super($scope, $state, $window, authManager, ga, modalDialog, STATE_GIST, STATE_REPO, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
+        super($scope, $state, $window, authManager, ga, modalDialog, STATE_GIST, STATE_REPO, STATE_ROOM, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
 
         $scope.doodles = function() {
             return doodles.filter(function() { return true; });

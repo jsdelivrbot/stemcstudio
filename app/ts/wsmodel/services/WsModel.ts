@@ -17,6 +17,7 @@ import EditSession from '../../editor/EditSession';
 // FIXME: Replace by $http
 import {get} from '../../editor/lib/net';
 import getPosition from '../../editor/workspace/getPosition';
+import Gist from '../../services/github/Gist';
 import LanguageServiceProxy from '../../editor/workspace/LanguageServiceProxy';
 // FIXME: Code Organization.
 import IDoodleConfig from '../../services/doodles/IDoodleConfig';
@@ -289,8 +290,8 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      * This is the counterpart of the dispose method.
      */
     recycle(callback: (err: any) => any): void {
-        // console.lg(`recycle(), refCount => ${this.refCount}`);
         if (this.windingDown) {
+            // console.lg("windingDown...");
             this.windingDown.then(() => {
                 this.windingDown = void 0;
                 this.recycle(callback);
@@ -299,6 +300,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             });
         }
         else {
+            // console.lg(`recycle(), refCount => ${this.refCount}`);
             this.addRef();
             this.inFlight++;
             this.languageServiceProxy.initialize(scriptImports, (err: any) => {
@@ -464,17 +466,23 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      */
     attachEditor(path: string, editor: Editor): void {
 
+        // The user may elect to open an editor but then leave the workspace as the editor is opening.
+        if (this.isZombie()) {
+            // console.lg("WsModel.attachEditor ignored because isZombie");
+            return;
+        }
+
         this.addRef();
 
         // console.lg(`WsModel.attachEditor(${path})`);
-        // Check arguments.
+
         checkPath(path);
         checkEditor(editor);
 
         // Idempotency.
         const existing = this.getFileEditor(path);
         if (existing) {
-            // console.lg(`attachEditor ignored because existing => ${existing}`);
+            console.warn(`attachEditor ignored because existing => ${existing}`);
             // existing.release();
             return;
         }
@@ -504,36 +512,44 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      * Detaching the Editor from the workspace disables the IDE features.
      */
     detachEditor(path: string, editor: Editor): void {
-        // console.lg(`WsModel.detachEditor(${path})`);
 
-        // Check Arguments.
-        checkPath(path);
-        checkEditor(editor);
-
-        // Idempotency.
-        if (!this.getFileEditor(path)) {
-            // console.lg(`WsModel.detachEditor(${path}) ignored`);
+        if (this.isZombie()) {
+            // console.lg("WsModel.detachEditor Open because isZombie");
             return;
         }
-        else {
-            this.setFileEditor(path, void 0);
-        }
+        try {
+            // console.lg(`WsModel.detachEditor(${path})`);
 
-        if (isTypeScript(path)) {
-            // Remove QuickInfo
-            if (this.quickin[path]) {
-                const quickInfo = this.quickin[path];
-                quickInfo.terminate();
-                delete this.quickin[path];
+            checkPath(path);
+            checkEditor(editor);
+
+            // Idempotency.
+            if (!this.getFileEditor(path)) {
+                console.warn(`WsModel.detachEditor(${path}) ignored`);
+                return;
             }
-        }
+            else {
+                this.setFileEditor(path, void 0);
+            }
 
-        this.detachSession(path, editor.getSession());
-        this.release();
+            if (isTypeScript(path)) {
+                // Remove QuickInfo
+                if (this.quickin[path]) {
+                    const quickInfo = this.quickin[path];
+                    quickInfo.terminate();
+                    delete this.quickin[path];
+                }
+            }
+
+            this.detachSession(path, editor.getSession());
+        }
+        finally {
+            this.release();
+        }
     }
 
     private attachSession(path: string, session: EditSession): void {
-        // console.lg("attachSession");
+        // console.lg(`attachSession(${path})`);
         checkPath(path);
         checkSession(session);
 
@@ -546,21 +562,18 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
                         this.semanticDiagnostics();
                         this.outputFiles();
                     }
-                    else {
-                        console.warn(`Ignoring 'annotations' event because inFlight => ${this.inFlight}`);
-                    }
                 };
                 session.on('annotations', annotationsHandler);
                 this.annotationHandlers[path] = annotationsHandler;
             }
             else {
-                console.warn("attachSession ignored");
+                console.warn(`attachSession(${path}) ignored because there is already an annotation handler.`);
             }
         }
     }
 
     private detachSession(path: string, session: EditSession) {
-        // console.lg("detachSession");
+        // console.lg(`detachSession(${path})`);
         checkPath(path);
         checkSession(session);
 
@@ -572,7 +585,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
                 delete this.annotationHandlers[path];
             }
             else {
-                console.warn("detachSession ignored");
+                console.warn(`detachSession(${path}) ignored because there is no annottaion handler.`);
             }
         }
     }
@@ -1068,24 +1081,38 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             throw new Error(`${path} already exists. The path must be unique.`);
         }
     }
-    deleteFile(path: string): void {
+
+    /**
+     * 1. Ends monitoring of the Document at the specified path.
+     * 2. Removes the file from the workspace.
+     * 3. Updates Local Storage.
+     */
+    deleteFile(path: string, callback: (reason: Error) => any): void {
         const file = this.files.getWeakRef(path);
         if (file) {
             // Determine whether the file exists in GitHub so that we can DELETE it upon upload.
             // Use the raw_url as the sentinel. Keep it in trash for later deletion.
             this.endDocumentMonitoring(path, (err) => {
                 if (file.raw_url) {
+                    // console.lg(`File ${path} is being moved to the trash.`);
                     this.moveFileToTrash(path);
+                    this.updateStorage();
+                    callback(void 0);
                 }
                 else {
                     // It's a file that does not exist on GitHub.
+                    // console.lg(`File ${path} is being dropped.`);
                     this.files.remove(path).release();
                     delete this.lastKnownJs[path];
+                    this.updateStorage();
+                    callback(void 0);
                 }
             });
         }
         else {
-            console.warn(`deleteFile(${path}), ${path} was not found.`);
+            setTimeout(() => {
+                callback(new Error(`deleteFile(${path}), ${path} was not found.`));
+            }, 0);
         }
     }
     existsFile(path: string): boolean {
@@ -1146,7 +1173,10 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
                     theFile.mode = mode;
                 }
                 // Delete the file by the old path.
-                this.deleteFile(oldName);
+                // FIXME:
+                this.deleteFile(oldName, (reason: Error) => {
+                    console.warn("TODO: Rename");
+                });
             }
             else {
                 throw new Error(`${newName} already exists. The new path must be unique.`);
@@ -1200,6 +1230,18 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
                 file.selected = true;
                 return;
             }
+        }
+    }
+
+    markAllFilesAsInGitHub(gist: Gist): void {
+
+        const paths = this.files.keys;
+        const iLen = paths.length;
+        for (let i = 0; i < iLen; i++) {
+            const path = paths[i];
+            const file = this.files.getWeakRef(path);
+            const gistFile = gist.files[path];
+            file.raw_url = gistFile.raw_url;
         }
     }
 
@@ -1574,7 +1616,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
                     // Verify that all of the edits are Raw to begin with.
                     if (allEditsRaw(files)) {
                         // We make a new Doodle to accept the downloaded workspace.
-                        // FIXME: Can we wait for the therad to stop?
+                        // FIXME: Can we wait for the thread to stop?
                         this.dispose();
                         this.recycle((err) => {
                             addMissingFilesToWorkspace(this, files);

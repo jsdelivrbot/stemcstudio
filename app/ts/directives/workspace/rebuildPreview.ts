@@ -47,7 +47,7 @@ export default function rebuildPreview(
             while (preview.children.length > 0) {
                 preview.removeChild(preview.firstChild);
             }
-            if (workspace) {
+            if (workspace && !workspace.isZombie()) {
                 const bestFile: string = workspace.getPreviewFileOrBestAvailable();
                 if (bestFile && $scope.isViewVisible) {
 

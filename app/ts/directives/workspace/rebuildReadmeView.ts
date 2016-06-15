@@ -27,7 +27,7 @@ export default function rebuildReadmeView(
             while (hostElement.children.length > 0) {
                 hostElement.removeChild(hostElement.firstChild);
             }
-            if (workspace && $scope.isReadMeVisible) {
+            if (workspace && !workspace.isZombie() && $scope.isReadMeVisible) {
                 const iframe: HTMLIFrameElement = document.createElement('iframe');
                 iframe.style.width = '100%';
                 iframe.style.height = '100%';

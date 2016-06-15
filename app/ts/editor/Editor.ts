@@ -1265,17 +1265,20 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
         this.$highlightPending = true;
         setTimeout(() => {
             this.$highlightPending = false;
-
-            const pos = this.session.findMatchingBracket(this.getCursorPosition());
-            let range: Range;
-            if (pos) {
-                range = new Range(pos.row, pos.column, pos.row, pos.column + 1);
-            }
-            else if (this.session.$mode && this.session.$mode.getMatching) {
-                range = this.session.$mode.getMatching(this.session);
-            }
-            if (range) {
-                this.session.$bracketHighlight = this.session.addMarker(range, "ace_bracket", "text");
+            // The session may be pulled out from under us during the wait time.
+            // TODO: We could cancel the timeout if we saved the handle for the timer.
+            if (this.session) {
+                const pos = this.session.findMatchingBracket(this.getCursorPosition());
+                let range: Range;
+                if (pos) {
+                    range = new Range(pos.row, pos.column, pos.row, pos.column + 1);
+                }
+                else if (this.session.$mode && this.session.$mode.getMatching) {
+                    range = this.session.$mode.getMatching(this.session);
+                }
+                if (range) {
+                    this.session.$bracketHighlight = this.session.addMarker(range, "ace_bracket", "text");
+                }
             }
         }, 50);
     }

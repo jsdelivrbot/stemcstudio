@@ -1,6 +1,6 @@
 import * as ng from 'angular';
 import ContextMenuItem from '../contextMenu/ContextMenuItem';
-import IDoodleFile from '../../services/doodles/IDoodleFile';
+import WsFile from '../../wsmodel/services/WsFile';
 
 /**
  * The shape of the menu property dictates the form of the DOM attribute in the context-menu.
@@ -8,7 +8,7 @@ import IDoodleFile from '../../services/doodles/IDoodleFile';
  * context-menu = 'menu(name, file)'
  */
 interface ExplorerFilesScope extends ng.IScope {
-    menu: (name: string, file: IDoodleFile) => ContextMenuItem[];
+    menu: (name: string, file: WsFile) => ContextMenuItem[];
 }
 
 export default ExplorerFilesScope;

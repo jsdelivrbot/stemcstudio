@@ -13,7 +13,10 @@ export default function removeUnwantedFilesFromWorkspace(slave: WsModel, master:
             // May need to verify that the action is not a delete!
         }
         else {
-            slave.deleteFile(path);
+            // TODO: This is asynchronous too!
+            slave.deleteFile(path, (reason: Error) => {
+                // Do something.
+            });
         }
     }
 }

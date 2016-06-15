@@ -31,6 +31,7 @@ export default class HomeController extends AbstractPageController {
         'STATE_EXAMPLES',
         'STATE_GIST',
         'STATE_REPO',
+        'STATE_ROOM',
         'UNIVERSAL_ANALYTICS_TRACKING_ID'
     ];
 
@@ -55,9 +56,10 @@ export default class HomeController extends AbstractPageController {
         STATE_EXAMPLES: string,
         STATE_GIST: string,
         STATE_REPO: string,
+        STATE_ROOM: string,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string
     ) {
-        super($scope, $state, $window, authManager, ga, modalDialog, STATE_GIST, STATE_REPO, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
+        super($scope, $state, $window, authManager, ga, modalDialog, STATE_GIST, STATE_REPO, STATE_ROOM, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
 
         $scope.FEATURE_DASHBOARD_ENABLED = FEATURE_DASHBOARD_ENABLED;
         $scope.FEATURE_EXAMPLES_ENABLED = FEATURE_EXAMPLES_ENABLED;

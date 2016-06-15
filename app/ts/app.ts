@@ -130,6 +130,7 @@ app.constant('FEATURE_LOGIN_ENABLED', true);
 app.constant('FEATURE_GIST_ENABLED', true);
 app.constant('FEATURE_I18N_ENABLED', true);
 app.constant('FEATURE_REPO_ENABLED', false);
+app.constant('FEATURE_ROOM_ENABLED', true);
 app.constant('FEATURE_SYNC_ENABLED', true);
 // Features for authentication.
 app.constant('FEATURE_AMAZON_SIGNIN_ENABLED', false);
@@ -195,6 +196,7 @@ app.constant('STATE_DOODLE', 'doodle');
 app.constant('STATE_EXAMPLES', 'examples');
 app.constant('STATE_GIST', 'gist');
 app.constant('STATE_REPO', 'repo');
+app.constant('STATE_ROOM', 'room');
 
 // The TypeScript d.ts library provides the type checking of global JavaScript types.
 app.constant('FILENAME_TYPESCRIPT_CURRENT_LIB_DTS', vendorPath('typescript@1.4.1.3', 'lib.d.ts'));
@@ -267,11 +269,13 @@ app.config([
     'FEATURE_GIST_ENABLED',
     'FEATURE_GOOGLE_SIGNIN_ENABLED',
     'FEATURE_REPO_ENABLED',
+    'FEATURE_ROOM_ENABLED',
     'STATE_DASHBOARD',
     'STATE_DOODLE',
     'STATE_EXAMPLES',
     'STATE_GIST',
     'STATE_REPO',
+    'STATE_ROOM',
     function(
         $stateProvider: angular.ui.IStateProvider,
         $translateProvider: ITranslateProvider,
@@ -281,11 +285,13 @@ app.config([
         FEATURE_GIST_ENABLED: boolean,
         FEATURE_GOOGLE_SIGNIN_ENABLED: boolean,
         FEATURE_REPO_ENABLED: boolean,
+        FEATURE_ROOM_ENABLED: boolean,
         STATE_DASHBOARD: string,
         STATE_DOODLE: string,
         STATE_EXAMPLES: string,
         STATE_GIST: string,
-        STATE_REPO: string
+        STATE_REPO: string,
+        STATE_ROOM: string
     ) {
         // console.lg(`${app.name}.config(...)`);
 
@@ -363,6 +369,17 @@ app.config([
         if (FEATURE_REPO_ENABLED) {
             $stateProvider.state(STATE_REPO, {
                 url: '/users/{owner}/repos/{repo}',
+                templateUrl: 'doodle.html',
+                controller: 'DoodleController'
+            });
+        }
+        else {
+            // TODO: Recognize the url but go to a no droids here.
+        }
+
+        if (FEATURE_ROOM_ENABLED) {
+            $stateProvider.state(STATE_ROOM, {
+                url: '/rooms/{roomId}',
                 templateUrl: 'doodle.html',
                 controller: 'DoodleController'
             });

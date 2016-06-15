@@ -191,19 +191,19 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
                 const url = `${gists()}/${gistId}`;
                 const method = HTTP_METHOD_GET;
                 const headers = requestHeaders();
-                return $http({ method, url, headers });
+                return $http<Gist>({ method, url, headers });
             },
             createGist: function(data: GistData): ng.IHttpPromise<Gist> {
                 const url = gists();
                 const method = HTTP_METHOD_POST;
                 const headers = requestHeaders();
-                return $http({ method, url, data, headers });
+                return $http<Gist>({ method, url, data, headers });
             },
             updateGist: function(gistId: string, data: GistData): ng.IHttpPromise<Gist> {
                 const url = `${gists()}/${gistId}`;
                 const method = HTTP_METHOD_PATCH;
                 const headers = requestHeaders();
-                return $http({ method, url, data, headers });
+                return $http<Gist>({ method, url, data, headers });
             },
             deleteGist: function(gistId: string, done: (err: any, response) => any) {
                 const url = `${gists()}/${gistId}`;

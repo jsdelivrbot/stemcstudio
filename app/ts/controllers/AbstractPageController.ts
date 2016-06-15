@@ -29,6 +29,7 @@ export default class AbstractPageController {
         modalDialog: ModalDialog,
         private STATE_GIST: string,
         private STATE_REPO: string,
+        private STATE_ROOM: string,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string,
         overflow: string) {
 
@@ -69,12 +70,16 @@ export default class AbstractPageController {
         };
     }
 
+    protected navigateToGist(gistId: string) {
+        return this.navigateTo(this.STATE_GIST, { gistId });
+    }
+
     protected navigateToRepo(owner: string, repo: string) {
         return this.navigateTo(this.STATE_REPO, { owner, repo });
     }
 
-    protected navigateToGist(gistId: string) {
-        return this.navigateTo(this.STATE_GIST, { gistId });
+    protected navigateToRoom(roomId: string) {
+        return this.navigateTo(this.STATE_ROOM, { roomId });
     }
 
     /**

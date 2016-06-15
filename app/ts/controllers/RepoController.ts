@@ -20,6 +20,7 @@ export default class RepoController extends AbstractPageController {
         'modalDialog',
         'STATE_GIST',
         'STATE_REPO',
+        'STATE_ROOM',
         'UNIVERSAL_ANALYTICS_TRACKING_ID'
     ];
     constructor(
@@ -31,8 +32,9 @@ export default class RepoController extends AbstractPageController {
         modalDialog: ModalDialog,
         STATE_GIST: string,
         STATE_REPO: string,
+        STATE_ROOM: string,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string) {
-        super($scope, $state, $window, authManager, ga, modalDialog, STATE_GIST, STATE_REPO, UNIVERSAL_ANALYTICS_TRACKING_ID, 'hidden');
+        super($scope, $state, $window, authManager, ga, modalDialog, STATE_GIST, STATE_REPO, STATE_ROOM, UNIVERSAL_ANALYTICS_TRACKING_ID, 'hidden');
     }
     $onInit(): void {
         // This will not be called because this is a routing controller.

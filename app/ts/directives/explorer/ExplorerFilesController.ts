@@ -1,47 +1,28 @@
 // import * as uib from 'angular-bootstrap';
 import ExplorerFilesScope from './ExplorerFilesScope';
-import IDoodleFile from '../../services/doodles/IDoodleFile';
-import IDoodleManager from '../../services/doodles/IDoodleManager';
 import ModalDialog from '../../services/modalService/ModalDialog';
 import AlertOptions from '../../services/modalService/AlertOptions';
 import ConfirmOptions from '../../services/modalService/ConfirmOptions';
 import PromptOptions from '../../services/modalService/PromptOptions';
+import WsFile from '../../wsmodel/services/WsFile';
 import WsModel from '../../wsmodel/services/WsModel';
 
-/**
- * @class ExplorerFilesController
- */
 export default class ExplorerFilesController {
 
-    /**
-     * @property $inject
-     * @type string[]
-     * @static
-     */
-    public static $inject: string[] = ['$scope', 'doodles', 'modalDialog', 'wsModel'];
+    public static $inject: string[] = ['$scope', 'modalDialog', 'wsModel'];
 
-    /**
-     * @class ExplorerFilesController
-     * @constructor
-     * @param $scope {ExplorerFilesScope}
-     * @param doodles {IDoodleManager}
-     */
-    constructor($scope: ExplorerFilesScope, private doodles: IDoodleManager, private modalService: ModalDialog, private wsModel: WsModel) {
+    constructor($scope: ExplorerFilesScope, private modalService: ModalDialog, private wsModel: WsModel) {
         // Define the context menu used by the files.
-        $scope.menu = (name: string, file: IDoodleFile) => {
+        $scope.menu = (path: string, file: WsFile) => {
             return [
-                { label: "Open", action: () => { this.openFile(name); } },
+                { label: file.isOpen ? "Close" : "Open", action: () => { file.isOpen ? this.closeFile(path) : this.openFile(path); } },
                 null,   // divider
-                { label: "Rename", action: () => { this.renameFile(name); } },
-                { label: "Delete", action: () => { this.deleteFile(name); } },
+                { label: "Rename", action: () => { this.renameFile(path); } },
+                { label: "Delete", action: () => { this.deleteFile(path); } },
             ];
         };
     }
 
-    /**
-     * @method newFile
-     * @return {void}
-     */
     public newFile(): void {
         const options: PromptOptions = {
             title: 'New File',
@@ -51,11 +32,11 @@ export default class ExplorerFilesController {
             message: "Enter the name of the new file."
         };
         this.modalService.prompt(options)
-            .then((name) => {
+            .then((path) => {
                 try {
-                    this.wsModel.newFile(name);
-                    this.wsModel.selectFile(name);
-                    this.doodles.updateStorage();
+                    this.wsModel.newFile(path);
+                    this.wsModel.selectFile(path);
+                    this.wsModel.updateStorage();
                 }
                 catch (e) {
                     const alertOptions: AlertOptions = { title: "Error", message: e.toString() };
@@ -67,21 +48,17 @@ export default class ExplorerFilesController {
             });
     }
 
-    /**
-     * @method openFile
-     * @param name {string}
-     * @return {void}
-     */
-    public openFile(name: string): void {
-        this.wsModel.openFile(name);
-        this.wsModel.selectFile(name);
+    public openFile(path: string): void {
+        this.wsModel.openFile(path);
+        this.wsModel.selectFile(path);
+        this.wsModel.updateStorage();
     }
 
-    /**
-     * @method renameFile
-     * @param oldName {string}
-     * @return {void}
-     */
+    public closeFile(path: string): void {
+        this.wsModel.closeFile(path);
+        this.wsModel.updateStorage();
+    }
+
     public renameFile(oldName: string): void {
         const options: PromptOptions = {
             title: `Rename '${oldName}'`,
@@ -94,7 +71,7 @@ export default class ExplorerFilesController {
             .then((newName) => {
                 try {
                     this.wsModel.renameFile(oldName, newName);
-                    this.doodles.updateStorage();
+                    this.wsModel.updateStorage();
                 }
                 catch (e) {
                     this.modalService.alert({ title: "Error", message: e.toString() });
@@ -105,23 +82,20 @@ export default class ExplorerFilesController {
             });
     }
 
-    /**
-     * @method deleteFile
-     * @param name {string}
-     * @return {void}
-     */
-    public deleteFile(name: string): void {
+    public deleteFile(path: string): void {
         const options: ConfirmOptions = {
-            title: `Delete '${name}'`,
-            message: `Are you sure you want to delete '${name}'?`,
+            title: `Delete '${path}'`,
+            message: `Are you sure you want to delete '${path}'?`,
             actionButtonText: 'Delete File'
         };
         this.modalService.confirm(options)
             .then((result) => {
-                this.wsModel.deleteFile(name);
-                this.doodles.updateStorage();
+                this.wsModel.deleteFile(path, (reason: Error) => {
+                    // This has already been done.
+                    // this.wsModel.updateStorage();
+                });
             })
-            .catch(function(reason: any) {
+            .catch(function(reason) {
                 // Do nothing.
             });
     }

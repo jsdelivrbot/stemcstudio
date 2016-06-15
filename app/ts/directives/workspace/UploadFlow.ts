@@ -3,6 +3,7 @@ import FlowService from '../../services/flow/FlowService';
 import UploadFacts from './UploadFacts';
 import ModalDialog from '../../services/modalService/ModalDialog';
 import CloudService from '../../services/cloud/CloudService';
+import Gist from '../../services/github/Gist';
 import GitHubReason from '../../services/github/GitHubReason';
 import GitHubService from '../../services/github/GitHubService';
 import PromptOptions from '../../services/modalService/PromptOptions';
@@ -116,11 +117,12 @@ export default class UploadFlow {
                         facts.statusText.resolve(statusText);
                         switch (status) {
                             case 200: {
-                                const gist = http.data;
+                                const gist: Gist = http.data;
                                 // console.lg(JSON.stringify(gist, null, 2));
                                 facts.uploadedAt.resolve(gist.updated_at);
                                 facts.uploadMessage.resolve(`Your project was successfully uploaded and patched the existing Gist.`);
                                 try {
+                                    this.wsModel.markAllFilesAsInGitHub(gist);
                                     this.wsModel.emptyTrash();
                                     this.wsModel.updated_at = gist.updated_at;
                                     this.wsModel.updateStorage();

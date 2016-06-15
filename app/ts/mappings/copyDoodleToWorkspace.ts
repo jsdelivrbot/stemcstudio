@@ -41,7 +41,8 @@ function copyTrashToWorkspace(dudeFiles: { [path: string]: DoodleFile }, workspa
             wsFile.raw_url = dudeFile.raw_url;
             wsFile.selected = dudeFile.selected;
 
-            workspace.deleteFile(path);
+            // FIXME: Do it right.
+            // workspace.deleteFile(path);
         }
         finally {
             wsFile.release();
@@ -53,6 +54,10 @@ function copyTrashToWorkspace(dudeFiles: { [path: string]: DoodleFile }, workspa
  * 
  */
 export default function copyDoodleToWorkspace(doodle: Doodle, wsModel: WsModel): void {
+
+    // console.lg("copyDoodleToWorkspace");
+    // console.lg(`files => ${doodle.files ? Object.keys(doodle.files) : []}`);
+    // console.lg(`trash => ${doodle.trash ? Object.keys(doodle.trash) : []}`);
 
     copyFilesToWorkspace(doodle.files, wsModel);
     copyTrashToWorkspace(doodle.trash, wsModel);
