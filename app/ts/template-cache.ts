@@ -306,18 +306,18 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
 
   $templateCache.put('copy.html',
     "<div class='modal-content'>\n" +
-    "  <div class='modal-header'>\n" +
-    "      <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden='true' ng-click='doCancel()'>&times;</button>\n" +
-    "    <h3>Make Copy of Project \"{{template.description}}\"</h3>\n" +
-    "  </div>\n" +
-    "  <div class='modal-body'>\n" +
-    "    <input type='text' ng-model='description' placeholder=\"Enter description\" autofocus/>\n" +
-    "  </div>\n" +
-    "  <div class='modal-footer'>\n" +
-    "    <button class='btn btn-primary' ng-click='doOK()'>Copy project</button>\n" +
-    "    <button class='btn' ng-click='doCancel()'>Cancel</button>\n" +
-    "  </div>\n" +
-    "</div>\n"
+    "    <div class='modal-header'>\n" +
+    "        <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden='true' ng-click='doCancel()'>&times;</button>\n" +
+    "        <h3>Make Copy of Project \"{{oldDescription}}\"</h3>\n" +
+    "    </div>\n" +
+    "    <div class='modal-body'>\n" +
+    "        <input type='text' ng-model='newDescription' placeholder=\"Enter description\" autofocus/>\n" +
+    "    </div>\n" +
+    "    <div class='modal-footer'>\n" +
+    "        <button class='btn btn-primary' ng-click='doOK()'>Copy project</button>\n" +
+    "        <button class='btn' ng-click='doCancel()'>Cancel</button>\n" +
+    "    </div>\n" +
+    "</div>"
   );
 
 

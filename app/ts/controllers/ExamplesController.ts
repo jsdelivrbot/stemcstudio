@@ -111,6 +111,12 @@ export default class ExamplesController extends AbstractPageController {
                 category: 'Mathematics'
             },
             {
+                gistId: '1054e457c4fb6bba3aab1aceb25f1212',
+                title: "EightJS Starter Template",
+                description: "An example that you can copy to create your own 3D graphics programs using the EIGHT library.",
+                category: 'Physics'
+            },
+            {
                 gistId: '1af94bb1db939e36e5f84764b44030af',
                 title: "Modeling a Gas",
                 description: "This program models a Gas as a collection of Molecules interacting with each other and the walls of a Box through elastic collisions.",

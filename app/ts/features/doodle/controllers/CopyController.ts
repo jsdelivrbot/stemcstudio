@@ -41,19 +41,42 @@ export default class CopyController {
         STATE_DOODLE: string
     ) {
         //
+        // The old description provides context for the user dialog.
+        //
+        $scope.oldDescription = doodles.current().description;
+
+        //
         // The user can change the description.
         //
-        $scope.description = doodles.current().description;
+        $scope.newDescription = doodles.current().description;
 
         //
         // Copy the current doodle into a new doodle.
         //
         $scope.doOK = function() {
+            const original = doodles.current();
             const doodle = doodles.createDoodle();
-            copyDoodleToDoodle(doodles.current(), doodle);
-            doodle.description = $scope.description;
+
+            copyDoodleToDoodle(original, doodle);
+
+            doodle.author = void 0;
+            doodle.created_at = void 0;
+            doodle.gistId = void 0;
+            doodle.isCodeVisible = original.isCodeVisible;
+            doodle.isViewVisible = original.isViewVisible;
+            doodle.keywords = original.keywords;
+            doodle.lastKnownJs = {};
+            doodle.name = 'copy-of-' + original.name;
+            doodle.owner = void 0;
+            doodle.repo = void 0;
+            doodle.updated_at = void 0;
+            doodle.version = '0.1.0';
+
+            doodle.description = $scope.newDescription;
+
             doodles.unshift(doodle);
             doodles.updateStorage();
+
             $state.go(STATE_DOODLE);
         };
 

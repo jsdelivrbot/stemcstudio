@@ -1,11 +1,11 @@
 import Doodle from './Doodle';
 
 /**
- * TODO: Move this towards being an API for LocalStorage.
+ * API for LocalStorage of Doodle(s).
  */
 interface IDoodleManager {
     /**
-     * Inserts the doodle at the top of the list of doodles.
+     * Inserts the doodle at the top of the list of doodles, making it the current doodle.
      */
     unshift(doodle: Doodle): void;
     length: number;
@@ -13,9 +13,14 @@ interface IDoodleManager {
     current(): Doodle;
     makeCurrent(doodle: Doodle): void;
     deleteDoodle(doodle: Doodle): void;
-    updateStorage(): void;
+
     /**
-     * Creates a standalone empty Doodle.
+     * Persist the list of doodles to Local Storage.
+     */
+    updateStorage(): void;
+
+    /**
+     * Creates a standalone empty Doodle. The doodle is not part of the list.
      */
     createDoodle(): Doodle;
     suggestName(): string;
