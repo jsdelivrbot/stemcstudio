@@ -85,6 +85,19 @@ import BackgroundService from './services/background/BackgroundService';
 import {BACKGROUND_UUID} from './services/background/Background';
 import Iso8601 from './services/iso8601/Iso8601';
 import MissionControl from './services/mission/MissionControl';
+import NavigationService from './modules/navigation/NavigationService';
+import {STATE_ABOUT} from './modules/navigation/NavigationService';
+import {STATE_COPY} from './modules/navigation/NavigationService';
+import {STATE_DASHBOARD} from './modules/navigation/NavigationService';
+import {STATE_DOODLE} from './modules/navigation/NavigationService';
+import {STATE_DOWNLOAD} from './modules/navigation/NavigationService';
+import {STATE_EXAMPLES} from './modules/navigation/NavigationService';
+import {STATE_GIST} from './modules/navigation/NavigationService';
+import {STATE_HOME} from './modules/navigation/NavigationService';
+import {STATE_NEW} from './modules/navigation/NavigationService';
+import {STATE_OPEN} from './modules/navigation/NavigationService';
+import {STATE_REPO} from './modules/navigation/NavigationService';
+import {STATE_ROOM} from './modules/navigation/NavigationService';
 
 //
 // Create 'app' module and declare its Angular module dependencies.
@@ -130,8 +143,7 @@ app.constant('FEATURE_LOGIN_ENABLED', true);
 app.constant('FEATURE_GIST_ENABLED', true);
 app.constant('FEATURE_I18N_ENABLED', true);
 app.constant('FEATURE_REPO_ENABLED', false);
-app.constant('FEATURE_ROOM_ENABLED', false);
-app.constant('FEATURE_SYNC_ENABLED', false);
+app.constant('FEATURE_ROOM_ENABLED', true);
 // Features for authentication.
 app.constant('FEATURE_AMAZON_SIGNIN_ENABLED', false);
 app.constant('FEATURE_GITHUB_SIGNIN_ENABLED', true);
@@ -188,15 +200,6 @@ app.constant('GITHUB_TOKEN_COOKIE_NAME', 'github-token');
 
 // Cache the user.login once we have received the token in this cookie.
 app.constant('GITHUB_LOGIN_COOKIE_NAME', 'github-login');
-
-// Names of routing states.
-// WARNING: Changing state names can break ui-sref directives.
-app.constant('STATE_DASHBOARD', 'dashboard');
-app.constant('STATE_DOODLE', 'doodle');
-app.constant('STATE_EXAMPLES', 'examples');
-app.constant('STATE_GIST', 'gist');
-app.constant('STATE_REPO', 'repo');
-app.constant('STATE_ROOM', 'room');
 
 // The TypeScript d.ts library provides the type checking of global JavaScript types.
 app.constant('FILENAME_TYPESCRIPT_CURRENT_LIB_DTS', vendorPath('typescript@1.4.1.3', 'lib.d.ts'));
@@ -256,6 +259,7 @@ app.service('publishDialog', PublishDialogService);
 app.service(BACKGROUND_UUID, BackgroundService);
 app.service('iso8601', Iso8601);
 app.service('missionControl', MissionControl);
+app.service('navigation', NavigationService);
 
 //
 // Register work which needs to be performed on module loading.
@@ -270,12 +274,6 @@ app.config([
     'FEATURE_GOOGLE_SIGNIN_ENABLED',
     'FEATURE_REPO_ENABLED',
     'FEATURE_ROOM_ENABLED',
-    'STATE_DASHBOARD',
-    'STATE_DOODLE',
-    'STATE_EXAMPLES',
-    'STATE_GIST',
-    'STATE_REPO',
-    'STATE_ROOM',
     function(
         $stateProvider: angular.ui.IStateProvider,
         $translateProvider: ITranslateProvider,
@@ -285,19 +283,13 @@ app.config([
         FEATURE_GIST_ENABLED: boolean,
         FEATURE_GOOGLE_SIGNIN_ENABLED: boolean,
         FEATURE_REPO_ENABLED: boolean,
-        FEATURE_ROOM_ENABLED: boolean,
-        STATE_DASHBOARD: string,
-        STATE_DOODLE: string,
-        STATE_EXAMPLES: string,
-        STATE_GIST: string,
-        STATE_REPO: string,
-        STATE_ROOM: string
+        FEATURE_ROOM_ENABLED: boolean
     ) {
         // console.lg(`${app.name}.config(...)`);
 
         // FIXME: Some of the states should be replaced by modal dialogs.
         $stateProvider
-            .state('home', {
+            .state(STATE_HOME, {
                 url: '/',
                 templateUrl: 'home.html',
                 controller: HOME_CONTROLLER_NAME
@@ -307,27 +299,27 @@ app.config([
                 templateUrl: 'doodle.html',
                 controller: 'DoodleController'
             })
-            .state('new', {
+            .state(STATE_NEW, {
                 url: '/new',
                 templateUrl: 'new.html',
                 controller: NEW_CONTROLLER_NAME
             })
-            .state('open', {
+            .state(STATE_OPEN, {
                 url: '/open',
                 templateUrl: 'open.html',
                 controller: OPEN_CONTROLLER_NAME
             })
-            .state('copy', {
+            .state(STATE_COPY, {
                 url: '/copy',
                 templateUrl: 'copy.html',
                 controller: COPY_CONTROLLER_NAME
             })
-            .state('download', {
+            .state(STATE_DOWNLOAD, {
                 url: '/download',
                 templateUrl: 'download.html',
                 controller: 'download-controller'
             })
-            .state('about', {
+            .state(STATE_ABOUT, {
                 url: '/about',
                 templateUrl: 'about.html',
                 controller: ABOUT_CONTROLLER_NAME

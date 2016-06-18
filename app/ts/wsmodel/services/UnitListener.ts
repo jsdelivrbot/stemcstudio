@@ -19,10 +19,10 @@ export default class UnitListener implements RoomListener {
                 file.unit.setEdits(nodeId, edits);
             }
             else {
-                const newbie = new MwUnit(this.workspace);
+                file.unit = new MwUnit(this.workspace);
                 const editor: MwEditor = this.workspace.createEditor();
-                newbie.setEditor(editor);
-                newbie.setEdits(nodeId, edits);
+                file.unit.setEditor(editor);
+                file.unit.setEdits(nodeId, edits);
                 // console.warn(`MwUnit not found for path ${path}.`);
             }
         }

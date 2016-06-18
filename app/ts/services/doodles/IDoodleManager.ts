@@ -4,10 +4,17 @@ import Doodle from './Doodle';
  * API for LocalStorage of Doodle(s).
  */
 interface IDoodleManager {
+
     /**
-     * Inserts the doodle at the top of the list of doodles, making it the current doodle.
+     * Inserts the doodle at the front of the list of doodles, making it the current doodle.
      */
-    unshift(doodle: Doodle): void;
+    addHead(doodle: Doodle): void;
+
+    /**
+     * Inserts the doodle ath the back of the list of doodles.
+     */
+    addTail(doodle: Doodle): void;
+
     length: number;
     filter(callback: (doodle: Doodle, index: number, array: Doodle[]) => boolean): Doodle[];
     current(): Doodle;

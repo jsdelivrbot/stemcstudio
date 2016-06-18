@@ -2,23 +2,22 @@ import * as ng from 'angular';
 import app from '../../../app';
 import ITemplate from '../../../services/templates/ITemplate';
 import IDoodleManager from '../../../services/doodles/IDoodleManager';
+import NavigationService from '../../../modules/navigation/NavigationService';
 import NewScope from '../../../scopes/NewScope';
 import copyTemplateToDoodle from '../../../mappings/copyTemplateToDoodle';
 
 export default class NewController {
     public static $inject: string[] = [
         '$scope',
-        '$state',
         'doodles',
-        'templates',
-        'STATE_DOODLE',
+        'navigation',
+        'templates'
     ];
     constructor(
         $scope: NewScope,
-        $state: ng.ui.IStateService,
         doodles: IDoodleManager,
-        templates: ITemplate[],
-        STATE_DOODLE: string
+        navigation: NavigationService,
+        templates: ITemplate[]
     ) {
         $scope.description = doodles.suggestName();
         $scope.template = templates[0];
@@ -28,13 +27,13 @@ export default class NewController {
             const doodle = doodles.createDoodle();
             copyTemplateToDoodle($scope.template, doodle);
             doodle.description = $scope.description;
-            doodles.unshift(doodle);
+            doodles.addHead(doodle);
             doodles.updateStorage();
-            $state.go(STATE_DOODLE);
+            navigation.gotoDoodle();
         };
 
         $scope.doCancel = function() {
-            $state.go(STATE_DOODLE);
+            navigation.gotoDoodle();
         };
     }
 }

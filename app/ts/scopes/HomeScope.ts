@@ -17,7 +17,7 @@ export interface HomeScope extends BodyScope, SearchScope, ThumbnailsScope {
     /**
      * Navigate to the Doodle page.
      */
-    goDoodle(): void;
+    clickCodeNow(label?: string, value?: number): void;
 
     /**
      * Navigate to the Examples page.

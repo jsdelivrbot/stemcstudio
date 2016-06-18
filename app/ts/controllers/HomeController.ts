@@ -6,6 +6,7 @@ import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
 import HitService from '../services/hits/HitService';
 import HomeScope from '../scopes/HomeScope';
 import ModalDialog from '../services/modalService/ModalDialog';
+import NavigationService from '../modules/navigation/NavigationService';
 import StemcArXiv from '../stemcArXiv/StemcArXiv';
 
 /**
@@ -15,23 +16,17 @@ export default class HomeController extends AbstractPageController {
 
     public static $inject: string[] = [
         '$scope',
-        '$state',
         '$window',
         'doodles',
         'GitHubAuthManager',
         'ga',
         'hits',
         'modalDialog',
+        'navigation',
         'stemcArXiv',
         'FEATURE_DASHBOARD_ENABLED',
         'FEATURE_EXAMPLES_ENABLED',
         'FEATURE_GOOGLE_SIGNIN_ENABLED',
-        'STATE_DASHBOARD',
-        'STATE_DOODLE',
-        'STATE_EXAMPLES',
-        'STATE_GIST',
-        'STATE_REPO',
-        'STATE_ROOM',
         'UNIVERSAL_ANALYTICS_TRACKING_ID'
     ];
 
@@ -40,26 +35,20 @@ export default class HomeController extends AbstractPageController {
      */
     constructor(
         $scope: HomeScope,
-        $state: angular.ui.IStateService,
         $window: angular.IWindowService,
         doodles: IDoodleManager,
         authManager: IGitHubAuthManager,
         ga: UniversalAnalytics.ga,
         hits: HitService,
         modalDialog: ModalDialog,
+        navigation: NavigationService,
         stemcArXiv: StemcArXiv,
         FEATURE_DASHBOARD_ENABLED: boolean,
         FEATURE_EXAMPLES_ENABLED: boolean,
         FEATURE_GOOGLE_SIGNIN_ENABLED: boolean,
-        STATE_DASHBOARD: string,
-        STATE_DOODLE: string,
-        STATE_EXAMPLES: string,
-        STATE_GIST: string,
-        STATE_REPO: string,
-        STATE_ROOM: string,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string
     ) {
-        super($scope, $state, $window, authManager, ga, modalDialog, STATE_GIST, STATE_REPO, STATE_ROOM, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
+        super($scope, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
 
         $scope.FEATURE_DASHBOARD_ENABLED = FEATURE_DASHBOARD_ENABLED;
         $scope.FEATURE_EXAMPLES_ENABLED = FEATURE_EXAMPLES_ENABLED;
@@ -67,20 +56,35 @@ export default class HomeController extends AbstractPageController {
 
         $scope.goDashboard = () => {
             if (FEATURE_DASHBOARD_ENABLED) {
-                this.navigateTo(STATE_DASHBOARD);
+                navigation.gotoDashboard();
             }
             else {
                 console.warn(`FEATURE_DASHBOARD_ENABLED => ${FEATURE_DASHBOARD_ENABLED}`);
             }
         };
 
-        $scope.goDoodle = () => {
-            this.navigateTo(STATE_DOODLE);
+        $scope.clickCodeNow = (label?: string, value?: number) => {
+
+            console.log(`clickCodeNow(label => ${label}, value => ${value})`);
+
+            // It's now possible to select a doodle from Local Storage, and very
+            // easy to select the most recent doodle at the head of the list.
+            // We don't want to duplicate that functionality.
+            // Instead, we create an empty doodle and leave it to be discovered.
+            const doodle = doodles.createDoodle();
+            doodles.addHead(doodle);
+            doodles.updateStorage();
+
+            navigation.gotoDoodle(label, value);
         };
 
         $scope.goExamples = () => {
             if (FEATURE_EXAMPLES_ENABLED) {
-                this.navigateTo(STATE_EXAMPLES);
+                navigation.gotoExamples().then(function(promiseValue: any) {
+                    // console.lg(`gotoExamples() completed.`);
+                }).catch(function(reason: any) {
+                    console.warn(`gotoExamples() failed: ${JSON.stringify(reason, null, 2)}`);
+                });
             }
             else {
                 console.warn(`FEATURE_EXAMPLES_ENABLED => ${FEATURE_EXAMPLES_ENABLED}`);
@@ -127,13 +131,13 @@ export default class HomeController extends AbstractPageController {
             // We know that the Doodle is in Local Storage, but we can avoid
             // a state change by going to the correct state the first time.
             if (doodle.owner && doodle.repo) {
-                this.navigateToRepo(doodle.owner, doodle.repo);
+                navigation.gotoRepo(doodle.owner, doodle.repo);
             }
             else if (doodle.gistId) {
-                this.navigateToGist(doodle.gistId);
+                navigation.gotoGist(doodle.gistId);
             }
             else {
-                this.navigateTo(STATE_DOODLE);
+                navigation.gotoDoodle();
             }
         };
 

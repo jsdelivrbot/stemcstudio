@@ -127,8 +127,12 @@ app.factory('doodles', [
 
         const that: IDoodleManager = {
 
-            unshift: function(doodle: Doodle): number {
+            addHead: function(doodle: Doodle): number {
                 return _doodles.unshift(doodle);
+            },
+
+            addTail: function(doodle: Doodle): number {
+                return _doodles.push(doodle);
             },
 
             get length(): number {

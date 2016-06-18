@@ -14,38 +14,21 @@ export default class ExamplesController extends AbstractPageController {
 
     public static $inject: string[] = [
         '$scope',
-        '$state',
-        '$stateParams',
-        '$http',
-        '$location',
-        '$timeout',
         '$window',
         'GitHubAuthManager',
         'ga',
         'modalDialog',
-        'STATE_GIST',
-        'STATE_REPO',
-        'STATE_ROOM',
         'UNIVERSAL_ANALYTICS_TRACKING_ID',
     ];
 
     constructor(
         $scope: ExamplesScope,
-        $state: angular.ui.IStateService,
-        $stateParams: angular.ui.IStateParamsService,
-        http: angular.IHttpService,
-        $location: angular.ILocationService,
-        $timeout: angular.ITimeoutService,
         $window: angular.IWindowService,
         authManager: IGitHubAuthManager,
         ga: UniversalAnalytics.ga,
         modalDialog: ModalDialog,
-        STATE_GIST: string,
-        STATE_REPO: string,
-        STATE_ROOM: string,
-        UNIVERSAL_ANALYTICS_TRACKING_ID: string
-    ) {
-        super($scope, $state, $window, authManager, ga, modalDialog, STATE_GIST, STATE_REPO, STATE_ROOM, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
+        UNIVERSAL_ANALYTICS_TRACKING_ID: string) {
+        super($scope, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
 
         $scope.examples = [
             {

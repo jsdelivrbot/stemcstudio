@@ -10,6 +10,7 @@ var https = require('https');
 var qs = require('querystring');
 var bodyParser = require('body-parser');
 var errorHandler = require('errorhandler');
+var rooms = require('./server/routes/rooms/index');
 var stemcArXiv = require('./server/routes/stemcArXiv/index');
 var npm = require('./package.json');
 var cfg = require('./configure');
@@ -88,6 +89,9 @@ app.get("/github_callback", function (req, res, next) {
         npm: npm
     });
 });
+app.post('/rooms', rooms.createRoom);
+app.get('/rooms/:id', rooms.getRoom);
+app.delete('/rooms/:id', rooms.destroyRoom);
 app.post('/search', stemcArXiv.search);
 app.post('/submissions', stemcArXiv.submit);
 app.get("/*", function (req, res, next) {

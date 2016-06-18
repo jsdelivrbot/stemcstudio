@@ -453,7 +453,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                                <ng-md-icon>\n" +
     "                        </a>\n" +
     "                    </li>\n" +
-    "                    <li ng-if='FEATURE_SYNC_ENABLED' uib-dropdown ng-show='isGitHubSignedIn()' ng-controller='rooms-controller as rooms'>\n" +
+    "                    <li ng-if='FEATURE_ROOM_ENABLED' uib-dropdown ng-show='isGitHubSignedIn()' ng-controller='rooms-controller as rooms'>\n" +
     "                        <a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"Collaboration Menu\" tooltip-placement='bottom'>\n" +
     "                            <ng-md-icon icon='group' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'>\n" +
     "                                <ng-md-icon>\n" +
@@ -710,7 +710,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                <div class='navbar-brand'>\n" +
     "                    <brand />\n" +
     "                </div>\n" +
-    "                <button type=\"button\" class=\"btn btn-primary navbar-btn\" ng-click='goDoodle()'>Code Now!</button>\n" +
+    "                <button type=\"button\" class=\"btn btn-primary navbar-btn\" ng-click='clickCodeNow()'>Code Now!</button>\n" +
     "                <button ng-if='FEATURE_EXAMPLES_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goExamples()'>Examples</button>\n" +
     "                <button ng-if='FEATURE_DASHBOARD_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goDashboard()' ng-show='isGitHubSignedIn()'>Dashboard</button>\n" +
     "                <a role=\"button\" class=\"btn btn-secondary navbar-btn\" ng-href='https://github.com/stemcstudio/stemcstudio/wiki' target='_blank'>Wiki</a>\n" +

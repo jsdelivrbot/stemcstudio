@@ -74,7 +74,7 @@ var MwRemote = (function () {
     MwRemote.prototype.discardChanges = function (nodeId) {
         delete this.edits[nodeId];
     };
-    MwRemote.prototype.patchDelta = function (nodeId, editor, code, delta, localVersion, remoteVersion) {
+    MwRemote.prototype.patchDelta = function (nodeId, editor, code, delta, localVersion, remoteVersion, callback) {
         var shadow = this.shadow;
         var backup = this.backup;
         if (typeof shadow.m !== 'number') {
@@ -85,17 +85,19 @@ var MwRemote = (function () {
                 this.discardChanges(nodeId);
                 shadow.copy(backup);
                 shadow.happy = true;
+                callback(void 0);
             }
             else {
                 shadow.happy = false;
-                console.warn("handleDelta(...) this.localVersion=" + shadow.n + ", localVersion=" + localVersion);
+                callback(new Error("handleDelta(...) this.localVersion=" + shadow.n + ", localVersion=" + localVersion));
             }
         }
         else if (remoteVersion > shadow.m) {
             shadow.happy = false;
-            console.warn('Remote version in future.\n' + 'Expected: ' + shadow.m + ' Got: ' + remoteVersion);
+            callback(new Error('Remote version in future.\n' + 'Expected: ' + shadow.m + ' Got: ' + remoteVersion));
         }
         else if (remoteVersion < shadow.m) {
+            callback(void 0);
         }
         else {
             var diffs = void 0;
@@ -112,22 +114,33 @@ var MwRemote = (function () {
                 if (isChanged_1.default(diffs)) {
                     if (code === 'D') {
                         shadow.text = dmp.resultText(diffs);
-                        editor.setText(shadow.text);
-                        shadow.happy = true;
+                        editor.setText(shadow.text, function (err) {
+                            if (!err) {
+                                shadow.happy = true;
+                                callback(void 0);
+                            }
+                            else {
+                                callback(err);
+                            }
+                        });
                     }
                     else {
                         var patches = dmp.computePatches(shadow.text, diffs);
                         var serverResult = dmp.patch_apply(patches, shadow.text);
                         shadow.text = serverResult[0];
                         shadow.happy = true;
-                        editor.patch(patches);
+                        editor.patch(patches, function (err, flags) {
+                            callback(err);
+                        });
                     }
                 }
                 else {
                     shadow.happy = true;
+                    callback(void 0);
                 }
             }
             else {
+                callback(void 0);
             }
         }
     };

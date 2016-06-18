@@ -33,7 +33,7 @@ export default function sockets(app: express.Express, server: http.Server) {
         socket.on('download', function(data: { fromId: string, roomId: string }, ack: (err, data) => any) {
             const {fromId, roomId} = data;
             console.log(`download(${roomId}) request received from ${fromId}.`);
-            rooms.getEdits(fromId, roomId, function(err, data: { fromId: string; roomId: string; files: { [fileName: string]: MwEdits } }) {
+            rooms.getEdits(fromId, roomId, function(err, data: { fromId: string; roomId: string; files: { [path: string]: MwEdits } }) {
                 if (!err) {
                     const {files} = data;
                     ack(err, files);
@@ -56,39 +56,50 @@ export default function sockets(app: express.Express, server: http.Server) {
 
             socket.join(roomId, function(err) {
                 ack();
-                rooms.getEdits(fromId, roomId, function(err, data: { fromId: string; roomId: string; files: { [fileName: string]: MwEdits } }) {
+                rooms.getEdits(fromId, roomId, function(err, data: { fromId: string; roomId: string; files: { [path: string]: MwEdits } }) {
                     const {fromId, roomId, files} = data;
-                    const fileNames = Object.keys(files);
-                    for (let i = 0; i < fileNames.length; i++) {
-                        const fileName = fileNames[i];
-                        const edits = files[fileName];
-                        socket.emit('edits', { fromId, roomId, fileName, edits });
+                    const paths = Object.keys(files);
+                    for (let i = 0; i < paths.length; i++) {
+                        const path = paths[i];
+                        const edits = files[path];
+                        socket.emit('edits', { fromId, roomId, path, edits });
                     }
                 });
             });
         });
 
-        socket.on('edits', function(data: { fromId: string; roomId: string; fileName: string, edits: MwEdits }, ack: () => any) {
-            const {fromId, roomId, fileName, edits} = data;
+        socket.on('edits', function(data: { fromId: string; roomId: string; path: string, edits: MwEdits }, ack: () => any) {
+            const {fromId, roomId, path, edits} = data;
             socketByNodeId[fromId] = socket;
             // TODO; Track the inverse mapping so that when a socket disconnects, we can clean up.
-            rooms.setEdits(fromId, roomId, fileName, edits, function(err: any, data: { roomId: string; fileName: string; broadcast: MwBroadcast }) {
+            rooms.setEdits(fromId, roomId, path, edits, function(err: any, data: { roomId: string; path: string; broadcast: MwBroadcast }) {
                 ack();
-                const {roomId, fileName, broadcast} = data;
                 if (!err) {
-                    if (broadcast) {
-                        const nodeIds = Object.keys(broadcast);
-                        for (let i = 0; i < nodeIds.length; i++) {
-                            const nodeId = nodeIds[i];
-                            const edits = broadcast[nodeId];
-                            console.log(`edits for ${fileName} from ${roomId} going to room ${nodeId}`);
-                            console.log(JSON.stringify(edits, null, 2));
-                            const target = socketByNodeId[nodeId];
-                            if (target) {
-                                target.emit('edits', { fromId: roomId, roomId: nodeId, fileName, edits });
+                    if (data) {
+                        const {roomId, path, broadcast} = data;
+                        if (broadcast) {
+                            const nodeIds = Object.keys(broadcast);
+                            for (let i = 0; i < nodeIds.length; i++) {
+                                const nodeId = nodeIds[i];
+                                const edits = broadcast[nodeId];
+                                console.log(`edits for ${path} from ${roomId} going to room ${nodeId}`);
+                                console.log(JSON.stringify(edits, null, 2));
+                                const target = socketByNodeId[nodeId];
+                                if (target) {
+                                    target.emit('edits', { fromId: roomId, roomId: nodeId, path, edits });
+                                }
                             }
                         }
+                        else {
+                            console.log("No broadcast in response to setting edits.");
+                        }
                     }
+                    else {
+                        console.log("No data in response to setting edits.");
+                    }
+                }
+                else {
+                    console.log(`Unable to setEdits(from=${fromId}, room=${roomId}, path=${path}): ${JSON.stringify(err, null, 2)}`);
                 }
             });
         });

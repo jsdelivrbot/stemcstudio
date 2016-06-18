@@ -3,10 +3,10 @@ import MwEdits from '../../../synchronization/MwEdits';
 interface RoomListener {
     /**
      * @param nodeId Where the edits came from.
-     * @param fileName
+     * @param path
      * @param edits
      */
-    setEdits(nodeId: string, fileName: string, edits: MwEdits): void;
+    setEdits(nodeId: string, path: string, edits: MwEdits): void;
 }
 
 export default RoomListener;

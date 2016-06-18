@@ -1,6 +1,4 @@
 import * as ng from 'angular';
-import addMissingFilesToWorkspace from './addMissingFilesToWorkspace';
-import allEditsRaw from './allEditsRaw';
 import Annotation from '../../editor/Annotation';
 import AutoCompleteCommand from '../../editor/autocomplete/AutoCompleteCommand';
 import CompletionEntry from '../../editor/workspace/CompletionEntry';
@@ -45,7 +43,6 @@ import setOptionalStringArrayProperty from '../../services/doodles/setOptionalSt
 import UnitListener from './UnitListener';
 import WorkspaceCompleter from '../../editor/workspace/WorkspaceCompleter';
 import WorkspaceCompleterHost from '../../editor/workspace/WorkspaceCompleterHost';
-import removeUnwantedFilesFromWorkspace from './removeUnwantedFilesFromWorkspace';
 
 /**
  * Symbolic constant for the package.json file.
@@ -195,6 +192,11 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     repo: string;
 
     /**
+     * The room identifier (collaboration).
+     */
+    roomId: string;
+
+    /**
      * 
      */
     created_at: string;
@@ -250,6 +252,10 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
 
     private languageServiceProxy: LanguageServiceProxy;
 
+    /**
+     * The room that this workspace is currently connected to.
+     */
+    private room: RoomAgent;
     private roomListener: UnitListener;
 
     /**
@@ -1500,9 +1506,29 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      */
     updateStorage(): void {
         if (!this.isZombie()) {
-            const doodle = this.doodles.current();
-            copyWorkspaceToDoodle(this, doodle);
-            this.doodles.updateStorage();
+            // When in room mode we don't want to clobber the current doodle.
+            // TODO: We could play the same game to match other kinds (Repository, Gist).
+            if (this.roomId) {
+                const matches = this.doodles.filter((doodle) => { return doodle.roomId === this.roomId; });
+                if (matches.length > 0) {
+                    if (matches.length === 1) {
+                        const doodle = matches[0];
+                        copyWorkspaceToDoodle(this, doodle);
+                        this.doodles.updateStorage();
+                    }
+                    else {
+                        throw new Error(`Multiple (${matches.length}) doodles in Local Storage for roomId ${this.roomId}`);
+                    }
+                }
+                else {
+                    console.warn(`Unable to find the doodle with roomId ${this.roomId} in Local Storage.`);
+                }
+            }
+            else {
+                const doodle = this.doodles.current();
+                copyWorkspaceToDoodle(this, doodle);
+                this.doodles.updateStorage();
+            }
         }
     }
 
@@ -1594,8 +1620,26 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             throw new Error(`${path} cannot be restored from trash because it does not exist.`);
         }
     }
+
+    /**
+     * 1. Initializes the unit: MwUnit property on each file.
+     * 2. Connects each unit to its respective file.
+     * (A unit can now read/write a file).
+     * 3. Create a listener on the room that can send messages to this workspace.
+     * 4. Create listeners on each file that send change events as edits to the room.
+     * 5. Maintains a reference to the room until the disconnection happens.
+     */
     connectToRoom(room: RoomAgent) {
-        if (room) {
+
+        if (this.room) {
+            this.disconnectFromRoom();
+        }
+
+        if (room instanceof RoomAgent) {
+
+            this.room = room;
+            this.room.addRef();
+
             // Enumerate the editors in the workspace and add them to the node.
             // This will enable the node to get/set the editor value, diff and apply patches.
             const paths = this.files.keys;
@@ -1608,7 +1652,8 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
                 file.unit.setEditor(file);
             }
 
-            // Add a listener to the room agent so that edits broadcast from the room are sent to the node.
+            // Add a listener to the room agent so that edits broadcast from the room are
+            // received by the appropriate unit, converted to patches and applied.
             this.roomListener = new UnitListener(this);
             room.addListener(this.roomListener);
 
@@ -1620,6 +1665,9 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
                 try {
                     const file = this.files.getWeakRef(path);
                     const unit = file.unit;
+                    // When the Document emits delta events they gets debounced.
+                    // When things go quiet, the unit diffs the file against the shadow to create edits.
+                    // The edits are sent to the room (server). 
                     const changeHandler = debounce(uploadFileEditsToRoom(path, unit, room), SYNCH_DELAY_MILLISECONDS);
                     this.roomDocumentChangeListenerRemovers[path] = doc.addChangeListener(changeHandler);
                 }
@@ -1629,70 +1677,55 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             }
         }
         else {
-            throw new Error("Must have a workspace and a room.");
+            throw new TypeError("room must be a RoomAgent.");
         }
     }
-    disconnectFromRoom(room: RoomAgent) {
-        // Remove listeners on the editor for changes.
-        const paths = this.files.keys;
-        for (let i = 0; i < paths.length; i++) {
-            const path = paths[i];
-            const doc = this.getFileDocument(path);
-            try {
-                this.roomDocumentChangeListenerRemovers[path]();
-                delete this.roomDocumentChangeListenerRemovers[path];
+
+    /**
+     * Performs the contra-operations to the connectToRoom method.
+     */
+    disconnectFromRoom() {
+        if (this.room) {
+            // Remove listeners on the editor for changes.
+            const paths = this.files.keys;
+            for (let i = 0; i < paths.length; i++) {
+                const path = paths[i];
+                const doc = this.getFileDocument(path);
+                try {
+                    this.roomDocumentChangeListenerRemovers[path]();
+                    delete this.roomDocumentChangeListenerRemovers[path];
+                }
+                finally {
+                    doc.release();
+                }
             }
-            finally {
-                doc.release();
-            }
-        }
-        // remove the listener on the room agent.
-        room.removeListener(this.roomListener);
-        this.roomListener = void 0;
-        // TODO: We can purge all the units.
-    }
-    uploadToRoom(room: RoomAgent) {
-        if (room) {
-            const fileIds = this.files.keys;
-            for (let i = 0; i < fileIds.length; i++) {
-                const fileId = fileIds[i];
-                const file = this.files.getWeakRef(fileId);
-                const unit = file.unit;
-                const edits: MwEdits = unit.getEdits(room.id);
-                room.setEdits(fileId, edits);
-            }
+            // remove the listener on the room agent.
+            this.room.removeListener(this.roomListener);
+            this.roomListener = void 0;
+            // release the room reference.
+            this.room.release();
+            this.room = void 0;
+            // TODO: We can purge all the units.
+            // I don't think it is critical for them to be left in place.
         }
         else {
-            console.warn("We appear to be missing a room");
+            console.warn("No worries, you are already disconnected.");
         }
     }
-    downloadFromRoom(room: RoomAgent) {
+
+    /**
+     * For each file, collect the edits and send them to the room.
+     */
+    uploadToRoom(room: RoomAgent) {
         if (room) {
-            // This could also be done through the rooms service.
-            room.download((err, files: { [fileName: string]: MwEdits }) => {
-                if (!err) {
-                    // Verify that all of the edits are Raw to begin with.
-                    if (allEditsRaw(files)) {
-                        // We make a new Doodle to accept the downloaded workspace.
-                        // FIXME: Can we wait for the thread to stop?
-                        this.dispose();
-                        this.recycle((err) => {
-                            addMissingFilesToWorkspace(this, files);
-                            // This will not be required since we are starting with a new Doodle.
-                            removeUnwantedFilesFromWorkspace(this, files);
-                            // Save the downloaded edits for when the editors come online?
-                            // this.files = files;
-                        });
-                    }
-                    else {
-                        console.warn(JSON.stringify(files, null, 2));
-                    }
-                }
-                else {
-                    console.warn(`Unable to download workspace: ${err}`);
-                }
-            });
-            // doodle.files
+            const paths = this.files.keys;
+            for (let i = 0; i < paths.length; i++) {
+                const path = paths[i];
+                const file = this.files.getWeakRef(path);
+                const unit = file.unit;
+                const edits: MwEdits = unit.getEdits(room.id);
+                room.setEdits(path, edits);
+            }
         }
         else {
             console.warn("We appear to be missing a room");

@@ -19,7 +19,7 @@ interface RoomValue {
     /**
      * The dehydrated units.
      */
-    units: { [fileId: string]: FzUnit };
+    units: { [path: string]: FzUnit };
 }
 
 export default RoomValue;

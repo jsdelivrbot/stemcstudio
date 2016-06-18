@@ -69,15 +69,15 @@ export default class RoomAgent implements Shareable {
             // We get this repeatedly when the server is down.
             // console.lg("RoomAgent socket reconnecting");
         });
-        this._socket.on('edits', (data: { fromId: string, roomId: string; fileName: string; edits: MwEdits }) => {
+        this._socket.on('edits', (data: { fromId: string, roomId: string; path: string; edits: MwEdits }) => {
             // Having the roomId sent back seems a bit redundant since this room agent already knows it.
             // We can use it as either a safety check or to future proof for multiple client rooms per socket.
-            const {fromId, roomId, fileName, edits} = data;
-            console.log(`RoomAgent receiving edits for file ${fileName}: ${JSON.stringify(edits, null, 2)}`);
+            const {fromId, roomId, path, edits} = data;
+            console.log(`RoomAgent receiving edits for path ${path}: ${JSON.stringify(edits, null, 2)}`);
             if (fromId === this.roomId && roomId === this.nodeId) {
                 for (let i = 0; i < this.roomListeners.length; i++) {
                     const roomListener = this.roomListeners[i];
-                    roomListener.setEdits(fromId, fileName, edits);
+                    roomListener.setEdits(fromId, path, edits);
                 }
             }
             else {
@@ -135,22 +135,22 @@ export default class RoomAgent implements Shareable {
     /**
      * Initiate a download of the remote room.
      */
-    download(callback: (err, files: { [fileName: string]: MwEdits }) => any) {
+    download(callback: (err, files: { [path: string]: MwEdits }) => any) {
         const params = { fromId: this.nodeId, roomId: this.roomId };
         console.log(`params => ${JSON.stringify(params, null, 2)}`);
-        this._socket.emit('download', params, (err: any, files: { [fileName: string]: MwEdits }) => {
+        this._socket.emit('download', params, (err: any, files: { [path: string]: MwEdits }) => {
             callback(err, files);
         });
     }
 
     /**
-     * fileName corresponds 1:1 with the edits.s, which is the MwUnit unique identifier.
+     *
      */
     setEdits(path: string, edits: MwEdits) {
         // The roomId and the nodeId should not be required because of previous calls
-        // that established those properties on the socket.
-        this._socket.emit('edits', { fromId: this.nodeId, roomId: this.roomId, fileName: path, edits }, () => {
-            // console.lg(`Room ${this.roomId} has acknowledged edits for file ${fileName}.`);
+        // that established those properties on the socket?
+        this._socket.emit('edits', { fromId: this.nodeId, roomId: this.roomId, path, edits }, () => {
+            console.log(`Room ${this.roomId} has acknowledged edits for path ${path}.`);
         });
     }
 }

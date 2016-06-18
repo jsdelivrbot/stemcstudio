@@ -28,35 +28,46 @@ function sockets(app, server) {
                 ack();
                 rooms.getEdits(fromId, roomId, function (err, data) {
                     var fromId = data.fromId, roomId = data.roomId, files = data.files;
-                    var fileNames = Object.keys(files);
-                    for (var i = 0; i < fileNames.length; i++) {
-                        var fileName = fileNames[i];
-                        var edits = files[fileName];
-                        socket.emit('edits', { fromId: fromId, roomId: roomId, fileName: fileName, edits: edits });
+                    var paths = Object.keys(files);
+                    for (var i = 0; i < paths.length; i++) {
+                        var path = paths[i];
+                        var edits = files[path];
+                        socket.emit('edits', { fromId: fromId, roomId: roomId, path: path, edits: edits });
                     }
                 });
             });
         });
         socket.on('edits', function (data, ack) {
-            var fromId = data.fromId, roomId = data.roomId, fileName = data.fileName, edits = data.edits;
+            var fromId = data.fromId, roomId = data.roomId, path = data.path, edits = data.edits;
             socketByNodeId[fromId] = socket;
-            rooms.setEdits(fromId, roomId, fileName, edits, function (err, data) {
+            rooms.setEdits(fromId, roomId, path, edits, function (err, data) {
                 ack();
-                var roomId = data.roomId, fileName = data.fileName, broadcast = data.broadcast;
                 if (!err) {
-                    if (broadcast) {
-                        var nodeIds = Object.keys(broadcast);
-                        for (var i = 0; i < nodeIds.length; i++) {
-                            var nodeId = nodeIds[i];
-                            var edits_1 = broadcast[nodeId];
-                            console.log("edits for " + fileName + " from " + roomId + " going to room " + nodeId);
-                            console.log(JSON.stringify(edits_1, null, 2));
-                            var target = socketByNodeId[nodeId];
-                            if (target) {
-                                target.emit('edits', { fromId: roomId, roomId: nodeId, fileName: fileName, edits: edits_1 });
+                    if (data) {
+                        var roomId_1 = data.roomId, path_1 = data.path, broadcast = data.broadcast;
+                        if (broadcast) {
+                            var nodeIds = Object.keys(broadcast);
+                            for (var i = 0; i < nodeIds.length; i++) {
+                                var nodeId = nodeIds[i];
+                                var edits_1 = broadcast[nodeId];
+                                console.log("edits for " + path_1 + " from " + roomId_1 + " going to room " + nodeId);
+                                console.log(JSON.stringify(edits_1, null, 2));
+                                var target = socketByNodeId[nodeId];
+                                if (target) {
+                                    target.emit('edits', { fromId: roomId_1, roomId: nodeId, path: path_1, edits: edits_1 });
+                                }
                             }
                         }
+                        else {
+                            console.log("No broadcast in response to setting edits.");
+                        }
                     }
+                    else {
+                        console.log("No data in response to setting edits.");
+                    }
+                }
+                else {
+                    console.log("Unable to setEdits(from=" + fromId + ", room=" + roomId + ", path=" + path + "): " + JSON.stringify(err, null, 2));
                 }
             });
         });

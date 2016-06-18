@@ -4,6 +4,7 @@ import IDoodleManager from '../services/doodles/IDoodleManager';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
 import OpenScope from '../scopes/OpenScope';
 import ModalDialog from '../services/modalService/ModalDialog';
+import NavigationService from '../modules/navigation/NavigationService';
 
 /**
  * @class OpenController
@@ -12,33 +13,25 @@ import ModalDialog from '../services/modalService/ModalDialog';
 export default class OpenController extends AbstractPageController {
     public static $inject: string[] = [
         '$scope',
-        '$state',
         '$window',
         'doodles',
         'GitHubAuthManager',
         'ga',
         'modalDialog',
-        'STATE_DOODLE',
-        'STATE_GIST',
-        'STATE_REPO',
-        'STATE_ROOM',
+        'navigation',
         'UNIVERSAL_ANALYTICS_TRACKING_ID'
     ];
     constructor(
         $scope: OpenScope,
-        $state: angular.ui.IStateService,
         $window: angular.IWindowService,
         doodles: IDoodleManager,
         authManager: IGitHubAuthManager,
         ga: UniversalAnalytics.ga,
         modalDialog: ModalDialog,
-        STATE_DOODLE: string,
-        STATE_GIST: string,
-        STATE_REPO: string,
-        STATE_ROOM: string,
+        navigation: NavigationService,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string
     ) {
-        super($scope, $state, $window, authManager, ga, modalDialog, STATE_GIST, STATE_REPO, STATE_ROOM, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
+        super($scope, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
 
         $scope.doodles = function() {
             return doodles.filter(function() { return true; });
@@ -53,13 +46,13 @@ export default class OpenController extends AbstractPageController {
             doodles.makeCurrent(doodle);
             doodles.updateStorage();
             if (doodle.owner && doodle.repo) {
-                this.navigateTo(STATE_REPO, { owner: doodle.owner, repo: doodle.repo });
+                navigation.gotoRepo(doodle.owner, doodle.repo);
             }
             else if (doodle.gistId) {
-                this.navigateToGist(doodle.gistId);
+                navigation.gotoGist(doodle.gistId);
             }
             else {
-                this.navigateTo(STATE_DOODLE);
+                navigation.gotoDoodle();
             }
         };
 
@@ -83,7 +76,7 @@ export default class OpenController extends AbstractPageController {
         };
 
         $scope.doClose = function() {
-            $state.go(STATE_DOODLE);
+            navigation.gotoDoodle();
         };
     }
 }

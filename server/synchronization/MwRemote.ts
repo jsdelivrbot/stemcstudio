@@ -141,7 +141,7 @@ export default class MwRemote implements FzSerializable<FzRemote> {
      * @param localVersion This comes from the File change.
      * @param remoteVersion This comes from the Delta change.
      */
-    patchDelta(nodeId: string, editor: MwEditor, code: string, delta: string[], localVersion: number, remoteVersion: number) {
+    patchDelta(nodeId: string, editor: MwEditor, code: string, delta: string[], localVersion: number, remoteVersion: number, callback: (err: Error) => any): void {
         const shadow = this.shadow;
         const backup = this.backup;
         // The server offers a compressed delta of changes to be applied.
@@ -155,23 +155,25 @@ export default class MwRemote implements FzSerializable<FzRemote> {
                 this.discardChanges(nodeId);
                 shadow.copy(backup);
                 shadow.happy = true;
+                callback(void 0);
             }
             else {
                 // Can't apply a delta on a mismatched this version.
                 shadow.happy = false;
-                console.warn(`handleDelta(...) this.localVersion=${shadow.n}, localVersion=${localVersion}`);
+                callback(new Error(`handleDelta(...) this.localVersion=${shadow.n}, localVersion=${localVersion}`));
             }
         }
         else if (remoteVersion > shadow.m) {
             // Remote has a version in the future?
             shadow.happy = false;
-            console.warn('Remote version in future.\n' + 'Expected: ' + shadow.m + ' Got: ' + remoteVersion);
+            callback(new Error('Remote version in future.\n' + 'Expected: ' + shadow.m + ' Got: ' + remoteVersion));
         }
         else if (remoteVersion < shadow.m) {
             // We've already seen this delta.
             // This happens when one side sends but the other side does not acknowledge often enough?
             // TODO: Send this to some other log.
             // console.warn(`Ignoring duplicate packet. m => ${remoteVersion}, this.m => ${this.m}`);
+            callback(void 0);
         }
         else {
             // Expand the delta into a diff using the shadow text.
@@ -196,8 +198,15 @@ export default class MwRemote implements FzSerializable<FzRemote> {
                     if (code === 'D') {
                         // Overwrite text.
                         shadow.text = dmp.resultText(diffs);
-                        editor.setText(shadow.text);
-                        shadow.happy = true;
+                        editor.setText(shadow.text, function(err: Error) {
+                            if (!err) {
+                                shadow.happy = true;
+                                callback(void 0);
+                            }
+                            else {
+                                callback(err);
+                            }
+                        });
                     }
                     else {
                         // Merge text.
@@ -207,7 +216,9 @@ export default class MwRemote implements FzSerializable<FzRemote> {
                         shadow.text = <string>serverResult[0];
                         shadow.happy = true;
                         // Second the user's text.
-                        editor.patch(patches);
+                        editor.patch(patches, function(err: Error, flags: boolean[]) {
+                            callback(err);
+                        });
                     }
                     // Server-side activity.
                     // this.serverChange_ = true;
@@ -215,10 +226,12 @@ export default class MwRemote implements FzSerializable<FzRemote> {
                 else {
                     // Don't apply a diff which does not contain changes.
                     shadow.happy = true;
+                    callback(void 0);
                 }
             }
             else {
                 // delta supplied does not fit in shadow text.
+                callback(void 0);
             }
         }
     }

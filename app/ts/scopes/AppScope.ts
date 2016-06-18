@@ -27,6 +27,7 @@ interface AppScope extends angular.IRootScopeService {
      * (Google)
      */
     googleUser: gapi.auth2.GoogleUser;
+
     /**
      * (Google)
      */
@@ -56,16 +57,6 @@ interface AppScope extends angular.IRootScopeService {
      * Navigate to the Home page.
      */
     goHome(): void;
-
-    /**
-     * Navigate to the Log In page.
-     */
-    goLogin(): void;
-
-    /**
-     * Navigate to the Search page.
-     */
-    goSearch(): void;
 }
 
 export default AppScope;

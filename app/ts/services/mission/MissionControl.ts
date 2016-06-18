@@ -36,9 +36,6 @@ export default class MissionControl {
             throw new Error("Must have a workspace and a room.");
         }
     }
-    disconnectWorkspaceFromRoom() {
-        this.wsModel.disconnectFromRoom(this._room);
-    }
     uploadWorkspaceToRoom() {
         if (this._room) {
             this.wsModel.uploadToRoom(this._room);
@@ -47,10 +44,10 @@ export default class MissionControl {
             console.warn("We appear to be missing a node and a room");
         }
     }
-    downloadWorkspaceFromRoom() {
+    downloadWorkspaceFromRoomDEPRECATED() {
         if (this._room) {
-            console.log("TODO: downloadWorkspaceFromRoom");
-            this.wsModel.downloadFromRoom(this._room);
+            console.log("DEPRECATED: downloadWorkspaceFromRoom");
+            // this.wsModel.downloadFromRoom(this._room);
         }
         else {
             console.warn("We appear to be missing a node and a room");

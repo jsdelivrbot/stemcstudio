@@ -1,4 +1,3 @@
-import Diff from '../../synchronization/Diff';
 import DMP from '../../synchronization/DMP';
 import Patch from '../../synchronization/Patch';
 import MwEditor from '../../synchronization/MwEditor';
@@ -31,9 +30,6 @@ export default class ServerEditor implements MwEditor {
             this.setText(newText);
         }
         return flags;
-    }
-    onSentDiff(diffs: Diff[]): void {
-        // console.log(`onSentDiff: ${JSON.stringify(diffs, null, 2)}`);
     }
     release(): number {
         return 0;

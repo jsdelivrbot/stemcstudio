@@ -7,6 +7,7 @@ import ITemplateFile from '../../../services/templates/ITemplateFile';
 import WsModel from '../../../wsmodel/services/WsModel';
 import WsFile from '../../../wsmodel/services/WsFile';
 import copyDoodleToDoodle from '../../../mappings/copyDoodleToDoodle';
+import NavigationService from '../../../modules/navigation/NavigationService';
 
 function mapWorkspaceFileToTemplateFile(wsFile: WsFile): ITemplateFile {
     const result: ITemplateFile = {
@@ -30,15 +31,13 @@ function mapDoodleFilesToTemplateFiles(wsModel: WsModel): { [path: string]: ITem
 export default class CopyController {
     public static $inject: string[] = [
         '$scope',
-        '$state',
         'doodles',
-        'STATE_DOODLE'
+        'navigation'
     ];
     constructor(
         $scope: CopyScope,
-        $state: ng.ui.IStateService,
         doodles: IDoodleManager,
-        STATE_DOODLE: string
+        navigation: NavigationService
     ) {
         //
         // The old description provides context for the user dialog.
@@ -74,17 +73,17 @@ export default class CopyController {
 
             doodle.description = $scope.newDescription;
 
-            doodles.unshift(doodle);
+            doodles.addHead(doodle);
             doodles.updateStorage();
 
-            $state.go(STATE_DOODLE);
+            navigation.gotoDoodle();
         };
 
         //
         // Go back to whatever is the current project.
         //
         $scope.doCancel = function() {
-            $state.go(STATE_DOODLE);
+            navigation.gotoDoodle();
         };
     }
 }

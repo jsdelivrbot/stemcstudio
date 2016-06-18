@@ -1,7 +1,7 @@
-import * as angular from 'angular';
 import FlowService from '../../services/flow/FlowService';
 import UploadFacts from './UploadFacts';
 import ModalDialog from '../../services/modalService/ModalDialog';
+import NavigationService from '../../modules/navigation/NavigationService';
 import CloudService from '../../services/cloud/CloudService';
 import Gist from '../../services/github/Gist';
 import GitHubReason from '../../services/github/GitHubReason';
@@ -14,15 +14,13 @@ import WsModel from '../../wsmodel/services/WsModel';
 
 const FEATURE_GIST_ENABLED = true;
 const FEATURE_REPO_ENABLED = false;
-const STATE_GIST = 'gist';
-const STATE_REPO = 'repo';
 
 export default class UploadFlow {
     constructor(
         private owner: string,
-        private $state: angular.ui.IStateService,
         private flowService: FlowService,
         private modalDialog: ModalDialog,
+        private navigation: NavigationService,
         private cloud: CloudService,
         private github: GitHubService,
         private wsModel: WsModel
@@ -384,10 +382,10 @@ export default class UploadFlow {
                     this.modalDialog.alert({ title, message: facts.uploadMessage.value });
                     if (facts.redirect.isResolved()) {
                         if (facts.gistId.isResolved()) {
-                            this.$state.go(STATE_GIST, { gistId: this.wsModel.gistId });
+                            this.navigation.gotoGist(this.wsModel.gistId);
                         }
                         else if (facts.owner.isResolved() && facts.repo.isResolved()) {
-                            this.$state.go(STATE_REPO, { owner: this.wsModel.owner, repo: this.wsModel.repo });
+                            this.navigation.gotoRepo(this.wsModel.owner, this.wsModel.repo);
                         }
                         else {
                             // FIXME: redirect should contain it's own instructions.

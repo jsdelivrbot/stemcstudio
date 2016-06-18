@@ -3,6 +3,7 @@ import IDoodleManager from '../services/doodles/IDoodleManager';
 import DownloadScope from '../scopes/DownloadScope';
 import GitHubService from '../services/github/GitHubService';
 import linkToMap from '../utils/linkToMap';
+import NavigationService from '../modules/navigation/NavigationService';
 
 // The 'rel' values that we understand for Hypermedia links.
 const PAGE_F = 'first';
@@ -12,18 +13,16 @@ const PAGE_L = 'last';
 
 app.controller('download-controller', [
     '$scope',
-    '$state',
     'doodles',
     'ga',
     'GitHub',
-    'STATE_DOODLE',
+    'navigation',
     function(
         $scope: DownloadScope,
-        $state: angular.ui.IStateService,
         doodles: IDoodleManager,
         ga: UniversalAnalytics.ga,
         github: GitHubService,
-        STATE_DOODLE: string
+        navigation: NavigationService
     ) {
 
         function isPage(rel: string): boolean {
@@ -59,7 +58,7 @@ app.controller('download-controller', [
                     else {
                         $scope.links = {};
                     }
-                    $state.go('download');
+                    navigation.gotoDownload();
                 })
                 .catch(function(reason: any) {
                     BootstrapDialog.show({
@@ -95,8 +94,7 @@ app.controller('download-controller', [
         };
 
         $scope.doCancel = function() {
-            $state.go(STATE_DOODLE);
+            navigation.gotoDoodle();
         };
-
     }
 ]);

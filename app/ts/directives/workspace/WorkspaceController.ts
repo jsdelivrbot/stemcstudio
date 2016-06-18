@@ -27,6 +27,10 @@ import isMarkdownFilePath from '../../utils/isMarkdownFilePath';
 import OutputFileHandler from './OutputFileHandler';
 import MissionControl from '../../services/mission/MissionControl';
 import ModalDialog from '../../services/modalService/ModalDialog';
+import NavigationService from '../../modules/navigation/NavigationService';
+import {STATE_GIST} from '../../modules/navigation/NavigationService';
+import {STATE_REPO} from '../../modules/navigation/NavigationService';
+import {STATE_ROOM} from '../../modules/navigation/NavigationService';
 import PublishDialog from '../../modules/publish/PublishDialog';
 import StemcArXiv from '../../stemcArXiv/StemcArXiv';
 import FlowService from '../../services/flow/FlowService';
@@ -100,21 +104,20 @@ export default class WorkspaceController implements WorkspaceMixin {
         'labelDialog',
         'missionControl',
         'modalDialog',
+        'navigation',
         'options',
         'propertiesDialog',
         'publishDialog',
         'stemcArXiv',
         'FEATURE_GIST_ENABLED',
         'FEATURE_REPO_ENABLED',
-        'FEATURE_SYNC_ENABLED',
+        'FEATURE_ROOM_ENABLED',
         'FILENAME_README',
         'FILENAME_CODE',
         'FILENAME_LIBS',
         'FILENAME_LESS',
         'FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS',
         'FILENAME_TYPESCRIPT_CURRENT_LIB_DTS',
-        'STATE_GIST',
-        'STATE_REPO',
         'STYLE_MARKER',
         'STYLES_MARKER',
         'SCRIPTS_MARKER',
@@ -174,21 +177,20 @@ export default class WorkspaceController implements WorkspaceMixin {
         private labelDialog: LabelDialog,
         private missionControl: MissionControl,
         private modalDialog: ModalDialog,
+        private navigation: NavigationService,
         private options: IOptionManager,
         private propertiesDialog: PropertiesDialog,
         private publishDialog: PublishDialog,
         private stemcArXiv: StemcArXiv,
         private FEATURE_GIST_ENABLED: boolean,
         private FEATURE_REPO_ENABLED: boolean,
-        private FEATURE_SYNC_ENABLED: boolean,
+        private FEATURE_ROOM_ENABLED: boolean,
         private FILENAME_README: string,
         private FILENAME_CODE: string,
         private FILENAME_LIBS: string,
         private FILENAME_LESS: string,
         private FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS: string,
         private FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
-        private STATE_GIST: string,
-        private STATE_REPO: string,
         private STYLE_MARKER: string,
         private STYLES_MARKER: string,
         private SCRIPTS_MARKER: string,
@@ -198,7 +200,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         private wsModel: WsModel) {
 
         // const startTime = performance.now();
-        $scope.FEATURE_SYNC_ENABLED = FEATURE_SYNC_ENABLED;
+        $scope.FEATURE_ROOM_ENABLED = FEATURE_ROOM_ENABLED;
 
         let rebuildPromise: angular.IPromise<void>;
         $scope.updatePreview = (delay: number) => {
@@ -370,9 +372,9 @@ export default class WorkspaceController implements WorkspaceMixin {
             ga('send', 'event', 'doodle', 'upload', label, value);
             const uploadFlow = new UploadFlow(
                 $scope.userLogin(),
-                this.$state,
                 this.flowService,
                 this.modalDialog,
+                this.navigation,
                 this.cloud,
                 this.github,
                 wsModel);
@@ -395,6 +397,8 @@ export default class WorkspaceController implements WorkspaceMixin {
         const owner: string = this.$stateParams['owner'];
         const repo: string = this.$stateParams['repo'];
         const gistId: string = this.$stateParams['gistId'];
+        const roomId: string = this.$stateParams['roomId'];
+        console.log(`roomId => ${roomId}`);
         // TODO: It's a bit wierd that this looks like it has a side effect on the workspace.
         // If we had multiple workspace then the workspace would be a parameter.
 
@@ -403,15 +407,18 @@ export default class WorkspaceController implements WorkspaceMixin {
 
         this.wsModel.recycle((err) => {
             if (!err) {
-                this.background.loadWsModel(owner, repo, gistId, (err: Error) => {
+                this.background.loadWsModel(owner, repo, gistId, roomId, (err: Error) => {
                     if (!err) {
                         // We don't need to load anything, but are we in the correct state for the Doodle?
                         // We end up here, e.g., when user presses Cancel from New dialog.
-                        if (gistId && this.FEATURE_GIST_ENABLED && !this.$state.is(this.STATE_GIST, { gistId })) {
-                            this.$state.go(this.STATE_GIST, { gistId: this.wsModel.gistId });
+                        if (gistId && this.FEATURE_GIST_ENABLED && !this.$state.is(STATE_GIST, { gistId })) {
+                            this.navigation.gotoGist(this.wsModel.gistId);
                         }
-                        else if (owner && repo && this.FEATURE_REPO_ENABLED && !this.$state.is(this.STATE_REPO, { owner, repo })) {
-                            this.$state.go(this.STATE_REPO, { owner: this.wsModel.owner, repo: this.wsModel.repo });
+                        else if (owner && repo && this.FEATURE_REPO_ENABLED && !this.$state.is(STATE_REPO, { owner, repo })) {
+                            this.navigation.gotoRepo(this.wsModel.owner, this.wsModel.repo);
+                        }
+                        else if (roomId && this.FEATURE_ROOM_ENABLED && !this.$state.is(STATE_ROOM, { roomId })) {
+                            this.navigation.gotoRoom(this.wsModel.roomId);
                         }
                         else {
                             // We are in the correct state.

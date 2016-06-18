@@ -11,15 +11,27 @@ import setOptionalStringArrayProperty from './setOptionalStringArrayProperty';
 const FILENAME_META = 'package.json';
 
 export default class Doodle {
+
+    /**
+     * The GitHub Gist identifier.
+     */
+    public gistId: string;
+
     /**
      * The owner's login name.
      */
     public owner: string;
+
     /**
      * The repository name property.
      */
     public repo: string;
-    public gistId: string;
+
+    /**
+     * The room identifier (collaboration).
+     */
+    public roomId: string;
+
     public isCodeVisible: boolean;
     public isViewVisible: boolean;
     public lastKnownJs: { [name: string]: string };
