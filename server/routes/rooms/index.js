@@ -5,8 +5,10 @@ var isBoolean_1 = require('../../utils/isBoolean');
 var isNumber_1 = require('../../utils/isNumber');
 var isString_1 = require('../../utils/isString');
 var uniqueId_1 = require('./uniqueId');
+var DMP_1 = require('../../synchronization/DMP');
 var MwRemote_1 = require('../../synchronization/MwRemote');
 var TEN_MINUTES_IN_SECONDS = 600;
+var dmp = new DMP_1.default();
 var client = redis.createClient();
 client.on('ready', function (err) {
     console.log("Redis connection has been established.");
@@ -28,6 +30,9 @@ client.on('end', function (err) {
 });
 function createRoomKey(roomId) {
     return "room:" + roomId;
+}
+function createRoomPropertyKey(roomId, name) {
+    return createRoomKey(roomId) + "@" + name;
 }
 function createUnitKey(roomId, path) {
     return createRoomKey(roomId) + ", path:" + path;
@@ -92,18 +97,19 @@ function getRoom(request, response) {
     });
 }
 exports.getRoom = getRoom;
-function ensureRemoteKey(roomId, path, nodeId, callback) {
-    var remotes = createUnitPropertyKey(roomId, path, 'remotes');
-    client.sismember([remotes, nodeId], function (reason, exists) {
+function ensurePathKey(roomId, path, callback) {
+    console.log("ensurePathKey(" + roomId + ", " + path + ")");
+    var paths = createRoomPropertyKey(roomId, 'paths');
+    client.sismember([paths, path], function (reason, exists) {
         if (!reason) {
             asserts_1.mustBeTruthy(isNumber_1.default(exists), "exists must be a number");
             if (exists > 0) {
                 callback(void 0);
             }
             else {
-                client.sadd([remotes, nodeId], function (reason, reply) {
+                client.sadd([paths, path], function (reason, reply) {
                     if (!reason) {
-                        client.expire(remotes, TEN_MINUTES_IN_SECONDS, function (reason, reply) {
+                        client.expire(paths, TEN_MINUTES_IN_SECONDS, function (reason, reply) {
                             callback(reason);
                         });
                     }
@@ -114,33 +120,81 @@ function ensureRemoteKey(roomId, path, nodeId, callback) {
             }
         }
         else {
-            callback(new Error("Unable to determine whether remote " + nodeId + " exists: " + reason));
+            callback(new Error("Unable to determine whether path " + path + " exists: " + reason));
         }
     });
 }
+function ensureRemoteKey(roomId, path, nodeId, callback) {
+    console.log("ensureRemoteKey(" + roomId + ", " + path + ", " + nodeId + ")");
+    ensurePathKey(roomId, path, function (err) {
+        if (!err) {
+            var remotes_1 = createUnitPropertyKey(roomId, path, 'remotes');
+            client.sismember([remotes_1, nodeId], function (reason, exists) {
+                if (!reason) {
+                    asserts_1.mustBeTruthy(isNumber_1.default(exists), "exists must be a number");
+                    if (exists > 0) {
+                        callback(void 0);
+                    }
+                    else {
+                        client.sadd([remotes_1, nodeId], function (reason, reply) {
+                            if (!reason) {
+                                client.expire(remotes_1, TEN_MINUTES_IN_SECONDS, function (reason, reply) {
+                                    callback(reason);
+                                });
+                            }
+                            else {
+                                callback(reason);
+                            }
+                        });
+                    }
+                }
+                else {
+                    callback(new Error("Unable to determine whether remote " + nodeId + " exists: " + reason));
+                }
+            });
+        }
+        else {
+            callback(err);
+        }
+    });
+}
+function getRemote(roomId, path, nodeId, callback) {
+    console.log("getRemote(" + roomId + ", " + path + ", " + nodeId + ")");
+    var key = createRemoteKey(roomId, path, nodeId);
+    client.get(key, function (err, remoteText) {
+        if (!err) {
+            var remote = new MwRemote_1.default();
+            remote.rehydrate(JSON.parse(remoteText));
+            callback(void 0, remote);
+        }
+        else {
+            callback(new Error(), void 0);
+        }
+    });
+}
+function setRemote(roomId, path, nodeId, remote, callback) {
+    console.log("updateRemote(" + roomId + ", " + path + ", " + nodeId + ")");
+    var key = createRemoteKey(roomId, path, nodeId);
+    var dehydrated = remote.dehydrate();
+    var remoteText = JSON.stringify(dehydrated);
+    client.set(key, remoteText, function (err, replay) {
+        callback(err);
+    });
+}
 function ensureRemote(roomId, path, nodeId, callback) {
+    console.log("ensureRemote(" + roomId + ", " + path + ", " + nodeId + ")");
     var key = createRemoteKey(roomId, path, nodeId);
     client.exists(key, function (err, exists) {
         if (!err) {
             asserts_1.mustBeTruthy(isNumber_1.default(exists), "exists must be a number");
             if (exists > 0) {
-                client.get(key, function (err, remoteText) {
-                    if (!err) {
-                        var remote = new MwRemote_1.default();
-                        remote.rehydrate(JSON.parse(remoteText));
-                        callback(void 0, remote);
-                    }
-                    else {
-                        callback(new Error(), void 0);
-                    }
-                });
+                getRemote(roomId, path, nodeId, callback);
             }
             else {
                 var remote = new MwRemote_1.default();
-                var remoteText = JSON.stringify(remote.dehydrate());
-                client.set(key, remoteText, function (err, reply) {
+                setRemote(roomId, path, nodeId, remote, function (err) {
                     if (!err) {
-                        ensureRemote(roomId, path, nodeId, callback);
+                        getRemote(roomId, path, nodeId, callback);
                     }
                     else {
                         callback(err, void 0);
@@ -151,15 +205,6 @@ function ensureRemote(roomId, path, nodeId, callback) {
         else {
             callback(err, void 0);
         }
-    });
-}
-function updateRemote(roomId, path, nodeId, remote, callback) {
-    console.log("updateRemote(" + roomId + ", " + path + ", " + nodeId + ")");
-    var key = createRemoteKey(roomId, path, nodeId);
-    var dehydrated = remote.dehydrate();
-    var remoteText = JSON.stringify(dehydrated);
-    client.set(key, remoteText, function (err, replay) {
-        callback(err);
     });
 }
 var RedisEditor = (function () {
@@ -179,8 +224,21 @@ var RedisEditor = (function () {
             callback(err);
         });
     };
-    RedisEditor.prototype.patch = function () {
-        throw new Error("patch");
+    RedisEditor.prototype.patch = function (patches, callback) {
+        var _this = this;
+        this.getText(function (err, oldText) {
+            var result = dmp.patch_apply(patches, oldText);
+            var newText = result[0];
+            var flags = result[1];
+            if (oldText !== newText) {
+                _this.setText(newText, function (err) {
+                    callback(err, flags);
+                });
+            }
+            else {
+                callback(void 0, flags);
+            }
+        });
     };
     RedisEditor.prototype.release = function () {
         this.refCount--;
@@ -213,6 +271,13 @@ function deleteDocument(roomId, path, callback) {
         callback(err);
     });
 }
+function getPaths(roomId, callback) {
+    var paths = createRoomPropertyKey(roomId, 'paths');
+    client.smembers(paths, function (err, reply) {
+        console.log("paths => " + JSON.stringify(reply, null, 2));
+        callback(err, reply);
+    });
+}
 function getRemoteNodeIds(roomId, path, callback) {
     var remotes = createUnitPropertyKey(roomId, path, 'remotes');
     client.smembers(remotes, function (err, reply) {
@@ -220,43 +285,42 @@ function getRemoteNodeIds(roomId, path, callback) {
         callback(err, reply);
     });
 }
-function captureFile(roomId, path, nodeId, callback) {
-    ensureRemote(roomId, path, nodeId, function (err, remote) {
-        var shadow = remote.shadow;
-        getDocument(roomId, path, function (err, editor) {
-            if (editor) {
-                editor.getText(function (err, text) {
-                    if (!err) {
-                        if (shadow) {
-                            if (shadow.happy) {
-                                callback(void 0, shadow.createDiffTextChange(text));
-                            }
-                            else {
-                                if (remote.containsRawAction(nodeId, text)) {
-                                    callback(void 0, void 0);
-                                }
-                                else {
-                                    callback(void 0, shadow.createFullTextChange(text, true));
-                                }
-                            }
+function captureFile(roomId, path, nodeId, remote, callback) {
+    var shadow = remote.shadow;
+    getDocument(roomId, path, function (err, editor) {
+        if (editor) {
+            editor.getText(function (err, text) {
+                if (!err) {
+                    if (shadow) {
+                        if (shadow.happy) {
+                            callback(void 0, shadow.createDiffTextChange(text));
                         }
                         else {
-                            var shadow_1 = remote.ensureShadow();
-                            callback(void 0, shadow_1.createFullTextChange(text, true));
+                            if (remote.containsRawAction(nodeId, text)) {
+                                callback(void 0, void 0);
+                            }
+                            else {
+                                callback(void 0, shadow.createFullTextChange(text, true));
+                            }
                         }
                     }
                     else {
-                        callback(new Error("Unable to get text from editor."), void 0);
+                        var shadow_1 = remote.ensureShadow();
+                        callback(void 0, shadow_1.createFullTextChange(text, true));
                     }
-                });
-            }
-            else {
-                callback(new Error("Must be an editor to capture a file."), void 0);
-            }
-        });
+                }
+                else {
+                    callback(new Error("Unable to get text from editor."), void 0);
+                }
+            });
+        }
+        else {
+            callback(new Error("Must be an editor to capture a file."), void 0);
+        }
     });
 }
 function getBroadcast(roomId, path, callback) {
+    console.log("getBroadcast(room=" + roomId + ", path=" + path + ")");
     getRemoteNodeIds(roomId, path, function (err, nodeIds) {
         if (!err) {
             var iLen = nodeIds.length;
@@ -264,14 +328,14 @@ function getBroadcast(roomId, path, callback) {
             var _loop_1 = function(i) {
                 var nodeId = nodeIds[i];
                 outstanding.push(new Promise(function (resolve, reject) {
-                    ensureRemote(roomId, path, nodeId, function (err, remote) {
+                    getRemote(roomId, path, nodeId, function (err, remote) {
                         if (!err) {
-                            captureFile(roomId, path, nodeId, function (err, change) {
+                            captureFile(roomId, path, nodeId, remote, function (err, change) {
                                 if (!err) {
                                     remote.addChange(nodeId, change);
                                     var edits_1 = remote.getEdits(nodeId);
                                     console.log("nodeId=" + nodeId + " => " + JSON.stringify(edits_1, null, 2));
-                                    updateRemote(roomId, path, nodeId, remote, function (err) {
+                                    setRemote(roomId, path, nodeId, remote, function (err) {
                                         if (!err) {
                                             resolve({ nodeId: nodeId, edits: edits_1 });
                                         }
@@ -411,23 +475,31 @@ function setEdits(nodeId, roomId, path, edits, callback) {
                     for (var i = 0; i < iLen; i++) {
                         _loop_2(i);
                     }
+                    console.log("outstanding.length => " + outstanding.length);
                     Promise.all(outstanding).then(function (unused) {
-                        updateRemote(roomId, path, nodeId, remote, function (err) {
-                            getBroadcast(roomId, path, function (err, broadcast) {
-                                if (!err) {
-                                    callback(err, { roomId: roomId, path: path, broadcast: broadcast });
-                                }
-                                else {
-                                    callback(err, void 0);
-                                }
-                            });
+                        setRemote(roomId, path, nodeId, remote, function (err) {
+                            if (!err) {
+                                getBroadcast(roomId, path, function (err, broadcast) {
+                                    if (!err) {
+                                        callback(err, { roomId: roomId, path: path, broadcast: broadcast });
+                                    }
+                                    else {
+                                        callback(err, void 0);
+                                    }
+                                });
+                            }
+                            else {
+                                console.log("Unable to update remote 0 => " + err.message + ", 1 => " + err + ", 2 => " + JSON.stringify(err, null, 2));
+                                callback(err, void 0);
+                            }
                         });
                     }).catch(function (err) {
+                        console.log("Unable to apply the edits: 1 => " + err + ", 2 => " + JSON.stringify(err, null, 2));
                         callback(new Error("Unable to apply the edits: " + err), void 0);
                     });
                 }
                 else {
-                    callback(new Error("Unable to ensureRemote(room=" + roomId + ", path=" + path + ", nodeId=" + nodeId + "): " + err), void 0);
+                    callback(new Error("Unable to ensure remote (room=" + roomId + ", path=" + path + ", nodeId=" + nodeId + "): " + err), void 0);
                 }
             });
         }
@@ -437,7 +509,48 @@ function setEdits(nodeId, roomId, path, edits, callback) {
     });
 }
 exports.setEdits = setEdits;
-function getEdits(fromId, roomId, callback) {
+function getEdits(nodeId, roomId, callback) {
+    getPaths(roomId, function (err, paths) {
+        var outstanding = [];
+        var _loop_3 = function(i) {
+            var path = paths[i];
+            outstanding.push(new Promise(function (resolve, reject) {
+                ensureRemote(roomId, path, nodeId, function (err, remote) {
+                    captureFile(roomId, path, nodeId, remote, function (err, change) {
+                        if (!err) {
+                            remote.addChange(nodeId, change);
+                            var edits_2 = remote.getEdits(nodeId);
+                            console.log("nodeId=" + nodeId + " => " + JSON.stringify(edits_2, null, 2));
+                            setRemote(roomId, path, nodeId, remote, function (err) {
+                                if (!err) {
+                                    resolve({ path: path, edits: edits_2 });
+                                }
+                                else {
+                                    reject(err);
+                                }
+                            });
+                        }
+                        else {
+                            callback(err, void 0);
+                        }
+                    });
+                });
+            }));
+        };
+        for (var i = 0; i < paths.length; i++) {
+            _loop_3(i);
+        }
+        Promise.all(outstanding).then(function (pathEdits) {
+            var files = {};
+            for (var i = 0; i < pathEdits.length; i++) {
+                var pathEdit = pathEdits[i];
+                files[pathEdit.path] = pathEdit.edits;
+            }
+            callback(void 0, { fromId: roomId, roomId: nodeId, files: files });
+        }).catch(function (err) {
+            callback(err, void 0);
+        });
+    });
 }
 exports.getEdits = getEdits;
 function destroyRoom(request, response) {

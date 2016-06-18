@@ -72,7 +72,7 @@ export default function sockets(app: express.Express, server: http.Server) {
             const {fromId, roomId, path, edits} = data;
             socketByNodeId[fromId] = socket;
             // TODO; Track the inverse mapping so that when a socket disconnects, we can clean up.
-            rooms.setEdits(fromId, roomId, path, edits, function(err: any, data: { roomId: string; path: string; broadcast: MwBroadcast }) {
+            rooms.setEdits(fromId, roomId, path, edits, function(err: Error, data: { roomId: string; path: string; broadcast: MwBroadcast }) {
                 ack();
                 if (!err) {
                     if (data) {
@@ -99,7 +99,7 @@ export default function sockets(app: express.Express, server: http.Server) {
                     }
                 }
                 else {
-                    console.log(`Unable to setEdits(from=${fromId}, room=${roomId}, path=${path}): ${JSON.stringify(err, null, 2)}`);
+                    console.log(`Unable to setEdits(from=${fromId}, room=${roomId}, path=${path}): 1 => ${err}, 2 => ${JSON.stringify(err, null, 2)}`);
                 }
             });
         });

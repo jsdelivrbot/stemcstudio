@@ -67,7 +67,7 @@ function sockets(app, server) {
                     }
                 }
                 else {
-                    console.log("Unable to setEdits(from=" + fromId + ", room=" + roomId + ", path=" + path + "): " + JSON.stringify(err, null, 2));
+                    console.log("Unable to setEdits(from=" + fromId + ", room=" + roomId + ", path=" + path + "): 1 => " + err + ", 2 => " + JSON.stringify(err, null, 2));
                 }
             });
         });

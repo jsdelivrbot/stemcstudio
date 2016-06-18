@@ -160,7 +160,7 @@ export default class MwRemote implements FzSerializable<FzRemote> {
             else {
                 // Can't apply a delta on a mismatched this version.
                 shadow.happy = false;
-                callback(new Error(`handleDelta(...) this.localVersion=${shadow.n}, localVersion=${localVersion}`));
+                callback(new Error(`Can't apply a delta on a mismatched version: shadow.n=${shadow.n}, localVersion=${localVersion}`));
             }
         }
         else if (remoteVersion > shadow.m) {
