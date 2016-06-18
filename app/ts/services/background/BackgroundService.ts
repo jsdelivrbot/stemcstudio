@@ -136,8 +136,8 @@ export default class BackgroundService implements Background {
                             callback(new Error(`Unable to download workspace from room: ${err}`));
                         }
                     });
-                }).catch((reason) => {
-                    callback(new Error(`Error attempting to connect to room '${roomId}':  ${JSON.stringify(reason, null, 2)}`));
+                }).catch((reason: Error) => {
+                    callback(new Error(`Error attempting to connect to room '${roomId}':  ${reason.message}`));
                 });
             }
             else {

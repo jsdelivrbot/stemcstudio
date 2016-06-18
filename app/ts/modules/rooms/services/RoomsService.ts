@@ -42,16 +42,24 @@ export default class RoomsService {
         return d.promise;
     }
 
-    getRoom(id: string): ng.IPromise<RoomAgent> {
+    getRoom(roomId: string): ng.IPromise<RoomAgent> {
         const d = this.$q.defer<RoomAgent>();
-        this.$http.get<Room>(`/rooms/${id}`)
+        this.$http.get<Room>(`/rooms/${roomId}`)
             .then(function(promiseValue) {
                 const room = promiseValue.data;
                 const agent = new RoomAgent(room.id);
                 d.resolve(agent);
             })
             .catch(function(reason: { data: string; status: number; statusText: string }) {
-                d.reject(reason);
+                switch (reason.status) {
+                    case 404: {
+                        d.reject(new Error(`The room '${roomId}' could not be found.`));
+                        break;
+                    }
+                    default: {
+                        d.reject(new Error(reason.statusText));
+                    }
+                }
             });
         return d.promise;
     }

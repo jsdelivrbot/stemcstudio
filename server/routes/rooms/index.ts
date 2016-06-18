@@ -158,20 +158,27 @@ export function getRoom(request: express.Request, response: express.Response): v
     // console.lg(`getRoom GET ${JSON.stringify(params, null, 2)}`);
     const roomId = params.id;
     const roomKey = createRoomKey(roomId);
-    client.get(roomKey, function(err, reply: string) {
+    client.get(roomKey, function(err: Error, reply: string) {
         if (!err) {
+            redis.print(err, reply);
+            console.log(`reply: ${typeof reply} => ${JSON.stringify(reply, null, 2)}`);
             // TODO: Do we use more fine-grained objects in redis
             // to reduce the CPU cost or parsing and serializing?
             const value: RoomValue = JSON.parse(reply);
-            // The value part does not have the id property, so we patch that in.
-            // const sNode = new MwNode(roomId, new ServerWorkspace());
-            // sNode.rehydrate(value);
-            const room: Room = {
-                id: roomId,
-                description: value.description,
-                public: value.public
-            };
-            response.status(200).send(room);
+            if (value) {
+                // The value part does not have the id property, so we patch that in.
+                // const sNode = new MwNode(roomId, new ServerWorkspace());
+                // sNode.rehydrate(value);
+                const room: Room = {
+                    id: roomId,
+                    description: value.description,
+                    public: value.public
+                };
+                response.status(200).send(room);
+            }
+            else {
+                response.status(404).send(new Error(`Something is rotten in Denmark: ${roomId}`));
+            }
         }
         else {
             response.status(404).send(err);

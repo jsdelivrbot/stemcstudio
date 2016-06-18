@@ -83,13 +83,20 @@ function getRoom(request, response) {
     var roomKey = createRoomKey(roomId);
     client.get(roomKey, function (err, reply) {
         if (!err) {
+            redis.print(err, reply);
+            console.log("reply: " + typeof reply + " => " + JSON.stringify(reply, null, 2));
             var value = JSON.parse(reply);
-            var room = {
-                id: roomId,
-                description: value.description,
-                public: value.public
-            };
-            response.status(200).send(room);
+            if (value) {
+                var room = {
+                    id: roomId,
+                    description: value.description,
+                    public: value.public
+                };
+                response.status(200).send(room);
+            }
+            else {
+                response.status(404).send(new Error("Something is rotten in Denmark: " + roomId));
+            }
         }
         else {
             response.status(404).send(err);
