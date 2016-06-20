@@ -7,6 +7,8 @@ import Shareable from '../base/Shareable';
 
 let CHAR_COUNT = 0;
 
+export const changeCharacterSize = 'changeCharacterSize';
+
 /**
  * FontMetrics sets up a timer that repeatedly checks for changes in font sizes.
  * It raises the event 'changeCharacterSize'.
@@ -125,10 +127,13 @@ export default class FontMetrics implements EventBus<any, FontMetrics>, Shareabl
             this.$characterSize = size;
             this.charSizes = Object.create(null);
             this.allowBoldFonts = boldSize && boldSize.width === size.width && boldSize.height === size.height;
+            console.log(`FontMetrics ${changeCharacterSize} ${JSON.stringify(size, null, 2)}`);
+            const ws = "xiXbm".split("").map(this.$measureCharWidth, this);
+            console.log(`ws ${changeCharacterSize} ${JSON.stringify(ws, null, 2)}`);
             /**
              * @event changeCharacterSize
              */
-            this.eventBus._emit("changeCharacterSize", { data: size });
+            this.eventBus._emit(changeCharacterSize, { data: size });
         }
     }
 
