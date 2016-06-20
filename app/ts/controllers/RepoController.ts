@@ -2,6 +2,7 @@ import * as angular from 'angular';
 import BodyScope from '../scopes/BodyScope';
 import AbstractPageController from './AbstractPageController';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
+import {GITHUB_AUTH_MANAGER} from '../services/gham/IGitHubAuthManager';
 import ModalDialog from '../services/modalService/ModalDialog';
 
 /**
@@ -11,7 +12,7 @@ export default class RepoController extends AbstractPageController {
     public static $inject: string[] = [
         '$scope',
         '$window',
-        'GitHubAuthManager',
+        GITHUB_AUTH_MANAGER,
         'ga',
         'modalDialog',
         'UNIVERSAL_ANALYTICS_TRACKING_ID'

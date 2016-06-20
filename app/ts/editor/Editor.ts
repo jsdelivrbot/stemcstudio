@@ -411,7 +411,13 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      *
      */
     get selection(): Selection {
-        return this.session.getSelection();
+        const session = this.session;
+        if (session) {
+            return session.getSelection();
+        }
+        else {
+            return void 0;
+        }
     }
 
     set selection(selection: Selection) {
@@ -1290,8 +1296,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      */
     private $highlightTags(): void {
 
-        const session = this.session;
-
         if (this.$highlightTagPending) {
             return;
         }
@@ -1301,8 +1305,13 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
         setTimeout(() => {
             this.$highlightTagPending = false;
 
+            const session = this.session;
+            if (!session) {
+                return;
+            }
+
             const pos = this.getCursorPosition();
-            const iterator = new TokenIterator(this.session, pos.row, pos.column);
+            const iterator = new TokenIterator(session, pos.row, pos.column);
             let token = iterator.getCurrentToken();
 
             if (!token || token.type.indexOf('tag-name') === -1) {
@@ -2991,12 +3000,15 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Gets the current position of the cursor.
-     *
-     * @method getCursorPosition
-     * @return {Position}
      */
     getCursorPosition(): Position {
-        return this.selection.getCursor();
+        const selection = this.selection;
+        if (selection) {
+            return selection.getCursor();
+        }
+        else {
+            return void 0;
+        }
     }
 
     /**
@@ -3245,8 +3257,20 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * @param animate If `true` animates scolling.
      */
     gotoLine(lineNumber: number, column?: number, animate?: boolean): void {
-        this.selection.clearSelection();
-        this.session.unfold({ row: lineNumber - 1, column: column || 0 });
+
+        if (this.selection) {
+            this.selection.clearSelection();
+        }
+        else {
+            return;
+        }
+
+        if (this.session) {
+            this.session.unfold({ row: lineNumber - 1, column: column || 0 });
+        }
+        else {
+            return;
+        }
 
         this.$blockScrolling += 1;
         // todo: find a way to automatically exit multiselect mode

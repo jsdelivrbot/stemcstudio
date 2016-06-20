@@ -1,4 +1,5 @@
 interface RoomParams {
+    owner: string;
     description?: string;
     public?: boolean;
     /**

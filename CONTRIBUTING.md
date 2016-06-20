@@ -74,6 +74,10 @@ git push origin master
 
 # Upload to Heroku
 
+Application is stemcstudio
+
+Email: geometryzen@gmail.com, R...
+
 ## Remote
 ```
 git remote add heroku git@heroku.com:STEMCstudio.git

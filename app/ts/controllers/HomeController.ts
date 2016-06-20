@@ -3,6 +3,7 @@ import AbstractPageController from './AbstractPageController';
 import Doodle from '../services/doodles/Doodle';
 import IDoodleManager from '../services/doodles/IDoodleManager';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
+import {GITHUB_AUTH_MANAGER} from '../services/gham/IGitHubAuthManager';
 import HitService from '../services/hits/HitService';
 import HomeScope from '../scopes/HomeScope';
 import ModalDialog from '../services/modalService/ModalDialog';
@@ -18,7 +19,7 @@ export default class HomeController extends AbstractPageController {
         '$scope',
         '$window',
         'doodles',
-        'GitHubAuthManager',
+        GITHUB_AUTH_MANAGER,
         'ga',
         'hits',
         'modalDialog',
@@ -65,7 +66,7 @@ export default class HomeController extends AbstractPageController {
 
         $scope.clickCodeNow = (label?: string, value?: number) => {
 
-            console.log(`clickCodeNow(label => ${label}, value => ${value})`);
+            // console.lg(`clickCodeNow(label => ${label}, value => ${value})`);
 
             // It's now possible to select a doodle from Local Storage, and very
             // easy to select the most recent doodle at the head of the list.

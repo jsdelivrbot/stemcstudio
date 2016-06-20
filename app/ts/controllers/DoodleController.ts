@@ -2,6 +2,7 @@ import * as angular from 'angular';
 import AbstractPageController from './AbstractPageController';
 import DoodleScope from '../scopes/DoodleScope';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
+import {GITHUB_AUTH_MANAGER} from '../services/gham/IGitHubAuthManager';
 import ITemplate from '../services/templates/ITemplate';
 import ModalDialog from '../services/modalService/ModalDialog';
 import NavigationService from '../modules/navigation/NavigationService';
@@ -13,7 +14,7 @@ export default class DoodleController extends AbstractPageController {
     public static $inject: string[] = [
         '$scope',
         '$window',
-        'GitHubAuthManager',
+        GITHUB_AUTH_MANAGER,
         'templates',
         'ga',
         'modalDialog',

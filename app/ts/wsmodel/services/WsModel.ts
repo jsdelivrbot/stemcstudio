@@ -192,11 +192,6 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     repo: string;
 
     /**
-     * The room identifier (collaboration).
-     */
-    roomId: string;
-
-    /**
      * 
      */
     created_at: string;
@@ -253,9 +248,15 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     private languageServiceProxy: LanguageServiceProxy;
 
     /**
+     * The room identifier (collaboration).
+     */
+    // roomId: string;
+
+    /**
      * The room that this workspace is currently connected to.
      */
     private room: RoomAgent;
+
     private roomListener: UnitListener;
 
     /**
@@ -764,17 +765,18 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         // console.lg(`ensureScript(${path})`);
         checkPath(path);
         checkCallback(callback);
-
-        this.inFlight++;
-        this.languageServiceProxy.ensureScript(path, content, (err: any) => {
-            this.inFlight--;
-            if (!err) {
-                callback(void 0);
-            }
-            else {
-                callback(err);
-            }
-        });
+        if (this.languageServiceProxy) {
+            this.inFlight++;
+            this.languageServiceProxy.ensureScript(path, content, (err: any) => {
+                this.inFlight--;
+                if (!err) {
+                    callback(void 0);
+                }
+                else {
+                    callback(err);
+                }
+            });
+        }
     }
 
     /**
@@ -1508,8 +1510,8 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         if (!this.isZombie()) {
             // When in room mode we don't want to clobber the current doodle.
             // TODO: We could play the same game to match other kinds (Repository, Gist).
-            if (this.roomId) {
-                const matches = this.doodles.filter((doodle) => { return doodle.roomId === this.roomId; });
+            if (this.room) {
+                const matches = this.doodles.filter((doodle) => { return doodle.roomId === this.room.id; });
                 if (matches.length > 0) {
                     if (matches.length === 1) {
                         const doodle = matches[0];
@@ -1517,11 +1519,11 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
                         this.doodles.updateStorage();
                     }
                     else {
-                        throw new Error(`Multiple (${matches.length}) doodles in Local Storage for roomId ${this.roomId}`);
+                        throw new Error(`Multiple (${matches.length}) doodles in Local Storage for roomId ${this.room.id}`);
                     }
                 }
                 else {
-                    console.warn(`Unable to find the doodle with roomId ${this.roomId} in Local Storage.`);
+                    console.warn(`Unable to find the doodle with roomId ${this.room.id} in Local Storage.`);
                 }
             }
             else {
@@ -1684,7 +1686,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     /**
      * Performs the contra-operations to the connectToRoom method.
      */
-    disconnectFromRoom() {
+    disconnectFromRoom(): RoomAgent {
         if (this.room) {
             // Remove listeners on the editor for changes.
             const paths = this.files.keys;
@@ -1703,10 +1705,9 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             this.room.removeListener(this.roomListener);
             this.roomListener = void 0;
             // release the room reference.
-            this.room.release();
+            const room = this.room;
             this.room = void 0;
-            // TODO: We can purge all the units.
-            // I don't think it is critical for them to be left in place.
+            return room;
         }
         else {
             console.warn("No worries, you are already disconnected.");
@@ -1729,6 +1730,19 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         }
         else {
             console.warn("We appear to be missing a room");
+        }
+    }
+
+    isConnectedToRoom(): boolean {
+        return !!this.room;
+    }
+
+    isRoomOwner(owner: string): boolean {
+        if (this.room) {
+            return this.room.owner === owner;
+        }
+        else {
+            return void 0;
         }
     }
 

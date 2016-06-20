@@ -1,5 +1,6 @@
 "use strict";
 var redis = require('redis');
+var url = require('url');
 var asserts_1 = require('../../synchronization/asserts');
 var isBoolean_1 = require('../../utils/isBoolean');
 var isNumber_1 = require('../../utils/isNumber');
@@ -9,7 +10,15 @@ var DMP_1 = require('../../synchronization/DMP');
 var MwRemote_1 = require('../../synchronization/MwRemote');
 var TEN_MINUTES_IN_SECONDS = 600;
 var dmp = new DMP_1.default();
-var client = redis.createClient();
+var client;
+if (process.env.REDISTOGO_URL) {
+    var rtg = url.parse(process.env.REDISTOGO_URL);
+    client = redis.createClient(rtg.port, rtg.hostname);
+    client.auth(rtg.auth.split(":")[1]);
+}
+else {
+    client = redis.createClient();
+}
 client.on('ready', function (err) {
     console.log("Redis connection has been established.");
 });
@@ -51,6 +60,7 @@ function createRoom(request, response) {
     var roomId = uniqueId_1.default();
     var roomKey = createRoomKey(roomId);
     var value = {
+        owner: params.owner,
         description: params.description,
         public: params.public,
         units: {}
@@ -61,6 +71,7 @@ function createRoom(request, response) {
                 if (!err) {
                     var room = {
                         id: roomId,
+                        owner: params.owner,
                         description: params.description,
                         public: params.public
                     };
@@ -84,11 +95,11 @@ function getRoom(request, response) {
     client.get(roomKey, function (err, reply) {
         if (!err) {
             redis.print(err, reply);
-            console.log("reply: " + typeof reply + " => " + JSON.stringify(reply, null, 2));
             var value = JSON.parse(reply);
             if (value) {
                 var room = {
                     id: roomId,
+                    owner: value.owner,
                     description: value.description,
                     public: value.public
                 };
@@ -105,7 +116,6 @@ function getRoom(request, response) {
 }
 exports.getRoom = getRoom;
 function ensurePathKey(roomId, path, callback) {
-    console.log("ensurePathKey(" + roomId + ", " + path + ")");
     var paths = createRoomPropertyKey(roomId, 'paths');
     client.sismember([paths, path], function (reason, exists) {
         if (!reason) {
@@ -132,7 +142,6 @@ function ensurePathKey(roomId, path, callback) {
     });
 }
 function ensureRemoteKey(roomId, path, nodeId, callback) {
-    console.log("ensureRemoteKey(" + roomId + ", " + path + ", " + nodeId + ")");
     ensurePathKey(roomId, path, function (err) {
         if (!err) {
             var remotes_1 = createUnitPropertyKey(roomId, path, 'remotes');
@@ -166,7 +175,6 @@ function ensureRemoteKey(roomId, path, nodeId, callback) {
     });
 }
 function getRemote(roomId, path, nodeId, callback) {
-    console.log("getRemote(" + roomId + ", " + path + ", " + nodeId + ")");
     var key = createRemoteKey(roomId, path, nodeId);
     client.get(key, function (err, remoteText) {
         if (!err) {
@@ -180,7 +188,6 @@ function getRemote(roomId, path, nodeId, callback) {
     });
 }
 function setRemote(roomId, path, nodeId, remote, callback) {
-    console.log("updateRemote(" + roomId + ", " + path + ", " + nodeId + ")");
     var key = createRemoteKey(roomId, path, nodeId);
     var dehydrated = remote.dehydrate();
     var remoteText = JSON.stringify(dehydrated);
@@ -189,7 +196,6 @@ function setRemote(roomId, path, nodeId, remote, callback) {
     });
 }
 function ensureRemote(roomId, path, nodeId, callback) {
-    console.log("ensureRemote(" + roomId + ", " + path + ", " + nodeId + ")");
     var key = createRemoteKey(roomId, path, nodeId);
     client.exists(key, function (err, exists) {
         if (!err) {
@@ -254,7 +260,6 @@ var RedisEditor = (function () {
     return RedisEditor;
 }());
 function createDocument(roomId, path, text, callback) {
-    console.log("createDocument(" + roomId + ", " + path + ")");
     var editorKey = createUnitPropertyKey(roomId, path, 'editor');
     client.set(editorKey, text, function (err, reply) {
         var editor = new RedisEditor(roomId, path);
@@ -263,7 +268,6 @@ function createDocument(roomId, path, text, callback) {
     });
 }
 function getDocument(roomId, path, callback) {
-    console.log("getDocument(" + roomId + ", " + path + ")");
     var editorKey = createUnitPropertyKey(roomId, path, 'editor');
     client.get(editorKey, function (err, reply) {
         var editor = new RedisEditor(roomId, path);
@@ -272,7 +276,6 @@ function getDocument(roomId, path, callback) {
     });
 }
 function deleteDocument(roomId, path, callback) {
-    console.log("deleteDocument(" + roomId + ", " + path + ")");
     var editorKey = createUnitPropertyKey(roomId, path, 'editor');
     client.del(editorKey, function (err, reply) {
         callback(err);
@@ -281,14 +284,12 @@ function deleteDocument(roomId, path, callback) {
 function getPaths(roomId, callback) {
     var paths = createRoomPropertyKey(roomId, 'paths');
     client.smembers(paths, function (err, reply) {
-        console.log("paths => " + JSON.stringify(reply, null, 2));
         callback(err, reply);
     });
 }
 function getRemoteNodeIds(roomId, path, callback) {
     var remotes = createUnitPropertyKey(roomId, path, 'remotes');
     client.smembers(remotes, function (err, reply) {
-        console.log("members => " + JSON.stringify(reply, null, 2));
         callback(err, reply);
     });
 }
@@ -327,7 +328,6 @@ function captureFile(roomId, path, nodeId, remote, callback) {
     });
 }
 function getBroadcast(roomId, path, callback) {
-    console.log("getBroadcast(room=" + roomId + ", path=" + path + ")");
     getRemoteNodeIds(roomId, path, function (err, nodeIds) {
         if (!err) {
             var iLen = nodeIds.length;
@@ -341,7 +341,6 @@ function getBroadcast(roomId, path, callback) {
                                 if (!err) {
                                     remote.addChange(nodeId, change);
                                     var edits_1 = remote.getEdits(nodeId);
-                                    console.log("nodeId=" + nodeId + " => " + JSON.stringify(edits_1, null, 2));
                                     setRemote(roomId, path, nodeId, remote, function (err) {
                                         if (!err) {
                                             resolve({ nodeId: nodeId, edits: edits_1 });
@@ -366,13 +365,11 @@ function getBroadcast(roomId, path, callback) {
                 _loop_1(i);
             }
             Promise.all(outstanding).then(function (nodeEdits) {
-                console.log("nodeEdits => " + JSON.stringify(nodeEdits, null, 2));
                 var broadcast = {};
                 for (var i = 0; i < nodeEdits.length; i++) {
                     var nodeEdit = nodeEdits[i];
                     broadcast[nodeEdit.nodeId] = nodeEdit.edits;
                 }
-                console.log("broadcast => " + JSON.stringify(broadcast, null, 2));
                 callback(void 0, broadcast);
             }).catch(function (err) {
                 callback(new Error(""), void 0);
@@ -384,7 +381,6 @@ function getBroadcast(roomId, path, callback) {
     });
 }
 function setEdits(nodeId, roomId, path, edits, callback) {
-    console.log("setEdits('" + roomId + "', '" + path + "'), from '" + nodeId + "'.");
     ensureRemoteKey(roomId, path, nodeId, function (err) {
         if (!err) {
             ensureRemote(roomId, path, nodeId, function (err, remote) {
@@ -482,7 +478,6 @@ function setEdits(nodeId, roomId, path, edits, callback) {
                     for (var i = 0; i < iLen; i++) {
                         _loop_2(i);
                     }
-                    console.log("outstanding.length => " + outstanding.length);
                     Promise.all(outstanding).then(function (unused) {
                         setRemote(roomId, path, nodeId, remote, function (err) {
                             if (!err) {
@@ -496,12 +491,10 @@ function setEdits(nodeId, roomId, path, edits, callback) {
                                 });
                             }
                             else {
-                                console.log("Unable to update remote 0 => " + err.message + ", 1 => " + err + ", 2 => " + JSON.stringify(err, null, 2));
                                 callback(err, void 0);
                             }
                         });
                     }).catch(function (err) {
-                        console.log("Unable to apply the edits: 1 => " + err + ", 2 => " + JSON.stringify(err, null, 2));
                         callback(new Error("Unable to apply the edits: " + err), void 0);
                     });
                 }
@@ -527,7 +520,6 @@ function getEdits(nodeId, roomId, callback) {
                         if (!err) {
                             remote.addChange(nodeId, change);
                             var edits_2 = remote.getEdits(nodeId);
-                            console.log("nodeId=" + nodeId + " => " + JSON.stringify(edits_2, null, 2));
                             setRemote(roomId, path, nodeId, remote, function (err) {
                                 if (!err) {
                                     resolve({ path: path, edits: edits_2 });

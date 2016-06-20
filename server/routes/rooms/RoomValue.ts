@@ -9,6 +9,11 @@ interface RoomValue {
     /**
      * 
      */
+    owner: string;
+
+    /**
+     * 
+     */
     description: string;
 
     /**

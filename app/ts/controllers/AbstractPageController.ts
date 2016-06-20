@@ -30,7 +30,7 @@ export default class AbstractPageController {
         overflow: string) {
 
         // Our main reponsibility is handling the GitHub OAuth callback.
-        authManager.handleGitHubLoginCallback(function(err, token: string) {
+        authManager.handleGitHubLoginCallback(function(err: Error, token: string) {
             if (err) {
                 modalDialog.alert({ title: 'Login', message: err.message });
             }

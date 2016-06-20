@@ -21,6 +21,7 @@ import PropertiesDialog from '../../modules/properties/PropertiesDialog';
 import PropertiesFlow from './PropertiesFlow';
 import PublishFlow from './PublishFlow';
 import IGitHubAuthManager from '../../services/gham/IGitHubAuthManager';
+import {GITHUB_AUTH_MANAGER} from '../../services/gham/IGitHubAuthManager';
 import IOptionManager from '../../services/options/IOptionManager';
 import isHtmlFilePath from '../../utils/isHtmlFilePath';
 import isMarkdownFilePath from '../../utils/isMarkdownFilePath';
@@ -95,7 +96,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         BACKGROUND_UUID,
         'base64',
         'GitHub',
-        'GitHubAuthManager',
+        GITHUB_AUTH_MANAGER,
         'cloud',
         'doodles',
         'templates',
@@ -398,7 +399,6 @@ export default class WorkspaceController implements WorkspaceMixin {
         const repo: string = this.$stateParams['repo'];
         const gistId: string = this.$stateParams['gistId'];
         const roomId: string = this.$stateParams['roomId'];
-        console.log(`roomId => ${roomId}`);
         // TODO: It's a bit wierd that this looks like it has a side effect on the workspace.
         // If we had multiple workspace then the workspace would be a parameter.
 
@@ -412,13 +412,13 @@ export default class WorkspaceController implements WorkspaceMixin {
                         // We don't need to load anything, but are we in the correct state for the Doodle?
                         // We end up here, e.g., when user presses Cancel from New dialog.
                         if (gistId && this.FEATURE_GIST_ENABLED && !this.$state.is(STATE_GIST, { gistId })) {
-                            this.navigation.gotoGist(this.wsModel.gistId);
+                            this.navigation.gotoGist(gistId);
                         }
                         else if (owner && repo && this.FEATURE_REPO_ENABLED && !this.$state.is(STATE_REPO, { owner, repo })) {
-                            this.navigation.gotoRepo(this.wsModel.owner, this.wsModel.repo);
+                            this.navigation.gotoRepo(owner, repo);
                         }
                         else if (roomId && this.FEATURE_ROOM_ENABLED && !this.$state.is(STATE_ROOM, { roomId })) {
-                            this.navigation.gotoRoom(this.wsModel.roomId);
+                            this.navigation.gotoRoom(roomId);
                         }
                         else {
                             // We are in the correct state.

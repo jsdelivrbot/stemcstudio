@@ -105,16 +105,16 @@
                                 <ng-md-icon>
                         </a>
                         <ul uib-dropdown-menu role="menu">
-                            <li>
+                            <li ng-if='rooms.isCreateRoomEnabled()'>
                                 <a ng-click='rooms.createRoom()()' role='button'>Set Up Room</a>
                             </li>
-                            <li>
+                            <li ng-if='rooms.isJoinRoomEnabled()'>
                                 <a ng-click='rooms.joinRoom()' role='button'>Join Room</a>
                             </li>
-                            <li>
+                            <li ng-if='rooms.isLeaveRoomEnabled()'>
                                 <a ng-click='rooms.leaveRoom()' role='button'>Leave Room</a>
                             </li>
-                            <li>
+                            <li ng-if='rooms.isDestroyRoomEnabled()'>
                                 <a ng-click='rooms.destroyRoom()' role='button'>Tear Down Room</a>
                             </li>
                         </ul>

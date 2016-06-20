@@ -2,6 +2,7 @@ import AbstractPageController from './AbstractPageController';
 import Doodle from '../services/doodles/Doodle';
 import IDoodleManager from '../services/doodles/IDoodleManager';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
+import {GITHUB_AUTH_MANAGER} from '../services/gham/IGitHubAuthManager';
 import OpenScope from '../scopes/OpenScope';
 import ModalDialog from '../services/modalService/ModalDialog';
 import NavigationService from '../modules/navigation/NavigationService';
@@ -15,7 +16,7 @@ export default class OpenController extends AbstractPageController {
         '$scope',
         '$window',
         'doodles',
-        'GitHubAuthManager',
+        GITHUB_AUTH_MANAGER,
         'ga',
         'modalDialog',
         'navigation',

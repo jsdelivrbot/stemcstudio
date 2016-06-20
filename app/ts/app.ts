@@ -83,6 +83,8 @@ import wsmodel from './wsmodel/module';
 
 import BackgroundService from './services/background/BackgroundService';
 import {BACKGROUND_UUID} from './services/background/Background';
+import GitHubAuthManager from './services/gham/GitHubAuthManager';
+import {GITHUB_AUTH_MANAGER} from './services/gham/IGitHubAuthManager';
 import Iso8601 from './services/iso8601/Iso8601';
 import MissionControl from './services/mission/MissionControl';
 import NavigationService from './modules/navigation/NavigationService';
@@ -257,6 +259,7 @@ app.controller('PropertiesModalController', PropertiesModalController);
 app.service('publishDialog', PublishDialogService);
 
 app.service(BACKGROUND_UUID, BackgroundService);
+app.service(GITHUB_AUTH_MANAGER, GitHubAuthManager);
 app.service('iso8601', Iso8601);
 app.service('missionControl', MissionControl);
 app.service('navigation', NavigationService);

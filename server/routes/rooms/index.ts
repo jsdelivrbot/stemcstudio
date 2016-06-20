@@ -1,5 +1,6 @@
 import * as express from 'express';
 import * as redis from 'redis';
+import * as url from 'url';
 import {mustBeTruthy} from '../../synchronization/asserts';
 import isBoolean from '../../utils/isBoolean';
 import isNumber from '../../utils/isNumber';
@@ -24,7 +25,15 @@ const TEN_MINUTES_IN_SECONDS = 600;
 
 const dmp = new DMP();
 
-const client = redis.createClient();
+let client: redis.RedisClient;
+if (process.env.REDISTOGO_URL) {
+    const rtg = url.parse(process.env.REDISTOGO_URL);
+    client = redis.createClient(rtg.port, rtg.hostname);
+    client.auth(rtg.auth.split(":")[1]);
+}
+else {
+    client = redis.createClient();
+}
 
 client.on('ready', function(err) {
     console.log("Redis connection has been established.");
@@ -125,6 +134,7 @@ export function createRoom(request: express.Request, response: express.Response)
     // programming rather than creating mutable objects. It might also be worth considering
     // computations that can be suspended until the next tick.
     const value: RoomValue = {
+        owner: params.owner,
         description: params.description,
         public: params.public,
         units: {}
@@ -137,6 +147,7 @@ export function createRoom(request: express.Request, response: express.Response)
                 if (!err) {
                     const room: Room = {
                         id: roomId,
+                        owner: params.owner,
                         description: params.description,
                         public: params.public
                     };
@@ -161,7 +172,7 @@ export function getRoom(request: express.Request, response: express.Response): v
     client.get(roomKey, function(err: Error, reply: string) {
         if (!err) {
             redis.print(err, reply);
-            console.log(`reply: ${typeof reply} => ${JSON.stringify(reply, null, 2)}`);
+            // console.lg(`reply: ${typeof reply} => ${JSON.stringify(reply, null, 2)}`);
             // TODO: Do we use more fine-grained objects in redis
             // to reduce the CPU cost or parsing and serializing?
             const value: RoomValue = JSON.parse(reply);
@@ -171,6 +182,7 @@ export function getRoom(request: express.Request, response: express.Response): v
                 // sNode.rehydrate(value);
                 const room: Room = {
                     id: roomId,
+                    owner: value.owner,
                     description: value.description,
                     public: value.public
                 };
@@ -187,7 +199,7 @@ export function getRoom(request: express.Request, response: express.Response): v
 }
 
 function ensurePathKey(roomId: string, path: string, callback: (err: Error) => any): void {
-    console.log(`ensurePathKey(${roomId}, ${path})`);
+    // console.lg(`ensurePathKey(${roomId}, ${path})`);
     const paths = createRoomPropertyKey(roomId, 'paths');
     client.sismember([paths, path], function(reason: Error, exists: number) {
         if (!reason) {
@@ -218,7 +230,7 @@ function ensurePathKey(roomId: string, path: string, callback: (err: Error) => a
  * Ensures that the remote is being tracked at the unit level.
  */
 function ensureRemoteKey(roomId: string, path: string, nodeId: string, callback: (err: Error) => any) {
-    console.log(`ensureRemoteKey(${roomId}, ${path}, ${nodeId})`);
+    // console.lg(`ensureRemoteKey(${roomId}, ${path}, ${nodeId})`);
     ensurePathKey(roomId, path, function(err: Error) {
         if (!err) {
             const remotes = createUnitPropertyKey(roomId, path, 'remotes');
@@ -253,7 +265,7 @@ function ensureRemoteKey(roomId: string, path: string, nodeId: string, callback:
 }
 
 function getRemote(roomId: string, path: string, nodeId: string, callback: (err: Error, remote: MwRemote) => any): void {
-    console.log(`getRemote(${roomId}, ${path}, ${nodeId})`);
+    // console.lg(`getRemote(${roomId}, ${path}, ${nodeId})`);
     const key = createRemoteKey(roomId, path, nodeId);
     client.get(key, function(err: Error, remoteText: string) {
         if (!err) {
@@ -268,7 +280,7 @@ function getRemote(roomId: string, path: string, nodeId: string, callback: (err:
 }
 
 function setRemote(roomId: string, path: string, nodeId: string, remote: MwRemote, callback: (err: Error) => any) {
-    console.log(`updateRemote(${roomId}, ${path}, ${nodeId})`);
+    // console.lg(`updateRemote(${roomId}, ${path}, ${nodeId})`);
     const key = createRemoteKey(roomId, path, nodeId);
     const dehydrated = remote.dehydrate();
     const remoteText = JSON.stringify(dehydrated);
@@ -281,7 +293,7 @@ function setRemote(roomId: string, path: string, nodeId: string, remote: MwRemot
  * Ensures that we have an object representing the remote.
  */
 function ensureRemote(roomId: string, path: string, nodeId: string, callback: (err: Error, remote: MwRemote) => any) {
-    console.log(`ensureRemote(${roomId}, ${path}, ${nodeId})`);
+    // console.lg(`ensureRemote(${roomId}, ${path}, ${nodeId})`);
     const key = createRemoteKey(roomId, path, nodeId);
     client.exists(key, function(err: Error, exists: number) {
         if (!err) {
@@ -349,7 +361,7 @@ class RedisEditor implements MwEditor {
 }
 
 function createDocument(roomId: string, path: string, text: string, callback: (err: Error, editor: MwEditor) => any) {
-    console.log(`createDocument(${roomId}, ${path})`);
+    // console.lg(`createDocument(${roomId}, ${path})`);
     const editorKey = createUnitPropertyKey(roomId, path, 'editor');
     client.set(editorKey, text, function(err, reply) {
         const editor = new RedisEditor(roomId, path);
@@ -359,7 +371,7 @@ function createDocument(roomId: string, path: string, text: string, callback: (e
 }
 
 function getDocument(roomId: string, path: string, callback: (err: Error, editor: MwEditor) => any) {
-    console.log(`getDocument(${roomId}, ${path})`);
+    // console.lg(`getDocument(${roomId}, ${path})`);
     const editorKey = createUnitPropertyKey(roomId, path, 'editor');
     client.get(editorKey, function(err, reply) {
         const editor = new RedisEditor(roomId, path);
@@ -369,7 +381,7 @@ function getDocument(roomId: string, path: string, callback: (err: Error, editor
 }
 
 function deleteDocument(roomId: string, path: string, callback: (err: Error) => any) {
-    console.log(`deleteDocument(${roomId}, ${path})`);
+    // console.lg(`deleteDocument(${roomId}, ${path})`);
     const editorKey = createUnitPropertyKey(roomId, path, 'editor');
     client.del(editorKey, function(err, reply) {
         callback(err);
@@ -379,7 +391,7 @@ function deleteDocument(roomId: string, path: string, callback: (err: Error) => 
 function getPaths(roomId: string, callback: (err: Error, paths: string[]) => any): void {
     const paths = createRoomPropertyKey(roomId, 'paths');
     client.smembers(paths, function(err: Error, reply: string[]) {
-        console.log(`paths => ${JSON.stringify(reply, null, 2)}`);
+        // console.lg(`paths => ${JSON.stringify(reply, null, 2)}`);
         callback(err, reply);
     });
 }
@@ -387,7 +399,7 @@ function getPaths(roomId: string, callback: (err: Error, paths: string[]) => any
 function getRemoteNodeIds(roomId: string, path: string, callback: (err: Error, nodeIds: string[]) => any): void {
     const remotes = createUnitPropertyKey(roomId, path, 'remotes');
     client.smembers(remotes, function(err: Error, reply: string[]) {
-        console.log(`members => ${JSON.stringify(reply, null, 2)}`);
+        // console.lg(`members => ${JSON.stringify(reply, null, 2)}`);
         callback(err, reply);
     });
 }
@@ -433,7 +445,7 @@ function captureFile(roomId: string, path: string, nodeId: string, remote: MwRem
 }
 
 function getBroadcast(roomId: string, path: string, callback: (err: Error, broadcast: MwBroadcast) => any): void {
-    console.log(`getBroadcast(room=${roomId}, path=${path})`);
+    // console.lg(`getBroadcast(room=${roomId}, path=${path})`);
     getRemoteNodeIds(roomId, path, function(err: Error, nodeIds: string[]) {
         if (!err) {
             const iLen = nodeIds.length;
@@ -447,7 +459,7 @@ function getBroadcast(roomId: string, path: string, callback: (err: Error, broad
                                 if (!err) {
                                     remote.addChange(nodeId, change);
                                     const edits = remote.getEdits(nodeId);
-                                    console.log(`nodeId=${nodeId} => ${JSON.stringify(edits, null, 2)}`);
+                                    // console.lg(`nodeId=${nodeId} => ${JSON.stringify(edits, null, 2)}`);
                                     setRemote(roomId, path, nodeId, remote, function(err: Error) {
                                         if (!err) {
                                             resolve({ nodeId, edits });
@@ -471,13 +483,13 @@ function getBroadcast(roomId: string, path: string, callback: (err: Error, broad
             // tsc v1.8.10 has problems with this! Visual Studio Code seems OK without the casting to any[].
             // I'd like to either have the type of nodeEdits inferred or explicit.
             Promise.all(outstanding).then(function(nodeEdits: any[]) {
-                console.log(`nodeEdits => ${JSON.stringify(nodeEdits, null, 2)}`);
+                // console.lg(`nodeEdits => ${JSON.stringify(nodeEdits, null, 2)}`);
                 const broadcast: MwBroadcast = {};
                 for (let i = 0; i < nodeEdits.length; i++) {
                     const nodeEdit = nodeEdits[i];
                     broadcast[nodeEdit.nodeId] = nodeEdit.edits;
                 }
-                console.log(`broadcast => ${JSON.stringify(broadcast, null, 2)}`);
+                // console.lg(`broadcast => ${JSON.stringify(broadcast, null, 2)}`);
                 callback(void 0, broadcast);
             }).catch(function(err) {
                 callback(new Error(""), void 0);
@@ -496,7 +508,7 @@ function getBroadcast(roomId: string, path: string, callback: (err: Error, broad
  * @param path
  */
 export function setEdits(nodeId: string, roomId: string, path: string, edits: MwEdits, callback: (err: Error, data: { roomId: string; path: string; broadcast: MwBroadcast }) => any) {
-    console.log(`setEdits('${roomId}', '${path}'), from '${nodeId}'.`);
+    // console.lg(`setEdits('${roomId}', '${path}'), from '${nodeId}'.`);
     ensureRemoteKey(roomId, path, nodeId, function(err: Error) {
         if (!err) {
             ensureRemote(roomId, path, nodeId, (err: Error, remote: MwRemote) => {
@@ -594,7 +606,7 @@ export function setEdits(nodeId: string, roomId: string, path: string, edits: Mw
                             }
                         }
                     }
-                    console.log(`outstanding.length => ${outstanding.length}`);
+                    // console.lg(`outstanding.length => ${outstanding.length}`);
                     Promise.all(outstanding).then(function(unused) {
                         setRemote(roomId, path, nodeId, remote, function(err: Error) {
                             if (!err) {
@@ -608,12 +620,12 @@ export function setEdits(nodeId: string, roomId: string, path: string, edits: Mw
                                 });
                             }
                             else {
-                                console.log(`Unable to update remote 0 => ${err.message}, 1 => ${err}, 2 => ${JSON.stringify(err, null, 2)}`);
+                                // console.lg(`Unable to update remote 0 => ${err.message}, 1 => ${err}, 2 => ${JSON.stringify(err, null, 2)}`);
                                 callback(err, void 0);
                             }
                         });
                     }).catch(function(err) {
-                        console.log(`Unable to apply the edits: 1 => ${err}, 2 => ${JSON.stringify(err, null, 2)}`);
+                        // console.lg(`Unable to apply the edits: 1 => ${err}, 2 => ${JSON.stringify(err, null, 2)}`);
                         callback(new Error(`Unable to apply the edits: ${err}`), void 0);
                     });
                 }
@@ -642,7 +654,7 @@ export function getEdits(nodeId: string, roomId: string, callback: (err, data: {
                         if (!err) {
                             remote.addChange(nodeId, change);
                             const edits = remote.getEdits(nodeId);
-                            console.log(`nodeId=${nodeId} => ${JSON.stringify(edits, null, 2)}`);
+                            // console.lg(`nodeId=${nodeId} => ${JSON.stringify(edits, null, 2)}`);
                             setRemote(roomId, path, nodeId, remote, function(err: Error) {
                                 if (!err) {
                                     resolve({ path, edits });

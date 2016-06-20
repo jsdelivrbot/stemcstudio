@@ -38,7 +38,6 @@ export default class BackgroundService implements Background {
      * @param roomId The identifier of the room (collaboration).
      */
     loadWsModel(owner: string, repo: string, gistId: string, roomId: string, callback: (err: Error) => any) {
-        console.log(`loadWsModel(owner=${owner}, repo=${repo}, gistId=${gistId}, roomId=${roomId})`);
         // If there is a doodle in Local Storage with the specified keys, we load that
         // so as not to trample on any existing work.
         const matches = this.doodles.filter(function(doodle: Doodle) {
@@ -56,7 +55,6 @@ export default class BackgroundService implements Background {
             }
         });
         if (matches.length > 0) {
-            console.log("Copying doodle from Local Storage...");
             // We certainly don't want to overwrite anything in local storage.
             // The user should be advised and then may delete manually from local storage.
             const match = matches[0];
@@ -67,7 +65,6 @@ export default class BackgroundService implements Background {
         }
         else {
             if (owner && repo) {
-                console.log("Downloading Repository...");
                 this.cloud.downloadTree(owner, repo, 'heads/master')
                     .then((doodle) => {
                         this.doodles.addHead(doodle);
@@ -81,7 +78,6 @@ export default class BackgroundService implements Background {
                     });
             }
             else if (gistId) {
-                console.log("Downloading Gist...");
                 this.cloud.downloadGist(gistId, (reason: any, doodle: Doodle) => {
                     if (!reason) {
                         this.doodles.addHead(doodle);
@@ -95,13 +91,10 @@ export default class BackgroundService implements Background {
                 });
             }
             else if (roomId) {
-                console.log("Dereferencing roomId...");
                 this.roomsService.getRoom(roomId).then((room: RoomAgent) => {
-                    console.log("Downloading Room edits...");
                     room.download((err, edits: { [path: string]: MwEdits }) => {
                         if (!err) {
                             const paths = Object.keys(edits);
-                            console.log(`paths (edits) => ${paths}`);
                             // We'll first mirror the structure of the workspace in the room.
                             // We are expecting Raw edits on every file so every edit is a create.
                             for (let i = 0; i < paths.length; i++) {
@@ -113,9 +106,7 @@ export default class BackgroundService implements Background {
                                     console.warn(`Unexpected file ${path} in workspace`);
                                 }
                             }
-                            console.log("Connecting to Room...");
                             this.wsModel.connectToRoom(room);
-                            console.log("Applying edits...");
                             for (let i = 0; i < paths.length; i++) {
                                 const path = paths[i];
                                 const file = this.wsModel.findFileByPath(path);
@@ -128,7 +119,6 @@ export default class BackgroundService implements Background {
                             // current doodle. Add it to the tail of the list and maybe remove it later?
                             doodle.roomId = roomId;
                             this.doodles.addTail(doodle);
-                            console.log("Updating Local Storage...");
                             this.wsModel.updateStorage();
                             callback(void 0);
                         }

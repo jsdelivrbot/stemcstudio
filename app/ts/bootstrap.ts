@@ -95,7 +95,6 @@ import './fugly/ga/ga';
 // FIXME: Don't like this style of import.
 import './services/cookie/cookie';
 import './services/doodles/doodles';
-import './services/gham/GitHubAuthManager';
 import './services/github/GitHub';
 import './services/options/options';
 import './services/settings/settings';

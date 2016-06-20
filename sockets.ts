@@ -32,7 +32,7 @@ export default function sockets(app: express.Express, server: http.Server) {
         //
         socket.on('download', function(data: { fromId: string, roomId: string }, ack: (err, data) => any) {
             const {fromId, roomId} = data;
-            console.log(`download(${roomId}) request received from ${fromId}.`);
+            // console.lg(`download(${roomId}) request received from ${fromId}.`);
             rooms.getEdits(fromId, roomId, function(err, data: { fromId: string; roomId: string; files: { [path: string]: MwEdits } }) {
                 if (!err) {
                     const {files} = data;
@@ -49,7 +49,7 @@ export default function sockets(app: express.Express, server: http.Server) {
         //
         socket.on('join', function(data: { fromId: string, roomId: string }, ack: () => any) {
             const {fromId, roomId} = data;
-            console.log(`join(${roomId}) request received from ${fromId}.`);
+            // console.lg(`join(${roomId}) request received from ${fromId}.`);
             socketByNodeId[fromId] = socket;
 
             socket.leaveAll();
@@ -82,8 +82,8 @@ export default function sockets(app: express.Express, server: http.Server) {
                             for (let i = 0; i < nodeIds.length; i++) {
                                 const nodeId = nodeIds[i];
                                 const edits = broadcast[nodeId];
-                                console.log(`edits for ${path} from ${roomId} going to room ${nodeId}`);
-                                console.log(JSON.stringify(edits, null, 2));
+                                // console.lg(`edits for ${path} from ${roomId} going to room ${nodeId}`);
+                                // console.lg(JSON.stringify(edits, null, 2));
                                 const target = socketByNodeId[nodeId];
                                 if (target) {
                                     target.emit('edits', { fromId: roomId, roomId: nodeId, path, edits });
@@ -91,15 +91,15 @@ export default function sockets(app: express.Express, server: http.Server) {
                             }
                         }
                         else {
-                            console.log("No broadcast in response to setting edits.");
+                            // console.lg("No broadcast in response to setting edits.");
                         }
                     }
                     else {
-                        console.log("No data in response to setting edits.");
+                        // console.lg("No data in response to setting edits.");
                     }
                 }
                 else {
-                    console.log(`Unable to setEdits(from=${fromId}, room=${roomId}, path=${path}): 1 => ${err}, 2 => ${JSON.stringify(err, null, 2)}`);
+                    // console.lg(`Unable to setEdits(from=${fromId}, room=${roomId}, path=${path}): 1 => ${err}, 2 => ${JSON.stringify(err, null, 2)}`);
                 }
             });
         });

@@ -459,16 +459,16 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                                <ng-md-icon>\n" +
     "                        </a>\n" +
     "                        <ul uib-dropdown-menu role=\"menu\">\n" +
-    "                            <li>\n" +
+    "                            <li ng-if='rooms.isCreateRoomEnabled()'>\n" +
     "                                <a ng-click='rooms.createRoom()()' role='button'>Set Up Room</a>\n" +
     "                            </li>\n" +
-    "                            <li>\n" +
+    "                            <li ng-if='rooms.isJoinRoomEnabled()'>\n" +
     "                                <a ng-click='rooms.joinRoom()' role='button'>Join Room</a>\n" +
     "                            </li>\n" +
-    "                            <li>\n" +
+    "                            <li ng-if='rooms.isLeaveRoomEnabled()'>\n" +
     "                                <a ng-click='rooms.leaveRoom()' role='button'>Leave Room</a>\n" +
     "                            </li>\n" +
-    "                            <li>\n" +
+    "                            <li ng-if='rooms.isDestroyRoomEnabled()'>\n" +
     "                                <a ng-click='rooms.destroyRoom()' role='button'>Tear Down Room</a>\n" +
     "                            </li>\n" +
     "                        </ul>\n" +
