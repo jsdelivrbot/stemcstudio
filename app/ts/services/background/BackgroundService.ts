@@ -94,35 +94,41 @@ export default class BackgroundService implements Background {
                 this.roomsService.getRoom(roomId).then((room: RoomAgent) => {
                     room.download((err, edits: { [path: string]: MwEdits }) => {
                         if (!err) {
-                            const paths = Object.keys(edits);
-                            // We'll first mirror the structure of the workspace in the room.
-                            // We are expecting Raw edits on every file so every edit is a create.
-                            for (let i = 0; i < paths.length; i++) {
-                                const path = paths[i];
-                                if (!this.wsModel.existsFile(path)) {
-                                    this.wsModel.newFile(path).release();
+                            try {
+                                const paths = Object.keys(edits);
+                                // We'll first mirror the structure of the workspace in the room.
+                                // We are expecting Raw edits on every file so every edit is a create.
+                                for (let i = 0; i < paths.length; i++) {
+                                    const path = paths[i];
+                                    if (!this.wsModel.existsFile(path)) {
+                                        this.wsModel.newFile(path).release();
+                                    }
+                                    else {
+                                        console.warn(`Unexpected file ${path} in workspace`);
+                                    }
                                 }
-                                else {
-                                    console.warn(`Unexpected file ${path} in workspace`);
+                                this.wsModel.connectToRoom(room);
+                                for (let i = 0; i < paths.length; i++) {
+                                    const path = paths[i];
+                                    const file = this.wsModel.findFileByPath(path);
+                                    file.unit.setEdits(roomId, edits[path]);
                                 }
+                                // Because we are already connected, setting the edits should trigger the acknowledgement.
+                                // this.wsModel.uploadToRoom(room);
+                                const doodle = this.doodles.createDoodle();
+                                // Tag the Doodle with the roomId so that we can serialize to it without making it the
+                                // current doodle. Add it to the tail of the list and maybe remove it later?
+                                doodle.roomId = roomId;
+                                this.doodles.addTail(doodle);
+                                this.wsModel.updateStorage();
+                                callback(void 0);
                             }
-                            this.wsModel.connectToRoom(room);
-                            for (let i = 0; i < paths.length; i++) {
-                                const path = paths[i];
-                                const file = this.wsModel.findFileByPath(path);
-                                file.unit.setEdits(roomId, edits[path]);
+                            finally {
+                                room.release();
                             }
-                            // Because we are already connected, setting the edits should trigger the acknowledgement.
-                            // this.wsModel.uploadToRoom(room);
-                            const doodle = this.doodles.createDoodle();
-                            // Tag the Doodle with the roomId so that we can serialize to it without making it the
-                            // current doodle. Add it to the tail of the list and maybe remove it later?
-                            doodle.roomId = roomId;
-                            this.doodles.addTail(doodle);
-                            this.wsModel.updateStorage();
-                            callback(void 0);
                         }
                         else {
+                            room.release();
                             callback(new Error(`Unable to download workspace from room: ${err}`));
                         }
                     });

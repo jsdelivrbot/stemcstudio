@@ -61,13 +61,12 @@ export default class RoomsController {
      * The room creator stays put 
      */
     createRoom(): void {
-        if (this.authManager.isSignedIn()) {
+        if (this.isCreateRoomEnabled()) {
             const roomParams: RoomParams = {
                 owner: this.authManager.userLogin(),
                 description: "",
                 public: true
             };
-            console.log(`roomParams => ${JSON.stringify(roomParams, null, 2)}`);
             this.roomsService.createRoom(roomParams).then((room: RoomAgent) => {
                 // This could use a flow.
                 // Share dialog...
@@ -102,7 +101,7 @@ export default class RoomsController {
      * 
      */
     joinRoom(): void {
-        if (this.authManager.isSignedIn()) {
+        if (this.isJoinRoomEnabled()) {
             this.modalDialog.prompt({ title: "Join Room", message: "Please enter the name of the room you would like to join.", text: "", placeholder: "r1234567" }).then((roomId) => {
                 this.navigation.gotoRoom(roomId);
             }).catch(function(err) {
@@ -119,22 +118,26 @@ export default class RoomsController {
             });
         }
         else {
-            this.modalDialog.alert({ title: "Join Room", message: "You must be signed in with GitHub to join a collaboration room." });
+            console.warn("Join Room is not enabled.");
         }
     }
 
     /**
      * 
      */
-    leaveRoom(): void {
-        if (this.authManager.isSignedIn()) {
+    leaveRoom(label?: string, value?: number): void {
+        if (this.isLeaveRoomEnabled()) {
             const room = this.wsModel.disconnectFromRoom();
             if (room) {
                 room.release();
+                this.navigation.gotoDoodle(label, value);
+            }
+            else {
+                console.warn("disconnectFromRoom did not return a room.");
             }
         }
         else {
-            this.modalDialog.alert({ title: "Leave Room", message: "You must be signed in with GitHub to leave a collaboration room." });
+            console.warn("Leave Room is not enabled.");
         }
     }
 
@@ -142,7 +145,7 @@ export default class RoomsController {
      * 
      */
     destroyRoom(): void {
-        if (this.authManager.isSignedIn()) {
+        if (this.isDestroyRoomEnabled()) {
             if (this.wsModel.isConnectedToRoom()) {
                 const room = this.wsModel.disconnectFromRoom();
                 this.roomsService.destroyRoom(room.id).then(() => {

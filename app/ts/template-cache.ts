@@ -453,7 +453,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                                <ng-md-icon>\n" +
     "                        </a>\n" +
     "                    </li>\n" +
-    "                    <li ng-if='FEATURE_ROOM_ENABLED' uib-dropdown ng-show='isGitHubSignedIn()' ng-controller='rooms-controller as rooms'>\n" +
+    "                    <li ng-if='FEATURE_ROOM_ENABLED' uib-dropdown ng-controller='rooms-controller as rooms'>\n" +
     "                        <a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"Collaboration Menu\" tooltip-placement='bottom'>\n" +
     "                            <ng-md-icon icon='group' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'>\n" +
     "                                <ng-md-icon>\n" +

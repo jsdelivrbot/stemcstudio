@@ -26,7 +26,6 @@ import IOptionManager from '../../services/options/IOptionManager';
 import isHtmlFilePath from '../../utils/isHtmlFilePath';
 import isMarkdownFilePath from '../../utils/isMarkdownFilePath';
 import OutputFileHandler from './OutputFileHandler';
-import MissionControl from '../../services/mission/MissionControl';
 import ModalDialog from '../../services/modalService/ModalDialog';
 import NavigationService from '../../modules/navigation/NavigationService';
 import {STATE_GIST} from '../../modules/navigation/NavigationService';
@@ -103,7 +102,6 @@ export default class WorkspaceController implements WorkspaceMixin {
         'flow',
         'ga',
         'labelDialog',
-        'missionControl',
         'modalDialog',
         'navigation',
         'options',
@@ -176,7 +174,6 @@ export default class WorkspaceController implements WorkspaceMixin {
         private flowService: FlowService,
         ga: UniversalAnalytics.ga,
         private labelDialog: LabelDialog,
-        private missionControl: MissionControl,
         private modalDialog: ModalDialog,
         private navigation: NavigationService,
         private options: IOptionManager,

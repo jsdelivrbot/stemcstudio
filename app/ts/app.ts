@@ -86,7 +86,6 @@ import {BACKGROUND_UUID} from './services/background/Background';
 import GitHubAuthManager from './services/gham/GitHubAuthManager';
 import {GITHUB_AUTH_MANAGER} from './services/gham/IGitHubAuthManager';
 import Iso8601 from './services/iso8601/Iso8601';
-import MissionControl from './services/mission/MissionControl';
 import NavigationService from './modules/navigation/NavigationService';
 import {STATE_ABOUT} from './modules/navigation/NavigationService';
 import {STATE_COPY} from './modules/navigation/NavigationService';
@@ -135,7 +134,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version for use by scopes.
-app.constant('version', '2.1.2');
+app.constant('version', '2.2.0');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -261,7 +260,6 @@ app.service('publishDialog', PublishDialogService);
 app.service(BACKGROUND_UUID, BackgroundService);
 app.service(GITHUB_AUTH_MANAGER, GitHubAuthManager);
 app.service('iso8601', Iso8601);
-app.service('missionControl', MissionControl);
 app.service('navigation', NavigationService);
 
 //

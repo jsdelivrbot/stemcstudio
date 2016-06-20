@@ -4,7 +4,6 @@ import Doodle from '../services/doodles/Doodle';
 import IDoodleManager from '../services/doodles/IDoodleManager';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
 import {GITHUB_AUTH_MANAGER} from '../services/gham/IGitHubAuthManager';
-import HitService from '../services/hits/HitService';
 import HomeScope from '../scopes/HomeScope';
 import ModalDialog from '../services/modalService/ModalDialog';
 import NavigationService from '../modules/navigation/NavigationService';
@@ -21,7 +20,6 @@ export default class HomeController extends AbstractPageController {
         'doodles',
         GITHUB_AUTH_MANAGER,
         'ga',
-        'hits',
         'modalDialog',
         'navigation',
         'stemcArXiv',
@@ -40,7 +38,6 @@ export default class HomeController extends AbstractPageController {
         doodles: IDoodleManager,
         authManager: IGitHubAuthManager,
         ga: UniversalAnalytics.ga,
-        hits: HitService,
         modalDialog: ModalDialog,
         navigation: NavigationService,
         stemcArXiv: StemcArXiv,

@@ -101,15 +101,16 @@ export default class RoomAgent implements Shareable {
         this._socket.connect();
     }
     addRef(): number {
-        if (this.refCount > 0) {
-            this.refCount++;
-            return this.refCount;
-        }
-        else {
+        if (this.refCount <= 0) {
             throw new Error(`RoomAgent.addRef when refCount is ${this.refCount}`);
         }
+        this.refCount++;
+        return this.refCount;
     }
     release(): number {
+        if (this.refCount <= 0) {
+            throw new Error(`RoomAgent.release when refCount is ${this.refCount}`);
+        }
         this.refCount--;
         if (this.refCount === 0) {
             this.destructor();

@@ -21,7 +21,6 @@ import DoodleController from './controllers/DoodleController';
 import ExamplesController from './controllers/ExamplesController';
 import GitHubAccountController from './controllers/GitHubAccountController';
 import GitHubCloudService from './services/cloud/GitHubCloudService';
-import HitService from './services/hits/HitService';
 import HomeController from './controllers/HomeController';
 import editor from './directives/editor/editor.component';
 import explorer from './directives/explorer/explorer.component';
@@ -107,8 +106,6 @@ app.service('modalDialog', ModalDialogService);
 
 app.service('flow', ReteFlowService);
 app.service('flowSessionService', NaiveFlowSessionService);
-
-app.service('hits', HitService);
 
 app.service('textService', TextService);
 app.service('themeManager', DefaultThemeManager);
