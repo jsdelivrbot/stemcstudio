@@ -107,7 +107,7 @@ export default class BackgroundService implements Background {
                                         console.warn(`Unexpected file ${path} in workspace`);
                                     }
                                 }
-                                this.wsModel.connectToRoom(room);
+                                this.wsModel.connectToRoom(room, false);
                                 for (let i = 0; i < paths.length; i++) {
                                     const path = paths[i];
                                     const file = this.wsModel.findFileByPath(path);

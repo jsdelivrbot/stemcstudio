@@ -256,6 +256,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      * The room that this workspace is currently connected to.
      */
     private room: RoomAgent;
+    private roomMaster: boolean;
 
     private roomListener: UnitListener;
 
@@ -1509,8 +1510,8 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     updateStorage(): void {
         if (!this.isZombie()) {
             // When in room mode we don't want to clobber the current doodle.
-            // TODO: We could play the same game to match other kinds (Repository, Gist).
-            if (this.room) {
+            if (this.isConnectedToRoom() && !this.roomMaster) {
+                // TODO: Do we even want to maintain Local Storage in this scenario?
                 const matches = this.doodles.filter((doodle) => { return doodle.roomId === this.room.id; });
                 if (matches.length > 0) {
                     if (matches.length === 1) {
@@ -1630,8 +1631,11 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      * 3. Create a listener on the room that can send messages to this workspace.
      * 4. Create listeners on each file that send change events as edits to the room.
      * 5. Maintains a reference to the room until the disconnection happens.
+     * 
+     * @param room The room to connect to.
+     * @param master <code>true</code> if the room was created with this workspace as the master.
      */
-    connectToRoom(room: RoomAgent) {
+    connectToRoom(room: RoomAgent, master: boolean) {
 
         if (this.room) {
             this.disconnectFromRoom();
@@ -1641,6 +1645,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
 
             this.room = room;
             this.room.addRef();
+            this.roomMaster = master;
 
             // Enumerate the editors in the workspace and add them to the node.
             // This will enable the node to get/set the editor value, diff and apply patches.

@@ -84,7 +84,7 @@ export default class RoomsController {
                     // 
                 });
 
-                this.wsModel.connectToRoom(room);
+                this.wsModel.connectToRoom(room, true);
                 this.wsModel.uploadToRoom(room);
                 room.release();
 
