@@ -78,6 +78,8 @@ export default class MwRemote implements FzSerializable<FzRemote> {
     }
 
     rehydrate(value: FzRemote): void {
+        console.log(`MwRemote.rehydrate(value: ${typeof value})`);
+        console.log(JSON.stringify(value, null, 2));
         this.shadow = value.s ? new MwShadow().rehydrate(value.s) : void 0;
         this.backup = value.b ? new MwShadow().rehydrate(value.b) : void 0;
         this.edits = value.e;

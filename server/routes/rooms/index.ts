@@ -7,7 +7,6 @@ import isNumber from '../../utils/isNumber';
 import isString from '../../utils/isString';
 import RoomParams from './RoomParams';
 import Room from './Room';
-// import ServerWorkspace from './ServerWorkspace';
 import uniqueId from './uniqueId';
 import RoomValue from './RoomValue';
 import DMP from '../../synchronization/DMP';
@@ -18,10 +17,12 @@ import MwEdits from '../../synchronization/MwEdits';
 import MwRemote from '../../synchronization/MwRemote';
 import MwChange from '../../synchronization/MwChange';
 import MwShadow from '../../synchronization/MwShadow';
-// import MwUnit from '../../synchronization/MwUnit';
-// import FzNode from '../../synchronization/ds/FzNode';
 
-const TEN_MINUTES_IN_SECONDS = 600;
+const EXPIRE_DURATION_IN_SECONDS = 1800;
+
+const ROOM_PATHS_PROPERTY_NAME = 'paths';
+const ROOM_PATH_CONTENT_PROPERTY_NAME = 'content';
+const ROOM_PATH_REMOTES_PROPERTY_NAME = 'remotes';
 
 const dmp = new DMP();
 
@@ -36,11 +37,11 @@ else {
 }
 
 client.on('ready', function(err) {
-    console.log("Redis connection has been established.");
+    console.log("Redis client is 'ready'.");
 });
 
 client.on('connect', function(err) {
-    console.log("Redis stream is connected to the server.");
+    console.log("Redis client has connected to the server.");
 });
 
 client.on('reconnecting', function(err) {
@@ -67,41 +68,17 @@ function createRoomPropertyKey(roomId: string, name: string): string {
     return `${createRoomKey(roomId)}@${name}`;
 }
 
-function createUnitKey(roomId: string, path: string): string {
+function createRoomPathKey(roomId: string, path: string): string {
     return `${createRoomKey(roomId)}, path:${path}`;
 }
 
-function createUnitPropertyKey(roomId: string, path: string, name: string): string {
-    return `${createUnitKey(roomId, path)}@${name}`;
+function createRoomPathPropertyKey(roomId: string, path: string, name: string): string {
+    return `${createRoomPathKey(roomId, path)}@${name}`;
 }
 
-function createRemoteKey(roomId: string, path: string, nodeId: string): string {
-    return `${createUnitKey(roomId, path)}, node:${nodeId}`;
+function createRoomPathRemoteKey(roomId: string, path: string, nodeId: string): string {
+    return `${createRoomPathKey(roomId, path)}, node:${nodeId}`;
 }
-
-/*
-function inspectMwUnit(fileName: string, unit: MwUnit) {
-    // console.lg(fileName);
-    const frozen = unit.dehydrate();
-    const remotes = frozen.k;
-    const nodeIds = Object.keys(remotes);
-    for (let i = 0; i < nodeIds.length; i++) {
-        const nodeId = nodeIds[i];
-        const remote = remotes[nodeId];
-        const edits = remote.e;
-        const shadow = remote.s;
-        // const backup = remote.b;
-        const n = shadow.n;
-        const m = shadow.m;
-        const text = shadow.t;
-        const happy = shadow.h;
-        // console.lg(`Remote ${nodeId}`);
-        // console.lg(`n: ${n}, m: ${m}, happy: ${happy}, text: ${text}`);
-        // console.lg(`edits: ${JSON.stringify(edits, null, 2)}`);
-    }
-    unit.rehydrate(frozen);
-}
-*/
 
 /**
  * Creates a room for collaborating.
@@ -110,12 +87,10 @@ export function createRoom(request: express.Request, response: express.Response)
 
     const params: RoomParams = request.body;
 
-    // console.lg(`createRoom POST ${JSON.stringify(params, null, 2)}`);
-
     // Apply default values to the parameters.
     params.description = isString(params.description) ? params.description : "";
     params.public = isBoolean(params.public) ? params.public : true;
-    params.expire = isNumber(params.expire) ? params.expire : TEN_MINUTES_IN_SECONDS;
+    params.expire = isNumber(params.expire) ? params.expire : EXPIRE_DURATION_IN_SECONDS;
 
     /**
      * The room identifier defaults to 8 digits long.
@@ -142,8 +117,7 @@ export function createRoom(request: express.Request, response: express.Response)
 
     client.set(roomKey, JSON.stringify(value), function(err: Error, reply: any) {
         if (!err) {
-            // 600 seconds is 10 minutes.
-            client.expire(roomKey, params.expire, function(err: Error, reply: any) {
+            client.expire(roomKey, EXPIRE_DURATION_IN_SECONDS, function(err: Error, reply: any) {
                 if (!err) {
                     const room: Room = {
                         id: roomId,
@@ -166,13 +140,11 @@ export function createRoom(request: express.Request, response: express.Response)
 
 export function getRoom(request: express.Request, response: express.Response): void {
     const params: Room = request.params;
-    // console.lg(`getRoom GET ${JSON.stringify(params, null, 2)}`);
     const roomId = params.id;
     const roomKey = createRoomKey(roomId);
     client.get(roomKey, function(err: Error, reply: string) {
         if (!err) {
             redis.print(err, reply);
-            // console.lg(`reply: ${typeof reply} => ${JSON.stringify(reply, null, 2)}`);
             // TODO: Do we use more fine-grained objects in redis
             // to reduce the CPU cost or parsing and serializing?
             const value: RoomValue = JSON.parse(reply);
@@ -199,8 +171,7 @@ export function getRoom(request: express.Request, response: express.Response): v
 }
 
 function ensurePathKey(roomId: string, path: string, callback: (err: Error) => any): void {
-    // console.lg(`ensurePathKey(${roomId}, ${path})`);
-    const paths = createRoomPropertyKey(roomId, 'paths');
+    const paths = createRoomPropertyKey(roomId, ROOM_PATHS_PROPERTY_NAME);
     client.sismember([paths, path], function(reason: Error, exists: number) {
         if (!reason) {
             mustBeTruthy(isNumber(exists), `exists must be a number`);
@@ -210,7 +181,7 @@ function ensurePathKey(roomId: string, path: string, callback: (err: Error) => a
             else {
                 client.sadd([paths, path], function(reason: Error, reply: any) {
                     if (!reason) {
-                        client.expire(paths, TEN_MINUTES_IN_SECONDS, function(reason: Error, reply: any) {
+                        client.expire(paths, EXPIRE_DURATION_IN_SECONDS, function(reason: Error, reply: any) {
                             callback(reason);
                         });
                     }
@@ -230,10 +201,9 @@ function ensurePathKey(roomId: string, path: string, callback: (err: Error) => a
  * Ensures that the remote is being tracked at the unit level.
  */
 function ensureRemoteKey(roomId: string, path: string, nodeId: string, callback: (err: Error) => any) {
-    // console.lg(`ensureRemoteKey(${roomId}, ${path}, ${nodeId})`);
     ensurePathKey(roomId, path, function(err: Error) {
         if (!err) {
-            const remotes = createUnitPropertyKey(roomId, path, 'remotes');
+            const remotes = createRoomPathPropertyKey(roomId, path, ROOM_PATH_REMOTES_PROPERTY_NAME);
             client.sismember([remotes, nodeId], function(reason: Error, exists: number) {
                 if (!reason) {
                     mustBeTruthy(isNumber(exists), `exists must be a number`);
@@ -243,7 +213,7 @@ function ensureRemoteKey(roomId: string, path: string, nodeId: string, callback:
                     else {
                         client.sadd([remotes, nodeId], function(reason: Error, reply: any) {
                             if (!reason) {
-                                client.expire(remotes, TEN_MINUTES_IN_SECONDS, function(reason: Error, reply: any) {
+                                client.expire(remotes, EXPIRE_DURATION_IN_SECONDS, function(reason: Error, reply: any) {
                                     callback(reason);
                                 });
                             }
@@ -265,9 +235,8 @@ function ensureRemoteKey(roomId: string, path: string, nodeId: string, callback:
 }
 
 function getRemote(roomId: string, path: string, nodeId: string, callback: (err: Error, remote: MwRemote) => any): void {
-    // console.lg(`getRemote(${roomId}, ${path}, ${nodeId})`);
-    const key = createRemoteKey(roomId, path, nodeId);
-    client.get(key, function(err: Error, remoteText: string) {
+    const remoteKey = createRoomPathRemoteKey(roomId, path, nodeId);
+    client.get(remoteKey, function(err: Error, remoteText: string) {
         if (!err) {
             const remote = new MwRemote();
             remote.rehydrate(JSON.parse(remoteText));
@@ -280,12 +249,13 @@ function getRemote(roomId: string, path: string, nodeId: string, callback: (err:
 }
 
 function setRemote(roomId: string, path: string, nodeId: string, remote: MwRemote, callback: (err: Error) => any) {
-    // console.lg(`updateRemote(${roomId}, ${path}, ${nodeId})`);
-    const key = createRemoteKey(roomId, path, nodeId);
+    const remoteKey = createRoomPathRemoteKey(roomId, path, nodeId);
     const dehydrated = remote.dehydrate();
     const remoteText = JSON.stringify(dehydrated);
-    client.set(key, remoteText, function(err: Error, replay: any) {
-        callback(err);
+    client.set(remoteKey, remoteText, function(err: Error, reply: any) {
+        client.expire(remoteKey, EXPIRE_DURATION_IN_SECONDS, function(err, reply) {
+            callback(err);
+        });
     });
 }
 
@@ -293,8 +263,7 @@ function setRemote(roomId: string, path: string, nodeId: string, remote: MwRemot
  * Ensures that we have an object representing the remote.
  */
 function ensureRemote(roomId: string, path: string, nodeId: string, callback: (err: Error, remote: MwRemote) => any) {
-    // console.lg(`ensureRemote(${roomId}, ${path}, ${nodeId})`);
-    const key = createRemoteKey(roomId, path, nodeId);
+    const key = createRoomPathRemoteKey(roomId, path, nodeId);
     client.exists(key, function(err: Error, exists: number) {
         if (!err) {
             mustBeTruthy(isNumber(exists), `exists must be a number`);
@@ -321,19 +290,21 @@ function ensureRemote(roomId: string, path: string, nodeId: string, callback: (e
 
 class RedisEditor implements MwEditor {
     private refCount = 1;
-    private key: string;
+    private contentKey: string;
     constructor(private roomId: string, private path: string) {
         // Do nothing yet.
-        this.key = createUnitPropertyKey(this.roomId, this.path, 'editor');
+        this.contentKey = createRoomPathPropertyKey(this.roomId, this.path, ROOM_PATH_CONTENT_PROPERTY_NAME);
     }
     getText(callback: (err: Error, text: string) => any): void {
-        client.get(this.key, function(err: Error, reply: string) {
+        client.get(this.contentKey, function(err: Error, reply: string) {
             callback(err, reply);
         });
     }
     setText(text: string, callback: (err: Error) => any): void {
-        client.set(this.key, text, function(err, reply) {
-            callback(err);
+        client.set(this.contentKey, text, (err, reply) => {
+            client.expire(this.contentKey, EXPIRE_DURATION_IN_SECONDS, function(err, reply) {
+                callback(err);
+            });
         });
     }
     patch(patches: Patch[], callback: (err: Error, flags: boolean[]) => any): void {
@@ -361,19 +332,19 @@ class RedisEditor implements MwEditor {
 }
 
 function createDocument(roomId: string, path: string, text: string, callback: (err: Error, editor: MwEditor) => any) {
-    // console.lg(`createDocument(${roomId}, ${path})`);
-    const editorKey = createUnitPropertyKey(roomId, path, 'editor');
-    client.set(editorKey, text, function(err, reply) {
-        const editor = new RedisEditor(roomId, path);
-        callback(err, editor);
-        editor.release();
+    const contentKey = createRoomPathPropertyKey(roomId, path, ROOM_PATH_CONTENT_PROPERTY_NAME);
+    client.set(contentKey, text, (err, reply) => {
+        client.expire(contentKey, EXPIRE_DURATION_IN_SECONDS, function(err, reply) {
+            const editor = new RedisEditor(roomId, path);
+            callback(err, editor);
+            editor.release();
+        });
     });
 }
 
 function getDocument(roomId: string, path: string, callback: (err: Error, editor: MwEditor) => any) {
-    // console.lg(`getDocument(${roomId}, ${path})`);
-    const editorKey = createUnitPropertyKey(roomId, path, 'editor');
-    client.get(editorKey, function(err, reply) {
+    const contentKey = createRoomPathPropertyKey(roomId, path, ROOM_PATH_CONTENT_PROPERTY_NAME);
+    client.get(contentKey, function(err, reply) {
         const editor = new RedisEditor(roomId, path);
         callback(err, editor);
         editor.release();
@@ -381,25 +352,22 @@ function getDocument(roomId: string, path: string, callback: (err: Error, editor
 }
 
 function deleteDocument(roomId: string, path: string, callback: (err: Error) => any) {
-    // console.lg(`deleteDocument(${roomId}, ${path})`);
-    const editorKey = createUnitPropertyKey(roomId, path, 'editor');
-    client.del(editorKey, function(err, reply) {
+    const contentKey = createRoomPathPropertyKey(roomId, path, ROOM_PATH_CONTENT_PROPERTY_NAME);
+    client.del(contentKey, function(err, reply) {
         callback(err);
     });
 }
 
 function getPaths(roomId: string, callback: (err: Error, paths: string[]) => any): void {
-    const paths = createRoomPropertyKey(roomId, 'paths');
+    const paths = createRoomPropertyKey(roomId, ROOM_PATHS_PROPERTY_NAME);
     client.smembers(paths, function(err: Error, reply: string[]) {
-        // console.lg(`paths => ${JSON.stringify(reply, null, 2)}`);
         callback(err, reply);
     });
 }
 
 function getRemoteNodeIds(roomId: string, path: string, callback: (err: Error, nodeIds: string[]) => any): void {
-    const remotes = createUnitPropertyKey(roomId, path, 'remotes');
+    const remotes = createRoomPathPropertyKey(roomId, path, ROOM_PATH_REMOTES_PROPERTY_NAME);
     client.smembers(remotes, function(err: Error, reply: string[]) {
-        // console.lg(`members => ${JSON.stringify(reply, null, 2)}`);
         callback(err, reply);
     });
 }
@@ -445,7 +413,6 @@ function captureFile(roomId: string, path: string, nodeId: string, remote: MwRem
 }
 
 function getBroadcast(roomId: string, path: string, callback: (err: Error, broadcast: MwBroadcast) => any): void {
-    // console.lg(`getBroadcast(room=${roomId}, path=${path})`);
     getRemoteNodeIds(roomId, path, function(err: Error, nodeIds: string[]) {
         if (!err) {
             const iLen = nodeIds.length;
@@ -459,7 +426,6 @@ function getBroadcast(roomId: string, path: string, callback: (err: Error, broad
                                 if (!err) {
                                     remote.addChange(nodeId, change);
                                     const edits = remote.getEdits(nodeId);
-                                    // console.lg(`nodeId=${nodeId} => ${JSON.stringify(edits, null, 2)}`);
                                     setRemote(roomId, path, nodeId, remote, function(err: Error) {
                                         if (!err) {
                                             resolve({ nodeId, edits });
@@ -483,13 +449,11 @@ function getBroadcast(roomId: string, path: string, callback: (err: Error, broad
             // tsc v1.8.10 has problems with this! Visual Studio Code seems OK without the casting to any[].
             // I'd like to either have the type of nodeEdits inferred or explicit.
             Promise.all(outstanding).then(function(nodeEdits: any[]) {
-                // console.lg(`nodeEdits => ${JSON.stringify(nodeEdits, null, 2)}`);
                 const broadcast: MwBroadcast = {};
                 for (let i = 0; i < nodeEdits.length; i++) {
                     const nodeEdit = nodeEdits[i];
                     broadcast[nodeEdit.nodeId] = nodeEdit.edits;
                 }
-                // console.lg(`broadcast => ${JSON.stringify(broadcast, null, 2)}`);
                 callback(void 0, broadcast);
             }).catch(function(err) {
                 callback(new Error(""), void 0);
@@ -508,7 +472,6 @@ function getBroadcast(roomId: string, path: string, callback: (err: Error, broad
  * @param path
  */
 export function setEdits(nodeId: string, roomId: string, path: string, edits: MwEdits, callback: (err: Error, data: { roomId: string; path: string; broadcast: MwBroadcast }) => any) {
-    // console.lg(`setEdits('${roomId}', '${path}'), from '${nodeId}'.`);
     ensureRemoteKey(roomId, path, nodeId, function(err: Error) {
         if (!err) {
             ensureRemote(roomId, path, nodeId, (err: Error, remote: MwRemote) => {
@@ -606,7 +569,6 @@ export function setEdits(nodeId: string, roomId: string, path: string, edits: Mw
                             }
                         }
                     }
-                    // console.lg(`outstanding.length => ${outstanding.length}`);
                     Promise.all(outstanding).then(function(unused) {
                         setRemote(roomId, path, nodeId, remote, function(err: Error) {
                             if (!err) {
@@ -620,12 +582,10 @@ export function setEdits(nodeId: string, roomId: string, path: string, edits: Mw
                                 });
                             }
                             else {
-                                // console.lg(`Unable to update remote 0 => ${err.message}, 1 => ${err}, 2 => ${JSON.stringify(err, null, 2)}`);
                                 callback(err, void 0);
                             }
                         });
                     }).catch(function(err) {
-                        // console.lg(`Unable to apply the edits: 1 => ${err}, 2 => ${JSON.stringify(err, null, 2)}`);
                         callback(new Error(`Unable to apply the edits: ${err}`), void 0);
                     });
                 }
@@ -654,7 +614,6 @@ export function getEdits(nodeId: string, roomId: string, callback: (err, data: {
                         if (!err) {
                             remote.addChange(nodeId, change);
                             const edits = remote.getEdits(nodeId);
-                            // console.lg(`nodeId=${nodeId} => ${JSON.stringify(edits, null, 2)}`);
                             setRemote(roomId, path, nodeId, remote, function(err: Error) {
                                 if (!err) {
                                     resolve({ path, edits });
@@ -685,35 +644,6 @@ export function getEdits(nodeId: string, roomId: string, callback: (err, data: {
             callback(err, void 0);
         });
     });
-    /*
-        const roomKey = createRoomKey(roomId);
-        client.get(roomKey, function(err, roomAsJSON: string) {
-            if (!err) {
-                const files: { [path: string]: MwEdits } = {};
-                const room: RoomValue = JSON.parse(roomAsJSON);
-                const paths = Object.keys(room.units);
-                for (let i = 0; i < paths.length; i++) {
-                    const path = paths[i];
-                    const unit = new MwUnit(new ServerWorkspace());
-                    const frozen = room.units[path];
-                    if (frozen) {
-                        unit.rehydrate(frozen);
-                    }
-                    const edits: MwEdits = unit.getEdits(fromId);
-                    files[path] = edits;
-                    room.units[path] = unit.dehydrate();
-                }
-                console.lg(`ROOM: ${roomId} => ${JSON.stringify(Object.keys(room.units), null, 2)}`);
-                client.set(roomKey, JSON.stringify(room), function(err: Error, reply: string) {
-                    // The roomId parameter is the `from` room because the broadcast contains all the `to` rooms.
-                    callback(err, { fromId: roomId, roomId: fromId, files });
-                });
-            }
-            else {
-                callback(err, void 0);
-            }
-        });
-    */
 }
 
 /**
@@ -721,16 +651,13 @@ export function getEdits(nodeId: string, roomId: string, callback: (err, data: {
  */
 export function destroyRoom(request: express.Request, response: express.Response): void {
     const params: Room = request.params;
-    // console.lg(`destroyRoom(${JSON.stringify(params, null, 2)})`);
     const roomId = params.id;
     const roomKey = createRoomKey(roomId);
     client.del(roomKey, function(err, reply) {
         if (!err) {
-            // console.lg(reply);
             response.status(200).send({});
         }
         else {
-            // console.lg(err);
             response.status(404).send({});
         }
     });

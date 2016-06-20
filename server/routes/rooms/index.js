@@ -8,7 +8,10 @@ var isString_1 = require('../../utils/isString');
 var uniqueId_1 = require('./uniqueId');
 var DMP_1 = require('../../synchronization/DMP');
 var MwRemote_1 = require('../../synchronization/MwRemote');
-var TEN_MINUTES_IN_SECONDS = 600;
+var EXPIRE_DURATION_IN_SECONDS = 1800;
+var ROOM_PATHS_PROPERTY_NAME = 'paths';
+var ROOM_PATH_CONTENT_PROPERTY_NAME = 'content';
+var ROOM_PATH_REMOTES_PROPERTY_NAME = 'remotes';
 var dmp = new DMP_1.default();
 var client;
 if (process.env.REDISTOGO_URL) {
@@ -20,10 +23,10 @@ else {
     client = redis.createClient();
 }
 client.on('ready', function (err) {
-    console.log("Redis connection has been established.");
+    console.log("Redis client is 'ready'.");
 });
 client.on('connect', function (err) {
-    console.log("Redis stream is connected to the server.");
+    console.log("Redis client has connected to the server.");
 });
 client.on('reconnecting', function (err) {
     console.log("Trying to reconnect to the Redis server after losing the connection.");
@@ -43,20 +46,20 @@ function createRoomKey(roomId) {
 function createRoomPropertyKey(roomId, name) {
     return createRoomKey(roomId) + "@" + name;
 }
-function createUnitKey(roomId, path) {
+function createRoomPathKey(roomId, path) {
     return createRoomKey(roomId) + ", path:" + path;
 }
-function createUnitPropertyKey(roomId, path, name) {
-    return createUnitKey(roomId, path) + "@" + name;
+function createRoomPathPropertyKey(roomId, path, name) {
+    return createRoomPathKey(roomId, path) + "@" + name;
 }
-function createRemoteKey(roomId, path, nodeId) {
-    return createUnitKey(roomId, path) + ", node:" + nodeId;
+function createRoomPathRemoteKey(roomId, path, nodeId) {
+    return createRoomPathKey(roomId, path) + ", node:" + nodeId;
 }
 function createRoom(request, response) {
     var params = request.body;
     params.description = isString_1.default(params.description) ? params.description : "";
     params.public = isBoolean_1.default(params.public) ? params.public : true;
-    params.expire = isNumber_1.default(params.expire) ? params.expire : TEN_MINUTES_IN_SECONDS;
+    params.expire = isNumber_1.default(params.expire) ? params.expire : EXPIRE_DURATION_IN_SECONDS;
     var roomId = uniqueId_1.default();
     var roomKey = createRoomKey(roomId);
     var value = {
@@ -67,7 +70,7 @@ function createRoom(request, response) {
     };
     client.set(roomKey, JSON.stringify(value), function (err, reply) {
         if (!err) {
-            client.expire(roomKey, params.expire, function (err, reply) {
+            client.expire(roomKey, EXPIRE_DURATION_IN_SECONDS, function (err, reply) {
                 if (!err) {
                     var room = {
                         id: roomId,
@@ -116,7 +119,7 @@ function getRoom(request, response) {
 }
 exports.getRoom = getRoom;
 function ensurePathKey(roomId, path, callback) {
-    var paths = createRoomPropertyKey(roomId, 'paths');
+    var paths = createRoomPropertyKey(roomId, ROOM_PATHS_PROPERTY_NAME);
     client.sismember([paths, path], function (reason, exists) {
         if (!reason) {
             asserts_1.mustBeTruthy(isNumber_1.default(exists), "exists must be a number");
@@ -126,7 +129,7 @@ function ensurePathKey(roomId, path, callback) {
             else {
                 client.sadd([paths, path], function (reason, reply) {
                     if (!reason) {
-                        client.expire(paths, TEN_MINUTES_IN_SECONDS, function (reason, reply) {
+                        client.expire(paths, EXPIRE_DURATION_IN_SECONDS, function (reason, reply) {
                             callback(reason);
                         });
                     }
@@ -144,7 +147,7 @@ function ensurePathKey(roomId, path, callback) {
 function ensureRemoteKey(roomId, path, nodeId, callback) {
     ensurePathKey(roomId, path, function (err) {
         if (!err) {
-            var remotes_1 = createUnitPropertyKey(roomId, path, 'remotes');
+            var remotes_1 = createRoomPathPropertyKey(roomId, path, ROOM_PATH_REMOTES_PROPERTY_NAME);
             client.sismember([remotes_1, nodeId], function (reason, exists) {
                 if (!reason) {
                     asserts_1.mustBeTruthy(isNumber_1.default(exists), "exists must be a number");
@@ -154,7 +157,7 @@ function ensureRemoteKey(roomId, path, nodeId, callback) {
                     else {
                         client.sadd([remotes_1, nodeId], function (reason, reply) {
                             if (!reason) {
-                                client.expire(remotes_1, TEN_MINUTES_IN_SECONDS, function (reason, reply) {
+                                client.expire(remotes_1, EXPIRE_DURATION_IN_SECONDS, function (reason, reply) {
                                     callback(reason);
                                 });
                             }
@@ -175,8 +178,8 @@ function ensureRemoteKey(roomId, path, nodeId, callback) {
     });
 }
 function getRemote(roomId, path, nodeId, callback) {
-    var key = createRemoteKey(roomId, path, nodeId);
-    client.get(key, function (err, remoteText) {
+    var remoteKey = createRoomPathRemoteKey(roomId, path, nodeId);
+    client.get(remoteKey, function (err, remoteText) {
         if (!err) {
             var remote = new MwRemote_1.default();
             remote.rehydrate(JSON.parse(remoteText));
@@ -188,15 +191,17 @@ function getRemote(roomId, path, nodeId, callback) {
     });
 }
 function setRemote(roomId, path, nodeId, remote, callback) {
-    var key = createRemoteKey(roomId, path, nodeId);
+    var remoteKey = createRoomPathRemoteKey(roomId, path, nodeId);
     var dehydrated = remote.dehydrate();
     var remoteText = JSON.stringify(dehydrated);
-    client.set(key, remoteText, function (err, replay) {
-        callback(err);
+    client.set(remoteKey, remoteText, function (err, reply) {
+        client.expire(remoteKey, EXPIRE_DURATION_IN_SECONDS, function (err, reply) {
+            callback(err);
+        });
     });
 }
 function ensureRemote(roomId, path, nodeId, callback) {
-    var key = createRemoteKey(roomId, path, nodeId);
+    var key = createRoomPathRemoteKey(roomId, path, nodeId);
     client.exists(key, function (err, exists) {
         if (!err) {
             asserts_1.mustBeTruthy(isNumber_1.default(exists), "exists must be a number");
@@ -225,16 +230,19 @@ var RedisEditor = (function () {
         this.roomId = roomId;
         this.path = path;
         this.refCount = 1;
-        this.key = createUnitPropertyKey(this.roomId, this.path, 'editor');
+        this.contentKey = createRoomPathPropertyKey(this.roomId, this.path, ROOM_PATH_CONTENT_PROPERTY_NAME);
     }
     RedisEditor.prototype.getText = function (callback) {
-        client.get(this.key, function (err, reply) {
+        client.get(this.contentKey, function (err, reply) {
             callback(err, reply);
         });
     };
     RedisEditor.prototype.setText = function (text, callback) {
-        client.set(this.key, text, function (err, reply) {
-            callback(err);
+        var _this = this;
+        client.set(this.contentKey, text, function (err, reply) {
+            client.expire(_this.contentKey, EXPIRE_DURATION_IN_SECONDS, function (err, reply) {
+                callback(err);
+            });
         });
     };
     RedisEditor.prototype.patch = function (patches, callback) {
@@ -260,35 +268,37 @@ var RedisEditor = (function () {
     return RedisEditor;
 }());
 function createDocument(roomId, path, text, callback) {
-    var editorKey = createUnitPropertyKey(roomId, path, 'editor');
-    client.set(editorKey, text, function (err, reply) {
-        var editor = new RedisEditor(roomId, path);
-        callback(err, editor);
-        editor.release();
+    var contentKey = createRoomPathPropertyKey(roomId, path, ROOM_PATH_CONTENT_PROPERTY_NAME);
+    client.set(contentKey, text, function (err, reply) {
+        client.expire(contentKey, EXPIRE_DURATION_IN_SECONDS, function (err, reply) {
+            var editor = new RedisEditor(roomId, path);
+            callback(err, editor);
+            editor.release();
+        });
     });
 }
 function getDocument(roomId, path, callback) {
-    var editorKey = createUnitPropertyKey(roomId, path, 'editor');
-    client.get(editorKey, function (err, reply) {
+    var contentKey = createRoomPathPropertyKey(roomId, path, ROOM_PATH_CONTENT_PROPERTY_NAME);
+    client.get(contentKey, function (err, reply) {
         var editor = new RedisEditor(roomId, path);
         callback(err, editor);
         editor.release();
     });
 }
 function deleteDocument(roomId, path, callback) {
-    var editorKey = createUnitPropertyKey(roomId, path, 'editor');
-    client.del(editorKey, function (err, reply) {
+    var contentKey = createRoomPathPropertyKey(roomId, path, ROOM_PATH_CONTENT_PROPERTY_NAME);
+    client.del(contentKey, function (err, reply) {
         callback(err);
     });
 }
 function getPaths(roomId, callback) {
-    var paths = createRoomPropertyKey(roomId, 'paths');
+    var paths = createRoomPropertyKey(roomId, ROOM_PATHS_PROPERTY_NAME);
     client.smembers(paths, function (err, reply) {
         callback(err, reply);
     });
 }
 function getRemoteNodeIds(roomId, path, callback) {
-    var remotes = createUnitPropertyKey(roomId, path, 'remotes');
+    var remotes = createRoomPathPropertyKey(roomId, path, ROOM_PATH_REMOTES_PROPERTY_NAME);
     client.smembers(remotes, function (err, reply) {
         callback(err, reply);
     });
