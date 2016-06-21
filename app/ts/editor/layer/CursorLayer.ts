@@ -6,7 +6,7 @@ import Position from '../Position';
 import PixelPosition from '../PixelPosition';
 import CursorConfig from './CursorConfig';
 
-var IE8;
+let isIE8;
 
 /**
  * This class is the HTML representation of the CursorLayer.
@@ -35,13 +35,13 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
     constructor(parent: HTMLElement) {
         super(parent, "ace_layer ace_cursor-layer");
 
-        if (IE8 === void 0) {
-            IE8 = "opacity" in this.element;
+        if (isIE8 === void 0) {
+            isIE8 = !("opacity" in this.element.style);
         }
 
         this.cursor = this.addCursor();
         addCssClass(this.element, "ace_hidden-cursors");
-        this.$updateCursors = this.$updateVisibility.bind(this);
+        this.$updateCursors = (isIE8 ? this.$updateVisibility : this.$updateOpacity).bind(this);
     }
 
     /**
@@ -53,15 +53,15 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
     }
 
     private $updateVisibility(visible: boolean): void {
-        var cursors = this.cursors;
-        for (var i = cursors.length; i--;) {
+        const cursors = this.cursors;
+        for (let i = cursors.length; i--;) {
             cursors[i].style.visibility = visible ? "" : "hidden";
         }
     }
 
     private $updateOpacity(opaque: boolean): void {
-        var cursors = this.cursors;
-        for (var i = cursors.length; i--;) {
+        const cursors = this.cursors;
+        for (let i = cursors.length; i--;) {
             cursors[i].style.opacity = opaque ? "" : "0";
         }
     }
@@ -109,10 +109,11 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
      * @return {void}
      */
     public setSmoothBlinking(smoothBlinking: boolean): void {
-        if (smoothBlinking !== this.smoothBlinking && !IE8) {
+        if (smoothBlinking !== this.smoothBlinking && !isIE8) {
             this.smoothBlinking = smoothBlinking;
             setCssClass(this.element, "ace_smooth-blinking", smoothBlinking);
             this.$updateCursors(true);
+            // TODO: Differs from ACE...
             this.$updateCursors = (smoothBlinking
                 ? this.$updateOpacity
                 : this.$updateVisibility).bind(this);

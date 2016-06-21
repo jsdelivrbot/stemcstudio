@@ -320,7 +320,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         this.$loop.schedule(CHANGE_FULL);
 
         this.setPadding(4);
-        this.setFontSize("12px");
+        this.setFontSize("16px");
         this.setShowFoldWidgets(true);
         this.updateCharacterSize();
     }

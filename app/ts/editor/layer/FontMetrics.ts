@@ -98,7 +98,7 @@ export default class FontMetrics implements EventBus<any, FontMetrics>, Shareabl
         el.style.width = "0.2px";
         document.documentElement.appendChild(el);
         const w = el.getBoundingClientRect().width;
-        CHAR_COUNT = (w > 0 && w < 1) ? 1 : 100;
+        CHAR_COUNT = (w > 0 && w < 1) ? 50 : 100;
         el.parentNode.removeChild(el);
     }
 
@@ -120,13 +120,19 @@ export default class FontMetrics implements EventBus<any, FontMetrics>, Shareabl
 
     public checkForSizeChanges(): void {
         const size = this.$measureSizes();
+        //      console.log(`size           => ${JSON.stringify(size, null, 2)}`);
+        //      console.log(`$characterSize => ${JSON.stringify(this.$characterSize, null, 2)}`);
         if (size && (this.$characterSize.width !== size.width || this.$characterSize.height !== size.height)) {
             this.$measureNode.style.fontWeight = "bold";
-            const boldSize = this.$measureSizes();
-            this.$measureNode.style.fontWeight = "";
+            try {
+                const boldSize = this.$measureSizes();
+                this.allowBoldFonts = boldSize && boldSize.width === size.width && boldSize.height === size.height;
+            }
+            finally {
+                this.$measureNode.style.fontWeight = "";
+            }
             this.$characterSize = size;
             this.charSizes = Object.create(null);
-            this.allowBoldFonts = boldSize && boldSize.width === size.width && boldSize.height === size.height;
             console.log(`FontMetrics ${changeCharacterSize} ${JSON.stringify(size, null, 2)}`);
             const ws = "xiXbm".split("").map(this.$measureCharWidth, this);
             console.log(`ws ${changeCharacterSize} ${JSON.stringify(ws, null, 2)}`);
@@ -179,8 +185,7 @@ export default class FontMetrics implements EventBus<any, FontMetrics>, Shareabl
                 width: this.$measureNode.clientWidth / CHAR_COUNT
             };
         }
-        // Size and width can be null if the editor is not visible or
-        // detached from the document
+        // Size and width can be null if the editor is not visible or detached from the document.
         if (size.width === 0 || size.height === 0) {
             return null;
         }
