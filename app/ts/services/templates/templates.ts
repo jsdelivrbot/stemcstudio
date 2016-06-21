@@ -24,9 +24,7 @@ import {LANGUAGE_MARKDOWN} from '../../languages/modes';
 app.factory('templates', [
     '$location',
     'options',
-    'CODE_MARKER',
     'LIBS_MARKER',
-    'STYLE_MARKER',
     'SCRIPTS_MARKER',
     'FILENAME_HTML',
     'FILENAME_CODE',
@@ -35,9 +33,7 @@ app.factory('templates', [
     function(
         $location: angular.ILocationService,
         options: IOptionManager,
-        CODE_MARKER: string,
         LIBS_MARKER: string,
-        STYLE_MARKER: string,
         SCRIPTS_MARKER: string,
         FILENAME_HTML: string,
         FILENAME_CODE: string,

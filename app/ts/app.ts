@@ -134,7 +134,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version for use by scopes.
-app.constant('version', '2.2.3');
+app.constant('version', '2.2.4');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -183,8 +183,6 @@ app.constant('VENDOR_FOLDER_MARKER', VENDOR_FOLDER_MARKER);
 // For backwards compatibility, don't change the values of these constants.
 app.constant('SCRIPTS_MARKER', '<!-- SCRIPTS-MARKER -->');
 app.constant('STYLES_MARKER', '<!-- STYLES-MARKER -->');
-app.constant('STYLE_MARKER', '/* STYLE-MARKER */');
-app.constant('CODE_MARKER', '// CODE-MARKER');
 app.constant('LIBS_MARKER', '// LIBS-MARKER');
 
 // We can change the global namespace used by Google's Universal Analytics.

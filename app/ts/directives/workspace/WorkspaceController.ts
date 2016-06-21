@@ -117,10 +117,8 @@ export default class WorkspaceController implements WorkspaceMixin {
         'FILENAME_LESS',
         'FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS',
         'FILENAME_TYPESCRIPT_CURRENT_LIB_DTS',
-        'STYLE_MARKER',
         'STYLES_MARKER',
         'SCRIPTS_MARKER',
-        'CODE_MARKER',
         'LIBS_MARKER',
         'VENDOR_FOLDER_MARKER',
         'wsModel'
@@ -189,10 +187,8 @@ export default class WorkspaceController implements WorkspaceMixin {
         private FILENAME_LESS: string,
         private FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS: string,
         private FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
-        private STYLE_MARKER: string,
         private STYLES_MARKER: string,
         private SCRIPTS_MARKER: string,
-        private CODE_MARKER: string,
         private LIBS_MARKER: string,
         private VENDOR_FOLDER_MARKER: string,
         private wsModel: WsModel) {
@@ -209,14 +205,12 @@ export default class WorkspaceController implements WorkspaceMixin {
                 this.$scope,
                 this.$location,
                 this.$window,
-                this.CODE_MARKER,
                 this.FILENAME_CODE,
                 this.FILENAME_LESS,
                 this.FILENAME_LIBS,
                 this.FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS,
                 this.LIBS_MARKER,
                 this.SCRIPTS_MARKER,
-                this.STYLE_MARKER,
                 this.STYLES_MARKER,
                 this.VENDOR_FOLDER_MARKER); rebuildPromise = undefined; }, delay);
         };

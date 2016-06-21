@@ -1202,20 +1202,20 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     /**
      * 
      */
-    renameFile(oldName: string, newName: string): void {
-        const mode = modeFromName(newName);
+    renameFile(oldPath: string, newPath: string): void {
+        const mode = modeFromName(newPath);
         if (!mode) {
-            throw new Error(`${newName} is not a recognized language.`);
+            throw new Error(`${newPath} is not a recognized language.`);
         }
         // Make sure that the file we want to re-path really does exist.
-        const oldFile = this.files.getWeakRef(oldName);
+        const oldFile = this.files.getWeakRef(oldPath);
         if (oldFile) {
-            if (!this.existsFile(newName)) {
+            if (!this.existsFile(newPath)) {
                 // Determine whether we can recycle a file from trash or must create a new file.
-                if (!this.existsFileInTrash(newName)) {
+                if (!this.existsFileInTrash(newPath)) {
 
                     // We must create a new file.
-                    const newFile = this.newFile(newName);
+                    const newFile = this.newFile(newPath);
 
                     // Initialize properties.
                     newFile.setText(oldFile.getText());
@@ -1228,27 +1228,28 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
                     // Initialize properties that depend upon the new path.
                     newFile.mode = mode;
 
-                    this.files.putWeakRef(newName, newFile);
+                    this.files.putWeakRef(newPath, newFile);
                 }
                 else {
                     // We can recycle a file from trash.
-                    this.restoreFileFromTrash(newName);
-                    const theFile = this.files.getWeakRef(newName);
+                    this.restoreFileFromTrash(newPath);
+                    const theFile = this.files.getWeakRef(newPath);
                     // Initialize properties that depend upon the new path.
                     theFile.mode = mode;
                 }
                 // Delete the file by the old path.
-                // FIXME:
-                this.deleteFile(oldName, (reason: Error) => {
-                    console.warn("TODO: Rename");
+                this.deleteFile(oldPath, (reason: Error) => {
+                    if (reason) {
+                        console.warn(`renameFile('${oldPath}', '${newPath}') could not delete the oldFile: ${reason.message}`);
+                    }
                 });
             }
             else {
-                throw new Error(`${newName} already exists. The new path must be unique.`);
+                throw new Error(`${newPath} already exists. The new path must be unique.`);
             }
         }
         else {
-            throw new Error(`${oldName} does not exist. The old path must be the path of an existing file.`);
+            throw new Error(`${oldPath} does not exist. The old path must be the path of an existing file.`);
         }
     }
 

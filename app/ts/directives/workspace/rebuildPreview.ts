@@ -8,10 +8,12 @@ import IOption from '../../services/options/IOption';
 import IOptionManager from '../../services/options/IOptionManager';
 import currentJavaScript from './currentJavaScript';
 import detect1x from './detect1x';
+import detectMarker from './detectMarker';
 import scriptURL from './scriptURL';
 import WorkspaceScope from '../../scopes/WorkspaceScope';
 import WsModel from '../../wsmodel/services/WsModel';
 import mathscript from 'davinci-mathscript';
+import {CODE_MARKER, STYLE_MARKER} from '../../features/preview/index';
 
 export default function rebuildPreview(
     workspace: WsModel,
@@ -19,14 +21,12 @@ export default function rebuildPreview(
     $scope: WorkspaceScope,
     $location: angular.ILocationService,
     $window: angular.IWindowService,
-    CODE_MARKER: string,
     FILENAME_CODE: string,
     FILENAME_LESS: string,
     FILENAME_LIBS: string,
     FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS: string,
     LIBS_MARKER: string,
     SCRIPTS_MARKER: string,
-    STYLE_MARKER: string,
     STYLES_MARKER: string,
     VENDOR_FOLDER_MARKER: string
 ) {
@@ -75,7 +75,15 @@ export default function rebuildPreview(
                         const stylesTags = chosenCssFileNames.map((fileName: string) => {
                             return "<link rel='stylesheet' href='" + scriptURL(DOMAIN, fileName, VENDOR_FOLDER_MARKER) + "'></link>\n";
                         });
-                        html = html.replace(STYLES_MARKER, stylesTags.join(""));
+
+                        if (detectMarker(STYLES_MARKER, workspace, bestFile)) {
+                            html = html.replace(STYLES_MARKER, stylesTags.join(""));
+                        }
+                        else {
+                            if (stylesTags.length > 0) {
+                                console.warn(`Unable to find '${STYLES_MARKER}' in ${bestFile} file.`);
+                            }
+                        }
 
                         const chosenJsFileNames: string[] = closureOpts.map(function(option: IOption) { return option.minJs; }).reduce(function(previousValue, currentValue) { return previousValue.concat(currentValue); }, []);
                         // TODO: We will later want to make operator overloading configurable for speed.
@@ -86,15 +94,32 @@ export default function rebuildPreview(
                             return "<script src='" + scriptURL(DOMAIN, fileName, VENDOR_FOLDER_MARKER) + "'></script>\n";
                         });
 
-                        html = html.replace(SCRIPTS_MARKER, scriptTags.join(""));
+                        if (detectMarker(SCRIPTS_MARKER, workspace, bestFile)) {
+                            html = html.replace(SCRIPTS_MARKER, scriptTags.join(""));
+                        }
+                        else {
+                            if (scriptTags.length > 0) {
+                                console.warn(`Unable to find '${SCRIPTS_MARKER}' in ${bestFile} file.`);
+                            }
+                        }
 
                         // TODO: It would be nice to have a more flexible way to define stylesheet imports.
                         // TODO: We should then be able to move away from symbolic constants for the stylesheet file name.
                         if (fileExists('style.css', workspace)) {
-                            html = html.replace(STYLE_MARKER, [fileContent('style.css', workspace)].join(""));
+                            if (detectMarker(STYLE_MARKER, workspace, bestFile)) {
+                                html = html.replace(STYLE_MARKER, [fileContent('style.css', workspace)].join(""));
+                            }
+                            else {
+                                console.warn(`Unable to find '${STYLE_MARKER}' in ${bestFile} file.`);
+                            }
                         }
                         else if (fileExists(FILENAME_LESS, workspace)) {
-                            html = html.replace(STYLE_MARKER, [fileContent(FILENAME_LESS, workspace)].join(""));
+                            if (detectMarker(STYLE_MARKER, workspace, bestFile)) {
+                                html = html.replace(STYLE_MARKER, [fileContent(FILENAME_LESS, workspace)].join(""));
+                            }
+                            else {
+                                console.warn(`Unable to find '${STYLE_MARKER}' in ${bestFile} file.`);
+                            }
                         }
 
                         if (detect1x(workspace)) {
@@ -106,7 +131,7 @@ export default function rebuildPreview(
                             html = html.replace('<!-- STYLE-MARKER -->', ['<style>', fileContent(FILENAME_LESS, workspace), '</style>'].join(""));
                             html = html.replace('<!-- CODE-MARKER -->', currentJavaScript(FILENAME_CODE, workspace));
                         }
-                        else {
+                        else if (detectMarker(CODE_MARKER, workspace, bestFile)) {
                             const modulesJs: string[] = [];
                             const names: string[] = Object.keys(workspace.lastKnownJs);
                             const iLen: number = names.length;
@@ -117,6 +142,9 @@ export default function rebuildPreview(
                                 modulesJs.push(moduleMs);
                             }
                             html = html.replace(CODE_MARKER, modulesJs.join('\n'));
+                        }
+                        else {
+                            console.warn(`Unable to find '${CODE_MARKER}' in index.html file.`);
                         }
 
                         content.open();
