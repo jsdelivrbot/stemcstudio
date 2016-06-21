@@ -35,6 +35,7 @@ export default class ExplorerFilesController {
             .then((path) => {
                 try {
                     this.wsModel.newFile(path);
+                    this.wsModel.openFile(path);
                     this.wsModel.selectFile(path);
                     this.wsModel.updateStorage();
                 }

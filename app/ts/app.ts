@@ -134,7 +134,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version for use by scopes.
-app.constant('version', '2.2.4');
+app.constant('version', '2.2.5');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
