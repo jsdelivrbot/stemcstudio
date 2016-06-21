@@ -8,6 +8,7 @@ import Annotation from './Annotation';
 
 import CursorLayer from "./layer/CursorLayer";
 import FontMetrics from "./layer/FontMetrics";
+import {changeCharacterSize} from './layer/FontMetrics';
 import GutterLayer from "./layer/GutterLayer";
 import MarkerLayer from "./layer/MarkerLayer";
 // import PrintMarginLayer from "./layer/PrintMarginLayer";
@@ -298,13 +299,13 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
 
         this.textLayer.setFontMetrics(this.fontMetrics);
 
-        this.removeChangeCharacterSizeHandler = this.textLayer.on("changeCharacterSize", (event, text: TextLayer) => {
+        this.removeChangeCharacterSizeHandler = this.textLayer.on(changeCharacterSize, (event, text: TextLayer) => {
             this.updateCharacterSize();
             this.onResize(true, this.gutterWidth, this.$size.width, this.$size.height);
             /**
              * @event changeCharacterSize
              */
-            this.eventBus._signal("changeCharacterSize", event);
+            this.eventBus._signal(changeCharacterSize, event);
         });
 
         this.$size = {
@@ -318,10 +319,10 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         this.$loop = new RenderLoop(this.$renderChanges.bind(this), this.container.ownerDocument.defaultView);
         this.$loop.schedule(CHANGE_FULL);
 
-        this.updateCharacterSize();
         this.setPadding(4);
         this.setFontSize("12px");
         this.setShowFoldWidgets(true);
+        this.updateCharacterSize();
     }
 
     /**

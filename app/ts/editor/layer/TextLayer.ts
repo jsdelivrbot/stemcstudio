@@ -7,6 +7,7 @@ import EventBus from "../EventBus";
 import EventEmitterClass from "../lib/EventEmitterClass";
 import FoldLine from "../FoldLine";
 import FontMetrics from "../layer/FontMetrics";
+import {changeCharacterSize} from '../layer/FontMetrics'
 import TextConfig from './TextConfig';
 import Token from "../Token";
 
@@ -122,11 +123,11 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
         this.fontMetrics = fontMetrics;
         this.fontMetrics.addRef();
         // TODO: Make sure off is called when fontMetrics are released
-        this.removeChangeCharacterSizeHandler = this.fontMetrics.on("changeCharacterSize", (e) => {
+        this.removeChangeCharacterSizeHandler = this.fontMetrics.on(changeCharacterSize, (e) => {
             /**
              * @event changeCharacterSize
              */
-            this.eventBus._signal("changeCharacterSize", e);
+            this.eventBus._signal(changeCharacterSize, e);
         });
         this.$pollSizeChanges();
     }
