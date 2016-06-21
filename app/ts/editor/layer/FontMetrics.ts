@@ -120,8 +120,6 @@ export default class FontMetrics implements EventBus<any, FontMetrics>, Shareabl
 
     public checkForSizeChanges(): void {
         const size = this.$measureSizes();
-        //      console.log(`size           => ${JSON.stringify(size, null, 2)}`);
-        //      console.log(`$characterSize => ${JSON.stringify(this.$characterSize, null, 2)}`);
         if (size && (this.$characterSize.width !== size.width || this.$characterSize.height !== size.height)) {
             this.$measureNode.style.fontWeight = "bold";
             try {
@@ -133,9 +131,7 @@ export default class FontMetrics implements EventBus<any, FontMetrics>, Shareabl
             }
             this.$characterSize = size;
             this.charSizes = Object.create(null);
-            console.log(`FontMetrics ${changeCharacterSize} ${JSON.stringify(size, null, 2)}`);
-            const ws = "xiXbm".split("").map(this.$measureCharWidth, this);
-            console.log(`ws ${changeCharacterSize} ${JSON.stringify(ws, null, 2)}`);
+            // const ws = "xiXbm".split("").map(this.$measureCharWidth, this);
             /**
              * @event changeCharacterSize
              */
