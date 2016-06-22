@@ -1,4 +1,5 @@
 import app from '../app';
+import BootstrapDialog from 'bootstrap-dialog';
 import IDoodleManager from '../services/doodles/IDoodleManager';
 import DownloadScope from '../scopes/DownloadScope';
 import GitHubService from '../services/github/GitHubService';
@@ -52,7 +53,7 @@ app.controller('download-controller', [
                     const gists = promiseValue.data;
                     const headers = promiseValue.headers;
                     $scope.gists = gists;
-                    if (headers['link']) {
+                    if (headers('link')) {
                         $scope.links = linkToMap(headers('link'));
                     }
                     else {

@@ -13,13 +13,16 @@ interface DeltaLight {
     text: string;
 }
 
+/**
+ * {action: 'removeFolds', folds: Fold[]} is a possible delta, so lines is actually optional!
+ */
 function $serializeDelta(delta: Delta): DeltaLight {
     return {
         action: delta.action,
         start: delta.start,
         end: delta.end,
-        lines: delta.lines.length === 1 ? null : delta.lines,
-        text: delta.lines.length === 1 ? delta.lines[0] : null
+        lines: delta.lines ? (delta.lines.length === 1 ? null : delta.lines) : null,
+        text: delta.lines ? (delta.lines.length === 1 ? delta.lines[0] : null) : null
     };
 }
 

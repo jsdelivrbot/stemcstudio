@@ -88,6 +88,10 @@ module.exports = function(grunt) {
                         dest: 'generated/vendor/jasmine@2.4.1/package.json'
                     },
                     {
+                        src: 'app/img/checkerboard.jpg',
+                        dest: 'generated/img/checkerboard.jpg'
+                    },
+                    {
                         src: 'app/img/particles.png',
                         dest: 'generated/img/particles.png'
                     },
@@ -388,6 +392,10 @@ module.exports = function(grunt) {
                     {
                         src: 'museum/jasmine@2.4.1/package.json',
                         dest: 'dist/vendor/jasmine@2.4.1/package.json'
+                    },
+                    {
+                        src: 'app/img/checkerboard.jpg',
+                        dest: 'dist/img/checkerboard.jpg'
                     },
                     {
                         src: 'app/img/particles.png',

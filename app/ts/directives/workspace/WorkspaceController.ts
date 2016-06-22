@@ -1,4 +1,5 @@
 import * as ng from 'angular';
+// import BootstrapDialog from 'bootstrap-dialog';
 import CredentialsService from '../../services/credentials/CredentialsService';
 import Base64Service from '../../services/base64/Base64Service';
 import Delta from '../../editor/Delta';
@@ -17,6 +18,7 @@ import IDoodleManager from '../../services/doodles/IDoodleManager';
 import GitHubService from '../../services/github/GitHubService';
 import LabelDialog from '../../modules/publish/LabelDialog';
 import LabelFlow from './LabelFlow';
+// import linkToMap from '../../utils/linkToMap';
 import PropertiesDialog from '../../modules/properties/PropertiesDialog';
 import PropertiesFlow from './PropertiesFlow';
 import PublishFlow from './PublishFlow';
@@ -341,22 +343,6 @@ export default class WorkspaceController implements WorkspaceMixin {
             propertiesFlow.execute();
         };
 
-        $scope.doPublish = (label?: string, value?: number) => {
-            if (wsModel.isZombie()) {
-                return;
-            }
-            ga('send', 'event', 'doodle', 'upload', label, value);
-            const publishFlow = new PublishFlow(
-                $scope.userLogin(),
-                this.flowService,
-                this.modalDialog,
-                this.publishDialog,
-                this.credentials,
-                this.stemcArXiv,
-                wsModel);
-            publishFlow.execute();
-        };
-
         $scope.doUpload = (label?: string, value?: number) => {
             if (wsModel.isZombie()) {
                 return;
@@ -371,6 +357,22 @@ export default class WorkspaceController implements WorkspaceMixin {
                 this.github,
                 wsModel);
             uploadFlow.execute();
+        };
+
+        $scope.doPublish = (label?: string, value?: number) => {
+            if (wsModel.isZombie()) {
+                return;
+            }
+            ga('send', 'event', 'doodle', 'publish', label, value);
+            const publishFlow = new PublishFlow(
+                $scope.userLogin(),
+                this.flowService,
+                this.modalDialog,
+                this.publishDialog,
+                this.credentials,
+                this.stemcArXiv,
+                wsModel);
+            publishFlow.execute();
         };
 
         // const endTime = performance.now();
