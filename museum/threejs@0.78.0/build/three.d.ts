@@ -4071,8 +4071,8 @@ declare module THREE {
         constructor(geometry?: BufferGeometry, material?: LineBasicMaterial, mode?: number);
         constructor(geometry?: BufferGeometry, material?: ShaderMaterial, mode?: number);
 
-        geometry: any; // Geometry or BufferGeometry;
-        material: Material; // LineDashedMaterial or LineBasicMaterial or ShaderMaterial
+        geometry: Geometry | BufferGeometry;
+        material: LineDashedMaterial | LineBasicMaterial | ShaderMaterial;
         mode: LineMode;
 
         raycast(raycaster: Raycaster, intersects: any): void;
@@ -4081,7 +4081,7 @@ declare module THREE {
 
     enum LineMode { }
     var LineStrip: LineMode;
-    var LinePieces: LineMode;
+    var LineSegments: LineMode;
 
     export class LOD extends Object3D {
         constructor();
