@@ -235,17 +235,17 @@ module.exports = function(grunt) {
                     },
                     {
                         expand: true,
-                        cwd: "museum/threejs@0.72.0",
+                        cwd: "museum/threejs@0.78.0",
                         src: ["**"],
-                        dest: "generated/vendor/threejs@0.72.0"
+                        dest: "generated/vendor/threejs@0.78.0"
                     },
                     {
                         src: "bower_components/threejs/build/three.js",
-                        dest: "generated/vendor/threejs@0.72.0/build/three.js"
+                        dest: "generated/vendor/threejs@0.78.0/build/three.js"
                     },
                     {
                         src: "bower_components/threejs/build/three.min.js",
-                        dest: "generated/vendor/threejs@0.72.0/build/three.min.js"
+                        dest: "generated/vendor/threejs@0.78.0/build/three.min.js"
                     },
                     {
                         src: "museum/two@0.5.0/two.d.ts",
@@ -541,17 +541,17 @@ module.exports = function(grunt) {
                     },
                     {
                         expand: true,
-                        cwd: "museum/threejs@0.72.0",
+                        cwd: "museum/threejs@0.78.0",
                         src: ["**"],
-                        dest: "dist/vendor/threejs@0.72.0"
+                        dest: "dist/vendor/threejs@0.78.0"
                     },
                     {
                         src: "bower_components/threejs/build/three.js",
-                        dest: "dist/vendor/threejs@0.72.0/build/three.js"
+                        dest: "dist/vendor/threejs@0.78.0/build/three.js"
                     },
                     {
                         src: "bower_components/threejs/build/three.min.js",
-                        dest: "dist/vendor/threejs@0.72.0/build/three.min.js"
+                        dest: "dist/vendor/threejs@0.78.0/build/three.min.js"
                     },
                     {
                         src: "museum/two@0.5.0/two.d.ts",

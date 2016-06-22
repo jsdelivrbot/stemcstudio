@@ -27,7 +27,7 @@ app.factory('options', [
         // const VERSION_REQUIREJS = '2.1.9';
         const VERSION_STATSJS = '0.0.14';
         // const VERSION_SYSTEMJS = '0.19.26';
-        const VERSION_THREEJS = '0.72.0';
+        const VERSION_THREEJS = '0.78.0';
         const VERSION_TWO = '0.5.0';
         // const VERSION_UNDERSCORE = '1.8.3';
 
