@@ -435,22 +435,49 @@ declare module THREE {
         attributes: BufferAttribute[];
         attributesKeys: string[];
         drawcalls: { start: number; count: number; index: number; }[];
-        offsets: { start: number; count: number; index: number; }[];
         boundingBox: Box3;
         boundingSphere: BoundingSphere;
 
         addAttribute(name: string, attribute: BufferAttribute): any;
         addAttribute(name: string, array: any, itemSize: number): any;
         getAttribute(name: string): any;
+
+        /**
+         * Adds a draw call to this geometry.
+         */
         addDrawCall(start: number, count: number, index: number): void;
+
+        /**
+         * Clears all draw calls.
+         */
+        clearDrawCalls(): void;
 
         /**
          * Bakes matrix transform directly into vertex coordinates.
          */
         applyMatrix(matrix: Matrix4): void;
 
-        // this method is currently empty.
+        /**
+         * Center the geometry based on the bounding box.
+         */
         center(): void;
+
+        /**
+         * Rotate the geometry about the X axis.
+         * This is typically done as a one time operation, and not during a loop.
+         * Use Object3D.rotation for typical real-time mesh rotation.
+         */
+        rotateX(radians: number): void;
+        rotateY(radians: number): void;
+        rotateZ(radians: number): void;
+
+        translate(x: number, y: number, z: number): void;
+
+        scale(x: number, y: number, z: number): void;
+
+        lookAt(vector: Vector3): void;
+
+        setFromObject(object: Object3D): void;
 
         fromGeometry(geometry: Geometry, settings?: any): BufferGeometry;
 
@@ -466,9 +493,6 @@ declare module THREE {
          */
         computeBoundingSphere(): void;
 
-        // deprecated
-        computeFaceNormals(): void;
-
         /**
          * Computes vertex normals by averaging face normals.
          */
@@ -482,10 +506,27 @@ declare module THREE {
         computeTangents(): void;
 
         computeOffsets(indexBufferSize: number): void;
+
+        /**
+         * Merge in another BufferGeometry with an optional offset of where to start merging in.
+         */
         merge(geometry: BufferGeometry, offset: number): BufferGeometry;
+
+        /**
+         * Every normal vector in a geometry will have a magnitude of 1. This will correct lighting on the geometry surfaces.
+         */
         normalizeNormals(): void;
+
         reorderBuffers(indexBuffer: number, indexMap: number[], vertexCount: number): void;
+
+        /**
+         * Returns a raw object representation of the BufferGeometry.
+         */
         toJSON(): any;
+
+        /**
+         * Creates a clone of this BufferGeometry.
+         */
         clone(): BufferGeometry;
 
         /**
@@ -5404,6 +5445,18 @@ declare module THREE {
     export class CubeGeometry extends BoxGeometry {
     }
 
+    export class CylinderBufferGeometry extends BufferGeometry {
+        /**
+         * @param radiusTop — Radius of the cylinder at the top.
+         * @param radiusBottom — Radius of the cylinder at the bottom.
+         * @param height — Height of the cylinder.
+         * @param radiusSegments — Number of segmented faces around the circumference of the cylinder.
+         * @param heightSegments — Number of rows of faces along the height of the cylinder.
+         * @param openEnded - A Boolean indicating whether or not to cap the ends of the cylinder.
+         */
+        constructor(radiusTop?: number, radiusBottom?: number, height?: number, radiusSegments?: number, heightSegments?: number, openEnded?: boolean, thetaStart?: number, thetaLength?: number);
+    }
+
     export class CylinderGeometry extends Geometry {
         /**
          * @param radiusTop — Radius of the cylinder at the top.
@@ -5634,12 +5687,38 @@ declare module THREE {
     export class ArrowHelper extends Object3D {
         constructor(dir: Vector3, origin?: Vector3, length?: number, hex?: number, headLength?: number, headWidth?: number);
 
+        /**
+         * Contains the line part of the arrow.
+         */
         line: Line;
+
+        /**
+         * Contains the cone part of the arrow.
+         */
         cone: Mesh;
 
+        /**
+         * Sets the direction of the arrow.
+         * 
+         * @param dir The desired direction. Must be a unit vector.
+         */
         setDirection(dir: Vector3): void;
+
+        /**
+         * Sets the length of the arrow.
+         * 
+         * @param length The desired length.
+         * @param headLength The length of the head of the arrow.
+         * @param headWidth The width of the head of the arrow.
+         */
         setLength(length: number, headLength?: number, headWidth?: number): void;
-        setColor(hex: number): void;
+
+        /**
+         * Sets the color of the arrow.
+         * 
+         * @param color The hexadecimal value of the color.
+         */
+        setColor(color: number): void;
     }
 
     export class AxisHelper extends Line {

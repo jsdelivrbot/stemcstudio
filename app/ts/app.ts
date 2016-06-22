@@ -133,8 +133,8 @@ function vendorPath(packageFolder: string, fileName: string): string {
     return VENDOR_FOLDER_MARKER + '/' + packageFolder + '/' + fileName;
 }
 
-// The application version for use by scopes.
-app.constant('version', '2.2.7');
+// The application version.
+app.constant('version', '2.2.8');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
