@@ -1,4 +1,3 @@
-import DocCommentHighlightRules from "./DocCommentHighlightRules";
 import TextHighlightRules from "./TextHighlightRules";
 
 export default class PythonHighlightRules extends TextHighlightRules {
@@ -26,11 +25,11 @@ export default class PythonHighlightRules extends TextHighlightRules {
             "buffer|dict|hex|object|slice|coerce|dir|id|oct|sorted|intern"
         );
 
-        //var futureReserved = "";
+        // var futureReserved = "";
         var keywordMapper = this.createKeywordMapper({
             "invalid.deprecated": "debugger",
             "support.function": builtinFunctions,
-            //"invalid.illegal": futureReserved,
+            // "invalid.illegal": futureReserved,
             "constant.language": builtinConstants,
             "keyword": keywords
         }, "identifier");

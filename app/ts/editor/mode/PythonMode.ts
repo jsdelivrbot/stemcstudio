@@ -3,8 +3,6 @@ import TextMode from "./TextMode";
 import PythonHighlightRules from "./PythonHighlightRules";
 import MatchingBraceOutdent from "./MatchingBraceOutdent";
 import WorkerClient from "../worker/WorkerClient";
-import CstyleBehaviour from "./behaviour/CstyleBehaviour";
-import CStyleFoldMode from "./folding/CstyleFoldMode";
 import EditSession from "../EditSession";
 import Range from '../Range';
 import PythonFoldMode from './folding/PythonFoldMode';
@@ -15,7 +13,7 @@ const outdents = {
     "raise": 1,
     "break": 1,
     "continue": 1
-}
+};
 
 /**
  * @class PythonMode
@@ -32,17 +30,17 @@ export default class PythonMode extends TextMode {
         this.foldingRules = new PythonFoldMode("\\:");
     }
     getNextLineIndent(state: string, line: string, tab: string): string {
-        var indent = this.$getIndent(line);
+        let indent = this.$getIndent(line);
 
-        var tokenizedLine = this.getTokenizer().getLineTokens(line, state);
-        var tokens = tokenizedLine.tokens;
+        const tokenizedLine = this.getTokenizer().getLineTokens(line, state);
+        const tokens = tokenizedLine.tokens;
 
-        if (tokens.length && tokens[tokens.length - 1].type == "comment") {
+        if (tokens.length && tokens[tokens.length - 1].type === "comment") {
             return indent;
         }
 
-        if (state == "start") {
-            var match = line.match(/^.*[\{\(\[\:]\s*$/);
+        if (state === "start") {
+            const match = line.match(/^.*[\{\(\[\:]\s*$/);
             if (match) {
                 indent += tab;
             }
@@ -55,7 +53,7 @@ export default class PythonMode extends TextMode {
         if (input !== "\r\n" && input !== "\r" && input !== "\n")
             return false;
 
-        var tokens = this.getTokenizer().getLineTokens(line.trim(), state).tokens;
+        const tokens = this.getTokenizer().getLineTokens(line.trim(), state).tokens;
 
         if (!tokens)
             return false;
@@ -63,12 +61,12 @@ export default class PythonMode extends TextMode {
         // ignore trailing comments
         do {
             var last = tokens.pop();
-        } while (last && (last.type == "comment" || (last.type == "text" && last.value.match(/^\s+$/))));
+        } while (last && (last.type === "comment" || (last.type === "text" && last.value.match(/^\s+$/))));
 
         if (!last)
             return false;
 
-        return (last.type == "keyword" && outdents[last.value]);
+        return (last.type === "keyword" && outdents[last.value]);
     }
 
     autoOutdent(state: string, doc: EditSession, row: number): number {
@@ -78,7 +76,7 @@ export default class PythonMode extends TextMode {
         row += 1;
         var indent = this.$getIndent(doc.getLine(row));
         var tab = doc.getTabString();
-        if (indent.slice(-tab.length) == tab)
+        if (indent.slice(-tab.length) === tab)
             doc.remove(new Range(row, indent.length - tab.length, row, indent.length));
         // TODO
         return 0;

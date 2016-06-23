@@ -1,3 +1,5 @@
+import {LANGUAGE_C} from '../languages/modes';
+import {LANGUAGE_CPP} from '../languages/modes';
 import {LANGUAGE_CSS} from '../languages/modes';
 import {LANGUAGE_HTML} from '../languages/modes';
 import {LANGUAGE_JSON} from '../languages/modes';
@@ -12,6 +14,8 @@ const extensionToMode: { [ext: string]: string } = {};
 const fileNameToMode: { [fileName: string]: string } = {};
 
 // extensionToMode['coffee'] = 'CoffeeScript'
+extensionToMode['c'] = LANGUAGE_C;
+extensionToMode['cpp'] = LANGUAGE_CPP;
 extensionToMode['css'] = LANGUAGE_CSS;
 extensionToMode['gitignore'] = LANGUAGE_TEXT;
 extensionToMode['html'] = LANGUAGE_HTML;
@@ -36,7 +40,14 @@ export default function modeFromName(fileName: string): string {
     const period = fileName.lastIndexOf('.');
     if (period >= 0) {
         const extension = fileName.substring(period + 1);
-        return extensionToMode[extension];
+        const mode = extensionToMode[extension];
+        if (mode) {
+            return mode;
+        }
+        else {
+            console.warn(`modeFromName('${fileName}') can't figure that one out.`);
+            return void 0;
+        }
     }
     if (fileNameToMode[fileName]) {
         return fileNameToMode[fileName];

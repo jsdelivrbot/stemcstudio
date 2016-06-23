@@ -94,7 +94,7 @@ export default class HtmlMode extends TextMode {
                     worker.attachToDocument(session.getDocument());
                     if (this.fragmentContext) {
                         worker.call("setOptions", [{ context: this.fragmentContext }], function(data: any) {
-                            
+                            // Do nothing?
                         });
                     }
                     callback(void 0, worker);

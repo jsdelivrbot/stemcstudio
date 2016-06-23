@@ -12,18 +12,18 @@ export default class JsonMode extends TextMode {
     private $outdent: MatchingBraceOutdent;
 
     constructor(workerUrl: string, scriptImports: string[]) {
-        super(workerUrl, scriptImports)
+        super(workerUrl, scriptImports);
         this.HighlightRules = JsonHighlightRules;
         this.$outdent = new MatchingBraceOutdent();
         this.$behaviour = new CstyleBehaviour();
         this.foldingRules = new CStyleFoldMode();
     }
 
-    getNextLineIndent(state, line, tab) {
-        var indent = this.$getIndent(line);
+    getNextLineIndent(state: string, line: string, tab: string) {
+        let indent = this.$getIndent(line);
 
-        if (state == "start") {
-            var match = line.match(/^.*[\{\(\[]\s*$/);
+        if (state === "start") {
+            const match = line.match(/^.*[\{\(\[]\s*$/);
             if (match) {
                 indent += tab;
             }

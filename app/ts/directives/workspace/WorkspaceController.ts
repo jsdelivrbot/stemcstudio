@@ -41,6 +41,8 @@ import WorkspaceScope from '../../scopes/WorkspaceScope';
 import WorkspaceMixin from '../editor/WorkspaceMixin';
 import WsFile from '../../wsmodel/services/WsFile';
 import WsModel from '../../wsmodel/services/WsModel';
+import {LANGUAGE_C} from '../../languages/modes';
+import {LANGUAGE_CPP} from '../../languages/modes';
 import {LANGUAGE_CSS} from '../../languages/modes';
 import {LANGUAGE_HTML} from '../../languages/modes';
 import {LANGUAGE_JSON} from '../../languages/modes';
@@ -638,6 +640,8 @@ export default class WorkspaceController implements WorkspaceMixin {
                 // Ignore.
                 break;
             }
+            case LANGUAGE_C:
+            case LANGUAGE_CPP:
             case LANGUAGE_CSS:
             case LANGUAGE_JSON:
             case LANGUAGE_HTML:
@@ -762,6 +766,8 @@ export default class WorkspaceController implements WorkspaceMixin {
                 // Ignore
                 break;
             }
+            case LANGUAGE_C:
+            case LANGUAGE_CPP:
             case LANGUAGE_CSS:
             case LANGUAGE_HTML:
             case LANGUAGE_JSON:

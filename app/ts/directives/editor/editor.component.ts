@@ -1,12 +1,13 @@
 import * as ng from 'angular';
+import CppMode from '../../editor/mode/CppMode';
+import CssMode from '../../editor/mode/CssMode';
 import HtmlMode from '../../editor/mode/HtmlMode';
 import JavaScriptMode from '../../editor/mode/JavaScriptMode';
 import JsonMode from '../../editor/mode/JsonMode';
+import MarkdownMode from '../../editor/mode/MarkdownMode';
 import PythonMode from '../../editor/mode/PythonMode';
 import TextMode from '../../editor/mode/TextMode';
 import TypeScriptMode from '../../editor/mode/TypeScriptMode';
-import createCssMode from '../../editor/mode/createCssMode';
-import createMarkdownMode from '../../editor/mode/createMarkdownMode';
 import EditSession from '../../editor/EditSession';
 import Renderer from '../../editor/Renderer';
 import UndoManager from '../../editor/UndoManager';
@@ -19,6 +20,9 @@ import ThemeManager from '../../services/themes/ThemeManager';
 import ThemeManagerEvent from '../../services/themes/ThemeManagerEvent';
 import {currentTheme} from '../../services/themes/ThemeManagerEvent';
 import WorkspaceMixin from '../../directives/editor/WorkspaceMixin';
+// Temporary support for C and C++ while we develop GLSL.
+import {LANGUAGE_C} from '../../languages/modes';
+import {LANGUAGE_CPP} from '../../languages/modes';
 import {LANGUAGE_CSS} from '../../languages/modes';
 import {LANGUAGE_HTML} from '../../languages/modes';
 import {LANGUAGE_JSON} from '../../languages/modes';
@@ -177,11 +181,23 @@ function factory(
                                 });
                                 break;
                             }
+                            case LANGUAGE_C:
+                            case LANGUAGE_CPP: {
+                                // If we don't use the worker then we don't get a confirmation.
+                                session.setUseWorker(false);
+                                session.setLanguageMode(new CppMode('/js/worker.js', workerImports), function(err: any) {
+                                    if (err) {
+                                        console.warn(`${file.mode} => ${err}`);
+                                    }
+                                    removeEditor = control.attachEditor($scope.path, file.mode, editor);
+                                });
+                                break;
+                            }
                             case LANGUAGE_CSS:
                             case LANGUAGE_LESS: {
                                 // If we don't use the worker then we don't get a confirmation.
                                 session.setUseWorker(false);
-                                session.setLanguageMode(createCssMode('/js/worker.js', workerImports), function(err: any) {
+                                session.setLanguageMode(new CssMode('/js/worker.js', workerImports), function(err: any) {
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
@@ -192,7 +208,7 @@ function factory(
                             case LANGUAGE_MARKDOWN: {
                                 session.setUseWrapMode(true);
                                 editor.setWrapBehavioursEnabled(true);
-                                session.setLanguageMode(createMarkdownMode('/js/worker.js', workerImports), function(err: any) {
+                                session.setLanguageMode(new MarkdownMode('/js/worker.js', workerImports), function(err: any) {
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
