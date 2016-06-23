@@ -1,6 +1,6 @@
 import * as ng from 'angular';
-import CppMode from '../../editor/mode/CppMode';
 import CssMode from '../../editor/mode/CssMode';
+import GlslMode from '../../editor/mode/GlslMode';
 import HtmlMode from '../../editor/mode/HtmlMode';
 import JavaScriptMode from '../../editor/mode/JavaScriptMode';
 import JsonMode from '../../editor/mode/JsonMode';
@@ -14,19 +14,16 @@ import UndoManager from '../../editor/UndoManager';
 import Editor from '../../editor/Editor';
 import EditorScope from './EditorScope';
 import ISettingsService from '../../services/settings/ISettingsService';
-// import isUndefined from '../../utils/isUndefined';
 import ITextService from '../../services/text/ITextService';
 import ThemeManager from '../../services/themes/ThemeManager';
 import ThemeManagerEvent from '../../services/themes/ThemeManagerEvent';
 import {currentTheme} from '../../services/themes/ThemeManagerEvent';
 import WorkspaceMixin from '../../directives/editor/WorkspaceMixin';
-// Temporary support for C and C++ while we develop GLSL.
-import {LANGUAGE_C} from '../../languages/modes';
-import {LANGUAGE_CPP} from '../../languages/modes';
 import {LANGUAGE_CSS} from '../../languages/modes';
+import {LANGUAGE_GLSL} from '../../languages/modes';
 import {LANGUAGE_HTML} from '../../languages/modes';
-import {LANGUAGE_JSON} from '../../languages/modes';
 import {LANGUAGE_JAVA_SCRIPT} from '../../languages/modes';
+import {LANGUAGE_JSON} from '../../languages/modes';
 import {LANGUAGE_LESS} from '../../languages/modes';
 import {LANGUAGE_MARKDOWN} from '../../languages/modes';
 import {LANGUAGE_PYTHON} from '../../languages/modes';
@@ -181,11 +178,10 @@ function factory(
                                 });
                                 break;
                             }
-                            case LANGUAGE_C:
-                            case LANGUAGE_CPP: {
+                            case LANGUAGE_GLSL: {
                                 // If we don't use the worker then we don't get a confirmation.
                                 session.setUseWorker(false);
-                                session.setLanguageMode(new CppMode('/js/worker.js', workerImports), function(err: any) {
+                                session.setLanguageMode(new GlslMode('/js/worker.js', workerImports), function(err: any) {
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }

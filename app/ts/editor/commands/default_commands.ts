@@ -10,9 +10,9 @@ function bindKey(win: string, mac: string) {
     return { win: win, mac: mac };
 }
 
-/*
-    scrollIntoView: true|"cursor"|"center"|"selectionPart"
-*/
+//
+// scrollIntoView: true|"cursor"|"center"|"selectionPart"
+//
 
 const commands: Command[] = [
     {
@@ -78,7 +78,7 @@ const commands: Command[] = [
         exec: function(editor: Editor) {
             editor.getSession().foldAll();
             // FIXME
-            //editor.getSession().unfold(editor.selection.getAllRanges());
+            // editor.getSession().unfold(editor.selection.getAllRanges());
         },
         scrollIntoView: "center",
         readOnly: true
@@ -353,7 +353,9 @@ const commands: Command[] = [
     }, {
         name: "passKeysToBrowser",
         bindKey: bindKey("null", "null"),
-        exec: function() { },
+        exec: function() {
+            // Do nothing?
+        },
         passEvent: true,
         readOnly: true
     },
@@ -572,7 +574,7 @@ const commands: Command[] = [
             var isBackwards = editor.selection.isBackwards();
             var selectionStart = isBackwards ? editor.selection.getSelectionLead() : editor.selection.getSelectionAnchor();
             var selectionEnd = isBackwards ? editor.selection.getSelectionAnchor() : editor.selection.getSelectionLead();
-            var firstLineEndCol = editor.session.doc.getLine(selectionStart.row).length
+            var firstLineEndCol = editor.session.doc.getLine(selectionStart.row).length;
             var selectedText = editor.session.doc.getTextRange(editor.selection.getRange());
             var selectedCount = selectedText.replace(/\n\s*/, " ").length;
             var insertLine = editor.session.doc.getLine(selectionStart.row);
@@ -620,7 +622,7 @@ const commands: Command[] = [
             }
 
             for (var i = 0; i < ranges.length; i++) {
-                if (i == (ranges.length - 1)) {
+                if (i === (ranges.length - 1)) {
                     // The last selection must connect to the end of the document, unless it already does
                     if (!(ranges[i].end.row === endRow && ranges[i].end.column === endCol)) {
                         newRanges.push(new Range(ranges[i].end.row, ranges[i].end.column, endRow, endCol));

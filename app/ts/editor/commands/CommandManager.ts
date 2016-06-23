@@ -35,7 +35,7 @@ export default class CommandManager implements EventBus<any, CommandManager> {
     private $addCommandToMacro: (event, cm: CommandManager) => any;
     private eventBus: EventEmitterClass<any, CommandManager>;
 
-    _buildKeyHash
+    _buildKeyHash;
 
     /**
      * @class CommandManager
@@ -45,7 +45,7 @@ export default class CommandManager implements EventBus<any, CommandManager> {
      */
     constructor(platform: string, commands: Command[]) {
         this.eventBus = new EventEmitterClass<any, CommandManager>(this);
-        this.hashHandler = new KeyboardHandler(commands, platform)
+        this.hashHandler = new KeyboardHandler(commands, platform);
         this.eventBus.setDefaultHandler("exec", function(e: { command: Command; editor: Editor; args }) {
             return e.command.exec(e.editor, e.args || {});
         });
@@ -155,7 +155,9 @@ export default class CommandManager implements EventBus<any, CommandManager> {
         if (this.$inReplay)
             return;
 
-        editor && editor._emit("changeStatus");
+        if (editor) {
+            editor._emit("changeStatus");
+        }
         if (this.recording) {
             this.macro.pop();
             this.eventBus.off("exec", this.$addCommandToMacro);
@@ -187,7 +189,7 @@ export default class CommandManager implements EventBus<any, CommandManager> {
         try {
             this.$inReplay = true;
             this.macro.forEach(function(x) {
-                if (typeof x == "string")
+                if (typeof x === "string")
                     this.exec(x, editor);
                 else
                     this.exec(x[0], editor, x[1]);
@@ -199,7 +201,7 @@ export default class CommandManager implements EventBus<any, CommandManager> {
 
     trimMacro(m) {
         return m.map(function(x) {
-            if (typeof x[0] != "string")
+            if (typeof x[0] !== "string")
                 x[0] = x[0].name;
             if (!x[1])
                 x = x[0];

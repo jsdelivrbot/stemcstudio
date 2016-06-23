@@ -36,7 +36,7 @@ export default class CallbackManager {
     public releaseCallback(callbackId: number): (err: any) => any {
         const callback = this.callbacks[callbackId];
         delete this.callbacks[callbackId];
-        this.housekeeping()
+        this.housekeeping();
         return callback;
     }
 

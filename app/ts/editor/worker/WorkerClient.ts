@@ -72,7 +72,7 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
     init(scriptImports: string[], moduleName: string, className: string, callback: (err: any) => any): void {
 
         if (this.worker) {
-            console.warn("The worker is already initialized")
+            console.warn("The worker is already initialized");
             setTimeout(callback, 0);
             return;
         }
@@ -120,21 +120,29 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
      * @private
      */
     private onMessage(event: MessageEvent): void {
-        const origin: string = event.origin;
-        const source: Window = event.source;
+        // const origin: string = event.origin;
+        // const source: Window = event.source;
         const msg = event.data;
         switch (msg.type) {
             case "info":
-                window.console && console.log && console.info.apply(console, msg.data);
+                if (window.console && console.info) {
+                    console.info.apply(console, msg.data);
+                }
                 break;
             case "log":
-                window.console && console.log && console.log.apply(console, msg.data);
+                if (window.console && console.log) {
+                    console.log.apply(console, msg.data);
+                }
                 break;
             case "warn":
-                window.console && console.log && console.warn.apply(console, msg.data);
+                if (window.console && console.warn) {
+                    console.warn.apply(console, msg.data);
+                }
                 break;
             case "error":
-                window.console && console.log && console.error.apply(console, msg.data);
+                if (window.console && console.error) {
+                    console.error.apply(console, msg.data);
+                }
                 break;
             case "event":
                 switch (msg.name) {
@@ -158,16 +166,6 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
                 }
                 break;
         }
-    }
-
-    /**
-     * @method $normalizePath
-     * @param path {string}
-     * @return {string}
-     * @private
-     */
-    private $normalizePath(path: string): string {
-        return qualifyURL(path);
     }
 
     /**
@@ -259,7 +257,7 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
             this.$doc = doc;
             this.$doc.addRef();
             this.call("setValue", [doc.getValue()], function(data: any) {
-                console.log(`setValue => ${data}`)
+                console.log(`setValue => ${data}`);
             });
             doc.addChangeListener(this.changeListener);
         }
@@ -314,8 +312,8 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
     on(eventName: string, callback: (event: MessageEvent, source: WorkerClient) => any) {
         this.eventBus.on(eventName, callback, false);
         return () => {
-            this.eventBus.off(eventName, callback, false)
-        }
+            this.eventBus.off(eventName, callback, false);
+        };
     }
 
     /**
@@ -350,7 +348,7 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
             // TODO: If there is no callback then call is the same as send,
             // which is a postCommand.
             this.call("setValue", [doc.getValue()], function(data: any) {
-                console.log(`setValue => ${data}`)
+                console.log(`setValue => ${data}`);
             });
         }
         else {

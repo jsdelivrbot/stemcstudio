@@ -134,7 +134,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version.
-app.constant('version', '2.2.8');
+app.constant('version', '2.2.9');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -181,7 +181,6 @@ app.constant('FILENAME_LESS', 'style.less');
 app.constant('VENDOR_FOLDER_MARKER', VENDOR_FOLDER_MARKER);
 
 // For backwards compatibility, don't change the values of these constants.
-app.constant('SCRIPTS_MARKER', '<!-- SCRIPTS-MARKER -->');
 app.constant('STYLES_MARKER', '<!-- STYLES-MARKER -->');
 app.constant('LIBS_MARKER', '// LIBS-MARKER');
 

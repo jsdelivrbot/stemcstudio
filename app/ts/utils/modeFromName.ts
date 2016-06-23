@@ -1,6 +1,7 @@
 import {LANGUAGE_C} from '../languages/modes';
 import {LANGUAGE_CPP} from '../languages/modes';
 import {LANGUAGE_CSS} from '../languages/modes';
+import {LANGUAGE_GLSL} from '../languages/modes';
 import {LANGUAGE_HTML} from '../languages/modes';
 import {LANGUAGE_JSON} from '../languages/modes';
 import {LANGUAGE_JAVA_SCRIPT} from '../languages/modes';
@@ -18,6 +19,7 @@ extensionToMode['c'] = LANGUAGE_C;
 extensionToMode['cpp'] = LANGUAGE_CPP;
 extensionToMode['css'] = LANGUAGE_CSS;
 extensionToMode['gitignore'] = LANGUAGE_TEXT;
+extensionToMode['glsl'] = LANGUAGE_GLSL;
 extensionToMode['html'] = LANGUAGE_HTML;
 extensionToMode['js'] = LANGUAGE_JAVA_SCRIPT;
 extensionToMode['json'] = LANGUAGE_JSON;

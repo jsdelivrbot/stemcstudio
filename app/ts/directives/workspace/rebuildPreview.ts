@@ -9,11 +9,15 @@ import IOptionManager from '../../services/options/IOptionManager';
 import currentJavaScript from './currentJavaScript';
 import detect1x from './detect1x';
 import detectMarker from './detectMarker';
+import modeFromName from '../../utils/modeFromName';
+import prefixFromPath from '../../utils/prefixFromPath';
+import {LANGUAGE_GLSL} from '../../languages/modes';
 import scriptURL from './scriptURL';
+import shaderTypeFromContent from './shaderTypeFromContent';
 import WorkspaceScope from '../../scopes/WorkspaceScope';
 import WsModel from '../../wsmodel/services/WsModel';
 import mathscript from 'davinci-mathscript';
-import {CODE_MARKER, STYLE_MARKER} from '../../features/preview/index';
+import {CODE_MARKER, SCRIPTS_MARKER, SHADERS_MARKER, STYLE_MARKER} from '../../features/preview/index';
 
 export default function rebuildPreview(
     workspace: WsModel,
@@ -26,7 +30,6 @@ export default function rebuildPreview(
     FILENAME_LIBS: string,
     FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS: string,
     LIBS_MARKER: string,
-    SCRIPTS_MARKER: string,
     STYLES_MARKER: string,
     VENDOR_FOLDER_MARKER: string
 ) {
@@ -100,6 +103,24 @@ export default function rebuildPreview(
                         else {
                             if (scriptTags.length > 0) {
                                 console.warn(`Unable to find '${SCRIPTS_MARKER}' in ${bestFile} file.`);
+                            }
+                        }
+
+                        const shaderFilePaths: string[] = workspace.getFileDocumentPaths().filter(function(path: string) {
+                            return LANGUAGE_GLSL === modeFromName(path);
+                        });
+                        const shaderTags = shaderFilePaths.map((path: string) => {
+                            const content = fileContent(path, workspace);
+                            const type = shaderTypeFromContent(content);
+                            return `<script id='${prefixFromPath(path)}' type='${type}'>${content}</script>\n`;
+                        });
+
+                        if (detectMarker(SHADERS_MARKER, workspace, bestFile)) {
+                            html = html.replace(SHADERS_MARKER, shaderTags.join(""));
+                        }
+                        else {
+                            if (shaderTags.length > 0) {
+                                console.warn(`Unable to find '${SHADERS_MARKER}' in ${bestFile} file.`);
                             }
                         }
 

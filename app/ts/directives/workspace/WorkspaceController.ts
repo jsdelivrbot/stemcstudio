@@ -41,9 +41,8 @@ import WorkspaceScope from '../../scopes/WorkspaceScope';
 import WorkspaceMixin from '../editor/WorkspaceMixin';
 import WsFile from '../../wsmodel/services/WsFile';
 import WsModel from '../../wsmodel/services/WsModel';
-import {LANGUAGE_C} from '../../languages/modes';
-import {LANGUAGE_CPP} from '../../languages/modes';
 import {LANGUAGE_CSS} from '../../languages/modes';
+import {LANGUAGE_GLSL} from '../../languages/modes';
 import {LANGUAGE_HTML} from '../../languages/modes';
 import {LANGUAGE_JSON} from '../../languages/modes';
 import {LANGUAGE_JAVA_SCRIPT} from '../../languages/modes';
@@ -122,7 +121,6 @@ export default class WorkspaceController implements WorkspaceMixin {
         'FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS',
         'FILENAME_TYPESCRIPT_CURRENT_LIB_DTS',
         'STYLES_MARKER',
-        'SCRIPTS_MARKER',
         'LIBS_MARKER',
         'VENDOR_FOLDER_MARKER',
         'wsModel'
@@ -192,7 +190,6 @@ export default class WorkspaceController implements WorkspaceMixin {
         private FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS: string,
         private FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,
         private STYLES_MARKER: string,
-        private SCRIPTS_MARKER: string,
         private LIBS_MARKER: string,
         private VENDOR_FOLDER_MARKER: string,
         private wsModel: WsModel) {
@@ -214,7 +211,6 @@ export default class WorkspaceController implements WorkspaceMixin {
                 this.FILENAME_LIBS,
                 this.FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS,
                 this.LIBS_MARKER,
-                this.SCRIPTS_MARKER,
                 this.STYLES_MARKER,
                 this.VENDOR_FOLDER_MARKER); rebuildPromise = undefined; }, delay);
         };
@@ -640,11 +636,10 @@ export default class WorkspaceController implements WorkspaceMixin {
                 // Ignore.
                 break;
             }
-            case LANGUAGE_C:
-            case LANGUAGE_CPP:
             case LANGUAGE_CSS:
-            case LANGUAGE_JSON:
+            case LANGUAGE_GLSL:
             case LANGUAGE_HTML:
+            case LANGUAGE_JSON:
             case LANGUAGE_LESS:
             case LANGUAGE_TEXT: {
                 editor.getSession().on('change', this.createPreviewChangeHandler(path));
@@ -766,9 +761,8 @@ export default class WorkspaceController implements WorkspaceMixin {
                 // Ignore
                 break;
             }
-            case LANGUAGE_C:
-            case LANGUAGE_CPP:
             case LANGUAGE_CSS:
+            case LANGUAGE_GLSL:
             case LANGUAGE_HTML:
             case LANGUAGE_JSON:
             case LANGUAGE_LESS:
