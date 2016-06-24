@@ -180,7 +180,6 @@ function factory(
                             }
                             case LANGUAGE_GLSL: {
                                 // If we don't use the worker then we don't get a confirmation.
-                                session.setUseWorker(false);
                                 session.setLanguageMode(new GlslMode('/js/worker.js', workerImports), function(err: any) {
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);

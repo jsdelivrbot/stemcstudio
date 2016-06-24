@@ -75,7 +75,6 @@ export default class JsonMode extends TextMode {
                     callback(void 0, worker);
                 }
                 else {
-                    console.warn(`JavaScriptWorker init fail: ${err}`);
                     callback(err, void 0);
                 }
             });

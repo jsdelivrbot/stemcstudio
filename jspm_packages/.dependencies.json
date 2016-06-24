@@ -138,12 +138,6 @@
     "process": "github:jspm/nodelibs-process@^0.1.0",
     "fs": "github:jspm/nodelibs-fs@^0.1.0"
   },
-  "npm:showdown@1.4.1": {
-    "yargs": "npm:yargs@^3.15.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0",
-    "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
-    "fs": "github:jspm/nodelibs-fs@^0.1.0"
-  },
   "npm:isarray@0.0.1": {},
   "npm:indexof@0.0.1": {},
   "npm:socket.io-adapter@0.4.0": {
@@ -639,7 +633,6 @@
     "assert": "github:jspm/nodelibs-assert@^0.1.0",
     "fs": "github:jspm/nodelibs-fs@^0.1.0"
   },
-  "github:ace2ts/ace-workers@0.1.69": {},
   "npm:tiny-emitter@1.0.2": {},
   "npm:good-listener@1.1.7": {
     "delegate": "npm:delegate@^3.0.0"
@@ -674,5 +667,39 @@
     "symbol-observable": "npm:symbol-observable@0.2.4",
     "process": "github:jspm/nodelibs-process@^0.1.0",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
-  }
+  },
+  "npm:socket.io-client@1.4.7": {
+    "debug": "npm:debug@2.2.0",
+    "engine.io-client": "npm:engine.io-client@1.6.10",
+    "component-bind": "npm:component-bind@1.0.0",
+    "component-emitter": "npm:component-emitter@1.2.0",
+    "object-component": "npm:object-component@0.0.3",
+    "socket.io-parser": "npm:socket.io-parser@2.2.6",
+    "has-binary": "npm:has-binary@0.1.7",
+    "indexof": "npm:indexof@0.0.1",
+    "parseuri": "npm:parseuri@0.0.4",
+    "to-array": "npm:to-array@0.1.4",
+    "backo2": "npm:backo2@1.0.2",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
+  },
+  "npm:engine.io-client@1.6.10": {
+    "has-cors": "npm:has-cors@1.1.0",
+    "component-emitter": "npm:component-emitter@1.1.2",
+    "indexof": "npm:indexof@0.0.1",
+    "engine.io-parser": "npm:engine.io-parser@1.2.4",
+    "debug": "npm:debug@2.2.0",
+    "parseuri": "npm:parseuri@0.0.4",
+    "parsejson": "npm:parsejson@0.0.1",
+    "parseqs": "npm:parseqs@0.0.2",
+    "component-inherit": "npm:component-inherit@0.0.3",
+    "yeast": "npm:yeast@0.1.2",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
+  },
+  "npm:showdown@1.4.2": {
+    "yargs": "npm:yargs@^3.15.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
+    "fs": "github:jspm/nodelibs-fs@^0.1.0"
+  },
+  "github:ace2ts/ace-workers@0.1.70": {}
 }

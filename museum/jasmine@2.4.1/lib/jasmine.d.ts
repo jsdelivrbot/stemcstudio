@@ -49,8 +49,11 @@ declare function runs(asyncMethod: Function): void;
 declare function waitsFor(latchMethod: () => boolean, failureMessage?: string, timeout?: number): void;
 declare function waits(timeout?: number): void;
 
+//
+// A namespace is the TypeScript 1.5+ nomenclature for "Internal modules".
+//
 /**
- * A namespace is the TypeScript 1.5+ nomenclature for "Internal modules".
+ * 
  */
 declare namespace jasmine {
 
@@ -366,17 +369,54 @@ declare namespace jasmine {
         Any: Any;
     }
 
-    interface Reporter {
-        reportRunnerStarting(runner: Runner): void;
-        reportRunnerResults(runner: Runner): void;
-        reportSuiteResults(suite: Suite): void;
-        reportSpecStarting(spec: Spec): void;
-        reportSpecResults(spec: Spec): void;
-        log(str: string): void;
+    interface Expectation {
+        matcherName: string;
+        message: string;
+        stack: string;
+        passed: boolean;
+        expected?: any;
+        actual?: any;
     }
 
-    interface MultiReporter extends Reporter {
-        addReporter(reporter: Reporter): void;
+    interface Reporter {
+        jasmineStarted(
+            options: {
+                totalSpecsDefined: number;
+            }): void;
+        jasmineDone(
+            options: {
+                order: { random: boolean; seed: string };
+            }): void;
+        suiteStarted(suite: {
+            id: string;
+            description: string;
+            fullName: string;
+            failedExpectations: Expectation[];
+        }): void;
+        suiteDone(suite: {
+            id: string;
+            description: string;
+            fullName: string;
+            failedExpectations: Expectation[];
+            status: 'finished' | 'failed' | 'disabled' | 'pending';
+        }): void;
+        specStarted(spec: {
+            id: string;
+            description: string;
+            fullName: string;
+            failedExpectations: Expectation[];
+            passedExpectations: Expectation[];
+            pendingReason: string;
+        }): void;
+        specDone(spec: {
+            id: string;
+            description: string;
+            fullName: string;
+            failedExpectations: Expectation[];
+            passedExpectations: Expectation[];
+            pendingReason: string;
+            status: 'passed' | 'failed' | 'disabled' | 'pending';
+        }): void;
     }
 
     interface Runner {
@@ -550,7 +590,9 @@ declare namespace jasmine {
     }
 
     interface Jasmine {
+        getEnv: () => Env;
         Spec: Spec;
+        Timer: Timer;
         clock: Clock;
         util: Util;
     }
@@ -576,13 +618,19 @@ declare namespace jasmine {
  * 
  */
 declare namespace jasmineRequire {
+
     /**
      * Builds the public core API, Jasmine.
      */
     function core(jasmineRequire): jasmine.Jasmine;
+
     /**
      * Adds properties to the Jasmine API: HtmlReporter, HtmlSpecFilter, ResultsNode, QueryString.
      */
     function html(jasmine: jasmine.Jasmine): void;
-    function interface(jasmine, env: jasmine.Env): any;
+
+    /**
+     * 
+     */
+    function interface(jasmine: jasmine.Jasmine, env: jasmine.Env): any;
 }
