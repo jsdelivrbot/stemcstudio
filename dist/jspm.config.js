@@ -9,7 +9,7 @@ System.config({
 
   map: {
     "@angular/router": "npm:@angular/router@0.2.0",
-    "ace2ts/ace-workers": "github:ace2ts/ace-workers@0.1.70",
+    "ace2ts/ace-workers": "github:ace2ts/ace-workers@1.0.1",
     "angular": "github:angular/bower-angular@1.5.7",
     "angular-animate": "github:angular/bower-angular-animate@1.5.7",
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.3",
@@ -25,7 +25,7 @@ System.config({
     "jquery": "npm:jquery@2.2.4",
     "showdown": "npm:showdown@1.4.2",
     "socket.io": "npm:socket.io@1.4.6",
-    "socket.io-client": "npm:socket.io-client@1.4.7",
+    "socket.io-client": "npm:socket.io-client@1.4.8",
     "ui-select": "npm:ui-select@0.17.1",
     "underscore": "npm:underscore@1.8.3",
     "github:angular-ui/ui-router@0.2.18": {
@@ -311,7 +311,7 @@ System.config({
       "inherits": "npm:inherits@2.0.1",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
     },
-    "npm:engine.io-client@1.6.10": {
+    "npm:engine.io-client@1.6.11": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "component-emitter": "npm:component-emitter@1.1.2",
       "component-inherit": "npm:component-inherit@0.0.3",
@@ -547,13 +547,13 @@ System.config({
       "socket.io-parser": "npm:socket.io-parser@2.2.6",
       "to-array": "npm:to-array@0.1.4"
     },
-    "npm:socket.io-client@1.4.7": {
+    "npm:socket.io-client@1.4.8": {
       "backo2": "npm:backo2@1.0.2",
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "component-bind": "npm:component-bind@1.0.0",
       "component-emitter": "npm:component-emitter@1.2.0",
       "debug": "npm:debug@2.2.0",
-      "engine.io-client": "npm:engine.io-client@1.6.10",
+      "engine.io-client": "npm:engine.io-client@1.6.11",
       "has-binary": "npm:has-binary@0.1.7",
       "indexof": "npm:indexof@0.0.1",
       "object-component": "npm:object-component@0.0.3",

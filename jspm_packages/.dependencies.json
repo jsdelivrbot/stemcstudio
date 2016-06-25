@@ -668,21 +668,13 @@
     "process": "github:jspm/nodelibs-process@^0.1.0",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
   },
-  "npm:socket.io-client@1.4.7": {
-    "debug": "npm:debug@2.2.0",
-    "engine.io-client": "npm:engine.io-client@1.6.10",
-    "component-bind": "npm:component-bind@1.0.0",
-    "component-emitter": "npm:component-emitter@1.2.0",
-    "object-component": "npm:object-component@0.0.3",
-    "socket.io-parser": "npm:socket.io-parser@2.2.6",
-    "has-binary": "npm:has-binary@0.1.7",
-    "indexof": "npm:indexof@0.0.1",
-    "parseuri": "npm:parseuri@0.0.4",
-    "to-array": "npm:to-array@0.1.4",
-    "backo2": "npm:backo2@1.0.2",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
+  "npm:showdown@1.4.2": {
+    "yargs": "npm:yargs@^3.15.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
+    "fs": "github:jspm/nodelibs-fs@^0.1.0"
   },
-  "npm:engine.io-client@1.6.10": {
+  "npm:engine.io-client@1.6.11": {
     "has-cors": "npm:has-cors@1.1.0",
     "component-emitter": "npm:component-emitter@1.1.2",
     "indexof": "npm:indexof@0.0.1",
@@ -695,11 +687,19 @@
     "yeast": "npm:yeast@0.1.2",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
   },
-  "npm:showdown@1.4.2": {
-    "yargs": "npm:yargs@^3.15.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0",
-    "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
-    "fs": "github:jspm/nodelibs-fs@^0.1.0"
+  "npm:socket.io-client@1.4.8": {
+    "debug": "npm:debug@2.2.0",
+    "engine.io-client": "npm:engine.io-client@1.6.11",
+    "component-bind": "npm:component-bind@1.0.0",
+    "component-emitter": "npm:component-emitter@1.2.0",
+    "object-component": "npm:object-component@0.0.3",
+    "socket.io-parser": "npm:socket.io-parser@2.2.6",
+    "has-binary": "npm:has-binary@0.1.7",
+    "indexof": "npm:indexof@0.0.1",
+    "parseuri": "npm:parseuri@0.0.4",
+    "to-array": "npm:to-array@0.1.4",
+    "backo2": "npm:backo2@1.0.2",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
   },
-  "github:ace2ts/ace-workers@0.1.70": {}
+  "github:ace2ts/ace-workers@1.0.1": {}
 }
