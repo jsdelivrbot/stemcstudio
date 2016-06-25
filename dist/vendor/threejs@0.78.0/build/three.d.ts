@@ -2627,7 +2627,7 @@ declare module THREE {
         lerp(color: Color, alpha: number): Color;
         equals(color: Color): boolean;
         fromArray(rgb: number[]): Color;
-        toArray(): number[];
+        toArray(array?: number[], offset?: number): number[];
 
         /**
          * Clones this color.
@@ -4120,9 +4120,20 @@ declare module THREE {
         clone(object?: Line): Line;
     }
 
+    /**
+     * A series of lines drawn between pairs of vertices.
+     */
+    export class LineSegments extends Line {
+        constructor(geometry?: Geometry, material?: LineDashedMaterial, mode?: number);
+        constructor(geometry?: Geometry, material?: LineBasicMaterial, mode?: number);
+        constructor(geometry?: Geometry, material?: ShaderMaterial, mode?: number);
+        constructor(geometry?: BufferGeometry, material?: LineDashedMaterial, mode?: number);
+        constructor(geometry?: BufferGeometry, material?: LineBasicMaterial, mode?: number);
+        constructor(geometry?: BufferGeometry, material?: ShaderMaterial, mode?: number);
+    }
+
     enum LineMode { }
     var LineStrip: LineMode;
-    var LineSegments: LineMode;
 
     export class LOD extends Object3D {
         constructor();
