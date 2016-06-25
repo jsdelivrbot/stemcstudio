@@ -223,9 +223,9 @@ module.exports = function(grunt) {
                     },
                     {
                         expand: true,
-                        cwd: "museum/stats.js@0.0.14",
+                        cwd: "museum/stats.js@0.16.0",
                         src: ["**"],
-                        dest: "generated/vendor/stats.js@0.0.14"
+                        dest: "generated/vendor/stats.js@0.16.0"
                     },
                     {
                         expand: true,
@@ -529,9 +529,9 @@ module.exports = function(grunt) {
                     },
                     {
                         expand: true,
-                        cwd: "museum/stats.js@0.0.14",
+                        cwd: "museum/stats.js@0.16.0",
                         src: ["**"],
-                        dest: "dist/vendor/stats.js@0.0.14"
+                        dest: "dist/vendor/stats.js@0.16.0"
                     },
                     {
                         expand: true,
