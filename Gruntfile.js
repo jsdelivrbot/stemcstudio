@@ -291,6 +291,7 @@ module.exports = function(grunt) {
                         src: "bower_components/davinci-eight/dist/davinci-eight.js",
                         dest: "generated/vendor/davinci-eight@2.102.0/dist/davinci-eight.js"
                     },
+                    /*
                     {
                         src: "../davinci-eight/dist/davinci-eight.d.ts",
                         dest: "generated/vendor/davinci-eight@2.102.0/dist/davinci-eight.d.ts"
@@ -299,6 +300,7 @@ module.exports = function(grunt) {
                         src: "../davinci-eight/dist/davinci-eight.js",
                         dest: "generated/vendor/davinci-eight@2.102.0/dist/davinci-eight.js"
                     },
+                    */
                     {
                         src: "bower_components/davinci-mathscript/dist/davinci-mathscript.d.ts",
                         dest: "generated/vendor/davinci-mathscript@1.0.8/dist/davinci-mathscript.d.ts"
