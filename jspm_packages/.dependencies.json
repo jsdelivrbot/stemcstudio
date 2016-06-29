@@ -633,7 +633,6 @@
     "assert": "github:jspm/nodelibs-assert@^0.1.0",
     "fs": "github:jspm/nodelibs-fs@^0.1.0"
   },
-  "npm:tiny-emitter@1.0.2": {},
   "npm:good-listener@1.1.7": {
     "delegate": "npm:delegate@^3.0.0"
   },
@@ -701,5 +700,6 @@
     "backo2": "npm:backo2@1.0.2",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
   },
-  "github:ace2ts/ace-workers@1.0.1": {}
+  "github:ace2ts/ace-workers@1.0.1": {},
+  "npm:tiny-emitter@1.1.0": {}
 }

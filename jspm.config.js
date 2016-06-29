@@ -228,7 +228,7 @@ System.config({
     "npm:clipboard@1.5.12": {
       "good-listener": "npm:good-listener@1.1.7",
       "select": "npm:select@1.0.6",
-      "tiny-emitter": "npm:tiny-emitter@1.0.2"
+      "tiny-emitter": "npm:tiny-emitter@1.1.0"
     },
     "npm:cliui@3.2.0": {
       "string-width": "npm:string-width@1.0.1",

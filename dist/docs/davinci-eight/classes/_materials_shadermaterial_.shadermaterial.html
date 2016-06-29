@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>MaterialBase | EIGHT 2.244.0</title>
+	<title>ShaderMaterial | EIGHT 2.248.0</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">EIGHT 2.244.0</a>
+					<a href="../index.html" class="title">EIGHT 2.248.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -57,13 +57,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_materials_materialbase_.html">&quot;materials/MaterialBase&quot;</a>
+					<a href="../modules/_materials_shadermaterial_.html">&quot;materials/ShaderMaterial&quot;</a>
 				</li>
 				<li>
-					<a href="_materials_materialbase_.materialbase.html">MaterialBase</a>
+					<a href="_materials_shadermaterial_.shadermaterial.html">ShaderMaterial</a>
 				</li>
 			</ul>
-			<h1>Class MaterialBase</h1>
+			<h1>Class ShaderMaterial</h1>
 		</div>
 	</div>
 </header>
@@ -77,7 +77,7 @@
 						<a href="_core_shareablecontextconsumer_.shareablecontextconsumer.html" class="tsd-signature-type">ShareableContextConsumer</a>
 						<ul class="tsd-hierarchy">
 							<li>
-								<span class="target">MaterialBase</span>
+								<span class="target">ShaderMaterial</span>
 								<ul class="tsd-hierarchy">
 									<li>
 										<a href="_materials_smartgraphicsprogram_.smartgraphicsprogram.html" class="tsd-signature-type">SmartGraphicsProgram</a>
@@ -102,6 +102,7 @@
 				<ul class="tsd-hierarchy">
 					<li><a href="../interfaces/_core_shareable_.shareable.html" class="tsd-signature-type">Shareable</a></li>
 					<li><a href="../interfaces/_core_contextconsumer_.contextconsumer.html" class="tsd-signature-type">ContextConsumer</a></li>
+					<li><a href="../interfaces/_core_enginesubscriber_.enginesubscriber.html" class="tsd-signature-type">EngineSubscriber</a></li>
 					<li><a href="../interfaces/_core_material_.material.html" class="tsd-signature-type">Material</a></li>
 				</ul>
 			</section>
@@ -112,69 +113,66 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="_materials_materialbase_.materialbase.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-private-protected tsd-is-external">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-external"><a href="_materials_materialbase_.materialbase.html#_attribs" class="tsd-kind-icon">_attribs</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-external"><a href="_materials_materialbase_.materialbase.html#_attributes" class="tsd-kind-icon">_attributes</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-external"><a href="_materials_materialbase_.materialbase.html#_fragmentshadersrc" class="tsd-kind-icon">_fragment<wbr>Shader<wbr>Src</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-external"><a href="_materials_materialbase_.materialbase.html#_program" class="tsd-kind-icon">_program</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external"><a href="_materials_materialbase_.materialbase.html#_type" class="tsd-kind-icon">_type</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-external"><a href="_materials_materialbase_.materialbase.html#_uniforms" class="tsd-kind-icon">_uniforms</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-external"><a href="_materials_materialbase_.materialbase.html#_vertexshadersrc" class="tsd-kind-icon">_vertex<wbr>Shader<wbr>Src</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external"><a href="_materials_materialbase_.materialbase.html#contextprovider" class="tsd-kind-icon">context<wbr>Provider</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#_attribs" class="tsd-kind-icon">_attribs</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#_attributes" class="tsd-kind-icon">_attributes</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#_fragmentshadersrc" class="tsd-kind-icon">_fragment<wbr>Shader<wbr>Src</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#_program" class="tsd-kind-icon">_program</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#_type" class="tsd-kind-icon">_type</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#_uniforms" class="tsd-kind-icon">_uniforms</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#_vertexshadersrc" class="tsd-kind-icon">_vertex<wbr>Shader<wbr>Src</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#contextprovider" class="tsd-kind-icon">context<wbr>Provider</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Accessors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="_materials_materialbase_.materialbase.html#attributenames" class="tsd-kind-icon">attribute<wbr>Names</a></li>
-								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="_materials_materialbase_.materialbase.html#fragmentshadersrc" class="tsd-kind-icon">fragment<wbr>Shader<wbr>Src</a></li>
-								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="_materials_materialbase_.materialbase.html#gl" class="tsd-kind-icon">gl</a></li>
-								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="_materials_materialbase_.materialbase.html#vertexshadersrc" class="tsd-kind-icon">vertex<wbr>Shader<wbr>Src</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#attributenames" class="tsd-kind-icon">attribute<wbr>Names</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#fragmentshadersrc" class="tsd-kind-icon">fragment<wbr>Shader<wbr>Src</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#gl" class="tsd-kind-icon">gl</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#vertexshadersrc" class="tsd-kind-icon">vertex<wbr>Shader<wbr>Src</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="_materials_materialbase_.materialbase.html#addref" class="tsd-kind-icon">add<wbr>Ref</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="_materials_materialbase_.materialbase.html#cleanup" class="tsd-kind-icon">clean<wbr>Up</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="_materials_materialbase_.materialbase.html#contextfree" class="tsd-kind-icon">context<wbr>Free</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="_materials_materialbase_.materialbase.html#contextgain" class="tsd-kind-icon">context<wbr>Gain</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="_materials_materialbase_.materialbase.html#contextlost" class="tsd-kind-icon">context<wbr>Lost</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected tsd-is-external"><a href="_materials_materialbase_.materialbase.html#destructor" class="tsd-kind-icon">destructor</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_materialbase_.materialbase.html#disableattrib" class="tsd-kind-icon">disable<wbr>Attrib</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_materialbase_.materialbase.html#disableattribs" class="tsd-kind-icon">disable<wbr>Attribs</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_materialbase_.materialbase.html#enableattrib" class="tsd-kind-icon">enable<wbr>Attrib</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_materialbase_.materialbase.html#enableattribs" class="tsd-kind-icon">enable<wbr>Attribs</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_materialbase_.materialbase.html#getattriblocation" class="tsd-kind-icon">get<wbr>Attrib<wbr>Location</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="_materials_materialbase_.materialbase.html#getloggingname" class="tsd-kind-icon">get<wbr>Logging<wbr>Name</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_materialbase_.materialbase.html#getuniformlocation" class="tsd-kind-icon">get<wbr>Uniform<wbr>Location</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_materialbase_.materialbase.html#hasuniformlocation" class="tsd-kind-icon">has<wbr>Uniform<wbr>Location</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="_materials_materialbase_.materialbase.html#iszombie" class="tsd-kind-icon">is<wbr>Zombie</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_materialbase_.materialbase.html#mat2" class="tsd-kind-icon">mat2</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_materialbase_.materialbase.html#mat3" class="tsd-kind-icon">mat3</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_materialbase_.materialbase.html#mat4" class="tsd-kind-icon">mat4</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="_materials_materialbase_.materialbase.html#release" class="tsd-kind-icon">release</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external"><a href="_materials_materialbase_.materialbase.html#setloggingname" class="tsd-kind-icon">set<wbr>Logging<wbr>Name</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="_materials_materialbase_.materialbase.html#subscribe" class="tsd-kind-icon">subscribe</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="_materials_materialbase_.materialbase.html#synchup" class="tsd-kind-icon">synch<wbr>Up</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_materialbase_.materialbase.html#uniform1f" class="tsd-kind-icon">uniform1f</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_materialbase_.materialbase.html#uniform2f" class="tsd-kind-icon">uniform2f</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_materialbase_.materialbase.html#uniform3f" class="tsd-kind-icon">uniform3f</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_materialbase_.materialbase.html#uniform4f" class="tsd-kind-icon">uniform4f</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="_materials_materialbase_.materialbase.html#unsubscribe" class="tsd-kind-icon">unsubscribe</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_materialbase_.materialbase.html#use" class="tsd-kind-icon">use</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_materialbase_.materialbase.html#vec2" class="tsd-kind-icon">vec2</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_materialbase_.materialbase.html#vec3" class="tsd-kind-icon">vec3</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_materialbase_.materialbase.html#vec4" class="tsd-kind-icon">vec4</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_materialbase_.materialbase.html#vector2fv" class="tsd-kind-icon">vector2fv</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_materialbase_.materialbase.html#vector3fv" class="tsd-kind-icon">vector3fv</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_materialbase_.materialbase.html#vector4fv" class="tsd-kind-icon">vector4fv</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_materialbase_.materialbase.html#vertexpointer" class="tsd-kind-icon">vertex<wbr>Pointer</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#addref" class="tsd-kind-icon">add<wbr>Ref</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#cleanup" class="tsd-kind-icon">clean<wbr>Up</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#contextfree" class="tsd-kind-icon">context<wbr>Free</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#contextgain" class="tsd-kind-icon">context<wbr>Gain</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#contextlost" class="tsd-kind-icon">context<wbr>Lost</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#destructor" class="tsd-kind-icon">destructor</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#disableattrib" class="tsd-kind-icon">disable<wbr>Attrib</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#disableattribs" class="tsd-kind-icon">disable<wbr>Attribs</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#enableattrib" class="tsd-kind-icon">enable<wbr>Attrib</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#enableattribs" class="tsd-kind-icon">enable<wbr>Attribs</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#getattriblocation" class="tsd-kind-icon">get<wbr>Attrib<wbr>Location</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#getloggingname" class="tsd-kind-icon">get<wbr>Logging<wbr>Name</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#getuniformlocation" class="tsd-kind-icon">get<wbr>Uniform<wbr>Location</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#hasuniformlocation" class="tsd-kind-icon">has<wbr>Uniform<wbr>Location</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#iszombie" class="tsd-kind-icon">is<wbr>Zombie</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#matrix2fv" class="tsd-kind-icon">matrix2fv</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#matrix3fv" class="tsd-kind-icon">matrix3fv</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#matrix4fv" class="tsd-kind-icon">matrix4fv</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#release" class="tsd-kind-icon">release</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#setloggingname" class="tsd-kind-icon">set<wbr>Logging<wbr>Name</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#subscribe" class="tsd-kind-icon">subscribe</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#synchup" class="tsd-kind-icon">synch<wbr>Up</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#uniform1f" class="tsd-kind-icon">uniform1f</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#uniform2f" class="tsd-kind-icon">uniform2f</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#uniform3f" class="tsd-kind-icon">uniform3f</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#uniform4f" class="tsd-kind-icon">uniform4f</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#unsubscribe" class="tsd-kind-icon">unsubscribe</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#use" class="tsd-kind-icon">use</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#vector2fv" class="tsd-kind-icon">vector2fv</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#vector3fv" class="tsd-kind-icon">vector3fv</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#vector4fv" class="tsd-kind-icon">vector4fv</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="_materials_shadermaterial_.shadermaterial.html#vertexpointer" class="tsd-kind-icon">vertex<wbr>Pointer</a></li>
 							</ul>
 						</section>
 					</div>
@@ -186,14 +184,14 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Material<wbr>Base<span class="tsd-signature-symbol">(</span>vertexShaderSrc<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, fragmentShaderSrc<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, attribs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, engine<span class="tsd-signature-symbol">: </span><a href="_core_engine_.engine.html" class="tsd-signature-type">Engine</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_materials_materialbase_.materialbase.html" class="tsd-signature-type">MaterialBase</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Shader<wbr>Material<span class="tsd-signature-symbol">(</span>vertexShaderSrc<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, fragmentShaderSrc<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, attribs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, engine<span class="tsd-signature-symbol">: </span><a href="_core_engine_.engine.html" class="tsd-signature-type">Engine</a>, levelUp<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_materials_shadermaterial_.shadermaterial.html" class="tsd-signature-type">ShaderMaterial</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overwrites <a href="_core_shareablecontextconsumer_.shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="_core_shareablecontextconsumer_.shareablecontextconsumer.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L58">materials/MaterialBase.ts:58</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L51">materials/ShaderMaterial.ts:51</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -232,8 +230,11 @@
 										</div>
 									</div>
 								</li>
+								<li>
+									<h5>levelUp: <span class="tsd-signature-type">number</span></h5>
+								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="_materials_materialbase_.materialbase.html" class="tsd-signature-type">MaterialBase</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="_materials_shadermaterial_.shadermaterial.html" class="tsd-signature-type">ShaderMaterial</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -246,7 +247,7 @@
 					<div class="tsd-signature tsd-kind-icon">_attribs<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L43">materials/MaterialBase.ts:43</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L36">materials/ShaderMaterial.ts:36</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -256,7 +257,7 @@
 					<div class="tsd-signature tsd-kind-icon">_attributes<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L53">materials/MaterialBase.ts:53</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L46">materials/ShaderMaterial.ts:46</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -274,7 +275,7 @@
 					<div class="tsd-signature tsd-kind-icon">_fragment<wbr>Shader<wbr>Src<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L38">materials/MaterialBase.ts:38</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L31">materials/ShaderMaterial.ts:31</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -284,7 +285,7 @@
 					<div class="tsd-signature tsd-kind-icon">_program<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">WebGLProgram</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L48">materials/MaterialBase.ts:48</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L41">materials/ShaderMaterial.ts:41</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -305,7 +306,7 @@
 					<div class="tsd-signature tsd-kind-icon">_uniforms<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L58">materials/MaterialBase.ts:58</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L51">materials/ShaderMaterial.ts:51</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-type-declaration">
@@ -323,7 +324,7 @@
 					<div class="tsd-signature tsd-kind-icon">_vertex<wbr>Shader<wbr>Src<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L33">materials/MaterialBase.ts:33</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L26">materials/ShaderMaterial.ts:26</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -334,7 +335,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="_core_shareablecontextconsumer_.shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="_core_shareablecontextconsumer_.shareablecontextconsumer.html#contextprovider">contextProvider</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/core/ShareableContextConsumer.ts#L54">core/ShareableContextConsumer.ts:54</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/core/ShareableContextConsumer.ts#L55">core/ShareableContextConsumer.ts:55</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -361,7 +362,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L233">materials/MaterialBase.ts:233</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L226">materials/ShaderMaterial.ts:226</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
@@ -369,7 +370,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L242">materials/MaterialBase.ts:242</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L235">materials/ShaderMaterial.ts:235</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -393,7 +394,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L212">materials/MaterialBase.ts:212</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L205">materials/ShaderMaterial.ts:205</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -401,7 +402,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L215">materials/MaterialBase.ts:215</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L208">materials/ShaderMaterial.ts:208</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -426,7 +427,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_core_shareablecontextconsumer_.shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="_core_shareablecontextconsumer_.shareablecontextconsumer.html#gl">gl</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/core/ShareableContextConsumer.ts#L176">core/ShareableContextConsumer.ts:176</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/core/ShareableContextConsumer.ts#L177">core/ShareableContextConsumer.ts:177</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -440,7 +441,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_core_shareablecontextconsumer_.shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="_core_shareablecontextconsumer_.shareablecontextconsumer.html#gl">gl</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/core/ShareableContextConsumer.ts#L184">core/ShareableContextConsumer.ts:184</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/core/ShareableContextConsumer.ts#L185">core/ShareableContextConsumer.ts:185</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -469,7 +470,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L191">materials/MaterialBase.ts:191</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L184">materials/ShaderMaterial.ts:184</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -477,7 +478,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L194">materials/MaterialBase.ts:194</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L187">materials/ShaderMaterial.ts:187</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -531,7 +532,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_core_shareablecontextconsumer_.shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="_core_shareablecontextconsumer_.shareablecontextconsumer.html#cleanup">cleanUp</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/core/ShareableContextConsumer.ts#L128">core/ShareableContextConsumer.ts:128</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/core/ShareableContextConsumer.ts#L129">core/ShareableContextConsumer.ts:129</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -550,7 +551,7 @@
 								<p>Implementation of <a href="../interfaces/_core_material_.material.html">Material</a>.<a href="../interfaces/_core_material_.material.html#contextfree">contextFree</a></p>
 								<p>Overwrites <a href="_core_shareablecontextconsumer_.shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="_core_shareablecontextconsumer_.shareablecontextconsumer.html#contextfree">contextFree</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L146">materials/MaterialBase.ts:146</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L139">materials/ShaderMaterial.ts:139</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -579,7 +580,7 @@
 								<p>Implementation of <a href="../interfaces/_core_material_.material.html">Material</a>.<a href="../interfaces/_core_material_.material.html#contextgain">contextGain</a></p>
 								<p>Overwrites <a href="_core_shareablecontextconsumer_.shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="_core_shareablecontextconsumer_.shareablecontextconsumer.html#contextgain">contextGain</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L92">materials/MaterialBase.ts:92</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L85">materials/ShaderMaterial.ts:85</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -608,7 +609,7 @@
 								<p>Implementation of <a href="../interfaces/_core_material_.material.html">Material</a>.<a href="../interfaces/_core_material_.material.html#contextlost">contextLost</a></p>
 								<p>Overwrites <a href="_core_shareablecontextconsumer_.shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="_core_shareablecontextconsumer_.shareablecontextconsumer.html#contextlost">contextLost</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L128">materials/MaterialBase.ts:128</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L121">materials/ShaderMaterial.ts:121</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -626,17 +627,13 @@
 							<aside class="tsd-sources">
 								<p>Overwrites <a href="_core_shareablecontextconsumer_.shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="_core_shareablecontextconsumer_.shareablecontextconsumer.html#destructor">destructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L81">materials/MaterialBase.ts:81</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L74">materials/ShaderMaterial.ts:74</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>levelUp: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -654,7 +651,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_core_material_.material.html">Material</a>.<a href="../interfaces/_core_material_.material.html#disableattrib">disableAttrib</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L283">materials/MaterialBase.ts:283</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L276">materials/ShaderMaterial.ts:276</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -677,7 +674,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L303">materials/MaterialBase.ts:303</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L296">materials/ShaderMaterial.ts:296</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -695,7 +692,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_core_material_.material.html">Material</a>.<a href="../interfaces/_core_material_.material.html#enableattrib">enableAttrib</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L249">materials/MaterialBase.ts:249</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L242">materials/ShaderMaterial.ts:242</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -723,7 +720,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L269">materials/MaterialBase.ts:269</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L262">materials/ShaderMaterial.ts:262</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -741,7 +738,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_core_material_.material.html">Material</a>.<a href="../interfaces/_core_material_.material.html#getattriblocation">getAttribLocation</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L318">materials/MaterialBase.ts:318</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L311">materials/ShaderMaterial.ts:311</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -791,7 +788,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_core_material_.material.html">Material</a>.<a href="../interfaces/_core_material_.material.html#getuniformlocation">getUniformLocation</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L338">materials/MaterialBase.ts:338</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L331">materials/ShaderMaterial.ts:331</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -824,7 +821,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L368">materials/MaterialBase.ts:368</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L361">materials/ShaderMaterial.ts:361</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -869,17 +866,17 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="mat2" class="tsd-anchor"></a>
-					<h3>mat2</h3>
+					<a name="matrix2fv" class="tsd-anchor"></a>
+					<h3>matrix2fv</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">mat2<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, matrix<span class="tsd-signature-symbol">: </span><a href="_math_matrix2_.default.html" class="tsd-signature-type">default</a>, transpose<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">matrix2fv<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, matrix<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Float32Array</span>, transpose<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_core_material_.material.html">Material</a>.<a href="../interfaces/_core_material_.material.html#mat2">mat2</a></p>
+								<p>Implementation of <a href="../interfaces/_core_material_.material.html">Material</a>.<a href="../interfaces/_core_material_.material.html#matrix2fv">matrix2fv</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L437">materials/MaterialBase.ts:437</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L415">materials/ShaderMaterial.ts:415</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -888,7 +885,7 @@
 									<h5>name: <span class="tsd-signature-type">string</span></h5>
 								</li>
 								<li>
-									<h5>matrix: <a href="_math_matrix2_.default.html" class="tsd-signature-type">default</a></h5>
+									<h5>matrix: <span class="tsd-signature-type">Float32Array</span></h5>
 								</li>
 								<li>
 									<h5>transpose: <span class="tsd-signature-type">boolean</span></h5>
@@ -899,17 +896,17 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="mat3" class="tsd-anchor"></a>
-					<h3>mat3</h3>
+					<a name="matrix3fv" class="tsd-anchor"></a>
+					<h3>matrix3fv</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">mat3<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, matrix<span class="tsd-signature-symbol">: </span><a href="_math_matrix3_.default.html" class="tsd-signature-type">default</a>, transpose<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">matrix3fv<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, matrix<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Float32Array</span>, transpose<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_core_material_.material.html">Material</a>.<a href="../interfaces/_core_material_.material.html#mat3">mat3</a></p>
+								<p>Implementation of <a href="../interfaces/_core_material_.material.html">Material</a>.<a href="../interfaces/_core_material_.material.html#matrix3fv">matrix3fv</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L447">materials/MaterialBase.ts:447</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L422">materials/ShaderMaterial.ts:422</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -918,7 +915,7 @@
 									<h5>name: <span class="tsd-signature-type">string</span></h5>
 								</li>
 								<li>
-									<h5>matrix: <a href="_math_matrix3_.default.html" class="tsd-signature-type">default</a></h5>
+									<h5>matrix: <span class="tsd-signature-type">Float32Array</span></h5>
 								</li>
 								<li>
 									<h5>transpose: <span class="tsd-signature-type">boolean</span></h5>
@@ -929,17 +926,17 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="mat4" class="tsd-anchor"></a>
-					<h3>mat4</h3>
+					<a name="matrix4fv" class="tsd-anchor"></a>
+					<h3>matrix4fv</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">mat4<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, matrix<span class="tsd-signature-symbol">: </span><a href="_math_matrix4_.default.html" class="tsd-signature-type">default</a>, transpose<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">matrix4fv<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, matrix<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Float32Array</span>, transpose<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_core_material_.material.html">Material</a>.<a href="../interfaces/_core_material_.material.html#mat4">mat4</a></p>
+								<p>Implementation of <a href="../interfaces/_core_material_.material.html">Material</a>.<a href="../interfaces/_core_material_.material.html#matrix4fv">matrix4fv</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L457">materials/MaterialBase.ts:457</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L429">materials/ShaderMaterial.ts:429</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -948,7 +945,7 @@
 									<h5>name: <span class="tsd-signature-type">string</span></h5>
 								</li>
 								<li>
-									<h5>matrix: <a href="_math_matrix4_.default.html" class="tsd-signature-type">default</a></h5>
+									<h5>matrix: <span class="tsd-signature-type">Float32Array</span></h5>
 								</li>
 								<li>
 									<h5>transpose: <span class="tsd-signature-type">boolean</span></h5>
@@ -1039,9 +1036,10 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/_core_enginesubscriber_.enginesubscriber.html">EngineSubscriber</a>.<a href="../interfaces/_core_enginesubscriber_.enginesubscriber.html#subscribe">subscribe</a></p>
 								<p>Inherited from <a href="_core_shareablecontextconsumer_.shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="_core_shareablecontextconsumer_.shareablecontextconsumer.html#subscribe">subscribe</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/core/ShareableContextConsumer.ts#L96">core/ShareableContextConsumer.ts:96</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/core/ShareableContextConsumer.ts#L97">core/ShareableContextConsumer.ts:97</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1077,7 +1075,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_core_shareablecontextconsumer_.shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="_core_shareablecontextconsumer_.shareablecontextconsumer.html#synchup">synchUp</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/core/ShareableContextConsumer.ts#L118">core/ShareableContextConsumer.ts:118</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/core/ShareableContextConsumer.ts#L119">core/ShareableContextConsumer.ts:119</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1095,7 +1093,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_core_material_.material.html">Material</a>.<a href="../interfaces/_core_material_.material.html#uniform1f">uniform1f</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L397">materials/MaterialBase.ts:397</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L387">materials/ShaderMaterial.ts:387</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1122,7 +1120,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_core_material_.material.html">Material</a>.<a href="../interfaces/_core_material_.material.html#uniform2f">uniform2f</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L407">materials/MaterialBase.ts:407</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L394">materials/ShaderMaterial.ts:394</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1152,7 +1150,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_core_material_.material.html">Material</a>.<a href="../interfaces/_core_material_.material.html#uniform3f">uniform3f</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L417">materials/MaterialBase.ts:417</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L401">materials/ShaderMaterial.ts:401</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1185,7 +1183,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_core_material_.material.html">Material</a>.<a href="../interfaces/_core_material_.material.html#uniform4f">uniform4f</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L427">materials/MaterialBase.ts:427</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L408">materials/ShaderMaterial.ts:408</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1219,9 +1217,10 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/_core_enginesubscriber_.enginesubscriber.html">EngineSubscriber</a>.<a href="../interfaces/_core_enginesubscriber_.enginesubscriber.html#unsubscribe">unsubscribe</a></p>
 								<p>Inherited from <a href="_core_shareablecontextconsumer_.shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="_core_shareablecontextconsumer_.shareablecontextconsumer.html#unsubscribe">unsubscribe</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/core/ShareableContextConsumer.ts#L140">core/ShareableContextConsumer.ts:140</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/core/ShareableContextConsumer.ts#L141">core/ShareableContextConsumer.ts:141</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1249,90 +1248,9 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_core_material_.material.html">Material</a>.<a href="../interfaces/_core_material_.material.html#use">use</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L178">materials/MaterialBase.ts:178</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L171">materials/ShaderMaterial.ts:171</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="vec2" class="tsd-anchor"></a>
-					<h3>vec2</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">vec2<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, vector<span class="tsd-signature-symbol">: </span><a href="../interfaces/_math_vectore2_.vectore2.html" class="tsd-signature-type">VectorE2</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_core_material_.material.html">Material</a>.<a href="../interfaces/_core_material_.material.html#vec2">vec2</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L467">materials/MaterialBase.ts:467</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>name: <span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li>
-									<h5>vector: <a href="../interfaces/_math_vectore2_.vectore2.html" class="tsd-signature-type">VectorE2</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="vec3" class="tsd-anchor"></a>
-					<h3>vec3</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">vec3<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, vector<span class="tsd-signature-symbol">: </span><a href="../interfaces/_math_vectore3_.vectore3.html" class="tsd-signature-type">VectorE3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_core_material_.material.html">Material</a>.<a href="../interfaces/_core_material_.material.html#vec3">vec3</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L477">materials/MaterialBase.ts:477</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>name: <span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li>
-									<h5>vector: <a href="../interfaces/_math_vectore3_.vectore3.html" class="tsd-signature-type">VectorE3</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="vec4" class="tsd-anchor"></a>
-					<h3>vec4</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">vec4<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, vector<span class="tsd-signature-symbol">: </span><a href="../interfaces/_math_vectore4_.vectore4.html" class="tsd-signature-type">VectorE4</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/_core_material_.material.html">Material</a>.<a href="../interfaces/_core_material_.material.html#vec4">vec4</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L487">materials/MaterialBase.ts:487</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>name: <span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li>
-									<h5>vector: <a href="../interfaces/_math_vectore4_.vectore4.html" class="tsd-signature-type">VectorE4</a></h5>
-								</li>
-							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -1348,7 +1266,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_core_material_.material.html">Material</a>.<a href="../interfaces/_core_material_.material.html#vector2fv">vector2fv</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L497">materials/MaterialBase.ts:497</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L436">materials/ShaderMaterial.ts:436</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1375,7 +1293,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_core_material_.material.html">Material</a>.<a href="../interfaces/_core_material_.material.html#vector3fv">vector3fv</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L507">materials/MaterialBase.ts:507</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L443">materials/ShaderMaterial.ts:443</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1402,7 +1320,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_core_material_.material.html">Material</a>.<a href="../interfaces/_core_material_.material.html#vector4fv">vector4fv</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L517">materials/MaterialBase.ts:517</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L450">materials/ShaderMaterial.ts:450</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1429,7 +1347,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/_core_material_.material.html">Material</a>.<a href="../interfaces/_core_material_.material.html#vertexpointer">vertexPointer</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/MaterialBase.ts#L379">materials/MaterialBase.ts:379</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/master/src/davinci-eight/materials/ShaderMaterial.ts#L372">materials/ShaderMaterial.ts:372</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1467,7 +1385,7 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class="current tsd-kind-external-module tsd-is-external">
-						<a href="../modules/_materials_materialbase_.html">"materials/<wbr>Material<wbr>Base"</a>
+						<a href="../modules/_materials_shadermaterial_.html">"materials/<wbr>Shader<wbr>Material"</a>
 					</li>
 				</ul>
 			</nav>
@@ -1476,151 +1394,142 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-external-module tsd-is-external">
-						<a href="_materials_materialbase_.materialbase.html" class="tsd-kind-icon">Material<wbr>Base</a>
+						<a href="_materials_shadermaterial_.shadermaterial.html" class="tsd-kind-icon">Shader<wbr>Material</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#_attribs" class="tsd-kind-icon">_attribs</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#_attribs" class="tsd-kind-icon">_attribs</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#_attributes" class="tsd-kind-icon">_attributes</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#_attributes" class="tsd-kind-icon">_attributes</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#_fragmentshadersrc" class="tsd-kind-icon">_fragment<wbr>Shader<wbr>Src</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#_fragmentshadersrc" class="tsd-kind-icon">_fragment<wbr>Shader<wbr>Src</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#_program" class="tsd-kind-icon">_program</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#_program" class="tsd-kind-icon">_program</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#_type" class="tsd-kind-icon">_type</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#_type" class="tsd-kind-icon">_type</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#_uniforms" class="tsd-kind-icon">_uniforms</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#_uniforms" class="tsd-kind-icon">_uniforms</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#_vertexshadersrc" class="tsd-kind-icon">_vertex<wbr>Shader<wbr>Src</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#_vertexshadersrc" class="tsd-kind-icon">_vertex<wbr>Shader<wbr>Src</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#contextprovider" class="tsd-kind-icon">context<wbr>Provider</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#contextprovider" class="tsd-kind-icon">context<wbr>Provider</a>
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#attributenames" class="tsd-kind-icon">attribute<wbr>Names</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#attributenames" class="tsd-kind-icon">attribute<wbr>Names</a>
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#fragmentshadersrc" class="tsd-kind-icon">fragment<wbr>Shader<wbr>Src</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#fragmentshadersrc" class="tsd-kind-icon">fragment<wbr>Shader<wbr>Src</a>
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#gl" class="tsd-kind-icon">gl</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#gl" class="tsd-kind-icon">gl</a>
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#vertexshadersrc" class="tsd-kind-icon">vertex<wbr>Shader<wbr>Src</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#vertexshadersrc" class="tsd-kind-icon">vertex<wbr>Shader<wbr>Src</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#addref" class="tsd-kind-icon">add<wbr>Ref</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#addref" class="tsd-kind-icon">add<wbr>Ref</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#cleanup" class="tsd-kind-icon">clean<wbr>Up</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#cleanup" class="tsd-kind-icon">clean<wbr>Up</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#contextfree" class="tsd-kind-icon">context<wbr>Free</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#contextfree" class="tsd-kind-icon">context<wbr>Free</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#contextgain" class="tsd-kind-icon">context<wbr>Gain</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#contextgain" class="tsd-kind-icon">context<wbr>Gain</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#contextlost" class="tsd-kind-icon">context<wbr>Lost</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#contextlost" class="tsd-kind-icon">context<wbr>Lost</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#destructor" class="tsd-kind-icon">destructor</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#destructor" class="tsd-kind-icon">destructor</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#disableattrib" class="tsd-kind-icon">disable<wbr>Attrib</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#disableattrib" class="tsd-kind-icon">disable<wbr>Attrib</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#disableattribs" class="tsd-kind-icon">disable<wbr>Attribs</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#disableattribs" class="tsd-kind-icon">disable<wbr>Attribs</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#enableattrib" class="tsd-kind-icon">enable<wbr>Attrib</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#enableattrib" class="tsd-kind-icon">enable<wbr>Attrib</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#enableattribs" class="tsd-kind-icon">enable<wbr>Attribs</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#enableattribs" class="tsd-kind-icon">enable<wbr>Attribs</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#getattriblocation" class="tsd-kind-icon">get<wbr>Attrib<wbr>Location</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#getattriblocation" class="tsd-kind-icon">get<wbr>Attrib<wbr>Location</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#getloggingname" class="tsd-kind-icon">get<wbr>Logging<wbr>Name</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#getloggingname" class="tsd-kind-icon">get<wbr>Logging<wbr>Name</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#getuniformlocation" class="tsd-kind-icon">get<wbr>Uniform<wbr>Location</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#getuniformlocation" class="tsd-kind-icon">get<wbr>Uniform<wbr>Location</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#hasuniformlocation" class="tsd-kind-icon">has<wbr>Uniform<wbr>Location</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#hasuniformlocation" class="tsd-kind-icon">has<wbr>Uniform<wbr>Location</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#iszombie" class="tsd-kind-icon">is<wbr>Zombie</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#iszombie" class="tsd-kind-icon">is<wbr>Zombie</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#mat2" class="tsd-kind-icon">mat2</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#matrix2fv" class="tsd-kind-icon">matrix2fv</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#mat3" class="tsd-kind-icon">mat3</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#matrix3fv" class="tsd-kind-icon">matrix3fv</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#mat4" class="tsd-kind-icon">mat4</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#matrix4fv" class="tsd-kind-icon">matrix4fv</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#release" class="tsd-kind-icon">release</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#release" class="tsd-kind-icon">release</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#setloggingname" class="tsd-kind-icon">set<wbr>Logging<wbr>Name</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#setloggingname" class="tsd-kind-icon">set<wbr>Logging<wbr>Name</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#subscribe" class="tsd-kind-icon">subscribe</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#subscribe" class="tsd-kind-icon">subscribe</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#synchup" class="tsd-kind-icon">synch<wbr>Up</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#synchup" class="tsd-kind-icon">synch<wbr>Up</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#uniform1f" class="tsd-kind-icon">uniform1f</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#uniform1f" class="tsd-kind-icon">uniform1f</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#uniform2f" class="tsd-kind-icon">uniform2f</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#uniform2f" class="tsd-kind-icon">uniform2f</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#uniform3f" class="tsd-kind-icon">uniform3f</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#uniform3f" class="tsd-kind-icon">uniform3f</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#uniform4f" class="tsd-kind-icon">uniform4f</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#uniform4f" class="tsd-kind-icon">uniform4f</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#unsubscribe" class="tsd-kind-icon">unsubscribe</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#unsubscribe" class="tsd-kind-icon">unsubscribe</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#use" class="tsd-kind-icon">use</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#use" class="tsd-kind-icon">use</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#vec2" class="tsd-kind-icon">vec2</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#vector2fv" class="tsd-kind-icon">vector2fv</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#vec3" class="tsd-kind-icon">vec3</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#vector3fv" class="tsd-kind-icon">vector3fv</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#vec4" class="tsd-kind-icon">vec4</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#vector4fv" class="tsd-kind-icon">vector4fv</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#vector2fv" class="tsd-kind-icon">vector2fv</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#vector3fv" class="tsd-kind-icon">vector3fv</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#vector4fv" class="tsd-kind-icon">vector4fv</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="_materials_materialbase_.materialbase.html#vertexpointer" class="tsd-kind-icon">vertex<wbr>Pointer</a>
+								<a href="_materials_shadermaterial_.shadermaterial.html#vertexpointer" class="tsd-kind-icon">vertex<wbr>Pointer</a>
 							</li>
 						</ul>
 					</li>

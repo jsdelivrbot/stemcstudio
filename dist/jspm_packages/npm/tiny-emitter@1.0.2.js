@@ -1,1 +1,0 @@
-module.exports = require("npm:tiny-emitter@1.0.2/index.js");

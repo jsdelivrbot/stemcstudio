@@ -187,6 +187,11 @@ declare module JXG {
         strokeWidth?: number;
 
         /**
+         * 
+         */
+        style?: number;
+
+        /**
          * If true the element will be traced, i.e. on every movement the element will be copied
          * to the background. Use {@link JXG.GeometryElement#clearTrace} to delete the trace elements.
          */
@@ -216,10 +221,12 @@ declare module JXG {
          * Getter method for x, this is used by for CAS-points to access point coordinates.
          */
         X(): number;
+
         /**
          * Getter method for y, this is used by for CAS-points to access point coordinates.
          */
         Y(): number;
+
         /**
          * Starts an animated point movement towards the given coordinates where.
          * The animation is done after time milliseconds.
@@ -243,42 +250,56 @@ declare module JXG {
      */
     export interface Text extends CoordsElement {
     }
+
     /**
      *
      */
     export interface Button extends Text {
     }
+
+    /**
+     *
+     */
+    export interface Chart extends GeometryElement {
+    }
+
     /**
      *
      */
     export interface Circle extends GeometryElement {
         Radius(): number;
     }
+
     /**
      *
      */
     export interface Curve extends GeometryElement {
     }
+
     /**
      * A grid is a set of vertical and horizontal lines to support the user with element placement.
      */
     export interface Grid extends Curve {
     }
+
     /**
      * This element is used to provide a constructor for a generic conic section uniquely defined by five points.
      */
     export interface Conic extends Curve {
     }
+
     /**
      * 
      */
     export interface Ellipse extends Conic {
     }
+
     /**
      *
      */
     export interface Sector extends Curve {
     }
+
     /**
      *
      */
@@ -289,10 +310,11 @@ declare module JXG {
          */
         setAngle(val: any): Angle
     }
+
     /**
      *
      */
-    export interface Functiongraph {
+    export interface Functiongraph extends GeometryElement {
     }
 
     /**
@@ -304,7 +326,7 @@ declare module JXG {
     }
 
     export interface PointAttributes extends CoordsElementAttributes {
-        face?: string;
+        face?: 'cross' | 'circle' | 'square' | 'plus' | 'diamond' | 'triangleUp' | 'triangleDown' | 'triangleLeft' | 'triangleRight';
         name?: string;
         size?: number;
     }
@@ -455,6 +477,10 @@ declare module JXG {
         /**
          *
          */
+        create(elementType: string, parents?: any[], attributes?: {}): GeometryElement;
+        /**
+         *
+         */
         create(elementType: "angle", parents?: any[], attributes?: {}): Angle;
         /**
          *
@@ -472,6 +498,10 @@ declare module JXG {
          *
          */
         create(elementType: "button", parents?: any[], attributes?: {}): Button;
+        /**
+         *
+         */
+        create(elementType: "chart", parents: any[], attributes?: {}): Chart;
         /**
          *
          */
@@ -626,6 +656,7 @@ declare module JXG {
          * returns The transpose of M.
          */
         transpose(M: number[][]): number[][];
+        Geometry: Geometry;
         /**
          * The JXG.Math.Numerics namespace holds numerical algorithms, constants, and variables.
          */
@@ -636,7 +667,19 @@ declare module JXG {
      */
     var Math: Math;
 
+    export interface Geometry {
+        /**
+         * Calculates the angle defined by the points A, B, C.
+         */
+        angle(A: Point | number[], B: Point | number[], C: Point|number[]): number;
+    }
+
     export interface Numerics {
+        /**
+         * Numerical (symmetric) approximation of derivative.
+         */
+        D(f: (x: number) => number, obj?: any): (x: number) => number;
+
         /**
          * Solves a system of linear equations given by A and b using the Gauss-Jordan-elimination.
          * The algorithm runs in-place. I.e. the entries of A and b are changed.
@@ -645,6 +688,15 @@ declare module JXG {
          * returns A vector that solves the linear equation system.
          */
         Gauss(A: number[][], b: number[]): number[];
+
+        /**
+         * Computes the polynomial through a given set of coordinates in Lagrange form.
+         * Returns the Lagrange polynomials, see Jean-Paul Berrut, Lloyd N. Trefethen: Barycentric Lagrange Interpolation,
+         * SIAM Review, Vol 46, No 3, (2004) 501-517.
+         * @returns A function of one parameter which returns the value of the polynomial, whose graph runs through the given points.
+         */
+        lagrangePolynomial(p: Point[]): (t: number) => number;
+
         /**
          * Solve initial value problems numerically using Runge-Kutta-methods.
          * See http://en.wikipedia.org/wiki/Runge-Kutta_methods for more information on the algorithm.

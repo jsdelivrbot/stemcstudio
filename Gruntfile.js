@@ -202,6 +202,12 @@ module.exports = function(grunt) {
                         dest: "generated/vendor/jsxgraph@0.99.3"
                     },
                     {
+                        expand: true,
+                        cwd: "museum/jsxgraph@0.99.4",
+                        src: ["**"],
+                        dest: "generated/vendor/jsxgraph@0.99.4"
+                    },
+                    {
                         src: "museum/plotly@1.5.2/plotly.d.ts",
                         dest: "generated/vendor/plotly@1.5.2/plotly.d.ts"
                     },
@@ -506,6 +512,12 @@ module.exports = function(grunt) {
                         cwd: "museum/jsxgraph@0.99.3",
                         src: ["**"],
                         dest: "dist/vendor/jsxgraph@0.99.3"
+                    },
+                    {
+                        expand: true,
+                        cwd: "museum/jsxgraph@0.99.4",
+                        src: ["**"],
+                        dest: "dist/vendor/jsxgraph@0.99.4"
                     },
                     {
                         src: "museum/plotly@1.5.2/plotly.d.ts",
