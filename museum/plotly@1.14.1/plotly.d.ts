@@ -205,7 +205,7 @@ declare module Plotly {
     /**
      * 
      */
-    function newPlot(graphDiv: string | HTMLElement, data: Data[], layout: Layout): void;
+    function newPlot(graphDiv: string | HTMLElement, data: Data | Data[], layout?: Layout): void;
 
     /**
      * Plotly.plot is like newPlot, but it isn't idempotent (you can't call it multiple times in a row).
