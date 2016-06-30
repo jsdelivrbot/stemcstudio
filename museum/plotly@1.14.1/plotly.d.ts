@@ -23,6 +23,7 @@ declare module Plotly {
      */
     interface Axis {
         autorange?: boolean;
+        domain?: number[];
         title?: string;
         type?: 'log';
         showgrid?: boolean;
@@ -56,17 +57,20 @@ declare module Plotly {
     interface Data {
         autocolorscale?: boolean;
         colorbar?: ColorBar;
-        colorscale?: (number | string)[][];
+        colorscale?: string | (number | string)[][];
         contours?: Contours;
         marker?: Marker;
         mode?: 'lines' | 'markers';
         name?: string;
+        ncontours?: number;
         reversescale?: boolean;
         showscale?: boolean;
-        type?: 'bar' | 'scatter';
+        type?: 'bar' | 'contour' | 'heatmap' | 'histogram' | 'histogram2dcontour' | 'scatter';
         uid?: string;
         x?: number[];
+        xaxis?: string;
         y?: number[];
+        yaxis?: string;
         z?: number[];
         r?: number[];
         t?: number[];
@@ -82,16 +86,21 @@ declare module Plotly {
             tickcolor: string;
         };
         annotations?: Annotation[];
+        autosize?: boolean;
+        bargap?: number;
         font?: {
             family?: string;
             size?: number;
             color?: string;
         };
+        hovermode?: 'closest';
         showlegend?: boolean;
         title?: string;
         margin?: Margin;
         xaxis?: Axis;
         yaxis?: Axis;
+        xaxis2?: Axis;
+        yaxis2?: Axis;
         width?: number;
         height?: number;
         paper_bgcolor?: string;
