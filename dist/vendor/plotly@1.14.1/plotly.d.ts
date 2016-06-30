@@ -59,14 +59,17 @@ declare module Plotly {
         colorscale?: (number | string)[][];
         contours?: Contours;
         marker?: Marker;
+        mode?: 'lines' | 'markers';
         name?: string;
         reversescale?: boolean;
         showscale?: boolean;
         type?: 'bar' | 'scatter';
         uid?: string;
-        x: number[];
-        y: number[];
+        x?: number[];
+        y?: number[];
         z?: number[];
+        r?: number[];
+        t?: number[];
         zmin?: number;
         zmax?: number;
     }
@@ -75,11 +78,25 @@ declare module Plotly {
      *
      */
     interface Layout {
+        angularaxis?: {
+            tickcolor: string;
+        };
         annotations?: Annotation[];
+        font?: {
+            family?: string;
+            size?: number;
+            color?: string;
+        };
+        showlegend?: boolean;
         title?: string;
         margin?: Margin;
         xaxis?: Axis;
         yaxis?: Axis;
+        width?: number;
+        height?: number;
+        paper_bgcolor?: string;
+        plot_bgcolor?: string;
+        orientation?: number;
     }
 
     /**
@@ -109,6 +126,8 @@ declare module Plotly {
         l?: number;
         b?: number;
         t?: number;
+        r?: number;
+        pad?: number;
     }
 
     /**
@@ -120,6 +139,13 @@ declare module Plotly {
          * Sets the marker color.
          */
         color?: string;
+
+        /**
+         * 
+         */
+        line?: {
+            color?: string;
+        };
 
         /**
          * Sets the color of the outlier sample points.
