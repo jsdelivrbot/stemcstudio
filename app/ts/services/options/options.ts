@@ -23,7 +23,7 @@ app.factory('options', [
         const VERSION_JASMINE = '2.4.1';
         const VERSION_JQUERY = '2.1.4';
         const VERSION_JSXGRAPH = '0.99.3';
-        const VERSION_PLOTLY = '1.5.2';
+        const VERSION_PLOTLY = '1.14.1';
         // const VERSION_REQUIREJS = '2.1.9';
         const VERSION_STATSJS = '0.16.0';
         // const VERSION_SYSTEMJS = '0.19.26';

@@ -1,5 +1,5 @@
 //
-// TypeScript definitions for plot.ly 1.5.2
+// TypeScript definitions for plot.ly 1.14.1
 //
 // Copyright (c) 2016 David Geo Holmes
 // Definitions by: David Geo Holmes <https://github.com/geometryzen>
@@ -22,10 +22,14 @@ declare module Plotly {
      *
      */
     interface Axis {
+        autorange?: boolean;
         title?: string;
+        type?: 'log';
+        showgrid?: boolean;
         showline?: boolean;
         mirror?: string;
         ticks?: string;
+        zeroline?: boolean;
     }
 
     /**
@@ -58,10 +62,7 @@ declare module Plotly {
         name?: string;
         reversescale?: boolean;
         showscale?: boolean;
-        /**
-         * 'bar', 'scatter'
-         */
-        type?: string;
+        type?: 'bar' | 'scatter';
         uid?: string;
         x: number[];
         y: number[];
@@ -86,19 +87,19 @@ declare module Plotly {
      */
     interface Line {
 
-      /**
-       * Sets the color of the lines bounding the marker points.
-       * default: '#444'
-       */
-      color?: string;
+        /**
+         * Sets the color of the lines bounding the marker points.
+         * default: '#444'
+         */
+        color?: string;
 
-      /**
-       * Sets the width (in px) of the lines bounding the marker points.
-       * default: 0
-       */
-      width?: number;
-      outlierwidth?: number;
-      outliercolor?: string;
+        /**
+         * Sets the width (in px) of the lines bounding the marker points.
+         * default: 0
+         */
+        width?: number;
+        outlierwidth?: number;
+        outliercolor?: string;
     }
 
     /**
@@ -151,7 +152,67 @@ declare module Plotly {
     }
 
     /**
-     *
+     * 
      */
-    function plot(element: HTMLElement, data: Data[], layout: Layout): void
+    function addTraces(graphDiv: string | HTMLElement, data: Data | Data[], index?: number): void;
+
+    /**
+     * 
+     */
+    function deleteTraces(graphDiv: string | HTMLElement, indexOrIndices: number | number[]): void;
+
+    /**
+     * 
+     */
+    function downloadImage(graphDiv: string | HTMLElement, options: {
+        filename: string;
+        format: 'png';
+        width: number;
+        height: number;
+    }): void;
+
+    /**
+     * 
+     */
+    function moveTraces(graphDiv: string | HTMLElement, indexOrIndicesFrom: number | number[], indexOrIndicesTo?: number | number[]): void;
+
+    /**
+     * 
+     */
+    function newPlot(graphDiv: string | HTMLElement, data: Data[], layout: Layout): void;
+
+    /**
+     * Plotly.plot is like newPlot, but it isn't idempotent (you can't call it multiple times in a row).
+     */
+    function plot(graphDiv: string | HTMLElement, data: Data[], layout: Layout): void;
+
+    /**
+     * 
+     */
+    function purge(graphDiv: string | HTMLElement): void;
+
+    /**
+     * 
+     */
+    function redraw(graphDiv: string | HTMLElement): void;
+
+    /**
+     * 
+     */
+    function relayout(graphDiv: string | HTMLElement, update: any): void;
+
+    /**
+     * 
+     */
+    function restyle(graphDiv: string | HTMLElement, update: any, something?: number | number[]): void;
+
+    /**
+     * 
+     */
+    function toImage(graphDiv: string | HTMLElement, options: {
+        format: 'png';
+        width: number;
+        height: number;
+    }): void;
+
 }
