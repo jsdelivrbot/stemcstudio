@@ -65,7 +65,7 @@ declare module Plotly {
         ncontours?: number;
         reversescale?: boolean;
         showscale?: boolean;
-        type?: 'bar' | 'histogram' | 'histogram2dcontour' | 'scatter';
+        type?: 'bar' | 'contour' | 'heatmap' | 'histogram' | 'histogram2dcontour' | 'scatter';
         uid?: string;
         x?: number[];
         xaxis?: string;
