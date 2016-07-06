@@ -2,8 +2,7 @@ const NEWLINE = '\n';
 
 export default function(options: {} = {}): string {
     const lines: string[] = [];
-    lines.push("import extend from './extend'");
-    lines.push("import Vector from './Vector.spec'");
+    lines.push("import Example from './Example.spec'");
     lines.push("");
     lines.push("window['jasmine'] = jasmineRequire.core(jasmineRequire)");
     lines.push("");
@@ -23,23 +22,22 @@ export default function(options: {} = {}): string {
     lines.push("  timer: new jasmine.Timer()");
     lines.push("})");
     lines.push("");
-    lines.push("env.addReporter(jasmineInterface.jsApiReporter)");
     lines.push("env.addReporter(htmlReporter)");
-    lines.push("");
-    lines.push("const specFilter = new jasmine.HtmlSpecFilter({");
-    lines.push("  filterString: function() {");
-    lines.push("    return void 0");
-    lines.push("  }");
-    lines.push("})");
-    lines.push("");
-    lines.push("env.specFilter = function(spec: jasmine.Spec) {");
-    lines.push("  return specFilter.matches(spec.getFullName())");
-    lines.push("}");
     lines.push("");
     lines.push("DomReady.ready(function() {");
     lines.push("  htmlReporter.initialize()");
-    lines.push("  describe(\"Vector\", Vector)");
+    lines.push('  describe("Example", Example)');
     lines.push("  env.execute()");
     lines.push("})");
+    lines.push("");
+    lines.push("/*");
+    lines.push(" * Helper function for extending the properties on objects.");
+    lines.push(" */");
+    lines.push("export default function extend<T>(destination: T, source: any): T {");
+    lines.push("    for (let property in source) {");
+    lines.push("        destination[property] = source[property]");
+    lines.push("    }");
+    lines.push("    return destination");
+    lines.push("}");
     return lines.join(NEWLINE).concat(NEWLINE);
 }

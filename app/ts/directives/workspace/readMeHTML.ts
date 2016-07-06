@@ -20,6 +20,7 @@ export default function readMeHTML(options: {} = {}): string {
     lines.push("    </style>");
 
     mathJax(lines);
+    highlightJs(lines);
 
     lines.push("  </head>");
     lines.push("  <body>");
@@ -88,6 +89,12 @@ function githubStyle(lines: string[]): void {
     lines.push('}');
 
     lines.push("    </style>");
+}
+
+function highlightJs(lines: string[]): void {
+    lines.push('    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.5.0/styles/default.min.css">');
+    lines.push('    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.5.0/highlight.min.js"></script>');
+    lines.push('    <script>hljs.initHighlightingOnLoad();</script>');
 }
 
 function mathJax(lines: string[]): void {
