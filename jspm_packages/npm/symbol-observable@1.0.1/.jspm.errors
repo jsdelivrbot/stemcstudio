@@ -1,0 +1,13 @@
+MultipleErrors: /home/david/.jspm/packages/npm/symbol-observable@1.0.1/es/ponyfill.js:1:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/symbol-observable@1.0.1/es/ponyfill.js:1:8: Semi-colon expected
+/home/david/.jspm/packages/npm/symbol-observable@1.0.1/es/ponyfill.js:1:8: Unexpected reserved word default
+/home/david/.jspm/packages/npm/symbol-observable@1.0.1/es/ponyfill.js:1:16: Semi-colon expected
+
+MultipleErrors: /home/david/.jspm/packages/npm/symbol-observable@1.0.1/es/index.js:2:1: Unexpected reserved word import
+/home/david/.jspm/packages/npm/symbol-observable@1.0.1/es/index.js:2:8: Semi-colon expected
+/home/david/.jspm/packages/npm/symbol-observable@1.0.1/es/index.js:2:17: Semi-colon expected
+/home/david/.jspm/packages/npm/symbol-observable@1.0.1/es/index.js:2:22: Semi-colon expected
+/home/david/.jspm/packages/npm/symbol-observable@1.0.1/es/index.js:12:1: Unexpected reserved word export
+/home/david/.jspm/packages/npm/symbol-observable@1.0.1/es/index.js:12:8: Semi-colon expected
+/home/david/.jspm/packages/npm/symbol-observable@1.0.1/es/index.js:12:8: Unexpected reserved word default
+/home/david/.jspm/packages/npm/symbol-observable@1.0.1/es/index.js:12:16: Semi-colon expected

@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.6.1",
+  "version": "2.6.2",
   "private": true,
   "description": "Learning STEM through Computational Modeling",
   "engines": {
@@ -48,9 +48,9 @@
   "dependencies": {
     "@angular/router": "^0.2.0",
     "angular": "^1.5.7",
-    "angular-material-icons": "^0.7.0",
+    "angular-material-icons": "^0.7.1",
     "angular2": "2.0.0-beta.17",
-    "aws-sdk": "^2.4.5",
+    "aws-sdk": "^2.4.6",
     "body-parser": "^1.15.2",
     "cookie-parser": "^1.4.3",
     "debug": "^2.2.0",

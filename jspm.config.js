@@ -13,7 +13,7 @@ System.config({
     "angular": "github:angular/bower-angular@1.5.7",
     "angular-animate": "github:angular/bower-angular-animate@1.5.7",
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.3",
-    "angular-material-icons": "npm:angular-material-icons@0.7.0",
+    "angular-material-icons": "npm:angular-material-icons@0.7.1",
     "angular-sanitize": "github:angular/bower-angular-sanitize@1.5.7",
     "angular-ui-router": "github:angular-ui/ui-router@0.2.18",
     "angular2": "npm:angular2@2.0.0-beta.17",
@@ -100,12 +100,12 @@ System.config({
       "mime-types": "npm:mime-types@2.1.11",
       "negotiator": "npm:negotiator@0.6.0"
     },
-    "npm:angular-material-icons@0.7.0": {
+    "npm:angular-material-icons@0.7.1": {
       "angular": "npm:angular@1.5.7"
     },
     "npm:angular2@2.0.0-beta.17": {
       "reflect-metadata": "npm:reflect-metadata@0.1.2",
-      "rxjs": "npm:rxjs@5.0.0-beta.9",
+      "rxjs": "npm:rxjs@5.0.0-beta.10",
       "zone.js": "npm:zone.js@0.6.12"
     },
     "npm:asn1.js@4.6.2": {
@@ -510,10 +510,10 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:rxjs@5.0.0-beta.9": {
+    "npm:rxjs@5.0.0-beta.10": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
-      "symbol-observable": "npm:symbol-observable@0.2.4"
+      "symbol-observable": "npm:symbol-observable@1.0.1"
     },
     "npm:sha.js@2.4.5": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
