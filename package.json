@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.6.3",
+  "version": "2.6.4",
   "private": true,
   "description": "Learning STEM through Computational Modeling",
   "engines": {
@@ -31,9 +31,9 @@
     "karma": "^0.13.22",
     "karma-chrome-launcher": "^1.0.1",
     "karma-jasmine": "^1.0.2",
-    "karma-jspm": "^2.1.1",
+    "karma-jspm": "^2.2.0",
     "lite-server": "^2.2.2",
-    "plotly.js": "^1.14.1",
+    "plotly.js": "^1.14.2",
     "protractor": "^3.3.0",
     "systemjs-builder": "^0.15.23",
     "tslint": "^3.13.0",

@@ -2,21 +2,21 @@
 
 Learning STEM through Computational Modeling.
 
-# Prerequisites
+## Prerequisites
 
-## Node.js (go to http://node.js.or/)
+### Node.js (go to http://node.js.or/)
 
-## Typings
+### Typings
 ```
 npm install -g typings
 ```
 
-## Karma
+### Karma
 ```
 npm install -g karma-cli
 ```
 
-# Instructions
+## Instructions
 
 1. `git clone https://github.com/geometryzen/STEMCstudio.git`
 2. `cd STEMCstudio`
@@ -41,7 +41,13 @@ declare module AngularUiBootstrap {
 10. `npm start`
 11. Open your web browser to localhost:8080
 
-# Upgrading
+## Testing
+
+```
+karma start
+```
+
+## Upgrading
 
 Update versions in
 
@@ -49,7 +55,7 @@ Update versions in
 2. bower.json
 3. app/ts/app.ts
 
-## Upgrading ace
+### Upgrading ace
 
 1. tsconfig.json
 2. Gruntfile.js
@@ -64,7 +70,7 @@ bower update
 jspm install
 jspm update
 ``` 
-## Upgrading ace-workers
+### Upgrading ace-workers
 
 1. Gruntfile.js
 2. package.json
@@ -72,18 +78,18 @@ jspm update
 
 git push origin master
 
-# Upload to Heroku
+## Upload to Heroku
 
 Application is stemcstudio
 
 Email: geometryzen@gmail.com, R...
 
-## Remote
+### Remote
 ```
 git remote add heroku git@heroku.com:STEMCstudio.git
 ```
 
-## Push
+### Push
 ```
 git push -f heroku master
 ```
