@@ -603,8 +603,15 @@ declare module EIGHT {
         attributes: { [name: string]: Attribute };
     }
 
+    /**
+     * 
+     */
     function vertexArraysFromPrimitive(primitive: Primitive, order?: string[]): VertexArrays;
-    function geometryFromPrimitive(primitive: Primitive, engine: Engine, order?: string[]): Geometry;
+
+    /**
+     *
+     */
+    function geometryFromPrimitive(primitive: Primitive, tilt: SpinorE3, engine: Engine, order?: string[]): Geometry;
 
     /**
      *
@@ -3289,7 +3296,7 @@ declare module EIGHT {
         /**
          *
          */
-        constructor(data: VertexArrays, engine: Engine, levelUp?: number);
+        constructor(data: VertexArrays, tilt: SpinorE3, engine: Engine, levelUp?: number);
         protected destructor(levelUp: number): void;
         addPart(geometry: Geometry): void;
         bind(material: Material): void;
@@ -3316,7 +3323,7 @@ declare module EIGHT {
          * The total number of bytes for each element.
          */
         stride: number;
-        constructor(data: VertexArrays, engine: Engine, levelUp?: number);
+        constructor(data: VertexArrays, tilt: SpinorE3, engine: Engine, levelUp?: number);
         protected destructor(levelUp: number): void;
         addPart(geometry: Geometry): void;
         bind(material: Material): void;
@@ -3330,90 +3337,52 @@ declare module EIGHT {
         setPrincipalScale(name: string, value: number): void;
     }
 
-    interface GeometryBuilder {
-        stress: Vector3
-        tilt: Spinor3
-        offset: Vector3
-        toGeometry(): Geometry
+    class ConicalShellBuilder {
+        height: number;
+        offset: Vector3;
+        radius: number;
+        radialSegments: number;
+        sliceAngle: number;
+        stress: Vector3;
+        thetaSegments: number;
+        tilt: Spinor3;
+        useNormal: boolean;
+        usePosition: boolean;
+        useTextureCoord: boolean;
+        constructor(e: VectorE3, cutLine: VectorE3, clockwise: boolean);
+        toPrimitive(): Primitive;
     }
 
-    class ArrowBuilder implements GeometryBuilder {
-        heightCone: number
-        offset: Vector3
-        radiusCone: number
-        radiusShaft: number
-        sliceAngle: number
-        stress: Vector3
-        thetaSegments: number
-        tilt: Spinor3
-        useNormal: boolean
-        usePosition: boolean
-        useTextureCoord: boolean
-        constructor(e: VectorE3, cutLine: VectorE3, clockwise: boolean)
-        toGeometry(): Geometry
+    class CylindricalShellBuilder {
+        height: number;
+        offset: Vector3;
+        radialSegments: number;
+        radius: number;
+        sliceAngle: number;
+        stress: Vector3;
+        thetaSegments: number;
+        tilt: Spinor3;
+        useNormal: boolean;
+        usePosition: boolean;
+        useTextureCoord: boolean;
+        constructor(e: VectorE3, cutLine: VectorE3, clockwise: boolean);
+        toPrimitive(): Primitive;
     }
 
-    class ConicalShellBuilder implements GeometryBuilder {
-        height: number
-        offset: Vector3
-        radius: number
-        radialSegments: number
-        sliceAngle: number
-        stress: Vector3
-        thetaSegments: number
-        tilt: Spinor3
-        useNormal: boolean
-        usePosition: boolean
-        useTextureCoord: boolean
-        constructor(e: VectorE3, cutLine: VectorE3, clockwise: boolean)
-        toGeometry(): Geometry
-    }
-
-    class CylinderBuilder implements GeometryBuilder {
-        offset: Vector3
-        openBase: boolean
-        openCap: boolean
-        sliceAngle: number
-        stress: Vector3
-        tilt: Spinor3
-        useNormal: boolean
-        usePosition: boolean
-        useTextureCoord: boolean
-        constructor(e: VectorE3, cutLine: VectorE3, clockwise: boolean)
-        boundary(times?: number): void
-        toGeometry(): Geometry
-    }
-
-    class CylindricalShellBuilder implements GeometryBuilder {
-        height: number
-        offset: Vector3
-        radialSegments: number
-        radius: number
-        sliceAngle: number
-        stress: Vector3
-        thetaSegments: number
-        tilt: Spinor3
-        useNormal: boolean
-        usePosition: boolean
-        useTextureCoord: boolean
-        constructor(e: VectorE3, cutLine: VectorE3, clockwise: boolean)
-        toGeometry(): Geometry
-    }
-
-    class RingBuilder implements GeometryBuilder {
-        innerRadius: number
-        offset: Vector3
-        outerRadius: number
-        radialSegments: number
-        sliceAngle: number
-        stress: Vector3
-        thetaSegments: number
-        tilt: Spinor3
-        useNormal: boolean
-        usePosition: boolean
-        useTextureCoord: boolean
-        constructor(e: VectorE3, cutLine: VectorE3, clockwise: boolean)
-        toGeometry(): Geometry
+    class RingBuilder {
+        innerRadius: number;
+        offset: Vector3;
+        outerRadius: number;
+        radialSegments: number;
+        sliceAngle: number;
+        stress: Vector3;
+        thetaSegments: number;
+        tilt: Spinor3;
+        useNormal: boolean;
+        usePosition: boolean;
+        useTextureCoord: boolean;
+        constructor(e: VectorE3, cutLine: VectorE3, clockwise: boolean);
+        toPrimitive(): Primitive;
     }
 
     interface BoxGeometryOptions {
