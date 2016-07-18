@@ -285,17 +285,9 @@ module.exports = function(grunt) {
                     },
                     {
                         expand: true,
-                        cwd: "bower_components/davinci-eight/documentation",
+                        cwd: "../davinci-eight/documentation",
                         src: ["**"],
                         dest: "generated/docs/davinci-eight"
-                    },
-                    {
-                        src: "bower_components/davinci-eight/dist/davinci-eight.d.ts",
-                        dest: "generated/vendor/davinci-eight@2.245.0/dist/davinci-eight.d.ts"
-                    },
-                    {
-                        src: "bower_components/davinci-eight/dist/davinci-eight.js",
-                        dest: "generated/vendor/davinci-eight@2.245.0/dist/davinci-eight.js"
                     },
                     {
                         src: "../davinci-eight/dist/davinci-eight.d.ts",
@@ -597,16 +589,16 @@ module.exports = function(grunt) {
                     },
                     {
                         expand: true,
-                        cwd: "bower_components/davinci-eight/documentation",
+                        cwd: "../davinci-eight/documentation",
                         src: ["**"],
                         dest: "dist/docs/davinci-eight"
                     },
                     {
-                        src: "bower_components/davinci-eight/dist/davinci-eight.d.ts",
+                        src: "../davinci-eight/dist/davinci-eight.d.ts",
                         dest: "dist/vendor/davinci-eight@2.245.0/dist/davinci-eight.d.ts"
                     },
                     {
-                        src: "bower_components/davinci-eight/dist/davinci-eight.js",
+                        src: "../davinci-eight/dist/davinci-eight.js",
                         dest: "dist/vendor/davinci-eight@2.245.0/dist/davinci-eight.js"
                     },
                     {
