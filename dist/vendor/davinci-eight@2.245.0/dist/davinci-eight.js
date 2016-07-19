@@ -556,9 +556,9 @@ define('davinci-eight/config',["require", "exports", './core/ErrorMode'], functi
         function Eight() {
             this._errorMode = ErrorMode_1.default.STRICT;
             this.GITHUB = 'https://github.com/geometryzen/davinci-eight';
-            this.LAST_MODIFIED = '2016-07-18';
+            this.LAST_MODIFIED = '2016-07-19';
             this.NAMESPACE = 'EIGHT';
-            this.VERSION = '2.270.0';
+            this.VERSION = '2.271.0';
         }
         Object.defineProperty(Eight.prototype, "errorMode", {
             get: function () {
@@ -9911,7 +9911,7 @@ define('davinci-eight/core/vertexArraysFromPrimitive',["require", "exports", './
         if (primitive) {
             var keys = order ? order : Object.keys(primitive.attributes);
             var that = {
-                drawMode: primitive.mode,
+                mode: primitive.mode,
                 indices: primitive.indices,
                 attributes: computeAttributes_1.default(primitive.attributes, keys),
                 stride: computeStride_1.default(primitive.attributes, keys),
@@ -10106,7 +10106,7 @@ define('davinci-eight/core/GeometryArrays',["require", "exports", './computeAttr
             var data = vertexArraysFromPrimitive_1.default(primitive, options.order);
             if (!isNull_1.default(data) && !isUndefined_1.default(data)) {
                 if (isObject_1.default(data)) {
-                    this.drawMode = data.drawMode;
+                    this.mode = data.mode;
                     this.vbo.data = new Float32Array(data.attributes);
                     this.count = data.attributes.length / (data.stride / 4);
                     this._stride = data.stride;
@@ -10158,7 +10158,7 @@ define('davinci-eight/core/GeometryArrays',["require", "exports", './computeAttr
         GeometryArrays.prototype.draw = function (material) {
             var contextProvider = this.contextProvider;
             if (contextProvider) {
-                this.contextProvider.drawArrays(this.drawMode, this.first, this.count);
+                this.contextProvider.drawArrays(this.mode, this.first, this.count);
             }
         };
         GeometryArrays.prototype.unbind = function (material) {
@@ -10428,7 +10428,7 @@ define('davinci-eight/core/GeometryElements',["require", "exports", '../config',
             var data = vertexArraysFromPrimitive_1.default(primitive, options.order);
             if (!isNull_1.default(data) && !isUndefined_1.default(data)) {
                 if (isObject_1.default(data)) {
-                    this.drawMode = data.drawMode;
+                    this.mode = data.mode;
                     this.setIndices(data.indices);
                     this._attributes = data.attributes;
                     this._stride = data.stride;
@@ -10482,7 +10482,7 @@ define('davinci-eight/core/GeometryElements',["require", "exports", '../config',
         Object.defineProperty(GeometryElements.prototype, "data", {
             get: function () {
                 return {
-                    drawMode: this.drawMode,
+                    mode: this.mode,
                     indices: this._indices,
                     attributes: this._attributes,
                     stride: this._stride,
@@ -10604,7 +10604,7 @@ define('davinci-eight/core/GeometryElements',["require", "exports", '../config',
             var contextProvider = this.contextProvider;
             if (contextProvider) {
                 if (this.count) {
-                    contextProvider.drawElements(this.drawMode, this.count, this.offset);
+                    contextProvider.drawElements(this.mode, this.count, this.offset);
                 }
                 else {
                     switch (config_1.default.errorMode) {
@@ -15270,7 +15270,7 @@ define('davinci-eight/transforms/Approximation',["require", "exports", '../check
                     v.approx(this.n);
                 }
                 else {
-                    throw new Error("Expecting " + aName + " to be a Coords");
+                    throw new Error("Expecting " + aName + " to be a VectorN");
                 }
             }
         };
@@ -17386,8 +17386,8 @@ define('davinci-eight/geometries/gridPrimitive',["require", "exports", '../core/
         var vMin = isDefined_1.default(options.vMin) ? mustBeNumber_1.default('vMin', options.vMin) : 0;
         var vMax = isDefined_1.default(options.vMax) ? mustBeNumber_1.default('vMax', options.vMax) : 1;
         var vSegments = isDefined_1.default(options.vSegments) ? options.vSegments : 1;
-        var drawMode = isDefined_1.default(options.drawMode) ? options.drawMode : BeginMode_1.default.LINES;
-        var grid = topology(drawMode, uSegments, false, vSegments, false);
+        var mode = isDefined_1.default(options.mode) ? options.mode : BeginMode_1.default.LINES;
+        var grid = topology(mode, uSegments, false, vSegments, false);
         var iLen = grid.uLength;
         var jLen = grid.vLength;
         if (uSegments > 0) {
@@ -20348,7 +20348,7 @@ define('davinci-eight/geometries/curvePrimitive',["require", "exports", '../core
                 return new LineStrip_1.default(uSegments);
             }
             default: {
-                throw new Error("drawMode must be POINTS, LINES");
+                throw new Error("mode must be POINTS, LINES");
             }
         }
     }
@@ -20366,8 +20366,8 @@ define('davinci-eight/geometries/curvePrimitive',["require", "exports", '../core
         var uMin = isDefined_1.default(options.uMin) ? mustBeNumber_1.default('uMin', options.uMin) : 0;
         var uMax = isDefined_1.default(options.uMax) ? mustBeNumber_1.default('uMax', options.uMax) : 1;
         var uSegments = isDefined_1.default(options.uSegments) ? options.uSegments : 1;
-        var drawMode = isDefined_1.default(options.drawMode) ? options.drawMode : BeginMode_1.default.LINES;
-        var curve = topology(drawMode, uSegments, false);
+        var mode = isDefined_1.default(options.mode) ? options.mode : BeginMode_1.default.LINES;
+        var curve = topology(mode, uSegments, false);
         var iLen = curve.uLength;
         if (uSegments > 0) {
             for (var i = 0; i < iLen; i++) {
@@ -20473,7 +20473,7 @@ define('davinci-eight/visual/Curve',["require", "exports", '../core/BeginMode', 
     function configPoints(options, curve) {
         var geoOptions = {};
         transferGeometryOptions(options, geoOptions);
-        geoOptions.drawMode = BeginMode_1.default.POINTS;
+        geoOptions.mode = BeginMode_1.default.POINTS;
         var geometry = new CurveGeometry_1.default(geoOptions);
         curve.geometry = geometry;
         geometry.release();
@@ -20509,7 +20509,7 @@ define('davinci-eight/visual/Curve',["require", "exports", '../core/BeginMode', 
     function configLines(options, curve) {
         var geoOptions = {};
         transferGeometryOptions(options, geoOptions);
-        geoOptions.drawMode = BeginMode_1.default.LINES;
+        geoOptions.mode = BeginMode_1.default.LINES;
         var geometry = new CurveGeometry_1.default(geoOptions);
         curve.geometry = geometry;
         geometry.release();
@@ -20542,8 +20542,8 @@ define('davinci-eight/visual/Curve',["require", "exports", '../core/BeginMode', 
             if (levelUp === void 0) { levelUp = 0; }
             _super.call(this, void 0, void 0, options.engine, levelUp + 1);
             this.setLoggingName('Curve');
-            var drawMode = isDefined_1.default(options.drawMode) ? options.drawMode : BeginMode_1.default.LINES;
-            switch (drawMode) {
+            var mode = isDefined_1.default(options.mode) ? options.mode : BeginMode_1.default.LINES;
+            switch (mode) {
                 case BeginMode_1.default.POINTS:
                     {
                         configPoints(options, this);
@@ -20556,7 +20556,7 @@ define('davinci-eight/visual/Curve',["require", "exports", '../core/BeginMode', 
                     }
                     break;
                 default: {
-                    throw new Error("'" + drawMode + "' is not a valid option for drawMode.");
+                    throw new Error("'" + mode + "' is not a valid option for mode.");
                 }
             }
             if (levelUp === 0) {
@@ -20660,7 +20660,7 @@ define('davinci-eight/visual/Grid',["require", "exports", '../core/BeginMode', '
     function configPoints(options, grid) {
         var geoOptions = {};
         transferGeometryOptions(options, geoOptions);
-        geoOptions.drawMode = BeginMode_1.default.POINTS;
+        geoOptions.mode = BeginMode_1.default.POINTS;
         var geometry = new GridGeometry_1.default(geoOptions);
         grid.geometry = geometry;
         geometry.release();
@@ -20690,7 +20690,7 @@ define('davinci-eight/visual/Grid',["require", "exports", '../core/BeginMode', '
     function configLines(options, grid) {
         var geoOptions = {};
         transferGeometryOptions(options, geoOptions);
-        geoOptions.drawMode = BeginMode_1.default.LINES;
+        geoOptions.mode = BeginMode_1.default.LINES;
         var geometry = new GridGeometry_1.default(geoOptions);
         grid.geometry = geometry;
         geometry.release();
@@ -20722,7 +20722,7 @@ define('davinci-eight/visual/Grid',["require", "exports", '../core/BeginMode', '
     function configMesh(options, grid) {
         var geoOptions = {};
         transferGeometryOptions(options, geoOptions);
-        geoOptions.drawMode = BeginMode_1.default.TRIANGLE_STRIP;
+        geoOptions.mode = BeginMode_1.default.TRIANGLE_STRIP;
         var geometry = new GridGeometry_1.default(geoOptions);
         grid.geometry = geometry;
         geometry.release();
@@ -20773,8 +20773,8 @@ define('davinci-eight/visual/Grid',["require", "exports", '../core/BeginMode', '
             if (levelUp === void 0) { levelUp = 0; }
             _super.call(this, void 0, void 0, options.engine, levelUp + 1);
             this.setLoggingName('Grid');
-            var drawMode = isDefined_1.default(options.drawMode) ? options.drawMode : BeginMode_1.default.LINES;
-            switch (drawMode) {
+            var mode = isDefined_1.default(options.mode) ? options.mode : BeginMode_1.default.LINES;
+            switch (mode) {
                 case BeginMode_1.default.POINTS:
                     {
                         configPoints(options, this);
@@ -20793,7 +20793,7 @@ define('davinci-eight/visual/Grid',["require", "exports", '../core/BeginMode', '
                     }
                     break;
                 default: {
-                    throw new Error("'" + drawMode + "' is not a valid option for drawMode.");
+                    throw new Error("'" + mode + "' is not a valid option for mode.");
                 }
             }
             if (options.color) {
@@ -21142,40 +21142,14 @@ define('davinci-eight/math/Modulo',["require", "exports", '../checks/mustBeGE', 
     exports.default = Modulo;
 });
 
-define('davinci-eight/visual/TrailConfig',["require", "exports", '../config', '../core/ErrorMode', '../checks/isBoolean', '../checks/mustBeBoolean'], function (require, exports, config_1, ErrorMode_1, isBoolean_1, mustBeBoolean_1) {
+define('davinci-eight/visual/TrailConfig',["require", "exports"], function (require, exports) {
     "use strict";
     var TrailConfig = (function () {
         function TrailConfig() {
-            this._enabled = true;
+            this.enabled = true;
             this.interval = 10;
             this.retain = 10;
         }
-        Object.defineProperty(TrailConfig.prototype, "enabled", {
-            get: function () {
-                return this._enabled;
-            },
-            set: function (enabled) {
-                if (isBoolean_1.default(enabled)) {
-                    this._enabled = enabled;
-                }
-                else {
-                    switch (config_1.default.errorMode) {
-                        case ErrorMode_1.default.IGNORE: {
-                            break;
-                        }
-                        case ErrorMode_1.default.WARNME: {
-                            console.warn("TrailConfig.enabled must be a boolean");
-                            break;
-                        }
-                        default: {
-                            mustBeBoolean_1.default('enabled', enabled);
-                        }
-                    }
-                }
-            },
-            enumerable: true,
-            configurable: true
-        });
         return TrailConfig;
     }());
     exports.TrailConfig = TrailConfig;
