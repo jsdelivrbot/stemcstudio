@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;geometries/curveVertexArrays&quot; | EIGHT 2.269.0</title>
+	<title>&quot;geometries/gridPrimitive&quot; | EIGHT 2.270.0</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">EIGHT 2.269.0</a>
+					<a href="../index.html" class="title">EIGHT 2.270.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -57,10 +57,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="_geometries_curvevertexarrays_.html">&quot;geometries/curveVertexArrays&quot;</a>
+					<a href="_geometries_gridprimitive_.html">&quot;geometries/gridPrimitive&quot;</a>
 				</li>
 			</ul>
-			<h1>External module &quot;geometries/curveVertexArrays&quot;</h1>
+			<h1>External module &quot;geometries/gridPrimitive&quot;</h1>
 		</div>
 	</div>
 </header>
@@ -74,10 +74,11 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported"><a href="_geometries_curvevertexarrays_.html#apositiondefault" class="tsd-kind-icon">a<wbr>Position<wbr>Default</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-external"><a href="_geometries_curvevertexarrays_.html#default" class="tsd-kind-icon">default</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported"><a href="_geometries_curvevertexarrays_.html#topology" class="tsd-kind-icon">topology</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported"><a href="_geometries_curvevertexarrays_.html#transformvertex" class="tsd-kind-icon">transform<wbr>Vertex</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported"><a href="_geometries_gridprimitive_.html#anormaldefault" class="tsd-kind-icon">a<wbr>Normal<wbr>Default</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported"><a href="_geometries_gridprimitive_.html#apositiondefault" class="tsd-kind-icon">a<wbr>Position<wbr>Default</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-external"><a href="_geometries_gridprimitive_.html#gridprimitive" class="tsd-kind-icon">grid<wbr>Primitive</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported"><a href="_geometries_gridprimitive_.html#topology" class="tsd-kind-icon">topology</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported"><a href="_geometries_gridprimitive_.html#transformvertex" class="tsd-kind-icon">transform<wbr>Vertex</a></li>
 							</ul>
 						</section>
 					</div>
@@ -86,16 +87,16 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Functions</h2>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported">
-					<a name="apositiondefault" class="tsd-anchor"></a>
-					<h3>a<wbr>Position<wbr>Default</h3>
+					<a name="anormaldefault" class="tsd-anchor"></a>
+					<h3>a<wbr>Normal<wbr>Default</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">a<wbr>Position<wbr>Default<span class="tsd-signature-symbol">(</span>u<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_math_r3_.r3.html" class="tsd-signature-type">R3</a></li>
+						<li class="tsd-signature tsd-kind-icon">a<wbr>Normal<wbr>Default<span class="tsd-signature-symbol">(</span>u<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, v<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_math_r3_.r3.html" class="tsd-signature-type">R3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9c0ea1c/src/davinci-eight/geometries/curveVertexArrays.ts#L17">geometries/curveVertexArrays.ts:17</a></li>
+									<li>Defined in geometries/gridPrimitive.ts:22</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -103,31 +104,60 @@
 								<li>
 									<h5>u: <span class="tsd-signature-type">number</span></h5>
 								</li>
+								<li>
+									<h5>v: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../classes/_math_r3_.r3.html" class="tsd-signature-type">R3</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported">
+					<a name="apositiondefault" class="tsd-anchor"></a>
+					<h3>a<wbr>Position<wbr>Default</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">a<wbr>Position<wbr>Default<span class="tsd-signature-symbol">(</span>u<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, v<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_math_r3_.r3.html" class="tsd-signature-type">R3</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in geometries/gridPrimitive.ts:18</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>u: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>v: <span class="tsd-signature-type">number</span></h5>
+								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../classes/_math_r3_.r3.html" class="tsd-signature-type">R3</a></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-external-module tsd-is-external">
-					<a name="default" class="tsd-anchor"></a>
-					<h3>default</h3>
+					<a name="gridprimitive" class="tsd-anchor"></a>
+					<h3>grid<wbr>Primitive</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">default<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_geometries_curvegeometryoptions_.curvegeometryoptions.html" class="tsd-signature-type">CurveGeometryOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_core_vertexarrays_.vertexarrays.html" class="tsd-signature-type">VertexArrays</a></li>
+						<li class="tsd-signature tsd-kind-icon">grid<wbr>Primitive<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_geometries_gridgeometryoptions_.gridgeometryoptions.html" class="tsd-signature-type">GridGeometryOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/_core_primitive_.primitive.html" class="tsd-signature-type">Primitive</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9c0ea1c/src/davinci-eight/geometries/curveVertexArrays.ts#L46">geometries/curveVertexArrays.ts:46</a></li>
+									<li>Defined in geometries/gridPrimitive.ts:60</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>options: <a href="../interfaces/_geometries_curvegeometryoptions_.curvegeometryoptions.html" class="tsd-signature-type">CurveGeometryOptions</a></h5>
+									<h5>options: <a href="../interfaces/_geometries_gridgeometryoptions_.gridgeometryoptions.html" class="tsd-signature-type">GridGeometryOptions</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_core_vertexarrays_.vertexarrays.html" class="tsd-signature-type">VertexArrays</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/_core_primitive_.primitive.html" class="tsd-signature-type">Primitive</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -135,13 +165,13 @@
 					<a name="topology" class="tsd-anchor"></a>
 					<h3>topology</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">topology<span class="tsd-signature-symbol">(</span>mode<span class="tsd-signature-symbol">: </span><a href="../enums/_core_beginmode_.beginmode.html" class="tsd-signature-type">BeginMode</a>, uSegments<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, uClosed<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_atoms_curveprimitive_.curveprimitive.html" class="tsd-signature-type">CurvePrimitive</a></li>
+						<li class="tsd-signature tsd-kind-icon">topology<span class="tsd-signature-symbol">(</span>mode<span class="tsd-signature-symbol">: </span><a href="../enums/_core_beginmode_.beginmode.html" class="tsd-signature-type">BeginMode</a>, uSegments<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, uClosed<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, vSegments<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, vClosed<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_atoms_gridprimitive_.gridprimitive.html" class="tsd-signature-type">GridPrimitive</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9c0ea1c/src/davinci-eight/geometries/curveVertexArrays.ts#L21">geometries/curveVertexArrays.ts:21</a></li>
+									<li>Defined in geometries/gridPrimitive.ts:26</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -155,8 +185,14 @@
 								<li>
 									<h5>uClosed: <span class="tsd-signature-type">boolean</span></h5>
 								</li>
+								<li>
+									<h5>vSegments: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>vClosed: <span class="tsd-signature-type">boolean</span></h5>
+								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../classes/_atoms_curveprimitive_.curveprimitive.html" class="tsd-signature-type">CurvePrimitive</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../classes/_atoms_gridprimitive_.gridprimitive.html" class="tsd-signature-type">GridPrimitive</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -164,13 +200,13 @@
 					<a name="transformvertex" class="tsd-anchor"></a>
 					<h3>transform<wbr>Vertex</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">transform<wbr>Vertex<span class="tsd-signature-symbol">(</span>vertex<span class="tsd-signature-symbol">: </span><a href="../classes/_atoms_vertex_.vertex.html" class="tsd-signature-type">Vertex</a>, u<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_geometries_curvegeometryoptions_.curvegeometryoptions.html" class="tsd-signature-type">CurveGeometryOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">transform<wbr>Vertex<span class="tsd-signature-symbol">(</span>vertex<span class="tsd-signature-symbol">: </span><a href="../classes/_atoms_vertex_.vertex.html" class="tsd-signature-type">Vertex</a>, u<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, v<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_geometries_gridgeometryoptions_.gridgeometryoptions.html" class="tsd-signature-type">GridGeometryOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/9c0ea1c/src/davinci-eight/geometries/curveVertexArrays.ts#L35">geometries/curveVertexArrays.ts:35</a></li>
+									<li>Defined in geometries/gridPrimitive.ts:43</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -182,7 +218,10 @@
 									<h5>u: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>options: <a href="../interfaces/_geometries_curvegeometryoptions_.curvegeometryoptions.html" class="tsd-signature-type">CurveGeometryOptions</a></h5>
+									<h5>v: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>options: <a href="../interfaces/_geometries_gridgeometryoptions_.gridgeometryoptions.html" class="tsd-signature-type">GridGeometryOptions</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -198,23 +237,26 @@
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 					<li class="current tsd-kind-external-module tsd-is-external">
-						<a href="_geometries_curvevertexarrays_.html">"geometries/curve<wbr>Vertex<wbr>Arrays"</a>
+						<a href="_geometries_gridprimitive_.html">"geometries/grid<wbr>Primitive"</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported">
-						<a href="_geometries_curvevertexarrays_.html#apositiondefault" class="tsd-kind-icon">a<wbr>Position<wbr>Default</a>
+						<a href="_geometries_gridprimitive_.html#anormaldefault" class="tsd-kind-icon">a<wbr>Normal<wbr>Default</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported">
+						<a href="_geometries_gridprimitive_.html#apositiondefault" class="tsd-kind-icon">a<wbr>Position<wbr>Default</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-external">
-						<a href="_geometries_curvevertexarrays_.html#default" class="tsd-kind-icon">default</a>
+						<a href="_geometries_gridprimitive_.html#gridprimitive" class="tsd-kind-icon">grid<wbr>Primitive</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported">
-						<a href="_geometries_curvevertexarrays_.html#topology" class="tsd-kind-icon">topology</a>
+						<a href="_geometries_gridprimitive_.html#topology" class="tsd-kind-icon">topology</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-external-module tsd-is-external tsd-is-not-exported">
-						<a href="_geometries_curvevertexarrays_.html#transformvertex" class="tsd-kind-icon">transform<wbr>Vertex</a>
+						<a href="_geometries_gridprimitive_.html#transformvertex" class="tsd-kind-icon">transform<wbr>Vertex</a>
 					</li>
 				</ul>
 			</nav>
