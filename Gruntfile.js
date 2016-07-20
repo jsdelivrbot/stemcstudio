@@ -310,7 +310,21 @@ module.exports = function(grunt) {
                         // This version is loaded into iframe for the runtime.
                         src: "bower_components/davinci-mathscript/dist/davinci-mathscript.min.js",
                         dest: "generated/vendor/davinci-mathscript@1.0.8/dist/davinci-mathscript.min.js"
-                    }
+                    },
+                    {
+                        expand: true,
+                        cwd: "../davinci-units/documentation",
+                        src: ["**"],
+                        dest: "generated/docs/davinci-units"
+                    },
+                    {
+                        src: "../davinci-units/dist/davinci-units.d.ts",
+                        dest: "generated/vendor/davinci-units@1.0.0/dist/davinci-units.d.ts"
+                    },
+                    {
+                        src: "../davinci-units/dist/davinci-units.js",
+                        dest: "generated/vendor/davinci-units@1.0.0/dist/davinci-units.js"
+                    },
                 ]
             },
             prod: {
@@ -614,7 +628,21 @@ module.exports = function(grunt) {
                         // This version is loaded into iframe for the runtime.
                         src: "bower_components/davinci-mathscript/dist/davinci-mathscript.min.js",
                         dest: "dist/vendor/davinci-mathscript@1.0.8/dist/davinci-mathscript.min.js"
-                    }
+                    },
+                    {
+                        expand: true,
+                        cwd: "../davinci-units/documentation",
+                        src: ["**"],
+                        dest: "dist/docs/davinci-units"
+                    },
+                    {
+                        src: "../davinci-units/dist/davinci-units.d.ts",
+                        dest: "dist/vendor/davinci-units@1.0.0/dist/davinci-units.d.ts"
+                    },
+                    {
+                        src: "../davinci-units/dist/davinci-units.js",
+                        dest: "dist/vendor/davinci-units@1.0.0/dist/davinci-units.js"
+                    },
                 ]
             },
             app: {

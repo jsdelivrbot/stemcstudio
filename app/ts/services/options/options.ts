@@ -29,6 +29,7 @@ app.factory('options', [
         // const VERSION_SYSTEMJS = '0.19.26';
         const VERSION_THREEJS = '0.78.0';
         const VERSION_TWO = '0.5.0';
+        const VERSION_UNITS = '1.0.0';
         // const VERSION_UNDERSCORE = '1.8.3';
 
         // FIXME: DRY This function is defined in constants.ts?
@@ -111,6 +112,9 @@ app.factory('options', [
           return vendorFolder('underscore', VERSION_UNDERSCORE, void 0, fileName);
         }
         */
+        function units(subFolder: string, fileName: string): string {
+            return vendorFolder('davinci-units', VERSION_UNITS, subFolder, fileName);
+        }
         // TODO: Make this external.
         let _options: IOption[] = [
             {
@@ -168,7 +172,7 @@ app.factory('options', [
             },
             {
                 name: 'davinci-eight',
-                moniker: 'Eight.js',
+                moniker: 'EIGHT',
                 description: "Mathematical Computer Graphics using WebGL.",
                 homepage: 'https://www.stemcstudio.com/docs/davinci-eight/index.html',
                 version: VERSION_EIGHT,
@@ -177,6 +181,19 @@ app.factory('options', [
                 dts: eight('dist', 'davinci-eight.d.ts'),
                 js: [eight('dist', 'davinci-eight.js')],
                 minJs: [eight('dist', 'davinci-eight.js')],
+                dependencies: {}
+            },
+            {
+                name: 'davinci-units',
+                moniker: 'UNITS',
+                description: "Dimensions, Units and Geometric Algebra.",
+                homepage: 'https://www.stemcstudio.com/docs/davinci-units/index.html',
+                version: VERSION_UNITS,
+                visible: true,
+                css: [],
+                dts: units('dist', 'davinci-units.d.ts'),
+                js: [units('dist', 'davinci-units.js')],
+                minJs: [units('dist', 'davinci-units.js')],
                 dependencies: {}
             },
             {

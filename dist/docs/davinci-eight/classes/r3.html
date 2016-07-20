@@ -71,7 +71,7 @@
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
 						<p>
-							An immutable vector in Euclidean 3D space supporting an optional unit of measure.
+							An immutable vector in Euclidean 3D space supporting a unit of measure.
 						</p>
 						<p>
 							This class is intended to be used for Physical Science education and research by
@@ -82,11 +82,6 @@
 							owing to the cost of creating temporary objects and unit computation.
 						</p>
 					</div>
-					<dl class="tsd-comment-tags">
-						<dt>class</dt>
-						<dd><p>R3</p>
-						</dd>
-					</dl>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
@@ -139,7 +134,9 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="r3.html#___add__" class="tsd-kind-icon">___add__</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="r3.html#add" class="tsd-kind-icon">add</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="r3.html#cross" class="tsd-kind-icon">cross</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="r3.html#divbyscalar" class="tsd-kind-icon">div<wbr>ByScalar</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="r3.html#dot" class="tsd-kind-icon">dot</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="r3.html#lerp" class="tsd-kind-icon">lerp</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="r3.html#magnitude" class="tsd-kind-icon">magnitude</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="r3.html#neg" class="tsd-kind-icon">neg</a></li>
@@ -157,6 +154,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="r3.html#tostringcustom" class="tsd-kind-icon">to<wbr>String<wbr>Custom</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="r3.html#direction" class="tsd-kind-icon">direction</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="r3.html#fromvector" class="tsd-kind-icon">from<wbr>Vector</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="r3.html#random" class="tsd-kind-icon">random</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="r3.html#vector" class="tsd-kind-icon">vector</a></li>
 							</ul>
 						</section>
@@ -175,18 +173,9 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L82">math/R3.ts:82</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L43">davinci-eight/math/R3.ts:43</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>class</dt>
-									<dd><p>R3</p>
-									</dd>
-									<dt>constructor</dt>
-									<dd></dd>
-								</dl>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -197,10 +186,6 @@
 								</li>
 								<li>
 									<h5>z: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-										</div>
-									</div>
 								</li>
 								<li>
 									<h5>uom: <a href="unit.html" class="tsd-signature-type">Unit</a></h5>
@@ -219,19 +204,9 @@
 					<div class="tsd-signature tsd-kind-icon">_coords<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L43">math/R3.ts:43</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L38">davinci-eight/math/R3.ts:38</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-comment-tags">
-							<dt>property</dt>
-							<dd><p>_coords</p>
-							</dd>
-							<dt>type</dt>
-							<dd><p>number[]</p>
-							</dd>
-						</dl>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-external">
 					<a name="_uom" class="tsd-anchor"></a>
@@ -239,19 +214,9 @@
 					<div class="tsd-signature tsd-kind-icon">_uom<span class="tsd-signature-symbol">:</span> <a href="unit.html" class="tsd-signature-type">Unit</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L50">math/R3.ts:50</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L39">davinci-eight/math/R3.ts:39</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-comment-tags">
-							<dt>property</dt>
-							<dd><p>_uom</p>
-							</dd>
-							<dt>type</dt>
-							<dd><p>{Unit}</p>
-							</dd>
-						</dl>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="e1" class="tsd-anchor"></a>
@@ -259,23 +224,9 @@
 					<div class="tsd-signature tsd-kind-icon">e1<span class="tsd-signature-symbol">:</span> <a href="r3.html" class="tsd-signature-type">R3</a><span class="tsd-signature-symbol"> =&nbsp;new R3(1, 0, 0, Unit.ONE)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L66">math/R3.ts:66</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L41">davinci-eight/math/R3.ts:41</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-comment-tags">
-							<dt>property</dt>
-							<dd><p>e1</p>
-							</dd>
-							<dt>type</dt>
-							<dd><p>R3</p>
-							</dd>
-							<dt>readonly</dt>
-							<dd></dd>
-							<dt>static</dt>
-							<dd></dd>
-						</dl>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="e2" class="tsd-anchor"></a>
@@ -283,23 +234,9 @@
 					<div class="tsd-signature tsd-kind-icon">e2<span class="tsd-signature-symbol">:</span> <a href="r3.html" class="tsd-signature-type">R3</a><span class="tsd-signature-symbol"> =&nbsp;new R3(0, 1, 0, Unit.ONE)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L74">math/R3.ts:74</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L42">davinci-eight/math/R3.ts:42</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-comment-tags">
-							<dt>property</dt>
-							<dd><p>e2</p>
-							</dd>
-							<dt>type</dt>
-							<dd><p>R3</p>
-							</dd>
-							<dt>readonly</dt>
-							<dd></dd>
-							<dt>static</dt>
-							<dd></dd>
-						</dl>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="e3" class="tsd-anchor"></a>
@@ -307,23 +244,9 @@
 					<div class="tsd-signature tsd-kind-icon">e3<span class="tsd-signature-symbol">:</span> <a href="r3.html" class="tsd-signature-type">R3</a><span class="tsd-signature-symbol"> =&nbsp;new R3(0, 0, 1, Unit.ONE)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L82">math/R3.ts:82</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L43">davinci-eight/math/R3.ts:43</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-comment-tags">
-							<dt>property</dt>
-							<dd><p>e3</p>
-							</dd>
-							<dt>type</dt>
-							<dd><p>R3</p>
-							</dd>
-							<dt>readonly</dt>
-							<dd></dd>
-							<dt>static</dt>
-							<dd></dd>
-						</dl>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="zero" class="tsd-anchor"></a>
@@ -331,23 +254,9 @@
 					<div class="tsd-signature tsd-kind-icon">zero<span class="tsd-signature-symbol">:</span> <a href="r3.html" class="tsd-signature-type">R3</a><span class="tsd-signature-symbol"> =&nbsp;new R3(0, 0, 0, Unit.ONE)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L58">math/R3.ts:58</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L40">davinci-eight/math/R3.ts:40</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-comment-tags">
-							<dt>property</dt>
-							<dd><p>zero</p>
-							</dd>
-							<dt>type</dt>
-							<dd><p>R3</p>
-							</dd>
-							<dt>readonly</dt>
-							<dd></dd>
-							<dt>static</dt>
-							<dd></dd>
-						</dl>
-					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
@@ -363,27 +272,15 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L148">math/R3.ts:148</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L82">davinci-eight/math/R3.ts:82</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>property</dt>
-									<dd><p>uom</p>
-									</dd>
-									<dt>type</dt>
-									<dd><p>Unit</p>
-									</dd>
-									<dt>readonly</dt>
-									<dd></dd>
-								</dl>
-							</div>
 							<h4 class="tsd-returns-title">Returns <a href="unit.html" class="tsd-signature-type">Unit</a></h4>
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L151">math/R3.ts:151</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L85">davinci-eight/math/R3.ts:85</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -407,27 +304,15 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L112">math/R3.ts:112</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L61">davinci-eight/math/R3.ts:61</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>property</dt>
-									<dd><p>x</p>
-									</dd>
-									<dt>type</dt>
-									<dd><p>number</p>
-									</dd>
-									<dt>readonly</dt>
-									<dd></dd>
-								</dl>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L115">math/R3.ts:115</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L64">davinci-eight/math/R3.ts:64</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -451,27 +336,15 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L124">math/R3.ts:124</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L68">davinci-eight/math/R3.ts:68</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>property</dt>
-									<dd><p>y</p>
-									</dd>
-									<dt>type</dt>
-									<dd><p>number</p>
-									</dd>
-									<dt>readonly</dt>
-									<dd></dd>
-								</dl>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L127">math/R3.ts:127</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L71">davinci-eight/math/R3.ts:71</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -495,27 +368,15 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L136">math/R3.ts:136</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L75">davinci-eight/math/R3.ts:75</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>property</dt>
-									<dd><p>z</p>
-									</dd>
-									<dt>type</dt>
-									<dd><p>number</p>
-									</dd>
-									<dt>readonly</dt>
-									<dd></dd>
-								</dl>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L139">math/R3.ts:139</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L78">davinci-eight/math/R3.ts:78</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -541,16 +402,9 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L349">math/R3.ts:349</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L207">davinci-eight/math/R3.ts:207</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p><strong>add</strong></p>
-									</dd>
-								</dl>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -571,16 +425,9 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L161">math/R3.ts:161</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L89">davinci-eight/math/R3.ts:89</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>add</p>
-									</dd>
-								</dl>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -588,6 +435,29 @@
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> α: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="r3.html" class="tsd-signature-type">R3</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="cross" class="tsd-anchor"></a>
+					<h3>cross</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">cross<span class="tsd-signature-symbol">(</span>rhs<span class="tsd-signature-symbol">: </span><a href="r3.html" class="tsd-signature-type">R3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="r3.html" class="tsd-signature-type">R3</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L93">davinci-eight/math/R3.ts:93</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>rhs: <a href="r3.html" class="tsd-signature-type">R3</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="r3.html" class="tsd-signature-type">R3</a></h4>
@@ -604,16 +474,9 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L170">math/R3.ts:170</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L101">davinci-eight/math/R3.ts:101</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>divByScalar</p>
-									</dd>
-								</dl>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -621,6 +484,29 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="r3.html" class="tsd-signature-type">R3</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="dot" class="tsd-anchor"></a>
+					<h3>dot</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">dot<span class="tsd-signature-symbol">(</span>rhs<span class="tsd-signature-symbol">: </span><a href="r3.html" class="tsd-signature-type">R3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="unit.html" class="tsd-signature-type">Unit</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L105">davinci-eight/math/R3.ts:105</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>rhs: <a href="r3.html" class="tsd-signature-type">R3</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="unit.html" class="tsd-signature-type">Unit</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -634,16 +520,9 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L180">math/R3.ts:180</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L110">davinci-eight/math/R3.ts:110</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>lerp</p>
-									</dd>
-								</dl>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -668,16 +547,9 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/normedlinearelement.html">NormedLinearElement</a>.<a href="../interfaces/normedlinearelement.html#magnitude">magnitude</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L188">math/R3.ts:188</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L114">davinci-eight/math/R3.ts:114</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>magnitude</p>
-									</dd>
-								</dl>
-							</div>
 							<h4 class="tsd-returns-title">Returns <a href="unit.html" class="tsd-signature-type">Unit</a></h4>
 						</li>
 					</ul>
@@ -693,16 +565,9 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/normedlinearelement.html">NormedLinearElement</a>.<a href="../interfaces/normedlinearelement.html#neg">neg</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L196">math/R3.ts:196</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L118">davinci-eight/math/R3.ts:118</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>neg</p>
-									</dd>
-								</dl>
-							</div>
 							<h4 class="tsd-returns-title">Returns <a href="r3.html" class="tsd-signature-type">R3</a></h4>
 						</li>
 					</ul>
@@ -717,16 +582,9 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L205">math/R3.ts:205</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L122">davinci-eight/math/R3.ts:122</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>reflect</p>
-									</dd>
-								</dl>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -747,16 +605,9 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L214">math/R3.ts:214</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L126">davinci-eight/math/R3.ts:126</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>rotate</p>
-									</dd>
-								</dl>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -777,16 +628,9 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L241">math/R3.ts:241</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L148">davinci-eight/math/R3.ts:148</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>scale</p>
-									</dd>
-								</dl>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -807,23 +651,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L251">math/R3.ts:251</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L152">davinci-eight/math/R3.ts:152</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>slerp</p>
-									</dd>
-								</dl>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>target: <a href="r3.html" class="tsd-signature-type">R3</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>R3</p>
-									</div>
 								</li>
 								<li>
 									<h5>α: <span class="tsd-signature-type">number</span></h5>
@@ -844,16 +678,9 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/normedlinearelement.html">NormedLinearElement</a>.<a href="../interfaces/normedlinearelement.html#squarednorm">squaredNorm</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L259">math/R3.ts:259</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L156">davinci-eight/math/R3.ts:156</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>squaredNorm</p>
-									</dd>
-								</dl>
-							</div>
 							<h4 class="tsd-returns-title">Returns <a href="unit.html" class="tsd-signature-type">Unit</a></h4>
 						</li>
 					</ul>
@@ -868,16 +695,9 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L271">math/R3.ts:271</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L163">davinci-eight/math/R3.ts:163</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>stress</p>
-									</dd>
-								</dl>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -898,16 +718,9 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L281">math/R3.ts:281</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L167">davinci-eight/math/R3.ts:167</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>sub</p>
-									</dd>
-								</dl>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -932,16 +745,9 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/normedlinearelement.html">NormedLinearElement</a>.<a href="../interfaces/normedlinearelement.html#toexponential">toExponential</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L309">math/R3.ts:309</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L187">davinci-eight/math/R3.ts:187</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>toExponential</p>
-									</dd>
-								</dl>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -963,16 +769,9 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/normedlinearelement.html">NormedLinearElement</a>.<a href="../interfaces/normedlinearelement.html#tofixed">toFixed</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L319">math/R3.ts:319</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L192">davinci-eight/math/R3.ts:192</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>toFixed</p>
-									</dd>
-								</dl>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -994,16 +793,9 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/normedlinearelement.html">NormedLinearElement</a>.<a href="../interfaces/normedlinearelement.html#toprecision">toPrecision</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L329">math/R3.ts:329</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L197">davinci-eight/math/R3.ts:197</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>toPrecision</p>
-									</dd>
-								</dl>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -1025,16 +817,9 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/normedlinearelement.html">NormedLinearElement</a>.<a href="../interfaces/normedlinearelement.html#tostring">toString</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L339">math/R3.ts:339</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L202">davinci-eight/math/R3.ts:202</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>toString</p>
-									</dd>
-								</dl>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -1055,14 +840,9 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L288">math/R3.ts:288</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L171">davinci-eight/math/R3.ts:171</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Intentionally undocumented.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -1104,7 +884,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L385">math/R3.ts:385</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L229">davinci-eight/math/R3.ts:229</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1116,15 +896,6 @@
 										If the input is <code>undefined</code> then the output is <code>undefined</code>.
 									</p>
 								</div>
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>direction</p>
-									</dd>
-									<dt>static</dt>
-									<dd></dd>
-									<dt>chainable</dt>
-									<dd></dd>
-								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -1146,20 +917,9 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L367">math/R3.ts:367</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L217">davinci-eight/math/R3.ts:217</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>fromVector</p>
-									</dd>
-									<dt>static</dt>
-									<dd></dd>
-									<dt>chainable</dt>
-									<dd></dd>
-								</dl>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -1174,6 +934,23 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="random" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> random</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">random<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="r3.html" class="tsd-signature-type">R3</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L242">davinci-eight/math/R3.ts:242</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="r3.html" class="tsd-signature-type">R3</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="vector" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> vector</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
@@ -1183,20 +960,9 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b14674b/src/davinci-eight/math/R3.ts#L407">math/R3.ts:407</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/5b51c07/src/davinci-eight/math/R3.ts#L250">davinci-eight/math/R3.ts:250</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>vector</p>
-									</dd>
-									<dt>static</dt>
-									<dd></dd>
-									<dt>chainable</dt>
-									<dd></dd>
-								</dl>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -1273,7 +1039,13 @@
 								<a href="r3.html#add" class="tsd-kind-icon">add</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="r3.html#cross" class="tsd-kind-icon">cross</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="r3.html#divbyscalar" class="tsd-kind-icon">div<wbr>ByScalar</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="r3.html#dot" class="tsd-kind-icon">dot</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="r3.html#lerp" class="tsd-kind-icon">lerp</a>
@@ -1325,6 +1097,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
 								<a href="r3.html#fromvector" class="tsd-kind-icon">from<wbr>Vector</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="r3.html#random" class="tsd-kind-icon">random</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
 								<a href="r3.html#vector" class="tsd-kind-icon">vector</a>
