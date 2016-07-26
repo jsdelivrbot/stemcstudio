@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.7.13",
+  "version": "2.7.14",
   "private": true,
   "description": "Learning STEM through Computational Modeling",
   "engines": {
@@ -27,7 +27,7 @@
     "grunt-contrib-watch": "^1.0.0",
     "grunt-ts": "^5.5.1",
     "grunt-tslint": "^3.1.1",
-    "jspm": "^0.16.39",
+    "jspm": "^0.16.40",
     "karma": "^0.13.22",
     "karma-chrome-launcher": "^1.0.1",
     "karma-jasmine": "^1.0.2",
@@ -35,7 +35,7 @@
     "lite-server": "^2.2.2",
     "plotly.js": "^1.15.0",
     "protractor": "^3.3.0",
-    "systemjs-builder": "^0.15.23",
+    "systemjs-builder": "^0.15.24",
     "tslint": "^3.13.0",
     "typedoc": "^0.4.4",
     "typescript": "^1.8.10",
@@ -71,7 +71,7 @@
     "serve-favicon": "^2.3.0",
     "showdown": "^1.4.2",
     "socket.io": "^1.4.8",
-    "systemjs": "^0.19.32",
+    "systemjs": "^0.19.34",
     "zone.js": "^0.6.12"
   },
   "jspm": {
