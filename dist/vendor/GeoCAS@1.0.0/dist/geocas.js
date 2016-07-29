@@ -792,7 +792,10 @@ define('geocas/math/Algebra',["require", "exports"], function (require, exports)
         MultiplyExpr.prototype.simplify = function () {
             var a = this.lhs.simplify();
             var b = this.rhs.simplify();
-            if (a instanceof MultiplyExpr) {
+            if (!(a instanceof ScalarExpr) && b instanceof ScalarExpr) {
+                return new MultiplyExpr(b, a, true);
+            }
+            else if (a instanceof MultiplyExpr) {
                 var aL = a.lhs;
                 var aR = a.rhs;
                 if (aL instanceof ScalarExpr) {
@@ -812,7 +815,7 @@ define('geocas/math/Algebra',["require", "exports"], function (require, exports)
                     return new MultiplyExpr(a, b);
                 }
             }
-            if (a instanceof ScalarExpr) {
+            else if (a instanceof ScalarExpr) {
                 if (typeof a.value === 'number' && a.value === 0) {
                     return a.copy(true);
                 }

@@ -1,6 +1,6 @@
 {
     "name": "stemcstudio",
-    "version": "2.7.15",
+    "version": "2.7.16",
     "description": "Learning STEM through Computational Modeling",
     "homepage": "https://github.com/geometryzen/STEMCstudio",
     "authors": [
@@ -35,7 +35,7 @@
         "aws-sdk-js": "^2.3.17",
         "bootstrap": "^3.3.6",
         "bootstrap3-dialog": "^1.35.0",
-        "davinci-eight": "2.282.0",
+        "davinci-eight": "2.283.0",
         "davinci-mathscript": "^1.0.11",
         "deck.js": "^1.1.0",
         "dialog-polyfill": "^0.4.1",
@@ -54,7 +54,6 @@
         "randomcolor": "randomColor#~0.4.4"
     },
     "resolutions": {
-        "angular": "1.5.8",
-        "jquery": ">= 1.9.0"
+        "angular": "1.5.8"
     }
 }
