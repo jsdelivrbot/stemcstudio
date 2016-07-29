@@ -19,6 +19,7 @@ app.factory('options', [
         const VERSION_DOMREADY = '1.0.0';
         const VERSION_D3 = '3.5.5';
         const VERSION_EIGHT = '2.245.0';
+        const VERSION_GEOCAS = '1.0.0';
         const VERSION_GLMATRIX = '2.3.2';
         const VERSION_JASMINE = '2.4.1';
         const VERSION_JQUERY = '2.1.4';
@@ -72,6 +73,9 @@ app.factory('options', [
         }
         function eight(subFolder: string, fileName: string): string {
             return vendorFolder('davinci-eight', VERSION_EIGHT, subFolder, fileName);
+        }
+        function geocas(subFolder: string, fileName: string): string {
+            return vendorFolder('GeoCAS', VERSION_GEOCAS, subFolder, fileName);
         }
         function glMatrix(fileName: string): string {
             return vendorFolder('gl-matrix', VERSION_GLMATRIX, void 0, fileName);
@@ -144,6 +148,19 @@ app.factory('options', [
                 dependencies: {}
             },
             */
+            {
+                name: 'geocas',
+                moniker: 'GeoCAS',
+                description: "Geometric Computer Algebra System.",
+                homepage: 'https://www.stemcstudio.com/docs/GeoCAS/index.html',
+                version: VERSION_GEOCAS,
+                visible: true,
+                css: [],
+                dts: geocas('dist', 'geocas.d.ts'),
+                js: [geocas('dist', 'geocas.js')],
+                minJs: [geocas('dist', 'geocas.js')],
+                dependencies: {}
+            },
             {
                 name: 'gl-matrix',
                 moniker: 'gl-matrix',
