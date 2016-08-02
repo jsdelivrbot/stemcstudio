@@ -42,14 +42,10 @@ declare class Stats {
     /**
      * Captures the end time.
      * Updates the display.
-     * Call this method at the beginning of the monitoring period.
+     * Call this method at the end of the monitoring period,
+     * usually before the call to requestAnimationFrame.
      */
     end(): number;
-
-    /**
-     * A convenience method for calling the end method and assigning to the begin time.
-     */
-    update(): void;
 }
 
 declare module "stats.js" {

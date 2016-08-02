@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Basis | EIGHT 2.285.0</title>
+	<title>Basis | EIGHT 2.286.0</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">EIGHT 2.285.0</a>
+					<a href="../index.html" class="title">EIGHT 2.286.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -141,6 +141,7 @@
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="basis.html#addref" class="tsd-kind-icon">add<wbr>Ref</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="basis.html#bind" class="tsd-kind-icon">bind</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="basis.html#cleanup" class="tsd-kind-icon">clean<wbr>Up</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="basis.html#contextfree" class="tsd-kind-icon">context<wbr>Free</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited"><a href="basis.html#contextgain" class="tsd-kind-icon">context<wbr>Gain</a></li>
@@ -153,13 +154,17 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="basis.html#iszombie" class="tsd-kind-icon">is<wbr>Zombie</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="basis.html#release" class="tsd-kind-icon">release</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="basis.html#removefacet" class="tsd-kind-icon">remove<wbr>Facet</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="basis.html#render" class="tsd-kind-icon">render</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="basis.html#setambients" class="tsd-kind-icon">set<wbr>Ambients</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="basis.html#setfacet" class="tsd-kind-icon">set<wbr>Facet</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="basis.html#setloggingname" class="tsd-kind-icon">set<wbr>Logging<wbr>Name</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected"><a href="basis.html#setprincipalscale" class="tsd-kind-icon">set<wbr>Principal<wbr>Scale</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="basis.html#setuniforms" class="tsd-kind-icon">set<wbr>Uniforms</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="basis.html#subscribe" class="tsd-kind-icon">subscribe</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="basis.html#synchup" class="tsd-kind-icon">synch<wbr>Up</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="basis.html#unbind" class="tsd-kind-icon">unbind</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="basis.html#unsubscribe" class="tsd-kind-icon">unsubscribe</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="basis.html#use" class="tsd-kind-icon">use</a></li>
 							</ul>
 						</section>
 					</div>
@@ -178,7 +183,7 @@
 							<aside class="tsd-sources">
 								<p>Overwrites <a href="mesh.html">Mesh</a>.<a href="mesh.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/visual/Basis.ts#L100">visual/Basis.ts:100</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/visual/Basis.ts#L100">visual/Basis.ts:100</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -204,7 +209,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#_type">_type</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/ShareableBase.ts#L48">core/ShareableBase.ts:48</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/ShareableBase.ts#L48">core/ShareableBase.ts:48</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -215,7 +220,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#contextprovider">contextProvider</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/ShareableContextConsumer.ts#L61">core/ShareableContextConsumer.ts:61</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/ShareableContextConsumer.ts#L61">core/ShareableContextConsumer.ts:61</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -236,7 +241,7 @@
 						<p>Implementation of <a href="../interfaces/abstractmesh.html">AbstractMesh</a>.<a href="../interfaces/abstractmesh.html#name">name</a></p>
 						<p>Inherited from <a href="drawable.html">Drawable</a>.<a href="drawable.html#name">name</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Drawable.ts#L39">core/Drawable.ts:39</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Drawable.ts#L39">core/Drawable.ts:39</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -246,7 +251,7 @@
 					<div class="tsd-signature tsd-kind-icon">u<wbr>ColorA<span class="tsd-signature-symbol">:</span> <a href="colorfacet.html" class="tsd-signature-type">ColorFacet</a><span class="tsd-signature-symbol"> =&nbsp;new ColorFacet(uColorA)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/visual/Basis.ts#L98">visual/Basis.ts:98</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/visual/Basis.ts#L98">visual/Basis.ts:98</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -256,7 +261,7 @@
 					<div class="tsd-signature tsd-kind-icon">u<wbr>ColorB<span class="tsd-signature-symbol">:</span> <a href="colorfacet.html" class="tsd-signature-type">ColorFacet</a><span class="tsd-signature-symbol"> =&nbsp;new ColorFacet(uColorB)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/visual/Basis.ts#L99">visual/Basis.ts:99</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/visual/Basis.ts#L99">visual/Basis.ts:99</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -266,7 +271,7 @@
 					<div class="tsd-signature tsd-kind-icon">u<wbr>ColorC<span class="tsd-signature-symbol">:</span> <a href="colorfacet.html" class="tsd-signature-type">ColorFacet</a><span class="tsd-signature-symbol"> =&nbsp;new ColorFacet(uColorC)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/visual/Basis.ts#L100">visual/Basis.ts:100</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/visual/Basis.ts#L100">visual/Basis.ts:100</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -276,7 +281,7 @@
 					<div class="tsd-signature tsd-kind-icon">u<wbr>PointA<span class="tsd-signature-symbol">:</span> <a href="vector3facet.html" class="tsd-signature-type">Vector3Facet</a><span class="tsd-signature-symbol"> =&nbsp;new Vector3Facet(uPointA)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/visual/Basis.ts#L95">visual/Basis.ts:95</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/visual/Basis.ts#L95">visual/Basis.ts:95</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -286,7 +291,7 @@
 					<div class="tsd-signature tsd-kind-icon">u<wbr>PointB<span class="tsd-signature-symbol">:</span> <a href="vector3facet.html" class="tsd-signature-type">Vector3Facet</a><span class="tsd-signature-symbol"> =&nbsp;new Vector3Facet(uPointB)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/visual/Basis.ts#L96">visual/Basis.ts:96</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/visual/Basis.ts#L96">visual/Basis.ts:96</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -296,7 +301,7 @@
 					<div class="tsd-signature tsd-kind-icon">u<wbr>PointC<span class="tsd-signature-symbol">:</span> <a href="vector3facet.html" class="tsd-signature-type">Vector3Facet</a><span class="tsd-signature-symbol"> =&nbsp;new Vector3Facet(uPointC)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/visual/Basis.ts#L97">visual/Basis.ts:97</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/visual/Basis.ts#L97">visual/Basis.ts:97</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -315,7 +320,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mesh.html">Mesh</a>.<a href="mesh.html#r">R</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Mesh.ts#L47">core/Mesh.ts:47</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Mesh.ts#L47">core/Mesh.ts:47</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -329,7 +334,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mesh.html">Mesh</a>.<a href="mesh.html#r">R</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Mesh.ts#L56">core/Mesh.ts:56</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Mesh.ts#L56">core/Mesh.ts:56</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -359,7 +364,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mesh.html">Mesh</a>.<a href="mesh.html#x">X</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Mesh.ts#L91">core/Mesh.ts:91</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Mesh.ts#L91">core/Mesh.ts:91</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -373,7 +378,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mesh.html">Mesh</a>.<a href="mesh.html#x">X</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Mesh.ts#L100">core/Mesh.ts:100</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Mesh.ts#L100">core/Mesh.ts:100</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -401,7 +406,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/visual/Basis.ts#L144">visual/Basis.ts:144</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/visual/Basis.ts#L144">visual/Basis.ts:144</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="vector3.html" class="tsd-signature-type">Vector3</a></h4>
@@ -418,7 +423,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/visual/Basis.ts#L147">visual/Basis.ts:147</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/visual/Basis.ts#L147">visual/Basis.ts:147</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="vector3.html" class="tsd-signature-type">Vector3</a></h4>
@@ -435,7 +440,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/visual/Basis.ts#L150">visual/Basis.ts:150</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/visual/Basis.ts#L150">visual/Basis.ts:150</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="vector3.html" class="tsd-signature-type">Vector3</a></h4>
@@ -454,7 +459,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mesh.html">Mesh</a>.<a href="mesh.html#color">color</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Mesh.ts#L69">core/Mesh.ts:69</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Mesh.ts#L69">core/Mesh.ts:69</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -468,7 +473,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mesh.html">Mesh</a>.<a href="mesh.html#color">color</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Mesh.ts#L78">core/Mesh.ts:78</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Mesh.ts#L78">core/Mesh.ts:78</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -496,7 +501,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/visual/Basis.ts#L153">visual/Basis.ts:153</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/visual/Basis.ts#L153">visual/Basis.ts:153</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="color.html" class="tsd-signature-type">Color</a></h4>
@@ -513,7 +518,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/visual/Basis.ts#L156">visual/Basis.ts:156</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/visual/Basis.ts#L156">visual/Basis.ts:156</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="color.html" class="tsd-signature-type">Color</a></h4>
@@ -530,7 +535,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/visual/Basis.ts#L159">visual/Basis.ts:159</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/visual/Basis.ts#L159">visual/Basis.ts:159</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="color.html" class="tsd-signature-type">Color</a></h4>
@@ -549,7 +554,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="drawable.html">Drawable</a>.<a href="drawable.html#fragmentshadersrc">fragmentShaderSrc</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Drawable.ts#L89">core/Drawable.ts:89</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Drawable.ts#L89">core/Drawable.ts:89</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -558,7 +563,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="drawable.html">Drawable</a>.<a href="drawable.html#fragmentshadersrc">fragmentShaderSrc</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Drawable.ts#L98">core/Drawable.ts:98</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Drawable.ts#L98">core/Drawable.ts:98</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -583,7 +588,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="drawable.html">Drawable</a>.<a href="drawable.html#geometry">geometry</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Drawable.ts#L275">core/Drawable.ts:275</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Drawable.ts#L310">core/Drawable.ts:310</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -597,7 +602,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="drawable.html">Drawable</a>.<a href="drawable.html#geometry">geometry</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Drawable.ts#L284">core/Drawable.ts:284</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Drawable.ts#L319">core/Drawable.ts:319</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -627,7 +632,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#gl">gl</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/ShareableContextConsumer.ts#L178">core/ShareableContextConsumer.ts:178</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/ShareableContextConsumer.ts#L178">core/ShareableContextConsumer.ts:178</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -641,7 +646,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#gl">gl</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/ShareableContextConsumer.ts#L186">core/ShareableContextConsumer.ts:186</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/ShareableContextConsumer.ts#L186">core/ShareableContextConsumer.ts:186</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -671,7 +676,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="drawable.html">Drawable</a>.<a href="drawable.html#material">material</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Drawable.ts#L294">core/Drawable.ts:294</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Drawable.ts#L329">core/Drawable.ts:329</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -685,7 +690,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="drawable.html">Drawable</a>.<a href="drawable.html#material">material</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Drawable.ts#L303">core/Drawable.ts:303</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Drawable.ts#L338">core/Drawable.ts:338</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -715,7 +720,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="drawable.html">Drawable</a>.<a href="drawable.html#opacity">opacity</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Drawable.ts#L129">core/Drawable.ts:129</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Drawable.ts#L129">core/Drawable.ts:129</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -724,7 +729,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="drawable.html">Drawable</a>.<a href="drawable.html#opacity">opacity</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Drawable.ts#L138">core/Drawable.ts:138</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Drawable.ts#L138">core/Drawable.ts:138</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -749,7 +754,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="drawable.html">Drawable</a>.<a href="drawable.html#pointsize">pointSize</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Drawable.ts#L156">core/Drawable.ts:156</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Drawable.ts#L156">core/Drawable.ts:156</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -758,7 +763,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="drawable.html">Drawable</a>.<a href="drawable.html#pointsize">pointSize</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Drawable.ts#L165">core/Drawable.ts:165</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Drawable.ts#L165">core/Drawable.ts:165</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -783,7 +788,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mesh.html">Mesh</a>.<a href="mesh.html#stress">stress</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Mesh.ts#L113">core/Mesh.ts:113</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Mesh.ts#L113">core/Mesh.ts:113</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -797,7 +802,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mesh.html">Mesh</a>.<a href="mesh.html#stress">stress</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Mesh.ts#L122">core/Mesh.ts:122</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Mesh.ts#L122">core/Mesh.ts:122</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -827,7 +832,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="drawable.html">Drawable</a>.<a href="drawable.html#vertexshadersrc">vertexShaderSrc</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Drawable.ts#L110">core/Drawable.ts:110</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Drawable.ts#L110">core/Drawable.ts:110</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -836,7 +841,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="drawable.html">Drawable</a>.<a href="drawable.html#vertexshadersrc">vertexShaderSrc</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Drawable.ts#L119">core/Drawable.ts:119</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Drawable.ts#L119">core/Drawable.ts:119</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -861,7 +866,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="drawable.html">Drawable</a>.<a href="drawable.html#visible">visible</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Drawable.ts#L316">core/Drawable.ts:316</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Drawable.ts#L351">core/Drawable.ts:351</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -877,7 +882,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="drawable.html">Drawable</a>.<a href="drawable.html#visible">visible</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Drawable.ts#L319">core/Drawable.ts:319</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Drawable.ts#L354">core/Drawable.ts:354</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -905,7 +910,7 @@
 								<p>Implementation of <a href="../interfaces/abstractmesh.html">AbstractMesh</a>.<a href="../interfaces/abstractmesh.html#addref">addRef</a></p>
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#addref">addRef</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/ShareableBase.ts#L123">core/ShareableBase.ts:123</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/ShareableBase.ts#L123">core/ShareableBase.ts:123</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -921,6 +926,25 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="bind" class="tsd-anchor"></a>
+					<h3>bind</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">bind<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="drawable.html" class="tsd-signature-type">Drawable</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/abstractmesh.html">AbstractMesh</a>.<a href="../interfaces/abstractmesh.html#bind">bind</a></p>
+								<p>Inherited from <a href="drawable.html">Drawable</a>.<a href="drawable.html#bind">bind</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Drawable.ts#L183">core/Drawable.ts:183</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="drawable.html" class="tsd-signature-type">Drawable</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 					<a name="cleanup" class="tsd-anchor"></a>
 					<h3>clean<wbr>Up</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -931,7 +955,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#cleanup">cleanUp</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/ShareableContextConsumer.ts#L130">core/ShareableContextConsumer.ts:130</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/ShareableContextConsumer.ts#L130">core/ShareableContextConsumer.ts:130</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -951,7 +975,7 @@
 								<p>Inherited from <a href="drawable.html">Drawable</a>.<a href="drawable.html#contextfree">contextFree</a></p>
 								<p>Overwrites <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#contextfree">contextFree</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Drawable.ts#L225">core/Drawable.ts:225</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Drawable.ts#L223">core/Drawable.ts:223</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -981,7 +1005,7 @@
 								<p>Inherited from <a href="drawable.html">Drawable</a>.<a href="drawable.html#contextgain">contextGain</a></p>
 								<p>Overwrites <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#contextgain">contextGain</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Drawable.ts#L234">core/Drawable.ts:234</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Drawable.ts#L232">core/Drawable.ts:232</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1011,7 +1035,7 @@
 								<p>Inherited from <a href="drawable.html">Drawable</a>.<a href="drawable.html#contextlost">contextLost</a></p>
 								<p>Overwrites <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#contextlost">contextLost</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Drawable.ts#L244">core/Drawable.ts:244</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Drawable.ts#L242">core/Drawable.ts:242</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1029,7 +1053,7 @@
 							<aside class="tsd-sources">
 								<p>Overwrites <a href="mesh.html">Mesh</a>.<a href="mesh.html#destructor">destructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/visual/Basis.ts#L138">visual/Basis.ts:138</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/visual/Basis.ts#L138">visual/Basis.ts:138</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1046,7 +1070,7 @@
 					<a name="draw" class="tsd-anchor"></a>
 					<h3>draw</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">draw<span class="tsd-signature-symbol">(</span>ambients<span class="tsd-signature-symbol">: </span><a href="../interfaces/facet.html" class="tsd-signature-type">Facet</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">draw<span class="tsd-signature-symbol">(</span>ambients<span class="tsd-signature-symbol">?: </span><a href="../interfaces/facet.html" class="tsd-signature-type">Facet</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="drawable.html" class="tsd-signature-type">Drawable</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -1054,20 +1078,16 @@
 								<p>Implementation of <a href="../interfaces/abstractmesh.html">AbstractMesh</a>.<a href="../interfaces/abstractmesh.html#draw">draw</a></p>
 								<p>Inherited from <a href="drawable.html">Drawable</a>.<a href="drawable.html#draw">draw</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Drawable.ts#L202">core/Drawable.ts:202</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Drawable.ts#L205">core/Drawable.ts:205</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>ambients: <a href="../interfaces/facet.html" class="tsd-signature-type">Facet</a><span class="tsd-signature-symbol">[]</span></h5>
-									<div class="tsd-comment tsd-typography">
-									</div>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> ambients: <a href="../interfaces/facet.html" class="tsd-signature-type">Facet</a><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="drawable.html" class="tsd-signature-type">Drawable</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -1082,7 +1102,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="drawable.html">Drawable</a>.<a href="drawable.html#getfacet">getFacet</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Drawable.ts#L253">core/Drawable.ts:253</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Drawable.ts#L251">core/Drawable.ts:251</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1110,7 +1130,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#getloggingname">getLoggingName</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/ShareableBase.ts#L132">core/ShareableBase.ts:132</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/ShareableBase.ts#L132">core/ShareableBase.ts:132</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1130,7 +1150,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mesh.html">Mesh</a>.<a href="mesh.html#getprincipalscale">getPrincipalScale</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Mesh.ts#L136">core/Mesh.ts:136</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Mesh.ts#L136">core/Mesh.ts:136</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1156,7 +1176,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#iszombie">isZombie</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/ShareableBase.ts#L112">core/ShareableBase.ts:112</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/ShareableBase.ts#L112">core/ShareableBase.ts:112</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1181,7 +1201,7 @@
 								<p>Implementation of <a href="../interfaces/abstractmesh.html">AbstractMesh</a>.<a href="../interfaces/abstractmesh.html#release">release</a></p>
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#release">release</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/ShareableBase.ts#L170">core/ShareableBase.ts:170</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/ShareableBase.ts#L170">core/ShareableBase.ts:170</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1207,7 +1227,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="drawable.html">Drawable</a>.<a href="drawable.html#removefacet">removeFacet</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Drawable.ts#L257">core/Drawable.ts:257</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Drawable.ts#L282">core/Drawable.ts:282</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1217,6 +1237,69 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/facet.html" class="tsd-signature-type">Facet</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="render" class="tsd-anchor"></a>
+					<h3>render</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">render<span class="tsd-signature-symbol">(</span>ambients<span class="tsd-signature-symbol">: </span><a href="../interfaces/facet.html" class="tsd-signature-type">Facet</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="drawable.html" class="tsd-signature-type">Drawable</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/abstractmesh.html">AbstractMesh</a>.<a href="../interfaces/abstractmesh.html#render">render</a></p>
+								<p>Inherited from <a href="drawable.html">Drawable</a>.<a href="drawable.html#render">render</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Drawable.ts#L266">core/Drawable.ts:266</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>A convenience method for performing all of the methods required for rendering.
+										The following methods are called in order.
+										use()
+										bind()
+										setAmbients(ambients)
+										setUniforms()
+										draw()
+										unbind()
+									In particle simulations it may be useful to call the underlying method directly.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>ambients: <a href="../interfaces/facet.html" class="tsd-signature-type">Facet</a><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="drawable.html" class="tsd-signature-type">Drawable</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="setambients" class="tsd-anchor"></a>
+					<h3>set<wbr>Ambients</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Ambients<span class="tsd-signature-symbol">(</span>ambients<span class="tsd-signature-symbol">: </span><a href="../interfaces/facet.html" class="tsd-signature-type">Facet</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="drawable.html" class="tsd-signature-type">Drawable</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/abstractmesh.html">AbstractMesh</a>.<a href="../interfaces/abstractmesh.html#setambients">setAmbients</a></p>
+								<p>Inherited from <a href="drawable.html">Drawable</a>.<a href="drawable.html#setambients">setAmbients</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Drawable.ts#L273">core/Drawable.ts:273</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>ambients: <a href="../interfaces/facet.html" class="tsd-signature-type">Facet</a><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="drawable.html" class="tsd-signature-type">Drawable</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -1231,7 +1314,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="drawable.html">Drawable</a>.<a href="drawable.html#setfacet">setFacet</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Drawable.ts#L268">core/Drawable.ts:268</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Drawable.ts#L293">core/Drawable.ts:293</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1262,7 +1345,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#setloggingname">setLoggingName</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/ShareableBase.ts#L155">core/ShareableBase.ts:155</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/ShareableBase.ts#L155">core/ShareableBase.ts:155</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1307,7 +1390,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mesh.html">Mesh</a>.<a href="mesh.html#setprincipalscale">setPrincipalScale</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Mesh.ts#L152">core/Mesh.ts:152</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Mesh.ts#L152">core/Mesh.ts:152</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1331,7 +1414,7 @@
 					<a name="setuniforms" class="tsd-anchor"></a>
 					<h3>set<wbr>Uniforms</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Uniforms<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Uniforms<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="drawable.html" class="tsd-signature-type">Drawable</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -1339,10 +1422,10 @@
 								<p>Implementation of <a href="../interfaces/abstractmesh.html">AbstractMesh</a>.<a href="../interfaces/abstractmesh.html#setuniforms">setUniforms</a></p>
 								<p>Inherited from <a href="drawable.html">Drawable</a>.<a href="drawable.html#setuniforms">setUniforms</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/Drawable.ts#L186">core/Drawable.ts:186</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Drawable.ts#L191">core/Drawable.ts:191</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="drawable.html" class="tsd-signature-type">Drawable</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -1357,7 +1440,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#subscribe">subscribe</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/ShareableContextConsumer.ts#L98">core/ShareableContextConsumer.ts:98</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/ShareableContextConsumer.ts#L98">core/ShareableContextConsumer.ts:98</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1391,10 +1474,29 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#synchup">synchUp</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/ShareableContextConsumer.ts#L120">core/ShareableContextConsumer.ts:120</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/ShareableContextConsumer.ts#L120">core/ShareableContextConsumer.ts:120</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="unbind" class="tsd-anchor"></a>
+					<h3>unbind</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">unbind<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="drawable.html" class="tsd-signature-type">Drawable</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/abstractmesh.html">AbstractMesh</a>.<a href="../interfaces/abstractmesh.html#unbind">unbind</a></p>
+								<p>Inherited from <a href="drawable.html">Drawable</a>.<a href="drawable.html#unbind">unbind</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Drawable.ts#L297">core/Drawable.ts:297</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="drawable.html" class="tsd-signature-type">Drawable</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -1410,7 +1512,7 @@
 								<p>Implementation of <a href="../interfaces/enginesubscriber.html">EngineSubscriber</a>.<a href="../interfaces/enginesubscriber.html#unsubscribe">unsubscribe</a></p>
 								<p>Inherited from <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#unsubscribe">unsubscribe</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/760f984/src/davinci-eight/core/ShareableContextConsumer.ts#L142">core/ShareableContextConsumer.ts:142</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/ShareableContextConsumer.ts#L142">core/ShareableContextConsumer.ts:142</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1424,6 +1526,25 @@
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+					<a name="use" class="tsd-anchor"></a>
+					<h3>use</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+						<li class="tsd-signature tsd-kind-icon">use<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="drawable.html" class="tsd-signature-type">Drawable</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/abstractmesh.html">AbstractMesh</a>.<a href="../interfaces/abstractmesh.html#use">use</a></p>
+								<p>Inherited from <a href="drawable.html">Drawable</a>.<a href="drawable.html#use">use</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/f22000d/src/davinci-eight/core/Drawable.ts#L302">core/Drawable.ts:302</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="drawable.html" class="tsd-signature-type">Drawable</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -1532,6 +1653,9 @@
 								<a href="basis.html#addref" class="tsd-kind-icon">add<wbr>Ref</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="basis.html#bind" class="tsd-kind-icon">bind</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="basis.html#cleanup" class="tsd-kind-icon">clean<wbr>Up</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited">
@@ -1568,6 +1692,12 @@
 								<a href="basis.html#removefacet" class="tsd-kind-icon">remove<wbr>Facet</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="basis.html#render" class="tsd-kind-icon">render</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="basis.html#setambients" class="tsd-kind-icon">set<wbr>Ambients</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="basis.html#setfacet" class="tsd-kind-icon">set<wbr>Facet</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected">
@@ -1586,7 +1716,13 @@
 								<a href="basis.html#synchup" class="tsd-kind-icon">synch<wbr>Up</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="basis.html#unbind" class="tsd-kind-icon">unbind</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
 								<a href="basis.html#unsubscribe" class="tsd-kind-icon">unsubscribe</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+								<a href="basis.html#use" class="tsd-kind-icon">use</a>
 							</li>
 						</ul>
 					</li>
