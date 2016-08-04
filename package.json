@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.7.20",
+  "version": "2.7.21",
   "private": true,
   "description": "Learning STEM through Computational Modeling",
   "engines": {
@@ -63,7 +63,7 @@
     "lactate": "0.13.12",
     "method-override": "^2.3.6",
     "morgan": "^1.7.0",
-    "multer": "^1.1.0",
+    "multer": "^1.2.0",
     "nconf": "^0.8.4",
     "redis": "^2.6.2",
     "reflect-metadata": "0.1.2",
