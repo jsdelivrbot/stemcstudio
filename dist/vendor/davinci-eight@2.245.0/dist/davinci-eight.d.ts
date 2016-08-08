@@ -541,35 +541,29 @@ declare module EIGHT {
         unsubscribe(): void;
     }
 
-    interface DataBuffer<T extends ArrayBufferView> {
-        data: T;
-        usage: Usage;
-        bufferData(): void;
-        bind(): void;
-        unbind(): void;
-    }
-
     /**
      * A wrapper around a WebGLBuffer with binding to ARRAY_BUFFER.
      */
-    class VertexBuffer extends ShareableContextConsumer implements DataBuffer<Float32Array> {
+    class VertexBuffer extends ShareableContextConsumer {
         data: Float32Array;
         usage: Usage;
-        constructor(contextManager: ContextManager);
+        constructor(contextManager: ContextManager, levelUp?: number);
+        protected destructor(levelUp: number): void;
         bind(): void;
-        bufferData(): void;
+        bufferData(data: Float32Array, usage: Usage): void;
         unbind(): void
     }
 
     /**
      * A wrapper around a WebGLBuffer with binding to ELEMENT_ARRAY_BUFFER.
      */
-    class IndexBuffer extends ShareableContextConsumer implements DataBuffer<Uint16Array> {
+    class IndexBuffer extends ShareableContextConsumer {
         data: Uint16Array;
         usage: Usage;
-        constructor(contextManager: ContextManager);
+        constructor(contextManager: ContextManager, levelUp?: number);
+        protected destructor(levelUp: number): void;
         bind(): void;
-        bufferData(): void;
+        bufferData(data: Uint16Array, usage: Usage): void;
         unbind(): void;
     }
 
@@ -2979,6 +2973,7 @@ declare module EIGHT {
         hasPrincipalScale(name: string): boolean;
         setAttribute(name: string, attribute: Attribute): void;
         setPrincipalScale(name: string, value: number): void;
+        protected setScale(x: number, y: number, z: number): void;
     }
 
     class GeometryElements extends ShareableContextConsumer implements Geometry {
@@ -2999,6 +2994,7 @@ declare module EIGHT {
         getPrincipalScale(name: string): number;
         hasPrincipalScale(name: string): boolean;
         setPrincipalScale(name: string, value: number): void;
+        protected setScale(x: number, y: number, z: number): void;
     }
 
     /**
@@ -3086,7 +3082,7 @@ declare module EIGHT {
         width?: number;
     }
 
-    class BoxGeometry extends GeometryContainer {
+    class BoxGeometry extends GeometryElements {
         constructor(options?: BoxGeometryOptions);
     }
 
@@ -3679,7 +3675,7 @@ declare module EIGHT {
         protected destructor(levelUp: number): void;
     }
 
-    class Basis extends Mesh {
+    class Basis extends RigidBody {
         a: Vector3;
         b: Vector3;
         c: Vector3;
@@ -3697,7 +3693,7 @@ declare module EIGHT {
         protected destructor(levelUp: number): void;
     }
 
-    class Box extends Mesh {
+    class Box extends RigidBody {
         width: number;
         height: number;
         depth: number;
@@ -3831,7 +3827,7 @@ declare module EIGHT {
         protected destructor(levelUp: number): void;
     }
 
-    class Tetrahedron extends Mesh {
+    class Tetrahedron extends RigidBody {
         radius: number;
         constructor(
             options?: {
