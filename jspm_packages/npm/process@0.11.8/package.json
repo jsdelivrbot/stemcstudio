@@ -6,9 +6,10 @@
     "process"
   ],
   "scripts": {
-    "test": "mocha test.js"
+    "test": "mocha test.js",
+    "browser": "zuul --no-coverage --ui mocha-bdd --local 8080 -- test.js"
   },
-  "version": "0.11.7",
+  "version": "0.11.8",
   "repository": {
     "type": "git",
     "url": "git://github.com/shtylman/node-process.git"
@@ -20,6 +21,7 @@
     "node": ">= 0.6.0"
   },
   "devDependencies": {
-    "mocha": "2.2.1"
+    "mocha": "2.2.1",
+    "zuul": "^3.10.3"
   }
 }

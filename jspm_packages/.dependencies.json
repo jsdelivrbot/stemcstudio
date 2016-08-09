@@ -697,7 +697,7 @@
   },
   "github:angular/bower-angular@1.5.8": {},
   "npm:angular@1.5.8": {},
-  "npm:process@0.11.7": {
+  "npm:process@0.11.8": {
     "assert": "github:jspm/nodelibs-assert@^0.1.0",
     "vm": "github:jspm/nodelibs-vm@^0.1.0",
     "fs": "github:jspm/nodelibs-fs@^0.1.0"

@@ -1,12 +1,12 @@
 /* */ 
 var assert = require('assert');
 var ourProcess = require('./browser');
-describe('test against process', function() {
-  test(process);
+describe('test against our process', function() {
+  test(ourProcess);
 });
 if (!process.browser) {
-  describe('test against our shim', function() {
-    test(ourProcess);
+  describe('test against node', function() {
+    test(process);
   });
   vmtest();
 }
@@ -35,32 +35,34 @@ function test(ourProcess) {
       }, 2);
     });
   });
-  describe('test errors', function(t) {
-    it('works', function(done) {
-      var order = 0;
-      process.removeAllListeners('uncaughtException');
-      process.once('uncaughtException', function(err) {
-        assert.equal(2, order++, 'error is third');
-        ourProcess.nextTick(function() {
-          assert.equal(5, order++, 'schedualed in error is last');
-          done();
+  if (!process.browser) {
+    describe('test errors', function(t) {
+      it('works', function(done) {
+        var order = 0;
+        process.removeAllListeners('uncaughtException');
+        process.once('uncaughtException', function(err) {
+          assert.equal(2, order++, 'error is third');
+          ourProcess.nextTick(function() {
+            assert.equal(5, order++, 'schedualed in error is last');
+            done();
+          });
         });
-      });
-      ourProcess.nextTick(function() {
-        assert.equal(0, order++, 'first one works');
         ourProcess.nextTick(function() {
-          assert.equal(4, order++, 'recursive one is 4th');
+          assert.equal(0, order++, 'first one works');
+          ourProcess.nextTick(function() {
+            assert.equal(4, order++, 'recursive one is 4th');
+          });
         });
-      });
-      ourProcess.nextTick(function() {
-        assert.equal(1, order++, 'second one starts');
-        throw (new Error('an error is thrown'));
-      });
-      ourProcess.nextTick(function() {
-        assert.equal(3, order++, '3rd schedualed happens after the error');
+        ourProcess.nextTick(function() {
+          assert.equal(1, order++, 'second one starts');
+          throw (new Error('an error is thrown'));
+        });
+        ourProcess.nextTick(function() {
+          assert.equal(3, order++, '3rd schedualed happens after the error');
+        });
       });
     });
-  });
+  }
   describe('rename globals', function(t) {
     var oldTimeout = setTimeout;
     var oldClear = clearTimeout;
@@ -69,17 +71,24 @@ function test(ourProcess) {
       clearTimeout = function() {
         ok = false;
       };
+      var ran = false;
+      console.log('clear timeout start');
+      function cleanup() {
+        console.log('seccond');
+        clearTimeout = oldClear;
+        var err;
+        try {
+          assert.ok(ok, 'fake clearTimeout ran');
+          assert.ok(ran, 'should have run');
+        } catch (e) {
+          err = e;
+        }
+        done(err);
+      }
+      setTimeout(cleanup, 1000);
       ourProcess.nextTick(function() {
-        setTimeout(function() {
-          clearTimeout = oldClear;
-          var err;
-          try {
-            assert.ok(ok, 'fake clearTimeout ran');
-          } catch (e) {
-            err = e;
-          }
-          done(err);
-        }, 50);
+        console.log('first');
+        ran = true;
       });
     });
     it('just setTimeout', function(done) {
