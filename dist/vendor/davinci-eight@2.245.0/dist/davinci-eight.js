@@ -5390,9 +5390,6 @@ define('davinci-eight/controls/MouseControls',["require", "exports", '../base/in
                 _this.mode = _this.prevMode;
                 _this.wnd.addEventListener('keydown', _this.keydown, false);
             };
-            this.contextmenu = function (event) {
-                event.preventDefault();
-            };
         }
         MouseControls.prototype.destructor = function (levelUp) {
             if (this.domElement) {
@@ -5409,7 +5406,6 @@ define('davinci-eight/controls/MouseControls',["require", "exports", '../base/in
                 this.unsubscribe();
             }
             this.domElement = domElement;
-            this.domElement.addEventListener('contextmenu', this.contextmenu, false);
             this.domElement.addEventListener('mousedown', this.mousedown, false);
             this.domElement.addEventListener('mousewheel', this.mousewheel, false);
             this.domElement.addEventListener('DOMMouseScroll', this.mousewheel, false);
@@ -5419,7 +5415,6 @@ define('davinci-eight/controls/MouseControls',["require", "exports", '../base/in
         };
         MouseControls.prototype.unsubscribe = function () {
             if (this.domElement) {
-                this.domElement.removeEventListener('contextmenu', this.contextmenu, false);
                 this.domElement.removeEventListener('mousedown', this.mousedown, false);
                 this.domElement.removeEventListener('mousewheel', this.mousewheel, false);
                 this.domElement.removeEventListener('DOMMouseScroll', this.mousewheel, false);
@@ -5972,6 +5967,9 @@ define('davinci-eight/core/Color',["require", "exports", '../math/clamp', '../ma
             return this;
         };
         Color.prototype.scale = function (α) {
+            this.coords[COORD_R] *= α;
+            this.coords[COORD_G] *= α;
+            this.coords[COORD_B] *= α;
             return this;
         };
         Color.prototype.slerp = function (target, α) {

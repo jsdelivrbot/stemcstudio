@@ -88,6 +88,12 @@ module.exports = function(grunt) {
                         dest: 'generated/vendor/jasmine@2.4.1/package.json'
                     },
                     {
+                        expand: true,
+                        cwd: "app/img",
+                        src: ["**"],
+                        dest: "generated/img"
+                    },
+                    {
                         src: 'app/img/checkerboard.jpg',
                         dest: 'generated/img/checkerboard.jpg'
                     },
@@ -206,6 +212,12 @@ module.exports = function(grunt) {
                         cwd: "museum/jsxgraph@0.99.4",
                         src: ["**"],
                         dest: "generated/vendor/jsxgraph@0.99.4"
+                    },
+                    {
+                        expand: true,
+                        cwd: "museum/jsxgraph@0.99.5",
+                        src: ["**"],
+                        dest: "generated/vendor/jsxgraph@0.99.5"
                     },
                     {
                         src: "museum/plotly@1.14.1/plotly.d.ts",
@@ -420,6 +432,12 @@ module.exports = function(grunt) {
                         dest: 'dist/vendor/jasmine@2.4.1/package.json'
                     },
                     {
+                        expand: true,
+                        cwd: "app/img",
+                        src: ["**"],
+                        dest: "dist/img"
+                    },
+                    {
                         src: 'app/img/checkerboard.jpg',
                         dest: 'dist/img/checkerboard.jpg'
                     },
@@ -538,6 +556,12 @@ module.exports = function(grunt) {
                         cwd: "museum/jsxgraph@0.99.4",
                         src: ["**"],
                         dest: "dist/vendor/jsxgraph@0.99.4"
+                    },
+                    {
+                        expand: true,
+                        cwd: "museum/jsxgraph@0.99.5",
+                        src: ["**"],
+                        dest: "dist/vendor/jsxgraph@0.99.5"
                     },
                     {
                         src: "museum/plotly@1.14.1/plotly.d.ts",

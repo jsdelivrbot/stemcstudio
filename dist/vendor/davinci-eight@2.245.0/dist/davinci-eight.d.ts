@@ -2242,17 +2242,21 @@ declare module EIGHT {
         wedge(m: GeometricE3): Geometric3;
 
         /**
-         * The identity element for addition, <b>0</b>.
+         * The identity element for addition, 0.
+         * e.g.
+         * const origin = EIGHT.Geometric3.zero();
          */
         static zero(): Geometric3;
 
         /**
-         * The identity element for multiplication, <b>1</b>.
+         * The identity element for multiplication, 1 (scalar).
+         * e.g.
+         * const one = EIGHT.Geometric3.one();
          */
         static one(): Geometric3;
 
         /**
-         * Basis vector corresponding to the <code>x</code> coordinate.
+         * Standard Basis vector corresponding to the x coordinate.
          */
         static e1(): Geometric3;
 

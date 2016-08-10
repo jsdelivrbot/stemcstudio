@@ -23,7 +23,7 @@ app.factory('options', [
         const VERSION_GLMATRIX = '2.3.2';
         const VERSION_JASMINE = '2.4.1';
         const VERSION_JQUERY = '2.1.4';
-        const VERSION_JSXGRAPH = '0.99.3';
+        const VERSION_JSXGRAPH = '0.99.5';
         const VERSION_PLOTLY = '1.14.1';
         // const VERSION_REQUIREJS = '2.1.9';
         const VERSION_STATSJS = '0.16.0';
@@ -288,8 +288,8 @@ app.factory('options', [
                 visible: true,
                 css: [],
                 dts: jsxgraph('jsxgraph.d.ts'),
-                js: [jsxgraph('jsxgraph.js')],
-                minJs: [jsxgraph('jsxgraph.min.js')],
+                js: [jsxgraph('jsxgraphcore.js')],
+                minJs: [jsxgraph('jsxgraphcore.js')],
                 dependencies: {}
             },
             {

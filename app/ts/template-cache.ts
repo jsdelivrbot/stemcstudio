@@ -545,6 +545,11 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                            <p class='lead'>\n" +
     "                                <a href='/#/gists/{{example.gistId}}'>{{example.title}}</a>\n" +
     "                            </p>\n" +
+    "                            <p>\n" +
+    "                                <a href='/#/gists/{{example.gistId}}'>\n" +
+    "                                    <img src='{{example.imageSrc}}' alt='{{example.imageAlt}}' height='250' , width='250'><img>\n" +
+    "                                </a>\n" +
+    "                            </p>\n" +
     "                            <p>{{example.description}}</p>\n" +
     "                        </div>\n" +
     "                    </div>\n" +
@@ -557,6 +562,11 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                        <div ng-repeat='example in examples | filter : {category : \"Graphics\"}'>\n" +
     "                            <p class='lead'>\n" +
     "                                <a href='/#/gists/{{example.gistId}}'>{{example.title}}</a>\n" +
+    "                            </p>\n" +
+    "                            <p>\n" +
+    "                                <a href='/#/gists/{{example.gistId}}'>\n" +
+    "                                    <img src='{{example.imageSrc}}' alt='{{example.imageAlt}}' height='250' , width='250'><img>\n" +
+    "                                </a>\n" +
     "                            </p>\n" +
     "                            <p>{{example.description}}</p>\n" +
     "                        </div>\n" +
@@ -571,42 +581,36 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                            <p class='lead'>\n" +
     "                                <a href='/#/gists/{{example.gistId}}'>{{example.title}}</a>\n" +
     "                            </p>\n" +
+    "                            <p>\n" +
+    "                                <a href='/#/gists/{{example.gistId}}'>\n" +
+    "                                    <img src='{{example.imageSrc}}' alt='{{example.imageAlt}}' height='250' , width='250'><img>\n" +
+    "                                </a>\n" +
+    "                            </p>\n" +
     "                            <p>{{example.description}}</p>\n" +
     "                        </div>\n" +
-    "                        <!--\n" +
-    "          <p class='lead'>\n" +
-    "            <a href='/#/gists/8571a36545d10f34bfef'>Fundamental Theorem of Algebra</a>\n" +
-    "          <p>\n" +
-    "          Colors a complex (G2+) function in the Wessel (Argand) plane in order to visualize the direction. This may be used as a basis for introductory arguments for the Fundamental Theorem of Algebra.\n" +
-    "          </p>\n" +
-    "          <p>\n" +
-    "          This example takes advantage of the GPU using custom shader programs for fast rendering.\n" +
-    "          </p>\n" +
-    "          <p class='lead'>\n" +
-    "            <a href='/#/gists/5c70bee3c68b2b7a4572'>Mandelbrot Set</a>\n" +
-    "          <p>\n" +
-    "          A rendering of the Mandelbrot Set.\n" +
-    "          </p>\n" +
-    "          <p class='lead'>\n" +
-    "            <a href='/#/gists/39390d95450ff9159b8e'>Julia Set</a>\n" +
-    "          <p>\n" +
-    "          A rendering of the Julia Set in 2D. Interestingly, this may be generalized to 3D and higher dimensions through the use of Geometric Algebra.\n" +
-    "          </p>\n" +
-    "          <p class='lead'>\n" +
-    "          <a href='/#/gists/d4a1b374cb80ca178ad2'>Eight Surface</a>\n" +
-    "          <p>\n" +
-    "          This example demonstrates the flexibility inherent in an environment that is based upon\n" +
-    "          general-purpose programming with standards-based tools.\n" +
-    "          </p>\n" +
-    "          -->\n" +
     "                    </div>\n" +
+    "                    <!-- Chemistry -->\n" +
+    "                    <div class='md-docs-section'>\n" +
+    "                        <h1 class='page-header'>Chemistry</h1>\n" +
     "\n" +
-    "                    <!-- Games -->\n" +
+    "                        <div ng-repeat='example in examples | filter : {category : \"Chemistry\"}'>\n" +
+    "                            <p class='lead'>\n" +
+    "                                <a href='/#/gists/{{example.gistId}}'>{{example.title}}</a>\n" +
+    "                            </p>\n" +
+    "                            <p>\n" +
+    "                                <a href='/#/gists/{{example.gistId}}'>\n" +
+    "                                    <img src='{{example.imageSrc}}' alt='{{example.imageAlt}}' height='250' , width='250'><img>\n" +
+    "                                </a>\n" +
+    "                            </p>\n" +
+    "                            <p>{{example.description}}</p>\n" +
+    "                        </div>\n" +
+    "                    </div>\n" +
+    "                    <!-- Computer Science -->\n" +
     "                    <div class='md-docs-section'>\n" +
     "\n" +
-    "                        <h1 class='page-header'>Game Development Projects</h1>\n" +
+    "                        <h1 class='page-header'>Computer Science</h1>\n" +
     "\n" +
-    "                        <div ng-repeat='example in examples | filter : {category : \"Games\"}'>\n" +
+    "                        <div ng-repeat='example in examples | filter : {category : \"CompSci\"}'>\n" +
     "                            <p class='lead'>\n" +
     "                                <a href='/#/gists/{{example.gistId}}'>{{example.title}}</a>\n" +
     "                            </p>\n" +

@@ -1,6 +1,6 @@
 {
     "name": "stemcstudio",
-    "version": "2.7.25",
+    "version": "2.7.26",
     "description": "Learning STEM through Computational Modeling",
     "homepage": "https://github.com/geometryzen/STEMCstudio",
     "authors": [
@@ -46,7 +46,7 @@
         "threejs": "latest",
         "stats.js": "latest",
         "underscore": "^1.8.3",
-        "jsxgraph": "^0.99.4",
+        "jsxgraph": "^0.99.5",
         "dat-gui": "^0.5.1",
         "two.js": "^0.6.0"
     },
