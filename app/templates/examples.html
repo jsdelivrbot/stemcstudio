@@ -68,6 +68,7 @@
                             <p>{{example.description}}</p>
                         </div>
                     </div>
+
                     <!-- Chemistry -->
                     <div class='md-docs-section'>
                         <h1 class='page-header'>Chemistry</h1>
@@ -86,42 +87,20 @@
                     </div>
                     <!-- Computer Science -->
                     <div class='md-docs-section'>
-
                         <h1 class='page-header'>Computer Science</h1>
 
                         <div ng-repeat='example in examples | filter : {category : "CompSci"}'>
                             <p class='lead'>
                                 <a href='/#/gists/{{example.gistId}}'>{{example.title}}</a>
                             </p>
+                            <p>
+                                <a href='/#/gists/{{example.gistId}}'>
+                                    <img src='{{example.imageSrc}}' alt='{{example.imageAlt}}' height='250' , width='250'><img>
+                                </a>
+                            </p>
                             <p>{{example.description}}</p>
                         </div>
-
                     </div>
-
-                    <!-- Misc -->
-                    <!--
-        <div class='md-docs-section'>
-
-          <h1 class='page-header'>Miscellaneous</h1>
-
-          <p class='lead'><a href='/#/gists/8d58e1a9412168b987f7'>SingleViewApp</a></p>
-          <p>
-          Demonstrates a lightweigh application framework for minimizing boilerplate code in a browser application using Eight.Js. This framework creates a single Viewport for a Scene with a Linear Perspective Camera and DirectionalLight. The framework coordinates with DOM loading and cleans up correctly when the window is unloaded. See the API reference for details.
-          </p>
-
-          <p class='lead'><a href='/#/gists/2685e5f638fe34a7f97f'>MultiViewApp</a></p>
-          <p>
-          Upgrade a single view application to multiple viewports.
-          </p>
-
-          <p class='lead'><a href='/#/gists/d1259b443308060443a1'>Orbit Controls</a></p>
-          <p>
-          Controls that keep the camera upright.
-          </p>
-
-        </div>
-        -->
-
                 </div>
             </div>
         </div>

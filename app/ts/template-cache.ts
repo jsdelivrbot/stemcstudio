@@ -589,6 +589,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                            <p>{{example.description}}</p>\n" +
     "                        </div>\n" +
     "                    </div>\n" +
+    "\n" +
     "                    <!-- Chemistry -->\n" +
     "                    <div class='md-docs-section'>\n" +
     "                        <h1 class='page-header'>Chemistry</h1>\n" +
@@ -607,42 +608,20 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                    </div>\n" +
     "                    <!-- Computer Science -->\n" +
     "                    <div class='md-docs-section'>\n" +
-    "\n" +
     "                        <h1 class='page-header'>Computer Science</h1>\n" +
     "\n" +
     "                        <div ng-repeat='example in examples | filter : {category : \"CompSci\"}'>\n" +
     "                            <p class='lead'>\n" +
     "                                <a href='/#/gists/{{example.gistId}}'>{{example.title}}</a>\n" +
     "                            </p>\n" +
+    "                            <p>\n" +
+    "                                <a href='/#/gists/{{example.gistId}}'>\n" +
+    "                                    <img src='{{example.imageSrc}}' alt='{{example.imageAlt}}' height='250' , width='250'><img>\n" +
+    "                                </a>\n" +
+    "                            </p>\n" +
     "                            <p>{{example.description}}</p>\n" +
     "                        </div>\n" +
-    "\n" +
     "                    </div>\n" +
-    "\n" +
-    "                    <!-- Misc -->\n" +
-    "                    <!--\n" +
-    "        <div class='md-docs-section'>\n" +
-    "\n" +
-    "          <h1 class='page-header'>Miscellaneous</h1>\n" +
-    "\n" +
-    "          <p class='lead'><a href='/#/gists/8d58e1a9412168b987f7'>SingleViewApp</a></p>\n" +
-    "          <p>\n" +
-    "          Demonstrates a lightweigh application framework for minimizing boilerplate code in a browser application using Eight.Js. This framework creates a single Viewport for a Scene with a Linear Perspective Camera and DirectionalLight. The framework coordinates with DOM loading and cleans up correctly when the window is unloaded. See the API reference for details.\n" +
-    "          </p>\n" +
-    "\n" +
-    "          <p class='lead'><a href='/#/gists/2685e5f638fe34a7f97f'>MultiViewApp</a></p>\n" +
-    "          <p>\n" +
-    "          Upgrade a single view application to multiple viewports.\n" +
-    "          </p>\n" +
-    "\n" +
-    "          <p class='lead'><a href='/#/gists/d1259b443308060443a1'>Orbit Controls</a></p>\n" +
-    "          <p>\n" +
-    "          Controls that keep the camera upright.\n" +
-    "          </p>\n" +
-    "\n" +
-    "        </div>\n" +
-    "        -->\n" +
-    "\n" +
     "                </div>\n" +
     "            </div>\n" +
     "        </div>\n" +

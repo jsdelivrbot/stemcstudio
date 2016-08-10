@@ -139,7 +139,7 @@ export default class ExamplesController extends AbstractPageController {
             {
                 gistId: '72b8c2b765792d2fe100',
                 title: "Projectile Motion",
-                description: "Physics demonstrations and explorations require accessible solutions without having to re-invent graphical components. This example shows how to model projectile motion by composing high-level components in the Eight.Js library.",
+                description: "Physics demonstrations and explorations require accessible solutions without having to re-invent graphical components. This example shows how to model projectile motion by composing high-level components in the EIGHT library.",
                 imageSrc: '/img/examples/projectile-motion.png',
                 imageAlt: '',
                 category: 'Physics'
@@ -171,8 +171,8 @@ export default class ExamplesController extends AbstractPageController {
             {
                 gistId: 'a1ee16bc6b1c98317ba1',
                 title: "Units of Measure",
-                description: "The Eight.Js library includes Geometric Algebra measures that include optional units of measure. The units are based upon the seven S.I. base units and is also able to recognize some common derived units.",
-                imageSrc: '',
+                description: "The UNITS library includes Geometric Algebra measures that include optional units of measure. The units are based upon the seven S.I. base units and is also able to recognize some common derived units.",
+                imageSrc: '/img/examples/units-of-measure.png',
                 imageAlt: '',
                 category: 'Physics'
             },
@@ -180,7 +180,7 @@ export default class ExamplesController extends AbstractPageController {
                 gistId: 'd51e8b997c6a1de2ce71',
                 title: "Basis Labeling",
                 description: "This program computes the geometric product of basis elements in G3 and displays the results in a novel way using unicode characters that suggest a geometric interpretation of the basis element.",
-                imageSrc: '',
+                imageSrc: '/img/examples/basis-labeling.png',
                 imageAlt: '',
                 category: 'Physics'
             },
