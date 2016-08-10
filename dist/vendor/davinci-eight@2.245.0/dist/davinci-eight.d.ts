@@ -335,7 +335,8 @@ declare module EIGHT {
 
     /**
      * A wrapper around an HTMLCanvasElement that provides WebGLRenderingContext initialization
-     * and context lost management.
+     * and context lost management. An instance of this class is provided to objects created
+     * WebGL resources.
      */
     class Engine extends ShareableBase implements ContextProvider {
 
@@ -366,7 +367,7 @@ declare module EIGHT {
 
         /**
          * Constructs an Engine.
-         * If the canvas arguments is provided then the Engine will be started automatically.
+         * If the canvas argument is provided then the Engine will be started automatically.
          */
         constructor(canvas?: string | HTMLCanvasElement | WebGLRenderingContext, attributes?: WebGLContextAttributes);
 
@@ -2827,21 +2828,39 @@ declare module EIGHT {
     ///////////////////////////////////////////////////////
 
     /**
-     *
+     * A collection of AbstractDrawable objects providing a convenient way to render multiple objects to the WebGL pipeline.
      */
     class Scene extends ShareableContextConsumer {
+        /**
+         * Constructs a Scene instance.
+         * contextManager: Usually an instance of Engine.
+         */
         constructor(contextManager: ContextManager);
+        /**
+         * Adds the specified drawable object to this Scene.
+         */
         add(drawable: AbstractDrawable): void;
         contains(drawable: AbstractDrawable);
         contextFree(contextProvider: ContextProvider): void;
         contextGain(contextProvider: ContextProvider): void;
         contextLost(): void;
         protected destructor(): void;
+        /**
+         * Traverses the collection of AbstractDrawable objects, calling render(ambients) on each one.
+         * The rendering takes place in two stages.
+         * In the first stage, non-transparent objects are drawn.
+         * In the second state, transparent objects are drawn.
+         *
+         * ambients: Provide GLSL uniform values all Materials. 
+         */
         draw(ambients: Facet[]): void;
         find(match: (drawable: AbstractDrawable) => boolean): ShareableArray<AbstractDrawable>;
         findByName(name: string): ShareableArray<AbstractDrawable>;
         findOne(match: (drawable: AbstractDrawable) => boolean): AbstractDrawable;
         findOneByName(name: string): AbstractDrawable;
+        /**
+         * Removes the specified drawable from this Scene.
+         */
         remove(drawable: AbstractDrawable): void;
     }
 
@@ -2917,6 +2936,14 @@ declare module EIGHT {
          */
         viewMatrix: Matrix4;
 
+        /**
+         * Constructs a PerspectiveCamera from optional parameters.
+         * 
+         * fov: The vertical field of view, measured in radians.
+         * aspect: The aspect ratio of the viewport, width divided by height.
+         * near: The distance to the near plane from the camera.
+         * far: The distance to the far plane from the camera. 
+         */
         constructor(fov?: number, aspect?: number, near?: number, far?: number)
         getProperty(name: string): number[]
         setAspect(aspect: number): PerspectiveCamera

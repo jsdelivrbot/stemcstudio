@@ -185,6 +185,30 @@ export default class ExamplesController extends AbstractPageController {
                 category: 'Physics'
             },
             {
+                gistId: 'df53295b58127b519c30251d447f0ae2',
+                title: "Plotly Error Bars Graph",
+                description: "",
+                imageSrc: '/img/examples/plotly-error-bars.png',
+                imageAlt: '',
+                category: 'Physics'
+            },
+            {
+                gistId: '8fc17be344fcd68fee452bb7524d2cfd',
+                title: "Plotly Contours Graph",
+                description: "",
+                imageSrc: '/img/examples/plotly-contour-colorscale.png',
+                imageAlt: '',
+                category: 'Physics'
+            },
+            {
+                gistId: '376b9f7aff2e174a9474dfe87b727066',
+                title: "Plotly Histogram Contours Graph",
+                description: "",
+                imageSrc: '/img/examples/plotly-histogram-contours.png',
+                imageAlt: '',
+                category: 'Physics'
+            },
+            {
                 gistId: '8cc0338a0bcb1edf900a2074e9aa9cf2',
                 title: "Molecule Visualization",
                 description: "",

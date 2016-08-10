@@ -547,7 +547,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                            </p>\n" +
     "                            <p>\n" +
     "                                <a href='/#/gists/{{example.gistId}}'>\n" +
-    "                                    <img src='{{example.imageSrc}}' alt='{{example.imageAlt}}' height='250' , width='250'><img>\n" +
+    "                                    <img src='{{example.imageSrc}}' alt='{{example.imageAlt}}' height='300' , width='300'><img>\n" +
     "                                </a>\n" +
     "                            </p>\n" +
     "                            <p>{{example.description}}</p>\n" +
@@ -565,7 +565,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                            </p>\n" +
     "                            <p>\n" +
     "                                <a href='/#/gists/{{example.gistId}}'>\n" +
-    "                                    <img src='{{example.imageSrc}}' alt='{{example.imageAlt}}' height='250' , width='250'><img>\n" +
+    "                                    <img src='{{example.imageSrc}}' alt='{{example.imageAlt}}' height='300' , width='300'><img>\n" +
     "                                </a>\n" +
     "                            </p>\n" +
     "                            <p>{{example.description}}</p>\n" +
@@ -583,7 +583,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                            </p>\n" +
     "                            <p>\n" +
     "                                <a href='/#/gists/{{example.gistId}}'>\n" +
-    "                                    <img src='{{example.imageSrc}}' alt='{{example.imageAlt}}' height='250' , width='250'><img>\n" +
+    "                                    <img src='{{example.imageSrc}}' alt='{{example.imageAlt}}' height='300' , width='300'><img>\n" +
     "                                </a>\n" +
     "                            </p>\n" +
     "                            <p>{{example.description}}</p>\n" +
@@ -600,7 +600,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                            </p>\n" +
     "                            <p>\n" +
     "                                <a href='/#/gists/{{example.gistId}}'>\n" +
-    "                                    <img src='{{example.imageSrc}}' alt='{{example.imageAlt}}' height='250' , width='250'><img>\n" +
+    "                                    <img src='{{example.imageSrc}}' alt='{{example.imageAlt}}' height='300' , width='300'><img>\n" +
     "                                </a>\n" +
     "                            </p>\n" +
     "                            <p>{{example.description}}</p>\n" +
@@ -616,7 +616,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                            </p>\n" +
     "                            <p>\n" +
     "                                <a href='/#/gists/{{example.gistId}}'>\n" +
-    "                                    <img src='{{example.imageSrc}}' alt='{{example.imageAlt}}' height='250' , width='250'><img>\n" +
+    "                                    <img src='{{example.imageSrc}}' alt='{{example.imageAlt}}' height='300' , width='300'><img>\n" +
     "                                </a>\n" +
     "                            </p>\n" +
     "                            <p>{{example.description}}</p>\n" +
