@@ -680,14 +680,8 @@
   },
   "github:ace2ts/ace-workers@1.0.1": {},
   "npm:tiny-emitter@1.1.0": {},
-  "npm:symbol-observable@1.0.1": {},
   "npm:angular-material-icons@0.7.1": {
     "angular": "npm:angular"
-  },
-  "npm:rxjs@5.0.0-beta.10": {
-    "symbol-observable": "npm:symbol-observable@^1.0.1",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0"
   },
   "github:angular/bower-angular-sanitize@1.5.8": {
     "angular": "jspm:angular@^1.3.0"
@@ -701,5 +695,11 @@
     "assert": "github:jspm/nodelibs-assert@^0.1.0",
     "vm": "github:jspm/nodelibs-vm@^0.1.0",
     "fs": "github:jspm/nodelibs-fs@^0.1.0"
+  },
+  "npm:symbol-observable@1.0.2": {},
+  "npm:rxjs@5.0.0-beta.11": {
+    "symbol-observable": "npm:symbol-observable@^1.0.1",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
   }
 }

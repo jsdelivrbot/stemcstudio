@@ -81,6 +81,14 @@ export default class ExamplesController extends AbstractPageController {
                 category: 'Graphics'
             },
             {
+                gistId: '117063c7f0542755cc43b0e82480ba81',
+                title: "Alpha Blending in EIGHT",
+                description: "Demonstrates how to simulate transparency using WebGL Alpha Blending.",
+                imageSrc: '/img/examples/eight-alpha-blending.png',
+                imageAlt: 'Opaque red cube cut in half by transparent blue plane.',
+                category: 'Graphics'
+            },
+            {
                 gistId: '1fef109875fac0bd77da086727d6832f',
                 title: "Local Geometry on a Sphere",
                 description: "Explore the consequences of curvature on a sphere.",

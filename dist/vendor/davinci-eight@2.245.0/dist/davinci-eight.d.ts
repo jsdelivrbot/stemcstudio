@@ -356,11 +356,6 @@ declare module EIGHT {
         drawingBufferWidth: number;
 
         /**
-         *
-         */
-        commands: ShareableArray<ContextConsumer>;
-
-        /**
          * The underlying WebGLRenderingContext.
          */
         gl: WebGLRenderingContext;
@@ -369,7 +364,7 @@ declare module EIGHT {
          * Constructs an Engine.
          * If the canvas argument is provided then the Engine will be started automatically.
          */
-        constructor(canvas?: string | HTMLCanvasElement | WebGLRenderingContext, attributes?: WebGLContextAttributes);
+        constructor(canvas?: string | HTMLCanvasElement | WebGLRenderingContext, attributes?: WebGLContextAttributes, doc?: Document);
 
         /**
          * Called when the last reference to this Engine has been released.
@@ -382,14 +377,14 @@ declare module EIGHT {
         addContextListener(user: ContextConsumer): void;
 
         /**
-         * 
+         * Creates a VertexBuffer from the provided Float32Array data.
          */
         array(data?: Float32Array, usage?: Usage): VertexBuffer;
 
         /**
-         * 
+         * Sets the parameters for blending.
          */
-        elements(data?: Uint16Array, usage?: Usage): IndexBuffer;
+        blendFunc(sfactor: BlendingFactorSrc, dfactor: BlendingFactorDest): Engine;
 
         /**
          * Clears buffers to preset values.
@@ -429,6 +424,11 @@ declare module EIGHT {
         disable(capability: Capability): Engine;
 
         /**
+         * Creates an IndexBuffer from the provided Uint16Array data.
+         */
+        elements(data?: Uint16Array, usage?: Usage): IndexBuffer;
+
+        /**
          * Turns on specific WebGL capabilities for this context.
          */
         enable(capability: Capability): Engine;
@@ -446,12 +446,13 @@ declare module EIGHT {
         getViewport(): Int32Array;
 
         /**
-         * 
+         * Constructs a Geometry from the specified Primitive.
+         * For more flexibility, subclass GeometryArrays or GeometryElements.
          */
         geometry(primitive: Primitive): Geometry;
 
         /**
-         * 
+         * Constructs a Material from the specified vertex and fragment shader.
          */
         material(vertexShader: string, fragmentShader: string, dom?: Document): Material;
 
