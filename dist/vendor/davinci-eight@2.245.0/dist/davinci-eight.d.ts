@@ -3791,8 +3791,8 @@ declare module EIGHT {
     }
 
     class Cylinder extends RigidBody {
-        length: number;
-        radius: number;
+        length: Geometric3;
+        radius: Geometric3;
         constructor(
             options?: {
                 attitude?: SpinorE3;
@@ -3914,25 +3914,37 @@ declare module EIGHT {
     }
 
     /**
-     * A graphical object used to visualize the position history of a Mesh using a line.
+     * A graphical object used to visualize a succession of points using a line.
+     * e.g.
+     * const path = new LineStrip(engine);
+     * ...
+     * path.addPoint(X);
+     * ...
+     * path.render(ambients);
+     * 
+     * The LineStrip will only be visible if there are two or more points defined.
      */
-    class Track extends Mesh {
+    class LineStrip extends Mesh {
 
         /**
-         * Constructs a new Track.
-         * contextManager: 
+         * Constructs a new LineStrip.
          */
-        constructor(contextManager: ContextManager, trackedMesh: Mesh);
+        constructor(contextManager: ContextManager);
 
         /**
-         * Erases the track points, making it ready to display a new track.
+         * 
          */
-        erase(): void;
+        protected destructor(levelUp: number): void;
 
         /**
-         * Extends the track to include a new point corresponding to the current trackedMesh position.
+         * Extends this LineStrip by adding a new point.
          */
-        snapshot(): void;
+        addPoint(point: VectorE3): void;
+
+        /**
+         * Erases the points, making it ready to accept new points.
+         */
+        clear(): void;
     }
 
     /**
