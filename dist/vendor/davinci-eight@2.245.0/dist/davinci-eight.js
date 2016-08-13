@@ -543,9 +543,9 @@ define('davinci-eight/config',["require", "exports"], function (require, exports
     var Eight = (function () {
         function Eight() {
             this.GITHUB = 'https://github.com/geometryzen/davinci-eight';
-            this.LAST_MODIFIED = '2016-08-12';
+            this.LAST_MODIFIED = '2016-08-13';
             this.NAMESPACE = 'EIGHT';
-            this.VERSION = '2.294.0';
+            this.VERSION = '2.296.0';
         }
         Eight.prototype.log = function (message) {
             var optionalParams = [];
@@ -4908,6 +4908,15 @@ define('davinci-eight/math/Vector3',["require", "exports", './Coords', './dotVec
             else {
                 return new Vector3([-B.yz, -B.zx, -B.xy]);
             }
+        };
+        Vector3.e1 = function () {
+            return new Vector3([1, 0, 0]);
+        };
+        Vector3.e2 = function () {
+            return new Vector3([0, 1, 0]);
+        };
+        Vector3.e3 = function () {
+            return new Vector3([0, 0, 1]);
         };
         Vector3.isInstance = function (x) {
             return x instanceof Vector3;
@@ -18212,7 +18221,7 @@ define('davinci-eight/visual/Track',["require", "exports", '../core/BeginMode', 
             return this;
         };
         LineGeometry.prototype.draw = function (material) {
-            this.contextProvider.gl.drawArrays(BeginMode_1.default.LINE_STRIP, 0, this.count);
+            this.contextProvider.drawArrays(BeginMode_1.default.LINE_STRIP, 0, this.count);
             return this;
         };
         LineGeometry.prototype.getPrincipalScale = function (name) {
@@ -18265,10 +18274,20 @@ define('davinci-eight/visual/Track',["require", "exports", '../core/BeginMode', 
     }());
     var Track = (function (_super) {
         __extends(Track, _super);
-        function Track(contextManager, mesh) {
-            _super.call(this, new LineGeometry(contextManager), new LineMaterial_1.LineMaterial(void 0, contextManager), contextManager);
+        function Track(contextManager, mesh, levelUp) {
+            if (levelUp === void 0) { levelUp = 0; }
+            _super.call(this, new LineGeometry(contextManager), new LineMaterial_1.LineMaterial(void 0, contextManager), contextManager, levelUp + 1);
             this.mesh = mesh;
+            if (levelUp === 0) {
+                this.synchUp();
+            }
         }
+        Track.prototype.destructor = function (levelUp) {
+            if (levelUp === 0) {
+                this.cleanUp();
+            }
+            _super.prototype.destructor.call(this, levelUp + 1);
+        };
         Track.prototype.erase = function () {
             var geometry = this.geometry;
             geometry.erase();
