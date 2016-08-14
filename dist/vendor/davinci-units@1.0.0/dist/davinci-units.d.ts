@@ -364,7 +364,14 @@ declare module UNITS {
         toFixed(fractionDigits?: number): string;
         toPrecision(precision?: number): string;
         toString(radix?: number): string;
+        /**
+         * Computes the direction of this multivector.
+         */
         direction(): G3;
+        /**
+         * Creates a new G3 from the coordinates of m and the optional unit of measure, uom.
+         */
+        static copy(m: GeometricE3, uom?: Unit): G3;
         static fromSpinor(spinor: SpinorE3): G3;
         static fromVector(vector: VectorE3): G3;
         /**

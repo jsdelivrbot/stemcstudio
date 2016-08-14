@@ -545,7 +545,7 @@ define('davinci-eight/config',["require", "exports"], function (require, exports
             this.GITHUB = 'https://github.com/geometryzen/davinci-eight';
             this.LAST_MODIFIED = '2016-08-13';
             this.NAMESPACE = 'EIGHT';
-            this.VERSION = '2.300.0';
+            this.VERSION = '2.301.0';
         }
         Eight.prototype.log = function (message) {
             var optionalParams = [];
