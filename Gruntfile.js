@@ -311,17 +311,17 @@ module.exports = function(grunt) {
                     },
                     {
                         src: "bower_components/davinci-mathscript/dist/davinci-mathscript.d.ts",
-                        dest: "generated/vendor/davinci-mathscript@1.0.8/dist/davinci-mathscript.d.ts"
+                        dest: "generated/vendor/davinci-mathscript@1.1.1/dist/davinci-mathscript.d.ts"
                     },
                     {
                         // This version is bundled for transpile.
                         src: "bower_components/davinci-mathscript/dist/davinci-mathscript.js",
-                        dest: "generated/vendor/davinci-mathscript@1.0.8/dist/davinci-mathscript.js"
+                        dest: "generated/vendor/davinci-mathscript@1.1.1/dist/davinci-mathscript.js"
                     },
                     {
                         // This version is loaded into iframe for the runtime.
                         src: "bower_components/davinci-mathscript/dist/davinci-mathscript.min.js",
-                        dest: "generated/vendor/davinci-mathscript@1.0.8/dist/davinci-mathscript.min.js"
+                        dest: "generated/vendor/davinci-mathscript@1.1.1/dist/davinci-mathscript.min.js"
                     },
                     {
                         expand: true,
@@ -655,17 +655,17 @@ module.exports = function(grunt) {
                     },
                     {
                         src: "bower_components/davinci-mathscript/dist/davinci-mathscript.d.ts",
-                        dest: "dist/vendor/davinci-mathscript@1.0.8/dist/davinci-mathscript.d.ts"
+                        dest: "dist/vendor/davinci-mathscript@1.1.1/dist/davinci-mathscript.d.ts"
                     },
                     {
                         // This version is bundled for transpile.
                         src: "bower_components/davinci-mathscript/dist/davinci-mathscript.js",
-                        dest: "dist/vendor/davinci-mathscript@1.0.8/dist/davinci-mathscript.js"
+                        dest: "dist/vendor/davinci-mathscript@1.1.1/dist/davinci-mathscript.js"
                     },
                     {
                         // This version is loaded into iframe for the runtime.
                         src: "bower_components/davinci-mathscript/dist/davinci-mathscript.min.js",
-                        dest: "dist/vendor/davinci-mathscript@1.0.8/dist/davinci-mathscript.min.js"
+                        dest: "dist/vendor/davinci-mathscript@1.1.1/dist/davinci-mathscript.min.js"
                     },
                     {
                         expand: true,

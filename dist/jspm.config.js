@@ -20,8 +20,8 @@ System.config({
     "bootstrap": "vendor/bootstrap/dist/js/npm",
     "bootstrap-dialog": "npm:bootstrap-dialog@1.34.6",
     "clipboard": "npm:clipboard@1.5.12",
-    "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.0.11",
-    "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.0.11",
+    "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.1.1",
+    "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.1.1",
     "jquery": "npm:jquery@2.2.4",
     "showdown": "npm:showdown@1.4.2",
     "socket.io": "npm:socket.io@1.4.6",
@@ -106,7 +106,7 @@ System.config({
     "npm:angular2@2.0.0-beta.17": {
       "reflect-metadata": "npm:reflect-metadata@0.1.2",
       "rxjs": "npm:rxjs@5.0.0-beta.11",
-      "zone.js": "npm:zone.js@0.6.12"
+      "zone.js": "npm:zone.js@0.6.13"
     },
     "npm:asn1.js@4.6.2": {
       "assert": "github:jspm/nodelibs-assert@0.1.0",
@@ -231,7 +231,7 @@ System.config({
       "tiny-emitter": "npm:tiny-emitter@1.1.0"
     },
     "npm:cliui@3.2.0": {
-      "string-width": "npm:string-width@1.0.1",
+      "string-width": "npm:string-width@1.0.2",
       "strip-ansi": "npm:strip-ansi@3.0.1",
       "wrap-ansi": "npm:wrap-ansi@2.0.0"
     },
@@ -595,7 +595,7 @@ System.config({
       "inherits": "npm:inherits@2.0.1",
       "readable-stream": "npm:readable-stream@1.1.14"
     },
-    "npm:string-width@1.0.1": {
+    "npm:string-width@1.0.2": {
       "code-point-at": "npm:code-point-at@1.0.0",
       "is-fullwidth-code-point": "npm:is-fullwidth-code-point@1.0.0",
       "strip-ansi": "npm:strip-ansi@3.0.1"
@@ -641,7 +641,7 @@ System.config({
       "tty": "github:jspm/nodelibs-tty@0.1.0"
     },
     "npm:wrap-ansi@2.0.0": {
-      "string-width": "npm:string-width@1.0.1"
+      "string-width": "npm:string-width@1.0.2"
     },
     "npm:ws@1.0.1": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
@@ -674,11 +674,11 @@ System.config({
       "os-locale": "npm:os-locale@1.4.0",
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
-      "string-width": "npm:string-width@1.0.1",
+      "string-width": "npm:string-width@1.0.2",
       "window-size": "npm:window-size@0.1.4",
       "y18n": "npm:y18n@3.2.1"
     },
-    "npm:zone.js@0.6.12": {
+    "npm:zone.js@0.6.13": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     }
