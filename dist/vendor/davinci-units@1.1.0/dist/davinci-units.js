@@ -2583,6 +2583,7 @@ define('davinci-units/math/G2',["require", "exports", './bezier2', './bezier3', 
         };
         G2.prototype.isOne = function () { return this.a === 1 && this.x === 0 && this.y === 0 && this.b === 0; };
         G2.prototype.isNaN = function () { return isNaN(this.a) || isNaN(this.x) || isNaN(this.y) || isNaN(this.b); };
+        G2.prototype.isScalar = function () { return this.x === 0 && this.y === 0 && this.b === 0; };
         G2.prototype.isZero = function () { return this.a === 0 && this.x === 0 && this.y === 0 && this.b === 0; };
         G2.prototype.toStringCustom = function (coordToString, labels) {
             var quantityString = stringFromCoordinates_1.default(this.coords, coordToString, labels);
@@ -2618,6 +2619,117 @@ define('davinci-units/math/G2',["require", "exports", './bezier2', './bezier3', 
         G2.prototype.toStringIJK = function () {
             var coordToString = function (coord) { return coord.toString(); };
             return this.toStringCustom(coordToString, ["1", "i", "j", "I"]);
+        };
+        G2.prototype.__eq__ = function (rhs) {
+            if (rhs instanceof G2) {
+                try {
+                    Unit_1.Unit.compatible(this.uom, rhs.uom);
+                }
+                catch (e) {
+                    throw new Error("Dimensions mismatch in equality expression: " + this.uom.dimensions + " === " + rhs.uom.dimensions);
+                }
+                return this.a === rhs.a && this.x === rhs.x && this.y === rhs.y && this.b === rhs.b;
+            }
+            else {
+                return void 0;
+            }
+        };
+        G2.prototype.__ne__ = function (rhs) {
+            if (rhs instanceof G2) {
+                try {
+                    Unit_1.Unit.compatible(this.uom, rhs.uom);
+                }
+                catch (e) {
+                    throw new Error("Dimensions mismatch in inequality expression: " + this.uom.dimensions + " !== " + rhs.uom.dimensions);
+                }
+                return this.a !== rhs.a ||
+                    this.x !== rhs.x ||
+                    this.y !== rhs.y ||
+                    this.b !== this.b;
+            }
+            else {
+                return void 0;
+            }
+        };
+        G2.prototype.__ge__ = function (rhs) {
+            if (rhs instanceof G2) {
+                try {
+                    Unit_1.Unit.compatible(this.uom, rhs.uom);
+                }
+                catch (e) {
+                    throw new Error("Dimensions mismatch in comparison expression: " + this.uom.dimensions + " >= " + rhs.uom.dimensions);
+                }
+                if (!this.isScalar()) {
+                    throw new Error("left operand (" + this + ") in comparison expression must be a scalar.");
+                }
+                if (!rhs.isScalar()) {
+                    throw new Error("right operand (" + rhs + ") in comparison expression must be a scalar.");
+                }
+                return this.a >= rhs.a;
+            }
+            else {
+                return void 0;
+            }
+        };
+        G2.prototype.__gt__ = function (rhs) {
+            if (rhs instanceof G2) {
+                try {
+                    Unit_1.Unit.compatible(this.uom, rhs.uom);
+                }
+                catch (e) {
+                    throw new Error("Dimensions mismatch in comparison expression: " + this.uom.dimensions + " > " + rhs.uom.dimensions);
+                }
+                if (!this.isScalar()) {
+                    throw new Error("left operand (" + this + ") in comparison expression must be a scalar.");
+                }
+                if (!rhs.isScalar()) {
+                    throw new Error("right operand (" + rhs + ") in comparison expression must be a scalar.");
+                }
+                return this.a > rhs.a;
+            }
+            else {
+                return void 0;
+            }
+        };
+        G2.prototype.__le__ = function (rhs) {
+            if (rhs instanceof G2) {
+                try {
+                    Unit_1.Unit.compatible(this.uom, rhs.uom);
+                }
+                catch (e) {
+                    throw new Error("Dimensions mismatch in comparison expression: " + this.uom.dimensions + " <= " + rhs.uom.dimensions);
+                }
+                if (!this.isScalar()) {
+                    throw new Error("left operand (" + this + ") in comparison expression must be a scalar.");
+                }
+                if (!rhs.isScalar()) {
+                    throw new Error("right operand (" + rhs + ") in comparison expression must be a scalar.");
+                }
+                return this.a <= rhs.a;
+            }
+            else {
+                return void 0;
+            }
+        };
+        G2.prototype.__lt__ = function (rhs) {
+            if (rhs instanceof G2) {
+                try {
+                    Unit_1.Unit.compatible(this.uom, rhs.uom);
+                }
+                catch (e) {
+                    throw new Error("Dimensions mismatch in comparison expression: " + this.uom.dimensions + " < " + rhs.uom.dimensions);
+                }
+                if (!this.isScalar()) {
+                    throw new Error("left operand (" + this + ") in comparison expression must be a scalar.");
+                }
+                if (!rhs.isScalar()) {
+                    throw new Error("right operand (" + rhs + ") in comparison expression must be a scalar.");
+                }
+                return this.a < rhs.a;
+            }
+            else {
+                return void 0;
+            }
         };
         G2.copy = function (m) {
             if (m instanceof G2) {
@@ -3786,6 +3898,9 @@ define('davinci-units/math/G3',["require", "exports", './bezier2', './bezier3', 
         G3.prototype.isOne = function () {
             return (this.a === 1) && (this.x === 0) && (this.y === 0) && (this.z === 0) && (this.yz === 0) && (this.zx === 0) && (this.xy === 0) && (this.b === 0);
         };
+        G3.prototype.isScalar = function () {
+            return (this.x === 0) && (this.y === 0) && (this.z === 0) && (this.yz === 0) && (this.zx === 0) && (this.xy === 0) && (this.b === 0);
+        };
         G3.prototype.isZero = function () {
             return (this.a === 0) && (this.x === 0) && (this.y === 0) && (this.z === 0) && (this.yz === 0) && (this.zx === 0) && (this.xy === 0) && (this.b === 0);
         };
@@ -3969,6 +4084,128 @@ define('davinci-units/math/G3',["require", "exports", './bezier2', './bezier3', 
             var coordToString = function (coord) { return coord.toString(radix); };
             return this.toStringCustom(coordToString, G3.BASIS_LABELS);
         };
+        G3.prototype.__eq__ = function (rhs) {
+            if (rhs instanceof G3) {
+                try {
+                    Unit_1.Unit.compatible(this.uom, rhs.uom);
+                }
+                catch (e) {
+                    throw new Error("Dimensions mismatch in equality expression: " + this.uom.dimensions + " === " + rhs.uom.dimensions);
+                }
+                return this.a === rhs.a &&
+                    this.x === rhs.x &&
+                    this.y === rhs.y &&
+                    this.z === rhs.z &&
+                    this.xy === rhs.xy &&
+                    this.yz === rhs.yz &&
+                    this.zx === rhs.zx &&
+                    this.b === rhs.b;
+            }
+            else {
+                return void 0;
+            }
+        };
+        G3.prototype.__ne__ = function (rhs) {
+            if (rhs instanceof G3) {
+                try {
+                    Unit_1.Unit.compatible(this.uom, rhs.uom);
+                }
+                catch (e) {
+                    throw new Error("Dimensions mismatch in inequality expression: " + this.uom.dimensions + " !== " + rhs.uom.dimensions);
+                }
+                return this.a !== rhs.a ||
+                    this.x !== rhs.x ||
+                    this.y !== rhs.y ||
+                    this.z !== rhs.z ||
+                    this.xy !== rhs.xy ||
+                    this.yz !== rhs.yz ||
+                    this.zx !== rhs.zx ||
+                    this.b !== this.b;
+            }
+            else {
+                return void 0;
+            }
+        };
+        G3.prototype.__ge__ = function (rhs) {
+            if (rhs instanceof G3) {
+                try {
+                    Unit_1.Unit.compatible(this.uom, rhs.uom);
+                }
+                catch (e) {
+                    throw new Error("Dimensions mismatch in comparison expression: " + this.uom.dimensions + " >= " + rhs.uom.dimensions);
+                }
+                if (!this.isScalar()) {
+                    throw new Error("left operand (" + this + ") in comparison expression must be a scalar.");
+                }
+                if (!rhs.isScalar()) {
+                    throw new Error("right operand (" + rhs + ") in comparison expression must be a scalar.");
+                }
+                return this.a >= rhs.a;
+            }
+            else {
+                return void 0;
+            }
+        };
+        G3.prototype.__gt__ = function (rhs) {
+            if (rhs instanceof G3) {
+                try {
+                    Unit_1.Unit.compatible(this.uom, rhs.uom);
+                }
+                catch (e) {
+                    throw new Error("Dimensions mismatch in comparison expression: " + this.uom.dimensions + " > " + rhs.uom.dimensions);
+                }
+                if (!this.isScalar()) {
+                    throw new Error("left operand (" + this + ") in comparison expression must be a scalar.");
+                }
+                if (!rhs.isScalar()) {
+                    throw new Error("right operand (" + rhs + ") in comparison expression must be a scalar.");
+                }
+                return this.a > rhs.a;
+            }
+            else {
+                return void 0;
+            }
+        };
+        G3.prototype.__le__ = function (rhs) {
+            if (rhs instanceof G3) {
+                try {
+                    Unit_1.Unit.compatible(this.uom, rhs.uom);
+                }
+                catch (e) {
+                    throw new Error("Dimensions mismatch in comparison expression: " + this.uom.dimensions + " <= " + rhs.uom.dimensions);
+                }
+                if (!this.isScalar()) {
+                    throw new Error("left operand (" + this + ") in comparison expression must be a scalar.");
+                }
+                if (!rhs.isScalar()) {
+                    throw new Error("right operand (" + rhs + ") in comparison expression must be a scalar.");
+                }
+                return this.a <= rhs.a;
+            }
+            else {
+                return void 0;
+            }
+        };
+        G3.prototype.__lt__ = function (rhs) {
+            if (rhs instanceof G3) {
+                try {
+                    Unit_1.Unit.compatible(this.uom, rhs.uom);
+                }
+                catch (e) {
+                    throw new Error("Dimensions mismatch in comparison expression: " + this.uom.dimensions + " < " + rhs.uom.dimensions);
+                }
+                if (!this.isScalar()) {
+                    throw new Error("left operand (" + this + ") in comparison expression must be a scalar.");
+                }
+                if (!rhs.isScalar()) {
+                    throw new Error("right operand (" + rhs + ") in comparison expression must be a scalar.");
+                }
+                return this.a < rhs.a;
+            }
+            else {
+                return void 0;
+            }
+        };
         G3.mutator = function (M) {
             var that = {
                 set a(value) {
@@ -4126,9 +4363,9 @@ define('davinci-units/config',["require", "exports"], function (require, exports
     var Units = (function () {
         function Units() {
             this.GITHUB = 'https://github.com/geometryzen/davinci-units';
-            this.LAST_MODIFIED = '2016-08-13';
+            this.LAST_MODIFIED = '2016-08-15';
             this.NAMESPACE = 'UNITS';
-            this.VERSION = '1.0.1';
+            this.VERSION = '1.1.0';
         }
         Units.prototype.log = function (message) {
             var optionalParams = [];
