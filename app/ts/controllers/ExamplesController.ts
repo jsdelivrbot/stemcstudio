@@ -97,10 +97,26 @@ export default class ExamplesController extends AbstractPageController {
                 category: 'Mathematics'
             },
             {
+                gistId: '823a7918fec5da1c7b075a0b37445f80',
+                title: "Euclidean Plane using WebGL",
+                description: "An example that covers Common Core Math, Linear and Geometric Algebra.",
+                imageSrc: '/img/examples/euclidean-plane-webgl.png',
+                imageAlt: '',
+                category: 'Mathematics'
+            },
+            {
                 gistId: '2d975217f9406177e4a6cd812bd28134',
                 title: "Euclidean Plane using JSXGraph",
                 description: "JSXGraph is a cross-browser JavaScript library for interactive geometry, function plotting, charting, and data visualization in the web browser.",
                 imageSrc: '/img/examples/jsxgraph-fitting-a-circle.png',
+                imageAlt: '',
+                category: 'Mathematics'
+            },
+            {
+                gistId: '8571a36545d10f34bfef',
+                title: "Domain Coloring",
+                description: "Using WebGL in 2D to visualize complex functions.",
+                imageSrc: '/img/examples/domain-coloring.png',
                 imageAlt: '',
                 category: 'Mathematics'
             },
