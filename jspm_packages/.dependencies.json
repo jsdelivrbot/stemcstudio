@@ -636,12 +636,6 @@
     "select": "npm:select@^1.0.6",
     "tiny-emitter": "npm:tiny-emitter@^1.0.0"
   },
-  "npm:showdown@1.4.2": {
-    "yargs": "npm:yargs@^3.15.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0",
-    "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
-    "fs": "github:jspm/nodelibs-fs@^0.1.0"
-  },
   "npm:engine.io-client@1.6.11": {
     "has-cors": "npm:has-cors@1.1.0",
     "component-emitter": "npm:component-emitter@1.1.2",
@@ -698,8 +692,14 @@
     "is-fullwidth-code-point": "npm:is-fullwidth-code-point@^1.0.0",
     "strip-ansi": "npm:strip-ansi@^3.0.0"
   },
-  "npm:zone.js@0.6.14": {
+  "npm:zone.js@0.6.15": {
     "process": "github:jspm/nodelibs-process@^0.1.0",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
+  },
+  "npm:showdown@1.4.3": {
+    "yargs": "npm:yargs@^3.15.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
+    "fs": "github:jspm/nodelibs-fs@^0.1.0"
   }
 }
