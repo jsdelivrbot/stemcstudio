@@ -121,7 +121,10 @@
                     </li>
                 </ul>
             </div>
-            <div class='navbar-header'>
+            <div class='navbar-header' ng-if='workspace.description && workspace.owner'>
+                <span class='md-logo-text-math navbar-brand'>{{ workspace.description }} @ {{ workspace.owner }}</span>
+            </div>
+            <div class='navbar-header' ng-if='workspace.description && !workspace.owner'>
                 <span class='md-logo-text-math navbar-brand'>{{ workspace.description }}</span>
             </div>
         </nav>

@@ -78,6 +78,8 @@ const WAIT_FOR_MORE_README_KEYSTROKES = 1000;
 const MODULE_KIND_NONE = 'none';
 const MODULE_KIND_SYSTEM = 'system';
 const SCRIPT_TARGET_ES5 = 'es5';
+// const SCRIPT_TARGET_ES6 = 'es6';
+const SCRIPT_TARGET = SCRIPT_TARGET_ES5;
 
 /**
  * @class WorkspaceController
@@ -589,7 +591,7 @@ export default class WorkspaceController implements WorkspaceMixin {
                 this.wsModel.setModuleKind(moduleKind, (err) => {
 
                 // Set the script target for transpilation consistent with the version.
-                const scriptTarget = detect1x(this.wsModel) ? SCRIPT_TARGET_ES5 : SCRIPT_TARGET_ES5;
+                const scriptTarget = detect1x(this.wsModel) ? SCRIPT_TARGET_ES5 : SCRIPT_TARGET;
 
                 this.wsModel.setScriptTarget(scriptTarget, (err) => {
                     // FIXME: Need a callback here...

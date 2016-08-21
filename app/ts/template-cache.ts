@@ -475,7 +475,10 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                    </li>\n" +
     "                </ul>\n" +
     "            </div>\n" +
-    "            <div class='navbar-header'>\n" +
+    "            <div class='navbar-header' ng-if='workspace.description && workspace.owner'>\n" +
+    "                <span class='md-logo-text-math navbar-brand'>{{ workspace.description }} @ {{ workspace.owner }}</span>\n" +
+    "            </div>\n" +
+    "            <div class='navbar-header' ng-if='workspace.description && !workspace.owner'>\n" +
     "                <span class='md-logo-text-math navbar-brand'>{{ workspace.description }}</span>\n" +
     "            </div>\n" +
     "        </nav>\n" +
