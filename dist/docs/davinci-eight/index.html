@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>EIGHT 2.302.0</title>
+	<title>EIGHT 2.303.0</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">EIGHT 2.302.0</a>
+					<a href="index.html" class="title">EIGHT 2.303.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -57,7 +57,7 @@
 					<a href="globals.html">Globals</a>
 				</li>
 			</ul>
-			<h1> EIGHT 2.302.0</h1>
+			<h1> EIGHT 2.303.0</h1>
 		</div>
 	</div>
 </header>
@@ -196,8 +196,11 @@
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="classes/coordstransform2d.html" class="tsd-kind-icon">Coords<wbr>Transform2D</a>
 					</li>
-					<li class=" tsd-kind-class tsd-is-external">
+					<li class=" tsd-kind-class tsd-is-external tsd-is-not-exported">
 						<a href="classes/cuboidprimitivesbuilder.html" class="tsd-kind-icon">Cuboid<wbr>Primitives<wbr>Builder</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external tsd-is-not-exported">
+						<a href="classes/cuboidsimplexprimitivesbuilder.html" class="tsd-kind-icon">Cuboid<wbr>Simplex<wbr>Primitives<wbr>Builder</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="classes/curve.html" class="tsd-kind-icon">Curve</a>
@@ -211,7 +214,7 @@
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="classes/cylinder.html" class="tsd-kind-icon">Cylinder</a>
 					</li>
-					<li class=" tsd-kind-class tsd-is-external">
+					<li class=" tsd-kind-class tsd-is-external tsd-is-not-exported">
 						<a href="classes/cylinderbuilder.html" class="tsd-kind-icon">Cylinder<wbr>Builder</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
@@ -422,15 +425,12 @@
 						<a href="classes/simplexprimitivesbuilder.html" class="tsd-kind-icon">Simplex<wbr>Primitives<wbr>Builder</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
-						<a href="classes/slicesimplexprimitivesbuilder.html" class="tsd-kind-icon">Slice<wbr>Simplex<wbr>Primitives<wbr>Builder</a>
-					</li>
-					<li class=" tsd-kind-class tsd-is-external">
 						<a href="classes/smartgraphicsprogram.html" class="tsd-kind-icon">Smart<wbr>Graphics<wbr>Program</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="classes/sphere.html" class="tsd-kind-icon">Sphere</a>
 					</li>
-					<li class=" tsd-kind-class tsd-is-external">
+					<li class=" tsd-kind-class tsd-is-external tsd-is-not-exported">
 						<a href="classes/spherebuilder.html" class="tsd-kind-icon">Sphere<wbr>Builder</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
@@ -634,6 +634,9 @@
 					<li class=" tsd-kind-interface tsd-is-external tsd-is-not-exported">
 						<a href="interfaces/pseudo.html" class="tsd-kind-icon">Pseudo</a>
 					</li>
+					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="interfaces/r3.html" class="tsd-kind-icon">R3</a>
+					</li>
 					<li class=" tsd-kind-interface tsd-is-external tsd-is-not-exported">
 						<a href="interfaces/scalar.html" class="tsd-kind-icon">Scalar</a>
 					</li>
@@ -713,6 +716,9 @@
 						<a href="globals.html#assign" class="tsd-kind-icon">ASSIGN</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
+						<a href="globals.html#attitude_name" class="tsd-kind-icon">ATTITUDE_<wbr>NAME</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#attribute" class="tsd-kind-icon">ATTRIBUTE</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
@@ -776,6 +782,42 @@
 						<a href="globals.html#coord_zx" class="tsd-kind-icon">COORD_<wbr>ZX</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
+						<a href="globals.html#default_a" class="tsd-kind-icon">DEFAULT_<wbr>A</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
+						<a href="globals.html#default_azimuth_length" class="tsd-kind-icon">DEFAULT_<wbr>AZIMUTH_<wbr>LENGTH</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
+						<a href="globals.html#default_azimuth_segments" class="tsd-kind-icon">DEFAULT_<wbr>AZIMUTH_<wbr>SEGMENTS</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
+						<a href="globals.html#default_azimuth_start" class="tsd-kind-icon">DEFAULT_<wbr>AZIMUTH_<wbr>START</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
+						<a href="globals.html#default_b" class="tsd-kind-icon">DEFAULT_<wbr>B</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
+						<a href="globals.html#default_c" class="tsd-kind-icon">DEFAULT_<wbr>C</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
+						<a href="globals.html#default_elevation_length" class="tsd-kind-icon">DEFAULT_<wbr>ELEVATION_<wbr>LENGTH</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
+						<a href="globals.html#default_elevation_segments" class="tsd-kind-icon">DEFAULT_<wbr>ELEVATION_<wbr>SEGMENTS</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
+						<a href="globals.html#default_elevation_start" class="tsd-kind-icon">DEFAULT_<wbr>ELEVATION_<wbr>START</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
+						<a href="globals.html#default_k" class="tsd-kind-icon">DEFAULT_<wbr>K</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
+						<a href="globals.html#default_meridian" class="tsd-kind-icon">DEFAULT_<wbr>MERIDIAN</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
+						<a href="globals.html#default_zenith" class="tsd-kind-icon">DEFAULT_<wbr>ZENITH</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#directional_light_cosine_factor_varname" class="tsd-kind-icon">DIRECTIONAL_<wbr>LIGHT_<wbr>COSINE_<wbr>FACTOR_<wbr>VARNAME</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
@@ -814,6 +856,9 @@
 					<li class=" tsd-kind-variable tsd-is-not-exported">
 						<a href="globals.html#position_coords_per_vertex" class="tsd-kind-icon">POSITION_<wbr>COORDS_<wbr>PER_<wbr>VERTEX</a>
 					</li>
+					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
+						<a href="globals.html#position_name" class="tsd-kind-icon">POSITION_<wbr>NAME</a>
+					</li>
 					<li class=" tsd-kind-variable tsd-is-not-exported">
 						<a href="globals.html#precision" class="tsd-kind-icon">PRECISION</a>
 					</li>
@@ -822,6 +867,12 @@
 					</li>
 					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#r" class="tsd-kind-icon">R</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
+						<a href="globals.html#radius_default" class="tsd-kind-icon">RADIUS_<wbr>DEFAULT</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
+						<a href="globals.html#radius_name" class="tsd-kind-icon">RADIUS_<wbr>NAME</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#rightwards_arrow" class="tsd-kind-icon">RIGHTWARDS_<wbr>ARROW</a>
@@ -1072,11 +1123,8 @@
 					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#beundefined" class="tsd-kind-icon">be<wbr>Undefined</a>
 					</li>
-					<li class=" tsd-kind-function tsd-is-external">
+					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#boxprimitive" class="tsd-kind-icon">box<wbr>Primitive</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-external">
-						<a href="globals.html#boxvertexarrays" class="tsd-kind-icon">box<wbr>Vertex<wbr>Arrays</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#builder" class="tsd-kind-icon">builder</a>
@@ -1162,6 +1210,9 @@
 					<li class=" tsd-kind-function tsd-is-not-exported">
 						<a href="globals.html#contextmanager" class="tsd-kind-icon">context<wbr>Manager</a>
 					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#contextmanagerfromoptions" class="tsd-kind-icon">context<wbr>Manager<wbr>From<wbr>Options</a>
+					</li>
 					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#coordinates" class="tsd-kind-icon">coordinates</a>
 					</li>
@@ -1192,7 +1243,7 @@
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#curveprimitive" class="tsd-kind-icon">curve<wbr>Primitive</a>
 					</li>
-					<li class=" tsd-kind-function tsd-is-external">
+					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#cylinderprimitive" class="tsd-kind-icon">cylinder<wbr>Primitive</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
@@ -1352,6 +1403,9 @@
 						<a href="globals.html#joinindices" class="tsd-kind-icon">join<wbr>Indices</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#kfromoptions" class="tsd-kind-icon">k<wbr>From<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#lcoe2" class="tsd-kind-icon">lco<wbr>E2</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
@@ -1398,6 +1452,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#makezerobelow" class="tsd-kind-icon">make<wbr>Zero<wbr>Below</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#materialfromoptions" class="tsd-kind-icon">material<wbr>From<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#max" class="tsd-kind-icon">max</a>
@@ -1505,6 +1562,9 @@
 						<a href="globals.html#reduce" class="tsd-kind-icon">reduce</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
+						<a href="globals.html#rgb255" class="tsd-kind-icon">rgb255</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#rowwithmaximumincolumn" class="tsd-kind-icon">row<wbr>With<wbr>Maximum<wbr>InColumn</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
@@ -1518,6 +1578,12 @@
 					</li>
 					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#setattributes" class="tsd-kind-icon">set<wbr>Attributes</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#setcoloroption" class="tsd-kind-icon">set<wbr>Color<wbr>Option</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#setdeprecatedoptions" class="tsd-kind-icon">set<wbr>Deprecated<wbr>Options</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#setviewattitude" class="tsd-kind-icon">set<wbr>View<wbr>Attitude</a>
@@ -1534,7 +1600,7 @@
 					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#solve" class="tsd-kind-icon">solve</a>
 					</li>
-					<li class=" tsd-kind-function tsd-is-external">
+					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#sphereprimitive" class="tsd-kind-icon">sphere<wbr>Primitive</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
@@ -1593,6 +1659,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#vlightrequired" class="tsd-kind-icon">v<wbr>Light<wbr>Required</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#vec" class="tsd-kind-icon">vec</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#verboten" class="tsd-kind-icon">verboten</a>

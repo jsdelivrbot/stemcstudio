@@ -106,7 +106,7 @@ System.config({
     "npm:angular2@2.0.0-beta.17": {
       "reflect-metadata": "npm:reflect-metadata@0.1.2",
       "rxjs": "npm:rxjs@5.0.0-beta.11",
-      "zone.js": "npm:zone.js@0.6.15"
+      "zone.js": "npm:zone.js@0.6.17"
     },
     "npm:asn1.js@4.6.2": {
       "assert": "github:jspm/nodelibs-assert@0.1.0",
@@ -678,7 +678,7 @@ System.config({
       "window-size": "npm:window-size@0.1.4",
       "y18n": "npm:y18n@3.2.1"
     },
-    "npm:zone.js@0.6.15": {
+    "npm:zone.js@0.6.17": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     }

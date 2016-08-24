@@ -793,6 +793,13 @@ define('davinci-units/math/BigInteger',["require", "exports"], function (require
         BigInteger.prototype.plus = function (v) {
             return this.add(v);
         };
+        BigInteger.prototype.__add__ = function (rhs) {
+            return this.add(rhs);
+        };
+        BigInteger.prototype.__radd__ = function (lhs) {
+            var n = parseValue(lhs);
+            return n.add(this);
+        };
         BigInteger.prototype.subtract = function (v) {
             var n = parseValue(v);
             if (this.sign !== n.sign) {
@@ -811,11 +818,30 @@ define('davinci-units/math/BigInteger',["require", "exports"], function (require
         BigInteger.prototype.minus = function (v) {
             return this.subtract(v);
         };
+        BigInteger.prototype.__sub__ = function (rhs) {
+            return this.subtract(rhs);
+        };
+        BigInteger.prototype.__rsub__ = function (lhs) {
+            var n = parseValue(lhs);
+            return n.subtract(this);
+        };
         BigInteger.prototype.negate = function () {
             return new BigInteger(this.value, !this.sign);
         };
+        BigInteger.prototype.neg = function () {
+            return new BigInteger(this.value, !this.sign);
+        };
+        BigInteger.prototype.__neg__ = function () {
+            return this.negate();
+        };
+        BigInteger.prototype.__pos__ = function () {
+            return this;
+        };
         BigInteger.prototype.abs = function () {
             return new BigInteger(this.value, false);
+        };
+        BigInteger.prototype.inv = function () {
+            throw new Error("inv() is not supported for BigInteger");
         };
         BigInteger.prototype.multiply = function (v) {
             var n = parseValue(v);
@@ -845,6 +871,13 @@ define('davinci-units/math/BigInteger',["require", "exports"], function (require
         };
         BigInteger.prototype.times = function (v) {
             return this.multiply(v);
+        };
+        BigInteger.prototype.__mul__ = function (rhs) {
+            return this.multiply(rhs);
+        };
+        BigInteger.prototype.__rmul__ = function (lhs) {
+            var n = parseValue(lhs);
+            return n.multiply(this);
         };
         BigInteger.prototype._multiplyBySmall = function (a) {
             if (a.value === 0)
@@ -903,6 +936,9 @@ define('davinci-units/math/BigInteger',["require", "exports"], function (require
         };
         BigInteger.prototype.isNegative = function () {
             return this.sign;
+        };
+        BigInteger.prototype.isOne = function () {
+            return false;
         };
         BigInteger.prototype.isUnit = function () {
             return false;
@@ -974,6 +1010,13 @@ define('davinci-units/math/BigInteger',["require", "exports"], function (require
         SmallInteger.prototype.plus = function (v) {
             return this.add(v);
         };
+        SmallInteger.prototype.__add__ = function (rhs) {
+            return this.add(rhs);
+        };
+        SmallInteger.prototype.__radd__ = function (lhs) {
+            var n = parseValue(lhs);
+            return n.add(this);
+        };
         SmallInteger.prototype.subtract = function (v) {
             var n = parseValue(v);
             var a = this.value;
@@ -992,14 +1035,33 @@ define('davinci-units/math/BigInteger',["require", "exports"], function (require
         SmallInteger.prototype.minus = function (v) {
             return this.subtract(v);
         };
+        SmallInteger.prototype.__sub__ = function (rhs) {
+            return this.subtract(rhs);
+        };
+        SmallInteger.prototype.__rsub__ = function (lhs) {
+            var n = parseValue(lhs);
+            return n.subtract(this);
+        };
         SmallInteger.prototype.negate = function () {
             var sign = this.sign;
             var small = new SmallInteger(-this.value);
             small.sign = !sign;
             return small;
         };
+        SmallInteger.prototype.neg = function () {
+            return this.negate();
+        };
+        SmallInteger.prototype.__neg__ = function () {
+            return this.negate();
+        };
+        SmallInteger.prototype.__pos__ = function () {
+            return this;
+        };
         SmallInteger.prototype.abs = function () {
             return new SmallInteger(Math.abs(this.value));
+        };
+        SmallInteger.prototype.inv = function () {
+            throw new Error("inv() is not supported");
         };
         SmallInteger.prototype._multiplyBySmall = function (a) {
             if (isPrecise(a.value * this.value)) {
@@ -1012,6 +1074,13 @@ define('davinci-units/math/BigInteger',["require", "exports"], function (require
         };
         SmallInteger.prototype.times = function (v) {
             return this.multiply(v);
+        };
+        SmallInteger.prototype.__mul__ = function (rhs) {
+            return this.multiply(rhs);
+        };
+        SmallInteger.prototype.__rmul__ = function (lhs) {
+            var n = parseValue(lhs);
+            return n.multiply(this);
         };
         SmallInteger.prototype.square = function () {
             var value = this.value * this.value;
@@ -1061,6 +1130,9 @@ define('davinci-units/math/BigInteger',["require", "exports"], function (require
         };
         SmallInteger.prototype.isNegative = function () {
             return this.value < 0;
+        };
+        SmallInteger.prototype.isOne = function () {
+            return this.isUnit();
         };
         SmallInteger.prototype.isUnit = function () {
             return Math.abs(this.value) === 1;
@@ -1792,22 +1864,30 @@ define('davinci-units/math/BigInteger',["require", "exports"], function (require
 define('davinci-units/math/BigRational',["require", "exports", './BigInteger', './BigInteger'], function (require, exports, BigInteger_1, BigInteger_2) {
     "use strict";
     var BigRational = (function () {
-        function BigRational(num, denom) {
-            this.num = num;
+        function BigRational(numer, denom) {
+            this.numer = numer;
             this.denom = denom;
             if (denom.isZero())
                 throw "Denominator cannot be 0.";
-            this.numerator = this.num = num;
-            this.denominator = this.denom = denom;
         }
         BigRational.prototype.add = function (n, d) {
-            var v = interpret(n, d), multiple = BigInteger_2.lcm(this.denom, v.denom), a = multiple.divide(this.denom), b = multiple.divide(v.denom);
-            a = this.num.times(a);
-            b = v.num.times(b);
+            var v = interpret(n, d);
+            var multiple = BigInteger_2.lcm(this.denom, v.denom);
+            var a = multiple.divide(this.denom);
+            var b = multiple.divide(v.denom);
+            a = this.numer.times(a);
+            b = v.numer.times(b);
             return reduce(a.add(b), multiple);
         };
         BigRational.prototype.plus = function (n, d) {
             return this.add(n, d);
+        };
+        BigRational.prototype.__add__ = function (rhs) {
+            return this.add(rhs);
+        };
+        BigRational.prototype.__radd__ = function (lhs) {
+            var v = interpret(lhs);
+            return v.add(this);
         };
         BigRational.prototype.subtract = function (n, d) {
             var v = interpret(n, d);
@@ -1816,22 +1896,46 @@ define('davinci-units/math/BigRational',["require", "exports", './BigInteger', '
         BigRational.prototype.minus = function (n, d) {
             return this.subtract(n, d);
         };
+        BigRational.prototype.__sub__ = function (rhs) {
+            return this.subtract(rhs);
+        };
+        BigRational.prototype.__rsub__ = function (lhs) {
+            var v = interpret(lhs);
+            return v.subtract(this);
+        };
         BigRational.prototype.multiply = function (n, d) {
             var v = interpret(n, d);
-            return reduce(this.num.times(v.num), this.denom.times(v.denom));
+            return reduce(this.numer.times(v.numer), this.denom.times(v.denom));
         };
         BigRational.prototype.times = function (n, d) {
             return this.multiply(n, d);
         };
+        BigRational.prototype.__mul__ = function (rhs) {
+            return this.multiply(rhs);
+        };
+        BigRational.prototype.__rmul__ = function (lhs) {
+            var v = interpret(lhs);
+            return v.multiply(this);
+        };
         BigRational.prototype.divide = function (n, d) {
             var v = interpret(n, d);
-            return reduce(this.num.times(v.denom), this.denom.times(v.num));
+            return reduce(this.numer.times(v.denom), this.denom.times(v.numer));
+        };
+        BigRational.prototype.__div__ = function (rhs) {
+            return this.divide(rhs);
+        };
+        BigRational.prototype.__rdiv__ = function (lhs) {
+            var v = interpret(lhs);
+            return v.divide(this);
+        };
+        BigRational.prototype.inv = function () {
+            return this.reciprocate();
         };
         BigRational.prototype.over = function (n, d) {
             return this.divide(n, d);
         };
         BigRational.prototype.reciprocate = function () {
-            return new BigRational(this.denom, this.num);
+            return new BigRational(this.denom, this.numer);
         };
         BigRational.prototype.mod = function (n, d) {
             var v = interpret(n, d);
@@ -1839,12 +1943,12 @@ define('davinci-units/math/BigRational',["require", "exports", './BigInteger', '
         };
         BigRational.prototype.pow = function (n) {
             var v = BigInteger_1.default(n);
-            var num = this.num.pow(v);
+            var num = this.numer.pow(v);
             var denom = this.denom.pow(v);
             return reduce(num, denom);
         };
         BigRational.prototype.floor = function (toBigInt) {
-            var divmod = this.num.divmod(this.denom);
+            var divmod = this.numer.divmod(this.denom);
             var floor;
             if (divmod.remainder.isZero() || !divmod.quotient.sign) {
                 floor = divmod.quotient;
@@ -1856,7 +1960,7 @@ define('davinci-units/math/BigRational',["require", "exports", './BigInteger', '
             return new BigRational(floor, BigInteger_2.one);
         };
         BigRational.prototype.ceil = function (toBigInt) {
-            var divmod = this.num.divmod(this.denom);
+            var divmod = this.numer.divmod(this.denom);
             var ceil;
             if (divmod.remainder.isZero() || divmod.quotient.sign) {
                 ceil = divmod.quotient;
@@ -1873,17 +1977,17 @@ define('davinci-units/math/BigRational',["require", "exports", './BigInteger', '
         BigRational.prototype.compareAbs = function (n, d) {
             var v = interpret(n, d);
             if (this.denom.equals(v.denom)) {
-                return this.num.compareAbs(v.num);
+                return this.numer.compareAbs(v.numer);
             }
-            return this.num.times(v.denom).compareAbs(v.num.times(this.denom));
+            return this.numer.times(v.denom).compareAbs(v.numer.times(this.denom));
         };
         BigRational.prototype.compare = function (n, d) {
             var v = interpret(n, d);
             if (this.denom.equals(v.denom)) {
-                return this.num.compare(v.num);
+                return this.numer.compare(v.numer);
             }
             var comparison = this.denom.sign === v.denom.sign ? 1 : -1;
-            return comparison * this.num.times(v.denom).compare(v.num.times(this.denom));
+            return comparison * this.numer.times(v.denom).compare(v.numer.times(this.denom));
         };
         BigRational.prototype.compareTo = function (n, d) {
             return this.compare(n, d);
@@ -1894,11 +1998,17 @@ define('davinci-units/math/BigRational',["require", "exports", './BigInteger', '
         BigRational.prototype.eq = function (n, d) {
             return this.equals(n, d);
         };
+        BigRational.prototype.__eq__ = function (rhs) {
+            return this.eq(rhs);
+        };
         BigRational.prototype.notEquals = function (n, d) {
             return this.compare(n, d) !== 0;
         };
         BigRational.prototype.neq = function (n, d) {
             return this.notEquals(n, d);
+        };
+        BigRational.prototype.__ne__ = function (rhs) {
+            return this.neq(rhs);
         };
         BigRational.prototype.lesser = function (n, d) {
             return this.compare(n, d) < 0;
@@ -1906,11 +2016,17 @@ define('davinci-units/math/BigRational',["require", "exports", './BigInteger', '
         BigRational.prototype.lt = function (n, d) {
             return this.lesser(n, d);
         };
+        BigRational.prototype.__lt__ = function (rhs) {
+            return this.lt(rhs);
+        };
         BigRational.prototype.lesserOrEquals = function (n, d) {
             return this.compare(n, d) <= 0;
         };
         BigRational.prototype.leq = function (n, d) {
             return this.lesserOrEquals(n, d);
+        };
+        BigRational.prototype.__le__ = function (rhs) {
+            return this.leq(rhs);
         };
         BigRational.prototype.greater = function (n, d) {
             return this.compare(n, d) > 0;
@@ -1918,43 +2034,92 @@ define('davinci-units/math/BigRational',["require", "exports", './BigInteger', '
         BigRational.prototype.gt = function (n, d) {
             return this.greater(n, d);
         };
+        BigRational.prototype.__gt__ = function (rhs) {
+            return this.gt(rhs);
+        };
         BigRational.prototype.greaterOrEquals = function (n, d) {
             return this.compare(n, d) >= 0;
         };
         BigRational.prototype.geq = function (n, d) {
             return this.greaterOrEquals(n, d);
         };
+        BigRational.prototype.__ge__ = function (rhs) {
+            return this.geq(rhs);
+        };
         BigRational.prototype.abs = function () {
             if (this.isPositive())
                 return this;
             return this.negate();
         };
+        BigRational.prototype.__pos__ = function () {
+            return this;
+        };
+        BigRational.prototype.__neg__ = function () {
+            return this.negate();
+        };
+        BigRational.prototype.neg = function () {
+            return this.negate();
+        };
         BigRational.prototype.negate = function () {
             if (this.denom.sign) {
-                return new BigRational(this.num, this.denom.negate());
+                return new BigRational(this.numer, this.denom.negate());
             }
-            return new BigRational(this.num.negate(), this.denom);
+            return new BigRational(this.numer.negate(), this.denom);
         };
         BigRational.prototype.isNegative = function () {
-            return this.num.sign !== this.denom.sign && !this.num.isZero();
+            return this.numer.sign !== this.denom.sign && !this.numer.isZero();
+        };
+        BigRational.prototype.isOne = function () {
+            return this.numer.isUnit() && this.denom.isUnit();
         };
         BigRational.prototype.isPositive = function () {
-            return this.num.sign === this.denom.sign && !this.num.isZero();
+            return this.numer.sign === this.denom.sign && !this.numer.isZero();
         };
         BigRational.prototype.isZero = function () {
-            return this.num.isZero();
+            return this.numer.isZero();
+        };
+        BigRational.prototype.__vbar__ = function (rhs) {
+            return this.multiply(rhs);
+        };
+        BigRational.prototype.__rvbar__ = function (lhs) {
+            var v = interpret(lhs);
+            return v.multiply(this);
+        };
+        BigRational.prototype.__wedge__ = function (rhs) {
+            return bigRat(0);
+        };
+        BigRational.prototype.__rwedge__ = function (rhs) {
+            return bigRat(0);
+        };
+        BigRational.prototype.__lshift__ = function (rhs) {
+            return this.__vbar__(rhs);
+        };
+        BigRational.prototype.__rlshift__ = function (rhs) {
+            return this.__vbar__(rhs);
+        };
+        BigRational.prototype.__rshift__ = function (rhs) {
+            return this.__vbar__(rhs);
+        };
+        BigRational.prototype.__rrshift__ = function (rhs) {
+            return this.__vbar__(rhs);
+        };
+        BigRational.prototype.__bang__ = function () {
+            return void 0;
+        };
+        BigRational.prototype.__tilde__ = function () {
+            return void 0;
         };
         BigRational.prototype.toDecimal = function (digits) {
             if (digits === void 0) { digits = 10; }
-            var n = this.num.divmod(this.denom);
+            var n = this.numer.divmod(this.denom);
             var intPart = n.quotient.abs().toString();
             var remainder = bigRat(n.remainder.abs(), this.denom);
             var shiftedRemainder = remainder.times(BigInteger_1.default("1e" + digits));
-            var decPart = shiftedRemainder.num.over(shiftedRemainder.denom).toString();
+            var decPart = shiftedRemainder.numer.over(shiftedRemainder.denom).toString();
             if (decPart.length < digits) {
                 decPart = new Array(digits - decPart.length + 1).join("0") + decPart;
             }
-            if (shiftedRemainder.num.mod(shiftedRemainder.denom).isZero()) {
+            if (shiftedRemainder.numer.mod(shiftedRemainder.denom).isZero()) {
                 while (decPart.slice(-1) === "0") {
                     decPart = decPart.slice(0, -1);
                 }
@@ -1968,19 +2133,21 @@ define('davinci-units/math/BigRational',["require", "exports", './BigInteger', '
             return intPart + "." + decPart;
         };
         BigRational.prototype.toString = function () {
-            return String(this.num) + "/" + String(this.denom);
+            return String(this.numer) + "/" + String(this.denom);
         };
         BigRational.prototype.valueOf = function () {
-            return this.num.valueOf() / this.denom.valueOf();
+            return this.numer.valueOf() / this.denom.valueOf();
         };
         return BigRational;
     }());
     function reduce(n, d) {
-        var divisor = BigInteger_2.gcd(n, d), num = n.over(divisor), denom = d.over(divisor);
+        var divisor = BigInteger_2.gcd(n, d);
+        var numer = n.over(divisor);
+        var denom = d.over(divisor);
         if (denom.isNegative()) {
-            return new BigRational(num.negate(), denom.negate());
+            return new BigRational(numer.negate(), denom.negate());
         }
-        return new BigRational(num, denom);
+        return new BigRational(numer, denom);
     }
     function interpret(n, d) {
         return bigRat(n, d);
@@ -2042,7 +2209,7 @@ define('davinci-units/math/BigRational',["require", "exports", './BigInteger', '
         }
         if (a instanceof BigRational)
             return a;
-        var num;
+        var numer;
         var denom;
         var text = String(a);
         var texts = text.split("/");
@@ -2056,15 +2223,15 @@ define('davinci-units/math/BigRational',["require", "exports", './BigInteger', '
             }
             if (parts.length > 1) {
                 var isPositive = parts[0][0] !== "-";
-                num = BigInteger_1.default(parts[0]).times(texts[1]);
+                numer = BigInteger_1.default(parts[0]).times(texts[1]);
                 if (isPositive) {
-                    num = num.add(parts[1]);
+                    numer = numer.add(parts[1]);
                 }
                 else {
-                    num = num.subtract(parts[1]);
+                    numer = numer.subtract(parts[1]);
                 }
                 denom = BigInteger_1.default(texts[1]);
-                return reduce(num, denom);
+                return reduce(numer, denom);
             }
             return reduce(BigInteger_1.default(texts[0]), BigInteger_1.default(texts[1]));
         }

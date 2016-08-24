@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>SimplexPrimitivesBuilder | EIGHT 2.302.0</title>
+	<title>SimplexPrimitivesBuilder | EIGHT 2.303.0</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">EIGHT 2.302.0</a>
+					<a href="../index.html" class="title">EIGHT 2.303.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -89,7 +89,13 @@
 								<span class="target">SimplexPrimitivesBuilder</span>
 								<ul class="tsd-hierarchy">
 									<li>
-										<a href="slicesimplexprimitivesbuilder.html" class="tsd-signature-type">SliceSimplexPrimitivesBuilder</a>
+										<a href="cuboidsimplexprimitivesbuilder.html" class="tsd-signature-type">CuboidSimplexPrimitivesBuilder</a>
+									</li>
+									<li>
+										<a href="cylinderbuilder.html" class="tsd-signature-type">CylinderBuilder</a>
+									</li>
+									<li>
+										<a href="spherebuilder.html" class="tsd-signature-type">SphereBuilder</a>
 									</li>
 									<li>
 										<a href="polyhedronbuilder.html" class="tsd-signature-type">PolyhedronBuilder</a>
@@ -127,7 +133,6 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="simplexprimitivesbuilder.html#offset" class="tsd-kind-icon">offset</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="simplexprimitivesbuilder.html#orientationcolors" class="tsd-kind-icon">orientation<wbr>Colors</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="simplexprimitivesbuilder.html#stress" class="tsd-kind-icon">stress</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="simplexprimitivesbuilder.html#tilt" class="tsd-kind-icon">tilt</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="simplexprimitivesbuilder.html#transforms" class="tsd-kind-icon">transforms</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="simplexprimitivesbuilder.html#usenormal" class="tsd-kind-icon">use<wbr>Normal</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="simplexprimitivesbuilder.html#useposition" class="tsd-kind-icon">use<wbr>Position</a></li>
@@ -175,7 +180,7 @@
 							<aside class="tsd-sources">
 								<p>Overwrites <a href="primitivesbuilder.html">PrimitivesBuilder</a>.<a href="primitivesbuilder.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/876f399/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L42">geometries/SimplexPrimitivesBuilder.ts:42</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/c61ad13/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L37">geometries/SimplexPrimitivesBuilder.ts:37</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -200,7 +205,7 @@
 					<div class="tsd-signature tsd-kind-icon">_k<span class="tsd-signature-symbol">:</span> <a href="vector1.html" class="tsd-signature-type">Vector1</a><span class="tsd-signature-symbol"> =&nbsp;new Vector1([Simplex.TRIANGLE])</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/876f399/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L21">geometries/SimplexPrimitivesBuilder.ts:21</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/c61ad13/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L21">geometries/SimplexPrimitivesBuilder.ts:21</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -210,22 +215,9 @@
 					<div class="tsd-signature tsd-kind-icon">curved<wbr>Segments<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;16</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/876f399/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L28">geometries/SimplexPrimitivesBuilder.ts:28</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/c61ad13/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L23">geometries/SimplexPrimitivesBuilder.ts:23</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-comment-tags">
-							<dt>property</dt>
-							<dd><p>curvedSegments</p>
-							</dd>
-							<dt>type</dt>
-							<dd><p>number</p>
-							</dd>
-							<dt>default</dt>
-							<dd><p>16</p>
-							</dd>
-						</dl>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
 					<a name="data" class="tsd-anchor"></a>
@@ -233,7 +225,7 @@
 					<div class="tsd-signature tsd-kind-icon">data<span class="tsd-signature-symbol">:</span> <a href="simplex.html" class="tsd-signature-type">Simplex</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/876f399/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L19">geometries/SimplexPrimitivesBuilder.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/c61ad13/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L19">geometries/SimplexPrimitivesBuilder.ts:19</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -243,7 +235,7 @@
 					<div class="tsd-signature tsd-kind-icon">flat<wbr>Segments<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/876f399/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L35">geometries/SimplexPrimitivesBuilder.ts:35</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/c61ad13/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L30">geometries/SimplexPrimitivesBuilder.ts:30</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -266,7 +258,7 @@
 					<div class="tsd-signature tsd-kind-icon">meta<span class="tsd-signature-symbol">:</span> <a href="../interfaces/geometrymeta.html" class="tsd-signature-type">GeometryMeta</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/876f399/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L20">geometries/SimplexPrimitivesBuilder.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/c61ad13/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L20">geometries/SimplexPrimitivesBuilder.ts:20</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -278,7 +270,7 @@
 						<p>Implementation of <a href="../interfaces/geometrybuilder.html">GeometryBuilder</a>.<a href="../interfaces/geometrybuilder.html#offset">offset</a></p>
 						<p>Inherited from <a href="primitivesbuilder.html">PrimitivesBuilder</a>.<a href="primitivesbuilder.html#offset">offset</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/876f399/src/davinci-eight/geometries/PrimitivesBuilder.ts#L43">geometries/PrimitivesBuilder.ts:43</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/c61ad13/src/davinci-eight/geometries/PrimitivesBuilder.ts#L34">geometries/PrimitivesBuilder.ts:34</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -304,7 +296,7 @@
 					<div class="tsd-signature tsd-kind-icon">orientation<wbr>Colors<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/876f399/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L42">geometries/SimplexPrimitivesBuilder.ts:42</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/c61ad13/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L37">geometries/SimplexPrimitivesBuilder.ts:37</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -329,7 +321,7 @@
 						<p>Implementation of <a href="../interfaces/geometrybuilder.html">GeometryBuilder</a>.<a href="../interfaces/geometrybuilder.html#stress">stress</a></p>
 						<p>Inherited from <a href="primitivesbuilder.html">PrimitivesBuilder</a>.<a href="primitivesbuilder.html#stress">stress</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/876f399/src/davinci-eight/geometries/PrimitivesBuilder.ts#L27">geometries/PrimitivesBuilder.ts:27</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/c61ad13/src/davinci-eight/geometries/PrimitivesBuilder.ts#L26">geometries/PrimitivesBuilder.ts:26</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -355,41 +347,13 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-					<a name="tilt" class="tsd-anchor"></a>
-					<h3>tilt</h3>
-					<div class="tsd-signature tsd-kind-icon">tilt<span class="tsd-signature-symbol">:</span> <a href="geometric3.html" class="tsd-signature-type">Geometric3</a><span class="tsd-signature-symbol"> =&nbsp;Geometric3.one()</span></div>
-					<aside class="tsd-sources">
-						<p>Implementation of <a href="../interfaces/geometrybuilder.html">GeometryBuilder</a>.<a href="../interfaces/geometrybuilder.html#tilt">tilt</a></p>
-						<p>Inherited from <a href="primitivesbuilder.html">PrimitivesBuilder</a>.<a href="primitivesbuilder.html#tilt">tilt</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/876f399/src/davinci-eight/geometries/PrimitivesBuilder.ts#L35">geometries/PrimitivesBuilder.ts:35</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The rotor to apply to the geometry (after scale has been applied).</p>
-						</div>
-						<dl class="tsd-comment-tags">
-							<dt>property</dt>
-							<dd><p>tilt</p>
-							</dd>
-							<dt>type</dt>
-							<dd><p>Geometric3</p>
-							</dd>
-							<dt>default</dt>
-							<dd><p>1</p>
-							</dd>
-						</dl>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="transforms" class="tsd-anchor"></a>
 					<h3>transforms</h3>
 					<div class="tsd-signature tsd-kind-icon">transforms<span class="tsd-signature-symbol">:</span> <a href="../interfaces/transform.html" class="tsd-signature-type">Transform</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="primitivesbuilder.html">PrimitivesBuilder</a>.<a href="primitivesbuilder.html#transforms">transforms</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/876f399/src/davinci-eight/geometries/PrimitivesBuilder.ts#L49">geometries/PrimitivesBuilder.ts:49</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/c61ad13/src/davinci-eight/geometries/PrimitivesBuilder.ts#L40">geometries/PrimitivesBuilder.ts:40</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -410,7 +374,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="primitivesbuilder.html">PrimitivesBuilder</a>.<a href="primitivesbuilder.html#usenormal">useNormal</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/876f399/src/davinci-eight/geometries/PrimitivesBuilder.ts#L58">geometries/PrimitivesBuilder.ts:58</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/c61ad13/src/davinci-eight/geometries/PrimitivesBuilder.ts#L49">geometries/PrimitivesBuilder.ts:49</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -437,7 +401,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="primitivesbuilder.html">PrimitivesBuilder</a>.<a href="primitivesbuilder.html#useposition">usePosition</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/876f399/src/davinci-eight/geometries/PrimitivesBuilder.ts#L67">geometries/PrimitivesBuilder.ts:67</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/c61ad13/src/davinci-eight/geometries/PrimitivesBuilder.ts#L58">geometries/PrimitivesBuilder.ts:58</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -464,7 +428,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="primitivesbuilder.html">PrimitivesBuilder</a>.<a href="primitivesbuilder.html#usetexturecoord">useTextureCoord</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/876f399/src/davinci-eight/geometries/PrimitivesBuilder.ts#L76">geometries/PrimitivesBuilder.ts:76</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/c61ad13/src/davinci-eight/geometries/PrimitivesBuilder.ts#L67">geometries/PrimitivesBuilder.ts:67</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -498,7 +462,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/876f399/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L58">geometries/SimplexPrimitivesBuilder.ts:58</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/c61ad13/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L53">geometries/SimplexPrimitivesBuilder.ts:53</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -516,7 +480,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/876f399/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L61">geometries/SimplexPrimitivesBuilder.ts:61</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/c61ad13/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L56">geometries/SimplexPrimitivesBuilder.ts:56</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -543,7 +507,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="primitivesbuilder.html">PrimitivesBuilder</a>.<a href="primitivesbuilder.html#applytransforms">applyTransforms</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/876f399/src/davinci-eight/geometries/PrimitivesBuilder.ts#L86">geometries/PrimitivesBuilder.ts:86</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/c61ad13/src/davinci-eight/geometries/PrimitivesBuilder.ts#L77">geometries/PrimitivesBuilder.ts:77</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -578,7 +542,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/876f399/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L91">geometries/SimplexPrimitivesBuilder.ts:91</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/c61ad13/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L86">geometries/SimplexPrimitivesBuilder.ts:86</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -608,7 +572,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/876f399/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L96">geometries/SimplexPrimitivesBuilder.ts:96</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/c61ad13/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L91">geometries/SimplexPrimitivesBuilder.ts:91</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="simplexprimitivesbuilder.html" class="tsd-signature-type">SimplexPrimitivesBuilder</a></h4>
@@ -625,7 +589,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/876f399/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L162">geometries/SimplexPrimitivesBuilder.ts:162</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/c61ad13/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L155">geometries/SimplexPrimitivesBuilder.ts:155</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -654,7 +618,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/876f399/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L77">geometries/SimplexPrimitivesBuilder.ts:77</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/c61ad13/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L72">geometries/SimplexPrimitivesBuilder.ts:72</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -671,7 +635,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/876f399/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L134">geometries/SimplexPrimitivesBuilder.ts:134</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/c61ad13/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L129">geometries/SimplexPrimitivesBuilder.ts:129</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -700,7 +664,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/876f399/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L111">geometries/SimplexPrimitivesBuilder.ts:111</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/c61ad13/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L106">geometries/SimplexPrimitivesBuilder.ts:106</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -723,7 +687,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/876f399/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L150">geometries/SimplexPrimitivesBuilder.ts:150</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/c61ad13/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L145">geometries/SimplexPrimitivesBuilder.ts:145</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -752,7 +716,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/876f399/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L70">geometries/SimplexPrimitivesBuilder.ts:70</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/c61ad13/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L65">geometries/SimplexPrimitivesBuilder.ts:65</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -776,7 +740,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/876f399/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L80">geometries/SimplexPrimitivesBuilder.ts:80</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/c61ad13/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L75">geometries/SimplexPrimitivesBuilder.ts:75</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -799,7 +763,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/876f399/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L100">geometries/SimplexPrimitivesBuilder.ts:100</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/c61ad13/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L95">geometries/SimplexPrimitivesBuilder.ts:95</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -824,7 +788,7 @@
 								<p>Implementation of <a href="../interfaces/geometrybuilder.html">GeometryBuilder</a>.<a href="../interfaces/geometrybuilder.html#toprimitives">toPrimitives</a></p>
 								<p>Overwrites <a href="primitivesbuilder.html">PrimitivesBuilder</a>.<a href="primitivesbuilder.html#toprimitives">toPrimitives</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/876f399/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L106">geometries/SimplexPrimitivesBuilder.ts:106</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/c61ad13/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L101">geometries/SimplexPrimitivesBuilder.ts:101</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/primitive.html" class="tsd-signature-type">Primitive</a><span class="tsd-signature-symbol">[]</span></h4>
@@ -843,7 +807,7 @@
 								<p>Implementation of <a href="../interfaces/geometrybuilder.html">GeometryBuilder</a>.<a href="../interfaces/geometrybuilder.html#tovertexarrays">toVertexArrays</a></p>
 								<p>Inherited from <a href="primitivesbuilder.html">PrimitivesBuilder</a>.<a href="primitivesbuilder.html#tovertexarrays">toVertexArrays</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/876f399/src/davinci-eight/geometries/PrimitivesBuilder.ts#L98">geometries/PrimitivesBuilder.ts:98</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/c61ad13/src/davinci-eight/geometries/PrimitivesBuilder.ts#L89">geometries/PrimitivesBuilder.ts:89</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -869,7 +833,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/876f399/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L114">geometries/SimplexPrimitivesBuilder.ts:114</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/c61ad13/src/davinci-eight/geometries/SimplexPrimitivesBuilder.ts#L109">geometries/SimplexPrimitivesBuilder.ts:109</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -931,9 +895,6 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="simplexprimitivesbuilder.html#stress" class="tsd-kind-icon">stress</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="simplexprimitivesbuilder.html#tilt" class="tsd-kind-icon">tilt</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="simplexprimitivesbuilder.html#transforms" class="tsd-kind-icon">transforms</a>
