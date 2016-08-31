@@ -6,7 +6,7 @@ app.factory('options', [
     '$window',
     'doodlesKey',
     'VENDOR_FOLDER_MARKER',
-    function(
+    function (
         $window: angular.IWindowService,
         doodlesKey: string,
         VENDOR_FOLDER_MARKER
@@ -18,7 +18,7 @@ app.factory('options', [
         const VERSION_DECKJS = '1.1.0';
         const VERSION_DOMREADY = '1.0.0';
         const VERSION_D3 = '3.5.5';
-        const VERSION_EIGHT = '2.304.0';
+        const VERSION_EIGHT = '2.305.0';
         const VERSION_GEOCAS = '1.0.0';
         const VERSION_GLMATRIX = '2.3.2';
         const VERSION_JASMINE = '2.4.1';
@@ -378,7 +378,7 @@ app.factory('options', [
 
         const that: IOptionManager = {
 
-            unshift: function(doodle: IOption) {
+            unshift: function (doodle: IOption) {
                 return _options.unshift(doodle);
             },
 
@@ -386,11 +386,11 @@ app.factory('options', [
                 return _options.length;
             },
 
-            filter: function(callback: (doodle: IOption, index: number, array: IOption[]) => boolean) {
+            filter: function (callback: (doodle: IOption, index: number, array: IOption[]) => boolean) {
                 return _options.filter(callback);
             },
 
-            deleteOption: function(name: string) {
+            deleteOption: function (name: string) {
                 var options: IOption[] = [];
 
                 var i = 0, found;

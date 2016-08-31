@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.7.46",
+  "version": "2.7.47",
   "private": true,
   "description": "Learning STEM through Computational Modeling",
   "engines": {

@@ -1,4 +1,4 @@
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
     const path = require('path');
     const Builder = require('systemjs-builder');
@@ -303,11 +303,11 @@ module.exports = function(grunt) {
                     },
                     {
                         src: "../davinci-eight/dist/davinci-eight.d.ts",
-                        dest: "generated/vendor/davinci-eight@2.304.0/dist/davinci-eight.d.ts"
+                        dest: "generated/vendor/davinci-eight@2.305.0/dist/davinci-eight.d.ts"
                     },
                     {
                         src: "../davinci-eight/dist/davinci-eight.js",
-                        dest: "generated/vendor/davinci-eight@2.304.0/dist/davinci-eight.js"
+                        dest: "generated/vendor/davinci-eight@2.305.0/dist/davinci-eight.js"
                     },
                     {
                         src: "bower_components/davinci-mathscript/dist/davinci-mathscript.d.ts",
@@ -647,11 +647,11 @@ module.exports = function(grunt) {
                     },
                     {
                         src: "../davinci-eight/dist/davinci-eight.d.ts",
-                        dest: "dist/vendor/davinci-eight@2.304.0/dist/davinci-eight.d.ts"
+                        dest: "dist/vendor/davinci-eight@2.305.0/dist/davinci-eight.d.ts"
                     },
                     {
                         src: "../davinci-eight/dist/davinci-eight.js",
-                        dest: "dist/vendor/davinci-eight@2.304.0/dist/davinci-eight.js"
+                        dest: "dist/vendor/davinci-eight@2.305.0/dist/davinci-eight.js"
                     },
                     {
                         src: "bower_components/davinci-mathscript/dist/davinci-mathscript.d.ts",
@@ -733,7 +733,7 @@ module.exports = function(grunt) {
                 src: '*.html',
                 dest: 'app/ts/template-cache.ts',
                 options: {
-                    bootstrap: function(module, script) {
+                    bootstrap: function (module, script) {
                         return '' +
                             "//\n" +
                             "// GENERATED FILE\n" +
@@ -905,13 +905,13 @@ module.exports = function(grunt) {
         return builder.bundle('js/bootstrap.js', 'dist/js/bootstrap.js', options);
     }
 
-    grunt.registerTask('bundle', "Bundle into system modules", function() {
+    grunt.registerTask('bundle', "Bundle into system modules", function () {
         var done = this.async();
         bundle()
-            .then(function() {
+            .then(function () {
                 done(true);
             })
-            .catch(function(err) {
+            .catch(function (err) {
                 console.log(err);
                 done(false);
             });
