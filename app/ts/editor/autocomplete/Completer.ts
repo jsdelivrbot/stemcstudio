@@ -4,13 +4,12 @@ import EditSession from '../EditSession';
 import Position from '../Position';
 
 /**
- * @class Completer
+ *
  */
 interface Completer {
 
     /**
-     * @property identifierRegexps
-     * @type RegExp[]
+     *
      */
     identifierRegexps?: RegExp[];
 
@@ -24,24 +23,18 @@ interface Completer {
     getCompletionsAtPosition(editor: Editor, position: Position, prefix: string): Promise<Completion[]>;
 
     /**
-     * Intentionally undocumented.
-     * deprecated
+     *
      */
     getCompletions(editor: Editor, session: EditSession, pos: Position, prefix: string, callback: (err, results: Completion[]) => any);
 
     /**
      * The completer may, optionally, define how it wants insertions to be performed.
-     * TODO: But how does it know what the insertion is?
-     *
-     * @method insertMatch
-     * @param editor {Editor}
-     * @return {void}
+     * TODO: But how does it know what the insertion is?u
      */
     insertMatch?(editor: Editor): void;
 
     /**
-     * @method getDocTooltip
-     * @param completion {Completion}
+     *
      */
     getDocTooltip?(completion: Completion);
 }

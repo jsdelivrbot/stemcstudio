@@ -5,7 +5,7 @@ import CompletionManager from './CompletionManager';
 import {COMMAND_NAME_AUTO_COMPLETE} from '../editor_protocol';
 
 /**
- * @class AutoCompleteCommand
+ *
  */
 export default class AutoCompleteCommand implements Command {
     name: string;
@@ -13,14 +13,12 @@ export default class AutoCompleteCommand implements Command {
     bindKey: string;
 
     /**
-     * @class AutoCompleteCommand
-     * @constructor
-     * @param [name = COMMAND_NAME_AUTO_COMPLETE] {string}
+     *
      */
     constructor(name = COMMAND_NAME_AUTO_COMPLETE) {
         this.name = name;
         this.bindKey = 'Ctrl-Space|Ctrl-Shift-Space|Alt-Space';
-        this.exec = function(editor: Editor) {
+        this.exec = function (editor: Editor) {
             let manager: CompletionManager = editor.completionManager;
             if (!manager) {
                 manager = new CompletionManager();

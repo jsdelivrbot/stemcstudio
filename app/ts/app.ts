@@ -134,7 +134,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version.
-app.constant('version', '2.7.45');
+app.constant('version', '2.7.46');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -273,7 +273,7 @@ app.config([
     'FEATURE_GOOGLE_SIGNIN_ENABLED',
     'FEATURE_REPO_ENABLED',
     'FEATURE_ROOM_ENABLED',
-    function(
+    function (
         $stateProvider: angular.ui.IStateProvider,
         $translateProvider: ITranslateProvider,
         $urlRouterProvider: angular.ui.IUrlRouterProvider,
@@ -420,7 +420,7 @@ app.run([
     'GITHUB_LOGIN_COOKIE_NAME',
     'GITHUB_TOKEN_COOKIE_NAME',
     'UNIVERSAL_ANALYTICS_TRACKING_ID',
-    function(
+    function (
         $rootScope: AppScope,
         $state: angular.ui.IStateService,
         $stateParams: angular.ui.IStateParamsService,
@@ -455,7 +455,7 @@ app.run([
         $rootScope.FEATURE_LOGIN_ENABLED = FEATURE_LOGIN_ENABLED;
 
         // The server drops this cookie so that we can make the GitHub autorization request.
-        $rootScope.clientId = function() {
+        $rootScope.clientId = function () {
             if (FEATURE_LOGIN_ENABLED) {
                 return cookie.getItem(GITHUB_APPLICATION_CLIENT_ID_COOKIE_NAME);
             }
@@ -464,7 +464,7 @@ app.run([
             }
         };
 
-        $rootScope.isGitHubSignedIn = function() {
+        $rootScope.isGitHubSignedIn = function () {
             if (FEATURE_LOGIN_ENABLED) {
                 return cookie.hasItem(GITHUB_TOKEN_COOKIE_NAME);
             }
@@ -474,7 +474,7 @@ app.run([
             }
         };
 
-        $rootScope.userLogin = function() {
+        $rootScope.userLogin = function () {
             if (FEATURE_LOGIN_ENABLED) {
                 return cookie.getItem(GITHUB_LOGIN_COOKIE_NAME);
             }
@@ -485,7 +485,7 @@ app.run([
         };
 
         if (FEATURE_GOOGLE_SIGNIN_ENABLED) {
-            $rootScope.isGoogleSignedIn = function() {
+            $rootScope.isGoogleSignedIn = function () {
                 if (gapi.auth2) {
                     const auth2 = gapi.auth2.getAuthInstance();
                     return auth2.isSignedIn.get();

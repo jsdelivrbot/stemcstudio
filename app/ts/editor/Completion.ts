@@ -1,10 +1,13 @@
 import Completer from './autocomplete/Completer';
 
 /**
- * @class Completion
+ *
  */
 interface Completion {
 
+    /**
+     * 
+     */
     className?: string;
 
     /**
@@ -60,9 +63,6 @@ interface Completion {
     /**
      * An optional completer for a completion that allows the completion to
      * specify how it wants the match to be inserted into the editor.
-     *
-     * @property completer
-     * @type Completer
      */
     completer?: Completer;
 }

@@ -61,7 +61,7 @@ function position(el: HTMLElement): PixelPosition {
 }
 
 /**
- * @class AutoCompleteView
+ *
  */
 export default class AutoCompleteView {
     private editor: Editor;
@@ -69,9 +69,7 @@ export default class AutoCompleteView {
     public listElement: HTMLUListElement;
 
     /**
-     * @class AutoCompleteView
-     * @constructor
-     * @param editor {Editor}
+     *
      */
     constructor(editor: Editor) {
         if (typeof editor === 'undefined') {
@@ -121,6 +119,8 @@ export default class AutoCompleteView {
         }
 
         el.style.display = "block";
+        // FIXME: This seems to be correct. Why is it not caught by TypeScript?
+        // renderer.textLayer.checkForSizeChanges();
         renderer.$textLayer.checkForSizeChanges();
 
         var left = pos.left;

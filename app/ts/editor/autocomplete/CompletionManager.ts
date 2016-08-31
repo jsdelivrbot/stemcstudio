@@ -16,6 +16,10 @@ import Range from '../Range';
 // import retrievePrecedingIdentifier from "./retrievePrecedingIdentifier";
 import {COMMAND_NAME_INSERT_STRING} from '../editor_protocol';
 
+const completionCompareFn = function (a: Completion, b: Completion) {
+    return a.caption.toLowerCase() > b.caption.toLowerCase() ? +1 : -1;
+};
+
 //
 // Flow:
 // attach => updateCompletions => openPopup
@@ -25,22 +29,17 @@ import {COMMAND_NAME_INSERT_STRING} from '../editor_protocol';
 //
 
 /**
- * @class CompletionManager
+ *
  */
 export default class CompletionManager {
 
     /**
-     * @property popup
-     * @type ListViewPopup
+     *
      */
     public popup: ListViewPopup;
 
     /**
-     * The editor with which the completion manager is interating.
-     *
-     * @property editor
-     * @type Editor
-     * @private
+     * The editor with which the completion manager is interacting.
      */
     private editor: Editor;
 
@@ -91,8 +90,7 @@ export default class CompletionManager {
     private tooltipTimer: DelayedCall;
 
     /**
-     * @class CompletionManager
-     * @constructor
+     *
      */
     constructor() {
         this.autoInsert = false;
@@ -297,14 +295,9 @@ export default class CompletionManager {
     }
 
     /**
-     * @method gatherCompletions
-     * @param editor {Editor}
-     * @param pos {Position}
-     * @param prefix {string}
-     * @param callback {(err, result) => any}
-     * @return {boolean}
+     * 
      */
-    public gatherCompletions(editor: Editor, pos: Position, prefix: string, callback: (err, results?: { prefix: string; matches: Completion[]; finished: boolean }) => any): boolean {
+    private gatherCompletions(editor: Editor, pos: Position, prefix: string, callback: (err, results?: { prefix: string; matches: Completion[]; finished: boolean }) => any): boolean {
         const session: EditSession = editor.getSession();
 
         this.base = new Anchor(session.doc, pos.row, pos.column - prefix.length);
@@ -313,8 +306,8 @@ export default class CompletionManager {
         let matches: Completion[] = [];
         let total = editor.completers.length;
 
-        editor.completers.forEach(function(completer: Completer, index: number) {
-            completer.getCompletions(editor, session, pos, prefix, function(err, results: Completion[]) {
+        editor.completers.forEach(function (completer: Completer, index: number) {
+            completer.getCompletions(editor, session, pos, prefix, function (err, results: Completion[]) {
                 if (err) {
                     callback(err);
                 }
@@ -442,7 +435,7 @@ export default class CompletionManager {
             this.popup.on('changeHoverMarker', this.tooltipTimer.bind(null, null));
         }
 
-        this.popup.setData(this.completions.filtered);
+        this.popup.setData(this.completions.filtered.sort(completionCompareFn));
 
         // We've already done this when we attached to the editor.
         // editor.keyBinding.addKeyboardHandler(this.keyboardHandler);
@@ -527,7 +520,7 @@ export default class CompletionManager {
         var doc = null;
         if (!selected || !this.editor || !this.popup.isOpen)
             return this.hideDocTooltip();
-        this.editor.completers.some(function(completer) {
+        this.editor.completers.some(function (completer) {
             if (completer.getDocTooltip) {
                 doc = completer.getDocTooltip(selected);
             }

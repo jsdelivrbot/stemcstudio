@@ -13,14 +13,14 @@ import {COMMAND_NAME_BACKSPACE} from '../editor_protocol';
  * Makes a function that can be used to compare completion entries for sorting purposes.
  */
 function makeCompareFn(text: string) {
-    return function(a: CompletionEntry, b: CompletionEntry) {
-        var matchFunc = function(entry: CompletionEntry): number {
+    return function (a: CompletionEntry, b: CompletionEntry) {
+        var matchFunc = function (entry: CompletionEntry): number {
             return entry.name.indexOf(text) === 0 ? 1 : 0;
         };
-        var matchCompare = function(): number {
+        var matchCompare = function (): number {
             return matchFunc(b) - matchFunc(a);
         };
-        var textCompare = function(): number {
+        var textCompare = function (): number {
             if (a.name === b.name) {
                 return 0;
             }
@@ -44,7 +44,7 @@ export default function createAutoComplete(editor: Editor, fileNameProvider: () 
      * The any type declartion avoids the noImplicitAny error.
      * May be better to define a class here?
      */
-    var AutoComplete: any = function() {
+    var AutoComplete: any = function () {
         // Do nothing.
     };
     var that: { activate: () => void; deactivate: () => void; isActive: () => boolean } = new AutoComplete();
@@ -77,7 +77,7 @@ export default function createAutoComplete(editor: Editor, fileNameProvider: () 
      */
     var _inputText = '';
 
-    _handler.attach = function() {
+    _handler.attach = function () {
 
         editor.on("change", onEditorChange);
 
@@ -85,14 +85,14 @@ export default function createAutoComplete(editor: Editor, fileNameProvider: () 
         _active = true;
     };
 
-    _handler.detach = function() {
+    _handler.detach = function () {
         editor.off("change", onEditorChange);
         _view.hide();
         _eventEmitter._emit("detach", { 'sender': that });
         _active = false;
     };
 
-    _handler.handleKeyboard = function(unused: any, hashId: number, key: string, keyCode: number) {
+    _handler.handleKeyboard = function (unused: any, hashId: number, key: string, keyCode: number) {
 
         if (hashId === -1) {
             if (" -=,[]_/()!';:<>".indexOf(key) !== -1) {
@@ -118,19 +118,19 @@ export default function createAutoComplete(editor: Editor, fileNameProvider: () 
         return { 'command': command, 'args': void 0 };
     };
 
-    _handler.bindKey("Up|Ctrl-p", function(editor: Editor) {
+    _handler.bindKey("Up|Ctrl-p", function (editor: Editor) {
         _view.focusPrev();
     });
 
-    _handler.bindKey("Down|Ctrl-n", function(editor: Editor) {
+    _handler.bindKey("Down|Ctrl-n", function (editor: Editor) {
         _view.focusNext();
     });
 
-    _handler.bindKey("esc|Ctrl-g", function(editor: Editor) {
+    _handler.bindKey("esc|Ctrl-g", function (editor: Editor) {
         deactivate();
     });
 
-    _handler.bindKey("Return|Tab", function(editor: Editor) {
+    _handler.bindKey("Return|Tab", function (editor: Editor) {
 
         editor.off("change", onEditorChange);
 
@@ -156,7 +156,7 @@ export default function createAutoComplete(editor: Editor, fileNameProvider: () 
     function activateUsingCursor(position: Position) {
 
         completionService.getCompletionsAtCursor(fileNameProvider(), position)
-            .then(function(completions: CompletionEntry[]) {
+            .then(function (completions: CompletionEntry[]) {
 
                 var text = completionService.matchText;
 
@@ -193,7 +193,7 @@ export default function createAutoComplete(editor: Editor, fileNameProvider: () 
 
                 // Filter the completions based upon text that the user enters.
                 if (completions && _inputText.length > 0) {
-                    completions = completions.filter(function(completion) {
+                    completions = completions.filter(function (completion) {
                         return completion.name.toLowerCase().indexOf(_inputText.toLowerCase()) === 0;
                     });
                 }
@@ -208,7 +208,7 @@ export default function createAutoComplete(editor: Editor, fileNameProvider: () 
                 }
 
             })
-            .catch(function(err) {
+            .catch(function (err) {
                 console.warn(`err => ${err}`);
             });
     }
