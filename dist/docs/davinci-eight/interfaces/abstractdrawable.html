@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>AbstractDrawable | EIGHT 2.305.0</title>
+	<title>AbstractDrawable | EIGHT 2.306.0</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">EIGHT 2.305.0</a>
+					<a href="../index.html" class="title">EIGHT 2.306.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -60,13 +60,24 @@
 					<a href="abstractdrawable.html">AbstractDrawable</a>
 				</li>
 			</ul>
-			<h1>Interface AbstractDrawable</h1>
+			<h1>Interface AbstractDrawable&lt;G, M&gt;</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-type-parameters">
+				<h3>Type parameters</h3>
+				<ul class="tsd-type-parameters">
+					<li>
+						<h4>G<span class="tsd-signature-symbol">: </span><a href="geometry.html" class="tsd-signature-type">Geometry</a></h4>
+					</li>
+					<li>
+						<h4>M<span class="tsd-signature-symbol">: </span><a href="material.html" class="tsd-signature-type">Material</a></h4>
+					</li>
+				</ul>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -97,6 +108,7 @@
 					<li><a href="../classes/grid.html" class="tsd-signature-type">Grid</a></li>
 					<li><a href="../classes/hollowcylinder.html" class="tsd-signature-type">HollowCylinder</a></li>
 					<li><a href="../classes/mesh.html" class="tsd-signature-type">Mesh</a></li>
+					<li><a href="../classes/principalscalemesh.html" class="tsd-signature-type">PrincipalScaleMesh</a></li>
 					<li><a href="../classes/rigidbody.html" class="tsd-signature-type">RigidBody</a></li>
 					<li><a href="../classes/sphere.html" class="tsd-signature-type">Sphere</a></li>
 					<li><a href="../classes/tetrahedron.html" class="tsd-signature-type">Tetrahedron</a></li>
@@ -146,7 +158,7 @@
 					<div class="tsd-signature tsd-kind-icon">fragment<wbr>Shader<wbr>Src<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/dd3625e/src/davinci-eight/core/AbstractDrawable.ts#L22">core/AbstractDrawable.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/core/AbstractDrawable.ts#L22">core/AbstractDrawable.ts:22</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -160,10 +172,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
 					<a name="geometry" class="tsd-anchor"></a>
 					<h3>geometry</h3>
-					<div class="tsd-signature tsd-kind-icon">geometry<span class="tsd-signature-symbol">:</span> <a href="geometry.html" class="tsd-signature-type">Geometry</a></div>
+					<div class="tsd-signature tsd-kind-icon">geometry<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">G</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/dd3625e/src/davinci-eight/core/AbstractDrawable.ts#L36">core/AbstractDrawable.ts:36</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/core/AbstractDrawable.ts#L36">core/AbstractDrawable.ts:36</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -182,10 +194,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
 					<a name="material" class="tsd-anchor"></a>
 					<h3>material</h3>
-					<div class="tsd-signature tsd-kind-icon">material<span class="tsd-signature-symbol">:</span> <a href="material.html" class="tsd-signature-type">Material</a></div>
+					<div class="tsd-signature tsd-kind-icon">material<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">M</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/dd3625e/src/davinci-eight/core/AbstractDrawable.ts#L50">core/AbstractDrawable.ts:50</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/core/AbstractDrawable.ts#L50">core/AbstractDrawable.ts:50</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -208,7 +220,7 @@
 					<aside class="tsd-sources">
 						<p>Overwrites <a href="renderable.html">Renderable</a>.<a href="renderable.html#name">name</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/dd3625e/src/davinci-eight/core/AbstractDrawable.ts#L14">core/AbstractDrawable.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/core/AbstractDrawable.ts#L14">core/AbstractDrawable.ts:14</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -219,7 +231,7 @@
 					<aside class="tsd-sources">
 						<p>Overwrites <a href="renderable.html">Renderable</a>.<a href="renderable.html#transparent">transparent</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/dd3625e/src/davinci-eight/core/AbstractDrawable.ts#L66">core/AbstractDrawable.ts:66</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/core/AbstractDrawable.ts#L66">core/AbstractDrawable.ts:66</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -235,7 +247,7 @@
 					<div class="tsd-signature tsd-kind-icon">vertex<wbr>Shader<wbr>Src<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/dd3625e/src/davinci-eight/core/AbstractDrawable.ts#L55">core/AbstractDrawable.ts:55</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/core/AbstractDrawable.ts#L55">core/AbstractDrawable.ts:55</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -250,7 +262,7 @@
 					<div class="tsd-signature tsd-kind-icon">visible<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/dd3625e/src/davinci-eight/core/AbstractDrawable.ts#L60">core/AbstractDrawable.ts:60</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/core/AbstractDrawable.ts#L60">core/AbstractDrawable.ts:60</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -264,7 +276,7 @@
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
 					<a name="addref" class="tsd-anchor"></a>
-					<h3>add<wbr>Ref</h3>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> add<wbr>Ref</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
 						<li class="tsd-signature tsd-kind-icon">add<wbr>Ref<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 					</ul>
@@ -273,7 +285,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareable.html">Shareable</a>.<a href="shareable.html#addref">addRef</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/dd3625e/src/davinci-eight/core/Shareable.ts#L12">core/Shareable.ts:12</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/core/Shareable.ts#L12">core/Shareable.ts:12</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -290,13 +302,13 @@
 					<a name="bind" class="tsd-anchor"></a>
 					<h3>bind</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">bind<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="abstractdrawable.html" class="tsd-signature-type">AbstractDrawable</a></li>
+						<li class="tsd-signature tsd-kind-icon">bind<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="abstractdrawable.html" class="tsd-signature-type">AbstractDrawable</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">G</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">M</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/dd3625e/src/davinci-eight/core/AbstractDrawable.ts#L71">core/AbstractDrawable.ts:71</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/core/AbstractDrawable.ts#L71">core/AbstractDrawable.ts:71</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -304,13 +316,13 @@
 									<p>A convenience method for geometry.bind(material).</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <a href="abstractdrawable.html" class="tsd-signature-type">AbstractDrawable</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="abstractdrawable.html" class="tsd-signature-type">AbstractDrawable</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">G</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">M</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
 					<a name="contextfree" class="tsd-anchor"></a>
-					<h3>context<wbr>Free</h3>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> context<wbr>Free</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
 						<li class="tsd-signature tsd-kind-icon">context<wbr>Free<span class="tsd-signature-symbol">(</span>contextProvider<span class="tsd-signature-symbol">: </span><a href="contextprovider.html" class="tsd-signature-type">ContextProvider</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
@@ -319,7 +331,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="contextconsumer.html">ContextConsumer</a>.<a href="contextconsumer.html#contextfree">contextFree</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/dd3625e/src/davinci-eight/core/ContextConsumer.ts#L21">core/ContextConsumer.ts:21</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/core/ContextConsumer.ts#L21">core/ContextConsumer.ts:21</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -345,7 +357,7 @@
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
 					<a name="contextgain" class="tsd-anchor"></a>
-					<h3>context<wbr>Gain</h3>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> context<wbr>Gain</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
 						<li class="tsd-signature tsd-kind-icon">context<wbr>Gain<span class="tsd-signature-symbol">(</span>contextProvider<span class="tsd-signature-symbol">: </span><a href="contextprovider.html" class="tsd-signature-type">ContextProvider</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
@@ -354,7 +366,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="contextconsumer.html">ContextConsumer</a>.<a href="contextconsumer.html#contextgain">contextGain</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/dd3625e/src/davinci-eight/core/ContextConsumer.ts#L30">core/ContextConsumer.ts:30</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/core/ContextConsumer.ts#L30">core/ContextConsumer.ts:30</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -378,7 +390,7 @@
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
 					<a name="contextlost" class="tsd-anchor"></a>
-					<h3>context<wbr>Lost</h3>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> context<wbr>Lost</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
 						<li class="tsd-signature tsd-kind-icon">context<wbr>Lost<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
@@ -387,7 +399,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="contextconsumer.html">ContextConsumer</a>.<a href="contextconsumer.html#contextlost">contextLost</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/dd3625e/src/davinci-eight/core/ContextConsumer.ts#L38">core/ContextConsumer.ts:38</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/core/ContextConsumer.ts#L38">core/ContextConsumer.ts:38</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -406,13 +418,13 @@
 					<a name="draw" class="tsd-anchor"></a>
 					<h3>draw</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">draw<span class="tsd-signature-symbol">(</span>ambients<span class="tsd-signature-symbol">?: </span><a href="facet.html" class="tsd-signature-type">Facet</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="abstractdrawable.html" class="tsd-signature-type">AbstractDrawable</a></li>
+						<li class="tsd-signature tsd-kind-icon">draw<span class="tsd-signature-symbol">(</span>ambients<span class="tsd-signature-symbol">?: </span><a href="facet.html" class="tsd-signature-type">Facet</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="abstractdrawable.html" class="tsd-signature-type">AbstractDrawable</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">G</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">M</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/dd3625e/src/davinci-eight/core/AbstractDrawable.ts#L77">core/AbstractDrawable.ts:77</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/core/AbstractDrawable.ts#L77">core/AbstractDrawable.ts:77</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -427,13 +439,13 @@
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> ambients: <a href="facet.html" class="tsd-signature-type">Facet</a><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="abstractdrawable.html" class="tsd-signature-type">AbstractDrawable</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="abstractdrawable.html" class="tsd-signature-type">AbstractDrawable</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">G</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">M</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
 					<a name="release" class="tsd-anchor"></a>
-					<h3>release</h3>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> release</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
 						<li class="tsd-signature tsd-kind-icon">release<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 					</ul>
@@ -442,7 +454,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareable.html">Shareable</a>.<a href="shareable.html#release">release</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/dd3625e/src/davinci-eight/core/Shareable.ts#L20">core/Shareable.ts:20</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/core/Shareable.ts#L20">core/Shareable.ts:20</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -459,14 +471,14 @@
 					<a name="render" class="tsd-anchor"></a>
 					<h3>render</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-overwrite tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">render<span class="tsd-signature-symbol">(</span>ambients<span class="tsd-signature-symbol">: </span><a href="facet.html" class="tsd-signature-type">Facet</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="abstractdrawable.html" class="tsd-signature-type">AbstractDrawable</a></li>
+						<li class="tsd-signature tsd-kind-icon">render<span class="tsd-signature-symbol">(</span>ambients<span class="tsd-signature-symbol">: </span><a href="facet.html" class="tsd-signature-type">Facet</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="abstractdrawable.html" class="tsd-signature-type">AbstractDrawable</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">G</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">M</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overwrites <a href="renderable.html">Renderable</a>.<a href="renderable.html#render">render</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/dd3625e/src/davinci-eight/core/AbstractDrawable.ts#L89">core/AbstractDrawable.ts:89</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/core/AbstractDrawable.ts#L89">core/AbstractDrawable.ts:89</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -486,7 +498,7 @@
 									<h5>ambients: <a href="facet.html" class="tsd-signature-type">Facet</a><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="abstractdrawable.html" class="tsd-signature-type">AbstractDrawable</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="abstractdrawable.html" class="tsd-signature-type">AbstractDrawable</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">G</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">M</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -494,13 +506,13 @@
 					<a name="setambients" class="tsd-anchor"></a>
 					<h3>set<wbr>Ambients</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Ambients<span class="tsd-signature-symbol">(</span>ambients<span class="tsd-signature-symbol">: </span><a href="facet.html" class="tsd-signature-type">Facet</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="abstractdrawable.html" class="tsd-signature-type">AbstractDrawable</a></li>
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Ambients<span class="tsd-signature-symbol">(</span>ambients<span class="tsd-signature-symbol">: </span><a href="facet.html" class="tsd-signature-type">Facet</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="abstractdrawable.html" class="tsd-signature-type">AbstractDrawable</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">G</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">M</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/dd3625e/src/davinci-eight/core/AbstractDrawable.ts#L94">core/AbstractDrawable.ts:94</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/core/AbstractDrawable.ts#L94">core/AbstractDrawable.ts:94</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -509,7 +521,7 @@
 									<h5>ambients: <a href="facet.html" class="tsd-signature-type">Facet</a><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="abstractdrawable.html" class="tsd-signature-type">AbstractDrawable</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="abstractdrawable.html" class="tsd-signature-type">AbstractDrawable</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">G</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">M</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -517,16 +529,16 @@
 					<a name="setuniforms" class="tsd-anchor"></a>
 					<h3>set<wbr>Uniforms</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Uniforms<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="abstractdrawable.html" class="tsd-signature-type">AbstractDrawable</a></li>
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Uniforms<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="abstractdrawable.html" class="tsd-signature-type">AbstractDrawable</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">G</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">M</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/dd3625e/src/davinci-eight/core/AbstractDrawable.ts#L99">core/AbstractDrawable.ts:99</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/core/AbstractDrawable.ts#L99">core/AbstractDrawable.ts:99</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="abstractdrawable.html" class="tsd-signature-type">AbstractDrawable</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="abstractdrawable.html" class="tsd-signature-type">AbstractDrawable</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">G</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">M</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -534,13 +546,13 @@
 					<a name="unbind" class="tsd-anchor"></a>
 					<h3>unbind</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">unbind<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="abstractdrawable.html" class="tsd-signature-type">AbstractDrawable</a></li>
+						<li class="tsd-signature tsd-kind-icon">unbind<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="abstractdrawable.html" class="tsd-signature-type">AbstractDrawable</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">G</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">M</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/dd3625e/src/davinci-eight/core/AbstractDrawable.ts#L104">core/AbstractDrawable.ts:104</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/core/AbstractDrawable.ts#L104">core/AbstractDrawable.ts:104</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -548,7 +560,7 @@
 									<p>A convenience method for geometry.unbind(material).</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <a href="abstractdrawable.html" class="tsd-signature-type">AbstractDrawable</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="abstractdrawable.html" class="tsd-signature-type">AbstractDrawable</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">G</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">M</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -556,13 +568,13 @@
 					<a name="use" class="tsd-anchor"></a>
 					<h3>use</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">use<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="abstractdrawable.html" class="tsd-signature-type">AbstractDrawable</a></li>
+						<li class="tsd-signature tsd-kind-icon">use<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="abstractdrawable.html" class="tsd-signature-type">AbstractDrawable</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">G</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">M</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/dd3625e/src/davinci-eight/core/AbstractDrawable.ts#L109">core/AbstractDrawable.ts:109</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/core/AbstractDrawable.ts#L109">core/AbstractDrawable.ts:109</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -570,7 +582,7 @@
 									<p>A convenience method for material.use().</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <a href="abstractdrawable.html" class="tsd-signature-type">AbstractDrawable</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="abstractdrawable.html" class="tsd-signature-type">AbstractDrawable</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">G</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">M</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -588,7 +600,7 @@
 				<ul class="before-current">
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface tsd-is-external">
+					<li class="current tsd-kind-interface tsd-has-type-parameter tsd-is-external">
 						<a href="abstractdrawable.html" class="tsd-kind-icon">Abstract<wbr>Drawable</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
