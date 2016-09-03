@@ -4,7 +4,7 @@ declare class Two {
     width: number;
     height: number;
     constructor(params?: TwoConstructionParams);
-    appendTo(element: HTMLElement);
+    appendTo(element: HTMLElement): Two;
 
     makeLine(x1: number, y1: number, x2: number, y2: number): Two.Shape;
     makeRectangle(x: number, y: number, width: number, height: number): Two.Shape;
@@ -55,7 +55,7 @@ declare module Two {
         set(x: number, y: number);
     }
 
-    class LogicalShape extends Backbone.Events {
+    class LogicalShape {
         translation: Two.Vector;
         rotation: number; // radian
         scale: number;
@@ -102,4 +102,5 @@ interface TwoConstructionParams {
     height?: number;
     autostart?: boolean;
     fullscreen?: boolean;
+    ratio?: number;
 }

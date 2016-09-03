@@ -266,16 +266,16 @@ module.exports = function (grunt) {
                         dest: "generated/vendor/threejs@0.78.0/build/three.min.js"
                     },
                     {
-                        src: "museum/two@0.5.0/two.d.ts",
-                        dest: "generated/vendor/two@0.5.0/two.d.ts"
+                        src: "museum/two@0.6.0/two.d.ts",
+                        dest: "generated/vendor/two@0.6.0/two.d.ts"
                     },
                     {
-                        src: "museum/two@0.5.0/two.js",
-                        dest: "generated/vendor/two@0.5.0/two.js"
+                        src: "museum/two@0.6.0/two.js",
+                        dest: "generated/vendor/two@0.6.0/two.js"
                     },
                     {
-                        src: "museum/two@0.5.0/two.min.js",
-                        dest: "generated/vendor/two@0.5.0/two.min.js"
+                        src: "museum/two@0.6.0/two.min.js",
+                        dest: "generated/vendor/two@0.6.0/two.min.js"
                     },
                     {
                         expand: true,
@@ -610,16 +610,16 @@ module.exports = function (grunt) {
                         dest: "dist/vendor/threejs@0.78.0/build/three.min.js"
                     },
                     {
-                        src: "museum/two@0.5.0/two.d.ts",
-                        dest: "dist/vendor/two@0.5.0/two.d.ts"
+                        src: "museum/two@0.6.0/two.d.ts",
+                        dest: "dist/vendor/two@0.6.0/two.d.ts"
                     },
                     {
-                        src: "museum/two@0.5.0/two.js",
-                        dest: "dist/vendor/two@0.5.0/two.js"
+                        src: "museum/two@0.6.0/two.js",
+                        dest: "dist/vendor/two@0.6.0/two.js"
                     },
                     {
-                        src: "museum/two@0.5.0/two.min.js",
-                        dest: "dist/vendor/two@0.5.0/two.min.js"
+                        src: "museum/two@0.6.0/two.min.js",
+                        dest: "dist/vendor/two@0.6.0/two.min.js"
                     },
                     {
                         expand: true,

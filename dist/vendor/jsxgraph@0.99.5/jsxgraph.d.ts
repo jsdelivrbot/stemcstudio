@@ -596,14 +596,117 @@ declare module JXG {
         initBoard(
             box: string,
             attributes: {
+                /**
+                 * Show default axis.
+                 * If shown, the horizontal axis can be accessed via JXG.Board.defaultAxes.x, the
+                 * vertical axis can be accessed via JXG.Board.defaultAxes.y. Both axes have a sub-element "defaultTicks".
+                 * default false
+                 */
                 axis?: boolean;
+
+                /**
+                 * Bounding box of the visible area in user coordinates.
+                 * It is an array consisting of four values:
+                 * [x<sub>1</sub>, y<sub>1</sub>, x<sub>2</sub>, y<sub>2</sub>]
+                 *
+                 * The canvas will be spanned from the upper left corner (<sub>1</sub>, y<sub>1</sub>)
+                 * to the lower right corner (x<sub>2</sub>, y<sub>2</sub>).
+                 *
+                 * default [-5, 5, 5, -5]
+                 */
                 boundingbox?: number[];
+                /**
+                 * Supply the document object. Defaults to window.document
+                 *
+                 * default false (meaning window.document)
+                 */
+                document: boolean;
                 grid?: boolean;
-                keepaspectratio?: boolean;
+
+                /**
+                 * If set true and
+                 * hasPoint() is true for both an element and it's label,
+                 * the element (and not the label) is taken as drag element.
+                 *
+                 * If set false and hasPoint() is true for both an element and it's label,
+                 * the label is taken (if it is on a higher layer than the element)
+                 *
+                 * default true
+                 */
+                ignoreLabels: boolean;
+
+                /**
+                 * If set to true the bounding box might be changed such that
+                 * the ratio of width and height of the hosting HTML div is equal
+                 * to the ratio of wifth and height of the bounding box.
+                 *
+                 * This is necessary if circles should look like circles and not
+                 * like ellipses. It is recommended to set keepAspectRatio = true
+                 * for geometric applets. For function plotting keepAspectRatio = false
+                 * might be the better choice.
+                 *
+                 * default false
+                 */
+                keepAspectRatio?: boolean;
+                /**
+                 * Maximum number of digits in automatic label generation.
+                 * For example, if set to 1 automatic point labels end at "Z".
+                 * If set to 2, point labels end at "ZZ".
+                 *
+                 * default 1
+                 */
+                maxNameLength: number;
                 pan?: boolean;
+                /**
+                 * Show a button which allows to clear all traces of a board.
+                 *
+                 * default false
+                 */
+                showClearTraces: boolean;
+
+                /**
+                 * Show copyright string in canvas.
+                 *
+                 * default true
+                 */
                 showCopyright?: boolean;
+                /**
+                 * Display of navigation arrows and zoom buttons
+                 *
+                 * default true
+                 */
                 showNavigation?: boolean;
+                /**
+                 * Show a button to force reload of a construction.
+                 * Works only with the JessieCode tag
+                 *
+                 * default false
+                 */
+                showReload: boolean;
+                /**
+                 * Display of zoom buttons. To show zoom buttons, additionally
+                 * showNavigation has to be set to true.
+                 *
+                 * default true
+                 */
+                showZoom: number;
                 zoom?: boolean;
+                /**
+                 * Additional zoom factor multiplied to zoomX and zoomY.
+                 * default 1.0
+                 */
+                zoomFactor: number;
+                /**
+                 * Zoom factor in horizontal direction.
+                 * default 1.0
+                 */
+                zoomX: number;
+
+                /**
+                 * Zoom factor in vertical direction.
+                 * default 1.0
+                 */
+                zoomY: number;
             }
         ): Board;
 
@@ -612,10 +715,20 @@ declare module JXG {
          */
         freeBoard(board: Board | string): void
     }
+
+    /**
+     * 
+     */
+    export interface JXGOptions {
+        text: {
+            fontSize: number;
+        }
+    }
     /**
      *
      */
     var JSXGraph: Graph;
+    var Options: JXGOptions;
     /**
      *
      */
