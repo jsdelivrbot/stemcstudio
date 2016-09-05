@@ -247,9 +247,9 @@ module.exports = function (grunt) {
                     },
                     {
                         expand: true,
-                        cwd: "museum/systemjs@0.19.26",
+                        cwd: "museum/systemjs@0.19.37",
                         src: ["**"],
-                        dest: "generated/vendor/systemjs@0.19.26"
+                        dest: "generated/vendor/systemjs@0.19.37"
                     },
                     {
                         expand: true,
@@ -591,9 +591,9 @@ module.exports = function (grunt) {
                     },
                     {
                         expand: true,
-                        cwd: "museum/systemjs@0.19.26",
+                        cwd: "museum/systemjs@0.19.37",
                         src: ["**"],
-                        dest: "dist/vendor/systemjs@0.19.26"
+                        dest: "dist/vendor/systemjs@0.19.37"
                     },
                     {
                         expand: true,
