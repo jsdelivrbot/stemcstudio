@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ViewControls | EIGHT 2.306.0</title>
+	<title>ViewControls | EIGHT 2.307.0</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">EIGHT 2.306.0</a>
+					<a href="../index.html" class="title">EIGHT 2.307.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -165,14 +165,14 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>View<wbr>Controls<span class="tsd-signature-symbol">(</span>view<span class="tsd-signature-symbol">: </span><a href="../interfaces/view.html" class="tsd-signature-type">View</a>, wnd<span class="tsd-signature-symbol">: </span><a href="../interfaces/browserwindow.html" class="tsd-signature-type">BrowserWindow</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="viewcontrols.html" class="tsd-signature-type">ViewControls</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>View<wbr>Controls<span class="tsd-signature-symbol">(</span>view<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span>, wnd<span class="tsd-signature-symbol">: </span><a href="../interfaces/browserwindow.html" class="tsd-signature-type">BrowserWindow</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="viewcontrols.html" class="tsd-signature-type">ViewControls</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overwrites <a href="mousecontrols.html">MouseControls</a>.<a href="mousecontrols.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/ViewControls.ts#L63">controls/ViewControls.ts:63</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/ViewControls.ts#L64">controls/ViewControls.ts:64</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -180,7 +180,18 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>view: <a href="../interfaces/view.html" class="tsd-signature-type">View</a></h5>
+									<h5>view: <span class="tsd-signature-type">object</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter">
+											<h5>eye<span class="tsd-signature-symbol">: </span><a href="../interfaces/vectore3.html" class="tsd-signature-type">VectorE3</a></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5>look<span class="tsd-signature-symbol">: </span><a href="../interfaces/vectore3.html" class="tsd-signature-type">VectorE3</a></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5>up<span class="tsd-signature-symbol">: </span><a href="../interfaces/vectore3.html" class="tsd-signature-type">VectorE3</a></h5>
+										</li>
+									</ul>
 								</li>
 								<li>
 									<h5>wnd: <a href="../interfaces/browserwindow.html" class="tsd-signature-type">BrowserWindow</a></h5>
@@ -204,7 +215,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#_type">_type</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/core/ShareableBase.ts#L48">core/ShareableBase.ts:48</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/core/ShareableBase.ts#L48">core/ShareableBase.ts:48</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -215,7 +226,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="mousecontrols.html">MouseControls</a>.<a href="mousecontrols.html#enabled">enabled</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/MouseControls.ts#L24">controls/MouseControls.ts:24</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/MouseControls.ts#L24">controls/MouseControls.ts:24</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -232,7 +243,7 @@
 					<div class="tsd-signature tsd-kind-icon">eye0<span class="tsd-signature-symbol">:</span> <a href="vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> =&nbsp;Vector3.vector(0, 0, 1)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/ViewControls.ts#L33">controls/ViewControls.ts:33</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/ViewControls.ts#L33">controls/ViewControls.ts:33</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -247,7 +258,7 @@
 					<div class="tsd-signature tsd-kind-icon">eye<wbr>Minus<wbr>Look<span class="tsd-signature-symbol">:</span> <a href="vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> =&nbsp;new Vector3()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/ViewControls.ts#L53">controls/ViewControls.ts:53</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/ViewControls.ts#L54">controls/ViewControls.ts:54</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -257,7 +268,7 @@
 					<div class="tsd-signature tsd-kind-icon">look<span class="tsd-signature-symbol">:</span> <a href="vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> =&nbsp;new Vector3()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/ViewControls.ts#L58">controls/ViewControls.ts:58</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/ViewControls.ts#L59">controls/ViewControls.ts:59</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -267,7 +278,7 @@
 					<div class="tsd-signature tsd-kind-icon">look0<span class="tsd-signature-symbol">:</span> <a href="vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> =&nbsp;Vector3.zero()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/ViewControls.ts#L38">controls/ViewControls.ts:38</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/ViewControls.ts#L38">controls/ViewControls.ts:38</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -283,7 +294,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="mousecontrols.html">MouseControls</a>.<a href="mousecontrols.html#maxdistance">maxDistance</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/MouseControls.ts#L54">controls/MouseControls.ts:54</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/MouseControls.ts#L54">controls/MouseControls.ts:54</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -301,7 +312,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="mousecontrols.html">MouseControls</a>.<a href="mousecontrols.html#mindistance">minDistance</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/MouseControls.ts#L48">controls/MouseControls.ts:48</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/MouseControls.ts#L48">controls/MouseControls.ts:48</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -319,7 +330,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="mousecontrols.html">MouseControls</a>.<a href="mousecontrols.html#movecurr">moveCurr</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/MouseControls.ts#L74">controls/MouseControls.ts:74</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/MouseControls.ts#L74">controls/MouseControls.ts:74</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -330,7 +341,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="mousecontrols.html">MouseControls</a>.<a href="mousecontrols.html#moveprev">movePrev</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/MouseControls.ts#L79">controls/MouseControls.ts:79</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/MouseControls.ts#L79">controls/MouseControls.ts:79</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -341,7 +352,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="mousecontrols.html">MouseControls</a>.<a href="mousecontrols.html#nopan">noPan</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/MouseControls.ts#L42">controls/MouseControls.ts:42</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/MouseControls.ts#L42">controls/MouseControls.ts:42</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -359,7 +370,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="mousecontrols.html">MouseControls</a>.<a href="mousecontrols.html#norotate">noRotate</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/MouseControls.ts#L30">controls/MouseControls.ts:30</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/MouseControls.ts#L30">controls/MouseControls.ts:30</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -377,7 +388,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="mousecontrols.html">MouseControls</a>.<a href="mousecontrols.html#nozoom">noZoom</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/MouseControls.ts#L36">controls/MouseControls.ts:36</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/MouseControls.ts#L36">controls/MouseControls.ts:36</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -395,7 +406,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="mousecontrols.html">MouseControls</a>.<a href="mousecontrols.html#panend">panEnd</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/MouseControls.ts#L99">controls/MouseControls.ts:99</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/MouseControls.ts#L99">controls/MouseControls.ts:99</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -405,7 +416,7 @@
 					<div class="tsd-signature tsd-kind-icon">pan<wbr>Speed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/ViewControls.ts#L28">controls/ViewControls.ts:28</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/ViewControls.ts#L28">controls/ViewControls.ts:28</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -423,7 +434,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="mousecontrols.html">MouseControls</a>.<a href="mousecontrols.html#panstart">panStart</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/MouseControls.ts#L94">controls/MouseControls.ts:94</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/MouseControls.ts#L94">controls/MouseControls.ts:94</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -433,7 +444,7 @@
 					<div class="tsd-signature tsd-kind-icon">rotate<wbr>Speed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/ViewControls.ts#L16">controls/ViewControls.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/ViewControls.ts#L16">controls/ViewControls.ts:16</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -450,7 +461,7 @@
 					<div class="tsd-signature tsd-kind-icon">up<span class="tsd-signature-symbol">:</span> <a href="vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> =&nbsp;new Vector3()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/ViewControls.ts#L63">controls/ViewControls.ts:63</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/ViewControls.ts#L64">controls/ViewControls.ts:64</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -460,7 +471,7 @@
 					<div class="tsd-signature tsd-kind-icon">up0<span class="tsd-signature-symbol">:</span> <a href="vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> =&nbsp;Vector3.vector(0, 1, 0)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/ViewControls.ts#L43">controls/ViewControls.ts:43</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/ViewControls.ts#L43">controls/ViewControls.ts:43</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -472,16 +483,31 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-external">
 					<a name="view" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagPrivate">Private</span> view</h3>
-					<div class="tsd-signature tsd-kind-icon">view<span class="tsd-signature-symbol">:</span> <a href="../interfaces/view.html" class="tsd-signature-type">View</a></div>
+					<div class="tsd-signature tsd-kind-icon">view<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/ViewControls.ts#L48">controls/ViewControls.ts:48</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/ViewControls.ts#L49">controls/ViewControls.ts:49</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The view that is being controlled.</p>
+							<p>The view that is being controlled.
+							We work only with coordinates to minimize requirements for interoperability.</p>
 						</div>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5>eye<span class="tsd-signature-symbol">: </span><a href="../interfaces/vectore3.html" class="tsd-signature-type">VectorE3</a></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>look<span class="tsd-signature-symbol">: </span><a href="../interfaces/vectore3.html" class="tsd-signature-type">VectorE3</a></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>up<span class="tsd-signature-symbol">: </span><a href="../interfaces/vectore3.html" class="tsd-signature-type">VectorE3</a></h5>
+							</li>
+						</ul>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external">
@@ -491,7 +517,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="mousecontrols.html">MouseControls</a>.<a href="mousecontrols.html#zoomend">zoomEnd</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/MouseControls.ts#L89">controls/MouseControls.ts:89</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/MouseControls.ts#L89">controls/MouseControls.ts:89</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -501,7 +527,7 @@
 					<div class="tsd-signature tsd-kind-icon">zoom<wbr>Speed<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/ViewControls.ts#L22">controls/ViewControls.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/ViewControls.ts#L22">controls/ViewControls.ts:22</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -519,7 +545,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="mousecontrols.html">MouseControls</a>.<a href="mousecontrols.html#zoomstart">zoomStart</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/MouseControls.ts#L84">controls/MouseControls.ts:84</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/MouseControls.ts#L84">controls/MouseControls.ts:84</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -538,7 +564,7 @@
 								<p>Implementation of <a href="../interfaces/shareable.html">Shareable</a>.<a href="../interfaces/shareable.html#addref">addRef</a></p>
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#addref">addRef</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/core/ShareableBase.ts#L123">core/ShareableBase.ts:123</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/core/ShareableBase.ts#L123">core/ShareableBase.ts:123</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -564,7 +590,7 @@
 							<aside class="tsd-sources">
 								<p>Overwrites <a href="mousecontrols.html">MouseControls</a>.<a href="mousecontrols.html#destructor">destructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/ViewControls.ts#L78">controls/ViewControls.ts:78</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/ViewControls.ts#L79">controls/ViewControls.ts:79</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -592,7 +618,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#getloggingname">getLoggingName</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/core/ShareableBase.ts#L132">core/ShareableBase.ts:132</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/core/ShareableBase.ts#L132">core/ShareableBase.ts:132</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -612,7 +638,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mousecontrols.html">MouseControls</a>.<a href="mousecontrols.html#handleresize">handleResize</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/MouseControls.ts#L370">controls/MouseControls.ts:370</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/MouseControls.ts#L370">controls/MouseControls.ts:370</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -634,7 +660,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/ViewControls.ts#L85">controls/ViewControls.ts:85</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/ViewControls.ts#L86">controls/ViewControls.ts:86</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -654,7 +680,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#iszombie">isZombie</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/core/ShareableBase.ts#L112">core/ShareableBase.ts:112</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/core/ShareableBase.ts#L112">core/ShareableBase.ts:112</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -678,7 +704,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mousecontrols.html">MouseControls</a>.<a href="mousecontrols.html#move">move</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/MouseControls.ts#L292">controls/MouseControls.ts:292</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/MouseControls.ts#L292">controls/MouseControls.ts:292</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -713,7 +739,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/ViewControls.ts#L137">controls/ViewControls.ts:137</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/ViewControls.ts#L144">controls/ViewControls.ts:144</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -732,7 +758,7 @@
 								<p>Implementation of <a href="../interfaces/shareable.html">Shareable</a>.<a href="../interfaces/shareable.html#release">release</a></p>
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#release">release</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/core/ShareableBase.ts#L170">core/ShareableBase.ts:170</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/core/ShareableBase.ts#L170">core/ShareableBase.ts:170</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -759,7 +785,7 @@
 								<p>Implementation of <a href="../interfaces/viewcontroller.html">ViewController</a>.<a href="../interfaces/viewcontroller.html#reset">reset</a></p>
 								<p>Overwrites <a href="mousecontrols.html">MouseControls</a>.<a href="mousecontrols.html#reset">reset</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/ViewControls.ts#L144">controls/ViewControls.ts:144</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/ViewControls.ts#L151">controls/ViewControls.ts:151</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -776,7 +802,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/ViewControls.ts#L119">controls/ViewControls.ts:119</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/ViewControls.ts#L126">controls/ViewControls.ts:126</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -794,7 +820,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#setloggingname">setLoggingName</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/core/ShareableBase.ts#L155">core/ShareableBase.ts:155</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/core/ShareableBase.ts#L155">core/ShareableBase.ts:155</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -832,14 +858,13 @@
 					<a name="setview" class="tsd-anchor"></a>
 					<h3>set<wbr>View</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>View<span class="tsd-signature-symbol">(</span>view<span class="tsd-signature-symbol">: </span><a href="../interfaces/view.html" class="tsd-signature-type">View</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">set<wbr>View<span class="tsd-signature-symbol">(</span>view<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/viewcontroller.html">ViewController</a>.<a href="../interfaces/viewcontroller.html#setview">setView</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/ViewControls.ts#L156">controls/ViewControls.ts:156</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/ViewControls.ts#L169">controls/ViewControls.ts:169</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -847,9 +872,20 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>view: <a href="../interfaces/view.html" class="tsd-signature-type">View</a></h5>
+									<h5>view: <span class="tsd-signature-type">object</span></h5>
 									<div class="tsd-comment tsd-typography">
 									</div>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter">
+											<h5>eye<span class="tsd-signature-symbol">: </span><a href="../interfaces/vectore3.html" class="tsd-signature-type">VectorE3</a></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5>look<span class="tsd-signature-symbol">: </span><a href="../interfaces/vectore3.html" class="tsd-signature-type">VectorE3</a></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5>up<span class="tsd-signature-symbol">: </span><a href="../interfaces/vectore3.html" class="tsd-signature-type">VectorE3</a></h5>
+										</li>
+									</ul>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -867,7 +903,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mousecontrols.html">MouseControls</a>.<a href="mousecontrols.html#subscribe">subscribe</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/MouseControls.ts#L300">controls/MouseControls.ts:300</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/MouseControls.ts#L300">controls/MouseControls.ts:300</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -895,7 +931,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/viewcontroller.html">ViewController</a>.<a href="../interfaces/viewcontroller.html#synchronize">synchronize</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/ViewControls.ts#L169">controls/ViewControls.ts:169</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/ViewControls.ts#L182">controls/ViewControls.ts:182</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -913,7 +949,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="mousecontrols.html">MouseControls</a>.<a href="mousecontrols.html#unsubscribe">unsubscribe</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/MouseControls.ts#L318">controls/MouseControls.ts:318</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/MouseControls.ts#L318">controls/MouseControls.ts:318</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -931,7 +967,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/viewcontroller.html">ViewController</a>.<a href="../interfaces/viewcontroller.html#update">update</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/ViewControls.ts#L94">controls/ViewControls.ts:94</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/ViewControls.ts#L95">controls/ViewControls.ts:95</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -955,7 +991,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/da5a01c/src/davinci-eight/controls/ViewControls.ts#L126">controls/ViewControls.ts:126</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/811618b/src/davinci-eight/controls/ViewControls.ts#L133">controls/ViewControls.ts:133</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
