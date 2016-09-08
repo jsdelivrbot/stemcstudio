@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.7.52",
+  "version": "2.7.53",
   "private": true,
   "description": "Learning STEM through Computational Modeling",
   "engines": {
@@ -33,9 +33,9 @@
     "karma-jasmine": "^1.0.2",
     "karma-jspm": "^2.2.0",
     "lite-server": "^2.2.2",
-    "plotly.js": "^1.16.3",
+    "plotly.js": "^1.17.0",
     "protractor": "^3.3.0",
-    "systemjs-builder": "^0.15.30",
+    "systemjs-builder": "^0.15.31",
     "tslint": "^3.15.1",
     "typedoc": "^0.4.5",
     "typescript": "^1.8.10",
@@ -50,7 +50,7 @@
     "angular": "^1.5.8",
     "angular-material-icons": "^0.7.1",
     "angular2": "2.0.0-beta.17",
-    "aws-sdk": "^2.5.5",
+    "aws-sdk": "^2.5.6",
     "body-parser": "^1.15.2",
     "cookie-parser": "^1.4.3",
     "debug": "^2.2.0",
@@ -71,7 +71,7 @@
     "serve-favicon": "^2.3.0",
     "showdown": "^1.4.3",
     "socket.io": "^1.4.8",
-    "systemjs": "^0.19.37",
+    "systemjs": "^0.19.38",
     "zone.js": "^0.6.17"
   },
   "jspm": {

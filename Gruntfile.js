@@ -303,11 +303,11 @@ module.exports = function (grunt) {
                     },
                     {
                         src: "../davinci-eight/dist/davinci-eight.d.ts",
-                        dest: "generated/vendor/davinci-eight@2.308.0/dist/davinci-eight.d.ts"
+                        dest: "generated/vendor/davinci-eight@2.309.0/dist/davinci-eight.d.ts"
                     },
                     {
                         src: "../davinci-eight/dist/davinci-eight.js",
-                        dest: "generated/vendor/davinci-eight@2.308.0/dist/davinci-eight.js"
+                        dest: "generated/vendor/davinci-eight@2.309.0/dist/davinci-eight.js"
                     },
                     {
                         src: "bower_components/davinci-mathscript/dist/davinci-mathscript.d.ts",
@@ -647,11 +647,11 @@ module.exports = function (grunt) {
                     },
                     {
                         src: "../davinci-eight/dist/davinci-eight.d.ts",
-                        dest: "dist/vendor/davinci-eight@2.308.0/dist/davinci-eight.d.ts"
+                        dest: "dist/vendor/davinci-eight@2.309.0/dist/davinci-eight.d.ts"
                     },
                     {
                         src: "../davinci-eight/dist/davinci-eight.js",
-                        dest: "dist/vendor/davinci-eight@2.308.0/dist/davinci-eight.js"
+                        dest: "dist/vendor/davinci-eight@2.309.0/dist/davinci-eight.js"
                     },
                     {
                         src: "bower_components/davinci-mathscript/dist/davinci-mathscript.d.ts",
@@ -920,9 +920,9 @@ module.exports = function (grunt) {
     grunt.registerTask('app', "Set up environment for front-end development.", ['copy:app']);
     grunt.registerTask('web', "Set up environment for back-end development.", ['copy:web']);
 
-    grunt.registerTask('dev', "Build for development.", ['clean', 'ngtemplates', 'ts:app', 'tslint', 'copy:dev', 'less:dev']);
+    grunt.registerTask('dev', "Build for development.", ['ngtemplates', 'ts:app', 'copy:dev', 'less:dev']);
 
-    grunt.registerTask('prod', "Build for production.", ['dev', 'ts:web', 'tslint', 'copy:prod', 'bundle']);
+    grunt.registerTask('prod', "Build for production.", ['clean', 'ngtemplates', 'ts:app', 'tslint', 'copy:dev', 'less:dev', 'ts:web', 'tslint', 'copy:prod', 'bundle']);
 
     grunt.registerTask('default', ['prod']);
 
