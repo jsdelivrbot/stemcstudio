@@ -51,6 +51,7 @@ declare module GeoCAS {
         asString(arg: T): string;
         cos(arg: T): T;
         isField(arg: any): arg is T;
+        isOne(arg: T): boolean;
         isZero(arg: T): boolean;
         one(): T;
         scale(arg: T, alpha: number): T;
@@ -115,6 +116,7 @@ declare module GeoCAS {
         asString(arg: number): string;
         cos(arg: number): number;
         isField(arg: any): arg is number;
+        isOne(arg: number): boolean;
         isZero(arg: number): boolean;
         one(): number;
         scale(arg: number, alpha: number): number;

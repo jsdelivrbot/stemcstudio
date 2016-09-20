@@ -3297,24 +3297,34 @@ define('geocas/mother/Blade',["require", "exports", './bitCount', './canonicalRe
                 return blade(SCALAR, adapter.zero(), adapter);
             },
             asString: function (names) {
-                var result = "";
+                var bladePart = "";
                 var i = 1;
                 var x = b;
                 while (x !== 0) {
                     if ((x & 1) !== 0) {
-                        if (result.length > 0)
-                            result += "^";
+                        if (bladePart.length > 0)
+                            bladePart += " ^ ";
                         if (isUndefined_1.default(names) || (names === null) || (i > names.length) || (names[i - 1] == null)) {
-                            result = result + "e" + i;
+                            bladePart = bladePart + "e" + i;
                         }
                         else {
-                            result = result + names[i - 1];
+                            bladePart = bladePart + names[i - 1];
                         }
                     }
                     x >>= 1;
                     i++;
                 }
-                return (result.length === 0) ? adapter.asString(weight) : adapter.asString(weight) + "*" + result;
+                if (bladePart.length === 0) {
+                    return adapter.asString(weight);
+                }
+                else {
+                    if (adapter.isOne(weight)) {
+                        return bladePart;
+                    }
+                    else {
+                        return adapter.asString(weight) + " * " + bladePart;
+                    }
+                }
             },
             toString: function () {
                 return that.asString(void 0);
@@ -3363,38 +3373,45 @@ define('geocas/mother/gpL',["require", "exports", './Blade', './gpE'], function 
     exports.default = gpL;
 });
 
-define('geocas/mother/simplify',["require", "exports", './Blade'], function (require, exports, Blade_1) {
+define('geocas/mother/bladesToArray',["require", "exports"], function (require, exports) {
+    "use strict";
+    function bladesToArray(map) {
+        var bitmaps = Object.keys(map);
+        var rez = [];
+        for (var i = 0; i < bitmaps.length; i++) {
+            var bitmap = bitmaps[i];
+            var blade = map[bitmap];
+            rez.push(blade);
+        }
+        return rez;
+    }
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = bladesToArray;
+});
+
+define('geocas/mother/simplify',["require", "exports", './Blade', './bladesToArray'], function (require, exports, Blade_1, bladesToArray_1) {
     "use strict";
     function simplify(blades, adapter) {
-        var rez = [];
-        var bitmap;
-        var scale;
-        var push = function () {
-            if (typeof bitmap !== 'undefined') {
-                if (!adapter.isZero(scale)) {
-                    rez.push(Blade_1.default(bitmap, scale, adapter));
-                }
-                bitmap = void 0;
-                scale = void 0;
-            }
-        };
+        var map = {};
         for (var i = 0; i < blades.length; i++) {
             var B = blades[i];
-            if (bitmap === B.bitmap) {
-                scale = adapter.add(scale, B.weight);
-            }
-            else if (typeof bitmap === 'undefined') {
-                bitmap = B.bitmap;
-                scale = B.weight;
+            var existing = map[B.bitmap];
+            if (existing) {
+                var scale = adapter.add(existing.weight, B.weight);
+                if (adapter.isZero(scale)) {
+                    delete map[B.bitmap];
+                }
+                else {
+                    map[B.bitmap] = Blade_1.default(B.bitmap, scale, adapter);
+                }
             }
             else {
-                push();
-                bitmap = B.bitmap;
-                scale = B.weight;
+                if (!adapter.isZero(B.weight)) {
+                    map[B.bitmap] = B;
+                }
             }
         }
-        push();
-        return rez;
+        return bladesToArray_1.default(map);
     }
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = simplify;
@@ -3974,6 +3991,9 @@ define('geocas/mother/NumberFieldAdapter',["require", "exports"], function (requ
         NumberFieldAdapter.prototype.isField = function (arg) {
             return typeof arg === 'number';
         };
+        NumberFieldAdapter.prototype.isOne = function (arg) {
+            return arg === 1;
+        };
         NumberFieldAdapter.prototype.isZero = function (arg) {
             return arg === 0;
         };
@@ -4003,9 +4023,9 @@ define('geocas/config',["require", "exports"], function (require, exports) {
     var GeoCAS = (function () {
         function GeoCAS() {
             this.GITHUB = 'https://github.com/geometryzen/GeoCAS';
-            this.LAST_MODIFIED = '2016-09-19';
+            this.LAST_MODIFIED = '2016-09-20';
             this.NAMESPACE = 'GeoCAS';
-            this.VERSION = '1.1.0';
+            this.VERSION = '1.2.0';
         }
         GeoCAS.prototype.log = function (message) {
             var optionalParams = [];

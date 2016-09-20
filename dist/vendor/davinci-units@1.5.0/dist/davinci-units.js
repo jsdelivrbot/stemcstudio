@@ -3362,14 +3362,19 @@ define('davinci-units/math/Unit',["require", "exports", '../math/Dimensions', '.
         ["H"],
         ["Wb"]
     ];
-    var dumbString = function (multiplier, formatted, dimensions, labels) {
+    var dumbString = function (multiplier, formatted, dimensions, labels, compact) {
         var stringify = function (rational, label) {
             if (rational.numer === 0) {
                 return null;
             }
             else if (rational.denom === 1) {
                 if (rational.numer === 1) {
-                    return "" + label;
+                    if (compact) {
+                        return "" + label;
+                    }
+                    else {
+                        return "" + label;
+                    }
                 }
                 else {
                     return "" + label + " ** " + rational.numer;
@@ -3377,8 +3382,8 @@ define('davinci-units/math/Unit',["require", "exports", '../math/Dimensions', '.
             }
             return "" + label + " ** " + rational;
         };
-        var operatorStr = multiplier === 1 || dimensions.isOne() ? "" : " ";
-        var scaleString = multiplier === 1 ? "" : formatted;
+        var operatorStr = multiplier === 1 || dimensions.isOne() ? (compact ? "" : " ") : " ";
+        var scaleString = multiplier === 1 ? (compact ? "" : formatted) : formatted;
         var unitsString = [stringify(dimensions.M, labels[0]), stringify(dimensions.L, labels[1]), stringify(dimensions.T, labels[2]), stringify(dimensions.Q, labels[3]), stringify(dimensions.temperature, labels[4]), stringify(dimensions.amount, labels[5]), stringify(dimensions.intensity, labels[6])].filter(function (x) {
             return typeof x === 'string';
         }).join(" ");
@@ -3414,7 +3419,7 @@ define('davinci-units/math/Unit',["require", "exports", '../math/Dimensions', '.
                 }
             }
         }
-        return dumbString(multiplier, formatted, dimensions, labels);
+        return dumbString(multiplier, formatted, dimensions, labels, compact);
     };
     function add(lhs, rhs) {
         return new Unit(lhs.multiplier + rhs.multiplier, lhs.dimensions.compatible(rhs.dimensions), lhs.labels);
@@ -4424,7 +4429,7 @@ define('davinci-units/math/G2',["require", "exports", './bezier2', './bezier3', 
         G2.prototype.toStringCustom = function (coordToString, labels) {
             var quantityString = stringFromCoordinates_1.default(this.coords, coordToString, labels);
             if (this.uom) {
-                var unitString = this.uom.toString().trim();
+                var unitString = this.uom.toString(10, true).trim();
                 if (unitString) {
                     return quantityString + ' ' + unitString;
                 }
@@ -5892,7 +5897,7 @@ define('davinci-units/math/G3',["require", "exports", './bezier2', './bezier3', 
         G3.prototype.toStringCustom = function (coordToString, labels) {
             var quantityString = stringFromCoordinates_1.default(this.coords, coordToString, labels);
             if (this.uom) {
-                var unitString = this.uom.toString().trim();
+                var unitString = this.uom.toString(10, true).trim();
                 if (unitString) {
                     return quantityString + ' ' + unitString;
                 }
@@ -6201,7 +6206,7 @@ define('davinci-units/config',["require", "exports"], function (require, exports
             this.GITHUB = 'https://github.com/geometryzen/davinci-units';
             this.LAST_MODIFIED = '2016-09-19';
             this.NAMESPACE = 'UNITS';
-            this.VERSION = '1.5.0';
+            this.VERSION = '1.5.1';
         }
         Units.prototype.log = function (message) {
             var optionalParams = [];
