@@ -18,8 +18,8 @@ app.factory('options', [
         const VERSION_DECKJS = '1.1.0';
         const VERSION_DOMREADY = '1.0.0';
         const VERSION_D3 = '3.5.5';
-        const VERSION_EIGHT = '2.310.0';
-        const VERSION_GEOCAS = '1.0.0';
+        const VERSION_EIGHT = '2.311.0';
+        const VERSION_GEOCAS = '1.1.0';
         const VERSION_GLMATRIX = '2.3.2';
         const VERSION_JASMINE = '2.4.1';
         const VERSION_JQUERY = '2.1.4';
@@ -30,7 +30,7 @@ app.factory('options', [
         const VERSION_SYSTEMJS = '0.19.37';
         const VERSION_THREEJS = '0.78.0';
         const VERSION_TWO = '0.6.0';
-        const VERSION_UNITS = '1.3.0';
+        const VERSION_UNITS = '1.5.0';
         // const VERSION_UNDERSCORE = '1.8.3';
 
         // FIXME: DRY This function is defined in constants.ts?

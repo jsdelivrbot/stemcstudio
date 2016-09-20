@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.7.54",
+  "version": "2.7.55",
   "private": true,
   "description": "Learning STEM through Computational Modeling",
   "engines": {
@@ -72,7 +72,7 @@
     "showdown": "^1.4.3",
     "socket.io": "^1.4.8",
     "systemjs": "^0.19.38",
-    "zone.js": "^0.6.23"
+    "zone.js": "^0.6.25"
   },
   "jspm": {
     "configFile": "jspm.config.js",

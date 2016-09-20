@@ -303,15 +303,15 @@ module.exports = function (grunt) {
                     },
                     {
                         src: "../davinci-eight/dist/davinci-eight.d.ts",
-                        dest: "generated/vendor/davinci-eight@2.310.0/dist/davinci-eight.d.ts"
+                        dest: "generated/vendor/davinci-eight@2.311.0/dist/davinci-eight.d.ts"
                     },
                     {
                         src: "../davinci-eight/dist/davinci-eight.js",
-                        dest: "generated/vendor/davinci-eight@2.310.0/dist/davinci-eight.js"
+                        dest: "generated/vendor/davinci-eight@2.311.0/dist/davinci-eight.js"
                     },
                     {
                         src: "../davinci-eight/dist/davinci-eight.css",
-                        dest: "generated/vendor/davinci-eight@2.310.0/dist/davinci-eight.css"
+                        dest: "generated/vendor/davinci-eight@2.311.0/dist/davinci-eight.css"
                     },
                     {
                         src: "bower_components/davinci-mathscript/dist/davinci-mathscript.d.ts",
@@ -335,11 +335,11 @@ module.exports = function (grunt) {
                     },
                     {
                         src: "../davinci-units/dist/davinci-units.d.ts",
-                        dest: "generated/vendor/davinci-units@1.3.0/dist/davinci-units.d.ts"
+                        dest: "generated/vendor/davinci-units@1.5.0/dist/davinci-units.d.ts"
                     },
                     {
                         src: "../davinci-units/dist/davinci-units.js",
-                        dest: "generated/vendor/davinci-units@1.3.0/dist/davinci-units.js"
+                        dest: "generated/vendor/davinci-units@1.5.0/dist/davinci-units.js"
                     },
                     {
                         expand: true,
@@ -349,11 +349,11 @@ module.exports = function (grunt) {
                     },
                     {
                         src: "../GeoCAS/dist/geocas.d.ts",
-                        dest: "generated/vendor/GeoCAS@1.0.0/dist/geocas.d.ts"
+                        dest: "generated/vendor/GeoCAS@1.1.0/dist/geocas.d.ts"
                     },
                     {
                         src: "../GeoCAS/dist/geocas.js",
-                        dest: "generated/vendor/GeoCAS@1.0.0/dist/geocas.js"
+                        dest: "generated/vendor/GeoCAS@1.1.0/dist/geocas.js"
                     },
                 ]
             },
@@ -651,15 +651,15 @@ module.exports = function (grunt) {
                     },
                     {
                         src: "../davinci-eight/dist/davinci-eight.d.ts",
-                        dest: "dist/vendor/davinci-eight@2.310.0/dist/davinci-eight.d.ts"
+                        dest: "dist/vendor/davinci-eight@2.311.0/dist/davinci-eight.d.ts"
                     },
                     {
                         src: "../davinci-eight/dist/davinci-eight.js",
-                        dest: "dist/vendor/davinci-eight@2.310.0/dist/davinci-eight.js"
+                        dest: "dist/vendor/davinci-eight@2.311.0/dist/davinci-eight.js"
                     },
                     {
                         src: "../davinci-eight/dist/davinci-eight.css",
-                        dest: "dist/vendor/davinci-eight@2.310.0/dist/davinci-eight.css"
+                        dest: "dist/vendor/davinci-eight@2.311.0/dist/davinci-eight.css"
                     },
                     {
                         src: "bower_components/davinci-mathscript/dist/davinci-mathscript.d.ts",
@@ -683,11 +683,11 @@ module.exports = function (grunt) {
                     },
                     {
                         src: "../davinci-units/dist/davinci-units.d.ts",
-                        dest: "dist/vendor/davinci-units@1.3.0/dist/davinci-units.d.ts"
+                        dest: "dist/vendor/davinci-units@1.5.0/dist/davinci-units.d.ts"
                     },
                     {
                         src: "../davinci-units/dist/davinci-units.js",
-                        dest: "dist/vendor/davinci-units@1.3.0/dist/davinci-units.js"
+                        dest: "dist/vendor/davinci-units@1.5.0/dist/davinci-units.js"
                     },
                     {
                         expand: true,
@@ -697,11 +697,11 @@ module.exports = function (grunt) {
                     },
                     {
                         src: "../GeoCAS/dist/geocas.d.ts",
-                        dest: "dist/vendor/GeoCAS@1.0.0/dist/geocas.d.ts"
+                        dest: "dist/vendor/GeoCAS@1.1.0/dist/geocas.d.ts"
                     },
                     {
                         src: "../GeoCAS/dist/geocas.js",
-                        dest: "dist/vendor/GeoCAS@1.0.0/dist/geocas.js"
+                        dest: "dist/vendor/GeoCAS@1.1.0/dist/geocas.js"
                     },
                 ]
             },

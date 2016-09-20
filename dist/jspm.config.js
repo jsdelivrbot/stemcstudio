@@ -109,13 +109,11 @@ System.config({
     "npm:angular2@2.0.0-beta.17": {
       "reflect-metadata": "npm:reflect-metadata@0.1.2",
       "rxjs": "npm:rxjs@5.0.0-beta.12",
-      "zone.js": "npm:zone.js@0.6.23"
+      "zone.js": "npm:zone.js@0.6.25"
     },
-    "npm:asn1.js@4.8.0": {
-      "assert": "github:jspm/nodelibs-assert@0.1.0",
+    "npm:asn1.js@4.8.1": {
       "bn.js": "npm:bn.js@4.11.6",
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
-      "fs": "github:jspm/nodelibs-fs@0.1.2",
       "inherits": "npm:inherits@2.0.1",
       "minimalistic-assert": "npm:minimalistic-assert@1.0.0",
       "vm": "github:jspm/nodelibs-vm@0.1.0"
@@ -429,7 +427,7 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:parse-asn1@5.0.0": {
-      "asn1.js": "npm:asn1.js@4.8.0",
+      "asn1.js": "npm:asn1.js@4.8.1",
       "browserify-aes": "npm:browserify-aes@1.0.6",
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "create-hash": "npm:create-hash@1.1.2",
@@ -681,7 +679,7 @@ System.config({
       "window-size": "npm:window-size@0.1.4",
       "y18n": "npm:y18n@3.2.1"
     },
-    "npm:zone.js@0.6.23": {
+    "npm:zone.js@0.6.25": {
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
       "events": "github:jspm/nodelibs-events@0.1.1",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
