@@ -145,6 +145,14 @@ export default class ExamplesController extends AbstractPageController {
                 category: 'Mathematics'
             },
             {
+                gistId: '1bf1ccdd7abd613b12bb792f48e36d4e',
+                title: "Homogeneous Model and Geometric Algebra",
+                description: "Demonstrates Geometric Algebra in arbitrary higher dimensions using the Multivector type.",
+                imageSrc: '/img/examples/h3ga.png',
+                imageAlt: 'Red and green points on blue line.',
+                category: 'Physics'
+            },
+            {
                 gistId: '1054e457c4fb6bba3aab1aceb25f1212',
                 title: "EIGHT Starter Template",
                 description: "An example that you can copy to create your own 3D graphics programs using the EIGHT library.",
