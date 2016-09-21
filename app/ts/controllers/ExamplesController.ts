@@ -89,6 +89,14 @@ export default class ExamplesController extends AbstractPageController {
                 category: 'Graphics'
             },
             {
+                gistId: '1bf1ccdd7abd613b12bb792f48e36d4e',
+                title: "Homogeneous Model and Geometric Algebra",
+                description: "Demonstrates Geometric Algebra in arbitrary higher dimensions using the Multivector type.",
+                imageSrc: '/img/examples/h3ga.png',
+                imageAlt: 'Red and green points on blue line.',
+                category: 'Mathematics'
+            },
+            {
                 gistId: '1fef109875fac0bd77da086727d6832f',
                 title: "Local Geometry on a Sphere",
                 description: "Explore the consequences of curvature on a sphere.",
@@ -143,14 +151,6 @@ export default class ExamplesController extends AbstractPageController {
                 imageSrc: '/img/examples/fundamental-theorem-of-algebra.png',
                 imageAlt: '',
                 category: 'Mathematics'
-            },
-            {
-                gistId: '1bf1ccdd7abd613b12bb792f48e36d4e',
-                title: "Homogeneous Model and Geometric Algebra",
-                description: "Demonstrates Geometric Algebra in arbitrary higher dimensions using the Multivector type.",
-                imageSrc: '/img/examples/h3ga.png',
-                imageAlt: 'Red and green points on blue line.',
-                category: 'Physics'
             },
             {
                 gistId: '1054e457c4fb6bba3aab1aceb25f1212',
