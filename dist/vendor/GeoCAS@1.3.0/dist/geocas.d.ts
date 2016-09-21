@@ -67,8 +67,6 @@ declare module GeoCAS {
         blades: Blade<T>[];
         __add__(rhs: Multivector<T>): Multivector<T>;
         __sub__(rhs: Multivector<T>): Multivector<T>;
-        __mul__(rhs: T | Multivector<T>): Multivector<T>;
-        __rmul__(lhs: T | Multivector<T>): Multivector<T>;
         __div__(rhs: T | Multivector<T>): Multivector<T>;
         __lshift__(rhs: Multivector<T>): Multivector<T>;
         __rshift__(rhs: Multivector<T>): Multivector<T>;
@@ -76,6 +74,8 @@ declare module GeoCAS {
         __wedge__(rhs: Multivector<T>): Multivector<T>;
         __pos__(): Multivector<T>;
         __neg__(): Multivector<T>;
+        mul(rhs: Multivector<T>): Multivector<T>;
+        mulByScalar(α: T): Multivector<T>;
         divByScalar(α: T): Multivector<T>;
         dual(): Multivector<T>;
         /**
@@ -86,7 +86,6 @@ declare module GeoCAS {
         asString(names: string[]): string;
         rev(): Multivector<T>;
         scalarCoordinate(): T;
-        scale(multiplier: T): Multivector<T>;
         /**
          * Returns the scalar product of this multivector with rhs, i.e. this | rhs. 
          */

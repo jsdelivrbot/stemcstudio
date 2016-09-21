@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>GeoCAS 1.2.0</title>
+	<title>GeoCAS 1.3.0</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">GeoCAS 1.2.0</a>
+					<a href="index.html" class="title">GeoCAS 1.3.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -57,7 +57,7 @@
 					<a href="globals.html">Globals</a>
 				</li>
 			</ul>
-			<h1> GeoCAS 1.2.0</h1>
+			<h1> GeoCAS 1.3.0</h1>
 		</div>
 	</div>
 </header>
@@ -79,6 +79,8 @@
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/binaryexpr.html" class="tsd-kind-icon">Binary<wbr>Expr</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/divideexpr.html" class="tsd-kind-icon">Divide<wbr>Expr</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/expr.html" class="tsd-kind-icon">Expr</a></li>
+								<li class="tsd-kind-class tsd-is-external"><a href="classes/float.html" class="tsd-kind-icon">Float</a></li>
+								<li class="tsd-kind-class tsd-is-external"><a href="classes/floatadapter.html" class="tsd-kind-icon">Float<wbr>Adapter</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/integer.html" class="tsd-kind-icon">Integer</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/inverseexpr.html" class="tsd-kind-icon">Inverse<wbr>Expr</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/lcontractexpr.html" class="tsd-kind-icon">LContract<wbr>Expr</a></li>
@@ -120,12 +122,22 @@
 								<li class="tsd-kind-variable tsd-is-external tsd-is-not-exported"><a href="globals.html#max_int" class="tsd-kind-icon">MAX_<wbr>INT</a></li>
 								<li class="tsd-kind-variable tsd-is-external tsd-is-not-exported"><a href="globals.html#max_int_arr" class="tsd-kind-icon">MAX_<wbr>INT_<wbr>ARR</a></li>
 								<li class="tsd-kind-variable tsd-is-external tsd-is-not-exported"><a href="globals.html#scalar" class="tsd-kind-icon">SCALAR</a></li>
+								<li class="tsd-kind-variable tsd-is-external tsd-is-not-exported"><a href="globals.html#abs" class="tsd-kind-icon">abs</a></li>
+								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#eight" class="tsd-kind-icon">eight</a></li>
+								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#ffa" class="tsd-kind-icon">ffa</a></li>
+								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#four" class="tsd-kind-icon">four</a></li>
+								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#fourteen" class="tsd-kind-icon">fourteen</a></li>
 								<li class="tsd-kind-variable tsd-is-external tsd-is-not-exported"><a href="globals.html#highestpower2" class="tsd-kind-icon">highest<wbr>Power2</a></li>
 								<li class="tsd-kind-variable tsd-is-external"><a href="globals.html#minusone" class="tsd-kind-icon">minus<wbr>One</a></li>
 								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#nfa" class="tsd-kind-icon">nfa</a></li>
 								<li class="tsd-kind-variable tsd-is-external"><a href="globals.html#one" class="tsd-kind-icon">one</a></li>
 								<li class="tsd-kind-variable tsd-is-external tsd-is-not-exported"><a href="globals.html#powers2length" class="tsd-kind-icon">powers2<wbr>Length</a></li>
 								<li class="tsd-kind-variable tsd-is-external tsd-is-not-exported"><a href="globals.html#powersoftwo" class="tsd-kind-icon">powers<wbr>OfTwo</a></li>
+								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#six" class="tsd-kind-icon">six</a></li>
+								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#sixteen" class="tsd-kind-icon">sixteen</a></li>
+								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#ten" class="tsd-kind-icon">ten</a></li>
+								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#three" class="tsd-kind-icon">three</a></li>
+								<li class="tsd-kind-variable tsd-is-not-exported"><a href="globals.html#two" class="tsd-kind-icon">two</a></li>
 								<li class="tsd-kind-variable tsd-is-external"><a href="globals.html#zero" class="tsd-kind-icon">zero</a></li>
 							</ul>
 						</section>
@@ -136,6 +148,7 @@
 								<li class="tsd-kind-function tsd-is-external tsd-is-not-exported"><a href="globals.html#addany" class="tsd-kind-icon">add<wbr>Any</a></li>
 								<li class="tsd-kind-function tsd-is-external tsd-is-not-exported"><a href="globals.html#addsmall" class="tsd-kind-icon">add<wbr>Small</a></li>
 								<li class="tsd-kind-function tsd-is-external tsd-is-not-exported"><a href="globals.html#arraytosmall" class="tsd-kind-icon">array<wbr>ToSmall</a></li>
+								<li class="tsd-kind-function tsd-is-external tsd-is-not-exported"><a href="globals.html#beanumber" class="tsd-kind-icon">beANumber</a></li>
 								<li class="tsd-kind-function tsd-is-external tsd-is-not-exported"><a href="globals.html#beaninteger" class="tsd-kind-icon">be<wbr>AnInteger</a></li>
 								<li class="tsd-kind-function tsd-is-external tsd-is-not-exported"><a href="globals.html#bedefined" class="tsd-kind-icon">be<wbr>Defined</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#bigint" class="tsd-kind-icon">big<wbr>Int</a></li>
@@ -154,6 +167,7 @@
 								<li class="tsd-kind-function tsd-is-external tsd-is-not-exported"><a href="globals.html#divmod2" class="tsd-kind-icon">div<wbr>Mod2</a></li>
 								<li class="tsd-kind-function tsd-is-external tsd-is-not-exported"><a href="globals.html#divmodany" class="tsd-kind-icon">div<wbr>Mod<wbr>Any</a></li>
 								<li class="tsd-kind-function tsd-is-external tsd-is-not-exported"><a href="globals.html#divmodsmall" class="tsd-kind-icon">div<wbr>Mod<wbr>Small</a></li>
+								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#gauss" class="tsd-kind-icon">gauss</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#gcd" class="tsd-kind-icon">gcd</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter tsd-is-external"><a href="globals.html#getbasisvector" class="tsd-kind-icon">get<wbr>Basis<wbr>Vector</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter tsd-is-external"><a href="globals.html#getscalar" class="tsd-kind-icon">get<wbr>Scalar</a></li>
@@ -175,6 +189,8 @@
 								<li class="tsd-kind-function tsd-has-type-parameter tsd-is-external"><a href="globals.html#lcoe" class="tsd-kind-icon">lcoE</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter tsd-is-external"><a href="globals.html#lcog" class="tsd-kind-icon">lcoG</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter tsd-is-external"><a href="globals.html#lcol" class="tsd-kind-icon">lcoL</a></li>
+								<li class="tsd-kind-function tsd-is-external tsd-is-not-exported"><a href="globals.html#makecolumnvector" class="tsd-kind-icon">make<wbr>Column<wbr>Vector</a></li>
+								<li class="tsd-kind-function tsd-is-external tsd-is-not-exported"><a href="globals.html#makezerobelow" class="tsd-kind-icon">make<wbr>Zero<wbr>Below</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#max" class="tsd-kind-icon">max</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#min" class="tsd-kind-icon">min</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#minusonepow" class="tsd-kind-icon">minus<wbr>One<wbr>Pow</a></li>
@@ -198,16 +214,19 @@
 								<li class="tsd-kind-function tsd-has-type-parameter tsd-is-external"><a href="globals.html#rcol" class="tsd-kind-icon">rcoL</a></li>
 								<li class="tsd-kind-function tsd-is-external tsd-is-not-exported"><a href="globals.html#reduce" class="tsd-kind-icon">reduce</a></li>
 								<li class="tsd-kind-function tsd-is-external tsd-is-not-exported"><a href="globals.html#roughlob" class="tsd-kind-icon">roughLOB</a></li>
+								<li class="tsd-kind-function tsd-is-external tsd-is-not-exported"><a href="globals.html#rowwithmaximumincolumn" class="tsd-kind-icon">row<wbr>With<wbr>Maximum<wbr>InColumn</a></li>
 								<li class="tsd-kind-function tsd-is-external tsd-is-not-exported"><a href="globals.html#shiftleft" class="tsd-kind-icon">shift<wbr>Left</a></li>
 								<li class="tsd-kind-function tsd-is-external tsd-is-not-exported"><a href="globals.html#shift_issmall" class="tsd-kind-icon">shift_<wbr>is<wbr>Small</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter tsd-is-external"><a href="globals.html#simplify" class="tsd-kind-icon">simplify</a></li>
 								<li class="tsd-kind-function tsd-is-external tsd-is-not-exported"><a href="globals.html#smalltoarray" class="tsd-kind-icon">small<wbr>ToArray</a></li>
+								<li class="tsd-kind-function tsd-is-external tsd-is-not-exported"><a href="globals.html#solve" class="tsd-kind-icon">solve</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter tsd-is-external"><a href="globals.html#sortblades" class="tsd-kind-icon">sort<wbr>Blades</a></li>
 								<li class="tsd-kind-function tsd-is-external tsd-is-not-exported"><a href="globals.html#square" class="tsd-kind-icon">square</a></li>
 								<li class="tsd-kind-function tsd-is-external tsd-is-not-exported"><a href="globals.html#stringify" class="tsd-kind-icon">stringify</a></li>
 								<li class="tsd-kind-function tsd-is-external tsd-is-not-exported"><a href="globals.html#subtract" class="tsd-kind-icon">subtract</a></li>
 								<li class="tsd-kind-function tsd-is-external tsd-is-not-exported"><a href="globals.html#subtractany" class="tsd-kind-icon">subtract<wbr>Any</a></li>
 								<li class="tsd-kind-function tsd-is-external tsd-is-not-exported"><a href="globals.html#subtractsmall" class="tsd-kind-icon">subtract<wbr>Small</a></li>
+								<li class="tsd-kind-function tsd-is-external tsd-is-not-exported"><a href="globals.html#swaprows" class="tsd-kind-icon">swap<wbr>Rows</a></li>
 								<li class="tsd-kind-function tsd-is-external tsd-is-not-exported"><a href="globals.html#tobase" class="tsd-kind-icon">to<wbr>Base</a></li>
 								<li class="tsd-kind-function tsd-is-external tsd-is-not-exported"><a href="globals.html#trim" class="tsd-kind-icon">trim</a></li>
 								<li class="tsd-kind-function tsd-is-external tsd-is-not-exported"><a href="globals.html#truncate" class="tsd-kind-icon">truncate</a></li>
@@ -226,7 +245,7 @@
 					<div class="tsd-signature tsd-kind-icon">BASE<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;10000000</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L3">math/BigInteger.ts:3</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L3">math/BigInteger.ts:3</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -236,7 +255,7 @@
 					<div class="tsd-signature tsd-kind-icon">LOBMASK_<wbr>BI<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;(BASE &amp; -BASE) * (BASE &amp; -BASE) | LOBMASK_I</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L1222">math/BigInteger.ts:1222</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L1222">math/BigInteger.ts:1222</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -246,7 +265,7 @@
 					<div class="tsd-signature tsd-kind-icon">LOBMASK_<wbr>I<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1 &lt;&lt; 30</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L1222">math/BigInteger.ts:1222</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L1222">math/BigInteger.ts:1222</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -256,7 +275,7 @@
 					<div class="tsd-signature tsd-kind-icon">LOG_<wbr>BASE<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;7</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L4">math/BigInteger.ts:4</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L4">math/BigInteger.ts:4</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -266,7 +285,7 @@
 					<div class="tsd-signature tsd-kind-icon">LOG_<wbr>MAX_<wbr>INT<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;Math.log(MAX_INT)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L7">math/BigInteger.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L7">math/BigInteger.ts:7</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -276,7 +295,7 @@
 					<div class="tsd-signature tsd-kind-icon">MAX_<wbr>INT<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;9007199254740992</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L5">math/BigInteger.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L5">math/BigInteger.ts:5</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -286,7 +305,7 @@
 					<div class="tsd-signature tsd-kind-icon">MAX_<wbr>INT_<wbr>ARR<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;smallToArray(MAX_INT)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L6">math/BigInteger.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L6">math/BigInteger.ts:6</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -296,7 +315,7 @@
 					<div class="tsd-signature tsd-kind-icon">SCALAR<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/mother/Blade.ts#L10">mother/Blade.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/Blade.ts#L10">mother/Blade.ts:10</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -306,12 +325,62 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-external tsd-is-not-exported">
+					<a name="abs" class="tsd-anchor"></a>
+					<h3>abs</h3>
+					<div class="tsd-signature tsd-kind-icon">abs<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">abs</span><span class="tsd-signature-symbol"> =&nbsp;Math.abs</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/gauss.ts#L4">math/gauss.ts:4</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-not-exported">
+					<a name="eight" class="tsd-anchor"></a>
+					<h3>eight</h3>
+					<div class="tsd-signature tsd-kind-icon">eight<span class="tsd-signature-symbol">:</span> <a href="classes/float.html" class="tsd-signature-type">Float</a><span class="tsd-signature-symbol"> =&nbsp;new Float(8)</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/gauss.spec.ts#L12">mother/gauss.spec.ts:12</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-not-exported">
+					<a name="ffa" class="tsd-anchor"></a>
+					<h3>ffa</h3>
+					<div class="tsd-signature tsd-kind-icon">ffa<span class="tsd-signature-symbol">:</span> <a href="classes/floatadapter.html" class="tsd-signature-type">FloatAdapter</a><span class="tsd-signature-symbol"> =&nbsp;new FloatAdapter()</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/gauss.spec.ts#L5">mother/gauss.spec.ts:5</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-not-exported">
+					<a name="four" class="tsd-anchor"></a>
+					<h3>four</h3>
+					<div class="tsd-signature tsd-kind-icon">four<span class="tsd-signature-symbol">:</span> <a href="classes/float.html" class="tsd-signature-type">Float</a><span class="tsd-signature-symbol"> =&nbsp;new Float(4)</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/gauss.spec.ts#L10">mother/gauss.spec.ts:10</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-not-exported">
+					<a name="fourteen" class="tsd-anchor"></a>
+					<h3>fourteen</h3>
+					<div class="tsd-signature tsd-kind-icon">fourteen<span class="tsd-signature-symbol">:</span> <a href="classes/float.html" class="tsd-signature-type">Float</a><span class="tsd-signature-symbol"> =&nbsp;new Float(14)</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/gauss.spec.ts#L14">mother/gauss.spec.ts:14</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-external tsd-is-not-exported">
 					<a name="highestpower2" class="tsd-anchor"></a>
 					<h3>highest<wbr>Power2</h3>
 					<div class="tsd-signature tsd-kind-icon">highest<wbr>Power2<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;powersOfTwo[powers2Length - 1]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L46">math/BigInteger.ts:46</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L46">math/BigInteger.ts:46</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -321,8 +390,8 @@
 					<div class="tsd-signature tsd-kind-icon">minus<wbr>One<span class="tsd-signature-symbol">:</span> <a href="classes/bigrational.html" class="tsd-signature-type">BigRational</a><span class="tsd-signature-symbol"> =&nbsp;bigRat(-1)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L1422">math/BigInteger.ts:1422</a></li>
-							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigRational.ts#L388">math/BigRational.ts:388</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L1422">math/BigInteger.ts:1422</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigRational.ts#L388">math/BigRational.ts:388</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -332,20 +401,21 @@
 					<div class="tsd-signature tsd-kind-icon">nfa<span class="tsd-signature-symbol">:</span> <a href="classes/numberfieldadapter.html" class="tsd-signature-type">NumberFieldAdapter</a><span class="tsd-signature-symbol"> =&nbsp;new NumberFieldAdapter()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/mother/simplify.spec.ts#L6">mother/simplify.spec.ts:6</a></li>
-							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/mother/Blade.spec.ts#L4">mother/Blade.spec.ts:4</a></li>
-							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/mother/Multivector.spec.ts#L7">mother/Multivector.spec.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/simplify.spec.ts#L6">mother/simplify.spec.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/Blade.spec.ts#L4">mother/Blade.spec.ts:4</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/Multivector.spec.ts#L7">mother/Multivector.spec.ts:7</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-external">
 					<a name="one" class="tsd-anchor"></a>
 					<h3>one</h3>
-					<div class="tsd-signature tsd-kind-icon">one<span class="tsd-signature-symbol">:</span> <a href="classes/bigrational.html" class="tsd-signature-type">BigRational</a><span class="tsd-signature-symbol"> =&nbsp;bigRat(1)</span></div>
+					<div class="tsd-signature tsd-kind-icon">one<span class="tsd-signature-symbol">:</span> <a href="classes/float.html" class="tsd-signature-type">Float</a><span class="tsd-signature-symbol"> =&nbsp;new Float(1)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L1420">math/BigInteger.ts:1420</a></li>
-							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigRational.ts#L387">math/BigRational.ts:387</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L1420">math/BigInteger.ts:1420</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigRational.ts#L387">math/BigRational.ts:387</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/gauss.spec.ts#L7">mother/gauss.spec.ts:7</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -355,7 +425,7 @@
 					<div class="tsd-signature tsd-kind-icon">powers2<wbr>Length<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;powersOfTwo.length</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L45">math/BigInteger.ts:45</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L45">math/BigInteger.ts:45</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -365,7 +435,57 @@
 					<div class="tsd-signature tsd-kind-icon">powers<wbr>OfTwo<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;[1]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L41">math/BigInteger.ts:41</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L41">math/BigInteger.ts:41</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-not-exported">
+					<a name="six" class="tsd-anchor"></a>
+					<h3>six</h3>
+					<div class="tsd-signature tsd-kind-icon">six<span class="tsd-signature-symbol">:</span> <a href="classes/float.html" class="tsd-signature-type">Float</a><span class="tsd-signature-symbol"> =&nbsp;new Float(6)</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/gauss.spec.ts#L11">mother/gauss.spec.ts:11</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-not-exported">
+					<a name="sixteen" class="tsd-anchor"></a>
+					<h3>sixteen</h3>
+					<div class="tsd-signature tsd-kind-icon">sixteen<span class="tsd-signature-symbol">:</span> <a href="classes/float.html" class="tsd-signature-type">Float</a><span class="tsd-signature-symbol"> =&nbsp;new Float(16)</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/gauss.spec.ts#L15">mother/gauss.spec.ts:15</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-not-exported">
+					<a name="ten" class="tsd-anchor"></a>
+					<h3>ten</h3>
+					<div class="tsd-signature tsd-kind-icon">ten<span class="tsd-signature-symbol">:</span> <a href="classes/float.html" class="tsd-signature-type">Float</a><span class="tsd-signature-symbol"> =&nbsp;new Float(10)</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/gauss.spec.ts#L13">mother/gauss.spec.ts:13</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-not-exported">
+					<a name="three" class="tsd-anchor"></a>
+					<h3>three</h3>
+					<div class="tsd-signature tsd-kind-icon">three<span class="tsd-signature-symbol">:</span> <a href="classes/float.html" class="tsd-signature-type">Float</a><span class="tsd-signature-symbol"> =&nbsp;new Float(3)</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/gauss.spec.ts#L9">mother/gauss.spec.ts:9</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-is-not-exported">
+					<a name="two" class="tsd-anchor"></a>
+					<h3>two</h3>
+					<div class="tsd-signature tsd-kind-icon">two<span class="tsd-signature-symbol">:</span> <a href="classes/float.html" class="tsd-signature-type">Float</a><span class="tsd-signature-symbol"> =&nbsp;new Float(2)</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/gauss.spec.ts#L8">mother/gauss.spec.ts:8</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -375,8 +495,8 @@
 					<div class="tsd-signature tsd-kind-icon">zero<span class="tsd-signature-symbol">:</span> <a href="classes/bigrational.html" class="tsd-signature-type">BigRational</a><span class="tsd-signature-symbol"> =&nbsp;bigRat(0)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L1421">math/BigInteger.ts:1421</a></li>
-							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigRational.ts#L386">math/BigRational.ts:386</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L1421">math/BigInteger.ts:1421</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigRational.ts#L386">math/BigRational.ts:386</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -393,7 +513,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L777">math/BigInteger.ts:777</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L777">math/BigInteger.ts:777</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -419,7 +539,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L799">math/BigInteger.ts:799</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L799">math/BigInteger.ts:799</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -445,7 +565,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L804">math/BigInteger.ts:804</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L804">math/BigInteger.ts:804</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -471,7 +591,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L743">math/BigInteger.ts:743</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L743">math/BigInteger.ts:743</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -488,6 +608,23 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external tsd-is-not-exported">
+					<a name="beanumber" class="tsd-anchor"></a>
+					<h3>beANumber</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-is-external tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">beANumber<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/checks/mustBeNumber.ts#L4">checks/mustBeNumber.ts:4</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external tsd-is-not-exported">
 					<a name="beaninteger" class="tsd-anchor"></a>
 					<h3>be<wbr>AnInteger</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-is-external tsd-is-not-exported">
@@ -497,7 +634,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/checks/mustBeInteger.ts#L4">checks/mustBeInteger.ts:4</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/checks/mustBeInteger.ts#L4">checks/mustBeInteger.ts:4</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -514,7 +651,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/checks/mustBeDefined.ts#L4">checks/mustBeDefined.ts:4</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/checks/mustBeDefined.ts#L4">checks/mustBeDefined.ts:4</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -531,7 +668,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L1431">math/BigInteger.ts:1431</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L1431">math/BigInteger.ts:1431</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -557,7 +694,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigRational.ts#L345">math/BigRational.ts:345</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigRational.ts#L345">math/BigRational.ts:345</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -583,7 +720,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/mother/bitCount.ts#L1">mother/bitCount.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/bitCount.ts#L1">mother/bitCount.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -606,7 +743,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L1186">math/BigInteger.ts:1186</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L1186">math/BigInteger.ts:1186</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -656,7 +793,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/mother/Blade.ts#L32">mother/Blade.ts:32</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/Blade.ts#L32">mother/Blade.ts:32</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -691,7 +828,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in mother/bladesToArray.ts:3</li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/bladesToArray.ts#L3">mother/bladesToArray.ts:3</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -725,7 +862,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/mother/canonicalReorderingSign.ts#L6">mother/canonicalReorderingSign.ts:6</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/canonicalReorderingSign.ts#L6">mother/canonicalReorderingSign.ts:6</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -757,7 +894,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L1161">math/BigInteger.ts:1161</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L1161">math/BigInteger.ts:1161</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -783,7 +920,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/mother/sortBlades.ts#L4">mother/sortBlades.ts:4</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/sortBlades.ts#L4">mother/sortBlades.ts:4</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -815,7 +952,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L763">math/BigInteger.ts:763</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L763">math/BigInteger.ts:763</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -838,7 +975,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/checks/isNull.ts#L1">checks/isNull.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/checks/isNull.ts#L1">checks/isNull.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -861,7 +998,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/mother/Multivector.ts#L112">mother/Multivector.ts:112</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/Multivector.ts#L113">mother/Multivector.ts:113</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -899,7 +1036,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L990">math/BigInteger.ts:990</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L990">math/BigInteger.ts:990</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -925,7 +1062,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L1049">math/BigInteger.ts:1049</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L1049">math/BigInteger.ts:1049</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -951,7 +1088,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L1096">math/BigInteger.ts:1096</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L1096">math/BigInteger.ts:1096</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -977,7 +1114,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L1082">math/BigInteger.ts:1082</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L1082">math/BigInteger.ts:1082</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -994,6 +1131,38 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external">
+					<a name="gauss" class="tsd-anchor"></a>
+					<h3>gauss</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">gauss<span class="tsd-signature-symbol">(</span>A<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span>, b<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/gauss.ts#L65">math/gauss.ts:65</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Gaussian elimination
+									Ax = b</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>A: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+								<li>
+									<h5>b: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external">
 					<a name="gcd" class="tsd-anchor"></a>
 					<h3>gcd</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-is-external">
@@ -1003,7 +1172,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L1241">math/BigInteger.ts:1241</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L1241">math/BigInteger.ts:1241</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1029,7 +1198,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/mother/Multivector.ts#L133">mother/Multivector.ts:133</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/Multivector.ts#L134">mother/Multivector.ts:134</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1069,7 +1238,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/mother/Multivector.ts#L144">mother/Multivector.ts:144</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/Multivector.ts#L145">mother/Multivector.ts:145</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1109,7 +1278,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/mother/gpE.ts#L6">mother/gpE.ts:6</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/gpE.ts#L6">mother/gpE.ts:6</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1144,7 +1313,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/mother/gpG.ts#L7">mother/gpG.ts:7</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/gpG.ts#L7">mother/gpG.ts:7</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1182,7 +1351,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/mother/gpL.ts#L6">mother/gpL.ts:6</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/gpL.ts#L6">mother/gpL.ts:6</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1220,7 +1389,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/mother/grade.ts#L3">mother/grade.ts:3</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/grade.ts#L3">mother/grade.ts:3</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1243,7 +1412,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigRational.ts#L298">math/BigRational.ts:298</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigRational.ts#L298">math/BigRational.ts:298</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1269,7 +1438,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/checks/isArray.ts#L1">checks/isArray.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/checks/isArray.ts#L1">checks/isArray.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1292,7 +1461,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L1171">math/BigInteger.ts:1171</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L1171">math/BigInteger.ts:1171</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1315,7 +1484,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/checks/isDefined.ts#L1">checks/isDefined.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/checks/isDefined.ts#L1">checks/isDefined.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1338,7 +1507,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L1427">math/BigInteger.ts:1427</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L1427">math/BigInteger.ts:1427</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1361,7 +1530,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/checks/isInteger.ts#L3">checks/isInteger.ts:3</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/checks/isInteger.ts#L3">checks/isInteger.ts:3</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1384,7 +1553,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/mother/Multivector.ts#L64">mother/Multivector.ts:64</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/Multivector.ts#L65">mother/Multivector.ts:65</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1413,7 +1582,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/checks/isNumber.ts#L1">checks/isNumber.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/checks/isNumber.ts#L1">checks/isNumber.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1436,7 +1605,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L731">math/BigInteger.ts:731</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L731">math/BigInteger.ts:731</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1459,7 +1628,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/checks/isUndefined.ts#L1">checks/isUndefined.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/checks/isUndefined.ts#L1">checks/isUndefined.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1482,7 +1651,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L1268">math/BigInteger.ts:1268</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L1268">math/BigInteger.ts:1268</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1508,7 +1677,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/mother/lcoE.ts#L6">mother/lcoE.ts:6</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/lcoE.ts#L6">mother/lcoE.ts:6</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1543,7 +1712,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/mother/lcoG.ts#L7">mother/lcoG.ts:7</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/lcoG.ts#L7">mother/lcoG.ts:7</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1581,7 +1750,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/mother/lcoL.ts#L6">mother/lcoL.ts:6</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/lcoL.ts#L6">mother/lcoL.ts:6</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1609,6 +1778,61 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external tsd-is-not-exported">
+					<a name="makecolumnvector" class="tsd-anchor"></a>
+					<h3>make<wbr>Column<wbr>Vector</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-is-external tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">make<wbr>Column<wbr>Vector<span class="tsd-signature-symbol">(</span>n<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, v<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/gauss.ts#L6">math/gauss.ts:6</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>n: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>v: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external tsd-is-not-exported">
+					<a name="makezerobelow" class="tsd-anchor"></a>
+					<h3>make<wbr>Zero<wbr>Below</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-is-external tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">make<wbr>Zero<wbr>Below<span class="tsd-signature-symbol">(</span>A<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span>, i<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, N<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/gauss.ts#L35">math/gauss.ts:35</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>A: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+								<li>
+									<h5>i: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>N: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external">
 					<a name="max" class="tsd-anchor"></a>
 					<h3>max</h3>
@@ -1619,7 +1843,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L1231">math/BigInteger.ts:1231</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L1231">math/BigInteger.ts:1231</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1645,7 +1869,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L1236">math/BigInteger.ts:1236</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L1236">math/BigInteger.ts:1236</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1671,7 +1895,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/mother/minusOnePow.ts#L4">mother/minusOnePow.ts:4</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/minusOnePow.ts#L4">mother/minusOnePow.ts:4</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1699,7 +1923,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/mother/Multivector.ts#L73">mother/Multivector.ts:73</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/Multivector.ts#L74">mother/Multivector.ts:74</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1737,7 +1961,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L939">math/BigInteger.ts:939</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L939">math/BigInteger.ts:939</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1763,7 +1987,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L895">math/BigInteger.ts:895</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L895">math/BigInteger.ts:895</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1789,7 +2013,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L915">math/BigInteger.ts:915</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L915">math/BigInteger.ts:915</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1815,7 +2039,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L965">math/BigInteger.ts:965</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L965">math/BigInteger.ts:965</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1844,7 +2068,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/checks/mustBeDefined.ts#L8">checks/mustBeDefined.ts:8</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/checks/mustBeDefined.ts#L8">checks/mustBeDefined.ts:8</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1885,7 +2109,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/checks/mustBeInteger.ts#L8">checks/mustBeInteger.ts:8</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/checks/mustBeInteger.ts#L8">checks/mustBeInteger.ts:8</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1926,7 +2150,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/checks/mustSatisfy.ts#L4">checks/mustSatisfy.ts:4</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/checks/mustSatisfy.ts#L4">checks/mustSatisfy.ts:4</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1987,7 +2211,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/mother/Multivector.ts#L152">mother/Multivector.ts:152</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/Multivector.ts#L153">mother/Multivector.ts:153</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -2022,7 +2246,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L9">math/BigInteger.ts:9</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L9">math/BigInteger.ts:9</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2048,7 +2272,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigRational.ts#L302">math/BigRational.ts:302</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigRational.ts#L302">math/BigRational.ts:302</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2071,7 +2295,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L1393">math/BigInteger.ts:1393</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L1393">math/BigInteger.ts:1393</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2094,7 +2318,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L1351">math/BigInteger.ts:1351</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L1351">math/BigInteger.ts:1351</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2117,7 +2341,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L1401">math/BigInteger.ts:1401</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L1401">math/BigInteger.ts:1401</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2140,7 +2364,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L1273">math/BigInteger.ts:1273</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L1273">math/BigInteger.ts:1273</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2166,7 +2390,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/mother/rcoE.ts#L6">mother/rcoE.ts:6</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/rcoE.ts#L6">mother/rcoE.ts:6</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -2201,7 +2425,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/mother/rcoG.ts#L7">mother/rcoG.ts:7</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/rcoG.ts#L7">mother/rcoG.ts:7</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -2239,7 +2463,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/mother/rcoL.ts#L6">mother/rcoL.ts:6</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/rcoL.ts#L6">mother/rcoL.ts:6</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -2277,7 +2501,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigRational.ts#L287">math/BigRational.ts:287</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigRational.ts#L287">math/BigRational.ts:287</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2303,13 +2527,42 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L1223">math/BigInteger.ts:1223</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L1223">math/BigInteger.ts:1223</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>n: <a href="classes/integer.html" class="tsd-signature-type">Integer</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external tsd-is-not-exported">
+					<a name="rowwithmaximumincolumn" class="tsd-anchor"></a>
+					<h3>row<wbr>With<wbr>Maximum<wbr>InColumn</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-is-external tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">row<wbr>With<wbr>Maximum<wbr>InColumn<span class="tsd-signature-symbol">(</span>A<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span>, column<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, N<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/gauss.ts#L14">math/gauss.ts:14</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>A: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+								<li>
+									<h5>column: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>N: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -2326,7 +2579,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L933">math/BigInteger.ts:933</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L933">math/BigInteger.ts:933</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2352,7 +2605,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L1181">math/BigInteger.ts:1181</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L1181">math/BigInteger.ts:1181</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2375,7 +2628,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/mother/simplify.ts#L7">mother/simplify.ts:7</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/simplify.ts#L7">mother/simplify.ts:7</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -2407,7 +2660,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L735">math/BigInteger.ts:735</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L735">math/BigInteger.ts:735</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2417,6 +2670,32 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external tsd-is-not-exported">
+					<a name="solve" class="tsd-anchor"></a>
+					<h3>solve</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-is-external tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">solve<span class="tsd-signature-symbol">(</span>A<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span>, N<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/gauss.ts#L49">math/gauss.ts:49</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>A: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+								<li>
+									<h5>N: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -2430,7 +2709,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/mother/sortBlades.ts#L17">mother/sortBlades.ts:17</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/mother/sortBlades.ts#L17">mother/sortBlades.ts:17</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -2459,7 +2738,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L972">math/BigInteger.ts:972</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L972">math/BigInteger.ts:972</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2482,7 +2761,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L1300">math/BigInteger.ts:1300</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L1300">math/BigInteger.ts:1300</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2505,7 +2784,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L822">math/BigInteger.ts:822</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L822">math/BigInteger.ts:822</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2531,7 +2810,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L854">math/BigInteger.ts:854</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L854">math/BigInteger.ts:854</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2560,7 +2839,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L872">math/BigInteger.ts:872</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L872">math/BigInteger.ts:872</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2580,6 +2859,38 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external tsd-is-not-exported">
+					<a name="swaprows" class="tsd-anchor"></a>
+					<h3>swap<wbr>Rows</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-is-external tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">swap<wbr>Rows<span class="tsd-signature-symbol">(</span>A<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span>, i<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, j<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, N<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/gauss.ts#L26">math/gauss.ts:26</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>A: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+								<li>
+									<h5>i: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>j: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>N: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external tsd-is-not-exported">
 					<a name="tobase" class="tsd-anchor"></a>
 					<h3>to<wbr>Base</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-is-external tsd-is-not-exported">
@@ -2589,7 +2900,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L1314">math/BigInteger.ts:1314</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L1314">math/BigInteger.ts:1314</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2615,7 +2926,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L757">math/BigInteger.ts:757</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L757">math/BigInteger.ts:757</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2638,7 +2949,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L772">math/BigInteger.ts:772</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L772">math/BigInteger.ts:772</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2661,7 +2972,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/BigInteger.ts#L961">math/BigInteger.ts:961</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/BigInteger.ts#L961">math/BigInteger.ts:961</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2687,7 +2998,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/38beae5/src/geocas/math/Algebra.ts#L1">math/Algebra.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/GeoCAS/blob/306d06b/src/geocas/math/Algebra.ts#L1">math/Algebra.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2738,6 +3049,12 @@
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="classes/expr.html" class="tsd-kind-icon">Expr</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="classes/float.html" class="tsd-kind-icon">Float</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="classes/floatadapter.html" class="tsd-kind-icon">Float<wbr>Adapter</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="classes/integer.html" class="tsd-kind-icon">Integer</a>
@@ -2833,6 +3150,21 @@
 						<a href="globals.html#scalar" class="tsd-kind-icon">SCALAR</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
+						<a href="globals.html#abs" class="tsd-kind-icon">abs</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#eight" class="tsd-kind-icon">eight</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#ffa" class="tsd-kind-icon">ffa</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#four" class="tsd-kind-icon">four</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#fourteen" class="tsd-kind-icon">fourteen</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#highestpower2" class="tsd-kind-icon">highest<wbr>Power2</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-is-external">
@@ -2850,6 +3182,21 @@
 					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#powersoftwo" class="tsd-kind-icon">powers<wbr>OfTwo</a>
 					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#six" class="tsd-kind-icon">six</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#sixteen" class="tsd-kind-icon">sixteen</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#ten" class="tsd-kind-icon">ten</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#three" class="tsd-kind-icon">three</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-is-not-exported">
+						<a href="globals.html#two" class="tsd-kind-icon">two</a>
+					</li>
 					<li class=" tsd-kind-variable tsd-is-external">
 						<a href="globals.html#zero" class="tsd-kind-icon">zero</a>
 					</li>
@@ -2864,6 +3211,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#arraytosmall" class="tsd-kind-icon">array<wbr>ToSmall</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
+						<a href="globals.html#beanumber" class="tsd-kind-icon">beANumber</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#beaninteger" class="tsd-kind-icon">be<wbr>AnInteger</a>
@@ -2918,6 +3268,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#divmodsmall" class="tsd-kind-icon">div<wbr>Mod<wbr>Small</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#gauss" class="tsd-kind-icon">gauss</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#gcd" class="tsd-kind-icon">gcd</a>
@@ -2981,6 +3334,12 @@
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-external">
 						<a href="globals.html#lcol" class="tsd-kind-icon">lcoL</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
+						<a href="globals.html#makecolumnvector" class="tsd-kind-icon">make<wbr>Column<wbr>Vector</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
+						<a href="globals.html#makezerobelow" class="tsd-kind-icon">make<wbr>Zero<wbr>Below</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#max" class="tsd-kind-icon">max</a>
@@ -3052,6 +3411,9 @@
 						<a href="globals.html#roughlob" class="tsd-kind-icon">roughLOB</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
+						<a href="globals.html#rowwithmaximumincolumn" class="tsd-kind-icon">row<wbr>With<wbr>Maximum<wbr>InColumn</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#shiftleft" class="tsd-kind-icon">shift<wbr>Left</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
@@ -3062,6 +3424,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#smalltoarray" class="tsd-kind-icon">small<wbr>ToArray</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
+						<a href="globals.html#solve" class="tsd-kind-icon">solve</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-external">
 						<a href="globals.html#sortblades" class="tsd-kind-icon">sort<wbr>Blades</a>
@@ -3080,6 +3445,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#subtractsmall" class="tsd-kind-icon">subtract<wbr>Small</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
+						<a href="globals.html#swaprows" class="tsd-kind-icon">swap<wbr>Rows</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#tobase" class="tsd-kind-icon">to<wbr>Base</a>
