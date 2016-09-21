@@ -64,27 +64,21 @@ declare module GeoCAS {
      * A multivector with a parameterized field type.
      */
     interface Multivector<T> {
-        blades: Blade<T>[];
-        __add__(rhs: Multivector<T>): Multivector<T>;
-        __sub__(rhs: Multivector<T>): Multivector<T>;
-        __mul__(rhs: T | Multivector<T>): Multivector<T>;
-        __rmul__(lhs: T | Multivector<T>): Multivector<T>;
-        __div__(rhs: T | Multivector<T>): Multivector<T>;
-        __lshift__(rhs: Multivector<T>): Multivector<T>;
-        __rshift__(rhs: Multivector<T>): Multivector<T>;
-        __vbar__(rhs: Multivector<T>): Multivector<T>;
-        __wedge__(rhs: Multivector<T>): Multivector<T>;
-        __pos__(): Multivector<T>;
-        __neg__(): Multivector<T>;
+        add(rhs: Multivector<T>): Multivector<T>;
         asString(names: string[]): string;
+        cliffordConjugate(): Multivector<T>;
         div(rhs: Multivector<T>): Multivector<T>;
         divByScalar(α: T): Multivector<T>;
+        /**
+         * dual(M) = M << I, where I is the pseudoscalar of the space.
+         */
         dual(): Multivector<T>;
         /**
          * Returns the universal exponential function, exp, applied to this, i.e. exp(this).
          */
         exp(): Multivector<T>;
         extractGrade(grade: number): Multivector<T>;
+        gradeInversion(): Multivector<T>;
         inv(): Multivector<T>;
         mul(rhs: Multivector<T>): Multivector<T>;
         mulByScalar(α: T): Multivector<T>;
@@ -94,6 +88,7 @@ declare module GeoCAS {
          * Returns the scalar product of this multivector with rhs, i.e. this | rhs. 
          */
         scp(rhs: Multivector<T>): T;
+        sub(rhs: Multivector<T>): Multivector<T>;
         toString(): string;
     }
 
