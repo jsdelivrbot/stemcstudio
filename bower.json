@@ -1,6 +1,6 @@
 {
     "name": "stemcstudio",
-    "version": "2.7.60",
+    "version": "2.7.61",
     "description": "Learning STEM through Computational Modeling",
     "homepage": "https://github.com/geometryzen/STEMCstudio",
     "authors": [
@@ -31,8 +31,8 @@
         "angular-ui-router": "^0.2.18",
         "angular-uuid4": "^0.3.0",
         "angular": "^1.5.8",
-        "async": "^1.5.0",
-        "aws-sdk-js": "^2.5.5",
+        "async": "^2.0.1",
+        "aws-sdk-js": "^2.6.4",
         "bootstrap": "^3.3.6",
         "bootstrap3-dialog": "^1.35.0",
         "davinci-eight": "^2.311.0",

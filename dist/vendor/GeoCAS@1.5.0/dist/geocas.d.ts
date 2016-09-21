@@ -76,9 +76,7 @@ declare module GeoCAS {
         __wedge__(rhs: Multivector<T>): Multivector<T>;
         __pos__(): Multivector<T>;
         __neg__(): Multivector<T>;
-        inv(): Multivector<T>;
-        mul(rhs: Multivector<T>): Multivector<T>;
-        mulByScalar(α: T): Multivector<T>;
+        asString(names: string[]): string;
         div(rhs: Multivector<T>): Multivector<T>;
         divByScalar(α: T): Multivector<T>;
         dual(): Multivector<T>;
@@ -87,7 +85,9 @@ declare module GeoCAS {
          */
         exp(): Multivector<T>;
         extractGrade(grade: number): Multivector<T>;
-        asString(names: string[]): string;
+        inv(): Multivector<T>;
+        mul(rhs: Multivector<T>): Multivector<T>;
+        mulByScalar(α: T): Multivector<T>;
         rev(): Multivector<T>;
         scalarCoordinate(): T;
         /**
