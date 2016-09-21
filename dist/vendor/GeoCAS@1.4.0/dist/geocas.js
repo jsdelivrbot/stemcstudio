@@ -3780,6 +3780,16 @@ define('geocas/mother/Multivector',["require", "exports", './Blade', './gpE', '.
                 }
                 return mv(simplify_1.default(rez, adapter), metric, adapter);
             },
+            inv: function () {
+                var reverse = that.rev();
+                var denom = that.mul(reverse);
+                if (denom.blades.length === 1 && denom.blades[0].bitmap === 0) {
+                    return reverse.divByScalar(denom.scalarCoordinate());
+                }
+                else {
+                    throw new Error("non-invertible multivector (versor inverse)");
+                }
+            },
             mul: function (rhs) {
                 return mul(that, rhs, metric, adapter);
             },
@@ -3887,6 +3897,9 @@ define('geocas/mother/Multivector',["require", "exports", './Blade', './gpE', '.
                 return cosθ.__add__(i.__mul__(sinθ));
             },
             extractGrade: extractGrade,
+            div: function (rhs) {
+                return that.mul(rhs.inv());
+            },
             divByScalar: function (α) {
                 var rez = [];
                 for (var i = 0; i < blades.length; i++) {
@@ -4029,9 +4042,9 @@ define('geocas/config',["require", "exports"], function (require, exports) {
     var GeoCAS = (function () {
         function GeoCAS() {
             this.GITHUB = 'https://github.com/geometryzen/GeoCAS';
-            this.LAST_MODIFIED = '2016-09-20';
+            this.LAST_MODIFIED = '2016-09-21';
             this.NAMESPACE = 'GeoCAS';
-            this.VERSION = '1.3.0';
+            this.VERSION = '1.4.0';
         }
         GeoCAS.prototype.log = function (message) {
             var optionalParams = [];
