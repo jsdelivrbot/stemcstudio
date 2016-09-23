@@ -686,12 +686,6 @@
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "npm:pbkdf2@3.0.7": {
-    "create-hmac": "npm:create-hmac@^1.1.2",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0",
-    "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
-  },
   "npm:zone.js@0.6.25": {
     "process": "github:jspm/nodelibs-process@^0.1.0",
     "events": "github:jspm/nodelibs-events@^0.1.1",
@@ -705,5 +699,11 @@
     "minimalistic-assert": "npm:minimalistic-assert@^1.0.0",
     "vm": "github:jspm/nodelibs-vm@^0.1.0",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
+  },
+  "npm:pbkdf2@3.0.8": {
+    "create-hmac": "npm:create-hmac@^1.1.2",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
   }
 }

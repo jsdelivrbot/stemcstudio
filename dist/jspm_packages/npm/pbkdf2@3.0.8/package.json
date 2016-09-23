@@ -1,6 +1,6 @@
 {
   "name": "pbkdf2",
-  "version": "3.0.7",
+  "version": "3.0.8",
   "description": "This library provides the functionality of PBKDF2 with the ability to use any supported hashing algorithm returned from crypto.getHashes()",
   "keywords": [
     "pbkdf2",
@@ -29,7 +29,7 @@
   },
   "scripts": {
     "prepublish": "npm run test",
-    "coverage": "nyc --check-coverage --branches 100 --functions 100 tape test/*.js",
+    "coverage": "nyc --check-coverage --branches 90 --functions 100 tape test/*.js",
     "lint": "standard",
     "test": "npm run lint && npm run unit",
     "bundle-test": "browserify test/index.js > test/bundle.js",
@@ -48,5 +48,8 @@
     "ignore": [
       "test/bundle.js"
     ]
+  },
+  "engines": {
+    "node": ">=0.12"
   }
 }

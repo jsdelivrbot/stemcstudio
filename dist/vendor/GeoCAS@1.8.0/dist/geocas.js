@@ -442,948 +442,6 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-define('geocas/math/Algebra',["require", "exports"], function (require, exports) {
-    "use strict";
-    var wedgeBlades = function (a, b) {
-        var result = [];
-        var aLen = a.length;
-        var bLen = b.length;
-        for (var i = 0; i < aLen; i++) {
-            var av = a[i];
-            if (b.indexOf(av) < 0) {
-                result.push(av);
-            }
-            else {
-                return null;
-            }
-        }
-        for (var i = 0; i < bLen; i++) {
-            result.push(b[i]);
-        }
-        return result;
-    };
-    var Expr = (function () {
-        function Expr(env, type) {
-            this.env = env;
-            this.type = type;
-        }
-        Expr.prototype.isChanged = function () {
-            throw new Error(this.type + ".isChanged is not implemented.");
-        };
-        Expr.prototype.copy = function (dirty) {
-            throw new Error(this.type + ".copy is not implemented.");
-        };
-        Expr.prototype.reset = function () {
-            throw new Error(this.type + ".reset is not implemented.");
-        };
-        Expr.prototype.simplify = function () {
-            throw new Error(this.type + ".simplify is not implemented.");
-        };
-        Expr.prototype.toPrefix = function () {
-            throw new Error(this.type + ".toPrefix is not implemented.");
-        };
-        Expr.prototype.toString = function () {
-            throw new Error(this.type + ".toString is not implemented.");
-        };
-        Expr.prototype.__add__ = function (rhs) {
-            if (rhs instanceof Expr) {
-                return new AddExpr(this, rhs);
-            }
-            else if (typeof rhs === 'number') {
-                return new AddExpr(this, new ScalarExpr(this.env, rhs));
-            }
-            else {
-                return void 0;
-            }
-        };
-        Expr.prototype.__radd__ = function (lhs) {
-            if (lhs instanceof Expr) {
-                return new AddExpr(lhs, this);
-            }
-            else if (typeof lhs === 'number') {
-                return new AddExpr(new ScalarExpr(this.env, lhs), this);
-            }
-            else {
-                return void 0;
-            }
-        };
-        Expr.prototype.__sub__ = function (rhs) {
-            if (rhs instanceof Expr) {
-                return new SubExpr(this, rhs);
-            }
-            else if (typeof rhs === 'number') {
-                return new SubExpr(this, new ScalarExpr(this.env, rhs));
-            }
-            else {
-                return void 0;
-            }
-        };
-        Expr.prototype.__rsub__ = function (lhs) {
-            if (lhs instanceof Expr) {
-                return new SubExpr(lhs, this);
-            }
-            else if (typeof lhs === 'number') {
-                return new SubExpr(new ScalarExpr(this.env, lhs), this);
-            }
-            else {
-                return void 0;
-            }
-        };
-        Expr.prototype.__mul__ = function (rhs) {
-            if (rhs instanceof Expr) {
-                return new MultiplyExpr(this, rhs);
-            }
-            else if (typeof rhs === 'number') {
-                return new MultiplyExpr(this, new ScalarExpr(this.env, rhs));
-            }
-            else {
-                return void 0;
-            }
-        };
-        Expr.prototype.__rmul__ = function (lhs) {
-            if (lhs instanceof Expr) {
-                return new MultiplyExpr(lhs, this);
-            }
-            else if (typeof lhs === 'number') {
-                return new MultiplyExpr(new ScalarExpr(this.env, lhs), this);
-            }
-            else {
-                return void 0;
-            }
-        };
-        Expr.prototype.__div__ = function (rhs) {
-            if (rhs instanceof Expr) {
-                return new DivideExpr(this, rhs);
-            }
-            else if (typeof rhs === 'number') {
-                return new DivideExpr(this, new ScalarExpr(this.env, rhs));
-            }
-            else {
-                return void 0;
-            }
-        };
-        Expr.prototype.__rdiv__ = function (lhs) {
-            if (lhs instanceof Expr) {
-                return new DivideExpr(lhs, this);
-            }
-            else if (typeof lhs === 'number') {
-                return new DivideExpr(new ScalarExpr(this.env, lhs), this);
-            }
-            else {
-                return void 0;
-            }
-        };
-        Expr.prototype.__vbar__ = function (rhs) {
-            if (rhs instanceof Expr) {
-                return new VBarExpr(this, rhs);
-            }
-            else if (typeof rhs === 'number') {
-                return new VBarExpr(this, new ScalarExpr(this.env, rhs));
-            }
-            else {
-                return void 0;
-            }
-        };
-        Expr.prototype.__rvbar__ = function (lhs) {
-            if (lhs instanceof Expr) {
-                return new VBarExpr(lhs, this);
-            }
-            else if (typeof lhs === 'number') {
-                return new VBarExpr(new ScalarExpr(this.env, lhs), this);
-            }
-            else {
-                return void 0;
-            }
-        };
-        Expr.prototype.__lshift__ = function (rhs) {
-            if (rhs instanceof Expr) {
-                return new LContractExpr(this, rhs);
-            }
-            else if (typeof rhs === 'number') {
-                return new LContractExpr(this, new ScalarExpr(this.env, rhs));
-            }
-            else {
-                return void 0;
-            }
-        };
-        Expr.prototype.__rlshift__ = function (lhs) {
-            if (lhs instanceof Expr) {
-                return new LContractExpr(lhs, this);
-            }
-            else if (typeof lhs === 'number') {
-                return new LContractExpr(new ScalarExpr(this.env, lhs), this);
-            }
-            else {
-                return void 0;
-            }
-        };
-        Expr.prototype.__rshift__ = function (rhs) {
-            if (rhs instanceof Expr) {
-                return new RContractExpr(this, rhs);
-            }
-            else if (typeof rhs === 'number') {
-                return new RContractExpr(this, new ScalarExpr(this.env, rhs));
-            }
-            else {
-                return void 0;
-            }
-        };
-        Expr.prototype.__rrshift__ = function (lhs) {
-            if (lhs instanceof Expr) {
-                return new RContractExpr(lhs, this);
-            }
-            else if (typeof lhs === 'number') {
-                return new RContractExpr(new ScalarExpr(this.env, lhs), this);
-            }
-            else {
-                return void 0;
-            }
-        };
-        Expr.prototype.__wedge__ = function (rhs) {
-            if (rhs instanceof Expr) {
-                return new WedgeExpr(this, rhs);
-            }
-            else if (typeof rhs === 'number') {
-                return new WedgeExpr(this, new ScalarExpr(this.env, rhs));
-            }
-            else {
-                return void 0;
-            }
-        };
-        Expr.prototype.__rwedge__ = function (lhs) {
-            if (lhs instanceof Expr) {
-                return new WedgeExpr(lhs, this);
-            }
-            else if (typeof lhs === 'number') {
-                return new WedgeExpr(new ScalarExpr(this.env, lhs), this);
-            }
-            else {
-                return void 0;
-            }
-        };
-        Expr.prototype.__tilde__ = function () {
-            return new ReverseExpr(this);
-        };
-        Expr.prototype.__bang__ = function () {
-            return new InverseExpr(this);
-        };
-        Expr.prototype.__neg__ = function () {
-            return new NegExpr(this);
-        };
-        Expr.prototype.__pos__ = function () {
-            return new PosExpr(this);
-        };
-        return Expr;
-    }());
-    exports.Expr = Expr;
-    var BinaryExpr = (function (_super) {
-        __extends(BinaryExpr, _super);
-        function BinaryExpr(lhs, rhs, type) {
-            _super.call(this, lhs.env, type);
-            this.lhs = lhs;
-            this.rhs = rhs;
-            if (!(lhs instanceof Expr)) {
-                throw new Error(type + ".lhs must be an Expr: " + typeof lhs);
-            }
-            if (!(rhs instanceof Expr)) {
-                throw new Error(type + ".rhs must be an Expr: " + typeof rhs);
-            }
-        }
-        return BinaryExpr;
-    }(Expr));
-    exports.BinaryExpr = BinaryExpr;
-    var AddExpr = (function (_super) {
-        __extends(AddExpr, _super);
-        function AddExpr(lhs, rhs, dirty) {
-            if (dirty === void 0) { dirty = false; }
-            _super.call(this, lhs, rhs, 'AddExpr');
-            this.dirty = dirty;
-        }
-        AddExpr.prototype.isChanged = function () {
-            return this.dirty || this.lhs.isChanged() || this.rhs.isChanged();
-        };
-        AddExpr.prototype.copy = function (dirty) {
-            return new AddExpr(this.lhs, this.rhs, dirty);
-        };
-        AddExpr.prototype.reset = function () {
-            return new AddExpr(this.lhs.reset(), this.rhs.reset());
-        };
-        AddExpr.prototype.simplify = function () {
-            var a = this.lhs.simplify();
-            var b = this.rhs.simplify();
-            if (b instanceof ScalarExpr && typeof b.value === 'number' && b.value === 0) {
-                return a.copy(true);
-            }
-            else if (a instanceof MultiplyExpr && b instanceof MultiplyExpr) {
-                if (a.lhs instanceof ScalarExpr && b.lhs instanceof ScalarExpr && a.rhs === b.rhs) {
-                    var sa = a.lhs;
-                    var sb = b.lhs;
-                    if (typeof sa.value === 'number' && typeof sb.value === 'number') {
-                        var s = new ScalarExpr(this.env, sa.value + sb.value);
-                        return new MultiplyExpr(s, a.rhs, true);
-                    }
-                    else {
-                        return new AddExpr(a, b);
-                    }
-                }
-                else {
-                    return new AddExpr(a, b);
-                }
-            }
-            else if (a instanceof ScalarExpr && b instanceof ScalarExpr) {
-                if (typeof a.value === 'number' && typeof b.value === 'number') {
-                    return new ScalarExpr(this.env, a.value + b.value, true);
-                }
-                else {
-                    return new AddExpr(a, b);
-                }
-            }
-            else {
-                return new AddExpr(a, b);
-            }
-        };
-        AddExpr.prototype.toPrefix = function () {
-            return "add(" + this.lhs.toPrefix() + ", " + this.rhs.toPrefix() + ")";
-        };
-        AddExpr.prototype.toString = function () {
-            return this.lhs + " + " + this.rhs;
-        };
-        return AddExpr;
-    }(BinaryExpr));
-    exports.AddExpr = AddExpr;
-    var SubExpr = (function (_super) {
-        __extends(SubExpr, _super);
-        function SubExpr(lhs, rhs, dirty) {
-            if (dirty === void 0) { dirty = false; }
-            _super.call(this, lhs, rhs, 'SubExpr');
-            this.dirty = dirty;
-        }
-        SubExpr.prototype.isChanged = function () {
-            return this.dirty || this.lhs.isChanged() || this.rhs.isChanged();
-        };
-        SubExpr.prototype.copy = function (dirty) {
-            return new SubExpr(this.lhs, this.rhs, dirty);
-        };
-        SubExpr.prototype.reset = function () {
-            return new SubExpr(this.lhs.reset(), this.rhs.reset());
-        };
-        SubExpr.prototype.simplify = function () {
-            var a = this.lhs.simplify();
-            var b = this.rhs.simplify();
-            return new SubExpr(a, b);
-        };
-        SubExpr.prototype.toPrefix = function () {
-            return "sub(" + this.lhs.toPrefix() + ", " + this.rhs.toPrefix() + ")";
-        };
-        SubExpr.prototype.toString = function () {
-            return this.lhs + " - " + this.rhs;
-        };
-        return SubExpr;
-    }(BinaryExpr));
-    exports.SubExpr = SubExpr;
-    var MultiplyExpr = (function (_super) {
-        __extends(MultiplyExpr, _super);
-        function MultiplyExpr(lhs, rhs, dirty) {
-            if (dirty === void 0) { dirty = false; }
-            _super.call(this, lhs, rhs, 'MultiplyExpr');
-            this.dirty = dirty;
-        }
-        MultiplyExpr.prototype.isChanged = function () {
-            return this.dirty || this.lhs.isChanged() || this.rhs.isChanged();
-        };
-        MultiplyExpr.prototype.copy = function (dirty) {
-            return new MultiplyExpr(this.lhs, this.rhs, dirty);
-        };
-        MultiplyExpr.prototype.reset = function () {
-            return new MultiplyExpr(this.lhs.reset(), this.rhs.reset());
-        };
-        MultiplyExpr.prototype.simplify = function () {
-            var a = this.lhs.simplify();
-            var b = this.rhs.simplify();
-            if (!(a instanceof ScalarExpr) && b instanceof ScalarExpr) {
-                return new MultiplyExpr(b, a, true);
-            }
-            else if (a instanceof MultiplyExpr) {
-                var aL = a.lhs;
-                var aR = a.rhs;
-                if (aL instanceof ScalarExpr) {
-                    return new MultiplyExpr(aL, new MultiplyExpr(aR, b), true);
-                }
-                else {
-                    return new MultiplyExpr(a, b);
-                }
-            }
-            else if (b instanceof MultiplyExpr) {
-                var bL = b.lhs;
-                var bR = b.rhs;
-                if (bL instanceof ScalarExpr) {
-                    return new MultiplyExpr(bL, new MultiplyExpr(a, bR), true);
-                }
-                else {
-                    return new MultiplyExpr(a, b);
-                }
-            }
-            else if (a instanceof ScalarExpr) {
-                if (typeof a.value === 'number' && a.value === 0) {
-                    return a.copy(true);
-                }
-                else if (typeof a.value === 'number' && a.value === 1) {
-                    return b.copy(true);
-                }
-                else if (b instanceof ScalarExpr) {
-                    if (typeof a.value === 'number' && a.value === 1) {
-                        return b;
-                    }
-                    else if (typeof a.value === 'number' && typeof b.value === 'number') {
-                        return new ScalarExpr(this.env, a.value * b.value, true);
-                    }
-                    else if (typeof a.value !== 'number' && typeof b.value === 'number') {
-                        return new MultiplyExpr(b, a, true);
-                    }
-                    else {
-                        return new MultiplyExpr(a, b);
-                    }
-                }
-                else {
-                    return new MultiplyExpr(a, b);
-                }
-            }
-            else if (a instanceof BasisBladeExpr) {
-                if (b instanceof MultiplyExpr) {
-                    var bL = b.lhs;
-                    var bR = b.rhs;
-                    if (bL instanceof BasisBladeExpr) {
-                        if (a.vectors[0] === bL.vectors[0]) {
-                            return new MultiplyExpr(new MultiplyExpr(a, bL), bR, true);
-                        }
-                        else {
-                            return new MultiplyExpr(a, b);
-                        }
-                    }
-                    else {
-                        return new MultiplyExpr(a, b);
-                    }
-                }
-                else if (b instanceof BasisBladeExpr) {
-                    if (a === b) {
-                        return new VBarExpr(a, b, true);
-                    }
-                    else {
-                        return new MultiplyExpr(a, b);
-                    }
-                }
-                else if (b instanceof ScalarExpr) {
-                    return new MultiplyExpr(b, a, true);
-                }
-                else {
-                    return new MultiplyExpr(a, b);
-                }
-            }
-            else {
-                return new MultiplyExpr(a, b);
-            }
-        };
-        MultiplyExpr.prototype.toPrefix = function () {
-            return "mul(" + this.lhs.toPrefix() + ", " + this.rhs.toPrefix() + ")";
-        };
-        MultiplyExpr.prototype.toString = function () {
-            return this.lhs + " * " + this.rhs;
-        };
-        return MultiplyExpr;
-    }(BinaryExpr));
-    exports.MultiplyExpr = MultiplyExpr;
-    var DivideExpr = (function (_super) {
-        __extends(DivideExpr, _super);
-        function DivideExpr(lhs, rhs, dirty) {
-            if (dirty === void 0) { dirty = false; }
-            _super.call(this, lhs, rhs, 'SubExpr');
-            this.dirty = dirty;
-        }
-        DivideExpr.prototype.isChanged = function () {
-            return this.dirty || this.lhs.isChanged() || this.rhs.isChanged();
-        };
-        DivideExpr.prototype.copy = function (dirty) {
-            return new DivideExpr(this.lhs, this.rhs, dirty);
-        };
-        DivideExpr.prototype.reset = function () {
-            return new DivideExpr(this.lhs.reset(), this.rhs.reset());
-        };
-        DivideExpr.prototype.simplify = function () {
-            var a = this.lhs.simplify();
-            var b = this.rhs.simplify();
-            return new DivideExpr(a, b);
-        };
-        DivideExpr.prototype.toPrefix = function () {
-            return "div(" + this.lhs.toPrefix() + ", " + this.rhs.toPrefix() + ")";
-        };
-        DivideExpr.prototype.toString = function () {
-            return this.lhs + " / " + this.rhs;
-        };
-        return DivideExpr;
-    }(BinaryExpr));
-    exports.DivideExpr = DivideExpr;
-    var LContractExpr = (function (_super) {
-        __extends(LContractExpr, _super);
-        function LContractExpr(lhs, rhs, dirty) {
-            if (dirty === void 0) { dirty = false; }
-            _super.call(this, lhs, rhs, 'LContractExpr');
-            this.dirty = dirty;
-        }
-        LContractExpr.prototype.isChanged = function () {
-            return this.dirty || this.lhs.isChanged() || this.rhs.isChanged();
-        };
-        LContractExpr.prototype.copy = function (dirty) {
-            return new LContractExpr(this.lhs, this.rhs, dirty);
-        };
-        LContractExpr.prototype.reset = function () {
-            return new LContractExpr(this.lhs.reset(), this.rhs.reset());
-        };
-        LContractExpr.prototype.simplify = function () {
-            var a = this.lhs.simplify();
-            var b = this.rhs.simplify();
-            return new LContractExpr(a, b);
-        };
-        LContractExpr.prototype.toPrefix = function () {
-            return "lco(" + this.lhs.toPrefix() + ", " + this.rhs.toPrefix() + ")";
-        };
-        LContractExpr.prototype.toString = function () {
-            return this.lhs + " << " + this.rhs;
-        };
-        return LContractExpr;
-    }(BinaryExpr));
-    exports.LContractExpr = LContractExpr;
-    var RContractExpr = (function (_super) {
-        __extends(RContractExpr, _super);
-        function RContractExpr(lhs, rhs, dirty) {
-            if (dirty === void 0) { dirty = false; }
-            _super.call(this, lhs, rhs, 'RContractExpr');
-            this.dirty = dirty;
-        }
-        RContractExpr.prototype.isChanged = function () {
-            return this.dirty || this.lhs.isChanged() || this.rhs.isChanged();
-        };
-        RContractExpr.prototype.copy = function (dirty) {
-            return new RContractExpr(this.lhs, this.rhs, dirty);
-        };
-        RContractExpr.prototype.reset = function () {
-            return new RContractExpr(this.lhs.reset(), this.rhs.reset());
-        };
-        RContractExpr.prototype.simplify = function () {
-            var a = this.lhs.simplify();
-            var b = this.rhs.simplify();
-            return new RContractExpr(a, b);
-        };
-        RContractExpr.prototype.toPrefix = function () {
-            return "rco(" + this.lhs.toPrefix() + ", " + this.rhs.toPrefix() + ")";
-        };
-        RContractExpr.prototype.toString = function () {
-            return this.lhs + " >> " + this.rhs;
-        };
-        return RContractExpr;
-    }(BinaryExpr));
-    exports.RContractExpr = RContractExpr;
-    var BasisBladeExpr = (function (_super) {
-        __extends(BasisBladeExpr, _super);
-        function BasisBladeExpr(env, vectors, dirty) {
-            if (dirty === void 0) { dirty = false; }
-            _super.call(this, env, 'BasisBladeExpr');
-            this.vectors = vectors;
-            this.dirty = dirty;
-            if (!Array.isArray(vectors)) {
-                throw new Error('vectors must be a number[]');
-            }
-        }
-        BasisBladeExpr.prototype.isChanged = function () {
-            return this.dirty;
-        };
-        BasisBladeExpr.prototype.copy = function (dirty) {
-            return new BasisBladeExpr(this.env, this.vectors, dirty);
-        };
-        BasisBladeExpr.prototype.reset = function () {
-            if (this.dirty) {
-                return new BasisBladeExpr(this.env, this.vectors, false);
-            }
-            else {
-                return this;
-            }
-        };
-        BasisBladeExpr.prototype.simplify = function () {
-            return this;
-        };
-        BasisBladeExpr.prototype.toPrefix = function () {
-            return this.env.bladeName(this.vectors);
-        };
-        BasisBladeExpr.prototype.toString = function () {
-            return this.env.bladeName(this.vectors);
-        };
-        return BasisBladeExpr;
-    }(Expr));
-    exports.BasisBladeExpr = BasisBladeExpr;
-    var ScalarExpr = (function (_super) {
-        __extends(ScalarExpr, _super);
-        function ScalarExpr(env, value, dirty) {
-            if (dirty === void 0) { dirty = false; }
-            _super.call(this, env, 'ScalarExpr');
-            this.value = value;
-            this.dirty = dirty;
-        }
-        ScalarExpr.prototype.isChanged = function () {
-            return false;
-        };
-        ScalarExpr.prototype.copy = function (dirty) {
-            return new ScalarExpr(this.env, this.value, dirty);
-        };
-        ScalarExpr.prototype.reset = function () {
-            if (this.dirty) {
-                return new ScalarExpr(this.env, this.value, false);
-            }
-            else {
-                return this;
-            }
-        };
-        ScalarExpr.prototype.simplify = function () {
-            return this;
-        };
-        ScalarExpr.prototype.toPrefix = function () {
-            return "" + this.value;
-        };
-        ScalarExpr.prototype.toPrefixLong = function () {
-            return "ScalarExpr('" + this.value + "')";
-        };
-        ScalarExpr.prototype.toString = function () {
-            return "" + this.value;
-        };
-        return ScalarExpr;
-    }(Expr));
-    exports.ScalarExpr = ScalarExpr;
-    var VBarExpr = (function (_super) {
-        __extends(VBarExpr, _super);
-        function VBarExpr(lhs, rhs, dirty) {
-            if (dirty === void 0) { dirty = false; }
-            _super.call(this, lhs, rhs, 'VBarExpr');
-            this.dirty = dirty;
-        }
-        VBarExpr.prototype.isChanged = function () {
-            return this.dirty || this.lhs.isChanged() || this.rhs.isChanged();
-        };
-        VBarExpr.prototype.reset = function () {
-            return new VBarExpr(this.lhs.reset(), this.rhs.reset());
-        };
-        VBarExpr.prototype.simplify = function () {
-            var a = this.lhs.simplify();
-            var b = this.rhs.simplify();
-            if (a instanceof BasisBladeExpr && b instanceof BasisBladeExpr) {
-                return this.env.g(a, b);
-            }
-            else if (a instanceof AddExpr && b instanceof BasisBladeExpr) {
-                var aL = a.lhs;
-                var aR = a.rhs;
-                return new AddExpr(new VBarExpr(aL, b), new VBarExpr(aR, b), true);
-            }
-            else if (a instanceof BasisBladeExpr && b instanceof AddExpr) {
-                var bL = b.lhs;
-                var bR = b.rhs;
-                return new AddExpr(new VBarExpr(a, bL), new VBarExpr(a, bR), true);
-            }
-            else if (a instanceof MultiplyExpr && b instanceof Expr) {
-                var aL = a.lhs;
-                var aR = a.rhs;
-                if (aL instanceof ScalarExpr && aR instanceof BasisBladeExpr) {
-                    return new MultiplyExpr(aL, new VBarExpr(aR, b), true);
-                }
-                else {
-                    return new VBarExpr(a, b);
-                }
-            }
-            else if (a instanceof BasisBladeExpr && b instanceof MultiplyExpr) {
-                var bL = b.lhs;
-                var bR = b.rhs;
-                if (bL instanceof ScalarExpr && bR instanceof BasisBladeExpr) {
-                    return new MultiplyExpr(bL, new VBarExpr(a, bR), true);
-                }
-                else {
-                    return new VBarExpr(a, b);
-                }
-            }
-            else {
-                return new VBarExpr(a, b);
-            }
-        };
-        VBarExpr.prototype.toPrefix = function () {
-            return "scp(" + this.lhs.toPrefix() + ", " + this.rhs.toPrefix() + ")";
-        };
-        VBarExpr.prototype.toString = function () {
-            return this.lhs + " | " + this.rhs;
-        };
-        return VBarExpr;
-    }(BinaryExpr));
-    exports.VBarExpr = VBarExpr;
-    var WedgeExpr = (function (_super) {
-        __extends(WedgeExpr, _super);
-        function WedgeExpr(lhs, rhs, dirty) {
-            if (dirty === void 0) { dirty = false; }
-            _super.call(this, lhs, rhs, 'WedgeExpr');
-            this.dirty = dirty;
-        }
-        WedgeExpr.prototype.isChanged = function () {
-            return this.dirty || this.lhs.isChanged() || this.rhs.isChanged();
-        };
-        WedgeExpr.prototype.reset = function () {
-            return new WedgeExpr(this.lhs.reset(), this.rhs.reset());
-        };
-        WedgeExpr.prototype.simplify = function () {
-            var a = this.lhs.simplify();
-            var b = this.rhs.simplify();
-            if (a instanceof ScalarExpr) {
-                if (b instanceof ScalarExpr) {
-                    return new ScalarExpr(this.env, 0, true);
-                }
-                else if (typeof a.value === 'number' && a.value === 1) {
-                    return b.copy(true);
-                }
-                else {
-                    return new WedgeExpr(a, b);
-                }
-            }
-            else if (b instanceof ScalarExpr) {
-                if (a instanceof ScalarExpr) {
-                    return new ScalarExpr(this.env, 0, true);
-                }
-                else if (typeof b.value === 'number' && b.value === 1) {
-                    if (a instanceof BasisBladeExpr) {
-                        return a.copy(true);
-                    }
-                    else {
-                        return new WedgeExpr(a, b);
-                    }
-                }
-                else {
-                    return new WedgeExpr(a, b);
-                }
-            }
-            else if (a instanceof BasisBladeExpr && b instanceof BasisBladeExpr) {
-                var blade = wedgeBlades(a.vectors, b.vectors);
-                if (Array.isArray(blade)) {
-                    return new BasisBladeExpr(this.env, blade, true);
-                }
-                else {
-                    return new ScalarExpr(this.env, 0, true);
-                }
-            }
-            else if (a instanceof BasisBladeExpr && b instanceof BasisBladeExpr) {
-                if (a === b) {
-                    return new ScalarExpr(this.env, 0, true);
-                }
-                else {
-                    return new AddExpr(new MultiplyExpr(a, b), new MultiplyExpr(new ScalarExpr(this.env, -1), new VBarExpr(a, b)), true);
-                }
-            }
-            else {
-                return new WedgeExpr(a, b);
-            }
-        };
-        WedgeExpr.prototype.toPrefix = function () {
-            return "ext(" + this.lhs + ", " + this.rhs + ")";
-        };
-        WedgeExpr.prototype.toString = function () {
-            return this.lhs + " ^ " + this.rhs;
-        };
-        return WedgeExpr;
-    }(BinaryExpr));
-    exports.WedgeExpr = WedgeExpr;
-    var ReverseExpr = (function (_super) {
-        __extends(ReverseExpr, _super);
-        function ReverseExpr(inner, dirty) {
-            if (dirty === void 0) { dirty = false; }
-            _super.call(this, inner.env, 'ReverseExpr');
-            this.inner = inner;
-            this.dirty = dirty;
-        }
-        ReverseExpr.prototype.isChanged = function () {
-            return this.dirty || this.inner.isChanged();
-        };
-        ReverseExpr.prototype.copy = function (dirty) {
-            return new ReverseExpr(this.inner, dirty);
-        };
-        ReverseExpr.prototype.reset = function () {
-            return new ReverseExpr(this.inner.reset(), false);
-        };
-        ReverseExpr.prototype.simplify = function () {
-            return new ReverseExpr(this.inner.simplify());
-        };
-        ReverseExpr.prototype.toPrefix = function () {
-            return "reverse(" + this.inner + ")";
-        };
-        ReverseExpr.prototype.toString = function () {
-            return "~" + this.inner;
-        };
-        return ReverseExpr;
-    }(Expr));
-    exports.ReverseExpr = ReverseExpr;
-    var InverseExpr = (function (_super) {
-        __extends(InverseExpr, _super);
-        function InverseExpr(inner, dirty) {
-            if (dirty === void 0) { dirty = false; }
-            _super.call(this, inner.env, 'InverseExpr');
-            this.inner = inner;
-            this.dirty = dirty;
-        }
-        InverseExpr.prototype.isChanged = function () {
-            return this.dirty || this.inner.isChanged();
-        };
-        InverseExpr.prototype.copy = function (dirty) {
-            return new InverseExpr(this.inner, dirty);
-        };
-        InverseExpr.prototype.reset = function () {
-            return new InverseExpr(this.inner.reset(), false);
-        };
-        InverseExpr.prototype.simplify = function () {
-            return new InverseExpr(this.inner.simplify());
-        };
-        InverseExpr.prototype.toPrefix = function () {
-            return "inverse(" + this.inner + ")";
-        };
-        InverseExpr.prototype.toString = function () {
-            return "!" + this.inner;
-        };
-        return InverseExpr;
-    }(Expr));
-    exports.InverseExpr = InverseExpr;
-    var NegExpr = (function (_super) {
-        __extends(NegExpr, _super);
-        function NegExpr(inner, dirty) {
-            if (dirty === void 0) { dirty = false; }
-            _super.call(this, inner.env, 'NegExpr');
-            this.inner = inner;
-            this.dirty = dirty;
-        }
-        NegExpr.prototype.isChanged = function () {
-            return this.dirty || this.inner.isChanged();
-        };
-        NegExpr.prototype.copy = function (dirty) {
-            return new NegExpr(this.inner, dirty);
-        };
-        NegExpr.prototype.reset = function () {
-            return new NegExpr(this.inner.reset(), false);
-        };
-        NegExpr.prototype.simplify = function () {
-            return new NegExpr(this.inner.simplify());
-        };
-        NegExpr.prototype.toPrefix = function () {
-            return "neg(" + this.inner + ")";
-        };
-        NegExpr.prototype.toString = function () {
-            return "-" + this.inner;
-        };
-        return NegExpr;
-    }(Expr));
-    exports.NegExpr = NegExpr;
-    var PosExpr = (function (_super) {
-        __extends(PosExpr, _super);
-        function PosExpr(inner, dirty) {
-            if (dirty === void 0) { dirty = false; }
-            _super.call(this, inner.env, 'PosExpr');
-            this.inner = inner;
-            this.dirty = dirty;
-        }
-        PosExpr.prototype.isChanged = function () {
-            return this.dirty || this.inner.isChanged();
-        };
-        PosExpr.prototype.copy = function (dirty) {
-            return new PosExpr(this.inner, dirty);
-        };
-        PosExpr.prototype.reset = function () {
-            return new PosExpr(this.inner.reset(), false);
-        };
-        PosExpr.prototype.simplify = function () {
-            return new PosExpr(this.inner.simplify());
-        };
-        PosExpr.prototype.toPrefix = function () {
-            return "pos(" + this.inner + ")";
-        };
-        PosExpr.prototype.toString = function () {
-            return "+" + this.inner;
-        };
-        return PosExpr;
-    }(Expr));
-    exports.PosExpr = PosExpr;
-    var Algebra = (function () {
-        function Algebra(g, unused) {
-            this.basis = [];
-            this._bnames = [];
-            this._metric = g;
-            this.basis.push(new BasisBladeExpr(this, []));
-            this._bnames[0] = '1';
-            for (var i = 0; i < this._metric.length; i++) {
-                var vector = new BasisBladeExpr(this, [i]);
-                var bLength = this.basis.length;
-                for (var j = 0; j < bLength; j++) {
-                    var existing = this.basis[j];
-                    var extended = new WedgeExpr(existing, vector);
-                    var blade = this.simplify(extended);
-                    if (blade instanceof BasisBladeExpr) {
-                        this.basis.push(blade);
-                    }
-                    else {
-                        throw new Error(extended + " must simplify to a BasisBladeExpr");
-                    }
-                }
-            }
-        }
-        Algebra.prototype.bladeName = function (vectors) {
-            var _this = this;
-            if (vectors.length > 0) {
-                return vectors.map(function (i) {
-                    if (_this._bnames) {
-                        var basisIndex = Math.pow(2, i);
-                        if (_this._bnames[basisIndex]) {
-                            return _this._bnames[basisIndex];
-                        }
-                    }
-                    return "e" + (i + 1);
-                }).join(' ^ ');
-            }
-            else {
-                return this._bnames[0];
-            }
-        };
-        Algebra.prototype.g = function (u, v) {
-            var i = u.vectors[0];
-            var j = v.vectors[0];
-            return new ScalarExpr(this, this._metric[i][j]);
-        };
-        Algebra.prototype.scalar = function (value) {
-            return new ScalarExpr(this, value);
-        };
-        Algebra.prototype.simplify = function (expr) {
-            var count = 0;
-            if (expr instanceof Expr) {
-                expr = expr.reset();
-                expr = expr.simplify();
-                while (expr.isChanged()) {
-                    expr = expr.reset();
-                    count++;
-                    if (count < 100) {
-                        expr = expr.simplify();
-                    }
-                }
-                return expr;
-            }
-            else {
-                throw new Error("expr must be an Expr");
-            }
-        };
-        return Algebra;
-    }());
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.default = Algebra;
-});
-
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
 define('geocas/math/BigInteger',["require", "exports"], function (require, exports) {
     "use strict";
     var BASE = 1e7;
@@ -3258,7 +2316,7 @@ define('geocas/mother/Blade',["require", "exports", './bitCount', './canonicalRe
             },
             __vbar__: function (rhs, m) {
                 if (b !== rhs.bitmap) {
-                    return blade(SCALAR, adapter.zero(), adapter);
+                    return blade(SCALAR, adapter.zero, adapter);
                 }
                 else {
                     return blade(SCALAR, adapter.mul(weight, rhs.weight), adapter);
@@ -3266,7 +2324,7 @@ define('geocas/mother/Blade',["require", "exports", './bitCount', './canonicalRe
             },
             __wedge__: function (rhs) {
                 if (b & rhs.bitmap) {
-                    return blade(SCALAR, adapter.zero(), adapter);
+                    return blade(SCALAR, adapter.zero, adapter);
                 }
                 else {
                     var bitmap = b ^ rhs.bitmap;
@@ -3294,7 +2352,7 @@ define('geocas/mother/Blade',["require", "exports", './bitCount', './canonicalRe
                 return blade(b, sign > 0 ? weight : adapter.neg(weight), adapter);
             },
             zero: function () {
-                return blade(SCALAR, adapter.zero(), adapter);
+                return blade(SCALAR, adapter.zero, adapter);
             },
             asString: function (names) {
                 var bladePart = "";
@@ -3336,6 +2394,360 @@ define('geocas/mother/Blade',["require", "exports", './bitCount', './canonicalRe
     exports.default = blade;
 });
 
+define('geocas/checks/isNumber',["require", "exports"], function (require, exports) {
+    "use strict";
+    function isNumber(x) {
+        return (typeof x === 'number');
+    }
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = isNumber;
+});
+
+define('geocas/mother/Complex',["require", "exports", '../checks/isNumber'], function (require, exports, isNumber_1) {
+    "use strict";
+    function complex(x, y) {
+        var that = {
+            get x() {
+                return x;
+            },
+            get y() {
+                return y;
+            },
+            __abs__: function () {
+                return complex(Math.sqrt(x * x + y * y), 0);
+            },
+            __add__: function (rhs) {
+                return complex(x + rhs.x, y + rhs.y);
+            },
+            __sub__: function (rhs) {
+                return complex(x - rhs.x, y - rhs.y);
+            },
+            __mul__: function (rhs) {
+                if (isNumber_1.default(rhs)) {
+                    return complex(x * rhs, y * rhs);
+                }
+                else {
+                    return complex(x * rhs.x - y * rhs.y, y * rhs.x + x * rhs.y);
+                }
+            },
+            __div__: function (rhs) {
+                if (isNumber_1.default(rhs)) {
+                    return complex(x / rhs, y / rhs);
+                }
+                else {
+                    var denom = rhs.x * rhs.x + rhs.y * rhs.y;
+                    return complex((x * rhs.x + y * rhs.y) / denom, (y * rhs.x - x * rhs.y) / denom);
+                }
+            },
+            __neg__: function () {
+                return complex(-x, -y);
+            },
+            toString: function () {
+                return "[" + x + ", " + y + "]";
+            },
+            __cos__: function () {
+                throw new Error("TODO: cos");
+            },
+            __sin__: function () {
+                throw new Error("TODO: sin");
+            }
+        };
+        return that;
+    }
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = complex;
+});
+
+define('geocas/mother/ComplexFieldAdapter',["require", "exports", './Complex', '../checks/isNumber'], function (require, exports, Complex_1, isNumber_1) {
+    "use strict";
+    var ComplexFieldAdapter = (function () {
+        function ComplexFieldAdapter() {
+        }
+        ComplexFieldAdapter.prototype.abs = function (z) {
+            return z.__abs__();
+        };
+        ComplexFieldAdapter.prototype.add = function (lhs, rhs) {
+            return lhs.__add__(rhs);
+        };
+        ComplexFieldAdapter.prototype.eq = function (lhs, rhs) {
+            return lhs.x === rhs.x && lhs.y === rhs.y;
+        };
+        ComplexFieldAdapter.prototype.ne = function (lhs, rhs) {
+            return lhs.x !== rhs.x || lhs.y !== rhs.y;
+        };
+        ComplexFieldAdapter.prototype.le = function (lhs, rhs) {
+            return lhs.x <= rhs.x;
+        };
+        ComplexFieldAdapter.prototype.lt = function (lhs, rhs) {
+            return lhs.x < rhs.x;
+        };
+        ComplexFieldAdapter.prototype.ge = function (lhs, rhs) {
+            return lhs.x >= rhs.x;
+        };
+        ComplexFieldAdapter.prototype.gt = function (lhs, rhs) {
+            return lhs.x > rhs.x;
+        };
+        ComplexFieldAdapter.prototype.sub = function (lhs, rhs) {
+            return lhs.__sub__(rhs);
+        };
+        ComplexFieldAdapter.prototype.max = function (lhs, rhs) {
+            return (lhs.x >= rhs.x) ? lhs : rhs;
+        };
+        ComplexFieldAdapter.prototype.min = function (lhs, rhs) {
+            return (lhs.x <= rhs.x) ? lhs : rhs;
+        };
+        ComplexFieldAdapter.prototype.mul = function (lhs, rhs) {
+            return lhs.__mul__(rhs);
+        };
+        ComplexFieldAdapter.prototype.mulByNumber = function (arg, α) {
+            return arg.__mul__(α);
+        };
+        ComplexFieldAdapter.prototype.div = function (lhs, rhs) {
+            return lhs.__div__(rhs);
+        };
+        ComplexFieldAdapter.prototype.neg = function (z) {
+            return z.__neg__();
+        };
+        ComplexFieldAdapter.prototype.asString = function (z) {
+            return z.toString();
+        };
+        ComplexFieldAdapter.prototype.cos = function (z) {
+            return z.__cos__();
+        };
+        ComplexFieldAdapter.prototype.isField = function (z) {
+            return isNumber_1.default(z.x) && isNumber_1.default(z.y);
+        };
+        ComplexFieldAdapter.prototype.isOne = function (z) {
+            return z.x === 1 && z.y === 0;
+        };
+        ComplexFieldAdapter.prototype.isZero = function (z) {
+            return z.x === 0 && z.y === 0;
+        };
+        Object.defineProperty(ComplexFieldAdapter.prototype, "one", {
+            get: function () {
+                return Complex_1.default(1, 0);
+            },
+            enumerable: true,
+            configurable: true
+        });
+        ComplexFieldAdapter.prototype.sin = function (z) {
+            return z.__sin__();
+        };
+        ComplexFieldAdapter.prototype.sqrt = function (z) {
+            if (z.x === 0) {
+                if (z.y === 0) {
+                    throw new Error("TODO: sqrt" + z.toString());
+                }
+                else {
+                    throw new Error("TODO: sqrt" + z.toString());
+                }
+            }
+            else {
+                if (z.y === 0) {
+                    if (z.x > 0) {
+                        return Complex_1.default(Math.sqrt(z.x), 0);
+                    }
+                    else {
+                        return Complex_1.default(0, Math.sqrt(-z.x));
+                    }
+                }
+                else {
+                    throw new Error("TODO: sqrt" + z.toString());
+                }
+            }
+        };
+        Object.defineProperty(ComplexFieldAdapter.prototype, "zero", {
+            get: function () {
+                return Complex_1.default(0, 0);
+            },
+            enumerable: true,
+            configurable: true
+        });
+        return ComplexFieldAdapter;
+    }());
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = ComplexFieldAdapter;
+});
+
+define('geocas/mother/squaredNorm',["require", "exports"], function (require, exports) {
+    "use strict";
+    function squaredNorm(A) {
+        return A.scp(A.rev());
+    }
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = squaredNorm;
+});
+
+define('geocas/mother/norm',["require", "exports", './squaredNorm'], function (require, exports, squaredNorm_1) {
+    "use strict";
+    function norm(A) {
+        return squaredNorm_1.default(A).sqrt();
+    }
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = norm;
+});
+
+define('geocas/mother/cosineOfAngleBetweenBlades',["require", "exports", './norm'], function (require, exports, norm_1) {
+    "use strict";
+    function cos(A, B) {
+        var a = norm_1.default(A).scalarCoordinate();
+        var b = norm_1.default(B).scalarCoordinate();
+        return A.scp(B.rev()).divByScalar(a).divByScalar(b);
+    }
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = cos;
+});
+
+define('geocas/mother/NumberFieldAdapter',["require", "exports"], function (require, exports) {
+    "use strict";
+    var NumberFieldAdapter = (function () {
+        function NumberFieldAdapter() {
+        }
+        NumberFieldAdapter.prototype.abs = function (arg) {
+            return Math.abs(arg);
+        };
+        NumberFieldAdapter.prototype.add = function (lhs, rhs) {
+            return lhs + rhs;
+        };
+        NumberFieldAdapter.prototype.eq = function (lhs, rhs) {
+            return lhs === rhs;
+        };
+        NumberFieldAdapter.prototype.ne = function (lhs, rhs) {
+            return lhs !== rhs;
+        };
+        NumberFieldAdapter.prototype.le = function (lhs, rhs) {
+            return lhs <= rhs;
+        };
+        NumberFieldAdapter.prototype.lt = function (lhs, rhs) {
+            return lhs < rhs;
+        };
+        NumberFieldAdapter.prototype.ge = function (lhs, rhs) {
+            return lhs >= rhs;
+        };
+        NumberFieldAdapter.prototype.gt = function (lhs, rhs) {
+            return lhs > rhs;
+        };
+        NumberFieldAdapter.prototype.sub = function (lhs, rhs) {
+            return lhs - rhs;
+        };
+        NumberFieldAdapter.prototype.max = function (lhs, rhs) {
+            return Math.max(lhs, rhs);
+        };
+        NumberFieldAdapter.prototype.min = function (lhs, rhs) {
+            return Math.min(lhs, rhs);
+        };
+        NumberFieldAdapter.prototype.mul = function (lhs, rhs) {
+            return lhs * rhs;
+        };
+        NumberFieldAdapter.prototype.mulByNumber = function (arg, alpha) {
+            return arg * alpha;
+        };
+        NumberFieldAdapter.prototype.div = function (lhs, rhs) {
+            return lhs / rhs;
+        };
+        NumberFieldAdapter.prototype.neg = function (arg) {
+            return -arg;
+        };
+        NumberFieldAdapter.prototype.asString = function (arg) {
+            return arg.toString();
+        };
+        NumberFieldAdapter.prototype.cos = function (arg) {
+            return Math.cos(arg);
+        };
+        NumberFieldAdapter.prototype.isField = function (arg) {
+            return typeof arg === 'number';
+        };
+        NumberFieldAdapter.prototype.isOne = function (arg) {
+            return arg === 1;
+        };
+        NumberFieldAdapter.prototype.isZero = function (arg) {
+            return arg === 0;
+        };
+        Object.defineProperty(NumberFieldAdapter.prototype, "one", {
+            get: function () {
+                return 1;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        NumberFieldAdapter.prototype.sin = function (arg) {
+            return Math.sin(arg);
+        };
+        NumberFieldAdapter.prototype.sqrt = function (arg) {
+            return Math.sqrt(arg);
+        };
+        Object.defineProperty(NumberFieldAdapter.prototype, "zero", {
+            get: function () {
+                return 0;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        return NumberFieldAdapter;
+    }());
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = NumberFieldAdapter;
+});
+
+define('geocas/mother/orthoFramesToVersor',["require", "exports", './cosineOfAngleBetweenBlades'], function (require, exports, cosineOfAngleBetweenBlades_1) {
+    "use strict";
+    function orthoFramesToVersor(A, B, vs, algebra) {
+        if (A.length > 0) {
+            var j = bestIndex(A, B, algebra);
+            var a = A[j];
+            var b = B[j];
+            var e_1 = a.sub(b);
+            var field = algebra.field;
+            var eps = field.mulByNumber(field.one, 1e-6);
+            var cosMinusOne = cosineOfAngleBetweenBlades_1.default(a, b).sub(algebra.one).scalarCoordinate();
+            var tooClose = field.lt(field.abs(cosMinusOne), eps);
+            if (tooClose) {
+                return orthoFramesToVersor(removeAt(A, j), removeAt(B, j), vs, algebra);
+            }
+            else {
+                var e2_1 = e_1.scp(e_1).scalarCoordinate();
+                var rvs = prepend(vs, e_1.divByScalar(algebra.field.sqrt(e2_1)));
+                return orthoFramesToVersor(removeAt(A, j).map(function (x) { return e_1.mul(x.mul(e_1)).neg().divByScalar(e2_1); }), removeAt(B, j), rvs, algebra);
+            }
+        }
+        else {
+            return vs;
+        }
+    }
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = orthoFramesToVersor;
+    function prepend(xs, x) {
+        var result = [];
+        result.push(x);
+        for (var i = 0; i < xs.length; i++) {
+            result.push(xs[i]);
+        }
+        return result;
+    }
+    function removeAt(xs, index) {
+        var result = [];
+        for (var i = 0; i < xs.length; i++) {
+            if (i !== index) {
+                result.push(xs[i]);
+            }
+        }
+        return result;
+    }
+    function bestIndex(A, B, algebra) {
+        var N = A.length;
+        var max = algebra.zero;
+        var idx = 0;
+        for (var k = 0; k < N; k++) {
+            var x = A[k].sub(B[k]);
+            var squaredNorm = x.scp(x.rev()).scalarCoordinate();
+            if (algebra.field.gt(squaredNorm, max.scalarCoordinate())) {
+                idx = k;
+            }
+        }
+        return idx;
+    }
+});
+
 define('geocas/mother/gpE',["require", "exports", './Blade', './canonicalReorderingSign'], function (require, exports, Blade_1, canonicalReorderingSign_1) {
     "use strict";
     function gpE(a, b, adapter) {
@@ -3362,7 +2774,7 @@ define('geocas/mother/gpL',["require", "exports", './Blade', './gpE'], function 
         var i = 0;
         while (bitmap !== 0) {
             if ((bitmap & 1) !== 0) {
-                weight = adapter.scale(weight, m[i]);
+                weight = adapter.mulByNumber(weight, m[i]);
             }
             i++;
             bitmap = bitmap >> 1;
@@ -3591,13 +3003,22 @@ define('geocas/checks/isArray',["require", "exports"], function (require, export
     exports.default = isArray;
 });
 
-define('geocas/checks/isNumber',["require", "exports"], function (require, exports) {
+define('geocas/checks/isDefined',["require", "exports"], function (require, exports) {
     "use strict";
-    function isNumber(x) {
-        return (typeof x === 'number');
+    function isDefined(arg) {
+        return (typeof arg !== 'undefined');
     }
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.default = isNumber;
+    exports.default = isDefined;
+});
+
+define('geocas/checks/isString',["require", "exports"], function (require, exports) {
+    "use strict";
+    function isString(s) {
+        return (typeof s === 'string');
+    }
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = isString;
 });
 
 define('geocas/checks/mustSatisfy',["require", "exports"], function (require, exports) {
@@ -3611,15 +3032,6 @@ define('geocas/checks/mustSatisfy',["require", "exports"], function (require, ex
     }
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = mustSatisfy;
-});
-
-define('geocas/checks/isDefined',["require", "exports"], function (require, exports) {
-    "use strict";
-    function isDefined(arg) {
-        return (typeof arg !== 'undefined');
-    }
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.default = isDefined;
 });
 
 define('geocas/checks/mustBeDefined',["require", "exports", '../checks/mustSatisfy', '../checks/isDefined'], function (require, exports, mustSatisfy_1, isDefined_1) {
@@ -3657,7 +3069,7 @@ define('geocas/checks/mustBeInteger',["require", "exports", '../checks/mustSatis
     exports.default = mustBeInteger;
 });
 
-define('geocas/mother/Multivector',["require", "exports", './Blade', './gpE', './gpL', './gpG', './lcoE', './lcoL', './lcoG', './rcoE', './rcoL', './rcoG', '../checks/isArray', '../checks/isNumber', '../checks/isUndefined', '../checks/mustBeDefined', '../checks/mustBeInteger', '../checks/mustSatisfy', './simplify'], function (require, exports, Blade_1, gpE_1, gpL_1, gpG_1, lcoE_1, lcoL_1, lcoG_1, rcoE_1, rcoL_1, rcoG_1, isArray_1, isNumber_1, isUndefined_1, mustBeDefined_1, mustBeInteger_1, mustSatisfy_1, simplify_1) {
+define('geocas/mother/Multivector',["require", "exports", './Blade', './gpE', './gpL', './gpG', './lcoE', './lcoL', './lcoG', './rcoE', './rcoL', './rcoG', '../checks/isArray', '../checks/isDefined', '../checks/isNumber', '../checks/isString', '../checks/isUndefined', '../checks/mustBeDefined', '../checks/mustBeInteger', '../checks/mustSatisfy', './simplify'], function (require, exports, Blade_1, gpE_1, gpL_1, gpG_1, lcoE_1, lcoL_1, lcoG_1, rcoE_1, rcoL_1, rcoG_1, isArray_1, isDefined_1, isNumber_1, isString_1, isUndefined_1, mustBeDefined_1, mustBeInteger_1, mustSatisfy_1, simplify_1) {
     "use strict";
     function isMultivector(arg) {
         if (arg) {
@@ -3687,14 +3099,14 @@ define('geocas/mother/Multivector',["require", "exports", './Blade', './gpE', '.
             throw new Error("metric is undefined");
         }
     }
-    function add(lhs, rhs, metric, adapter) {
+    function add(lhs, rhs, metric, adapter, labels) {
         if (adapter.isField(lhs) && isMultivector(rhs)) {
             var rez = [];
             rez.push(Blade_1.default(0, lhs, adapter));
             for (var k = 0; k < rhs.blades.length; k++) {
                 rez.push(rhs.blades[k]);
             }
-            return mv(simplify_1.default(rez, adapter), metric, adapter);
+            return mv(simplify_1.default(rez, adapter), metric, adapter, labels);
         }
         else if (isMultivector(lhs) && adapter.isField(rhs)) {
             var rez = [];
@@ -3702,7 +3114,7 @@ define('geocas/mother/Multivector',["require", "exports", './Blade', './gpE', '.
             for (var k = 0; k < lhs.blades.length; k++) {
                 rez.push(lhs.blades[k]);
             }
-            return mv(simplify_1.default(rez, adapter), metric, adapter);
+            return mv(simplify_1.default(rez, adapter), metric, adapter, labels);
         }
         else {
             if (isMultivector(lhs) && isMultivector(rhs)) {
@@ -3713,21 +3125,21 @@ define('geocas/mother/Multivector',["require", "exports", './Blade', './gpE', '.
                 for (var k = 0; k < rhs.blades.length; k++) {
                     rez.push(rhs.blades[k]);
                 }
-                return mv(simplify_1.default(rez, adapter), metric, adapter);
+                return mv(simplify_1.default(rez, adapter), metric, adapter, labels);
             }
             else {
                 return void 0;
             }
         }
     }
-    function sub(lhs, rhs, metric, adapter) {
+    function sub(lhs, rhs, metric, adapter, labels) {
         if (adapter.isField(lhs) && isMultivector(rhs)) {
             var rez = [];
             rez.push(Blade_1.default(0, lhs, adapter));
             for (var k = 0; k < rhs.blades.length; k++) {
                 rez.push(rhs.blades[k].__neg__());
             }
-            return mv(simplify_1.default(rez, adapter), metric, adapter);
+            return mv(simplify_1.default(rez, adapter), metric, adapter, labels);
         }
         else if (isMultivector(lhs) && adapter.isField(rhs)) {
             var rez = [];
@@ -3735,7 +3147,7 @@ define('geocas/mother/Multivector',["require", "exports", './Blade', './gpE', '.
             for (var k = 0; k < lhs.blades.length; k++) {
                 rez.push(lhs.blades[k]);
             }
-            return mv(simplify_1.default(rez, adapter), metric, adapter);
+            return mv(simplify_1.default(rez, adapter), metric, adapter, labels);
         }
         else {
             if (isMultivector(lhs) && isMultivector(rhs)) {
@@ -3746,14 +3158,14 @@ define('geocas/mother/Multivector',["require", "exports", './Blade', './gpE', '.
                 for (var k = 0; k < rhs.blades.length; k++) {
                     rez.push(rhs.blades[k].__neg__());
                 }
-                return mv(simplify_1.default(rez, adapter), metric, adapter);
+                return mv(simplify_1.default(rez, adapter), metric, adapter, labels);
             }
             else {
                 return void 0;
             }
         }
     }
-    function mul(lhs, rhs, metric, adapter) {
+    function mul(lhs, rhs, metric, adapter, labels) {
         if (adapter.isField(lhs) && isMultivector(rhs)) {
             return rhs.mulByScalar(lhs);
         }
@@ -3783,7 +3195,7 @@ define('geocas/mother/Multivector',["require", "exports", './Blade', './gpE', '.
                         }
                     }
                 }
-                return mv(simplify_1.default(rez, adapter), metric, adapter);
+                return mv(simplify_1.default(rez, adapter), metric, adapter, labels);
             }
             else {
                 return void 0;
@@ -3806,23 +3218,21 @@ define('geocas/mother/Multivector',["require", "exports", './Blade', './gpE', '.
             }
         }
     }
-    function getBasisVector(index, metric, adapter) {
+    function getBasisVector(index, metric, field, labels) {
         mustBeInteger_1.default('index', index);
         mustBeDefined_1.default('metric', metric);
-        mustBeDefined_1.default('adapter', adapter);
-        var B = Blade_1.default(1 << index, adapter.one(), adapter);
-        return mv([B], metric, adapter);
+        mustBeDefined_1.default('field', field);
+        var B = Blade_1.default(1 << index, field.one, field);
+        return mv([B], metric, field, labels);
     }
-    exports.getBasisVector = getBasisVector;
-    function getScalar(weight, metric, adapter) {
+    function getScalar(weight, metric, adapter, labels) {
         mustBeDefined_1.default('metric', metric);
         mustBeDefined_1.default('adapter', adapter);
         mustSatisfy_1.default('weight', adapter.isField(weight), function () { return "be a field value"; });
         var B = Blade_1.default(0, weight, adapter);
-        return mv([B], metric, adapter);
+        return mv([B], metric, adapter, labels);
     }
-    exports.getScalar = getScalar;
-    function mv(blades, metric, adapter) {
+    function mv(blades, metric, adapter, labels) {
         if (!isArray_1.default(blades)) {
             throw new Error("blades must be Blade<T>[]");
         }
@@ -3840,29 +3250,29 @@ define('geocas/mother/Multivector',["require", "exports", './Blade', './gpE', '.
                     rez.push(B);
                 }
             }
-            return mv(rez, metric, adapter);
+            return mv(rez, metric, adapter, labels);
         };
         var that = {
             get blades() {
                 return blades;
             },
             add: function (rhs) {
-                return add(that, rhs, metric, adapter);
+                return add(that, rhs, metric, adapter, labels);
             },
             __add__: function (rhs) {
-                return add(that, rhs, metric, adapter);
+                return add(that, rhs, metric, adapter, labels);
             },
             __radd__: function (lhs) {
-                return add(lhs, that, metric, adapter);
+                return add(lhs, that, metric, adapter, labels);
             },
             sub: function (rhs) {
-                return sub(that, rhs, metric, adapter);
+                return sub(that, rhs, metric, adapter, labels);
             },
             __sub__: function (rhs) {
-                return sub(that, rhs, metric, adapter);
+                return sub(that, rhs, metric, adapter, labels);
             },
             __rsub__: function (lhs) {
-                return sub(lhs, that, metric, adapter);
+                return sub(lhs, that, metric, adapter, labels);
             },
             inv: function () {
                 var reverse = that.rev();
@@ -3871,11 +3281,14 @@ define('geocas/mother/Multivector',["require", "exports", './Blade', './gpE', '.
                     return reverse.divByScalar(denom.scalarCoordinate());
                 }
                 else {
-                    throw new Error("non-invertible multivector (versor inverse)");
+                    throw new Error("non-invertible multivector (versor inverse) " + that);
                 }
             },
+            isZero: function () {
+                return blades.length === 0;
+            },
             mul: function (rhs) {
-                return mul(that, rhs, metric, adapter);
+                return mul(that, rhs, metric, adapter, labels);
             },
             mulByScalar: function (α) {
                 var rez = [];
@@ -3886,13 +3299,13 @@ define('geocas/mother/Multivector',["require", "exports", './Blade', './gpE', '.
                         rez.push(Blade_1.default(B.bitmap, scale, adapter));
                     }
                 }
-                return mv(rez, metric, adapter);
+                return mv(rez, metric, adapter, labels);
             },
             __mul__: function (rhs) {
-                return mul(that, rhs, metric, adapter);
+                return mul(that, rhs, metric, adapter, labels);
             },
             __rmul__: function (lhs) {
-                return mul(lhs, that, metric, adapter);
+                return mul(lhs, that, metric, adapter, labels);
             },
             __div__: function (rhs) {
                 return div(that, rhs, metric, adapter);
@@ -3919,7 +3332,7 @@ define('geocas/mother/Multivector',["require", "exports", './Blade', './gpE', '.
                         }
                     }
                 }
-                return mv(simplify_1.default(rez, adapter), metric, adapter);
+                return mv(simplify_1.default(rez, adapter), metric, adapter, labels);
             },
             __rshift__: function (rhs) {
                 var rez = [];
@@ -3943,7 +3356,7 @@ define('geocas/mother/Multivector',["require", "exports", './Blade', './gpE', '.
                         }
                     }
                 }
-                return mv(simplify_1.default(rez, adapter), metric, adapter);
+                return mv(simplify_1.default(rez, adapter), metric, adapter, labels);
             },
             __vbar__: function (rhs) {
                 return that.__mul__(rhs).extractGrade(0);
@@ -3958,7 +3371,7 @@ define('geocas/mother/Multivector',["require", "exports", './Blade', './gpE', '.
                         rez.push(B);
                     }
                 }
-                return mv(simplify_1.default(rez, adapter), metric, adapter);
+                return mv(simplify_1.default(rez, adapter), metric, adapter, labels);
             },
             __bang__: function () {
                 return that.inv();
@@ -3966,13 +3379,21 @@ define('geocas/mother/Multivector',["require", "exports", './Blade', './gpE', '.
             __pos__: function () {
                 return that;
             },
+            neg: function () {
+                var rez = [];
+                for (var i = 0; i < blades.length; i++) {
+                    var B = blades[i];
+                    rez.push(B.__neg__());
+                }
+                return mv(rez, metric, adapter, labels);
+            },
             __neg__: function () {
                 var rez = [];
                 for (var i = 0; i < blades.length; i++) {
                     var B = blades[i];
                     rez.push(B.__neg__());
                 }
-                return mv(rez, metric, adapter);
+                return mv(rez, metric, adapter, labels);
             },
             __tilde__: function () {
                 return that.rev();
@@ -3983,15 +3404,43 @@ define('geocas/mother/Multivector',["require", "exports", './Blade', './gpE', '.
                     var B = blades[i];
                     rez.push(B.cliffordConjugate());
                 }
-                return mv(rez, metric, adapter);
+                return mv(rez, metric, adapter, labels);
+            },
+            compress: function (fraction) {
+                if (fraction === void 0) { fraction = 1e-12; }
+                var eps = adapter.mulByNumber(adapter.one, fraction);
+                var max = adapter.zero;
+                for (var i = 0; i < blades.length; i++) {
+                    var B = blades[i];
+                    max = adapter.max(max, adapter.abs(B.weight));
+                }
+                var cutOff = adapter.mul(max, eps);
+                var rez = [];
+                for (var i = 0; i < blades.length; i++) {
+                    var B = blades[i];
+                    if (adapter.ge(adapter.abs(B.weight), cutOff)) {
+                        rez.push(B);
+                    }
+                }
+                return mv(rez, metric, adapter, labels);
+            },
+            direction: function () {
+                var squaredNorm = that.scp(that.rev()).scalarCoordinate();
+                var norm = adapter.sqrt(squaredNorm);
+                if (!adapter.isZero(norm)) {
+                    return that.divByScalar(norm);
+                }
+                else {
+                    return that;
+                }
             },
             exp: function () {
                 var B = extractGrade(2);
                 var Brev = B.rev();
                 var θ = adapter.sqrt(B.__vbar__(Brev).scalarCoordinate());
                 var i = B.divByScalar(θ);
-                var cosθ = mv([Blade_1.default(0, adapter.cos(θ), adapter)], metric, adapter);
-                var sinθ = mv([Blade_1.default(0, adapter.sin(θ), adapter)], metric, adapter);
+                var cosθ = mv([Blade_1.default(0, adapter.cos(θ), adapter)], metric, adapter, labels);
+                var sinθ = mv([Blade_1.default(0, adapter.sin(θ), adapter)], metric, adapter, labels);
                 return cosθ.__add__(i.__mul__(sinθ));
             },
             extractGrade: extractGrade,
@@ -4007,11 +3456,11 @@ define('geocas/mother/Multivector',["require", "exports", './Blade', './gpE', '.
                         rez.push(Blade_1.default(B.bitmap, scale, adapter));
                     }
                 }
-                return mv(rez, metric, adapter);
+                return mv(rez, metric, adapter, labels);
             },
             dual: function () {
                 var n = dim(metric);
-                var I = mv([Blade_1.default((1 << n) - 1, adapter.one(), adapter)], metric, adapter);
+                var I = mv([Blade_1.default((1 << n) - 1, adapter.one, adapter)], metric, adapter, labels);
                 return that.__lshift__(I);
             },
             gradeInversion: function () {
@@ -4020,7 +3469,7 @@ define('geocas/mother/Multivector',["require", "exports", './Blade', './gpE', '.
                     var B = blades[i];
                     rez.push(B.gradeInversion());
                 }
-                return mv(rez, metric, adapter);
+                return mv(rez, metric, adapter, labels);
             },
             rev: function () {
                 var rez = [];
@@ -4028,7 +3477,7 @@ define('geocas/mother/Multivector',["require", "exports", './Blade', './gpE', '.
                     var B = blades[i];
                     rez.push(B.reverse());
                 }
-                return mv(rez, metric, adapter);
+                return mv(rez, metric, adapter, labels);
             },
             scalarCoordinate: function () {
                 for (var i = 0; i < blades.length; i++) {
@@ -4037,12 +3486,26 @@ define('geocas/mother/Multivector',["require", "exports", './Blade', './gpE', '.
                         return B.weight;
                     }
                 }
-                return adapter.zero();
+                return adapter.zero;
             },
             scp: function (rhs) {
-                return that.__vbar__(rhs).scalarCoordinate();
+                return that.__vbar__(rhs);
+            },
+            sqrt: function () {
+                var rez = [];
+                for (var i = 0; i < blades.length; i++) {
+                    var B = blades[i];
+                    if (B.bitmap === 0) {
+                        rez.push(Blade_1.default(B.bitmap, adapter.sqrt(B.weight), adapter));
+                    }
+                    else {
+                        throw new Error("sqrt on arbitrary multivectors is not yet supported.");
+                    }
+                }
+                return mv(rez, metric, adapter, labels);
             },
             asString: function (names) {
+                checkBasisLabels('names', names, dim(metric));
                 if (blades.length === 0) {
                     return "0";
                 }
@@ -4069,72 +3532,66 @@ define('geocas/mother/Multivector',["require", "exports", './Blade', './gpE', '.
                 }
             },
             toString: function () {
-                return that.asString(void 0);
+                return that.asString(labels);
             }
         };
         return that;
     }
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.default = mv;
-});
-
-define('geocas/mother/NumberFieldAdapter',["require", "exports"], function (require, exports) {
-    "use strict";
-    var NumberFieldAdapter = (function () {
-        function NumberFieldAdapter() {
+    function checkBasisLabels(name, labels, n) {
+        if (isDefined_1.default(labels)) {
+            if (isArray_1.default(labels)) {
+                if (labels.length !== n) {
+                    throw new Error(name + ".length must match the dimensionality of the vector space.");
+                }
+                for (var i = 0; i < labels.length; i++) {
+                    var label = labels[i];
+                    if (!isString_1.default(label)) {
+                        throw new Error(name + "[" + i + "] must be a string.");
+                    }
+                }
+            }
+            else {
+                throw new Error(name + " must be a string[]");
+            }
         }
-        NumberFieldAdapter.prototype.abs = function (arg) {
-            return Math.abs(arg);
+    }
+    function algebra(metric, field, labels) {
+        mustBeDefined_1.default('metric', metric);
+        var n = dim(metric);
+        mustBeDefined_1.default('field', field);
+        checkBasisLabels('labels', labels, n);
+        var scalarOne = getScalar(field.one, metric, field, labels);
+        var scalarZero = getScalar(field.zero, metric, field, labels);
+        var basisVectors = [];
+        for (var i = 0; i < n; i++) {
+            basisVectors[i] = getBasisVector(i, metric, field, labels);
+        }
+        var that = {
+            get field() {
+                return field;
+            },
+            get one() {
+                return scalarOne;
+            },
+            get zero() {
+                return scalarZero;
+            },
+            unit: function (index) {
+                mustBeInteger_1.default('index', index);
+                if (index >= 0 && index < n) {
+                    return basisVectors[index];
+                }
+                else {
+                    throw new Error("index must be in range [0 ... " + (n - 1) + ")");
+                }
+            },
+            get units() {
+                return basisVectors.map(function (x) { return x; });
+            }
         };
-        NumberFieldAdapter.prototype.add = function (lhs, rhs) {
-            return lhs + rhs;
-        };
-        NumberFieldAdapter.prototype.sub = function (lhs, rhs) {
-            return lhs - rhs;
-        };
-        NumberFieldAdapter.prototype.mul = function (lhs, rhs) {
-            return lhs * rhs;
-        };
-        NumberFieldAdapter.prototype.div = function (lhs, rhs) {
-            return lhs / rhs;
-        };
-        NumberFieldAdapter.prototype.neg = function (arg) {
-            return -arg;
-        };
-        NumberFieldAdapter.prototype.asString = function (arg) {
-            return arg.toString();
-        };
-        NumberFieldAdapter.prototype.cos = function (arg) {
-            return Math.cos(arg);
-        };
-        NumberFieldAdapter.prototype.isField = function (arg) {
-            return typeof arg === 'number';
-        };
-        NumberFieldAdapter.prototype.isOne = function (arg) {
-            return arg === 1;
-        };
-        NumberFieldAdapter.prototype.isZero = function (arg) {
-            return arg === 0;
-        };
-        NumberFieldAdapter.prototype.one = function () {
-            return 1;
-        };
-        NumberFieldAdapter.prototype.scale = function (arg, alpha) {
-            return arg * alpha;
-        };
-        NumberFieldAdapter.prototype.sin = function (arg) {
-            return Math.sin(arg);
-        };
-        NumberFieldAdapter.prototype.sqrt = function (arg) {
-            return Math.sqrt(arg);
-        };
-        NumberFieldAdapter.prototype.zero = function () {
-            return 0;
-        };
-        return NumberFieldAdapter;
-    }());
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.default = NumberFieldAdapter;
+        return that;
+    }
+    exports.algebra = algebra;
 });
 
 define('geocas/config',["require", "exports"], function (require, exports) {
@@ -4142,9 +3599,9 @@ define('geocas/config',["require", "exports"], function (require, exports) {
     var GeoCAS = (function () {
         function GeoCAS() {
             this.GITHUB = 'https://github.com/geometryzen/GeoCAS';
-            this.LAST_MODIFIED = '2016-09-21';
+            this.LAST_MODIFIED = '2016-09-23';
             this.NAMESPACE = 'GeoCAS';
-            this.VERSION = '1.6.0';
+            this.VERSION = '1.8.0';
         }
         GeoCAS.prototype.log = function (message) {
             var optionalParams = [];
@@ -4181,19 +3638,22 @@ define('geocas/config',["require", "exports"], function (require, exports) {
     exports.default = config;
 });
 
-define('geocas',["require", "exports", './geocas/math/Algebra', './geocas/math/BigInteger', './geocas/math/BigRational', './geocas/mother/Blade', './geocas/mother/Multivector', './geocas/mother/NumberFieldAdapter', './geocas/mother/Multivector', './geocas/config'], function (require, exports, Algebra_1, BigInteger_1, BigRational_1, Blade_1, Multivector_1, NumberFieldAdapter_1, Multivector_2, config_1) {
+define('geocas',["require", "exports", './geocas/math/BigInteger', './geocas/math/BigRational', './geocas/mother/Blade', './geocas/mother/Complex', './geocas/mother/ComplexFieldAdapter', './geocas/mother/cosineOfAngleBetweenBlades', './geocas/mother/norm', './geocas/mother/NumberFieldAdapter', './geocas/mother/orthoFramesToVersor', './geocas/mother/Multivector', './geocas/config', './geocas/mother/squaredNorm'], function (require, exports, BigInteger_1, BigRational_1, Blade_1, Complex_1, ComplexFieldAdapter_1, cosineOfAngleBetweenBlades_1, norm_1, NumberFieldAdapter_1, orthoFramesToVersor_1, Multivector_1, config_1, squaredNorm_1) {
     "use strict";
     var GeoCAS = {
         get LAST_MODIFIED() { return config_1.default.LAST_MODIFIED; },
         get VERSION() { return config_1.default.VERSION; },
-        get Algebra() { return Algebra_1.default; },
         get bigInt() { return BigInteger_1.default; },
         get bigRat() { return BigRational_1.default; },
         get blade() { return Blade_1.default; },
-        get mv() { return Multivector_1.default; },
+        get complex() { return Complex_1.default; },
+        get ComplexFieldAdapter() { return ComplexFieldAdapter_1.default; },
+        get cosineOfAngleBetweenBlades() { return cosineOfAngleBetweenBlades_1.default; },
+        get norm() { return norm_1.default; },
         get NumberFieldAdapter() { return NumberFieldAdapter_1.default; },
-        get getScalar() { return Multivector_2.getScalar; },
-        get getBasisVector() { return Multivector_2.getBasisVector; }
+        get orthoFramesToVersor() { return orthoFramesToVersor_1.default; },
+        get algebra() { return Multivector_1.algebra; },
+        get squaredNorm() { return squaredNorm_1.default; }
     };
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = GeoCAS;

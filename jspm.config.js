@@ -278,7 +278,7 @@ System.config({
       "create-hmac": "npm:create-hmac@1.1.4",
       "diffie-hellman": "npm:diffie-hellman@5.0.2",
       "inherits": "npm:inherits@2.0.1",
-      "pbkdf2": "npm:pbkdf2@3.0.7",
+      "pbkdf2": "npm:pbkdf2@3.0.8",
       "public-encrypt": "npm:public-encrypt@4.0.0",
       "randombytes": "npm:randombytes@2.0.3"
     },
@@ -432,7 +432,7 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "create-hash": "npm:create-hash@1.1.2",
       "evp_bytestokey": "npm:evp_bytestokey@1.0.0",
-      "pbkdf2": "npm:pbkdf2@3.0.7",
+      "pbkdf2": "npm:pbkdf2@3.0.8",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
     },
     "npm:parsejson@0.0.1": {
@@ -447,7 +447,7 @@ System.config({
     "npm:path-browserify@0.0.0": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:pbkdf2@3.0.7": {
+    "npm:pbkdf2@3.0.8": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "create-hmac": "npm:create-hmac@1.1.4",
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
