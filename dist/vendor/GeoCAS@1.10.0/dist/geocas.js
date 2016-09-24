@@ -3256,6 +3256,9 @@ define('geocas/mother/Multivector',["require", "exports", './Blade', './gpE', '.
             get blades() {
                 return blades;
             },
+            __abs__: function () {
+                return that.scp(that.rev()).sqrt();
+            },
             add: function (rhs) {
                 return add(that, rhs, metric, adapter, labels);
             },
@@ -3601,7 +3604,7 @@ define('geocas/config',["require", "exports"], function (require, exports) {
             this.GITHUB = 'https://github.com/geometryzen/GeoCAS';
             this.LAST_MODIFIED = '2016-09-23';
             this.NAMESPACE = 'GeoCAS';
-            this.VERSION = '1.8.0';
+            this.VERSION = '1.10.0';
         }
         GeoCAS.prototype.log = function (message) {
             var optionalParams = [];

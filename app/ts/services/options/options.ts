@@ -19,7 +19,7 @@ app.factory('options', [
         const VERSION_DOMREADY = '1.0.0';
         const VERSION_D3 = '3.5.5';
         const VERSION_EIGHT = '2.311.0';
-        const VERSION_GEOCAS = '1.8.0';
+        const VERSION_GEOCAS = '1.10.0';
         const VERSION_GLMATRIX = '2.3.2';
         const VERSION_JASMINE = '2.4.1';
         const VERSION_JQUERY = '2.1.4';
