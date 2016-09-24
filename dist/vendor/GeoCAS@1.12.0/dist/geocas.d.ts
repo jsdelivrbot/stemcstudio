@@ -45,6 +45,7 @@ declare module GeoCAS {
     }
 
     interface FieldAdapter<T> {
+        ε: T;
         one: T;
         zero: T;
         abs(arg: T): T;
@@ -132,6 +133,8 @@ declare module GeoCAS {
      * A ready-made implementation of FieldAdapter<T> with T being a number.
      */
     class NumberFieldAdapter implements FieldAdapter<number> {
+        constructor(ε?: number);
+        ε: number;
         one: number;
         zero: number;
         abs(arg: number): number;
@@ -163,6 +166,10 @@ declare module GeoCAS {
      * 
      */
     interface Algebra<T> {
+        /**
+         * Returns the epsilon (rounding error) ratio for numerical calculations.
+         */
+        ε: Multivector<T>;
         /**
          * Returns the adapter used to interact with the parameterized field.
          */
@@ -236,6 +243,8 @@ declare module GeoCAS {
      * 
      */
     class ComplexFieldAdapter implements FieldAdapter<Complex> {
+        constructor(ε?: number);
+        ε: Complex;
         one: Complex;
         zero: Complex;
         abs(z: Complex): Complex;

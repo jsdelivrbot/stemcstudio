@@ -3,6 +3,9 @@
  */
 declare function describe(description: string, specDefinitions: () => void): void;
 declare function fdescribe(description: string, specDefinitions: () => void): void;
+/**
+ * Defines a disabled suite of specifications.
+ */
 declare function xdescribe(description: string, specDefinitions: () => void): void;
 
 /**
@@ -12,7 +15,13 @@ declare function it(expectation: string, assertion?: () => void, timeout?: numbe
 declare function it(expectation: string, assertion?: (done: DoneFn) => void, timeout?: number): void;
 declare function fit(expectation: string, assertion?: () => void, timeout?: number): void;
 declare function fit(expectation: string, assertion?: (done: DoneFn) => void, timeout?: number): void;
+/**
+ * Defines a pending specification.
+ */
 declare function xit(expectation: string, assertion?: () => void, timeout?: number): void;
+/**
+ * Defines a pending specification.
+ */
 declare function xit(expectation: string, assertion?: (done: DoneFn) => void, timeout?: number): void;
 
 /** If you call the function pending anywhere in the spec body, no matter the expectations, the spec will be marked pending. */
@@ -360,7 +369,10 @@ declare namespace jasmine {
         toContain(expected: any, expectationFailOutput?: any): boolean;
         toBeLessThan(expected: number, expectationFailOutput?: any): boolean;
         toBeGreaterThan(expected: number, expectationFailOutput?: any): boolean;
-        toBeCloseTo(expected: number, precision: any, expectationFailOutput?: any): boolean;
+        /**
+         * 
+         */
+        toBeCloseTo(expected: number, precision: number, expectationFailOutput?: any): boolean;
         toThrow(expected?: any): boolean;
         toThrowError(message?: string | RegExp): boolean;
         toThrowError(expected?: new (...args: any[]) => Error, message?: string | RegExp): boolean;

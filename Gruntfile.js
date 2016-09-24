@@ -349,11 +349,11 @@ module.exports = function (grunt) {
                     },
                     {
                         src: "../GeoCAS/dist/geocas.d.ts",
-                        dest: "generated/vendor/GeoCAS@1.10.0/dist/geocas.d.ts"
+                        dest: "generated/vendor/GeoCAS@1.12.0/dist/geocas.d.ts"
                     },
                     {
                         src: "../GeoCAS/dist/geocas.js",
-                        dest: "generated/vendor/GeoCAS@1.10.0/dist/geocas.js"
+                        dest: "generated/vendor/GeoCAS@1.12.0/dist/geocas.js"
                     },
                 ]
             },
@@ -697,11 +697,11 @@ module.exports = function (grunt) {
                     },
                     {
                         src: "../GeoCAS/dist/geocas.d.ts",
-                        dest: "dist/vendor/GeoCAS@1.10.0/dist/geocas.d.ts"
+                        dest: "dist/vendor/GeoCAS@1.12.0/dist/geocas.d.ts"
                     },
                     {
                         src: "../GeoCAS/dist/geocas.js",
-                        dest: "dist/vendor/GeoCAS@1.10.0/dist/geocas.js"
+                        dest: "dist/vendor/GeoCAS@1.12.0/dist/geocas.js"
                     },
                 ]
             },
