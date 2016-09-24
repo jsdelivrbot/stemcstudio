@@ -3083,6 +3083,59 @@ define('geocas/checks/isString',["require", "exports"], function (require, expor
     exports.default = isString;
 });
 
+define('geocas/mother/sortBlades',["require", "exports"], function (require, exports) {
+    "use strict";
+    function compareFn(a, b) {
+        if (a.bitmap < b.bitmap) {
+            return -1;
+        }
+        else if (a.bitmap > b.bitmap) {
+            return +1;
+        }
+        else {
+            return 0;
+        }
+    }
+    function sortBlades(blades) {
+        var rez = [];
+        for (var i = 0; i < blades.length; i++) {
+            var B = blades[i];
+            rez.push(B);
+        }
+        rez.sort(compareFn);
+        return rez;
+    }
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = sortBlades;
+});
+
+define('geocas/mother/multivectorEQ',["require", "exports", './sortBlades'], function (require, exports, sortBlades_1) {
+    "use strict";
+    function multivectorEQ(lhs, rhs, field) {
+        if (lhs.blades.length === rhs.blades.length) {
+            var bladesL = sortBlades_1.default(lhs.blades);
+            var bladesR = sortBlades_1.default(rhs.blades);
+            var length_1 = bladesL.length;
+            for (var i = 0; i < length_1; i++) {
+                var bladeL = bladesL[i];
+                var bladeR = bladesR[i];
+                if (bladeL.bitmap !== bladeR.bitmap) {
+                    return false;
+                }
+                if (field.ne(bladeL.weight, bladeR.weight)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = multivectorEQ;
+});
+
 define('geocas/mother/multivectorGE',["require", "exports", './isScalar'], function (require, exports, isScalar_1) {
     "use strict";
     function multivectorGE(lhs, rhs, field) {
@@ -3182,7 +3235,7 @@ define('geocas/checks/mustBeInteger',["require", "exports", '../checks/mustSatis
     exports.default = mustBeInteger;
 });
 
-define('geocas/mother/Algebra',["require", "exports", './Blade', './gpE', './gpL', './gpG', './lcoE', './lcoL', './lcoG', './rcoE', './rcoL', './rcoG', '../checks/isArray', '../checks/isDefined', '../checks/isNumber', './isScalar', '../checks/isString', '../checks/isUndefined', './multivectorGE', './multivectorGT', './multivectorLE', './multivectorLT', '../checks/mustBeDefined', '../checks/mustBeInteger', '../checks/mustSatisfy', './simplify'], function (require, exports, Blade_1, gpE_1, gpL_1, gpG_1, lcoE_1, lcoL_1, lcoG_1, rcoE_1, rcoL_1, rcoG_1, isArray_1, isDefined_1, isNumber_1, isScalar_1, isString_1, isUndefined_1, multivectorGE_1, multivectorGT_1, multivectorLE_1, multivectorLT_1, mustBeDefined_1, mustBeInteger_1, mustSatisfy_1, simplify_1) {
+define('geocas/mother/Algebra',["require", "exports", './Blade', './gpE', './gpL', './gpG', './lcoE', './lcoL', './lcoG', './rcoE', './rcoL', './rcoG', '../checks/isArray', '../checks/isDefined', '../checks/isNumber', './isScalar', '../checks/isString', '../checks/isUndefined', './multivectorEQ', './multivectorGE', './multivectorGT', './multivectorLE', './multivectorLT', '../checks/mustBeDefined', '../checks/mustBeInteger', '../checks/mustSatisfy', './simplify'], function (require, exports, Blade_1, gpE_1, gpL_1, gpG_1, lcoE_1, lcoL_1, lcoG_1, rcoE_1, rcoL_1, rcoG_1, isArray_1, isDefined_1, isNumber_1, isScalar_1, isString_1, isUndefined_1, multivectorEQ_1, multivectorGE_1, multivectorGT_1, multivectorLE_1, multivectorLT_1, mustBeDefined_1, mustBeInteger_1, mustSatisfy_1, simplify_1) {
     "use strict";
     function isMultivector(arg) {
         if (arg) {
@@ -3398,7 +3451,7 @@ define('geocas/mother/Algebra',["require", "exports", './Blade', './gpE', './gpL
                 return sub(lhs, that, algebra, metric, labels);
             },
             __eq__: function (rhs) {
-                throw new Error("=== is not implemented");
+                return multivectorEQ_1.default(that, rhs, field);
             },
             __ge__: function (rhs) {
                 return multivectorGE_1.default(that, rhs, field);
@@ -3413,7 +3466,7 @@ define('geocas/mother/Algebra',["require", "exports", './Blade', './gpE', './gpL
                 return multivectorLT_1.default(that, rhs, field);
             },
             __ne__: function (rhs) {
-                throw new Error("!== is not implemented");
+                return !multivectorEQ_1.default(that, rhs, field);
             },
             inv: function () {
                 var reverse = that.rev();
@@ -3747,7 +3800,7 @@ define('geocas/config',["require", "exports"], function (require, exports) {
             this.GITHUB = 'https://github.com/geometryzen/GeoCAS';
             this.LAST_MODIFIED = '2016-09-24';
             this.NAMESPACE = 'GeoCAS';
-            this.VERSION = '1.12.0';
+            this.VERSION = '1.13.0';
         }
         GeoCAS.prototype.log = function (message) {
             var optionalParams = [];
