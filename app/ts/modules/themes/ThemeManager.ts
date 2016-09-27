@@ -1,0 +1,33 @@
+import * as angular from 'angular';
+import Theme from './Theme';
+import ThemeManagerEvent from './ThemeManagerEvent';
+
+interface ThemeManager {
+    /**
+     * Returns the available list of themes as identifiers. 
+     */
+    getThemes(): angular.IPromise<Theme[]>;
+    /**
+     * Returns the available list of themes as identifiers. 
+     */
+    getThemeNames(): angular.IPromise<string[]>;
+    /**
+     * Returns the identifier for the current theme.
+     */
+    getCurrentTheme(): Theme;
+    /**
+     * Sets the current theme using the theme name.
+     * The theme should be known to the theme manager.
+     */
+    setCurrentThemeByName(themeName: string);
+    /**
+     * Adds a listener for changes in the theme.
+     */
+    addEventListener(eventName: string, callback: (event: ThemeManagerEvent) => any);
+    /**
+     * Removes a listener for changes in the theme.
+     */
+    removeEventListener(eventName: string, callback: (event: ThemeManagerEvent) => any);
+}
+
+export default ThemeManager;

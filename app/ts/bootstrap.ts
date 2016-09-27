@@ -39,7 +39,6 @@ import RepoController from './controllers/RepoController';
 import RepoDataController from './services/cloud/RepoDataController';
 import resizable from './directives/resizable/resizable';
 import TextService from './services/text/TextService';
-import DefaultThemeManager from './services/themes/DefaultThemeManager';
 import workspace from './directives/workspace/workspace.component';
 
 //
@@ -108,7 +107,6 @@ app.service('flow', ReteFlowService);
 app.service('flowSessionService', NaiveFlowSessionService);
 
 app.service('textService', TextService);
-app.service('themeManager', DefaultThemeManager);
 
 import './template-cache';
 

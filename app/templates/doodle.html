@@ -13,20 +13,20 @@
                     <li>
                         <a role='button' ng-click='toggleExplorer()'>
                             <ng-md-icon icon="{{isExplorerVisible ? 'flip_to_back' : 'flip_to_front'}}" style="fill: {{isExplorerVisible ? '#ffffff' : '#ffffff'}}"
-                            size='24' aria-hidden='true' uib-tooltip="{{isExplorerVisible ? 'Hide Code' : 'Show Code'}}"
-                            tooltip-placement='bottom'>
+                                size='24' aria-hidden='true' uib-tooltip="{{isExplorerVisible ? 'Hide Code' : 'Show Code'}}"
+                                tooltip-placement='bottom'>
                                 <ng-md-icon>
                         </a>
                     </li>
                     <li ng-if='htmlFileCount() > 0'>
                         <a role='button' ng-click='toggleView()' ng-hide='isViewVisible'>
                             <ng-md-icon icon='launch' style="fill: {{true ? '#00ff00' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="Launch Program"
-                            tooltip-placement='bottom'>
+                                tooltip-placement='bottom'>
                                 <ng-md-icon>
                         </a>
                         <a role='button' ng-click='toggleView()' ng-show='isViewVisible'>
-                            <ng-md-icon icon='cancel' style="fill: {{true ? '#ff0000' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="Cancel Program"
-                            tooltip-placement='bottom'>
+                            <ng-md-icon icon='stop' style="fill: {{true ? 'DarkRed' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="Stop Program"
+                                tooltip-placement='bottom'>
                                 <ng-md-icon>
                         </a>
                     </li>
@@ -46,10 +46,11 @@
                     <li ng-if='markdownFileCount() > 0'>
                         <a role='button' ng-click='toggleReadMeVisible()'>
                             <ng-md-icon icon='description' style="fill: {{isReadMeVisible ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="{{isReadMeVisible ?  'Hide README.md' : 'Show README.md'}}"
-                            tooltip-placement='bottom'>
+                                tooltip-placement='bottom'>
                                 <ng-md-icon>
                         </a>
                     </li>
+                    <!--
                     <li>
                         <a role='button' ng-click='toggleCommentsVisible()'>
                             <ng-md-icon icon='comment' style="fill: {{isCommentsVisible ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="{{isCommentsVisible ?  'Hide Comments' : 'Show Comments'}}"
@@ -57,6 +58,7 @@
                                 <ng-md-icon>
                         </a>
                     </li>
+                    -->
                     <li uib-dropdown>
                         <a uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="Project Menu" tooltip-placement='bottom'>
                             <ng-md-icon icon='folder' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true'>
@@ -117,6 +119,22 @@
                             <li ng-if='rooms.isDestroyRoomEnabled()'>
                                 <a ng-click='rooms.destroyRoom()' role='button'>Tear Down Room</a>
                             </li>
+                        </ul>
+                    </li>
+                    <li uib-dropdown>
+                        <a uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="More" tooltip-placement='bottom'>
+                            <ng-md-icon icon='menu' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true'>
+                                <ng-md-icon>
+                        </a>
+                        <ul uib-dropdown-menu role="menu">
+                            <li ng-controller='themes-controller as themes'>
+                                <a ng-click='themes.showThemeChoices()' role='button'>Editor Theme</a>
+                            </li>
+                            <!--
+                            <li>
+                                <a ng-click='clickEditor()' role='button'>Editor</a>
+                            </li>
+                            -->
                         </ul>
                     </li>
                 </ul>

@@ -367,20 +367,20 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                    <li>\n" +
     "                        <a role='button' ng-click='toggleExplorer()'>\n" +
     "                            <ng-md-icon icon=\"{{isExplorerVisible ? 'flip_to_back' : 'flip_to_front'}}\" style=\"fill: {{isExplorerVisible ? '#ffffff' : '#ffffff'}}\"\n" +
-    "                            size='24' aria-hidden='true' uib-tooltip=\"{{isExplorerVisible ? 'Hide Code' : 'Show Code'}}\"\n" +
-    "                            tooltip-placement='bottom'>\n" +
+    "                                size='24' aria-hidden='true' uib-tooltip=\"{{isExplorerVisible ? 'Hide Code' : 'Show Code'}}\"\n" +
+    "                                tooltip-placement='bottom'>\n" +
     "                                <ng-md-icon>\n" +
     "                        </a>\n" +
     "                    </li>\n" +
     "                    <li ng-if='htmlFileCount() > 0'>\n" +
     "                        <a role='button' ng-click='toggleView()' ng-hide='isViewVisible'>\n" +
     "                            <ng-md-icon icon='launch' style=\"fill: {{true ? '#00ff00' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"Launch Program\"\n" +
-    "                            tooltip-placement='bottom'>\n" +
+    "                                tooltip-placement='bottom'>\n" +
     "                                <ng-md-icon>\n" +
     "                        </a>\n" +
     "                        <a role='button' ng-click='toggleView()' ng-show='isViewVisible'>\n" +
-    "                            <ng-md-icon icon='cancel' style=\"fill: {{true ? '#ff0000' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"Cancel Program\"\n" +
-    "                            tooltip-placement='bottom'>\n" +
+    "                            <ng-md-icon icon='stop' style=\"fill: {{true ? 'DarkRed' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"Stop Program\"\n" +
+    "                                tooltip-placement='bottom'>\n" +
     "                                <ng-md-icon>\n" +
     "                        </a>\n" +
     "                    </li>\n" +
@@ -400,10 +400,11 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                    <li ng-if='markdownFileCount() > 0'>\n" +
     "                        <a role='button' ng-click='toggleReadMeVisible()'>\n" +
     "                            <ng-md-icon icon='description' style=\"fill: {{isReadMeVisible ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"{{isReadMeVisible ?  'Hide README.md' : 'Show README.md'}}\"\n" +
-    "                            tooltip-placement='bottom'>\n" +
+    "                                tooltip-placement='bottom'>\n" +
     "                                <ng-md-icon>\n" +
     "                        </a>\n" +
     "                    </li>\n" +
+    "                    <!--\n" +
     "                    <li>\n" +
     "                        <a role='button' ng-click='toggleCommentsVisible()'>\n" +
     "                            <ng-md-icon icon='comment' style=\"fill: {{isCommentsVisible ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"{{isCommentsVisible ?  'Hide Comments' : 'Show Comments'}}\"\n" +
@@ -411,6 +412,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                                <ng-md-icon>\n" +
     "                        </a>\n" +
     "                    </li>\n" +
+    "                    -->\n" +
     "                    <li uib-dropdown>\n" +
     "                        <a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"Project Menu\" tooltip-placement='bottom'>\n" +
     "                            <ng-md-icon icon='folder' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'>\n" +
@@ -471,6 +473,22 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                            <li ng-if='rooms.isDestroyRoomEnabled()'>\n" +
     "                                <a ng-click='rooms.destroyRoom()' role='button'>Tear Down Room</a>\n" +
     "                            </li>\n" +
+    "                        </ul>\n" +
+    "                    </li>\n" +
+    "                    <li uib-dropdown>\n" +
+    "                        <a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"More\" tooltip-placement='bottom'>\n" +
+    "                            <ng-md-icon icon='menu' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'>\n" +
+    "                                <ng-md-icon>\n" +
+    "                        </a>\n" +
+    "                        <ul uib-dropdown-menu role=\"menu\">\n" +
+    "                            <li ng-controller='themes-controller as themes'>\n" +
+    "                                <a ng-click='themes.showThemeChoices()' role='button'>Editor Theme</a>\n" +
+    "                            </li>\n" +
+    "                            <!--\n" +
+    "                            <li>\n" +
+    "                                <a ng-click='clickEditor()' role='button'>Editor</a>\n" +
+    "                            </li>\n" +
+    "                            -->\n" +
     "                        </ul>\n" +
     "                    </li>\n" +
     "                </ul>\n" +
@@ -1177,6 +1195,30 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "<div class=\"modal-footer\">\n" +
     "    <button class=\"btn btn-secondary\" type=\"button\" data-ng-click=\"close()\">{{options.closeButtonText}}</button>\n" +
     "</div>"
+  );
+
+
+  $templateCache.put('themes-dialog.html',
+    "<!-- Using a name on the form puts the controller on the scope with a property of the same name -->\n" +
+    "<form name='labelForm' ng-submit='ok()'>\n" +
+    "    <fieldset>\n" +
+    "        <!-- legend>Labels and Keywords</legend -->\n" +
+    "        <div class=\"modal-header\" style=\"clear: both\">\n" +
+    "            <h3 class='modal-title' style=\"float: left;\">\n" +
+    "                <logo-text version='{{version}}' />\n" +
+    "            </h3>\n" +
+    "            <h3 class='modal-title' style=\"float: right;\">Theme Preference</h3>\n" +
+    "        </div>\n" +
+    "        <div id='themes-modal-body' class=\"modal-body\">\n" +
+    "            <label class='text-muted'>Theme:</label>\n" +
+    "            <select ng-model='theme' ng-options='theme.name for theme in themes track by theme.name'></select>\n" +
+    "        </div>\n" +
+    "        <div class=\"modal-footer\">\n" +
+    "            <button class=\"btn btn-secondary\" type=\"button\" data-ng-click=\"cancel()\">Cancel</button>\n" +
+    "            <button class=\"btn btn-primary\" type=\"submit\">OK</button>\n" +
+    "        </div>\n" +
+    "    </fieldset>\n" +
+    "</form>"
   );
 
 }]);

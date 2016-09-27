@@ -1,11 +1,11 @@
 import * as ng from 'angular';
 import themes from './manifest';
-import Theme from './Theme';
-import ThemeManager from './ThemeManager';
-import ThemeManagerEvent from './ThemeManagerEvent';
-import {currentTheme} from './ThemeManagerEvent';
+import Theme from '../../Theme';
+import ThemeManager from '../../ThemeManager';
+import ThemeManagerEvent from '../../ThemeManagerEvent';
+import {currentTheme} from '../../ThemeManagerEvent';
 
-const names: string[] = themes.map(theme => theme.name);
+const themeNames: string[] = themes.map(theme => theme.name);
 
 interface ThemeManagerCallback {
     (event: ThemeManagerEvent): any;
@@ -14,12 +14,14 @@ interface ThemeManagerCallback {
 export default class DefaultThemeManager implements ThemeManager {
     public static $inject: string[] = ['$q'];
     private callbacksByEventName: { [eventName: string]: ThemeManagerCallback[] } = {};
+    private currentTheme: Theme;
     constructor(private $q: ng.IQService) {
         // Do nothing yet.
+        this.currentTheme = getThemeByName("Twilight");
     }
     addEventListener(eventName: string, callback: ThemeManagerCallback) {
         this.ensureCallbacks(eventName).push(callback);
-        const theme = this.getThemeByName("Twilight");
+        const theme = this.currentTheme;
         callback({ cssClass: theme.cssClass, href: `/themes/${theme.fileName}`, isDark: theme.isDark });
     }
     removeEventListener(eventName: string, callback: ThemeManagerCallback) {
@@ -29,13 +31,21 @@ export default class DefaultThemeManager implements ThemeManager {
             cbs.splice(index, 1);
         }
     }
-    getThemeNames(): ng.IPromise<string[]> {
-        const deferred: ng.IDeferred<any> = this.$q.defer<any>();
-        deferred.resolve(names);
+    getThemes(): ng.IPromise<Theme[]> {
+        const deferred: ng.IDeferred<Theme[]> = this.$q.defer<Theme[]>();
+        deferred.resolve(themes);
         return deferred.promise;
     }
-    setTheme(name: string): void {
-        const index = names.indexOf(name);
+    getThemeNames(): ng.IPromise<string[]> {
+        const deferred: ng.IDeferred<string[]> = this.$q.defer<string[]>();
+        deferred.resolve(themeNames);
+        return deferred.promise;
+    }
+    getCurrentTheme(): Theme {
+        return this.currentTheme;
+    }
+    setCurrentThemeByName(themeName: string): void {
+        const index = themeNames.indexOf(themeName);
         if (index >= 0) {
             const theme: Theme = themes[index];
             const cbs = this.ensureCallbacks(currentTheme);
@@ -43,15 +53,7 @@ export default class DefaultThemeManager implements ThemeManager {
                 const cb = cbs[i];
                 cb({ cssClass: theme.cssClass, href: `/themes/${theme.fileName}`, isDark: theme.isDark });
             }
-        }
-    }
-    private getThemeByName(name: string): Theme {
-        const index = names.indexOf(name);
-        if (index >= 0) {
-            return themes[index];
-        }
-        else {
-            return void 0;
+            this.currentTheme = theme;
         }
     }
     private ensureCallbacks(eventName: string): ThemeManagerCallback[] {
@@ -60,5 +62,15 @@ export default class DefaultThemeManager implements ThemeManager {
             map[eventName] = [];
         }
         return map[eventName];
+    }
+}
+
+function getThemeByName(name: string): Theme {
+    const index = themeNames.indexOf(name);
+    if (index >= 0) {
+        return themes[index];
+    }
+    else {
+        return void 0;
     }
 }

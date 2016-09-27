@@ -78,6 +78,7 @@ import propsFilter from './filters/propsFilter';
 // Import them and then use their name as app module dependencies.
 import rooms from './modules/rooms/index';
 import stemcArXiv from './stemcArXiv/index';
+import themes from './modules/themes/index';
 import translate from './translate/index';
 import wsmodel from './wsmodel/module';
 
@@ -112,6 +113,7 @@ const app: angular.IModule = angular.module('app', [
     'ui.select',
     rooms.name,
     stemcArXiv.name,
+    themes.name,
     translate.name,
     wsmodel.name
 ]);
@@ -134,7 +136,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version.
-app.constant('version', '2.7.68');
+app.constant('version', '2.7.69');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);

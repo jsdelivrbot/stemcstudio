@@ -16,9 +16,10 @@ import EditorScope from './EditorScope';
 import searchBox from '../../editor/ext/SearchBox';
 import ISettingsService from '../../services/settings/ISettingsService';
 import ITextService from '../../services/text/ITextService';
-import ThemeManager from '../../services/themes/ThemeManager';
-import ThemeManagerEvent from '../../services/themes/ThemeManagerEvent';
-import {currentTheme} from '../../services/themes/ThemeManagerEvent';
+import {THEME_MANAGER} from '../../modules/themes/constants';
+import ThemeManager from '../../modules/themes/ThemeManager';
+import ThemeManagerEvent from '../../modules/themes/ThemeManagerEvent';
+import {currentTheme} from '../../modules/themes/ThemeManagerEvent';
 import WorkspaceMixin from '../../directives/editor/WorkspaceMixin';
 import {LANGUAGE_CSS} from '../../languages/modes';
 import {LANGUAGE_GLSL} from '../../languages/modes';
@@ -343,6 +344,6 @@ function factory(
     return directive;
 }
 
-factory.$inject = ['$timeout', 'settings', 'textService', 'themeManager'];
+factory.$inject = ['$timeout', 'settings', 'textService', THEME_MANAGER];
 
 export default factory;

@@ -1,5 +1,6 @@
 import {addCssClass, createElement, removeCssClass, setCssClass} from "./lib/dom";
 import appendHTMLLinkElement from './dom/appendHTMLLinkElement';
+import removeHTMLLinkElement from './dom/removeHTMLLinkElement';
 import Disposable from '../base/Disposable';
 import ensureHTMLStyleElement from './dom/ensureHTMLStyleElement';
 import hasHTMLLinkElement from './dom/hasHTMLLinkElement';
@@ -129,7 +130,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
     private $frozen = false;
 
     /**
-     * The identifier of the theme and the class e.g. 'ace-twilight'
+     * The identifier of the theme and the class e.g. 'ace-themename'
      */
     private themeId: string;
 
@@ -394,7 +395,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
      * @return {void}
      */
     setCursorLayerOff(): void {
-        const noop = function() {/* Do nothing.*/ };
+        const noop = function () {/* Do nothing.*/ };
         this.cursorLayer.restartTimer = noop;
         this.cursorLayer.element.style.opacity = "0";
     }
@@ -1627,7 +1628,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         var l: number = this.STEPS;
         var steps: number[] = [];
 
-        var func = function(t: number, x_min: number, dx: number): number {
+        var func = function (t: number, x_min: number, dx: number): number {
             return dx * (Math.pow(t - 1, 3) + 1) + x_min;
         };
 
@@ -1945,6 +1946,10 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         addCssClass(this.container, cssClass);
     }
 
+    removeCssClass(cssClass: string): void {
+        removeCssClass(this.container, cssClass);
+    }
+
     /**
      * @method setCssClass
      * @param className: {string}
@@ -1965,6 +1970,12 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
      * @return {void}
      */
     setThemeCss(themeId: string, href?: string): void {
+        if (this.themeId) {
+            this.removeCssClass(this.themeId);
+            if (hasHTMLLinkElement(this.themeId, this.container.ownerDocument)) {
+                removeHTMLLinkElement(themeId, this.container.ownerDocument);
+            }
+        }
         if (href) {
             if (!hasHTMLLinkElement(themeId, this.container.ownerDocument)) {
                 appendHTMLLinkElement(themeId, 'stylesheet', 'text/css', href, this.container.ownerDocument);
