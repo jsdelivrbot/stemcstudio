@@ -52,7 +52,7 @@ export default class Fold extends RangeList {
      */
     setFoldLine(foldLine: FoldLine): void {
         this.foldLine = foldLine;
-        this.subFolds.forEach(function(fold: Fold) {
+        this.subFolds.forEach(function (fold: Fold) {
             fold.setFoldLine(foldLine);
         });
     }
@@ -64,7 +64,7 @@ export default class Fold extends RangeList {
     clone(): Fold {
         var range = this.range.clone();
         var fold = new Fold(range, this.placeholder);
-        this.subFolds.forEach(function(subFold) {
+        this.subFolds.forEach(function (subFold) {
             fold.subFolds.push(subFold.clone());
         });
         fold.collapseChildren = this.collapseChildren;

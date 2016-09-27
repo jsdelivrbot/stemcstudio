@@ -3,12 +3,10 @@ import ScrollBar from './ScrollBar';
 import { scrollbarWidth } from "./lib/dom";
 import Renderer from "./Renderer";
 import ScrollBarEvent from './events/ScrollBarEvent';
+import toPixelString from './dom/toPixelString';
 
 /**
  * A vertical scroll bar.
- *
- * @class VScrollBar
- * @extends ScrollBar
  */
 export default class VScrollBar extends ScrollBar {
 
@@ -29,7 +27,7 @@ export default class VScrollBar extends ScrollBar {
         // in Firefox 6+ scrollbar is hidden if element has the same width as scrollbar
         // make element a little bit wider to retain scrollbar when page is zoomed 
         renderer.$scrollbarWidth = this._width = scrollbarWidth(parent.ownerDocument);
-        this.inner.style.width = this.element.style.width = (this._width || 15) + 5 + "px";
+        this.inner.style.width = this.element.style.width = toPixelString((this._width || 15) + 5);
         addListener(this.element, "scroll", this.onScroll.bind(this));
     }
 
@@ -64,7 +62,7 @@ export default class VScrollBar extends ScrollBar {
      * @param {Number} height The new height
      */
     setHeight(height: number) {
-        this.element.style.height = height + "px";
+        this.element.style.height = toPixelString(height);
     }
 
     /**
@@ -72,7 +70,7 @@ export default class VScrollBar extends ScrollBar {
      * @param {Number} height The new scroll height
      */
     setScrollHeight(height: number) {
-        this.inner.style.height = height + "px";
+        this.inner.style.height = toPixelString(height);
     }
 
     /**

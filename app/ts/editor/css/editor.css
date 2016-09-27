@@ -133,7 +133,7 @@
     opacity: 0;
     background: transparent;
     -moz-appearance: none;
-    appearance: none;
+/*  appearance: none; */
     border: none;
     resize: none;
     outline: none;
@@ -276,8 +276,10 @@
     pointer-events: auto;
 }
 
+/*
 .ace_dark .ace_fold {
 }
+*/
 
 .ace_fold:hover{
     background-image:

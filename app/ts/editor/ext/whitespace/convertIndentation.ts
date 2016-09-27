@@ -8,7 +8,7 @@ export default function convertIndentation(session: EditSession, ch: string, len
     if (!len) len = oldLen;
     if (!ch) ch = oldCh;
 
-    var tab = ch == "\t" ? ch : stringRepeat(ch, len);
+    var tab = ch === "\t" ? ch : stringRepeat(ch, len);
 
     var doc: Document = session.doc;
     var lines: string[] = doc.getAllLines();
@@ -25,12 +25,12 @@ export default function convertIndentation(session: EditSession, ch: string, len
             var toInsert = cache[tabCount] || (cache[tabCount] = stringRepeat(tab, tabCount));
             toInsert += spaceCache[remainder] || (spaceCache[remainder] = stringRepeat(" ", remainder));
 
-            if (toInsert != match) {
+            if (toInsert !== match) {
                 doc.removeInLine(i, 0, match.length);
                 doc.insertInLine({ row: i, column: 0 }, toInsert);
             }
         }
     }
     session.setTabSize(len);
-    session.setUseSoftTabs(ch == " ");
+    session.setUseSoftTabs(ch === " ");
 }

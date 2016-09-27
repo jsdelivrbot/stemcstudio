@@ -6,8 +6,6 @@ import Tabstop from './Tabstop';
  * This object is used in various places to indicate a region within the editor.
  * To better visualize how this works, imagine a rectangle.
  * Each quadrant of the rectangle is analogus to a range, as ranges contain a starting row and starting column, and an ending row, and ending column.
- *
- * @class Range
  */
 export default class Range {
 

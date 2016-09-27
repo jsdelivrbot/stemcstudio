@@ -784,6 +784,7 @@ module.exports = function (grunt) {
                 "app/ts/editor/commands/**/*.ts",
                 "app/ts/editor/dom/**/*.ts",
                 "app/ts/editor/events/**/*.ts",
+                "app/ts/editor/ext/**/*.ts",
                 "app/ts/editor/mode/**/*.ts",
                 "app/ts/editor/worker/**/*.ts",
                 "app/ts/editor/workspace/**/*.ts",

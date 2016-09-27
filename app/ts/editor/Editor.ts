@@ -7,6 +7,7 @@ import Disposable from './base/Disposable';
 import {stringRepeat} from "./lib/lang";
 import {isIE, isMac, isMobile, isOldIE, isWebKit} from "./lib/useragent";
 import GutterLayer from "./layer/GutterLayer";
+import GutterTooltip from './GutterTooltip';
 import KeyboardHandler from "./keyboard/KeyboardHandler";
 import KeyBinding from "./keyboard/KeyBinding";
 import TextInput from "./keyboard/TextInput";
@@ -14,6 +15,7 @@ import Delta from "./Delta";
 import EditorAction from "./keyboard/EditorAction";
 import EditSession from "./EditSession";
 import Search from "./Search";
+import {assembleRegExp} from './Search';
 import FirstAndLast from "./FirstAndLast";
 import LanguageMode from './LanguageMode';
 import Position from "./Position";
@@ -145,7 +147,10 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     private $mergeUndoDeltas;
     public $readOnly = false;
     private $scrollAnchor: HTMLDivElement;
-    private $search: Search;
+    /**
+     * Used by SearchBox.
+     */
+    public $search: Search;
     private _$emitInputEvent: DelayedCall;
 
     /**
@@ -270,10 +275,10 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
             let keyboardMultiSelect = new KeyboardHandler([{
                 name: "singleSelection",
                 bindKey: "esc",
-                exec: function(editor: Editor) { editor.exitMultiSelectMode(); },
+                exec: function (editor: Editor) { editor.exitMultiSelectMode(); },
                 scrollIntoView: "cursor",
                 readOnly: true,
-                isAvailable: function(editor: Editor) { return editor && editor.inMultiSelectMode; }
+                isAvailable: function (editor: Editor) { return editor && editor.inMultiSelectMode; }
             }]);
 
             let onMultiSelect = (unused: SelectionMultiSelectEvent, selection: Selection) => {
@@ -305,7 +310,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
                 this._emit("changeSelection");
             };
 
-            let onMultiSelectExec = function(e: { command: Command, editor: Editor, args: any }) {
+            let onMultiSelectExec = function (e: { command: Command, editor: Editor, args: any }) {
                 var command: Command = e.command;
                 var editor: Editor = e.editor;
                 if (!editor.multiSelect)
@@ -640,7 +645,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
         var ranges = sel.ranges;
         // filter out ranges on same row
         var row = -1;
-        var sameRowRanges = ranges.filter(function(r) {
+        var sameRowRanges = ranges.filter(function (r) {
             if (r.cursor.row === row)
                 return true;
             row = r.cursor.row;
@@ -673,13 +678,13 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
             this.selection.setRange(range);
         }
         else {
-            sameRowRanges.forEach(function(r: Range) {
+            sameRowRanges.forEach(function (r: Range) {
                 sel.substractPoint(r.cursor);
             });
 
             var maxCol = 0;
             var minSpace = Infinity;
-            var spaceOffsets = ranges.map(function(r) {
+            var spaceOffsets = ranges.map(function (r) {
                 var p = r.cursor;
                 var line = session.getLine(p.row);
                 var spaceOffset = line.substr(p.column).search(/\S/g);
@@ -692,7 +697,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
                     minSpace = spaceOffset;
                 return spaceOffset;
             });
-            ranges.forEach(function(r, i) {
+            ranges.forEach(function (r, i) {
                 var p = r.cursor;
                 var l = maxCol - p.column;
                 var d = spaceOffsets[i] - minSpace;
@@ -725,7 +730,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
         var textW: number;
         var endW: number;
 
-        return lines.map(function(line) {
+        return lines.map(function (line) {
             var m = line.match(/(\s*)(.*?)(\s*)([=:].*)/);
             if (!m)
                 return [line];
@@ -1624,11 +1629,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
         // When the needle is a string, the return type will be a RegExp.
         // TODO: Split out this functionality for cleaner type safety.
-        var re = <RegExp>this.$search.$assembleRegExp({
-            wholeWord: true,
-            caseSensitive: true,
-            needle: needle
-        });
+        const re = <RegExp>assembleRegExp({ wholeWord: true, caseSensitive: true, needle: needle });
 
         return re;
     }
@@ -2462,7 +2463,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
         }
         else {
             let count = column % size;
-            while (line[range.start.column] === " " && count) {
+            while (line[range.start.column - 1] === " " && count) {
                 range.start.column--;
                 count--;
             }
@@ -2506,7 +2507,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
         for (let i = rows.first; i <= rows.last; i++)
             lines.push(session.getLine(i));
 
-        lines.sort(function(a, b) {
+        lines.sort(function (a, b) {
             if (a.toLowerCase() < b.toLowerCase()) return -1;
             if (a.toLowerCase() > b.toLowerCase()) return 1;
             return 0;
@@ -2872,7 +2873,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
         this.$blockScrolling++;
         try {
             if (select === true) {
-                this.selection.$moveSelection(function() {
+                this.selection.$moveSelection(function () {
                     this.moveCursorBy(rows, 0);
                 });
             }
@@ -3454,12 +3455,13 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * @param options {SearchOptions} The options to use.
      * @return {number}
      */
-    replace(replacement: string, options: SearchOptions): number {
-        if (options)
+    replace(replacement: string, options?: SearchOptions): number {
+        if (options) {
             this.$search.set(options);
+        }
 
-        var range = this.$search.find(this.session);
-        var replaced = 0;
+        const range = this.$search.find(this.session);
+        let replaced = 0;
         if (!range)
             return replaced;
 
@@ -3482,22 +3484,23 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * @param options {SearchOptions} The options to use.
      * @return {number}
      */
-    replaceAll(replacement: string, options: SearchOptions): number {
+    replaceAll(replacement: string, options?: SearchOptions): number {
         if (options) {
             this.$search.set(options);
         }
 
-        var ranges = this.$search.findAll(this.session);
-        var replaced = 0;
-        if (!ranges.length)
+        const ranges = this.$search.findAll(this.session);
+        let replaced = 0;
+        if (!ranges.length) {
             return replaced;
+        }
 
         this.$blockScrolling += 1;
 
-        var selection = this.getSelectionRange();
+        const selection = this.getSelectionRange();
         this.selection.moveTo(0, 0);
 
-        for (var i = ranges.length - 1; i >= 0; --i) {
+        for (let i = ranges.length - 1; i >= 0; --i) {
             if (this.$tryReplace(ranges[i], replacement)) {
                 replaced++;
             }
@@ -3583,7 +3586,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * @return {Range}
      */
     find(needle?: (string | RegExp), options: SearchOptions = {}, animate?: boolean): Range {
-
         if (typeof needle === "string" || needle instanceof RegExp) {
             options.needle = needle;
         }
@@ -3591,7 +3593,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
             mixin(options, needle);
         }
 
-        var range = this.selection.getRange();
+        let range = this.selection.getRange();
         if (options.needle == null) {
             needle = this.session.getTextRange(range) || this.$search.$options.needle;
             if (!needle) {
@@ -3603,11 +3605,10 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
         this.$search.set(options);
         if (!options.start) {
-            // TODO: I'm guessing that we need range.start, was just range.
-            this.$search.set({ start: range.start });
+            this.$search.set({ start: range });
         }
 
-        var newRange = this.$search.find(this.session);
+        const newRange = this.$search.find(this.session);
         if (options.preventScroll) {
             return newRange;
         }
@@ -3616,10 +3617,12 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
             return newRange;
         }
         // clear selection if nothing is found
-        if (options.backwards)
+        if (options.backwards) {
             range.start = range.end;
-        else
+        }
+        else {
             range.end = range.start;
+        }
         this.selection.setRange(range);
     }
 
@@ -3706,7 +3709,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
         var scrollAnchor = this.$scrollAnchor;
         scrollAnchor.style.cssText = "position:absolute";
         this.container.insertBefore(scrollAnchor, this.container.firstChild);
-        let onChangeSelection = this.on("changeSelection", function() {
+        let onChangeSelection = this.on("changeSelection", function () {
             shouldScroll = true;
         });
         // needed to not trigger sync reflow
@@ -3835,7 +3838,7 @@ class FoldHandler {
 
         // The following handler detects clicks in the editor (not gutter) region
         // to determine whether to remove or expand a fold.
-        editor.on("click", function(e: EditorMouseEvent) {
+        editor.on("click", function (e: EditorMouseEvent) {
             var position = e.getDocumentPosition();
             var session = editor.getSession();
 
@@ -3856,7 +3859,7 @@ class FoldHandler {
         });
 
         // The following handler detects clicks on the gutter.
-        editor.on('gutterclick', function(e: EditorMouseEvent) {
+        editor.on('gutterclick', function (e: EditorMouseEvent) {
             var gutterRegion = editor.renderer.$gutterLayer.getRegion(e);
             if (gutterRegion === 'foldWidgets') {
                 var row = e.getDocumentPosition().row;
@@ -3871,7 +3874,7 @@ class FoldHandler {
             }
         });
 
-        editor.on('gutterdblclick', function(e: EditorMouseEvent) {
+        editor.on('gutterdblclick', function (e: EditorMouseEvent) {
             const gutterRegion: string = editor.renderer.$gutterLayer.getRegion(e);
 
             if (gutterRegion === 'foldWidgets') {
@@ -3946,7 +3949,7 @@ class MouseHandler implements IGestureHandler {
         new GutterHandler(this);
         //      FIXME: new DragdropHandler(this);
 
-        const onMouseDown = function(e: MouseEvent) {
+        const onMouseDown = function (e: MouseEvent) {
             if (!editor.isFocused() && editor.textInput) {
                 editor.textInput.moveToMouse(e);
             }
@@ -3978,13 +3981,13 @@ class MouseHandler implements IGestureHandler {
 
         addListener(mouseTarget, "mousedown", onMouseDown);
 
-        addListener(gutterEl, "mousedown", function(e) {
+        addListener(gutterEl, "mousedown", function (e) {
             editor.focus();
             return preventDefault(e);
         });
 
         // Handle `mousemove` while the mouse is over the editing area (and not the gutter).
-        editor.on('mousemove', function(e: MouseEvent) {
+        editor.on('mousemove', function (e: MouseEvent) {
             if (_self.state || _self.$dragDelay || !_self.$dragEnabled) {
                 return;
             }
@@ -4042,8 +4045,8 @@ class MouseHandler implements IGestureHandler {
             renderer.$keepTextAreaAtCursor = null;
         }
 
-        const onMouseMove = (function(editor: Editor, mouseHandler: MouseHandler) {
-            return function(mouseEvent: MouseEvent) {
+        const onMouseMove = (function (editor: Editor, mouseHandler: MouseHandler) {
+            return function (mouseEvent: MouseEvent) {
                 if (!mouseEvent) return;
                 // if editor is loaded inside iframe, and mouseup event is outside
                 // we won't recieve it, so we cancel on first mousemove without button
@@ -4062,8 +4065,8 @@ class MouseHandler implements IGestureHandler {
             };
         })(this.editor, this);
 
-        const onCaptureEnd = (function(mouseHandler: MouseHandler) {
-            return function(e) {
+        const onCaptureEnd = (function (mouseHandler: MouseHandler) {
+            return function (e) {
                 clearInterval(timerId);
                 onCaptureInterval();
                 mouseHandler[mouseHandler.state + "End"] && mouseHandler[mouseHandler.state + "End"](e);
@@ -4078,15 +4081,15 @@ class MouseHandler implements IGestureHandler {
             };
         })(this);
 
-        const onCaptureInterval = (function(mouseHandler: MouseHandler) {
-            return function() {
+        const onCaptureInterval = (function (mouseHandler: MouseHandler) {
+            return function () {
                 mouseHandler[mouseHandler.state] && mouseHandler[mouseHandler.state]();
                 mouseHandler.$mouseMoved = false;
             };
         })(this);
 
         if (isOldIE && ev.domEvent.type === "dblclick") {
-            return setTimeout(function() { onCaptureEnd(ev); });
+            return setTimeout(function () { onCaptureEnd(ev); });
         }
 
         this.$onCaptureMouseMove = onMouseMove;
@@ -4095,7 +4098,7 @@ class MouseHandler implements IGestureHandler {
     }
 
     cancelContextMenu(): void {
-        var stop = function(e: EditorMouseEvent) {
+        var stop = function (e: EditorMouseEvent) {
             if (e && e.domEvent && e.domEvent.type !== "contextmenu") {
                 return;
             }
@@ -4321,11 +4324,11 @@ class EditorMouseEvent {
         return this.domEvent.shiftKey;
     }
 
-    getAccelKey = isMac ? function() { return this.domEvent.metaKey; } : function() { return this.domEvent.ctrlKey; };
+    getAccelKey = isMac ? function () { return this.domEvent.metaKey; } : function () { return this.domEvent.ctrlKey; };
 }
 
 function makeMouseDownHandler(editor: Editor, mouseHandler: MouseHandler) {
-    return function(ev: EditorMouseEvent) {
+    return function (ev: EditorMouseEvent) {
         const inSelection = ev.inSelection();
         const pos = ev.getDocumentPosition();
         mouseHandler.mousedownEvent = ev;
@@ -4363,7 +4366,7 @@ function makeMouseDownHandler(editor: Editor, mouseHandler: MouseHandler) {
 }
 
 function makeMouseWheelHandler(editor: Editor, mouseHandler: MouseHandler) {
-    return function(ev: EditorMouseEvent) {
+    return function (ev: EditorMouseEvent) {
         if (ev.getAccelKey()) {
             return;
         }
@@ -4387,7 +4390,7 @@ function makeMouseWheelHandler(editor: Editor, mouseHandler: MouseHandler) {
 }
 
 function makeDoubleClickHandler(editor: Editor, mouseHandler: MouseHandler) {
-    return function(editorMouseEvent: EditorMouseEvent) {
+    return function (editorMouseEvent: EditorMouseEvent) {
         var pos = editorMouseEvent.getDocumentPosition();
         var session = editor.getSession();
 
@@ -4409,7 +4412,7 @@ function makeDoubleClickHandler(editor: Editor, mouseHandler: MouseHandler) {
 }
 
 function makeTripleClickHandler(editor: Editor, mouseHandler: MouseHandler) {
-    return function(editorMouseEvent: EditorMouseEvent) {
+    return function (editorMouseEvent: EditorMouseEvent) {
         var pos = editorMouseEvent.getDocumentPosition();
 
         mouseHandler.setState("selectByLines");
@@ -4426,7 +4429,7 @@ function makeTripleClickHandler(editor: Editor, mouseHandler: MouseHandler) {
 }
 
 function makeQuadClickHandler(editor: Editor, mouseHandler: MouseHandler) {
-    return function(editorMouseEvent: EditorMouseEvent) {
+    return function (editorMouseEvent: EditorMouseEvent) {
         editor.selectAll();
         mouseHandler.$clickSelection = editor.getSelectionRange();
         mouseHandler.setState("selectAll");
@@ -4434,7 +4437,7 @@ function makeQuadClickHandler(editor: Editor, mouseHandler: MouseHandler) {
 }
 
 function makeExtendSelectionBy(editor: Editor, mouseHandler: MouseHandler, unitName: string) {
-    return function() {
+    return function () {
         var anchor;
         var cursor = mouseHandler.textCoordinates();
         const range: Range = editor.selection[unitName](cursor.row, cursor.column);
@@ -4495,23 +4498,23 @@ function calcRangeOrientation(range: Range, cursor: { row: number; column: numbe
 
 class GutterHandler {
     constructor(mouseHandler: MouseHandler) {
-        var editor: Editor = mouseHandler.editor;
-        var gutter: GutterLayer = editor.renderer.$gutterLayer;
-        var tooltip = new GutterTooltip(editor.container);
+        const editor: Editor = mouseHandler.editor;
+        const gutter: GutterLayer = editor.renderer.$gutterLayer;
+        const tooltip = new GutterTooltip(editor.container);
 
-        mouseHandler.editor.setDefaultHandler("guttermousedown", function(e: EditorMouseEvent) {
+        mouseHandler.editor.setDefaultHandler("guttermousedown", function (e: EditorMouseEvent) {
             if (!editor.isFocused() || e.getButton() !== 0) {
                 return;
             }
 
-            var gutterRegion = gutter.getRegion(e);
+            const gutterRegion = gutter.getRegion(e);
 
             if (gutterRegion === "foldWidgets") {
                 return;
             }
 
-            var row = e.getDocumentPosition().row;
-            var selection = editor.getSession().getSelection();
+            const row = e.getDocumentPosition().row;
+            const selection = editor.getSession().getSelection();
 
             if (e.getShiftKey()) {
                 selection.selectTo(row, 0);
@@ -4592,7 +4595,7 @@ class GutterHandler {
             tooltip.setPosition(event.clientX, event.clientY);
         }
 
-        mouseHandler.editor.setDefaultHandler("guttermousemove", function(e: EditorMouseEvent) {
+        mouseHandler.editor.setDefaultHandler("guttermousemove", function (e: EditorMouseEvent) {
             // FIXME: Obfuscating the type of target to thwart compiler.
             var target: any = e.domEvent.target || e.domEvent.srcElement;
             if (hasCssClass(target, "ace_fold-widget")) {
@@ -4607,7 +4610,7 @@ class GutterHandler {
             if (tooltipTimeout) {
                 return;
             }
-            tooltipTimeout = setTimeout(function() {
+            tooltipTimeout = setTimeout(function () {
                 tooltipTimeout = null;
                 if (mouseEvent && !mouseHandler.isMousePressed)
                     showTooltip();
@@ -4616,55 +4619,17 @@ class GutterHandler {
             }, 50);
         });
 
-        addListener(editor.renderer.$gutter, "mouseout", function(e: MouseEvent) {
+        addListener(editor.renderer.$gutter, "mouseout", function (e: MouseEvent) {
             mouseEvent = null;
             if (!tooltipAnnotation || tooltipTimeout)
                 return;
 
-            tooltipTimeout = setTimeout(function() {
+            tooltipTimeout = setTimeout(function () {
                 tooltipTimeout = null;
                 hideTooltip(void 0, editor);
             }, 50);
         });
 
         editor.on("changeSession", hideTooltip);
-    }
-}
-
-/**
- * @class GutterTooltip
- * @extends Tooltip
- */
-class GutterTooltip extends Tooltip {
-
-    /**
-     * @class GutterTooltip
-     * @constructor
-     * @param parent {HTMLElement}
-     */
-    constructor(parent: HTMLElement) {
-        super(parent);
-    }
-
-    /**
-     * @method setPosition
-     * @param x {number}
-     * @param y {number}
-     * @return {void}
-     */
-    setPosition(x: number, y: number): void {
-        var windowWidth = window.innerWidth || document.documentElement.clientWidth;
-        var windowHeight = window.innerHeight || document.documentElement.clientHeight;
-        var width = this.getWidth();
-        var height = this.getHeight();
-        x += 15;
-        y += 15;
-        if (x + width > windowWidth) {
-            x -= (x + width) - windowWidth;
-        }
-        if (y + height > windowHeight) {
-            y -= 20 + height;
-        }
-        super.setPosition(x, y);
     }
 }

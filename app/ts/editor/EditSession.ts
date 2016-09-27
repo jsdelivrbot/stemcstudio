@@ -130,13 +130,13 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @private
      */
     private $defaultUndoManager = {
-        undo: function() {
+        undo: function () {
             // Do nothing.
         },
-        redo: function() {
+        redo: function () {
             // Do nothing.
         },
-        reset: function() {
+        reset: function () {
             // Do nothing.
         }
     };
@@ -262,7 +262,8 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         this.eventBus = new EventEmitterClass<any, EditSession>(this);
 
         this.$foldData = [];
-        this.$foldData.toString = function() {
+
+        this.$foldData.toString = function () {
             return this.join("\n");
         };
 
@@ -273,7 +274,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
         // FIXME: Can we avoid setting a "temporary mode".
         // The reason is that the worker can fail.
-        this.setLanguageMode(new TextMode('', []), function(err: any) {
+        this.setLanguageMode(new TextMode('', []), function (err: any) {
             if (!err) {
                 // Do nothing.
             }
@@ -954,11 +955,11 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @param [inFront] {boolean} Set to `true` to establish a front marker.
      * @return {Marker} The added marker
      */
-    private addDynamicMarker(marker: Marker, inFront?: boolean): Marker {
+    private addDynamicMarker<T extends Marker>(marker: T, inFront?: boolean): T {
         if (!marker.update) {
             return;
         }
-        var id = this.$markerId++;
+        const id = this.$markerId++;
         marker.id = id;
         marker.inFront = !!inFront;
 
@@ -1020,8 +1021,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     public highlight(re: RegExp): void {
         if (!this.$searchHighlight) {
             const highlight = new SearchHighlight(null, "ace_selected-word", "text");
-            /* this.$searchHighlight =*/ this.addDynamicMarker(highlight); // TODO: Check.
-            this.$searchHighlight = highlight;
+            this.$searchHighlight = this.addDynamicMarker(highlight);
         }
         this.$searchHighlight.setRegexp(re);
     }
@@ -1189,7 +1189,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
         this.$stopWorker();
         if (useWorker) {
-            this.$startWorker(function(err) {
+            this.$startWorker(function (err) {
                 // Do nothing.
             });
         }
@@ -1409,7 +1409,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     private getLineWidgetMaxWidth(): number {
         if (this.lineWidgetsWidth != null) return this.lineWidgetsWidth;
         var width = 0;
-        this.lineWidgets.forEach(function(w) {
+        this.lineWidgets.forEach(function (w) {
             if (w && w.screenWidth > width)
                 width = w.screenWidth;
         });
@@ -1492,7 +1492,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @param range {Range} The range to work with.
      * @return {string}
      */
-    public getTextRange(range: Range): string {
+    public getTextRange(range?: Range): string {
         return this.doc.getTextRange(range || this.selection.getRange());
     }
 
@@ -1716,7 +1716,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
             var newStart = toRange.start;
             rowDiff = newStart.row - oldStart.row;
             colDiff = newStart.column - oldStart.column;
-            this.addFolds(folds.map(function(x) {
+            this.addFolds(folds.map(function (x) {
                 x = x.clone();
                 if (x.start.row === oldStart.row) {
                     x.start.column += colDiff;
@@ -1802,7 +1802,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         }
 
         const range = new Range(firstRow, 0, lastRow, Number.MAX_VALUE);
-        const folds = this.getFoldsInRange(range).map(function(x) {
+        const folds = this.getFoldsInRange(range).map(function (x) {
             x = x.clone();
             x.start.row += diff;
             x.end.row += diff;
@@ -2217,7 +2217,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
                 row++;
             } else {
                 tokens = [];
-                foldLine.walk(function(placeholder, row, column, lastColumn) {
+                foldLine.walk(function (placeholder, row, column, lastColumn) {
                     var walkTokens: number[];
                     if (placeholder != null) {
                         walkTokens = this.$getDisplayTokens(
@@ -2262,12 +2262,12 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
             var len = displayed.length;
             displayed.join("").
                 // Get all the TAB_SPACEs.
-                replace(/12/g, function() {
+                replace(/12/g, function () {
                     len -= 1;
                     return void 0;
                 }).
                 // Get all the CHAR_EXT/multipleWidth characters.
-                replace(/2/g, function() {
+                replace(/2/g, function () {
                     len -= 1;
                     return void 0;
                 });
@@ -3146,7 +3146,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     private $addFoldLine(foldLine: FoldLine) {
         this.$foldData.push(foldLine);
-        this.$foldData.sort(function(a, b) {
+        this.$foldData.sort(function (a, b) {
             return a.start.row - b.start.row;
         });
         return foldLine;
@@ -3205,7 +3205,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
             // Remove the folds from fold data.
             this.removeFolds(folds);
             // Add the removed folds as subfolds on the new fold.
-            folds.forEach(function(subFold) {
+            folds.forEach(function (subFold) {
                 fold.addSubFold(subFold);
             });
         }
@@ -3265,7 +3265,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     }
 
     addFolds(folds: Fold[]) {
-        folds.forEach(function(fold) {
+        folds.forEach(function (fold) {
             this.addFold(fold);
         }, this);
     }
@@ -3339,7 +3339,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
             cloneFolds.push(folds[i]);
         }
 
-        cloneFolds.forEach(function(fold) {
+        cloneFolds.forEach(function (fold) {
             this.removeFold(fold);
         }, this);
         this.setModified(true);
@@ -3347,7 +3347,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     expandFold(fold: Fold): void {
         this.removeFold(fold);
-        fold.subFolds.forEach(function(subFold) {
+        fold.subFolds.forEach(function (subFold) {
             fold.restoreRange(subFold);
             this.addFold(subFold);
         }, this);
@@ -3358,7 +3358,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     }
 
     expandFolds(folds: Fold[]) {
-        folds.forEach(function(fold) {
+        folds.forEach(function (fold) {
             this.expandFold(fold);
         }, this);
     }
@@ -3478,8 +3478,8 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     $cloneFoldData(): FoldLine[] {
         let fd: FoldLine[] = [];
-        fd = this.$foldData.map(function(foldLine) {
-            var folds = foldLine.folds.map(function(fold) {
+        fd = this.$foldData.map(function (foldLine) {
+            var folds = foldLine.folds.map(function (fold) {
                 return fold.clone();
             });
             return new FoldLine(fd, folds);

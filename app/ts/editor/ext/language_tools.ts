@@ -1,19 +1,19 @@
-import Command from '../commands/Command';
-import SnippetManager from "SnippetManager";
-import AutoCompleteCommand from '../autocomplete/AutoCompleteCommand';
+// import Command from '../commands/Command';
+// import SnippetManager from "SnippetManager";
+// import AutoCompleteCommand from '../autocomplete/AutoCompleteCommand';
 import Completer from '../autocomplete/Completer';
-import CompletionManager from '../autocomplete/CompletionManager';
-import retrievePrecedingIdentifier from "../autocomplete/retrievePrecedingIdentifier";
-import Completion from "../Completion";
-import Editor from "../Editor";
-import EditSession from '../EditSession';
-import LanguageMode from '../LanguageMode';
-import Position from '../Position';
-import {COMMAND_NAME_AUTO_COMPLETE} from '../editor_protocol';
-import {COMMAND_NAME_BACKSPACE} from '../editor_protocol';
-import {COMMAND_NAME_INSERT_STRING} from '../editor_protocol';
+// import CompletionManager from '../autocomplete/CompletionManager';
+// import retrievePrecedingIdentifier from "../autocomplete/retrievePrecedingIdentifier";
+// import Completion from "../Completion";
+// import Editor from "../Editor";
+// import EditSession from '../EditSession';
+// import LanguageMode from '../LanguageMode';
+// import Position from '../Position';
+// import {COMMAND_NAME_AUTO_COMPLETE} from '../editor_protocol';
+// import {COMMAND_NAME_BACKSPACE} from '../editor_protocol';
+// import {COMMAND_NAME_INSERT_STRING} from '../editor_protocol';
 
-var snippetManager = new SnippetManager();
+// var snippetManager = new SnippetManager();
 
 // Exports existing completer so that user can construct his own set of completers.
 // export var textCompleter: acm.Completer = tcm;
@@ -48,15 +48,16 @@ export var snippetCompleter: Completer = {
     }
 };
 */
-var completers: Completer[] = [];
+const completers: Completer[] = [];
 
 export function addCompleter(completer: Completer) {
     completers.push(completer);
 };
 
+/*
 var expandSnippet: Command = {
     name: 'expandSnippet',
-    exec: function(editor: Editor) {
+    exec: function (editor: Editor) {
         var success = snippetManager.expandWithTab(editor);
         if (!success) {
             let indentCommand = editor.commands.getCommandByName('indent')
@@ -65,12 +66,14 @@ var expandSnippet: Command = {
     },
     bindKey: 'Tab'
 };
-
-var onChangeMode = function(e, editor: Editor) {
+*/
+/*
+var onChangeMode = function (e, editor: Editor) {
     loadSnippetsForMode(editor.getSession().$mode);
 };
-
-var loadSnippetsForMode = function(mode: LanguageMode) {
+*/
+/*
+var loadSnippetsForMode = function (mode: LanguageMode) {
     var id = mode.$id;
     if (!snippetManager['files']) {
         snippetManager['files'] = {};
@@ -80,7 +83,8 @@ var loadSnippetsForMode = function(mode: LanguageMode) {
         mode.modes.forEach(loadSnippetsForMode);
     }
 };
-
+*/
+/*
 var loadSnippetFile = function(id: string) {
     if (!id || snippetManager['files'][id])
         return;
@@ -93,26 +97,26 @@ var loadSnippetFile = function(id: string) {
                 m.snippets = snippetManager.parseSnippetFile(m.snippetText);
             snippetManager.register(m.snippets || [], m.scope);
             // This hack is for the velocity language...
-            /*
             if (m.includeScopes) {
                 snippetManager.snippetMap[m.scope].includeScopes = m.includeScopes;
                 m.includeScopes.forEach(function(x) {
                     loadSnippetFile("ace/mode/" + x);
                 });
             }
-            */
         }
     });
 };
+*/
 
+/*
 function getCompletionPrefix(editor: Editor): string {
     var pos = editor.getCursorPosition();
     var line = editor.getSession().getLine(pos.row);
     var prefix = retrievePrecedingIdentifier(line, pos.column);
     // Try to find custom prefixes on the completers
-    editor.completers.forEach(function(completer) {
+    editor.completers.forEach(function (completer) {
         if (completer['identifierRegexps']) {
-            completer['identifierRegexps'].forEach(function(identifierRegex) {
+            completer['identifierRegexps'].forEach(function (identifierRegex) {
                 if (!prefix && identifierRegex) {
                     prefix = retrievePrecedingIdentifier(line, pos.column, identifierRegex);
                 }
@@ -121,8 +125,10 @@ function getCompletionPrefix(editor: Editor): string {
     });
     return prefix;
 }
+*/
 
-var doLiveAutocomplete = function(e: { editor: Editor; command: Command; args }) {
+/*
+var doLiveAutocomplete = function (e: { editor: Editor; command: Command; args }) {
     var editor = e.editor;
     var text = e.args || "";
     var hasCompleter = editor.completionManager && editor.completionManager.activated;
@@ -146,6 +152,7 @@ var doLiveAutocomplete = function(e: { editor: Editor; command: Command; args })
         }
     }
 };
+*/
 /*
 defOptions(Editor.prototype, 'editor', {
     enableBasicAutocompletion: {

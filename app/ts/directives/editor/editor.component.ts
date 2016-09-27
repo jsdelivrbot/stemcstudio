@@ -13,6 +13,7 @@ import Renderer from '../../editor/Renderer';
 import UndoManager from '../../editor/UndoManager';
 import Editor from '../../editor/Editor';
 import EditorScope from './EditorScope';
+import searchBox from '../../editor/ext/SearchBox';
 import ISettingsService from '../../services/settings/ISettingsService';
 import ITextService from '../../services/text/ITextService';
 import ThemeManager from '../../services/themes/ThemeManager';
@@ -69,7 +70,7 @@ function factory(
         const editor: Editor = new Editor(renderer, void 0);
         let removeEditor: () => void;
 
-        const themeEventHandler = function(event: ThemeManagerEvent) {
+        const themeEventHandler = function (event: ThemeManagerEvent) {
             editor.setThemeCss(event.cssClass, event.href);
             editor.setThemeDark(event.isDark);
         };
@@ -84,12 +85,12 @@ function factory(
         editor.setFontSize(settings.fontSize);
         editor.setShowPrintMargin(settings.showPrintMargin);
 
-        attrs.$observe<boolean>('readonly', function(readOnly: boolean) {
+        attrs.$observe<boolean>('readonly', function (readOnly: boolean) {
             editor.setReadOnly(readOnly);
         });
 
         // formatters update the viewValue from the modelValue
-        ngModel.$formatters.push(function(modelValue: string) {
+        ngModel.$formatters.push(function (modelValue: string) {
             if (ng.isUndefined(modelValue) || modelValue === null) {
                 return void 0;
             }
@@ -101,20 +102,20 @@ function factory(
 
         // parsers update the modelValue from the viewValue
         // This is how it is done prior to AngularJs 1.3
-        ngModel.$parsers.push(function(viewValue: string) {
+        ngModel.$parsers.push(function (viewValue: string) {
             ngModel.$setValidity('yadda', true);
             return viewValue;
         });
 
         // In Angular 1.3+ we have the $validators pipeline.
         // We don't need to set validation states because we have an object, not an array.
-        ngModel.$validators['foo'] = function(modelValue: string, viewValue: string): boolean {
+        ngModel.$validators['foo'] = function (modelValue: string, viewValue: string): boolean {
             return true;
         };
 
         // The basic idea here is to set the $render callback function that will be used to take
         // the model value and use it to update the view (editor).
-        ngModel.$render = function() {
+        ngModel.$render = function () {
             const file: WsFile = ngModel.$viewValue;
             if (file instanceof WsFile) {
                 // If there is no a session, then the file should lazily create one.
@@ -130,11 +131,27 @@ function factory(
                         session.setUseSoftTabs(true);
                         // Setting displayIndentGuides requires an editSession.
                         editor.setDisplayIndentGuides(settings.displayIndentGuides);
+                        editor.commands.addCommand({
+                            name: 'Find',
+                            bindKey: { win: 'Ctrl-F', mac: 'Command-F' },
+                            exec: function (editor: Editor) {
+                                searchBox(editor, false);
+                            },
+                            readOnly: true // false if this command should not apply in readOnly mode
+                        });
+                        editor.commands.addCommand({
+                            name: 'Replace',
+                            bindKey: { win: 'Ctrl-H', mac: 'Command-H' },
+                            exec: function (editor: Editor) {
+                                searchBox(editor, true);
+                            },
+                            readOnly: true // false if this command should not apply in readOnly mode
+                        });
                         // We must wait for the $render function to be called so that we have a session.
                         switch (file.mode) {
                             case LANGUAGE_PYTHON: {
                                 session.setUseWorker(false);
-                                session.setLanguageMode(new PythonMode('/js/worker.js', workerImports), function(err: any) {
+                                session.setLanguageMode(new PythonMode('/js/worker.js', workerImports), function (err: any) {
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
@@ -143,7 +160,7 @@ function factory(
                                 break;
                             }
                             case LANGUAGE_JAVA_SCRIPT: {
-                                session.setLanguageMode(new JavaScriptMode('/js/worker.js', workerImports), function(err: any) {
+                                session.setLanguageMode(new JavaScriptMode('/js/worker.js', workerImports), function (err: any) {
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
@@ -152,7 +169,7 @@ function factory(
                                 break;
                             }
                             case LANGUAGE_TYPE_SCRIPT: {
-                                session.setLanguageMode(new TypeScriptMode('/js/worker.js', workerImports), function(err: any) {
+                                session.setLanguageMode(new TypeScriptMode('/js/worker.js', workerImports), function (err: any) {
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
@@ -161,7 +178,7 @@ function factory(
                                 break;
                             }
                             case LANGUAGE_HTML: {
-                                session.setLanguageMode(new HtmlMode('/js/worker.js', workerImports), function(err: any) {
+                                session.setLanguageMode(new HtmlMode('/js/worker.js', workerImports), function (err: any) {
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
@@ -170,7 +187,7 @@ function factory(
                                 break;
                             }
                             case LANGUAGE_JSON: {
-                                session.setLanguageMode(new JsonMode('/js/worker.js', workerImports), function(err: any) {
+                                session.setLanguageMode(new JsonMode('/js/worker.js', workerImports), function (err: any) {
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
@@ -180,7 +197,7 @@ function factory(
                             }
                             case LANGUAGE_GLSL: {
                                 // If we don't use the worker then we don't get a confirmation.
-                                session.setLanguageMode(new GlslMode('/js/worker.js', workerImports), function(err: any) {
+                                session.setLanguageMode(new GlslMode('/js/worker.js', workerImports), function (err: any) {
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
@@ -192,7 +209,7 @@ function factory(
                             case LANGUAGE_LESS: {
                                 // If we don't use the worker then we don't get a confirmation.
                                 session.setUseWorker(false);
-                                session.setLanguageMode(new CssMode('/js/worker.js', workerImports), function(err: any) {
+                                session.setLanguageMode(new CssMode('/js/worker.js', workerImports), function (err: any) {
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
@@ -203,7 +220,7 @@ function factory(
                             case LANGUAGE_MARKDOWN: {
                                 session.setUseWrapMode(true);
                                 editor.setWrapBehavioursEnabled(true);
-                                session.setLanguageMode(new MarkdownMode('/js/worker.js', workerImports), function(err: any) {
+                                session.setLanguageMode(new MarkdownMode('/js/worker.js', workerImports), function (err: any) {
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
@@ -212,7 +229,7 @@ function factory(
                                 break;
                             }
                             case LANGUAGE_TEXT: {
-                                session.setLanguageMode(new TextMode('/js/worker.js', workerImports), function(err: any) {
+                                session.setLanguageMode(new TextMode('/js/worker.js', workerImports), function (err: any) {
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }
@@ -224,7 +241,7 @@ function factory(
                                 console.warn(`Unrecognized mode => ${file.mode}`);
                             }
                         }
-                        $timeout(function() {
+                        $timeout(function () {
                             resizeEditor();
                             // The resize event appears to happen AFTER a session is injected.
                             // If it did not happen that way, the following line would blow up.
@@ -255,14 +272,14 @@ function factory(
          * 
          * This $watch is cancelled on onDestroyScope.
          */
-        const unregisterWatchNgShow = $scope.$watch('ngShow'/*attrs['ngShow']*/, function(newShowing: boolean, oldShowing: boolean) {
+        const unregisterWatchNgShow = $scope.$watch('ngShow'/*attrs['ngShow']*/, function (newShowing: boolean, oldShowing: boolean) {
             if (newShowing) {
                 resizeEditorNextTick();
             }
         });
 
         function resizeEditorNextTick() {
-            $timeout(function() { resizeEditor(); }, 0, /* No delay. */ false /* Don't trigger a digest. */);
+            $timeout(function () { resizeEditor(); }, 0, /* No delay. */ false /* Don't trigger a digest. */);
         }
 
         function resizeEditor() {

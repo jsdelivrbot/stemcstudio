@@ -1,95 +1,75 @@
 import Range from './Range';
-import Position from './Position';
 
 /**
- * @class SearchOptions
+ *
  */
 interface SearchOptions {
 
     /**
-     * @property needle
-     * @type string | RegExp
-     * @optional
+     * The string or regular expression you're looking for.
      */
     needle?: string | RegExp;
 
     /**
-     * @property range
-     * @type range
-     * @optional
+     *  The Range to search within. Set this to null for the whole document.
      */
     range?: Range;
 
     /**
-     * @property backwards
-     * @type boolean
-     * @optional
+     * The starting Range or cursor position to begin the search.
+     * The existing selection range.
+     */
+    start?: Range;
+
+    /**
+     * Whether to search backwards from where cursor currently is. Defaults to false.
      */
     backwards?: boolean;
 
     /**
-     * @property $isMultiLine
-     * @type boolean
-     * @optional
+     *
      */
     $isMultiLine?: boolean;
 
     /**
      * A multi-line search will have an array of regular expressions.
-     * TODO: Better to separate these out for type-safety purposes.
      */
-    re?: /*boolean | RegExp | RegExp[]*/any;
-    regExp?: RegExp;
+    re?: boolean | RegExp | RegExp[];
+
+    /**
+     * Whether the search is a regular expression or not. Defaults to false.
+     * SearchBox sets this to a boolean to indicate the state of the Regular Expression toggle.
+     */
+    regExp?: boolean;
 
     /**
      * TODO: Possible BUG duplicating caseSensitive property?
-     *
-     * @property preserveCase
-     * @type boolean
-     * @optional
      */
     preserveCase?: boolean;
 
     /**
-     * @property caseSensitive
-     * @type boolean
-     * @optional
+     * Whether the search ought to be case-sensitive. Defaults to false.
      */
     caseSensitive?: boolean;
 
     /**
-     * @property wholeWord
-     * @type boolean
-     * @optional
+     * Whether the search matches only on whole words. Defaults to false.
      */
     wholeWord?: boolean;
 
     /**
-     * @property skipCurrent
-     * @type boolean
-     * @optional
+     * Whether or not to include the current line in the search. Default to false.
      */
     skipCurrent?: boolean;
 
 
     /**
-     * @property wrap
-     * @type boolean
-     * @optional
+     * Whether to wrap the search back to the beginning when it hits the end. Defaults to false.
      */
     wrap?: boolean;
 
     /**
-     * @property start
-     * @type Position
-     * @optional
-     */
-    start?: Position;
-
-    /**
-     * @property preventScroll
-     * @type boolean
-     * @optional
+     *
      */
     preventScroll?: boolean;
 }

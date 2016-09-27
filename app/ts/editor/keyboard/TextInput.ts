@@ -72,7 +72,7 @@ export default class TextInput {
 
     private afterContextMenu: boolean;
 
-    private inComposition: { range?: Range; lastValue?: string };
+    private inComposition: { range?: Range; lastValue?: string; canUndo?: boolean };
 
     private inputHandler: (data: string) => string;
 
@@ -141,7 +141,7 @@ export default class TextInput {
             }
         });
 
-        isWebKit || editor.on('changeSelection', function(event, editor: Editor) {
+        isWebKit || editor.on('changeSelection', function (event, editor: Editor) {
             if (editor.selection.isEmpty() !== isSelectionEmpty) {
                 isSelectionEmpty = !isSelectionEmpty;
                 syncSelection.schedule();
@@ -155,19 +155,19 @@ export default class TextInput {
         }
 
 
-        var isAllSelected = function(text: HTMLTextAreaElement) {
+        var isAllSelected = function (text: HTMLTextAreaElement) {
             return text.selectionStart === 0 && text.selectionEnd === text.value.length;
         };
         // IE8 does not support setSelectionRange
         if (!this.text.setSelectionRange && this.text.createTextRange) {
-            this.text.setSelectionRange = function(selectionStart: number, selectionEnd: number) {
+            this.text.setSelectionRange = function (selectionStart: number, selectionEnd: number) {
                 var range = this.createTextRange();
                 range.collapse(true);
                 range.moveStart('character', selectionStart);
                 range.moveEnd('character', selectionEnd);
                 range.select();
             };
-            isAllSelected = function(text: HTMLTextAreaElement) {
+            isAllSelected = function (text: HTMLTextAreaElement) {
                 try {
                     var range = text.ownerDocument['selection'].createRange();
                 }
@@ -210,7 +210,7 @@ export default class TextInput {
             });
             // when user presses backspace after focusing the editor 
             // propertychange isn't called for the next character
-            addListener(this.text, "keydown", function(e) {
+            addListener(this.text, "keydown", function (e) {
                 syncProperty.schedule(50);
             });
         }
@@ -241,7 +241,7 @@ export default class TextInput {
             this.resetValue();
         };
 
-        var handleClipboardData = function(e, data?) {
+        var handleClipboardData = function (e, data?) {
             var clipboardData = e.clipboardData || window['clipboardData'];
             if (!clipboardData || BROKEN_SETDATA)
                 return;
@@ -279,11 +279,11 @@ export default class TextInput {
             }
         };
 
-        var onCut = function(e: KeyboardEvent) {
+        var onCut = function (e: KeyboardEvent) {
             doCopy(e, true);
         };
 
-        var onCopy = function(e: KeyboardEvent) {
+        var onCopy = function (e: KeyboardEvent) {
             doCopy(e, false);
         };
 
@@ -314,7 +314,7 @@ export default class TextInput {
 
         // Opera has no clipboard events
         if (!('oncut' in this.text) || !('oncopy' in this.text) || !('onpaste' in this.text)) {
-            addListener(container, "keydown", function(e: KeyboardEvent) {
+            addListener(container, "keydown", function (e: KeyboardEvent) {
                 if ((isMac && !e.metaKey) || !e.ctrlKey)
                     return;
 
@@ -345,7 +345,7 @@ export default class TextInput {
             editor.onCompositionStart();
             setTimeout(onCompositionUpdate, 0);
             editor.on("mousedown", onCompositionEnd);
-            if (!editor.selection.isEmpty()) {
+            if (this.inComposition.canUndo && !editor.selection.isEmpty()) {
                 editor.insert("", false);
                 editor.getSession().markUndoGroup();
                 editor.selection.clearSelection();
@@ -361,9 +361,12 @@ export default class TextInput {
             if (this.inComposition.lastValue === val) return;
 
             editor.onCompositionUpdate(val);
-            if (this.inComposition.lastValue)
+            if (this.inComposition.lastValue) {
                 editor.undo();
-            this.inComposition.lastValue = val;
+            }
+            if (this.inComposition.canUndo) {
+                this.inComposition.lastValue = val;
+            }
             if (this.inComposition.lastValue) {
                 var r = editor.selection.getRange();
                 editor.insert(this.inComposition.lastValue, false);
@@ -417,11 +420,11 @@ export default class TextInput {
 
         addListener(this.text, "compositionstart", onCompositionStart);
         if (isGecko) {
-            addListener(this.text, "text", function() { syncComposition.schedule(); });
+            addListener(this.text, "text", function () { syncComposition.schedule(); });
         }
         else {
-            addListener(this.text, "keyup", function() { syncComposition.schedule(); });
-            addListener(this.text, "keydown", function() { syncComposition.schedule(); });
+            addListener(this.text, "keyup", function () { syncComposition.schedule(); });
+            addListener(this.text, "keydown", function () { syncComposition.schedule(); });
         }
         addListener(this.text, "compositionend", onCompositionEnd);
 

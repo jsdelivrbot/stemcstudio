@@ -18,7 +18,7 @@ function $detectIndentation(lines: string[], fallback?: any): Indentation {
             tabIndents++;
 
         var spaces = line.match(/^ */)[0].length;
-        if (spaces && line[spaces] != "\t") {
+        if (spaces && line[spaces] !== "\t") {
             var diff = spaces - prevSpaces;
             if (diff > 0 && !(prevSpaces % diff) && !(spaces % diff))
                 changes[diff] = (changes[diff] || 0) + 1;
@@ -28,7 +28,7 @@ function $detectIndentation(lines: string[], fallback?: any): Indentation {
         prevSpaces = spaces;
 
         // ignore lines ending with backslash
-        while (i < max && line[line.length - 1] == "\\")
+        while (i < max && line[line.length - 1] === "\\")
             line = lines[i++];
     }
 
@@ -39,17 +39,17 @@ function $detectIndentation(lines: string[], fallback?: any): Indentation {
         return score;
     }
 
-    var changesTotal = changes.reduce(function(a, b) { return a + b }, 0);
+    var changesTotal = changes.reduce(function (a, b) { return a + b; }, 0);
 
     var first = { score: 0, length: 0 };
     var spaceIndents = 0;
     for (var i = 1; i < 12; i++) {
         var score = getScore(i);
-        if (i == 1) {
+        if (i === 1) {
             spaceIndents = score;
             score = stats[1] ? 0.9 : 0.8;
             if (!stats.length)
-                score = 0
+                score = 0;
         } else
             score /= spaceIndents;
 

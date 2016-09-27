@@ -162,7 +162,7 @@ export default class KeyboardHandler {
      * @return {void}
      */
     addCommands(commands: Command[]): void {
-        for (var i = 0, iLength = commands.length; i < iLength; i++) {
+        for (let i = 0, iLength = commands.length; i < iLength; i++) {
             this.addCommand(commands[i]);
         }
     }

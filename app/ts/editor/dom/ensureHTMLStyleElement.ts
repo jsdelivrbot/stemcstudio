@@ -9,7 +9,7 @@ export default function ensureHTMLStyleElement(cssText: string, id: string, doc:
         return;
     }
     else {
-        let style = doc.createElement('style');
+        const style = doc.createElement('style');
         style.appendChild(doc.createTextNode(cssText));
         if (id) {
             style.id = id;

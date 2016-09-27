@@ -46,9 +46,9 @@
 'use strict';
 
 import {createHTMLDivElement} from "../../lib/dom";
-import Editor from '../Editor';
-//var cssText = require("../../requirejs/text!./settings_menu.css");
-//dom.importCssString(cssText);
+import Editor from '../../Editor';
+// var cssText = require("../../requirejs/text!./settings_menu.css");
+// dom.importCssString(cssText);
 
 /**
  * Generates an overlay for displaying menus. The overlay is an absolutely
@@ -83,7 +83,7 @@ export default function overlayPage(editor: Editor, contentElement: Node, top: s
         'position: fixed; top:0; bottom:0; left:0; right:0;' +
         'z-index: 9990; ' +
         'background-color: rgba(0, 0, 0, 0.3);';
-    closer.addEventListener('click', function() {
+    closer.addEventListener('click', function () {
         document.removeEventListener('keydown', documentEscListener);
         closer.parentNode.removeChild(closer);
         editor.focus();
@@ -93,7 +93,7 @@ export default function overlayPage(editor: Editor, contentElement: Node, top: s
     document.addEventListener('keydown', documentEscListener);
 
     contentContainer.style.cssText = topStyle + rightStyle + bottomStyle + leftStyle;
-    contentContainer.addEventListener('click', function(e) {
+    contentContainer.addEventListener('click', function (e) {
         e.stopPropagation();
     });
 
@@ -102,7 +102,7 @@ export default function overlayPage(editor: Editor, contentElement: Node, top: s
 
     var closeButton = createHTMLDivElement();
     closeButton.className = "ace_closeButton";
-    closeButton.addEventListener('click', function() {
+    closeButton.addEventListener('click', function () {
         closer.click();
     });
 
