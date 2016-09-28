@@ -1211,7 +1211,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "        </div>\n" +
     "        <div id='themes-modal-body' class=\"modal-body\">\n" +
     "            <label class='text-muted'>Theme:</label>\n" +
-    "            <select ng-model='theme' ng-options='theme.name for theme in themes track by theme.name'></select>\n" +
+    "            <select ng-model='theme' ng-options='theme.name for theme in themes track by theme.name' ng-change='themeChange()'></select>\n" +
     "        </div>\n" +
     "        <div class=\"modal-footer\">\n" +
     "            <button class=\"btn btn-secondary\" type=\"button\" data-ng-click=\"cancel()\">Cancel</button>\n" +

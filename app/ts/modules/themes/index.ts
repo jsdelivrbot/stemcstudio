@@ -19,11 +19,11 @@ m.service(THEMES_DIALOG, ThemesDialogService);
 m.service(THEME_MANAGER, ThemeManagerService);
 
 m.config([function () {
-    console.log(`${m.name}.config(...)`);
+    // console.log(`${m.name}.config(...)`);
 }]);
 
 m.run([function () {
-    console.log(`${m.name}.run(...)`);
+    // console.log(`${m.name}.run(...)`);
 }]);
 
 export default m;

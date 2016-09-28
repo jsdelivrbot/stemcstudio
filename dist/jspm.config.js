@@ -227,7 +227,7 @@ System.config({
       "string_decoder": "github:jspm/nodelibs-string_decoder@0.1.0"
     },
     "npm:clipboard@1.5.12": {
-      "good-listener": "npm:good-listener@1.1.7",
+      "good-listener": "npm:good-listener@1.1.8",
       "select": "npm:select@1.0.6",
       "tiny-emitter": "npm:tiny-emitter@1.1.0"
     },
@@ -236,11 +236,14 @@ System.config({
       "strip-ansi": "npm:strip-ansi@3.0.1",
       "wrap-ansi": "npm:wrap-ansi@2.0.0"
     },
-    "npm:closest@0.0.1": {
-      "matches-selector": "npm:matches-selector@0.0.1"
-    },
     "npm:code-point-at@1.0.0": {
       "number-is-nan": "npm:number-is-nan@1.0.0"
+    },
+    "npm:component-closest@1.0.1": {
+      "component-matches-selector": "npm:component-matches-selector@0.1.6"
+    },
+    "npm:component-matches-selector@0.1.6": {
+      "component-query": "npm:component-query@0.0.3"
     },
     "npm:constants-browserify@0.0.1": {
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
@@ -289,8 +292,8 @@ System.config({
     "npm:debug@2.2.0": {
       "ms": "npm:ms@0.7.1"
     },
-    "npm:delegate@3.0.1": {
-      "closest": "npm:closest@0.0.1"
+    "npm:delegate@3.0.2": {
+      "component-closest": "npm:component-closest@1.0.1"
     },
     "npm:des.js@1.0.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
@@ -368,8 +371,8 @@ System.config({
       "create-hash": "npm:create-hash@1.1.2",
       "crypto": "github:jspm/nodelibs-crypto@0.1.0"
     },
-    "npm:good-listener@1.1.7": {
-      "delegate": "npm:delegate@3.0.1"
+    "npm:good-listener@1.1.8": {
+      "delegate": "npm:delegate@3.0.2"
     },
     "npm:has-binary@0.1.6": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",

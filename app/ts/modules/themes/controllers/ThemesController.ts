@@ -19,14 +19,14 @@ export default class ThemesController {
         const theme = this.themeManager.getCurrentTheme();
         const model: ThemesDialogModel = { theme };
         this.themesDialog.open(model).then((model) => {
-            console.log(JSON.stringify(model));
             this.themeManager.setCurrentThemeByName(model.theme.name);
         }).catch((reason) => {
             switch (reason) {
                 case 'cancel click':
                 case 'escape key press':
                 case 'backdrop click': {
-                    console.log(`reason => ${reason}`);
+                    // Restore the original theme.
+                    this.themeManager.setCurrentThemeByName(theme.name);
                     break;
                 }
                 default: {

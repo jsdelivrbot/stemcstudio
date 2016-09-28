@@ -72,8 +72,10 @@ function factory(
         let removeEditor: () => void;
 
         const themeEventHandler = function (event: ThemeManagerEvent) {
-            editor.setThemeCss(event.cssClass, event.href);
-            editor.setThemeDark(event.isDark);
+            setTimeout(function () {
+                editor.setThemeCss(event.cssClass, event.href);
+                editor.setThemeDark(event.isDark);
+            }, 0);
         };
         // This event listener gets removed in onDestroyScope
         themeManager.addEventListener(currentTheme, themeEventHandler);

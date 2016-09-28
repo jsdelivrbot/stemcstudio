@@ -14,33 +14,43 @@ export default class PropertiesModalController {
         THEME_MANAGER,
         'model'];
     constructor(
-        $scope: ThemesDialogScope,
-        $uibModalInstance: uib.IModalServiceInstance,
-        themeManager: ThemeManager,
-        model: ThemesDialogModel) {
+        private $scope: ThemesDialogScope,
+        private $uibModalInstance: uib.IModalServiceInstance,
+        private themeManager: ThemeManager,
+        private model: ThemesDialogModel) {
+    }
 
-        $scope.theme = model.theme;
+    /**
+     * 
+     */
+    $onInit(): void {
+        this.$scope.theme = this.model.theme;
 
-        themeManager.getThemes().then((themes) => {
-            $scope.themes = themes;
+        // If the theme changes, apply it immediately so that the user can see the result.
+        this.$scope.themeChange = () => {
+            this.themeManager.setCurrentThemeByName(this.$scope.theme.name);
+        };
+
+        this.$scope.ok = () => {
+            this.model.theme = this.$scope.theme;
+            this.$uibModalInstance.close(this.model);
+        };
+
+        this.$scope.cancel = () => {
+            // Important that this string be consistent with workflow.
+            this.$uibModalInstance.dismiss('cancel click');
+        };
+
+        this.themeManager.getThemes().then((themes) => {
+            this.$scope.themes = themes;
         }).catch((reason) => {
             // Ignore
         });
-
-        $scope.ok = function () {
-            model.theme = $scope.theme;
-            $uibModalInstance.close(model);
-        };
-
-        $scope.cancel = function () {
-            // Important that this string be consistent with workflow.
-            $uibModalInstance.dismiss('cancel click');
-        };
     }
-    $onInit(): void {
-        // This IS called.
-        console.warn("ThemesDialogController.$onInit");
-    }
+
+    /**
+     * 
+     */
     $onDestroy(): void {
         // This is NOT called. Don't know why.
         console.warn("ThemesDialogController.$onDestroy");

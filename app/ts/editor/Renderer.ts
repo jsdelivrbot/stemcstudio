@@ -1970,19 +1970,21 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
      * @return {void}
      */
     setThemeCss(themeId: string, href?: string): void {
-        if (this.themeId) {
-            this.removeCssClass(this.themeId);
-            if (hasHTMLLinkElement(this.themeId, this.container.ownerDocument)) {
-                removeHTMLLinkElement(themeId, this.container.ownerDocument);
+        if (themeId !== this.themeId) {
+            if (this.themeId) {
+                this.removeCssClass(this.themeId);
+                if (hasHTMLLinkElement(this.themeId, this.container.ownerDocument)) {
+                    removeHTMLLinkElement(themeId, this.container.ownerDocument);
+                }
             }
-        }
-        if (href) {
-            if (!hasHTMLLinkElement(themeId, this.container.ownerDocument)) {
-                appendHTMLLinkElement(themeId, 'stylesheet', 'text/css', href, this.container.ownerDocument);
+            if (href) {
+                if (!hasHTMLLinkElement(themeId, this.container.ownerDocument)) {
+                    appendHTMLLinkElement(themeId, 'stylesheet', 'text/css', href, this.container.ownerDocument);
+                }
             }
+            this.addCssClass(themeId);
+            this.themeId = themeId;
         }
-        this.addCssClass(themeId);
-        this.themeId = themeId;
     }
 
     setThemeDark(isDark: boolean): void {

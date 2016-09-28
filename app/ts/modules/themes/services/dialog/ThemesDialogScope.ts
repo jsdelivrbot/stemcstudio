@@ -12,6 +12,8 @@ interface ThemesDialogScope {
      */
     themes: Theme[];
 
+    themeChange(): void;
+
     ok(): void;
     submit(): void;
     cancel(); void;
