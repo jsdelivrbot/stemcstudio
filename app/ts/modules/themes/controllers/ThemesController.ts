@@ -15,7 +15,7 @@ export default class ThemesController {
     ) {
         // Do nothing yet. 
     }
-    public showThemeChoices(): void {
+    public showEditorPreferences(): void {
         const theme = this.themeManager.getCurrentTheme();
         const model: ThemesDialogModel = { theme };
         this.themesDialog.open(model).then((model) => {

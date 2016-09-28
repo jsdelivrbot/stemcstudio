@@ -482,7 +482,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                        </a>\n" +
     "                        <ul uib-dropdown-menu role=\"menu\">\n" +
     "                            <li ng-controller='themes-controller as themes'>\n" +
-    "                                <a ng-click='themes.showThemeChoices()' role='button'>Editor Theme</a>\n" +
+    "                                <a ng-click='themes.showEditorPreferences()' role='button'>Editor Preferences</a>\n" +
     "                            </li>\n" +
     "                            <!--\n" +
     "                            <li>\n" +
@@ -1207,7 +1207,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "            <h3 class='modal-title' style=\"float: left;\">\n" +
     "                <logo-text version='{{version}}' />\n" +
     "            </h3>\n" +
-    "            <h3 class='modal-title' style=\"float: right;\">Theme Preference</h3>\n" +
+    "            <h3 class='modal-title' style=\"float: right;\">Editor Preferences</h3>\n" +
     "        </div>\n" +
     "        <div id='themes-modal-body' class=\"modal-body\">\n" +
     "            <label class='text-muted'>Theme:</label>\n" +

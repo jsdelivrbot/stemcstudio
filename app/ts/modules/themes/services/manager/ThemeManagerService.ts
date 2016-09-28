@@ -4,6 +4,8 @@ import Theme from '../../Theme';
 import ThemeManager from '../../ThemeManager';
 import ThemeManagerEvent from '../../ThemeManagerEvent';
 import {currentTheme} from '../../ThemeManagerEvent';
+import {PREFERENCES_MANAGER} from '../../../preferences/constants';
+import PreferencesManager from '../../../preferences/PreferencesManager';
 
 const themeNames: string[] = themes.map(theme => theme.name);
 
@@ -12,12 +14,12 @@ interface ThemeManagerCallback {
 }
 
 export default class DefaultThemeManager implements ThemeManager {
-    public static $inject: string[] = ['$q'];
+    public static $inject: string[] = ['$q', PREFERENCES_MANAGER];
     private callbacksByEventName: { [eventName: string]: ThemeManagerCallback[] } = {};
     private currentTheme: Theme;
-    constructor(private $q: ng.IQService) {
+    constructor(private $q: ng.IQService, private preferences: PreferencesManager) {
         // Do nothing yet.
-        this.currentTheme = getThemeByName("Twilight");
+        this.currentTheme = getThemeByName(preferences.theme);
     }
     addEventListener(eventName: string, callback: ThemeManagerCallback) {
         this.ensureCallbacks(eventName).push(callback);
@@ -54,6 +56,8 @@ export default class DefaultThemeManager implements ThemeManager {
                 cb({ cssClass: theme.cssClass, href: `/themes/${theme.fileName}`, isDark: theme.isDark });
             }
             this.currentTheme = theme;
+            this.preferences.theme = theme.name;
+
         }
     }
     private ensureCallbacks(eventName: string): ThemeManagerCallback[] {

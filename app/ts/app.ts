@@ -76,6 +76,7 @@ import propsFilter from './filters/propsFilter';
 
 // Local (AngularJS) modules.
 // Import them and then use their name as app module dependencies.
+import preferences from './modules/preferences/index';
 import rooms from './modules/rooms/index';
 import stemcArXiv from './stemcArXiv/index';
 import themes from './modules/themes/index';
@@ -111,6 +112,7 @@ const app: angular.IModule = angular.module('app', [
     'ui.bootstrap.modal',
     'ui.router',
     'ui.select',
+    preferences.name,
     rooms.name,
     stemcArXiv.name,
     themes.name,
@@ -136,7 +138,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version.
-app.constant('version', '2.7.70');
+app.constant('version', '2.7.71');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
