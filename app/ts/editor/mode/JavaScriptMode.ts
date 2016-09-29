@@ -8,18 +8,14 @@ import CStyleFoldMode from "./folding/CstyleFoldMode";
 import EditSession from "../EditSession";
 
 /**
- * @class JavaScriptMode
- * @extends TextMode
+ *
  */
 export default class JavaScriptMode extends TextMode {
     $outdent: MatchingBraceOutdent;
     blockComment: { start: string; end: string };
 
     /**
-     * @class JavaScriptMode
-     * @constructor
-     * @param workerUrl {string}
-     * @param scriptImports: {string[]}
+     *
      */
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
