@@ -303,15 +303,15 @@ module.exports = function (grunt) {
                     },
                     {
                         src: "../davinci-eight/dist/davinci-eight.d.ts",
-                        dest: "generated/vendor/davinci-eight@2.312.0/dist/davinci-eight.d.ts"
+                        dest: "generated/vendor/davinci-eight@2.313.0/dist/davinci-eight.d.ts"
                     },
                     {
                         src: "../davinci-eight/dist/davinci-eight.js",
-                        dest: "generated/vendor/davinci-eight@2.312.0/dist/davinci-eight.js"
+                        dest: "generated/vendor/davinci-eight@2.313.0/dist/davinci-eight.js"
                     },
                     {
                         src: "../davinci-eight/dist/davinci-eight.css",
-                        dest: "generated/vendor/davinci-eight@2.312.0/dist/davinci-eight.css"
+                        dest: "generated/vendor/davinci-eight@2.313.0/dist/davinci-eight.css"
                     },
                     {
                         src: "bower_components/davinci-mathscript/dist/davinci-mathscript.d.ts",
@@ -651,15 +651,15 @@ module.exports = function (grunt) {
                     },
                     {
                         src: "../davinci-eight/dist/davinci-eight.d.ts",
-                        dest: "dist/vendor/davinci-eight@2.312.0/dist/davinci-eight.d.ts"
+                        dest: "dist/vendor/davinci-eight@2.313.0/dist/davinci-eight.d.ts"
                     },
                     {
                         src: "../davinci-eight/dist/davinci-eight.js",
-                        dest: "dist/vendor/davinci-eight@2.312.0/dist/davinci-eight.js"
+                        dest: "dist/vendor/davinci-eight@2.313.0/dist/davinci-eight.js"
                     },
                     {
                         src: "../davinci-eight/dist/davinci-eight.css",
-                        dest: "dist/vendor/davinci-eight@2.312.0/dist/davinci-eight.css"
+                        dest: "dist/vendor/davinci-eight@2.313.0/dist/davinci-eight.css"
                     },
                     {
                         src: "bower_components/davinci-mathscript/dist/davinci-mathscript.d.ts",
