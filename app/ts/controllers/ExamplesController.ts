@@ -161,6 +161,14 @@ export default class ExamplesController extends AbstractPageController {
                 category: 'Physics'
             },
             {
+                gistId: 'dea0b84d306d956bc5fde22e9c0ba5c1',
+                title: "Geometric Algebra",
+                description: "An interactive visualization of vectors, bivectors, and trivectors.",
+                imageSrc: '/img/examples/eight-parallelepiped.png',
+                imageAlt: 'Trivector with arrows along edges.',
+                category: 'Physics'
+            },
+            {
                 gistId: '1af94bb1db939e36e5f84764b44030af',
                 title: "Modeling a Gas",
                 description: "This program models a Gas as a collection of Molecules interacting with each other and the walls of a Box through elastic collisions.",
