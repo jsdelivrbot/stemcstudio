@@ -5,7 +5,7 @@ import { addCssClass, createElement, setInnerText } from "./lib/dom";
  */
 export default class Tooltip {
 
-    private isOpen = false;
+    protected isOpen = false;
     private $element: HTMLElement = null;
     private $parentElement: HTMLElement;
 

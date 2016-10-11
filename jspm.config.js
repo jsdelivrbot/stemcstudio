@@ -25,7 +25,7 @@ System.config({
     "jquery": "npm:jquery@2.2.4",
     "showdown": "npm:showdown@1.4.3",
     "socket.io": "npm:socket.io@1.4.6",
-    "socket.io-client": "npm:socket.io-client@1.4.8",
+    "socket.io-client": "npm:socket.io-client@1.5.0",
     "ui-select": "npm:ui-select@0.17.1",
     "underscore": "npm:underscore@1.8.3",
     "github:angular-ui/ui-router@0.2.18": {
@@ -108,7 +108,7 @@ System.config({
     },
     "npm:angular2@2.0.0-beta.17": {
       "reflect-metadata": "npm:reflect-metadata@0.1.2",
-      "rxjs": "npm:rxjs@5.0.0-beta.12",
+      "rxjs": "npm:rxjs@5.0.0-rc.1",
       "zone.js": "npm:zone.js@0.6.25"
     },
     "npm:asn1.js@4.8.1": {
@@ -212,7 +212,7 @@ System.config({
       "base64-js": "npm:base64-js@0.0.8",
       "child_process": "github:jspm/nodelibs-child_process@0.1.0",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
-      "ieee754": "npm:ieee754@1.1.6",
+      "ieee754": "npm:ieee754@1.1.8",
       "isarray": "npm:isarray@1.0.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
@@ -236,8 +236,8 @@ System.config({
       "strip-ansi": "npm:strip-ansi@3.0.1",
       "wrap-ansi": "npm:wrap-ansi@2.0.0"
     },
-    "npm:code-point-at@1.0.0": {
-      "number-is-nan": "npm:number-is-nan@1.0.0"
+    "npm:code-point-at@1.0.1": {
+      "number-is-nan": "npm:number-is-nan@1.0.1"
     },
     "npm:component-closest@1.0.1": {
       "component-matches-selector": "npm:component-matches-selector@0.1.6"
@@ -281,7 +281,7 @@ System.config({
       "create-hmac": "npm:create-hmac@1.1.4",
       "diffie-hellman": "npm:diffie-hellman@5.0.2",
       "inherits": "npm:inherits@2.0.1",
-      "pbkdf2": "npm:pbkdf2@3.0.8",
+      "pbkdf2": "npm:pbkdf2@3.0.9",
       "public-encrypt": "npm:public-encrypt@4.0.0",
       "randombytes": "npm:randombytes@2.0.3"
     },
@@ -315,7 +315,7 @@ System.config({
       "inherits": "npm:inherits@2.0.1",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
     },
-    "npm:engine.io-client@1.6.11": {
+    "npm:engine.io-client@1.6.9": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "component-emitter": "npm:component-emitter@1.1.2",
       "component-inherit": "npm:component-inherit@0.0.3",
@@ -328,12 +328,12 @@ System.config({
       "parseuri": "npm:parseuri@0.0.4",
       "yeast": "npm:yeast@0.1.2"
     },
-    "npm:engine.io-client@1.6.9": {
+    "npm:engine.io-client@1.7.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "component-emitter": "npm:component-emitter@1.1.2",
       "component-inherit": "npm:component-inherit@0.0.3",
       "debug": "npm:debug@2.2.0",
-      "engine.io-parser": "npm:engine.io-parser@1.2.4",
+      "engine.io-parser": "npm:engine.io-parser@1.3.0",
       "has-cors": "npm:has-cors@1.1.0",
       "indexof": "npm:indexof@0.0.1",
       "parsejson": "npm:parsejson@0.0.1",
@@ -349,6 +349,15 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "has-binary": "npm:has-binary@0.1.6",
       "utf8": "npm:utf8@2.1.0"
+    },
+    "npm:engine.io-parser@1.3.0": {
+      "after": "npm:after@0.8.1",
+      "arraybuffer.slice": "npm:arraybuffer.slice@0.0.6",
+      "base64-arraybuffer": "npm:base64-arraybuffer@0.1.5",
+      "blob": "npm:blob@0.0.4",
+      "buffer": "github:jspm/nodelibs-buffer@0.1.0",
+      "has-binary": "npm:has-binary@0.1.6",
+      "wtf-8": "npm:wtf-8@1.0.0"
     },
     "npm:engine.io@1.6.9": {
       "accepts": "npm:accepts@1.3.1",
@@ -394,7 +403,7 @@ System.config({
       "util": "github:jspm/nodelibs-util@0.1.0"
     },
     "npm:is-fullwidth-code-point@1.0.0": {
-      "number-is-nan": "npm:number-is-nan@1.0.0"
+      "number-is-nan": "npm:number-is-nan@1.0.1"
     },
     "npm:lcid@1.0.0": {
       "invert-kv": "npm:invert-kv@1.0.0",
@@ -435,7 +444,7 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "create-hash": "npm:create-hash@1.1.2",
       "evp_bytestokey": "npm:evp_bytestokey@1.0.0",
-      "pbkdf2": "npm:pbkdf2@3.0.8",
+      "pbkdf2": "npm:pbkdf2@3.0.9",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
     },
     "npm:parsejson@0.0.1": {
@@ -450,7 +459,7 @@ System.config({
     "npm:path-browserify@0.0.0": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:pbkdf2@3.0.8": {
+    "npm:pbkdf2@3.0.9": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "create-hmac": "npm:create-hmac@1.1.4",
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
@@ -511,10 +520,10 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:rxjs@5.0.0-beta.12": {
+    "npm:rxjs@5.0.0-rc.1": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
-      "symbol-observable": "npm:symbol-observable@1.0.2"
+      "symbol-observable": "npm:symbol-observable@1.0.3"
     },
     "npm:sha.js@2.4.5": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
@@ -548,13 +557,13 @@ System.config({
       "socket.io-parser": "npm:socket.io-parser@2.2.6",
       "to-array": "npm:to-array@0.1.4"
     },
-    "npm:socket.io-client@1.4.8": {
+    "npm:socket.io-client@1.5.0": {
       "backo2": "npm:backo2@1.0.2",
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "component-bind": "npm:component-bind@1.0.0",
       "component-emitter": "npm:component-emitter@1.2.0",
       "debug": "npm:debug@2.2.0",
-      "engine.io-client": "npm:engine.io-client@1.6.11",
+      "engine.io-client": "npm:engine.io-client@1.7.0",
       "has-binary": "npm:has-binary@0.1.7",
       "indexof": "npm:indexof@0.0.1",
       "object-component": "npm:object-component@0.0.3",
@@ -597,7 +606,7 @@ System.config({
       "readable-stream": "npm:readable-stream@1.1.14"
     },
     "npm:string-width@1.0.2": {
-      "code-point-at": "npm:code-point-at@1.0.0",
+      "code-point-at": "npm:code-point-at@1.0.1",
       "is-fullwidth-code-point": "npm:is-fullwidth-code-point@1.0.0",
       "strip-ansi": "npm:strip-ansi@3.0.1"
     },

@@ -120,12 +120,9 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
     public textLayer: TextLayer;
 
     /**
-     * @property $padding
-     * @type number
-     * @private
-     * @default 0
+     * Used by TokenTooltip...
      */
-    private $padding: number = 0;
+    public $padding: number = 0;
 
     private $frozen = false;
 

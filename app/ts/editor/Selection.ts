@@ -158,7 +158,7 @@ export default class Selection implements EventBus<any, Selection> {
      * @return {Range}
      */
     substractPoint(pos: Position): Range {
-        var removed: Range[] = this.rangeList.substractPoint(pos);
+        const removed: Range[] = this.rangeList.substractPoint(pos);
         if (removed) {
             this.$onRemoveRange(removed);
             return removed[0];
@@ -339,7 +339,7 @@ export default class Selection implements EventBus<any, Selection> {
             this.setSelectionAnchor(anchor.row, anchor.column + columns);
 
         if (isBackwards || lead.column !== 0) {
-            this.$moveSelection(function() {
+            this.$moveSelection(function () {
                 this.moveCursorTo(lead.row, lead.column + columns);
             });
         }
@@ -464,7 +464,7 @@ export default class Selection implements EventBus<any, Selection> {
      * @return {void}
      */
     selectTo(row: number, column: number): void {
-        this.$moveSelection(function() {
+        this.$moveSelection(function () {
             this.moveCursorTo(row, column);
         });
     }
@@ -478,7 +478,7 @@ export default class Selection implements EventBus<any, Selection> {
      */
     selectToPosition(position: Position): void {
         var self = this;
-        this.$moveSelection(function() {
+        this.$moveSelection(function () {
             self.moveCursorToPosition(position);
         });
     }
@@ -1215,7 +1215,7 @@ export default class Selection implements EventBus<any, Selection> {
 
     toJSON(): Range[] {
         if (this.rangeCount) {
-            const ranges: Range[] = this.ranges.map(function(r) {
+            const ranges: Range[] = this.ranges.map(function (r) {
                 const r1 = r.clone();
                 r1.isBackwards = r.cursor === r.start;
                 return r1;

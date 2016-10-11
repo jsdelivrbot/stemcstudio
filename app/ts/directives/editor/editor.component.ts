@@ -14,6 +14,7 @@ import UndoManager from '../../editor/UndoManager';
 import Editor from '../../editor/Editor';
 import EditorScope from './EditorScope';
 import searchBox from '../../editor/ext/SearchBox';
+import showKeyboardShortcuts from '../../editor/ext/showKeyboardShortcuts';
 import ISettingsService from '../../services/settings/ISettingsService';
 import ITextService from '../../services/text/ITextService';
 import {THEME_MANAGER} from '../../modules/themes/constants';
@@ -150,6 +151,13 @@ function factory(
                             },
                             readOnly: true // false if this command should not apply in readOnly mode
                         });
+                        editor.commands.addCommands([{
+                            name: "showKeyboardShortcuts",
+                            bindKey: { win: "Ctrl-Alt-h", mac: "Command-Alt-h" },
+                            exec: function (editor: Editor, line) {
+                                showKeyboardShortcuts(editor);
+                            }
+                        }]);
                         // We must wait for the $render function to be called so that we have a session.
                         switch (file.mode) {
                             case LANGUAGE_PYTHON: {

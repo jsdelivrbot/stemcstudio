@@ -601,10 +601,10 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * @return {void}
      */
     selectMore(dir: number, skip?: boolean, stopAtFirst?: boolean): void {
-        var session = this.session;
-        var sel = session.multiSelect;
+        const session = this.session;
+        const sel = session.multiSelect;
 
-        var range = sel.toOrientedRange();
+        let range = sel.toOrientedRange();
         if (range.isEmpty()) {
             range = session.getWordRange(range.start.row, range.start.column);
             range.cursor = dir === -1 ? range.start : range.end;
@@ -613,9 +613,9 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
                 return;
         }
 
-        var needle = session.getTextRange(range);
+        const needle = session.getTextRange(range);
 
-        var newRange = find(session, needle, dir);
+        const newRange = find(session, needle, dir);
         if (newRange) {
             newRange.cursor = (dir === -1) ? newRange.start : newRange.end;
             this.$blockScrolling += 1;

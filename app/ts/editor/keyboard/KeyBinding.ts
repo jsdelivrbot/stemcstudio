@@ -47,7 +47,10 @@ export default class KeyBinding {
      */
     private editor: Editor;
     private $data;
-    private $handlers: KeyboardHandler[];
+    /**
+     * Used by getEditorKeyboardShortcuts
+     */
+    public $handlers: KeyboardHandler[];
     private $defaultHandler: KeyboardHandler;
 
     /**

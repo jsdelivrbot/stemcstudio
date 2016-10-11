@@ -615,12 +615,17 @@ declare module JXG {
                  * default [-5, 5, 5, -5]
                  */
                 boundingbox?: number[];
+
                 /**
                  * Supply the document object. Defaults to window.document
                  *
                  * default false (meaning window.document)
                  */
-                document: boolean;
+                document?: boolean | Document;
+
+                /**
+                 * 
+                 */
                 grid?: boolean;
 
                 /**
@@ -633,7 +638,7 @@ declare module JXG {
                  *
                  * default true
                  */
-                ignoreLabels: boolean;
+                ignoreLabels?: boolean;
 
                 /**
                  * If set to true the bounding box might be changed such that
@@ -648,6 +653,7 @@ declare module JXG {
                  * default false
                  */
                 keepAspectRatio?: boolean;
+
                 /**
                  * Maximum number of digits in automatic label generation.
                  * For example, if set to 1 automatic point labels end at "Z".
@@ -655,14 +661,19 @@ declare module JXG {
                  *
                  * default 1
                  */
-                maxNameLength: number;
+                maxNameLength?: number;
+
+                /**
+                 * 
+                 */
                 pan?: boolean;
+
                 /**
                  * Show a button which allows to clear all traces of a board.
                  *
                  * default false
                  */
-                showClearTraces: boolean;
+                showClearTraces?: boolean;
 
                 /**
                  * Show copyright string in canvas.
@@ -670,43 +681,52 @@ declare module JXG {
                  * default true
                  */
                 showCopyright?: boolean;
+
                 /**
                  * Display of navigation arrows and zoom buttons
                  *
                  * default true
                  */
                 showNavigation?: boolean;
+
                 /**
                  * Show a button to force reload of a construction.
                  * Works only with the JessieCode tag
                  *
                  * default false
                  */
-                showReload: boolean;
+                showReload?: boolean;
+
                 /**
                  * Display of zoom buttons. To show zoom buttons, additionally
                  * showNavigation has to be set to true.
                  *
                  * default true
                  */
-                showZoom: number;
+                showZoom?: boolean;
+
+                /**
+                 * 
+                 */
                 zoom?: boolean;
+
                 /**
                  * Additional zoom factor multiplied to zoomX and zoomY.
                  * default 1.0
                  */
-                zoomFactor: number;
+                zoomFactor?: number;
+
                 /**
                  * Zoom factor in horizontal direction.
                  * default 1.0
                  */
-                zoomX: number;
+                zoomX?: number;
 
                 /**
                  * Zoom factor in vertical direction.
                  * default 1.0
                  */
-                zoomY: number;
+                zoomY?: number;
             }
         ): Board;
 
