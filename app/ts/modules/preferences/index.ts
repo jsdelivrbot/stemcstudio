@@ -13,11 +13,11 @@ const m: angular.IModule = angular.module(PREFERENCES_MODULE, []);
 m.service(PREFERENCES_MANAGER, PreferencesManagerService);
 
 m.config([function () {
-    // console.log(`${m.name}.config(...)`);
+    // console.lg(`${m.name}.config(...)`);
 }]);
 
 m.run([function () {
-    // console.log(`${m.name}.run(...)`);
+    // console.lg(`${m.name}.run(...)`);
 }]);
 
 export default m;

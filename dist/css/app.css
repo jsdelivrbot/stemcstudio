@@ -7843,6 +7843,12 @@ article.ace_dts code {
   color: darkcyan;
   font-weight: normal;
 }
+.ace_status-indicator {
+  color: gray;
+  position: absolute;
+  right: 0px;
+  border-left: 1px solid;
+}
 #gist-comments {
   padding-top: 4px;
   padding-left: 4px;

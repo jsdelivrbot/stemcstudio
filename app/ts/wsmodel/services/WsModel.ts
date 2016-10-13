@@ -61,6 +61,11 @@ const workerUrl = '/js/worker.js';
  * The script imports for initializing the LanguageServiceProxy.
  */
 const scriptImports = workerImports.concat(typescriptServices);
+
+/**
+ * Converts a Diagnostic to an Annotation.
+ * The type of the annotation is assumed to be 'error'.
+ */
 function diagnosticToAnnotation(doc: Document, diagnostic: Diagnostic): Annotation {
     const minChar = diagnostic.start;
     const pos: Position = getPosition(doc, minChar);
@@ -79,6 +84,9 @@ function checkEditor(editor: Editor): void {
     }
 }
 
+/**
+ * Asserts that the session really is an EditSession.
+ */
 function checkSession(session: EditSession): void {
     if (!(session instanceof EditSession)) {
         throw new Error("session must be an EditSession.");
@@ -153,11 +161,11 @@ function debounce(next: () => any, delay: number) {
      */
     let timer: number;
 
-    return function(delta: Delta, doc: Document) {
+    return function (delta: Delta, doc: Document) {
         if (timer) {
             window.clearTimeout(timer);
         }
-        timer = setTimeout(function() {
+        timer = setTimeout(function () {
             timer = void 0;
             next();
         }, delay);
@@ -165,7 +173,7 @@ function debounce(next: () => any, delay: number) {
 }
 
 function uploadFileEditsToRoom(path: string, unit: MwUnit, room: RoomAgent) {
-    return function() {
+    return function () {
         const edits = unit.getEdits(room.id);
         room.setEdits(path, edits);
     };
@@ -246,11 +254,6 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     private errorMarkerIds: number[] = [];
 
     private languageServiceProxy: LanguageServiceProxy;
-
-    /**
-     * The room identifier (collaboration).
-     */
-    // roomId: string;
 
     /**
      * The room that this workspace is currently connected to.
@@ -447,8 +450,9 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     }
 
     /**
-     * @param url
-     * @pram callback
+     * Executes an HTTP GET request to the specified URL.
+     * Uses the returned contents to set the default library on the language service (proxy).
+     * This method is asynchronous. The callback is executed upon completion.
      */
     setDefaultLibrary(url: string, callback: (err: any) => any): void {
         checkCallback(callback);
@@ -746,7 +750,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         if (outstanding > 0) {
             for (let i = 0; i < paths.length; i++) {
                 const path = paths[i];
-                this.endDocumentMonitoring(path, function(err) {
+                this.endDocumentMonitoring(path, function (err) {
                     outstanding--;
                     if (outstanding === 0) {
                         callback();
@@ -805,12 +809,13 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      */
     public semanticDiagnostics(): void {
         const paths = this.getFileSessionPaths();
+        // console.lg(`WsModel.semanticDiagnostics(${paths})`);
         for (let i = 0; i < paths.length; i++) {
             const path = paths[i];
             if (isTypeScript(path)) {
                 const session = this.getFileSession(path);
                 try {
-                    this.semanticDiagnosticsForSession(path, session);
+                    this.diagnosticsForSession(path, session);
                 }
                 finally {
                     session.release();
@@ -820,7 +825,8 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     }
 
     private updateSession(path: string, errors: Diagnostic[], session: EditSession): void {
-
+        // We have the path and diagnostics, so we should be able to provide hyperlinks to errors!
+        // console.lg(`WsModel.updateSession(path => ${path})`);
         if (session) {
             checkSession(session);
         }
@@ -830,14 +836,15 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
 
         const doc = session.getDocument();
 
-        const annotations = errors.map(function(error) {
+        const annotations = errors.map(function (error) {
+            // console.wrn(`WsModel.diagnostic => ${JSON.stringify(error)}`);
             return diagnosticToAnnotation(doc, error);
         });
         session.setAnnotations(annotations);
 
-        this.errorMarkerIds.forEach(function(markerId) { session.removeMarker(markerId); });
+        this.errorMarkerIds.forEach(function (markerId) { session.removeMarker(markerId); });
 
-        errors.forEach((error: { message: string; start: number; length: number }) => {
+        errors.forEach((error) => {
             const minChar = error.start;
             const limChar = minChar + error.length;
             const start = getPosition(doc, minChar);
@@ -846,11 +853,11 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             // Add a new marker to the given Range. The last argument (inFront) causes a
             // front marker to be defined and the 'changeFrontMarker' event fires.
             // The class parameter is a css stylesheet class so you must have it in your CSS.
-            this.errorMarkerIds.push(session.addMarker(range, "typescript-error", "text", null, true));
+            this.errorMarkerIds.push(session.addMarker(range, "ace_error-marker", "text", null, true));
         });
     }
 
-    private semanticDiagnosticsForSession(path: string, session: EditSession): void {
+    private diagnosticsForSession(path: string, session: EditSession): void {
         checkPath(path);
 
         this.inFlight++;
@@ -926,6 +933,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             return void 0;
         }
     }
+
     set author(author: string) {
         const file = this.ensurePackageJson();
         try {
@@ -937,6 +945,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             file.release();
         }
     }
+
     get dependencies(): string[] {
         try {
             if (this.existsPackageJson()) {
@@ -958,6 +967,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             return [];
         }
     }
+
     set dependencies(dependencies: string[]) {
         try {
             const file = this.ensurePackageJson();
@@ -974,6 +984,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             console.warn(`Unable to set dependencies property in file '${FILENAME_META}'.`);
         }
     }
+
     get description(): string {
         try {
             if (this.existsPackageJson()) {
@@ -994,6 +1005,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             return void 0;
         }
     }
+
     set description(description: string) {
         const file = this.ensurePackageJson();
         try {
@@ -1005,6 +1017,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             file.release();
         }
     }
+
     get keywords(): string[] {
         try {
             if (this.existsPackageJson()) {
@@ -1025,6 +1038,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             return [];
         }
     }
+
     set keywords(keywords: string[]) {
         const file = this.ensurePackageJson();
         try {
@@ -1036,6 +1050,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             file.release();
         }
     }
+
     get name(): string {
         if (this.existsPackageJson()) {
             const pkgInfo = this.packageInfo;
@@ -1050,6 +1065,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             return void 0;
         }
     }
+
     set name(name: string) {
         const file = this.ensurePackageJson();
         try {
@@ -1064,6 +1080,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             file.release();
         }
     }
+
     get operatorOverloading(): boolean {
         if (this.existsPackageJson()) {
             const pkgInfo = this.packageInfo;
@@ -1078,6 +1095,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             return false;
         }
     }
+
     set operatorOverloading(operatorOverloading: boolean) {
         const file = this.ensurePackageJson();
         try {
@@ -1092,6 +1110,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             file.release();
         }
     }
+
     get version(): string {
         if (this.existsPackageJson()) {
             return this.packageInfo.version;
@@ -1100,6 +1119,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             return void 0;
         }
     }
+
     set version(version: string) {
         const file = this.ensurePackageJson();
         try {
@@ -1369,9 +1389,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     }
 
     /**
-     * Finds the file at the specified path.
-     *
-     * @returns The file at the specified path.
+     * Returns the file at the specified path.
      */
     findFileByPath(path: string): WsFile {
         if (this.files) {
@@ -1602,7 +1620,6 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     }
 
     public trashPut(path: string): void {
-        // TODO: Simplify trash down to a set of paths.
         const placeholder = new WsFile(this);
         placeholder.existsInGitHub = true;
         this.trash.putWeakRef(path, placeholder);
@@ -1627,8 +1644,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
 
     /**
      * 1. Initializes the unit: MwUnit property on each file.
-     * 2. Connects each unit to its respective file.
-     * (A unit can now read/write a file).
+     * 2. Connects each unit to its respective file. (A unit can now read/write a file).
      * 3. Create a listener on the room that can send messages to this workspace.
      * 4. Create listeners on each file that send change events as edits to the room.
      * 5. Maintains a reference to the room until the disconnection happens.
@@ -1774,7 +1790,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
                     throw new Error(`updateMarkerModels(${path}, ${JSON.stringify(delta)})`);
                 }
                 if (lineCount !== 0) {
-                    const markerUpdate = function(markerId: number) {
+                    const markerUpdate = function (markerId: number) {
                         const marker: Marker = markers[markerId];
                         let row = delta.start.row;
                         if (lineCount > 0) {
@@ -1806,11 +1822,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     }
 
     /**
-     * @method getCompletionsAtPosition
-     * @param path {string}
-     * @param position {number}
-     * @param prefix {string}
-     * @return {Promise} CompletionEntry[]
+     *
      */
     getCompletionsAtPosition(path: string, position: number, prefix: string): Promise<CompletionEntry[]> {
         checkPath(path);
@@ -1819,10 +1831,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     }
 
     /**
-     * @method getQuickInfoAtPosition
-     * @param path {string}
-     * @param position {number}
-     * @return {void}
+     *
      */
     getQuickInfoAtPosition(path: string, position: number, callback: (err: any, quickInfo: QuickInfo) => any): void {
         checkPath(path);

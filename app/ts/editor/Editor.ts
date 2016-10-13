@@ -3839,11 +3839,11 @@ class FoldHandler {
         // The following handler detects clicks in the editor (not gutter) region
         // to determine whether to remove or expand a fold.
         editor.on("click", function (e: EditorMouseEvent) {
-            var position = e.getDocumentPosition();
-            var session = editor.getSession();
+            const position = e.getDocumentPosition();
+            const session = editor.getSession();
 
             // If the user clicked on a fold, then expand it.
-            var fold = session.getFoldAt(position.row, position.column, 1);
+            const fold = session.getFoldAt(position.row, position.column, 1);
             if (fold) {
                 if (e.getAccelKey()) {
                     session.removeFold(fold);
@@ -3860,10 +3860,10 @@ class FoldHandler {
 
         // The following handler detects clicks on the gutter.
         editor.on('gutterclick', function (e: EditorMouseEvent) {
-            var gutterRegion = editor.renderer.$gutterLayer.getRegion(e);
+            const gutterRegion = editor.renderer.$gutterLayer.getRegion(e);
             if (gutterRegion === 'foldWidgets') {
-                var row = e.getDocumentPosition().row;
-                var session = editor.getSession();
+                const row = e.getDocumentPosition().row;
+                const session = editor.getSession();
                 if (session['foldWidgets'] && session['foldWidgets'][row]) {
                     session['onFoldWidgetClick'](row, e);
                 }
@@ -3875,17 +3875,17 @@ class FoldHandler {
         });
 
         editor.on('gutterdblclick', function (e: EditorMouseEvent) {
-            const gutterRegion: string = editor.renderer.$gutterLayer.getRegion(e);
+            const gutterRegion = editor.renderer.$gutterLayer.getRegion(e);
 
             if (gutterRegion === 'foldWidgets') {
-                var row = e.getDocumentPosition().row;
-                var session = editor.getSession();
-                var data = session['getParentFoldRangeData'](row, true);
-                var range = data.range || data.firstRange;
+                let row = e.getDocumentPosition().row;
+                const session = editor.getSession();
+                const data = session['getParentFoldRangeData'](row, true);
+                const range = data.range || data.firstRange;
 
                 if (range) {
                     row = range.start.row;
-                    var fold = session.getFoldAt(row, session.getLine(row).length, 1);
+                    const fold = session.getFoldAt(row, session.getLine(row).length, 1);
 
                     if (fold) {
                         session.removeFold(fold);
@@ -4537,26 +4537,28 @@ class GutterHandler {
         var tooltipAnnotation: string;
 
         function showTooltip() {
-            var row = mouseEvent.getDocumentPosition().row;
-            var annotation = gutter.$annotations[row];
+            const row = mouseEvent.getDocumentPosition().row;
+            const annotation = gutter.$annotations[row];
             if (!annotation) {
                 return hideTooltip(void 0, editor);
             }
 
-            var session = editor.getSession();
-            var maxRow = session.getLength();
+            const session = editor.getSession();
+            const maxRow = session.getLength();
             if (row === maxRow) {
-                var screenRow = editor.renderer.pixelToScreenCoordinates(0, mouseEvent.clientY).row;
-                var pos = mouseEvent.getDocumentPosition();
+                const screenRow = editor.renderer.pixelToScreenCoordinates(0, mouseEvent.clientY).row;
+                const pos = mouseEvent.getDocumentPosition();
                 if (screenRow > session.documentToScreenRow(pos.row, pos.column)) {
                     return hideTooltip(void 0, editor);
                 }
             }
 
             // TODO: Looks like the gutter annotation might also be a string?
-            if (tooltipAnnotation === annotation) {
-                return;
-            }
+            // This cannot be the case.
+            // if (tooltipAnnotation === annotation) {
+            //     return;
+            // }
+
             // TODO: The GutterLayer annotations are subtly different from Annotation
             // in that the text property is a string[] rather than string.
             tooltipAnnotation = annotation.text.join("<br/>");

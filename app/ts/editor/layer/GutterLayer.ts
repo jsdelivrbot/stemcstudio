@@ -13,39 +13,30 @@ import GutterRenderer from './GutterRenderer';
 import GutterCell from './GutterCell';
 
 /**
- * @class GutterLayer
- * @extends AbstractLayer
+ *
  */
 export default class GutterLayer extends AbstractLayer implements EventBus<number, GutterLayer> {
 
     /**
-     * @property gutterWidth
-     * @type number
-     * @default 0
+     *
      */
     public gutterWidth = 0;
 
     /**
-     * FIXME: Issue with the text being string or string[].
-     * GutterLayer annotation seem to be subtly different from Annotation,
-     * but maybe Annotation text S/B a string[].
-     *
-     * @property $annotations
+     * GutterLayer annotations are different from the Annotation type.
      */
-    public $annotations: any[] = [];
+    public $annotations: { className: string; text: string[] }[] = [];
     public $cells: GutterCell[] = [];
     private $fixedWidth = false;
     private $showLineNumbers = true;
-    private $renderer: any = "";
+    private $renderer: GutterRenderer;// = "";
     private session: EditSession;
     private $showFoldWidgets = true;
     public $padding: Padding;
     private eventBus: EventEmitterClass<any, GutterLayer>;
 
     /**
-     * @class GutterLayer
-     * @constructor
-     * @param parent {HTMLElement}
+     *
      */
     constructor(parent: HTMLElement) {
         super(parent, "ace_layer ace_gutter-layer");
@@ -77,9 +68,7 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
     }
 
     /**
-     * @method setSession
-     * @param session {EditSession}
-     * @return {void}
+     *
      */
     setSession(session: EditSession): void {
         if (this.session) {
@@ -92,34 +81,35 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
     }
 
     /**
-     * @method setAnnotations
-     * @param annotations {Annotation[]}
-     * @return {void}
+     *
      */
     setAnnotations(annotations: Annotation[]): void {
         // iterate over sparse array
         this.$annotations = [];
-        for (var i = 0; i < annotations.length; i++) {
-            var annotation = annotations[i];
-            var row = annotation.row;
+        for (let i = 0; i < annotations.length; i++) {
+            const annotation = annotations[i];
+            const row = annotation.row;
             var rowInfo: any = this.$annotations[row];
             if (!rowInfo) {
-                rowInfo = this.$annotations[row] = { text: [] };
+                rowInfo = this.$annotations[row] = { className: void 0, text: [] };
             }
 
-            var annoText = annotation.text;
-            annoText = annoText ? escapeHTML(annoText) : annotation.html || "";
+            const annoText = annotation.text ? escapeHTML(annotation.text) : annotation.html || "";
 
-            if (rowInfo.text.indexOf(annoText) === -1)
+            if (rowInfo.text.indexOf(annoText) === -1) {
                 rowInfo.text.push(annoText);
+            }
 
-            var type = annotation.type;
-            if (type === "error")
+            const type = annotation.type;
+            if (type === "error") {
                 rowInfo.className = " ace_error";
-            else if (type === "warning" && rowInfo.className !== " ace_error")
+            }
+            else if (type === "warning" && rowInfo.className !== " ace_error") {
                 rowInfo.className = " ace_warning";
-            else if (type === "info" && (!rowInfo.className))
+            }
+            else if (type === "info" && (!rowInfo.className)) {
                 rowInfo.className = " ace_info";
+            }
         }
     }
 
@@ -127,8 +117,8 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
         if (!this.$annotations.length) {
             return;
         }
-        var firstRow = delta.start.row;
-        var len = delta.end.row - firstRow;
+        const firstRow = delta.start.row;
+        const len = delta.end.row - firstRow;
         if (len === 0) {
             // do nothing
         }
@@ -136,16 +126,14 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
             this.$annotations.splice(firstRow, len + 1, null);
         }
         else {
-            var args = new Array(len + 1);
+            const args = new Array<number>(len + 1);
             args.unshift(firstRow, 1);
             this.$annotations.splice.apply(this.$annotations, args);
         }
     }
 
     /**
-     * @method update
-     * @param config {GutterConfig}
-     * @return {void}
+     *
      */
     update(config: GutterConfig): void {
         const session = this.session;
@@ -270,8 +258,8 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
      */
     setShowLineNumbers(show: boolean): void {
         this.$renderer = !show && {
-            getWidth: function() { return ""; },
-            getText: function() { return ""; }
+            getWidth: function (session: EditSession, row: number, config: GutterConfig) { return 0; },
+            getText: function (session: EditSession, row: number) { return ""; }
         };
     }
 
@@ -289,10 +277,12 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
      * @return {void}
      */
     setShowFoldWidgets(show: boolean): void {
-        if (show)
+        if (show) {
             addCssClass(this.element, "ace_folding-enabled");
-        else
+        }
+        else {
             removeCssClass(this.element, "ace_folding-enabled");
+        }
 
         this.$showFoldWidgets = show;
         this.$padding = null;
@@ -311,7 +301,7 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
             return { left: 0, right: 0 };
         }
         // FIXME: The firstChild may not be an HTMLElement.
-        var style = window.getComputedStyle(<Element>this.element.firstChild);
+        const style = window.getComputedStyle(<Element>this.element.firstChild);
         this.$padding = {};
         this.$padding.left = parseInt(style.paddingLeft, 10) + 1 || 0;
         this.$padding.right = parseInt(style.paddingRight, 10) || 0;
@@ -320,14 +310,10 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
 
     /**
      * Returns either "markers", "foldWidgets", or undefined.
-     *
-     * @method getRegion
-     * @param point {TODO}
-     * @return {string}
      */
-    getRegion(point: { clientX: number; clientY: number }): string {
-        var padding: Padding = this.$padding || this.$computePadding();
-        var rect = this.element.getBoundingClientRect();
+    getRegion(point: { clientX: number; clientY: number }): 'markers' | 'foldWidgets' {
+        const padding: Padding = this.$padding || this.$computePadding();
+        const rect = this.element.getBoundingClientRect();
         if (point.clientX < padding.left + rect.left) {
             return "markers";
         }

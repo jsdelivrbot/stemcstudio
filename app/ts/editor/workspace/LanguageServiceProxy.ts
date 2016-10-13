@@ -27,7 +27,7 @@ interface WorkerClientData<T> {
 }
 
 /**
- *
+ * This class is consumed by the WsModel.
  */
 export default class LanguageServiceProxy {
 
@@ -211,12 +211,14 @@ export default class LanguageServiceProxy {
     }
 
     public getSyntaxErrors(fileName: string, callback: (err: any, results: Diagnostic[]) => void): void {
+        // console.lg(`LanguageServiceProxy.getSyntaxErrors(${fileName})`);
         const callbackId = this.captureCallback(callback);
         const message = { data: { fileName, callbackId } };
         this.worker.emit(EVENT_GET_SYNTAX_ERRORS, message);
     }
 
     public getSemanticErrors(fileName: string, callback: (err: any, results: Diagnostic[]) => void): void {
+        // console.lg(`LanguageServiceProxy.getSemanticErrors(${fileName})`);
         const callbackId = this.captureCallback(callback);
         const message = { data: { fileName, callbackId } };
         this.worker.emit(EVENT_GET_SEMANTIC_ERRORS, message);
@@ -230,7 +232,7 @@ export default class LanguageServiceProxy {
 
     getCompletionsAtPosition(fileName: string, position: number, prefix: string): Promise<CompletionEntry[]> {
         return new Promise<CompletionEntry[]>((resolve, reject) => {
-            this._getCompletionsAtPosition(fileName, position, prefix, function(err: any, completions: CompletionEntry[]) {
+            this._getCompletionsAtPosition(fileName, position, prefix, function (err: any, completions: CompletionEntry[]) {
                 if (err) {
                     reject(err);
                 }

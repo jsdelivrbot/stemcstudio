@@ -34,7 +34,7 @@ export default class ServerObj implements MwEditor {
         return flags;
     }
     onSentDiff(diffs: Diff[]): void {
-        // console.log(`onSentDiff: ${JSON.stringify(diffs, null, 2)}`);
+        // console.lg(`onSentDiff: ${JSON.stringify(diffs, null, 2)}`);
     }
     release(): number {
         return 0;

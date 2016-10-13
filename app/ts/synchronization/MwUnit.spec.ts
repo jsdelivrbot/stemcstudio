@@ -26,7 +26,7 @@ class EditorFile implements MwEditor {
         return this.text;
     }
     setText(text: string): void {
-        // console.log(`setText '${text}`);
+        // console.lg(`setText '${text}`);
         this.text = text;
     }
     patch(patches: Patch[]): boolean[] {

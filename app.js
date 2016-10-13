@@ -16,7 +16,6 @@ var npm = require('./package.json');
 var cfg = require('./configure');
 var GITHUB_APPLICATION_CLIENT_ID_KEY = 'GITHUB_APPLICATION_CLIENT_ID';
 var clientId = nconf.get(GITHUB_APPLICATION_CLIENT_ID_KEY);
-console.log(GITHUB_APPLICATION_CLIENT_ID_KEY + " is '" + clientId + "'.");
 var isProductionMode = function () {
     switch (process.env.NODE_ENV || 'development') {
         case 'development':

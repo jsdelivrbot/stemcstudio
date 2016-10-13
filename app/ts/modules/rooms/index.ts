@@ -14,11 +14,11 @@ rooms.controller('rooms-controller', RoomsController);
 rooms.service('roomsService', RoomsService);
 
 rooms.config([function() {
-    // console.log(`${rooms.name}.config(...)`);
+    // console.lg(`${rooms.name}.config(...)`);
 }]);
 
 rooms.run([function() {
-    // console.log(`${rooms.name}.run(...)`);
+    // console.lg(`${rooms.name}.run(...)`);
 }]);
 
 export default rooms;

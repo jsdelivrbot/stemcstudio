@@ -103,7 +103,7 @@ export default class MwRemote implements FzSerializable<FzRemote> {
      * @param version
      */
     discardActionsLe(nodeId: string, version: number) {
-        // console.log(`discardActionsLe(${filename}, ${version})`);
+        // console.lg(`discardActionsLe(${filename}, ${version})`);
         const edits = this.edits[nodeId];
         if (edits) {
             const changes = edits.x;

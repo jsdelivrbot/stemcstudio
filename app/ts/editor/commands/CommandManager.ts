@@ -25,11 +25,9 @@ export default class CommandManager implements EventBus<any, CommandManager> {
     private $inReplay: boolean;
 
     /**
-     * @property recording
-     * @type boolean
-     * @private
+     * Used by StatusBar
      */
-    private recording: boolean;
+    public recording: boolean;
     private macro: any[][];
     private oldMacro;
     private $addCommandToMacro: (event, cm: CommandManager) => any;
@@ -46,7 +44,7 @@ export default class CommandManager implements EventBus<any, CommandManager> {
     constructor(platform: string, commands: Command[]) {
         this.eventBus = new EventEmitterClass<any, CommandManager>(this);
         this.hashHandler = new KeyboardHandler(commands, platform);
-        this.eventBus.setDefaultHandler("exec", function(e: { command: Command; editor: Editor; args }) {
+        this.eventBus.setDefaultHandler("exec", function (e: { command: Command; editor: Editor; args }) {
             return e.command.exec(e.editor, e.args || {});
         });
     }
@@ -168,7 +166,7 @@ export default class CommandManager implements EventBus<any, CommandManager> {
             return this.recording = false;
         }
         if (!this.$addCommandToMacro) {
-            this.$addCommandToMacro = function(e) {
+            this.$addCommandToMacro = function (e) {
                 this.macro.push([e.command, e.args]);
             }.bind(this);
         }
@@ -188,7 +186,7 @@ export default class CommandManager implements EventBus<any, CommandManager> {
 
         try {
             this.$inReplay = true;
-            this.macro.forEach(function(x) {
+            this.macro.forEach(function (x) {
                 if (typeof x === "string")
                     this.exec(x, editor);
                 else
@@ -200,7 +198,7 @@ export default class CommandManager implements EventBus<any, CommandManager> {
     }
 
     trimMacro(m) {
-        return m.map(function(x) {
+        return m.map(function (x) {
             if (typeof x[0] !== "string")
                 x[0] = x[0].name;
             if (!x[1])
