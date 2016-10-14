@@ -19,6 +19,9 @@ interface RendererEx extends Renderer {
     timeStamp?: number;
 }
 
+/**
+ * This class may be useful for developing highlighters.
+ */
 export default class TokenTooltip extends Tooltip {
     private editor: Editor;
     private x: number;
@@ -84,7 +87,7 @@ export default class TokenTooltip extends Tooltip {
             if (token.stateTransitions)
                 tokenText += "\n  " + token.stateTransitions.join("\n  ");
 
-            if (this.tokenText != tokenText) {
+            if (this.tokenText !== tokenText) {
                 this.setText(tokenText);
                 this.width = this.getWidth();
                 this.height = this.getHeight();

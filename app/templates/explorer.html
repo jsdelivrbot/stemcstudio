@@ -1,37 +1,39 @@
 <div id='explorer'>
-    <div class='explorer-section' ng-controller='ExplorerFilesController as filesController'>
-        <div class='explorer-section-header'>
-            <div class='navbar navbar-inverse explorer-section-box'>
-                <ul class='nav navbar-nav' style="display: flex; flex-direction: row;">
-                    <li>
-                        <a role='button' ng-click='doProperties()'>
-                            <ng-md-icon icon='settings' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="Settings"
-                            tooltip-placement='bottom'>
-                                <ng-md-icon>
-                        </a>
-                    </li>
-                    <li>
-                        <a role='button' ng-click='doLabel()'>
-                            <ng-md-icon icon='label' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="Labels and Tags"
-                            tooltip-placement='bottom'>
-                                <ng-md-icon>
-                        </a>
-                    </li>
-                    <li>
-                        <a role='button' ng-click='filesController.newFile()'>
-                            <ng-md-icon icon='add_box' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="New File"
-                            tooltip-placement='bottom'>
-                                <ng-md-icon>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <ul class='files'>
-            <!-- filesByPath is set on the scope by the explorer component -->
-            <li ng-repeat='(path, file) in workspace.filesByPath' ng-class='{open: file.isOpen && !file.selected, selected: file.selected}' context-menu='menu(path, file)'>
-                <a href ng-click='$ctrl.selectFile(path)' ng-dblclick='$ctrl.openFile(path)'>{{path | limitTo:24}}</a>
-            </li>
-        </ul>
-    </div>
+	<div class='explorer-section' ng-controller='ExplorerFilesController as filesController'>
+		<div class='explorer-section-header'>
+			<div class='navbar navbar-inverse explorer-section-box'>
+				<ul class='nav navbar-nav' style="display: flex; flex-direction: row;">
+					<li>
+						<a role='button' ng-click='doProperties()'>
+							<ng-md-icon icon='settings' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="Settings"
+								tooltip-placement='bottom'>
+								<ng-md-icon>
+						</a>
+					</li>
+					<li>
+						<a role='button' ng-click='doLabel()'>
+							<ng-md-icon icon='label' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="Labels and Tags"
+								tooltip-placement='bottom'>
+								<ng-md-icon>
+						</a>
+					</li>
+					<li>
+						<a role='button' ng-click='filesController.newFile()'>
+							<ng-md-icon icon='add_box' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="New File"
+								tooltip-placement='bottom'>
+								<ng-md-icon>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<ul class='files'>
+			<!-- workspace.filesByPath exits because workspace is set on the scope by the explorer component -->
+			<li ng-repeat='(path, file) in workspace.filesByPath' ng-class='{open: file.isOpen && !file.selected, selected: file.selected, tainted: file.tainted}'
+				context-menu='menu(path, file)'>
+				<a href ng-click='$ctrl.selectFile(path)' ng-dblclick='$ctrl.openFile(path)'>{{path}}</a>
+			</li>
+		</ul>
+		<!-- problems ng-model='workspace' class='problems' ng-show='isProblemsVisible'></problems -->
+	</div>
 </div>

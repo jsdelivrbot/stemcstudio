@@ -7,6 +7,10 @@ import PromptOptions from '../../services/modalService/PromptOptions';
 import WsFile from '../../wsmodel/services/WsFile';
 import WsModel from '../../wsmodel/services/WsModel';
 
+/**
+ * This controller is mostly used to define and manage the context menu for the files in the explorer.
+ * It also handles a request to create a new file.
+ */
 export default class ExplorerFilesController {
 
     public static $inject: string[] = ['$scope', 'modalDialog', 'wsModel'];
@@ -23,6 +27,9 @@ export default class ExplorerFilesController {
         };
     }
 
+    /**
+     * Handler for the "New File" button.
+     */
     public newFile(): void {
         const options: PromptOptions = {
             title: 'New File',
@@ -44,22 +51,31 @@ export default class ExplorerFilesController {
                     this.modalService.alert(alertOptions);
                 }
             })
-            .catch(function(reason: any) {
+            .catch(function (reason: any) {
                 // Do nothing.
             });
     }
 
+    /**
+     * Handler for the context menu "Open" menu item.
+     */
     public openFile(path: string): void {
         this.wsModel.openFile(path);
         this.wsModel.selectFile(path);
         this.wsModel.updateStorage();
     }
 
+    /**
+     * Handler for the context menu "Close" menu item.
+     */
     public closeFile(path: string): void {
         this.wsModel.closeFile(path);
         this.wsModel.updateStorage();
     }
 
+    /**
+     * Handler for the context menu "Rename" menu item.
+     */
     public renameFile(oldName: string): void {
         const options: PromptOptions = {
             title: `Rename '${oldName}'`,
@@ -78,11 +94,14 @@ export default class ExplorerFilesController {
                     this.modalService.alert({ title: "Error", message: e.toString() });
                 }
             })
-            .catch(function(reason: any) {
+            .catch(function (reason: any) {
                 // Do nothing.
             });
     }
 
+    /**
+     * Handler for the context menu "Delete" menu item.
+     */
     public deleteFile(path: string): void {
         const options: ConfirmOptions = {
             title: `Delete '${path}'`,
@@ -96,7 +115,7 @@ export default class ExplorerFilesController {
                     // this.wsModel.updateStorage();
                 });
             })
-            .catch(function(reason) {
+            .catch(function (reason) {
                 // Do nothing.
             });
     }

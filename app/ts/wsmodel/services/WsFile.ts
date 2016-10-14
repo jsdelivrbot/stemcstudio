@@ -79,6 +79,11 @@ export default class WsFile implements MwEditor, Shareable {
     public existsInGitHub = false;
 
     /**
+     * Let's us know that the file has diagnostic errors.
+     */
+    public tainted = false;
+
+    /**
      * 
      */
     public selected = false;

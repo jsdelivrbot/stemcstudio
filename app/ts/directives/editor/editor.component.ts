@@ -67,7 +67,6 @@ function factory(
         const control: WorkspaceMixin = controllers[1];
 
         const container: HTMLElement = element[0];
-        // Experiment with creating an Editor without an EditSession, which is injected later.
         const renderer: Renderer = new Renderer(container);
         const editor: Editor = new Editor(renderer, void 0);
         let removeEditor: () => void;
@@ -113,9 +112,11 @@ function factory(
 
         // In Angular 1.3+ we have the $validators pipeline.
         // We don't need to set validation states because we have an object, not an array.
+        /*
         ngModel.$validators['foo'] = function (modelValue: string, viewValue: string): boolean {
             return true;
         };
+        */
 
         // The basic idea here is to set the $render callback function that will be used to take
         // the model value and use it to update the view (editor).

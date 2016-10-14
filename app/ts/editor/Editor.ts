@@ -1550,8 +1550,8 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
             if ((this.$selectionStyle !== "line" || !this.selection.isMultiLine())) {
                 highlight = this.getCursorPosition();
             }
-            if (renderer.$maxLines && session.getLength() === 1 && !(renderer.$minLines > 1)) {
-                // FiXME: This just makes life more difficult, with stupid casting.
+            if (renderer.maxLines && session.getLength() === 1 && !(renderer.minLines > 1)) {
+                // FIXME: This just makes life more difficult, with stupid casting.
                 highlight = <any>false;
             }
         }

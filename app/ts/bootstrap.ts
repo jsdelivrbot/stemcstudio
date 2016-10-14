@@ -25,6 +25,7 @@ import HomeController from './controllers/HomeController';
 import editor from './directives/editor/editor.component';
 import explorer from './directives/explorer/explorer.component';
 import ExplorerFilesController from './directives/explorer/ExplorerFilesController';
+import problems from './directives/problems/problems.component';
 
 // FIXME: This should be an internal module.
 import AlertController from './services/modalService/AlertController';
@@ -83,6 +84,7 @@ import './controllers/ExamplesController';
 app.directive('contextMenu', contextMenu);
 app.directive('editor', editor);
 app.directive('explorer', explorer);
+app.directive('problems', problems);
 app.directive('resizable', resizable);
 app.directive('workspace', workspace);
 
@@ -113,6 +115,6 @@ import './template-cache';
 //
 // Nothing happens unless we bootstrap the application.
 //
-angular.element(document).ready(function() {
+angular.element(document).ready(function () {
     angular.bootstrap(document.documentElement, [app.name], { strictDi: true, debugInfoEnabled: true });
 });

@@ -50,17 +50,17 @@ export default class Split {
         return editor;
     }
 
-    setSplits(splits) {
-        var editor;
+    setSplits(splits: number) {
         if (splits < 1) {
-            throw "The number of splits have to be > 0!";
+            throw new Error("The number of splits must be greater than zero.");
         }
 
-        if (splits == this.$splits) {
+        if (splits === this.$splits) {
             return;
-        } else if (splits > this.$splits) {
+        }
+        else if (splits > this.$splits) {
             while (this.$splits < this.$editors.length && this.$splits < splits) {
-                editor = this.$editors[this.$splits];
+                const editor = this.$editors[this.$splits];
                 this.$container.appendChild(editor.container);
                 editor.setFontSize(this.$fontSize);
                 this.$splits++;
@@ -69,9 +69,10 @@ export default class Split {
                 this.$createEditor();
                 this.$splits++;
             }
-        } else {
+        }
+        else {
             while (this.$splits > splits) {
-                editor = this.$editors[this.$splits - 1];
+                const editor = this.$editors[this.$splits - 1];
                 this.$container.removeChild(editor.container);
                 this.$splits--;
             }
@@ -80,56 +81,45 @@ export default class Split {
     };
 
     /**
-     * 
      * Returns the number of splits.
-     * @returns {Number}
-     **/
-    getSplits() {
+     */
+    getSplits(): number {
         return this.$splits;
     }
 
     /**
-     * @param {Number} idx The index of the editor you want
-     *
      * Returns the editor identified by the index `idx`.
-     *
-     **/
-    getEditor(idx) {
+     * @param idx The index of the editor you want
+     */
+    getEditor(idx: number) {
         return this.$editors[idx];
     }
 
-    /**
-     * 
+    /** 
      * Returns the current editor.
-     * @returns {Editor}
-     **/
-    getCurrentEditor = function () {
+     */
+    getCurrentEditor(): Editor {
         return this.$cEditor;
     }
 
     /** 
      * Focuses the current editor.
-     * @related Editor.focus
-     **/
-    focus() {
+     */
+    focus(): void {
         this.$cEditor.focus();
     };
 
     /** 
      * Blurs the current editor.
-     * @related Editor.blur
-     **/
-    blur() {
+     */
+    blur(): void {
         this.$cEditor.blur();
     }
 
     /** 
-     * 
-     * @param {String} theme The name of the theme to set
-     * 
      * Sets a theme for each of the available editors.
-     * @related Editor.setTheme
-     **/
+     * @param theme The name of the theme to set
+     */
     setTheme(themeId: string, href?: string) {
         this.$editors.forEach(function (editor) {
             editor.setThemeCss(themeId, href);
@@ -137,41 +127,34 @@ export default class Split {
     };
 
     /** 
-     * 
-     * @param {String} keybinding 
-     * 
      * Sets the keyboard handler for the editor.
-     * @related editor.setKeyboardHandler
-     **/
-    setKeyboardHandler(keybinding: KeyboardHandler) {
+     * @param keybinding 
+     * 
+     */
+    setKeyboardHandler(keyboardHandler: KeyboardHandler) {
         this.$editors.forEach(function (editor) {
-            editor.setKeyboardHandler(keybinding);
+            editor.setKeyboardHandler(keyboardHandler);
         });
     }
 
     /** 
-     * 
-     * @param {Function} callback A callback function to execute
-     * @param {String} scope The default scope for the callback
-     * 
-     * Executes `callback` on all of the available editors. 
-     *
-     **/
+     * Executes `callback` on all of the available editors.
+     * @param {Function} callback A callback function to execute.
+     * @param {String} scope The default scope for the callback.
+     */
     forEach(callback, scope?) {
         this.$editors.forEach(callback, scope);
     };
 
 
     /** 
-     * @param {Number} size The new font size
-     * 
      * Sets the font size, in pixels, for all the available editors.
-     *
-     **/
-    setFontSize(size) {
-        this.$fontSize = size;
-        this.forEach(function (editor) {
-            editor.setFontSize(size);
+     * @param size The new font size.
+     */
+    setFontSize(fontSize: string) {
+        this.$fontSize = fontSize;
+        this.$editors.forEach(function (editor) {
+            editor.setFontSize(fontSize);
         });
     }
 
@@ -205,13 +188,10 @@ export default class Split {
     }
 
     /** 
-      * 
-      * @param {EditSession} session The new edit session
-      * @param {Number} idx The editor's index you're interested in
-      * 
-      * Sets a new [[EditSession `EditSession`]] for the indicated editor.
-      * @related Editor.setSession
-      **/
+     * Sets a new EditSession for the indicated editor.
+     * @param session The new edit session
+     * @param idx The editor's index you're interested in
+     */
     setSession(session: EditSession, idx: number): EditSession {
         var editor;
         if (idx == null) {
@@ -226,7 +206,7 @@ export default class Split {
         // the same session can cause terrible side effects (e.g. UndoQueue goes
         // wrong). This also gives the user of Split the possibility to treat
         // each session on each split editor different.
-        var isUsed = this.$editors.some(function (editor) {
+        const isUsed = this.$editors.some(function (editor) {
             return editor.session === session;
         });
 
@@ -240,22 +220,19 @@ export default class Split {
     }
 
     /** 
-      * 
-      * Returns the orientation.
-      **/
+     * 
+     * Returns the orientation.
+     */
     getOrientation(): number {
         return this.$orientation;
     }
 
     /** 
-      * 
-      * Sets the orientation.
-      * @param {Number} orientation The new orientation value
-      *
-      *
-      **/
+     * Sets the orientation.
+     * @param orientation The new orientation value.
+     */
     setOrientation(orientation: number) {
-        if (this.$orientation == orientation) {
+        if (this.$orientation === orientation) {
             return;
         }
         this.$orientation = orientation;
@@ -263,27 +240,27 @@ export default class Split {
     }
 
     /**  
-      * Resizes the editor.
-      **/
+     * Resizes the editor.
+     */
     resize() {
-        var width = this.$container.clientWidth;
-        var height = this.$container.clientHeight;
-        var editor;
+        const width = this.$container.clientWidth;
+        const height = this.$container.clientHeight;
 
-        if (this.$orientation == this.BESIDE) {
-            var editorWidth = width / this.$splits;
-            for (var i = 0; i < this.$splits; i++) {
-                editor = this.$editors[i];
+        if (this.$orientation === this.BESIDE) {
+            const editorWidth = width / this.$splits;
+            for (let i = 0; i < this.$splits; i++) {
+                const editor = this.$editors[i];
                 editor.container.style.width = editorWidth + "px";
                 editor.container.style.top = "0px";
                 editor.container.style.left = i * editorWidth + "px";
                 editor.container.style.height = height + "px";
                 editor.resize();
             }
-        } else {
-            var editorHeight = height / this.$splits;
-            for (var i = 0; i < this.$splits; i++) {
-                editor = this.$editors[i];
+        }
+        else {
+            const editorHeight = height / this.$splits;
+            for (let i = 0; i < this.$splits; i++) {
+                const editor = this.$editors[i];
                 editor.container.style.width = width + "px";
                 editor.container.style.top = i * editorHeight + "px";
                 editor.container.style.left = "0px";

@@ -152,7 +152,7 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
 
         let cell: GutterCell = null;
         let index = -1;
-        let row: number = firstRow;
+        let row = firstRow;
         while (true) {
             if (row > foldStart) {
                 row = fold.end.row + 1;

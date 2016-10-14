@@ -60,26 +60,27 @@ export default class SearchHighlight implements Marker {
      * @return {void}
      */
     update(html: (number | string)[], markerLayer: MarkerLayer, session: EditSession, config: MarkerConfig): void {
-        if (!this.regExp)
+        if (!this.regExp) {
             return;
+        }
 
-        var start = config.firstRow, end = config.lastRow;
+        const start = config.firstRow, end = config.lastRow;
 
-        for (var i = start; i <= end; i++) {
-            var ranges = this.cache[i];
+        for (let i = start; i <= end; i++) {
+            let ranges = this.cache[i];
             if (ranges == null) {
-                var matches = getMatchOffsets(session.getLine(i), this.regExp);
+                let matches = getMatchOffsets(session.getLine(i), this.regExp);
                 if (matches.length > MAX_RANGES) {
                     matches = matches.slice(0, MAX_RANGES);
                 }
-                ranges = matches.map(function(match) {
+                ranges = matches.map(function (match) {
                     return new Range(i, match.offset, i, match.offset + match.length);
                 });
                 // TODO: The zero-length case was the empty string, but that does not pass the compiler.
                 this.cache[i] = ranges.length ? ranges : [];
             }
 
-            for (var j = ranges.length; j--;) {
+            for (let j = ranges.length; j--;) {
                 markerLayer.drawSingleLineMarker(html, session.documentToScreenRange(ranges[j]), this.clazz, config);
             }
         }

@@ -7,7 +7,8 @@ import Position from "./Position";
 // TODO: The HTML nature is leaky.
 interface EditorRenderer {
     $keepTextAreaAtCursor: boolean;
-    $maxLines: number;
+    maxLines: number;
+    minLines: number;
     scroller: HTMLDivElement;
     /**
      *

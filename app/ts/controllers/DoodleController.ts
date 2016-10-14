@@ -34,8 +34,14 @@ export default class DoodleController extends AbstractPageController {
 
         // ExplorerMixin implementation.
         $scope.isExplorerVisible = true;
-        $scope.toggleExplorer = function() {
+        $scope.toggleExplorer = function () {
             $scope.isExplorerVisible = !$scope.isExplorerVisible;
+        };
+
+        // ProblemsMixin implementation.
+        $scope.isProblemsVisible = true;
+        $scope.toggleProblems = function () {
+            $scope.isProblemsVisible = !$scope.isProblemsVisible;
         };
 
         $scope.templates = templates;

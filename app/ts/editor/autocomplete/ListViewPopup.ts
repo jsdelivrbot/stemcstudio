@@ -12,7 +12,7 @@ import {stringRepeat} from "../lib/lang";
 import {addCssClass, createElement, removeCssClass} from "../lib/dom";
 import ListView from "./ListView";
 
-const noop = function() { /* Do nothing. */ };
+const noop = function () { /* Do nothing. */ };
 
 //
 // The ListViewPopup makes use of an Editor to do its rendering.
@@ -91,7 +91,7 @@ export default class ListViewPopup implements ListView {
             renderer.setStyle("ace_autocomplete");
             renderer.cursorLayer.restartTimer = noop;
             renderer.cursorLayer.element.style.opacity = "0";
-            renderer.$maxLines = 8;
+            renderer.maxLines = 8;
             renderer.$keepTextAreaAtCursor = false;
 
             const doc = new Document("");
@@ -233,7 +233,7 @@ export default class ListViewPopup implements ListView {
             return this.screenWidth = 0;
         };
 
-        this.editor.on("changeSelection", function() {
+        this.editor.on("changeSelection", function () {
             if (this.isOpen) {
                 this.setRow(this.popup.selection.lead.row);
             }
@@ -253,7 +253,7 @@ export default class ListViewPopup implements ListView {
         var screenWidth = window.innerWidth;
         var renderer = this.editor.renderer;
         // var maxLines = Math.min(renderer.$maxLines, this.session.getLength());
-        var maxH = renderer.$maxLines * lineHeight * 1.4;
+        var maxH = renderer.maxLines * lineHeight * 1.4;
         var top = pos.top + this.$borderSize;
         if (top + maxH > screenHeight - lineHeight && !topdownOnly) {
             el.style.top = "";

@@ -88,8 +88,9 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         height: 1,
         gutterOffset: 1
     };
-    public $maxLines: number;
-    public $minLines: number;
+
+    private $maxLines: number;
+    private $minLines: number;
 
     /**
      * FIXME: Leaky. ListViewPopup uses this property.
@@ -360,11 +361,31 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
     }
 
     /**
-     * @property maxLines
-     * @type number
+     * 
+     */
+    get maxLines(): number {
+        return this.$maxLines;
+    }
+
+    /**
+     *
      */
     set maxLines(maxLines: number) {
         this.$maxLines = maxLines;
+    }
+
+    /**
+     * 
+     */
+    get minLines(): number {
+        return this.$minLines;
+    }
+
+    /**
+     *
+     */
+    set minLines(minLines: number) {
+        this.$minLines = minLines;
     }
 
     /**

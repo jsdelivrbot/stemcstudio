@@ -1,11 +1,15 @@
 explorer {
-  flex: 0 1 150px;
-  background-color: @gutterBackground;
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    flex: 0 1 150px;
+    background-color: @gutterBackground;
 }
 
 .explorer-section {
     display: flex;
     flex-direction: column;
+    height: 100%;
 }
 
 .explorer-section-header {
@@ -41,4 +45,8 @@ ul.files li.open a {
 
 ul.files li.selected a {
     color: @orangePeel;
+}
+
+ul.files li.tainted a {
+    color: deeppink;
 }

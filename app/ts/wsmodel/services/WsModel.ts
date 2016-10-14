@@ -317,7 +317,6 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      */
     recycle(callback: (err: any) => any): void {
         if (this.zeroRefCount) {
-            // console.lg("Waiting for workspace reference count to return to zero...");
             this.zeroRefCount.then(() => {
                 this.zeroRefCount = void 0;
                 this.zeroRefCountDeferred = void 0;
@@ -327,7 +326,6 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             });
         }
         else if (this.windingDown) {
-            // console.lg("Waiting for workspace to wind down...");
             this.windingDown.then(() => {
                 this.windingDown = void 0;
                 this.recycle(callback);
@@ -336,7 +334,6 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             });
         }
         else {
-            // console.lg(`recycle(), refCount => ${this.refCount}`);
             if (this.refCount > 0) {
                 console.warn("recycle happening while refCount non-zero.");
             }
@@ -374,13 +371,11 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             this.zeroRefCount = this.zeroRefCountDeferred.promise;
         }
         this.refCount++;
-        // console.lg(`WsModel.addRef() refCount => ${this.refCount}`);
         return this.refCount;
     }
 
     release(): number {
         this.refCount--;
-        // console.lg(`WsModel.release() refCount => ${this.refCount}`);
         if (this.refCount === 0) {
             const deferred = this.$q.defer();
             this.endMonitoring(() => {
@@ -532,13 +527,10 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
 
         // The user may elect to open an editor but then leave the workspace as the editor is opening.
         if (this.isZombie()) {
-            // console.lg("WsModel.attachEditor ignored because isZombie");
             return;
         }
 
         this.addRef();
-
-        // console.lg(`WsModel.attachEditor(${path})`);
 
         checkPath(path);
         checkEditor(editor);
@@ -578,12 +570,9 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     detachEditor(path: string, editor: Editor): void {
 
         if (this.isZombie()) {
-            // console.lg("WsModel.detachEditor Open because isZombie");
             return;
         }
         try {
-            // console.lg(`WsModel.detachEditor(${path})`);
-
             checkPath(path);
             checkEditor(editor);
 
@@ -606,7 +595,6 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     }
 
     private attachSession(path: string, session: EditSession): void {
-        // console.lg(`attachSession(${path})`);
         checkPath(path);
 
         if (session) {
@@ -635,7 +623,6 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     }
 
     private detachSession(path: string, session: EditSession) {
-        // console.lg(`detachSession(${path})`);
         checkPath(path);
 
         if (session) {
@@ -662,7 +649,6 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      * Ends monitoring the Document at the specified path for changes and removes the script from the LanguageService.
      */
     beginDocumentMonitoring(path: string, callback: (err) => any): void {
-        // console.lg(`beginDocumentMonitoring(${path})`);
         checkPath(path);
         checkCallback(callback);
 
@@ -707,7 +693,6 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      * Ends monitoring the Document at the specified path for changes and removes the script from the LanguageService.
      */
     endDocumentMonitoring(path: string, callback: (err) => any) {
-        // console.lg(`endDocumentMonitoring(${path})`);
         checkPath(path);
         checkCallback(callback);
 
@@ -767,7 +752,6 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      * 
      */
     ensureScript(path: string, content: string, callback: (err) => any): void {
-        // console.lg(`ensureScript(${path})`);
         checkPath(path);
         checkCallback(callback);
         if (this.languageServiceProxy) {
@@ -788,7 +772,6 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      * 
      */
     removeScript(path: string, callback: (err) => any) {
-        // console.lg(`removeScript(${path})`);
         checkPath(path);
         checkCallback(callback);
 
@@ -809,7 +792,6 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      */
     public semanticDiagnostics(): void {
         const paths = this.getFileSessionPaths();
-        // console.lg(`WsModel.semanticDiagnostics(${paths})`);
         for (let i = 0; i < paths.length; i++) {
             const path = paths[i];
             if (isTypeScript(path)) {
@@ -826,7 +808,6 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
 
     private updateSession(path: string, errors: Diagnostic[], session: EditSession): void {
         // We have the path and diagnostics, so we should be able to provide hyperlinks to errors!
-        // console.lg(`WsModel.updateSession(path => ${path})`);
         if (session) {
             checkSession(session);
         }
@@ -834,10 +815,13 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             return;
         }
 
+        const file = this.getFileWeakRef(path);
+        file.tainted = false;
+
         const doc = session.getDocument();
 
         const annotations = errors.map(function (error) {
-            // console.wrn(`WsModel.diagnostic => ${JSON.stringify(error)}`);
+            file.tainted = true;
             return diagnosticToAnnotation(doc, error);
         });
         session.setAnnotations(annotations);
@@ -1134,7 +1118,6 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
 
     protected destructor(): void {
         // This may never be called when this class is deployed as a singleton service.
-        // console.lg("WsModel.destructor");
     }
 
     newFile(path: string): WsFile {
@@ -1182,14 +1165,12 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             // Use the raw_url as the sentinel. Keep it in trash for later deletion.
             this.endDocumentMonitoring(path, (err) => {
                 if (file.existsInGitHub) {
-                    // console.lg(`File ${path} is being moved to the trash.`);
                     this.moveFileToTrash(path);
                     this.updateStorage();
                     callback(void 0);
                 }
                 else {
                     // It's a file that does not exist on GitHub.
-                    // console.lg(`File ${path} is being dropped.`);
                     this.files.remove(path).release();
                     delete this.lastKnownJs[path];
                     this.updateStorage();

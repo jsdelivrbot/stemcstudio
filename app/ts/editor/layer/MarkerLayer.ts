@@ -6,8 +6,7 @@ import MarkerConfig from "./MarkerConfig";
 import Range from "../Range";
 
 /**
- * @class MarkerLayer
- * @extends AbstractLayer
+ * The MarkerLayer is used for highlighting parts of the code.
  */
 export default class MarkerLayer extends AbstractLayer {
 
@@ -17,9 +16,8 @@ export default class MarkerLayer extends AbstractLayer {
     private $padding: number = 0;
 
     /**
-     * @class MarkerLayer
-     * @constructor
-     * @param parent {HTMLDivElement}
+     *
+     * @param parent
      */
     constructor(parent: HTMLDivElement) {
         super(parent, "ace_layer ace_marker-layer");
@@ -137,7 +135,7 @@ export default class MarkerLayer extends AbstractLayer {
     }
 
     // Draws a multi line marker, where lines span the full width
-    private drawMultiLineMarker(stringBuilder: (number | string)[], range: Range, clazz, config: MarkerConfig, extraStyle?: string) {
+    private drawMultiLineMarker(stringBuilder: (number | string)[], range: Range, clazz, config: MarkerConfig, extraStyle?: string): void {
         // from selection start to the end of the line
         const padding = this.$padding;
         let height = config.lineHeight;
@@ -188,11 +186,11 @@ export default class MarkerLayer extends AbstractLayer {
      * Draws a marker which covers part or whole width of a single screen line.
      */
     public drawSingleLineMarker(stringBuilder: (number | string)[], range: Range, clazz: string, config: MarkerConfig, extraLength?: number, extraStyle?: string): void {
-        var height = config.lineHeight;
-        var width = (range.end.column + (extraLength || 0) - range.start.column) * config.characterWidth;
+        const height = config.lineHeight;
+        const width = (range.end.column + (extraLength || 0) - range.start.column) * config.characterWidth;
 
-        var top = this.$getTop(range.start.row, config);
-        var left = this.$padding + range.start.column * config.characterWidth;
+        const top = this.$getTop(range.start.row, config);
+        const left = this.$padding + range.start.column * config.characterWidth;
 
         stringBuilder.push(
             "<div class='", clazz, "' style='",

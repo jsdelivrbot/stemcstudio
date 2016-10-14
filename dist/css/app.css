@@ -7667,12 +7667,16 @@ body > .dropdown-menu > li > a {
 }
 */
 explorer {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
   flex: 0 1 150px;
   background-color: #232323;
 }
 .explorer-section {
   display: flex;
   flex-direction: column;
+  height: 100%;
 }
 .explorer-section-header {
   display: flex;
@@ -7702,6 +7706,9 @@ ul.files li.open a {
 }
 ul.files li.selected a {
   color: #ff9900;
+}
+ul.files li.tainted a {
+  color: deeppink;
 }
 div.ace_editor {
   flex: 1;
