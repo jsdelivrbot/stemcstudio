@@ -230,7 +230,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     private files: StringShareableMap<WsFile>;
 
     /**
-     * Files that have been deleted (used to support updating a Gist)
+     * Files that have been deleted (used to support updating a Gist).
      */
     private trash: StringShareableMap<WsFile>;
 
@@ -1165,12 +1165,13 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             // Use the raw_url as the sentinel. Keep it in trash for later deletion.
             this.endDocumentMonitoring(path, (err) => {
                 if (file.existsInGitHub) {
+                    // It's a file that DOES exist on GitHub. Move it to trash so that it gets synchronized properly.
                     this.moveFileToTrash(path);
                     this.updateStorage();
                     callback(void 0);
                 }
                 else {
-                    // It's a file that does not exist on GitHub.
+                    // It's a file that does NOT exist on GitHub. Remove it completely.
                     this.files.remove(path).release();
                     delete this.lastKnownJs[path];
                     this.updateStorage();

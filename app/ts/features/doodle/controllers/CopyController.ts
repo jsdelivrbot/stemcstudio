@@ -52,7 +52,7 @@ export default class CopyController {
         //
         // Copy the current doodle into a new doodle.
         //
-        $scope.doOK = function() {
+        $scope.doOK = function () {
             const original = doodles.current();
             const doodle = doodles.createDoodle();
 
@@ -82,7 +82,7 @@ export default class CopyController {
         //
         // Go back to whatever is the current project.
         //
-        $scope.doCancel = function() {
+        $scope.doCancel = function () {
             navigation.gotoDoodle();
         };
     }

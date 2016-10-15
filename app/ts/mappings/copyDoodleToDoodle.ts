@@ -13,7 +13,9 @@ export default function copyDoodleToDoodle(doodleIn: Doodle, doodleOut: Doodle):
         doodleFile.isOpen = doodleFileIn.isOpen;
         doodleFile.language = doodleFileIn.language;
         doodleFile.preview = doodleFileIn.preview;
-        doodleFile.raw_url = doodleFileIn.raw_url;
+        // The raw_url is sentinel that the file is in GitHub.
+        // If we don't clear it then Gist create will fail if we delete this file.
+        doodleFile.raw_url = void 0;
         doodleFile.selected = doodleFileIn.selected;
     }
 

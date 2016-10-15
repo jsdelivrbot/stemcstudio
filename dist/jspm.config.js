@@ -523,7 +523,7 @@ System.config({
     "npm:rxjs@5.0.0-rc.1": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
-      "symbol-observable": "npm:symbol-observable@1.0.3"
+      "symbol-observable": "npm:symbol-observable@1.0.4"
     },
     "npm:sha.js@2.4.5": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
