@@ -8,6 +8,7 @@ import {LANGUAGE_JAVA_SCRIPT} from '../languages/modes';
 import {LANGUAGE_LESS} from '../languages/modes';
 import {LANGUAGE_MARKDOWN} from '../languages/modes';
 import {LANGUAGE_PYTHON} from '../languages/modes';
+import {LANGUAGE_SCHEME} from '../languages/modes';
 import {LANGUAGE_TEXT} from '../languages/modes';
 import {LANGUAGE_TYPE_SCRIPT} from '../languages/modes';
 
@@ -26,6 +27,7 @@ extensionToMode['json'] = LANGUAGE_JSON;
 extensionToMode['less'] = LANGUAGE_LESS;
 extensionToMode['md'] = LANGUAGE_MARKDOWN;
 extensionToMode['py'] = LANGUAGE_PYTHON;
+extensionToMode['scm'] = LANGUAGE_SCHEME;
 // extensionToMode['sass'] = 'SASS'
 extensionToMode['ts'] = LANGUAGE_TYPE_SCRIPT;
 extensionToMode['txt'] = LANGUAGE_TEXT;

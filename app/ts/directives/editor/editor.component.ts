@@ -1,4 +1,5 @@
 import * as ng from 'angular';
+import ClojureMode from '../../editor/mode/ClojureMode';
 import CssMode from '../../editor/mode/CssMode';
 import GlslMode from '../../editor/mode/GlslMode';
 import HtmlMode from '../../editor/mode/HtmlMode';
@@ -29,6 +30,7 @@ import {LANGUAGE_JAVA_SCRIPT} from '../../languages/modes';
 import {LANGUAGE_JSON} from '../../languages/modes';
 import {LANGUAGE_LESS} from '../../languages/modes';
 import {LANGUAGE_MARKDOWN} from '../../languages/modes';
+import {LANGUAGE_SCHEME} from '../../languages/modes';
 import {LANGUAGE_PYTHON} from '../../languages/modes';
 import {LANGUAGE_TYPE_SCRIPT} from '../../languages/modes';
 import {LANGUAGE_TEXT} from '../../languages/modes';
@@ -164,6 +166,16 @@ function factory(
                             case LANGUAGE_PYTHON: {
                                 session.setUseWorker(false);
                                 session.setLanguageMode(new PythonMode('/js/worker.js', workerImports), function (err: any) {
+                                    if (err) {
+                                        console.warn(`${file.mode} => ${err}`);
+                                    }
+                                    removeEditor = control.attachEditor($scope.path, file.mode, editor);
+                                });
+                                break;
+                            }
+                            case LANGUAGE_SCHEME: {
+                                session.setUseWorker(false);
+                                session.setLanguageMode(new ClojureMode('/js/worker.js', workerImports), function (err: any) {
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }

@@ -8,6 +8,12 @@ const themes: Theme[] = [
         fileName: 'chrome.css'
     },
     {
+        name: "Cobalt",
+        isDark: true,
+        cssClass: 'ace-cobalt',
+        fileName: 'cobalt.css'
+    },
+    {
         name: "Dreamweaver",
         isDark: false,
         cssClass: 'ace-dreamweaver',

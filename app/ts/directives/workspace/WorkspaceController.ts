@@ -49,6 +49,7 @@ import {LANGUAGE_JAVA_SCRIPT} from '../../languages/modes';
 import {LANGUAGE_LESS} from '../../languages/modes';
 import {LANGUAGE_MARKDOWN} from '../../languages/modes';
 import {LANGUAGE_PYTHON} from '../../languages/modes';
+import {LANGUAGE_SCHEME} from '../../languages/modes';
 import {LANGUAGE_TYPE_SCRIPT} from '../../languages/modes';
 import {LANGUAGE_TEXT} from '../../languages/modes';
 import updateWorkspaceTypings from './updateWorkspaceTypings';
@@ -202,25 +203,27 @@ export default class WorkspaceController implements WorkspaceMixin {
         let rebuildPromise: angular.IPromise<void>;
         $scope.updatePreview = (delay: number) => {
             if (rebuildPromise) { $timeout.cancel(rebuildPromise); }
-            rebuildPromise = $timeout(() => { rebuildPreview(
-                this.wsModel,
-                this.options,
-                this.$scope,
-                this.$location,
-                this.$window,
-                this.FILENAME_CODE,
-                this.FILENAME_LESS,
-                this.FILENAME_LIBS,
-                this.FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS,
-                this.LIBS_MARKER,
-                this.STYLES_MARKER,
-                this.VENDOR_FOLDER_MARKER); rebuildPromise = undefined; }, delay);
+            rebuildPromise = $timeout(() => {
+                rebuildPreview(
+                    this.wsModel,
+                    this.options,
+                    this.$scope,
+                    this.$location,
+                    this.$window,
+                    this.FILENAME_CODE,
+                    this.FILENAME_LESS,
+                    this.FILENAME_LIBS,
+                    this.FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS,
+                    this.LIBS_MARKER,
+                    this.STYLES_MARKER,
+                    this.VENDOR_FOLDER_MARKER); rebuildPromise = undefined;
+            }, delay);
         };
 
         $scope.workspace = wsModel;
 
-        $scope.files = function() {
-            const fs: {[path: string]: WsFile} = {};
+        $scope.files = function () {
+            const fs: { [path: string]: WsFile } = {};
             if (!wsModel.isZombie()) {
                 const paths = wsModel.getFileDocumentPaths();
                 for (let i = 0; i < paths.length; i++) {
@@ -231,20 +234,20 @@ export default class WorkspaceController implements WorkspaceMixin {
             return fs;
         };
 
-        $scope.htmlFileCount = function() {
+        $scope.htmlFileCount = function () {
             if (wsModel && !wsModel.isZombie()) {
                 const paths = wsModel.getFileDocumentPaths();
-                return paths.filter(function(path) { return isHtmlFilePath(path); }).length;
+                return paths.filter(function (path) { return isHtmlFilePath(path); }).length;
             }
             else {
                 return 0;
             }
         };
 
-        $scope.markdownFileCount = function() {
+        $scope.markdownFileCount = function () {
             if (wsModel && !wsModel.isZombie()) {
                 const paths = wsModel.getFileDocumentPaths();
-                return paths.filter(function(path) { return isMarkdownFilePath(path); }).length;
+                return paths.filter(function (path) { return isMarkdownFilePath(path); }).length;
             }
             else {
                 return 0;
@@ -263,7 +266,7 @@ export default class WorkspaceController implements WorkspaceMixin {
             }
         };
 
-        $scope.toggleMode = function(label?: string, value?: number) {
+        $scope.toggleMode = function (label?: string, value?: number) {
             // Is this dead code?
             ga('send', 'event', 'doodle', 'toggleMode', label, value);
             $scope.isEditMode = !$scope.isEditMode;
@@ -279,7 +282,7 @@ export default class WorkspaceController implements WorkspaceMixin {
             }
         };
 
-        $scope.toggleView = function(label?: string, value?: number) {
+        $scope.toggleView = function (label?: string, value?: number) {
             ga('send', 'event', 'doodle', 'toggleView', label, value);
             $scope.isViewVisible = !$scope.isViewVisible;
             $scope.updatePreview(WAIT_NO_MORE);
@@ -296,7 +299,7 @@ export default class WorkspaceController implements WorkspaceMixin {
                 if (wsModel.isZombie()) {
                     github.getGistComments(wsModel.gistId).then((httpResponse) => {
                         const comments = httpResponse.data;
-                        $scope.comments = comments.map(function(comment) {
+                        $scope.comments = comments.map(function (comment) {
                             return { type: 'info', msg: comment.body };
                         });
                     }).catch((reason) => {
@@ -420,20 +423,20 @@ export default class WorkspaceController implements WorkspaceMixin {
                         }
                     }
                     else {
-                        this.modalDialog.alert({title: "Load Workspace Error", message: err.message});
+                        this.modalDialog.alert({ title: "Load Workspace Error", message: err.message });
                     }
                 });
 
                 this.wsModel.setDefaultLibrary('/typings/lib.es6.d.ts', (err) => {
                     if (err) {
-                        this.modalDialog.alert({title: "Default Library Error", message: err.message});
+                        this.modalDialog.alert({ title: "Default Library Error", message: err.message });
                     }
                 });
 
                 this.outputFilesWatchRemover = this.wsModel.watch('outputFiles', this.createOutputFilesEventHandler());
             }
             else {
-                this.modalDialog.alert({title: "Start Workspace Error", message: err.message});
+                this.modalDialog.alert({ title: "Start Workspace Error", message: err.message });
             }
         });
     }
@@ -541,7 +544,7 @@ export default class WorkspaceController implements WorkspaceMixin {
             // Don't do anything if we don't have a README file.
             if (this.wsModel.existsFile(this.FILENAME_README)) {
                 // Add the change handlers if the README viewer is visible.
-                if (isVisible  && !this.readmeChangeHandlers[this.FILENAME_README]) {
+                if (isVisible && !this.readmeChangeHandlers[this.FILENAME_README]) {
                     const file = this.wsModel.findFileByPath(this.FILENAME_README);
                     try {
                         const doc = file.getDocument();
@@ -590,16 +593,16 @@ export default class WorkspaceController implements WorkspaceMixin {
                 const moduleKind = detect1x(this.wsModel) ? MODULE_KIND_NONE : MODULE_KIND_SYSTEM;
                 this.wsModel.setModuleKind(moduleKind, (err) => {
 
-                // Set the script target for transpilation consistent with the version.
-                const scriptTarget = detect1x(this.wsModel) ? SCRIPT_TARGET_ES5 : SCRIPT_TARGET;
+                    // Set the script target for transpilation consistent with the version.
+                    const scriptTarget = detect1x(this.wsModel) ? SCRIPT_TARGET_ES5 : SCRIPT_TARGET;
 
-                this.wsModel.setScriptTarget(scriptTarget, (err) => {
-                    // FIXME: Need a callback here...
-                    this.wsModel.semanticDiagnostics();
-                    this.wsModel.outputFiles();
-                    this.$scope.workspaceLoaded = true;
-                    this.$scope.updatePreview(WAIT_NO_MORE);
-                });
+                    this.wsModel.setScriptTarget(scriptTarget, (err) => {
+                        // FIXME: Need a callback here...
+                        this.wsModel.semanticDiagnostics();
+                        this.wsModel.outputFiles();
+                        this.$scope.workspaceLoaded = true;
+                        this.$scope.updatePreview(WAIT_NO_MORE);
+                    });
                 });
             });
 
@@ -632,9 +635,10 @@ export default class WorkspaceController implements WorkspaceMixin {
         this.wsModel.attachEditor(path, editor);
 
         switch (mode) {
+            case LANGUAGE_JAVA_SCRIPT:
             case LANGUAGE_PYTHON:
-            case LANGUAGE_TYPE_SCRIPT:
-            case LANGUAGE_JAVA_SCRIPT: {
+            case LANGUAGE_SCHEME:
+            case LANGUAGE_TYPE_SCRIPT: {
                 // Ignore.
                 break;
             }
@@ -714,12 +718,14 @@ export default class WorkspaceController implements WorkspaceMixin {
     private updateReadmeView(delay: number) {
         // Throttle the requests to update the README view.
         if (this.readmePromise) { this.$timeout.cancel(this.readmePromise); }
-        this.readmePromise = this.$timeout(() => { rebuildReadmeView(
-            this.wsModel,
-            this.FILENAME_README,
-            this.$scope,
-            this.$window
-        ); this.readmePromise = undefined; }, delay);
+        this.readmePromise = this.$timeout(() => {
+            rebuildReadmeView(
+                this.wsModel,
+                this.FILENAME_README,
+                this.$scope,
+                this.$window
+            ); this.readmePromise = undefined;
+        }, delay);
     }
 
     private deletePreviewChangeHandler(path: string): void {
@@ -757,9 +763,10 @@ export default class WorkspaceController implements WorkspaceMixin {
         }
 
         switch (mode) {
-            case LANGUAGE_TYPE_SCRIPT:
             case LANGUAGE_JAVA_SCRIPT:
-            case LANGUAGE_PYTHON: {
+            case LANGUAGE_PYTHON:
+            case LANGUAGE_SCHEME:
+            case LANGUAGE_TYPE_SCRIPT: {
                 // Ignore
                 break;
             }
