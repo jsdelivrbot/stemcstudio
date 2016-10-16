@@ -20,7 +20,7 @@ module.exports = function (grunt) {
                         dest: 'generated/index.html'
                     },
                     {
-                        src: 'jspm_packages/github/ace2ts/ace-workers@1.0.2/src/worker.js',
+                        src: 'jspm_packages/github/ace2ts/ace-workers@1.0.4/src/worker.js',
                         dest: 'generated/js/worker.js'
                     },
                     {
@@ -28,7 +28,7 @@ module.exports = function (grunt) {
                         dest: 'generated/js/aws-sdk-2.3.12.min.js'
                     },
                     {
-                        src: 'jspm_packages/github/ace2ts/ace-workers@1.0.2/dist/ace-workers.js',
+                        src: 'jspm_packages/github/ace2ts/ace-workers@1.0.4/dist/ace-workers.js',
                         dest: 'generated/js/ace-workers.js'
                     },
                     {
@@ -374,7 +374,7 @@ module.exports = function (grunt) {
                         dest: 'dist/css/app.css'
                     },
                     {
-                        src: 'jspm_packages/github/ace2ts/ace-workers@1.0.2/src/worker.js',
+                        src: 'jspm_packages/github/ace2ts/ace-workers@1.0.4/src/worker.js',
                         dest: 'dist/js/worker.js'
                     },
                     {
@@ -382,7 +382,7 @@ module.exports = function (grunt) {
                         dest: 'dist/js/aws-sdk-2.3.12.min.js'
                     },
                     {
-                        src: 'jspm_packages/github/ace2ts/ace-workers@1.0.2/dist/ace-workers.js',
+                        src: 'jspm_packages/github/ace2ts/ace-workers@1.0.4/dist/ace-workers.js',
                         dest: 'dist/js/ace-workers.js'
                     },
                     {

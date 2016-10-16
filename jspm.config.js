@@ -9,7 +9,7 @@ System.config({
 
   map: {
     "@angular/router": "npm:@angular/router@0.2.0",
-    "ace2ts/ace-workers": "github:ace2ts/ace-workers@1.0.2",
+    "ace2ts/ace-workers": "github:ace2ts/ace-workers@1.0.4",
     "angular": "github:angular/bower-angular@1.5.8",
     "angular-animate": "github:angular/bower-angular-animate@1.5.8",
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.3",

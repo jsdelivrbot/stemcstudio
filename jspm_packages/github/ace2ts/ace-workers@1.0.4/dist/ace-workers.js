@@ -1,3 +1,41 @@
+System.register("src/mode/ClojureWorker.js", ["../worker/Mirror"], function (exports_1, context_1) {
+    "use strict";
+
+    var __moduleName = context_1 && context_1.id;
+    var __extends = this && this.__extends || function (d, b) {
+        for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+        function __() {
+            this.constructor = d;
+        }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+    var Mirror_1;
+    var ClojureWorker;
+    return {
+        setters: [function (Mirror_1_1) {
+            Mirror_1 = Mirror_1_1;
+        }],
+        execute: function () {
+            ClojureWorker = function (_super) {
+                __extends(ClojureWorker, _super);
+                function ClojureWorker(host) {
+                    _super.call(this, host, 500);
+                    this.setOptions();
+                }
+                ClojureWorker.prototype.setOptions = function (options) {
+                    this.doc.getValue() && this.deferredUpdate.schedule(100);
+                };
+                ClojureWorker.prototype.onUpdate = function () {
+                    var value = this.doc.getValue();
+                    var annotations = [];
+                    this.emitAnnotations(annotations);
+                };
+                return ClojureWorker;
+            }(Mirror_1.default);
+            exports_1("default", ClojureWorker);
+        }
+    };
+});
 System.register("src/mode/ExampleWorker.js", ["../worker/Mirror"], function (exports_1, context_1) {
     "use strict";
 
@@ -19158,14 +19196,16 @@ System.register("src/lib/Sender.js", ['./event_emitter'], function (exports_1, c
         }
     };
 });
-System.register("ace-workers.js", ["./src/mode/ExampleWorker", "./src/mode/GlslWorker", "./src/mode/HtmlWorker", "./src/mode/JavaScriptWorker", "./src/mode/JsonWorker", "./src/mode/TypeScriptWorker", "./src/mode/LanguageServiceWorker", "./src/lib/Sender"], function (exports_1, context_1) {
+System.register("ace-workers.js", ["./src/mode/ClojureWorker", "./src/mode/ExampleWorker", "./src/mode/GlslWorker", "./src/mode/HtmlWorker", "./src/mode/JavaScriptWorker", "./src/mode/JsonWorker", "./src/mode/TypeScriptWorker", "./src/mode/LanguageServiceWorker", "./src/lib/Sender"], function (exports_1, context_1) {
     "use strict";
 
     var __moduleName = context_1 && context_1.id;
-    var ExampleWorker_1, GlslWorker_1, HtmlWorker_1, JavaScriptWorker_1, JsonWorker_1, TypeScriptWorker_1, LanguageServiceWorker_1, Sender_1;
+    var ClojureWorker_1, ExampleWorker_1, GlslWorker_1, HtmlWorker_1, JavaScriptWorker_1, JsonWorker_1, TypeScriptWorker_1, LanguageServiceWorker_1, Sender_1;
     var main;
     return {
-        setters: [function (ExampleWorker_1_1) {
+        setters: [function (ClojureWorker_1_1) {
+            ClojureWorker_1 = ClojureWorker_1_1;
+        }, function (ExampleWorker_1_1) {
             ExampleWorker_1 = ExampleWorker_1_1;
         }, function (GlslWorker_1_1) {
             GlslWorker_1 = GlslWorker_1_1;
@@ -19184,6 +19224,9 @@ System.register("ace-workers.js", ["./src/mode/ExampleWorker", "./src/mode/GlslW
         }],
         execute: function () {
             main = {
+                get ClojureWorker() {
+                    return ClojureWorker_1.default;
+                },
                 get ExampleWorker() {
                     return ExampleWorker_1.default;
                 },

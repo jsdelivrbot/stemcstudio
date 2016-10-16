@@ -20,6 +20,7 @@
         "./src/Range.ts",
         "./src/WorkerCallback.ts",
         "./src/worker/Mirror.ts",
+        "./src/mode/ClojureWorker.ts",
         "./src/mode/CssWorker.ts",
         "./src/mode/ExampleWorker.ts",
         "./src/mode/HtmlWorker.ts",

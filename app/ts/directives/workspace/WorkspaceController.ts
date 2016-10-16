@@ -625,6 +625,9 @@ export default class WorkspaceController implements WorkspaceMixin {
         }
     }
 
+    /**
+     * 
+     */
     attachEditor(path: string, mode: string, editor: Editor): () => void {
         // const startTime = performance.now();
         if (this.wsModel.isZombie()) {
@@ -637,7 +640,6 @@ export default class WorkspaceController implements WorkspaceMixin {
         switch (mode) {
             case LANGUAGE_JAVA_SCRIPT:
             case LANGUAGE_PYTHON:
-            case LANGUAGE_SCHEME:
             case LANGUAGE_TYPE_SCRIPT: {
                 // Ignore.
                 break;
@@ -647,6 +649,7 @@ export default class WorkspaceController implements WorkspaceMixin {
             case LANGUAGE_HTML:
             case LANGUAGE_JSON:
             case LANGUAGE_LESS:
+            case LANGUAGE_SCHEME:
             case LANGUAGE_TEXT: {
                 editor.getSession().on('change', this.createPreviewChangeHandler(path));
                 break;
@@ -765,7 +768,6 @@ export default class WorkspaceController implements WorkspaceMixin {
         switch (mode) {
             case LANGUAGE_JAVA_SCRIPT:
             case LANGUAGE_PYTHON:
-            case LANGUAGE_SCHEME:
             case LANGUAGE_TYPE_SCRIPT: {
                 // Ignore
                 break;
@@ -775,6 +777,7 @@ export default class WorkspaceController implements WorkspaceMixin {
             case LANGUAGE_HTML:
             case LANGUAGE_JSON:
             case LANGUAGE_LESS:
+            case LANGUAGE_SCHEME:
             case LANGUAGE_TEXT: {
                 const handler = this.previewChangeHandlers[path];
                 editor.getSession().off('change', handler);
