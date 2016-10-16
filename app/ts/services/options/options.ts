@@ -14,6 +14,7 @@ app.factory('options', [
 
         const VERSION_ANGULARJS = '1.5.3';
         // const VERSION_ASYNC = '1.4.2';
+        const VERSION_BIWASCHEME = '0.6.6';
         const VERSION_DAT_GUI = '0.5.0';
         const VERSION_DECKJS = '1.1.0';
         const VERSION_DOMREADY = '1.0.0';
@@ -59,6 +60,9 @@ app.factory('options', [
           return vendorFolder('async', VERSION_ASYNC, void 0, fileName);
         }
         */
+        function biwascheme(fileName: string): string {
+            return vendorFolder('biwascheme', VERSION_BIWASCHEME, void 0, fileName);
+        }
         function datGUI(fileName: string): string {
             return vendorFolder('dat-gui', VERSION_DAT_GUI, void 0, fileName);
         }
@@ -146,6 +150,19 @@ app.factory('options', [
                 dependencies: {}
             },
             */
+            {
+                name: 'biwascheme',
+                moniker: 'BiwaScheme',
+                description: "Scheme interpreter written in JavaScript.",
+                homepage: 'https://github.com/biwascheme/biwascheme',
+                version: VERSION_BIWASCHEME,
+                visible: true,
+                css: [],
+                dts: biwascheme('biwascheme.d.ts'),
+                js: [biwascheme('biwascheme.js')],
+                minJs: [biwascheme('biwascheme.min.js')],
+                dependencies: {}
+            },
             {
                 name: 'geocas',
                 moniker: 'GeoCAS',

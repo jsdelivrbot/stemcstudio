@@ -9,15 +9,16 @@ import IOptionManager from '../../services/options/IOptionManager';
 import currentJavaScript from './currentJavaScript';
 import detect1x from './detect1x';
 import detectMarker from './detectMarker';
-import modeFromName from '../../utils/modeFromName';
-import prefixFromPath from '../../utils/prefixFromPath';
 import {LANGUAGE_GLSL} from '../../languages/modes';
+import {LANGUAGE_SCHEME} from '../../languages/modes';
+import replaceMarker from './replaceMarker';
 import scriptURL from './scriptURL';
+import schemeTypeFromContent from './schemeTypeFromContent';
 import shaderTypeFromContent from './shaderTypeFromContent';
 import WorkspaceScope from '../../scopes/WorkspaceScope';
 import WsModel from '../../wsmodel/services/WsModel';
 import mathscript from 'davinci-mathscript';
-import {CODE_MARKER, SCRIPTS_MARKER, SHADERS_MARKER, STYLE_MARKER} from '../../features/preview/index';
+import {CODE_MARKER, SCHEMES_MARKER, SCRIPTS_MARKER, SHADERS_MARKER, STYLE_MARKER} from '../../features/preview/index';
 
 export default function rebuildPreview(
     workspace: WsModel,
@@ -74,7 +75,7 @@ export default function rebuildPreview(
 
                         const closureOpts: IOption[] = closure(selOpts, options);
 
-                        const chosenCssFileNames: string[] = closureOpts.map(function(option: IOption) { return option.css; }).reduce(function(previousValue, currentValue) { return previousValue.concat(currentValue); }, []);
+                        const chosenCssFileNames: string[] = closureOpts.map(function (option: IOption) { return option.css; }).reduce(function (previousValue, currentValue) { return previousValue.concat(currentValue); }, []);
                         const stylesTags = chosenCssFileNames.map((fileName: string) => {
                             return "<link rel='stylesheet' href='" + scriptURL(DOMAIN, fileName, VENDOR_FOLDER_MARKER) + "'></link>\n";
                         });
@@ -88,7 +89,7 @@ export default function rebuildPreview(
                             }
                         }
 
-                        const chosenJsFileNames: string[] = closureOpts.map(function(option: IOption) { return option.minJs; }).reduce(function(previousValue, currentValue) { return previousValue.concat(currentValue); }, []);
+                        const chosenJsFileNames: string[] = closureOpts.map(function (option: IOption) { return option.minJs; }).reduce(function (previousValue, currentValue) { return previousValue.concat(currentValue); }, []);
                         // TODO: We will later want to make operator overloading configurable for speed.
 
                         const scriptFileNames: string[] = workspace.operatorOverloading ? chosenJsFileNames.concat(FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS) : chosenJsFileNames;
@@ -106,23 +107,8 @@ export default function rebuildPreview(
                             }
                         }
 
-                        const shaderFilePaths: string[] = workspace.getFileDocumentPaths().filter(function(path: string) {
-                            return LANGUAGE_GLSL === modeFromName(path);
-                        });
-                        const shaderTags = shaderFilePaths.map((path: string) => {
-                            const content = fileContent(path, workspace);
-                            const type = shaderTypeFromContent(content);
-                            return `<script id='${prefixFromPath(path)}' type='${type}'>${content}</script>\n`;
-                        });
-
-                        if (detectMarker(SHADERS_MARKER, workspace, bestFile)) {
-                            html = html.replace(SHADERS_MARKER, shaderTags.join(""));
-                        }
-                        else {
-                            if (shaderTags.length > 0) {
-                                console.warn(`Unable to find '${SHADERS_MARKER}' in ${bestFile} file.`);
-                            }
-                        }
+                        html = replaceMarker(SHADERS_MARKER, LANGUAGE_GLSL, shaderTypeFromContent, html, workspace, bestFile);
+                        html = replaceMarker(SCHEMES_MARKER, LANGUAGE_SCHEME, schemeTypeFromContent, html, workspace, bestFile);
 
                         // TODO: It would be nice to have a more flexible way to define stylesheet imports.
                         // TODO: We should then be able to move away from symbolic constants for the stylesheet file name.

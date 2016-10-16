@@ -174,7 +174,8 @@ function factory(
                                 break;
                             }
                             case LANGUAGE_SCHEME: {
-                                session.setUseWorker(false);
+                                // If we don't use the worker then we don't get a confirmation.
+                                // session.setUseWorker(false);
                                 session.setLanguageMode(new ClojureMode('/js/worker.js', workerImports), function (err: any) {
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);

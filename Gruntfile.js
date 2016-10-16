@@ -144,6 +144,12 @@ module.exports = function (grunt) {
                         dest: "generated/vendor/async@1.4.2"
                     },
                     {
+                        expand: true,
+                        cwd: "museum/biwascheme@0.6.6",
+                        src: ["**"],
+                        dest: "generated/vendor/biwascheme@0.6.6"
+                    },
+                    {
                         src: "bower_components/async/dist/async.js",
                         dest: "generated/vendor/async@1.4.2/dist/async.js"
                     },
@@ -490,6 +496,12 @@ module.exports = function (grunt) {
                         cwd: "museum/async@1.4.2",
                         src: ["**"],
                         dest: "dist/vendor/async@1.4.2"
+                    },
+                    {
+                        expand: true,
+                        cwd: "museum/biwascheme@0.6.6",
+                        src: ["**"],
+                        dest: "dist/vendor/biwascheme@0.6.6"
                     },
                     {
                         src: "bower_components/async/dist/async.js",
