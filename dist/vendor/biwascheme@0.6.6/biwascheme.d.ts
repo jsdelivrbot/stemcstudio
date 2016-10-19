@@ -51,6 +51,11 @@ declare module BiwaScheme {
         constructor(name: string);
     }
 
+    class Syntax {
+        constructor(sname: string, handler: () => any);
+        transform(x: any): any;
+    }
+
     function array_to_list(items: any): any;
     function assert_closure(items: any): void;
     function assert_date(items: any): void;
@@ -68,7 +73,7 @@ declare module BiwaScheme {
     function isRecord(item: any): item is Record;
     function isSymbol(item: any): item is Symbol;
     function inspect(item: any, fallback: Object): any;
-    function js_closure(items: any): (...args) => any;
+    function js_closure(items: any, interpereter: Interpreter): (...args) => any;
     function js_obj_to_alist(items: any): any;
     function Sym(name: string, leaveCase?: boolean): Symbol;
     function to_display(obj: Object): string;

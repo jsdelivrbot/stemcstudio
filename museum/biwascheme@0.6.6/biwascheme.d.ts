@@ -73,7 +73,7 @@ declare module BiwaScheme {
     function isRecord(item: any): item is Record;
     function isSymbol(item: any): item is Symbol;
     function inspect(item: any, fallback: Object): any;
-    function js_closure(items: any): (...args) => any;
+    function js_closure(items: any, interpereter: Interpreter): (...args) => any;
     function js_obj_to_alist(items: any): any;
     function Sym(name: string, leaveCase?: boolean): Symbol;
     function to_display(obj: Object): string;
