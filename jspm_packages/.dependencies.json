@@ -580,12 +580,6 @@
     "assert": "github:jspm/nodelibs-assert@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "npm:select@1.0.6": {},
-  "npm:clipboard@1.5.12": {
-    "good-listener": "npm:good-listener@^1.1.6",
-    "select": "npm:select@^1.0.6",
-    "tiny-emitter": "npm:tiny-emitter@^1.0.0"
-  },
   "npm:tiny-emitter@1.1.0": {},
   "npm:angular-material-icons@0.7.1": {
     "angular": "npm:angular"
@@ -635,13 +629,6 @@
   },
   "npm:bn.js@4.11.6": {
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
-  },
-  "npm:zone.js@0.6.25": {
-    "process": "github:jspm/nodelibs-process@^0.1.0",
-    "events": "github:jspm/nodelibs-events@^0.1.1",
-    "fs": "github:jspm/nodelibs-fs@^0.1.0",
-    "timers": "github:jspm/nodelibs-timers@^0.1.0",
-    "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
   },
   "npm:asn1.js@4.8.1": {
     "bn.js": "npm:bn.js@^4.0.0",
@@ -719,5 +706,18 @@
   },
   "npm:angular@1.5.8": {},
   "npm:symbol-observable@1.0.4": {},
-  "github:ace2ts/ace-workers@1.0.4": {}
+  "github:ace2ts/ace-workers@1.0.4": {},
+  "npm:clipboard@1.5.13": {
+    "good-listener": "npm:good-listener@^1.1.6",
+    "select": "npm:select@^1.0.6",
+    "tiny-emitter": "npm:tiny-emitter@^1.0.0"
+  },
+  "npm:select@1.1.0": {},
+  "npm:zone.js@0.6.26": {
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "events": "github:jspm/nodelibs-events@^0.1.1",
+    "fs": "github:jspm/nodelibs-fs@^0.1.0",
+    "timers": "github:jspm/nodelibs-timers@^0.1.0",
+    "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
+  }
 }

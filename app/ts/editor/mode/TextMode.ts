@@ -18,7 +18,7 @@ import LanguageMode from '../LanguageMode';
 import Rule from '../Rule';
 
 /**
- * @class TextMode
+ *
  */
 export default class TextMode implements LanguageMode {
     /**
@@ -36,8 +36,7 @@ export default class TextMode implements LanguageMode {
     protected $behaviour = new Behaviour();
 
     /**
-     * @property tokenRe
-     * @type RegExp
+     *
      */
     public tokenRe = new RegExp("^["
         + packages.L
@@ -47,8 +46,7 @@ export default class TextMode implements LanguageMode {
     );
 
     /**
-     * @property nonTokenRe
-     * @type RegExp
+     *
      */
     public nonTokenRe = new RegExp("^(?:[^"
         + packages.L
@@ -71,23 +69,17 @@ export default class TextMode implements LanguageMode {
     public getMatching: (session: EditSession) => Range;
 
     /**
-     * @property workerUrl
-     * @type string
-     * @protected
+     *
      */
     protected workerUrl: string;
 
     /**
-     * @property scriptImports
-     * @type string[]
-     * @protected
+     *
      */
     protected scriptImports: string[] = [];
 
     /**
-     * @class TextMode
-     * @constructor
-     * @param workerUrl {string}
+     *
      */
     constructor(workerUrl: string, scriptImports: string[]) {
         if (typeof workerUrl === 'string') {
@@ -100,8 +92,7 @@ export default class TextMode implements LanguageMode {
     }
 
     /**
-     * @method getTokenizer
-     * @return {Tokenizer}
+     *
      */
     getTokenizer(): Tokenizer {
         if (!this.$tokenizer) {
@@ -112,12 +103,7 @@ export default class TextMode implements LanguageMode {
     }
 
     /**
-     * @method toggleCommentLines
-     * @param state {string}
-     * @param session {EditSession}
-     * @param startRow {number}
-     * @param endRow {number}
-     * @return {boolean}
+     *
      */
     public toggleCommentLines(state: string, session: EditSession, startRow: number, endRow: number): boolean {
         const doc = session.doc;
@@ -140,7 +126,7 @@ export default class TextMode implements LanguageMode {
             const regexpStart = new RegExp("^(\\s*)(?:" + escapeRegExp(lineCommentStart) + ")");
             const regexpEnd = new RegExp("(?:" + escapeRegExp(lineCommentEnd) + ")\\s*$");
 
-            comment = function(line: string, i: number) {
+            comment = function (line: string, i: number) {
                 if (testRemove(line, i))
                     return;
                 if (!ignoreBlankLines || /\S/.test(line)) {
@@ -149,7 +135,7 @@ export default class TextMode implements LanguageMode {
                 }
             };
 
-            uncomment = function(line: string, i: number) {
+            uncomment = function (line: string, i: number) {
                 var m;
                 if (m = line.match(regexpEnd))
                     doc.removeInLine(i, line.length - m[0].length, line.length);
@@ -157,7 +143,7 @@ export default class TextMode implements LanguageMode {
                     doc.removeInLine(i, m[1].length, m[0].length);
             };
 
-            testRemove = function(line: string, row: number) {
+            testRemove = function (line: string, row: number) {
                 if (regexpStart.test(line))
                     return true;
                 var tokens = session.getTokens(row);
@@ -181,7 +167,7 @@ export default class TextMode implements LanguageMode {
 
             insertAtTabStop = session.getUseSoftTabs();
 
-            const shouldInsertSpace = function(line: string, before: number, after: number) {
+            const shouldInsertSpace = function (line: string, before: number, after: number) {
                 let spaces = 0;
                 while (before-- && line.charAt(before) === " ") {
                     spaces++;
@@ -201,7 +187,7 @@ export default class TextMode implements LanguageMode {
                 }
             };
 
-            uncomment = function(line: string, i: number) {
+            uncomment = function (line: string, i: number) {
                 const m = line.match(regexpStart);
                 if (!m) return;
                 const start = m[1].length;
@@ -212,7 +198,7 @@ export default class TextMode implements LanguageMode {
             };
 
             const commentWithSpace = lineCommentStart + " ";
-            comment = function(line: string, i: number) {
+            comment = function (line: string, i: number) {
                 if (!ignoreBlankLines || /\S/.test(line)) {
                     if (shouldInsertSpace(line, minIndent, minIndent))
                         doc.insertInLine({ row: i, column: minIndent }, commentWithSpace);
@@ -220,7 +206,7 @@ export default class TextMode implements LanguageMode {
                         doc.insertInLine({ row: i, column: minIndent }, lineCommentStart);
                 }
             };
-            testRemove = function(line: string, i: number) {
+            testRemove = function (line: string, i: number) {
                 return regexpStart.test(line);
             };
         }
@@ -233,7 +219,7 @@ export default class TextMode implements LanguageMode {
 
 
         var minEmptyLength = Infinity;
-        iter(function(line: string, row: number) {
+        iter(function (line: string, row: number) {
             var indent = line.search(/\S/);
             if (indent !== -1) {
                 if (indent < minIndent)
@@ -266,53 +252,56 @@ export default class TextMode implements LanguageMode {
      * @return {void}
      */
     toggleBlockComment(state: string, session: EditSession, range: Range, cursor: Position): void {
-        var comment = this.blockComment;
+        let comment = this.blockComment;
         if (!comment)
             return;
         if (!comment.start && comment[0])
             comment = comment[0];
 
-        var iterator = new TokenIterator(session, cursor.row, cursor.column);
-        var token = iterator.getCurrentToken();
+        const outerIterator = new TokenIterator(session, cursor.row, cursor.column);
+        let outerToken = outerIterator.getCurrentToken();
 
-        var selection = session.getSelection();
-        var initialRange = selection.toOrientedRange();
-        var startRow: number;
-        var colDiff: number;
+        const selection = session.getSelection();
+        const initialRange = selection.toOrientedRange();
+        let startRow: number;
+        let colDiff: number;
 
-        if (token && /comment/.test(token.type)) {
-            var startRange, endRange;
-            while (token && /comment/.test(token.type)) {
-                const i = token.value.indexOf(comment.start);
+        if (outerToken && /comment/.test(outerToken.type)) {
+            let startRange: Range;
+            let endRange: Range;
+            while (outerToken && /comment/.test(outerToken.type)) {
+                const i = outerToken.value.indexOf(comment.start);
                 if (i !== -1) {
-                    var row = iterator.getCurrentTokenRow();
-                    var column = iterator.getCurrentTokenColumn() + i;
+                    const row = outerIterator.getCurrentTokenRow();
+                    const column = outerIterator.getCurrentTokenColumn() + i;
                     startRange = new Range(row, column, row, column + comment.start.length);
                     break;
                 }
-                token = iterator.stepBackward();
+                outerToken = outerIterator.stepBackward();
             }
 
-            var iterator = new TokenIterator(session, cursor.row, cursor.column);
-            var token = iterator.getCurrentToken();
-            while (token && /comment/.test(token.type)) {
-                const i = token.value.indexOf(comment.end);
+            const innerIterator = new TokenIterator(session, cursor.row, cursor.column);
+            let innerToken = innerIterator.getCurrentToken();
+            while (innerToken && /comment/.test(innerToken.type)) {
+                const i = innerToken.value.indexOf(comment.end);
                 if (i !== -1) {
-                    var row = iterator.getCurrentTokenRow();
-                    var column = iterator.getCurrentTokenColumn() + i;
+                    const row = innerIterator.getCurrentTokenRow();
+                    const column = innerIterator.getCurrentTokenColumn() + i;
                     endRange = new Range(row, column, row, column + comment.end.length);
                     break;
                 }
-                token = iterator.stepForward();
+                innerToken = innerIterator.stepForward();
             }
-            if (endRange)
+            if (endRange) {
                 session.remove(endRange);
+            }
             if (startRange) {
                 session.remove(startRange);
                 startRow = startRange.start.row;
                 colDiff = -comment.start.length;
             }
-        } else {
+        }
+        else {
             colDiff = comment.start.length;
             startRow = range.start.row;
             session.insert(range.end, comment.end);
@@ -327,11 +316,7 @@ export default class TextMode implements LanguageMode {
     }
 
     /**
-     * @method getNextLineIndent
-     * @param state {string}
-     * @param line {string}
-     * @param tab {string}
-     * @return {string}
+     *
      */
     getNextLineIndent(state: string, line: string, tab: string): string {
         return this.$getIndent(line);
@@ -351,10 +336,7 @@ export default class TextMode implements LanguageMode {
     }
 
     /**
-     * @method createWorker
-     * @param session {EditSession}
-     * @param callback {(err: any, worker: WorkerClient) => any}
-     * @return {void}
+     *
      */
     createWorker(session: EditSession, callback: (err: any, worker: WorkerClient) => any): void {
         callback(void 0, void 0);
@@ -363,7 +345,7 @@ export default class TextMode implements LanguageMode {
     createModeDelegates(mapping: { [prefix: string]: any }) {
         this.$embeds = [];
         this.$modes = {};
-        for (var p in mapping) {
+        for (let p in mapping) {
             if (mapping[p]) {
                 this.$embeds.push(p);
                 // May not be ideal that we have to assume the same construction
@@ -376,32 +358,34 @@ export default class TextMode implements LanguageMode {
         const delegations = ['toggleBlockComment', 'toggleCommentLines', 'getNextLineIndent',
             'checkOutdent', 'autoOutdent', 'transformAction', 'getCompletions'];
 
-        for (var k = 0; k < delegations.length; k++) {
-            (function(scope) {
-                var functionName = delegations[k];
-                var defaultHandler = scope[functionName];
-                scope[delegations[k]] = function() {
+        for (let k = 0; k < delegations.length; k++) {
+            // TODO: Scarey code. Would be nice to unravel. But who provides arguments? 
+            (function (scope) {
+                const functionName = delegations[k];
+                const defaultHandler = scope[functionName];
+                scope[delegations[k]] = function () {
                     return this.$delegator(functionName, arguments, defaultHandler);
                 };
             } (this));
         }
     }
 
-    $delegator(method, args, defaultHandler) {
-        var state = args[0];
+    // We can't make this private because tslint would think that it is not being used.
+    $delegator(method: string, args, defaultHandler) {
+        let state = args[0];
         if (typeof state !== "string")
             state = state[0];
-        for (var i = 0; i < this.$embeds.length; i++) {
+        for (let i = 0; i < this.$embeds.length; i++) {
             if (!this.$modes[this.$embeds[i]]) continue;
 
-            var split = state.split(this.$embeds[i]);
+            const split = state.split(this.$embeds[i]);
             if (!split[0] && split[1]) {
                 args[0] = split[1];
-                var mode = this.$modes[this.$embeds[i]];
+                const mode = this.$modes[this.$embeds[i]];
                 return mode[method].apply(mode, args);
             }
         }
-        var ret = defaultHandler.apply(this, args);
+        const ret = defaultHandler.apply(this, args);
         return defaultHandler ? ret : undefined;
     }
 
@@ -421,13 +405,13 @@ export default class TextMode implements LanguageMode {
     // Range  => Range                               (This corresponds to the remove operation)
     transformAction(state: string, action: string, editor: Editor, session: EditSession, param: string | Range): TextAndSelection | Range {
         if (this.$behaviour) {
-            var behaviours = this.$behaviour.getBehaviours();
-            for (var key in behaviours) {
+            const behaviours = this.$behaviour.getBehaviours();
+            for (let key in behaviours) {
                 if (behaviours[key][action]) {
                     // FIXME: Make this type-safe?
                     // var callback: BehaviourCallback = behaviours[key][action];
                     // var transformed = callback(state, action, editor, session, unused);
-                    var ret = behaviours[key][action].apply(this, arguments);
+                    const ret = behaviours[key][action].apply(this, arguments);
                     if (ret) {
                         return ret;
                     }
@@ -492,7 +476,7 @@ export default class TextMode implements LanguageMode {
 
     getCompletions(state: string, session: EditSession, pos: Position, prefix: string): Completion[] {
         const keywords: string[] = this.$keywordList || this.$createKeywordList();
-        return keywords.map(function(word: string) {
+        return keywords.map(function (word: string) {
             return {
                 name: word,
                 value: word,

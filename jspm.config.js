@@ -19,7 +19,7 @@ System.config({
     "angular2": "npm:angular2@2.0.0-beta.17",
     "bootstrap": "vendor/bootstrap/dist/js/npm",
     "bootstrap-dialog": "npm:bootstrap-dialog@1.34.6",
-    "clipboard": "npm:clipboard@1.5.12",
+    "clipboard": "npm:clipboard@1.5.13",
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.1.1",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.1.1",
     "jquery": "npm:jquery@2.2.4",
@@ -109,7 +109,7 @@ System.config({
     "npm:angular2@2.0.0-beta.17": {
       "reflect-metadata": "npm:reflect-metadata@0.1.2",
       "rxjs": "npm:rxjs@5.0.0-rc.1",
-      "zone.js": "npm:zone.js@0.6.25"
+      "zone.js": "npm:zone.js@0.6.26"
     },
     "npm:asn1.js@4.8.1": {
       "bn.js": "npm:bn.js@4.11.6",
@@ -226,9 +226,9 @@ System.config({
       "stream": "github:jspm/nodelibs-stream@0.1.0",
       "string_decoder": "github:jspm/nodelibs-string_decoder@0.1.0"
     },
-    "npm:clipboard@1.5.12": {
+    "npm:clipboard@1.5.13": {
       "good-listener": "npm:good-listener@1.1.8",
-      "select": "npm:select@1.0.6",
+      "select": "npm:select@1.1.0",
       "tiny-emitter": "npm:tiny-emitter@1.1.0"
     },
     "npm:cliui@3.2.0": {
@@ -691,7 +691,7 @@ System.config({
       "window-size": "npm:window-size@0.1.4",
       "y18n": "npm:y18n@3.2.1"
     },
-    "npm:zone.js@0.6.25": {
+    "npm:zone.js@0.6.26": {
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
       "events": "github:jspm/nodelibs-events@0.1.1",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
