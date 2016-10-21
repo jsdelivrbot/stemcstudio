@@ -1,4 +1,4 @@
-import {addCssClass, createElement, removeCssClass, setCssClass} from "./lib/dom";
+import {addCssClass, createElement, createHTMLDivElement, removeCssClass, setCssClass} from "./lib/dom";
 import appendHTMLLinkElement from './dom/appendHTMLLinkElement';
 import removeHTMLLinkElement from './dom/removeHTMLLinkElement';
 import Disposable from '../base/Disposable';
@@ -193,7 +193,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
     private $changedLines: { firstRow: number; lastRow: number; };
     private $changes = 0;
     private resizing: number;
-    private $gutterLineHighlight;
+    private $gutterLineHighlight: HTMLDivElement;
     // FIXME: Why do we have two?
     public gutterWidth: number;
     private $gutterWidth: number;
@@ -226,7 +226,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
     private animatedScroll = false;
     private fadeFoldWidgets = false;
     private $scrollPastEnd: number;
-    private $highlightGutterLine;
+    private $highlightGutterLine: boolean;
     private desiredHeight: number;
 
     /**
@@ -849,7 +849,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
     setHighlightGutterLine(highlightGutterLine: boolean): void {
         this.$highlightGutterLine = highlightGutterLine;
         if (!this.$gutterLineHighlight) {
-            this.$gutterLineHighlight = createElement("div");
+            this.$gutterLineHighlight = createHTMLDivElement();
             this.$gutterLineHighlight.className = "ace_gutter-active-line";
             this.$gutter.appendChild(this.$gutterLineHighlight);
             return;
@@ -1981,18 +1981,13 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
     /**
      * Appends a link element with rel='stylesheet' type='text/css', and sets the cssClass as the id.
      * The cssClass doubles as both an identifier and a CSS class.
-     *
-     * @method setThemeCss
-     * @param themeId {string}
-     * @param [href] {string}
-     * @return {void}
      */
     setThemeCss(themeId: string, href?: string): void {
         if (themeId !== this.themeId) {
             if (this.themeId) {
                 this.removeCssClass(this.themeId);
                 if (hasHTMLLinkElement(this.themeId, this.container.ownerDocument)) {
-                    removeHTMLLinkElement(themeId, this.container.ownerDocument);
+                    removeHTMLLinkElement(this.themeId, this.container.ownerDocument);
                 }
             }
             if (href) {
@@ -2011,9 +2006,6 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
 
     /**
      * Returns the path of the current theme.
-     *
-     * @method getTheme
-     * @return {string}
      */
     getTheme(): string {
         return this.themeId;
@@ -2026,7 +2018,6 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
     /**
      * Adds a new class, `style`, to the editor.
      * @param {String} style A class name
-     *
      */
     setStyle(style: string, include?: boolean): void {
         setCssClass(this.container, style, include !== false);
@@ -2041,9 +2032,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
     }
 
     /**
-     * @method setCursorStyle
-     * @param style {string}
-     * @return {void}
+     *
      */
     setCursorStyle(style: string): void {
         if (this.content.style.cursor !== style) {
