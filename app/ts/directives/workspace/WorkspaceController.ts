@@ -343,7 +343,10 @@ export default class WorkspaceController implements WorkspaceMixin {
                 this.flowService,
                 this.propertiesDialog,
                 wsModel);
-            propertiesFlow.execute();
+
+            propertiesFlow.execute((err) => {
+                // Do nothing yet, the callback doesn't work properly anyway!
+            });
         };
 
         $scope.doUpload = (label?: string, value?: number) => {

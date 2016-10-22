@@ -1665,6 +1665,10 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     }
 
     private onChangeAnnotation(event, session: EditSession) {
+        // The Editor (this) is acting as a controller in MVC.
+        // When the session notifies that has changed its annotations,
+        // the controller applies them to the renderer.
+        // Finally, we propagate this event upwards.
         this.renderer.setAnnotations(session.getAnnotations());
         /**
          * @event changeAnnotation

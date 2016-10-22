@@ -610,6 +610,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
                 // This is our cue to begin semantic analysis and make use of transpiled files.
                 const annotationsHandler = (event: { data: Annotation[]; type: string }) => {
                     if (this.inFlight === 0) {
+                        // A change in a single file triggers analysis of all files.
                         this.semanticDiagnostics();
                     }
                 };

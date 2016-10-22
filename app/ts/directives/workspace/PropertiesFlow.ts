@@ -22,8 +22,9 @@ export default class PropertiesFlow {
     ) {
         // Do nothing.
     }
-    execute(): void {
+    execute(callback: (err) => any): void {
         const flow = this.flowService.createFlow<PropertiesFacts>("Properties");
+
         flow.rule("Settings", {},
             (facts) => {
                 return facts.settings.isUndefined();
@@ -65,6 +66,10 @@ export default class PropertiesFlow {
                     this.$http,
                     this.$location,
                     this.VENDOR_FOLDER_MARKER, () => {
+                        // This function executes asynchronously.
+                        // We'd like to know when it completes so that
+                        // we can inform a callback that can be uset to trigger
+                        // an Angular digest process.
                         this.wsModel.semanticDiagnostics();
                     });
             }
@@ -72,10 +77,12 @@ export default class PropertiesFlow {
                 switch (err) {
                     case 'cancel click':
                     case 'escape key press': {
+                        callback(err);
                         break;
                     }
                     default: {
                         console.warn(JSON.stringify(err, null, 2));
+                        callback(err);
                     }
                 }
             }

@@ -71,6 +71,9 @@ function factory(
         const container: HTMLElement = element[0];
         const renderer: Renderer = new Renderer(container);
         const editor: Editor = new Editor(renderer, void 0);
+        /**
+         * The function to call that will cause the editor to be removed from the workspace. 
+         */
         let removeEditor: () => void;
 
         const themeEventHandler = function (event: ThemeManagerEvent) {
@@ -89,6 +92,15 @@ function factory(
         editor.setShowInvisibles(settings.showInvisibles);
         editor.setFontSize(settings.fontSize);
         editor.setShowPrintMargin(settings.showPrintMargin);
+
+        const changeAnnotationHandler = function (data, editor: Editor) {
+            // Asynchronously trigger Angular digest loop so that files in explorer are updated.
+            $scope.$applyAsync(function () {
+                // Nothing to see here.
+            });
+        };
+
+        editor.on('changeAnnotation', changeAnnotationHandler);
 
         attrs.$observe<boolean>('readonly', function (readOnly: boolean) {
             editor.setReadOnly(readOnly);
@@ -319,6 +331,9 @@ function factory(
             // TODO: Since we only attach the editor after its thread has started and has been initialized,
             // should we only stop the thread after it has been detached?
             if (editor) {
+
+                editor.off("changeAnnotation", changeAnnotationHandler);
+
                 if (removeEditor) {
                     removeEditor();
                     removeEditor = void 0;

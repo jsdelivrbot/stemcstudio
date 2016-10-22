@@ -7,7 +7,7 @@ import scriptURL from './scriptURL';
 import WsModel from '../../wsmodel/services/WsModel';
 
 function optionsToNames(options: IOption[]): string[] {
-    return options.map(function(option: IOption) { return option.name; });
+    return options.map(function (option: IOption) { return option.name; });
 }
 
 /**
@@ -16,7 +16,7 @@ function optionsToNames(options: IOption[]): string[] {
  * This function does NOT trigger semantic validation.
  * Not worrying about callback right now - this will be re-written.
  */
-export default function(
+export default function updateWorkspaceTypings(
     wsModel: WsModel,
     options: IOptionManager,
     olds: string[],
@@ -27,6 +27,9 @@ export default function(
     callback: () => any
 ) {
     // Load the wokspace with the appropriate TypeScript definitions.
+    /**
+     * The new dependencies.
+     */
     const news: string[] = optionsToNames(closure(namesToOptions(wsModel.dependencies, options), options));
 
     // Determine what we need to add and remove from the workspace.
@@ -40,7 +43,7 @@ export default function(
     /**
      * The things that we need to remove from the workspace.
      */
-    const rmvs: string[] = olds.filter(function(dep) { return news.indexOf(dep) < 0; });
+    const rmvs: string[] = olds.filter(function (dep) { return news.indexOf(dep) < 0; });
 
     // The following is not essential, as `lib` is not an option, it's always there.
     // TODO: Dead code because dependency changes cause a page reload.
@@ -52,12 +55,12 @@ export default function(
 
     const rmvOpts: IOption[] = namesToOptions(rmvs, options);
 
-    const rmvUnits: { name: string; fileName: string }[] = rmvOpts.map(function(option) { return { name: option.name, fileName: option.dts }; });
+    const rmvUnits: { name: string; fileName: string }[] = rmvOpts.map(function (option) { return { name: option.name, fileName: option.dts }; });
 
     const addOpts: IOption[] = namesToOptions(adds, options);
 
     // TODO: Optimize so that we don't keep loading `lib`.
-    let addUnits: { name: string; fileName: string }[] = addOpts.map(function(option) { return { name: option.name, fileName: option.dts }; });
+    let addUnits: { name: string; fileName: string }[] = addOpts.map(function (option) { return { name: option.name, fileName: option.dts }; });
 
     // Ensure that the TypeScript ambient type definitions are present.
     if (olds.indexOf('lib') < 0) {
@@ -77,10 +80,10 @@ export default function(
     const readFile = (fileName: string, callback: (err, data?) => void) => {
         const url = scriptURL(DOMAIN, fileName, VENDOR_FOLDER_MARKER);
         $http.get(url)
-            .success(function(data, status: number, headers, config) {
+            .success(function (data, status: number, headers, config) {
                 callback(null, data);
             })
-            .error(function(data, status: number, headers, config) {
+            .error(function (data, status: number, headers, config) {
                 callback(new Error("Unable to wrangle #{fileName}."));
             });
     };
