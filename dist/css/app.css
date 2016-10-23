@@ -7888,6 +7888,8 @@ span.glyphicon-off {
 }
 html {
   height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 .md-logo-text-stem {
   color: #999;

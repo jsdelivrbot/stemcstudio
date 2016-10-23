@@ -1,5 +1,9 @@
 // html must expand to fill the screen vertically.
+// Fix font faced fonts looking bold on Mac in Chrome/Webkit based browsers.
+// Fix font bold issue in Firefox version 25+ on Mac.
 // ------------------------------------------------------------
 html {
   height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
