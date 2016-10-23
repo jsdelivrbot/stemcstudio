@@ -1,1 +1,0 @@
-module.exports = require("npm:component-query@0.0.3/index.js");

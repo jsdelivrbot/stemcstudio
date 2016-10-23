@@ -57,7 +57,7 @@ export default class PropertiesFlow {
                 this.wsModel.version = facts.settings.value.version;
                 this.wsModel.operatorOverloading = facts.settings.value.operatorOverloading;
                 this.wsModel.dependencies = facts.settings.value.dependencies;
-                // TODO: Break out more rules to remove the nesting.
+
                 updateWorkspaceTypings(
                     this.wsModel,
                     this.options,
@@ -66,11 +66,7 @@ export default class PropertiesFlow {
                     this.$http,
                     this.$location,
                     this.VENDOR_FOLDER_MARKER, () => {
-                        // This function executes asynchronously.
-                        // We'd like to know when it completes so that
-                        // we can inform a callback that can be uset to trigger
-                        // an Angular digest process.
-                        this.wsModel.semanticDiagnostics();
+                        this.wsModel.semanticDiagnostics(callback);
                     });
             }
             else {

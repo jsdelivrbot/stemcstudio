@@ -3,7 +3,6 @@ import Annotation from '../../editor/Annotation';
 import AutoCompleteCommand from '../../editor/autocomplete/AutoCompleteCommand';
 import CompletionEntry from '../../editor/workspace/CompletionEntry';
 import copyWorkspaceToDoodle from '../../mappings/copyWorkspaceToDoodle';
-// FIXME: Code Organization.
 import dependenciesMap from '../../services/doodles/dependenciesMap';
 import dependencyNames from '../../services/doodles/dependencyNames';
 import Delta from '../../editor/Delta';
@@ -13,11 +12,9 @@ import Document from '../../editor/Document';
 import Editor from '../../editor/Editor';
 import EditSession from '../../editor/EditSession';
 import EventBus from './EventBus';
-// FIXME: Replace by $http
 import {get} from '../../editor/lib/net';
 import getPosition from '../../editor/workspace/getPosition';
 import LanguageServiceProxy from '../../editor/workspace/LanguageServiceProxy';
-// FIXME: Code Organization.
 import IDoodleConfig from '../../services/doodles/IDoodleConfig';
 import IDoodleManager from '../../services/doodles/IDoodleManager';
 import IOptionManager from '../../services/options/IOptionManager';
@@ -611,7 +608,9 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
                 const annotationsHandler = (event: { data: Annotation[]; type: string }) => {
                     if (this.inFlight === 0) {
                         // A change in a single file triggers analysis of all files.
-                        this.semanticDiagnostics();
+                        this.semanticDiagnostics(function (err) {
+                            // Nothing to see.
+                        });
                     }
                 };
                 session.on('annotations', annotationsHandler);
@@ -791,18 +790,23 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     /**
      * 
      */
-    public semanticDiagnostics(): void {
-        const paths = this.getFileSessionPaths();
-        for (let i = 0; i < paths.length; i++) {
-            const path = paths[i];
-            if (isTypeScript(path)) {
-                const session = this.getFileSession(path);
-                try {
-                    this.diagnosticsForSession(path, session);
-                }
-                finally {
-                    session.release();
-                }
+    public semanticDiagnostics(callback: (err) => any): void {
+        const tsPaths = this.getFileSessionPaths().filter(isTypeScript);
+        const tsLength = tsPaths.length;
+        let tsRemaining = tsLength;
+        for (let i = 0; i < tsLength; i++) {
+            const tsPath = tsPaths[i];
+            const session = this.getFileSession(tsPath);
+            try {
+                this.diagnosticsForSession(tsPath, session, function (err) {
+                    tsRemaining--;
+                    if (tsRemaining === 0) {
+                        callback(void 0);
+                    }
+                });
+            }
+            finally {
+                session.release();
             }
         }
     }
@@ -842,7 +846,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         });
     }
 
-    private diagnosticsForSession(path: string, session: EditSession): void {
+    private diagnosticsForSession(path: string, session: EditSession, callback: (err) => any): void {
         checkPath(path);
 
         this.inFlight++;
@@ -850,6 +854,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             this.inFlight--;
             if (err) {
                 console.warn(`getSyntaxErrors(${path}) => ${err}`);
+                callback(err);
             }
             else {
                 this.updateSession(path, syntaxErrors, session);
@@ -859,11 +864,16 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
                         this.inFlight--;
                         if (err) {
                             console.warn(`getSemanticErrors(${path}) => ${err}`);
+                            callback(err);
                         }
                         else {
                             this.updateSession(path, semanticErrors, session);
+                            callback(void 0);
                         }
                     });
+                }
+                else {
+                    callback(void 0);
                 }
             }
         });

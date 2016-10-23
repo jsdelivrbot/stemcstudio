@@ -345,7 +345,8 @@ export default class WorkspaceController implements WorkspaceMixin {
                 wsModel);
 
             propertiesFlow.execute((err) => {
-                // Do nothing yet, the callback doesn't work properly anyway!
+                // 
+                $scope.$applyAsync();
             });
         };
 
@@ -582,8 +583,6 @@ export default class WorkspaceController implements WorkspaceMixin {
             }
         }));
 
-        // FIXME: Some work to do in getting all the async work done right.
-        // TOOD: This needs a flow to manage the nesting and sequencing.
         updateWorkspaceTypings(
             this.wsModel,
             this.options,
@@ -600,17 +599,15 @@ export default class WorkspaceController implements WorkspaceMixin {
                     const scriptTarget = detect1x(this.wsModel) ? SCRIPT_TARGET_ES5 : SCRIPT_TARGET;
 
                     this.wsModel.setScriptTarget(scriptTarget, (err) => {
-                        // FIXME: Need a callback here...
-                        this.wsModel.semanticDiagnostics();
+                        this.wsModel.semanticDiagnostics((err) => {
+                            this.$scope.$applyAsync();
+                        });
                         this.wsModel.outputFiles();
                         this.$scope.workspaceLoaded = true;
                         this.$scope.updatePreview(WAIT_NO_MORE);
                     });
                 });
             });
-
-        // const endTime = performance.now();
-        // console.lg(`Workspace.onInitDoodle took ${endTime - startTime} ms.`);
     }
 
     /**

@@ -168,7 +168,7 @@ function factory(
                         });
                         editor.commands.addCommands([{
                             name: "showKeyboardShortcuts",
-                            bindKey: { win: "Ctrl-Alt-h", mac: "Command-Alt-h" },
+                            bindKey: { win: "Ctrl-Alt-H", mac: "Command-Alt-H" },
                             exec: function (editor: Editor, line) {
                                 showKeyboardShortcuts(editor);
                             }

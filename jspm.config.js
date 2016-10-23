@@ -19,7 +19,7 @@ System.config({
     "angular2": "npm:angular2@2.0.0-beta.17",
     "bootstrap": "vendor/bootstrap/dist/js/npm",
     "bootstrap-dialog": "npm:bootstrap-dialog@1.34.6",
-    "clipboard": "npm:clipboard@1.5.13",
+    "clipboard": "npm:clipboard@1.5.15",
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.1.1",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.1.1",
     "jquery": "npm:jquery@2.2.4",
@@ -226,8 +226,8 @@ System.config({
       "stream": "github:jspm/nodelibs-stream@0.1.0",
       "string_decoder": "github:jspm/nodelibs-string_decoder@0.1.0"
     },
-    "npm:clipboard@1.5.13": {
-      "good-listener": "npm:good-listener@1.1.8",
+    "npm:clipboard@1.5.15": {
+      "good-listener": "npm:good-listener@1.2.0",
       "select": "npm:select@1.1.0",
       "tiny-emitter": "npm:tiny-emitter@1.1.0"
     },
@@ -238,12 +238,6 @@ System.config({
     },
     "npm:code-point-at@1.0.1": {
       "number-is-nan": "npm:number-is-nan@1.0.1"
-    },
-    "npm:component-closest@1.0.1": {
-      "component-matches-selector": "npm:component-matches-selector@0.1.6"
-    },
-    "npm:component-matches-selector@0.1.6": {
-      "component-query": "npm:component-query@0.0.3"
     },
     "npm:constants-browserify@0.0.1": {
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
@@ -291,9 +285,6 @@ System.config({
     },
     "npm:debug@2.2.0": {
       "ms": "npm:ms@0.7.1"
-    },
-    "npm:delegate@3.0.2": {
-      "component-closest": "npm:component-closest@1.0.1"
     },
     "npm:des.js@1.0.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
@@ -380,8 +371,8 @@ System.config({
       "create-hash": "npm:create-hash@1.1.2",
       "crypto": "github:jspm/nodelibs-crypto@0.1.0"
     },
-    "npm:good-listener@1.1.8": {
-      "delegate": "npm:delegate@3.0.2"
+    "npm:good-listener@1.2.0": {
+      "delegate": "npm:delegate@3.1.0"
     },
     "npm:has-binary@0.1.6": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
