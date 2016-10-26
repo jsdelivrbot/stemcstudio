@@ -25,7 +25,7 @@ System.config({
     "jquery": "npm:jquery@2.2.4",
     "showdown": "npm:showdown@1.4.3",
     "socket.io": "npm:socket.io@1.4.6",
-    "socket.io-client": "npm:socket.io-client@1.5.0",
+    "socket.io-client": "npm:socket.io-client@1.5.1",
     "ui-select": "npm:ui-select@0.17.1",
     "underscore": "npm:underscore@1.8.3",
     "github:angular-ui/ui-router@0.2.18": {
@@ -319,12 +319,12 @@ System.config({
       "parseuri": "npm:parseuri@0.0.4",
       "yeast": "npm:yeast@0.1.2"
     },
-    "npm:engine.io-client@1.7.0": {
+    "npm:engine.io-client@1.7.2": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "component-emitter": "npm:component-emitter@1.1.2",
       "component-inherit": "npm:component-inherit@0.0.3",
       "debug": "npm:debug@2.2.0",
-      "engine.io-parser": "npm:engine.io-parser@1.3.0",
+      "engine.io-parser": "npm:engine.io-parser@1.3.1",
       "has-cors": "npm:has-cors@1.1.0",
       "indexof": "npm:indexof@0.0.1",
       "parsejson": "npm:parsejson@0.0.1",
@@ -341,7 +341,7 @@ System.config({
       "has-binary": "npm:has-binary@0.1.6",
       "utf8": "npm:utf8@2.1.0"
     },
-    "npm:engine.io-parser@1.3.0": {
+    "npm:engine.io-parser@1.3.1": {
       "after": "npm:after@0.8.1",
       "arraybuffer.slice": "npm:arraybuffer.slice@0.0.6",
       "base64-arraybuffer": "npm:base64-arraybuffer@0.1.5",
@@ -548,18 +548,18 @@ System.config({
       "socket.io-parser": "npm:socket.io-parser@2.2.6",
       "to-array": "npm:to-array@0.1.4"
     },
-    "npm:socket.io-client@1.5.0": {
+    "npm:socket.io-client@1.5.1": {
       "backo2": "npm:backo2@1.0.2",
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "component-bind": "npm:component-bind@1.0.0",
       "component-emitter": "npm:component-emitter@1.2.0",
       "debug": "npm:debug@2.2.0",
-      "engine.io-client": "npm:engine.io-client@1.7.0",
+      "engine.io-client": "npm:engine.io-client@1.7.2",
       "has-binary": "npm:has-binary@0.1.7",
       "indexof": "npm:indexof@0.0.1",
       "object-component": "npm:object-component@0.0.3",
       "parseuri": "npm:parseuri@0.0.4",
-      "socket.io-parser": "npm:socket.io-parser@2.2.6",
+      "socket.io-parser": "npm:socket.io-parser@2.3.1",
       "to-array": "npm:to-array@0.1.4"
     },
     "npm:socket.io-parser@2.2.2": {
@@ -572,6 +572,13 @@ System.config({
     },
     "npm:socket.io-parser@2.2.6": {
       "benchmark": "npm:benchmark@1.0.0",
+      "buffer": "github:jspm/nodelibs-buffer@0.1.0",
+      "component-emitter": "npm:component-emitter@1.1.2",
+      "debug": "npm:debug@2.2.0",
+      "isarray": "npm:isarray@0.0.1",
+      "json3": "npm:json3@3.3.2"
+    },
+    "npm:socket.io-parser@2.3.1": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "component-emitter": "npm:component-emitter@1.1.2",
       "debug": "npm:debug@2.2.0",

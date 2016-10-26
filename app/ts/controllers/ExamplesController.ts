@@ -161,6 +161,14 @@ export default class ExamplesController extends AbstractPageController {
                 category: 'Physics'
             },
             {
+                gistId: 'f00a5fe08eb92b854c803184ec26d402',
+                title: "Ball in a Box with Units",
+                description: "An example made to look like Visual Python but with Units of Measure.",
+                imageSrc: '/img/examples/ball-in-a-box-with-units.png',
+                imageAlt: 'Ball bouncing off the inside walls of a box.',
+                category: 'Physics'
+            },
+            {
                 gistId: 'dea0b84d306d956bc5fde22e9c0ba5c1',
                 title: "Geometric Algebra",
                 description: "An interactive visualization of vectors, bivectors, and trivectors.",

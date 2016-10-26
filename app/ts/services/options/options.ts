@@ -31,7 +31,7 @@ app.factory('options', [
         const VERSION_SYSTEMJS = '0.19.37';
         const VERSION_THREEJS = '0.78.0';
         const VERSION_TWO = '0.6.0';
-        const VERSION_UNITS = '1.5.0';
+        const VERSION_UNITS = '1.5.3';
         // const VERSION_UNDERSCORE = '1.8.3';
 
         // FIXME: DRY This function is defined in constants.ts?
