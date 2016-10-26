@@ -93,6 +93,10 @@ export default class MwUnit implements FzSerializable<FzUnit> {
     private addRemote(nodeId: string, remote: MwRemote): void {
         this.remotes[nodeId] = remote;
     }
+
+    /**
+     * 
+     */
     private captureFile(nodeId: string): MwChange {
         const remote = this.ensureRemote(nodeId);
         const shadow: MwShadow = remote.shadow;

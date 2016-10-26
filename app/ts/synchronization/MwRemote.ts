@@ -54,6 +54,7 @@ export default class MwRemote implements FzSerializable<FzRemote> {
      * 
      */
     containsRawAction(nodeId: string, text: string): boolean {
+        console.log(`containsRawAction(${nodeId}, ${text})`);
         const edits = this.getEdits(nodeId);
         const changes = edits.x;
         if (changes.length === 1) {
@@ -61,9 +62,9 @@ export default class MwRemote implements FzSerializable<FzRemote> {
             const action = change.a;
             // BUG: action is undefined? Cannot read property 'x'
             // But why does it not fail acessing 'c'?
-            if (action && typeof action === 'undefined') {
-                console.log(`change => ${JSON.stringify(change)}`);
-            }
+            // if (action && typeof action === 'undefined') {
+            console.log(`change => ${JSON.stringify(change)}`);
+            // }
             if (action && action.c === 'R' && action.x === text) {
                 return true;
             }
