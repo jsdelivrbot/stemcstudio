@@ -13,7 +13,7 @@ interface PanelFactory {
 /**
  * const stats = new Stats();
  * stats.showPanel(1);
- * document.body.appendChild(stats.dom);
+ * document.body.appendChild(stats.domElement);
  */
 declare class Stats {
 
@@ -21,7 +21,7 @@ declare class Stats {
 
     REVISION: number;
 
-    dom: HTMLDivElement;
+    domElement: HTMLDivElement;
 
     /**
      * @param panel
@@ -46,6 +46,11 @@ declare class Stats {
      * usually before the call to requestAnimationFrame.
      */
     end(): number;
+
+    /**
+     * 
+     */
+    update(): void;
 }
 
 declare module "stats.js" {

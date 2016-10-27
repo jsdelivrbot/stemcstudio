@@ -145,6 +145,12 @@ module.exports = function (grunt) {
                     },
                     {
                         expand: true,
+                        cwd: "museum/baconjs@0.7.88",
+                        src: ["**"],
+                        dest: "generated/vendor/baconjs@0.7.88"
+                    },
+                    {
+                        expand: true,
                         cwd: "museum/biwascheme@0.6.6",
                         src: ["**"],
                         dest: "generated/vendor/biwascheme@0.6.6"
@@ -259,17 +265,9 @@ module.exports = function (grunt) {
                     },
                     {
                         expand: true,
-                        cwd: "museum/threejs@0.78.0",
+                        cwd: "museum/threejs@0.79.0",
                         src: ["**"],
-                        dest: "generated/vendor/threejs@0.78.0"
-                    },
-                    {
-                        src: "bower_components/threejs/build/three.js",
-                        dest: "generated/vendor/threejs@0.78.0/build/three.js"
-                    },
-                    {
-                        src: "bower_components/threejs/build/three.min.js",
-                        dest: "generated/vendor/threejs@0.78.0/build/three.min.js"
+                        dest: "generated/vendor/threejs@0.79.0"
                     },
                     {
                         src: "museum/two@0.6.0/two.d.ts",
@@ -499,6 +497,12 @@ module.exports = function (grunt) {
                     },
                     {
                         expand: true,
+                        cwd: "museum/baconjs@0.7.88",
+                        src: ["**"],
+                        dest: "dist/vendor/baconjs@0.7.88"
+                    },
+                    {
+                        expand: true,
                         cwd: "museum/biwascheme@0.6.6",
                         src: ["**"],
                         dest: "dist/vendor/biwascheme@0.6.6"
@@ -613,17 +617,9 @@ module.exports = function (grunt) {
                     },
                     {
                         expand: true,
-                        cwd: "museum/threejs@0.78.0",
+                        cwd: "museum/threejs@0.79.0",
                         src: ["**"],
-                        dest: "dist/vendor/threejs@0.78.0"
-                    },
-                    {
-                        src: "bower_components/threejs/build/three.js",
-                        dest: "dist/vendor/threejs@0.78.0/build/three.js"
-                    },
-                    {
-                        src: "bower_components/threejs/build/three.min.js",
-                        dest: "dist/vendor/threejs@0.78.0/build/three.min.js"
+                        dest: "dist/vendor/threejs@0.79.0"
                     },
                     {
                         src: "museum/two@0.6.0/two.d.ts",

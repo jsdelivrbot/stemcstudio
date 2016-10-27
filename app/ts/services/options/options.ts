@@ -14,6 +14,7 @@ app.factory('options', [
 
         const VERSION_ANGULARJS = '1.5.3';
         // const VERSION_ASYNC = '1.4.2';
+        const VERSION_BACONJS = '0.7.88';
         const VERSION_BIWASCHEME = '0.6.6';
         const VERSION_DAT_GUI = '0.5.0';
         const VERSION_DECKJS = '1.1.0';
@@ -29,7 +30,7 @@ app.factory('options', [
         // const VERSION_REQUIREJS = '2.1.9';
         const VERSION_STATSJS = '0.16.0';
         const VERSION_SYSTEMJS = '0.19.37';
-        const VERSION_THREEJS = '0.78.0';
+        const VERSION_THREEJS = '0.79.0';
         const VERSION_TWO = '0.6.0';
         const VERSION_UNITS = '1.5.3';
         // const VERSION_UNDERSCORE = '1.8.3';
@@ -60,6 +61,9 @@ app.factory('options', [
           return vendorFolder('async', VERSION_ASYNC, void 0, fileName);
         }
         */
+        function baconjs(fileName: string): string {
+            return vendorFolder('baconjs', VERSION_BACONJS, void 0, fileName);
+        }
         function biwascheme(fileName: string): string {
             return vendorFolder('biwascheme', VERSION_BIWASCHEME, void 0, fileName);
         }
@@ -108,7 +112,7 @@ app.factory('options', [
             return vendorFolder('systemjs', VERSION_SYSTEMJS, void 0, fileName);
         }
         function threejs(fileName: string): string {
-            return vendorFolder('threejs', VERSION_THREEJS, 'build', fileName);
+            return vendorFolder('threejs', VERSION_THREEJS, void 0, fileName);
         }
         function two(fileName: string): string {
             return vendorFolder('two', VERSION_TWO, void 0, fileName);
@@ -280,6 +284,20 @@ app.factory('options', [
                 minJs: [jquery('jquery.min.js')],
                 dependencies: {}
             },
+            // FIXME: baconjs temporarily placed here (after jquery) until dependencies are fixed.
+            {
+                name: 'baconjs',
+                moniker: 'Bacon.js',
+                description: "Functional Reactive Programming for JavaScript.",
+                homepage: 'https://baconjs.github.io',
+                version: VERSION_BACONJS,
+                visible: true,
+                css: [],
+                dts: baconjs('baconjs.d.ts'),
+                js: [`https://cdnjs.cloudflare.com/ajax/libs/bacon.js/${VERSION_BACONJS}/Bacon.js`],
+                minJs: [`https://cdnjs.cloudflare.com/ajax/libs/bacon.js/${VERSION_BACONJS}/Bacon.min.js`],
+                dependencies: { 'jquery': VERSION_JQUERY }
+            },
             // FIXME: deck temporarily placed here (after jquery) until dependencies are fixed.
             {
                 name: 'deck.js',
@@ -292,7 +310,7 @@ app.factory('options', [
                 dts: deck('deck.core.d.ts'),
                 js: [deck('deck.core.js')],
                 minJs: [deck('deck.core.js')],
-                dependencies: { 'jquery': '2.1.4' }
+                dependencies: { 'jquery': VERSION_JQUERY }
             },
             {
                 name: 'jsxgraph',
@@ -329,8 +347,8 @@ app.factory('options', [
                 visible: true,
                 css: [],
                 dts: statsjs('stats.d.ts'),
-                js: [statsjs('stats.min.js')],
-                minJs: [statsjs('stats.min.js')],
+                js: ['https://cdnjs.cloudflare.com/ajax/libs/stats.js/r16/Stats.js'],
+                minJs: ['https://cdnjs.cloudflare.com/ajax/libs/stats.js/r16/Stats.min.js'],
                 dependencies: {}
             },
             {
@@ -355,8 +373,8 @@ app.factory('options', [
                 visible: true,
                 css: [],
                 dts: threejs('three.d.ts'),
-                js: [threejs('three.js')],
-                minJs: [threejs('three.min.js')],
+                js: ['https://cdnjs.cloudflare.com/ajax/libs/three.js/r79/three.js'],
+                minJs: ['https://cdnjs.cloudflare.com/ajax/libs/three.js/r79/three.min.js'],
                 dependencies: {}
             },
             {

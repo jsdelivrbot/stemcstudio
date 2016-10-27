@@ -19,7 +19,13 @@ export default function scriptURL(domain: string, fileName: string, VENDOR_FOLDE
         return domain + '/vendor' + fileName.substring(VENDOR_FOLDER_MARKER.length);
     }
     else {
-        // TODO: While we migrate options, everything is still local.
-        return domain + '/js/' + fileName;
+        // Cautiously migrate to using Content Delivery Networks.
+        if (startsWith(fileName, 'https://')) {
+            return fileName;
+        }
+        else {
+            // TODO: While we migrate options, everything is still local.
+            return domain + '/js/' + fileName;
+        }
     }
 }

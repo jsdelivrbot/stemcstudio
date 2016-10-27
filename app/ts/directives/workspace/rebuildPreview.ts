@@ -95,7 +95,7 @@ export default function rebuildPreview(
                         const scriptFileNames: string[] = workspace.operatorOverloading ? chosenJsFileNames.concat(FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS) : chosenJsFileNames;
                         // TOOD: Don't fix the location of the JavaScript here.
                         const scriptTags = scriptFileNames.map((fileName: string) => {
-                            return "<script src='" + scriptURL(DOMAIN, fileName, VENDOR_FOLDER_MARKER) + "'></script>\n";
+                            return `<script src='${scriptURL(DOMAIN, fileName, VENDOR_FOLDER_MARKER)}'></script>\n`;
                         });
 
                         if (detectMarker(SCRIPTS_MARKER, workspace, bestFile)) {
