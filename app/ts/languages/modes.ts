@@ -2,6 +2,7 @@ export const LANGUAGE_C = 'C';
 export const LANGUAGE_CPP = 'C++';
 export const LANGUAGE_CSS = 'CSS';
 export const LANGUAGE_GLSL = 'GLSL';
+export const LANGUAGE_HASKELL = 'Haskell';
 export const LANGUAGE_HTML = 'HTML';
 export const LANGUAGE_JAVA_SCRIPT = 'JavaScript';
 export const LANGUAGE_JSON = 'JSON';

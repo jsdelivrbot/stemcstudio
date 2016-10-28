@@ -43,6 +43,7 @@ import WsFile from '../../wsmodel/services/WsFile';
 import WsModel from '../../wsmodel/services/WsModel';
 import {LANGUAGE_CSS} from '../../languages/modes';
 import {LANGUAGE_GLSL} from '../../languages/modes';
+import {LANGUAGE_HASKELL} from '../../languages/modes';
 import {LANGUAGE_HTML} from '../../languages/modes';
 import {LANGUAGE_JSON} from '../../languages/modes';
 import {LANGUAGE_JAVA_SCRIPT} from '../../languages/modes';
@@ -638,6 +639,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         this.wsModel.attachEditor(path, editor);
 
         switch (mode) {
+            case LANGUAGE_HASKELL:
             case LANGUAGE_JAVA_SCRIPT:
             case LANGUAGE_PYTHON:
             case LANGUAGE_TYPE_SCRIPT: {
@@ -760,12 +762,12 @@ export default class WorkspaceController implements WorkspaceMixin {
      * 
      */
     detachEditor(path: string, mode: string, editor: Editor): void {
-        // const startTime = performance.now();
         if (this.wsModel.isZombie()) {
             return;
         }
 
         switch (mode) {
+            case LANGUAGE_HASKELL:
             case LANGUAGE_JAVA_SCRIPT:
             case LANGUAGE_PYTHON:
             case LANGUAGE_TYPE_SCRIPT: {
@@ -793,8 +795,5 @@ export default class WorkspaceController implements WorkspaceMixin {
         }
 
         this.wsModel.detachEditor(path, editor);
-
-        // const endTime = performance.now();
-        // console.lg(`Workspace.detachEditor(${path}) ${endTime - startTime} ms.`);
     }
 }

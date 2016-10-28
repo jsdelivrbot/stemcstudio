@@ -2,6 +2,7 @@ import * as ng from 'angular';
 import ClojureMode from '../../editor/mode/ClojureMode';
 import CssMode from '../../editor/mode/CssMode';
 import GlslMode from '../../editor/mode/GlslMode';
+import HaskellMode from '../../editor/mode/HaskellMode';
 import HtmlMode from '../../editor/mode/HtmlMode';
 import JavaScriptMode from '../../editor/mode/JavaScriptMode';
 import JsonMode from '../../editor/mode/JsonMode';
@@ -25,6 +26,7 @@ import {currentTheme} from '../../modules/themes/ThemeManagerEvent';
 import WorkspaceMixin from '../../directives/editor/WorkspaceMixin';
 import {LANGUAGE_CSS} from '../../languages/modes';
 import {LANGUAGE_GLSL} from '../../languages/modes';
+import {LANGUAGE_HASKELL} from '../../languages/modes';
 import {LANGUAGE_HTML} from '../../languages/modes';
 import {LANGUAGE_JAVA_SCRIPT} from '../../languages/modes';
 import {LANGUAGE_JSON} from '../../languages/modes';
@@ -175,6 +177,16 @@ function factory(
                         }]);
                         // We must wait for the $render function to be called so that we have a session.
                         switch (file.mode) {
+                            case LANGUAGE_HASKELL: {
+                                session.setUseWorker(false);
+                                session.setLanguageMode(new HaskellMode('/js/worker.js', workerImports), function (err: any) {
+                                    if (err) {
+                                        console.warn(`${file.mode} => ${err}`);
+                                    }
+                                    removeEditor = control.attachEditor($scope.path, file.mode, editor);
+                                });
+                                break;
+                            }
                             case LANGUAGE_PYTHON: {
                                 session.setUseWorker(false);
                                 session.setLanguageMode(new PythonMode('/js/worker.js', workerImports), function (err: any) {
