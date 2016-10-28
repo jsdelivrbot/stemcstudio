@@ -30,7 +30,8 @@ app.factory('options', [
         // const VERSION_REQUIREJS = '2.1.9';
         const VERSION_STATSJS = '0.16.0';
         const VERSION_SYSTEMJS = '0.19.37';
-        const VERSION_THREEJS = '0.79.0';
+        const VERSION_THREEJS = '0.82.0';
+        const RELEASE_THREEJS = 'r82';
         const VERSION_TWO = '0.6.0';
         const VERSION_UNITS = '1.5.3';
         // const VERSION_UNDERSCORE = '1.8.3';
@@ -373,8 +374,8 @@ app.factory('options', [
                 visible: true,
                 css: [],
                 dts: threejs('three.d.ts'),
-                js: ['https://cdnjs.cloudflare.com/ajax/libs/three.js/r79/three.js'],
-                minJs: ['https://cdnjs.cloudflare.com/ajax/libs/three.js/r79/three.min.js'],
+                js: [`https://cdnjs.cloudflare.com/ajax/libs/three.js/${RELEASE_THREEJS}/three.js`],
+                minJs: [`https://cdnjs.cloudflare.com/ajax/libs/three.js/${RELEASE_THREEJS}/three.min.js`],
                 dependencies: {}
             },
             {

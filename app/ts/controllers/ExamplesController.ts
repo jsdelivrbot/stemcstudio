@@ -162,7 +162,15 @@ export default class ExamplesController extends AbstractPageController {
             },
             {
                 gistId: 'f00a5fe08eb92b854c803184ec26d402',
-                title: "Ball in a Box with Units",
+                title: "Ball in a Box using EIGHT and Units",
+                description: "An example made to look like Visual Python but with Units of Measure.",
+                imageSrc: '/img/examples/ball-in-a-box-with-units.png',
+                imageAlt: 'Ball bouncing off the inside walls of a box.',
+                category: 'Physics'
+            },
+            {
+                gistId: '1d23649589c69cd3c4668c5775fcafa3',
+                title: "Ball in a Box using three.js and Units",
                 description: "An example made to look like Visual Python but with Units of Measure.",
                 imageSrc: '/img/examples/ball-in-a-box-with-units.png',
                 imageAlt: 'Ball bouncing off the inside walls of a box.',

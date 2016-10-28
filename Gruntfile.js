@@ -265,9 +265,9 @@ module.exports = function (grunt) {
                     },
                     {
                         expand: true,
-                        cwd: "museum/threejs@0.79.0",
+                        cwd: "museum/threejs@0.82.0",
                         src: ["**"],
-                        dest: "generated/vendor/threejs@0.79.0"
+                        dest: "generated/vendor/threejs@0.82.0"
                     },
                     {
                         src: "museum/two@0.6.0/two.d.ts",
@@ -617,9 +617,9 @@ module.exports = function (grunt) {
                     },
                     {
                         expand: true,
-                        cwd: "museum/threejs@0.79.0",
+                        cwd: "museum/threejs@0.82.0",
                         src: ["**"],
-                        dest: "dist/vendor/threejs@0.79.0"
+                        dest: "dist/vendor/threejs@0.82.0"
                     },
                     {
                         src: "museum/two@0.6.0/two.d.ts",
