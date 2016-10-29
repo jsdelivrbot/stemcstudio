@@ -1952,7 +1952,7 @@ declare module THREE {
          *
          * @param url
          */
-        load(url: string, onLoad: (texture: Texture) => void): void;
+        load(url: string, onLoad: (texture: Texture) => void, onProgress?: (event: { loaded: number; total: number }) => void, onError?: (event: any) => void): void;
         setCrossOrigin(crossOrigin: string): void;
     }
 
@@ -1964,7 +1964,7 @@ declare module THREE {
         responseType: string;
         crossOrigin: string;
 
-        load(url: string, onLoad?: (responseText: string) => void, onProgress?: (event: any) => void, onError?: (event: any) => void): void;
+        load(url: string, onLoad?: (responseText: string) => void, onProgress?: (event: { loaded: number; total: number }) => void, onError?: (event: any) => void): void;
         setResponseType(responseType: string): void;
         setCrossOrigin(crossOrigin: string): void;
     }
