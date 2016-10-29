@@ -348,10 +348,31 @@ declare module THREE {
     }
 
     // Core ///////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * This class stores data for an attribute associated with a BufferGeometry.
+     * See that page for details and a usage example.
+     * This class is used to store builtin attributes such as vertex position, normals, color, etc.,
+     * but can also be used in your code to store custom attributes in a BufferGeometry.
+     */
     export class BufferAttribute {
-        constructor(array: any, itemSize: number); // array parameter should be TypedArray.
-
+        /**
+         * Instantiates this attribute with data from the associated buffer.
+         * itemSize gives the number of values of the array that should be associated with a particular vertex.
+         * normalized indicates how the underlying data in the buffer maps to the values in the GLSL shader code.
+         */
+        constructor(array: Int8Array | Uint8Array | Int16Array | Uint16Array | Float32Array, itemSize: number, normalized?: boolean);
+        /**
+         * Stores the data associated with this attribute. This element should have
+         * itemSize * numVertices
+         * elements, where numVertices is the number of vertices in the associated geometry.
+         * array can be an instance of UInt8Array, Int8Array, UInt16Array, Int16Array, or Float32Array.
+         */
         array: number[];
+        /**
+         * Records how many items of the array are associated with a particular vertex.
+         * For instance, if this attribute is storing a 3-component vector (such as a position, normal, or color),
+         * then itemSize should be 3.
+         */
         itemSize: number;
         needsUpdate: boolean;
         length: number;
@@ -1563,7 +1584,7 @@ declare module THREE {
          * @param distance
          * @param decay
          */
-        constructor(color?: number, intensity?: number, distance?: number, decay? number);
+        constructor(color?: number, intensity?: number, distance?: number, decay?: number);
 
         /**
          * Light's intensity.
