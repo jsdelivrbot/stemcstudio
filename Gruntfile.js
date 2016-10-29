@@ -94,14 +94,6 @@ module.exports = function (grunt) {
                         dest: "generated/img"
                     },
                     {
-                        src: 'app/img/checkerboard.jpg',
-                        dest: 'generated/img/checkerboard.jpg'
-                    },
-                    {
-                        src: 'app/img/particles.png',
-                        dest: 'generated/img/particles.png'
-                    },
-                    {
                         expand: true,
                         cwd: "app/themes",
                         src: ["**"],
@@ -444,14 +436,6 @@ module.exports = function (grunt) {
                         cwd: "app/img",
                         src: ["**"],
                         dest: "dist/img"
-                    },
-                    {
-                        src: 'app/img/checkerboard.jpg',
-                        dest: 'dist/img/checkerboard.jpg'
-                    },
-                    {
-                        src: 'app/img/particles.png',
-                        dest: 'dist/img/particles.png'
                     },
                     {
                         expand: true,
