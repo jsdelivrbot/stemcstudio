@@ -28,7 +28,9 @@ declare module THREE {
 
     // MATERIAL CONSTANTS
 
-    // side
+    /**
+     * FrontSide | BackSide | DoubleSide
+     */
     export enum Side { }
     export var FrontSide: Side;
     export var BackSide: Side;
@@ -2222,26 +2224,157 @@ declare module THREE {
         morphTargets?: boolean;
     }
 
+    /**
+     * A material for drawing geometries in a simple shaded (flat or wireframe) way.
+     * 
+     * The default will render as flat polygons.
+     * To draw the mesh as wireframe, simply set the 'wireframe' property to true.
+     */
     export class MeshBasicMaterial extends Material {
+        /**
+         * parameters is an object with one or more properties defining the material's appearance.
+         * 
+         * color — geometry color in hexadecimal. Default is 0xffffff.
+         * map — Set texture map. Default is null.
+         * aoMap — Set ao map. Default is null.
+         * aoMapIntensity — Set ao map intensity. Default is 1.
+         * specularMap — Set specular map. Default is null.
+         * alphaMap — Set alpha map. Default is null.
+         * envMap — Set env map. Default is null.
+         * combine — Set combine operation. Default is THREE.MultiplyOperation.
+         * reflectivity — Set reflectivity. Default is 1.
+         * refractionRatio — Set refraction ratio. Default is 0.98.
+         * fog — Define whether the material color is affected by global fog settings. Default is true.
+         * shading — Define shading type. Default is THREE.SmoothShading.
+         * wireframe — render geometry as wireframe. Default is false.
+         * wireframeLinewidth — Line thickness. Default is 1.
+         * wireframeLinecap — Define appearance of line ends. Default is 'round'.
+         * wireframeLinejoin — Define appearance of line joints. Default is 'round'.
+         * vertexColors — Define how the vertices gets colored. Default is THREE.NoColors.
+         * skinning — Define whether the material uses skinning. Default is false.
+         * morphTargets — Define whether the material uses morphTargets. Default is false.
+         */
         constructor(parameters?: MeshBasicMaterialParameters);
 
+        /**
+         * Sets the color of the geometry. Default is 0xffffff.
+         */
         color: Color;
+
+        /**
+         * Set texture map. Default is null.
+         */
         map: Texture;
+
+        /**
+         * 
+         */
         lightMap: Texture;
+
+        /**
+         * Set specular map. Default is null.
+         */
         specularMap: Texture;
+
+        /**
+         * The alpha map is a grayscale texture that controls the opacity across the surface (black: fully transparent; white: fully opaque).
+         * Default is null.
+         * 
+         * Only the color of the texture is used, ignoring the alpha channel if one exists.
+         * For RGB and RGBA textures, the WebGL renderer will use the green channel when sampling this texture due to the extra bit of precision provided for green in DXT-compressed and uncompressed RGB 565 formats.
+         * Luminance-only and luminance/alpha textures will also still work as expected.
+         */
         alphaMap: Texture;
+
+        /**
+         * Set env map. Default is null.
+         */
         envMap: Texture;
+
+        /**
+         * How to combine the result of the surface's color with the environment map, if any.
+         * 
+         * Options are THREE.Multiply (default), THREE.MixOperation, THREE.AddOperation.
+         * If mix is chosen, the reflectivity is used to blend between the two colors.
+         */
         combine: Combine;
+
+        /**
+         * How much the environment map affects the surface; also see "combine".
+         */
         reflectivity: number;
+
+        /**
+         * The index of refraction for an environment map using THREE.CubeRefractionMapping.
+         * Default is 0.98.
+         */
         refractionRatio: number;
+
+        /**
+         * Define whether the material color is affected by global fog settings.
+         * 
+         * This setting might not have any effect when used with certain renderers.
+         * For example, it is ignored with the Canvas renderer, but does work with the WebGL renderer.
+         */
         fog: boolean;
+
+        /**
+         * Define shading type.
+         * Default is THREE.SmoothShading.
+         */
         shading: Shading;
+
+        /**
+         * Render geometry as wireframe.
+         * Default is false (i.e. render as flat polygons).
+         */
         wireframe: boolean;
+
+        /**
+         * Controls wireframe thickness. Default is 1.
+         * 
+         * Due to limitations in the ANGLE layer, on Windows platforms linewidth will always be 1 regardless of the set value.
+         */
         wireframeLinewidth: number;
+
+        /**
+         * Define appearance of line ends. Possible values are "butt", "round" and "square".
+         * Default is 'round'.
+         * 
+         * This setting might not have any effect when used with certain renderers. For example, it is ignored with the WebGL renderer, but does work with the Canvas renderer.
+         */
         wireframeLinecap: string;
+
+        /**
+         * Define appearance of line joints.
+         * Possible values are "round", "bevel" and "miter".
+         * Default is 'round'.
+         * 
+         * This setting might not have any effect when used with certain renderers.
+         * For example, it is ignored with the WebGL renderer, but does work with the Canvas renderer.
+         */
         wireframeLinejoin: string;
+
+        /**
+         * Define how the vertices gets colored.
+         * Possible values are THREE.NoColors, THREE.FaceColors and THREE.VertexColors.
+         * Default is THREE.NoColors.
+         * 
+         * This setting might not have any effect when used with certain renderers.
+         * For example, it is ignored with the Canvas renderer, but does work with the WebGL renderer.
+         */
         vertexColors: Colors;
+
+        /**
+         * Define whether the material uses skinning.
+         * Default is false.
+         */
         skinning: boolean;
+
+        /**
+         * Define whether the material uses morphTargets.
+         * Default is false.
+         */
         morphTargets: boolean;
 
         clone(): MeshBasicMaterial;
