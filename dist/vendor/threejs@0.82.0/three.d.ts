@@ -5107,6 +5107,9 @@ declare module THREE {
         clone(): DataTexture;
     }
 
+    /**
+     * A texture to apply to a surface or as a reflection or refraction map.
+     */
     export class Texture {
         constructor(
             image: any, // HTMLImageElement or HTMLCanvasElement ( or HTMLVideoElement)
@@ -5142,30 +5145,143 @@ declare module THREE {
             anisotropy?: number
         );
 
+        /**
+         * Unique number for this texture instance.
+         */
         id: number;
+
         uuid: string;
+
         name: string;
+
+        /**
+         * An Image object, typically created using the ImageUtils or ImageLoader classes.
+         * The Image object can include an image (e.g., PNG, JPG, GIF, DDS), video (e.g., MP4, OGG/OGV), or set of six images for a cube map.
+         * To use video as a texture you need to have a playing HTML5 video element as a source for your texture image and continuously update this texture as long as video is playing.
+         */
         image: any; // HTMLImageElement or ImageData ;
+
         mipmaps: ImageData[];
+
+        /**
+         * How the image is applied to the object.
+         * An object type of THREE.UVMapping is the default, where the U,V coordinates are used to apply the map, and a single texture is expected.
+         * The other types are THREE.CubeReflectionMapping, for cube maps used as a reflection map; THREE.CubeRefractionMapping, refraction mapping; and THREE.SphericalReflectionMapping, a spherical reflection map projection.
+         */
         mapping: Mapping;
+
+        /**
+         * The default is THREE.ClampToEdgeWrapping, where the edge is clamped to the outer edge texels.
+         * The other two choices are THREE.RepeatWrapping and THREE.MirroredRepeatWrapping.
+         * 
+         * NOTE: tiling of images in textures only functions if image dimensions are powers of two (2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, ...) in terms of pixels.
+         * Individual dimensions need not be equal, but each must be a power of two.
+         * This is a limitation of WebGL, not Three.js.
+         */
         wrapS: Wrapping;
+
+        /**
+         * The default is THREE.ClampToEdgeWrapping, where the edge is clamped to the outer edge texels.
+         * The other two choices are THREE.RepeatWrapping and THREE.MirroredRepeatWrapping.
+         * 
+         * NOTE: tiling of images in textures only functions if image dimensions are powers of two (2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, ...) in terms of pixels.
+         * Individual dimensions need not be equal, but each must be a power of two.
+         * This is a limitation of WebGL, not Three.js.
+         */
         wrapT: Wrapping;
+
+        /**
+         * How the texture is sampled when a texel covers more than one pixel.
+         * The default is THREE.LinearFilter, which takes the four closest texels and bilinearly interpolates among them.
+         * The other option is THREE.NearestFilter, which uses the value of the closest texel.
+         */
         magFilter: TextureFilter;
+
+        /**
+         * How the texture is sampled when a texel covers less than one pixel.
+         * The default is THREE.LinearMipMapLinearFilter, which uses mipmapping and a trilinear filter.
+         * Other choices are THREE.NearestFilter, THREE.NearestMipMapNearestFilter, THREE.NearestMipMapLinearFilter, THREE.LinearFilter, and THREE.LinearMipMapNearestFilter.
+         * These vary whether the nearest texel or nearest four texels are retrieved on the nearest mipmap or nearest two mipmaps.
+         * Interpolation occurs among the samples retrieved.
+         */
         minFilter: TextureFilter;
+
+        /**
+         * The number of samples taken along the axis through the pixel that has the highest density of texels.
+         * By default, this value is 1.
+         * A higher value gives a less blurry result than a basic mipmap, at the cost of more texture samples being used.
+         * Use renderer.getMaxAnisotropy() to find the maximum valid anisotropy value for the GPU; this value is usually a power of 2.
+         */
         anisotropy: number;
+
+        /**
+         * The default is THREE.RGBAFormat for the texture.
+         * Other formats are: THREE.AlphaFormat, THREE.RGBFormat, THREE.LuminanceFormat, and THREE.LuminanceAlphaFormat.
+         * There are also compressed texture formats, if the S3TC extension is supported: THREE.RGB_S3TC_DXT1_Format, THREE.RGBA_S3TC_DXT1_Format, THREE.RGBA_S3TC_DXT3_Format, and THREE.RGBA_S3TC_DXT5_Format.
+         */
         format: PixelFormat;
+
+        /**
+         * The default is THREE.UnsignedByteType.
+         * Other valid types (as WebGL allows) are THREE.ByteType, THREE.ShortType, THREE.UnsignedShortType, THREE.IntType, THREE.UnsignedIntType, THREE.FloatType, THREE.UnsignedShort4444Type, THREE.UnsignedShort5551Type, and THREE.UnsignedShort565Type.
+         */
         type: TextureDataType;
+
+        /**
+         * How much a single repetition of the texture is offset from the beginning, in each direction U and V.
+         * Typical range is 0.0 to 1.0.
+         */
         offset: Vector2;
+
+        /**
+         * How many times the texture is repeated across the surface, in each direction U and V.
+         */
         repeat: Vector2;
+
+        /**
+         * Whether to generate mipmaps (if possible) for a texture.
+         * True by default.
+         */
         generateMipmaps: boolean;
+
+        /**
+         * False by default, which is the norm for PNG images.
+         * Set to true if the RGB values have been stored premultiplied by alpha.
+         */
         premultiplyAlpha: boolean;
+
+        /**
+         * True by default.
+         * Flips the image's Y axis to match the WebGL texture coordinate space.
+         */
         flipY: boolean;
+
+        /**
+         * 4 by default.
+         * Specifies the alignment requirements for the start of each pixel row in memory.
+         * The allowable values are 1 (byte-alignment), 2 (rows aligned to even-numbered bytes), 4 (word-alignment), and 8 (rows start on double-word boundaries).
+         * See glPixelStorei for more information.
+         */
         unpackAlignment: number;
+
+        /**
+         * If a texture is changed after creation, set this flag to true so that the texture is properly set up.
+         * Particularly important for setting the wrap mode.
+         */
         needsUpdate: boolean;
+
+        /**
+         * A callback function, called when the texture is updated (e.g., when needsUpdate has been set to true and then the texture is used).
+         */
         onUpdate: () => void;
+
         static DEFAULT_IMAGE: any;
         static DEFAULT_MAPPING: any;
 
+        /**
+         * Make copy of texture.
+         * Note this is not a "deep copy", the image is shared.
+         */
         clone(): Texture;
         update(): void;
         dispose(): void;
