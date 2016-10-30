@@ -938,10 +938,8 @@ declare module THREE {
          */
         applyMatrix(matrix: Matrix4): void;
 
-        fromBufferGeometry(geometry: BufferGeometry): Geometry;
-
         /**
-         *
+         * Center the geometry based on the bounding box.
          */
         center(): Vector3;
 
@@ -951,8 +949,16 @@ declare module THREE {
         computeFaceNormals(): void;
 
         /**
+         * Computes flat vertex normals.
+         * Sets the vertex normal of each vertex of each face to be the same as the face's normal.
+         */
+        computeFlatVertexNormals(): void;
+
+        /**
          * Computes vertex normals by averaging face normals.
          * Face normals must be existing / computed beforehand.
+         * areaWeighted - If true the contribution of each face normal to the vertex normal is weighted by the area of the face.
+         * Default is true.
          */
         computeVertexNormals(areaWeighted?: boolean): void;
 
@@ -968,6 +974,9 @@ declare module THREE {
          */
         computeTangents(): void;
 
+        /**
+         * Compute distances between vertices for Line geometries.
+         */
         computeLineDistances(): void;
 
         /**
@@ -981,6 +990,8 @@ declare module THREE {
          */
         computeBoundingSphere(): void;
 
+        fromBufferGeometry(geometry: BufferGeometry): Geometry;
+
         merge(geometry: Geometry, matrix: Matrix, materialIndexOffset: number): void;
 
         mergeMesh(mesh: Mesh): void;
@@ -990,6 +1001,41 @@ declare module THREE {
          * Duplicated vertices are removed and faces' vertices are updated.
          */
         mergeVertices(): number;
+
+        /**
+         * Rotate the geometry about the X axis.
+         * This is typically done as a one time operation, and not during a loop.
+         * Use Object3D.rotation for typical real-time mesh rotation.
+         */
+        rotateX(radians: number): void;
+
+        /**
+         * Rotate the geometry about the Y axis.
+         * This is typically done as a one time operation, and not during a loop.
+         * Use Object3D.rotation for typical real-time mesh rotation.
+         */
+        rotateY(radians: number): void;
+
+        /**
+         * Rotate the geometry about the Z axis.
+         * This is typically done as a one time operation, and not during a loop.
+         * Use Object3D.rotation for typical real-time mesh rotation.
+         */
+        rotateZ(radians: number): void;
+
+        /**
+         * Translate the geometry.
+         * This is typically done as a one time operation, and not during a loop.
+         * Use Object3D.position for typical real-time mesh translation.
+         */
+        translate(x: number, y: number, z: number): void;
+
+        /**
+         * Scale the geometry data.
+         * This is typically done as a one time operation, and not during a loop.
+         * Use Object3D.scale for typical real-time mesh scaling.
+         */
+        scale(x: number, y: number, z: number): void;
 
         toJSON(): any;
 
