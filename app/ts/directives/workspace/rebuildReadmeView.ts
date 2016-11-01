@@ -41,7 +41,7 @@ export default function rebuildReadmeView(
                 const content = iframe.contentDocument || iframe.contentWindow.document;
                 if (fileExists(FILENAME_README, workspace)) {
                     const markdown: string = fileContent(FILENAME_README, workspace);
-                    const converter: sd.Converter = new sd.Converter();
+                    const converter: sd.Converter = new sd.Converter({ tables: true });
                     const markdownHTML = converter.makeHtml(markdown);
                     html = html.replace('// README.md', markdownHTML);
                 }
