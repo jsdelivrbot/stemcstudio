@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.8.1",
+  "version": "2.8.2",
   "private": true,
   "description": "Learning STEM through Computational Modeling",
   "engines": {
@@ -50,7 +50,7 @@
     "angular": "^1.5.8",
     "angular-material-icons": "^0.7.1",
     "angular2": "2.0.0-beta.17",
-    "aws-sdk": "^2.6.12",
+    "aws-sdk": "^2.6.13",
     "baconjs": "^0.7.88",
     "biwascheme": "^0.6.6",
     "body-parser": "^1.15.2",
