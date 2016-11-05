@@ -245,6 +245,12 @@ module.exports = function (grunt) {
                     },
                     {
                         expand: true,
+                        cwd: "museum/socket.io-client@1.5.1",
+                        src: ["**"],
+                        dest: "generated/vendor/socket.io-client@1.5.1"
+                    },
+                    {
+                        expand: true,
                         cwd: "museum/stats.js@0.16.0",
                         src: ["**"],
                         dest: "generated/vendor/stats.js@0.16.0"
@@ -586,6 +592,12 @@ module.exports = function (grunt) {
                     {
                         src: "bower_components/requirejs/require.js",
                         dest: "dist/vendor/requirejs@2.1.9/require.js"
+                    },
+                    {
+                        expand: true,
+                        cwd: "museum/socket.io-client@1.5.1",
+                        src: ["**"],
+                        dest: "dist/vendor/socket.io-client@1.5.1"
                     },
                     {
                         expand: true,

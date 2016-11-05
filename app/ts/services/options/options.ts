@@ -28,6 +28,7 @@ app.factory('options', [
         const VERSION_JSXGRAPH = '0.99.5';
         const VERSION_PLOTLY = '1.14.1';
         // const VERSION_REQUIREJS = '2.1.9';
+        const VERSION_SOCKETIO_CLIENT = '1.5.1';
         const VERSION_STATSJS = '0.16.0';
         const VERSION_SYSTEMJS = '0.19.37';
         const VERSION_THREEJS = '0.82.0';
@@ -106,6 +107,9 @@ app.factory('options', [
           return vendorFolder('requirejs', VERSION_REQUIREJS, void 0, fileName);
         }
         */
+        function socketIoClient(fileName: string): string {
+            return vendorFolder('socket.io-client', VERSION_SOCKETIO_CLIENT, void 0, fileName);
+        }
         function statsjs(fileName: string): string {
             return vendorFolder('stats.js', VERSION_STATSJS, void 0, fileName);
         }
@@ -337,6 +341,19 @@ app.factory('options', [
                 dts: plotly('plotly.d.ts'),
                 js: [plotly('plotly.js')],
                 minJs: [plotly('plotly.min.js')],
+                dependencies: {}
+            },
+            {
+                name: 'socket.io-client',
+                moniker: 'socket.io-client',
+                description: "Realtime application framework (client)",
+                homepage: 'socket.io',
+                version: VERSION_SOCKETIO_CLIENT,
+                visible: true,
+                css: [],
+                dts: socketIoClient('socket.io-client.d.ts'),
+                js: [socketIoClient('socket.io.js')],
+                minJs: [socketIoClient('socket.io.js')],
                 dependencies: {}
             },
             {
