@@ -641,11 +641,6 @@
     "process": "github:jspm/nodelibs-process@^0.1.0",
     "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
   },
-  "npm:rxjs@5.0.0-rc.1": {
-    "symbol-observable": "npm:symbol-observable@^1.0.1",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0"
-  },
   "npm:angular@1.5.8": {},
   "npm:symbol-observable@1.0.4": {},
   "github:ace2ts/ace-workers@1.0.4": {},
@@ -715,5 +710,10 @@
     "process": "github:jspm/nodelibs-process@^0.1.0",
     "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
     "fs": "github:jspm/nodelibs-fs@^0.1.0"
+  },
+  "npm:rxjs@5.0.0-rc.2": {
+    "symbol-observable": "npm:symbol-observable@^1.0.1",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
   }
 }
