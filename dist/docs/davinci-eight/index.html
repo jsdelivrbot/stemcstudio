@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>EIGHT 2.322.0</title>
+	<title>EIGHT 2.324.0</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">EIGHT 2.322.0</a>
+					<a href="index.html" class="title">EIGHT 2.324.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -57,7 +57,7 @@
 					<a href="globals.html">Globals</a>
 				</li>
 			</ul>
-			<h1> EIGHT 2.322.0</h1>
+			<h1> EIGHT 2.324.0</h1>
 		</div>
 	</div>
 </header>
@@ -141,6 +141,24 @@
 					</li>
 					<li class=" tsd-kind-enum tsd-is-external tsd-is-not-exported">
 						<a href="enums/pixeltype.html" class="tsd-kind-icon">Pixel<wbr>Type</a>
+					</li>
+					<li class=" tsd-kind-enum tsd-is-external tsd-is-not-exported">
+						<a href="enums/texturemagfilter.html" class="tsd-kind-icon">Texture<wbr>Mag<wbr>Filter</a>
+					</li>
+					<li class=" tsd-kind-enum tsd-is-external tsd-is-not-exported">
+						<a href="enums/textureminfilter.html" class="tsd-kind-icon">Texture<wbr>Min<wbr>Filter</a>
+					</li>
+					<li class=" tsd-kind-enum tsd-is-external tsd-is-not-exported">
+						<a href="enums/textureparametername.html" class="tsd-kind-icon">Texture<wbr>Parameter<wbr>Name</a>
+					</li>
+					<li class=" tsd-kind-enum tsd-is-external tsd-is-not-exported">
+						<a href="enums/texturetarget.html" class="tsd-kind-icon">Texture<wbr>Target</a>
+					</li>
+					<li class=" tsd-kind-enum tsd-is-external tsd-is-not-exported">
+						<a href="enums/textureunit.html" class="tsd-kind-icon">Texture<wbr>Unit</a>
+					</li>
+					<li class=" tsd-kind-enum tsd-is-external tsd-is-not-exported">
+						<a href="enums/texturewrapmode.html" class="tsd-kind-icon">Texture<wbr>Wrap<wbr>Mode</a>
 					</li>
 					<li class=" tsd-kind-enum tsd-is-external tsd-is-not-exported">
 						<a href="enums/usage.html" class="tsd-kind-icon">Usage</a>
@@ -450,6 +468,12 @@
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="classes/tetrahedrongeometry.html" class="tsd-kind-icon">Tetrahedron<wbr>Geometry</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="classes/texture.html" class="tsd-kind-icon">Texture</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="classes/texturefacet.html" class="tsd-kind-icon">Texture<wbr>Facet</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="classes/trackballcontrols.html" class="tsd-kind-icon">Trackball<wbr>Controls</a>
@@ -913,6 +937,9 @@
 					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#standard_labels" class="tsd-kind-icon">STANDARD_<wbr>LABELS</a>
 					</li>
+					<li class=" tsd-kind-variable tsd-is-external tsd-is-not-exported">
+						<a href="globals.html#texture_facet_name" class="tsd-kind-icon">TEXTURE_<wbr>FACET_<wbr>NAME</a>
+					</li>
 					<li class=" tsd-kind-variable tsd-is-not-exported">
 						<a href="globals.html#tex_coords_per_vertex" class="tsd-kind-icon">TEX_<wbr>COORDS_<wbr>PER_<wbr>VERTEX</a>
 					</li>
@@ -1166,6 +1193,9 @@
 						<a href="globals.html#checksize" class="tsd-kind-icon">check<wbr>Size</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#checktexturetarget" class="tsd-kind-icon">check<wbr>Texture<wbr>Target</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#checkusage" class="tsd-kind-icon">check<wbr>Usage</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
@@ -1381,6 +1411,9 @@
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#isboolean" class="tsd-kind-icon">is<wbr>Boolean</a>
 					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#iscodeline" class="tsd-kind-icon">is<wbr>Code<wbr>Line</a>
+					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#isdefined" class="tsd-kind-icon">is<wbr>Defined</a>
 					</li>
@@ -1407,6 +1440,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#isobject" class="tsd-kind-icon">is<wbr>Object</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#issinglelinecomment" class="tsd-kind-icon">is<wbr>Single<wbr>Line<wbr>Comment</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#isstring" class="tsd-kind-icon">is<wbr>String</a>
@@ -1624,6 +1660,9 @@
 					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#sphereprimitive" class="tsd-kind-icon">sphere<wbr>Primitive</a>
 					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#split" class="tsd-kind-icon">split</a>
+					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#squarednormg3" class="tsd-kind-icon">squared<wbr>Norm<wbr>G3</a>
 					</li>
@@ -1641,6 +1680,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#stringifyvertex" class="tsd-kind-icon">stringify<wbr>Vertex</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-not-exported">
+						<a href="globals.html#stripws" class="tsd-kind-icon">stripWS</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external tsd-is-not-exported">
 						<a href="globals.html#swaprows" class="tsd-kind-icon">swap<wbr>Rows</a>
@@ -1680,6 +1722,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#vcolorrequired" class="tsd-kind-icon">v<wbr>Color<wbr>Required</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#vcoordsrequired" class="tsd-kind-icon">v<wbr>Coords<wbr>Required</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#vlightrequired" class="tsd-kind-icon">v<wbr>Light<wbr>Required</a>
