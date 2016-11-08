@@ -167,6 +167,27 @@ declare module UNITS {
         neg(): Unit;
 
         /**
+         * Returns the compatible unit of measure or throws an error if the units are not compatible.
+         * If either argument is undefined or null it is considered to be equal to unity.
+         * This function should be used when adding or subtracting measures.
+         */
+        static compatible(lhs: Unit, rhs: Unit): Unit;
+
+        /**
+         * Returns the product of the two units of measure.
+         * If either argument is undefined or null it is considered to be equal to unity.
+         * This function should be used when multiplying measures.
+         */
+        static mul(lhs: Unit, rhs: Unit): Unit;
+
+        /**
+         * Returns the quotient of the two units of measure.
+         * If either argument is undefined or null it is considered to be equal to unity.
+         * This function should be used when dividing measures.
+         */
+        static div(lhs: Unit, rhs: Unit): Unit;
+
+        /**
          * The additive identity (0).
          */
         static ZERO: Unit;

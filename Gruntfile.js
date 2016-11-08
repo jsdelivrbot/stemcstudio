@@ -337,11 +337,11 @@ module.exports = function (grunt) {
                     },
                     {
                         src: "../davinci-units/dist/davinci-units.d.ts",
-                        dest: "generated/vendor/davinci-units@1.5.3/dist/davinci-units.d.ts"
+                        dest: "generated/vendor/davinci-units@1.5.4/dist/davinci-units.d.ts"
                     },
                     {
                         src: "../davinci-units/dist/davinci-units.js",
-                        dest: "generated/vendor/davinci-units@1.5.3/dist/davinci-units.js"
+                        dest: "generated/vendor/davinci-units@1.5.4/dist/davinci-units.js"
                     },
                     {
                         expand: true,
@@ -687,11 +687,11 @@ module.exports = function (grunt) {
                     },
                     {
                         src: "../davinci-units/dist/davinci-units.d.ts",
-                        dest: "dist/vendor/davinci-units@1.5.3/dist/davinci-units.d.ts"
+                        dest: "dist/vendor/davinci-units@1.5.4/dist/davinci-units.d.ts"
                     },
                     {
                         src: "../davinci-units/dist/davinci-units.js",
-                        dest: "dist/vendor/davinci-units@1.5.3/dist/davinci-units.js"
+                        dest: "dist/vendor/davinci-units@1.5.4/dist/davinci-units.js"
                     },
                     {
                         expand: true,
