@@ -241,6 +241,30 @@ export default class ExamplesController extends AbstractPageController {
                 category: 'Physics'
             },
             {
+                gistId: '1d9c0c563fd57fccf50aca5440972dd6',
+                title: "Vector Introduction",
+                description: "Explore the relationship between the geometric and algebraic representation of vectors.",
+                imageSrc: '/img/examples/vector-introduction.png',
+                imageAlt: '',
+                category: 'Physics'
+            },
+            {
+                gistId: '87255c18281069067a99d8e020749ca8',
+                title: "Vector Decomposition",
+                description: "Implement and visualize function and operators on vectors in a cartesian (standard) basis.",
+                imageSrc: '/img/examples/vector-decomposition.png',
+                imageAlt: '',
+                category: 'Physics'
+            },
+            {
+                gistId: 'c9dff10327f8378400b80a95ba2d5629',
+                title: "Vectors, Scalars, and Units",
+                description: "Create scalar and vector computational representation incorporating units of measure.",
+                imageSrc: '/img/examples/vectors-scalars-and-units.png',
+                imageAlt: '',
+                category: 'Physics'
+            },
+            {
                 gistId: 'df53295b58127b519c30251d447f0ae2',
                 title: "Plotly Error Bars Graph",
                 description: "",
