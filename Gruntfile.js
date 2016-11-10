@@ -224,16 +224,16 @@ module.exports = function (grunt) {
                         dest: "generated/vendor/jsxgraph@0.99.5"
                     },
                     {
-                        src: "museum/plotly@1.14.1/plotly.d.ts",
-                        dest: "generated/vendor/plotly@1.14.1/plotly.d.ts"
+                        src: "museum/plotly@1.19.2/plotly.d.ts",
+                        dest: "generated/vendor/plotly@1.19.2/plotly.d.ts"
                     },
                     {
-                        src: "museum/plotly@1.14.1/plotly.js",
-                        dest: "generated/vendor/plotly@1.14.1/plotly.js"
+                        src: "museum/plotly@1.19.2/plotly.js",
+                        dest: "generated/vendor/plotly@1.19.2/plotly.js"
                     },
                     {
-                        src: "museum/plotly@1.14.1/plotly.min.js",
-                        dest: "generated/vendor/plotly@1.14.1/plotly.min.js"
+                        src: "museum/plotly@1.19.2/plotly.min.js",
+                        dest: "generated/vendor/plotly@1.19.2/plotly.min.js"
                     },
                     {
                         src: "museum/requirejs@2.1.9/require.d.ts",
@@ -574,16 +574,16 @@ module.exports = function (grunt) {
                         dest: "dist/vendor/jsxgraph@0.99.5"
                     },
                     {
-                        src: "museum/plotly@1.14.1/plotly.d.ts",
-                        dest: "dist/vendor/plotly@1.14.1/plotly.d.ts"
+                        src: "museum/plotly@1.19.2/plotly.d.ts",
+                        dest: "dist/vendor/plotly@1.19.2/plotly.d.ts"
                     },
                     {
-                        src: "museum/plotly@1.14.1/plotly.js",
-                        dest: "dist/vendor/plotly@1.14.1/plotly.js"
+                        src: "museum/plotly@1.19.2/plotly.js",
+                        dest: "dist/vendor/plotly@1.19.2/plotly.js"
                     },
                     {
-                        src: "museum/plotly@1.14.1/plotly.min.js",
-                        dest: "dist/vendor/plotly@1.14.1/plotly.min.js"
+                        src: "museum/plotly@1.19.2/plotly.min.js",
+                        dest: "dist/vendor/plotly@1.19.2/plotly.min.js"
                     },
                     {
                         src: "museum/requirejs@2.1.9/require.d.ts",

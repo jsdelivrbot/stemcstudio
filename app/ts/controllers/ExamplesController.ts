@@ -249,6 +249,14 @@ export default class ExamplesController extends AbstractPageController {
                 category: 'Physics'
             },
             {
+                gistId: '277b6d56f1c03a51d41dd2921480a987',
+                title: "GDP and Life Expectancy",
+                description: "",
+                imageSrc: '/img/examples/plotly-gdp-and-life-expectancy.png',
+                imageAlt: '',
+                category: 'Mathematics'
+            },
+            {
                 gistId: '8fc17be344fcd68fee452bb7524d2cfd',
                 title: "Plotly Contours Graph",
                 description: "",
