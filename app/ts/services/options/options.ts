@@ -19,7 +19,7 @@ app.factory('options', [
         const VERSION_DAT_GUI = '0.5.0';
         const VERSION_DECKJS = '1.1.0';
         const VERSION_DOMREADY = '1.0.0';
-        const VERSION_D3 = '3.5.5';
+        const VERSION_D3 = '4.3.0';
         const VERSION_EIGHT = '2.324.0';
         const VERSION_GEOCAS = '1.13.0';
         const VERSION_GLMATRIX = '2.3.2';
@@ -246,8 +246,8 @@ app.factory('options', [
                 visible: true,
                 css: [],
                 dts: d3('d3.d.ts'),
-                js: [d3('d3.js')],
-                minJs: [d3('d3.min.js')],
+                js: [`https://cdnjs.cloudflare.com/ajax/libs/d3/${VERSION_D3}/d3.js`],
+                minJs: [`https://cdnjs.cloudflare.com/ajax/libs/d3/${VERSION_D3}/d3.min.js`],
                 dependencies: {}
             },
             {

@@ -175,9 +175,9 @@ module.exports = function (grunt) {
                     },
                     {
                         expand: true,
-                        cwd: "museum/d3@3.5.5",
+                        cwd: "museum/d3@4.3.0",
                         src: ["**"],
-                        dest: "generated/vendor/d3@3.5.5"
+                        dest: "generated/vendor/d3@4.3.0"
                     },
                     {
                         expand: true,
@@ -525,9 +525,9 @@ module.exports = function (grunt) {
                     },
                     {
                         expand: true,
-                        cwd: "museum/d3@3.5.5",
+                        cwd: "museum/d3@4.3.0",
                         src: ["**"],
-                        dest: "dist/vendor/d3@3.5.5"
+                        dest: "dist/vendor/d3@4.3.0"
                     },
                     {
                         expand: true,
