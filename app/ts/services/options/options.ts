@@ -19,7 +19,7 @@ app.factory('options', [
         const VERSION_DAT_GUI = '0.5.0';
         const VERSION_DECKJS = '1.1.0';
         const VERSION_DOMREADY = '1.0.0';
-        const VERSION_D3 = '4.3.0';
+        const VERSION_D3_V3 = '3.5.17';
         const VERSION_EIGHT = '2.324.0';
         const VERSION_GEOCAS = '1.13.0';
         const VERSION_GLMATRIX = '2.3.2';
@@ -79,7 +79,7 @@ app.factory('options', [
             return vendorFolder('domready', VERSION_DOMREADY, void 0, fileName);
         }
         function d3(fileName: string): string {
-            return vendorFolder('d3', VERSION_D3, void 0, fileName);
+            return vendorFolder('d3', VERSION_D3_V3, void 0, fileName);
         }
         function eight(subFolder: string, fileName: string): string {
             return vendorFolder('davinci-eight', VERSION_EIGHT, subFolder, fileName);
@@ -242,12 +242,12 @@ app.factory('options', [
                 moniker: 'd3',
                 description: "Data-Driven Documents.",
                 homepage: 'http://d3js.org',
-                version: VERSION_D3,
+                version: VERSION_D3_V3,
                 visible: true,
                 css: [],
                 dts: d3('d3.d.ts'),
-                js: [`https://cdnjs.cloudflare.com/ajax/libs/d3/${VERSION_D3}/d3.js`],
-                minJs: [`https://cdnjs.cloudflare.com/ajax/libs/d3/${VERSION_D3}/d3.min.js`],
+                js: [`https://cdnjs.cloudflare.com/ajax/libs/d3/${VERSION_D3_V3}/d3.js`],
+                minJs: [`https://cdnjs.cloudflare.com/ajax/libs/d3/${VERSION_D3_V3}/d3.min.js`],
                 dependencies: {}
             },
             {
