@@ -710,16 +710,10 @@
     "vm": "github:jspm/nodelibs-vm@^0.1.0",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
   },
-  "npm:sha.js@2.4.7": {
-    "hash-base": "npm:hash-base@^3.0.0",
+  "npm:sha.js@2.4.8": {
     "inherits": "npm:inherits@^2.0.1",
     "fs": "github:jspm/nodelibs-fs@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
-  },
-  "npm:hash-base@3.0.3": {
-    "inherits": "npm:inherits@^2.0.1",
-    "stream": "github:jspm/nodelibs-stream@^0.1.0",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
   }
 }
