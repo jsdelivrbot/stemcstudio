@@ -692,12 +692,6 @@
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
   },
   "npm:code-point-at@1.1.0": {},
-  "npm:showdown@1.4.4": {
-    "yargs": "npm:yargs@^3.15.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0",
-    "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
-    "fs": "github:jspm/nodelibs-fs@^0.1.0"
-  },
   "npm:rxjs@5.0.0-rc.2": {
     "symbol-observable": "npm:symbol-observable@^1.0.1",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
@@ -715,5 +709,11 @@
     "fs": "github:jspm/nodelibs-fs@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
+  },
+  "npm:showdown@1.5.0": {
+    "yargs": "npm:yargs@^3.15.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
+    "fs": "github:jspm/nodelibs-fs@^0.1.0"
   }
 }
