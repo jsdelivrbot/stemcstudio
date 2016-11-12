@@ -1,6 +1,6 @@
 {
     "name": "stemcstudio",
-    "version": "2.8.15",
+    "version": "2.8.16",
     "description": "Learning STEM through Computational Modeling",
     "homepage": "https://github.com/geometryzen/STEMCstudio",
     "authors": [
@@ -35,7 +35,7 @@
         "bootstrap": "^3.3.7",
         "bootstrap3-dialog": "^1.35.3",
         "dat-gui": "^0.6.0",
-        "davinci-eight": "^3.0.0",
+        "davinci-eight": "^3.0.1",
         "davinci-mathscript": "^1.1.1",
         "deck.js": "^1.1.0",
         "dialog-polyfill": "^0.4.4",
