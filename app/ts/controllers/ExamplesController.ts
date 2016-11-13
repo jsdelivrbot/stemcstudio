@@ -265,6 +265,14 @@ export default class ExamplesController extends AbstractPageController {
                 category: 'Physics'
             },
             {
+                gistId: '112227e26f5facf421a40e43703c6956',
+                title: "Kinematics and Dynamics",
+                description: "A starting point for modeling kinematics and dynamics concepts.",
+                imageSrc: '/img/examples/eight-kinematics-and-dynamics.png',
+                imageAlt: '',
+                category: 'Physics'
+            },
+            {
                 gistId: 'df53295b58127b519c30251d447f0ae2',
                 title: "Plotly Error Bars Graph",
                 description: "",
