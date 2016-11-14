@@ -1,3 +1,3 @@
 # STEMCstudio
 
-Learning STEM through Computational Modeling.
+Expressing Ideas through Computational Modeling.
