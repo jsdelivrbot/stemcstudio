@@ -726,12 +726,12 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "            </div>\n" +
     "            <div class='collapse navbar-collapse' id='navbar-header-collapse'>\n" +
     "                <a ng-show='github.isLoggedIn()' ng-controller='github-login-controller as github' role='button' ng-click='github.toggleLogin()'\n" +
-    "                class='navbar-brand navbar-right'>\n" +
+    "                    class='navbar-brand navbar-right'>\n" +
     "                    <span ng-show='github.isLoggedIn()' uib-tooltip=\"Sign out from GitHub\" tooltip-placement='bottom'>{{ userLogin() ? userLogin() : 'Unknown' }}</span>\n" +
     "                </a>\n" +
     "                <button ng-hide='github.isLoggedIn()' ng-controller='github-login-controller as github' type=\"button\" class=\"btn btn-github navbar-btn navbar-right\"\n" +
-    "                ng-click='github.toggleLogin()' uib-tooltip=\"Signing in to GitHub allows you to save your projects to your personal GitHub account (Recommended)\"\n" +
-    "                tooltip-placement='bottom'>\n" +
+    "                    ng-click='github.toggleLogin()' uib-tooltip=\"Signing in to GitHub allows you to save your projects to your personal GitHub account (Recommended)\"\n" +
+    "                    tooltip-placement='bottom'>\n" +
     "                    <span ng-hide='github.isLoggedIn()'>Sign in to GitHub</span>\n" +
     "                    <span ng-show='github.isLoggedIn()'>Signed in as {{userLogin()}}</span>\n" +
     "                </button>\n" +
@@ -740,8 +740,10 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "    </nav>\n" +
     "    <div class='md-docs-header'>\n" +
     "        <div class='container'>\n" +
-    "            <h1><logo-text version='{{version}}'/></h1>\n" +
-    "            <p>Learning STEM through Computational Modeling</p>\n" +
+    "            <h1>\n" +
+    "                <logo-text version='{{version}}' />\n" +
+    "            </h1>\n" +
+    "            <p>Expressing Ideas through Computational Modeling</p>\n" +
     "        </div>\n" +
     "    </div>\n" +
     "    <div class='container md-docs-container'>\n" +

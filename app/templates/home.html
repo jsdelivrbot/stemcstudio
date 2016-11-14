@@ -22,12 +22,12 @@
             </div>
             <div class='collapse navbar-collapse' id='navbar-header-collapse'>
                 <a ng-show='github.isLoggedIn()' ng-controller='github-login-controller as github' role='button' ng-click='github.toggleLogin()'
-                class='navbar-brand navbar-right'>
+                    class='navbar-brand navbar-right'>
                     <span ng-show='github.isLoggedIn()' uib-tooltip="Sign out from GitHub" tooltip-placement='bottom'>{{ userLogin() ? userLogin() : 'Unknown' }}</span>
                 </a>
                 <button ng-hide='github.isLoggedIn()' ng-controller='github-login-controller as github' type="button" class="btn btn-github navbar-btn navbar-right"
-                ng-click='github.toggleLogin()' uib-tooltip="Signing in to GitHub allows you to save your projects to your personal GitHub account (Recommended)"
-                tooltip-placement='bottom'>
+                    ng-click='github.toggleLogin()' uib-tooltip="Signing in to GitHub allows you to save your projects to your personal GitHub account (Recommended)"
+                    tooltip-placement='bottom'>
                     <span ng-hide='github.isLoggedIn()'>Sign in to GitHub</span>
                     <span ng-show='github.isLoggedIn()'>Signed in as {{userLogin()}}</span>
                 </button>
@@ -36,8 +36,10 @@
     </nav>
     <div class='md-docs-header'>
         <div class='container'>
-            <h1><logo-text version='{{version}}'/></h1>
-            <p>Learning STEM through Computational Modeling</p>
+            <h1>
+                <logo-text version='{{version}}' />
+            </h1>
+            <p>Expressing Ideas through Computational Modeling</p>
         </div>
     </div>
     <div class='container md-docs-container'>
