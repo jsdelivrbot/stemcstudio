@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ContextConsumer | EIGHT 3.1.0</title>
+	<title>GroupMember | EIGHT 3.1.0</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,45 +56,24 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="contextconsumer.html">ContextConsumer</a>
+					<a href="groupmember.html">GroupMember</a>
 				</li>
 			</ul>
-			<h1>Interface ContextConsumer</h1>
+			<h1>Interface GroupMember</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>This interface standardizes the concept of an implementation being dependent upon
-							a WebGL rendering context. The notification methods for context gain, loss, and free
-							allow the implementation to participate in the dynamic and volatile environment
-						whereupon a browser may reset its WebGL rendering contexts.</p>
-					</div>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="shareable.html" class="tsd-signature-type">Shareable</a>
+						<a href="renderable.html" class="tsd-signature-type">Renderable</a>
 						<ul class="tsd-hierarchy">
 							<li>
-								<span class="target">ContextConsumer</span>
-								<ul class="tsd-hierarchy">
-									<li>
-										<a href="material.html" class="tsd-signature-type">Material</a>
-									</li>
-									<li>
-										<a href="geometry.html" class="tsd-signature-type">Geometry</a>
-									</li>
-									<li>
-										<a href="renderable.html" class="tsd-signature-type">Renderable</a>
-									</li>
-								</ul>
+								<span class="target">GroupMember</span>
 							</li>
 						</ul>
 					</li>
@@ -103,68 +82,98 @@
 			<section class="tsd-panel">
 				<h3>Implemented by</h3>
 				<ul class="tsd-hierarchy">
-					<li><a href="../classes/arrow.html" class="tsd-signature-type">Arrow</a></li>
-					<li><a href="../classes/arrowgeometry.html" class="tsd-signature-type">ArrowGeometry</a></li>
-					<li><a href="../classes/basis.html" class="tsd-signature-type">Basis</a></li>
-					<li><a href="../classes/box.html" class="tsd-signature-type">Box</a></li>
-					<li><a href="../classes/boxgeometry.html" class="tsd-signature-type">BoxGeometry</a></li>
-					<li><a href="../classes/curve.html" class="tsd-signature-type">Curve</a></li>
-					<li><a href="../classes/curvegeometry.html" class="tsd-signature-type">CurveGeometry</a></li>
-					<li><a href="../classes/cylinder.html" class="tsd-signature-type">Cylinder</a></li>
-					<li><a href="../classes/cylindergeometry.html" class="tsd-signature-type">CylinderGeometry</a></li>
-					<li><a href="../classes/drawable.html" class="tsd-signature-type">Drawable</a></li>
-					<li><a href="../classes/geometryarrays.html" class="tsd-signature-type">GeometryArrays</a></li>
-					<li><a href="../classes/geometrybase.html" class="tsd-signature-type">GeometryBase</a></li>
-					<li><a href="../classes/geometryelements.html" class="tsd-signature-type">GeometryElements</a></li>
-					<li><a href="../classes/grid.html" class="tsd-signature-type">Grid</a></li>
-					<li><a href="../classes/gridgeometry.html" class="tsd-signature-type">GridGeometry</a></li>
-					<li><a href="../classes/hollowcylinder.html" class="tsd-signature-type">HollowCylinder</a></li>
-					<li><a href="../classes/hollowcylindergeometry.html" class="tsd-signature-type">HollowCylinderGeometry</a></li>
-					<li><a href="../classes/indexbuffer.html" class="tsd-signature-type">IndexBuffer</a></li>
-					<li><a href="../classes/linematerial.html" class="tsd-signature-type">LineMaterial</a></li>
-					<li><a href="../classes/mesh.html" class="tsd-signature-type">Mesh</a></li>
-					<li><a href="../classes/meshmaterial.html" class="tsd-signature-type">MeshMaterial</a></li>
-					<li><a href="../classes/pointmaterial.html" class="tsd-signature-type">PointMaterial</a></li>
-					<li><a href="../classes/principalscalemesh.html" class="tsd-signature-type">PrincipalScaleMesh</a></li>
-					<li><a href="../classes/rigidbody.html" class="tsd-signature-type">RigidBody</a></li>
-					<li><a href="../classes/shadermaterial.html" class="tsd-signature-type">ShaderMaterial</a></li>
-					<li><a href="../classes/shareablecontextconsumer.html" class="tsd-signature-type">ShareableContextConsumer</a></li>
-					<li><a href="../classes/smartgraphicsprogram.html" class="tsd-signature-type">SmartGraphicsProgram</a></li>
-					<li><a href="../classes/sphere.html" class="tsd-signature-type">Sphere</a></li>
-					<li><a href="../classes/spheregeometry.html" class="tsd-signature-type">SphereGeometry</a></li>
-					<li><a href="../classes/tetrahedron.html" class="tsd-signature-type">Tetrahedron</a></li>
-					<li><a href="../classes/tetrahedrongeometry.html" class="tsd-signature-type">TetrahedronGeometry</a></li>
-					<li><a href="../classes/texture.html" class="tsd-signature-type">Texture</a></li>
-					<li><a href="../classes/turtle.html" class="tsd-signature-type">Turtle</a></li>
-					<li><a href="../classes/turtlegeometry.html" class="tsd-signature-type">TurtleGeometry</a></li>
-					<li><a href="../classes/vertexbuffer.html" class="tsd-signature-type">VertexBuffer</a></li>
-					<li><a href="../classes/webgldisable.html" class="tsd-signature-type">WebGLDisable</a></li>
-					<li><a href="../classes/webglenable.html" class="tsd-signature-type">WebGLEnable</a></li>
+					<li><a href="../classes/group.html" class="tsd-signature-type">Group</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section tsd-is-external">
+						<section class="tsd-index-section tsd-is-external tsd-is-not-exported">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external tsd-is-not-exported"><a href="groupmember.html#r" class="tsd-kind-icon">R</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external tsd-is-not-exported"><a href="groupmember.html#x" class="tsd-kind-icon">X</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external tsd-is-not-exported"><a href="groupmember.html#name" class="tsd-kind-icon">name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external tsd-is-not-exported"><a href="groupmember.html#transparent" class="tsd-kind-icon">transparent</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-inherited tsd-is-external tsd-is-not-exported">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external"><a href="contextconsumer.html#addref" class="tsd-kind-icon">add<wbr>Ref</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="contextconsumer.html#contextfree" class="tsd-kind-icon">context<wbr>Free</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="contextconsumer.html#contextgain" class="tsd-kind-icon">context<wbr>Gain</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="contextconsumer.html#contextlost" class="tsd-kind-icon">context<wbr>Lost</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external"><a href="contextconsumer.html#release" class="tsd-kind-icon">release</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external tsd-is-not-exported"><a href="groupmember.html#addref" class="tsd-kind-icon">add<wbr>Ref</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external tsd-is-not-exported"><a href="groupmember.html#contextfree" class="tsd-kind-icon">context<wbr>Free</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external tsd-is-not-exported"><a href="groupmember.html#contextgain" class="tsd-kind-icon">context<wbr>Gain</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external tsd-is-not-exported"><a href="groupmember.html#contextlost" class="tsd-kind-icon">context<wbr>Lost</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external tsd-is-not-exported"><a href="groupmember.html#release" class="tsd-kind-icon">release</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external tsd-is-not-exported"><a href="groupmember.html#render" class="tsd-kind-icon">render</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-external">
+			<section class="tsd-panel-group tsd-member-group tsd-is-external tsd-is-not-exported">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external tsd-is-not-exported">
+					<a name="r" class="tsd-anchor"></a>
+					<h3>R</h3>
+					<div class="tsd-signature tsd-kind-icon">R<span class="tsd-signature-symbol">:</span> <a href="../classes/geometric3.html" class="tsd-signature-type">Geometric3</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in visual/Group.ts:9</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external tsd-is-not-exported">
+					<a name="x" class="tsd-anchor"></a>
+					<h3>X</h3>
+					<div class="tsd-signature tsd-kind-icon">X<span class="tsd-signature-symbol">:</span> <a href="../classes/geometric3.html" class="tsd-signature-type">Geometric3</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in visual/Group.ts:8</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external tsd-is-not-exported">
+					<a name="name" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> name</h3>
+					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="renderable.html">Renderable</a>.<a href="renderable.html#name">name</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/05377ec/src/davinci-eight/core/Renderable.ts#L12">core/Renderable.ts:12</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>An optional name allowing the object to be found by name.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external tsd-is-not-exported">
+					<a name="transparent" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> transparent</h3>
+					<div class="tsd-signature tsd-kind-icon">transparent<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="renderable.html">Renderable</a>.<a href="renderable.html#transparent">transparent</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/05377ec/src/davinci-eight/core/Renderable.ts#L18">core/Renderable.ts:18</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Determines when this object will be renderered relative to other objects.
+							Transparent objects are rendered after non-transparent objects.</p>
+						</div>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-inherited tsd-is-external tsd-is-not-exported">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external tsd-is-not-exported">
 					<a name="addref" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> add<wbr>Ref</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external tsd-is-not-exported">
 						<li class="tsd-signature tsd-kind-icon">add<wbr>Ref<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
@@ -185,15 +194,16 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external tsd-is-not-exported">
 					<a name="contextfree" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> context<wbr>Free</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external tsd-is-not-exported">
 						<li class="tsd-signature tsd-kind-icon">context<wbr>Free<span class="tsd-signature-symbol">(</span>contextProvider<span class="tsd-signature-symbol">: </span><a href="contextprovider.html" class="tsd-signature-type">ContextProvider</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Inherited from <a href="contextconsumer.html">ContextConsumer</a>.<a href="contextconsumer.html#contextfree">contextFree</a></p>
 								<ul>
 									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/05377ec/src/davinci-eight/core/ContextConsumer.ts#L21">core/ContextConsumer.ts:21</a></li>
 								</ul>
@@ -219,15 +229,16 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external tsd-is-not-exported">
 					<a name="contextgain" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> context<wbr>Gain</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external tsd-is-not-exported">
 						<li class="tsd-signature tsd-kind-icon">context<wbr>Gain<span class="tsd-signature-symbol">(</span>contextProvider<span class="tsd-signature-symbol">: </span><a href="contextprovider.html" class="tsd-signature-type">ContextProvider</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Inherited from <a href="contextconsumer.html">ContextConsumer</a>.<a href="contextconsumer.html#contextgain">contextGain</a></p>
 								<ul>
 									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/05377ec/src/davinci-eight/core/ContextConsumer.ts#L30">core/ContextConsumer.ts:30</a></li>
 								</ul>
@@ -251,15 +262,16 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external tsd-is-not-exported">
 					<a name="contextlost" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> context<wbr>Lost</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external tsd-is-not-exported">
 						<li class="tsd-signature tsd-kind-icon">context<wbr>Lost<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Inherited from <a href="contextconsumer.html">ContextConsumer</a>.<a href="contextconsumer.html#contextlost">contextLost</a></p>
 								<ul>
 									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/05377ec/src/davinci-eight/core/ContextConsumer.ts#L38">core/ContextConsumer.ts:38</a></li>
 								</ul>
@@ -276,10 +288,10 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external tsd-is-not-exported">
 					<a name="release" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> release</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external tsd-is-not-exported">
 						<li class="tsd-signature tsd-kind-icon">release<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
@@ -300,6 +312,35 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external tsd-is-not-exported">
+					<a name="render" class="tsd-anchor"></a>
+					<h3>render</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">render<span class="tsd-signature-symbol">(</span>ambients<span class="tsd-signature-symbol">: </span><a href="facet.html" class="tsd-signature-type">Facet</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="renderable.html">Renderable</a>.<a href="renderable.html#render">render</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/05377ec/src/davinci-eight/core/Renderable.ts#L23">core/Renderable.ts:23</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Renders this object to the WebGL pipeline.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>ambients: <a href="facet.html" class="tsd-signature-type">Facet</a><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -314,23 +355,38 @@
 				<ul class="before-current">
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface tsd-is-external">
-						<a href="contextconsumer.html" class="tsd-kind-icon">Context<wbr>Consumer</a>
+					<li class="current tsd-kind-interface tsd-is-external tsd-is-not-exported">
+						<a href="groupmember.html" class="tsd-kind-icon">Group<wbr>Member</a>
 						<ul>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
-								<a href="contextconsumer.html#addref" class="tsd-kind-icon">add<wbr>Ref</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external tsd-is-not-exported">
+								<a href="groupmember.html#r" class="tsd-kind-icon">R</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-								<a href="contextconsumer.html#contextfree" class="tsd-kind-icon">context<wbr>Free</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external tsd-is-not-exported">
+								<a href="groupmember.html#x" class="tsd-kind-icon">X</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-								<a href="contextconsumer.html#contextgain" class="tsd-kind-icon">context<wbr>Gain</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external tsd-is-not-exported">
+								<a href="groupmember.html#name" class="tsd-kind-icon">name</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-								<a href="contextconsumer.html#contextlost" class="tsd-kind-icon">context<wbr>Lost</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external tsd-is-not-exported">
+								<a href="groupmember.html#transparent" class="tsd-kind-icon">transparent</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
-								<a href="contextconsumer.html#release" class="tsd-kind-icon">release</a>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external tsd-is-not-exported">
+								<a href="groupmember.html#addref" class="tsd-kind-icon">add<wbr>Ref</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external tsd-is-not-exported">
+								<a href="groupmember.html#contextfree" class="tsd-kind-icon">context<wbr>Free</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external tsd-is-not-exported">
+								<a href="groupmember.html#contextgain" class="tsd-kind-icon">context<wbr>Gain</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external tsd-is-not-exported">
+								<a href="groupmember.html#contextlost" class="tsd-kind-icon">context<wbr>Lost</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external tsd-is-not-exported">
+								<a href="groupmember.html#release" class="tsd-kind-icon">release</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external tsd-is-not-exported">
+								<a href="groupmember.html#render" class="tsd-kind-icon">render</a>
 							</li>
 						</ul>
 					</li>
