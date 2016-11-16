@@ -273,6 +273,14 @@ export default class ExamplesController extends AbstractPageController {
                 category: 'Physics'
             },
             {
+                gistId: '300202f132a385aa6663c8ba6bbe9cce',
+                title: "Graphing with Plot.ly",
+                description: "",
+                imageSrc: '/img/examples/plotly-graphing.png',
+                imageAlt: '',
+                category: 'Mathematics'
+            },
+            {
                 gistId: 'df53295b58127b519c30251d447f0ae2',
                 title: "Plotly Error Bars Graph",
                 description: "",

@@ -216,12 +216,12 @@ declare module Plotly {
     }
 
     /**
-     * 
+     * Plot the data. Replaces the previous plot with a new plot.
      */
-    function newPlot(graphDiv: string | HTMLElement, data: Data | Data[], layout?: Layout, options?: PlotOptions): void;
+    function newPlot(graphDiv: string | HTMLElement, data: Data[], layout?: Layout, options?: PlotOptions): void;
 
     /**
-     * Plotly.plot is like newPlot, but it isn't idempotent (you can't call it multiple times in a row).
+     * Plot the data.
      */
     function plot(graphDiv: string | HTMLElement, data: Data[], layout: Layout, options?: PlotOptions): void;
 
