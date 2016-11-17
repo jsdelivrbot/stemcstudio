@@ -153,8 +153,8 @@ export default class ExamplesController extends AbstractPageController {
                 category: 'Mathematics'
             },
             {
-                gistId: '1054e457c4fb6bba3aab1aceb25f1212',
-                title: "EIGHT Starter Template",
+                gistId: '54644519dcd556bf8bf779bfa084ced3',
+                title: "EIGHT Getting Started",
                 description: "An example that you can copy to create your own 3D graphics programs using the EIGHT library.",
                 imageSrc: '/img/examples/eight-starter-template.png',
                 imageAlt: 'Green cube illuminated by a directional light.',
