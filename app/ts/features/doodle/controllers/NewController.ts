@@ -1,5 +1,3 @@
-import * as ng from 'angular';
-import app from '../../../app';
 import ITemplate from '../../../services/templates/ITemplate';
 import IDoodleManager from '../../../services/doodles/IDoodleManager';
 import NavigationService from '../../../modules/navigation/NavigationService';
@@ -23,7 +21,7 @@ export default class NewController {
         $scope.template = templates[0];
         $scope.templates = templates;
 
-        $scope.doOK = function() {
+        $scope.doOK = function () {
             const doodle = doodles.createDoodle();
             copyTemplateToDoodle($scope.template, doodle);
             doodle.description = $scope.description;
@@ -32,7 +30,7 @@ export default class NewController {
             navigation.gotoDoodle();
         };
 
-        $scope.doCancel = function() {
+        $scope.doCancel = function () {
             navigation.gotoDoodle();
         };
     }

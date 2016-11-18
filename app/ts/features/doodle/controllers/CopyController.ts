@@ -1,32 +1,7 @@
-import * as ng from 'angular';
-import app from '../../../app';
 import CopyScope from '../../../scopes/CopyScope';
 import IDoodleManager from '../../../services/doodles/IDoodleManager';
-import ITemplate from '../../../services/templates/ITemplate';
-import ITemplateFile from '../../../services/templates/ITemplateFile';
-import WsModel from '../../../wsmodel/services/WsModel';
-import WsFile from '../../../wsmodel/services/WsFile';
 import copyDoodleToDoodle from '../../../mappings/copyDoodleToDoodle';
 import NavigationService from '../../../modules/navigation/NavigationService';
-
-function mapWorkspaceFileToTemplateFile(wsFile: WsFile): ITemplateFile {
-    const result: ITemplateFile = {
-        content: wsFile.getText(),
-        language: wsFile.mode
-    };
-    return result;
-}
-
-function mapDoodleFilesToTemplateFiles(wsModel: WsModel): { [path: string]: ITemplateFile } {
-    const result: { [path: string]: ITemplateFile } = {};
-    const paths: string[] = wsModel.getFileDocumentPaths();
-    for (let i = 0; i < paths.length; i++) {
-        const path = paths[i];
-        const file = wsModel.getFileWeakRef(path);
-        result[path] = mapWorkspaceFileToTemplateFile(file);
-    }
-    return result;
-}
 
 export default class CopyController {
     public static $inject: string[] = [
