@@ -7,7 +7,7 @@ import EventBus from "../EventBus";
 import EventEmitterClass from "../lib/EventEmitterClass";
 import FoldLine from "../FoldLine";
 import FontMetrics from "../layer/FontMetrics";
-import {changeCharacterSize} from '../layer/FontMetrics'
+import {changeCharacterSize} from '../layer/FontMetrics';
 import TextConfig from './TextConfig';
 import Token from "../Token";
 
@@ -193,7 +193,7 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
         this.eventBus.on(eventName, callback, false);
         return () => {
             this.eventBus.off(eventName, callback);
-        }
+        };
     }
 
     /**
@@ -651,7 +651,7 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
         }
 
         var tokens = session.getTokens(row);
-        foldLine.walk(function(placeholder, row, column, lastColumn, isNewRow) {
+        foldLine.walk(function (placeholder, row, column, lastColumn, isNewRow) {
             if (placeholder != null) {
                 renderTokens.push({
                     type: "fold",

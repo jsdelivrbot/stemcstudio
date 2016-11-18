@@ -1,6 +1,4 @@
-"use strict";
-
-import { addEventListeners, each, getWindowForElement, hasParent, inArray, inStr, prefixed, removeEventListeners, splitStr, TEST_ELEMENT, toArray, uniqueArray, uniqueId } from './utils';
+import { addEventListeners, each, getWindowForElement, inArray, inStr, prefixed, removeEventListeners, splitStr, TEST_ELEMENT, uniqueId } from './utils';
 
 export interface Touch {
     clientX: number;
@@ -163,6 +161,14 @@ export interface IRecognizerCallback {
     updateTouchAction(): void;
 }
 
+export const STATE_UNDEFINED = 0;
+export const STATE_POSSIBLE = 1;
+export const STATE_BEGAN = 2;
+export const STATE_CHANGED = 4;
+export const STATE_RECOGNIZED = 8;
+export const STATE_CANCELLED = 16;
+export const STATE_FAILED = 32;
+
 export class Manager implements IRecognizerCallback {
     public handlers = {};
     public session = new Session();
@@ -175,7 +181,7 @@ export class Manager implements IRecognizerCallback {
     public enable = true;  // What does this enable?
     public inputTarget;
     private cssProps = {};
-    private callback: IRecognizerCallback;
+    // private callback: IRecognizerCallback;
     /**
      * Manager
      * @param {HTMLElement} element
@@ -239,7 +245,7 @@ export class Manager implements IRecognizerCallback {
             // 3.   allow if the recognizer is allowed to run simultaneous with the current recognized recognizer.
             //      this can be setup with the `recognizeWith()` method on the recognizer.
             if (session.stopped !== FORCED_STOP && ( // 1
-                !curRecognizer || recognizer == curRecognizer || // 2
+                !curRecognizer || recognizer === curRecognizer || // 2
                 recognizer.canRecognizeWith(curRecognizer))) { // 3
 
                 recognizer.recognize(inputData);
@@ -310,7 +316,7 @@ export class Manager implements IRecognizerCallback {
      */
     on(events: string, handler): Manager {
         var handlers = this.handlers;
-        each(splitStr(events), function(event) {
+        each(splitStr(events), function (event) {
             handlers[event] = handlers[event] || [];
             handlers[event].push(handler);
         });
@@ -325,7 +331,7 @@ export class Manager implements IRecognizerCallback {
      */
     off(events: string, handler): Manager {
         var handlers = this.handlers;
-        each(splitStr(events), function(event) {
+        each(splitStr(events), function (event) {
             if (!handler) {
                 delete handlers[event];
             }
@@ -377,7 +383,9 @@ export class Manager implements IRecognizerCallback {
      * it doesn't unbind dom events, that is the user own responsibility
      */
     destroy() {
-        this.element && this.toggleCssProps(false);
+        if (this.element) {
+            this.toggleCssProps(false);
+        }
 
         this.handlers = {};
         this.session = undefined;
@@ -390,12 +398,13 @@ export class Manager implements IRecognizerCallback {
             return;
         }
         var element = this.element;
-        each(this.cssProps, function(value, name) {
+        each(this.cssProps, function (value, name) {
             element.style[prefixed(element.style, name)] = add ? value : '';
         });
     }
 
     cancelContextMenu(): void {
+        // Do nothing yet.
     }
 }
 
@@ -411,11 +420,11 @@ function triggerDomEvent(event, data) {
     data.target.dispatchEvent(gestureEvent);
 }
 
-var MOBILE_REGEX = /mobile|tablet|ip(ad|hone|od)|android/i;
+// var MOBILE_REGEX = /mobile|tablet|ip(ad|hone|od)|android/i;
 
-var SUPPORT_TOUCH = ('ontouchstart' in window);
-var SUPPORT_POINTER_EVENTS = prefixed(window, 'PointerEvent') !== undefined;
-var SUPPORT_ONLY_TOUCH = SUPPORT_TOUCH && MOBILE_REGEX.test(navigator.userAgent);
+// var SUPPORT_TOUCH = ('ontouchstart' in window);
+// var SUPPORT_POINTER_EVENTS = prefixed(window, 'PointerEvent') !== undefined;
+// var SUPPORT_ONLY_TOUCH = SUPPORT_TOUCH && MOBILE_REGEX.test(navigator.userAgent);
 
 var PREFIXED_TOUCH_ACTION = prefixed(TEST_ELEMENT.style, 'touchAction');
 var NATIVE_TOUCH_ACTION = PREFIXED_TOUCH_ACTION !== undefined;
@@ -465,7 +474,7 @@ class TouchAction {
     compute() {
         var actions: string[] = [];
         // FIXME: Make this type-safe automagically
-        each(this.manager.recognizers, function(recognizer: Recognizer) {
+        each(this.manager.recognizers, function (recognizer: Recognizer) {
             if (recognizer.enabled) {
                 actions = actions.concat(recognizer.getTouchAction());
             }
@@ -550,7 +559,7 @@ export var INPUT_TYPE_PEN = 'pen';
 export var INPUT_TYPE_MOUSE = 'mouse';
 export var INPUT_TYPE_KINECT = 'kinect';
 
-var COMPUTE_INTERVAL = 25;
+// var COMPUTE_INTERVAL = 25;
 
 export var INPUT_START = 1;
 export var INPUT_MOVE = 2;
@@ -588,7 +597,7 @@ export var DIRECTION_VERTICAL = DIRECTION_UP | DIRECTION_DOWN;
 export var DIRECTION_ALL = DIRECTION_HORIZONTAL | DIRECTION_VERTICAL;
 
 var PROPS_XY = ['x', 'y'];
-var PROPS_CLIENT_XY = ['clientX', 'clientY'];
+// var PROPS_CLIENT_XY = ['clientX', 'clientY'];
 
 class Input {
     public manager: Manager;
@@ -619,7 +628,7 @@ class Input {
 
         // smaller wrapper around the handler, for the scope and the enabled state of the manager,
         // so when disabled the input events are completely bypassed.
-        this.domHandler = function(event: TouchEvent) {
+        this.domHandler = function (event: TouchEvent) {
             if (manager.enable) {
                 self.handler(event);
             }
@@ -631,24 +640,38 @@ class Input {
      * should handle the inputEvent data and trigger the callback
      * @virtual
      */
-    handler(event: any) { }
+    handler(event: any) {
+        // Do nothing yet.
+    }
 
     /**
      * bind the events
      */
     init() {
-        this.evEl && addEventListeners(this.element, this.evEl, this.domHandler);
-        this.evTarget && addEventListeners(this.target, this.evTarget, this.domHandler);
-        this.evWin && addEventListeners(getWindowForElement(this.element), this.evWin, this.domHandler);
+        if (this.evEl) {
+            addEventListeners(this.element, this.evEl, this.domHandler);
+        }
+        if (this.evTarget) {
+            addEventListeners(this.target, this.evTarget, this.domHandler);
+        }
+        if (this.evWin) {
+            addEventListeners(getWindowForElement(this.element), this.evWin, this.domHandler);
+        }
     }
 
     /**
      * unbind the events
      */
     destroy() {
-        this.evEl && removeEventListeners(this.element, this.evEl, this.domHandler);
-        this.evTarget && removeEventListeners(this.target, this.evTarget, this.domHandler);
-        this.evWin && removeEventListeners(getWindowForElement(this.element), this.evWin, this.domHandler);
+        if (this.evEl) {
+            removeEventListeners(this.element, this.evEl, this.domHandler);
+        }
+        if (this.evTarget) {
+            removeEventListeners(this.target, this.evTarget, this.domHandler);
+        }
+        if (this.evWin) {
+            removeEventListeners(getWindowForElement(this.element), this.evWin, this.domHandler);
+        }
     }
 }
 
@@ -673,14 +696,14 @@ function inputHandler(manager: Manager, eventType: number, touchEvent: TouchEven
  * @param {IComputedEvent} input
  */
 function computeIComputedEvent(manager: Manager, eventType: number, touchEvent: TouchEvent): IComputedEvent {
-    var touchesLength = touchEvent.touches.length;
-    var changedPointersLen = touchEvent.changedTouches.length;
-    var isFirst: boolean = (eventType & INPUT_START && (touchesLength - changedPointersLen === 0));
-    var isFinal: boolean = (eventType & (INPUT_END | INPUT_CANCEL) && (touchesLength - changedPointersLen === 0));
+    const touchesLength = touchEvent.touches.length;
+    const changedPointersLen = touchEvent.changedTouches.length;
+    const isFirst: boolean = (eventType & INPUT_START && (touchesLength - changedPointersLen === 0));
+    // var isFinal: boolean = (eventType & (INPUT_END | INPUT_CANCEL) && (touchesLength - changedPointersLen === 0));
 
-    //var compEvent: any/*IComputedEvent*/ = {};
-    //compEvent.isFirst = !!isFirst;
-    //compEvent.isFinal = !!isFinal;
+    // var compEvent: any/*IComputedEvent*/ = {};
+    // compEvent.isFirst = !!isFirst;
+    // compEvent.isFinal = !!isFinal;
 
     if (isFirst) {
         manager.session.reset();
@@ -717,7 +740,7 @@ function computeIComputedEvent(manager: Manager, eventType: number, touchEvent: 
     var timeStamp = Date.now();
     var movementTime = timeStamp - session.startTime;
 
-    //var angle = getAngle(offsetCenter, center);
+    // var angle = getAngle(offsetCenter, center);
     var distance: number = movement ? movement.norm() : 0;
     var direction: number = getDirection(movement);
 
@@ -777,20 +800,15 @@ function computeCenter(touches: Touch[]): ClientLocation {
 
 /**
  * calculate the velocity between two points. unit is in px per ms.
- * @param {Number} deltaTime
- * @param {Number} x
- * @param {Number} y
- * @return {Object} velocity `x` and `y`
  */
+/*
 function getVelocity(deltaTime: number, x: number, y: number): { x: number; y: number } {
     return { x: x / deltaTime || 0, y: y / deltaTime || 0 };
 }
+*/
 
 /**
  * get the direction between two points
- * @param {VectorE2} movement
- * @param {Number} y
- * @return {Number} direction
  */
 function getDirection(movement: VectorE2): number {
     var N = new VectorE2(0, -1);
@@ -846,6 +864,7 @@ export function getDistance(p1, p2, props?) {
  * @param {Array} [props] containing x and y keys
  * @return {Number} angle
  */
+/*
 function getAngle(p1, p2, props?) {
     if (!props) {
         props = PROPS_XY;
@@ -854,16 +873,16 @@ function getAngle(p1, p2, props?) {
         y = p2[props[1]] - p1[props[1]];
     return Math.atan2(y, x) * 180 / Math.PI;
 }
+*/
 
 /**
  * calculate the rotation degrees between two pointersets
- * @param {Array} start array of pointers
- * @param {Array} end array of pointers
- * @return {Number} rotation
  */
+/*
 function getRotation(start, end) {
     return getAngle(end[1], end[0], PROPS_CLIENT_XY) - getAngle(start[1], start[0], PROPS_CLIENT_XY);
 }
+*/
 
 /**
  * calculate the scale factor between two pointersets
@@ -872,9 +891,11 @@ function getRotation(start, end) {
  * @param {Array} end array of pointers
  * @return {Number} scale
  */
+/*
 function getScale(start, end) {
     return getDistance(end[0], end[1], PROPS_CLIENT_XY) / getDistance(start[0], start[1], PROPS_CLIENT_XY);
 }
+*/
 
 var TOUCH_INPUT_MAP: { [s: string]: number; } = {
     touchstart: INPUT_START,
@@ -886,12 +907,10 @@ var TOUCH_INPUT_MAP: { [s: string]: number; } = {
 var TOUCH_TARGET_EVENTS = 'touchstart touchmove touchend touchcancel';
 
 class TouchInput extends Input {
-    private targetIds = {};
+    // private targetIds = {};
     private callback: (manager: Manager, type: number, data: TouchEvent) => void;
     /**
      * Multi-user touch events input
-     * @constructor
-     * @extends Input
      */
     constructor(manager: Manager, callback: (manager: Manager, type: number, data: TouchEvent) => void) {
         // FIXME: The base class registers handlers and could be firing events
@@ -911,6 +930,7 @@ class TouchInput extends Input {
  * @param {Number} type flag
  * @return {undefined|Array} [all, changed]
  */
+/*
 function getTouches(event: TouchEvent, type: number) {
     var allTouches = toArray(event.touches);
     var targetIds = this.targetIds;
@@ -928,7 +948,7 @@ function getTouches(event: TouchEvent, type: number) {
         target = this.target;
 
     // get target touches from touches
-    targetTouches = allTouches.filter(function(touch) {
+    targetTouches = allTouches.filter(function (touch) {
         return hasParent(touch.target, target);
     });
 
@@ -965,6 +985,7 @@ function getTouches(event: TouchEvent, type: number) {
         changedTargetTouches
     ];
 }
+*/
 
 /**
  * Recognizer flow explained; *
@@ -993,13 +1014,6 @@ function getTouches(event: TouchEvent, type: number) {
  *                                         |
  *                                     Recognized
  */
-export var STATE_UNDEFINED = 0;
-export var STATE_POSSIBLE = 1;
-export var STATE_BEGAN = 2;
-export var STATE_CHANGED = 4;
-export var STATE_RECOGNIZED = 8;
-export var STATE_CANCELLED = 16;
-export var STATE_FAILED = 32;
 
 export class Recognizer implements IRecognizer {
     public id;
@@ -1031,7 +1045,9 @@ export class Recognizer implements IRecognizer {
         //      extend(this.options, options);
 
         // also update the touchAction, in case something changed about the directions/enabled state
-        this.manager && this.manager.updateTouchAction();
+        if (this.manager) {
+            this.manager.updateTouchAction();
+        }
         return this;
     }
 
@@ -1144,6 +1160,7 @@ export class Recognizer implements IRecognizer {
             return this.emit();
         }
         else {
+            // Do nothing
         }
         // it's failing anyway?
         this.state = STATE_FAILED;
@@ -1212,7 +1229,9 @@ export class Recognizer implements IRecognizer {
      * like when another is being recognized or it is disabled
      * @virtual
      */
-    reset() { }
+    reset() {
+        // Do nothing.
+    }
 }
 
 /**

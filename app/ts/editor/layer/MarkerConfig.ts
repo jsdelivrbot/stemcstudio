@@ -26,4 +26,4 @@ interface MarkerConfig extends LayerConfig {
     characterWidth: number;
 }
 
-export default MarkerConfig
+export default MarkerConfig;

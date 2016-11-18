@@ -2,19 +2,19 @@
 
 import { ContinuousRecognizer } from './attribute';
 import {
-DIRECTION_ALL,
-DIRECTION_DOWN,
-DIRECTION_HORIZONTAL,
-DIRECTION_LEFT,
-DIRECTION_RIGHT,
-DIRECTION_UNDEFINED,
-DIRECTION_UP,
-DIRECTION_VERTICAL,
-IComputedEvent,
-STATE_BEGAN,
-TOUCH_ACTION_PAN_X,
-TOUCH_ACTION_PAN_Y,
-VectorE2
+    DIRECTION_ALL,
+    DIRECTION_DOWN,
+    DIRECTION_HORIZONTAL,
+    DIRECTION_LEFT,
+    DIRECTION_RIGHT,
+    DIRECTION_UNDEFINED,
+    DIRECTION_UP,
+    DIRECTION_VERTICAL,
+    IComputedEvent,
+    STATE_BEGAN,
+    TOUCH_ACTION_PAN_X,
+    TOUCH_ACTION_PAN_Y,
+    VectorE2
 } from '../hammer';
 
 /**
@@ -49,26 +49,26 @@ export class PanRecognizer extends ContinuousRecognizer {
     }
 
     directionTest(input: IComputedEvent): boolean {
-        var hasMoved = true;
-        var distance = input.distance;
-        var direction = input.direction;
-        var x = input.movement.x;
-        var y = input.movement.y;
+        let hasMoved = true;
+        let distance = input.distance;
+        let direction = input.direction;
+        const x = input.movement.x;
+        const y = input.movement.y;
 
         // lock to axis?
         if (!(direction & this.direction)) {
             if (this.direction & DIRECTION_HORIZONTAL) {
                 direction = (x === 0) ? DIRECTION_UNDEFINED : (x < 0) ? DIRECTION_LEFT : DIRECTION_RIGHT;
-                hasMoved = x != this.pX;
+                hasMoved = x !== this.pX;
                 distance = Math.abs(input.movement.x);
             }
             else {
                 direction = (y === 0) ? DIRECTION_UNDEFINED : (y < 0) ? DIRECTION_UP : DIRECTION_DOWN;
-                hasMoved = y != this.pY;
+                hasMoved = y !== this.pY;
                 distance = Math.abs(input.movement.y);
             }
         }
-        var directionAllowed: boolean = (direction & this.direction) > 0;
+        const directionAllowed: boolean = (direction & this.direction) > 0;
         return hasMoved && distance > this.threshold && directionAllowed;
     }
 
@@ -77,8 +77,8 @@ export class PanRecognizer extends ContinuousRecognizer {
         // The first and last events will not have movement defined.
         // The direction test requires movement!
         if (input.movement) {
-            var directionOK: boolean = this.directionTest(input);
-            var began: boolean = (this.state & STATE_BEGAN) > 0;
+            const directionOK: boolean = this.directionTest(input);
+            const began: boolean = (this.state & STATE_BEGAN) > 0;
             return super.attributeTest(input) && (began || (!began && directionOK));
         }
         else {

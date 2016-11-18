@@ -17,7 +17,6 @@ export default class MarkerLayer extends AbstractLayer {
 
     /**
      *
-     * @param parent
      */
     constructor(parent: HTMLDivElement) {
         super(parent, "ace_layer ace_marker-layer");
@@ -32,7 +31,13 @@ export default class MarkerLayer extends AbstractLayer {
     }
 
     public setMarkers(markers: { [id: number]: Marker }) {
-        this.markers = markers;
+        // If the markers are not defined then we'll have problems in the update method.
+        if (typeof markers === 'object') {
+            this.markers = markers;
+        }
+        else {
+            throw new Error(`markers must be an object, was ${typeof markers}`);
+        }
     }
 
     public update(config: MarkerConfig) {
@@ -45,54 +50,56 @@ export default class MarkerLayer extends AbstractLayer {
 
         const html: (number | string)[] = [];
 
-        const ids = Object.keys(this.markers);
-        const iLen = ids.length;
-        for (let i = 0; i < iLen; i++) {
-            const id = parseInt(ids[i], 10);
+        if (typeof this.markers === 'object') {
+            const ids = Object.keys(this.markers);
+            const iLen = ids.length;
+            for (let i = 0; i < iLen; i++) {
+                const id = parseInt(ids[i], 10);
 
-            const marker: Marker = this.markers[id];
+                const marker: Marker = this.markers[id];
 
-            if (!marker.range) {
-                marker.update(html, this, this.session, config);
-                continue;
-            }
+                if (!marker.range) {
+                    marker.update(html, this, this.session, config);
+                    continue;
+                }
 
-            if (typeof marker.range.start.row !== 'number') {
-                throw new TypeError();
-            }
-            if (typeof marker.range.start.column !== 'number') {
-                throw new TypeError();
-            }
-            if (typeof marker.range.end.row !== 'number') {
-                throw new TypeError();
-            }
-            if (typeof marker.range.end.row !== 'number') {
-                throw new TypeError();
-            }
+                if (typeof marker.range.start.row !== 'number') {
+                    throw new TypeError();
+                }
+                if (typeof marker.range.start.column !== 'number') {
+                    throw new TypeError();
+                }
+                if (typeof marker.range.end.row !== 'number') {
+                    throw new TypeError();
+                }
+                if (typeof marker.range.end.row !== 'number') {
+                    throw new TypeError();
+                }
 
-            let range: Range = marker.range.clipRows(config.firstRow, config.lastRow);
-            if (range.isEmpty()) continue;
+                let range: Range = marker.range.clipRows(config.firstRow, config.lastRow);
+                if (range.isEmpty()) continue;
 
-            range = this.session.documentToScreenRange(range);
-            if (marker.renderer) {
-                const top = this.$getTop(range.start.row, config);
-                const left = this.$padding + range.start.column * config.characterWidth;
-                marker.renderer(html, range, left, top, config);
-            }
-            else if (marker.type === "fullLine") {
-                this.drawFullLineMarker(html, range, marker.clazz, config);
-            }
-            else if (marker.type === "screenLine") {
-                this.drawScreenLineMarker(html, range, marker.clazz, config);
-            }
-            else if (range.isMultiLine()) {
-                if (marker.type === "text")
-                    this.drawTextMarker(html, range, marker.clazz, config);
-                else
-                    this.drawMultiLineMarker(html, range, marker.clazz, config);
-            }
-            else {
-                this.drawSingleLineMarker(html, range, marker.clazz + " ace_start ace_br15", config);
+                range = this.session.documentToScreenRange(range);
+                if (marker.renderer) {
+                    const top = this.$getTop(range.start.row, config);
+                    const left = this.$padding + range.start.column * config.characterWidth;
+                    marker.renderer(html, range, left, top, config);
+                }
+                else if (marker.type === "fullLine") {
+                    this.drawFullLineMarker(html, range, marker.clazz, config);
+                }
+                else if (marker.type === "screenLine") {
+                    this.drawScreenLineMarker(html, range, marker.clazz, config);
+                }
+                else if (range.isMultiLine()) {
+                    if (marker.type === "text")
+                        this.drawTextMarker(html, range, marker.clazz, config);
+                    else
+                        this.drawMultiLineMarker(html, range, marker.clazz, config);
+                }
+                else {
+                    this.drawSingleLineMarker(html, range, marker.clazz + " ace_start ace_br15", config);
+                }
             }
         }
         this.element.innerHTML = html.join("");

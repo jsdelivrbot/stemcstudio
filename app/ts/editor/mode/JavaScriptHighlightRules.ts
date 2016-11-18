@@ -34,7 +34,7 @@ export default class JavaScriptHighlightRules extends TextHighlightRules {
     }, "identifier");
 
     // keywords which can be followed by regular expressions
-    const kwBeforeRe = "case|do|else|finally|in|of|instanceof|return|throw|try|typeof|yield|void";
+    const kwBeforeRe = "case|do|else|finally|in|instanceof|return|throw|try|typeof|yield|void";
 
     // TODO: Unicode escape sequences
     const identifierRe = "[a-zA-Z\\$_\u00a1-\uffff][a-zA-Z\\d\\$_\u00a1-\uffff]*\\b";

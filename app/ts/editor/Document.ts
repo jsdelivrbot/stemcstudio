@@ -6,7 +6,7 @@ import Range from './Range';
 import RangeBasic from './RangeBasic';
 import Shareable from './base/Shareable';
 
-var $split: (text: string) => string[] = (function() {
+const $split: (text: string) => string[] = (function () {
     function foo(text: string): string[] {
         return text.replace(/\r\n|\r/g, "\n").split("\n");
     }
@@ -88,8 +88,6 @@ export default class Document implements Shareable {
      * @param textOrLines
      */
     constructor(textOrLines: string | Array<string>) {
-        // console.lg("Document.constructor");
-
         this._lines = [""];
 
         this._eventBus = new EventEmitterClass<any, Document>(this);
@@ -108,20 +106,17 @@ export default class Document implements Shareable {
     }
 
     protected destructor(): void {
-        // console.lg("Document.destructor");
         this._lines = void 0;
         this._eventBus = void 0;
     }
 
     public addRef(): number {
         this.refCount++;
-        // console.lg(`Document.addRef => ${this.refCount}`);
         return this.refCount;
     }
 
     public release(): number {
         this.refCount--;
-        // console.lg(`Document.release => ${this.refCount}`);
         if (this.refCount === 0) {
             this.destructor();
         }
@@ -278,10 +273,9 @@ export default class Document implements Shareable {
     /**
      * Inserts a block of `text` at the indicated `position`.
      *
-     * @method insert
-     * @param position {Position} The position to start inserting at; it's an object that looks like `{ row: row, column: column}`
-     * @param text {string} A chunk of text to insert
-     * @return {Position} The position ({row, column}) of the last line of `text`.
+     * @param position The position to start inserting at; it's an object that looks like `{ row: row, column: column}`
+     * @param text A chunk of text to insert
+     * @return The position ({row, column}) of the last line of `text`.
      * If the length of `text` is 0, this function simply returns `position`. 
      */
     insert(position: Position, text: string): Position {
@@ -521,10 +515,9 @@ export default class Document implements Shareable {
      * Removes a range of full lines.
      * This method also triggers the `"change"` event.
      *
-     * @method removeFullLines
-     * @param firstRow {number} The first row to be removed
-     * @param lastRow {number} The last row to be removed
-     * @returns {[String]} Returns all the removed lines.
+     * @param firstRow The first row to be removed
+     * @param lastRow The last row to be removed
+     * @returns all the removed lines.
      */
     removeFullLines(firstRow: number, lastRow: number): string[] {
         // Clip to document.

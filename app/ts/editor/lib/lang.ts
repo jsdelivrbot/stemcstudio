@@ -38,17 +38,19 @@ export function stringTrimRight(s: string): string {
 }
 
 export function copyObject(obj) {
-    var copy = {};
-    for (var key in obj) {
-        copy[key] = obj[key];
+    const copy = {};
+    for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            copy[key] = obj[key];
+        }
     }
     return copy;
 }
 
 export function copyArray<T>(array: T[]): T[] {
-    var copy: T[] = [];
-    for (var i = 0, l = array.length; i < l; i++) {
-        if (array[i] && typeof array[i] == "object")
+    const copy: T[] = [];
+    for (let i = 0, l = array.length; i < l; i++) {
+        if (array[i] && typeof array[i] === "object")
             copy[i] = this.copyObject(array[i]);
         else
             copy[i] = array[i];
@@ -83,9 +85,11 @@ export function arrayToMap<T>(xs: string[], value: T): { [name: string]: T } {
 }
 
 export function createMap(props) {
-    var map = Object.create(null);
-    for (var i in props) {
-        map[i] = props[i];
+    const map = Object.create(null);
+    for (let i in props) {
+        if (props.hasOwnProperty(i)) {
+            map[i] = props[i];
+        }
     }
     return map;
 }

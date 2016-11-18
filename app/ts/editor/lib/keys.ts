@@ -109,16 +109,19 @@ var Keys = {
 };
 
 // A reverse map of FUNCTION_KEYS
-var name, i;
-for (i in Keys.FUNCTION_KEYS) {
-    name = Keys.FUNCTION_KEYS[i].toLowerCase();
-    Keys[name] = parseInt(i, 10);
+for (let i in Keys.FUNCTION_KEYS) {
+    if (Keys.FUNCTION_KEYS.hasOwnProperty(i)) {
+        const name = Keys.FUNCTION_KEYS[i].toLowerCase();
+        Keys[name] = parseInt(i, 10);
+    }
 }
 
 // A reverse map of PRINTABLE_KEYS
-for (i in Keys.PRINTABLE_KEYS) {
-    name = Keys.PRINTABLE_KEYS[i].toLowerCase();
-    Keys[name] = parseInt(i, 10);
+for (let i in Keys.PRINTABLE_KEYS) {
+    if (Keys.PRINTABLE_KEYS.hasOwnProperty(i)) {
+        const name = Keys.PRINTABLE_KEYS[i].toLowerCase();
+        Keys[name] = parseInt(i, 10);
+    }
 }
 
 // Add the MODIFIER_KEYS, FUNCTION_KEYS and PRINTABLE_KEYS to the KEY variables as well.
@@ -130,14 +133,14 @@ mixin(Keys, Keys.FUNCTION_KEYS);
 // workaround for firefox bug
 Keys[173] = '-';
 
-(function() {
+(function () {
     // Why do I need to set any here rather than string?
-    var mods: any = ["cmd", "ctrl", "alt", "shift"];
-    for (var i = Math.pow(2, mods.length); i--;) {
-        var f = function(s: string): number {
-            return i & Keys.KEY_MODS[s];
+    const mods: string[] = ["cmd", "ctrl", "alt", "shift"];
+    for (let i = Math.pow(2, mods.length); i--;) {
+        const f = function (s: string): boolean {
+            return !!(i & Keys.KEY_MODS[s]);
         };
-        var filtrate: number[] = mods.filter(f);
+        // const filtrate: number[] = mods.filter(f);
         Keys.KEY_MODS[i] = mods.filter(f).join("-") + "-";
     }
 })();

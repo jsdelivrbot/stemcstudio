@@ -1,10 +1,10 @@
 import {ContinuousRecognizer} from './attribute';
 import {PanRecognizer} from './pan';
 import {
-DIRECTION_HORIZONTAL,
-DIRECTION_VERTICAL,
-IComputedEvent,
-INPUT_END
+    DIRECTION_HORIZONTAL,
+    DIRECTION_VERTICAL,
+    IComputedEvent,
+    INPUT_END
 } from '../hammer';
 import {} from '../utils';
 /**
@@ -19,7 +19,7 @@ export class SwipeRecognizer extends ContinuousRecognizer {
     private direction: number = DIRECTION_HORIZONTAL | DIRECTION_VERTICAL;
 
     constructor(eventName: string, enabled: boolean) {
-        super(eventName, enabled, 1)
+        super(eventName, enabled, 1);
     }
 
     getTouchAction(): string[] {
@@ -48,7 +48,7 @@ export class SwipeRecognizer extends ContinuousRecognizer {
     }
 
     emit(): void {
-        var direction = undefined;//hammer.directionStr(input.direction);
+        var direction = undefined; // hammer.directionStr(input.direction);
         var event = new Event('swipe');
         if (direction) {
             this.manager.emit(this.eventName + direction, event);

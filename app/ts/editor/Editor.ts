@@ -5,7 +5,7 @@ import createDelayedCall from './lib/lang/createDelayedCall';
 import DelayedCall from './lib/lang/DelayedCall';
 import Disposable from './base/Disposable';
 import {stringRepeat} from "./lib/lang";
-import {isIE, isMac, isMobile, isOldIE, isWebKit} from "./lib/useragent";
+import {isIE, isMac, isOldIE, isWebKit} from "./lib/useragent";
 import GutterLayer from "./layer/GutterLayer";
 import GutterTooltip from './GutterTooltip';
 import KeyboardHandler from "./keyboard/KeyboardHandler";
@@ -17,7 +17,6 @@ import EditSession from "./EditSession";
 import Search from "./Search";
 import {assembleRegExp} from './Search';
 import FirstAndLast from "./FirstAndLast";
-import LanguageMode from './LanguageMode';
 import Position from "./Position";
 import Range from "./Range";
 import RangeList from './RangeList';
@@ -39,9 +38,7 @@ import SearchOptions from './SearchOptions';
 import Selection from './Selection';
 import SnippetManager from './SnippetManager';
 import {addListener, addMouseWheelListener, addMultiMouseDownListener, capture, getButton, preventDefault, stopEvent, stopPropagation} from "./lib/event";
-import {touchManager} from './touch/touch';
 import TabstopManager from './TabstopManager';
-import Tooltip from "./Tooltip";
 import EditorChangeSessionEvent from './events/EditorChangeSessionEvent';
 import SessionChangeEditorEvent from './events/SessionChangeEditorEvent';
 import SessionChangeCursorEvent from './events/SessionChangeCursorEvent';
@@ -65,8 +62,6 @@ function find(session: EditSession, needle: string | RegExp, dir: number): Range
 
 /**
  * The `Editor` acts as a controller, mediating between the editSession and renderer.
- *
- * @class Editor
  */
 export default class Editor implements Disposable, EventBus<any, Editor> {
 
@@ -80,11 +75,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      */
     public session: EditSession;
 
-    /**
-     * @property eventBus
-     * @type EventEmitterClass
-     * @private
-     */
     private eventBus: EventEmitterClass<any, Editor>;
 
     private $mouseHandler: IGestureHandler;
@@ -153,11 +143,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     public $search: Search;
     private _$emitInputEvent: DelayedCall;
 
-    /**
-     * @property selections
-     * @type Range[]
-     * @private
-     */
     private selections: Range[];
 
     /**
@@ -165,13 +150,13 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      */
     private $selectionStyle: 'line' | 'text' = 'line';
     private $opResetTimer: DelayedCall;
-    private curOp;
-    private prevOp: { command?; args?};
-    private lastFileJumpPos;
+    private curOp: { command: /*Command*/any; args; scrollTop: number; docChanged?: boolean; selectionChanged?: boolean };
+    private prevOp: { command?: Command; args?};
+    private lastFileJumpPos: Range;
     private previousCommand;
     private $mergeableCommands: string[];
-    private mergeNextCommand;
-    private $mergeNextCommand;
+    private mergeNextCommand: boolean;
+    private $mergeNextCommand: boolean;
     private sequenceStartTime: number;
     private $onDocumentChange;
     private $onChangeMode;
@@ -207,11 +192,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Creates a new `Editor` object.
-     *
-     * @class Editor
-     * @constructor
-     * @param renderer {Renderer} The view.
-     * @param session {EditSession} The model.
      */
     constructor(renderer: Renderer, session: EditSession) {
         this.eventBus = new EventEmitterClass<any, Editor>(this);
@@ -281,36 +261,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
                 isAvailable: function (editor: Editor) { return editor && editor.inMultiSelectMode; }
             }]);
 
-            let onMultiSelect = (unused: SelectionMultiSelectEvent, selection: Selection) => {
-                if (this.inMultiSelectMode) {
-                    return;
-                }
-                this.inMultiSelectMode = true;
-
-                this.setStyle("ace_multiselect");
-                this.keyBinding.addKeyboardHandler(keyboardMultiSelect);
-                this.commands.setDefaultHandler("exec", onMultiSelectExec);
-
-                this.renderer.updateCursor();
-                this.renderer.updateBackMarkers();
-            };
-
-            let onSingleSelect = (unused: SelectionSingleSelectEvent, selection: Selection) => {
-                if (this.session.multiSelect.inVirtualMode) {
-                    return;
-                }
-                this.inMultiSelectMode = false;
-
-                this.unsetStyle("ace_multiselect");
-                this.keyBinding.removeKeyboardHandler(keyboardMultiSelect);
-
-                this.commands.removeDefaultHandler("exec", onMultiSelectExec);
-                this.renderer.updateCursor();
-                this.renderer.updateBackMarkers();
-                this._emit("changeSelection");
-            };
-
-            let onMultiSelectExec = function (e: { command: Command, editor: Editor, args: any }) {
+            const onMultiSelectExec = function (e: { command: Command, editor: Editor, args: any }) {
                 var command: Command = e.command;
                 var editor: Editor = e.editor;
                 if (!editor.multiSelect)
@@ -342,6 +293,36 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
                 }
                 return result;
             };
+
+            let onMultiSelect = (unused: SelectionMultiSelectEvent, selection: Selection) => {
+                if (this.inMultiSelectMode) {
+                    return;
+                }
+                this.inMultiSelectMode = true;
+
+                this.setStyle("ace_multiselect");
+                this.keyBinding.addKeyboardHandler(keyboardMultiSelect);
+                this.commands.setDefaultHandler("exec", onMultiSelectExec);
+
+                this.renderer.updateCursor();
+                this.renderer.updateBackMarkers();
+            };
+
+            let onSingleSelect = (unused: SelectionSingleSelectEvent, selection: Selection) => {
+                if (this.session.multiSelect.inVirtualMode) {
+                    return;
+                }
+                this.inMultiSelectMode = false;
+
+                this.unsetStyle("ace_multiselect");
+                this.keyBinding.removeKeyboardHandler(keyboardMultiSelect);
+
+                this.commands.removeDefaultHandler("exec", onMultiSelectExec);
+                this.renderer.updateCursor();
+                this.renderer.updateBackMarkers();
+                this._emit("changeSelection");
+            };
+
 
             let checkMultiselectChange = (unused: AnchorChangeEvent, anchor: Anchor) => {
                 if (this.inMultiSelectMode && !this.inVirtualSelectionMode) {
@@ -635,9 +616,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /** 
      * Aligns the cursors or selected text.
-     *
-     * @method alignCursors
-     * @return {void}
      */
     alignCursors(): void {
         var session = this.session;
@@ -780,9 +758,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     }
 
     /**
-     * @method $initOperationListeners
-     * @return {void}
-     * @private
+     *
      */
     private $initOperationListeners(): void {
 
@@ -804,7 +780,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
         }, true);
 
         this.commands.on("afterExec", (e: { command: Command }, cm: CommandManager) => {
-            var command = e.command;
+            const command = e.command;
 
             if (command.aceCommandGroup === "fileJump") {
                 if (this.lastFileJumpPos && !this.curOp.selectionChanged) {
@@ -817,26 +793,28 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
         this.$opResetTimer = createDelayedCall(this.endOperation.bind(this));
 
         this.eventBus.on("change", () => {
-            this.curOp || this.startOperation();
+            if (!this.curOp) {
+                this.startOperation();
+            }
             this.curOp.docChanged = true;
         }, true);
 
         this.eventBus.on("changeSelection", () => {
-            this.curOp || this.startOperation();
+            if (!this.curOp) {
+                this.startOperation();
+            }
             this.curOp.selectionChanged = true;
         }, true);
     }
 
     /**
-     * @method startOperation
-     * @param [commandEvent]
-     * @return {void}
-     * @private
+     * By the end of this method, the curOp property should be defined.
      */
-    private startOperation(commandEvent?): void {
+    private startOperation(commandEvent?: { command?: Command; args?}): void {
         if (this.curOp) {
-            if (!commandEvent || this.curOp.command)
+            if (!commandEvent || this.curOp.command) {
                 return;
+            }
             this.prevOp = this.curOp;
         }
         if (!commandEvent) {
@@ -851,7 +829,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
             scrollTop: this.renderer.scrollTop
         };
 
-        var command = this.curOp.command;
+        const command = this.curOp.command;
         if (command && command.scrollIntoView) {
             this.$blockScrolling++;
         }
@@ -987,7 +965,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
             this.session.off("changeTabSize", this.$onChangeTabSize);
             this.session.off("changeWrapLimit", this.$onChangeWrapLimit);
             this.session.off("changeWrapMode", this.$onChangeWrapMode);
-            this.session.off("onChangeFold", this.$onChangeFold);
+            this.session.off("changeFold", this.$onChangeFold);
             this.session.off("changeFrontMarker", this.$onChangeFrontMarker);
             this.session.off("changeBackMarker", this.$onChangeBackMarker);
             this.session.off("changeBreakpoint", this.$onChangeBreakpoint);
@@ -1054,8 +1032,8 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
             this.selection.on("changeCursor", this.$onCursorChange);
 
             const onSelectionChange = (unused: any, selection: Selection) => {
-                this.onSelectionChange(unused, selection)
-            }
+                this.onSelectionChange(unused, selection);
+            };
             this.removeChangeSelectionHandler = this.selection.on("changeSelection", onSelectionChange);
 
             this.onChangeMode(void 0, this.session);
@@ -1077,7 +1055,9 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
             this.onChangeBackMarker(void 0, this.session);
             this.onChangeBreakpoint(void 0, this.session);
             this.onChangeAnnotation(void 0, this.session);
-            session.getUseWrapMode() && this.renderer.adjustWrapLimit();
+            if (session.getUseWrapMode()) {
+                this.renderer.adjustWrapLimit();
+            }
             this.renderer.updateFull();
         }
 
@@ -1780,10 +1760,10 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      */
     insert(text: string, pasted?: boolean): void {
 
-        var session = this.session;
-        var mode = session.getMode();
-        var cursor: Position = this.getCursorPosition();
-        var transform: TextAndSelection;
+        const session = this.session;
+        const mode = session.getMode();
+        let cursor: Position = this.getCursorPosition();
+        let transform: TextAndSelection;
 
         if (this.getBehavioursEnabled() && !pasted) {
             // Get a transform if the current mode wants one.
@@ -1803,31 +1783,31 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
         // Remove selected text.
         if (!this.selection.isEmpty()) {
-            var range = this.getSelectionRange();
+            const range = this.getSelectionRange();
             cursor = this.session.remove(range);
             this.clearSelection();
         }
         else if (this.session.getOverwrite()) {
-            var range = Range.fromPoints(cursor, cursor);
+            const range = Range.fromPoints(cursor, cursor);
             range.end.column += text.length;
             this.session.remove(range);
         }
 
         if (text === "\n" || text === "\r\n") {
-            var line = session.getLine(cursor.row);
+            const line = session.getLine(cursor.row);
             if (cursor.column > line.search(/\S|$/)) {
-                var d = line.substr(cursor.column).search(/\S|$/);
+                const d = line.substr(cursor.column).search(/\S|$/);
                 session.doc.removeInLine(cursor.row, cursor.column, cursor.column + d);
             }
         }
 
         this.clearSelection();
 
-        var start = cursor.column;
-        var lineState = session.getState(cursor.row);
-        var line = session.getLine(cursor.row);
-        var shouldOutdent = mode.checkOutdent(lineState, line, text);
-        var end = session.insert(cursor, text);
+        const start = cursor.column;
+        const lineState = session.getState(cursor.row);
+        const line = session.getLine(cursor.row);
+        const shouldOutdent = mode.checkOutdent(lineState, line, text);
+        /* const end = */ session.insert(cursor, text);
 
         if (transform && transform.selection) {
             if (transform.selection.length === 2) { // Transform relative to the current column
@@ -1845,7 +1825,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
         }
 
         if (session.getDocument().isNewLine(text)) {
-            var lineIndent = mode.getNextLineIndent(lineState, line.slice(0, cursor.column), session.getTabString());
+            const lineIndent = mode.getNextLineIndent(lineState, line.slice(0, cursor.column), session.getTabString());
             session.insert({ row: cursor.row + 1, column: 0 }, lineIndent);
         }
 
@@ -1863,7 +1843,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
         this.eventBus.on(eventName, callback, capturing);
         return () => {
             this.off(eventName, callback, capturing);
-        }
+        };
     }
 
     /**
@@ -1895,10 +1875,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     /**
      * This method is called as a result of the use typing.
      * The text will probably be a single character.
-     *
-     * @method onTextInput
-     * @param text {string}
-     * @return {void}
      */
     onTextInput(text: string): void {
         this.keyBinding.onTextInput(text);
@@ -1911,7 +1887,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
             }
         }
         else if (this.getSession().getDocument().isNewLine(text)) {
-            var lineNumber = this.getCursorPosition().row;
+            // const lineNumber = this.getCursorPosition().row;
             //            var option = new Services.EditorOptions();
             //            option.NewLineCharacter = "\n";
             // FIXME: Smart Indenting
@@ -1942,7 +1918,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * If the value of `overwrite` changes, this function also emites the `changeOverwrite` event.
      *
      * @method setOverwrite
-     * @param overwrite {boolean} Defines wheter or not to set overwrites
+     * @param overwrite {boolean} Defines whether or not to set overwrites
      * @return {void}
      */
     setOverwrite(overwrite: boolean): void {
@@ -2211,7 +2187,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     /**
      * Specifies whether to use wrapping behaviors or not, i.e. automatically wrapping the selection with characters such as brackets
      * when such a character is typed in.
-     
      * @param wrapBehavioursEnabled Enables or disables wrapping behaviors.
      */
     setWrapBehavioursEnabled(wrapBehavioursEnabled: boolean): void {
@@ -2829,10 +2804,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Indicates if the row is currently visible on the screen.
-     *
-     * @method isRowVisible
-     * @param row {number} The row to check
-     * @return {boolean}
      */
     isRowVisible(row: number): boolean {
         return (row >= this.getFirstVisibleRow() && row <= this.getLastVisibleRow());
@@ -2840,23 +2811,16 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Indicates if the entire row is currently visible on the screen.
-     *
-     * @method isRowFullyVisible
-     * @param row {number} The row to check
-     * @return {boolean}
      */
     isRowFullyVisible(row: number): boolean {
         return (row >= this.renderer.getFirstFullyVisibleRow() && row <= this.renderer.getLastFullyVisibleRow());
     }
 
     /**
-     * Returns the number of currently visibile rows.
-     *
-     * @method $getVisibleRowCount
-     * @return {number}
-     * @private
+     * FIXME: This does not seem to be used. Why does it have a $ symbol?
+     * Returns the number of currently visible rows.
      */
-    private $getVisibleRowCount(): number {
+    $getVisibleRowCount(): number {
         return this.renderer.getScrollBottomRow() - this.renderer.getScrollTopRow() + 1;
     }
 
@@ -3255,7 +3219,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     }
 
     /**
-     * Moves the cursor to the specified line number, and also into the indiciated column.
+     * Moves the cursor to the specified line number, and also into the indicated column.
      *
      * @param lineNumber The line number to go to.
      * @param column A column number to go to.
@@ -3279,7 +3243,9 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
         this.$blockScrolling += 1;
         // todo: find a way to automatically exit multiselect mode
-        this.exitMultiSelectMode && this.exitMultiSelectMode();
+        if (this.exitMultiSelectMode) {
+            this.exitMultiSelectMode();
+        }
         this.moveCursorTo(lineNumber - 1, column || 0);
         this.$blockScrolling -= 1;
 
@@ -3452,7 +3418,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     }
 
     /**
-     * Replaces the first occurance of `options.needle` with the value in `replacement`.
+     * Replaces the first occurence of `options.needle` with the value in `replacement`.
      *
      * @method replace
      * @param replacement {string} The text to replace with.
@@ -3481,7 +3447,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     }
 
     /**
-     * Replaces all occurances of `options.needle` with the value in `replacement`.
+     * Replaces all occurences of `options.needle` with the value in `replacement`.
      *
      * @method replaceAll
      * @param replacement {string} The text to replace with
@@ -4063,17 +4029,32 @@ class MouseHandler implements IGestureHandler {
 
                 mouseHandler.clientX = mouseEvent.clientX;
                 mouseHandler.clientY = mouseEvent.clientY;
-                mouseMoveHandler && mouseMoveHandler(mouseEvent);
+                if (mouseMoveHandler) {
+                    mouseMoveHandler(mouseEvent);
+                }
                 mouseHandler.mouseEvent = new EditorMouseEvent(mouseEvent, editor);
                 mouseHandler.$mouseMoved = true;
             };
         })(this.editor, this);
 
+        let timerId: number;
+
+        const onCaptureInterval = (function (mouseHandler: MouseHandler) {
+            return function () {
+                if (mouseHandler[mouseHandler.state]) {
+                    mouseHandler[mouseHandler.state]();
+                }
+                mouseHandler.$mouseMoved = false;
+            };
+        })(this);
+
         const onCaptureEnd = (function (mouseHandler: MouseHandler) {
-            return function (e) {
+            return function (e: MouseEvent) {
                 clearInterval(timerId);
                 onCaptureInterval();
-                mouseHandler[mouseHandler.state + "End"] && mouseHandler[mouseHandler.state + "End"](e);
+                if (mouseHandler[mouseHandler.state + "End"]) {
+                    mouseHandler[mouseHandler.state + "End"](e);
+                }
                 mouseHandler.state = "";
                 if (renderer.$keepTextAreaAtCursor == null) {
                     renderer.$keepTextAreaAtCursor = true;
@@ -4081,28 +4062,24 @@ class MouseHandler implements IGestureHandler {
                 }
                 mouseHandler.isMousePressed = false;
                 mouseHandler.$onCaptureMouseMove = mouseHandler.releaseMouse = null;
-                e && mouseHandler.onMouseEvent("mouseup", e);
-            };
-        })(this);
-
-        const onCaptureInterval = (function (mouseHandler: MouseHandler) {
-            return function () {
-                mouseHandler[mouseHandler.state] && mouseHandler[mouseHandler.state]();
-                mouseHandler.$mouseMoved = false;
+                if (e) {
+                    mouseHandler.onMouseEvent("mouseup", e);
+                }
             };
         })(this);
 
         if (isOldIE && ev.domEvent.type === "dblclick") {
-            return setTimeout(function () { onCaptureEnd(ev); });
+            // FIXME: There is a conflict here.
+            return setTimeout(function () { onCaptureEnd(<any>ev); });
         }
 
         this.$onCaptureMouseMove = onMouseMove;
         this.releaseMouse = capture(this.editor.container, onMouseMove, onCaptureEnd);
-        var timerId = setInterval(onCaptureInterval, 20);
+        timerId = setInterval(onCaptureInterval, 20);
     }
 
     cancelContextMenu(): void {
-        var stop = function (e: EditorMouseEvent) {
+        const stop = (e: EditorMouseEvent) => {
             if (e && e.domEvent && e.domEvent.type !== "contextmenu") {
                 return;
             }
@@ -4110,7 +4087,7 @@ class MouseHandler implements IGestureHandler {
             if (e && e.domEvent) {
                 stopEvent(e.domEvent);
             }
-        }.bind(this);
+        };
         setTimeout(stop, 10);
         this.editor.on("nativecontextmenu", stop);
     }
@@ -4288,24 +4265,22 @@ class EditorMouseEvent {
         return this.$pos;
     }
 
-    /*
-     * Check if the mouse cursor is inside of the text selection
-     *
-     * @method inSelection
-     * @return {Boolean} whether the mouse cursor is inside of the selection
+    /**
+     * Determines whether the mouse cursor is inside of the text selection
      */
-    inSelection() {
-        if (this.$inSelection !== null)
+    inSelection(): boolean {
+        if (this.$inSelection !== null) {
             return this.$inSelection;
+        }
 
-        var editor = this.editor;
+        const editor = this.editor;
 
-
-        var selectionRange = editor.getSelectionRange();
-        if (selectionRange.isEmpty())
+        const selectionRange = editor.getSelectionRange();
+        if (selectionRange.isEmpty()) {
             this.$inSelection = false;
+        }
         else {
-            var pos = this.getDocumentPosition();
+            const pos = this.getDocumentPosition();
             this.$inSelection = selectionRange.contains(pos.row, pos.column);
         }
 
@@ -4315,16 +4290,16 @@ class EditorMouseEvent {
     /*
      * Get the clicked mouse button
      * 
-     * @return {Number} 0 for left button, 1 for middle button, 2 for right button
+     * @return 0 for left button, 1 for middle button, 2 for right button
      */
-    getButton() {
+    getButton(): number {
         return getButton(this.domEvent);
     }
 
     /*
-     * @return {Boolean} whether the shift key was pressed when the event was emitted
+     * Determines whether the shift key was pressed when the event was emitted
      */
-    getShiftKey() {
+    getShiftKey(): boolean {
         return this.domEvent.shiftKey;
     }
 
@@ -4339,8 +4314,8 @@ function makeMouseDownHandler(editor: Editor, mouseHandler: MouseHandler) {
 
         const button = ev.getButton();
         if (button !== 0) {
-            var selectionRange = editor.getSelectionRange();
-            var selectionEmpty = selectionRange.isEmpty();
+            const selectionRange = editor.getSelectionRange();
+            const selectionEmpty = selectionRange.isEmpty();
 
             if (selectionEmpty)
                 editor.selection.moveToPosition(pos);
@@ -4395,10 +4370,10 @@ function makeMouseWheelHandler(editor: Editor, mouseHandler: MouseHandler) {
 
 function makeDoubleClickHandler(editor: Editor, mouseHandler: MouseHandler) {
     return function (editorMouseEvent: EditorMouseEvent) {
-        var pos = editorMouseEvent.getDocumentPosition();
-        var session = editor.getSession();
+        const pos = editorMouseEvent.getDocumentPosition();
+        const session = editor.getSession();
 
-        var range = session.getBracketRange(pos);
+        let range = session.getBracketRange(pos);
         if (range) {
             if (range.isEmpty()) {
                 range.start.column--;
@@ -4417,10 +4392,10 @@ function makeDoubleClickHandler(editor: Editor, mouseHandler: MouseHandler) {
 
 function makeTripleClickHandler(editor: Editor, mouseHandler: MouseHandler) {
     return function (editorMouseEvent: EditorMouseEvent) {
-        var pos = editorMouseEvent.getDocumentPosition();
+        const pos = editorMouseEvent.getDocumentPosition();
 
         mouseHandler.setState("selectByLines");
-        var range = editor.getSelectionRange();
+        const range = editor.getSelectionRange();
         if (range.isMultiLine() && range.contains(pos.row, pos.column)) {
             mouseHandler.$clickSelection = editor.selection.getLineRange(range.start.row);
             mouseHandler.$clickSelection.end = editor.selection.getLineRange(range.end.row).end;
@@ -4477,19 +4452,20 @@ function makeExtendSelectionBy(editor: Editor, mouseHandler: MouseHandler, unitN
     };
 }
 
-function calcDistance(ax: number, ay: number, bx: number, by: number) {
+function calcDistance(ax: number, ay: number, bx: number, by: number): number {
     return Math.sqrt(Math.pow(bx - ax, 2) + Math.pow(by - ay, 2));
 }
 
 function calcRangeOrientation(range: Range, cursor: { row: number; column: number }): { cursor: { row: number; column: number }; anchor: { row: number; column: number } } {
+    let cmp: number;
     if (range.start.row === range.end.row) {
-        var cmp = 2 * cursor.column - range.start.column - range.end.column;
+        cmp = 2 * cursor.column - range.start.column - range.end.column;
     }
     else if (range.start.row === range.end.row - 1 && !range.start.column && !range.end.column) {
-        var cmp = cursor.column - 4;
+        cmp = cursor.column - 4;
     }
     else {
-        var cmp = 2 * cursor.row - range.start.row - range.end.row;
+        cmp = 2 * cursor.row - range.start.row - range.end.row;
     }
 
     if (cmp < 0) {

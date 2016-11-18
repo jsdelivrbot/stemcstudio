@@ -1,16 +1,12 @@
 import EventBus from "../EventBus";
 
-"use strict";
-
-var stopPropagation = function() { this.propagationStopped = true; };
-var preventDefault = function() { this.defaultPrevented = true; };
+const stopPropagation = function () { this.propagationStopped = true; };
+const preventDefault = function () { this.defaultPrevented = true; };
 
 /**
  * Intended to be used as a Mixin.
  * N.B. The original implementation was an object, the TypeScript way is
  * designed to satisfy the compiler.
- *
- * @class EventEmitterClass
  */
 export default class EventEmitterClass<E, T> implements EventBus<E, T> {
 
@@ -44,13 +40,17 @@ export default class EventEmitterClass<E, T> implements EventBus<E, T> {
      */
     private _dispatchEvent(eventName: string, event: E): any {
 
-        this._eventRegistry || (this._eventRegistry = {});
+        if (!this._eventRegistry) {
+            this._eventRegistry = {};
+        }
 
-        this._defaultHandlers || (this._defaultHandlers = {});
+        if (!this._defaultHandlers) {
+            this._defaultHandlers = {};
+        }
 
-        var listeners = this._eventRegistry[eventName] || [];
+        let listeners = this._eventRegistry[eventName] || [];
 
-        var defaultHandler = this._defaultHandlers[eventName];
+        const defaultHandler = this._defaultHandlers[eventName];
 
         if (!listeners.length && !defaultHandler)
             return;
@@ -132,28 +132,30 @@ export default class EventEmitterClass<E, T> implements EventBus<E, T> {
 
     once(eventName: string, callback: (event: E, source: T) => any) {
         const _self = this;
-        callback && this.addEventListener(eventName, function newCallback() {
-            _self.removeEventListener(eventName, newCallback);
-            callback.apply(null, arguments);
-        });
+        if (callback) {
+            this.addEventListener(eventName, function newCallback() {
+                _self.removeEventListener(eventName, newCallback);
+                callback.apply(null, arguments);
+            });
+        }
     }
 
     setDefaultHandler(eventName: string, callback: (event: E, source: T) => any) {
         // FIXME: All this casting is creepy.
-        var handlers: any = this._defaultHandlers
+        let handlers: any = this._defaultHandlers;
         if (!handlers) {
             handlers = this._defaultHandlers = <any>{ _disabled_: {} };
         }
 
         if (handlers[eventName]) {
-            let existingHandler = handlers[eventName];
-            var disabled = handlers._disabled_[eventName];
+            const existingHandler = handlers[eventName];
+            let disabled = handlers._disabled_[eventName];
             if (!disabled) {
                 handlers._disabled_[eventName] = disabled = [];
             }
             disabled.push(existingHandler);
             var i = disabled.indexOf(callback);
-            if (i != -1)
+            if (i !== -1)
                 disabled.splice(i, 1);
         }
         handlers[eventName] = callback;
@@ -161,7 +163,7 @@ export default class EventEmitterClass<E, T> implements EventBus<E, T> {
 
     removeDefaultHandler(eventName: string, callback: (event: E, source: T) => any) {
         // FIXME: All this casting is creepy.
-        var handlers: any = this._defaultHandlers
+        var handlers: any = this._defaultHandlers;
         if (!handlers) {
             return;
         }
@@ -169,14 +171,16 @@ export default class EventEmitterClass<E, T> implements EventBus<E, T> {
 
         if (handlers[eventName] === callback) {
             // FIXME: Something wrong here.
-            var unused = handlers[eventName];
-            if (disabled)
+            // var unused = handlers[eventName];
+            if (disabled) {
                 this.setDefaultHandler(eventName, disabled.pop());
+            }
         }
         else if (disabled) {
-            var i = disabled.indexOf(callback);
-            if (i != -1)
+            const i = disabled.indexOf(callback);
+            if (i !== -1) {
                 disabled.splice(i, 1);
+            }
         }
     }
 
@@ -199,7 +203,7 @@ export default class EventEmitterClass<E, T> implements EventBus<E, T> {
         }
         return () => {
             this.removeEventListener(eventName, callback, capturing);
-        }
+        };
     }
 
     /**
@@ -226,9 +230,11 @@ export default class EventEmitterClass<E, T> implements EventBus<E, T> {
     }
 
     // Discourage usage.
+    /*
     private removeListener(eventName: string, callback: (event: E, source: T) => any, capturing?: boolean) {
         return this.removeEventListener(eventName, callback, capturing);
     }
+    */
 
     /**
      * @method off

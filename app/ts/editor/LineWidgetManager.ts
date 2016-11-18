@@ -7,7 +7,7 @@ import LineWidget from "./LineWidget";
 import Change from './Change';
 
 /**
- * @class LineWidgetManager
+ *
  */
 export default class LineWidgetManager {
     session: EditSession;
@@ -21,9 +21,7 @@ export default class LineWidgetManager {
     $useWrapMode: boolean;
 
     /**
-     * @class LineWidgetManager
-     * @constructor
-     * @param session {EditSession}
+     *
      */
     constructor(session: EditSession) {
         this.session = session;
@@ -41,11 +39,6 @@ export default class LineWidgetManager {
         this.session.on("changeEditor", this.$onChangeEditor);
     }
 
-    /**
-     * @method getRowLength
-     * @param row {number}
-     * @return {number}
-     */
     getRowLength(row: number): number {
         var h: number;
 
@@ -64,7 +57,7 @@ export default class LineWidgetManager {
 
     private $getWidgetScreenLength(): number {
         var screenRows = 0;
-        this.lineWidgets.forEach(function(w) {
+        this.lineWidgets.forEach(function (w) {
             if (w && w.rowCount && !w.hidden)
                 screenRows += w.rowCount;
         });
@@ -114,7 +107,7 @@ export default class LineWidgetManager {
         editor.renderer.off("afterRender", this.renderWidgets);
         const lineWidgets = this.session.lineWidgets;
         if (lineWidgets) {
-            lineWidgets.forEach(function(w: LineWidget) {
+            lineWidgets.forEach(function (w: LineWidget) {
                 if (w && w.el && w.el.parentNode) {
                     w._inDocument = false;
                     w.el.parentNode.removeChild(w.el);
@@ -192,7 +185,7 @@ export default class LineWidgetManager {
         const lineWidgets = this.session.lineWidgets;
         if (!lineWidgets) return;
         let noWidgets = true;
-        lineWidgets.forEach(function(w: LineWidget, i: number) {
+        lineWidgets.forEach(function (w: LineWidget, i: number) {
             if (w) {
                 noWidgets = false;
                 w.row = i;
@@ -206,11 +199,6 @@ export default class LineWidgetManager {
             this.session.lineWidgets = null;
     }
 
-    /**
-     * @method addLineWidget
-     * @param w {LineWidget}
-     * @return {LineWidget}
-     */
     addLineWidget(w: LineWidget): LineWidget {
         if (!this.session.lineWidgets) {
             this.session.lineWidgets = new Array<LineWidget>(this.session.getLength());
@@ -229,7 +217,7 @@ export default class LineWidgetManager {
 
         w.session = this.session;
 
-        var renderer = this.editor.renderer;
+        const renderer = this.editor.renderer;
         if (w.html && !w.el) {
             w.el = <HTMLDivElement>createElement("div");
             w.el.innerHTML = w.html;
@@ -245,14 +233,14 @@ export default class LineWidgetManager {
         if (!w.coverGutter) {
             w.el.style.zIndex = '3';
         }
-        if (!w.pixelHeight) {
+        if (w.pixelHeight === null) {
             w.pixelHeight = w.el.offsetHeight;
         }
         if (w.rowCount == null) {
             w.rowCount = w.pixelHeight / renderer.layerConfig.lineHeight;
         }
 
-        var fold = this.session.getFoldAt(w.row, 0);
+        const fold = this.session.getFoldAt(w.row, 0);
         w.$fold = fold;
         if (fold) {
             var lineWidgets = this.session.lineWidgets;
@@ -270,11 +258,6 @@ export default class LineWidgetManager {
         return w;
     }
 
-    /**
-     * @method removeLineWidget
-     * @param w {LineWidget}
-     * @return {void}
-     */
     removeLineWidget(w: LineWidget): void {
         w._inDocument = false;
         w.session = null;
@@ -288,7 +271,7 @@ export default class LineWidgetManager {
             }
         }
         if (this.session.lineWidgets) {
-            var w1 = this.session.lineWidgets[w.row];
+            let w1 = this.session.lineWidgets[w.row];
             if (w1 === w) {
                 this.session.lineWidgets[w.row] = w.$oldWidget;
                 if (w.$oldWidget)
@@ -307,15 +290,10 @@ export default class LineWidgetManager {
         this.$updateRows();
     }
 
-    /**
-     * @method getWidgetsAtRow
-     * @param row {number}
-     * @return {LineWidget[]}
-     */
     getWidgetsAtRow(row: number): LineWidget[] {
-        var lineWidgets = this.session.lineWidgets;
-        var w = lineWidgets && lineWidgets[row];
-        var list: LineWidget[] = [];
+        const lineWidgets = this.session.lineWidgets;
+        let w = lineWidgets && lineWidgets[row];
+        const list: LineWidget[] = [];
         while (w) {
             list.push(w);
             w = w.$oldWidget;
@@ -323,11 +301,6 @@ export default class LineWidgetManager {
         return list;
     }
 
-    /**
-     * @method onWidgetChanged
-     * @param w {LineWidget}
-     * @return {void}
-     */
     private onWidgetChanged(w: LineWidget): void {
         this.session._changedWidgets.push(w);
         if (this.editor) {
@@ -338,18 +311,13 @@ export default class LineWidgetManager {
     /**
      * This method is used as an event handler connected to the <code>Renderer</code>.
      * It is called in response to the 'beforeRender' event.
-     *
-     * @method measureWidgets
-     * @param event {any}
-     * @param renderer {Renderer}
-     * @return {void}
      */
     measureWidgets(event: any, renderer: Renderer): void {
-        var changedWidgets = this.session._changedWidgets;
-        var config = renderer.layerConfig;
+        const changedWidgets = this.session._changedWidgets;
+        const config = renderer.layerConfig;
 
         if (!changedWidgets || !changedWidgets.length) return;
-        var min = Infinity;
+        let min = Infinity;
         for (var i = 0; i < changedWidgets.length; i++) {
             var w = changedWidgets[i];
             if (!w || !w.el) continue;
@@ -390,11 +358,6 @@ export default class LineWidgetManager {
     /**
      * This method is used as an event handler connected to the <code>Renderer</code>.
      * It is called in response to the 'afterRender' event.
-     *
-     * @method renderWidgets
-     * @param event {any}
-     * @param renderer {Renderer}
-     * @return {void}
      */
     renderWidgets(event: any, renderer: Renderer): void {
         const config = renderer.layerConfig;

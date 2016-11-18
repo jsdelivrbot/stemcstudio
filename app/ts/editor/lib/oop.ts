@@ -47,8 +47,10 @@ export function inherits(ctor, superCtor) {
  * Classic ACE
  */
 export function mixin(obj, base) {
-    for (var key in base) {
-        obj[key] = base[key];
+    for (let key in base) {
+        if (base.hasOwnProperty(key)) {
+            obj[key] = base[key];
+        }
     }
     return obj;
 }

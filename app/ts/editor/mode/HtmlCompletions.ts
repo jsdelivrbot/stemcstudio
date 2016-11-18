@@ -215,30 +215,30 @@ function findTagName(session: EditSession, pos: Position): string {
     while (token && !is(token, "tag-name")) {
         token = iterator.stepBackward();
     }
-    if (token)
+    if (token) {
         return token.value;
+    }
 }
 
-/**
- * @class HtmlCompletions
- */
+function findAttributeName(session: EditSession, pos: Position): string {
+    const iterator = new TokenIterator(session, pos.row, pos.column);
+    let token = iterator.getCurrentToken();
+    while (token && !is(token, "attribute-name")) {
+        token = iterator.stepBackward();
+    }
+    if (token) {
+        return token.value;
+    }
+}
+
 export default class HtmlCompletions {
     /**
-     * @class HtmlCompletions
-     * @constructor
+     * 
      */
     constructor() {
         // Do nothing.
     }
 
-    /**
-     * @method getCompletions
-     * @param state {string}
-     * @param session {EditSession}
-     * @param pos {Position}
-     * @param prefix {string}
-     * @return {Completion[]} An array of Completion(s).
-     */
     getCompletions(state: string, session: EditSession, pos: Position, prefix: string): Completion[] {
         const token = session.getTokenAt(pos.row, pos.column);
 
@@ -255,20 +255,19 @@ export default class HtmlCompletions {
         if (is(token, "tag-whitespace") || is(token, "attribute-name")) {
             return this.getAttributeCompetions(state, session, pos, prefix);
         }
+        // tag attribute values
+        if (is(token, "attribute-value"))
+            return this.getAttributeValueCompletions(state, session, pos, prefix);
 
+        // HTML entities
+        var line = session.getLine(pos.row).substr(0, pos.column);
+        if (/&[a-z]*$/i.test(line))
+            return this.getHTMLEntityCompletions(state, session, pos, prefix);
         return [];
     }
 
-    /**
-     * @method getTagCompletions
-     * @param state {string}
-     * @param session {EditSession}
-     * @param pos {Position}
-     * @param prefix {string}
-     * @return {Completion[]} An array of Completion(s).
-     */
     getTagCompletions(state: string, session: EditSession, pos: Position, prefix: string): Completion[] {
-        return elements.map(function(element: string) {
+        return elements.map(function (element: string) {
             return {
                 value: element,
                 meta: "tag",
@@ -277,14 +276,6 @@ export default class HtmlCompletions {
         });
     }
 
-    /**
-     * @method getAttributeCompletions
-     * @param state {string}
-     * @param session {EditSession}
-     * @param pos {Position}
-     * @param prefix {string}
-     * @return {Completion[]} An array of Completion(s).
-     */
     getAttributeCompetions(state: string, session: EditSession, pos: Position, prefix: string): Completion[] {
         const tagName = findTagName(session, pos);
         if (!tagName) {
@@ -294,7 +285,7 @@ export default class HtmlCompletions {
         if (tagName in attributeMap) {
             attributes = attributes.concat(attributeMap[tagName]);
         }
-        return attributes.map(function(attribute: string) {
+        return attributes.map(function (attribute: string) {
             return {
                 caption: attribute,
                 snippet: attribute + '="$0"',
@@ -303,4 +294,38 @@ export default class HtmlCompletions {
             };
         });
     }
+
+    getAttributeValueCompletions(state: string, session: EditSession, pos: Position, prefix: string): Completion[] {
+        const tagName = findTagName(session, pos);
+        const attributeName = findAttributeName(session, pos);
+
+        if (!tagName) {
+            return [];
+        }
+        let values: string[] = [];
+        if (tagName in attributeMap && attributeName in attributeMap[tagName] && typeof attributeMap[tagName][attributeName] === "object") {
+            values = Object.keys(attributeMap[tagName][attributeName]);
+        }
+        return values.map(function (value) {
+            return {
+                caption: value,
+                snippet: value,
+                meta: "attribute value",
+                score: Number.MAX_VALUE
+            };
+        });
+    };
+
+    getHTMLEntityCompletions(state: string, session: EditSession, pos: Position, prefix: string): Completion[] {
+        const values = ['Aacute;', 'aacute;', 'Acirc;', 'acirc;', 'acute;', 'AElig;', 'aelig;', 'Agrave;', 'agrave;', 'alefsym;', 'Alpha;', 'alpha;', 'amp;', 'and;', 'ang;', 'Aring;', 'aring;', 'asymp;', 'Atilde;', 'atilde;', 'Auml;', 'auml;', 'bdquo;', 'Beta;', 'beta;', 'brvbar;', 'bull;', 'cap;', 'Ccedil;', 'ccedil;', 'cedil;', 'cent;', 'Chi;', 'chi;', 'circ;', 'clubs;', 'cong;', 'copy;', 'crarr;', 'cup;', 'curren;', 'Dagger;', 'dagger;', 'dArr;', 'darr;', 'deg;', 'Delta;', 'delta;', 'diams;', 'divide;', 'Eacute;', 'eacute;', 'Ecirc;', 'ecirc;', 'Egrave;', 'egrave;', 'empty;', 'emsp;', 'ensp;', 'Epsilon;', 'epsilon;', 'equiv;', 'Eta;', 'eta;', 'ETH;', 'eth;', 'Euml;', 'euml;', 'euro;', 'exist;', 'fnof;', 'forall;', 'frac12;', 'frac14;', 'frac34;', 'frasl;', 'Gamma;', 'gamma;', 'ge;', 'gt;', 'hArr;', 'harr;', 'hearts;', 'hellip;', 'Iacute;', 'iacute;', 'Icirc;', 'icirc;', 'iexcl;', 'Igrave;', 'igrave;', 'image;', 'infin;', 'int;', 'Iota;', 'iota;', 'iquest;', 'isin;', 'Iuml;', 'iuml;', 'Kappa;', 'kappa;', 'Lambda;', 'lambda;', 'lang;', 'laquo;', 'lArr;', 'larr;', 'lceil;', 'ldquo;', 'le;', 'lfloor;', 'lowast;', 'loz;', 'lrm;', 'lsaquo;', 'lsquo;', 'lt;', 'macr;', 'mdash;', 'micro;', 'middot;', 'minus;', 'Mu;', 'mu;', 'nabla;', 'nbsp;', 'ndash;', 'ne;', 'ni;', 'not;', 'notin;', 'nsub;', 'Ntilde;', 'ntilde;', 'Nu;', 'nu;', 'Oacute;', 'oacute;', 'Ocirc;', 'ocirc;', 'OElig;', 'oelig;', 'Ograve;', 'ograve;', 'oline;', 'Omega;', 'omega;', 'Omicron;', 'omicron;', 'oplus;', 'or;', 'ordf;', 'ordm;', 'Oslash;', 'oslash;', 'Otilde;', 'otilde;', 'otimes;', 'Ouml;', 'ouml;', 'para;', 'part;', 'permil;', 'perp;', 'Phi;', 'phi;', 'Pi;', 'pi;', 'piv;', 'plusmn;', 'pound;', 'Prime;', 'prime;', 'prod;', 'prop;', 'Psi;', 'psi;', 'quot;', 'radic;', 'rang;', 'raquo;', 'rArr;', 'rarr;', 'rceil;', 'rdquo;', 'real;', 'reg;', 'rfloor;', 'Rho;', 'rho;', 'rlm;', 'rsaquo;', 'rsquo;', 'sbquo;', 'Scaron;', 'scaron;', 'sdot;', 'sect;', 'shy;', 'Sigma;', 'sigma;', 'sigmaf;', 'sim;', 'spades;', 'sub;', 'sube;', 'sum;', 'sup;', 'sup1;', 'sup2;', 'sup3;', 'supe;', 'szlig;', 'Tau;', 'tau;', 'there4;', 'Theta;', 'theta;', 'thetasym;', 'thinsp;', 'THORN;', 'thorn;', 'tilde;', 'times;', 'trade;', 'Uacute;', 'uacute;', 'uArr;', 'uarr;', 'Ucirc;', 'ucirc;', 'Ugrave;', 'ugrave;', 'uml;', 'upsih;', 'Upsilon;', 'upsilon;', 'Uuml;', 'uuml;', 'weierp;', 'Xi;', 'xi;', 'Yacute;', 'yacute;', 'yen;', 'Yuml;', 'yuml;', 'Zeta;', 'zeta;', 'zwj;', 'zwnj;'];
+
+        return values.map(function (value) {
+            return {
+                caption: value,
+                snippet: value,
+                meta: "html entity",
+                score: Number.MAX_VALUE
+            };
+        });
+    };
 }

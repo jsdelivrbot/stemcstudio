@@ -1,19 +1,19 @@
 "use strict";
 
 import {
-ClientLocation,
-decodeEventType,
-getDistance,
-IComputedEvent,
-INPUT_START,
-INPUT_MOVE,
-INPUT_END,
-INPUT_CANCEL,
-Recognizer,
-STATE_BEGAN,
-STATE_FAILED,
-STATE_RECOGNIZED,
-TOUCH_ACTION_MANIPULATION
+    ClientLocation,
+    decodeEventType,
+    getDistance,
+    IComputedEvent,
+    INPUT_START,
+    INPUT_MOVE,
+    INPUT_END,
+    INPUT_CANCEL,
+    Recognizer,
+    STATE_BEGAN,
+    STATE_FAILED,
+    STATE_RECOGNIZED,
+    TOUCH_ACTION_MANIPULATION
 } from '../hammer';
 import {setTimeoutContext} from '../utils';
 
@@ -43,10 +43,10 @@ export class TapRecognizer extends Recognizer {
     private pTime: number;
     private pCenter: ClientLocation;
     private _timer;
-    //private _input: IComputedEvent;
+    // private _input: IComputedEvent;
     private count = 0;
     private taps = 1;
-    private pointers = 1;
+    // private pointers = 1;
     private time = 250; // max time of the pointer to be down (like finger on the screen)
     private threshold = 6; // a minimal movement is ok, but keep it low
     private interval = 300; // max time between the multi-tap taps
@@ -111,7 +111,7 @@ export class TapRecognizer extends Recognizer {
                 return STATE_RECOGNIZED;
             }
             else {
-                this._timer = setTimeoutContext(function() {
+                this._timer = setTimeoutContext(function () {
                     this.state = STATE_RECOGNIZED;
                     this.tryEmit();
                 }, this.interval, this);
@@ -122,7 +122,7 @@ export class TapRecognizer extends Recognizer {
     }
 
     failTimeout() {
-        this._timer = setTimeoutContext(function() {
+        this._timer = setTimeoutContext(function () {
             this.state = STATE_FAILED;
         }, this.interval, this);
         return STATE_FAILED;

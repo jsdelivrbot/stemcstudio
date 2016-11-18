@@ -27,10 +27,11 @@ const keywordOperators = (
 );
 
 const builtinConstants = (
-    "NULL|true|false|TRUE|FALSE"
+    "NULL|true|false|TRUE|FALSE|nullptr"
 );
 
 // const identifierRe = "[a-zA-Z\\$_\u00a1-\uffff][a-zA-Z\d\\$_\u00a1-\uffff]*\\b";
+// const escapeRe = /\\(?:['"?\\abfnrtv]|[0-7]{1,3}|x[a-fA-F\d]{2}|u[a-fA-F\d]{4}U[a-fA-F\d]{8}|.)/.source;
 
 export default class CppHighlightRules extends TextHighlightRules {
     constructor() {

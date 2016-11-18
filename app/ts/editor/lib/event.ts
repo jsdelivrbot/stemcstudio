@@ -78,9 +78,9 @@ export function preventDefault(e: Event): void {
  * @return {Number} 0 for left button, 1 for middle button, 2 for right button
  */
 export function getButton(e: MouseEvent): number {
-    if (e.type == "dblclick")
+    if (e.type === "dblclick")
         return 0;
-    if (e.type == "contextmenu" || (isMac && (e.ctrlKey && !e.altKey && !e.shiftKey)))
+    if (e.type === "contextmenu" || (isMac && (e.ctrlKey && !e.altKey && !e.shiftKey)))
         return 2;
 
     // DOM Event
@@ -104,9 +104,12 @@ export function capture(unused: HTMLElement, acquireCaptureHandler: (event: Mous
     function releaseMouse(e: MouseEvent) {
 
         // It seems redundant and cumbersome to provide this event to both handlers?
-        acquireCaptureHandler && acquireCaptureHandler(e);
-
-        releaseCaptureHandler && releaseCaptureHandler(e);
+        if (acquireCaptureHandler) {
+            acquireCaptureHandler(e);
+        }
+        if (releaseCaptureHandler) {
+            releaseCaptureHandler(e);
+        }
 
         removeListener(element, "mousemove", acquireCaptureHandler, true);
         removeListener(element, "mouseup", releaseMouse, true);
@@ -125,7 +128,7 @@ export function capture(unused: HTMLElement, acquireCaptureHandler: (event: Mous
  */
 export function addMouseWheelListener(element: HTMLElement, callback: (event: MouseWheelEvent) => void): void {
     if ("onmousewheel" in element) {
-        addListener(element, "mousewheel", function(e: MouseWheelEvent) {
+        addListener(element, "mousewheel", function (e: MouseWheelEvent) {
             var factor = 8;
             if (e['wheelDeltaX'] !== undefined) {
                 e['wheelX'] = -e['wheelDeltaX'] / factor;
@@ -139,7 +142,7 @@ export function addMouseWheelListener(element: HTMLElement, callback: (event: Mo
         });
     }
     else if ("onwheel" in element) {
-        addListener(element, "wheel", function(e) {
+        addListener(element, "wheel", function (e) {
             var factor = 0.35;
             switch (e.deltaMode) {
                 case e.DOM_DELTA_PIXEL:
@@ -157,8 +160,8 @@ export function addMouseWheelListener(element: HTMLElement, callback: (event: Mo
     }
     else {
         // TODO: Define interface for DOMMouseScroll.
-        addListener(element, "DOMMouseScroll", function(e) {
-            if (e.axis && e.axis == e.HORIZONTAL_AXIS) {
+        addListener(element, "DOMMouseScroll", function (e) {
+            if (e.axis && e.axis === e.HORIZONTAL_AXIS) {
                 e.wheelX = (e.detail || 0) * 5;
                 e.wheelY = 0;
             }
@@ -180,7 +183,7 @@ export function addMultiMouseDownListener(el, timeouts, eventHandler, callbackNa
         4: "quadclick"
     };
 
-    addListener(el, "mousedown", function(e: MouseEvent) {
+    addListener(el, "mousedown", function (e: MouseEvent) {
         if (getButton(e) !== 0) {
             clicks = 0;
         } else if (e.detail > 1) {
@@ -196,9 +199,9 @@ export function addMultiMouseDownListener(el, timeouts, eventHandler, callbackNa
                 clicks = 1;
             if (timer)
                 clearTimeout(timer);
-            timer = setTimeout(function() { timer = null }, timeouts[clicks - 1] || 600);
+            timer = setTimeout(function () { timer = null; }, timeouts[clicks - 1] || 600);
 
-            if (clicks == 1) {
+            if (clicks === 1) {
                 startX = e.clientX;
                 startY = e.clientY;
             }
@@ -216,11 +219,11 @@ export function addMultiMouseDownListener(el, timeouts, eventHandler, callbackNa
     });
 
     if (isOldIE) {
-        addListener(el, "dblclick", function(e) {
+        addListener(el, "dblclick", function (e: MouseEvent) {
             clicks = 2;
             if (timer)
                 clearTimeout(timer);
-            timer = setTimeout(function() { timer = null }, timeouts[clicks - 1] || 600);
+            timer = setTimeout(function () { timer = null; }, timeouts[clicks - 1] || 600);
             eventHandler[callbackName]("mousedown", e);
             eventHandler[callbackName](eventNames[clicks], e);
         });
@@ -228,16 +231,24 @@ export function addMultiMouseDownListener(el, timeouts, eventHandler, callbackNa
 }
 
 var getModifierHash = isMac && isOpera && !("KeyboardEvent" in window)
-    ? function(e) {
+    ? function (e) {
         return 0 | (e.metaKey ? 1 : 0) | (e.altKey ? 2 : 0) | (e.shiftKey ? 4 : 0) | (e.ctrlKey ? 8 : 0);
     }
-    : function(e) {
+    : function (e) {
         return 0 | (e.ctrlKey ? 1 : 0) | (e.altKey ? 2 : 0) | (e.shiftKey ? 4 : 0) | (e.metaKey ? 8 : 0);
     };
 
 export function getModifierString(e) {
     return KEY_MODS[getModifierHash(e)];
 }
+
+let pressedKeys = null;
+
+function resetPressedKeys(e) {
+    pressedKeys = Object.create(null);
+}
+
+let ts = 0;
 
 function normalizeCommandKeys(callback, e: KeyboardEvent, keyCode: number) {
     var hashId = getModifierHash(e);
@@ -246,7 +257,7 @@ function normalizeCommandKeys(callback, e: KeyboardEvent, keyCode: number) {
         if (pressedKeys[91] || pressedKeys[92])
             hashId |= 8;
         if (pressedKeys.altGr) {
-            if ((3 & hashId) != 3)
+            if ((3 & hashId) !== 3)
                 pressedKeys.altGr = 0;
             else
                 return;
@@ -312,13 +323,6 @@ function normalizeCommandKeys(callback, e: KeyboardEvent, keyCode: number) {
     return callback(e, hashId, keyCode);
 }
 
-var pressedKeys = null;
-
-function resetPressedKeys(e) {
-    pressedKeys = Object.create(null);
-}
-
-var ts = 0;
 export function addCommandKeyListener(el, callback) {
     if (isOldGecko || (isOpera && !("KeyboardEvent" in window))) {
         // Old versions of Gecko aka. Firefox < 4.0 didn't repeat the keydown
@@ -328,31 +332,31 @@ export function addCommandKeyListener(el, callback) {
         // keyDown event is stored and in the following keypress events the
         // stores keyCode is used to emulate a keyDown event.
         var lastKeyDownKeyCode = null;
-        addListener(el, "keydown", function(e: KeyboardEvent) {
+        addListener(el, "keydown", function (e: KeyboardEvent) {
             lastKeyDownKeyCode = e.keyCode;
         });
-        addListener(el, "keypress", function(e: KeyboardEvent) {
+        addListener(el, "keypress", function (e: KeyboardEvent) {
             return normalizeCommandKeys(callback, e, lastKeyDownKeyCode);
         });
     }
     else {
         var lastDefaultPrevented = null;
 
-        addListener(el, "keydown", function(e: KeyboardEvent) {
+        addListener(el, "keydown", function (e: KeyboardEvent) {
             pressedKeys[e.keyCode] = true;
             var result = normalizeCommandKeys(callback, e, e.keyCode);
             lastDefaultPrevented = e.defaultPrevented;
             return result;
         });
 
-        addListener(el, 'keypress', function(e: KeyboardEvent) {
+        addListener(el, 'keypress', function (e: KeyboardEvent) {
             if (lastDefaultPrevented && (e.ctrlKey || e.altKey || e.shiftKey || e.metaKey)) {
                 stopEvent(e);
                 lastDefaultPrevented = null;
             }
         });
 
-        addListener(el, 'keyup', function(e: KeyboardEvent) {
+        addListener(el, 'keyup', function (e: KeyboardEvent) {
             pressedKeys[e.keyCode] = null;
         });
 
@@ -393,7 +397,7 @@ if (nextFrameCandidate) {
     nextFrameCandidate = nextFrameCandidate.bind(window);
 }
 else {
-    nextFrameCandidate = function(callback) {
+    nextFrameCandidate = function (callback) {
         setTimeout(callback, 17);
     };
 }

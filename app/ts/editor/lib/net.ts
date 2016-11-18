@@ -14,13 +14,13 @@ import getDocumentHead from '../dom/getDocumentHead';
 export function get(url: string, callback: (err: Error, responseText?: string) => any) {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
-    xhr.onreadystatechange = function(ev: ProgressEvent) {
+    xhr.onreadystatechange = function (ev: ProgressEvent) {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {
                 callback(void 0, xhr.responseText);
             }
             else {
-                callback(new Error(xhr.statusText))
+                callback(new Error(xhr.statusText));
             }
         }
     };
@@ -38,7 +38,7 @@ export function loadScript(src: string, callback: () => any, doc: Document): voi
     s.src = src;
     head.appendChild(s);
 
-    s.onload = s['onreadystatechange'] = function(_, isAbort?: boolean) {
+    s.onload = s['onreadystatechange'] = function (_, isAbort?: boolean) {
         if (isAbort || !s['readyState'] || s['readyState'] === "loaded" || s['readyState'] === "complete") {
             s = s.onload = s['onreadystatechange'] = null;
             if (!isAbort) {

@@ -1454,9 +1454,6 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
 
     /**
      * Schedules an update to all the front markers in the document.
-     *
-     * @method updateFrontMarkers
-     * @return {void}
      */
     updateFrontMarkers(): void {
         this.$markerFront.setMarkers(this.session.getMarkers(/*inFront=*/true));
@@ -1465,9 +1462,6 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
 
     /**
      * Schedules an update to all the back markers in the document.
-     *
-     * @method updateBackMarkers
-     * @return {void}
      */
     updateBackMarkers(): void {
         this.$markerBack.setMarkers(this.session.getMarkers(false));
@@ -1476,9 +1470,6 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
 
     /**
      * Redraw breakpoints.
-     *
-     * @method updateBreakpoints
-     * @return {void}
      */
     updateBreakpoints(): void {
         this.$loop.schedule(CHANGE_GUTTER);

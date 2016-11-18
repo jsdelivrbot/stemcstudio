@@ -54,7 +54,7 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
         this.eventBus.on(eventName, callback, false);
         return () => {
             this.eventBus.off(eventName, callback);
-        }
+        };
     }
 
     /**

@@ -1,38 +1,8 @@
-/* ***** BEGIN LICENSE BLOCK *****
- * Distributed under the BSD license:
- *
- * Copyright (c) 2010, Ajax.org B.V.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *     * Redistributions of source code must retain the above copyright
- *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of Ajax.org B.V. nor the
- *       names of its contributors may be used to endorse or promote products
- *       derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL AJAX.ORG B.V. BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * ***** END LICENSE BLOCK ***** */
-"use strict";
-
 import { addCommandKeyListener, addListener, capture, preventDefault } from "../lib/event";
 import { isChrome, isGecko, isIE, isMac, isOldIE, isTouchPad, isWebKit, isWin } from "../lib/useragent";
 import { createElement } from "../lib/dom";
 import createDelayedCall from "../lib/lang/createDelayedCall";
+import DelayedCall from "../lib/lang/DelayedCall";
 import Editor from "../Editor";
 import {COMMAND_NAME_BACKSPACE} from '../editor_protocol';
 import {COMMAND_NAME_DEL} from '../editor_protocol';
@@ -103,17 +73,26 @@ export default class TextInput {
             this.text.setAttribute("x-palm-disable-auto-cap", 'true');
         }
 
-        this.text.wrap = "off";
-        this.text['autocorrect'] = "off";
-        this.text['autocapitalize'] = "off";
-        this.text.spellcheck = false;
+        // autocapitalize is a nonstandard attribute supported by WebKit on iOS.
+        // none, sentences, words, characters (on, off are deprecated).
+        this.text.setAttribute("autocapitalize", "none");
+
+        // HTML5. We don't want the browser to perform auto complete.
+        this.text.setAttribute("autocorrect", "off");
+
+        // HTML5. Setting to true means that the element needs to have its spelling and grammar checked.
+        this.text.setAttribute("spellcheck", "false");
+
+        // HTML5. POssible values are (hard, soft). soft is the default value.
+        // FIXME: Why off?
+        this.text.setAttribute("wrap", "off");
 
         this.text.style.opacity = "0";
         container.insertBefore(this.text, container.firstChild);
 
-        var copied = false;
+        let copied = false;
         this.pasted = false;
-        var isSelectionEmpty = true;
+        let isSelectionEmpty = true;
 
         // FOCUS
         // ie9 throws error if document.activeElement is accessed too soon
@@ -131,22 +110,28 @@ export default class TextInput {
 
         // modifying selection of blured textarea can focus it (chrome mac/linux)
         const syncSelection = createDelayedCall(() => {
-            this._isFocused && this.resetSelection(isSelectionEmpty);
+            if (this._isFocused) {
+                this.resetSelection(isSelectionEmpty);
+            }
         });
 
         this.syncValue = createDelayedCall(() => {
             if (!this.inComposition) {
                 this.text.value = PLACEHOLDER;
-                this._isFocused && this.resetSelection();
+                if (this._isFocused) {
+                    this.resetSelection();
+                }
             }
         });
 
-        isWebKit || editor.on('changeSelection', function (event, editor: Editor) {
-            if (editor.selection.isEmpty() !== isSelectionEmpty) {
-                isSelectionEmpty = !isSelectionEmpty;
-                syncSelection.schedule();
-            }
-        });
+        if (!isWebKit) {
+            editor.on('changeSelection', function (event, editor: Editor) {
+                if (editor.selection.isEmpty() !== isSelectionEmpty) {
+                    isSelectionEmpty = !isSelectionEmpty;
+                    syncSelection.schedule();
+                }
+            });
+        }
 
         this.resetValue();
 
@@ -178,9 +163,106 @@ export default class TextInput {
                 return range.text === text.value;
             };
         }
+        const onCompositionUpdate = () => {
+
+            if (!this.inComposition || !editor.onCompositionUpdate || editor.$readOnly) {
+                return;
+            }
+            const val = this.text.value.replace(/\x01/g, "");
+            if (this.inComposition.lastValue === val) return;
+
+            editor.onCompositionUpdate(val);
+            if (this.inComposition.lastValue) {
+                editor.undo();
+            }
+            if (this.inComposition.canUndo) {
+                this.inComposition.lastValue = val;
+            }
+            if (this.inComposition.lastValue) {
+                const r = editor.selection.getRange();
+                editor.insert(this.inComposition.lastValue, false);
+                editor.getSession().markUndoGroup();
+                this.inComposition.range = editor.selection.getRange();
+                editor.selection.setRange(r);
+                editor.selection.clearSelection();
+            }
+        };
+
+        /**
+         * The event handler for the 'input' event of the text area.
+         */
+        const onInput = (e?) => {
+            if (this.inComposition) {
+                return;
+            }
+            const data = this.text.value;
+            // The data is essentially the last character typed because of the reset.
+            this.sendText(data);
+            this.resetValue();
+        };
+
+        const onCompositionEnd = (e, editor: Editor) => {
+            if (!editor.onCompositionEnd || editor.$readOnly) return;
+
+            var c = this.inComposition;
+            this.inComposition = false;
+            var timer = setTimeout(() => {
+                timer = null;
+                var str = this.text.value.replace(/\x01/g, "");
+
+                if (this.inComposition)
+                    return;
+                else if (str === c.lastValue)
+                    this.resetValue();
+                else if (!c.lastValue && str) {
+                    this.resetValue();
+                    this.sendText(str);
+                }
+            });
+
+            this.inputHandler = function compositionInputHandler(str: string) {
+
+                if (timer)
+                    clearTimeout(timer);
+                str = str.replace(/\x01/g, "");
+                if (str === c.lastValue)
+                    return "";
+                if (c.lastValue && timer)
+                    editor.undo();
+                return str;
+            };
+            editor.onCompositionEnd();
+            editor.off("mousedown", onCompositionEnd);
+            if (e.type === "compositionend" && c.range) {
+                editor.selection.setRange(c.range);
+            }
+            // Workaround for accent key composition in Chrome 53+.
+            if (isChrome && isChrome >= 53) {
+                onInput();
+            }
+        };
+
+        const onCompositionStart = () => {
+            if (this.inComposition || !editor.onCompositionStart || editor.$readOnly) {
+                return;
+            }
+
+            this.inComposition = {};
+            editor.onCompositionStart();
+            setTimeout(onCompositionUpdate, 0);
+            editor.on("mousedown", onCompositionEnd);
+            if (this.inComposition.canUndo && !editor.selection.isEmpty()) {
+                editor.insert("", false);
+                editor.getSession().markUndoGroup();
+                editor.selection.clearSelection();
+            }
+            editor.getSession().markUndoGroup();
+        };
+
         if (isOldIE) {
-            var inPropertyChange = false;
-            var onPropertyChange = (e?) => {
+            let inPropertyChange = false;
+            let syncProperty: DelayedCall;
+            const onPropertyChange = (e?) => {
                 if (inPropertyChange)
                     return;
                 var data = this.text.value;
@@ -196,7 +278,7 @@ export default class TextInput {
                 this.resetValue();
                 inPropertyChange = false;
             };
-            var syncProperty = createDelayedCall(onPropertyChange);
+            syncProperty = createDelayedCall(onPropertyChange);
             addListener(this.text, "propertychange", onPropertyChange);
 
             var keytable = { 13: 1, 27: 1 };
@@ -204,7 +286,7 @@ export default class TextInput {
                 if (this.inComposition && (!this.text.value || keytable[e.keyCode]))
                     setTimeout(onCompositionEnd, 0);
                 if ((this.text.value.charCodeAt(0) || 0) < 129) {
-                    return syncProperty.call();
+                    return syncProperty.schedule();
                 }
                 this.inComposition ? onCompositionUpdate() : onCompositionStart();
             });
@@ -226,19 +308,6 @@ export default class TextInput {
             else if (this.inputHandler) {
                 this.resetSelection(editor.selection.isEmpty());
             }
-        };
-
-        /**
-         * The event handler for the 'input' event of the text area.
-         */
-        const onInput = (e) => {
-            if (this.inComposition) {
-                return;
-            }
-            const data = this.text.value;
-            // The data is essentially the last character typed because of the reset.
-            this.sendText(data);
-            this.resetValue();
         };
 
         var handleClipboardData = function (e, data?) {
@@ -335,88 +404,7 @@ export default class TextInput {
             });
         }
 
-
-        // COMPOSITION
-        var onCompositionStart = () => {
-            if (this.inComposition || !editor.onCompositionStart || editor.$readOnly)
-                return;
-
-            this.inComposition = {};
-            editor.onCompositionStart();
-            setTimeout(onCompositionUpdate, 0);
-            editor.on("mousedown", onCompositionEnd);
-            if (this.inComposition.canUndo && !editor.selection.isEmpty()) {
-                editor.insert("", false);
-                editor.getSession().markUndoGroup();
-                editor.selection.clearSelection();
-            }
-            editor.getSession().markUndoGroup();
-        };
-
-        var onCompositionUpdate = () => {
-
-            if (!this.inComposition || !editor.onCompositionUpdate || editor.$readOnly)
-                return;
-            var val = this.text.value.replace(/\x01/g, "");
-            if (this.inComposition.lastValue === val) return;
-
-            editor.onCompositionUpdate(val);
-            if (this.inComposition.lastValue) {
-                editor.undo();
-            }
-            if (this.inComposition.canUndo) {
-                this.inComposition.lastValue = val;
-            }
-            if (this.inComposition.lastValue) {
-                var r = editor.selection.getRange();
-                editor.insert(this.inComposition.lastValue, false);
-                editor.getSession().markUndoGroup();
-                this.inComposition.range = editor.selection.getRange();
-                editor.selection.setRange(r);
-                editor.selection.clearSelection();
-            }
-        };
-
-        var onCompositionEnd = (e, editor: Editor) => {
-            if (!editor.onCompositionEnd || editor.$readOnly) return;
-
-            var c = this.inComposition;
-            this.inComposition = false;
-            var timer = setTimeout(() => {
-                timer = null;
-                var str = this.text.value.replace(/\x01/g, "");
-
-                if (this.inComposition)
-                    return;
-                else if (str === c.lastValue)
-                    this.resetValue();
-                else if (!c.lastValue && str) {
-                    this.resetValue();
-                    this.sendText(str);
-                }
-            });
-
-            this.inputHandler = function compositionInputHandler(str: string) {
-
-                if (timer)
-                    clearTimeout(timer);
-                str = str.replace(/\x01/g, "");
-                if (str === c.lastValue)
-                    return "";
-                if (c.lastValue && timer)
-                    editor.undo();
-                return str;
-            };
-            editor.onCompositionEnd();
-            editor.off("mousedown", onCompositionEnd);
-            if (e.type === "compositionend" && c.range) {
-                editor.selection.setRange(c.range);
-            }
-        };
-
-
-
-        var syncComposition = createDelayedCall(onCompositionUpdate, 50);
+        const syncComposition = createDelayedCall(onCompositionUpdate, 50);
 
         addListener(this.text, "compositionstart", onCompositionStart);
         if (isGecko) {
@@ -453,12 +441,6 @@ export default class TextInput {
         return this._isFocused;
     }
 
-    /**
-     * @method moveToMouse
-     * @param e {MouseEvent}
-     * @param [bringToFront] {boolean}
-     * @return {void}
-     */
     moveToMouse(e: MouseEvent, bringToFront?: boolean): void {
 
         if (!this.tempStyle) {
@@ -469,21 +451,22 @@ export default class TextInput {
             + "height:" + this.text.style.height + ";"
             + (isIE ? "opacity:0.1;" : "");
 
-        var rect = this.editor.container.getBoundingClientRect();
-        var style = window.getComputedStyle(this.editor.container);
-        var top = rect.top + (parseInt(style.borderTopWidth) || 0);
-        var left = rect.left + (parseInt(style.borderLeftWidth) || 0);
-        var maxTop = rect.bottom - top - this.text.clientHeight - 2;
+        const rect = this.editor.container.getBoundingClientRect();
+        const style = window.getComputedStyle(this.editor.container);
+        const top = rect.top + (parseInt(style.borderTopWidth, 10) || 0);
+        const left = rect.left + (parseInt(style.borderLeftWidth, 10) || 0);
+        const maxTop = rect.bottom - top - this.text.clientHeight - 2;
 
-        var move = (e: MouseEvent) => {
+        const move = (e: MouseEvent) => {
             this.text.style.left = e.clientX - left - 2 + "px";
             this.text.style.top = Math.min(e.clientY - top - 2, maxTop) + "px";
         };
 
         move(e);
 
-        if (e.type !== "mousedown")
+        if (e.type !== "mousedown") {
             return;
+        }
 
         if (this.editor.renderer.$keepTextAreaAtCursor) {
             this.editor.renderer.$keepTextAreaAtCursor = null;
@@ -597,11 +580,6 @@ export default class TextInput {
         }
     }
 
-    /**
-     * @method resetSelection
-     * @param [isEmpty] {boolean}
-     * @return {void}
-     */
     resetSelection(isEmpty?: boolean): void {
         if (this.inComposition) {
             return;

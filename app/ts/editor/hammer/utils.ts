@@ -1,11 +1,5 @@
-var VENDOR_PREFIXES = ['', 'webkit', 'moz', 'MS', 'ms', 'o'];
+const VENDOR_PREFIXES = ['', 'webkit', 'moz', 'MS', 'ms', 'o'];
 export var TEST_ELEMENT = document.createElement('div');
-
-var TYPE_FUNCTION = 'function';
-
-var round = Math.round;
-var abs = Math.abs;
-var now = Date.now;
 
 /**
  * set a timeout with a given `this` scope.
@@ -58,7 +52,9 @@ export function each(obj, iterator, context?) {
         }
     } else {
         for (i in obj) {
-            obj.hasOwnProperty(i) && iterator.call(context, obj[i], i, obj);
+            if (obj.hasOwnProperty(i)) {
+                iterator.call(context, obj[i], i, obj);
+            }
         }
     }
 }
@@ -142,7 +138,7 @@ export function ifUndefined(val1, val2) {
  * param {Function} handler
  */
 export function addEventListeners(eventTarget: EventTarget, types: string, handler) {
-    each(splitStr(types), function(type) {
+    each(splitStr(types), function (type) {
         eventTarget.addEventListener(type, handler, false);
     });
 }
@@ -154,7 +150,7 @@ export function addEventListeners(eventTarget: EventTarget, types: string, handl
  * param {Function} handler
  */
 export function removeEventListeners(eventTarget: EventTarget, types: string, handler) {
-    each(splitStr(types), function(type) {
+    each(splitStr(types), function (type) {
         eventTarget.removeEventListener(type, handler, false);
     });
 }
@@ -168,7 +164,7 @@ export function removeEventListeners(eventTarget: EventTarget, types: string, ha
  */
 export function hasParent(node: any, parent: HTMLElement): boolean {
     while (node) {
-        if (node == parent) {
+        if (node === parent) {
             return true;
         }
         node = node.parentNode;
@@ -208,7 +204,7 @@ export function inArray(src: any[], find, findByKey?: string) {
     } else {
         var i = 0;
         while (i < src.length) {
-            if ((findByKey && src[i][findByKey] == find) || (!findByKey && src[i] === find)) {
+            if ((findByKey && src[i][findByKey] === find) || (!findByKey && src[i] === find)) {
                 return i;
             }
             i++;

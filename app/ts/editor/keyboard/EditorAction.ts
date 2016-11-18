@@ -1,4 +1,5 @@
-import Editor from '../Editor';
+// FIXME: Does this really make any sense?
+// import Editor from '../Editor';
 
 /**
  * An action that is performed in the context of an <code>Editor</code>.

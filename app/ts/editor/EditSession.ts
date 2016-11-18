@@ -250,11 +250,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     private $bracketMatcher = new BracketMatch(this);
     private refCount = 1;
 
-    /**
-     * @param doc
-     */
     constructor(doc: Document) {
-        // console.lg("EditSession.constructor")
         if (!(doc instanceof Document)) {
             throw new TypeError('doc must be an Document');
         }
@@ -262,7 +258,8 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         this.eventBus = new EventEmitterClass<any, EditSession>(this);
 
         this.$foldData = [];
-
+        // FIXME: What is this used for?
+        // this.id = "session" + (++EditSession.$uid);
         this.$foldData.toString = function () {
             return this.join("\n");
         };
@@ -286,8 +283,6 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     }
 
     protected destructor(): void {
-        // FIXME: TODO
-        // console.lg("EditSession.destructor");
         this.$stopWorker();
         this.setDocument(void 0);
     }
@@ -809,10 +804,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     }
 
     /**
-     * Returns an array of strings, indicating which rows have breakpoints.
-     *
-     * @method getBreakpoints
-     * @return {string[]}
+     * Returns an array of strings, indicating the breakpoint class (if any) applied to each row.
      */
     public getBreakpoints(): string[] {
         return this.$breakpoints;
@@ -822,9 +814,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * Sets a breakpoint on every row number given by `rows`.
      * This function also emites the `'changeBreakpoint'` event.
      *
-     * @method setBreakpoints
-     * @param {number[]} rows An array of row indices
-     * @return {void}
+     * @param rows An array of row indices
      */
     public setBreakpoints(rows: number[]): void {
         this.$breakpoints = [];
@@ -840,9 +830,6 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     /**
      * Removes all breakpoints on the rows.
      * This function also emites the `'changeBreakpoint'` event.
-     *
-     * @method clearBreakpoints
-     * @return {void}
      */
     public clearBreakpoints(): void {
         this.$breakpoints = [];
@@ -1955,9 +1942,6 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     /**
      * Returns `true` if wrap mode is being used; `false` otherwise.
-     *
-     * @method getUseWrapMode
-     * @return {Boolean}
      */
     getUseWrapMode(): boolean {
         return this.$useWrapMode;
