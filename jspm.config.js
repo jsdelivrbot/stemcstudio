@@ -25,7 +25,7 @@ System.config({
     "jquery": "npm:jquery@2.2.4",
     "showdown": "npm:showdown@1.5.0",
     "socket.io": "npm:socket.io@1.4.6",
-    "socket.io-client": "npm:socket.io-client@1.5.1",
+    "socket.io-client": "npm:socket.io-client@1.6.0",
     "ui-select": "npm:ui-select@0.17.1",
     "underscore": "npm:underscore@1.8.3",
     "github:angular-ui/ui-router@0.2.18": {
@@ -108,7 +108,7 @@ System.config({
     },
     "npm:angular2@2.0.0-beta.17": {
       "reflect-metadata": "npm:reflect-metadata@0.1.2",
-      "rxjs": "npm:rxjs@5.0.0-rc.3",
+      "rxjs": "npm:rxjs@5.0.0-rc.4",
       "zone.js": "npm:zone.js@0.6.26"
     },
     "npm:asn1.js@4.9.0": {
@@ -283,6 +283,9 @@ System.config({
     "npm:debug@2.2.0": {
       "ms": "npm:ms@0.7.1"
     },
+    "npm:debug@2.3.3": {
+      "ms": "npm:ms@0.7.2"
+    },
     "npm:des.js@1.0.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "inherits": "npm:inherits@2.0.1",
@@ -316,17 +319,17 @@ System.config({
       "parseuri": "npm:parseuri@0.0.4",
       "yeast": "npm:yeast@0.1.2"
     },
-    "npm:engine.io-client@1.7.2": {
+    "npm:engine.io-client@1.8.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
-      "component-emitter": "npm:component-emitter@1.1.2",
+      "component-emitter": "npm:component-emitter@1.2.1",
       "component-inherit": "npm:component-inherit@0.0.3",
-      "debug": "npm:debug@2.2.0",
+      "debug": "npm:debug@2.3.3",
       "engine.io-parser": "npm:engine.io-parser@1.3.1",
       "has-cors": "npm:has-cors@1.1.0",
       "indexof": "npm:indexof@0.0.1",
-      "parsejson": "npm:parsejson@0.0.1",
-      "parseqs": "npm:parseqs@0.0.2",
-      "parseuri": "npm:parseuri@0.0.4",
+      "parsejson": "npm:parsejson@0.0.3",
+      "parseqs": "npm:parseqs@0.0.5",
+      "parseuri": "npm:parseuri@0.0.5",
       "yeast": "npm:yeast@0.1.2"
     },
     "npm:engine.io-parser@1.2.4": {
@@ -438,10 +441,19 @@ System.config({
     "npm:parsejson@0.0.1": {
       "better-assert": "npm:better-assert@1.0.2"
     },
+    "npm:parsejson@0.0.3": {
+      "better-assert": "npm:better-assert@1.0.2"
+    },
     "npm:parseqs@0.0.2": {
       "better-assert": "npm:better-assert@1.0.2"
     },
+    "npm:parseqs@0.0.5": {
+      "better-assert": "npm:better-assert@1.0.2"
+    },
     "npm:parseuri@0.0.4": {
+      "better-assert": "npm:better-assert@1.0.2"
+    },
+    "npm:parseuri@0.0.5": {
       "better-assert": "npm:better-assert@1.0.2"
     },
     "npm:path-browserify@0.0.0": {
@@ -508,7 +520,7 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:rxjs@5.0.0-rc.3": {
+    "npm:rxjs@5.0.0-rc.4": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "symbol-observable": "npm:symbol-observable@1.0.4"
@@ -545,17 +557,18 @@ System.config({
       "socket.io-parser": "npm:socket.io-parser@2.2.6",
       "to-array": "npm:to-array@0.1.4"
     },
-    "npm:socket.io-client@1.5.1": {
+    "npm:socket.io-client@1.6.0": {
       "backo2": "npm:backo2@1.0.2",
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "component-bind": "npm:component-bind@1.0.0",
-      "component-emitter": "npm:component-emitter@1.2.0",
-      "debug": "npm:debug@2.2.0",
-      "engine.io-client": "npm:engine.io-client@1.7.2",
+      "component-emitter": "npm:component-emitter@1.2.1",
+      "debug": "npm:debug@2.3.3",
+      "engine.io-client": "npm:engine.io-client@1.8.0",
       "has-binary": "npm:has-binary@0.1.7",
       "indexof": "npm:indexof@0.0.1",
       "object-component": "npm:object-component@0.0.3",
-      "parseuri": "npm:parseuri@0.0.4",
+      "parseuri": "npm:parseuri@0.0.5",
+      "process": "github:jspm/nodelibs-process@0.1.2",
       "socket.io-parser": "npm:socket.io-parser@2.3.1",
       "to-array": "npm:to-array@0.1.4"
     },

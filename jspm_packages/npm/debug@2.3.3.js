@@ -1,0 +1,1 @@
+module.exports = require("npm:debug@2.3.3/browser.js");

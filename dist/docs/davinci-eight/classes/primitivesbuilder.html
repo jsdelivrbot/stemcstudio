@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>PrimitivesBuilder | EIGHT 3.4.0</title>
+	<title>PrimitivesBuilder | EIGHT 3.5.0</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">EIGHT 3.4.0</a>
+					<a href="../index.html" class="title">EIGHT 3.5.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -110,6 +110,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="primitivesbuilder.html#offset" class="tsd-kind-icon">offset</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="primitivesbuilder.html#stress" class="tsd-kind-icon">stress</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="primitivesbuilder.html#tilt" class="tsd-kind-icon">tilt</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="primitivesbuilder.html#transforms" class="tsd-kind-icon">transforms</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="primitivesbuilder.html#usenormal" class="tsd-kind-icon">use<wbr>Normal</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="primitivesbuilder.html#useposition" class="tsd-kind-icon">use<wbr>Position</a></li>
@@ -139,18 +140,9 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/27cbfb5/src/davinci-eight/geometries/PrimitivesBuilder.ts#L67">geometries/PrimitivesBuilder.ts:67</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/eadc22c/src/davinci-eight/geometries/PrimitivesBuilder.ts#L52">geometries/PrimitivesBuilder.ts:52</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>class</dt>
-									<dd><p>PrimitivesBuilder</p>
-									</dd>
-									<dt>constructor</dt>
-									<dd></dd>
-								</dl>
-							</div>
 							<h4 class="tsd-returns-title">Returns <a href="primitivesbuilder.html" class="tsd-signature-type">PrimitivesBuilder</a></h4>
 						</li>
 					</ul>
@@ -165,24 +157,13 @@
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/geometrybuilder.html">GeometryBuilder</a>.<a href="../interfaces/geometrybuilder.html#offset">offset</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/27cbfb5/src/davinci-eight/geometries/PrimitivesBuilder.ts#L34">geometries/PrimitivesBuilder.ts:34</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/eadc22c/src/davinci-eight/geometries/PrimitivesBuilder.ts#L32">geometries/PrimitivesBuilder.ts:32</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>The translation to apply to the geometry (after tilt has been applied).</p>
 						</div>
-						<dl class="tsd-comment-tags">
-							<dt>property</dt>
-							<dd><p>offset</p>
-							</dd>
-							<dt>type</dt>
-							<dd><p>Vector3</p>
-							</dd>
-							<dt>default</dt>
-							<dd><p>0</p>
-							</dd>
-						</dl>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
@@ -192,7 +173,7 @@
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/geometrybuilder.html">GeometryBuilder</a>.<a href="../interfaces/geometrybuilder.html#stress">stress</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/27cbfb5/src/davinci-eight/geometries/PrimitivesBuilder.ts#L26">geometries/PrimitivesBuilder.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/eadc22c/src/davinci-eight/geometries/PrimitivesBuilder.ts#L22">geometries/PrimitivesBuilder.ts:22</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -202,19 +183,21 @@
 							reference frame specific transformation.</p>
 						</div>
 						<p>This may be replaced by a Matrix3 in future.</p>
-						<dl class="tsd-comment-tags">
-							<dt>property</dt>
-							<dd><p>stress</p>
-							</dd>
-							<dt>type</dt>
-							<dd><p>Vector3</p>
-							</dd>
-							<dt>default</dt>
-							<dd><p>vector(1, 1, 1)</p>
-							</dd>
-							<dt>beta</dt>
-							<dd></dd>
-						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
+					<a name="tilt" class="tsd-anchor"></a>
+					<h3>tilt</h3>
+					<div class="tsd-signature tsd-kind-icon">tilt<span class="tsd-signature-symbol">:</span> <a href="spinor3.html" class="tsd-signature-type">Spinor3</a><span class="tsd-signature-symbol"> =&nbsp;Spinor3.one()</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/eadc22c/src/davinci-eight/geometries/PrimitivesBuilder.ts#L27">geometries/PrimitivesBuilder.ts:27</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The rotation to apply to the geometry (after the stress has been applied).</p>
+						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
@@ -223,19 +206,9 @@
 					<div class="tsd-signature tsd-kind-icon">transforms<span class="tsd-signature-symbol">:</span> <a href="../interfaces/transform.html" class="tsd-signature-type">Transform</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/27cbfb5/src/davinci-eight/geometries/PrimitivesBuilder.ts#L40">geometries/PrimitivesBuilder.ts:40</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/eadc22c/src/davinci-eight/geometries/PrimitivesBuilder.ts#L37">geometries/PrimitivesBuilder.ts:37</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<dl class="tsd-comment-tags">
-							<dt>property</dt>
-							<dd><p>transforms</p>
-							</dd>
-							<dt>type</dt>
-							<dd><p>Transform[]</p>
-							</dd>
-						</dl>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
 					<a name="usenormal" class="tsd-anchor"></a>
@@ -243,24 +216,13 @@
 					<div class="tsd-signature tsd-kind-icon">use<wbr>Normal<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/27cbfb5/src/davinci-eight/geometries/PrimitivesBuilder.ts#L49">geometries/PrimitivesBuilder.ts:49</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/eadc22c/src/davinci-eight/geometries/PrimitivesBuilder.ts#L42">geometries/PrimitivesBuilder.ts:42</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Determines whether to include normals in the geometry.</p>
 						</div>
-						<dl class="tsd-comment-tags">
-							<dt>property</dt>
-							<dd><p>useNormal</p>
-							</dd>
-							<dt>type</dt>
-							<dd><p>boolean</p>
-							</dd>
-							<dt>default</dt>
-							<dd><p>true</p>
-							</dd>
-						</dl>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
@@ -269,24 +231,13 @@
 					<div class="tsd-signature tsd-kind-icon">use<wbr>Position<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/27cbfb5/src/davinci-eight/geometries/PrimitivesBuilder.ts#L58">geometries/PrimitivesBuilder.ts:58</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/eadc22c/src/davinci-eight/geometries/PrimitivesBuilder.ts#L47">geometries/PrimitivesBuilder.ts:47</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Determines whether to include positions in the geometry.</p>
 						</div>
-						<dl class="tsd-comment-tags">
-							<dt>property</dt>
-							<dd><p>usePosition</p>
-							</dd>
-							<dt>type</dt>
-							<dd><p>boolean</p>
-							</dd>
-							<dt>default</dt>
-							<dd><p>true</p>
-							</dd>
-						</dl>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
@@ -295,24 +246,13 @@
 					<div class="tsd-signature tsd-kind-icon">use<wbr>Texture<wbr>Coord<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/27cbfb5/src/davinci-eight/geometries/PrimitivesBuilder.ts#L67">geometries/PrimitivesBuilder.ts:67</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/eadc22c/src/davinci-eight/geometries/PrimitivesBuilder.ts#L52">geometries/PrimitivesBuilder.ts:52</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>Determines whether to include texture coordinates in the geometry.</p>
 						</div>
-						<dl class="tsd-comment-tags">
-							<dt>property</dt>
-							<dd><p>useTextureCoord</p>
-							</dd>
-							<dt>type</dt>
-							<dd><p>boolean</p>
-							</dd>
-							<dt>default</dt>
-							<dd><p>false</p>
-							</dd>
-						</dl>
 					</div>
 				</section>
 			</section>
@@ -328,7 +268,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/27cbfb5/src/davinci-eight/geometries/PrimitivesBuilder.ts#L77">geometries/PrimitivesBuilder.ts:77</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/eadc22c/src/davinci-eight/geometries/PrimitivesBuilder.ts#L58">geometries/PrimitivesBuilder.ts:58</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -364,19 +304,9 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/geometrybuilder.html">GeometryBuilder</a>.<a href="../interfaces/geometrybuilder.html#toprimitives">toPrimitives</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/27cbfb5/src/davinci-eight/geometries/PrimitivesBuilder.ts#L103">geometries/PrimitivesBuilder.ts:103</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/eadc22c/src/davinci-eight/geometries/PrimitivesBuilder.ts#L75">geometries/PrimitivesBuilder.ts:75</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>toPrimitives</p>
-									</dd>
-									<dt>type</dt>
-									<dd><p>Primitive[]</p>
-									</dd>
-								</dl>
-							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/primitive.html" class="tsd-signature-type">Primitive</a><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
@@ -392,18 +322,9 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/geometrybuilder.html">GeometryBuilder</a>.<a href="../interfaces/geometrybuilder.html#tovertexarrays">toVertexArrays</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/27cbfb5/src/davinci-eight/geometries/PrimitivesBuilder.ts#L89">geometries/PrimitivesBuilder.ts:89</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/eadc22c/src/davinci-eight/geometries/PrimitivesBuilder.ts#L65">geometries/PrimitivesBuilder.ts:65</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>toVertexArrays</p>
-									</dd>
-									<dt>beta</dt>
-									<dd></dd>
-								</dl>
-							</div>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/vertexarrays.html" class="tsd-signature-type">VertexArrays</a><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
@@ -433,6 +354,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
 								<a href="primitivesbuilder.html#stress" class="tsd-kind-icon">stress</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
+								<a href="primitivesbuilder.html#tilt" class="tsd-kind-icon">tilt</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
 								<a href="primitivesbuilder.html#transforms" class="tsd-kind-icon">transforms</a>
