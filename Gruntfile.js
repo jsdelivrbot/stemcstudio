@@ -488,15 +488,15 @@ function copies(target) {
         },
         {
             src: "../davinci-eight/dist/davinci-eight.d.ts",
-            dest: prepend(target, 'vendor/davinci-eight@3.7.0/dist/davinci-eight.d.ts')
+            dest: prepend(target, 'vendor/davinci-eight@3.7.2/dist/davinci-eight.d.ts')
         },
         {
             src: "../davinci-eight/dist/davinci-eight.js",
-            dest: prepend(target, 'vendor/davinci-eight@3.7.0/dist/davinci-eight.js')
+            dest: prepend(target, 'vendor/davinci-eight@3.7.2/dist/davinci-eight.js')
         },
         {
             src: "../davinci-eight/dist/davinci-eight.css",
-            dest: prepend(target, 'vendor/davinci-eight@3.7.0/dist/davinci-eight.css')
+            dest: prepend(target, 'vendor/davinci-eight@3.7.2/dist/davinci-eight.css')
         },
         {
             src: "bower_components/davinci-mathscript/dist/davinci-mathscript.d.ts",

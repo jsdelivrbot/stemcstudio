@@ -10,11 +10,11 @@ System.config({
   map: {
     "@angular/router": "npm:@angular/router@0.2.0",
     "ace2ts/ace-workers": "github:ace2ts/ace-workers@1.0.4",
-    "angular": "github:angular/bower-angular@1.5.8",
-    "angular-animate": "github:angular/bower-angular-animate@1.5.8",
+    "angular": "github:angular/bower-angular@1.5.9",
+    "angular-animate": "github:angular/bower-angular-animate@1.5.9",
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.3",
     "angular-material-icons": "npm:angular-material-icons@0.7.1",
-    "angular-sanitize": "github:angular/bower-angular-sanitize@1.5.8",
+    "angular-sanitize": "github:angular/bower-angular-sanitize@1.5.9",
     "angular-ui-router": "github:angular-ui/ui-router@0.2.18",
     "angular2": "npm:angular2@2.0.0-beta.17",
     "bootstrap": "vendor/bootstrap/dist/js/npm",
@@ -29,13 +29,13 @@ System.config({
     "ui-select": "npm:ui-select@0.17.1",
     "underscore": "npm:underscore@1.8.3",
     "github:angular-ui/ui-router@0.2.18": {
-      "angular": "github:angular/bower-angular@1.5.8"
+      "angular": "github:angular/bower-angular@1.5.9"
     },
-    "github:angular/bower-angular-animate@1.5.8": {
-      "angular": "github:angular/bower-angular@1.5.8"
+    "github:angular/bower-angular-animate@1.5.9": {
+      "angular": "github:angular/bower-angular@1.5.9"
     },
-    "github:angular/bower-angular-sanitize@1.5.8": {
-      "angular": "github:angular/bower-angular@1.5.8"
+    "github:angular/bower-angular-sanitize@1.5.9": {
+      "angular": "github:angular/bower-angular@1.5.9"
     },
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.4.1"
@@ -104,7 +104,7 @@ System.config({
       "negotiator": "npm:negotiator@0.6.0"
     },
     "npm:angular-material-icons@0.7.1": {
-      "angular": "npm:angular@1.5.8"
+      "angular": "npm:angular@1.5.9"
     },
     "npm:angular2@2.0.0-beta.17": {
       "reflect-metadata": "npm:reflect-metadata@0.1.2",
