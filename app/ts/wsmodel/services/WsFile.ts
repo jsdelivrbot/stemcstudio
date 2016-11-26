@@ -70,7 +70,12 @@ export default class WsFile implements MwEditor, Shareable {
     /**
      * 
      */
-    public preview = false;
+    public htmlChoice = false;
+
+    /**
+     * 
+     */
+    public markdownChoice = false;
 
     /**
      * Let's us know if this file exists in GitHub.

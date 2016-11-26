@@ -71,7 +71,8 @@ function copyFiles(inFiles: { [name: string]: IDoodleFile }): { [name: string]: 
         outFile.content = inFile.content;
         outFile.isOpen = inFile.isOpen;
         outFile.language = inFile.language;
-        outFile.preview = inFile.preview;
+        outFile.htmlChoice = inFile.htmlChoice;
+        outFile.markdownChoice = inFile.markdownChoice;
         outFile.raw_url = inFile.raw_url;
         outFile.selected = inFile.selected;
         outFiles[name] = outFile;
@@ -83,7 +84,7 @@ app.factory('doodles', [
     '$window',
     'options',
     'doodlesKey',
-    function(
+    function (
         $window: angular.IWindowService,
         options: IOptionManager,
         doodlesKey: string
@@ -92,7 +93,7 @@ app.factory('doodles', [
         // The doodles from local storage must be converted into classes in order to support the methods.
         var _doodles: Doodle[] = deserializeDoodles($window.localStorage[doodlesKey] !== undefined ? JSON.parse($window.localStorage[doodlesKey]) : [], options);
 
-        const suggestName = function(): string {
+        const suggestName = function (): string {
             const UNTITLED = "Project";
             // We assume that a doodle with a lower index will have a higher Untitled number.
             // To reduce sorting, sort as a descending sequence and use the resulting first
@@ -100,7 +101,7 @@ app.factory('doodles', [
             function compareNumbers(a: number, b: number) {
                 return b - a;
             }
-            const nums: number[] = _doodles.filter(function(doodle: Doodle) {
+            const nums: number[] = _doodles.filter(function (doodle: Doodle) {
                 if (typeof doodle.description === 'string') {
                     return typeof doodle.description.match(new RegExp(UNTITLED)) !== 'null';
                 }
@@ -109,12 +110,12 @@ app.factory('doodles', [
                     return false;
                 }
             }).
-                map(function(doodle: Doodle) {
+                map(function (doodle: Doodle) {
                     // We know that the doodle has a description, try removing the word in the prefix
                     // and then parse what's left as an integer. We may get NaN, but that's OK.
                     return parseInt(doodle.description.replace(UNTITLED + ' ', '').trim(), 10);
                 }).
-                filter(function(num) {
+                filter(function (num) {
                     // Throw away the description that did not parse to numbers.
                     return !isNaN(num);
                 });
@@ -127,11 +128,11 @@ app.factory('doodles', [
 
         const that: IDoodleManager = {
 
-            addHead: function(doodle: Doodle): number {
+            addHead: function (doodle: Doodle): number {
                 return _doodles.unshift(doodle);
             },
 
-            addTail: function(doodle: Doodle): number {
+            addTail: function (doodle: Doodle): number {
                 return _doodles.push(doodle);
             },
 
@@ -139,15 +140,15 @@ app.factory('doodles', [
                 return _doodles.length;
             },
 
-            filter: function(callback: (doodle: Doodle, index: number, array: Doodle[]) => boolean): Doodle[] {
+            filter: function (callback: (doodle: Doodle, index: number, array: Doodle[]) => boolean): Doodle[] {
                 return _doodles.filter(callback);
             },
 
-            createDoodle: function(): Doodle {
+            createDoodle: function (): Doodle {
                 return new Doodle(options);
             },
 
-            current: function(): Doodle {
+            current: function (): Doodle {
                 if (_doodles.length > 0) {
                     return _doodles[0];
                 }
@@ -156,7 +157,7 @@ app.factory('doodles', [
                 }
             },
 
-            makeCurrent: function(dude: Doodle): void {
+            makeCurrent: function (dude: Doodle): void {
                 const doodles: Doodle[] = [];
 
                 var i = 0, found;
@@ -174,7 +175,7 @@ app.factory('doodles', [
                 _doodles = doodles;
             },
 
-            deleteDoodle: function(dude: Doodle): void {
+            deleteDoodle: function (dude: Doodle): void {
                 const doodles: Doodle[] = [];
 
                 var i = 0, found;
@@ -195,7 +196,7 @@ app.factory('doodles', [
 
             suggestName: suggestName,
 
-            updateStorage: function(): void {
+            updateStorage: function (): void {
                 $window.localStorage[doodlesKey] = doodlesToString(_doodles);
             }
         };

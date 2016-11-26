@@ -49,8 +49,8 @@ interface WorkspaceScope extends DoodleScope {
     isCommentsVisible: boolean;
     toggleCommentsVisible(): void;
 
-    isReadMeVisible: boolean;
-    toggleReadMeVisible(): void;
+    isMarkdownVisible: boolean;
+    toggleMarkdownVisible(): void;
 
     /**
      * Label the project with a title, description, keywords, and license.
@@ -73,9 +73,14 @@ interface WorkspaceScope extends DoodleScope {
     doUpload(): void;
 
     /**
-     * View the specified (HTML) file in the Viewer.
+     * View the specified HTML (.html) file in the Viewer.
      */
-    doView(name: string): void;
+    doChooseHtml(name: string): void;
+
+    /**
+     * View the specified Markdown (.md) file in the Viewer.
+     */
+    doChooseMarkdown(name: string): void;
 
     // We can probably kill these in refactoring cleanup.
     updatePreview(delay: number): void;

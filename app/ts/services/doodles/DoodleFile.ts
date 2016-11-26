@@ -16,7 +16,8 @@ export default class DoodleFile {
      * The mode of the file refers to the computing language canonical name.
      */
     public language: string;
-    public preview: boolean;
+    public htmlChoice: boolean;
+    public markdownChoice: boolean;
     public raw_url: string;
     public selected: boolean;
 
@@ -26,7 +27,8 @@ export default class DoodleFile {
     constructor() {
         this.content = "";
         this.isOpen = true;
-        this.preview = false;
+        this.htmlChoice = false;
+        this.markdownChoice = false;
         this.selected = false;
     }
 

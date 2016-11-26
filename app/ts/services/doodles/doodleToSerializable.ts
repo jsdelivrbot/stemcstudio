@@ -8,7 +8,8 @@ function mapDoodleFileToIDoodleFile(doodleFile: DoodleFile): IDoodleFile {
         content: doodleFile.content,
         isOpen: doodleFile.isOpen,
         language: doodleFile.language,
-        preview: doodleFile.preview,
+        htmlChoice: doodleFile.htmlChoice,
+        markdownChoice: doodleFile.markdownChoice,
         raw_url: doodleFile.raw_url,
         selected: doodleFile.selected
     };

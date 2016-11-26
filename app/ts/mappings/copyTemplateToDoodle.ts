@@ -13,7 +13,8 @@ export default function copyTemplateToDoodle(template: ITemplate, doodle: Doodle
         doodleFile.content = templateFile.content;
         doodleFile.isOpen = false;
         doodleFile.language = templateFile.language;
-        doodleFile.preview = false;
+        doodleFile.htmlChoice = false;
+        doodleFile.markdownChoice = false;
         doodleFile.raw_url = void 0;
         doodleFile.selected = false;
     }

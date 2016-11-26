@@ -390,18 +390,31 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "						</a>\n" +
     "						<ul class='dropdown-menu' uib-dropdown-menu role='menu'>\n" +
     "							<li role='button' ng-repeat='(name, file) in files()' ng-if='name.indexOf(\".html\") &gt; 0'>\n" +
-    "								<a ng-click='doView(name, file)'>{{name}}&nbsp;\n" +
-    "                                    <ng-md-icon icon='done' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' ng-if='file.preview'><ng-md-icon>\n" +
+    "								<a ng-click='doChooseHtml(name, file)'>{{name}}&nbsp;\n" +
+    "                                    <ng-md-icon icon='done' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' ng-if='file.htmlChoice'><ng-md-icon>\n" +
     "                                </a>\n" +
     "							</li>\n" +
     "						</ul>\n" +
     "					</li>\n" +
     "					<li ng-if='markdownFileCount() > 0'>\n" +
-    "						<a role='button' ng-click='toggleReadMeVisible()'>\n" +
-    "							<ng-md-icon icon='description' style=\"fill: {{isReadMeVisible ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"{{isReadMeVisible ?  'Hide README.md' : 'Show README.md'}}\"\n" +
+    "						<a role='button' ng-click='toggleMarkdownVisible()'>\n" +
+    "							<ng-md-icon icon='description' style=\"fill: {{isMarkdownVisible ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' uib-tooltip=\"{{isMarkdownVisible ?  'Hide Markdown' : 'Show Markdown'}}\"\n" +
     "								tooltip-placement='bottom'>\n" +
     "								<ng-md-icon>\n" +
     "						</a>\n" +
+    "					</li>\n" +
+    "					<li uib-dropdown ng-if='markdownFileCount() > 1'>\n" +
+    "						<a uib-dropdown-toggle role=\"button\" aria-expanded=\"false\" uib-tooltip=\"Choose Markdown\" tooltip-placement='bottom'>\n" +
+    "							<ng-md-icon icon='playlist_add_check' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true'>\n" +
+    "								<ng-md-icon>\n" +
+    "						</a>\n" +
+    "						<ul class='dropdown-menu' uib-dropdown-menu role='menu'>\n" +
+    "							<li role='button' ng-repeat='(name, file) in files()' ng-if='name.indexOf(\".md\") &gt; 0'>\n" +
+    "								<a ng-click='doChooseMarkdown(name, file)'>{{name}}&nbsp;\n" +
+    "                                    <ng-md-icon icon='done' style=\"fill: {{true ? '#ffffff' : '#9d9d9d'}}\" size='24' aria-hidden='true' ng-if='file.markdownChoice'><ng-md-icon>\n" +
+    "                                </a>\n" +
+    "							</li>\n" +
+    "						</ul>\n" +
     "					</li>\n" +
     "					<!--\n" +
     "                    <li>\n" +
@@ -506,7 +519,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "				<div editor ng-if='file.isOpen' ng-repeat='(path, file) in files()' ng-model='file' path='{{path}}' ng-show='isEditMode &amp;&amp; file.selected'></div>\n" +
     "			</div>\n" +
     "			<div id='output' ng-if='isViewVisible'></div>\n" +
-    "			<div id='readme' ng-if='isReadMeVisible'></div>\n" +
+    "			<div id='readme' ng-if='isMarkdownVisible'></div>\n" +
     "			<div id='gist-comments' ng-if='isCommentsVisible && comments.length > 0'>\n" +
     "				<div ng-repeat=\"comment in comments\" class='gist-comment'><span>{{comment.msg}}</span></div>\n" +
     "			</div>\n" +

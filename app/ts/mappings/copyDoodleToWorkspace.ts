@@ -16,7 +16,8 @@ function copyFilesToWorkspace(dudeFiles: { [path: string]: DoodleFile }, workspa
                 wsFile.setText(dudeFile.content);
                 wsFile.isOpen = dudeFile.isOpen;
                 wsFile.mode = dudeFile.language;
-                wsFile.preview = dudeFile.preview;
+                wsFile.htmlChoice = dudeFile.htmlChoice;
+                wsFile.markdownChoice = dudeFile.markdownChoice;
                 wsFile.existsInGitHub = !!dudeFile.raw_url;
                 wsFile.selected = dudeFile.selected;
             }

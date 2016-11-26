@@ -55,7 +55,7 @@ import {LANGUAGE_TYPE_SCRIPT} from '../../languages/modes';
 import {LANGUAGE_TEXT} from '../../languages/modes';
 import updateWorkspaceTypings from './updateWorkspaceTypings';
 import rebuildPreview from './rebuildPreview';
-import rebuildReadmeView from './rebuildReadmeView';
+import rebuildMarkdownView from './rebuildMarkdownView';
 
 /**
  * A delay of 0 (zero) second.
@@ -118,7 +118,6 @@ export default class WorkspaceController implements WorkspaceMixin {
         'FEATURE_GIST_ENABLED',
         'FEATURE_REPO_ENABLED',
         'FEATURE_ROOM_ENABLED',
-        'FILENAME_README',
         'FILENAME_CODE',
         'FILENAME_LIBS',
         'FILENAME_LESS',
@@ -145,7 +144,7 @@ export default class WorkspaceController implements WorkspaceMixin {
     /**
      * Keep track of the README handlers that are registered for cleanup.
      */
-    private readmeChangeHandlers: { [path: string]: DocumentChangeHandler } = {};
+    private markdownChangeHandlers: { [path: string]: DocumentChangeHandler } = {};
 
     private resizeListener: (unused: UIEvent) => any;
 
@@ -187,7 +186,6 @@ export default class WorkspaceController implements WorkspaceMixin {
         private FEATURE_GIST_ENABLED: boolean,
         private FEATURE_REPO_ENABLED: boolean,
         private FEATURE_ROOM_ENABLED: boolean,
-        private FILENAME_README: string,
         private FILENAME_CODE: string,
         private FILENAME_LIBS: string,
         private FILENAME_LESS: string,
@@ -255,14 +253,31 @@ export default class WorkspaceController implements WorkspaceMixin {
             }
         };
 
-        $scope.doView = (path: string): void => {
+        $scope.doChooseHtml = (path: string): void => {
             if (!wsModel.isZombie()) {
                 const file = wsModel.getFileWeakRef(path);
                 if (file) {
-                    wsModel.setPreviewFile(path);
+                    wsModel.setHtmlFileChoice(path);
                     // The user probably wants to see the view, so make sure the view is visible.
                     $scope.isViewVisible = true;
                     $scope.updatePreview(WAIT_NO_MORE);
+                }
+            }
+        };
+
+        $scope.doChooseMarkdown = (chosenFilePath: string): void => {
+            if (!wsModel.isZombie()) {
+
+                const previousFilePath = wsModel.getHtmlFileChoiceOrBestAvailable();
+                this.disableMarkdownDocumentChangeTracking(previousFilePath);
+
+                const chosenFile = wsModel.getFileWeakRef(chosenFilePath);
+                if (chosenFile) {
+                    wsModel.setMarkdownFileChoice(chosenFilePath);
+                    this.enableMarkdownDocumentChangeTracking(chosenFilePath);
+                    // The user probably wants to see the markdown output, so make sure the markdown output is visible.
+                    $scope.isMarkdownVisible = true;
+                    this.updateMarkdownView(WAIT_NO_MORE);
                 }
             }
         };
@@ -296,7 +311,7 @@ export default class WorkspaceController implements WorkspaceMixin {
             $scope.isCommentsVisible = !$scope.isCommentsVisible;
             if ($scope.isCommentsVisible) {
                 // Experimenting with making these mutually exclusive.
-                $scope.isReadMeVisible = false;
+                $scope.isMarkdownVisible = false;
                 if (wsModel.isZombie()) {
                     github.getGistComments(wsModel.gistId).then((httpResponse) => {
                         const comments = httpResponse.data;
@@ -310,13 +325,13 @@ export default class WorkspaceController implements WorkspaceMixin {
             }
         };
 
-        $scope.toggleReadMeVisible = (label?: string, value?: number) => {
-            ga('send', 'event', 'doodle', 'toggleReadMeVisible', label, value);
-            $scope.isReadMeVisible = !$scope.isReadMeVisible;
-            if ($scope.isReadMeVisible) {
+        $scope.toggleMarkdownVisible = (label?: string, value?: number) => {
+            ga('send', 'event', 'doodle', 'toggleMarkdownVisible', label, value);
+            $scope.isMarkdownVisible = !$scope.isMarkdownVisible;
+            if ($scope.isMarkdownVisible) {
                 $scope.isCommentsVisible = false;
             }
-            this.updateReadmeView(WAIT_NO_MORE);
+            this.updateMarkdownView(WAIT_NO_MORE);
         };
 
         $scope.doLabel = (label?: string, value?: number) => {
@@ -526,7 +541,7 @@ export default class WorkspaceController implements WorkspaceMixin {
         // Don't display comments initially to keep things clean.
         this.$scope.isCommentsVisible = false;
         // No such issue with the README.md
-        this.$scope.isReadMeVisible = true;
+        this.$scope.isMarkdownVisible = true;
 
         this.watches.push(this.$scope.$watch('isViewVisible', (newVal: boolean, oldVal, unused: angular.IScope) => {
             if (this.wsModel.isZombie()) {
@@ -542,44 +557,18 @@ export default class WorkspaceController implements WorkspaceMixin {
             this.wsModel.isCodeVisible = this.$scope.isEditMode;
         }));
 
-        this.watches.push(this.$scope.$watch('isReadMeVisible', (isVisible: boolean, oldVal, unused: angular.IScope) => {
+        this.watches.push(this.$scope.$watch('isMarkdownVisible', (isVisible: boolean, oldVal, unused: angular.IScope) => {
             if (this.wsModel.isZombie()) {
                 return;
             }
-            // Don't do anything if we don't have a README file.
-            if (this.wsModel.existsFile(this.FILENAME_README)) {
-                // Add the change handlers if the README viewer is visible.
-                if (isVisible && !this.readmeChangeHandlers[this.FILENAME_README]) {
-                    const file = this.wsModel.findFileByPath(this.FILENAME_README);
-                    try {
-                        const doc = file.getDocument();
-                        try {
-                            this.addReadmeChangeHandler(this.FILENAME_README, doc);
-                            this.updateReadmeView(WAIT_NO_MORE);
-                        }
-                        finally {
-                            doc.release();
-                        }
-                    }
-                    finally {
-                        file.release();
-                    }
+            const markdownFilePath = this.wsModel.getMarkdownFileChoiceOrBestAvailable();
+            if (this.wsModel.existsFile(markdownFilePath)) {
+                if (isVisible) {
+                    this.enableMarkdownDocumentChangeTracking(markdownFilePath);
+                    this.updateMarkdownView(WAIT_NO_MORE);
                 }
-                // Remove the change handlers if the README viewer is not visible.
-                if (!isVisible && this.readmeChangeHandlers[this.FILENAME_README]) {
-                    const file = this.wsModel.findFileByPath(this.FILENAME_README);
-                    try {
-                        const doc = file.getDocument();
-                        try {
-                            this.removeReadmeChangeHandler(this.FILENAME_README, doc);
-                        }
-                        finally {
-                            doc.release();
-                        }
-                    }
-                    finally {
-                        file.release();
-                    }
+                else {
+                    this.disableMarkdownDocumentChangeTracking(markdownFilePath);
                 }
             }
         }));
@@ -710,23 +699,22 @@ export default class WorkspaceController implements WorkspaceMixin {
         return handler;
     }
 
-    private createReadmeChangeHandler(path: string): DocumentChangeHandler {
+    private createMarkdownChangeHandler(path: string): DocumentChangeHandler {
         const handler = (delta: Delta, source: Document) => {
             if (this.wsModel && !this.wsModel.isZombie()) {
-                this.updateReadmeView(WAIT_FOR_MORE_README_KEYSTROKES);
+                this.updateMarkdownView(WAIT_FOR_MORE_README_KEYSTROKES);
             }
         };
-        this.readmeChangeHandlers[path] = handler;
+        this.markdownChangeHandlers[path] = handler;
         return handler;
     }
 
-    private updateReadmeView(delay: number) {
+    private updateMarkdownView(delay: number) {
         // Throttle the requests to update the README view.
         if (this.readmePromise) { this.$timeout.cancel(this.readmePromise); }
         this.readmePromise = this.$timeout(() => {
-            rebuildReadmeView(
+            rebuildMarkdownView(
                 this.wsModel,
-                this.FILENAME_README,
                 this.$scope,
                 this.$window
             ); this.readmePromise = undefined;
@@ -737,24 +725,67 @@ export default class WorkspaceController implements WorkspaceMixin {
         delete this.previewChangeHandlers[path];
     }
 
-    private addReadmeChangeHandler(path: string, doc: Document): void {
-        if (this.readmeChangeHandlers[path]) {
-            console.warn(`NOT Expecting to find a README change handler for file ${path}.`);
-            return;
-        }
-        const handler = this.createReadmeChangeHandler(path);
-        doc.addChangeListener(handler);
-        this.readmeChangeHandlers[path] = handler;
-    }
-
-    private removeReadmeChangeHandler(path: string, doc: Document): void {
-        const handler = this.readmeChangeHandlers[path];
-        if (handler) {
-            doc.removeChangeListener(handler);
-            delete this.readmeChangeHandlers[path];
+    /**
+     * Add a change listener on the Document corresponding to the specified markdown file path.
+     * This method is idempotent and so is safe to call even if there is already an existing change handler.
+     */
+    private enableMarkdownDocumentChangeTracking(filePath: string): void {
+        if (!this.markdownChangeHandlers[filePath]) {
+            const file = this.wsModel.findFileByPath(filePath);
+            try {
+                const doc = file.getDocument();
+                try {
+                    if (this.markdownChangeHandlers[filePath]) {
+                        console.warn(`NOT Expecting to find a Markdown change handler for file ${filePath}.`);
+                        return;
+                    }
+                    const handler = this.createMarkdownChangeHandler(filePath);
+                    doc.addChangeListener(handler);
+                    this.markdownChangeHandlers[filePath] = handler;
+                    this.updateMarkdownView(WAIT_NO_MORE);
+                }
+                finally {
+                    doc.release();
+                }
+            }
+            finally {
+                file.release();
+            }
         }
         else {
-            console.warn(`Expecting to find a README change handler for file ${path}.`);
+            // Ignore because the file is already being tracked.
+        }
+    }
+
+    /**
+     * Remove any change listener on the Document corresponding to the specified markdown file path.
+     * This method is idempotent and so is safe to call even if there is no existing change handler.
+     */
+    private disableMarkdownDocumentChangeTracking(filePath: string): void {
+        if (this.markdownChangeHandlers[filePath]) {
+            const file = this.wsModel.findFileByPath(filePath);
+            try {
+                const doc = file.getDocument();
+                try {
+                    const handler = this.markdownChangeHandlers[filePath];
+                    if (handler) {
+                        doc.removeChangeListener(handler);
+                        delete this.markdownChangeHandlers[filePath];
+                    }
+                    else {
+                        console.warn(`Expecting to find a Markdown change handler for file ${filePath}.`);
+                    }
+                }
+                finally {
+                    doc.release();
+                }
+            }
+            finally {
+                file.release();
+            }
+        }
+        else {
+            // Ignore because the file is not being tracked.
         }
     }
 

@@ -34,7 +34,8 @@ function copyFiles(workspace: WsModel, doodle: Doodle) {
             doodleFile.content = wsFile.getText();
             doodleFile.language = wsFile.mode;
             doodleFile.isOpen = wsFile.isOpen;
-            doodleFile.preview = wsFile.preview;
+            doodleFile.htmlChoice = wsFile.htmlChoice;
+            doodleFile.markdownChoice = wsFile.markdownChoice;
             doodleFile.raw_url = wsFile.existsInGitHub ? "bogusURL" : void 0;
             doodleFile.selected = wsFile.selected;
         }

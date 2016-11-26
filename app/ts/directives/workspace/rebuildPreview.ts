@@ -52,7 +52,7 @@ export default function rebuildPreview(
                 preview.removeChild(preview.firstChild);
             }
             if (workspace && !workspace.isZombie()) {
-                const bestFile: string = workspace.getPreviewFileOrBestAvailable();
+                const bestFile: string = workspace.getHtmlFileChoiceOrBestAvailable();
                 if (bestFile && $scope.isViewVisible) {
 
                     $scope.previewIFrame = document.createElement('iframe');

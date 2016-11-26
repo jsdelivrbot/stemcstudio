@@ -36,18 +36,31 @@
 						</a>
 						<ul class='dropdown-menu' uib-dropdown-menu role='menu'>
 							<li role='button' ng-repeat='(name, file) in files()' ng-if='name.indexOf(".html") &gt; 0'>
-								<a ng-click='doView(name, file)'>{{name}}&nbsp;
-                                    <ng-md-icon icon='done' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' ng-if='file.preview'><ng-md-icon>
+								<a ng-click='doChooseHtml(name, file)'>{{name}}&nbsp;
+                                    <ng-md-icon icon='done' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' ng-if='file.htmlChoice'><ng-md-icon>
                                 </a>
 							</li>
 						</ul>
 					</li>
 					<li ng-if='markdownFileCount() > 0'>
-						<a role='button' ng-click='toggleReadMeVisible()'>
-							<ng-md-icon icon='description' style="fill: {{isReadMeVisible ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="{{isReadMeVisible ?  'Hide README.md' : 'Show README.md'}}"
+						<a role='button' ng-click='toggleMarkdownVisible()'>
+							<ng-md-icon icon='description' style="fill: {{isMarkdownVisible ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' uib-tooltip="{{isMarkdownVisible ?  'Hide Markdown' : 'Show Markdown'}}"
 								tooltip-placement='bottom'>
 								<ng-md-icon>
 						</a>
+					</li>
+					<li uib-dropdown ng-if='markdownFileCount() > 1'>
+						<a uib-dropdown-toggle role="button" aria-expanded="false" uib-tooltip="Choose Markdown" tooltip-placement='bottom'>
+							<ng-md-icon icon='playlist_add_check' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true'>
+								<ng-md-icon>
+						</a>
+						<ul class='dropdown-menu' uib-dropdown-menu role='menu'>
+							<li role='button' ng-repeat='(name, file) in files()' ng-if='name.indexOf(".md") &gt; 0'>
+								<a ng-click='doChooseMarkdown(name, file)'>{{name}}&nbsp;
+                                    <ng-md-icon icon='done' style="fill: {{true ? '#ffffff' : '#9d9d9d'}}" size='24' aria-hidden='true' ng-if='file.markdownChoice'><ng-md-icon>
+                                </a>
+							</li>
+						</ul>
 					</li>
 					<!--
                     <li>
@@ -152,7 +165,7 @@
 				<div editor ng-if='file.isOpen' ng-repeat='(path, file) in files()' ng-model='file' path='{{path}}' ng-show='isEditMode &amp;&amp; file.selected'></div>
 			</div>
 			<div id='output' ng-if='isViewVisible'></div>
-			<div id='readme' ng-if='isReadMeVisible'></div>
+			<div id='readme' ng-if='isMarkdownVisible'></div>
 			<div id='gist-comments' ng-if='isCommentsVisible && comments.length > 0'>
 				<div ng-repeat="comment in comments" class='gist-comment'><span>{{comment.msg}}</span></div>
 			</div>

@@ -28,7 +28,12 @@ interface IDoodleFile {
     /**
      * (Volatile)
      */
-    preview: boolean;
+    htmlChoice: boolean;
+
+    /**
+     * (Volatile)
+     */
+    markdownChoice: boolean;
 
     /**
      * (Gist)

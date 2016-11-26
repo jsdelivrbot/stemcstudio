@@ -358,15 +358,14 @@ export default class Doodle {
     }
 
     /**
-     * @method getPreviewFile
-     * @return {string}
+     *
      */
-    getPreviewFile(): string {
+    getHtmlFileChoice(): string {
         const names = Object.keys(this.files);
         const iLen = names.length;
         for (let i = 0; i < iLen; i++) {
             const name = names[i];
-            if (this.files[name].preview) {
+            if (this.files[name].htmlChoice) {
                 return name;
             }
         }
@@ -377,12 +376,9 @@ export default class Doodle {
      * If a file has been explicitly marked as being the preview file then use it.
      * Otherwise, make a best guess from the available files.
      * This will improve the user experience.
-     *
-     * getPreviewFileOrBestAvailable
-     * @return {string}
      */
-    getPreviewFileOrBestAvailable(): string {
-        const previewFile = this.getPreviewFile();
+    getHtmlFileChoiceOrBestAvailable(): string {
+        const previewFile = this.getHtmlFileChoice();
         if (previewFile) {
             return previewFile;
         }
@@ -589,20 +585,37 @@ export default class Doodle {
     }
 
     /**
-     * @method setPreviewFile
-     * @param name {string}
-     * @return {void}
+     *
      */
-    setPreviewFile(name: string): void {
+    setHtmlFileChoice(name: string): void {
         const file = this.findFileByName(name);
         if (file) {
             const names = Object.keys(this.files);
             const iLen = names.length;
             for (let i = 0; i < iLen; i++) {
                 const name = names[i];
-                this.files[name].preview = false;
+                this.files[name].htmlChoice = false;
             }
-            file.preview = true;
+            file.htmlChoice = true;
+        }
+        else {
+            // Do nothing
+        }
+    }
+
+    /**
+     *
+     */
+    setMarkdownFileChoice(name: string): void {
+        const file = this.findFileByName(name);
+        if (file) {
+            const names = Object.keys(this.files);
+            const iLen = names.length;
+            for (let i = 0; i < iLen; i++) {
+                const name = names[i];
+                this.files[name].markdownChoice = false;
+            }
+            file.markdownChoice = true;
         }
         else {
             // Do nothing

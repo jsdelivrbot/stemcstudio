@@ -13,9 +13,8 @@ const STAR_FSLASH = '*/';
 /**
  * 
  */
-export default function rebuildReadmeView(
+export default function rebuildMarkdownView(
     workspace: WsModel,
-    FILENAME_README: string,
     $scope: WorkspaceScope,
     $window: angular.IWindowService
 ) {
@@ -27,7 +26,7 @@ export default function rebuildReadmeView(
             while (hostElement.children.length > 0) {
                 hostElement.removeChild(hostElement.firstChild);
             }
-            if (workspace && !workspace.isZombie() && $scope.isReadMeVisible) {
+            if (workspace && !workspace.isZombie() && $scope.isMarkdownVisible) {
                 const iframe: HTMLIFrameElement = document.createElement('iframe');
                 iframe.style.width = '100%';
                 iframe.style.height = '100%';
@@ -39,8 +38,10 @@ export default function rebuildReadmeView(
                 let html = readMeHTML({});
 
                 const content = iframe.contentDocument || iframe.contentWindow.document;
-                if (fileExists(FILENAME_README, workspace)) {
-                    const markdown: string = fileContent(FILENAME_README, workspace);
+
+                const markdownFilePath = workspace.getMarkdownFileChoiceOrBestAvailable();
+                if (fileExists(markdownFilePath, workspace)) {
+                    const markdown: string = fileContent(markdownFilePath, workspace);
                     const converter: sd.Converter = new sd.Converter({ tables: true });
                     const markdownHTML = converter.makeHtml(markdown);
                     html = html.replace('// README.md', markdownHTML);

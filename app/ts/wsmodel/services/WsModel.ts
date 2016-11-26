@@ -21,6 +21,8 @@ import IOptionManager from '../../services/options/IOptionManager';
 import Position from '../../editor/Position';
 import Marker from '../../editor/Marker';
 import modeFromName from '../../utils/modeFromName';
+import {LANGUAGE_HTML} from '../../languages/modes';
+import {LANGUAGE_MARKDOWN} from '../../languages/modes';
 import MwEditor from '../../synchronization/MwEditor';
 import MwEdits from '../../synchronization/MwEdits';
 import MwUnit from '../../synchronization/MwUnit';
@@ -1335,22 +1337,22 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     /**
      *
      */
-    getPreviewFile(): string {
+    getHtmlFileChoice(): string {
         const paths = this.files.keys;
         const iLen = paths.length;
         for (let i = 0; i < iLen; i++) {
             const path = paths[i];
-            if (this.files.getWeakRef(path).preview) {
+            if (this.files.getWeakRef(path).htmlChoice) {
                 return path;
             }
         }
         return void 0;
     }
 
-    getPreviewFileOrBestAvailable(): string {
-        const previewFile = this.getPreviewFile();
-        if (previewFile) {
-            return previewFile;
+    getHtmlFileChoiceOrBestAvailable(): string {
+        const chosenFile = this.getHtmlFileChoice();
+        if (chosenFile) {
+            return chosenFile;
         }
         else {
             let bestFile: string;
@@ -1359,12 +1361,58 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             for (let i = 0; i < iLen; i++) {
                 const path = paths[i];
                 const mode = modeFromName(path);
-                if (mode === 'HTML') {
+                if (mode === LANGUAGE_HTML) {
                     if (path === 'index.html') {
                         return path;
                     }
                     else if (path.toLowerCase() === 'specrunner.html') {
                         bestFile = path;
+                    }
+                    else if (typeof bestFile === 'undefined') {
+                        bestFile = path;
+                    }
+                    else {
+                        // Ignore the file.
+                    }
+                }
+                else {
+                    // We don't consider other file types for now.
+                }
+            }
+            return bestFile;
+        }
+    }
+
+    /**
+     *
+     */
+    getMarkdownFileChoice(): string {
+        const paths = this.files.keys;
+        const iLen = paths.length;
+        for (let i = 0; i < iLen; i++) {
+            const path = paths[i];
+            if (this.files.getWeakRef(path).markdownChoice) {
+                return path;
+            }
+        }
+        return void 0;
+    }
+
+    getMarkdownFileChoiceOrBestAvailable(): string {
+        const chosenFile = this.getMarkdownFileChoice();
+        if (chosenFile) {
+            return chosenFile;
+        }
+        else {
+            let bestFile: string;
+            const paths = this.files.keys;
+            const iLen = paths.length;
+            for (let i = 0; i < iLen; i++) {
+                const path = paths[i];
+                const mode = modeFromName(path);
+                if (mode === LANGUAGE_MARKDOWN) {
+                    if (path.toLowerCase() === 'readme.md') {
+                        return path;
                     }
                     else if (typeof bestFile === 'undefined') {
                         bestFile = path;
@@ -1501,15 +1549,30 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         }
     }
 
-    setPreviewFile(path: string): void {
+    setHtmlFileChoice(path: string): void {
         const file = this.files.getWeakRef(path);
         if (file) {
             const paths = this.files.keys;
             const iLen = paths.length;
             for (let i = 0; i < iLen; i++) {
-                this.files.getWeakRef(paths[i]).preview = false;
+                this.files.getWeakRef(paths[i]).htmlChoice = false;
             }
-            file.preview = true;
+            file.htmlChoice = true;
+        }
+        else {
+            // Do nothing
+        }
+    }
+
+    setMarkdownFileChoice(path: string): void {
+        const file = this.files.getWeakRef(path);
+        if (file) {
+            const paths = this.files.keys;
+            const iLen = paths.length;
+            for (let i = 0; i < iLen; i++) {
+                this.files.getWeakRef(paths[i]).markdownChoice = false;
+            }
+            file.markdownChoice = true;
         }
         else {
             // Do nothing
