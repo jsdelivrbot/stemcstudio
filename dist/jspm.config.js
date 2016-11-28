@@ -16,7 +16,7 @@ System.config({
     "angular-material-icons": "npm:angular-material-icons@0.7.1",
     "angular-sanitize": "github:angular/bower-angular-sanitize@1.5.9",
     "angular-ui-router": "github:angular-ui/ui-router@0.2.18",
-    "angular2": "npm:angular2@2.0.0-beta.17",
+    "angular2": "npm:angular2@2.0.0-beta.20",
     "bootstrap": "vendor/bootstrap/dist/js/npm",
     "bootstrap-dialog": "npm:bootstrap-dialog@1.34.6",
     "clipboard": "npm:clipboard@1.5.15",
@@ -106,7 +106,7 @@ System.config({
     "npm:angular-material-icons@0.7.1": {
       "angular": "npm:angular@1.5.9"
     },
-    "npm:angular2@2.0.0-beta.17": {
+    "npm:angular2@2.0.0-beta.20": {
       "reflect-metadata": "npm:reflect-metadata@0.1.2",
       "rxjs": "npm:rxjs@5.0.0-rc.4",
       "zone.js": "npm:zone.js@0.6.26"

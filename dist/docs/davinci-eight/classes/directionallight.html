@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>DirectionalLight | EIGHT 3.7.9</title>
+	<title>DirectionalLight | EIGHT 4.0.0</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">EIGHT 3.7.9</a>
+					<a href="../index.html" class="title">EIGHT 4.0.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -40,8 +40,6 @@
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
 							<input type="checkbox" id="tsd-filter-externals" checked />
 							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -94,7 +92,6 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="directionallight.html#_color" class="tsd-kind-icon">_color</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-external"><a href="directionallight.html#_direction" class="tsd-kind-icon">_direction</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external">
@@ -119,32 +116,23 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Directional<wbr>Light<span class="tsd-signature-symbol">(</span>direction<span class="tsd-signature-symbol">?: </span><a href="../interfaces/vectore3.html" class="tsd-signature-type">VectorE3</a>, color<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="directionallight.html" class="tsd-signature-type">DirectionalLight</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Directional<wbr>Light<span class="tsd-signature-symbol">(</span>direction<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">VectorE3</span>, color<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="directionallight.html" class="tsd-signature-type">DirectionalLight</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/facets/DirectionalLight.ts#L16">facets/DirectionalLight.ts:16</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/facets/DirectionalLight.ts#L16">davinci-eight/facets/DirectionalLight.ts:16</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> direction: <a href="../interfaces/vectore3.html" class="tsd-signature-type">VectorE3</a><span class="tsd-signature-symbol"> =&nbsp;Vector3.vector(0, 0, 1).neg()</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> direction: <span class="tsd-signature-type">VectorE3</span><span class="tsd-signature-symbol"> =&nbsp;Vector3.vector(0, 0, 1).neg()</span></h5>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> color: <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> =&nbsp;Color.white</span></h5>
 									<ul class="tsd-parameters">
-										<li class="tsd-parameter">
-											<h5>b<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
-										</li>
-										<li class="tsd-parameter">
-											<h5>g<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
-										</li>
-										<li class="tsd-parameter">
-											<h5>r<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></h5>
-										</li>
 									</ul>
 								</li>
 							</ul>
@@ -161,17 +149,7 @@
 					<div class="tsd-signature tsd-kind-icon">_color<span class="tsd-signature-symbol">:</span> <a href="color.html" class="tsd-signature-type">Color</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/facets/DirectionalLight.ts#L16">facets/DirectionalLight.ts:16</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-external">
-					<a name="_direction" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> _direction</h3>
-					<div class="tsd-signature tsd-kind-icon">_direction<span class="tsd-signature-symbol">:</span> <a href="geometric3.html" class="tsd-signature-type">Geometric3</a></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/facets/DirectionalLight.ts#L15">facets/DirectionalLight.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/facets/DirectionalLight.ts#L16">davinci-eight/facets/DirectionalLight.ts:16</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -189,7 +167,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/facets/DirectionalLight.ts#L25">facets/DirectionalLight.ts:25</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/facets/DirectionalLight.ts#L25">davinci-eight/facets/DirectionalLight.ts:25</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="color.html" class="tsd-signature-type">Color</a></h4>
@@ -197,7 +175,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/facets/DirectionalLight.ts#L28">facets/DirectionalLight.ts:28</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/facets/DirectionalLight.ts#L28">davinci-eight/facets/DirectionalLight.ts:28</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -221,7 +199,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/facets/DirectionalLight.ts#L32">facets/DirectionalLight.ts:32</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/facets/DirectionalLight.ts#L32">davinci-eight/facets/DirectionalLight.ts:32</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="geometric3.html" class="tsd-signature-type">Geometric3</a></h4>
@@ -229,7 +207,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/facets/DirectionalLight.ts#L35">facets/DirectionalLight.ts:35</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/facets/DirectionalLight.ts#L35">davinci-eight/facets/DirectionalLight.ts:35</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -256,7 +234,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/facet.html">Facet</a>.<a href="../interfaces/facet.html#setuniforms">setUniforms</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/facets/DirectionalLight.ts#L40">facets/DirectionalLight.ts:40</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/facets/DirectionalLight.ts#L40">davinci-eight/facets/DirectionalLight.ts:40</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -291,9 +269,6 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
 								<a href="directionallight.html#_color" class="tsd-kind-icon">_color</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-external">
-								<a href="directionallight.html#_direction" class="tsd-kind-icon">_direction</a>
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
 								<a href="directionallight.html#color" class="tsd-kind-icon">color</a>

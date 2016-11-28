@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>EngineSubscriber | EIGHT 3.7.9</title>
+	<title>EngineSubscriber | EIGHT 4.0.0</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">EIGHT 3.7.9</a>
+					<a href="../index.html" class="title">EIGHT 4.0.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -40,8 +40,6 @@
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
 							<input type="checkbox" id="tsd-filter-externals" checked />
 							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -99,15 +97,28 @@
 					<li><a href="../classes/geometryelements.html" class="tsd-signature-type">GeometryElements</a></li>
 					<li><a href="../classes/grid.html" class="tsd-signature-type">Grid</a></li>
 					<li><a href="../classes/gridgeometry.html" class="tsd-signature-type">GridGeometry</a></li>
+					<li><a href="../classes/gridxy.html" class="tsd-signature-type">GridXY</a></li>
+					<li><a href="../classes/gridyz.html" class="tsd-signature-type">GridYZ</a></li>
+					<li><a href="../classes/gridzx.html" class="tsd-signature-type">GridZX</a></li>
+					<li><a href="../classes/htmlscriptsmaterial.html" class="tsd-signature-type">HTMLScriptsMaterial</a></li>
 					<li><a href="../classes/hollowcylinder.html" class="tsd-signature-type">HollowCylinder</a></li>
 					<li><a href="../classes/hollowcylindergeometry.html" class="tsd-signature-type">HollowCylinderGeometry</a></li>
+					<li><a href="../classes/imagetexture.html" class="tsd-signature-type">ImageTexture</a></li>
 					<li><a href="../classes/indexbuffer.html" class="tsd-signature-type">IndexBuffer</a></li>
 					<li><a href="../classes/linematerial.html" class="tsd-signature-type">LineMaterial</a></li>
 					<li><a href="../classes/mesh.html" class="tsd-signature-type">Mesh</a></li>
 					<li><a href="../classes/meshmaterial.html" class="tsd-signature-type">MeshMaterial</a></li>
+					<li><a href="../classes/minecraftarml.html" class="tsd-signature-type">MinecraftArmL</a></li>
+					<li><a href="../classes/minecraftarmr.html" class="tsd-signature-type">MinecraftArmR</a></li>
+					<li><a href="../classes/minecrafthead.html" class="tsd-signature-type">MinecraftHead</a></li>
+					<li><a href="../classes/minecraftlegl.html" class="tsd-signature-type">MinecraftLegL</a></li>
+					<li><a href="../classes/minecraftlegr.html" class="tsd-signature-type">MinecraftLegR</a></li>
+					<li><a href="../classes/minecrafttorso.html" class="tsd-signature-type">MinecraftTorso</a></li>
 					<li><a href="../classes/pointmaterial.html" class="tsd-signature-type">PointMaterial</a></li>
 					<li><a href="../classes/principalscalemesh.html" class="tsd-signature-type">PrincipalScaleMesh</a></li>
 					<li><a href="../classes/rigidbody.html" class="tsd-signature-type">RigidBody</a></li>
+					<li><a href="../classes/scene.html" class="tsd-signature-type">Scene</a></li>
+					<li><a href="../classes/shader.html" class="tsd-signature-type">Shader</a></li>
 					<li><a href="../classes/shadermaterial.html" class="tsd-signature-type">ShaderMaterial</a></li>
 					<li><a href="../classes/shareablecontextconsumer.html" class="tsd-signature-type">ShareableContextConsumer</a></li>
 					<li><a href="../classes/smartgraphicsprogram.html" class="tsd-signature-type">SmartGraphicsProgram</a></li>
@@ -116,8 +127,8 @@
 					<li><a href="../classes/tetrahedron.html" class="tsd-signature-type">Tetrahedron</a></li>
 					<li><a href="../classes/tetrahedrongeometry.html" class="tsd-signature-type">TetrahedronGeometry</a></li>
 					<li><a href="../classes/texture.html" class="tsd-signature-type">Texture</a></li>
+					<li><a href="../classes/track.html" class="tsd-signature-type">Track</a></li>
 					<li><a href="../classes/turtle.html" class="tsd-signature-type">Turtle</a></li>
-					<li><a href="../classes/turtlegeometry.html" class="tsd-signature-type">TurtleGeometry</a></li>
 					<li><a href="../classes/vertexbuffer.html" class="tsd-signature-type">VertexBuffer</a></li>
 				</ul>
 			</section>
@@ -147,9 +158,17 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/EngineSubscriber.ts#L7">core/EngineSubscriber.ts:7</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/EngineSubscriber.ts#L13">davinci-eight/core/EngineSubscriber.ts:13</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Instructs the target to subscribe to context loss and restore events from the engine.
+										The target will usually maintain and addRef a reference to the engine.
+										The target will call addContextListener on the engine.
+									If the synchUp parameter is true, the target will call the synchronize method on the engine.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -173,9 +192,16 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/EngineSubscriber.ts#L8">core/EngineSubscriber.ts:8</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/EngineSubscriber.ts#L19">davinci-eight/core/EngineSubscriber.ts:19</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Instructs the target to unsubscribe from context loss and restore events from the engine.
+										The target will call removeContextListener on the engine.
+									The target will release its reference to the engine.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>

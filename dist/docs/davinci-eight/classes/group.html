@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Group | EIGHT 3.7.9</title>
+	<title>Group | EIGHT 4.0.0</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">EIGHT 3.7.9</a>
+					<a href="../index.html" class="title">EIGHT 4.0.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -40,8 +40,6 @@
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
 							<input type="checkbox" id="tsd-filter-externals" checked />
 							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -69,7 +67,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>A collection of objects that can be added to the Scene.</p>
+						<p>A collection of objects that can be treated as a single Renderable.</p>
 					</div>
 				</div>
 			</section>
@@ -81,6 +79,11 @@
 						<ul class="tsd-hierarchy">
 							<li>
 								<span class="target">Group</span>
+								<ul class="tsd-hierarchy">
+									<li>
+										<a href="minecraftfigure.html" class="tsd-signature-type">MinecraftFigure</a>
+									</li>
+								</ul>
 							</li>
 						</ul>
 					</li>
@@ -90,7 +93,7 @@
 				<h3>Implements</h3>
 				<ul class="tsd-hierarchy">
 					<li><a href="../interfaces/shareable.html" class="tsd-signature-type">Shareable</a></li>
-					<li><a href="../interfaces/groupmember.html" class="tsd-signature-type">GroupMember</a></li>
+					<li><span class="tsd-signature-type">GroupMember</span></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -108,8 +111,6 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="group.html#r" class="tsd-kind-icon">R</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="group.html#x" class="tsd-kind-icon">X</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external"><a href="group.html#_type" class="tsd-kind-icon">_type</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-external"><a href="group.html#members" class="tsd-kind-icon">members</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="group.html#stress" class="tsd-kind-icon">stress</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="group.html#visible" class="tsd-kind-icon">visible</a></li>
 							</ul>
@@ -151,9 +152,14 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/visual/Group.ts#L24">visual/Group.ts:24</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/visual/Group.ts#L35">davinci-eight/visual/Group.ts:35</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Constructs</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <a href="group.html" class="tsd-signature-type">Group</a></h4>
 						</li>
 					</ul>
@@ -166,52 +172,38 @@
 					<h3>R</h3>
 					<div class="tsd-signature tsd-kind-icon">R<span class="tsd-signature-symbol">:</span> <a href="geometric3.html" class="tsd-signature-type">Geometric3</a><span class="tsd-signature-symbol"> =&nbsp;Geometric3.one()</span></div>
 					<aside class="tsd-sources">
-						<p>Implementation of <a href="../interfaces/groupmember.html">GroupMember</a>.<a href="../interfaces/groupmember.html#r">R</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/visual/Group.ts#L22">visual/Group.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/visual/Group.ts#L30">davinci-eight/visual/Group.ts:30</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Attitude (spinor). This is a short alias for the attitude property.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
 					<a name="x" class="tsd-anchor"></a>
 					<h3>X</h3>
 					<div class="tsd-signature tsd-kind-icon">X<span class="tsd-signature-symbol">:</span> <a href="geometric3.html" class="tsd-signature-type">Geometric3</a><span class="tsd-signature-symbol"> =&nbsp;Geometric3.zero()</span></div>
 					<aside class="tsd-sources">
-						<p>Implementation of <a href="../interfaces/groupmember.html">GroupMember</a>.<a href="../interfaces/groupmember.html#x">X</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/visual/Group.ts#L21">visual/Group.ts:21</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/visual/Group.ts#L26">davinci-eight/visual/Group.ts:26</a></li>
 						</ul>
 					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external">
-					<a name="_type" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _type</h3>
-					<div class="tsd-signature tsd-kind-icon">_type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#_type">_type</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/ShareableBase.ts#L48">core/ShareableBase.ts:48</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-external">
-					<a name="members" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagPrivate">Private</span> members</h3>
-					<div class="tsd-signature tsd-kind-icon">members<span class="tsd-signature-symbol">:</span> <a href="shareablearray.html" class="tsd-signature-type">ShareableArray</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/groupmember.html" class="tsd-signature-type">GroupMember</a><span class="tsd-signature-symbol">&gt;</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/visual/Group.ts#L20">visual/Group.ts:20</a></li>
-						</ul>
-					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Position (vector). This is a short alias for the position property.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
 					<a name="stress" class="tsd-anchor"></a>
 					<h3>stress</h3>
 					<div class="tsd-signature tsd-kind-icon">stress<span class="tsd-signature-symbol">:</span> <a href="matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol"> =&nbsp;Matrix4.one()</span></div>
 					<aside class="tsd-sources">
-						<p>Implementation of <a href="../interfaces/groupmember.html">GroupMember</a>.<a href="../interfaces/groupmember.html#stress">stress</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/visual/Group.ts#L23">visual/Group.ts:23</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/visual/Group.ts#L31">davinci-eight/visual/Group.ts:31</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -220,11 +212,15 @@
 					<h3>visible</h3>
 					<div class="tsd-signature tsd-kind-icon">visible<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;true</span></div>
 					<aside class="tsd-sources">
-						<p>Implementation of <a href="../interfaces/groupmember.html">GroupMember</a>.<a href="../interfaces/groupmember.html#visible">visible</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/visual/Group.ts#L24">visual/Group.ts:24</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/visual/Group.ts#L35">davinci-eight/visual/Group.ts:35</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Determines whether this group will be rendered.</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
@@ -240,17 +236,27 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/visual/Group.ts#L47">visual/Group.ts:47</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/visual/Group.ts#L70">davinci-eight/visual/Group.ts:70</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Attitude (spinor). This is a long alias for the R property.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <a href="geometric3.html" class="tsd-signature-type">Geometric3</a></h4>
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/visual/Group.ts#L50">visual/Group.ts:50</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/visual/Group.ts#L73">davinci-eight/visual/Group.ts:73</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Attitude (spinor). This is a long alias for the R property.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -272,17 +278,27 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/visual/Group.ts#L38">visual/Group.ts:38</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/visual/Group.ts#L58">davinci-eight/visual/Group.ts:58</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Position (vector). This is a long alias for the X property.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <a href="geometric3.html" class="tsd-signature-type">Geometric3</a></h4>
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/visual/Group.ts#L41">visual/Group.ts:41</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/visual/Group.ts#L61">davinci-eight/visual/Group.ts:61</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Position (vector). This is a long alias for the X property.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -300,19 +316,24 @@
 					<a name="add" class="tsd-anchor"></a>
 					<h3>add</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">add<span class="tsd-signature-symbol">(</span>member<span class="tsd-signature-symbol">: </span><a href="../interfaces/groupmember.html" class="tsd-signature-type">GroupMember</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">add<span class="tsd-signature-symbol">(</span>member<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">GroupMember</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/visual/Group.ts#L56">visual/Group.ts:56</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/visual/Group.ts#L82">davinci-eight/visual/Group.ts:82</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Adds a Renderable item to this Group.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>member: <a href="../interfaces/groupmember.html" class="tsd-signature-type">GroupMember</a></h5>
+									<h5>member: <span class="tsd-signature-type">GroupMember</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -328,10 +349,10 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/groupmember.html">GroupMember</a>.<a href="../interfaces/groupmember.html#addref">addRef</a></p>
+								<p>Implementation of <a href="../interfaces/shareable.html">Shareable</a>.<a href="../interfaces/shareable.html#addref">addRef</a></p>
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#addref">addRef</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/ShareableBase.ts#L121">core/ShareableBase.ts:121</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableBase.ts#L121">davinci-eight/core/ShareableBase.ts:121</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -357,7 +378,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#destructor">destructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/visual/Group.ts#L32">visual/Group.ts:32</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/visual/Group.ts#L49">davinci-eight/visual/Group.ts:49</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -381,9 +402,14 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#getloggingname">getLoggingName</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/ShareableBase.ts#L130">core/ShareableBase.ts:130</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableBase.ts#L130">davinci-eight/core/ShareableBase.ts:130</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the name that was assigned by the call to the setLoggingName method.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
 					</ul>
@@ -399,7 +425,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#iszombie">isZombie</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/ShareableBase.ts#L110">core/ShareableBase.ts:110</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableBase.ts#L110">davinci-eight/core/ShareableBase.ts:110</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -421,10 +447,10 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/groupmember.html">GroupMember</a>.<a href="../interfaces/groupmember.html#release">release</a></p>
+								<p>Implementation of <a href="../interfaces/shareable.html">Shareable</a>.<a href="../interfaces/shareable.html#release">release</a></p>
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#release">release</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/ShareableBase.ts#L161">core/ShareableBase.ts:161</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableBase.ts#L163">davinci-eight/core/ShareableBase.ts:163</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -443,19 +469,24 @@
 					<a name="remove" class="tsd-anchor"></a>
 					<h3>remove</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">remove<span class="tsd-signature-symbol">(</span>member<span class="tsd-signature-symbol">: </span><a href="../interfaces/groupmember.html" class="tsd-signature-type">GroupMember</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">remove<span class="tsd-signature-symbol">(</span>member<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">GroupMember</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/visual/Group.ts#L63">visual/Group.ts:63</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/visual/Group.ts#L89">davinci-eight/visual/Group.ts:89</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Removes a member item from this Group.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>member: <a href="../interfaces/groupmember.html" class="tsd-signature-type">GroupMember</a></h5>
+									<h5>member: <span class="tsd-signature-type">GroupMember</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -471,11 +502,15 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/groupmember.html">GroupMember</a>.<a href="../interfaces/groupmember.html#render">render</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/visual/Group.ts#L77">visual/Group.ts:77</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/visual/Group.ts#L103">davinci-eight/visual/Group.ts:103</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Renders all the members of this Group.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -497,7 +532,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#setloggingname">setLoggingName</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/ShareableBase.ts#L146">core/ShareableBase.ts:146</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableBase.ts#L148">davinci-eight/core/ShareableBase.ts:148</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -515,6 +550,9 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>name: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>This will usually be set to the name of the class.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -546,12 +584,6 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
 								<a href="group.html#x" class="tsd-kind-icon">X</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external">
-								<a href="group.html#_type" class="tsd-kind-icon">_type</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private tsd-is-external">
-								<a href="group.html#members" class="tsd-kind-icon">members</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
 								<a href="group.html#stress" class="tsd-kind-icon">stress</a>

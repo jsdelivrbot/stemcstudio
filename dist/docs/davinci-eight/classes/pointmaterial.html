@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>PointMaterial | EIGHT 3.7.9</title>
+	<title>PointMaterial | EIGHT 4.0.0</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">EIGHT 3.7.9</a>
+					<a href="../index.html" class="title">EIGHT 4.0.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -40,8 +40,6 @@
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
 							<input type="checkbox" id="tsd-filter-externals" checked />
 							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -101,8 +99,7 @@
 						<section class="tsd-index-section tsd-is-inherited tsd-is-private-protected tsd-is-external">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external"><a href="pointmaterial.html#_type" class="tsd-kind-icon">_type</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external"><a href="pointmaterial.html#contextprovider" class="tsd-kind-icon">context<wbr>Provider</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external"><a href="pointmaterial.html#contextmanager" class="tsd-kind-icon">context<wbr>Manager</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-inherited tsd-is-external">
@@ -167,14 +164,14 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Point<wbr>Material<span class="tsd-signature-symbol">(</span>contextManager<span class="tsd-signature-symbol">: </span><a href="../interfaces/contextmanager.html" class="tsd-signature-type">ContextManager</a>, options<span class="tsd-signature-symbol">: </span><a href="../interfaces/pointmaterialoptions.html" class="tsd-signature-type">PointMaterialOptions</a>, levelUp<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="pointmaterial.html" class="tsd-signature-type">PointMaterial</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Point<wbr>Material<span class="tsd-signature-symbol">(</span>contextManager<span class="tsd-signature-symbol">: </span><a href="../interfaces/contextmanager.html" class="tsd-signature-type">ContextManager</a>, options<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">PointMaterialOptions</span>, levelUp<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="pointmaterial.html" class="tsd-signature-type">PointMaterial</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overrides <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/PointMaterial.ts#L62">materials/PointMaterial.ts:62</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/PointMaterial.ts#L62">davinci-eight/materials/PointMaterial.ts:62</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -183,7 +180,7 @@
 									<h5>contextManager: <a href="../interfaces/contextmanager.html" class="tsd-signature-type">ContextManager</a></h5>
 								</li>
 								<li>
-									<h5>options: <a href="../interfaces/pointmaterialoptions.html" class="tsd-signature-type">PointMaterialOptions</a></h5>
+									<h5>options: <span class="tsd-signature-type">PointMaterialOptions</span></h5>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> levelUp: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></h5>
@@ -197,33 +194,20 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-inherited tsd-is-private-protected tsd-is-external">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external">
-					<a name="_type" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _type</h3>
-					<div class="tsd-signature tsd-kind-icon">_type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="contextmanager" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> context<wbr>Manager</h3>
+					<div class="tsd-signature tsd-kind-icon">context<wbr>Manager<span class="tsd-signature-symbol">:</span> <a href="../interfaces/contextmanager.html" class="tsd-signature-type">ContextManager</a></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#_type">_type</a></p>
+						<p>Inherited from <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#contextmanager">contextManager</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/ShareableBase.ts#L48">core/ShareableBase.ts:48</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external">
-					<a name="contextprovider" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> context<wbr>Provider</h3>
-					<div class="tsd-signature tsd-kind-icon">context<wbr>Provider<span class="tsd-signature-symbol">:</span> <a href="../interfaces/contextprovider.html" class="tsd-signature-type">ContextProvider</a></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#contextprovider">contextProvider</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/ShareableContextConsumer.ts#L61">core/ShareableContextConsumer.ts:61</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableContextConsumer.ts#L50">davinci-eight/core/ShareableContextConsumer.ts:50</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>We hold onto the context provider after a contextGain event.
-								However, this is only a convenience for derived classes.
-								(Maybe we should not do this).
-								We only need to release this property in our destructor.
-							We must not try to trigger a contextFree as that would violate Implementation Hierarchy Principle.</p>
+							<p>The <code>ContextManager</code> to which this consumer is subscribed.
+								The existence of this property indicates a subscription.
+							Therefore, before releasing this reference, be sure to unsubscribe.</p>
 						</div>
 					</div>
 				</section>
@@ -242,7 +226,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#attributenames">attributeNames</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L227">materials/ShaderMaterial.ts:227</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L195">davinci-eight/materials/ShaderMaterial.ts:195</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
@@ -251,7 +235,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#attributenames">attributeNames</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L237">materials/ShaderMaterial.ts:237</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L205">davinci-eight/materials/ShaderMaterial.ts:205</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -275,7 +259,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#fragmentshadersrc">fragmentShaderSrc</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L204">materials/ShaderMaterial.ts:204</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L188">davinci-eight/materials/ShaderMaterial.ts:188</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -294,7 +278,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#gl">gl</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/ShareableContextConsumer.ts#L178">core/ShareableContextConsumer.ts:178</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableContextConsumer.ts#L166">davinci-eight/core/ShareableContextConsumer.ts:166</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -308,7 +292,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#gl">gl</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/ShareableContextConsumer.ts#L186">core/ShareableContextConsumer.ts:186</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableContextConsumer.ts#L174">davinci-eight/core/ShareableContextConsumer.ts:174</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -337,7 +321,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#vertexshadersrc">vertexShaderSrc</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L182">materials/ShaderMaterial.ts:182</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L181">davinci-eight/materials/ShaderMaterial.ts:181</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -359,7 +343,7 @@
 								<p>Implementation of <a href="../interfaces/material.html">Material</a>.<a href="../interfaces/material.html#activetexture">activeTexture</a></p>
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#activetexture">activeTexture</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L371">materials/ShaderMaterial.ts:371</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L339">davinci-eight/materials/ShaderMaterial.ts:339</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -384,7 +368,7 @@
 								<p>Implementation of <a href="../interfaces/material.html">Material</a>.<a href="../interfaces/material.html#addref">addRef</a></p>
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#addref">addRef</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/ShareableBase.ts#L121">core/ShareableBase.ts:121</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableBase.ts#L121">davinci-eight/core/ShareableBase.ts:121</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -411,7 +395,7 @@
 								<p>Implementation of <a href="../interfaces/material.html">Material</a>.<a href="../interfaces/material.html#attrib">attrib</a></p>
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#attrib">attrib</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L309">materials/ShaderMaterial.ts:309</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L277">davinci-eight/materials/ShaderMaterial.ts:277</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -450,7 +434,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#cleanup">cleanUp</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/ShareableContextConsumer.ts#L130">core/ShareableContextConsumer.ts:130</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableContextConsumer.ts#L121">davinci-eight/core/ShareableContextConsumer.ts:121</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -461,7 +445,7 @@
 					<a name="contextfree" class="tsd-anchor"></a>
 					<h3>context<wbr>Free</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">context<wbr>Free<span class="tsd-signature-symbol">(</span>context<span class="tsd-signature-symbol">: </span><a href="../interfaces/contextprovider.html" class="tsd-signature-type">ContextProvider</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">context<wbr>Free<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -470,15 +454,9 @@
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#contextfree">contextFree</a></p>
 								<p>Overrides <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#contextfree">contextFree</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L149">materials/ShaderMaterial.ts:149</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L148">davinci-eight/materials/ShaderMaterial.ts:148</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>context: <a href="../interfaces/contextprovider.html" class="tsd-signature-type">ContextProvider</a></h5>
-								</li>
-							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -487,7 +465,7 @@
 					<a name="contextgain" class="tsd-anchor"></a>
 					<h3>context<wbr>Gain</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">context<wbr>Gain<span class="tsd-signature-symbol">(</span>context<span class="tsd-signature-symbol">: </span><a href="../interfaces/contextprovider.html" class="tsd-signature-type">ContextProvider</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">context<wbr>Gain<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -496,15 +474,9 @@
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#contextgain">contextGain</a></p>
 								<p>Overrides <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#contextgain">contextGain</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L90">materials/ShaderMaterial.ts:90</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L89">davinci-eight/materials/ShaderMaterial.ts:89</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>context: <a href="../interfaces/contextprovider.html" class="tsd-signature-type">ContextProvider</a></h5>
-								</li>
-							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -522,7 +494,7 @@
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#contextlost">contextLost</a></p>
 								<p>Overrides <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#contextlost">contextLost</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L130">materials/ShaderMaterial.ts:130</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L129">davinci-eight/materials/ShaderMaterial.ts:129</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -540,7 +512,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#destructor">destructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/PointMaterial.ts#L72">materials/PointMaterial.ts:72</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/PointMaterial.ts#L72">davinci-eight/materials/PointMaterial.ts:72</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -565,7 +537,7 @@
 								<p>Implementation of <a href="../interfaces/material.html">Material</a>.<a href="../interfaces/material.html#disableattrib">disableAttrib</a></p>
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#disableattrib">disableAttrib</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L278">materials/ShaderMaterial.ts:278</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L246">davinci-eight/materials/ShaderMaterial.ts:246</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -589,7 +561,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#disableattribs">disableAttribs</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L298">materials/ShaderMaterial.ts:298</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L266">davinci-eight/materials/ShaderMaterial.ts:266</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -608,7 +580,7 @@
 								<p>Implementation of <a href="../interfaces/material.html">Material</a>.<a href="../interfaces/material.html#drawarrays">drawArrays</a></p>
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#drawarrays">drawArrays</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L513">materials/ShaderMaterial.ts:513</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L481">davinci-eight/materials/ShaderMaterial.ts:481</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -650,7 +622,7 @@
 								<p>Implementation of <a href="../interfaces/material.html">Material</a>.<a href="../interfaces/material.html#drawelements">drawElements</a></p>
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#drawelements">drawElements</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L527">materials/ShaderMaterial.ts:527</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L495">davinci-eight/materials/ShaderMaterial.ts:495</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -698,7 +670,7 @@
 								<p>Implementation of <a href="../interfaces/material.html">Material</a>.<a href="../interfaces/material.html#enableattrib">enableAttrib</a></p>
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#enableattrib">enableAttrib</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L244">materials/ShaderMaterial.ts:244</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L212">davinci-eight/materials/ShaderMaterial.ts:212</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -727,7 +699,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#enableattribs">enableAttribs</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L264">materials/ShaderMaterial.ts:264</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L232">davinci-eight/materials/ShaderMaterial.ts:232</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -746,7 +718,7 @@
 								<p>Implementation of <a href="../interfaces/material.html">Material</a>.<a href="../interfaces/material.html#getattrib">getAttrib</a></p>
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#getattrib">getAttrib</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L319">materials/ShaderMaterial.ts:319</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L287">davinci-eight/materials/ShaderMaterial.ts:287</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -771,7 +743,7 @@
 								<p>Implementation of <a href="../interfaces/material.html">Material</a>.<a href="../interfaces/material.html#getattriblocation">getAttribLocation</a></p>
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#getattriblocation">getAttribLocation</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L336">materials/ShaderMaterial.ts:336</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L304">davinci-eight/materials/ShaderMaterial.ts:304</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -801,9 +773,14 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#getloggingname">getLoggingName</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/ShareableBase.ts#L130">core/ShareableBase.ts:130</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableBase.ts#L130">davinci-eight/core/ShareableBase.ts:130</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the name that was assigned by the call to the setLoggingName method.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
 					</ul>
@@ -820,7 +797,7 @@
 								<p>Implementation of <a href="../interfaces/material.html">Material</a>.<a href="../interfaces/material.html#getuniform">getUniform</a></p>
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#getuniform">getUniform</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L351">materials/ShaderMaterial.ts:351</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L319">davinci-eight/materials/ShaderMaterial.ts:319</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -852,7 +829,7 @@
 								<p>Implementation of <a href="../interfaces/material.html">Material</a>.<a href="../interfaces/material.html#hasuniform">hasUniform</a></p>
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#hasuniform">hasUniform</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L366">materials/ShaderMaterial.ts:366</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L334">davinci-eight/materials/ShaderMaterial.ts:334</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -883,7 +860,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#iszombie">isZombie</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/ShareableBase.ts#L110">core/ShareableBase.ts:110</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableBase.ts#L110">davinci-eight/core/ShareableBase.ts:110</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -908,7 +885,7 @@
 								<p>Implementation of <a href="../interfaces/material.html">Material</a>.<a href="../interfaces/material.html#matrix2fv">matrix2fv</a></p>
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#matrix2fv">matrix2fv</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L463">materials/ShaderMaterial.ts:463</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L431">davinci-eight/materials/ShaderMaterial.ts:431</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -939,7 +916,7 @@
 								<p>Implementation of <a href="../interfaces/material.html">Material</a>.<a href="../interfaces/material.html#matrix3fv">matrix3fv</a></p>
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#matrix3fv">matrix3fv</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L471">materials/ShaderMaterial.ts:471</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L439">davinci-eight/materials/ShaderMaterial.ts:439</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -970,7 +947,7 @@
 								<p>Implementation of <a href="../interfaces/material.html">Material</a>.<a href="../interfaces/material.html#matrix4fv">matrix4fv</a></p>
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#matrix4fv">matrix4fv</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L479">materials/ShaderMaterial.ts:479</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L447">davinci-eight/materials/ShaderMaterial.ts:447</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1001,7 +978,7 @@
 								<p>Implementation of <a href="../interfaces/material.html">Material</a>.<a href="../interfaces/material.html#release">release</a></p>
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#release">release</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/ShareableBase.ts#L161">core/ShareableBase.ts:161</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableBase.ts#L163">davinci-eight/core/ShareableBase.ts:163</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1027,7 +1004,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#setloggingname">setLoggingName</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/ShareableBase.ts#L146">core/ShareableBase.ts:146</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableBase.ts#L148">davinci-eight/core/ShareableBase.ts:148</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1045,6 +1022,9 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>name: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>This will usually be set to the name of the class.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1063,7 +1043,7 @@
 								<p>Implementation of <a href="../interfaces/material.html">Material</a>.<a href="../interfaces/material.html#setuniforms">setUniforms</a></p>
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#setuniforms">setUniforms</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L445">materials/ShaderMaterial.ts:445</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L413">davinci-eight/materials/ShaderMaterial.ts:413</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1092,7 +1072,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#subscribe">subscribe</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/ShareableContextConsumer.ts#L95">core/ShareableContextConsumer.ts:95</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableContextConsumer.ts#L86">davinci-eight/core/ShareableContextConsumer.ts:86</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1129,7 +1109,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#synchup">synchUp</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/ShareableContextConsumer.ts#L120">core/ShareableContextConsumer.ts:120</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableContextConsumer.ts#L111">davinci-eight/core/ShareableContextConsumer.ts:111</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1148,7 +1128,7 @@
 								<p>Implementation of <a href="../interfaces/material.html">Material</a>.<a href="../interfaces/material.html#uniform">uniform</a></p>
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#uniform">uniform</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L412">materials/ShaderMaterial.ts:412</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L380">davinci-eight/materials/ShaderMaterial.ts:380</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1176,7 +1156,7 @@
 								<p>Implementation of <a href="../interfaces/material.html">Material</a>.<a href="../interfaces/material.html#uniform1f">uniform1f</a></p>
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#uniform1f">uniform1f</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L384">materials/ShaderMaterial.ts:384</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L352">davinci-eight/materials/ShaderMaterial.ts:352</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1204,7 +1184,7 @@
 								<p>Implementation of <a href="../interfaces/material.html">Material</a>.<a href="../interfaces/material.html#uniform1i">uniform1i</a></p>
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#uniform1i">uniform1i</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L377">materials/ShaderMaterial.ts:377</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L345">davinci-eight/materials/ShaderMaterial.ts:345</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1232,7 +1212,7 @@
 								<p>Implementation of <a href="../interfaces/material.html">Material</a>.<a href="../interfaces/material.html#uniform2f">uniform2f</a></p>
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#uniform2f">uniform2f</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L391">materials/ShaderMaterial.ts:391</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L359">davinci-eight/materials/ShaderMaterial.ts:359</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1263,7 +1243,7 @@
 								<p>Implementation of <a href="../interfaces/material.html">Material</a>.<a href="../interfaces/material.html#uniform3f">uniform3f</a></p>
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#uniform3f">uniform3f</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L398">materials/ShaderMaterial.ts:398</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L366">davinci-eight/materials/ShaderMaterial.ts:366</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1297,7 +1277,7 @@
 								<p>Implementation of <a href="../interfaces/material.html">Material</a>.<a href="../interfaces/material.html#uniform4f">uniform4f</a></p>
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#uniform4f">uniform4f</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L405">materials/ShaderMaterial.ts:405</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L373">davinci-eight/materials/ShaderMaterial.ts:373</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1334,7 +1314,7 @@
 								<p>Implementation of <a href="../interfaces/enginesubscriber.html">EngineSubscriber</a>.<a href="../interfaces/enginesubscriber.html#unsubscribe">unsubscribe</a></p>
 								<p>Inherited from <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#unsubscribe">unsubscribe</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/ShareableContextConsumer.ts#L142">core/ShareableContextConsumer.ts:142</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableContextConsumer.ts#L143">davinci-eight/core/ShareableContextConsumer.ts:143</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1363,7 +1343,7 @@
 								<p>Implementation of <a href="../interfaces/material.html">Material</a>.<a href="../interfaces/material.html#use">use</a></p>
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#use">use</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L452">materials/ShaderMaterial.ts:452</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L420">davinci-eight/materials/ShaderMaterial.ts:420</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="shadermaterial.html" class="tsd-signature-type">ShaderMaterial</a></h4>
@@ -1382,7 +1362,7 @@
 								<p>Implementation of <a href="../interfaces/material.html">Material</a>.<a href="../interfaces/material.html#vector2fv">vector2fv</a></p>
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#vector2fv">vector2fv</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L487">materials/ShaderMaterial.ts:487</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L455">davinci-eight/materials/ShaderMaterial.ts:455</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1410,7 +1390,7 @@
 								<p>Implementation of <a href="../interfaces/material.html">Material</a>.<a href="../interfaces/material.html#vector3fv">vector3fv</a></p>
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#vector3fv">vector3fv</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L494">materials/ShaderMaterial.ts:494</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L462">davinci-eight/materials/ShaderMaterial.ts:462</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1438,7 +1418,7 @@
 								<p>Implementation of <a href="../interfaces/material.html">Material</a>.<a href="../interfaces/material.html#vector4fv">vector4fv</a></p>
 								<p>Inherited from <a href="shadermaterial.html">ShaderMaterial</a>.<a href="shadermaterial.html#vector4fv">vector4fv</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/materials/ShaderMaterial.ts#L501">materials/ShaderMaterial.ts:501</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/materials/ShaderMaterial.ts#L469">davinci-eight/materials/ShaderMaterial.ts:469</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1475,10 +1455,7 @@
 								<a href="pointmaterial.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external">
-								<a href="pointmaterial.html#_type" class="tsd-kind-icon">_type</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external">
-								<a href="pointmaterial.html#contextprovider" class="tsd-kind-icon">context<wbr>Provider</a>
+								<a href="pointmaterial.html#contextmanager" class="tsd-kind-icon">context<wbr>Manager</a>
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="pointmaterial.html#attributenames" class="tsd-kind-icon">attribute<wbr>Names</a>

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>SphereGeometry | EIGHT 3.7.9</title>
+	<title>SphereGeometry | EIGHT 4.0.0</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">EIGHT 3.7.9</a>
+					<a href="../index.html" class="title">EIGHT 4.0.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -40,8 +40,6 @@
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
 							<input type="checkbox" id="tsd-filter-externals" checked />
 							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -111,8 +109,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external"><a href="spheregeometry.html#_mode" class="tsd-kind-icon">_mode</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external"><a href="spheregeometry.html#_pointers" class="tsd-kind-icon">_pointers</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external"><a href="spheregeometry.html#_stride" class="tsd-kind-icon">_stride</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external"><a href="spheregeometry.html#_type" class="tsd-kind-icon">_type</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external"><a href="spheregeometry.html#contextprovider" class="tsd-kind-icon">context<wbr>Provider</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external"><a href="spheregeometry.html#contextmanager" class="tsd-kind-icon">context<wbr>Manager</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="spheregeometry.html#scaling" class="tsd-kind-icon">scaling</a></li>
 							</ul>
 						</section>
@@ -163,14 +160,14 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Sphere<wbr>Geometry<span class="tsd-signature-symbol">(</span>contextManager<span class="tsd-signature-symbol">: </span><a href="../interfaces/contextmanager.html" class="tsd-signature-type">ContextManager</a>, options<span class="tsd-signature-symbol">?: </span><a href="../interfaces/spheregeometryoptions.html" class="tsd-signature-type">SphereGeometryOptions</a>, levelUp<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="spheregeometry.html" class="tsd-signature-type">SphereGeometry</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Sphere<wbr>Geometry<span class="tsd-signature-symbol">(</span>contextManager<span class="tsd-signature-symbol">: </span><a href="../interfaces/contextmanager.html" class="tsd-signature-type">ContextManager</a>, options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">SphereGeometryOptions</span>, levelUp<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="spheregeometry.html" class="tsd-signature-type">SphereGeometry</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overrides <a href="geometryelements.html">GeometryElements</a>.<a href="geometryelements.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/geometries/SphereGeometry.ts#L386">geometries/SphereGeometry.ts:386</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/geometries/SphereGeometry.ts#L387">davinci-eight/geometries/SphereGeometry.ts:387</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -179,7 +176,7 @@
 									<h5>contextManager: <a href="../interfaces/contextmanager.html" class="tsd-signature-type">ContextManager</a></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <a href="../interfaces/spheregeometryoptions.html" class="tsd-signature-type">SphereGeometryOptions</a><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <span class="tsd-signature-type">SphereGeometryOptions</span><span class="tsd-signature-symbol"> =&nbsp;{}</span></h5>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> levelUp: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></h5>
@@ -199,18 +196,18 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="geometrybase.html">GeometryBase</a>.<a href="geometrybase.html#_mode">_mode</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/GeometryBase.ts#L29">core/GeometryBase.ts:29</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/GeometryBase.ts#L29">davinci-eight/core/GeometryBase.ts:29</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external">
 					<a name="_pointers" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _pointers</h3>
-					<div class="tsd-signature tsd-kind-icon">_pointers<span class="tsd-signature-symbol">:</span> <a href="../interfaces/vertexattribpointer.html" class="tsd-signature-type">VertexAttribPointer</a><span class="tsd-signature-symbol">[]</span></div>
+					<div class="tsd-signature tsd-kind-icon">_pointers<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">VertexAttribPointer</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="geometrybase.html">GeometryBase</a>.<a href="geometrybase.html#_pointers">_pointers</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/GeometryBase.ts#L45">core/GeometryBase.ts:45</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/GeometryBase.ts#L45">davinci-eight/core/GeometryBase.ts:45</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -221,7 +218,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="geometrybase.html">GeometryBase</a>.<a href="geometrybase.html#_stride">_stride</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/GeometryBase.ts#L40">core/GeometryBase.ts:40</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/GeometryBase.ts#L40">davinci-eight/core/GeometryBase.ts:40</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -237,33 +234,20 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external">
-					<a name="_type" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> _type</h3>
-					<div class="tsd-signature tsd-kind-icon">_type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="contextmanager" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> context<wbr>Manager</h3>
+					<div class="tsd-signature tsd-kind-icon">context<wbr>Manager<span class="tsd-signature-symbol">:</span> <a href="../interfaces/contextmanager.html" class="tsd-signature-type">ContextManager</a></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#_type">_type</a></p>
+						<p>Inherited from <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#contextmanager">contextManager</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/ShareableBase.ts#L48">core/ShareableBase.ts:48</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external">
-					<a name="contextprovider" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> context<wbr>Provider</h3>
-					<div class="tsd-signature tsd-kind-icon">context<wbr>Provider<span class="tsd-signature-symbol">:</span> <a href="../interfaces/contextprovider.html" class="tsd-signature-type">ContextProvider</a></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#contextprovider">contextProvider</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/ShareableContextConsumer.ts#L61">core/ShareableContextConsumer.ts:61</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableContextConsumer.ts#L50">davinci-eight/core/ShareableContextConsumer.ts:50</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>We hold onto the context provider after a contextGain event.
-								However, this is only a convenience for derived classes.
-								(Maybe we should not do this).
-								We only need to release this property in our destructor.
-							We must not try to trigger a contextFree as that would violate Implementation Hierarchy Principle.</p>
+							<p>The <code>ContextManager</code> to which this consumer is subscribed.
+								The existence of this property indicates a subscription.
+							Therefore, before releasing this reference, be sure to unsubscribe.</p>
 						</div>
 					</div>
 				</section>
@@ -274,7 +258,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="geometrybase.html">GeometryBase</a>.<a href="geometrybase.html#scaling">scaling</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/GeometryBase.ts#L50">core/GeometryBase.ts:50</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/GeometryBase.ts#L50">davinci-eight/core/GeometryBase.ts:50</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -298,7 +282,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#gl">gl</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/ShareableContextConsumer.ts#L178">core/ShareableContextConsumer.ts:178</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableContextConsumer.ts#L166">davinci-eight/core/ShareableContextConsumer.ts:166</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -312,7 +296,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#gl">gl</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/ShareableContextConsumer.ts#L186">core/ShareableContextConsumer.ts:186</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableContextConsumer.ts#L174">davinci-eight/core/ShareableContextConsumer.ts:174</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -341,7 +325,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/geometries/SphereGeometry.ts#L403">geometries/SphereGeometry.ts:403</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/geometries/SphereGeometry.ts#L404">davinci-eight/geometries/SphereGeometry.ts:404</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -349,7 +333,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/geometries/SphereGeometry.ts#L407">geometries/SphereGeometry.ts:407</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/geometries/SphereGeometry.ts#L408">davinci-eight/geometries/SphereGeometry.ts:408</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -377,7 +361,7 @@
 								<p>Implementation of <a href="../interfaces/geometry.html">Geometry</a>.<a href="../interfaces/geometry.html#addref">addRef</a></p>
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#addref">addRef</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/ShareableBase.ts#L121">core/ShareableBase.ts:121</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableBase.ts#L121">davinci-eight/core/ShareableBase.ts:121</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -405,7 +389,7 @@
 								<p>Inherited from <a href="geometryelements.html">GeometryElements</a>.<a href="geometryelements.html#bind">bind</a></p>
 								<p>Overrides <a href="geometrybase.html">GeometryBase</a>.<a href="geometrybase.html#bind">bind</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/GeometryElements.ts#L185">core/GeometryElements.ts:185</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/GeometryElements.ts#L185">davinci-eight/core/GeometryElements.ts:185</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -429,7 +413,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#cleanup">cleanUp</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/ShareableContextConsumer.ts#L130">core/ShareableContextConsumer.ts:130</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableContextConsumer.ts#L121">davinci-eight/core/ShareableContextConsumer.ts:121</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -440,7 +424,7 @@
 					<a name="contextfree" class="tsd-anchor"></a>
 					<h3>context<wbr>Free</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">context<wbr>Free<span class="tsd-signature-symbol">(</span>contextProvider<span class="tsd-signature-symbol">: </span><a href="../interfaces/contextprovider.html" class="tsd-signature-type">ContextProvider</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">context<wbr>Free<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -449,7 +433,7 @@
 								<p>Inherited from <a href="geometryelements.html">GeometryElements</a>.<a href="geometryelements.html#contextfree">contextFree</a></p>
 								<p>Overrides <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#contextfree">contextFree</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/GeometryElements.ts#L167">core/GeometryElements.ts:167</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/GeometryElements.ts#L167">davinci-eight/core/GeometryElements.ts:167</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -457,12 +441,6 @@
 									<p>The total number of bytes for each element.</p>
 								</div>
 							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>contextProvider: <a href="../interfaces/contextprovider.html" class="tsd-signature-type">ContextProvider</a></h5>
-								</li>
-							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -471,7 +449,7 @@
 					<a name="contextgain" class="tsd-anchor"></a>
 					<h3>context<wbr>Gain</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">context<wbr>Gain<span class="tsd-signature-symbol">(</span>contextProvider<span class="tsd-signature-symbol">: </span><a href="../interfaces/contextprovider.html" class="tsd-signature-type">ContextProvider</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">context<wbr>Gain<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
@@ -480,15 +458,9 @@
 								<p>Inherited from <a href="geometryelements.html">GeometryElements</a>.<a href="geometryelements.html#contextgain">contextGain</a></p>
 								<p>Overrides <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#contextgain">contextGain</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/GeometryElements.ts#L173">core/GeometryElements.ts:173</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/GeometryElements.ts#L173">davinci-eight/core/GeometryElements.ts:173</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>contextProvider: <a href="../interfaces/contextprovider.html" class="tsd-signature-type">ContextProvider</a></h5>
-								</li>
-							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -506,7 +478,7 @@
 								<p>Inherited from <a href="geometryelements.html">GeometryElements</a>.<a href="geometryelements.html#contextlost">contextLost</a></p>
 								<p>Overrides <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#contextlost">contextLost</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/GeometryElements.ts#L179">core/GeometryElements.ts:179</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/GeometryElements.ts#L179">davinci-eight/core/GeometryElements.ts:179</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -524,7 +496,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="geometryelements.html">GeometryElements</a>.<a href="geometryelements.html#destructor">destructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/geometries/SphereGeometry.ts#L396">geometries/SphereGeometry.ts:396</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/geometries/SphereGeometry.ts#L397">davinci-eight/geometries/SphereGeometry.ts:397</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -550,7 +522,7 @@
 								<p>Inherited from <a href="geometryelements.html">GeometryElements</a>.<a href="geometryelements.html#draw">draw</a></p>
 								<p>Overrides <a href="geometrybase.html">GeometryBase</a>.<a href="geometrybase.html#draw">draw</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/GeometryElements.ts#L226">core/GeometryElements.ts:226</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/GeometryElements.ts#L220">davinci-eight/core/GeometryElements.ts:220</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="geometryelements.html" class="tsd-signature-type">GeometryElements</a></h4>
@@ -568,9 +540,14 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#getloggingname">getLoggingName</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/ShareableBase.ts#L130">core/ShareableBase.ts:130</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableBase.ts#L130">davinci-eight/core/ShareableBase.ts:130</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the name that was assigned by the call to the setLoggingName method.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
 					</ul>
@@ -586,7 +563,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="geometrybase.html">GeometryBase</a>.<a href="geometrybase.html#getprincipalscale">getPrincipalScale</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/geometries/SphereGeometry.ts#L411">geometries/SphereGeometry.ts:411</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/geometries/SphereGeometry.ts#L412">davinci-eight/geometries/SphereGeometry.ts:412</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -610,7 +587,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="geometrybase.html">GeometryBase</a>.<a href="geometrybase.html#getscalex">getScaleX</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/GeometryBase.ts#L153">core/GeometryBase.ts:153</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/GeometryBase.ts#L153">davinci-eight/core/GeometryBase.ts:153</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -628,7 +605,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="geometrybase.html">GeometryBase</a>.<a href="geometrybase.html#getscaley">getScaleY</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/GeometryBase.ts#L157">core/GeometryBase.ts:157</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/GeometryBase.ts#L157">davinci-eight/core/GeometryBase.ts:157</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -646,7 +623,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="geometrybase.html">GeometryBase</a>.<a href="geometrybase.html#getscalez">getScaleZ</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/GeometryBase.ts#L161">core/GeometryBase.ts:161</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/GeometryBase.ts#L161">davinci-eight/core/GeometryBase.ts:161</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -664,7 +641,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="geometrybase.html">GeometryBase</a>.<a href="geometrybase.html#hasprincipalscale">hasPrincipalScale</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/GeometryBase.ts#L128">core/GeometryBase.ts:128</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/GeometryBase.ts#L128">davinci-eight/core/GeometryBase.ts:128</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -688,7 +665,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#iszombie">isZombie</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/ShareableBase.ts#L110">core/ShareableBase.ts:110</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableBase.ts#L110">davinci-eight/core/ShareableBase.ts:110</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -712,7 +689,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="geometrybase.html">GeometryBase</a>.<a href="geometrybase.html#off">off</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/GeometryBase.ts#L105">core/GeometryBase.ts:105</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/GeometryBase.ts#L105">davinci-eight/core/GeometryBase.ts:105</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -766,7 +743,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="geometrybase.html">GeometryBase</a>.<a href="geometrybase.html#on">on</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/GeometryBase.ts#L101">core/GeometryBase.ts:101</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/GeometryBase.ts#L101">davinci-eight/core/GeometryBase.ts:101</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -821,7 +798,7 @@
 								<p>Implementation of <a href="../interfaces/geometry.html">Geometry</a>.<a href="../interfaces/geometry.html#release">release</a></p>
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#release">release</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/ShareableBase.ts#L161">core/ShareableBase.ts:161</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableBase.ts#L163">davinci-eight/core/ShareableBase.ts:163</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -847,7 +824,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#setloggingname">setLoggingName</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/ShareableBase.ts#L146">core/ShareableBase.ts:146</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableBase.ts#L148">davinci-eight/core/ShareableBase.ts:148</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -865,6 +842,9 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>name: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>This will usually be set to the name of the class.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -882,7 +862,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="geometrybase.html">GeometryBase</a>.<a href="geometrybase.html#setprincipalscale">setPrincipalScale</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/geometries/SphereGeometry.ts#L422">geometries/SphereGeometry.ts:422</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/geometries/SphereGeometry.ts#L423">davinci-eight/geometries/SphereGeometry.ts:423</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -909,7 +889,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="geometrybase.html">GeometryBase</a>.<a href="geometrybase.html#setscale">setScale</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/GeometryBase.ts#L168">core/GeometryBase.ts:168</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/GeometryBase.ts#L168">davinci-eight/core/GeometryBase.ts:168</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -945,7 +925,7 @@
 								<p>Implementation of <a href="../interfaces/geometry.html">Geometry</a>.<a href="../interfaces/geometry.html#setuniforms">setUniforms</a></p>
 								<p>Inherited from <a href="geometrybase.html">GeometryBase</a>.<a href="geometrybase.html#setuniforms">setUniforms</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/GeometryBase.ts#L124">core/GeometryBase.ts:124</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/GeometryBase.ts#L124">davinci-eight/core/GeometryBase.ts:124</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -969,7 +949,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#subscribe">subscribe</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/ShareableContextConsumer.ts#L95">core/ShareableContextConsumer.ts:95</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableContextConsumer.ts#L86">davinci-eight/core/ShareableContextConsumer.ts:86</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1006,7 +986,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#synchup">synchUp</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/ShareableContextConsumer.ts#L120">core/ShareableContextConsumer.ts:120</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableContextConsumer.ts#L111">davinci-eight/core/ShareableContextConsumer.ts:111</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -1026,7 +1006,7 @@
 								<p>Inherited from <a href="geometryelements.html">GeometryElements</a>.<a href="geometryelements.html#unbind">unbind</a></p>
 								<p>Overrides <a href="geometrybase.html">GeometryBase</a>.<a href="geometrybase.html#unbind">unbind</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/GeometryElements.ts#L206">core/GeometryElements.ts:206</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/GeometryElements.ts#L203">davinci-eight/core/GeometryElements.ts:203</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1051,7 +1031,7 @@
 								<p>Implementation of <a href="../interfaces/enginesubscriber.html">EngineSubscriber</a>.<a href="../interfaces/enginesubscriber.html#unsubscribe">unsubscribe</a></p>
 								<p>Inherited from <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#unsubscribe">unsubscribe</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b945e76/src/davinci-eight/core/ShareableContextConsumer.ts#L142">core/ShareableContextConsumer.ts:142</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableContextConsumer.ts#L143">davinci-eight/core/ShareableContextConsumer.ts:143</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1098,10 +1078,7 @@
 								<a href="spheregeometry.html#_stride" class="tsd-kind-icon">_stride</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external">
-								<a href="spheregeometry.html#_type" class="tsd-kind-icon">_type</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external">
-								<a href="spheregeometry.html#contextprovider" class="tsd-kind-icon">context<wbr>Provider</a>
+								<a href="spheregeometry.html#contextmanager" class="tsd-kind-icon">context<wbr>Manager</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="spheregeometry.html#scaling" class="tsd-kind-icon">scaling</a>
