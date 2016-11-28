@@ -1,6 +1,6 @@
 /* */ 
 "format cjs";
-(function(Buffer) {
+(function(Buffer, process) {
   (function webpackUniversalModuleDefinition(root, factory) {
     if (typeof exports === 'object' && typeof module === 'object')
       module.exports = factory();
@@ -47,10 +47,10 @@
         var transports = __webpack_require__(3);
         var Emitter = __webpack_require__(19);
         var debug = __webpack_require__(23)('engine.io-client:socket');
-        var index = __webpack_require__(29);
+        var index = __webpack_require__(30);
         var parser = __webpack_require__(9);
-        var parseuri = __webpack_require__(30);
-        var parsejson = __webpack_require__(31);
+        var parseuri = __webpack_require__(31);
+        var parsejson = __webpack_require__(32);
         var parseqs = __webpack_require__(20);
         module.exports = Socket;
         function Socket(uri, opts) {
@@ -110,10 +110,14 @@
           this.ca = opts.ca || null;
           this.ciphers = opts.ciphers || null;
           this.rejectUnauthorized = opts.rejectUnauthorized === undefined ? null : opts.rejectUnauthorized;
+          this.forceNode = !!opts.forceNode;
           var freeGlobal = (typeof global === 'undefined' ? 'undefined' : _typeof(global)) === 'object' && global;
           if (freeGlobal.global === freeGlobal) {
             if (opts.extraHeaders && Object.keys(opts.extraHeaders).length > 0) {
               this.extraHeaders = opts.extraHeaders;
+            }
+            if (opts.localAddress) {
+              this.localAddress = opts.localAddress;
             }
           }
           this.id = null;
@@ -161,7 +165,9 @@
             ciphers: this.ciphers,
             rejectUnauthorized: this.rejectUnauthorized,
             perMessageDeflate: this.perMessageDeflate,
-            extraHeaders: this.extraHeaders
+            extraHeaders: this.extraHeaders,
+            forceNode: this.forceNode,
+            localAddress: this.localAddress
           });
           return transport;
         };
@@ -506,8 +512,8 @@
         'use strict';
         var XMLHttpRequest = __webpack_require__(4);
         var XHR = __webpack_require__(6);
-        var JSONP = __webpack_require__(26);
-        var websocket = __webpack_require__(27);
+        var JSONP = __webpack_require__(27);
+        var websocket = __webpack_require__(28);
         exports.polling = polling;
         exports.websocket = websocket;
         function polling(opts) {
@@ -584,6 +590,7 @@
         function empty() {}
         function XHR(opts) {
           Polling.call(this, opts);
+          this.requestTimeout = opts.requestTimeout;
           if (global.location) {
             var isSSL = 'https:' === location.protocol;
             var port = location.port;
@@ -613,6 +620,7 @@
           opts.ca = this.ca;
           opts.ciphers = this.ciphers;
           opts.rejectUnauthorized = this.rejectUnauthorized;
+          opts.requestTimeout = this.requestTimeout;
           opts.extraHeaders = this.extraHeaders;
           return new Request(opts);
         };
@@ -653,6 +661,7 @@
           this.isBinary = opts.isBinary;
           this.supportsBinary = opts.supportsBinary;
           this.enablesXDR = opts.enablesXDR;
+          this.requestTimeout = opts.requestTimeout;
           this.pfx = opts.pfx;
           this.key = opts.key;
           this.passphrase = opts.passphrase;
@@ -710,6 +719,9 @@
             } catch (e) {}
             if ('withCredentials' in xhr) {
               xhr.withCredentials = true;
+            }
+            if (this.requestTimeout) {
+              xhr.timeout = this.requestTimeout;
             }
             if (this.hasXDR()) {
               xhr.onload = function() {
@@ -955,7 +967,7 @@
           query.b64 = 1;
         }
         query = parseqs.encode(query);
-        if (this.port && ('https' === schema && this.port !== 443 || 'http' === schema && this.port !== 80)) {
+        if (this.port && ('https' === schema && Number(this.port) !== 443 || 'http' === schema && Number(this.port) !== 80)) {
           port = ':' + this.port;
         }
         if (query.length) {
@@ -988,7 +1000,9 @@
         this.ca = opts.ca;
         this.ciphers = opts.ciphers;
         this.rejectUnauthorized = opts.rejectUnauthorized;
+        this.forceNode = opts.forceNode;
         this.extraHeaders = opts.extraHeaders;
+        this.localAddress = opts.localAddress;
       }
       Emitter(Transport.prototype);
       Transport.prototype.onError = function(msg, desc) {
@@ -1043,7 +1057,7 @@
         var after = __webpack_require__(14);
         var utf8 = __webpack_require__(15);
         var base64encoder;
-        if (global.ArrayBuffer) {
+        if (global && global.ArrayBuffer) {
           base64encoder = __webpack_require__(17);
         }
         var isAndroid = typeof navigator !== 'undefined' && /Android/i.test(navigator.userAgent);
@@ -1154,7 +1168,10 @@
           return callback(message);
         };
         exports.decodePacket = function(data, binaryType, utf8decode) {
-          if (typeof data == 'string' || data === undefined) {
+          if (data === undefined) {
+            return err;
+          }
+          if (typeof data == 'string') {
             if (data.charAt(0) == 'b') {
               return exports.decodeBase64Packet(data.substr(1), binaryType);
             }
@@ -1834,8 +1851,10 @@
       }.call(exports, (function() {
         return this;
       }())));
-    }, function(module, exports) {
-      module.exports = Emitter;
+    }, function(module, exports, __webpack_require__) {
+      if (true) {
+        module.exports = Emitter;
+      }
       function Emitter(obj) {
         if (obj)
           return mixin(obj);
@@ -1849,14 +1868,12 @@
       }
       Emitter.prototype.on = Emitter.prototype.addEventListener = function(event, fn) {
         this._callbacks = this._callbacks || {};
-        (this._callbacks[event] = this._callbacks[event] || []).push(fn);
+        (this._callbacks['$' + event] = this._callbacks['$' + event] || []).push(fn);
         return this;
       };
       Emitter.prototype.once = function(event, fn) {
-        var self = this;
-        this._callbacks = this._callbacks || {};
         function on() {
-          self.off(event, on);
+          this.off(event, on);
           fn.apply(this, arguments);
         }
         on.fn = fn;
@@ -1869,11 +1886,11 @@
           this._callbacks = {};
           return this;
         }
-        var callbacks = this._callbacks[event];
+        var callbacks = this._callbacks['$' + event];
         if (!callbacks)
           return this;
         if (1 == arguments.length) {
-          delete this._callbacks[event];
+          delete this._callbacks['$' + event];
           return this;
         }
         var cb;
@@ -1889,7 +1906,7 @@
       Emitter.prototype.emit = function(event) {
         this._callbacks = this._callbacks || {};
         var args = [].slice.call(arguments, 1),
-            callbacks = this._callbacks[event];
+            callbacks = this._callbacks['$' + event];
         if (callbacks) {
           callbacks = callbacks.slice(0);
           for (var i = 0,
@@ -1901,7 +1918,7 @@
       };
       Emitter.prototype.listeners = function(event) {
         this._callbacks = this._callbacks || {};
-        return this._callbacks[event] || [];
+        return this._callbacks['$' + event] || [];
       };
       Emitter.prototype.hasListeners = function(event) {
         return !!this.listeners(event).length;
@@ -1970,73 +1987,232 @@
       yeast.decode = decode;
       module.exports = yeast;
     }, function(module, exports, __webpack_require__) {
-      exports = module.exports = __webpack_require__(24);
-      exports.log = log;
-      exports.formatArgs = formatArgs;
-      exports.save = save;
-      exports.load = load;
-      exports.useColors = useColors;
-      exports.storage = 'undefined' != typeof chrome && 'undefined' != typeof chrome.storage ? chrome.storage.local : localstorage();
-      exports.colors = ['lightseagreen', 'forestgreen', 'goldenrod', 'dodgerblue', 'darkorchid', 'crimson'];
-      function useColors() {
-        return ('WebkitAppearance' in document.documentElement.style) || (window.console && (console.firebug || (console.exception && console.table))) || (navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31);
-      }
-      exports.formatters.j = function(v) {
-        return JSON.stringify(v);
-      };
-      function formatArgs() {
-        var args = arguments;
-        var useColors = this.useColors;
-        args[0] = (useColors ? '%c' : '') + this.namespace + (useColors ? ' %c' : ' ') + args[0] + (useColors ? '%c ' : ' ') + '+' + exports.humanize(this.diff);
-        if (!useColors)
+      (function(process) {
+        exports = module.exports = __webpack_require__(25);
+        exports.log = log;
+        exports.formatArgs = formatArgs;
+        exports.save = save;
+        exports.load = load;
+        exports.useColors = useColors;
+        exports.storage = 'undefined' != typeof chrome && 'undefined' != typeof chrome.storage ? chrome.storage.local : localstorage();
+        exports.colors = ['lightseagreen', 'forestgreen', 'goldenrod', 'dodgerblue', 'darkorchid', 'crimson'];
+        function useColors() {
+          return (typeof document !== 'undefined' && 'WebkitAppearance' in document.documentElement.style) || (window.console && (console.firebug || (console.exception && console.table))) || (navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31);
+        }
+        exports.formatters.j = function(v) {
+          try {
+            return JSON.stringify(v);
+          } catch (err) {
+            return '[UnexpectedJSONParseError]: ' + err.message;
+          }
+        };
+        function formatArgs() {
+          var args = arguments;
+          var useColors = this.useColors;
+          args[0] = (useColors ? '%c' : '') + this.namespace + (useColors ? ' %c' : ' ') + args[0] + (useColors ? '%c ' : ' ') + '+' + exports.humanize(this.diff);
+          if (!useColors)
+            return args;
+          var c = 'color: ' + this.color;
+          args = [args[0], c, 'color: inherit'].concat(Array.prototype.slice.call(args, 1));
+          var index = 0;
+          var lastC = 0;
+          args[0].replace(/%[a-z%]/g, function(match) {
+            if ('%%' === match)
+              return;
+            index++;
+            if ('%c' === match) {
+              lastC = index;
+            }
+          });
+          args.splice(lastC, 0, c);
           return args;
-        var c = 'color: ' + this.color;
-        args = [args[0], c, 'color: inherit'].concat(Array.prototype.slice.call(args, 1));
-        var index = 0;
-        var lastC = 0;
-        args[0].replace(/%[a-z%]/g, function(match) {
-          if ('%%' === match)
-            return;
-          index++;
-          if ('%c' === match) {
-            lastC = index;
+        }
+        function log() {
+          return 'object' === typeof console && console.log && Function.prototype.apply.call(console.log, console, arguments);
+        }
+        function save(namespaces) {
+          try {
+            if (null == namespaces) {
+              exports.storage.removeItem('debug');
+            } else {
+              exports.storage.debug = namespaces;
+            }
+          } catch (e) {}
+        }
+        function load() {
+          var r;
+          try {
+            return exports.storage.debug;
+          } catch (e) {}
+          if (typeof process !== 'undefined' && 'env' in process) {
+            return process.env.DEBUG;
           }
-        });
-        args.splice(lastC, 0, c);
-        return args;
+        }
+        exports.enable(load());
+        function localstorage() {
+          try {
+            return window.localStorage;
+          } catch (e) {}
+        }
+      }.call(exports, __webpack_require__(24)));
+    }, function(module, exports) {
+      var process = module.exports = {};
+      var cachedSetTimeout;
+      var cachedClearTimeout;
+      function defaultSetTimout() {
+        throw new Error('setTimeout has not been defined');
       }
-      function log() {
-        return 'object' === typeof console && console.log && Function.prototype.apply.call(console.log, console, arguments);
+      function defaultClearTimeout() {
+        throw new Error('clearTimeout has not been defined');
       }
-      function save(namespaces) {
+      (function() {
         try {
-          if (null == namespaces) {
-            exports.storage.removeItem('debug');
+          if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
           } else {
-            exports.storage.debug = namespaces;
+            cachedSetTimeout = defaultSetTimout;
           }
-        } catch (e) {}
-      }
-      function load() {
-        var r;
+        } catch (e) {
+          cachedSetTimeout = defaultSetTimout;
+        }
         try {
-          r = exports.storage.debug;
-        } catch (e) {}
-        return r;
-      }
-      exports.enable(load());
-      function localstorage() {
+          if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+          } else {
+            cachedClearTimeout = defaultClearTimeout;
+          }
+        } catch (e) {
+          cachedClearTimeout = defaultClearTimeout;
+        }
+      }());
+      function runTimeout(fun) {
+        if (cachedSetTimeout === setTimeout) {
+          return setTimeout(fun, 0);
+        }
+        if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+          cachedSetTimeout = setTimeout;
+          return setTimeout(fun, 0);
+        }
         try {
-          return window.localStorage;
-        } catch (e) {}
+          return cachedSetTimeout(fun, 0);
+        } catch (e) {
+          try {
+            return cachedSetTimeout.call(null, fun, 0);
+          } catch (e) {
+            return cachedSetTimeout.call(this, fun, 0);
+          }
+        }
       }
+      function runClearTimeout(marker) {
+        if (cachedClearTimeout === clearTimeout) {
+          return clearTimeout(marker);
+        }
+        if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+          cachedClearTimeout = clearTimeout;
+          return clearTimeout(marker);
+        }
+        try {
+          return cachedClearTimeout(marker);
+        } catch (e) {
+          try {
+            return cachedClearTimeout.call(null, marker);
+          } catch (e) {
+            return cachedClearTimeout.call(this, marker);
+          }
+        }
+      }
+      var queue = [];
+      var draining = false;
+      var currentQueue;
+      var queueIndex = -1;
+      function cleanUpNextTick() {
+        if (!draining || !currentQueue) {
+          return;
+        }
+        draining = false;
+        if (currentQueue.length) {
+          queue = currentQueue.concat(queue);
+        } else {
+          queueIndex = -1;
+        }
+        if (queue.length) {
+          drainQueue();
+        }
+      }
+      function drainQueue() {
+        if (draining) {
+          return;
+        }
+        var timeout = runTimeout(cleanUpNextTick);
+        draining = true;
+        var len = queue.length;
+        while (len) {
+          currentQueue = queue;
+          queue = [];
+          while (++queueIndex < len) {
+            if (currentQueue) {
+              currentQueue[queueIndex].run();
+            }
+          }
+          queueIndex = -1;
+          len = queue.length;
+        }
+        currentQueue = null;
+        draining = false;
+        runClearTimeout(timeout);
+      }
+      process.nextTick = function(fun) {
+        var args = new Array(arguments.length - 1);
+        if (arguments.length > 1) {
+          for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+          }
+        }
+        queue.push(new Item(fun, args));
+        if (queue.length === 1 && !draining) {
+          runTimeout(drainQueue);
+        }
+      };
+      function Item(fun, array) {
+        this.fun = fun;
+        this.array = array;
+      }
+      Item.prototype.run = function() {
+        this.fun.apply(null, this.array);
+      };
+      process.title = 'browser';
+      process.browser = true;
+      process.env = {};
+      process.argv = [];
+      process.version = '';
+      process.versions = {};
+      function noop() {}
+      process.on = noop;
+      process.addListener = noop;
+      process.once = noop;
+      process.off = noop;
+      process.removeListener = noop;
+      process.removeAllListeners = noop;
+      process.emit = noop;
+      process.binding = function(name) {
+        throw new Error('process.binding is not supported');
+      };
+      process.cwd = function() {
+        return '/';
+      };
+      process.chdir = function(dir) {
+        throw new Error('process.chdir is not supported');
+      };
+      process.umask = function() {
+        return 0;
+      };
     }, function(module, exports, __webpack_require__) {
-      exports = module.exports = debug;
+      exports = module.exports = debug.debug = debug;
       exports.coerce = coerce;
       exports.disable = disable;
       exports.enable = enable;
       exports.enabled = enabled;
-      exports.humanize = __webpack_require__(25);
+      exports.humanize = __webpack_require__(26);
       exports.names = [];
       exports.skips = [];
       exports.formatters = {};
@@ -2060,7 +2236,10 @@
             self.useColors = exports.useColors();
           if (null == self.color && self.useColors)
             self.color = selectColor();
-          var args = Array.prototype.slice.call(arguments);
+          var args = new Array(arguments.length);
+          for (var i = 0; i < args.length; i++) {
+            args[i] = arguments[i];
+          }
           args[0] = exports.coerce(args[0]);
           if ('string' !== typeof args[0]) {
             args = ['%o'].concat(args);
@@ -2079,9 +2258,7 @@
             }
             return match;
           });
-          if ('function' === typeof exports.formatArgs) {
-            args = exports.formatArgs.apply(self, args);
-          }
+          args = exports.formatArgs.apply(self, args);
           var logFn = enabled.log || exports.log || console.log.bind(console);
           logFn.apply(self, args);
         }
@@ -2097,7 +2274,7 @@
         for (var i = 0; i < len; i++) {
           if (!split[i])
             continue;
-          namespaces = split[i].replace(/\*/g, '.*?');
+          namespaces = split[i].replace(/[\\^$+?.()|[\]{}]/g, '\\$&').replace(/\*/g, '.*?');
           if (namespaces[0] === '-') {
             exports.skips.push(new RegExp('^' + namespaces.substr(1) + '$'));
           } else {
@@ -2136,17 +2313,23 @@
       var y = d * 365.25;
       module.exports = function(val, options) {
         options = options || {};
-        if ('string' == typeof val)
+        var type = typeof val;
+        if (type === 'string' && val.length > 0) {
           return parse(val);
-        return options.long ? long(val) : short(val);
+        } else if (type === 'number' && isNaN(val) === false) {
+          return options.long ? fmtLong(val) : fmtShort(val);
+        }
+        throw new Error('val is not a non-empty string or a valid number. val=' + JSON.stringify(val));
       };
       function parse(str) {
-        str = '' + str;
-        if (str.length > 10000)
+        str = String(str);
+        if (str.length > 10000) {
           return;
+        }
         var match = /^((?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|years?|yrs?|y)?$/i.exec(str);
-        if (!match)
+        if (!match) {
           return;
+        }
         var n = parseFloat(match[1]);
         var type = (match[2] || 'ms').toLowerCase();
         switch (type) {
@@ -2184,27 +2367,35 @@
           case 'msec':
           case 'ms':
             return n;
+          default:
+            return undefined;
         }
       }
-      function short(ms) {
-        if (ms >= d)
+      function fmtShort(ms) {
+        if (ms >= d) {
           return Math.round(ms / d) + 'd';
-        if (ms >= h)
+        }
+        if (ms >= h) {
           return Math.round(ms / h) + 'h';
-        if (ms >= m)
+        }
+        if (ms >= m) {
           return Math.round(ms / m) + 'm';
-        if (ms >= s)
+        }
+        if (ms >= s) {
           return Math.round(ms / s) + 's';
+        }
         return ms + 'ms';
       }
-      function long(ms) {
+      function fmtLong(ms) {
         return plural(ms, d, 'day') || plural(ms, h, 'hour') || plural(ms, m, 'minute') || plural(ms, s, 'second') || ms + ' ms';
       }
       function plural(ms, n, name) {
-        if (ms < n)
+        if (ms < n) {
           return;
-        if (ms < n * 1.5)
+        }
+        if (ms < n * 1.5) {
           return Math.floor(ms / n) + ' ' + name;
+        }
         return Math.ceil(ms / n) + ' ' + name + 's';
       }
     }, function(module, exports, __webpack_require__) {
@@ -2354,11 +2545,15 @@
         var yeast = __webpack_require__(22);
         var debug = __webpack_require__(23)('engine.io-client:websocket');
         var BrowserWebSocket = global.WebSocket || global.MozWebSocket;
+        var NodeWebSocket;
+        if (typeof window === 'undefined') {
+          try {
+            NodeWebSocket = __webpack_require__(29);
+          } catch (e) {}
+        }
         var WebSocket = BrowserWebSocket;
         if (!WebSocket && typeof window === 'undefined') {
-          try {
-            WebSocket = __webpack_require__(28);
-          } catch (e) {}
+          WebSocket = NodeWebSocket;
         }
         module.exports = WS;
         function WS(opts) {
@@ -2367,6 +2562,10 @@
             this.supportsBinary = false;
           }
           this.perMessageDeflate = opts.perMessageDeflate;
+          this.usingBrowserWebSocket = BrowserWebSocket && !opts.forceNode;
+          if (!this.usingBrowserWebSocket) {
+            WebSocket = NodeWebSocket;
+          }
           Transport.call(this, opts);
         }
         inherit(WS, Transport);
@@ -2392,8 +2591,11 @@
           if (this.extraHeaders) {
             opts.headers = this.extraHeaders;
           }
+          if (this.localAddress) {
+            opts.localAddress = this.localAddress;
+          }
           try {
-            this.ws = BrowserWebSocket ? new WebSocket(uri) : new WebSocket(uri, protocols, opts);
+            this.ws = this.usingBrowserWebSocket ? new WebSocket(uri) : new WebSocket(uri, protocols, opts);
           } catch (err) {
             return this.emit('error', err);
           }
@@ -2431,7 +2633,7 @@
               l = total; i < l; i++) {
             (function(packet) {
               parser.encodePacket(packet, self.supportsBinary, function(data) {
-                if (!BrowserWebSocket) {
+                if (!self.usingBrowserWebSocket) {
                   var opts = {};
                   if (packet.options) {
                     opts.compress = packet.options.compress;
@@ -2444,7 +2646,7 @@
                   }
                 }
                 try {
-                  if (BrowserWebSocket) {
+                  if (self.usingBrowserWebSocket) {
                     self.ws.send(data);
                   } else {
                     self.ws.send(data, opts);
@@ -2476,7 +2678,7 @@
           var query = this.query || {};
           var schema = this.secure ? 'wss' : 'ws';
           var port = '';
-          if (this.port && ('wss' === schema && this.port !== 443 || 'ws' === schema && this.port !== 80)) {
+          if (this.port && ('wss' === schema && Number(this.port) !== 443 || 'ws' === schema && Number(this.port) !== 80)) {
             port = ':' + this.port;
           }
           if (this.timestampRequests) {
@@ -2559,4 +2761,4 @@
     }]);
   });
   ;
-})(require('buffer').Buffer);
+})(require('buffer').Buffer, require('process'));

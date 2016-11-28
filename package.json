@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.9.1",
+  "version": "2.9.2",
   "private": true,
   "description": "Expressing Ideas through Computational Modeling",
   "engines": {
@@ -72,7 +72,7 @@
     "rxjs": "5.0.0-beta.6",
     "serve-favicon": "^2.3.2",
     "showdown": "^1.5.0",
-    "socket.io": "^1.6.0",
+    "socket.io": "^1.7.1",
     "systemjs": "^0.19.41",
     "zone.js": "^0.6.26"
   },
@@ -93,7 +93,7 @@
       "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@^1.1.1",
       "jquery": "npm:jquery@^2.2.4",
       "showdown": "npm:showdown@^1.5.0",
-      "socket.io-client": "npm:socket.io-client@^1.6.0",
+      "socket.io-client": "npm:socket.io-client@^1.7.1",
       "ui-select": "npm:ui-select@^0.17.1",
       "underscore": "npm:underscore@^1.8.3"
     },

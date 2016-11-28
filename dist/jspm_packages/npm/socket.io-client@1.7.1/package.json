@@ -1,6 +1,6 @@
 {
   "name": "socket.io-client",
-  "version": "1.6.0",
+  "version": "1.7.1",
   "keywords": [
     "realtime",
     "framework",
@@ -12,16 +12,14 @@
   "main": "./lib/index",
   "files": [
     "lib/",
-    "socket.io.js",
-    "socket.io.min.js",
-    "socket.io.js.map"
+    "dist/"
   ],
   "dependencies": {
     "backo2": "1.0.2",
     "component-bind": "1.0.0",
     "component-emitter": "1.2.1",
     "debug": "2.3.3",
-    "engine.io-client": "1.8.0",
+    "engine.io-client": "1.8.1",
     "has-binary": "0.1.7",
     "indexof": "0.0.1",
     "object-component": "0.0.3",
@@ -51,10 +49,11 @@
     "imports-loader": "^0.6.5",
     "istanbul": "0.4.2",
     "mocha": "2.3.4",
-    "socket.io": "1.6.0",
+    "socket.io": "1.7.1",
+    "strip-loader": "0.1.2",
     "text-blob-builder": "0.0.1",
     "uglify-js": "2.6.1",
-    "webpack-stream": "3.1.0",
+    "webpack-stream": "3.2.0",
     "zuul": "3.11.0",
     "zuul-builder-webpack": "1.1.0",
     "zuul-ngrok": "4.0.0"

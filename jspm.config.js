@@ -25,7 +25,7 @@ System.config({
     "jquery": "npm:jquery@2.2.4",
     "showdown": "npm:showdown@1.5.0",
     "socket.io": "npm:socket.io@1.4.6",
-    "socket.io-client": "npm:socket.io-client@1.6.0",
+    "socket.io-client": "npm:socket.io-client@1.7.1",
     "ui-select": "npm:ui-select@0.17.1",
     "underscore": "npm:underscore@1.8.3",
     "github:angular-ui/ui-router@0.2.18": {
@@ -319,7 +319,7 @@ System.config({
       "parseuri": "npm:parseuri@0.0.4",
       "yeast": "npm:yeast@0.1.2"
     },
-    "npm:engine.io-client@1.8.0": {
+    "npm:engine.io-client@1.8.1": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "component-emitter": "npm:component-emitter@1.2.1",
       "component-inherit": "npm:component-inherit@0.0.3",
@@ -330,6 +330,7 @@ System.config({
       "parsejson": "npm:parsejson@0.0.3",
       "parseqs": "npm:parseqs@0.0.5",
       "parseuri": "npm:parseuri@0.0.5",
+      "process": "github:jspm/nodelibs-process@0.1.2",
       "yeast": "npm:yeast@0.1.2"
     },
     "npm:engine.io-parser@1.2.4": {
@@ -557,13 +558,13 @@ System.config({
       "socket.io-parser": "npm:socket.io-parser@2.2.6",
       "to-array": "npm:to-array@0.1.4"
     },
-    "npm:socket.io-client@1.6.0": {
+    "npm:socket.io-client@1.7.1": {
       "backo2": "npm:backo2@1.0.2",
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "component-bind": "npm:component-bind@1.0.0",
       "component-emitter": "npm:component-emitter@1.2.1",
       "debug": "npm:debug@2.3.3",
-      "engine.io-client": "npm:engine.io-client@1.8.0",
+      "engine.io-client": "npm:engine.io-client@1.8.1",
       "has-binary": "npm:has-binary@0.1.7",
       "indexof": "npm:indexof@0.0.1",
       "object-component": "npm:object-component@0.0.3",
