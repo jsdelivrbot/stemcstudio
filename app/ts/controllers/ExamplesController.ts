@@ -89,6 +89,14 @@ export default class ExamplesController extends AbstractPageController {
                 category: 'Graphics'
             },
             {
+                gistId: '43c6b33b9c9f9c1806f01710191a4c1a',
+                title: "Minecraft Figures",
+                description: "Use Minecraft Figures and Mathematics to create games and demonstrations.",
+                imageSrc: '/img/examples/minecraft-figures.png',
+                imageAlt: 'Batman and Batgirl Minecraft Figures',
+                category: 'Graphics'
+            },
+            {
                 gistId: '1bf1ccdd7abd613b12bb792f48e36d4e',
                 title: "Homogeneous Model and Geometric Algebra",
                 description: "Demonstrates Geometric Algebra in arbitrary higher dimensions using the Multivector type.",
