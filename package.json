@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.10.0",
+  "version": "2.10.1",
   "private": true,
   "description": "Expressing Ideas through Computational Modeling",
   "engines": {
@@ -18,7 +18,7 @@
   "license": "MIT",
   "devDependencies": {
     "bootstrap": "^3.3.7",
-    "concurrently": "^2.2.0",
+    "concurrently": "^3.1.0",
     "grunt": "^1.0.1",
     "grunt-angular-templates": "^1.1.0",
     "grunt-contrib-clean": "^1.0.0",
@@ -49,7 +49,7 @@
     "@angular/router": "^0.2.0",
     "angular": "^1.5.9",
     "angular-material-icons": "^0.7.1",
-    "angular2": "2.0.0-beta.17",
+    "angular2": "2.0.0-beta.20",
     "aws-sdk": "2.6.15",
     "baconjs": "^0.7.89",
     "biwascheme": "^0.6.6",

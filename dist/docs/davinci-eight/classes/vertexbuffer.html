@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>VertexBuffer | EIGHT 4.0.0</title>
+	<title>VertexBuffer | EIGHT 4.0.3</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">EIGHT 4.0.0</a>
+					<a href="../index.html" class="title">EIGHT 4.0.3</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -102,19 +102,16 @@
 								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="vertexbuffer.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-external">
+						<section class="tsd-index-section tsd-is-inherited tsd-is-private-protected tsd-is-external">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="vertexbuffer.html#_usage" class="tsd-kind-icon">_usage</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external"><a href="vertexbuffer.html#contextmanager" class="tsd-kind-icon">context<wbr>Manager</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-external">
+						<section class="tsd-index-section tsd-is-inherited tsd-is-external">
 							<h3>Accessors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="vertexbuffer.html#data" class="tsd-kind-icon">data</a></li>
 								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="vertexbuffer.html#gl" class="tsd-kind-icon">gl</a></li>
-								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="vertexbuffer.html#usage" class="tsd-kind-icon">usage</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external">
@@ -122,7 +119,6 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="vertexbuffer.html#addref" class="tsd-kind-icon">add<wbr>Ref</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="vertexbuffer.html#bind" class="tsd-kind-icon">bind</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="vertexbuffer.html#bufferdata" class="tsd-kind-icon">buffer<wbr>Data</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="vertexbuffer.html#cleanup" class="tsd-kind-icon">clean<wbr>Up</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="vertexbuffer.html#contextfree" class="tsd-kind-icon">context<wbr>Free</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="vertexbuffer.html#contextgain" class="tsd-kind-icon">context<wbr>Gain</a></li>
@@ -136,6 +132,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="vertexbuffer.html#synchup" class="tsd-kind-icon">synch<wbr>Up</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="vertexbuffer.html#unbind" class="tsd-kind-icon">unbind</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="vertexbuffer.html#unsubscribe" class="tsd-kind-icon">unsubscribe</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="vertexbuffer.html#upload" class="tsd-kind-icon">upload</a></li>
 							</ul>
 						</section>
 					</div>
@@ -147,20 +144,26 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Vertex<wbr>Buffer<span class="tsd-signature-symbol">(</span>contextManager<span class="tsd-signature-symbol">: </span><a href="../interfaces/contextmanager.html" class="tsd-signature-type">ContextManager</a>, levelUp<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="vertexbuffer.html" class="tsd-signature-type">VertexBuffer</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Vertex<wbr>Buffer<span class="tsd-signature-symbol">(</span>contextManager<span class="tsd-signature-symbol">: </span><a href="../interfaces/contextmanager.html" class="tsd-signature-type">ContextManager</a>, data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Float32Array</span>, usage<span class="tsd-signature-symbol">: </span><a href="../enums/usage.html" class="tsd-signature-type">Usage</a>, levelUp<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="vertexbuffer.html" class="tsd-signature-type">VertexBuffer</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overrides <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/VertexBuffer.ts#L14">davinci-eight/core/VertexBuffer.ts:14</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/fddc899/src/davinci-eight/core/VertexBuffer.ts#L11">davinci-eight/core/VertexBuffer.ts:11</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>contextManager: <a href="../interfaces/contextmanager.html" class="tsd-signature-type">ContextManager</a></h5>
+								</li>
+								<li>
+									<h5>data: <span class="tsd-signature-type">Float32Array</span></h5>
+								</li>
+								<li>
+									<h5>usage: <a href="../enums/usage.html" class="tsd-signature-type">Usage</a></h5>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> levelUp: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></h5>
@@ -171,18 +174,8 @@
 					</ul>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-external">
+			<section class="tsd-panel-group tsd-member-group tsd-is-inherited tsd-is-private-protected tsd-is-external">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
-					<a name="_usage" class="tsd-anchor"></a>
-					<h3>_usage</h3>
-					<div class="tsd-signature tsd-kind-icon">_usage<span class="tsd-signature-symbol">:</span> <a href="../enums/usage.html" class="tsd-signature-type">Usage</a><span class="tsd-signature-symbol"> =&nbsp;Usage.STATIC_DRAW</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/VertexBuffer.ts#L14">davinci-eight/core/VertexBuffer.ts:14</a></li>
-						</ul>
-					</aside>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external">
 					<a name="contextmanager" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> context<wbr>Manager</h3>
@@ -190,7 +183,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#contextmanager">contextManager</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableContextConsumer.ts#L50">davinci-eight/core/ShareableContextConsumer.ts:50</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/fddc899/src/davinci-eight/core/ShareableContextConsumer.ts#L50">davinci-eight/core/ShareableContextConsumer.ts:50</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -202,40 +195,8 @@
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-external">
+			<section class="tsd-panel-group tsd-member-group tsd-is-inherited tsd-is-external">
 				<h2>Accessors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
-					<a name="data" class="tsd-anchor"></a>
-					<h3>data</h3>
-					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> data<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Float32Array</span></li>
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> data<span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Float32Array</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/VertexBuffer.ts#L32">davinci-eight/core/VertexBuffer.ts:32</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Float32Array</span></h4>
-						</li>
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/VertexBuffer.ts#L35">davinci-eight/core/VertexBuffer.ts:35</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>data: <span class="tsd-signature-type">Float32Array</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="gl" class="tsd-anchor"></a>
 					<h3>gl</h3>
@@ -248,7 +209,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#gl">gl</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableContextConsumer.ts#L166">davinci-eight/core/ShareableContextConsumer.ts:166</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/fddc899/src/davinci-eight/core/ShareableContextConsumer.ts#L166">davinci-eight/core/ShareableContextConsumer.ts:166</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -262,7 +223,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#gl">gl</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableContextConsumer.ts#L174">davinci-eight/core/ShareableContextConsumer.ts:174</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/fddc899/src/davinci-eight/core/ShareableContextConsumer.ts#L174">davinci-eight/core/ShareableContextConsumer.ts:174</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -274,38 +235,6 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>unused: <span class="tsd-signature-type">WebGLRenderingContext</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
-					<a name="usage" class="tsd-anchor"></a>
-					<h3>usage</h3>
-					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> usage<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../enums/usage.html" class="tsd-signature-type">Usage</a></li>
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> usage<span class="tsd-signature-symbol">(</span>usage<span class="tsd-signature-symbol">: </span><a href="../enums/usage.html" class="tsd-signature-type">Usage</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/VertexBuffer.ts#L40">davinci-eight/core/VertexBuffer.ts:40</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="../enums/usage.html" class="tsd-signature-type">Usage</a></h4>
-						</li>
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/VertexBuffer.ts#L43">davinci-eight/core/VertexBuffer.ts:43</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>usage: <a href="../enums/usage.html" class="tsd-signature-type">Usage</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -327,7 +256,7 @@
 								<p>Implementation of <a href="../interfaces/contextconsumer.html">ContextConsumer</a>.<a href="../interfaces/contextconsumer.html#addref">addRef</a></p>
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#addref">addRef</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableBase.ts#L121">davinci-eight/core/ShareableBase.ts:121</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/fddc899/src/davinci-eight/core/ShareableBase.ts#L121">davinci-eight/core/ShareableBase.ts:121</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -352,35 +281,9 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/VertexBuffer.ts#L102">davinci-eight/core/VertexBuffer.ts:102</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/fddc899/src/davinci-eight/core/VertexBuffer.ts#L76">davinci-eight/core/VertexBuffer.ts:76</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="bufferdata" class="tsd-anchor"></a>
-					<h3>buffer<wbr>Data</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">buffer<wbr>Data<span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Float32Array</span>, usage<span class="tsd-signature-symbol">?: </span><a href="../enums/usage.html" class="tsd-signature-type">Usage</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/VertexBuffer.ts#L49">davinci-eight/core/VertexBuffer.ts:49</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> data: <span class="tsd-signature-type">Float32Array</span></h5>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> usage: <a href="../enums/usage.html" class="tsd-signature-type">Usage</a></h5>
-								</li>
-							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -396,7 +299,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#cleanup">cleanUp</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableContextConsumer.ts#L121">davinci-eight/core/ShareableContextConsumer.ts:121</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/fddc899/src/davinci-eight/core/ShareableContextConsumer.ts#L121">davinci-eight/core/ShareableContextConsumer.ts:121</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -415,7 +318,7 @@
 								<p>Implementation of <a href="../interfaces/contextconsumer.html">ContextConsumer</a>.<a href="../interfaces/contextconsumer.html#contextfree">contextFree</a></p>
 								<p>Overrides <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#contextfree">contextFree</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/VertexBuffer.ts#L68">davinci-eight/core/VertexBuffer.ts:68</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/fddc899/src/davinci-eight/core/VertexBuffer.ts#L40">davinci-eight/core/VertexBuffer.ts:40</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -434,7 +337,7 @@
 								<p>Implementation of <a href="../interfaces/contextconsumer.html">ContextConsumer</a>.<a href="../interfaces/contextconsumer.html#contextgain">contextGain</a></p>
 								<p>Overrides <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#contextgain">contextGain</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/VertexBuffer.ts#L85">davinci-eight/core/VertexBuffer.ts:85</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/fddc899/src/davinci-eight/core/VertexBuffer.ts#L57">davinci-eight/core/VertexBuffer.ts:57</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -453,7 +356,7 @@
 								<p>Implementation of <a href="../interfaces/contextconsumer.html">ContextConsumer</a>.<a href="../interfaces/contextconsumer.html#contextlost">contextLost</a></p>
 								<p>Overrides <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#contextlost">contextLost</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/VertexBuffer.ts#L97">davinci-eight/core/VertexBuffer.ts:97</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/fddc899/src/davinci-eight/core/VertexBuffer.ts#L71">davinci-eight/core/VertexBuffer.ts:71</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -471,7 +374,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#destructor">destructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/VertexBuffer.ts#L24">davinci-eight/core/VertexBuffer.ts:24</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/fddc899/src/davinci-eight/core/VertexBuffer.ts#L21">davinci-eight/core/VertexBuffer.ts:21</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -495,7 +398,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#getloggingname">getLoggingName</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableBase.ts#L130">davinci-eight/core/ShareableBase.ts:130</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/fddc899/src/davinci-eight/core/ShareableBase.ts#L130">davinci-eight/core/ShareableBase.ts:130</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -518,7 +421,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#iszombie">isZombie</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableBase.ts#L110">davinci-eight/core/ShareableBase.ts:110</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/fddc899/src/davinci-eight/core/ShareableBase.ts#L110">davinci-eight/core/ShareableBase.ts:110</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -543,7 +446,7 @@
 								<p>Implementation of <a href="../interfaces/contextconsumer.html">ContextConsumer</a>.<a href="../interfaces/contextconsumer.html#release">release</a></p>
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#release">release</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableBase.ts#L163">davinci-eight/core/ShareableBase.ts:163</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/fddc899/src/davinci-eight/core/ShareableBase.ts#L163">davinci-eight/core/ShareableBase.ts:163</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -569,7 +472,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#setloggingname">setLoggingName</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableBase.ts#L148">davinci-eight/core/ShareableBase.ts:148</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/fddc899/src/davinci-eight/core/ShareableBase.ts#L148">davinci-eight/core/ShareableBase.ts:148</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -607,7 +510,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#subscribe">subscribe</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableContextConsumer.ts#L86">davinci-eight/core/ShareableContextConsumer.ts:86</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/fddc899/src/davinci-eight/core/ShareableContextConsumer.ts#L86">davinci-eight/core/ShareableContextConsumer.ts:86</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -644,7 +547,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#synchup">synchUp</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableContextConsumer.ts#L111">davinci-eight/core/ShareableContextConsumer.ts:111</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/fddc899/src/davinci-eight/core/ShareableContextConsumer.ts#L111">davinci-eight/core/ShareableContextConsumer.ts:111</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -661,7 +564,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/VertexBuffer.ts#L109">davinci-eight/core/VertexBuffer.ts:109</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/fddc899/src/davinci-eight/core/VertexBuffer.ts#L83">davinci-eight/core/VertexBuffer.ts:83</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -680,7 +583,7 @@
 								<p>Implementation of <a href="../interfaces/enginesubscriber.html">EngineSubscriber</a>.<a href="../interfaces/enginesubscriber.html#unsubscribe">unsubscribe</a></p>
 								<p>Inherited from <a href="shareablecontextconsumer.html">ShareableContextConsumer</a>.<a href="shareablecontextconsumer.html#unsubscribe">unsubscribe</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/980ed41/src/davinci-eight/core/ShareableContextConsumer.ts#L143">davinci-eight/core/ShareableContextConsumer.ts:143</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/fddc899/src/davinci-eight/core/ShareableContextConsumer.ts#L143">davinci-eight/core/ShareableContextConsumer.ts:143</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -693,6 +596,23 @@
 									</p>
 								</div>
 							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="upload" class="tsd-anchor"></a>
+					<h3>upload</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">upload<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/fddc899/src/davinci-eight/core/VertexBuffer.ts#L29">davinci-eight/core/VertexBuffer.ts:29</a></li>
+								</ul>
+							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -717,29 +637,17 @@
 							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
 								<a href="vertexbuffer.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
-								<a href="vertexbuffer.html#_usage" class="tsd-kind-icon">_usage</a>
-							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external">
 								<a href="vertexbuffer.html#contextmanager" class="tsd-kind-icon">context<wbr>Manager</a>
 							</li>
-							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
-								<a href="vertexbuffer.html#data" class="tsd-kind-icon">data</a>
-							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="vertexbuffer.html#gl" class="tsd-kind-icon">gl</a>
-							</li>
-							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
-								<a href="vertexbuffer.html#usage" class="tsd-kind-icon">usage</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="vertexbuffer.html#addref" class="tsd-kind-icon">add<wbr>Ref</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="vertexbuffer.html#bind" class="tsd-kind-icon">bind</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="vertexbuffer.html#bufferdata" class="tsd-kind-icon">buffer<wbr>Data</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="vertexbuffer.html#cleanup" class="tsd-kind-icon">clean<wbr>Up</a>
@@ -779,6 +687,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="vertexbuffer.html#unsubscribe" class="tsd-kind-icon">unsubscribe</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="vertexbuffer.html#upload" class="tsd-kind-icon">upload</a>
 							</li>
 						</ul>
 					</li>
