@@ -234,7 +234,7 @@ System.config({
     "npm:cliui@3.2.0": {
       "string-width": "npm:string-width@1.0.2",
       "strip-ansi": "npm:strip-ansi@3.0.1",
-      "wrap-ansi": "npm:wrap-ansi@2.0.0"
+      "wrap-ansi": "npm:wrap-ansi@2.1.0"
     },
     "npm:constants-browserify@0.0.1": {
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
@@ -662,8 +662,9 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2",
       "tty": "github:jspm/nodelibs-tty@0.1.0"
     },
-    "npm:wrap-ansi@2.0.0": {
-      "string-width": "npm:string-width@1.0.2"
+    "npm:wrap-ansi@2.1.0": {
+      "string-width": "npm:string-width@1.0.2",
+      "strip-ansi": "npm:strip-ansi@3.0.1"
     },
     "npm:ws@1.0.1": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
