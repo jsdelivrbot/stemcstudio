@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.10.8",
+  "version": "2.10.9",
   "private": true,
   "description": "Expressing Ideas through Computational Modeling",
   "engines": {

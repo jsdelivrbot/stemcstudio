@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Trail | EIGHT 4.0.9</title>
+	<title>Trail | EIGHT 4.0.10</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">EIGHT 4.0.9</a>
+					<a href="../index.html" class="title">EIGHT 4.0.10</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -112,6 +112,7 @@ trail.release()
 				<h3>Implements</h3>
 				<ul class="tsd-hierarchy">
 					<li><a href="../interfaces/shareable.html" class="tsd-signature-type">Shareable</a></li>
+					<li><a href="../interfaces/renderable.html" class="tsd-signature-type">Renderable</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -140,6 +141,7 @@ trail.release()
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="trail.html#getloggingname" class="tsd-kind-icon">get<wbr>Logging<wbr>Name</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="trail.html#iszombie" class="tsd-kind-icon">is<wbr>Zombie</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="trail.html#release" class="tsd-kind-icon">release</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="trail.html#render" class="tsd-kind-icon">render</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external"><a href="trail.html#setloggingname" class="tsd-kind-icon">set<wbr>Logging<wbr>Name</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="trail.html#snapshot" class="tsd-kind-icon">snapshot</a></li>
 							</ul>
@@ -160,19 +162,18 @@ trail.release()
 							<aside class="tsd-sources">
 								<p>Overrides <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/05cbbc8/src/davinci-eight/visual/Trail.ts#L82">davinci-eight/visual/Trail.ts:82</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/170cccf/src/davinci-eight/visual/Trail.ts#L80">davinci-eight/visual/Trail.ts:80</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Constructs a trail for the specified mesh.</p>
+								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>mesh: <a href="mesh.html" class="tsd-signature-type">Mesh</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/geometry.html" class="tsd-signature-type">Geometry</a><span class="tsd-signature-symbol">, </span><a href="../interfaces/material.html" class="tsd-signature-type">Material</a><span class="tsd-signature-symbol">&gt;</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-										</div>
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="trail.html" class="tsd-signature-type">Trail</a></h4>
@@ -188,7 +189,7 @@ trail.release()
 					<div class="tsd-signature tsd-kind-icon">config<span class="tsd-signature-symbol">:</span> <a href="trailconfig.html" class="tsd-signature-type">TrailConfig</a><span class="tsd-signature-symbol"> =&nbsp;new TrailConfig()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/05cbbc8/src/davinci-eight/visual/Trail.ts#L75">davinci-eight/visual/Trail.ts:75</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/170cccf/src/davinci-eight/visual/Trail.ts#L76">davinci-eight/visual/Trail.ts:76</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -209,10 +210,10 @@ trail.release()
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/shareable.html">Shareable</a>.<a href="../interfaces/shareable.html#addref">addRef</a></p>
+								<p>Implementation of <a href="../interfaces/renderable.html">Renderable</a>.<a href="../interfaces/renderable.html#addref">addRef</a></p>
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#addref">addRef</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/05cbbc8/src/davinci-eight/core/ShareableBase.ts#L121">davinci-eight/core/ShareableBase.ts:121</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/170cccf/src/davinci-eight/core/ShareableBase.ts#L121">davinci-eight/core/ShareableBase.ts:121</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -238,17 +239,13 @@ trail.release()
 							<aside class="tsd-sources">
 								<p>Overrides <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#destructor">destructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/05cbbc8/src/davinci-eight/visual/Trail.ts#L98">davinci-eight/visual/Trail.ts:98</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/170cccf/src/davinci-eight/visual/Trail.ts#L96">davinci-eight/visual/Trail.ts:96</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>levelUp: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -265,17 +262,20 @@ trail.release()
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/05cbbc8/src/davinci-eight/visual/Trail.ts#L143">davinci-eight/visual/Trail.ts:143</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/170cccf/src/davinci-eight/visual/Trail.ts#L105">davinci-eight/visual/Trail.ts:105</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
+								<dl class="tsd-comment-tags">
+									<dt>deprecated</dt>
+									<dd><p>. Use the render method instead.</p>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>ambients: <a href="../interfaces/facet.html" class="tsd-signature-type">Facet</a><span class="tsd-signature-symbol">[]</span></h5>
-									<div class="tsd-comment tsd-typography">
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -292,7 +292,7 @@ trail.release()
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/05cbbc8/src/davinci-eight/visual/Trail.ts#L107">davinci-eight/visual/Trail.ts:107</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/170cccf/src/davinci-eight/visual/Trail.ts#L113">davinci-eight/visual/Trail.ts:113</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -315,7 +315,7 @@ trail.release()
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#getloggingname">getLoggingName</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/05cbbc8/src/davinci-eight/core/ShareableBase.ts#L130">davinci-eight/core/ShareableBase.ts:130</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/170cccf/src/davinci-eight/core/ShareableBase.ts#L130">davinci-eight/core/ShareableBase.ts:130</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -338,7 +338,7 @@ trail.release()
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#iszombie">isZombie</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/05cbbc8/src/davinci-eight/core/ShareableBase.ts#L110">davinci-eight/core/ShareableBase.ts:110</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/170cccf/src/davinci-eight/core/ShareableBase.ts#L110">davinci-eight/core/ShareableBase.ts:110</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -360,10 +360,10 @@ trail.release()
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/shareable.html">Shareable</a>.<a href="../interfaces/shareable.html#release">release</a></p>
+								<p>Implementation of <a href="../interfaces/renderable.html">Renderable</a>.<a href="../interfaces/renderable.html#release">release</a></p>
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#release">release</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/05cbbc8/src/davinci-eight/core/ShareableBase.ts#L163">davinci-eight/core/ShareableBase.ts:163</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/170cccf/src/davinci-eight/core/ShareableBase.ts#L163">davinci-eight/core/ShareableBase.ts:163</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -378,6 +378,35 @@ trail.release()
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="render" class="tsd-anchor"></a>
+					<h3>render</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">render<span class="tsd-signature-symbol">(</span>ambients<span class="tsd-signature-symbol">: </span><a href="../interfaces/facet.html" class="tsd-signature-type">Facet</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/renderable.html">Renderable</a>.<a href="../interfaces/renderable.html#render">render</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/170cccf/src/davinci-eight/visual/Trail.ts#L121">davinci-eight/visual/Trail.ts:121</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Renders the mesh in its historical positions and attitudes.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>ambients: <a href="../interfaces/facet.html" class="tsd-signature-type">Facet</a><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external">
 					<a name="setloggingname" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> set<wbr>Logging<wbr>Name</h3>
@@ -389,7 +418,7 @@ trail.release()
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#setloggingname">setLoggingName</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/05cbbc8/src/davinci-eight/core/ShareableBase.ts#L148">davinci-eight/core/ShareableBase.ts:148</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/170cccf/src/davinci-eight/core/ShareableBase.ts#L148">davinci-eight/core/ShareableBase.ts:148</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -426,7 +455,7 @@ trail.release()
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/05cbbc8/src/davinci-eight/visual/Trail.ts#L115">davinci-eight/visual/Trail.ts:115</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/170cccf/src/davinci-eight/visual/Trail.ts#L166">davinci-eight/visual/Trail.ts:166</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -481,6 +510,9 @@ trail.release()
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="trail.html#release" class="tsd-kind-icon">release</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="trail.html#render" class="tsd-kind-icon">render</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external">
 								<a href="trail.html#setloggingname" class="tsd-kind-icon">set<wbr>Logging<wbr>Name</a>
