@@ -201,9 +201,9 @@ export default class ExamplesController extends AbstractPageController {
                 category: 'Physics'
             },
             {
-                gistId: '72b8c2b765792d2fe100',
-                title: "Projectile Motion",
-                description: "Physics demonstrations and explorations require accessible solutions without having to re-invent graphical components. This example shows how to model projectile motion by composing high-level components in the EIGHT library.",
+                gistId: '72b08dfb371ea6bed2c71e851e9aa570',
+                title: "Projectile Motion with Units of Measure",
+                description: "Physics demonstrations and explorations require accessible solutions without having to re-invent graphical components. This example shows how to model projectile motion by composing high-level components in the EIGHT and UNITS libraries.",
                 imageSrc: '/img/examples/projectile-motion.png',
                 imageAlt: '',
                 category: 'Physics'
