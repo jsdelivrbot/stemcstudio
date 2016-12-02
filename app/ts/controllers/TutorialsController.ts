@@ -41,7 +41,7 @@ export default class TutorialsController extends AbstractPageController {
             .then(function (response) {
                 if (Array.isArray(response.data)) {
                     $scope.tutorials = response.data.map(function (tutorial) {
-                        tutorial.gistUrl = $sce.trustAsResourceUrl(`/#/gists/${tutorial.gistId}`);
+                        tutorial.gistUrl = $sce.trustAsResourceUrl(`/#/gists/${tutorial.gistId}?output=embed`);
                         tutorial.showEmbedded = false;
                         return tutorial;
                     });

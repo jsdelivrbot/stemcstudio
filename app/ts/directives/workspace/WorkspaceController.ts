@@ -27,6 +27,7 @@ import {GITHUB_AUTH_MANAGER} from '../../services/gham/IGitHubAuthManager';
 import IOptionManager from '../../services/options/IOptionManager';
 import isHtmlFilePath from '../../utils/isHtmlFilePath';
 import isMarkdownFilePath from '../../utils/isMarkdownFilePath';
+// import isString from '../../utils/isString';
 import OutputFileHandler from './OutputFileHandler';
 import ModalDialog from '../../services/modalService/ModalDialog';
 import NavigationService from '../../modules/navigation/NavigationService';
@@ -84,7 +85,7 @@ const SCRIPT_TARGET_ES5 = 'es5';
 const SCRIPT_TARGET = SCRIPT_TARGET_ES5;
 
 /**
- * @class WorkspaceController
+ *
  */
 export default class WorkspaceController implements WorkspaceMixin {
     /**
@@ -154,9 +155,7 @@ export default class WorkspaceController implements WorkspaceMixin {
     private watches: (() => any)[] = [];
 
     /**
-     * @class WorkspaceController
-     * @constructor
-     * @param $scope {WorkspaceScope}
+     *
      */
     constructor(
         private $scope: WorkspaceScope,
@@ -409,12 +408,37 @@ export default class WorkspaceController implements WorkspaceMixin {
      */
     $onInit(): void {
 
-        // console.lg("WorkspaceController.$onInit");
+        // console.log("WorkspaceController.$onInit called");
+        // console.log(`$stateParams=${JSON.stringify(this.$stateParams)}`);
 
         const owner: string = this.$stateParams['owner'];
         const repo: string = this.$stateParams['repo'];
         const gistId: string = this.$stateParams['gistId'];
         const roomId: string = this.$stateParams['roomId'];
+
+        /**
+         * Determine whether goHome should be enabled (based upon the output query parameter).
+         */
+        /*
+        function isGoHomeEnabled(output: string): boolean {
+            if (isString(output)) {
+                if (output === 'embed') {
+                    return false;
+                }
+                else {
+                    console.warn(`Unknown 'output' query parameter: ${output}`);
+                    return false;
+                }
+            }
+            else {
+                return true;
+            }
+        }
+
+        this.$scope.isGoHomeEnabled = isGoHomeEnabled(this.$stateParams['output']);
+        console.log(`isGoHomeEnabled => ${this.$scope.isGoHomeEnabled}`);
+        */
+
         // TODO: It's a bit wierd that this looks like it has a side effect on the workspace.
         // If we had multiple workspace then the workspace would be a parameter.
 

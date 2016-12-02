@@ -25,6 +25,12 @@ interface WorkspaceScope extends DoodleScope {
     doodleLoaded: boolean;
 
     /**
+     * Determines whether we can, for example, click the brand icon to go home.
+     * When application is embedded, we prevent such navigation.
+     */
+    isGoHomeEnabled: boolean;
+
+    /**
      * HTML files determine the applications that can be viewed.
      */
     htmlFileCount(): number;

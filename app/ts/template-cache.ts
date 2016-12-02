@@ -361,6 +361,9 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "				<a role='button' class='navbar-brand' ng-click='goHome()'>\n" +
     "					<brand />\n" +
     "				</a>\n" +
+    "				<!--div ng-hide='isGoHomeEnabled' class='navbar-brand'>\n" +
+    "					<brand/>\n" +
+    "				</div-->\n" +
     "			</div>\n" +
     "			<div class='ignore-collapse ignore-navbar-collapse'>\n" +
     "				<ul class='nav navbar-nav'>\n" +
@@ -1254,7 +1257,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "    </nav>\n" +
     "    <div class='container md-docs-container'>\n" +
     "        <div class='row'>\n" +
-    "            <!-- EIGHT Library -->\n" +
+    "            <!-- EIGHT -->\n" +
     "            <div class='md-docs-section'>\n" +
     "                <h1 class='page-header'>EIGHT</h1>\n" +
     "                <div ng-repeat='tutorial in tutorials | filter : {category : \"EIGHT\"}'>\n" +
@@ -1262,18 +1265,9 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                        <a href='/#/gists/{{tutorial.gistId}}'>{{tutorial.title}}</a>\n" +
     "                    </div>\n" +
     "                    <div>{{tutorial.description}}</div>\n" +
-    "                    <div>\n" +
-    "                        <button ng-hide='tutorial.showEmbedded' class='btn btn-primary' ng-click='toggleShowEmbedded(tutorial.gistId)'>Show Embedded</button>\n" +
-    "                        <button ng-show='tutorial.showEmbedded' class='btn btn-secondary' ng-click='toggleShowEmbedded(tutorial.gistId)'>Close</button>\n" +
-    "                    </div>\n" +
-    "                    <div ng-hide='tutorial.showEmbedded'>\n" +
-    "                        <a href='/#/gists/{{tutorial.gistId}}'>\n" +
-    "                            <img src='{{tutorial.imageSrc}}' alt='{{tutorial.imageAlt}}' height='300' , width='300'><img>\n" +
-    "                        </a>\n" +
-    "                    </div>\n" +
-    "                    <div ng-if='tutorial.showEmbedded'>\n" +
-    "                        <iframe src='{{tutorial.gistUrl}}' width='100%' height='600' frameborder='0' marginwidth='0' marginheight='0' allowfullscreen></iframe>\n" +
-    "                    </div>\n" +
+    "                    <a href='/#/gists/{{tutorial.gistId}}'>\n" +
+    "                        <img src='{{tutorial.imageSrc}}' alt='{{tutorial.imageAlt}}' height='300' , width='300'><img>\n" +
+    "                    </a>\n" +
     "                </div>\n" +
     "            </div>\n" +
     "        </div>\n" +

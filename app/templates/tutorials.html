@@ -11,7 +11,7 @@
     </nav>
     <div class='container md-docs-container'>
         <div class='row'>
-            <!-- EIGHT Library -->
+            <!-- EIGHT -->
             <div class='md-docs-section'>
                 <h1 class='page-header'>EIGHT</h1>
                 <div ng-repeat='tutorial in tutorials | filter : {category : "EIGHT"}'>
@@ -19,18 +19,9 @@
                         <a href='/#/gists/{{tutorial.gistId}}'>{{tutorial.title}}</a>
                     </div>
                     <div>{{tutorial.description}}</div>
-                    <div>
-                        <button ng-hide='tutorial.showEmbedded' class='btn btn-primary' ng-click='toggleShowEmbedded(tutorial.gistId)'>Show Embedded</button>
-                        <button ng-show='tutorial.showEmbedded' class='btn btn-secondary' ng-click='toggleShowEmbedded(tutorial.gistId)'>Close</button>
-                    </div>
-                    <div ng-hide='tutorial.showEmbedded'>
-                        <a href='/#/gists/{{tutorial.gistId}}'>
-                            <img src='{{tutorial.imageSrc}}' alt='{{tutorial.imageAlt}}' height='300' , width='300'><img>
-                        </a>
-                    </div>
-                    <div ng-if='tutorial.showEmbedded'>
-                        <iframe src='{{tutorial.gistUrl}}' width='100%' height='600' frameborder='0' marginwidth='0' marginheight='0' allowfullscreen></iframe>
-                    </div>
+                    <a href='/#/gists/{{tutorial.gistId}}'>
+                        <img src='{{tutorial.imageSrc}}' alt='{{tutorial.imageAlt}}' height='300' , width='300'><img>
+                    </a>
                 </div>
             </div>
         </div>

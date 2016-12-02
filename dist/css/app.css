@@ -8457,6 +8457,25 @@ article.thumbnail header h1 a {
 
 }
 */
+/**
+ * How this works: The container element is given a zero height and a percentage bottom padding.
+ * The percentage bottom padding is a percentage of the container width, so that gives it a fixed aspect ratio.
+ * But in order to get the iframe to show up inside the zero-height container,
+ * make the container relative and the iframe absolute, positioned inside the div.
+ */
+.stemcstudio-tutorial-container {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%;
+}
+.stemcstudio-iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
 #viewbar {
   display: flex;
   flex-grow: 0;

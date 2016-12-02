@@ -1,3 +1,3 @@
-export default function(value: string): boolean {
-    return typeof value === 'string';
+export default function (arg: any): arg is string {
+    return typeof arg === 'string';
 }
