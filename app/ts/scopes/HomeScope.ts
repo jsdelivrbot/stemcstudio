@@ -5,7 +5,14 @@ import ThumbnailsScope from './ThumbnailsScope';
 
 export interface HomeScope extends BodyScope, SearchScope, ThumbnailsScope {
     FEATURE_DASHBOARD_ENABLED: boolean;
+    /**
+     * Determines whether an Examples button or link is available.
+     */
     FEATURE_EXAMPLES_ENABLED: boolean;
+    /**
+     * Determines whether a Tutorials button or link is available.
+     */
+    FEATURE_TUTORIALS_ENABLED: boolean;
 
     onGoogleSignIn(googleUser): void;
 
@@ -23,6 +30,11 @@ export interface HomeScope extends BodyScope, SearchScope, ThumbnailsScope {
      * Navigate to the Examples page.
      */
     goExamples(): void;
+
+    /**
+     * Navigate to the Tutorials page.
+     */
+    goTutorials(): void;
 
     /**
      *

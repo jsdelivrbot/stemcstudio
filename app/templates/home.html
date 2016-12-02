@@ -12,6 +12,7 @@
                     <brand />
                 </div>
                 <button type="button" class="btn btn-primary navbar-btn" ng-click='clickCodeNow()'>Code Now!</button>
+                <button ng-if='FEATURE_TUTORIALS_ENABLED' type="button" class="btn btn-secondary navbar-btn" ng-click='goTutorials()'>Tutorials</button>
                 <button ng-if='FEATURE_EXAMPLES_ENABLED' type="button" class="btn btn-secondary navbar-btn" ng-click='goExamples()'>Examples</button>
                 <button ng-if='FEATURE_DASHBOARD_ENABLED' type="button" class="btn btn-secondary navbar-btn" ng-click='goDashboard()' ng-show='isGitHubSignedIn()'>Dashboard</button>
                 <a role="button" class="btn btn-secondary navbar-btn" ng-href='https://github.com/stemcstudio/stemcstudio/wiki' target='_blank'>User Guide</a>
@@ -94,6 +95,7 @@
                         <p>Suggestions:</p>
                         <ul>
                             <li>Code Now!</li>
+                            <li>Learn using the Tutorials.</li>
                             <li>Take a look at some of the Examples.</li>
                             <li>Search the STEMC arXiv.</li>
                         </ul>

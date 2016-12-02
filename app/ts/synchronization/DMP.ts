@@ -357,7 +357,7 @@ export default class DMP {
             // Walk the front path one step.
             for (let k1 = -d + k1start; k1 <= d - k1end; k1 += 2) {
                 let k1_offset = v_offset + k1;
-                let x1;
+                let x1: number;
                 if (k1 === -d || (k1 !== d && v1[k1_offset - 1] < v1[k1_offset + 1])) {
                     x1 = v1[k1_offset + 1];
                 } else {
@@ -392,7 +392,7 @@ export default class DMP {
             // Walk the reverse path one step.
             for (let k2 = -d + k2start; k2 <= d - k2end; k2 += 2) {
                 let k2_offset = v_offset + k2;
-                let x2;
+                let x2: number;
                 if (k2 === -d || (k2 !== d && v2[k2_offset - 1] < v2[k2_offset + 1])) {
                     x2 = v2[k2_offset + 1];
                 } else {
@@ -563,7 +563,7 @@ export default class DMP {
         var doubleEnd = this.Diff_DualThreshold * 2 < max_d;
         var v_map1: {}[] = [];
         var v_map2 = [];
-        var v1 = {};
+        var v1: { [index: number]: number } = {};
         var v2 = {};
         v1[1] = 0;
         v2[1] = 0;
@@ -757,7 +757,7 @@ export default class DMP {
         var x = text1.length;
         var y = text2.length;
         /** @type {number?} */
-        var last_op = null;
+        var last_op: number = null;
         for (var d = v_map.length - 2; d >= 0; d--) {
             while (1) {
                 if (v_map[d].hasOwnProperty ? v_map[d].hasOwnProperty((x - 1) + ',' + y) :
@@ -962,7 +962,10 @@ export default class DMP {
             var seed = longtext.substring(i, i + Math.floor(longtext.length / 4));
             var j = -1;
             var best_common = "";
-            var best_longtext_a, best_longtext_b, best_shorttext_a, best_shorttext_b;
+            let best_longtext_a: string;
+            let best_longtext_b: string;
+            let best_shorttext_a: string;
+            let best_shorttext_b: string;
             while ((j = shorttext.indexOf(seed, j + 1)) !== -1) {
                 const prefixLength = self.diff_commonPrefix(longtext.substring(i), shorttext.substring(j));
                 const suffixLength = self.diff_commonSuffix(longtext.substring(0, i), shorttext.substring(0, j));
@@ -2334,13 +2337,12 @@ export default class DMP {
     /**
      * Take a list of patches and return a textual representation.
      *
-     * @method patch_toText
-     * @param {Patch[]} patches Array of patch objects.
-     * @return {string} Text representation of patches.
+     * @param patches Array of patch objects.
+     * @return Text representation of patches.
      */
     patch_toText(patches: Patch[]): string {
         var text = [];
-        for (var x = 0; x < patches.length; x++) {
+        for (let x = 0; x < patches.length; x++) {
             text[x] = patches[x];
         }
         return text.join('');

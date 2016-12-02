@@ -733,9 +733,9 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
 
     /**
      * Identifies whether you want to show invisible characters or not.
+     * This method requires the session to be in effect.
      *
-     * @method setShowInvisibles
-     * @param {Boolean} showInvisibles Set to `true` to show invisibles
+     * @param showInvisibles Set to `true` to show invisibles
      */
     setShowInvisibles(showInvisibles: boolean): void {
         if (this.textLayer.setShowInvisibles(showInvisibles)) {
@@ -754,6 +754,9 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         return this.textLayer.getDisplayIndentGuides();
     }
 
+    /**
+     * This method requires the session to be in effect.
+     */
     setDisplayIndentGuides(displayIndentGuides: boolean): void {
         if (this.textLayer.setDisplayIndentGuides(displayIndentGuides)) {
             this.$loop.schedule(CHANGE_TEXT);

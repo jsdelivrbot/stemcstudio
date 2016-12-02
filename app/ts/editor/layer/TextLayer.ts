@@ -32,6 +32,9 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
     private $pollSizeChangesTimer: number;
     private showInvisibles = false;
     private displayIndentGuides = true;
+    /**
+     *
+     */
     private $tabStrings: string[] = [];
     private $textToken = { "text": true, "rparen": true, "lparen": true };
     private tabSize: number;
@@ -145,9 +148,7 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
     }
 
     /**
-     * @method setSession
-     * @param session {EditSession}
-     * @return {void}
+     * @param session
      */
     public setSession(session: EditSession): void {
         this.session = session;
@@ -158,6 +159,9 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
         return this.showInvisibles;
     }
 
+    /**
+     * This method required a session to be in effect.
+     */
     public setShowInvisibles(showInvisibles: boolean) {
         if (this.showInvisibles === showInvisibles) {
             return false;
@@ -173,6 +177,9 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
         return this.displayIndentGuides;
     }
 
+    /**
+     * This method requires a session to be in effect.
+     */
     public setDisplayIndentGuides(displayIndentGuides: boolean): boolean {
         if (this.displayIndentGuides === displayIndentGuides) {
             return false;
@@ -209,48 +216,58 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
         this.$computeTabString();
     }
 
-    //    this.onChangeTabSize =
+    /**
+     * Recomputes the tabSize, and $tabStrings properties.
+     * This method required a session to be defined.
+     */
     private $computeTabString(): void {
-        const tabSize = this.session.getTabSize();
-        this.tabSize = tabSize;
-        const tabStr = this.$tabStrings = ["0"];
-        for (var i = 1; i < tabSize + 1; i++) {
-            if (this.showInvisibles) {
-                tabStr.push("<span class='ace_invisible ace_invisible_tab'>"
-                    + TAB_CHAR
-                    + stringRepeat("\xa0", i - 1)
-                    + "</span>");
-            } else {
-                tabStr.push(stringRepeat("\xa0", i));
+        if (this.session) {
+            const tabSize = this.session.getTabSize();
+            this.tabSize = tabSize;
+            const tabStr = this.$tabStrings = ["0"];
+            for (let i = 1; i < tabSize + 1; i++) {
+                if (this.showInvisibles) {
+                    tabStr.push("<span class='ace_invisible ace_invisible_tab'>"
+                        + TAB_CHAR
+                        + stringRepeat("\xa0", i - 1)
+                        + "</span>");
+                }
+                else {
+                    tabStr.push(stringRepeat("\xa0", i));
+                }
+            }
+            if (this.displayIndentGuides) {
+                this.$indentGuideRe = /\s\S| \t|\t |\s$/;
+                let className = "ace_indent-guide";
+                let spaceClass = "";
+                let tabClass = "";
+                let spaceContent: string;
+                let tabContent: string;
+                if (this.showInvisibles) {
+                    className += " ace_invisible";
+                    spaceClass = " ace_invisible_space";
+                    tabClass = " ace_invisible_tab";
+                    spaceContent = stringRepeat(SPACE_CHAR, this.tabSize);
+                    tabContent = TAB_CHAR + stringRepeat("\xa0", this.tabSize - 1);
+                }
+                else {
+                    spaceContent = stringRepeat("\xa0", this.tabSize);
+                    tabContent = spaceContent;
+                }
+
+                this.$tabStrings[" "] = "<span class='" + className + spaceClass + "'>" + spaceContent + "</span>";
+                this.$tabStrings["\t"] = "<span class='" + className + tabClass + "'>" + tabContent + "</span>";
             }
         }
-        if (this.displayIndentGuides) {
-            this.$indentGuideRe = /\s\S| \t|\t |\s$/;
-            var className = "ace_indent-guide";
-            var spaceClass = "";
-            var tabClass = "";
-            if (this.showInvisibles) {
-                className += " ace_invisible";
-                spaceClass = " ace_invisible_space";
-                tabClass = " ace_invisible_tab";
-                var spaceContent = stringRepeat(SPACE_CHAR, this.tabSize);
-                var tabContent = TAB_CHAR + stringRepeat("\xa0", this.tabSize - 1);
-            } else {
-                var spaceContent = stringRepeat("\xa0", this.tabSize);
-                var tabContent = spaceContent;
-            }
-
-            this.$tabStrings[" "] = "<span class='" + className + spaceClass + "'>" + spaceContent + "</span>";
-            this.$tabStrings["\t"] = "<span class='" + className + tabClass + "'>" + tabContent + "</span>";
+        else {
+            // Ignoring, but could equally well throw an exception.
         }
     }
 
     /**
-     * @method updateLines
-     * @param config {TextConfig}
-     * @param firstRow {number}
-     * @param lastRow {number}
-     * @return {void}
+     * @param config
+     * @param firstRow
+     * @param lastRow
      */
     public updateLines(config: TextConfig, firstRow: number, lastRow: number): void {
         // Due to wrap line changes there can be new lines if e.g.
@@ -267,8 +284,8 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
         var lineElements = this.element.childNodes;
         var lineElementsIdx = 0;
 
-        for (var row = config.firstRow; row < first; row++) {
-            var foldLine = this.session.getFoldLine(row);
+        for (let row = config.firstRow; row < first; row++) {
+            const foldLine = this.session.getFoldLine(row);
             if (foldLine) {
                 if (foldLine.containsRow(first)) {
                     first = foldLine.start.row;
@@ -280,9 +297,9 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
             lineElementsIdx++;
         }
 
-        var row = first;
-        var foldLine = this.session.getNextFoldLine(row);
-        var foldStart = foldLine ? foldLine.start.row : Infinity;
+        let row = first;
+        let foldLine = this.session.getNextFoldLine(row);
+        let foldStart = foldLine ? foldLine.start.row : Infinity;
 
         while (true) {
             if (row > foldStart) {
@@ -293,9 +310,9 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
             if (row > last)
                 break;
 
-            var lineElement: HTMLElement = <HTMLElement>lineElements[lineElementsIdx++];
+            const lineElement: HTMLElement = <HTMLElement>lineElements[lineElementsIdx++];
             if (lineElement) {
-                var html = [];
+                const html: string[] = [];
                 this.$renderLine(
                     html, row, !this.$useLineGroups(), row === foldStart ? foldLine : false
                 );
@@ -307,9 +324,7 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
     }
 
     /**
-     * @method scrollLines
-     * @param config {TextConfig}
-     * @return {void}
+     * @param config
      */
     public scrollLines(config: TextConfig): void {
         var oldConfig = this.config;
@@ -489,7 +504,7 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
 
     // FIXME; How can max be optional if it is always used?
     private renderIndentGuide(stringBuilder: (number | string)[], value: string, max?: number): string {
-        var cols = value.search(this.$indentGuideRe);
+        let cols = value.search(this.$indentGuideRe);
         if (cols <= 0 || cols >= max)
             return value;
         if (value[0] === " ") {

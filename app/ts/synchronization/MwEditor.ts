@@ -12,7 +12,11 @@ interface MwEditor {
      * @returns An array of booolean flags indicating whether each patch could be applied.
      */
     patch(patches: Patch[]): boolean[];
-    onSentDiff(diffs: Diff[]);
+
+    /**
+     * 
+     */
+    onSentDiff(diffs: Diff[]): void;
 
     /**
      * A reference to this editor is no longer being used.

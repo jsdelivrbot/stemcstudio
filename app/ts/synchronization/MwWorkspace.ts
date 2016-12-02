@@ -12,7 +12,7 @@ interface MwWorkspace {
     /**
      * 
      */
-    deleteEditor(editor: MwEditor);
+    deleteEditor(editor: MwEditor): void;
 }
 
 export default MwWorkspace;

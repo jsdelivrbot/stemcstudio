@@ -272,6 +272,12 @@ function copies(target) {
         },
         {
             expand: true,
+            cwd: "app/data",
+            src: ["**"],
+            dest: prepend(target, 'data')
+        },
+        {
+            expand: true,
             cwd: "app/img",
             src: ["**"],
             dest: prepend(target, 'img')

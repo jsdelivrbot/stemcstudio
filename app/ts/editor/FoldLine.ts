@@ -35,7 +35,8 @@ export default class FoldLine {
         this.start = this.range.start;
         this.end = this.range.end;
 
-        this.folds.forEach(fold => { fold.setFoldLine(this); }); }
+        this.folds.forEach(fold => { fold.setFoldLine(this); });
+    }
 
     /**
      * Note: This doesn't update wrapData!
@@ -46,7 +47,7 @@ export default class FoldLine {
     shiftRow(shift: number): void {
         this.start.row += shift;
         this.end.row += shift;
-        this.folds.forEach(function(fold) {
+        this.folds.forEach(function (fold) {
             fold.start.row += shift;
             fold.end.row += shift;
         });
@@ -63,7 +64,7 @@ export default class FoldLine {
                 throw new Error("Can't add a fold to this FoldLine as it has no connection");
             }
             this.folds.push(fold);
-            this.folds.sort(function(a, b) {
+            this.folds.sort(function (a, b) {
                 return -a.range.compareEnd(b.start.row, b.start.column);
             });
             if (this.range.compareEnd(fold.start.row, fold.start.column) > 0) {
@@ -100,13 +101,11 @@ export default class FoldLine {
     }
 
     /**
-     * @method walk
      * @param callback
-     * @param endRow {number}
-     * @param endColumn {number}
-     * @return {void}
+     * @param endRow
+     * @param endColumn
      */
-    walk(callback: (placeholder, row, column, end, isNewRow?) => any, endRow: number, endColumn: number): void {
+    walk(callback: (placeholder: string, row: number, column: number, end: number, isNewRow?: boolean) => any, endRow: number, endColumn: number): void {
         let lastEnd = 0;
         let folds = this.folds;
         let isNewRow = true;
@@ -231,7 +230,7 @@ export default class FoldLine {
     toString() {
         var ret = [this.range.toString() + ": ["];
 
-        this.folds.forEach(function(fold) {
+        this.folds.forEach(function (fold) {
             ret.push("  " + fold.toString());
         });
         ret.push("]");

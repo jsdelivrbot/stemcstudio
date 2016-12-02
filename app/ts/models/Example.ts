@@ -4,7 +4,7 @@ interface Example {
     description: string;
     imageSrc: string;
     imageAlt: string;
-    category: string;
+    category: 'Chemistry' | 'CompSci' | 'Graphics' | 'Mathematics' | 'Physics';
 }
 
 export default Example;

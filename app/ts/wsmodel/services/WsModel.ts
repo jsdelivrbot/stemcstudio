@@ -471,7 +471,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         });
     }
 
-    setModuleKind(moduleKind: string, callback: (err) => any): void {
+    setModuleKind(moduleKind: string, callback: (err: any) => any): void {
         checkCallback(callback);
         if (this.languageServiceProxy) {
             this.inFlight++;
@@ -485,7 +485,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         }
     }
 
-    setScriptTarget(scriptTarget: string, callback: (err) => any): void {
+    setScriptTarget(scriptTarget: string, callback: (err: any) => any): void {
         checkCallback(callback);
         if (this.languageServiceProxy) {
             this.inFlight++;
@@ -499,7 +499,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         }
     }
 
-    setTrace(trace: boolean, callback: (err) => any): void {
+    setTrace(trace: boolean, callback: (err: any) => any): void {
         checkCallback(callback);
         // We won't bother tracking inFlight for tracing.
         if (this.languageServiceProxy) {
@@ -650,7 +650,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     /**
      * Ends monitoring the Document at the specified path for changes and removes the script from the LanguageService.
      */
-    beginDocumentMonitoring(path: string, callback: (err) => any): void {
+    beginDocumentMonitoring(path: string, callback: (err: any) => any): void {
         checkPath(path);
         checkCallback(callback);
 
@@ -694,7 +694,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     /**
      * Ends monitoring the Document at the specified path for changes and removes the script from the LanguageService.
      */
-    endDocumentMonitoring(path: string, callback: (err) => any) {
+    endDocumentMonitoring(path: string, callback: (err: any) => any) {
         checkPath(path);
         checkCallback(callback);
 
@@ -753,7 +753,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     /**
      * 
      */
-    ensureScript(path: string, content: string, callback: (err) => any): void {
+    ensureScript(path: string, content: string, callback: (err: any) => any): void {
         checkPath(path);
         checkCallback(callback);
         if (this.languageServiceProxy) {
@@ -773,7 +773,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     /**
      * 
      */
-    removeScript(path: string, callback: (err) => any) {
+    removeScript(path: string, callback: (err: any) => any) {
         checkPath(path);
         checkCallback(callback);
 
@@ -792,7 +792,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     /**
      * 
      */
-    public semanticDiagnostics(callback: (err) => any): void {
+    public semanticDiagnostics(callback: (err: any) => any): void {
         const tsPaths = this.getFileSessionPaths().filter(isTypeScript);
         const tsLength = tsPaths.length;
         let tsRemaining = tsLength;

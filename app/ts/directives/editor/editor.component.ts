@@ -150,7 +150,7 @@ function factory(
                         session.setUndoManager(undoManager);
                         session.setTabSize(2);
                         session.setUseSoftTabs(true);
-                        // Setting displayIndentGuides requires an editSession.
+                        editor.setShowInvisibles(settings.showInvisibles);
                         editor.setDisplayIndentGuides(settings.displayIndentGuides);
                         editor.commands.addCommand({
                             name: 'Find',

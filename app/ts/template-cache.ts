@@ -729,6 +729,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                    <brand />\n" +
     "                </div>\n" +
     "                <button type=\"button\" class=\"btn btn-primary navbar-btn\" ng-click='clickCodeNow()'>Code Now!</button>\n" +
+    "                <button ng-if='FEATURE_TUTORIALS_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goTutorials()'>Tutorials</button>\n" +
     "                <button ng-if='FEATURE_EXAMPLES_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goExamples()'>Examples</button>\n" +
     "                <button ng-if='FEATURE_DASHBOARD_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goDashboard()' ng-show='isGitHubSignedIn()'>Dashboard</button>\n" +
     "                <a role=\"button\" class=\"btn btn-secondary navbar-btn\" ng-href='https://github.com/stemcstudio/stemcstudio/wiki' target='_blank'>User Guide</a>\n" +
@@ -811,6 +812,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                        <p>Suggestions:</p>\n" +
     "                        <ul>\n" +
     "                            <li>Code Now!</li>\n" +
+    "                            <li>Learn using the Tutorials.</li>\n" +
     "                            <li>Take a look at some of the Examples.</li>\n" +
     "                            <li>Search the STEMC arXiv.</li>\n" +
     "                        </ul>\n" +
@@ -1235,6 +1237,49 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "        </div>\n" +
     "    </fieldset>\n" +
     "</form>"
+  );
+
+
+  $templateCache.put('tutorials.html',
+    "<div id='tutorials-page'>\n" +
+    "    <nav id='toolbar' class='navbar navbar-inverse'>\n" +
+    "        <div class='navbar-header'>\n" +
+    "            <a role='button' class='navbar-brand' ng-click='goHome()'>\n" +
+    "                <brand />\n" +
+    "            </a>\n" +
+    "        </div>\n" +
+    "        <div class='navbar-header'>\n" +
+    "            <span class='md-logo-text-math navbar-brand'>Tutorials</span>\n" +
+    "        </div>\n" +
+    "    </nav>\n" +
+    "    <div class='container md-docs-container'>\n" +
+    "        <div class='row'>\n" +
+    "            <!-- EIGHT Library -->\n" +
+    "            <div class='md-docs-section'>\n" +
+    "                <h1 class='page-header'>EIGHT</h1>\n" +
+    "                <div ng-repeat='tutorial in tutorials | filter : {category : \"EIGHT\"}'>\n" +
+    "                    <div class='lead'>\n" +
+    "                        <a href='/#/gists/{{tutorial.gistId}}'>{{tutorial.title}}</a>\n" +
+    "                    </div>\n" +
+    "                    <div>{{tutorial.description}}</div>\n" +
+    "                    <div>\n" +
+    "                        <button ng-hide='tutorial.showEmbedded' class='btn btn-primary' ng-click='toggleShowEmbedded(tutorial.gistId)'>Show Embedded</button>\n" +
+    "                        <button ng-show='tutorial.showEmbedded' class='btn btn-secondary' ng-click='toggleShowEmbedded(tutorial.gistId)'>Close</button>\n" +
+    "                    </div>\n" +
+    "                    <div ng-hide='tutorial.showEmbedded'>\n" +
+    "                        <a href='/#/gists/{{tutorial.gistId}}'>\n" +
+    "                            <img src='{{tutorial.imageSrc}}' alt='{{tutorial.imageAlt}}' height='300' , width='300'><img>\n" +
+    "                        </a>\n" +
+    "                    </div>\n" +
+    "                    <div ng-if='tutorial.showEmbedded'>\n" +
+    "                        <iframe src='{{tutorial.gistUrl}}' width='100%' height='600' frameborder='0' marginwidth='0' marginheight='0' allowfullscreen></iframe>\n" +
+    "                    </div>\n" +
+    "                </div>\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "    </div>\n" +
+    "\n" +
+    "</div>"
   );
 
 }]);

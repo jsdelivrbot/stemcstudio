@@ -64,6 +64,11 @@ export const STATE_ROOM = 'room';
 /**
  * 
  */
+export const STATE_TUTORIALS = 'tutorials';
+
+/**
+ * 
+ */
 export default class NavigationService {
     public static $inject: string[] = ['$state', 'ga'];
     constructor(private $state: angular.ui.IStateService, private ga: UniversalAnalytics.ga) {
@@ -116,6 +121,10 @@ export default class NavigationService {
 
     public gotoRoom(roomId: string) {
         return this.navigateTo(STATE_ROOM, { roomId });
+    }
+
+    public gotoTutorials(label?: string, value?: number) {
+        return this.navigateTo(STATE_TUTORIALS, void 0, void 0, label, value);
     }
 
     private navigateTo(to: string, params?: {}, options?: angular.ui.IStateOptions, label?: string, value?: number): angular.IPromise<any> {

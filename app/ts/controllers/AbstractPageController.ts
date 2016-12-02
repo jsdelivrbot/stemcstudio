@@ -6,19 +6,15 @@ import BodyScope from '../scopes/BodyScope';
 /**
  * This class is intended to serve as an abstract base, not as a concrete controller.
  * It's main purpose is to DRY (Don't Repeat Yourself) the derived classes.
- *
- * @class AbstractPageController
  */
 export default class AbstractPageController {
     // We're not a concrete controller so we don't need to declare our dependencies.
     /**
-     * @class AbstractPageController
-     * @constructor
-     * @param $scope {BodyScope}
-     * @param $window {IWindowService}
-     * @param authManager {IGitHubAuthManager}
-     * @param UNIVERSAL_ANALYTICS_TRACKING_ID {string}
-     * @param overflow {string} 'hidden' or 'auto' to control scrollbars on the page.
+     * @param $scope 
+     * @param $window
+     * @param authManager
+     * @param UNIVERSAL_ANALYTICS_TRACKING_ID
+     * @param overflow 'hidden' or 'auto' to control scrollbars on the page.
      */
     constructor(
         $scope: BodyScope,
@@ -30,7 +26,7 @@ export default class AbstractPageController {
         overflow: string) {
 
         // Our main reponsibility is handling the GitHub OAuth callback.
-        authManager.handleGitHubLoginCallback(function(err: Error, token: string) {
+        authManager.handleGitHubLoginCallback(function (err: Error, token: string) {
             if (err) {
                 modalDialog.alert({ title: 'Login', message: err.message });
             }

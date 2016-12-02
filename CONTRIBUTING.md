@@ -25,6 +25,14 @@ npm install -g karma-cli
 5. `typings install`
 6. `jspm install`
 
+### Peer Projects Required...
+
+davinci-eight
+davinci-mathscript
+davinci-units
+
+### Manual Tweak...
+
 Manully tweak typings/browser/ambient/angular-ui-bootstrap/index.d.ts as follows:
 
 ```

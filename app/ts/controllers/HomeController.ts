@@ -26,6 +26,7 @@ export default class HomeController extends AbstractPageController {
         'FEATURE_DASHBOARD_ENABLED',
         'FEATURE_EXAMPLES_ENABLED',
         'FEATURE_GOOGLE_SIGNIN_ENABLED',
+        'FEATURE_TUTORIALS_ENABLED',
         'UNIVERSAL_ANALYTICS_TRACKING_ID'
     ];
 
@@ -44,6 +45,7 @@ export default class HomeController extends AbstractPageController {
         FEATURE_DASHBOARD_ENABLED: boolean,
         FEATURE_EXAMPLES_ENABLED: boolean,
         FEATURE_GOOGLE_SIGNIN_ENABLED: boolean,
+        FEATURE_TUTORIALS_ENABLED: boolean,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string
     ) {
         super($scope, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
@@ -51,6 +53,7 @@ export default class HomeController extends AbstractPageController {
         $scope.FEATURE_DASHBOARD_ENABLED = FEATURE_DASHBOARD_ENABLED;
         $scope.FEATURE_EXAMPLES_ENABLED = FEATURE_EXAMPLES_ENABLED;
         $scope.FEATURE_GOOGLE_SIGNIN_ENABLED = FEATURE_GOOGLE_SIGNIN_ENABLED;
+        $scope.FEATURE_TUTORIALS_ENABLED = FEATURE_TUTORIALS_ENABLED;
 
         $scope.goDashboard = () => {
             if (FEATURE_DASHBOARD_ENABLED) {
@@ -78,9 +81,9 @@ export default class HomeController extends AbstractPageController {
 
         $scope.goExamples = () => {
             if (FEATURE_EXAMPLES_ENABLED) {
-                navigation.gotoExamples().then(function(promiseValue: any) {
-                    // console.lg(`gotoExamples() completed.`);
-                }).catch(function(reason: any) {
+                navigation.gotoExamples().then(function (promiseValue: any) {
+                    // Nothing to do.
+                }).catch(function (reason: any) {
                     console.warn(`gotoExamples() failed: ${JSON.stringify(reason, null, 2)}`);
                 });
             }
@@ -89,18 +92,31 @@ export default class HomeController extends AbstractPageController {
             }
         };
 
+        $scope.goTutorials = () => {
+            if (FEATURE_TUTORIALS_ENABLED) {
+                navigation.gotoTutorials().then(function (promiseValue: any) {
+                    // Nothing to do.
+                }).catch(function (reason: any) {
+                    console.warn(`gotoTutorials() failed: ${JSON.stringify(reason, null, 2)}`);
+                });
+            }
+            else {
+                console.warn(`FEATURE_TUTORIALS_ENABLED => ${FEATURE_TUTORIALS_ENABLED}`);
+            }
+        };
+
         //
         // We keep the search results and Local Storage doodles distinct.
         // This should be useful for 'dragging' search results to Local Storage. 
         //
         $scope.doodleRefs = [];
-        $scope.doodles = function() {
-            return doodles.filter(function() { return true; });
+        $scope.doodles = function () {
+            return doodles.filter(function () { return true; });
         };
 
         $scope.params = { query: '' };
 
-        $scope.doSearch = function() {
+        $scope.doSearch = function () {
             // Save the previous query value so that we can warn the user when no documents are returned.
             $scope.query = $scope.params.query;
             // Reset the other cached values.
@@ -139,12 +155,12 @@ export default class HomeController extends AbstractPageController {
             }
         };
 
-        $scope.doDelete = function(doodle: Doodle) {
+        $scope.doDelete = function (doodle: Doodle) {
             // TODO: DRY. This code also exists in the OpenController.
-            modalDialog.confirm({ title: 'Delete', message: `Are you sure you want to delete '${doodle.description}' from your Local Storage?` }).then(function(promiseValue) {
+            modalDialog.confirm({ title: 'Delete', message: `Are you sure you want to delete '${doodle.description}' from your Local Storage?` }).then(function (promiseValue) {
                 doodles.deleteDoodle(doodle);
                 doodles.updateStorage();
-            }).catch(function(reason) {
+            }).catch(function (reason) {
                 switch (reason) {
                     case 'backdrop click':
                     case 'cancel click':

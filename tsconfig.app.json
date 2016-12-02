@@ -9,7 +9,8 @@
         "removeComments": true,
         "noImplicitAny": false,
         "noLib": true,
-        "outDir": "generated/js"
+        "outDir": "generated/js",
+        "suppressImplicitAnyIndexErrors": true
     },
     "files": [
         "app/ts/app.ts",

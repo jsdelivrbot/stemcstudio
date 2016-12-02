@@ -22,6 +22,7 @@ import ExamplesController from './controllers/ExamplesController';
 import GitHubAccountController from './controllers/GitHubAccountController';
 import GitHubCloudService from './services/cloud/GitHubCloudService';
 import HomeController from './controllers/HomeController';
+import TutorialsController from './controllers/TutorialsController';
 import editor from './directives/editor/editor.component';
 import explorer from './directives/explorer/explorer.component';
 import ExplorerFilesController from './directives/explorer/ExplorerFilesController';
@@ -61,6 +62,7 @@ app.controller('DoodleController', DoodleController);
 app.controller('examples-controller', ExamplesController);
 app.controller('GitHubAccountController', GitHubAccountController);
 app.controller('home-controller', HomeController);
+app.controller('tutorials-controller', TutorialsController);
 
 app.controller('ExplorerFilesController', ExplorerFilesController);
 
@@ -77,9 +79,7 @@ app.controller('RepoDataController', RepoDataController);
 
 app.controller('RepoController', RepoController);
 // FIXME: Don't like this style of import.
-import './controllers/BodyController';
 import './controllers/DownloadController';
-import './controllers/ExamplesController';
 
 app.directive('contextMenu', contextMenu);
 app.directive('editor', editor);

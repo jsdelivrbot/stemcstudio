@@ -56,7 +56,7 @@ export default class EventBus<E, T> {
         }
     }
 
-    private removeEventListener(eventName, callback: (event: E, source: T) => any) {
+    private removeEventListener(eventName: string, callback: (event: E, source: T) => any) {
         const listeners = this._eventRegistry[eventName];
         if (!listeners)
             return;

@@ -101,6 +101,7 @@ import {STATE_NEW} from './modules/navigation/NavigationService';
 import {STATE_OPEN} from './modules/navigation/NavigationService';
 import {STATE_REPO} from './modules/navigation/NavigationService';
 import {STATE_ROOM} from './modules/navigation/NavigationService';
+import {STATE_TUTORIALS} from './modules/navigation/NavigationService';
 
 //
 // Create 'app' module and declare its Angular module dependencies.
@@ -138,7 +139,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version.
-app.constant('version', '2.10.9');
+app.constant('version', '2.10.10');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -149,6 +150,7 @@ app.constant('FEATURE_GIST_ENABLED', true);
 app.constant('FEATURE_I18N_ENABLED', true);
 app.constant('FEATURE_REPO_ENABLED', false);
 app.constant('FEATURE_ROOM_ENABLED', true);
+app.constant('FEATURE_TUTORIALS_ENABLED', false);
 // Features for authentication.
 app.constant('FEATURE_AMAZON_SIGNIN_ENABLED', false);
 app.constant('FEATURE_GITHUB_SIGNIN_ENABLED', true);
@@ -277,6 +279,7 @@ app.config([
     'FEATURE_GOOGLE_SIGNIN_ENABLED',
     'FEATURE_REPO_ENABLED',
     'FEATURE_ROOM_ENABLED',
+    'FEATURE_TUTORIALS_ENABLED',
     function (
         $stateProvider: angular.ui.IStateProvider,
         $translateProvider: ITranslateProvider,
@@ -286,10 +289,9 @@ app.config([
         FEATURE_GIST_ENABLED: boolean,
         FEATURE_GOOGLE_SIGNIN_ENABLED: boolean,
         FEATURE_REPO_ENABLED: boolean,
-        FEATURE_ROOM_ENABLED: boolean
+        FEATURE_ROOM_ENABLED: boolean,
+        FEATURE_TUTORIALS_ENABLED: boolean
     ) {
-        // console.lg(`${app.name}.config(...)`);
-
         // FIXME: Some of the states should be replaced by modal dialogs.
         $stateProvider
             .state(STATE_HOME, {
@@ -377,6 +379,17 @@ app.config([
                 url: '/rooms/{roomId}',
                 templateUrl: 'doodle.html',
                 controller: 'DoodleController'
+            });
+        }
+        else {
+            // TODO: Recognize the url but go to a no droids here.
+        }
+
+        if (FEATURE_TUTORIALS_ENABLED) {
+            $stateProvider.state(STATE_TUTORIALS, {
+                url: '/tutorials',
+                templateUrl: 'tutorials.html',
+                controller: 'tutorials-controller'
             });
         }
         else {

@@ -3,7 +3,9 @@
         "module": "commonjs",
         "sourceMap": false,
         "emitDecoratorMetadata": true,
-        "experimentalDecorators": true
+        "experimentalDecorators": true,
+        "noImplicitAny": false,
+        "suppressImplicitAnyIndexErrors": true
     },
     "files": [
         "./typings-manual/main.d.ts",

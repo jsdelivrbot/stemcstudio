@@ -7,9 +7,6 @@ import ModalDialog from '../services/modalService/ModalDialog';
 
 /**
  * The examples are currently not data-driven and not very pretty!
- * 
- * @class ExamplesController
- * @extends AbstractPageController
  */
 export default class ExamplesController extends AbstractPageController {
 
@@ -32,14 +29,6 @@ export default class ExamplesController extends AbstractPageController {
         super($scope, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
 
         $scope.examples = [
-            {
-                gistId: '',
-                title: "",
-                description: "",
-                imageSrc: '',
-                imageAlt: '',
-                category: ''
-            },
             {
                 gistId: '6774d1e77202db783182',
                 title: "Asteroids",

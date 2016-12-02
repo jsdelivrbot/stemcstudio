@@ -2064,10 +2064,9 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * If `showInvisibles` is set to `true`, invisible characters&mdash;like spaces or new lines&mdash;are show in the editor.
+     * This method requires the session to be in effect.
      *
-     * @method setShowInvisibles
-     * @param showInvisibles {boolean} Specifies whether or not to show invisible characters.
-     * @return {void}
+     * @param showInvisibles Specifies whether or not to show invisible characters.
      */
     setShowInvisibles(showInvisibles: boolean): void {
         this.renderer.setShowInvisibles(showInvisibles);
@@ -2075,18 +2074,15 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Returns `true` if invisible characters are being shown.
-     *
-     * @method getShowInvisibles
-     * @return {boolean}
      */
     getShowInvisibles(): boolean {
         return this.renderer.getShowInvisibles();
     }
 
     /**
-     * @method setDisplayIndentGuides
-     * @param displayIndentGuides {boolean}
-     * @return {void}
+     * This method requires the session to be in effect.
+     *
+     * @param displayIndentGuides
      */
     setDisplayIndentGuides(displayIndentGuides: boolean): void {
         this.renderer.setDisplayIndentGuides(displayIndentGuides);

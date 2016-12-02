@@ -2691,8 +2691,8 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         }
 
         let screenRow = 0;
-        let foldStartRow = null;
-        let fold = null;
+        let foldStartRow: number = null;
+        let fold: Fold = null;
 
         // Clamp the docRow position in case it's inside of a folded block.
         fold = this.getFoldAt(docRow, docColumn, 1);
@@ -2746,7 +2746,8 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         if (foldLine && row >= foldStart) {
             textLine = this.getFoldDisplayLine(foldLine, docRow, docColumn);
             foldStartRow = foldLine.start.row;
-        } else {
+        }
+        else {
             textLine = this.getLine(docRow).substring(0, docColumn);
             foldStartRow = docRow;
         }
