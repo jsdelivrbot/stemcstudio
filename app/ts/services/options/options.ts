@@ -9,7 +9,7 @@ app.factory('options', [
     function (
         $window: angular.IWindowService,
         doodlesKey: string,
-        VENDOR_FOLDER_MARKER
+        VENDOR_FOLDER_MARKER: string
     ) {
 
         const VERSION_ANGULARJS = '1.5.3';
@@ -440,9 +440,10 @@ app.factory('options', [
             },
 
             deleteOption: function (name: string) {
-                var options: IOption[] = [];
+                const options: IOption[] = [];
 
-                var i = 0, found;
+                let i = 0;
+                let found: IOption;
                 while (i < _options.length) {
                     if (_options[i].name === name) {
                         found = _options[i];

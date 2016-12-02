@@ -567,21 +567,21 @@ export default class WorkspaceController implements WorkspaceMixin {
         // No such issue with the README.md
         this.$scope.isMarkdownVisible = true;
 
-        this.watches.push(this.$scope.$watch('isViewVisible', (newVal: boolean, oldVal, unused: angular.IScope) => {
+        this.watches.push(this.$scope.$watch('isViewVisible', (newVal: boolean, oldVal: boolean, unused: angular.IScope) => {
             if (this.wsModel.isZombie()) {
                 return;
             }
             this.wsModel.isViewVisible = this.$scope.isViewVisible;
         }));
 
-        this.watches.push(this.$scope.$watch('isEditMode', (newVal: boolean, oldVal, unused: angular.IScope) => {
+        this.watches.push(this.$scope.$watch('isEditMode', (newVal: boolean, oldVal: boolean, unused: angular.IScope) => {
             if (this.wsModel.isZombie()) {
                 return;
             }
             this.wsModel.isCodeVisible = this.$scope.isEditMode;
         }));
 
-        this.watches.push(this.$scope.$watch('isMarkdownVisible', (isVisible: boolean, oldVal, unused: angular.IScope) => {
+        this.watches.push(this.$scope.$watch('isMarkdownVisible', (isVisible: boolean, oldVal: boolean, unused: angular.IScope) => {
             if (this.wsModel.isZombie()) {
                 return;
             }

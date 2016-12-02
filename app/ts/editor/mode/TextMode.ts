@@ -116,12 +116,13 @@ export default class TextMode implements LanguageMode {
         let comment: (line: string, i: number) => any;
         let uncomment: (line: string, i: number) => any;
         let testRemove: (line: string, i: number) => any;
+        let lineCommentStart: string;
 
         if (!this.lineCommentStart) {
             if (!this.blockComment) {
                 return false;
             }
-            var lineCommentStart = this.blockComment.start;
+            lineCommentStart = this.blockComment.start;
             const lineCommentEnd = this.blockComment.end;
             const regexpStart = new RegExp("^(\\s*)(?:" + escapeRegExp(lineCommentStart) + ")");
             const regexpEnd = new RegExp("(?:" + escapeRegExp(lineCommentEnd) + ")\\s*$");
@@ -136,7 +137,7 @@ export default class TextMode implements LanguageMode {
             };
 
             uncomment = function (line: string, i: number) {
-                var m;
+                let m: RegExpMatchArray;
                 if (m = line.match(regexpEnd))
                     doc.removeInLine(i, line.length - m[0].length, line.length);
                 if (m = line.match(regexpStart))
@@ -146,8 +147,8 @@ export default class TextMode implements LanguageMode {
             testRemove = function (line: string, row: number) {
                 if (regexpStart.test(line))
                     return true;
-                var tokens = session.getTokens(row);
-                for (var i = 0; i < tokens.length; i++) {
+                const tokens = session.getTokens(row);
+                for (let i = 0; i < tokens.length; i++) {
                     if (tokens[i].type === 'comment')
                         return true;
                 }

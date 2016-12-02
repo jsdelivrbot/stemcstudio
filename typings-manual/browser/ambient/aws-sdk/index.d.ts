@@ -36,11 +36,11 @@ declare module AWS {
          */
         apiVersions: string[];
         constructor(config: { [name: string]: any });
-        defineService(serviceIdentifier: string, versions: string[], feautres: Object);
-        makeRequest(operation, params, callback): void;
-        makeUnathenticatedRequest(operation, params, callback): void;
+        defineService(serviceIdentifier: string, versions: string[], features: Object): void;
+        makeRequest(operation: any, params: any, callback: any): void;
+        makeUnathenticatedRequest(operation: any, params: any, callback: any): void;
         setupRequestListeners(): void;
-        waitFor(state, params, callback): void;
+        waitFor(state: any, params: any, callback: any): void;
     }
     class ACM extends Service {
 
@@ -164,15 +164,15 @@ declare module AWS {
             sort?: string;
             start?: number;
             stats?: string;
-        }, callback: (err: any, data) => any): Request;
+        }, callback: (err: any, data: any) => any): Request;
         /**
          * Retrieves autocomplete suggestions for a partial query string.
          */
-        suggest(params: {}, callback: (err: any, data) => any): Request;
+        suggest(params: {}, callback: (err: any, data: any) => any): Request;
         /**
          * Posts a batch of documents to a search domain for indexing.
          */
-        uploadDocuments(params: {}, callback: (err: any, data) => any): Request;
+        uploadDocuments(params: {}, callback: (err: any, data: any) => any): Request;
     }
     class DynamoDB extends Service {
         endpoint: Endpoint;
@@ -180,15 +180,15 @@ declare module AWS {
             apiVersion?: string;
         });
         // Control Plan
-        createTable(params: CreateTableParams, callback: (err: any, data) => any): Request;
+        createTable(params: CreateTableParams, callback: (err: any, data: any) => any): Request;
         deleteTable(params: { TableName: string }, callback: (err: any, data: any) => any): Request;
         describeTable(params: DescribeTableParams, callback: (err: any, data: { Table: Table }) => any): Request;
-        listTables(params: ListTablesParams, callback: (err, data: { TableNames: string[] }) => any): Request;
+        listTables(params: ListTablesParams, callback: (err: any, data: { TableNames: string[] }) => any): Request;
         // Data Plane
-        putItem(params: PutItemParams, callback: (err, data: any) => any): Request;
-        batchWriteItem(params: {}, callback): Request;
+        putItem(params: PutItemParams, callback: (err: any, data: any) => any): Request;
+        batchWriteItem(params: {}, callback: (err: any, data: any) => any): Request;
         // Reading data
-        batchGetItem(params: {}, callback): Request;
+        batchGetItem(params: {}, callback: (err: any, data: any) => any): Request;
         query(params: QueryParams, callback: (err: any, data: QueryResult) => any): Request;
         // Updating data
         // Deleting Data

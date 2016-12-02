@@ -36,7 +36,7 @@ export default class JsonMode extends TextMode {
         return this.$outdent.checkOutdent(line, input);
     }
 
-    autoOutdent(state: string, session: EditSession, row): number {
+    autoOutdent(state: string, session: EditSession, row: number): number {
         return this.$outdent.autoOutdent(session, row);
     }
 
@@ -50,7 +50,7 @@ export default class JsonMode extends TextMode {
 
         const worker = new WorkerClient(this.workerUrl);
 
-        worker.on('annotations', function(event: { data: Annotation[] }) {
+        worker.on('annotations', function (event: { data: Annotation[] }) {
             const annotations: Annotation[] = event.data;
             if (annotations.length > 0) {
                 session.setAnnotations(annotations);
@@ -61,7 +61,7 @@ export default class JsonMode extends TextMode {
             session._emit("annotations", { data: annotations });
         });
 
-        worker.on("terminate", function() {
+        worker.on("terminate", function () {
             worker.detachFromDocument();
             session.clearAnnotations();
         });
@@ -69,7 +69,7 @@ export default class JsonMode extends TextMode {
         // FIXME: Must be able to inject the module name.
         const moduleName = 'ace-workers.js';
         try {
-            worker.init(this.scriptImports, moduleName, 'JsonWorker', function(err: any) {
+            worker.init(this.scriptImports, moduleName, 'JsonWorker', function (err: any) {
                 if (!err) {
                     worker.attachToDocument(session.getDocument());
                     callback(void 0, worker);

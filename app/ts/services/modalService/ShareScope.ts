@@ -2,7 +2,7 @@ import ShareOptions from './ShareOptions';
 
 interface ShareScope {
     options: ShareOptions;
-    close();
+    close(): void;
 }
 
 export default ShareScope;

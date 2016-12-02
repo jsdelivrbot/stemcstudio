@@ -7,9 +7,9 @@ function toInt(val: string): number {
  */
 export default class Iso8601 {
     parse(str: string): Date {
-        let year;
-        let month;
-        let day;
+        let year: number;
+        let month: number;
+        let day: number;
         // Default time to midnight.
         let hours = 0;
         let minutes = 0;

@@ -2,8 +2,8 @@ import ConfirmOptions from './ConfirmOptions';
 
 interface ConfirmScope {
     options: ConfirmOptions;
-    ok();
-    cancel();
+    ok(): void;
+    cancel(): void;
 }
 
 export default ConfirmScope;

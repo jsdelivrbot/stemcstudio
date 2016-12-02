@@ -38,8 +38,8 @@ import GitHubUser from './GitHubUser';
  * @class GitHubService
  */
 interface GitHubService {
-    deleteFile(owner: string, repo: string, path: string, message: string, sha: string, done: (err: any, response) => any);
-    deleteRepo(owner: string, repo: string, done: (err: any, response) => any);
+    deleteFile(owner: string, repo: string, path: string, message: string, sha: string, done: (err: any, response: any) => any): void;
+    deleteRepo(owner: string, repo: string, done: (err: any, response: any) => any): void;
 
     /**
      *
@@ -59,15 +59,15 @@ interface GitHubService {
     /**
      * 
      */
-    getRepoContents(owner: string, repo: string, done: (err: any, contents: RepoElement[]) => any);
+    getRepoContents(owner: string, repo: string, done: (err: any, contents: RepoElement[]) => any): void;
     getUser(): ng.IHttpPromise<GitHubUser>;
-    getUserGists(user: string, done: (err: any, response) => any);
-    getUserRepos(done: (err: any, repos: Repo[]) => any);
+    getUserGists(user: string, done: (err: any, response: any) => any): void;
+    getUserRepos(done: (err: any, repos: Repo[]) => any): void;
 
     getGist(gistId: string): ng.IHttpPromise<Gist>;
     createGist(data: GistData): ng.IHttpPromise<Gist>;
     updateGist(gistId: string, data: GistData): ng.IHttpPromise<Gist>;
-    deleteGist(gistId: string, done: (err: any, response) => any);
+    deleteGist(gistId: string, done: (err: any, response: any) => any): void;
     getGistComments(gistId: string): ng.IHttpPromise<GistComment[]>;
 
     /**

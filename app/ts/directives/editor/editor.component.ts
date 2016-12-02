@@ -95,7 +95,7 @@ function factory(
         editor.setFontSize(settings.fontSize);
         editor.setShowPrintMargin(settings.showPrintMargin);
 
-        const changeAnnotationHandler = function (data, editor: Editor) {
+        const changeAnnotationHandler = function (data: any, editor: Editor) {
             // Asynchronously trigger Angular digest loop so that files in explorer are updated.
             $scope.$applyAsync(function () {
                 // Nothing to see here.
@@ -171,7 +171,7 @@ function factory(
                         editor.commands.addCommands([{
                             name: "showKeyboardShortcuts",
                             bindKey: { win: "Ctrl-Alt-H", mac: "Command-Alt-H" },
-                            exec: function (editor: Editor, line) {
+                            exec: function (editor: Editor, line: any) {
                                 showKeyboardShortcuts(editor);
                             }
                         }]);

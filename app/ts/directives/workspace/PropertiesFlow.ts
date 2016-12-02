@@ -22,7 +22,7 @@ export default class PropertiesFlow {
     ) {
         // Do nothing.
     }
-    execute(callback: (err) => any): void {
+    execute(callback: (err: any) => any): void {
         const flow = this.flowService.createFlow<PropertiesFacts>("Properties");
 
         flow.rule("Settings", {},

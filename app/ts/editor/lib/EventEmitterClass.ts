@@ -216,7 +216,7 @@ export default class EventEmitterClass<E, T> implements EventBus<E, T> {
     }
 
     // Discourage usage.
-    private removeEventListener(eventName, callback: (event: E, source: T) => any, capturing?: boolean) {
+    private removeEventListener(eventName: string, callback: (event: E, source: T) => any, capturing?: boolean) {
         this._eventRegistry = this._eventRegistry || {};
 
         const listeners = this._eventRegistry[eventName];

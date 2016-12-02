@@ -106,7 +106,7 @@ export default class CssCompletions {
         if (typeof style[i] !== 'string')
           continue;
 
-        var name = i.replace(/[A-Z]/g, function(x) {
+        var name = i.replace(/[A-Z]/g, function (x) {
           return '-' + x.toLowerCase();
         });
 
@@ -142,7 +142,7 @@ export default class CssCompletions {
   }
   getPropertyCompletions(state: string, session: EditSession, pos: Position, prefix: string) {
     var properties = Object.keys(propertyMap);
-    return properties.map(function(property) {
+    return properties.map(function (property) {
       return {
         caption: property,
         snippet: property + ': $0',
@@ -153,16 +153,16 @@ export default class CssCompletions {
   }
 
   getPropertyValueCompletions(state: string, session: EditSession, pos: Position, prefix: string) {
-    var line = session.getLine(pos.row).substr(0, pos.column);
-    var property = (/([\w\-]+):[^:]*$/.exec(line) || {})[1];
+    const line = session.getLine(pos.row).substr(0, pos.column);
+    const property = (/([\w\-]+):[^:]*$/.exec(line) || {})[1];
 
     if (!property)
       return [];
-    var values = [];
+    let values: string[] = [];
     if (property in propertyMap && typeof propertyMap[property] === "object") {
       values = Object.keys(propertyMap[property]);
     }
-    return values.map(function(value) {
+    return values.map(function (value) {
       return {
         caption: value,
         snippet: value,

@@ -8,12 +8,11 @@ export default class ConfirmController {
 
         $scope.options = options;
 
-        $scope.ok = function() {
-            const result = null;
-            $uibModalInstance.close(result);
+        $scope.ok = function () {
+            $uibModalInstance.close(null);
         };
 
-        $scope.cancel = function() {
+        $scope.cancel = function () {
             const reason = 'cancel click';
             $uibModalInstance.dismiss(reason);
         };

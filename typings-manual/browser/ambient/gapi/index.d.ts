@@ -116,13 +116,13 @@ declare module gapi {
              * Returns true if the user is signed in.
              */
             isSignedIn(): boolean;
-            signIn(options): any;
+            signIn(options: { scope?: string }): any;
             grant(options: SigninOptionsBuilder): Promise<any>;
-            grantOfflineAccess(scopes): any;
+            grantOfflineAccess(options: { scope?: string; redirect_url?: string }): any;
             /**
              * Revokes all of the scopes that the user granted.
              */
-            disconnect();
+            disconnect(): void;
         }
         /**
          * GoogleAuth is a singleton class that provides methods to allow the user to sign in with
@@ -143,7 +143,7 @@ declare module gapi {
                  * @method listen
                  * @param listener {(direction)=>any} direction is true when user signs in, false when user signs out.
                  */
-                listen(listener: (direction: boolean) => any)
+                listen(listener: (direction: boolean) => any): void;
             }
             /**
              * 
@@ -154,8 +154,11 @@ declare module gapi {
              */
             signOut(): Promise<any>;
             then(onInit: () => any, onFailure: (reason: any) => any): Promise<any>;
-            disconnect();
-            grantOfflineAccess(options): Promise<any>;
+            /**
+             * Revokes all of the scopes that the use granted.
+             */
+            disconnect(): void;
+            grantOfflineAccess(options: { scope?: string; redirect_uri?: string }): Promise<any>;
             /**
              * @method attachClickHandler
              * @param container {string | HTMLDivElement}
@@ -163,7 +166,7 @@ declare module gapi {
              * @param onSuccess Handles successful sign-ins.
              * @param onFailure Handles sign-in failures.
              */
-            attachClickHandler(container: string | HTMLDivElement, options, onsuccess: (googleUser: auth2.GoogleUser) => any, onfailure: (error: any) => any)
+            attachClickHandler(container: string | HTMLDivElement, options: { app_package_name?: string; fetch_basic_profile?: boolean; prompt?: string; scope?: string }, onsuccess: (googleUser: auth2.GoogleUser) => any, onfailure: (error: any) => any): void;
         }
 
         /**
@@ -213,7 +216,7 @@ declare module gapi {
     /**
      * https://developers.google.com/identity/sign-in/web/people
      */
-    export function load(thing: string, callback: () => any);
+    export function load(thing: string, callback: () => any): void;
 }
 /*
 gapi.load('auth2', function() {

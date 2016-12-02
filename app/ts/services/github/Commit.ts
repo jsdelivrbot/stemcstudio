@@ -20,7 +20,7 @@ interface Commit {
     parents: {
         sha: string;
         url: string;
-        html_url;
+        html_url: string;
     }[];
 }
 

@@ -160,7 +160,8 @@ app.factory('doodles', [
             makeCurrent: function (dude: Doodle): void {
                 const doodles: Doodle[] = [];
 
-                var i = 0, found;
+                let i = 0;
+                let found: Doodle;
                 while (i < _doodles.length) {
                     if (_doodles[i] === dude) {
                         found = _doodles[i];
@@ -178,7 +179,8 @@ app.factory('doodles', [
             deleteDoodle: function (dude: Doodle): void {
                 const doodles: Doodle[] = [];
 
-                var i = 0, found;
+                let i = 0;
+                let found: Doodle;
                 while (i < _doodles.length) {
                     if (_doodles[i] === dude) {
                         found = _doodles[i];

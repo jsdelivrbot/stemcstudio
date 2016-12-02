@@ -848,7 +848,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         });
     }
 
-    private diagnosticsForSession(path: string, session: EditSession, callback: (err) => any): void {
+    private diagnosticsForSession(path: string, session: EditSession, callback: (err: any) => any): void {
         checkPath(path);
 
         this.inFlight++;
