@@ -1,8 +1,21 @@
 import EditorPreferencesStorage from '../EditorPreferencesStorage';
 
+/**
+ * 
+ */
 interface Preferences {
-    theme?: string;
+    /**
+     * 
+     */
+    fontSize?: string;
+    /**
+     * 
+     */
     showInvisibles?: boolean;
+    /**
+     * 
+     */
+    theme?: string;
 }
 
 function mixin(obj: Preferences, base: Preferences) {
@@ -17,8 +30,9 @@ function mixin(obj: Preferences, base: Preferences) {
 const PREFERENCES_KEY = 'com.stemcstudio.preferences';
 
 const DEFAULTS: Preferences = {
-    theme: "Eclipse",
-    showInvisibles: false
+    fontSize: '14px',
+    showInvisibles: false,
+    theme: "Eclipse"
 };
 
 export default class PreferencesManagerService implements EditorPreferencesStorage {
@@ -32,11 +46,11 @@ export default class PreferencesManagerService implements EditorPreferencesStora
         mixin(this.cache, DEFAULTS);
     }
 
-    get showInvisibles(): boolean {
-        return this.cache.showInvisibles;
+    get fontSize(): string {
+        return this.cache.fontSize;
     }
-    set showInvisibles(value: boolean) {
-        this.cache.showInvisibles = value;
+    set fontSize(value: string) {
+        this.cache.fontSize = value;
         this.updateStorage();
     }
 
@@ -45,6 +59,14 @@ export default class PreferencesManagerService implements EditorPreferencesStora
     }
     set theme(value: string) {
         this.cache.theme = value;
+        this.updateStorage();
+    }
+
+    get showInvisibles(): boolean {
+        return this.cache.showInvisibles;
+    }
+    set showInvisibles(value: boolean) {
+        this.cache.showInvisibles = value;
         this.updateStorage();
     }
 

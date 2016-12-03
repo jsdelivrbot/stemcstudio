@@ -25,23 +25,29 @@ export default class EditorPreferencesDialogController {
      */
     $onInit(): void {
         // Copy from the model to the scope.
-        this.$scope.theme = this.dialogModel.theme;
+        this.$scope.fontSize = this.dialogModel.fontSize;
         this.$scope.showInvisibles = this.dialogModel.showInvisibles;
+        this.$scope.theme = this.dialogModel.theme;
 
         // If anything changes, apply it immediately so that the user can see the result.
 
-        this.$scope.themeChange = () => {
-            this.editorPreferencesService.setCurrentThemeByName(this.$scope.theme.name);
+        this.$scope.fontSizeChange = () => {
+            this.editorPreferencesService.setFontSize(this.$scope.fontSize);
         };
 
         this.$scope.showInvisiblesChange = () => {
             this.editorPreferencesService.setShowInvisibles(this.$scope.showInvisibles);
         };
 
+        this.$scope.themeChange = () => {
+            this.editorPreferencesService.setCurrentThemeByName(this.$scope.theme.name);
+        };
+
         this.$scope.ok = () => {
             // Copy from the scope to the model.
-            this.dialogModel.theme = this.$scope.theme;
+            this.dialogModel.fontSize = this.$scope.fontSize;
             this.dialogModel.showInvisibles = this.$scope.showInvisibles;
+            this.dialogModel.theme = this.$scope.theme;
             this.$uibModalInstance.close(this.dialogModel);
         };
 
@@ -49,6 +55,14 @@ export default class EditorPreferencesDialogController {
             // Important that this string be consistent with workflow.
             this.$uibModalInstance.dismiss('cancel click');
         };
+
+        // Initialize available themes and fontSizes on scope. 
+
+        this.editorPreferencesService.getFontSizes().then((fontSize) => {
+            this.$scope.fontSizes = fontSize;
+        }).catch((reason) => {
+            // Ignore
+        });
 
         this.editorPreferencesService.getThemes().then((themes) => {
             this.$scope.themes = themes;

@@ -4,7 +4,17 @@ import Theme from '../Theme';
  * Controllers will set this and decide what to do with the response.
  */
 interface EditorPreferencesDialogModel {
+    /**
+     *
+     */
+    fontSize: string;
+    /**
+     * 
+     */
     theme: Theme;
+    /**
+     * 
+     */
     showInvisibles: boolean;
 }
 

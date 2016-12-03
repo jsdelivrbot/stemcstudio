@@ -1,7 +1,26 @@
+/**
+ * 
+ */
 interface EditorPreferencesEvent {
+    /**
+     * 
+     */
+    fontSize: string;
+    /**
+     * 
+     */
     isDark: boolean;
+    /**
+     * 
+     */
     cssClass: string;
+    /**
+     * 
+     */
     href: string;
+    /**
+     * 
+     */
     showInvisibles: boolean;
 }
 

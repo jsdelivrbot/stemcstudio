@@ -4,6 +4,18 @@ import EditorPreferencesEvent from './EditorPreferencesEvent';
 
 interface EditorPreferencesService {
     /**
+     * 
+     */
+    getFontSize(): string;
+    /**
+     * 
+     */
+    setFontSize(fontSize: string): void;
+    /**
+     * Returns the available list of fontSizes. 
+     */
+    getFontSizes(): angular.IPromise<string[]>;
+    /**
      * Returns the available list of themes as identifiers. 
      */
     getThemes(): angular.IPromise<Theme[]>;

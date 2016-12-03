@@ -7,6 +7,7 @@ import {currentTheme} from '../../EditorPreferencesEvent';
 import {EDITOR_PREFERENCES_STORAGE} from '../../../preferences/constants';
 import EditorPreferencesStorage from '../../../preferences/EditorPreferencesStorage';
 
+const fontSizes: string[] = [10, 11, 12, 13, 14, 16, 18, 20, 24].map(function (fontSize) { return `${fontSize}px`; });
 const themeNames: string[] = themes.map(theme => theme.name);
 
 interface EditorPreferencesCallback {
@@ -25,6 +26,7 @@ export default class DefaultEditorPreferencesService implements EditorPreference
         this.ensureCallbacks(eventName).push(callback);
         const theme = this.currentTheme;
         callback({
+            fontSize: this.storage.fontSize,
             cssClass: theme.cssClass,
             href: `/themes/${theme.fileName}`,
             isDark: theme.isDark,
@@ -38,11 +40,43 @@ export default class DefaultEditorPreferencesService implements EditorPreference
             cbs.splice(index, 1);
         }
     }
+
+    /**
+     * 
+     */
+    getFontSize(): string {
+        return this.storage.fontSize;
+    }
+
+    /**
+     * 
+     */
+    setFontSize(fontSize: string): void {
+        this.storage.fontSize = fontSize;
+        this.broadcast();
+    }
+
+    /**
+     * 
+     */
+    getFontSizes(): ng.IPromise<string[]> {
+        const deferred: ng.IDeferred<string[]> = this.$q.defer<string[]>();
+        deferred.resolve(fontSizes);
+        return deferred.promise;
+    }
+
+    /**
+     * 
+     */
     getThemes(): ng.IPromise<Theme[]> {
         const deferred: ng.IDeferred<Theme[]> = this.$q.defer<Theme[]>();
         deferred.resolve(themes);
         return deferred.promise;
     }
+
+    /**
+     * 
+     */
     getThemeNames(): ng.IPromise<string[]> {
         const deferred: ng.IDeferred<string[]> = this.$q.defer<string[]>();
         deferred.resolve(themeNames);
@@ -84,12 +118,16 @@ export default class DefaultEditorPreferencesService implements EditorPreference
         this.broadcast();
     }
 
+    /**
+     * 
+     */
     private broadcast() {
         const theme: Theme = this.currentTheme;
         const cbs = this.ensureCallbacks(currentTheme);
         for (let i = 0; i < cbs.length; i++) {
             const cb = cbs[i];
             cb({
+                fontSize: this.storage.fontSize,
                 cssClass: theme.cssClass,
                 href: `/themes/${theme.fileName}`,
                 isDark: theme.isDark,

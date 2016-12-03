@@ -2,7 +2,17 @@
  *
  */
 interface EditorPreferencesStorage {
+    /**
+     * 
+     */
+    fontSize: string;
+    /**
+     * 
+     */
     theme: string;
+    /**
+     * 
+     */
     showInvisibles: boolean;
 }
 

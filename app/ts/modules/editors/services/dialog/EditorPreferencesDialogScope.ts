@@ -1,6 +1,34 @@
 import Theme from '../../Theme';
 
+/**
+ * 
+ */
 interface EditorPreferencesDialogScope {
+
+    /**
+     * 
+     */
+    fontSize: string;
+
+    /**
+     * 
+     */
+    fontSizeChange(): void;
+
+    /**
+     * 
+     */
+    fontSizes: string[];
+
+    /**
+     * 
+     */
+    showInvisibles: boolean;
+
+    /**
+     * 
+     */
+    showInvisiblesChange(): void;
 
     /**
      * The selected theme.
@@ -16,16 +44,6 @@ interface EditorPreferencesDialogScope {
      * 
      */
     themeChange(): void;
-
-    /**
-     * 
-     */
-    showInvisibles: boolean;
-
-    /**
-     * 
-     */
-    showInvisiblesChange(): void;
 
     ok(): void;
     submit(): void;

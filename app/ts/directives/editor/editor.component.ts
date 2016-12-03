@@ -80,6 +80,7 @@ function factory(
 
         const editorPreferencesEventListener = function (event: EditorPreferencesEvent) {
             setTimeout(function () {
+                editor.setFontSize(event.fontSize);
                 editor.setThemeCss(event.cssClass, event.href);
                 editor.setThemeDark(event.isDark);
                 editor.setShowInvisibles(event.showInvisibles);
@@ -92,7 +93,6 @@ function factory(
         // Don't set session attributes here!
         editor.setThemeDark(true);
         editor.setPadding(4);
-        editor.setFontSize(settings.fontSize);
         editor.setShowPrintMargin(settings.showPrintMargin);
 
         const changeAnnotationHandler = function (data: any, editor: Editor) {
@@ -150,7 +150,7 @@ function factory(
                         session.setUndoManager(undoManager);
                         session.setTabSize(2);
                         session.setUseSoftTabs(true);
-                        editor.setShowInvisibles(settings.showInvisibles);
+                        // editor.setShowInvisibles(settings.showInvisibles);
                         editor.setDisplayIndentGuides(settings.displayIndentGuides);
                         editor.commands.addCommand({
                             name: 'Find',

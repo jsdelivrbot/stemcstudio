@@ -22,16 +22,19 @@ export default class EditorPreferencesController {
     public showEditorPreferences(): void {
         // TODO: Either we extend the responsibilities of the ThemeManager,
         // or we create additional managers for every property!
+        const fontSize = this.editorPreferencesService.getFontSize();
         const theme = this.editorPreferencesService.getCurrentTheme();
         const showInvisibles = this.editorPreferencesService.getShowInvisibles();
 
         const model: EditorPreferencesDialogModel = {
+            fontSize,
             theme,
             showInvisibles
         };
         this.dialog.open(model).then((model) => {
             // Send the new editor preferences for distribution.
             // Given that we already have an immediate change notification, this is duplication?
+            this.editorPreferencesService.setFontSize(model.fontSize);
             this.editorPreferencesService.setCurrentThemeByName(model.theme.name);
             this.editorPreferencesService.setShowInvisibles(model.showInvisibles);
         }).catch((reason) => {
@@ -40,6 +43,7 @@ export default class EditorPreferencesController {
                 case 'escape key press':
                 case 'backdrop click': {
                     // Restore the prior editor preferences.
+                    this.editorPreferencesService.setFontSize(fontSize);
                     this.editorPreferencesService.setCurrentThemeByName(theme.name);
                     this.editorPreferencesService.setShowInvisibles(showInvisibles);
                     break;

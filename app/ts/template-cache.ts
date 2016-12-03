@@ -565,6 +565,9 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "            <label class='text-muted'>Theme:</label>\n" +
     "            <select ng-model='theme' ng-options='theme.name for theme in themes track by theme.name' data-ng-change='themeChange()'></select>\n" +
     "            <br/>\n" +
+    "            <label class='text-muted'>Font Size:</label>\n" +
+    "            <select ng-model='fontSize' ng-options='fontSize for fontSize in fontSizes track by fontSize' data-ng-change='fontSizeChange()'></select>\n" +
+    "            <br/>\n" +
     "            <label class='checkbox-inline text-muted'>\n" +
     "                <input type='checkbox' ng-model='showInvisibles' data-ng-change='showInvisiblesChange()'>Show Invisibles</input>\n" +
     "            </label>\n" +
