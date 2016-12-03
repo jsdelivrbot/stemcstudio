@@ -87,6 +87,7 @@ function factory(
                 editor.setDisplayIndentGuides(event.displayIndentGuides);
                 editor.setShowInvisibles(event.showInvisibles);
                 editor.setShowLineNumbers(event.showLineNumbers);
+                editor.setShowPrintMargin(event.showPrintMargin);
             }, 0);
         };
         // This event listener gets removed in onDestroyScope
@@ -94,9 +95,7 @@ function factory(
 
         // Set properties that pertain to rendering.
         // Don't set session attributes here!
-        // editor.setThemeDark(true);
         editor.setPadding(4);
-        editor.setShowPrintMargin(settings.showPrintMargin);
 
         const changeAnnotationHandler = function (data: any, editor: Editor) {
             // Asynchronously trigger Angular digest loop so that files in explorer are updated.

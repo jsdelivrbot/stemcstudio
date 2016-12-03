@@ -28,6 +28,7 @@ export default class EditorPreferencesController {
         const showFoldWidgets = this.editorPreferencesService.getShowFoldWidgets();
         const showInvisibles = this.editorPreferencesService.getShowInvisibles();
         const showLineNumbers = this.editorPreferencesService.getShowLineNumbers();
+        const showPrintMargin = this.editorPreferencesService.getShowPrintMargin();
 
         const model: EditorPreferencesDialogModel = {
             displayIndentGuides,
@@ -35,7 +36,8 @@ export default class EditorPreferencesController {
             theme,
             showFoldWidgets,
             showInvisibles,
-            showLineNumbers
+            showLineNumbers,
+            showPrintMargin
         };
         this.dialog.open(model).then((model) => {
             // Send the new editor preferences for distribution.
@@ -46,6 +48,7 @@ export default class EditorPreferencesController {
             this.editorPreferencesService.setShowFoldWidgets(model.showFoldWidgets);
             this.editorPreferencesService.setShowInvisibles(model.showInvisibles);
             this.editorPreferencesService.setShowLineNumbers(model.showLineNumbers);
+            this.editorPreferencesService.setShowPrintMargin(model.showPrintMargin);
         }).catch((reason) => {
             switch (reason) {
                 case 'cancel click':
@@ -58,6 +61,7 @@ export default class EditorPreferencesController {
                     this.editorPreferencesService.setShowFoldWidgets(showFoldWidgets);
                     this.editorPreferencesService.setShowInvisibles(showInvisibles);
                     this.editorPreferencesService.setShowLineNumbers(showLineNumbers);
+                    this.editorPreferencesService.setShowPrintMargin(showPrintMargin);
                     break;
                 }
                 default: {

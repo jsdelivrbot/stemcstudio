@@ -30,6 +30,7 @@ export default class EditorPreferencesDialogController {
         this.$scope.showFoldWidgets = this.dialogModel.showFoldWidgets;
         this.$scope.showInvisibles = this.dialogModel.showInvisibles;
         this.$scope.showLineNumbers = this.dialogModel.showLineNumbers;
+        this.$scope.showPrintMargin = this.dialogModel.showPrintMargin;
         this.$scope.theme = this.dialogModel.theme;
 
         // If anything changes, apply it immediately so that the user can see the result.
@@ -54,6 +55,10 @@ export default class EditorPreferencesDialogController {
             this.editorPreferencesService.setShowLineNumbers(this.$scope.showLineNumbers);
         };
 
+        this.$scope.showPrintMarginChange = () => {
+            this.editorPreferencesService.setShowPrintMargin(this.$scope.showPrintMargin);
+        };
+
         this.$scope.themeChange = () => {
             this.editorPreferencesService.setCurrentThemeByName(this.$scope.theme.name);
         };
@@ -65,6 +70,7 @@ export default class EditorPreferencesDialogController {
             this.dialogModel.showFoldWidgets = this.$scope.showFoldWidgets;
             this.dialogModel.showInvisibles = this.$scope.showInvisibles;
             this.dialogModel.showLineNumbers = this.$scope.showLineNumbers;
+            this.dialogModel.showPrintMargin = this.$scope.showPrintMargin;
             this.dialogModel.theme = this.$scope.theme;
             this.$uibModalInstance.close(this.dialogModel);
         };

@@ -13,10 +13,6 @@ interface EditorPreferencesStorage {
     /**
      * 
      */
-    theme: string;
-    /**
-     * 
-     */
     showFoldWidgets: boolean;
     /**
      * 
@@ -26,6 +22,14 @@ interface EditorPreferencesStorage {
      * 
      */
     showLineNumbers: boolean;
+    /**
+     * 
+     */
+    showPrintMargin: boolean;
+    /**
+     * 
+     */
+    theme: string;
 }
 
 export default EditorPreferencesStorage;

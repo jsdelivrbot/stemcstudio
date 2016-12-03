@@ -7,7 +7,7 @@ import {currentTheme} from '../../EditorPreferencesEvent';
 import {EDITOR_PREFERENCES_STORAGE} from '../../../preferences/constants';
 import EditorPreferencesStorage from '../../../preferences/EditorPreferencesStorage';
 
-const fontSizes: string[] = [10, 11, 12, 13, 14, 16, 18, 20, 24].map(function (fontSize) { return `${fontSize}px`; });
+const fontSizes: string[] = [10, 11, 12, 13, 14, 15, 16, 18, 20, 24].map(function (fontSize) { return `${fontSize}px`; });
 const themeNames: string[] = themes.map(theme => theme.name);
 
 interface EditorPreferencesCallback {
@@ -33,7 +33,8 @@ export default class DefaultEditorPreferencesService implements EditorPreference
             isDark: theme.isDark,
             showFoldWidgets: this.storage.showFoldWidgets,
             showInvisibles: this.storage.showInvisibles,
-            showLineNumbers: this.storage.showLineNumbers
+            showLineNumbers: this.storage.showLineNumbers,
+            showPrintMargin: this.storage.showPrintMargin
         });
     }
     removeEventListener(eventName: string, callback: EditorPreferencesCallback) {
@@ -169,6 +170,21 @@ export default class DefaultEditorPreferencesService implements EditorPreference
     /**
      * 
      */
+    getShowPrintMargin(): boolean {
+        return this.storage.showPrintMargin;
+    }
+
+    /**
+     * 
+     */
+    setShowPrintMargin(showPrintMargin: boolean): void {
+        this.storage.showPrintMargin = showPrintMargin;
+        this.broadcast();
+    }
+
+    /**
+     * 
+     */
     private broadcast() {
         const theme: Theme = this.currentTheme;
         const cbs = this.ensureCallbacks(currentTheme);
@@ -182,7 +198,8 @@ export default class DefaultEditorPreferencesService implements EditorPreference
                 isDark: theme.isDark,
                 showFoldWidgets: this.storage.showFoldWidgets,
                 showInvisibles: this.storage.showInvisibles,
-                showLineNumbers: this.storage.showLineNumbers
+                showLineNumbers: this.storage.showLineNumbers,
+                showPrintMargin: this.storage.showPrintMargin
             });
         }
     }

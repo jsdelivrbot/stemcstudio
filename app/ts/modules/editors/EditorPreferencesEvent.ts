@@ -34,6 +34,10 @@ interface EditorPreferencesEvent {
      * 
      */
     showLineNumbers: boolean;
+    /**
+     * 
+     */
+    showPrintMargin: boolean;
 }
 
 export default EditorPreferencesEvent;

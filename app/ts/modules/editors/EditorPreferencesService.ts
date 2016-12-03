@@ -65,6 +65,14 @@ interface EditorPreferencesService {
      */
     setShowLineNumbers(showLineNumbers: boolean): void;
     /**
+     * 
+     */
+    getShowPrintMargin(): boolean;
+    /**
+     * 
+     */
+    setShowPrintMargin(showPrintMargin: boolean): void;
+    /**
      * Adds a listener for changes in the theme.
      */
     addEventListener(eventName: string, callback: (event: EditorPreferencesEvent) => any): void;

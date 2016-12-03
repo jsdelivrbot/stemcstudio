@@ -27,6 +27,10 @@ interface Preferences {
     /**
      * 
      */
+    showPrintMargin?: boolean;
+    /**
+     * 
+     */
     theme?: string;
 }
 
@@ -47,6 +51,7 @@ const DEFAULTS: Preferences = {
     showFoldWidgets: true,
     showInvisibles: false,
     showLineNumbers: true,
+    showPrintMargin: false,
     theme: "Eclipse"
 };
 
@@ -106,6 +111,14 @@ export default class PreferencesManagerService implements EditorPreferencesStora
     }
     set showLineNumbers(value: boolean) {
         this.cache.showLineNumbers = value;
+        this.updateStorage();
+    }
+
+    get showPrintMargin(): boolean {
+        return this.cache.showPrintMargin;
+    }
+    set showPrintMargin(value: boolean) {
+        this.cache.showPrintMargin = value;
         this.updateStorage();
     }
 

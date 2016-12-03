@@ -61,6 +61,16 @@ interface EditorPreferencesDialogScope {
     showLineNumbersChange(): void;
 
     /**
+     * 
+     */
+    showPrintMargin: boolean;
+
+    /**
+     * 
+     */
+    showPrintMarginChange(): void;
+
+    /**
      * The selected theme.
      */
     theme: Theme;

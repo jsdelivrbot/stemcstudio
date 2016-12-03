@@ -583,6 +583,10 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "            <label class='checkbox-inline text-muted'>\n" +
     "                <input type='checkbox' ng-model='displayIndentGuides' data-ng-change='displayIndentGuidesChange()'>Indent Guides</input>\n" +
     "            </label>\n" +
+    "            <br/>\n" +
+    "            <label class='checkbox-inline text-muted'>\n" +
+    "                <input type='checkbox' ng-model='showPrintMargin' data-ng-change='showPrintMarginChange()'>Print Margin</input>\n" +
+    "            </label>\n" +
     "        </div>\n" +
     "        <div class=\"modal-footer\">\n" +
     "            <button class=\"btn btn-secondary\" type=\"button\" data-ng-click=\"cancel()\">Cancel</button>\n" +

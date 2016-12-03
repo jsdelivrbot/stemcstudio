@@ -28,6 +28,10 @@ interface EditorPreferencesDialogModel {
      * 
      */
     showLineNumbers: boolean;
+    /**
+     * 
+     */
+    showPrintMargin: boolean;
 }
 
 export default EditorPreferencesDialogModel;
