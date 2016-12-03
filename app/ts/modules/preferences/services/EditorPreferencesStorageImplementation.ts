@@ -11,7 +11,15 @@ interface Preferences {
     /**
      * 
      */
+    showFoldWidgets?: boolean;
+    /**
+     * 
+     */
     showInvisibles?: boolean;
+    /**
+     * 
+     */
+    showLineNumbers?: boolean;
     /**
      * 
      */
@@ -31,7 +39,9 @@ const PREFERENCES_KEY = 'com.stemcstudio.preferences';
 
 const DEFAULTS: Preferences = {
     fontSize: '14px',
+    showFoldWidgets: true,
     showInvisibles: false,
+    showLineNumbers: true,
     theme: "Eclipse"
 };
 
@@ -62,11 +72,27 @@ export default class PreferencesManagerService implements EditorPreferencesStora
         this.updateStorage();
     }
 
+    get showFoldWidgets(): boolean {
+        return this.cache.showFoldWidgets;
+    }
+    set showFoldWidgets(value: boolean) {
+        this.cache.showFoldWidgets = value;
+        this.updateStorage();
+    }
+
     get showInvisibles(): boolean {
         return this.cache.showInvisibles;
     }
     set showInvisibles(value: boolean) {
         this.cache.showInvisibles = value;
+        this.updateStorage();
+    }
+
+    get showLineNumbers(): boolean {
+        return this.cache.showLineNumbers;
+    }
+    set showLineNumbers(value: boolean) {
+        this.cache.showLineNumbers = value;
         this.updateStorage();
     }
 

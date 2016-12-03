@@ -24,19 +24,25 @@ export default class EditorPreferencesController {
         // or we create additional managers for every property!
         const fontSize = this.editorPreferencesService.getFontSize();
         const theme = this.editorPreferencesService.getCurrentTheme();
+        const showFoldWidgets = this.editorPreferencesService.getShowFoldWidgets();
         const showInvisibles = this.editorPreferencesService.getShowInvisibles();
+        const showLineNumbers = this.editorPreferencesService.getShowLineNumbers();
 
         const model: EditorPreferencesDialogModel = {
             fontSize,
             theme,
-            showInvisibles
+            showFoldWidgets,
+            showInvisibles,
+            showLineNumbers
         };
         this.dialog.open(model).then((model) => {
             // Send the new editor preferences for distribution.
             // Given that we already have an immediate change notification, this is duplication?
             this.editorPreferencesService.setFontSize(model.fontSize);
             this.editorPreferencesService.setCurrentThemeByName(model.theme.name);
+            this.editorPreferencesService.setShowFoldWidgets(model.showFoldWidgets);
             this.editorPreferencesService.setShowInvisibles(model.showInvisibles);
+            this.editorPreferencesService.setShowLineNumbers(model.showLineNumbers);
         }).catch((reason) => {
             switch (reason) {
                 case 'cancel click':
@@ -45,7 +51,9 @@ export default class EditorPreferencesController {
                     // Restore the prior editor preferences.
                     this.editorPreferencesService.setFontSize(fontSize);
                     this.editorPreferencesService.setCurrentThemeByName(theme.name);
+                    this.editorPreferencesService.setShowFoldWidgets(showFoldWidgets);
                     this.editorPreferencesService.setShowInvisibles(showInvisibles);
+                    this.editorPreferencesService.setShowLineNumbers(showLineNumbers);
                     break;
                 }
                 default: {

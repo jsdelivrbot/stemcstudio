@@ -26,7 +26,9 @@ export default class EditorPreferencesDialogController {
     $onInit(): void {
         // Copy from the model to the scope.
         this.$scope.fontSize = this.dialogModel.fontSize;
+        this.$scope.showFoldWidgets = this.dialogModel.showFoldWidgets;
         this.$scope.showInvisibles = this.dialogModel.showInvisibles;
+        this.$scope.showLineNumbers = this.dialogModel.showLineNumbers;
         this.$scope.theme = this.dialogModel.theme;
 
         // If anything changes, apply it immediately so that the user can see the result.
@@ -35,8 +37,16 @@ export default class EditorPreferencesDialogController {
             this.editorPreferencesService.setFontSize(this.$scope.fontSize);
         };
 
+        this.$scope.showFoldWidgetsChange = () => {
+            this.editorPreferencesService.setShowFoldWidgets(this.$scope.showFoldWidgets);
+        };
+
         this.$scope.showInvisiblesChange = () => {
             this.editorPreferencesService.setShowInvisibles(this.$scope.showInvisibles);
+        };
+
+        this.$scope.showLineNumbersChange = () => {
+            this.editorPreferencesService.setShowLineNumbers(this.$scope.showLineNumbers);
         };
 
         this.$scope.themeChange = () => {
@@ -46,7 +56,9 @@ export default class EditorPreferencesDialogController {
         this.$scope.ok = () => {
             // Copy from the scope to the model.
             this.dialogModel.fontSize = this.$scope.fontSize;
+            this.dialogModel.showFoldWidgets = this.$scope.showFoldWidgets;
             this.dialogModel.showInvisibles = this.$scope.showInvisibles;
+            this.dialogModel.showLineNumbers = this.$scope.showLineNumbers;
             this.dialogModel.theme = this.$scope.theme;
             this.$uibModalInstance.close(this.dialogModel);
         };

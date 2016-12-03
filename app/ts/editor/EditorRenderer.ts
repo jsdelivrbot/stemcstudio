@@ -6,14 +6,29 @@ import Position from "./Position";
  */
 // TODO: The HTML nature is leaky.
 interface EditorRenderer {
+    /**
+     * 
+     */
     $keepTextAreaAtCursor: boolean;
+    /**
+     * 
+     */
     maxLines: number;
+    /**
+     * 
+     */
     minLines: number;
+    /**
+     * 
+     */
     scroller: HTMLDivElement;
     /**
      *
      */
     scrollTop: number;
+    /**
+     * 
+     */
     textarea: HTMLTextAreaElement;
 
     /**

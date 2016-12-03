@@ -15,7 +15,15 @@ interface EditorPreferencesDialogModel {
     /**
      * 
      */
+    showFoldWidgets: boolean;
+    /**
+     * 
+     */
     showInvisibles: boolean;
+    /**
+     * 
+     */
+    showLineNumbers: boolean;
 }
 
 export default EditorPreferencesDialogModel;

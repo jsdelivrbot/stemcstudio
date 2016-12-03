@@ -23,12 +23,32 @@ interface EditorPreferencesDialogScope {
     /**
      * 
      */
+    showFoldWidgets: boolean;
+
+    /**
+     * 
+     */
+    showFoldWidgetsChange(): void;
+
+    /**
+     * 
+     */
     showInvisibles: boolean;
 
     /**
      * 
      */
     showInvisiblesChange(): void;
+
+    /**
+     * 
+     */
+    showLineNumbers: boolean;
+
+    /**
+     * 
+     */
+    showLineNumbersChange(): void;
 
     /**
      * The selected theme.

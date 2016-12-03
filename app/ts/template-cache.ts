@@ -569,7 +569,15 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "            <select ng-model='fontSize' ng-options='fontSize for fontSize in fontSizes track by fontSize' data-ng-change='fontSizeChange()'></select>\n" +
     "            <br/>\n" +
     "            <label class='checkbox-inline text-muted'>\n" +
-    "                <input type='checkbox' ng-model='showInvisibles' data-ng-change='showInvisiblesChange()'>Show Invisibles</input>\n" +
+    "                <input type='checkbox' ng-model='showInvisibles' data-ng-change='showInvisiblesChange()'>Invisibles</input>\n" +
+    "            </label>\n" +
+    "            <br/>\n" +
+    "            <label class='checkbox-inline text-muted'>\n" +
+    "                <input type='checkbox' ng-model='showLineNumbers' data-ng-change='showLineNumbersChange()'>LineNumbers</input>\n" +
+    "            </label>\n" +
+    "            <br/>\n" +
+    "            <label class='checkbox-inline text-muted'>\n" +
+    "                <input type='checkbox' ng-model='showFoldWidgets' data-ng-change='showFoldWidgetsChange()'>Fold Widgets</input>\n" +
     "            </label>\n" +
     "        </div>\n" +
     "        <div class=\"modal-footer\">\n" +

@@ -17,7 +17,15 @@
             <select ng-model='fontSize' ng-options='fontSize for fontSize in fontSizes track by fontSize' data-ng-change='fontSizeChange()'></select>
             <br/>
             <label class='checkbox-inline text-muted'>
-                <input type='checkbox' ng-model='showInvisibles' data-ng-change='showInvisiblesChange()'>Show Invisibles</input>
+                <input type='checkbox' ng-model='showInvisibles' data-ng-change='showInvisiblesChange()'>Invisibles</input>
+            </label>
+            <br/>
+            <label class='checkbox-inline text-muted'>
+                <input type='checkbox' ng-model='showLineNumbers' data-ng-change='showLineNumbersChange()'>LineNumbers</input>
+            </label>
+            <br/>
+            <label class='checkbox-inline text-muted'>
+                <input type='checkbox' ng-model='showFoldWidgets' data-ng-change='showFoldWidgetsChange()'>Fold Widgets</input>
             </label>
         </div>
         <div class="modal-footer">

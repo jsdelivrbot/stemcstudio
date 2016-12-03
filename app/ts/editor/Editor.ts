@@ -2079,6 +2079,17 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
         return this.renderer.getShowInvisibles();
     }
 
+    setShowLineNumbers(showLineNumbers: boolean): void {
+        this.renderer.setShowLineNumbers(showLineNumbers);
+    }
+
+    /**
+     *
+     */
+    getShowLineNumbers(): boolean {
+        return this.renderer.getShowLineNumbers();
+    }
+
     /**
      * This method requires the session to be in effect.
      *

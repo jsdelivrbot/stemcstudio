@@ -30,7 +30,9 @@ export default class DefaultEditorPreferencesService implements EditorPreference
             cssClass: theme.cssClass,
             href: `/themes/${theme.fileName}`,
             isDark: theme.isDark,
-            showInvisibles: this.storage.showInvisibles
+            showFoldWidgets: this.storage.showFoldWidgets,
+            showInvisibles: this.storage.showInvisibles,
+            showLineNumbers: this.storage.showLineNumbers
         });
     }
     removeEventListener(eventName: string, callback: EditorPreferencesCallback) {
@@ -106,6 +108,21 @@ export default class DefaultEditorPreferencesService implements EditorPreference
     /**
      * 
      */
+    getShowFoldWidgets(): boolean {
+        return this.storage.showFoldWidgets;
+    }
+
+    /**
+     * 
+     */
+    setShowFoldWidgets(showFoldWidgets: boolean): void {
+        this.storage.showFoldWidgets = showFoldWidgets;
+        this.broadcast();
+    }
+
+    /**
+     * 
+     */
     getShowInvisibles(): boolean {
         return this.storage.showInvisibles;
     }
@@ -115,6 +132,21 @@ export default class DefaultEditorPreferencesService implements EditorPreference
      */
     setShowInvisibles(showInvisibles: boolean): void {
         this.storage.showInvisibles = showInvisibles;
+        this.broadcast();
+    }
+
+    /**
+     * 
+     */
+    getShowLineNumbers(): boolean {
+        return this.storage.showLineNumbers;
+    }
+
+    /**
+     * 
+     */
+    setShowLineNumbers(showLineNumbers: boolean): void {
+        this.storage.showLineNumbers = showLineNumbers;
         this.broadcast();
     }
 
@@ -131,7 +163,9 @@ export default class DefaultEditorPreferencesService implements EditorPreference
                 cssClass: theme.cssClass,
                 href: `/themes/${theme.fileName}`,
                 isDark: theme.isDark,
-                showInvisibles: this.storage.showInvisibles
+                showFoldWidgets: this.storage.showFoldWidgets,
+                showInvisibles: this.storage.showInvisibles,
+                showLineNumbers: this.storage.showLineNumbers
             });
         }
     }

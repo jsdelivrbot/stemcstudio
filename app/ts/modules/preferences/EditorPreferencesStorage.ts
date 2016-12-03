@@ -13,7 +13,15 @@ interface EditorPreferencesStorage {
     /**
      * 
      */
+    showFoldWidgets: boolean;
+    /**
+     * 
+     */
     showInvisibles: boolean;
+    /**
+     * 
+     */
+    showLineNumbers: boolean;
 }
 
 export default EditorPreferencesStorage;

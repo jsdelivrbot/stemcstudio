@@ -35,11 +35,27 @@ interface EditorPreferencesService {
     /**
      * 
      */
+    getShowFoldWidgets(): boolean;
+    /**
+     * 
+     */
+    setShowFoldWidgets(showFoldWidgets: boolean): void;
+    /**
+     * 
+     */
     getShowInvisibles(): boolean;
     /**
      * 
      */
     setShowInvisibles(showInvisibles: boolean): void;
+    /**
+     * 
+     */
+    getShowLineNumbers(): boolean;
+    /**
+     * 
+     */
+    setShowLineNumbers(showLineNumbers: boolean): void;
     /**
      * Adds a listener for changes in the theme.
      */

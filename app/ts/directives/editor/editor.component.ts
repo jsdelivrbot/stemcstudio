@@ -83,7 +83,9 @@ function factory(
                 editor.setFontSize(event.fontSize);
                 editor.setThemeCss(event.cssClass, event.href);
                 editor.setThemeDark(event.isDark);
+                editor.setShowFoldWidgets(event.showFoldWidgets);
                 editor.setShowInvisibles(event.showInvisibles);
+                editor.setShowLineNumbers(event.showLineNumbers);
             }, 0);
         };
         // This event listener gets removed in onDestroyScope
@@ -150,7 +152,6 @@ function factory(
                         session.setUndoManager(undoManager);
                         session.setTabSize(2);
                         session.setUseSoftTabs(true);
-                        // editor.setShowInvisibles(settings.showInvisibles);
                         editor.setDisplayIndentGuides(settings.displayIndentGuides);
                         editor.commands.addCommand({
                             name: 'Find',
