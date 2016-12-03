@@ -1047,8 +1047,8 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
 
 
     private $updateScrollBarV(): void {
-        var scrollHeight = this.layerConfig.maxHeight;
-        var scrollerHeight = this.$size.scrollerHeight;
+        let scrollHeight = this.layerConfig.maxHeight;
+        const scrollerHeight = this.$size.scrollerHeight;
         if (!this.$maxLines && this.$scrollPastEnd) {
             scrollHeight -= (scrollerHeight - this.lineHeight) * this.$scrollPastEnd;
             if (this.scrollTop > scrollHeight - scrollerHeight) {

@@ -84,6 +84,7 @@ function factory(
                 editor.setThemeCss(event.cssClass, event.href);
                 editor.setThemeDark(event.isDark);
                 editor.setShowFoldWidgets(event.showFoldWidgets);
+                editor.setDisplayIndentGuides(event.displayIndentGuides);
                 editor.setShowInvisibles(event.showInvisibles);
                 editor.setShowLineNumbers(event.showLineNumbers);
             }, 0);
@@ -93,7 +94,7 @@ function factory(
 
         // Set properties that pertain to rendering.
         // Don't set session attributes here!
-        editor.setThemeDark(true);
+        // editor.setThemeDark(true);
         editor.setPadding(4);
         editor.setShowPrintMargin(settings.showPrintMargin);
 
@@ -152,7 +153,6 @@ function factory(
                         session.setUndoManager(undoManager);
                         session.setTabSize(2);
                         session.setUseSoftTabs(true);
-                        editor.setDisplayIndentGuides(settings.displayIndentGuides);
                         editor.commands.addCommand({
                             name: 'Find',
                             bindKey: { win: 'Ctrl-F', mac: 'Command-F' },

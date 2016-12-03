@@ -5,6 +5,10 @@ import Theme from '../Theme';
  */
 interface EditorPreferencesDialogModel {
     /**
+     * 
+     */
+    displayIndentGuides: boolean;
+    /**
      *
      */
     fontSize: string;

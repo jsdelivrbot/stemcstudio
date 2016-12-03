@@ -2100,8 +2100,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     }
 
     /**
-     * @method getDisplayIndentGuides
-     * @return {boolean}
+     *
      */
     getDisplayIndentGuides(): boolean {
         return this.renderer.getDisplayIndentGuides();
@@ -2110,9 +2109,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     /**
      * If `showPrintMargin` is set to `true`, the print margin is shown in the editor.
      *
-     * @method setShowPrintMargin
-     * @param showPrintMargin {boolean} Specifies whether or not to show the print margin.
-     * @return {void}
+     * @param showPrintMargin Specifies whether or not to show the print margin.
      */
     setShowPrintMargin(showPrintMargin: boolean): void {
         this.renderer.setShowPrintMargin(showPrintMargin);
@@ -2120,9 +2117,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Returns `true` if the print margin is being shown.
-     *
-     * @method getShowPrintMargin
-     * @return {boolean}
      */
     getShowPrintMargin(): boolean {
         return this.renderer.getShowPrintMargin();

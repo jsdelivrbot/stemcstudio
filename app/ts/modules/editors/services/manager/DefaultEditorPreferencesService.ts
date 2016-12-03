@@ -26,6 +26,7 @@ export default class DefaultEditorPreferencesService implements EditorPreference
         this.ensureCallbacks(eventName).push(callback);
         const theme = this.currentTheme;
         callback({
+            displayIndentGuides: this.storage.displayIndentGuides,
             fontSize: this.storage.fontSize,
             cssClass: theme.cssClass,
             href: `/themes/${theme.fileName}`,
@@ -41,6 +42,21 @@ export default class DefaultEditorPreferencesService implements EditorPreference
         if (index >= 0) {
             cbs.splice(index, 1);
         }
+    }
+
+    /**
+     * 
+     */
+    getDisplayIndentGuides(): boolean {
+        return this.storage.displayIndentGuides;
+    }
+
+    /**
+     * 
+     */
+    setDisplayIndentGuides(displayIndentGuides: boolean): void {
+        this.storage.displayIndentGuides = displayIndentGuides;
+        this.broadcast();
     }
 
     /**
@@ -159,6 +175,7 @@ export default class DefaultEditorPreferencesService implements EditorPreference
         for (let i = 0; i < cbs.length; i++) {
             const cb = cbs[i];
             cb({
+                displayIndentGuides: this.storage.displayIndentGuides,
                 fontSize: this.storage.fontSize,
                 cssClass: theme.cssClass,
                 href: `/themes/${theme.fileName}`,

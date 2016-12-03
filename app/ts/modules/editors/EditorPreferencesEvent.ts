@@ -17,6 +17,10 @@ interface EditorPreferencesEvent {
     /**
      * 
      */
+    displayIndentGuides: boolean;
+    /**
+     * 
+     */
     href: string;
     /**
      * 

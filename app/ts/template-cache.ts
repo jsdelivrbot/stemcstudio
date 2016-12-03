@@ -573,11 +573,15 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "            </label>\n" +
     "            <br/>\n" +
     "            <label class='checkbox-inline text-muted'>\n" +
-    "                <input type='checkbox' ng-model='showLineNumbers' data-ng-change='showLineNumbersChange()'>LineNumbers</input>\n" +
+    "                <input type='checkbox' ng-model='showLineNumbers' data-ng-change='showLineNumbersChange()'>Line Numbers</input>\n" +
     "            </label>\n" +
     "            <br/>\n" +
     "            <label class='checkbox-inline text-muted'>\n" +
     "                <input type='checkbox' ng-model='showFoldWidgets' data-ng-change='showFoldWidgetsChange()'>Fold Widgets</input>\n" +
+    "            </label>\n" +
+    "            <br/>\n" +
+    "            <label class='checkbox-inline text-muted'>\n" +
+    "                <input type='checkbox' ng-model='displayIndentGuides' data-ng-change='displayIndentGuidesChange()'>Indent Guides</input>\n" +
     "            </label>\n" +
     "        </div>\n" +
     "        <div class=\"modal-footer\">\n" +

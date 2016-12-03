@@ -25,6 +25,7 @@ export default class EditorPreferencesDialogController {
      */
     $onInit(): void {
         // Copy from the model to the scope.
+        this.$scope.displayIndentGuides = this.dialogModel.displayIndentGuides;
         this.$scope.fontSize = this.dialogModel.fontSize;
         this.$scope.showFoldWidgets = this.dialogModel.showFoldWidgets;
         this.$scope.showInvisibles = this.dialogModel.showInvisibles;
@@ -32,6 +33,10 @@ export default class EditorPreferencesDialogController {
         this.$scope.theme = this.dialogModel.theme;
 
         // If anything changes, apply it immediately so that the user can see the result.
+
+        this.$scope.displayIndentGuidesChange = () => {
+            this.editorPreferencesService.setDisplayIndentGuides(this.$scope.displayIndentGuides);
+        };
 
         this.$scope.fontSizeChange = () => {
             this.editorPreferencesService.setFontSize(this.$scope.fontSize);
@@ -55,6 +60,7 @@ export default class EditorPreferencesDialogController {
 
         this.$scope.ok = () => {
             // Copy from the scope to the model.
+            this.dialogModel.displayIndentGuides = this.$scope.displayIndentGuides;
             this.dialogModel.fontSize = this.$scope.fontSize;
             this.dialogModel.showFoldWidgets = this.$scope.showFoldWidgets;
             this.dialogModel.showInvisibles = this.$scope.showInvisibles;

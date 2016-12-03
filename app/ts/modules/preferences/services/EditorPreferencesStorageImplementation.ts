@@ -7,6 +7,10 @@ interface Preferences {
     /**
      * 
      */
+    displayIndentGuides?: boolean;
+    /**
+     * 
+     */
     fontSize?: string;
     /**
      * 
@@ -38,6 +42,7 @@ function mixin(obj: Preferences, base: Preferences) {
 const PREFERENCES_KEY = 'com.stemcstudio.preferences';
 
 const DEFAULTS: Preferences = {
+    displayIndentGuides: false,
     fontSize: '14px',
     showFoldWidgets: true,
     showInvisibles: false,
@@ -54,6 +59,14 @@ export default class PreferencesManagerService implements EditorPreferencesStora
             this.cache = JSON.parse(value);
         }
         mixin(this.cache, DEFAULTS);
+    }
+
+    get displayIndentGuides(): boolean {
+        return this.cache.displayIndentGuides;
+    }
+    set displayIndentGuides(value: boolean) {
+        this.cache.displayIndentGuides = value;
+        this.updateStorage();
     }
 
     get fontSize(): string {

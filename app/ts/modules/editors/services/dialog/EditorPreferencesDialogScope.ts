@@ -8,6 +8,16 @@ interface EditorPreferencesDialogScope {
     /**
      * 
      */
+    displayIndentGuides: boolean;
+
+    /**
+     * 
+     */
+    displayIndentGuidesChange(): void;
+
+    /**
+     * 
+     */
     fontSize: string;
 
     /**

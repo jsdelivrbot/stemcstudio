@@ -5,6 +5,10 @@ interface EditorPreferencesStorage {
     /**
      * 
      */
+    displayIndentGuides: boolean;
+    /**
+     * 
+     */
     fontSize: string;
     /**
      * 

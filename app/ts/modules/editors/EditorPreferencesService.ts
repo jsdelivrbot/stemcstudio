@@ -6,6 +6,14 @@ interface EditorPreferencesService {
     /**
      * 
      */
+    getDisplayIndentGuides(): boolean;
+    /**
+     * 
+     */
+    setDisplayIndentGuides(displayIndentGuides: boolean): void;
+    /**
+     * 
+     */
     getFontSize(): string;
     /**
      * 
