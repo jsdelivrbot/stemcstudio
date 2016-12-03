@@ -25,13 +25,20 @@ npm install -g karma-cli
 5. `typings install`
 6. `jspm install`
 
-### Peer Projects Required...
+### Peer Projects Required
 
-davinci-eight
-davinci-mathscript
-davinci-units
+The following projects are required as peer dependencies of STEMCstudio in order to stage their documentation.
 
-### Manual Tweak...
+* davinci-eight
+* davinci-units
+
+These projects are available from the geometryzen GitHub repository.
+
+The copying of the documentation is performed by the STEMCstudio build.
+(The documentation for these projects is generated and is not checked into GitHub).
+
+
+### Manual Tweak
 
 Manully tweak typings/browser/ambient/angular-ui-bootstrap/index.d.ts as follows:
 
@@ -62,6 +69,13 @@ Update versions in
 1. package.json
 2. bower.json
 3. app/ts/app.ts
+
+### Upgrading a library dependency such as davinci-eight
+
+1. bower.json - update the version
+2. options.ts - update the version
+3. Gruntfile.js - update the version
+
 
 ### Upgrading ace
 

@@ -493,16 +493,28 @@ function copies(target) {
             dest: prepend(target, 'docs/davinci-eight')
         },
         {
+            src: "bower_components/davinci-eight/dist/davinci-eight.d.ts",
+            dest: prepend(target, 'vendor/davinci-eight@4.0.12/dist/davinci-eight.d.ts')
+        },
+        {
+            src: "bower_components/davinci-eight/dist/davinci-eight.js",
+            dest: prepend(target, 'vendor/davinci-eight@4.0.12/dist/davinci-eight.js')
+        },
+        {
+            src: "bower_components/davinci-eight/dist/davinci-eight.css",
+            dest: prepend(target, 'vendor/davinci-eight@4.0.12/dist/davinci-eight.css')
+        },
+        {
             src: "../davinci-eight/dist/davinci-eight.d.ts",
-            dest: prepend(target, 'vendor/davinci-eight@4.0.11/dist/davinci-eight.d.ts')
+            dest: prepend(target, 'vendor/davinci-eight@4.0.12/dist/davinci-eight.d.ts')
         },
         {
             src: "../davinci-eight/dist/davinci-eight.js",
-            dest: prepend(target, 'vendor/davinci-eight@4.0.11/dist/davinci-eight.js')
+            dest: prepend(target, 'vendor/davinci-eight@4.0.12/dist/davinci-eight.js')
         },
         {
             src: "../davinci-eight/dist/davinci-eight.css",
-            dest: prepend(target, 'vendor/davinci-eight@4.0.11/dist/davinci-eight.css')
+            dest: prepend(target, 'vendor/davinci-eight@4.0.12/dist/davinci-eight.css')
         },
         {
             src: "bower_components/davinci-mathscript/dist/davinci-mathscript.d.ts",
@@ -523,6 +535,14 @@ function copies(target) {
             cwd: "../davinci-units/documentation",
             src: ["**"],
             dest: prepend(target, 'docs/davinci-units')
+        },
+        {
+            src: "bower_components/davinci-units/dist/davinci-units.d.ts",
+            dest: prepend(target, 'vendor/davinci-units@1.5.4/dist/davinci-units.d.ts')
+        },
+        {
+            src: "bower_components/davinci-units/dist/davinci-units.js",
+            dest: prepend(target, 'vendor/davinci-units@1.5.4/dist/davinci-units.js')
         },
         {
             src: "../davinci-units/dist/davinci-units.d.ts",
