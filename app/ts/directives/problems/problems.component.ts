@@ -5,10 +5,10 @@ import EditSession from '../../editor/EditSession';
 import ProblemsScope from './ProblemsScope';
 import Renderer from '../../editor/Renderer';
 import TextMode from '../../editor/mode/TextMode';
-import {THEME_MANAGER} from '../../modules/themes/constants';
-import ThemeManager from '../../modules/themes/ThemeManager';
-import ThemeManagerEvent from '../../modules/themes/ThemeManagerEvent';
-import {currentTheme} from '../../modules/themes/ThemeManagerEvent';
+import {EDITOR_PREFERENCES_SERVICE} from '../../modules/editors/constants';
+import EditorPreferencesService from '../../modules/editors/EditorPreferencesService';
+import EditorPreferencesEvent from '../../modules/editors/EditorPreferencesEvent';
+import {currentTheme} from '../../modules/editors/EditorPreferencesEvent';
 import WsModel from '../../wsmodel/services/WsModel';
 
 const noop = function () { /* Do nothing. */ };
@@ -23,7 +23,7 @@ interface ProblemsAttributes extends ng.IAttributes {
 /**
  * The 'problems' directive.
  */
-function factory($timeout: ng.ITimeoutService, themeManager: ThemeManager): ng.IDirective {
+function factory($timeout: ng.ITimeoutService, editorPreferencesService: EditorPreferencesService): ng.IDirective {
     function compile(tElem: ng.IAugmentedJQuery, tAttrs: ng.IAttributes): ng.IDirectivePrePost {
         return {
             /**
@@ -95,15 +95,16 @@ function factory($timeout: ng.ITimeoutService, themeManager: ThemeManager): ng.I
                     }
                 });
 
-                const themeEventHandler = function (event: ThemeManagerEvent) {
+                const editorPreferencesEventListener = function (event: EditorPreferencesEvent) {
                     setTimeout(function () {
                         editor.setThemeCss(event.cssClass, event.href);
                         editor.setThemeDark(event.isDark);
+                        editor.setShowInvisibles(event.showInvisibles);
                     }, 0);
                 };
 
                 // This event listener gets removed in onDestroyScope
-                themeManager.addEventListener(currentTheme, themeEventHandler);
+                editorPreferencesService.addEventListener(currentTheme, editorPreferencesEventListener);
 
                 ngModel.$render = function () {
                     const viewValue = <WsModel>ngModel.$viewValue;
@@ -152,7 +153,7 @@ function factory($timeout: ng.ITimeoutService, themeManager: ThemeManager): ng.I
                 function onDestroyScope() {
                     unregisterWatchNgShow();
 
-                    themeManager.removeEventListener(currentTheme, themeEventHandler);
+                    editorPreferencesService.removeEventListener(currentTheme, editorPreferencesEventListener);
 
                     if (editor) {
                         editor.dispose();
@@ -179,6 +180,6 @@ function factory($timeout: ng.ITimeoutService, themeManager: ThemeManager): ng.I
     return directive;
 }
 
-factory.$inject = ['$timeout', THEME_MANAGER];
+factory.$inject = ['$timeout', EDITOR_PREFERENCES_SERVICE];
 
 export default factory;

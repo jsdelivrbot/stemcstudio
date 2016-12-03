@@ -142,14 +142,9 @@
 								<ng-md-icon>
 						</a>
 						<ul uib-dropdown-menu role="menu">
-							<li ng-controller='themes-controller as themes'>
-								<a ng-click='themes.showEditorPreferences()' role='button'>Editor Preferences</a>
+							<li ng-controller='editor-preferences-controller as controller'>
+								<a ng-click='controller.showEditorPreferences()' role='button'>Editor Preferences</a>
 							</li>
-							<!--
-                            <li>
-                                <a ng-click='clickEditor()' role='button'>Editor</a>
-                            </li>
-                            -->
 						</ul>
 					</li>
 				</ul>

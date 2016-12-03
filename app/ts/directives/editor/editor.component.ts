@@ -19,10 +19,10 @@ import searchBox from '../../editor/ext/SearchBox';
 import showKeyboardShortcuts from '../../editor/ext/showKeyboardShortcuts';
 import ISettingsService from '../../services/settings/ISettingsService';
 import ITextService from '../../services/text/ITextService';
-import {THEME_MANAGER} from '../../modules/themes/constants';
-import ThemeManager from '../../modules/themes/ThemeManager';
-import ThemeManagerEvent from '../../modules/themes/ThemeManagerEvent';
-import {currentTheme} from '../../modules/themes/ThemeManagerEvent';
+import {EDITOR_PREFERENCES_SERVICE} from '../../modules/editors/constants';
+import EditorPreferencesService from '../../modules/editors/EditorPreferencesService';
+import EditorPreferencesEvent from '../../modules/editors/EditorPreferencesEvent';
+import {currentTheme} from '../../modules/editors/EditorPreferencesEvent';
 import WorkspaceMixin from '../../directives/editor/WorkspaceMixin';
 import {LANGUAGE_CSS} from '../../languages/modes';
 import {LANGUAGE_GLSL} from '../../languages/modes';
@@ -49,7 +49,7 @@ function factory(
     $timeout: ng.ITimeoutService,
     settings: ISettingsService,
     textService: ITextService,
-    themeManager: ThemeManager): ng.IDirective {
+    editorPreferencesService: EditorPreferencesService): ng.IDirective {
 
     /**
      * @param $scope Used to monitor $onDestroy and support transclude.
@@ -78,20 +78,20 @@ function factory(
          */
         let removeEditor: () => void;
 
-        const themeEventHandler = function (event: ThemeManagerEvent) {
+        const editorPreferencesEventListener = function (event: EditorPreferencesEvent) {
             setTimeout(function () {
                 editor.setThemeCss(event.cssClass, event.href);
                 editor.setThemeDark(event.isDark);
+                editor.setShowInvisibles(event.showInvisibles);
             }, 0);
         };
         // This event listener gets removed in onDestroyScope
-        themeManager.addEventListener(currentTheme, themeEventHandler);
+        editorPreferencesService.addEventListener(currentTheme, editorPreferencesEventListener);
 
         // Set properties that pertain to rendering.
         // Don't set session attributes here!
         editor.setThemeDark(true);
         editor.setPadding(4);
-        editor.setShowInvisibles(settings.showInvisibles);
         editor.setFontSize(settings.fontSize);
         editor.setShowPrintMargin(settings.showPrintMargin);
 
@@ -355,7 +355,7 @@ function factory(
             // editorsController.removeEditor(scope)
             // editor.off('change', onEditorChange);
 
-            themeManager.removeEventListener(currentTheme, themeEventHandler);
+            editorPreferencesService.removeEventListener(currentTheme, editorPreferencesEventListener);
 
             // What about stopping the worker?
             if (editor) {
@@ -395,6 +395,6 @@ function factory(
     return directive;
 }
 
-factory.$inject = ['$timeout', 'settings', 'textService', THEME_MANAGER];
+factory.$inject = ['$timeout', 'settings', 'textService', EDITOR_PREFERENCES_SERVICE];
 
 export default factory;

@@ -1,8 +1,8 @@
 import * as angular from 'angular';
 import Theme from './Theme';
-import ThemeManagerEvent from './ThemeManagerEvent';
+import EditorPreferencesEvent from './EditorPreferencesEvent';
 
-interface ThemeManager {
+interface EditorPreferencesService {
     /**
      * Returns the available list of themes as identifiers. 
      */
@@ -19,15 +19,23 @@ interface ThemeManager {
      * Sets the current theme using the theme name.
      * The theme should be known to the theme manager.
      */
-    setCurrentThemeByName(themeName: string);
+    setCurrentThemeByName(themeName: string): void;
+    /**
+     * 
+     */
+    getShowInvisibles(): boolean;
+    /**
+     * 
+     */
+    setShowInvisibles(showInvisibles: boolean): void;
     /**
      * Adds a listener for changes in the theme.
      */
-    addEventListener(eventName: string, callback: (event: ThemeManagerEvent) => any);
+    addEventListener(eventName: string, callback: (event: EditorPreferencesEvent) => any): void;
     /**
      * Removes a listener for changes in the theme.
      */
-    removeEventListener(eventName: string, callback: (event: ThemeManagerEvent) => any);
+    removeEventListener(eventName: string, callback: (event: EditorPreferencesEvent) => any): void;
 }
 
-export default ThemeManager;
+export default EditorPreferencesService;

@@ -496,14 +496,9 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "								<ng-md-icon>\n" +
     "						</a>\n" +
     "						<ul uib-dropdown-menu role=\"menu\">\n" +
-    "							<li ng-controller='themes-controller as themes'>\n" +
-    "								<a ng-click='themes.showEditorPreferences()' role='button'>Editor Preferences</a>\n" +
+    "							<li ng-controller='editor-preferences-controller as controller'>\n" +
+    "								<a ng-click='controller.showEditorPreferences()' role='button'>Editor Preferences</a>\n" +
     "							</li>\n" +
-    "							<!--\n" +
-    "                            <li>\n" +
-    "                                <a ng-click='clickEditor()' role='button'>Editor</a>\n" +
-    "                            </li>\n" +
-    "                            -->\n" +
     "						</ul>\n" +
     "					</li>\n" +
     "				</ul>\n" +
@@ -551,6 +546,35 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "    <button class='btn' ng-click='doCancel()'>Close</button>\n" +
     "  </div>\n" +
     "</div>\n"
+  );
+
+
+  $templateCache.put('editor-preferences-dialog.html',
+    "<!-- Using a name on the form puts the controller on the scope with a property of the same name -->\n" +
+    "<form name='labelForm' ng-submit='ok()'>\n" +
+    "    <fieldset>\n" +
+    "        <!-- legend>Labels and Keywords</legend -->\n" +
+    "        <div class=\"modal-header\" style=\"clear: both\">\n" +
+    "            <h3 class='modal-title' style=\"float: left;\">\n" +
+    "                <logo-text version='{{version}}' />\n" +
+    "            </h3>\n" +
+    "            <h3 class='modal-title' style=\"float: right;\">Editor Preferences</h3>\n" +
+    "        </div>\n" +
+    "        <div id='themes-modal-body' class=\"modal-body\">\n" +
+    "\n" +
+    "            <label class='text-muted'>Theme:</label>\n" +
+    "            <select ng-model='theme' ng-options='theme.name for theme in themes track by theme.name' data-ng-change='themeChange()'></select>\n" +
+    "            <br/>\n" +
+    "            <label class='checkbox-inline text-muted'>\n" +
+    "                <input type='checkbox' ng-model='showInvisibles' data-ng-change='showInvisiblesChange()'>Show Invisibles</input>\n" +
+    "            </label>\n" +
+    "        </div>\n" +
+    "        <div class=\"modal-footer\">\n" +
+    "            <button class=\"btn btn-secondary\" type=\"button\" data-ng-click=\"cancel()\">Cancel</button>\n" +
+    "            <button class=\"btn btn-primary\" type=\"submit\">OK</button>\n" +
+    "        </div>\n" +
+    "    </fieldset>\n" +
+    "</form>"
   );
 
 
@@ -1216,30 +1240,6 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "<div class=\"modal-footer\">\n" +
     "    <button class=\"btn btn-secondary\" type=\"button\" data-ng-click=\"close()\">{{options.closeButtonText}}</button>\n" +
     "</div>"
-  );
-
-
-  $templateCache.put('themes-dialog.html',
-    "<!-- Using a name on the form puts the controller on the scope with a property of the same name -->\n" +
-    "<form name='labelForm' ng-submit='ok()'>\n" +
-    "    <fieldset>\n" +
-    "        <!-- legend>Labels and Keywords</legend -->\n" +
-    "        <div class=\"modal-header\" style=\"clear: both\">\n" +
-    "            <h3 class='modal-title' style=\"float: left;\">\n" +
-    "                <logo-text version='{{version}}' />\n" +
-    "            </h3>\n" +
-    "            <h3 class='modal-title' style=\"float: right;\">Editor Preferences</h3>\n" +
-    "        </div>\n" +
-    "        <div id='themes-modal-body' class=\"modal-body\">\n" +
-    "            <label class='text-muted'>Theme:</label>\n" +
-    "            <select ng-model='theme' ng-options='theme.name for theme in themes track by theme.name' ng-change='themeChange()'></select>\n" +
-    "        </div>\n" +
-    "        <div class=\"modal-footer\">\n" +
-    "            <button class=\"btn btn-secondary\" type=\"button\" data-ng-click=\"cancel()\">Cancel</button>\n" +
-    "            <button class=\"btn btn-primary\" type=\"submit\">OK</button>\n" +
-    "        </div>\n" +
-    "    </fieldset>\n" +
-    "</form>"
   );
 
 

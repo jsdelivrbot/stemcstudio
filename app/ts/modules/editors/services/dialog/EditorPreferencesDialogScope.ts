@@ -1,6 +1,6 @@
 import Theme from '../../Theme';
 
-interface ThemesDialogScope {
+interface EditorPreferencesDialogScope {
 
     /**
      * The selected theme.
@@ -12,11 +12,24 @@ interface ThemesDialogScope {
      */
     themes: Theme[];
 
+    /**
+     * 
+     */
     themeChange(): void;
+
+    /**
+     * 
+     */
+    showInvisibles: boolean;
+
+    /**
+     * 
+     */
+    showInvisiblesChange(): void;
 
     ok(): void;
     submit(): void;
     cancel(); void;
 }
 
-export default ThemesDialogScope;
+export default EditorPreferencesDialogScope;

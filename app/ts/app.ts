@@ -79,7 +79,7 @@ import propsFilter from './filters/propsFilter';
 import preferences from './modules/preferences/index';
 import rooms from './modules/rooms/index';
 import stemcArXiv from './stemcArXiv/index';
-import themes from './modules/themes/index';
+import editors from './modules/editors/index';
 import translate from './translate/index';
 import wsmodel from './wsmodel/module';
 
@@ -116,7 +116,7 @@ const app: angular.IModule = angular.module('app', [
     preferences.name,
     rooms.name,
     stemcArXiv.name,
-    themes.name,
+    editors.name,
     translate.name,
     wsmodel.name
 ]);
@@ -139,7 +139,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version.
-app.constant('version', '2.10.11');
+app.constant('version', '2.11.0');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);

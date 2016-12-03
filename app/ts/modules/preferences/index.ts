@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 
-import {PREFERENCES_MANAGER, PREFERENCES_MODULE} from './constants';
-import PreferencesManagerService from './services/PreferencesManagerService';
+import {EDITOR_PREFERENCES_STORAGE, PREFERENCES_MODULE} from './constants';
+import EditorPreferencesStorageImplementation from './services/EditorPreferencesStorageImplementation';
 
 //
 // How we name this module is not so important because we will
@@ -10,7 +10,7 @@ import PreferencesManagerService from './services/PreferencesManagerService';
 //
 const m: angular.IModule = angular.module(PREFERENCES_MODULE, []);
 
-m.service(PREFERENCES_MANAGER, PreferencesManagerService);
+m.service(EDITOR_PREFERENCES_STORAGE, EditorPreferencesStorageImplementation);
 
 m.config([function () {
     // console.lg(`${m.name}.config(...)`);
