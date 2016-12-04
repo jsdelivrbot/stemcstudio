@@ -6,17 +6,13 @@ import {COMMAND_NAME_BACKSPACE} from '../editor_protocol';
 import {COMMAND_NAME_DEL} from '../editor_protocol';
 import {COMMAND_NAME_INSERT_STRING} from "../editor_protocol";
 
-function bindKey(win: string, mac: string) {
-    return { win: win, mac: mac };
+function bindKey(win: string, mac: string): { win: string; mac: string } {
+    return { win, mac };
 }
-
-//
-// scrollIntoView: true|"cursor"|"center"|"selectionPart"
-//
 
 const commands: Command[] = [
     {
-        name: "Select All",
+        name: "selectall",
         bindKey: bindKey("Ctrl-A", "Command-A"),
         exec: function (editor: Editor) { editor.selectAll(); },
         readOnly: true
@@ -31,7 +27,7 @@ const commands: Command[] = [
         name: "gotoline",
         bindKey: bindKey("Ctrl-L", "Command-L"),
         exec: function (editor: Editor) {
-            var line = parseInt(prompt("Enter line number:"), 10);
+            const line = parseInt(prompt("Enter line number:"), 10);
             if (!isNaN(line)) {
                 editor.gotoLine(line);
             }
@@ -42,6 +38,7 @@ const commands: Command[] = [
         name: "fold",
         bindKey: bindKey("Alt-L|Ctrl-F1", "Command-Alt-L|Command-F1"),
         exec: function (editor: Editor) { editor.getSession().toggleFold(false); },
+        multiSelectAction: "forEach",
         scrollIntoView: "center",
         readOnly: true
     },
@@ -49,6 +46,7 @@ const commands: Command[] = [
         name: "unfold",
         bindKey: bindKey("Alt-Shift-L|Ctrl-Shift-F1", "Command-Alt-Shift-L|Command-Shift-F1"),
         exec: function (editor: Editor) { editor.getSession().toggleFold(true); },
+        multiSelectAction: "forEach",
         scrollIntoView: "center",
         readOnly: true
     },
@@ -56,6 +54,7 @@ const commands: Command[] = [
         name: "toggleFoldWidget",
         bindKey: bindKey("F2", "F2"),
         exec: function (editor: Editor) { editor.getSession().toggleFoldWidget(false); },
+        multiSelectAction: "forEach",
         scrollIntoView: "center",
         readOnly: true
     },
@@ -63,11 +62,13 @@ const commands: Command[] = [
         name: "toggleParentFoldWidget",
         bindKey: bindKey("Alt-F2", "Alt-F2"),
         exec: function (editor: Editor) { editor.getSession().toggleFoldWidget(true); },
+        multiSelectAction: "forEach",
         scrollIntoView: "center",
         readOnly: true
     },
     {
         name: "foldall",
+        // TODO: Should this be bindKey(null, ...?
         bindKey: bindKey("Ctrl-Alt-0", "Ctrl-Command-Option-0"),
         exec: function (editor: Editor) { editor.getSession().foldAll(); },
         scrollIntoView: "center",
@@ -78,7 +79,8 @@ const commands: Command[] = [
         bindKey: bindKey("Alt-0", "Command-Option-0"),
         exec: function (editor: Editor) {
             editor.getSession().foldAll();
-            // FIXME: editor.getSession().unfold(editor.selection.getAllRanges());
+            // FIXME: unfold must accept a Range[], then we add this line...
+            // editor.getSession().unfold(editor.selection.getAllRanges());
         },
         scrollIntoView: "center",
         readOnly: true
@@ -140,7 +142,7 @@ const commands: Command[] = [
     },
     {
         name: "selecttostart",
-        bindKey: bindKey("Ctrl-Shift-Home", "Command-Shift-Up"),
+        bindKey: bindKey("Ctrl-Shift-Home", "Command-Shift-Home|Command-Shift-Up"),
         exec: function (editor: Editor) { editor.getSelection().selectFileStart(); },
         multiSelectAction: "forEach",
         readOnly: true,
@@ -158,7 +160,7 @@ const commands: Command[] = [
     },
     {
         name: "selectup",
-        bindKey: bindKey("Shift-Up", "Shift-Up"),
+        bindKey: bindKey("Shift-Up", "Shift-Up|Ctrl-Shift-P"),
         exec: function (editor: Editor) { editor.getSelection().selectUp(); },
         multiSelectAction: "forEach",
         readOnly: true
@@ -172,7 +174,7 @@ const commands: Command[] = [
     },
     {
         name: "selecttoend",
-        bindKey: bindKey("Ctrl-Shift-End", "Command-Shift-Down"),
+        bindKey: bindKey("Ctrl-Shift-End", "Command-Shift-End|Command-Shift-Down"),
         exec: function (editor: Editor) { editor.getSelection().selectFileEnd(); },
         multiSelectAction: "forEach",
         readOnly: true,
@@ -190,7 +192,7 @@ const commands: Command[] = [
     },
     {
         name: "selectdown",
-        bindKey: bindKey("Shift-Down", "Shift-Down"),
+        bindKey: bindKey("Shift-Down", "Shift-Down|Ctrl-Shift-N"),
         exec: function (editor: Editor) { editor.getSelection().selectDown(); },
         multiSelectAction: "forEach",
         scrollIntoView: "cursor",
@@ -222,7 +224,7 @@ const commands: Command[] = [
     },
     {
         name: "selecttolinestart",
-        bindKey: bindKey("Alt-Shift-Left", "Command-Shift-Left"),
+        bindKey: bindKey("Alt-Shift-Left", "Command-Shift-Left|Ctrl-Shift-A"),
         exec: function (editor: Editor) { editor.getSelection().selectLineStart(); },
         multiSelectAction: "forEach",
         scrollIntoView: "cursor",
@@ -238,7 +240,7 @@ const commands: Command[] = [
     },
     {
         name: "selectleft",
-        bindKey: bindKey("Shift-Left", "Shift-Left"),
+        bindKey: bindKey("Shift-Left", "Shift-Left|Ctrl-Shift-B"),
         exec: function (editor: Editor) { editor.getSelection().selectLeft(); },
         multiSelectAction: "forEach",
         scrollIntoView: "cursor",
@@ -270,7 +272,7 @@ const commands: Command[] = [
     },
     {
         name: "selecttolineend",
-        bindKey: bindKey("Alt-Shift-Right", "Command-Shift-Right"),
+        bindKey: bindKey("Alt-Shift-Right", "Command-Shift-Right|Shift-End|Ctrl-Shift-E"),
         exec: function (editor: Editor) { editor.getSelection().selectLineEnd(); },
         multiSelectAction: "forEach",
         scrollIntoView: "cursor",
@@ -387,6 +389,13 @@ const commands: Command[] = [
         passEvent: true,
         readOnly: true
     },
+    {
+        name: "copy",
+        exec: function (editor: Editor) {
+            // placeholder for replay macro
+        },
+        readOnly: true,
+    },
 
     // commands disabled in readOnly mode
     {
@@ -402,6 +411,14 @@ const commands: Command[] = [
         },
         scrollIntoView: "cursor",
         multiSelectAction: "forEach"
+    },
+    {
+        name: "paste",
+        exec: function (editor: Editor, args) {
+            // TODO: $handlePaste on Editor
+            // editor.$handlePaste(args);
+        },
+        scrollIntoView: "cursor"
     },
     {
         name: "removeline",
@@ -601,7 +618,7 @@ const commands: Command[] = [
         name: "expandtoline",
         bindKey: bindKey("Ctrl-Shift-L", "Command-Shift-L"),
         exec: function (editor: Editor) {
-            var range = editor.selection.getRange();
+            const range = editor.selection.getRange();
 
             range.start.column = range.end.column = 0;
             range.end.row++;
@@ -614,16 +631,16 @@ const commands: Command[] = [
         name: "joinlines",
         bindKey: bindKey(null, null),
         exec: function (editor: Editor) {
-            var isBackwards = editor.selection.isBackwards();
-            var selectionStart = isBackwards ? editor.selection.getSelectionLead() : editor.selection.getSelectionAnchor();
-            var selectionEnd = isBackwards ? editor.selection.getSelectionAnchor() : editor.selection.getSelectionLead();
-            var firstLineEndCol = editor.session.doc.getLine(selectionStart.row).length;
-            var selectedText = editor.session.doc.getTextRange(editor.selection.getRange());
-            var selectedCount = selectedText.replace(/\n\s*/, " ").length;
-            var insertLine = editor.session.doc.getLine(selectionStart.row);
+            const isBackwards = editor.selection.isBackwards();
+            const selectionStart = isBackwards ? editor.selection.getSelectionLead() : editor.selection.getSelectionAnchor();
+            const selectionEnd = isBackwards ? editor.selection.getSelectionAnchor() : editor.selection.getSelectionLead();
+            const firstLineEndCol = editor.session.doc.getLine(selectionStart.row).length;
+            const selectedText = editor.session.doc.getTextRange(editor.selection.getRange());
+            const selectedCount = selectedText.replace(/\n\s*/, " ").length;
+            let insertLine = editor.session.doc.getLine(selectionStart.row);
 
-            for (var i = selectionStart.row + 1; i <= selectionEnd.row + 1; i++) {
-                var curLine = stringTrimLeft(stringTrimRight(editor.session.doc.getLine(i)));
+            for (let i = selectionStart.row + 1; i <= selectionEnd.row + 1; i++) {
+                let curLine = stringTrimLeft(stringTrimRight(editor.session.doc.getLine(i)));
                 if (curLine.length !== 0) {
                     curLine = " " + curLine;
                 }
@@ -644,8 +661,8 @@ const commands: Command[] = [
                 editor.selection.selectTo(selectionStart.row, selectionStart.column + selectedCount);
             } else {
                 // If the joined line had something in it, start the cursor at that something
-                firstLineEndCol = editor.session.doc.getLine(selectionStart.row).length > firstLineEndCol ? (firstLineEndCol + 1) : firstLineEndCol;
-                editor.selection.moveCursorTo(selectionStart.row, firstLineEndCol);
+                const column = editor.session.doc.getLine(selectionStart.row).length > firstLineEndCol ? (firstLineEndCol + 1) : firstLineEndCol;
+                editor.selection.moveCursorTo(selectionStart.row, column);
             }
         },
         multiSelectAction: "forEach",
@@ -654,17 +671,17 @@ const commands: Command[] = [
         name: "invertSelection",
         bindKey: bindKey(null, null),
         exec: function (editor: Editor) {
-            var endRow = editor.session.doc.getLength() - 1;
+            const endRow = editor.session.doc.getLength() - 1;
             var endCol = editor.session.doc.getLine(endRow).length;
-            var ranges = editor.selection.rangeList.ranges;
-            var newRanges: Range[] = [];
+            let ranges = editor.selection.rangeList.ranges;
+            const newRanges: Range[] = [];
 
             // If multiple selections don't exist, rangeList will return 0 so replace with single range
             if (ranges.length < 1) {
                 ranges = [editor.selection.getRange()];
             }
 
-            for (var i = 0; i < ranges.length; i++) {
+            for (let i = 0; i < ranges.length; i++) {
                 if (i === (ranges.length - 1)) {
                     // The last selection must connect to the end of the document, unless it already does
                     if (!(ranges[i].end.row === endRow && ranges[i].end.column === endCol)) {

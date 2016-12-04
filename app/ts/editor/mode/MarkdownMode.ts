@@ -30,6 +30,7 @@ export default class MarkdownMode extends TextMode {
         });
 
         this.foldingRules = new MarkdownFoldMode();
+        this.$behaviour = this.$defaultBehaviour;
     }
 
     /**

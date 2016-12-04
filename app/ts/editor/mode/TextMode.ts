@@ -5,6 +5,7 @@ import Tokenizer from "../Tokenizer";
 import TextHighlightRules from "./TextHighlightRules";
 import Behaviour from "./Behaviour";
 // import BehaviourCallback from "../BehaviourCallback";
+import CstyleBehaviour from './behaviour/CstyleBehaviour';
 import FoldMode from './folding/FoldMode';
 import {packages} from "../unicode";
 import {escapeRegExp} from "../lib/lang";
@@ -34,6 +35,7 @@ export default class TextMode implements LanguageMode {
     protected HighlightRules: any = TextHighlightRules;
 
     protected $behaviour = new Behaviour();
+    protected $defaultBehaviour = new CstyleBehaviour();
 
     /**
      *
@@ -245,12 +247,10 @@ export default class TextMode implements LanguageMode {
     }
 
     /**
-     * @method toggleBlockComment
-     * @param state {string}
-     * @param session {EditSession}
-     * @param range {Range}
-     * @param cirsor {Position}
-     * @return {void}
+     * @param state
+     * @param session
+     * @param range
+     * @param cursor
      */
     toggleBlockComment(state: string, session: EditSession, range: Range, cursor: Position): void {
         let comment = this.blockComment;

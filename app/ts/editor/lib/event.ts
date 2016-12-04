@@ -382,7 +382,8 @@ if (window.postMessage && !isOldIE) {
                 callback();
             }
         });
-        win.postMessage(messageName, "*");
+        // postMessage with "*" for targetOrigin is a security concern.
+        win.postMessage(messageName, window.location.href);
     };
 }
 */

@@ -3,12 +3,10 @@
  * (row,column) => (0,0) is the topmost and leftmost character.
  */
 interface Position {
-
     /**
      *
      */
     row: number;
-
     /**
      *
      */

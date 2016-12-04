@@ -1,6 +1,7 @@
 import {applyMixins} from "../lib/mix";
 import KeyboardHandler from "../keyboard/KeyboardHandler";
 import KeyHash from "../keyboard/KeyHash";
+import EditorAction from '../keyboard/EditorAction';
 import EventEmitterClass from "../lib/EventEmitterClass";
 import Command from './Command';
 import Editor from '../Editor';
@@ -8,38 +9,31 @@ import EventBus from '../EventBus';
 import KeyboardResponse from '../keyboard/KeyboardResponse';
 
 /**
- * @class CommandManager
+ *
  */
 export default class CommandManager implements EventBus<any, CommandManager> {
     /**
-     * @property hashHandler
-     * @type KeyboardHandler
+     *
      */
     public hashHandler: KeyboardHandler;
-
     /**
-     * @property $inReplay
-     * @type boolean
-     * @private
+     *
      */
     private $inReplay: boolean;
-
     /**
      * Used by StatusBar
      */
     public recording: boolean;
-    private macro: any[][];
-    private oldMacro;
+    private macro: { command: Command; args: any }[][];
+    private oldMacro: { command: Command; args: any }[][];
     private $addCommandToMacro: (event, cm: CommandManager) => any;
     private eventBus: EventEmitterClass<any, CommandManager>;
 
     _buildKeyHash;
 
     /**
-     * @class CommandManager
-     * @constructor
-     * @param platform {string} Identifier for the platform; must be either `'mac'` or `'win'`
-     * @param commands {Command[]} A list of commands
+     * @param platform Identifier for the platform; must be either `'mac'` or `'win'`
+     * @param commands A list of commands
      */
     constructor(platform: string, commands: Command[]) {
         this.eventBus = new EventEmitterClass<any, CommandManager>(this);
@@ -69,18 +63,16 @@ export default class CommandManager implements EventBus<any, CommandManager> {
         return this.hashHandler.commandKeyBinding;
     }
 
-    bindKey(key: string, command: any) {
+    bindKey(key: string, command: EditorAction): void {
         return this.hashHandler.bindKey(key, command);
     }
 
-    bindKeys(keyList) {
+    bindKeys(keyList: { [name: string]: EditorAction }): void {
         return this.hashHandler.bindKeys(keyList);
     }
 
     /**
-     * @method addCommand
-     * @param command {Command}
-     * @return {void}
+     * @param command
      */
     addCommand(command: Command): void {
         this.hashHandler.addCommand(command);
@@ -111,9 +103,7 @@ export default class CommandManager implements EventBus<any, CommandManager> {
     }
 
     /**
-     * @method getCommandByName
-     * @param name {string}
-     * @return {Command}
+     * @param name
      */
     getCommandByName(name: string): Command {
         return this.hashHandler.commands[name];
@@ -136,11 +126,15 @@ export default class CommandManager implements EventBus<any, CommandManager> {
             return false;
         }
 
-        var e = { editor: editor, command: command, args: args };
+        if (command.isAvailable && !command.isAvailable(editor)) {
+            return false;
+        }
+
+        const e = { editor: editor, command: command, args: args };
         /**
          * @event exec
          */
-        var retvalue = this.eventBus._emit("exec", e);
+        const retvalue = this.eventBus._emit("exec", e);
         /**
          * @event afterExec
          */
@@ -160,15 +154,16 @@ export default class CommandManager implements EventBus<any, CommandManager> {
             this.macro.pop();
             this.eventBus.off("exec", this.$addCommandToMacro);
 
-            if (!this.macro.length)
+            if (!this.macro.length) {
                 this.macro = this.oldMacro;
+            }
 
             return this.recording = false;
         }
         if (!this.$addCommandToMacro) {
-            this.$addCommandToMacro = function (e) {
+            this.$addCommandToMacro = (e: { command: Command; args: any }) => {
                 this.macro.push([e.command, e.args]);
-            }.bind(this);
+            };
         }
 
         this.oldMacro = this.macro;
@@ -177,7 +172,7 @@ export default class CommandManager implements EventBus<any, CommandManager> {
         return this.recording = true;
     }
 
-    replay(editor: Editor) {
+    replay(editor: Editor): boolean {
         if (this.$inReplay || !this.macro)
             return;
 
@@ -208,20 +203,16 @@ export default class CommandManager implements EventBus<any, CommandManager> {
     }
 
     /**
-     * @method on
-     * @param eventName {string}
-     * @param callback {(event: any, source: CommandManager) => any}
-     * @return {void}
+     * @param eventName
+     * @param callback
      */
     on(eventName: string, callback: (event: any, source: CommandManager) => any, capturing?: boolean): void {
         this.eventBus.on(eventName, callback, capturing);
     }
 
     /**
-     * @method off
-     * @param eventName {string}
-     * @param callback {(event, source: CommandManager) => any}
-     * @return {void}
+     * @param eventName
+     * @param callback
      */
     off(eventName: string, callback: (event: any, source: CommandManager) => any): void {
         this.eventBus.off(eventName, callback);

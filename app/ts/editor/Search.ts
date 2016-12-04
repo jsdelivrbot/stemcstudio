@@ -288,6 +288,14 @@ function $matchIterator(session: EditSession, options: SearchOptions): boolean |
     };
 }
 
+function addWordBoundary(needle: string, options: SearchOptions): string {
+    function wordBoundary(c: string): string {
+        if (/\w/.test(c) || options.regExp) return "\\b";
+        if (/\W/.test(c)) return "\\B";
+        return "";
+    }
+    return wordBoundary(needle[0]) + needle + wordBoundary(needle[needle.length - 1]);
+}
 /**
  * 
  */
@@ -309,10 +317,10 @@ export function assembleRegExp(options: SearchOptions, $disableFakeMultiline?: b
         }
 
         if (options.wholeWord) {
-            needleString = "\\b" + needleString + "\\b";
+            needleString = addWordBoundary(needleString, options);
         }
 
-        const modifier: string = options.caseSensitive ? "g" : "gi";
+        const modifier: string = options.caseSensitive ? "gm" : "gmi";
 
         options.$isMultiLine = !$disableFakeMultiline && /[\n\r]/.test(needleString);
         if (options.$isMultiLine) {

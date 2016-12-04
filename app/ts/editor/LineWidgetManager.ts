@@ -1,4 +1,4 @@
-import {addCssClass, createElement} from "./lib/dom";
+import {addCssClass, createHTMLDivElement} from "./lib/dom";
 import Delta from "./Delta";
 import Editor from "./Editor";
 import EditSession from "./EditSession";
@@ -69,9 +69,7 @@ export default class LineWidgetManager {
     }
 
     /**
-     * @method attach
-     * @param editor {Editor}
-     * @return {void}
+     * @param editor
      */
     attach(editor: Editor): void {
         if (editor && editor.widgetManager && editor.widgetManager !== this)
@@ -91,8 +89,7 @@ export default class LineWidgetManager {
     }
 
     /**
-     * @method detach
-     * @return {void}
+     *
      */
     detach(unused?: any): void {
         var editor = this.editor;
@@ -117,10 +114,8 @@ export default class LineWidgetManager {
     }
 
     /**
-     * @method updateOnFold
-     * @param e {Change}
-     * @param session {EditSession}
-     * @return {void}
+     * @param e
+     * @param session
      */
     updateOnFold(e: Change, session: EditSession): void {
         var lineWidgets = session.lineWidgets;
@@ -149,10 +144,8 @@ export default class LineWidgetManager {
     }
 
     /**
-     * @method updateOnChange
-     * @param delta {Delta}
-     * @param session {EditSession}
-     * @return {void}
+     * @param delta
+     * @param session
      */
     updateOnChange(delta: Delta, session: EditSession): void {
         const lineWidgets = this.session.lineWidgets;
@@ -219,7 +212,7 @@ export default class LineWidgetManager {
 
         const renderer = this.editor.renderer;
         if (w.html && !w.el) {
-            w.el = <HTMLDivElement>createElement("div");
+            w.el = createHTMLDivElement();
             w.el.innerHTML = w.html;
         }
         if (w.el) {

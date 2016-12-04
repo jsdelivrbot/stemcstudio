@@ -16,8 +16,7 @@ const outdents = {
 };
 
 /**
- * @class PythonMode
- * @extends TextMode
+ *
  */
 export default class PythonMode extends TextMode {
     $outdent: MatchingBraceOutdent;
@@ -28,6 +27,7 @@ export default class PythonMode extends TextMode {
         super(workerUrl, scriptImports);
         this.HighlightRules = PythonHighlightRules;
         this.foldingRules = new PythonFoldMode("\\:");
+        this.$behaviour = this.$defaultBehaviour;
     }
     getNextLineIndent(state: string, line: string, tab: string): string {
         let indent = this.$getIndent(line);
@@ -85,7 +85,7 @@ export default class PythonMode extends TextMode {
     createWorker(session: EditSession, callback: (err: any, worker: WorkerClient) => any): void {
         const worker = new WorkerClient(this.workerUrl);
 
-        worker.on('annotations', function(event: { data: Annotation[] }) {
+        worker.on('annotations', function (event: { data: Annotation[] }) {
             const annotations: Annotation[] = event.data;
             if (annotations.length > 0) {
                 session.setAnnotations(annotations);
@@ -96,7 +96,7 @@ export default class PythonMode extends TextMode {
             session._emit("annotations", { data: annotations });
         });
 
-        worker.on("terminate", function() {
+        worker.on("terminate", function () {
             worker.detachFromDocument();
             session.clearAnnotations();
         });
@@ -104,7 +104,7 @@ export default class PythonMode extends TextMode {
         // FIXME: Must be able to inject the module name.
         const moduleName = 'ace-workers.js';
         try {
-            worker.init(this.scriptImports, moduleName, 'PythonWorker', function(err: any) {
+            worker.init(this.scriptImports, moduleName, 'PythonWorker', function (err: any) {
                 if (!err) {
                     worker.attachToDocument(session.getDocument());
                     callback(void 0, worker);

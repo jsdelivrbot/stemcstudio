@@ -39,31 +39,28 @@ import Command from '../commands/Command';
 import KeyboardResponse from './KeyboardResponse';
 
 /**
- * @class KeyboardHandler
+ *
  */
 export default class KeyboardHandler {
 
     /**
-     * @property commandKeyBinding
+     *
      */
     public commandKeyBinding: { [hashId: number]: { [name: string]: Command } };
 
     /**
-     * @property commands
+     *
      */
     public commands: { [name: string]: Command };
 
     /**
-     * @property platform
-     * @type {string}
+     *
      */
     public platform: string;
 
     /**
-     * @class KeyboardHandler
-     * @constructor
-     * @params [commands] {Command[]}
-     * @params [platform] {string}
+     * @params commands
+     * @params platform
      */
     constructor(commands?: Command[], platform?: string) {
 
@@ -77,9 +74,7 @@ export default class KeyboardHandler {
     }
 
     /**
-     * @method addCommand
-     * @param command {Command}
-     * @return {void}
+     * @param command
      */
     addCommand(command: Command): void {
         if (this.commands[command.name]) {
@@ -94,9 +89,7 @@ export default class KeyboardHandler {
     }
 
     /**
-     * @method removeCommand
-     * @param command {string | Command}
-     * @return {void}
+     * @param command
      */
     removeCommand(command: string | Command): void {
         var name = (typeof command === 'string' ? command : command.name);
@@ -122,10 +115,8 @@ export default class KeyboardHandler {
      * This is a convenience function for adding a command.
      * The name of the command is derived from the key alternatives string.
      *
-     * @method bindKey
-     * @param key {string}
-     * @param action {EditorAction}
-     * @return {void}
+     * @param key
+     * @param action
      */
     bindKey(key: string, action: EditorAction): void {
         if (!key) {
@@ -149,7 +140,7 @@ export default class KeyboardHandler {
 
         var ckb = this.commandKeyBinding;
 
-        key.split("|").forEach(function(keyPart) {
+        key.split("|").forEach(function (keyPart) {
             var binding: KeyHash = self.parseKeys(keyPart/*, command*/);
             var hashId = binding.hashId;
             (ckb[hashId] || (ckb[hashId] = {}))[binding.key] = command;
@@ -199,7 +190,7 @@ export default class KeyboardHandler {
      */
     bindKeys(keyList: { [name: string]: EditorAction }): void {
         var self = this;
-        Object.keys(keyList).forEach(function(key) {
+        Object.keys(keyList).forEach(function (key) {
             self.bindKey(key, keyList[key]);
         }, self);
     }
@@ -231,7 +222,7 @@ export default class KeyboardHandler {
         if (keys.indexOf(" ") !== -1)
             keys = keys.split(/\s+/).pop();
 
-        var parts = keys.toLowerCase().split(/[\-\+]([\-\+])?/).filter(function(x: any) { return x; });
+        var parts = keys.toLowerCase().split(/[\-\+]([\-\+])?/).filter(function (x: any) { return x; });
         var key = parts.pop();
 
         var keyCode = keyCodes[key];
@@ -269,12 +260,11 @@ export default class KeyboardHandler {
      * @param data {any}
      * @param hashId {number}
      * @param keyString {string}
-     * @param [keyCode] {number}
-     * @param [e] {KeyboardEvent}
-     * @return {KeyboardResponse}
+     * @param keyCode
+     * @param e
      */
     handleKeyboard(data: any, hashId: number, keyString: string, keyCode?: number, e?: KeyboardEvent): KeyboardResponse {
-        var response = {
+        const response = {
             command: this.findKeyCommand(hashId, keyString)
         };
         return response;

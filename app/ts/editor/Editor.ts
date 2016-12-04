@@ -77,7 +77,10 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     private eventBus: EventEmitterClass<any, Editor>;
 
-    private $mouseHandler: IGestureHandler;
+    /**
+     * Have to make this public to support error marker extension.
+     */
+    public $mouseHandler: IGestureHandler;
     public $isFocused;
 
     /**
@@ -1357,7 +1360,9 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
             const range = new Range(row, column, row, column + token.value.length);
 
             // Remove range if different.
-            if (session.$tagHighlight && range.compareRange(session.$backMarkers[session.$tagHighlight].range) !== 0) {
+            const sbm = session.$backMarkers[session.$tagHighlight];
+            // Defensive undefined check may indicate a bug elsewhere?
+            if (session.$tagHighlight && sbm !== undefined && range.compareRange(sbm.range) !== 0) {
                 session.removeMarker(session.$tagHighlight);
                 session.$tagHighlight = null;
             }
@@ -3875,6 +3880,7 @@ class FoldHandler {
 interface IGestureHandler {
     $dragDelay: number;
     $scrollSpeed: number;
+    isMousePressed: boolean;
     cancelContextMenu(): void;
 }
 
@@ -3963,15 +3969,21 @@ class MouseHandler implements IGestureHandler {
                 return;
             }
             // FIXME: Probably s/b clientXY
-            var char = editor.renderer.screenToTextCoordinates(e.x, e.y);
-            var range = editor.getSession().getSelection().getRange();
-            var renderer = editor.renderer;
+            const char = editor.renderer.screenToTextCoordinates(e.x, e.y);
+            const session = editor.getSession();
+            if (session) {
+                const range = session.getSelection().getRange();
+                const renderer = editor.renderer;
 
-            if (!range.isEmpty() && range.insideStart(char.row, char.column)) {
-                renderer.setCursorStyle('default');
+                if (!range.isEmpty() && range.insideStart(char.row, char.column)) {
+                    renderer.setCursorStyle('default');
+                }
+                else {
+                    renderer.setCursorStyle("");
+                }
             }
             else {
-                renderer.setCursorStyle("");
+                console.warn("editor.session is not defined.");
             }
         });
     }

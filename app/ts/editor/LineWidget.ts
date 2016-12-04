@@ -6,24 +6,26 @@ import Fold from './Fold';
  *
  */
 interface LineWidget {
-    html: string;
+    html?: string;
     row: number;
-    rowCount: number;
-    coverLine: boolean;
+    rowCount?: number;
+    coverLine?: boolean;
     coverGutter: boolean;
-    session: EditSession;
-    editor: Editor;
-    h: number;
-    w: number;
-    el: HTMLElement;
-    pixelHeight: number;
-    fixedWidth: boolean;
-    fullWidth: boolean;
-    screenWidth: number;
-    hidden: boolean;
-    _inDocument: boolean;
-    $oldWidget: LineWidget;
-    $fold: Fold;
+    session?: EditSession;
+    editor?: Editor;
+    h?: number;
+    w?: number;
+    el: HTMLDivElement;
+    pixelHeight?: number;
+    fixedWidth?: boolean;
+    fullWidth?: boolean;
+    screenWidth?: number;
+    type?: 'errorMarker';
+    hidden?: boolean;
+    _inDocument?: boolean;
+    $oldWidget?: LineWidget;
+    $fold?: Fold;
+    destroy: () => any;
 }
 
 export default LineWidget;

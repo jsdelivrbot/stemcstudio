@@ -4,7 +4,13 @@ export function getDocumentBody(doc: Document = document): HTMLBodyElement {
     return <HTMLBodyElement>(doc.body || doc.getElementsByTagName("body")[0]);
 }
 
-export function createHTMLDivElement(namespaceURI?: string): HTMLDivElement {
+export function createHTMLDivElement(): HTMLDivElement {
+    return document.createElementNS ?
+        <HTMLDivElement>document.createElementNS(XHTML_NS, 'div') :
+        document.createElement('div');
+}
+
+export function createHTMLDivElementNS(namespaceURI: string): HTMLDivElement {
     return document.createElementNS ?
         <HTMLDivElement>document.createElementNS(namespaceURI || XHTML_NS, 'div') :
         document.createElement('div');

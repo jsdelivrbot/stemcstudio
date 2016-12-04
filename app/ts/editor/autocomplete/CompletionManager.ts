@@ -481,6 +481,11 @@ export default class CompletionManager {
     }
 
     private blurListener(e: MouseEvent) {
+        // If the user clicked on an anchor in the tooltip, open that before
+        // we close the tooltip
+        if (e.relatedTarget && e.relatedTarget['nodeName'] === "A" && e.relatedTarget['href']) {
+            window.open(e.relatedTarget['href'], "_blank");
+        }
         // we have to check if activeElement is a child of popup because
         // on IE preventDefault doesn't stop scrollbar from being focussed
         const el = document.activeElement;

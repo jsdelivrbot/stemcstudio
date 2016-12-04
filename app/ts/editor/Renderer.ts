@@ -90,7 +90,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
     private $minLines: number;
 
     /**
-     * FIXME: Leaky. ListViewPopup uses this property.
+     * FIXME: Leaky. ListViewPopup and showErrorMarker use this property.
      */
     public cursorLayer: CursorLayer;
 
@@ -1448,7 +1448,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
      * @param offset
      * @param $viewMargin
      */
-    scrollCursorIntoView(cursor?: Position, offset?: number, $viewMargin?: { top: number; bottom: number }): void {
+    scrollCursorIntoView(cursor?: Position, offset?: number, $viewMargin?: { top?: number; bottom?: number }): void {
         // the editor is not visible
         if (this.$size.scrollerHeight === 0)
             return;

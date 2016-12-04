@@ -16,6 +16,7 @@ import UndoManager from '../../editor/UndoManager';
 import Editor from '../../editor/Editor';
 import EditorScope from './EditorScope';
 import searchBox from '../../editor/ext/SearchBox';
+import showErrorMarker from '../../editor/ext/showErrorMarker';
 import showKeyboardShortcuts from '../../editor/ext/showKeyboardShortcuts';
 import ISettingsService from '../../services/settings/ISettingsService';
 import ITextService from '../../services/text/ITextService';
@@ -167,6 +168,24 @@ function factory(
                                 searchBox(editor, true);
                             },
                             readOnly: true // false if this command should not apply in readOnly mode
+                        });
+                        editor.commands.addCommand({
+                            name: 'goToNextError',
+                            bindKey: { win: 'Alt-E', mac: 'F4' },
+                            exec: function (editor: Editor) {
+                                showErrorMarker(editor, +1);
+                            },
+                            scrollIntoView: 'animate',
+                            readOnly: true
+                        });
+                        editor.commands.addCommand({
+                            name: 'goToPreviousError',
+                            bindKey: { win: 'Alt-Shift-E', mac: 'Shift-F4' },
+                            exec: function (editor: Editor) {
+                                showErrorMarker(editor, -1);
+                            },
+                            scrollIntoView: 'animate',
+                            readOnly: true
                         });
                         editor.commands.addCommands([{
                             name: "showKeyboardShortcuts",

@@ -93,10 +93,8 @@ export default class KeyBinding {
     }
 
     /**
-     * @method addKeyboardHandler
-     * @param kb {KeyboardHandler}
-     * @param [pos] {number}
-     * @return {void}
+     * @param kb
+     * @param pos
      */
     addKeyboardHandler(kb: KeyboardHandler, pos?: number): void {
         if (!kb) {
@@ -107,7 +105,7 @@ export default class KeyBinding {
             kb.handleKeyboard = kb;
         }
         */
-        var i = this.$handlers.indexOf(kb);
+        const i = this.$handlers.indexOf(kb);
         if (i !== -1) {
             this.$handlers.splice(i, 1);
         }
@@ -125,12 +123,10 @@ export default class KeyBinding {
     }
 
     /**
-     * @method removeKeyboardHandler
-     * @param kb {KeyboardHandler}
-     * @return {boolean}
+     * @param kb
      */
     removeKeyboardHandler(kb: KeyboardHandler): boolean {
-        var i = this.$handlers.indexOf(kb);
+        const i = this.$handlers.indexOf(kb);
         if (i === -1) {
             return false;
         }

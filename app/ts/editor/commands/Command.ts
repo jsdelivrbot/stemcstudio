@@ -27,67 +27,52 @@ import Editor from '../Editor';
 import EditorAction from '../keyboard/EditorAction';
 
 /**
- * @class Command
+ *
  */
 interface Command {
 
     /**
-     * @property name
-     * @type string
+     *
      */
     name: string;
 
     /**
-     * @property exec
-     * @type EditorAction
+     *
      */
     exec: EditorAction;
 
     /**
-     * @property bindKey
+     *
      */
     bindKey?: string | { win: string; mac: string };
 
     /**
      * "fileJump", what else?
-     * @property aceCommandGroup
-     * @type string
      */
-    aceCommandGroup?: string;
+    aceCommandGroup?: 'fileJump';
 
     /**
      * "forEach" | "forEachLine" | function | undefined
-     *
-     * @property multiSelectAction
-     * @type string | EditorAction
      */
-    multiSelectAction?: string | EditorAction;
+    multiSelectAction?: 'forEach' | 'forEachLine' | EditorAction;
 
     /**
-     * @property passEvent
-     * @type boolean
-     * @optional
+     *
      */
     passEvent?: boolean;
 
     /**
-     * @property readOnly
-     * @type boolean
-     * @optional
+     *
      */
     readOnly?: boolean;
 
     /**
-     * @property scrollIntoView
-     * @type boolean
-     * @optional
+     *
      */
-    scrollIntoView?: string;
+    scrollIntoView?: 'animate' | 'center' | 'cursor' | 'none' | 'selection' | 'selectionPart';
 
     /**
-     * @property isAvailable
-     * @type (editor: Editor) => boolean
-     * @optional
+     *
      */
     isAvailable?: (editor: Editor) => boolean;
 }

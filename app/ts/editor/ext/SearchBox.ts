@@ -308,6 +308,9 @@ class SearchBox {
     }
 }
 
+/**
+ * 
+ */
 export default function searchBox(editor: Editor, isReplace?: boolean): void {
     const searchBox = <SearchBox>editor[SEARCH_EXTENSION];
     const sb = searchBox || new SearchBox(editor);
