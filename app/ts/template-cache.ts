@@ -622,7 +622,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "            </label>\n" +
     "            <br/>\n" +
     "            <label class='checkbox-inline text-muted'>\n" +
-    "                <input type='checkbox' ng-model='useSoftTabs' data-ng-change='useSoftTabsChange()'>Use Soft Tabs</input>\n" +
+    "                <input type='checkbox' ng-model='useSoftTabs' data-ng-change='useSoftTabsChange()'>Soft Tabs</input>\n" +
     "            </label>\n" +
     "            <br/>\n" +
     "            <label class='text-muted'>Tab Size:</label>\n" +
