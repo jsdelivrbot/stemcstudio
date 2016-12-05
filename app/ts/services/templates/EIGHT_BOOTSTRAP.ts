@@ -1,0 +1,47 @@
+const NEWLINE = '\n';
+
+export default function (options: {}, tabString: string): string {
+    const _ = tabString;
+    const lines: string[] = [];
+    lines.push("const engine = new EIGHT.Engine('canvas3D')");
+    lines.push(_ + ".size(500, 500)");
+    lines.push(_ + ".clearColor(0.1, 0.1, 0.1, 1.0)");
+    lines.push(_ + ".enable(EIGHT.Capability.DEPTH_TEST)");
+    lines.push("");
+    lines.push("const scene = new EIGHT.Scene(engine)");
+    lines.push("");
+    lines.push("const ambients: EIGHT.Facet[] = []");
+    lines.push("");
+    lines.push("const camera = new EIGHT.PerspectiveCamera()");
+    lines.push("camera.eye.y = 1");
+    lines.push("camera.eye.z = 3");
+    lines.push("ambients.push(camera)");
+    lines.push("");
+    lines.push("const dirLight = new EIGHT.DirectionalLight()");
+    lines.push("ambients.push(dirLight)");
+    lines.push("");
+    lines.push("const trackball = new EIGHT.TrackballControls(camera)");
+    lines.push("trackball.subscribe(engine.canvas)");
+    lines.push("");
+    lines.push("const box = new EIGHT.Box(engine)");
+    lines.push("box.color = EIGHT.Color.blue");
+    lines.push("scene.add(box)");
+    lines.push("");
+    lines.push("const animate = function(timestamp: number) {");
+    lines.push("");
+    lines.push(_ + "engine.clear()");
+    lines.push("");
+    lines.push(_ + "trackball.update()");
+    lines.push("");
+    lines.push(_ + "dirLight.direction.copyVector(camera.look).subVector(camera.eye)");
+    lines.push("");
+    lines.push(_ + "box.attitude.rotorFromAxisAngle({x:0, y:1, z:0}, timestamp * 0.001)");
+    lines.push("");
+    lines.push(_ + "scene.render(ambients)");
+    lines.push("");
+    lines.push(_ + "requestAnimationFrame(animate)");
+    lines.push("}");
+    lines.push("");
+    lines.push("requestAnimationFrame(animate)");
+    return lines.join(NEWLINE).concat(NEWLINE);
+}

@@ -2,6 +2,8 @@ import app from '../../app';
 import IOptionManager from '../options/IOptionManager';
 import ITemplate from './ITemplate';
 
+import EIGHT_BOOTSTRAP from './EIGHT_BOOTSTRAP';
+import EIGHT_HTML from './EIGHT_HTML';
 import MINIMAL_HTML from './MINIMAL_HTML';
 import MINIMAL_BOOTSTRAP from './MINIMAL_BOOTSTRAP';
 import MINIMAL_CSS from './MINIMAL_CSS';
@@ -13,6 +15,25 @@ import {LANGUAGE_HTML} from '../../languages/modes';
 import {LANGUAGE_TYPE_SCRIPT} from '../../languages/modes';
 import {LANGUAGE_CSS} from '../../languages/modes';
 import {LANGUAGE_MARKDOWN} from '../../languages/modes';
+import {EDITOR_PREFERENCES_STORAGE} from '../../modules/preferences/constants';
+import EditorPreferencesStorage from '../../modules/preferences/EditorPreferencesStorage';
+
+/**
+ * Computes the string to use for a single tab based upon the current editor preferences.
+ */
+function tabString(editorPreferences: EditorPreferencesStorage): string {
+    if (editorPreferences.useSoftTabs) {
+        let ts = "";
+        const tabSize = editorPreferences.tabSize;
+        for (let i = 0; i < tabSize; i++) {
+            ts = ts + " ";
+        }
+        return ts;
+    }
+    else {
+        return "\t";
+    }
+}
 
 /**
  * The `templates` service provides starting point doodles.
@@ -20,14 +41,16 @@ import {LANGUAGE_MARKDOWN} from '../../languages/modes';
  */
 app.factory('templates', [
     '$location',
+    EDITOR_PREFERENCES_STORAGE,
     'options',
     'LIBS_MARKER',
     'FILENAME_HTML',
     'FILENAME_CODE',
     'FILENAME_LIBS',
     'FILENAME_LESS',
-    function(
+    function (
         $location: angular.ILocationService,
+        editorPreferences: EditorPreferencesStorage,
         options: IOptionManager,
         LIBS_MARKER: string,
         FILENAME_HTML: string,
@@ -35,25 +58,40 @@ app.factory('templates', [
         FILENAME_LIBS: string,
         FILENAME_LESS: string
     ): ITemplate[] {
+        /**
+         * The string to use for a single tab.
+         */
+        const tab = tabString(editorPreferences);
 
-        // We really don't need a full Doodle here.
-        // But maybe that won't save much?
-        const T0: ITemplate = {
-            description: "Getting Started with STEMCstudio",
+        const MINIM: ITemplate = {
+            name: "BASIC",
+            description: "Basic",
             files: {},
             dependencies: ['DomReady', 'jasmine'],
             operatorOverloading: false
         };
-        T0.files[FILENAME_HTML] = { content: MINIMAL_HTML(), language: LANGUAGE_HTML };
-        T0.files['index.ts'] = { content: MINIMAL_BOOTSTRAP(), language: LANGUAGE_TYPE_SCRIPT };
-        T0.files['style.css'] = { content: MINIMAL_CSS(), language: LANGUAGE_CSS };
-        T0.files['README.md'] = { content: MINIMAL_README(), language: LANGUAGE_MARKDOWN };
-        T0.files['tests.html'] = { content: MINIMAL_SPEC_RUNNER_HTML(), language: LANGUAGE_HTML };
-        T0.files['tests.ts'] = { content: MINIMAL_SPEC_RUNNER(), language: LANGUAGE_TYPE_SCRIPT };
-        T0.files['Example.spec.ts'] = { content: MINIMAL_EXAMPLE_SPEC(), language: LANGUAGE_TYPE_SCRIPT };
-        // TODO: The following should trigger the creation of the package.json file.
-        // T0.name = "getting-started";
-        // T0.version = "0.1.0";
+        MINIM.files[FILENAME_HTML] = { content: MINIMAL_HTML({}, tab), language: LANGUAGE_HTML };
+        MINIM.files['index.ts'] = { content: MINIMAL_BOOTSTRAP({}, tab), language: LANGUAGE_TYPE_SCRIPT };
+        MINIM.files['style.css'] = { content: MINIMAL_CSS({}, tab), language: LANGUAGE_CSS };
+        MINIM.files['README.md'] = { content: MINIMAL_README({}, tab), language: LANGUAGE_MARKDOWN };
+        MINIM.files['tests.html'] = { content: MINIMAL_SPEC_RUNNER_HTML({}, tab), language: LANGUAGE_HTML };
+        MINIM.files['tests.ts'] = { content: MINIMAL_SPEC_RUNNER({}, tab), language: LANGUAGE_TYPE_SCRIPT };
+        MINIM.files['Example.spec.ts'] = { content: MINIMAL_EXAMPLE_SPEC({}, tab), language: LANGUAGE_TYPE_SCRIPT };
 
-        return [T0];
+        const EIGHT: ITemplate = {
+            name: "EIGHT",
+            description: "EIGHT",
+            files: {},
+            dependencies: ['DomReady', 'jasmine', 'davinci-eight'],
+            operatorOverloading: true
+        };
+        EIGHT.files[FILENAME_HTML] = { content: EIGHT_HTML({}, tab), language: LANGUAGE_HTML };
+        EIGHT.files['index.ts'] = { content: EIGHT_BOOTSTRAP({}, tab), language: LANGUAGE_TYPE_SCRIPT };
+        EIGHT.files['style.css'] = { content: MINIMAL_CSS({}, tab), language: LANGUAGE_CSS };
+        EIGHT.files['README.md'] = { content: MINIMAL_README({}, tab), language: LANGUAGE_MARKDOWN };
+        EIGHT.files['tests.html'] = { content: MINIMAL_SPEC_RUNNER_HTML({}, tab), language: LANGUAGE_HTML };
+        EIGHT.files['tests.ts'] = { content: MINIMAL_SPEC_RUNNER({}, tab), language: LANGUAGE_TYPE_SCRIPT };
+        EIGHT.files['Example.spec.ts'] = { content: MINIMAL_EXAMPLE_SPEC({}, tab), language: LANGUAGE_TYPE_SCRIPT };
+
+        return [MINIM, EIGHT];
     }]);

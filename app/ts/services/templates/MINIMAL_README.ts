@@ -1,6 +1,7 @@
 const NEWLINE = '\n';
 
-export default function(options: {} = {}): string {
+export default function (options: {}, tabString: string): string {
+    // const _ = tabString;
     const lines: string[] = [];
     lines.push("# Getting Started with STEMCstudio");
     lines.push("");

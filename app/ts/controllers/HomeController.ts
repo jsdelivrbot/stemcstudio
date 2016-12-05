@@ -81,18 +81,17 @@ export default class HomeController extends AbstractPageController {
         };
 
         $scope.clickCodeNow = (label?: string, value?: number) => {
-
-            // console.lg(`clickCodeNow(label => ${label}, value => ${value})`);
-
-            // It's now possible to select a doodle from Local Storage, and very
-            // easy to select the most recent doodle at the head of the list.
-            // We don't want to duplicate that functionality.
-            // Instead, we create an empty doodle and leave it to be discovered.
+            // There seems to be very little point in creating a totally empty project.
+            // It could also create a barrier for new users.
+            // Instead, we navigate to New and choose a template for a new project.
+            // The existing code is retained for now.
+            /*
             const doodle = doodles.createDoodle();
             doodles.addHead(doodle);
             doodles.updateStorage();
-
             navigation.gotoDoodle(label, value);
+            */
+            navigation.gotoNew(label, value);
         };
 
         $scope.goExamples = () => {

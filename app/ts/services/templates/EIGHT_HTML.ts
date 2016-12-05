@@ -1,8 +1,8 @@
 const NEWLINE = '\n';
 
 export default function (options: {}, tabString: string): string {
-    const lines: string[] = [];
     const _ = tabString;
+    const lines: string[] = [];
     lines.push("<!DOCTYPE html>");
     lines.push("<html>");
     lines.push(_ + "<head>");
@@ -15,11 +15,12 @@ export default function (options: {}, tabString: string): string {
     lines.push(_ + _ + "<!-- SCRIPTS-MARKER -->");
     lines.push(_ + "</head>");
     lines.push(_ + "<body>");
+    lines.push(_ + _ + "<canvas id='canvas3D'></canvas>");
     lines.push(_ + _ + "<script>");
     lines.push(_ + _ + "// CODE-MARKER");
     lines.push(_ + _ + "</script>");
     lines.push(_ + _ + "<script>");
-    lines.push(_ + _ + "System.import('./tests.js')");
+    lines.push(_ + _ + "System.import('./index.js')");
     lines.push(_ + _ + "</script>");
     lines.push(_ + "</body>");
     lines.push("</html>");

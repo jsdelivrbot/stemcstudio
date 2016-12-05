@@ -1,6 +1,7 @@
 const NEWLINE = '\n';
 
-export default function(options: {} = {}): string {
+export default function (options: {}, tabString: string): string {
+    const _ = tabString;
     const lines: string[] = [];
     lines.push("import Example from './Example.spec'");
     lines.push("");
@@ -15,29 +16,29 @@ export default function(options: {} = {}): string {
     lines.push("extend(window, jasmineInterface)");
     lines.push("");
     lines.push("const htmlReporter = new jasmine.HtmlReporter({");
-    lines.push("  env: env,");
-    lines.push("  getContainer: function() { return document.body },");
-    lines.push("  createElement: function() { return document.createElement.apply(document, arguments) },");
-    lines.push("  createTextNode: function() { return document.createTextNode.apply(document, arguments) },");
-    lines.push("  timer: new jasmine.Timer()");
+    lines.push(_ + "env: env,");
+    lines.push(_ + "getContainer: function() { return document.body },");
+    lines.push(_ + "createElement: function() { return document.createElement.apply(document, arguments) },");
+    lines.push(_ + "createTextNode: function() { return document.createTextNode.apply(document, arguments) },");
+    lines.push(_ + "timer: new jasmine.Timer()");
     lines.push("})");
     lines.push("");
     lines.push("env.addReporter(htmlReporter)");
     lines.push("");
     lines.push("DomReady.ready(function() {");
-    lines.push("  htmlReporter.initialize()");
-    lines.push('  describe("Example", Example)');
-    lines.push("  env.execute()");
+    lines.push(_ + "htmlReporter.initialize()");
+    lines.push(_ + 'describe("Example", Example)');
+    lines.push(_ + "env.execute()");
     lines.push("})");
     lines.push("");
     lines.push("/*");
     lines.push(" * Helper function for extending the properties on objects.");
     lines.push(" */");
     lines.push("export default function extend<T>(destination: T, source: any): T {");
-    lines.push("    for (let property in source) {");
-    lines.push("        destination[property] = source[property]");
-    lines.push("    }");
-    lines.push("    return destination");
+    lines.push(_ + "for (let property in source) {");
+    lines.push(_ + _ + "destination[property] = source[property]");
+    lines.push(_ + "}");
+    lines.push(_ + "return destination");
     lines.push("}");
     return lines.join(NEWLINE).concat(NEWLINE);
 }

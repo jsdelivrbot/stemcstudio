@@ -1031,7 +1031,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
   $templateCache.put('new.html',
     "<div class='modal-content'>\n" +
     "  <div class='modal-header'>\n" +
-    "      <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden='true' ng-click='doCancel()'>&times;</button>\n" +
+    "    <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden='true' ng-click='doCancel()'>&times;</button>\n" +
     "    <h3>Create a New Project</h3>\n" +
     "  </div>\n" +
     "  <div class='modal-body'>\n" +
@@ -1043,7 +1043,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "    <button class='btn btn-primary' ng-click='doOK()'>Create project</button>\n" +
     "    <button class='btn' ng-click='doCancel()'>Cancel</button>\n" +
     "  </div>\n" +
-    "</div>\n"
+    "</div>"
   );
 
 
