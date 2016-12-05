@@ -31,7 +31,15 @@ interface Preferences {
     /**
      * 
      */
+    tabSize?: number;
+    /**
+     * 
+     */
     theme?: string;
+    /**
+     * 
+     */
+    useSoftTabs?: boolean;
 }
 
 function mixin(obj: Preferences, base: Preferences) {
@@ -52,7 +60,9 @@ const DEFAULTS: Preferences = {
     showInvisibles: false,
     showLineNumbers: true,
     showPrintMargin: false,
-    theme: "Eclipse"
+    tabSize: 4,
+    theme: "Eclipse",
+    useSoftTabs: true
 };
 
 export default class PreferencesManagerService implements EditorPreferencesStorage {
@@ -79,14 +89,6 @@ export default class PreferencesManagerService implements EditorPreferencesStora
     }
     set fontSize(value: string) {
         this.cache.fontSize = value;
-        this.updateStorage();
-    }
-
-    get theme(): string {
-        return this.cache.theme;
-    }
-    set theme(value: string) {
-        this.cache.theme = value;
         this.updateStorage();
     }
 
@@ -119,6 +121,30 @@ export default class PreferencesManagerService implements EditorPreferencesStora
     }
     set showPrintMargin(value: boolean) {
         this.cache.showPrintMargin = value;
+        this.updateStorage();
+    }
+
+    get tabSize(): number {
+        return this.cache.tabSize;
+    }
+    set tabSize(value: number) {
+        this.cache.tabSize = value;
+        this.updateStorage();
+    }
+
+    get theme(): string {
+        return this.cache.theme;
+    }
+    set theme(value: string) {
+        this.cache.theme = value;
+        this.updateStorage();
+    }
+
+    get useSoftTabs(): boolean {
+        return this.cache.useSoftTabs;
+    }
+    set useSoftTabs(value: boolean) {
+        this.cache.useSoftTabs = value;
         this.updateStorage();
     }
 

@@ -6,8 +6,6 @@ import {keyCodeToString} from '../lib/keys';
 import {addListener, addCommandKeyListener, stopEvent, stopPropagation} from '../lib/event';
 import KeyboardHandler from '../keyboard/KeyboardHandler';
 import Range from '../Range';
-// var searchboxCss = require("../requirejs/text!./searchbox.css");
-// dom.importCssString(searchboxCss, "ace_searchbox");
 
 // TODO: Need to negotiate with Editor to install (disposable) extension.
 const SEARCH_EXTENSION = "searchBox";
@@ -311,7 +309,7 @@ class SearchBox {
 /**
  * 
  */
-export default function searchBox(editor: Editor, isReplace?: boolean): void {
+export default function showFindReplace(editor: Editor, isReplace?: boolean): void {
     const searchBox = <SearchBox>editor[SEARCH_EXTENSION];
     const sb = searchBox || new SearchBox(editor);
     sb.show(editor.session.getTextRange(), isReplace);

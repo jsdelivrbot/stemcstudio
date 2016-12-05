@@ -71,6 +71,31 @@ interface EditorPreferencesDialogScope {
     showPrintMarginChange(): void;
 
     /**
+     * 
+     */
+    tabSize: number;
+
+    /**
+     * 
+     */
+    tabSizes: number[];
+
+    /**
+     * 
+     */
+    useSoftTabs: boolean;
+
+    /**
+     * 
+     */
+    useSoftTabsChange(): void;
+
+    /**
+     * 
+     */
+    tabSizeChange(): void;
+
+    /**
      * The selected theme.
      */
     theme: Theme;

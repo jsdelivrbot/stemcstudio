@@ -38,6 +38,14 @@ interface EditorPreferencesEvent {
      * 
      */
     showPrintMargin: boolean;
+    /**
+     * 
+     */
+    tabSize: number;
+    /**
+     * 
+     */
+    useSoftTabs: boolean;
 }
 
 export default EditorPreferencesEvent;

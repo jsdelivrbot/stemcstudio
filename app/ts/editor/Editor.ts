@@ -2148,6 +2148,22 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
         return this.renderer.getPrintMarginColumn();
     }
 
+    setTabSize(tabSize: number): void {
+        this.session.setTabSize(tabSize);
+    }
+
+    getTabSize(): number {
+        return this.session.getTabSize();
+    }
+
+    setUseSoftTabs(useSoftTabs: boolean): void {
+        this.session.setUseSoftTabs(useSoftTabs);
+    }
+
+    getUseSoftTabs(): boolean {
+        return this.session.getUseSoftTabs();
+    }
+
     /**
      * If `readOnly` is true, then the editor is set to read-only mode, and none of the content can change.
      *

@@ -595,7 +595,6 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "            <h3 class='modal-title' style=\"float: right;\">Editor Preferences</h3>\n" +
     "        </div>\n" +
     "        <div id='themes-modal-body' class=\"modal-body\">\n" +
-    "\n" +
     "            <label class='text-muted'>Theme:</label>\n" +
     "            <select ng-model='theme' ng-options='theme.name for theme in themes track by theme.name' data-ng-change='themeChange()'></select>\n" +
     "            <br/>\n" +
@@ -621,6 +620,13 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "            <label class='checkbox-inline text-muted'>\n" +
     "                <input type='checkbox' ng-model='showPrintMargin' data-ng-change='showPrintMarginChange()'>Print Margin</input>\n" +
     "            </label>\n" +
+    "            <br/>\n" +
+    "            <label class='checkbox-inline text-muted'>\n" +
+    "                <input type='checkbox' ng-model='useSoftTabs' data-ng-change='useSoftTabsChange()'>Use Soft Tabs</input>\n" +
+    "            </label>\n" +
+    "            <br/>\n" +
+    "            <label class='text-muted'>Tab Size:</label>\n" +
+    "            <select ng-model='tabSize' ng-options='tabSize for tabSize in tabSizes track by tabSize' data-ng-change='tabSizeChange()'></select>\n" +
     "        </div>\n" +
     "        <div class=\"modal-footer\">\n" +
     "            <button class=\"btn btn-secondary\" type=\"button\" data-ng-click=\"cancel()\">Cancel</button>\n" +

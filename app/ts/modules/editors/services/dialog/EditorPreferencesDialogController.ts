@@ -31,7 +31,9 @@ export default class EditorPreferencesDialogController {
         this.$scope.showInvisibles = this.dialogModel.showInvisibles;
         this.$scope.showLineNumbers = this.dialogModel.showLineNumbers;
         this.$scope.showPrintMargin = this.dialogModel.showPrintMargin;
+        this.$scope.tabSize = this.dialogModel.tabSize;
         this.$scope.theme = this.dialogModel.theme;
+        this.$scope.useSoftTabs = this.dialogModel.useSoftTabs;
 
         // If anything changes, apply it immediately so that the user can see the result.
 
@@ -59,8 +61,16 @@ export default class EditorPreferencesDialogController {
             this.editorPreferencesService.setShowPrintMargin(this.$scope.showPrintMargin);
         };
 
+        this.$scope.tabSizeChange = () => {
+            this.editorPreferencesService.setTabSize(this.$scope.tabSize);
+        };
+
         this.$scope.themeChange = () => {
             this.editorPreferencesService.setCurrentThemeByName(this.$scope.theme.name);
+        };
+
+        this.$scope.useSoftTabsChange = () => {
+            this.editorPreferencesService.setUseSoftTabs(this.$scope.useSoftTabs);
         };
 
         this.$scope.ok = () => {
@@ -71,7 +81,9 @@ export default class EditorPreferencesDialogController {
             this.dialogModel.showInvisibles = this.$scope.showInvisibles;
             this.dialogModel.showLineNumbers = this.$scope.showLineNumbers;
             this.dialogModel.showPrintMargin = this.$scope.showPrintMargin;
+            this.dialogModel.tabSize = this.$scope.tabSize;
             this.dialogModel.theme = this.$scope.theme;
+            this.dialogModel.useSoftTabs = this.$scope.useSoftTabs;
             this.$uibModalInstance.close(this.dialogModel);
         };
 
@@ -82,8 +94,14 @@ export default class EditorPreferencesDialogController {
 
         // Initialize available themes and fontSizes on scope. 
 
-        this.editorPreferencesService.getFontSizes().then((fontSize) => {
-            this.$scope.fontSizes = fontSize;
+        this.editorPreferencesService.getFontSizes().then((fontSizes) => {
+            this.$scope.fontSizes = fontSizes;
+        }).catch((reason) => {
+            // Ignore
+        });
+
+        this.editorPreferencesService.getTabSizes().then((tabSizes) => {
+            this.$scope.tabSizes = tabSizes;
         }).catch((reason) => {
             // Ignore
         });

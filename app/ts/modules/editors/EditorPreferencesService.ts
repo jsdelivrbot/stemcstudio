@@ -24,6 +24,18 @@ interface EditorPreferencesService {
      */
     getFontSizes(): angular.IPromise<string[]>;
     /**
+     * 
+     */
+    getTabSize(): number;
+    /**
+     * 
+     */
+    setTabSize(tabSize: number): void;
+    /**
+     * Returns the available list of tabSizes. 
+     */
+    getTabSizes(): angular.IPromise<number[]>;
+    /**
      * Returns the available list of themes as identifiers. 
      */
     getThemes(): angular.IPromise<Theme[]>;
@@ -72,6 +84,14 @@ interface EditorPreferencesService {
      * 
      */
     setShowPrintMargin(showPrintMargin: boolean): void;
+    /**
+     * 
+     */
+    getUseSoftTabs(): boolean;
+    /**
+     * 
+     */
+    setUseSoftTabs(useSoftTabs: boolean): void;
     /**
      * Adds a listener for changes in the theme.
      */

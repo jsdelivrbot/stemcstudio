@@ -9,7 +9,6 @@
             <h3 class='modal-title' style="float: right;">Editor Preferences</h3>
         </div>
         <div id='themes-modal-body' class="modal-body">
-
             <label class='text-muted'>Theme:</label>
             <select ng-model='theme' ng-options='theme.name for theme in themes track by theme.name' data-ng-change='themeChange()'></select>
             <br/>
@@ -35,6 +34,13 @@
             <label class='checkbox-inline text-muted'>
                 <input type='checkbox' ng-model='showPrintMargin' data-ng-change='showPrintMarginChange()'>Print Margin</input>
             </label>
+            <br/>
+            <label class='checkbox-inline text-muted'>
+                <input type='checkbox' ng-model='useSoftTabs' data-ng-change='useSoftTabsChange()'>Use Soft Tabs</input>
+            </label>
+            <br/>
+            <label class='text-muted'>Tab Size:</label>
+            <select ng-model='tabSize' ng-options='tabSize for tabSize in tabSizes track by tabSize' data-ng-change='tabSizeChange()'></select>
         </div>
         <div class="modal-footer">
             <button class="btn btn-secondary" type="button" data-ng-click="cancel()">Cancel</button>

@@ -29,7 +29,15 @@ interface EditorPreferencesStorage {
     /**
      * 
      */
+    tabSize: number;
+    /**
+     * 
+     */
     theme: string;
+    /**
+     * 
+     */
+    useSoftTabs: boolean;
 }
 
 export default EditorPreferencesStorage;

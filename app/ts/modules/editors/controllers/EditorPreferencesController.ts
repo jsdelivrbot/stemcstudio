@@ -29,15 +29,19 @@ export default class EditorPreferencesController {
         const showInvisibles = this.editorPreferencesService.getShowInvisibles();
         const showLineNumbers = this.editorPreferencesService.getShowLineNumbers();
         const showPrintMargin = this.editorPreferencesService.getShowPrintMargin();
+        const tabSize = this.editorPreferencesService.getTabSize();
+        const useSoftTabs = this.editorPreferencesService.getUseSoftTabs();
 
         const model: EditorPreferencesDialogModel = {
             displayIndentGuides,
             fontSize,
-            theme,
             showFoldWidgets,
             showInvisibles,
             showLineNumbers,
-            showPrintMargin
+            showPrintMargin,
+            tabSize,
+            theme,
+            useSoftTabs
         };
         this.dialog.open(model).then((model) => {
             // Send the new editor preferences for distribution.
@@ -49,6 +53,8 @@ export default class EditorPreferencesController {
             this.editorPreferencesService.setShowInvisibles(model.showInvisibles);
             this.editorPreferencesService.setShowLineNumbers(model.showLineNumbers);
             this.editorPreferencesService.setShowPrintMargin(model.showPrintMargin);
+            this.editorPreferencesService.setTabSize(model.tabSize);
+            this.editorPreferencesService.setUseSoftTabs(model.useSoftTabs);
         }).catch((reason) => {
             switch (reason) {
                 case 'cancel click':
@@ -62,6 +68,8 @@ export default class EditorPreferencesController {
                     this.editorPreferencesService.setShowInvisibles(showInvisibles);
                     this.editorPreferencesService.setShowLineNumbers(showLineNumbers);
                     this.editorPreferencesService.setShowPrintMargin(showPrintMargin);
+                    this.editorPreferencesService.setTabSize(tabSize);
+                    this.editorPreferencesService.setUseSoftTabs(useSoftTabs);
                     break;
                 }
                 default: {

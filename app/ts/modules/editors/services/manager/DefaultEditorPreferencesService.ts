@@ -8,6 +8,7 @@ import {EDITOR_PREFERENCES_STORAGE} from '../../../preferences/constants';
 import EditorPreferencesStorage from '../../../preferences/EditorPreferencesStorage';
 
 const fontSizes: string[] = [10, 11, 12, 13, 14, 15, 16, 18, 20, 24].map(function (fontSize) { return `${fontSize}px`; });
+const tabSizes: number[] = [2, 3, 4];
 const themeNames: string[] = themes.map(theme => theme.name);
 
 interface EditorPreferencesCallback {
@@ -34,7 +35,9 @@ export default class DefaultEditorPreferencesService implements EditorPreference
             showFoldWidgets: this.storage.showFoldWidgets,
             showInvisibles: this.storage.showInvisibles,
             showLineNumbers: this.storage.showLineNumbers,
-            showPrintMargin: this.storage.showPrintMargin
+            showPrintMargin: this.storage.showPrintMargin,
+            tabSize: this.storage.tabSize,
+            useSoftTabs: this.storage.useSoftTabs
         });
     }
     removeEventListener(eventName: string, callback: EditorPreferencesCallback) {
@@ -81,6 +84,30 @@ export default class DefaultEditorPreferencesService implements EditorPreference
     getFontSizes(): ng.IPromise<string[]> {
         const deferred: ng.IDeferred<string[]> = this.$q.defer<string[]>();
         deferred.resolve(fontSizes);
+        return deferred.promise;
+    }
+
+    /**
+     * 
+     */
+    getTabSize(): number {
+        return this.storage.tabSize;
+    }
+
+    /**
+     * 
+     */
+    setTabSize(tabSize: number): void {
+        this.storage.tabSize = tabSize;
+        this.broadcast();
+    }
+
+    /**
+     * 
+     */
+    getTabSizes(): ng.IPromise<number[]> {
+        const deferred: ng.IDeferred<number[]> = this.$q.defer<number[]>();
+        deferred.resolve(tabSizes);
         return deferred.promise;
     }
 
@@ -185,6 +212,21 @@ export default class DefaultEditorPreferencesService implements EditorPreference
     /**
      * 
      */
+    getUseSoftTabs(): boolean {
+        return this.storage.useSoftTabs;
+    }
+
+    /**
+     * 
+     */
+    setUseSoftTabs(useSoftTabs: boolean): void {
+        this.storage.useSoftTabs = useSoftTabs;
+        this.broadcast();
+    }
+
+    /**
+     * 
+     */
     private broadcast() {
         const theme: Theme = this.currentTheme;
         const cbs = this.ensureCallbacks(currentTheme);
@@ -199,7 +241,9 @@ export default class DefaultEditorPreferencesService implements EditorPreference
                 showFoldWidgets: this.storage.showFoldWidgets,
                 showInvisibles: this.storage.showInvisibles,
                 showLineNumbers: this.storage.showLineNumbers,
-                showPrintMargin: this.storage.showPrintMargin
+                showPrintMargin: this.storage.showPrintMargin,
+                tabSize: this.storage.tabSize,
+                useSoftTabs: this.storage.useSoftTabs
             });
         }
     }

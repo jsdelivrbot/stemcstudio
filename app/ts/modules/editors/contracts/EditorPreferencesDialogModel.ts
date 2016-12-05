@@ -32,6 +32,14 @@ interface EditorPreferencesDialogModel {
      * 
      */
     showPrintMargin: boolean;
+    /**
+     * 
+     */
+    tabSize: number;
+    /**
+     * 
+     */
+    useSoftTabs: boolean;
 }
 
 export default EditorPreferencesDialogModel;

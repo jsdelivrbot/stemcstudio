@@ -15,8 +15,8 @@ import Renderer from '../../editor/Renderer';
 import UndoManager from '../../editor/UndoManager';
 import Editor from '../../editor/Editor';
 import EditorScope from './EditorScope';
-import searchBox from '../../editor/ext/SearchBox';
 import showErrorMarker from '../../editor/ext/showErrorMarker';
+import showFindReplace from '../../editor/ext/showFindReplace';
 import showKeyboardShortcuts from '../../editor/ext/showKeyboardShortcuts';
 import ISettingsService from '../../services/settings/ISettingsService';
 import ITextService from '../../services/text/ITextService';
@@ -89,6 +89,8 @@ function factory(
                 editor.setShowInvisibles(event.showInvisibles);
                 editor.setShowLineNumbers(event.showLineNumbers);
                 editor.setShowPrintMargin(event.showPrintMargin);
+                editor.setTabSize(event.tabSize);
+                editor.setUseSoftTabs(event.useSoftTabs);
             }, 0);
         };
         // This event listener gets removed in onDestroyScope
@@ -151,13 +153,11 @@ function factory(
                         editor.setSession(session);
                         const undoManager = new UndoManager();
                         session.setUndoManager(undoManager);
-                        session.setTabSize(2);
-                        session.setUseSoftTabs(true);
                         editor.commands.addCommand({
                             name: 'Find',
                             bindKey: { win: 'Ctrl-F', mac: 'Command-F' },
                             exec: function (editor: Editor) {
-                                searchBox(editor, false);
+                                showFindReplace(editor, false);
                             },
                             readOnly: true // false if this command should not apply in readOnly mode
                         });
@@ -165,7 +165,7 @@ function factory(
                             name: 'Replace',
                             bindKey: { win: 'Ctrl-H', mac: 'Command-H' },
                             exec: function (editor: Editor) {
-                                searchBox(editor, true);
+                                showFindReplace(editor, true);
                             },
                             readOnly: true // false if this command should not apply in readOnly mode
                         });
