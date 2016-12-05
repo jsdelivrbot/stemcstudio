@@ -304,6 +304,40 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
   );
 
 
+  $templateCache.put('cookbook.html',
+    "<div id='tutorials-page'>\n" +
+    "    <nav id='toolbar' class='navbar navbar-inverse'>\n" +
+    "        <div class='navbar-header'>\n" +
+    "            <a role='button' class='navbar-brand' ng-click='goHome()'>\n" +
+    "                <brand />\n" +
+    "            </a>\n" +
+    "        </div>\n" +
+    "        <div class='navbar-header'>\n" +
+    "            <span class='md-logo-text-math navbar-brand'>Cookbook</span>\n" +
+    "        </div>\n" +
+    "    </nav>\n" +
+    "    <div class='container md-docs-container'>\n" +
+    "        <div class='row'>\n" +
+    "            <!-- EIGHT -->\n" +
+    "            <div class='md-docs-section'>\n" +
+    "                <h1 class='page-header'>EIGHT</h1>\n" +
+    "                <div ng-repeat='tutorial in tutorials | filter : {category : \"EIGHT\"}'>\n" +
+    "                    <div class='lead'>\n" +
+    "                        <a href='/#/gists/{{tutorial.gistId}}'>{{tutorial.title}}</a>\n" +
+    "                    </div>\n" +
+    "                    <div>{{tutorial.description}}</div>\n" +
+    "                    <a href='/#/gists/{{tutorial.gistId}}'>\n" +
+    "                        <img src='{{tutorial.imageSrc}}' alt='{{tutorial.imageAlt}}' height='300' , width='300'><img>\n" +
+    "                    </a>\n" +
+    "                </div>\n" +
+    "            </div>\n" +
+    "        </div>\n" +
+    "    </div>\n" +
+    "\n" +
+    "</div>"
+  );
+
+
   $templateCache.put('copy.html',
     "<div class='modal-content'>\n" +
     "    <div class='modal-header'>\n" +
@@ -775,6 +809,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                    <brand />\n" +
     "                </div>\n" +
     "                <button type=\"button\" class=\"btn btn-primary navbar-btn\" ng-click='clickCodeNow()'>Code Now!</button>\n" +
+    "                <button ng-if='FEATURE_COOKBOOK_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goCookbook()'>Cookbook</button>\n" +
     "                <button ng-if='FEATURE_TUTORIALS_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goTutorials()'>Tutorials</button>\n" +
     "                <button ng-if='FEATURE_EXAMPLES_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goExamples()'>Examples</button>\n" +
     "                <button ng-if='FEATURE_DASHBOARD_ENABLED' type=\"button\" class=\"btn btn-secondary navbar-btn\" ng-click='goDashboard()' ng-show='isGitHubSignedIn()'>Dashboard</button>\n" +

@@ -90,6 +90,7 @@ import {GITHUB_AUTH_MANAGER} from './services/gham/IGitHubAuthManager';
 import Iso8601 from './services/iso8601/Iso8601';
 import NavigationService from './modules/navigation/NavigationService';
 import {STATE_ABOUT} from './modules/navigation/NavigationService';
+import {STATE_COOKBOOK} from './modules/navigation/NavigationService';
 import {STATE_COPY} from './modules/navigation/NavigationService';
 import {STATE_DASHBOARD} from './modules/navigation/NavigationService';
 import {STATE_DOODLE} from './modules/navigation/NavigationService';
@@ -139,10 +140,11 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version.
-app.constant('version', '2.16.0');
+app.constant('version', '2.17.0');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
+app.constant('FEATURE_COOKBOOK_ENABLED', true);
 app.constant('FEATURE_DASHBOARD_ENABLED', false);
 app.constant('FEATURE_EXAMPLES_ENABLED', true);
 app.constant('FEATURE_LOGIN_ENABLED', true);
@@ -273,6 +275,7 @@ app.config([
     '$stateProvider',
     '$translateProvider',
     '$urlRouterProvider',
+    'FEATURE_COOKBOOK_ENABLED',
     'FEATURE_DASHBOARD_ENABLED',
     'FEATURE_EXAMPLES_ENABLED',
     'FEATURE_GIST_ENABLED',
@@ -284,6 +287,7 @@ app.config([
         $stateProvider: angular.ui.IStateProvider,
         $translateProvider: ITranslateProvider,
         $urlRouterProvider: angular.ui.IUrlRouterProvider,
+        FEATURE_COOKBOOK_ENABLED: boolean,
         FEATURE_DASHBOARD_ENABLED: boolean,
         FEATURE_EXAMPLES_ENABLED: boolean,
         FEATURE_GIST_ENABLED: boolean,
@@ -329,6 +333,17 @@ app.config([
                 templateUrl: 'about.html',
                 controller: ABOUT_CONTROLLER_NAME
             });
+
+        if (FEATURE_COOKBOOK_ENABLED) {
+            $stateProvider.state(STATE_COOKBOOK, {
+                url: '/cookbook',
+                templateUrl: 'cookbook.html',
+                controller: 'cookbook-controller'
+            });
+        }
+        else {
+            // TODO: Recognize the url but go to a no droids here.
+        }
 
         if (FEATURE_DASHBOARD_ENABLED) {
             $stateProvider.state(STATE_DASHBOARD, {

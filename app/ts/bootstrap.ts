@@ -16,6 +16,7 @@ import ChooseGistOrRepoController from './services/cloud/ChooseGistOrRepoControl
 import CommitMessageController from './services/cloud/CommitMessageController';
 import contextMenu from './directives/contextMenu/contextMenu.directive';
 import contiguous from './filters/contiguous';
+import CookbookController from './controllers/CookbookController';
 import DashboardController from './controllers/DashboardController';
 import DoodleController from './controllers/DoodleController';
 import ExamplesController from './controllers/ExamplesController';
@@ -59,6 +60,7 @@ app.controller('DoodleController', DoodleController);
  * It will be loaded by a System.import(...) call.
  * This is currently done using a Jade template.
  */
+app.controller('cookbook-controller', CookbookController);
 app.controller('examples-controller', ExamplesController);
 app.controller('GitHubAccountController', GitHubAccountController);
 app.controller('home-controller', HomeController);

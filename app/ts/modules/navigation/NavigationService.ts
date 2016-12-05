@@ -9,6 +9,11 @@ export const STATE_ABOUT = 'about';
 /**
  * 
  */
+export const STATE_COOKBOOK = 'cookbook';
+
+/**
+ * 
+ */
 export const STATE_COPY = 'copy';
 
 /**
@@ -77,6 +82,10 @@ export default class NavigationService {
 
     public gotoAbout(label?: string, value?: number) {
         return this.navigateTo(STATE_ABOUT, void 0, void 0, label, value);
+    }
+
+    public gotoCookbook(label?: string, value?: number) {
+        return this.navigateTo(STATE_COOKBOOK, void 0, void 0, label, value);
     }
 
     public gotoCopy(label?: string, value?: number) {

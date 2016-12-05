@@ -23,6 +23,7 @@ export default class HomeController extends AbstractPageController {
         'modalDialog',
         'navigation',
         'stemcArXiv',
+        'FEATURE_COOKBOOK_ENABLED',
         'FEATURE_DASHBOARD_ENABLED',
         'FEATURE_EXAMPLES_ENABLED',
         'FEATURE_GOOGLE_SIGNIN_ENABLED',
@@ -42,6 +43,7 @@ export default class HomeController extends AbstractPageController {
         modalDialog: ModalDialog,
         navigation: NavigationService,
         stemcArXiv: StemcArXiv,
+        FEATURE_COOKBOOK_ENABLED: boolean,
         FEATURE_DASHBOARD_ENABLED: boolean,
         FEATURE_EXAMPLES_ENABLED: boolean,
         FEATURE_GOOGLE_SIGNIN_ENABLED: boolean,
@@ -50,10 +52,24 @@ export default class HomeController extends AbstractPageController {
     ) {
         super($scope, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
 
+        $scope.FEATURE_COOKBOOK_ENABLED = FEATURE_COOKBOOK_ENABLED;
         $scope.FEATURE_DASHBOARD_ENABLED = FEATURE_DASHBOARD_ENABLED;
         $scope.FEATURE_EXAMPLES_ENABLED = FEATURE_EXAMPLES_ENABLED;
         $scope.FEATURE_GOOGLE_SIGNIN_ENABLED = FEATURE_GOOGLE_SIGNIN_ENABLED;
         $scope.FEATURE_TUTORIALS_ENABLED = FEATURE_TUTORIALS_ENABLED;
+
+        $scope.goCookbook = () => {
+            if (FEATURE_COOKBOOK_ENABLED) {
+                navigation.gotoCookbook().then(function (promiseValue: any) {
+                    // Nothing to do.
+                }).catch(function (reason: any) {
+                    console.warn(`gotoCookbook() failed: ${JSON.stringify(reason, null, 2)}`);
+                });
+            }
+            else {
+                console.warn(`FEATURE_COOKBOOK_ENABLED => ${FEATURE_COOKBOOK_ENABLED}`);
+            }
+        };
 
         $scope.goDashboard = () => {
             if (FEATURE_DASHBOARD_ENABLED) {

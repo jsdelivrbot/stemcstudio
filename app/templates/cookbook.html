@@ -1,0 +1,30 @@
+<div id='tutorials-page'>
+    <nav id='toolbar' class='navbar navbar-inverse'>
+        <div class='navbar-header'>
+            <a role='button' class='navbar-brand' ng-click='goHome()'>
+                <brand />
+            </a>
+        </div>
+        <div class='navbar-header'>
+            <span class='md-logo-text-math navbar-brand'>Cookbook</span>
+        </div>
+    </nav>
+    <div class='container md-docs-container'>
+        <div class='row'>
+            <!-- EIGHT -->
+            <div class='md-docs-section'>
+                <h1 class='page-header'>EIGHT</h1>
+                <div ng-repeat='tutorial in tutorials | filter : {category : "EIGHT"}'>
+                    <div class='lead'>
+                        <a href='/#/gists/{{tutorial.gistId}}'>{{tutorial.title}}</a>
+                    </div>
+                    <div>{{tutorial.description}}</div>
+                    <a href='/#/gists/{{tutorial.gistId}}'>
+                        <img src='{{tutorial.imageSrc}}' alt='{{tutorial.imageAlt}}' height='300' , width='300'><img>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
