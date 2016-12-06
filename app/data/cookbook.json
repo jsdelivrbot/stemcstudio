@@ -43,5 +43,14 @@
         "imageAlt": "A red arrow, yellow arrow, green arrow, and blue arrow arranged in a closed square",
         "docsUrl": null,
         "category": "EIGHT"
+    },
+    {
+        "gistId": "c4ab6dadb6305234974fe49122e1cf4d",
+        "title": "How to create a Hollow Cylinder",
+        "description": "",
+        "imageSrc": "/img/cookbook/eight/hollow-cylinder.png",
+        "imageAlt": "A whole red cylinder, a half blue cylinder, a three quarters yellow cylinder, and a quarter green cylinder",
+        "docsUrl": null,
+        "category": "EIGHT"
     }
 ]
