@@ -2,9 +2,18 @@
     {
         "gistId": "da7095592fec3f107e53ef7e644b7bcc",
         "title": "How to program the graphics minimum using the EIGHT library",
-        "description": "A bare-bones EIGHT program explained.",
+        "description": "",
         "imageSrc": "/img/cookbook/eight/the-graphics-minimum.png",
         "imageAlt": "A gray cube spinning in space",
+        "docsUrl": null,
+        "category": "EIGHT"
+    },
+    {
+        "gistId": "73e68084a4c927ce20bb0b4d06b33192",
+        "title": "How to create a Box",
+        "description": "",
+        "imageSrc": "/img/cookbook/eight/box.png",
+        "imageAlt": "A solid red cube, two wireframe cubes, and a point cube",
         "docsUrl": null,
         "category": "EIGHT"
     }
