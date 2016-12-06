@@ -34,5 +34,14 @@
         "imageAlt": "A solid red cylinder, two wireframe cylinders, and a point cylinder",
         "docsUrl": null,
         "category": "EIGHT"
+    },
+    {
+        "gistId": "f237a26ea0b083c785bf7ddca2a633a9",
+        "title": "How to create an Arrow",
+        "description": "",
+        "imageSrc": "/img/cookbook/eight/arrow.png",
+        "imageAlt": "A red arrow, yellow arrow, green arrow, and blue arrow arranged in a closed square",
+        "docsUrl": null,
+        "category": "EIGHT"
     }
 ]
