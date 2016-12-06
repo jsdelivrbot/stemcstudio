@@ -16,5 +16,14 @@
         "imageAlt": "A solid red cube, two wireframe cubes, and a point cube",
         "docsUrl": null,
         "category": "EIGHT"
+    },
+    {
+        "gistId": "fb619abc6dd5efb43e7c34d49f8f41f4",
+        "title": "How to create a Sphere",
+        "description": "",
+        "imageSrc": "/img/cookbook/eight/sphere.png",
+        "imageAlt": "A solid red sphere, two wireframe spheres, and a point sphere",
+        "docsUrl": null,
+        "category": "EIGHT"
     }
 ]
