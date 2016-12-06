@@ -36,8 +36,11 @@ export default class CookbookController extends AbstractPageController {
         super($scope, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
 
         $scope.tutorials = [];
-        const url = 'data/cookbook.json';
+        const url = `data/cookbook.json?bust=${Date.now()}`;
         $http.get<Tutorial[]>(url, { cache: $templateCache })
+        
+//            .success(function (tutorials: Tutorial[]) {
+//            })
             .then(function (response) {
                 if (Array.isArray(response.data)) {
                     $scope.tutorials = response.data.map(function (tutorial) {
