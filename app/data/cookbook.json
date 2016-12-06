@@ -61,5 +61,14 @@
         "imageAlt": "A red surface of points, a green surface of lines, a yellow saddle surface, and a flat blue grid",
         "docsUrl": null,
         "category": "EIGHT"
+    },
+    {
+        "gistId": "ee5ba5c16b28b9468f2a7c1122b8e062",
+        "title": "How to create a Curve",
+        "description": "",
+        "imageSrc": "/img/cookbook/eight/curve.png",
+        "imageAlt": "",
+        "docsUrl": null,
+        "category": "EIGHT"
     }
 ]

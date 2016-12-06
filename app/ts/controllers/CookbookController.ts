@@ -38,9 +38,9 @@ export default class CookbookController extends AbstractPageController {
         $scope.tutorials = [];
         const url = `data/cookbook.json?bust=${Date.now()}`;
         $http.get<Tutorial[]>(url, { cache: $templateCache })
-        
-//            .success(function (tutorials: Tutorial[]) {
-//            })
+            //  Here's another way of doing it that might be worth trying...
+            //  .success(function (tutorials: Tutorial[]) {
+            //  })
             .then(function (response) {
                 if (Array.isArray(response.data)) {
                     $scope.tutorials = response.data.map(function (tutorial) {
