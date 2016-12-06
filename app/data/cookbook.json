@@ -25,5 +25,14 @@
         "imageAlt": "A solid red sphere, two wireframe spheres, and a point sphere",
         "docsUrl": null,
         "category": "EIGHT"
+    },
+    {
+        "gistId": "f237a26ea0b083c785bf7ddca2a633a9",
+        "title": "How to create a Cylinder",
+        "description": "",
+        "imageSrc": "/img/cookbook/eight/cylinder.png",
+        "imageAlt": "A solid red cylinder, two wireframe cylinders, and a point cylinder",
+        "docsUrl": null,
+        "category": "EIGHT"
     }
 ]
