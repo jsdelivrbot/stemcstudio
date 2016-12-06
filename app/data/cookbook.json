@@ -52,5 +52,14 @@
         "imageAlt": "A whole red cylinder, a half blue cylinder, a three quarters yellow cylinder, and a quarter green cylinder",
         "docsUrl": null,
         "category": "EIGHT"
+    },
+    {
+        "gistId": "ad1c3e99872e2fef068f0011da279c48",
+        "title": "How to create a Grid",
+        "description": "",
+        "imageSrc": "/img/cookbook/eight/grid.png",
+        "imageAlt": "A red surface of points, a green surface of lines, a yellow saddle surface, and a flat blue grid",
+        "docsUrl": null,
+        "category": "EIGHT"
     }
 ]
