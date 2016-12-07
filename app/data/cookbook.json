@@ -72,6 +72,15 @@
         "category": "EIGHT"
     },
     {
+        "gistId": "5347b1231532e62cf37fe0cc4a8ece89",
+        "title": "How to create a Group",
+        "description": "",
+        "imageSrc": "/img/cookbook/eight/group.png",
+        "imageAlt": "",
+        "docsUrl": null,
+        "category": "EIGHT"
+    },
+    {
         "gistId": "e37cabcca4bbccf2e5bbd8281b960921",
         "title": "How to add Performance Monitoring",
         "description": "",
