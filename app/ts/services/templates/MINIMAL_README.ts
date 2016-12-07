@@ -69,7 +69,7 @@ export default function (options: {}, tabString: string): string {
     lines.push("");
     lines.push([
         "External dependencies are defined using the *Properties* menu and are included ",
-        "as &lt;script&gt; elements at the ```<!--- SCRIPTS-MARKER -->```."].join(''));
+        "as &lt;script&gt; elements at the ```<!-- SCRIPTS-MARKER -->```."].join(''));
     lines.push("");
     lines.push("You may add other external dependencies directly to the `index.html` file.");
     lines.push("");
