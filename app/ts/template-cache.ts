@@ -326,7 +326,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "                        <a href='/#/gists/{{tutorial.gistId}}'>{{tutorial.title}}</a>\n" +
     "                    </div>\n" +
     "                    <div>{{tutorial.description}}</div>\n" +
-    "                    <a href='/#/gists/{{tutorial.gistId}}'>\n" +
+    "                    <a ng-if='tutorial.imageSrc' href='/#/gists/{{tutorial.gistId}}'>\n" +
     "                        <img src='{{tutorial.imageSrc}}' alt='{{tutorial.imageAlt}}' height='300' , width='300'><img>\n" +
     "                    </a>\n" +
     "                </div>\n" +

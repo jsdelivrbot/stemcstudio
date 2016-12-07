@@ -19,7 +19,7 @@
                         <a href='/#/gists/{{tutorial.gistId}}'>{{tutorial.title}}</a>
                     </div>
                     <div>{{tutorial.description}}</div>
-                    <a href='/#/gists/{{tutorial.gistId}}'>
+                    <a ng-if='tutorial.imageSrc' href='/#/gists/{{tutorial.gistId}}'>
                         <img src='{{tutorial.imageSrc}}' alt='{{tutorial.imageAlt}}' height='300' , width='300'><img>
                     </a>
                 </div>

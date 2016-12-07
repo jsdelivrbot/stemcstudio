@@ -81,10 +81,19 @@
         "category": "EIGHT"
     },
     {
+        "gistId": "7ea88b6197a036ca2bacb5c10dbd12fe",
+        "title": "How to resize the canvas to the window size",
+        "description": "",
+        "imageSrc": null,
+        "imageAlt": "",
+        "docsUrl": null,
+        "category": "EIGHT"
+    },
+    {
         "gistId": "e37cabcca4bbccf2e5bbd8281b960921",
         "title": "How to add Performance Monitoring",
         "description": "",
-        "imageSrc": "/img/cookbook/eight/performance-monitoring.png",
+        "imageSrc": null,
         "imageAlt": "",
         "docsUrl": null,
         "category": "EIGHT"

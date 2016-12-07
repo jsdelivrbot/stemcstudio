@@ -93,5 +93,7 @@ app.factory('templates', [
         EIGHT.files['tests.ts'] = { content: MINIMAL_SPEC_RUNNER({}, tab), language: LANGUAGE_TYPE_SCRIPT };
         EIGHT.files['Example.spec.ts'] = { content: MINIMAL_EXAMPLE_SPEC({}, tab), language: LANGUAGE_TYPE_SCRIPT };
 
-        return [MINIM, EIGHT];
+        // The MINIM (minimal) template is only present as a foundation for other templates.
+        // Avoid providing templates that don't do much when the program is launched!
+        return [EIGHT];
     }]);
