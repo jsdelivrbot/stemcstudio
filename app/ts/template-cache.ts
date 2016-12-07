@@ -322,18 +322,19 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "            <div class='md-docs-section'>\n" +
     "                <h1 class='page-header'>EIGHT</h1>\n" +
     "                <div ng-repeat='tutorial in tutorials | filter : {category : \"EIGHT\"}'>\n" +
-    "                    <div class='lead'>\n" +
+    "                    <p class='lead'>\n" +
     "                        <a href='/#/gists/{{tutorial.gistId}}'>{{tutorial.title}}</a>\n" +
-    "                    </div>\n" +
-    "                    <a ng-if='tutorial.imageSrc' href='/#/gists/{{tutorial.gistId}}'>\n" +
-    "                        <img src='{{tutorial.imageSrc}}' alt='{{tutorial.imageAlt}}' height='500' , width='500'><img>\n" +
-    "                    </a>\n" +
-    "                    <div>{{tutorial.description}}</div>\n" +
+    "                    </p>\n" +
+    "                    <p>\n" +
+    "                        <a href='/#/gists/{{tutorial.gistId}}'>\n" +
+    "                            <img src='{{tutorial.imageSrc}}' alt='{{tutorial.imageAlt}}' height='300' , width='300'><img>\n" +
+    "                        </a>\n" +
+    "                    </p>\n" +
+    "                    <p>{{tutorial.description}}</p>\n" +
     "                </div>\n" +
     "            </div>\n" +
     "        </div>\n" +
     "    </div>\n" +
-    "\n" +
     "</div>"
   );
 

@@ -15,16 +15,17 @@
             <div class='md-docs-section'>
                 <h1 class='page-header'>EIGHT</h1>
                 <div ng-repeat='tutorial in tutorials | filter : {category : "EIGHT"}'>
-                    <div class='lead'>
+                    <p class='lead'>
                         <a href='/#/gists/{{tutorial.gistId}}'>{{tutorial.title}}</a>
-                    </div>
-                    <a ng-if='tutorial.imageSrc' href='/#/gists/{{tutorial.gistId}}'>
-                        <img src='{{tutorial.imageSrc}}' alt='{{tutorial.imageAlt}}' height='500' , width='500'><img>
-                    </a>
-                    <div>{{tutorial.description}}</div>
+                    </p>
+                    <p>
+                        <a href='/#/gists/{{tutorial.gistId}}'>
+                            <img src='{{tutorial.imageSrc}}' alt='{{tutorial.imageAlt}}' height='300' , width='300'><img>
+                        </a>
+                    </p>
+                    <p>{{tutorial.description}}</p>
                 </div>
             </div>
         </div>
     </div>
-
 </div>

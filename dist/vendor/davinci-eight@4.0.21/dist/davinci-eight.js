@@ -551,9 +551,9 @@ define('davinci-eight/config',["require", "exports"], function (require, exports
     var Eight = (function () {
         function Eight() {
             this.GITHUB = 'https://github.com/geometryzen/davinci-eight';
-            this.LAST_MODIFIED = '2016-12-06';
+            this.LAST_MODIFIED = '2016-12-07';
             this.NAMESPACE = 'EIGHT';
-            this.VERSION = '4.0.19';
+            this.VERSION = '4.0.21';
         }
         Eight.prototype.log = function (message) {
             var optionalParams = [];
@@ -2556,27 +2556,40 @@ define('davinci-eight/math/Geometric3',["require", "exports", "./Coords", "./arr
         Geometric3.prototype.copySpinor = function (spinor) {
             var contextBuilder = function () { return 'copySpinor'; };
             mustBeNonNullObject_1.default('spinor', spinor, contextBuilder);
-            var a = mustBeNumber_1.default('spinor.a', spinor.a, contextBuilder);
-            var yz = mustBeNumber_1.default('spinor.yz', spinor.yz, contextBuilder);
-            var zx = mustBeNumber_1.default('spinor.zx', spinor.zx, contextBuilder);
-            var xy = mustBeNumber_1.default('spinor.xy', spinor.xy, contextBuilder);
-            this.zero();
-            this.a = a;
-            this.yz = yz;
-            this.zx = zx;
-            this.xy = xy;
+            mustBeNumber_1.default('spinor.a', spinor.a, contextBuilder);
+            mustBeNumber_1.default('spinor.yz', spinor.yz, contextBuilder);
+            mustBeNumber_1.default('spinor.zx', spinor.zx, contextBuilder);
+            mustBeNumber_1.default('spinor.xy', spinor.xy, contextBuilder);
+            return this.copySpinorNoChecks(spinor);
+        };
+        Geometric3.prototype.copySpinorNoChecks = function (spinor) {
+            this.setCoordinate(COORD_SCALAR, spinor.a, 'a');
+            this.setCoordinate(COORD_X, 0, 'x');
+            this.setCoordinate(COORD_Y, 0, 'y');
+            this.setCoordinate(COORD_Z, 0, 'z');
+            this.setCoordinate(COORD_YZ, spinor.yz, 'yz');
+            this.setCoordinate(COORD_ZX, spinor.zx, 'zx');
+            this.setCoordinate(COORD_XY, spinor.xy, 'xy');
+            this.setCoordinate(COORD_PSEUDO, 0, 'b');
             return this;
         };
         Geometric3.prototype.copyVector = function (vector) {
             var contextBuilder = function () { return 'copyVector'; };
             mustBeNonNullObject_1.default('vector', vector, contextBuilder);
-            var x = mustBeNumber_1.default('vector.x', vector.x, contextBuilder);
-            var y = mustBeNumber_1.default('vector.y', vector.y, contextBuilder);
-            var z = mustBeNumber_1.default('vector.z', vector.z, contextBuilder);
-            this.zero();
-            this.x = x;
-            this.y = y;
-            this.z = z;
+            mustBeNumber_1.default('vector.x', vector.x, contextBuilder);
+            mustBeNumber_1.default('vector.y', vector.y, contextBuilder);
+            mustBeNumber_1.default('vector.z', vector.z, contextBuilder);
+            return this.copyVectorNoChecks(vector);
+        };
+        Geometric3.prototype.copyVectorNoChecks = function (vector) {
+            this.setCoordinate(COORD_SCALAR, 0, 'a');
+            this.setCoordinate(COORD_X, vector.x, 'x');
+            this.setCoordinate(COORD_Y, vector.y, 'y');
+            this.setCoordinate(COORD_Z, vector.z, 'z');
+            this.setCoordinate(COORD_YZ, 0, 'yz');
+            this.setCoordinate(COORD_ZX, 0, 'zx');
+            this.setCoordinate(COORD_XY, 0, 'xy');
+            this.setCoordinate(COORD_PSEUDO, 0, 'b');
             return this;
         };
         Geometric3.prototype.cross = function (m) {
@@ -2852,9 +2865,36 @@ define('davinci-eight/math/Geometric3',["require", "exports", "./Coords", "./arr
             return squaredNormG3_1.default(this);
         };
         Geometric3.prototype.reflect = function (n) {
-            var N = Geometric3.fromVector(n);
-            var R = N.clone().mul(this).mul(N).scale(-1);
-            this.copy(R);
+            var n1 = n.x;
+            var n2 = n.y;
+            var n3 = n.z;
+            var n11 = n1 * n1;
+            var n22 = n2 * n2;
+            var n33 = n3 * n3;
+            var nn = n11 + n22 + n33;
+            var f1 = 2 * n2 * n3;
+            var f2 = 2 * n3 * n1;
+            var f3 = 2 * n1 * n2;
+            var t1 = n22 + n33 - n11;
+            var t2 = n33 + n11 - n22;
+            var t3 = n11 + n22 - n33;
+            var cs = this.coords;
+            var a = cs[COORD_SCALAR];
+            var x1 = cs[COORD_X];
+            var x2 = cs[COORD_Y];
+            var x3 = cs[COORD_Z];
+            var B3 = cs[COORD_XY];
+            var B1 = cs[COORD_YZ];
+            var B2 = cs[COORD_ZX];
+            var b = cs[COORD_PSEUDO];
+            this.setCoordinate(COORD_SCALAR, -nn * a, 'a');
+            this.setCoordinate(COORD_X, x1 * t1 - x2 * f3 - x3 * f2, 'x');
+            this.setCoordinate(COORD_Y, x2 * t2 - x3 * f1 - x1 * f3, 'y');
+            this.setCoordinate(COORD_Z, x3 * t3 - x1 * f2 - x2 * f1, 'z');
+            this.setCoordinate(COORD_XY, B3 * t3 - B1 * f2 - B2 * f1, 'xy');
+            this.setCoordinate(COORD_YZ, B1 * t1 - B2 * f3 - B3 * f2, 'yz');
+            this.setCoordinate(COORD_ZX, B2 * t2 - B3 * f1 - B1 * f3, 'zx');
+            this.setCoordinate(COORD_PSEUDO, -nn * b, 'b');
             return this;
         };
         Geometric3.prototype.rev = function () {
@@ -20271,8 +20311,6 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 define('davinci-eight/visual/Trail',["require", "exports", "../math/Modulo", "../math/Spinor3", "../math/Vector3", "../checks/mustBeNonNullObject", "../core/ShareableBase", "./TrailConfig"], function (require, exports, Modulo_1, Spinor3_1, Vector3_1, mustBeNonNullObject_1, ShareableBase_1, TrailConfig_1) {
     "use strict";
-    var savedX = Vector3_1.default.zero();
-    var savedR = Spinor3_1.default.zero();
     var Trail = (function (_super) {
         __extends(Trail, _super);
         function Trail(mesh) {
@@ -20306,8 +20344,13 @@ define('davinci-eight/visual/Trail',["require", "exports", "../math/Modulo", "..
                 var mesh = this.mesh;
                 var X = mesh.X;
                 var R = mesh.R;
-                savedX.copy(X);
-                savedR.copy(R);
+                var x = X.x;
+                var y = X.y;
+                var z = X.z;
+                var a = R.a;
+                var yz = R.yz;
+                var zx = R.zx;
+                var xy = R.xy;
                 var geometry = mesh.geometry;
                 var material = mesh.material;
                 material.use();
@@ -20322,10 +20365,10 @@ define('davinci-eight/visual/Trail',["require", "exports", "../math/Modulo", "..
                 var iLength = this.modulo.size;
                 for (var i = 0; i < iLength; i++) {
                     if (Xs[i]) {
-                        X.copyVector(Xs[i]);
+                        X.copyVectorNoChecks(Xs[i]);
                     }
                     if (Rs[i]) {
-                        R.copySpinor(Rs[i]);
+                        R.copySpinorNoChecks(Rs[i]);
                     }
                     mesh.setUniforms();
                     geometry.draw();
@@ -20333,8 +20376,13 @@ define('davinci-eight/visual/Trail',["require", "exports", "../math/Modulo", "..
                 geometry.unbind(material);
                 geometry.release();
                 material.release();
-                X.copyVector(savedX);
-                R.copySpinor(savedR);
+                X.x = x;
+                X.y = y;
+                X.z = z;
+                R.a = a;
+                R.yz = yz;
+                R.zx = zx;
+                R.xy = xy;
             }
         };
         Trail.prototype.snapshot = function () {
