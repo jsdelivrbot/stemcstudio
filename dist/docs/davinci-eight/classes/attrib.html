@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Attrib | EIGHT 4.0.23</title>
+	<title>Attrib | EIGHT 5.0.0</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">EIGHT 4.0.23</a>
+					<a href="../index.html" class="title">EIGHT 5.0.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -67,7 +67,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>An object-oriented representation of an attribute in a GLSL shader program.</p>
+						<p>An object-oriented representation of an <code>attribute</code> in a GLSL shader program.</p>
 					</div>
 				</div>
 			</section>
@@ -110,6 +110,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="attrib.html#contextlost" class="tsd-kind-icon">context<wbr>Lost</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="attrib.html#disable" class="tsd-kind-icon">disable</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="attrib.html#enable" class="tsd-kind-icon">enable</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="attrib.html#getoffset" class="tsd-kind-icon">get<wbr>Offset</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="attrib.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
 							</ul>
 						</section>
@@ -122,17 +123,20 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Attrib<span class="tsd-signature-symbol">(</span>info<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">WebGLActiveInfo</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="attrib.html" class="tsd-signature-type">Attrib</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Attrib<span class="tsd-signature-symbol">(</span>contextManager<span class="tsd-signature-symbol">: </span><a href="../interfaces/contextmanager.html" class="tsd-signature-type">ContextManager</a>, info<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">WebGLActiveInfo</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="attrib.html" class="tsd-signature-type">Attrib</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/65296aa/src/davinci-eight/core/Attrib.ts#L27">davinci-eight/core/Attrib.ts:27</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b8fdeb7/src/davinci-eight/core/Attrib.ts#L29">davinci-eight/core/Attrib.ts:29</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
+								<li>
+									<h5>contextManager: <a href="../interfaces/contextmanager.html" class="tsd-signature-type">ContextManager</a></h5>
+								</li>
 								<li>
 									<h5>info: <span class="tsd-signature-type">WebGLActiveInfo</span></h5>
 								</li>
@@ -155,7 +159,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/65296aa/src/davinci-eight/core/Attrib.ts#L37">davinci-eight/core/Attrib.ts:37</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b8fdeb7/src/davinci-eight/core/Attrib.ts#L42">davinci-eight/core/Attrib.ts:42</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -169,7 +173,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/65296aa/src/davinci-eight/core/Attrib.ts#L40">davinci-eight/core/Attrib.ts:40</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b8fdeb7/src/davinci-eight/core/Attrib.ts#L45">davinci-eight/core/Attrib.ts:45</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -201,12 +205,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/65296aa/src/davinci-eight/core/Attrib.ts#L92">davinci-eight/core/Attrib.ts:92</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b8fdeb7/src/davinci-eight/core/Attrib.ts#L94">davinci-eight/core/Attrib.ts:94</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Calls the <code>vertexAttribPointer</code> method
+									<p>Specifies the data formats and locations of vertex attributes in a vertex attributes array.
+										Calls the <code>vertexAttribPointer</code> method
 										on the underlying <code>WebGLRenderingContext</code>
 										using the cached attribute index and the supplied parameters.
 									Note that the <code>type</code> parameter is hard-code to <code>FLOAT</code>.</p>
@@ -216,18 +221,33 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>size: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The number of components per attribute. Must be 1, 2, 3, or 4.</p>
+									</div>
 								</li>
 								<li>
 									<h5>type: <a href="../enums/datatype.html" class="tsd-signature-type">DataType</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The data type of each component in the array.</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> normalized: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Specifies whether fixed-point data values should be normalized (true), or are converted to fixed point vales (false) when accessed.</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> stride: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The distance in bytes between the beginning of consecutive vertex attributes.</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> offset: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The offset in bytes of the first component in the vertex attribute array. Must be a multiple of type.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -244,7 +264,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/65296aa/src/davinci-eight/core/Attrib.ts#L48">davinci-eight/core/Attrib.ts:48</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b8fdeb7/src/davinci-eight/core/Attrib.ts#L53">davinci-eight/core/Attrib.ts:53</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -267,7 +287,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/65296aa/src/davinci-eight/core/Attrib.ts#L63">davinci-eight/core/Attrib.ts:63</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b8fdeb7/src/davinci-eight/core/Attrib.ts#L67">davinci-eight/core/Attrib.ts:67</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -275,11 +295,6 @@
 									<p>Notifies this <code>Attrib</code> of a browser gain WebGL context event.
 									This <code>Attrib</code> responds by obtaining and caching attribute index.</p>
 								</div>
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>contextGain</p>
-									</dd>
-								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -288,6 +303,8 @@
 								</li>
 								<li>
 									<h5>program: <span class="tsd-signature-type">WebGLProgram</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -304,7 +321,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/65296aa/src/davinci-eight/core/Attrib.ts#L74">davinci-eight/core/Attrib.ts:74</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b8fdeb7/src/davinci-eight/core/Attrib.ts#L76">davinci-eight/core/Attrib.ts:76</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -312,11 +329,6 @@
 									<p>Notifies this <code>Attrib</code> of a browser lost WebGL context event.
 									This <code>Attrib</code> responds by setting its cached index and context to undefined.</p>
 								</div>
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>contextLost</p>
-									</dd>
-								</dl>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
@@ -332,7 +344,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/65296aa/src/davinci-eight/core/Attrib.ts#L117">davinci-eight/core/Attrib.ts:117</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b8fdeb7/src/davinci-eight/core/Attrib.ts#L129">davinci-eight/core/Attrib.ts:129</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -341,11 +353,6 @@
 										on the underlying <code>WebGLRenderingContext</code>
 									using the cached attribute index.</p>
 								</div>
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>disable</p>
-									</dd>
-								</dl>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
@@ -361,7 +368,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/65296aa/src/davinci-eight/core/Attrib.ts#L106">davinci-eight/core/Attrib.ts:106</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b8fdeb7/src/davinci-eight/core/Attrib.ts#L113">davinci-eight/core/Attrib.ts:113</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -370,13 +377,31 @@
 										on the underlying <code>WebGLRenderingContext</code>
 									using the cached attribute index.</p>
 								</div>
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>enable</p>
-									</dd>
-								</dl>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="getoffset" class="tsd-anchor"></a>
+					<h3>get<wbr>Offset</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Offset<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b8fdeb7/src/davinci-eight/core/Attrib.ts#L144">davinci-eight/core/Attrib.ts:144</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the address of the specified vertex attribute.
+									Experimental.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -390,18 +415,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/65296aa/src/davinci-eight/core/Attrib.ts#L126">davinci-eight/core/Attrib.ts:126</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b8fdeb7/src/davinci-eight/core/Attrib.ts#L160">davinci-eight/core/Attrib.ts:160</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Returns a non-normative string representation of the GLSL attribute.</p>
 								</div>
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>toString</p>
-									</dd>
-								</dl>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
@@ -447,6 +467,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="attrib.html#enable" class="tsd-kind-icon">enable</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="attrib.html#getoffset" class="tsd-kind-icon">get<wbr>Offset</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="attrib.html#tostring" class="tsd-kind-icon">to<wbr>String</a>

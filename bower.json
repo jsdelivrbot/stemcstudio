@@ -1,54 +1,57 @@
 {
-    "name": "stemcstudio",
-    "version": "2.19.20",
-    "description": "Expressing Ideas through Computational Modeling",
-    "homepage": "https://github.com/geometryzen/STEMCstudio",
-    "authors": [
-        "David Holmes <david.geo.holmes@gmail.com>",
-        "Geometry Zen <geometryzen@gmail.com>"
-    ],
-    "license": "MIT",
-    "ignore": [
-        "**/.*",
-        "bower_components",
-        "config",
-        "dist",
-        "generated",
-        "museum",
-        "node_modules",
-        "spec",
-        "spec-e2e",
-        "tasks",
-        "typings",
-        "views"
-    ],
-    "dependencies": {
-        "angular": "^1.5.9",
-        "angular-animate": "^1.5.9",
-        "angular-bootstrap": "^1.3.3",
-        "angular-material-icons": "^0.7.1",
-        "angular-translate": "^2.13.0",
-        "angular-ui-router": "^0.3.2",
-        "angular-uuid4": "^0.3.1",
-        "async": "^2.0.1",
-        "aws-sdk-js": "^2.7.10",
-        "bootstrap": "^3.3.7",
-        "bootstrap3-dialog": "^1.35.3",
-        "dat-gui": "^0.6.2",
-        "davinci-eight": "^4.0.23",
-        "davinci-mathscript": "^1.1.1",
-        "davinci-units": "^1.5.4",
-        "deck.js": "^1.1.0",
-        "dialog-polyfill": "^0.4.5",
-        "gl-matrix": "^2.3.2",
-        "jquery": "^3.1.1",
-        "jsxgraph": "^0.99.5",
-        "normalize-css": "^5.0.0",
-        "requirejs": "^2.3.2",
-        "two.js": "^0.6.0",
-        "underscore": "^1.8.3"
-    },
-    "devDependencies": {
-        "randomcolor": "randomColor#~0.4.4"
-    }
+  "name": "stemcstudio",
+  "version": "2.20.0",
+  "description": "Expressing Ideas through Computational Modeling",
+  "homepage": "https://github.com/geometryzen/STEMCstudio",
+  "authors": [
+    "David Holmes <david.geo.holmes@gmail.com>",
+    "Geometry Zen <geometryzen@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "bower_components",
+    "config",
+    "dist",
+    "generated",
+    "museum",
+    "node_modules",
+    "spec",
+    "spec-e2e",
+    "tasks",
+    "typings",
+    "views"
+  ],
+  "dependencies": {
+    "angular": "1.5.9",
+    "angular-animate": "^1.5.9",
+    "angular-bootstrap": "^1.3.3",
+    "angular-material-icons": "^0.7.1",
+    "angular-translate": "^2.13.0",
+    "angular-ui-router": "^0.3.2",
+    "angular-uuid4": "^0.3.1",
+    "async": "^2.0.1",
+    "aws-sdk-js": "^2.7.10",
+    "bootstrap": "^3.3.7",
+    "bootstrap3-dialog": "^1.35.3",
+    "dat-gui": "^0.6.2",
+    "davinci-eight": "^5.0.0",
+    "davinci-mathscript": "^1.1.1",
+    "davinci-units": "^1.5.4",
+    "deck.js": "^1.1.0",
+    "dialog-polyfill": "^0.4.5",
+    "gl-matrix": "^2.3.2",
+    "jquery": "^3.1.1",
+    "jsxgraph": "^0.99.5",
+    "normalize-css": "^5.0.0",
+    "requirejs": "^2.3.2",
+    "two.js": "^0.6.0",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "randomcolor": "randomColor#~0.4.4"
+  },
+  "resolutions": {
+    "angular": "1.5.9"
+  }
 }

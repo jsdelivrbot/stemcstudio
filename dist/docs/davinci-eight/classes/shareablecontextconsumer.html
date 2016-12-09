@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ShareableContextConsumer | EIGHT 4.0.23</title>
+	<title>ShareableContextConsumer | EIGHT 5.0.0</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">EIGHT 4.0.23</a>
+					<a href="../index.html" class="title">EIGHT 5.0.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -64,41 +64,6 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>
-							A base <code>class</class> for <code>ContextConsumer</code>(s).
-						</p>
-						<p>
-							Using this base <code>class</code> provides a standard and reliable way to
-							subscribe to <code>ContextManager</code> events. Extending this class provides automatic
-							subscribe at construction time and automatic unsubscribe in destruction. However,
-							it does not provide automatic synchronization (contextGain events) or automatic clean up
-							(contextFree or contextLost events) as these would violate the principle that the base
-							class should not call derived class methods during construction or destruction.
-						</p>
-					</div>
-					<pre><code><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyContextConsumer</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">EIGHT</span>.<span class="hljs-title">ShareableContextConsumer</span> </span>{
-  constructor(contextManager: <span class="hljs-type">EIGHT</span>.<span class="hljs-type">ContextManager</span>, levelUp = <span class="hljs-number">0</span>) {
-    <span class="hljs-keyword">super</span>(contextManager);
-    <span class="hljs-keyword">this</span>.setLoggingName(<span class="hljs-symbol">'MyContextConsume</span>r');
-    <span class="hljs-comment">// Allocate your own resources here or on-demand.</span>
-    <span class="hljs-keyword">if</span> (levelUp === <span class="hljs-number">0</span>) {
-      <span class="hljs-keyword">this</span>.synchUp();
-    }
-  }
-  <span class="hljs-keyword">protected</span> destructor(levelUp: number): void {
-    <span class="hljs-keyword">if</span> (levelUp === <span class="hljs-number">0</span>) {
-      <span class="hljs-keyword">this</span>.cleanUp();
-    }
-    <span class="hljs-comment">// Deallocate your own resources here.</span>
-    <span class="hljs-keyword">super</span>.destructor(levelUp + <span class="hljs-number">1</span>);
-  }
-}
-</code></pre>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -143,7 +108,6 @@
 				<ul class="tsd-hierarchy">
 					<li><a href="../interfaces/shareable.html" class="tsd-signature-type">Shareable</a></li>
 					<li><a href="../interfaces/contextconsumer.html" class="tsd-signature-type">ContextConsumer</a></li>
-					<li><a href="../interfaces/enginesubscriber.html" class="tsd-signature-type">EngineSubscriber</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -165,7 +129,7 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Accessors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="shareablecontextconsumer.html#gl" class="tsd-kind-icon">gl</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-external"><a href="shareablecontextconsumer.html#gl" class="tsd-kind-icon">gl</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external">
@@ -180,10 +144,9 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="shareablecontextconsumer.html#getloggingname" class="tsd-kind-icon">get<wbr>Logging<wbr>Name</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="shareablecontextconsumer.html#iszombie" class="tsd-kind-icon">is<wbr>Zombie</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="shareablecontextconsumer.html#release" class="tsd-kind-icon">release</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected tsd-is-external"><a href="shareablecontextconsumer.html#resurrector" class="tsd-kind-icon">resurrector</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external"><a href="shareablecontextconsumer.html#setloggingname" class="tsd-kind-icon">set<wbr>Logging<wbr>Name</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="shareablecontextconsumer.html#subscribe" class="tsd-kind-icon">subscribe</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="shareablecontextconsumer.html#synchup" class="tsd-kind-icon">synch<wbr>Up</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="shareablecontextconsumer.html#unsubscribe" class="tsd-kind-icon">unsubscribe</a></li>
 							</ul>
 						</section>
 					</div>
@@ -202,18 +165,9 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/65296aa/src/davinci-eight/core/ShareableContextConsumer.ts#L50">davinci-eight/core/ShareableContextConsumer.ts:50</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b8fdeb7/src/davinci-eight/core/ShareableContextConsumer.ts#L13">davinci-eight/core/ShareableContextConsumer.ts:13</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>We hold onto the context provider after a contextGain event.
-										However, this is only a convenience for derived classes.
-										(Maybe we should not do this).
-										We only need to release this property in our destructor.
-									We must not try to trigger a contextFree as that would violate Implementation Hierarchy Principle.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -233,32 +187,24 @@
 					<div class="tsd-signature tsd-kind-icon">context<wbr>Manager<span class="tsd-signature-symbol">:</span> <a href="../interfaces/contextmanager.html" class="tsd-signature-type">ContextManager</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/65296aa/src/davinci-eight/core/ShareableContextConsumer.ts#L50">davinci-eight/core/ShareableContextConsumer.ts:50</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b8fdeb7/src/davinci-eight/core/ShareableContextConsumer.ts#L18">davinci-eight/core/ShareableContextConsumer.ts:18</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The <code>ContextManager</code> to which this consumer is subscribed.
-								The existence of this property indicates a subscription.
-							Therefore, before releasing this reference, be sure to unsubscribe.</p>
-						</div>
-					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Accessors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-external">
 					<a name="gl" class="tsd-anchor"></a>
 					<h3>gl</h3>
-					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-external">
 						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> gl<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">WebGLRenderingContext</span></li>
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> gl<span class="tsd-signature-symbol">(</span>unused<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">WebGLRenderingContext</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/65296aa/src/davinci-eight/core/ShareableContextConsumer.ts#L166">davinci-eight/core/ShareableContextConsumer.ts:166</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b8fdeb7/src/davinci-eight/core/ShareableContextConsumer.ts#L113">davinci-eight/core/ShareableContextConsumer.ts:113</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -267,25 +213,6 @@
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">WebGLRenderingContext</span></h4>
-						</li>
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/65296aa/src/davinci-eight/core/ShareableContextConsumer.ts#L174">davinci-eight/core/ShareableContextConsumer.ts:174</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Provides access to the underlying WebGL context.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>unused: <span class="tsd-signature-type">WebGLRenderingContext</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -304,7 +231,7 @@
 								<p>Implementation of <a href="../interfaces/contextconsumer.html">ContextConsumer</a>.<a href="../interfaces/contextconsumer.html#addref">addRef</a></p>
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#addref">addRef</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/65296aa/src/davinci-eight/core/ShareableBase.ts#L121">davinci-eight/core/ShareableBase.ts:121</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b8fdeb7/src/davinci-eight/core/ShareableBase.ts#L129">davinci-eight/core/ShareableBase.ts:129</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -329,7 +256,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/65296aa/src/davinci-eight/core/ShareableContextConsumer.ts#L121">davinci-eight/core/ShareableContextConsumer.ts:121</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b8fdeb7/src/davinci-eight/core/ShareableContextConsumer.ts#L84">davinci-eight/core/ShareableContextConsumer.ts:84</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -347,7 +274,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/contextconsumer.html">ContextConsumer</a>.<a href="../interfaces/contextconsumer.html#contextfree">contextFree</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/65296aa/src/davinci-eight/core/ShareableContextConsumer.ts#L151">davinci-eight/core/ShareableContextConsumer.ts:151</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b8fdeb7/src/davinci-eight/core/ShareableContextConsumer.ts#L98">davinci-eight/core/ShareableContextConsumer.ts:98</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -365,7 +292,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/contextconsumer.html">ContextConsumer</a>.<a href="../interfaces/contextconsumer.html#contextgain">contextGain</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/65296aa/src/davinci-eight/core/ShareableContextConsumer.ts#L155">davinci-eight/core/ShareableContextConsumer.ts:155</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b8fdeb7/src/davinci-eight/core/ShareableContextConsumer.ts#L102">davinci-eight/core/ShareableContextConsumer.ts:102</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -383,7 +310,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/contextconsumer.html">ContextConsumer</a>.<a href="../interfaces/contextconsumer.html#contextlost">contextLost</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/65296aa/src/davinci-eight/core/ShareableContextConsumer.ts#L159">davinci-eight/core/ShareableContextConsumer.ts:159</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b8fdeb7/src/davinci-eight/core/ShareableContextConsumer.ts#L106">davinci-eight/core/ShareableContextConsumer.ts:106</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -401,7 +328,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#destructor">destructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/65296aa/src/davinci-eight/core/ShareableContextConsumer.ts#L73">davinci-eight/core/ShareableContextConsumer.ts:73</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b8fdeb7/src/davinci-eight/core/ShareableContextConsumer.ts#L38">davinci-eight/core/ShareableContextConsumer.ts:38</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -425,7 +352,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#getloggingname">getLoggingName</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/65296aa/src/davinci-eight/core/ShareableBase.ts#L130">davinci-eight/core/ShareableBase.ts:130</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b8fdeb7/src/davinci-eight/core/ShareableBase.ts#L144">davinci-eight/core/ShareableBase.ts:144</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -448,7 +375,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#iszombie">isZombie</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/65296aa/src/davinci-eight/core/ShareableBase.ts#L110">davinci-eight/core/ShareableBase.ts:110</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b8fdeb7/src/davinci-eight/core/ShareableBase.ts#L118">davinci-eight/core/ShareableBase.ts:118</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -473,7 +400,7 @@
 								<p>Implementation of <a href="../interfaces/contextconsumer.html">ContextConsumer</a>.<a href="../interfaces/contextconsumer.html#release">release</a></p>
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#release">release</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/65296aa/src/davinci-eight/core/ShareableBase.ts#L163">davinci-eight/core/ShareableBase.ts:163</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b8fdeb7/src/davinci-eight/core/ShareableBase.ts#L177">davinci-eight/core/ShareableBase.ts:177</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -488,6 +415,30 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected tsd-is-external">
+					<a name="resurrector" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> resurrector</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">resurrector<span class="tsd-signature-symbol">(</span>levelUp<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Overrides <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#resurrector">resurrector</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b8fdeb7/src/davinci-eight/core/ShareableContextConsumer.ts#L29">davinci-eight/core/ShareableContextConsumer.ts:29</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>levelUp: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external">
 					<a name="setloggingname" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> set<wbr>Logging<wbr>Name</h3>
@@ -499,7 +450,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="shareablebase.html">ShareableBase</a>.<a href="shareablebase.html#setloggingname">setLoggingName</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/65296aa/src/davinci-eight/core/ShareableBase.ts#L148">davinci-eight/core/ShareableBase.ts:148</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b8fdeb7/src/davinci-eight/core/ShareableBase.ts#L162">davinci-eight/core/ShareableBase.ts:162</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -527,42 +478,6 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="subscribe" class="tsd-anchor"></a>
-					<h3>subscribe</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">subscribe<span class="tsd-signature-symbol">(</span>contextManager<span class="tsd-signature-symbol">: </span><a href="../interfaces/contextmanager.html" class="tsd-signature-type">ContextManager</a>, synchUp<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/65296aa/src/davinci-eight/core/ShareableContextConsumer.ts#L86">davinci-eight/core/ShareableContextConsumer.ts:86</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>
-										Instructs the consumer to subscribe to context events.
-									</p>
-									<p>
-										This method is idempotent; calling it more than once with the same <code>ContextManager</code> does not change the state.
-									</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>contextManager: <a href="../interfaces/contextmanager.html" class="tsd-signature-type">ContextManager</a></h5>
-								</li>
-								<li>
-									<h5>synchUp: <span class="tsd-signature-type">boolean</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="synchup" class="tsd-anchor"></a>
 					<h3>synch<wbr>Up</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
@@ -572,37 +487,9 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/65296aa/src/davinci-eight/core/ShareableContextConsumer.ts#L111">davinci-eight/core/ShareableContextConsumer.ts:111</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/b8fdeb7/src/davinci-eight/core/ShareableContextConsumer.ts#L77">davinci-eight/core/ShareableContextConsumer.ts:77</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="unsubscribe" class="tsd-anchor"></a>
-					<h3>unsubscribe</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">unsubscribe<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/enginesubscriber.html">EngineSubscriber</a>.<a href="../interfaces/enginesubscriber.html#unsubscribe">unsubscribe</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/65296aa/src/davinci-eight/core/ShareableContextConsumer.ts#L143">davinci-eight/core/ShareableContextConsumer.ts:143</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>
-										Instructs the consumer to unsubscribe from context events.
-									</p>
-									<p>
-										This method is idempotent; calling it more than once does not change the state.
-									</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -630,7 +517,7 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-is-external">
 								<a href="shareablecontextconsumer.html#contextmanager" class="tsd-kind-icon">context<wbr>Manager</a>
 							</li>
-							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-external">
 								<a href="shareablecontextconsumer.html#gl" class="tsd-kind-icon">gl</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
@@ -660,17 +547,14 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="shareablecontextconsumer.html#release" class="tsd-kind-icon">release</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected tsd-is-external">
+								<a href="shareablecontextconsumer.html#resurrector" class="tsd-kind-icon">resurrector</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external">
 								<a href="shareablecontextconsumer.html#setloggingname" class="tsd-kind-icon">set<wbr>Logging<wbr>Name</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="shareablecontextconsumer.html#subscribe" class="tsd-kind-icon">subscribe</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="shareablecontextconsumer.html#synchup" class="tsd-kind-icon">synch<wbr>Up</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="shareablecontextconsumer.html#unsubscribe" class="tsd-kind-icon">unsubscribe</a>
 							</li>
 						</ul>
 					</li>
