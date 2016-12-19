@@ -1,1 +1,0 @@
-module.exports = require("npm:engine.io-client@1.8.1/index");

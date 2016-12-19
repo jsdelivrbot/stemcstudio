@@ -19,13 +19,13 @@ System.config({
     "angular2": "npm:angular2@2.0.0-beta.21",
     "bootstrap": "vendor/bootstrap/dist/js/npm",
     "bootstrap-dialog": "npm:bootstrap-dialog@1.34.6",
-    "clipboard": "npm:clipboard@1.5.15",
+    "clipboard": "npm:clipboard@1.5.16",
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.1.1",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.1.1",
     "jquery": "npm:jquery@2.2.4",
-    "showdown": "npm:showdown@1.5.1",
+    "showdown": "npm:showdown@1.5.3",
     "socket.io": "npm:socket.io@1.4.6",
-    "socket.io-client": "npm:socket.io-client@1.7.1",
+    "socket.io-client": "npm:socket.io-client@1.7.2",
     "ui-select": "npm:ui-select@0.17.1",
     "underscore": "npm:underscore@1.8.3",
     "github:angular-ui/ui-router@0.2.18": {
@@ -108,7 +108,7 @@ System.config({
     },
     "npm:angular2@2.0.0-beta.21": {
       "reflect-metadata": "npm:reflect-metadata@0.1.2",
-      "rxjs": "npm:rxjs@5.0.0-rc.5",
+      "rxjs": "npm:rxjs@5.0.1",
       "zone.js": "npm:zone.js@0.6.26"
     },
     "npm:asn1.js@4.9.0": {
@@ -226,8 +226,8 @@ System.config({
       "stream": "github:jspm/nodelibs-stream@0.1.0",
       "string_decoder": "github:jspm/nodelibs-string_decoder@0.1.0"
     },
-    "npm:clipboard@1.5.15": {
-      "good-listener": "npm:good-listener@1.2.0",
+    "npm:clipboard@1.5.16": {
+      "good-listener": "npm:good-listener@1.2.1",
       "select": "npm:select@1.1.0",
       "tiny-emitter": "npm:tiny-emitter@1.1.0"
     },
@@ -319,12 +319,12 @@ System.config({
       "parseuri": "npm:parseuri@0.0.4",
       "yeast": "npm:yeast@0.1.2"
     },
-    "npm:engine.io-client@1.8.1": {
+    "npm:engine.io-client@1.8.2": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "component-emitter": "npm:component-emitter@1.2.1",
       "component-inherit": "npm:component-inherit@0.0.3",
       "debug": "npm:debug@2.3.3",
-      "engine.io-parser": "npm:engine.io-parser@1.3.1",
+      "engine.io-parser": "npm:engine.io-parser@1.3.2",
       "has-cors": "npm:has-cors@1.1.0",
       "indexof": "npm:indexof@0.0.1",
       "parsejson": "npm:parsejson@0.0.3",
@@ -342,13 +342,13 @@ System.config({
       "has-binary": "npm:has-binary@0.1.6",
       "utf8": "npm:utf8@2.1.0"
     },
-    "npm:engine.io-parser@1.3.1": {
-      "after": "npm:after@0.8.1",
+    "npm:engine.io-parser@1.3.2": {
+      "after": "npm:after@0.8.2",
       "arraybuffer.slice": "npm:arraybuffer.slice@0.0.6",
       "base64-arraybuffer": "npm:base64-arraybuffer@0.1.5",
       "blob": "npm:blob@0.0.4",
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
-      "has-binary": "npm:has-binary@0.1.6",
+      "has-binary": "npm:has-binary@0.1.7",
       "wtf-8": "npm:wtf-8@1.0.0"
     },
     "npm:engine.io@1.6.9": {
@@ -372,8 +372,8 @@ System.config({
       "create-hash": "npm:create-hash@1.1.2",
       "crypto": "github:jspm/nodelibs-crypto@0.1.0"
     },
-    "npm:good-listener@1.2.0": {
-      "delegate": "npm:delegate@3.1.0"
+    "npm:good-listener@1.2.1": {
+      "delegate": "npm:delegate@3.1.1"
     },
     "npm:has-binary@0.1.6": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
@@ -521,7 +521,7 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:rxjs@5.0.0-rc.5": {
+    "npm:rxjs@5.0.1": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "symbol-observable": "npm:symbol-observable@1.0.4"
@@ -532,7 +532,7 @@ System.config({
       "inherits": "npm:inherits@2.0.1",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:showdown@1.5.1": {
+    "npm:showdown@1.5.3": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2",
@@ -558,13 +558,13 @@ System.config({
       "socket.io-parser": "npm:socket.io-parser@2.2.6",
       "to-array": "npm:to-array@0.1.4"
     },
-    "npm:socket.io-client@1.7.1": {
+    "npm:socket.io-client@1.7.2": {
       "backo2": "npm:backo2@1.0.2",
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "component-bind": "npm:component-bind@1.0.0",
       "component-emitter": "npm:component-emitter@1.2.1",
       "debug": "npm:debug@2.3.3",
-      "engine.io-client": "npm:engine.io-client@1.8.1",
+      "engine.io-client": "npm:engine.io-client@1.8.2",
       "has-binary": "npm:has-binary@0.1.7",
       "indexof": "npm:indexof@0.0.1",
       "object-component": "npm:object-component@0.0.3",
