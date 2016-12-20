@@ -54,6 +54,15 @@
         "category": "EIGHT"
     },
     {
+        "gistId": "7bc55a721656a9cda2494f60d68605bf",
+        "title": "How to set Position and Attitude",
+        "description": "",
+        "imageSrc": "/img/cookbook/eight/position-and-attitude.png",
+        "imageAlt": "A multi-colored cube",
+        "docsUrl": null,
+        "category": "EIGHT"
+    },
+    {
         "gistId": "c4ab6dadb6305234974fe49122e1cf4d",
         "title": "How to create a Hollow Cylinder",
         "description": "",
