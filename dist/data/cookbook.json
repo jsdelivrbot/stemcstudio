@@ -18,6 +18,15 @@
         "category": "EIGHT"
     },
     {
+        "gistId": "7bc55a721656a9cda2494f60d68605bf",
+        "title": "How to set Position and Attitude",
+        "description": "",
+        "imageSrc": "/img/cookbook/eight/position-and-attitude.png",
+        "imageAlt": "A multi-colored cube",
+        "docsUrl": null,
+        "category": "EIGHT"
+    },
+    {
         "gistId": "73e68084a4c927ce20bb0b4d06b33192",
         "title": "How to create a Box",
         "description": "",
@@ -50,15 +59,6 @@
         "description": "",
         "imageSrc": "/img/cookbook/eight/arrow.png",
         "imageAlt": "A red arrow, yellow arrow, green arrow, and blue arrow arranged in a closed square",
-        "docsUrl": null,
-        "category": "EIGHT"
-    },
-    {
-        "gistId": "7bc55a721656a9cda2494f60d68605bf",
-        "title": "How to set Position and Attitude",
-        "description": "",
-        "imageSrc": "/img/cookbook/eight/position-and-attitude.png",
-        "imageAlt": "A multi-colored cube",
         "docsUrl": null,
         "category": "EIGHT"
     },
@@ -122,6 +122,15 @@
         "description": "",
         "imageSrc": null,
         "imageAlt": "",
+        "docsUrl": null,
+        "category": "EIGHT"
+    },
+    {
+        "gistId": "ae804340e780847f0cc7a77660f427bf",
+        "title": "How to create many objects - Best Practice",
+        "description": "",
+        "imageSrc": "/img/cookbook/eight/one-thousand-best-practice.png",
+        "imageAlt": "One thousand cubes",
         "docsUrl": null,
         "category": "EIGHT"
     }
