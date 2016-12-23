@@ -11,10 +11,10 @@ System.config({
     "@angular/router": "npm:@angular/router@0.2.0",
     "ace2ts/ace-workers": "github:ace2ts/ace-workers@1.0.4",
     "angular": "github:angular/bower-angular@1.5.9",
-    "angular-animate": "github:angular/bower-angular-animate@1.6.0",
+    "angular-animate": "github:angular/bower-angular-animate@1.6.1",
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.3",
     "angular-material-icons": "npm:angular-material-icons@0.7.1",
-    "angular-sanitize": "github:angular/bower-angular-sanitize@1.6.0",
+    "angular-sanitize": "github:angular/bower-angular-sanitize@1.6.1",
     "angular-ui-router": "github:angular-ui/ui-router@0.2.18",
     "angular2": "npm:angular2@2.0.0-beta.21",
     "bootstrap": "vendor/bootstrap/dist/js/npm",
@@ -23,7 +23,7 @@ System.config({
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.1.1",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.1.1",
     "jquery": "npm:jquery@2.2.4",
-    "showdown": "npm:showdown@1.5.3",
+    "showdown": "npm:showdown@1.5.4",
     "socket.io": "npm:socket.io@1.4.6",
     "socket.io-client": "npm:socket.io-client@1.7.2",
     "ui-select": "npm:ui-select@0.17.1",
@@ -31,10 +31,10 @@ System.config({
     "github:angular-ui/ui-router@0.2.18": {
       "angular": "github:angular/bower-angular@1.5.9"
     },
-    "github:angular/bower-angular-animate@1.6.0": {
+    "github:angular/bower-angular-animate@1.6.1": {
       "angular": "github:angular/bower-angular@1.5.9"
     },
-    "github:angular/bower-angular-sanitize@1.6.0": {
+    "github:angular/bower-angular-sanitize@1.6.1": {
       "angular": "github:angular/bower-angular@1.5.9"
     },
     "github:jspm/nodelibs-assert@0.1.0": {
@@ -104,11 +104,11 @@ System.config({
       "negotiator": "npm:negotiator@0.6.0"
     },
     "npm:angular-material-icons@0.7.1": {
-      "angular": "npm:angular@1.6.0"
+      "angular": "npm:angular@1.6.1"
     },
     "npm:angular2@2.0.0-beta.21": {
       "reflect-metadata": "npm:reflect-metadata@0.1.2",
-      "rxjs": "npm:rxjs@5.0.1",
+      "rxjs": "npm:rxjs@5.0.2",
       "zone.js": "npm:zone.js@0.6.26"
     },
     "npm:asn1.js@4.9.0": {
@@ -521,7 +521,7 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:rxjs@5.0.1": {
+    "npm:rxjs@5.0.2": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "symbol-observable": "npm:symbol-observable@1.0.4"
@@ -532,7 +532,7 @@ System.config({
       "inherits": "npm:inherits@2.0.1",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:showdown@1.5.3": {
+    "npm:showdown@1.5.4": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2",

@@ -1,1 +1,0 @@
-module.exports = require("github:angular/bower-angular-animate@1.6.0/angular-animate");
