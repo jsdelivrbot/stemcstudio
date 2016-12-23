@@ -9,9 +9,9 @@
         "category": "EIGHT"
     },
     {
-        "gistId": "",
+        "gistId": "1ce869c8c52056ad9bd5740491679d97",
         "title": "How to introduce 3D graphics programming",
-        "description": "",
+        "description": "Use a lightweight wrapper to present an API similar to VPython.",
         "imageSrc": "/img/cookbook/eight/zen3d.png",
         "imageAlt": "Red, green, blue axes and a white arrow",
         "docsUrl": null,
