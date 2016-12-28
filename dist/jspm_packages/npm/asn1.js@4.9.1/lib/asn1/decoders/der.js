@@ -238,7 +238,7 @@ function derDecodeLen(buf, primitive, fail) {
     return len;
   }
   var num = len & 0x7f;
-  if (num >= 4)
+  if (num > 4)
     return buf.error('length octect is too long');
   len = 0;
   for (var i = 0; i < num; i++) {
