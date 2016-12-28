@@ -117,6 +117,15 @@
         "category": "EIGHT"
     },
     {
+        "gistId": "69ed742e3ffbcec677d7d215715cc5b7",
+        "title": "How to handle Mouse events",
+        "description": "How to bind to mouse pointer events and convert to world coordinates.",
+        "imageSrc": "/img/cookbook/eight/mouse-events.png",
+        "imageAlt": "",
+        "docsUrl": null,
+        "category": "EIGHT"
+    },
+    {
         "gistId": "16828bb6f002f7832d03a1b2c4d554d1",
         "title": "How to create a Trail",
         "description": "",
