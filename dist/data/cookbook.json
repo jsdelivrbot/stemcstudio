@@ -135,6 +135,15 @@
         "category": "EIGHT"
     },
     {
+        "gistId": "00e7adfba6ae99d4f3035c818716e909",
+        "title": "How to use a viewport",
+        "description": "Viewports allow a 3D canvas to be split so as to display a scene from multiple viewpoints.",
+        "imageSrc": "/img/cookbook/eight/rotating-frame.png",
+        "imageAlt": "",
+        "docsUrl": null,
+        "category": "EIGHT"
+    },
+    {
         "gistId": "e37cabcca4bbccf2e5bbd8281b960921",
         "title": "How to add Performance Monitoring",
         "description": "",
