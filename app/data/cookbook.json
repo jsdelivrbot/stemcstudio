@@ -135,6 +135,15 @@
         "category": "EIGHT"
     },
     {
+        "gistId": "1eeaba2371f7cc1fb5caba49523d1b7b",
+        "title": "How to add a texture",
+        "description": "",
+        "imageSrc": "/img/cookbook/eight/texture.png",
+        "imageAlt": "",
+        "docsUrl": null,
+        "category": "EIGHT"
+    },
+    {
         "gistId": "00e7adfba6ae99d4f3035c818716e909",
         "title": "How to use a viewport",
         "description": "Viewports allow a 3D canvas to be split so as to display a scene from multiple viewpoints.",
