@@ -158,6 +158,14 @@ export default class ExamplesController extends AbstractPageController {
                 category: 'Physics'
             },
             {
+                gistId: 'fe668d5c9dfa8e5c1984ee1290158b8d',
+                title: "Kinematics 1D with Units of Measure",
+                description: "A laboratory exploration of particle kinematics in one dimension.",
+                imageSrc: '/img/examples/kinematics-1d-with-units.png',
+                imageAlt: 'Red, green, and blue arrows showng acceleration, velocity, and displacement.',
+                category: 'Physics'
+            },
+            {
                 gistId: 'f00a5fe08eb92b854c803184ec26d402',
                 title: "Ball in a Box using EIGHT and Units",
                 description: "An example made to look like Visual Python but with Units of Measure.",
