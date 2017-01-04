@@ -320,7 +320,7 @@ app.factory('options', [
             {
                 name: 'jsxgraph',
                 moniker: 'JSXGraph',
-                description: "2D Geometry, Plotting, and Visualization.",
+                description: "Interactive 2D Geometry, Plotting, and Visualization.",
                 homepage: 'http://jsxgraph.uni-bayreuth.de',
                 version: VERSION_JSXGRAPH,
                 visible: true,
@@ -328,6 +328,9 @@ app.factory('options', [
                 dts: jsxgraph('jsxgraph.d.ts'),
                 js: [jsxgraph('jsxgraphcore.js')],
                 minJs: [jsxgraph('jsxgraphcore.js')],
+                // CDNJS does not deploy the correct version.
+                // js: [`https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/${VERSION_JSXGRAPH}/jsxgraphcore.js`],
+                // minJs: [`https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/${VERSION_JSXGRAPH}/jsxgraphcore.js`],
                 dependencies: {}
             },
             {

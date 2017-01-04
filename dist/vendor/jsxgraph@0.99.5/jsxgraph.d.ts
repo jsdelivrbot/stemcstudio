@@ -7,6 +7,10 @@
  */
 declare module JXG {
     /**
+     * 
+     */
+    export function addEvent(target: any, eventName: string, handler: () => any, something: any): void;
+    /**
      * Converts HSV color to RGB color. Based on C Code in "Computer Graphics -- Principles and Practice," Foley et al, 1996, p. 593. See also http://www.efg2.com/Lab/Graphics/Colors/HSV.htm 
      * param H value between 0 and 360
      * param S value between 0.0 (shade of gray) to 1.0 (pure color)
@@ -61,6 +65,8 @@ declare module JXG {
          */
         showElement(): void;
     }
+
+    type HTMLColorString = string;
 
     /**
      *
@@ -150,6 +156,11 @@ declare module JXG {
         needsRegularUpdate?: boolean;
 
         /**
+         * 
+         */
+        opacity?: number;
+
+        /**
          * A private element will be inaccessible in certain environments, e.g. a graphical user interface.
          */
         priv?: boolean;
@@ -175,7 +186,7 @@ declare module JXG {
         /**
          * The stroke color of the given geometry element.
          */
-        strokeColor?: string;
+        strokeColor?: string | (() => string);
 
         /**
          * Opacity for element's stroke color.
@@ -185,7 +196,7 @@ declare module JXG {
         /**
          * Width of the element's stroke.
          */
-        strokeWidth?: number;
+        strokeWidth?: number | (() => number);
 
         /**
          * 
@@ -255,6 +266,88 @@ declare module JXG {
     /**
      *
      */
+    export interface TextAttributes extends GeometryElementAttributes {
+        /**
+         * Anchor element of the text.
+         * If it exists, the coordinates of the text are relative to this anchor element. 
+         */
+        anchor?: Point | Text | Image;
+        /**
+         * The horizontal alignment of the text.
+         * The default value is 'left'.
+         */
+        anchorX?: 'left' | 'middle' | 'right';
+        /**
+         * The vertical alignment of the text.
+         * The default value is 'middle'.
+         */
+        anchorY?: 'top' | 'middle' | 'bottom';
+        /**
+         * List of attractor elements.
+         * If the distance of the text is less than attractorDistance the text is made to glider of this element. 
+         */
+        attractors?: GeometryElement[];
+        /**
+         * The precision of the slider value displayed in the optional text. 
+         */
+        cssClass?: string;
+        /**
+         * Used to round texts given by a number.
+         * The default value is 2.
+         */
+        digits?: number;
+        /**
+         * Sensitive area for dragging the text.
+         * Possible values are 'all', or something else.
+         * This may be extended to left, right, ... in the future.
+         */
+        dragArea?: 'all' | string;
+        /**
+         * The font size in pixels.
+         * The default value is 12.
+         */
+        fontSize?: number;
+        /**
+         * 
+         */
+        highlightCssClass?: string;
+        /**
+         * 
+         */
+        isLabel?: boolean;
+        /**
+         * 
+         */
+        parse?: boolean;
+        /**
+         * 
+         */
+        rotate?: number;
+        /**
+         * 
+         */
+        snapSizeX?: number;
+        /**
+         * 
+         */
+        snapSizeY?: number;
+        /**
+         * 
+         */
+        useASCIIMathML?: boolean;
+        /**
+         * 
+         */
+        useCaja?: boolean;
+        /**
+         * 
+         */
+        useMathJax?: boolean;
+    }
+
+    /**
+     *
+     */
     export interface Button extends Text {
     }
 
@@ -265,22 +358,94 @@ declare module JXG {
     }
 
     /**
+     * 
+     */
+    export interface ChartAttributes extends GeometryElementAttributes {
+        center?: PointSpecification;
+        chartStyle: 'bar' | 'pie';
+        colors?: string[];
+        gradient?: 'linear';
+        highlightColors?: string[];
+        highlightOnSector?: boolean;
+        highlightBySize?: boolean;
+        labels?: string[];
+    }
+
+    /**
+     *
+     */
+    export interface Checkbox extends Text {
+        /**
+         * 
+         */
+        Value(): boolean;
+    }
+
+    /**
+     *
+     */
+    export interface CheckboxAttributes extends TextAttributes {
+        /**
+         * Control the attribute "disabled" of the HTML checkbox.
+         * Default value is false.
+         */
+        disabled?: boolean;
+    }
+
+    /**
      *
      */
     export interface Circle extends GeometryElement {
+        center: Point;
         Radius(): number;
+    }
+
+    /**
+     * 
+     */
+    export interface CircleAttributes extends GeometryElementAttributes {
     }
 
     /**
      *
      */
     export interface Curve extends GeometryElement {
+        updateDataArray: () => any;
+    }
+
+    /**
+     * 
+     */
+    export interface CurveAttributes extends GeometryElementAttributes {
     }
 
     /**
      * A grid is a set of vertical and horizontal lines to support the user with element placement.
      */
     export interface Grid extends Curve {
+    }
+
+    /**
+     * 
+     */
+    export interface Group extends GeometryElement {
+    }
+
+    /**
+     * 
+     */
+    export interface GroupAttributes extends GeometryElementAttributes {
+    }
+
+    /**
+     * 
+     */
+    export interface Image extends GeometryElement {
+
+    }
+
+    export interface ImageAttributes {
+
     }
 
     /**
@@ -296,6 +461,12 @@ declare module JXG {
     }
 
     /**
+     * 
+     */
+    export interface Hyperbola extends Conic {
+    }
+
+    /**
      *
      */
     export interface Sector extends Curve {
@@ -306,10 +477,55 @@ declare module JXG {
      */
     export interface Angle extends Sector {
         /**
-         * Set an angle to a prescribed value given in radians. This is only possible if the third point of the angle, i.e. the anglepoint is a free point.
+         * Indicates a right angle.
+         * Invisible by default, use dot.visible: true to show.
+         * Though this dot indicates a right angle, it can be visible even if the angle is not a right one.
+         */
+        dot: Point;
+        /**
+         * The point defining the radius of the angle element.
+         */
+        point: Point;
+        /**
+         * Helper point for angles of type 'square'.
+         */
+        pointsquare: Point;
+        /**
+         * Frees an angle from a prescribed value.
+         */
+        free(): void;
+        /**
+         * Set an angle to a prescribed value given in radians.
+         * This is only possible if the third point of the angle, i.e. the anglepoint is a free point.
          * param val Number or Function which returns the size of the angle in Radians.
          */
-        setAngle(val: any): Angle
+        setAngle(val: number | NumberFunction): Angle;
+        /**
+         * Returns the value of the angle in Radians.
+         */
+        Value(): number;
+    }
+
+    /**
+     * 
+     */
+    export interface AngleAttributes {
+        /**
+         * Sensitivity (in degrees) to declare an angle as right angle.
+         */
+        orthoSensitivity?: number;
+        /**
+         * Display type of the angle field in case of a right angle.
+         */
+        orthoType?: 'square' | 'sectordot';
+        /**
+         * Radius of the sector, displaying the angle.
+         */
+        radius?: number;
+        /**
+         * Display type of the angle field.
+         */
+        type?: 'sector';
     }
 
     /**
@@ -318,18 +534,56 @@ declare module JXG {
     export interface Functiongraph extends GeometryElement {
     }
 
+    export interface FunctiongraphAttributes extends GeometryElementAttributes {
+    }
+
     /**
      *
      */
     export interface Point extends CoordsElement {
         X(): number;
         Y(): number;
+        Dist(point: Point): number;
     }
 
+    type FaceType = 'x' | 'cross' | 'o' | 'circle' | '[]' | 'square' | '+' | 'plus' | '<>' | 'diamond' | '^' | 'triangleUp' | 'triangleDown' | '<' | 'triangleLeft' | '>' | 'triangleRight';
+
+    /**
+     * 
+     */
     export interface PointAttributes extends CoordsElementAttributes {
-        face?: 'cross' | 'circle' | 'square' | 'plus' | 'diamond' | 'triangleUp' | 'triangleDown' | 'triangleLeft' | 'triangleRight';
+        attractorDistance?: number;
+        attractors?: any[];
+        attractorUnit?: 'screen' | 'user';
+        face?: FaceType;
+        ignoredSnapToPoints?: any[];
+        infoboxDigits?: any;
         name?: string;
+        showInfobox?: boolean;
         size?: number;
+        snapSizeX?: number;
+        snapSizeY?: number;
+        snapToGrid?: boolean;
+        snapToPoints?: boolean;
+        snatchDistance?: number;
+        zoom?: boolean;
+    }
+
+    /**
+     * 
+     */
+    export interface Polygon extends GeometryElement {
+
+    }
+
+    /**
+     * 
+     */
+    export interface PolygonAttributes extends GeometryElementAttributes {
+        /**
+         * 
+         */
+        withLines?: boolean;
     }
 
     /**
@@ -337,6 +591,13 @@ declare module JXG {
      */
     export interface Glider extends Point {
     }
+
+    /**
+     * 
+     */
+    export interface GliderAttributes extends GeometryElementAttributes {
+    }
+
     /**
      *
      */
@@ -345,6 +606,16 @@ declare module JXG {
          * Returns the current slider value.
          */
         Value(): number;
+    }
+
+    /**
+     * 
+     */
+    export interface SliderAttributes extends GeometryElementAttributes {
+        /**
+         * 
+         */
+        snapWidth?: number;
     }
 
     /**
@@ -377,21 +648,18 @@ declare module JXG {
          * Determines whether the line has an arrow at the first defining point.
          */
         firstArrow?: boolean;
-
         /**
          * Determines whether the line has an arrow at the second defining point.
          */
         lastArrow?: boolean;
-
         /**
-         * Colors the line in the color specified.
+         * Determines whether the line is drawn beyond the first defining point.
          */
-        strokeColor?: string;
-
+        straightFirst?: boolean;
         /**
-         * Determines whether the line is traced.
+         * Determines whether the line is drawn beyond the second defining point.
          */
-        trace?: boolean;
+        straightLast?: boolean;
     }
 
     /**
@@ -399,15 +667,33 @@ declare module JXG {
      */
     export interface Arc extends Line {
     }
+
     /**
      *
      */
     export interface Arrow extends Line {
     }
+
+    /**
+     *
+     */
+    export interface ArrowAttributes extends GeometryElementAttributes {
+    }
+
     /**
      *
      */
     export interface Axis extends Line {
+        /**
+         * 
+         */
+        defaultTicks: Ticks;
+    }
+
+    /**
+     *
+     */
+    export interface AxisAttributes extends GeometryElementAttributes {
     }
 
     /**
@@ -420,10 +706,26 @@ declare module JXG {
     }
 
     /**
+     * 
+     */
+    export interface Ticks {
+
+    }
+
+    /**
      *
      */
     export interface Tapemeasure extends Segment {
     }
+
+    export interface Transform extends GeometryElement {
+        bindTo(element: GeometryElement): void;
+    }
+
+    export interface TransformAttributes {
+        type: 'rotate' | 'scale' | 'translate';
+    }
+
     /**
      *
      */
@@ -460,10 +762,69 @@ declare module JXG {
          */
         setPenSize(size: number): Turtle;
     }
+
+    /**
+     * 
+     */
+    type ElementType = 'angle' | 'arc' | 'arrow' | 'axis' | 'button' | 'chart' | 'checkbox' | 'circle' | 'conic' | 'curve' | 'ellipse' | 'functiongraph' | 'glider' | 'grid' | 'group' | 'hyperbola' | 'image' | 'line' | 'point' | 'polygon' | 'segment' | 'slider' | 'tapemeasure' | 'text' | 'transform' | 'turtle';
+
+    /**
+     * GEONExT syntax for coordinates.
+     */
+    type GEONExT = string;
+
+    /**
+     * 
+     */
+    type ImageURL = string;
+
+    /**
+     * 
+     */
+    type NumberFunction = () => number;
+
+    /**
+     * 
+     */
+    type CurveFunction = (x: number) => number;
+
+    /**
+     * 
+     */
+    type CoordSpecification = number | NumberFunction | GEONExT;
+
+    /**
+     * 
+     */
+    type PointSpecification = CoordSpecification[] | Point | GEONExT;
+
+    /**
+     * 
+     */
+    type StringFunction = () => string;
+
     /**
      *
      */
     export interface Board {
+        /**
+         * 
+         */
+        containerObj: HTMLDivElement;
+        /**
+         * 
+         */
+        options: {
+            label: {
+                strokeColor: string;
+            };
+        };
+        /**
+         * 
+         */
+        renderer: {
+            dumpToCanvas(elementId: string): void;
+        }
         /**
          * Register a new event handler.
          * For a list of possible events see documentation of the elements and objects
@@ -478,11 +839,11 @@ declare module JXG {
         /**
          *
          */
-        create(elementType: string, parents?: any[], attributes?: {}): GeometryElement;
+        create(elementType: ElementType, parents: any[], attributes: GeometryElementAttributes): GeometryElement;
         /**
          *
          */
-        create(elementType: "angle", parents?: any[], attributes?: {}): Angle;
+        create(elementType: "angle", parents?: Point[], attributes?: AngleAttributes): Angle;
         /**
          *
          */
@@ -490,11 +851,11 @@ declare module JXG {
         /**
          *
          */
-        create(elementType: "arrow", parents?: any[], attributes?: {}): Arrow;
+        create(elementType: "arrow", parents?: [PointSpecification, PointSpecification], attributes?: ArrowAttributes): Arrow;
         /**
          *
          */
-        create(elementType: "axis", parents?: any[], attributes?: {}): Axis;
+        create(elementType: "axis", parents?: (number[] | Point)[] | [number, number, number], attributes?: AxisAttributes): Axis;
         /**
          *
          */
@@ -502,11 +863,15 @@ declare module JXG {
         /**
          *
          */
-        create(elementType: "chart", parents: any[], attributes?: {}): Chart;
+        create(elementType: "chart", parents: number[], attributes?: ChartAttributes): Chart;
         /**
          *
          */
-        create(elementType: "circle", parents: any[], attributes?: {}): Circle;
+        create(elementType: "checkbox", parents?: [number, number, string], attributes?: CheckboxAttributes): Checkbox;
+        /**
+         *
+         */
+        create(elementType: "circle", parents: ((number[] | number | NumberFunction | GEONExT)[] | GEONExT | number | Point)[], attributes?: CircleAttributes): Circle;
         /**
          *
          */
@@ -514,19 +879,19 @@ declare module JXG {
         /**
          *
          */
-        create(elementType: "curve", parents: any[], attributes?: {}): Curve;
+        create(elementType: "curve", parents: (number[] | CurveFunction)[], attributes?: CurveAttributes): Curve;
         /**
          *
          */
-        create(elementType: "ellipse", parents: any[], attributes?: {}): Ellipse;
+        create(elementType: "ellipse", parents: [PointSpecification, PointSpecification, (PointSpecification | number | NumberFunction)], attributes?: {}): Ellipse;
         /**
          *
          */
-        create(elementType: "functiongraph", parents?: any[], attributes?: {}): Functiongraph;
+        create(elementType: "functiongraph", parents?: (CurveFunction | number)[], attributes?: FunctiongraphAttributes): Functiongraph;
         /**
          *
          */
-        create(elementType: "glider", parents: any[], attributes?: {}): Glider;
+        create(elementType: "glider", parents: (number | GeometryElement)[], attributes?: GliderAttributes): Glider;
         /**
          *
          */
@@ -534,19 +899,35 @@ declare module JXG {
         /**
          *
          */
-        create(elementType: "line", parents: any[], attributes?: LineAttributes): Line;
+        create(elementType: "group", parents: GeometryElement[], attributes?: GroupAttributes): Group;
         /**
          *
          */
-        create(elementType: "point", parents?: any[], attributes?: PointAttributes): Point;
+        create(elementType: "hyperbola", parents: [PointSpecification, PointSpecification, (PointSpecification | number | NumberFunction)], attributes?: {}): Hyperbola;
         /**
          *
          */
-        create(elementType: "segment", parents: any[], attributes?: SegmentAttributes): Segment;
+        create(elementType: "image", parents: [ImageURL, PointSpecification, PointSpecification], attributes?: ImageAttributes): Image;
         /**
          *
          */
-        create(elementType: "slider", parents: any[], attributes?: {}): Slider;
+        create(elementType: "line", parents: [PointSpecification, PointSpecification], attributes?: LineAttributes): Line;
+        /**
+         *
+         */
+        create(elementType: "point", parents: (number | NumberFunction | Point | string | Transform)[], attributes?: PointAttributes): Point;
+        /**
+         *
+         */
+        create(elementType: "polygon", parents: Point[], attributes?: PolygonAttributes): Polygon;
+        /**
+         *
+         */
+        create(elementType: "segment", parents: Point[], attributes?: SegmentAttributes): Segment;
+        /**
+         *
+         */
+        create(elementType: "slider", parents: [PointSpecification, PointSpecification, number[]], attributes?: SliderAttributes): Slider;
         /**
          *
          */
@@ -554,7 +935,11 @@ declare module JXG {
         /**
          *
          */
-        create(elementType: "text", parents?: any[], attributes?: {}): Text;
+        create(elementType: "text", parents?: [number | NumberFunction, number | NumberFunction, string | StringFunction], attributes?: TextAttributes): Text;
+        /**
+         *
+         */
+        create(elementType: "transform", parents: ((() => number) | Point)[], attributes?: TransformAttributes): Transform;
         /**
          *
          */
