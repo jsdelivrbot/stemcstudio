@@ -233,12 +233,10 @@ declare module JXG {
          * Getter method for x, this is used by for CAS-points to access point coordinates.
          */
         X(): number;
-
         /**
          * Getter method for y, this is used by for CAS-points to access point coordinates.
          */
         Y(): number;
-
         /**
          * Starts an animated point movement towards the given coordinates where.
          * The animation is done after time milliseconds.
@@ -248,6 +246,16 @@ declare module JXG {
          * param options
          */
         moveTo(where: number[], time?: number, options?: { callback?: () => void; effect?: string; }): Point;
+        /**
+         * Animate the point.
+         * direction: The direction the glider is animated. Can be +1 or -1.
+         * stepCount: The number of steps.
+         */
+        startAnimation(direction: number, stepCount: number): void;
+        /**
+         * Stop animation.
+         */
+        stopAnimation(): void;
     }
 
     /**
@@ -396,7 +404,17 @@ declare module JXG {
      *
      */
     export interface Circle extends GeometryElement {
+        /**
+         * 
+         */
         center: Point;
+        /**
+         * 
+         */
+        midpoint: Point;
+        /**
+         * 
+         */
         Radius(): number;
     }
 
@@ -404,13 +422,133 @@ declare module JXG {
      * 
      */
     export interface CircleAttributes extends GeometryElementAttributes {
+        /**
+         * 
+         */
+        center?: Point;
+        /**
+         * 
+         */
+        hasInnerPoints?: boolean;
+        /**
+         * 
+         */
+        label?: Label;
+        /**
+         * 
+         */
+        point?: Point;
     }
 
     /**
-     *
+     * Curves are the common object for function graphs, parametric curves, polar curves, and data plots.
      */
     export interface Curve extends GeometryElement {
+        /**
+         * Array holding the x-coordinates of a data plot.
+         * This array can be updated during run time by overwriting the method updateDataArray.
+         */
+        dataX: number[];
+        /**
+         * Array holding the y-coordinates of a data plot.
+         * This array can be updated during run time by overwriting the method updateDataArray.
+         */
+        dataY: number[];
+        /**
+         * Number of points on curves.
+         * This value changes between numberPointsLow and numberPointsHigh.
+         * It is set in updateCurve.
+         */
+        numberPoints: number;
+        /**
+         * Stores a quad tree if it is required.
+         * The quad tree is generated in the curve updates and can be used to speed up the hasPoint method.
+         */
+        qdt: any;
+        /**
+         * Add transformations to this curve.
+         */
+        addTransform(transform): Curve;
+        /**
+         * Allocate points in the Coords array this.points
+         */
+        allocatePoints(): void;
+        /**
+         * 
+         */
+        checkReal();
+        /**
+         * 
+         */
+        generateTerm(varname, xterm, yterm, mi, ma);
+        /**
+         * Checks whether (x,y) is near the curve.
+         * x: Coordinate in x direction, screen coordinates.
+         * y: Coordinate in y direction, screen coordinates.
+         * start: Optional start index for search on data plots.
+         */
+        hasPoint(x: number, y: number, start: number): boolean;
+        /**
+         * Gives the default value of the right bound for the curve.
+         * May be overwritten in generateTerm.
+         */
+        maxX(): number;
+        /**
+         * Gives the default value of the left bound for the curve.
+         * May be overwritten in generateTerm.
+         */
+        minX(): number;
+        /**
+         * Finds dependencies in a given term and notifies the parents by adding the dependent object to the found objects child elements.
+         */
+        notifyParents(contentStr: string): void;
+        /**
+         * Computes for equidistant points on the x-axis the values of the function.
+         */
+        update(): Curve;
+        /**
+         * Computes for equidistant points on the x-axis the values of the function.
+         * If the mousemove event triggers this update, we use only few points.
+         * Otherwise, e.g. on mouseup, many points are used.
+         */
+        updateCurve(): Curve;
+        /**
+         * For dynamic dataplots updateCurve can be used to compute new entries for the arrays dataX and dataY.
+         * It is used in updateCurve.
+         * Default is an empty method, can be overwritten by the user.
+         */
         updateDataArray: () => any;
+        /**
+         * Updates the data points of a parametric curve.
+         * This version is used if doadvancedplot is true.
+         */
+        updateParametricCurve(mi: number, ma: number): Curve;
+        /**
+         * Updates the data points of a parametric curve.
+         * This version is used if doadvancedplot is false.
+         */
+        updateParametricCurveNaive(mi: number, ma: number, len: number): Curve;
+        /**
+         * Updates the visual contents of the curve.
+         */
+        updateRenderer(): Curve;
+        /**
+         * Applies the transformations of the curve to the given point p.
+         * Before using it, updateTransformMatrix has to be called.
+         */
+        updateTransform(p: Point): Point;
+        /**
+         * The parametric function which defines the x-coordinate of the curve.
+         */
+        X(t: number, suspendUpdate: boolean): number;
+        /**
+         * The parametric function which defines the y-coordinate of the curve.
+         */
+        Y(t: number, suspendUpdate: boolean): number;
+        /**
+         * Treat the curve as curve with homogeneous coordinates.
+         */
+        Z(t: number): number;
     }
 
     /**
@@ -446,6 +584,13 @@ declare module JXG {
 
     export interface ImageAttributes {
 
+    }
+
+    /**
+     * 
+     */
+    export interface Label {
+        fontSize?: number;
     }
 
     /**
@@ -587,9 +732,15 @@ declare module JXG {
     }
 
     /**
-     *
+     * A glider is a point which lives on another geometric element like a line, circle, curve, turtle.
      */
     export interface Glider extends Point {
+        /**
+         * When used as a glider this member stores the object, where to glide on.
+         * To set the object to glide on use the method makeGlider.
+         * DO NOT set this property directly as it will break the dependency tree.
+         */
+        slideObject: GeometryElement;
     }
 
     /**
@@ -618,6 +769,66 @@ declare module JXG {
         snapWidth?: number;
     }
 
+    /**
+     * 
+     */
+    export interface Slopetriangle extends Line {
+
+    }
+
+    /**
+     * 
+     */
+    export interface SlopetriangleAttributes extends LineAttributes {
+        /**
+         * 
+         */
+        baseline;
+        /**
+         * 
+         */
+        basepoint;
+        /**
+         * 
+         */
+        glider;
+        /**
+         * 
+         */
+        label;
+        /**
+         * 
+         */
+        tangent;
+        /**
+         * 
+         */
+        toppoint;
+    }
+
+    /**
+     *
+     */
+    export interface Stepfunction extends Curve {
+    }
+
+    export interface StepfunctionAttributes extends CurveAttributes {
+    }
+
+    /**
+     * With the element tangent the slope of a line, circle, or curve in a certain point can be visualized.
+     * A tangent is always constructed by a glider on a line, circle, or curve and describes the tangent in the glider point on that line, circle, or curve. 
+     */
+    export interface Tangent extends Line {
+
+    }
+
+    /**
+     * 
+     */
+    export interface TangentAttributes extends LineAttributes {
+
+    }
     /**
      *
      */
@@ -697,6 +908,16 @@ declare module JXG {
     }
 
     /**
+     * 
+     */
+    export interface Riemannsum extends Curve {
+        /**
+         * 
+         */
+        Value(): number;
+    }
+
+    /**
      *
      */
     export interface Segment extends Line {
@@ -766,7 +987,7 @@ declare module JXG {
     /**
      * 
      */
-    type ElementType = 'angle' | 'arc' | 'arrow' | 'axis' | 'button' | 'chart' | 'checkbox' | 'circle' | 'conic' | 'curve' | 'ellipse' | 'functiongraph' | 'glider' | 'grid' | 'group' | 'hyperbola' | 'image' | 'line' | 'point' | 'polygon' | 'segment' | 'slider' | 'tapemeasure' | 'text' | 'transform' | 'turtle';
+    type ElementType = 'angle' | 'arc' | 'arrow' | 'axis' | 'button' | 'chart' | 'checkbox' | 'circle' | 'conic' | 'curve' | 'ellipse' | 'functiongraph' | 'glider' | 'grid' | 'group' | 'hyperbola' | 'image' | 'line' | 'plot' | 'point' | 'polygon' | 'riemannsum' | 'segment' | 'slider' | 'slopetriangle' | 'stepfunction' | 'tangent' | 'tapemeasure' | 'text' | 'transform' | 'turtle';
 
     /**
      * GEONExT syntax for coordinates.
@@ -782,6 +1003,11 @@ declare module JXG {
      * 
      */
     type NumberFunction = () => number;
+
+    /**
+     * 
+     */
+    type BorderSpecification = number | NumberFunction;
 
     /**
      * 
@@ -915,6 +1141,10 @@ declare module JXG {
         /**
          *
          */
+        create(elementType: "plot", parents: [GEONExT], attributes?: CurveAttributes): Curve;
+        /**
+         *
+         */
         create(elementType: "point", parents: (number | NumberFunction | Point | string | Transform)[], attributes?: PointAttributes): Point;
         /**
          *
@@ -923,11 +1153,27 @@ declare module JXG {
         /**
          *
          */
+        create(elementType: "riemannsum", parents: (CurveFunction | CurveFunction[] | StringFunction | string | BorderSpecification)[], attributes?: CurveAttributes): Riemannsum;
+        /**
+         *
+         */
         create(elementType: "segment", parents: Point[], attributes?: SegmentAttributes): Segment;
         /**
          *
          */
         create(elementType: "slider", parents: [PointSpecification, PointSpecification, number[]], attributes?: SliderAttributes): Slider;
+        /**
+         *
+         */
+        create(elementType: "slopetriangle", parents: [Tangent] | [Line, Point], attributes?: SlopetriangleAttributes): Slopetriangle;
+        /**
+         *
+         */
+        create(elementType: "stepfunction", parents: [CoordSpecification[], CoordSpecification[]], attributes?: StepfunctionAttributes): Stepfunction;
+        /**
+         * Creates an instance of Tangent using a glider on a line, circle, or curve.
+         */
+        create(elementType: "tangent", parents?: [Glider], attributes?: TangentAttributes): Tangent;
         /**
          *
          */

@@ -326,11 +326,11 @@ app.factory('options', [
                 visible: true,
                 css: [],
                 dts: jsxgraph('jsxgraph.d.ts'),
-                js: [jsxgraph('jsxgraphcore.js')],
-                minJs: [jsxgraph('jsxgraphcore.js')],
-                // CDNJS does not deploy the correct version.
-                // js: [`https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/${VERSION_JSXGRAPH}/jsxgraphcore.js`],
-                // minJs: [`https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/${VERSION_JSXGRAPH}/jsxgraphcore.js`],
+                // js: [jsxgraph('jsxgraphcore.js')],
+                // minJs: [jsxgraph('jsxgraphcore.js')],
+                // CDNJS does not deploy the correct version?
+                js: [`https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/${VERSION_JSXGRAPH}/jsxgraphcore.js`],
+                minJs: [`https://cdnjs.cloudflare.com/ajax/libs/jsxgraph/${VERSION_JSXGRAPH}/jsxgraphcore.js`],
                 dependencies: {}
             },
             {
