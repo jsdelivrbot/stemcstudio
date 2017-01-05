@@ -1081,7 +1081,7 @@ declare module JXG {
         /**
          *
          */
-        create(elementType: "axis", parents?: (number[] | Point)[] | [number, number, number], attributes?: AxisAttributes): Axis;
+        create(elementType: "axis", parents?: [PointSpecification, PointSpecification] | [number, number, number], attributes?: AxisAttributes): Axis;
         /**
          *
          */
