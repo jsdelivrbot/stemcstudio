@@ -676,7 +676,7 @@ declare module JXG {
     /**
      *
      */
-    export interface Functiongraph extends GeometryElement {
+    export interface Functiongraph extends Curve {
     }
 
     export interface FunctiongraphAttributes extends GeometryElementAttributes {
@@ -747,6 +747,34 @@ declare module JXG {
      * 
      */
     export interface GliderAttributes extends GeometryElementAttributes {
+    }
+
+    /**
+     * Hatch marks can be used to mark congruent lines.
+     */
+    export interface Hatch extends Ticks {
+
+    }
+
+    /**
+     * 
+     */
+    export interface HatchAttributes extends GeometryElementAttributes {
+
+    }
+
+    /**
+     * 
+     */
+    export interface Integral extends Curve {
+
+    }
+
+    /**
+     * 
+     */
+    export interface IntegralAttributes extends CurveAttributes {
+
     }
 
     /**
@@ -876,7 +904,41 @@ declare module JXG {
     /**
      *
      */
-    export interface Arc extends Line {
+    export interface Arc extends Curve {
+        /**
+         * The point defining the arc's angle.
+         */
+        anglepoint: Point;
+        /**
+         * Center of the arc.
+         */
+        center: Point;
+        /**
+         * Point defining the arc's radius.
+         */
+        radiuspoint: Point;
+        /**
+         * Checks whether (x,y) is within the sector defined by the arc.
+         * x: Coordinate in x direction, screen coordinates.
+         * y: Coordinate in y direction, screen coordinates.
+         */
+        hasPointSector(x: number, y: number): boolean;
+        /**
+         * Determines the arc's current radius.
+         * i.e. the distance between center and radiuspoint.
+         */
+        Radius(): number;
+        /**
+         * Returns the length of the arc.
+         */
+        Value(): number;
+    }
+
+    /**
+     * 
+     */
+    export interface ArcAttributes extends CurveAttributes {
+
     }
 
     /**
@@ -908,6 +970,21 @@ declare module JXG {
     }
 
     /**
+     * A reflected point is given by a point and a line.
+     * It is determined by the reflection of the given point against the given line.
+     */
+    export interface Reflection extends Point {
+
+    }
+
+    /**
+     * 
+     */
+    export interface ReflectionAttributes extends PointAttributes {
+
+    }
+
+    /**
      * 
      */
     export interface Riemannsum extends Curve {
@@ -929,7 +1006,7 @@ declare module JXG {
     /**
      * 
      */
-    export interface Ticks {
+    export interface Ticks extends GeometryElement {
 
     }
 
@@ -987,7 +1064,7 @@ declare module JXG {
     /**
      * 
      */
-    type ElementType = 'angle' | 'arc' | 'arrow' | 'axis' | 'button' | 'chart' | 'checkbox' | 'circle' | 'conic' | 'curve' | 'ellipse' | 'functiongraph' | 'glider' | 'grid' | 'group' | 'hyperbola' | 'image' | 'line' | 'plot' | 'point' | 'polygon' | 'riemannsum' | 'segment' | 'slider' | 'slopetriangle' | 'stepfunction' | 'tangent' | 'tapemeasure' | 'text' | 'transform' | 'turtle';
+    type ElementType = 'angle' | 'arc' | 'arrow' | 'axis' | 'button' | 'chart' | 'checkbox' | 'circle' | 'conic' | 'curve' | 'ellipse' | 'functiongraph' | 'glider' | 'grid' | 'group' | 'hatch' | 'hyperbola' | 'image' | 'integral' | 'line' | 'plot' | 'point' | 'polygon' | 'reflection' | 'riemannsum' | 'segment' | 'slider' | 'slopetriangle' | 'stepfunction' | 'tangent' | 'tapemeasure' | 'text' | 'transform' | 'turtle';
 
     /**
      * GEONExT syntax for coordinates.
@@ -1069,11 +1146,13 @@ declare module JXG {
         /**
          *
          */
-        create(elementType: "angle", parents?: Point[], attributes?: AngleAttributes): Angle;
+        create(elementType: "angle", parents: [PointSpecification, PointSpecification, PointSpecification], attributes?: AngleAttributes): Angle;
         /**
-         *
+         * centerPoint
+         * radiusPoint
+         * anglePoint
          */
-        create(elementType: "arc", parents?: any[], attributes?: {}): Arc;
+        create(elementType: "arc", parents: [PointSpecification, PointSpecification, PointSpecification], attributes?: ArcAttributes): Arc;
         /**
          *
          */
@@ -1129,11 +1208,19 @@ declare module JXG {
         /**
          *
          */
+        create(elementType: "hatch", parents: [Line, number], attributes?: HatchAttributes): Hatch;
+        /**
+         *
+         */
         create(elementType: "hyperbola", parents: [PointSpecification, PointSpecification, (PointSpecification | number | NumberFunction)], attributes?: {}): Hyperbola;
         /**
          *
          */
         create(elementType: "image", parents: [ImageURL, PointSpecification, PointSpecification], attributes?: ImageAttributes): Image;
+        /**
+         *
+         */
+        create(elementType: "integral", parents: [[number, number], Curve], attributes?: IntegralAttributes): Integral;
         /**
          *
          */
@@ -1150,6 +1237,10 @@ declare module JXG {
          *
          */
         create(elementType: "polygon", parents: Point[], attributes?: PolygonAttributes): Polygon;
+        /**
+         *
+         */
+        create(elementType: "reflection", parents: [Point, Line], attributes?: ReflectionAttributes): Reflection;
         /**
          *
          */
