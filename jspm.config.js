@@ -108,7 +108,7 @@ System.config({
     },
     "npm:angular2@2.0.0-beta.21": {
       "reflect-metadata": "npm:reflect-metadata@0.1.2",
-      "rxjs": "npm:rxjs@5.0.2",
+      "rxjs": "npm:rxjs@5.0.3",
       "zone.js": "npm:zone.js@0.6.26"
     },
     "npm:asn1.js@4.9.1": {
@@ -521,7 +521,7 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:rxjs@5.0.2": {
+    "npm:rxjs@5.0.3": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "symbol-observable": "npm:symbol-observable@1.0.4"
