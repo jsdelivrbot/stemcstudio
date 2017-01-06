@@ -1027,38 +1027,188 @@ declare module JXG {
     /**
      *
      */
-    export interface Turtle extends GeometryElement {
+    export interface Turtle {
         /**
          *
          */
         pos: number[];
         /**
-         * Move the turtle forward.
-         param len of forward move in user coordinates
+         * Move the turtle backwards.
          */
-        forward(len: number): Turtle;
+        back(distance: number): Turtle;
+        /**
+         * Alias for back.
+         */
+        bk(distance: number): Turtle;
+        /**
+         * Removes the turtle curve from the board.
+         * The turtle stays in its position.
+         */
+        clean(): Turtle;
+        /**
+         * Removes the turtle completely and resets it to its initial position and direction.
+         */
+        clearScreen(): Turtle;
+        /**
+         * Alias for clearScreen.
+         */
+        cs(): Turtle;
+        /**
+         * Alias for forward.
+         */
+        fd(distance: number): Turtle;
+        /**
+         * Move the turtle forward.
+         */
+        forward(distance: number): Turtle;
+        /**
+         * Checks whether (x,y) is near the curve.
+         * x: Coordinate in x direction, screen coordinates.
+         * y: Coordinate in y direction, screen coordinates.
+         */
+        hasPoint(x: number, y: number): boolean;
+        /**
+         * Sets the visibility of the turtle head to false.
+         */
+        hideTurtle(): Turtle;
         /**
          * Moves the turtle to position [0,0].
          */
         home(): Turtle;
         /**
+         * Alias for hideTurtle.
+         */
+        ht(): Turtle;
+        /**
          * Rotate the turtle direction to the left.
-         * param {number} angle of the rotation in degrees
+         * angle: angle of the rotation in degrees.
          */
         left(angle: number): Turtle;
         /**
+         * Rotates the turtle into a new direction.
+         * There are two possibilities:
+         * If a number is given, it is interpreted as the new direction to look to.
+         * If an array consisting of two numbers is given, target is used as a pair coordinates.
+         */
+        lookTo(target: number | [number, number]): Turtle;
+        /**
+         * Alias for left.
+         */
+        lt(angle: number): Turtle;
+        /**
+         * Gives the upper bound of the parameter if the the turtle is treated as parametric curve.
+         */
+        maxX(): number;
+        /**
+         * Gives the lower bound of the parameter if the the turtle is treated as parametric curve.
+         */
+        minX(): number;
+        /**
+         * Moves the turtle to a given coordinate pair.
+         * The direction is not changed.
+         */
+        moveTo(target: [number, number]): Turtle;
+        /**
+         * Alias for penDown.
+         */
+        pd(): Turtle;
+        /**
+         * Pen down, continues visible drawing.
+         */
+        penDown(): Turtle;
+        /**
+         * Pen up, stops visible drawing.
+         */
+        penUp(): Turtle;
+        /**
+         * Alias for popTurtle.
+         */
+        pop(): Turtle;
+        /**
+         * Gets the last position of the turtle on the stack,
+         * sets the turtle to this position and removes this position from the stack.
+         */
+        popTurtle(): Turtle;
+        /**
+         * Alias for penUp.
+         */
+        pu(): Turtle;
+        /**
+         * Alias for pushTurtle.
+         */
+        push(): Turtle;
+        /**
+         * Pushes the position of the turtle on the stack.
+         */
+        pushTurtle(): Turtle;
+        /**
+         * Alias for right.
+         */
+        rt(angle: number): Turtle;
+        /**
          * Rotate the turtle direction to the right.
-         * param {number} angle of the rotation in degrees
+         * angle: angle of the rotation in degrees.
          */
         right(angle: number): Turtle;
         /**
-         * Sets the pen color. Equivalent to setAttribute({strokeColor:color}) but affects only the future turtle.
+         * Sets properties of the turtle.
+         * Sets the property for all curves of the turtle in the past and in the future.
+         */
+        setAttributes(attributes: {}): Turtle;
+        /**
+         * Sets the highlight pen color.
+         * Equivalent to setAttribute({highlightStrokeColor: color}) but affects only the future turtle.
+         */
+        setHighlightPenColor(color: string): Turtle;
+        /**
+         * Sets the pen color.
+         * Equivalent to setAttribute({strokeColor: color}) but affects only the future turtle.
          */
         setPenColor(color: string): Turtle;
         /**
-         * Sets the pen size. Equivalent to setAttribute({strokeWidth:size}) but affects only the future turtle.
+         * Sets the pen size.
+         * Equivalent to setAttribute({strokeWidth: size}) but affects only the future turtle.
          */
         setPenSize(size: number): Turtle;
+        /**
+         * Moves the turtle without drawing to a new position.
+         */
+        setPos(x: number, y: number): Turtle;
+        /**
+         * Sets the visibility of the turtle head to true.
+         */
+        showTurtle(): Turtle;
+        /**
+         * Alias for showTurtle.
+         */
+        st(): Turtle;
+        /**
+         * If t is not supplied the x-coordinate of the turtle is returned.
+         * Otherwise the x-coordinate of the turtle curve at position t is returned.
+         */
+        X(t?: number): number;
+        /**
+         * If t is not supplied the y-coordinate of the turtle is returned.
+         * Otherwise the y-coordinate of the turtle curve at position t is returned.
+         */
+        Y(t?: number): number;
+        /**
+         * Returns the z-coordinate of the turtle position.
+         */
+        Z(t: number): number;
+    }
+
+    /**
+     * Attributes to change the visual properties of the turtle object.
+     * All angles are in degrees.
+     */
+    export interface TurtleAttributes {
+        /**
+         * 
+         */
+        arrow?: {
+
+        }
     }
 
     /**
@@ -1142,7 +1292,7 @@ declare module JXG {
         /**
          *
          */
-        create(elementType: ElementType, parents: any[], attributes: GeometryElementAttributes): GeometryElement;
+        create(elementType: ElementType, parents: any[], attributes: any): any;
         /**
          *
          */
@@ -1280,7 +1430,7 @@ declare module JXG {
         /**
          *
          */
-        create(elementType: "turtle", parents?: any[], attributes?: {}): Turtle;
+        create(elementType: "turtle", parents?: any[], attributes?: TurtleAttributes): Turtle;
         /**
          * Stop updates of the board.
          * return Reference to the board
