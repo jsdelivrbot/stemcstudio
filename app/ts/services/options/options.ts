@@ -14,13 +14,13 @@ app.factory('options', [
 
         const VERSION_ANGULARJS = '1.5.3';
         // const VERSION_ASYNC = '1.4.2';
-        const VERSION_BACONJS = '0.7.88';
+        const VERSION_BACONJS = '0.7.89';
         const VERSION_BIWASCHEME = '0.6.6';
         const VERSION_DAT_GUI = '0.5.0';
         const VERSION_DECKJS = '1.1.0';
         const VERSION_DOMREADY = '1.0.0';
         const VERSION_D3_V3 = '3.5.17';
-        const VERSION_EIGHT = '5.0.24';
+        const VERSION_EIGHT = '6.0.0';
         const VERSION_GEOCAS = '1.13.0';
         const VERSION_GLMATRIX = '2.3.2';
         const VERSION_JASMINE = '2.4.1';
