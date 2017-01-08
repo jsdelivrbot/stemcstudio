@@ -332,6 +332,12 @@ function copies(target) {
         },
         {
             expand: true,
+            cwd: "museum/baconjs@0.7.89",
+            src: ["**"],
+            dest: prepend(target, 'vendor/baconjs@0.7.89')
+        },
+        {
+            expand: true,
             cwd: "museum/biwascheme@0.6.6",
             src: ["**"],
             dest: prepend(target, 'vendor/biwascheme@0.6.6')

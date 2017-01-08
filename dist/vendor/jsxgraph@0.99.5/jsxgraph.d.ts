@@ -9,6 +9,68 @@ declare module JXG {
     /**
      * 
      */
+    export const COORDS_BY_SCREEN: number;
+    /**
+     * 
+     */
+    export class Coords {
+        constructor(size: number, coords: number[], board: Board);
+        /**
+         * 
+         */
+        usrCoords: number[];
+    }
+    /**
+     * A JessieCode object provides an interface to the parser and stores all variables and objects used within a JessieCode script.
+     * The optional argument code is interpreted after initializing.
+     * To evaluate more code after initializing a JessieCode instance please use parse.
+     * For code snippets like single expressions use snippet.
+     */
+    export class JessieCode {
+        /**
+         * 
+         */
+        board: Board;
+        /**
+         * 
+         */
+        constructor(code?: string, geonext?: boolean);
+        /**
+         * 
+         */
+        dist(p1: Point, p2: Point): number;
+        /**
+         * 
+         */
+        getElementId(id: string): GeometryElement;
+        /**
+         * 
+         */
+        L(e: Line): number;
+        /**
+         * 
+         */
+        parse(code: string, geonext: boolean, dontstore: boolean);
+        /**
+         * 
+         */
+        snippet(code: string, funwrap: boolean, varname: string, geonext: boolean): any;
+        /**
+         * 
+         */
+        V(e: Glider | Slider): number;
+        /**
+         * 
+         */
+        X(e: Point | Text): number;
+        /**
+         * 
+         */
+        Y(e: Point | Text): number;
+    }
+    /**
+     * 
+     */
     export function addEvent(target: any, eventName: string, handler: () => any, something: any): void;
     /**
      * Converts HSV color to RGB color. Based on C Code in "Computer Graphics -- Principles and Practice," Foley et al, 1996, p. 593. See also http://www.efg2.com/Lab/Graphics/Colors/HSV.htm 
@@ -360,6 +422,17 @@ declare module JXG {
     }
 
     /**
+     * 
+     */
+    export interface ButtonAttributes extends TextAttributes {
+        /**
+         * Control the attribute "disabled" of the HTML button.
+         * Default Value: false.
+         */
+        disabled?: boolean;
+    }
+
+    /**
      *
      */
     export interface Chart extends GeometryElement {
@@ -383,6 +456,10 @@ declare module JXG {
      *
      */
     export interface Checkbox extends Text {
+        /**
+         * 
+         */
+        rendNodeCheckbox;
         /**
          * 
          */
@@ -760,6 +837,23 @@ declare module JXG {
      * 
      */
     export interface HatchAttributes extends GeometryElementAttributes {
+
+    }
+
+    /**
+     * 
+     */
+    export interface Input extends Text {
+        /**
+         * 
+         */
+        Value(): string;
+    }
+
+    /**
+     * 
+     */
+    export interface InputAttributes extends TextAttributes {
 
     }
 
@@ -1214,12 +1308,17 @@ declare module JXG {
     /**
      * 
      */
-    type ElementType = 'angle' | 'arc' | 'arrow' | 'axis' | 'button' | 'chart' | 'checkbox' | 'circle' | 'conic' | 'curve' | 'ellipse' | 'functiongraph' | 'glider' | 'grid' | 'group' | 'hatch' | 'hyperbola' | 'image' | 'integral' | 'line' | 'plot' | 'point' | 'polygon' | 'reflection' | 'riemannsum' | 'segment' | 'slider' | 'slopetriangle' | 'stepfunction' | 'tangent' | 'tapemeasure' | 'text' | 'transform' | 'turtle';
+    type ElementType = 'angle' | 'arc' | 'arrow' | 'axis' | 'button' | 'chart' | 'checkbox' | 'circle' | 'conic' | 'curve' | 'ellipse' | 'functiongraph' | 'glider' | 'grid' | 'group' | 'hatch' | 'hyperbola' | 'image' | 'input' | 'integral' | 'line' | 'plot' | 'point' | 'polygon' | 'reflection' | 'riemannsum' | 'segment' | 'slider' | 'slopetriangle' | 'stepfunction' | 'tangent' | 'tapemeasure' | 'text' | 'transform' | 'turtle';
 
     /**
      * GEONExT syntax for coordinates.
      */
     type GEONExT = string;
+
+    /**
+     * 
+     */
+    type HandlerFunction = () => any;
 
     /**
      * 
@@ -1263,7 +1362,35 @@ declare module JXG {
         /**
          * 
          */
+        BOARD_MODE_NONE: number;
+        /**
+         *
+         */
+        canvasHeight: number;
+        /**
+         * 
+         */
+        canvasWidth: number;
+        /**
+         * The HTML id of the HTML element containing the board.
+         */
+        container: string;
+        /**
+         * The HTML element containing the board.
+         */
         containerObj: HTMLDivElement;
+        /**
+         * Dimension of the board.
+         */
+        dimension: number;
+        /**
+         * Keep aspect ratio if bounding box is set and the width/height ratio differs from the width/height ratio of the canvas.
+         */
+        keepaspectratio: boolean;
+        /**
+         * JessieCode
+         */
+        jc: JessieCode;
         /**
          * 
          */
@@ -1278,6 +1405,22 @@ declare module JXG {
         renderer: {
             dumpToCanvas(elementId: string): void;
         }
+        /**
+         * The number of pixels which represent one unit in user-coordinates in x direction.
+         */
+        unitX: number;
+        /**
+         * The number of pixels which represent one unit in user-coordinates in y direction.
+         */
+        unitY: number;
+        /**
+         * Zoom factor in the X direction.
+         */
+        zoomX: number;
+        /**
+         * Zoom factor in the Y direction.
+         */
+        zoomY: number;
         /**
          * Register a new event handler.
          * For a list of possible events see documentation of the elements and objects
@@ -1314,7 +1457,7 @@ declare module JXG {
         /**
          *
          */
-        create(elementType: "button", parents?: any[], attributes?: {}): Button;
+        create(elementType: "button", parents?: [CoordSpecification, CoordSpecification, string] | [CoordSpecification, CoordSpecification, string, HandlerFunction], attributes?: ButtonAttributes): Button;
         /**
          *
          */
@@ -1322,7 +1465,7 @@ declare module JXG {
         /**
          *
          */
-        create(elementType: "checkbox", parents?: [number, number, string], attributes?: CheckboxAttributes): Checkbox;
+        create(elementType: "checkbox", parents?: [CoordSpecification, CoordSpecification, string], attributes?: CheckboxAttributes): Checkbox;
         /**
          *
          */
@@ -1367,6 +1510,10 @@ declare module JXG {
          *
          */
         create(elementType: "image", parents: [ImageURL, PointSpecification, PointSpecification], attributes?: ImageAttributes): Image;
+        /**
+         *
+         */
+        create(elementType: "input", parents: [CoordSpecification, CoordSpecification, string, string], attributes?: InputAttributes): Input;
         /**
          *
          */
@@ -1431,6 +1578,10 @@ declare module JXG {
          *
          */
         create(elementType: "turtle", parents?: any[], attributes?: TurtleAttributes): Turtle;
+        /**
+         * 
+         */
+        emulateColorBlindness(deficiency: 'protanopia' | 'deuteranopia' | 'tritanopia'): Board;
         /**
          * Stop updates of the board.
          * return Reference to the board
