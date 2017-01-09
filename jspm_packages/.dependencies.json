@@ -15,19 +15,6 @@
     "process": "github:jspm/nodelibs-process@^0.1.0",
     "assert": "github:jspm/nodelibs-assert@^0.1.0"
   },
-  "npm:yargs@3.32.0": {
-    "camelcase": "npm:camelcase@^2.0.1",
-    "cliui": "npm:cliui@^3.0.3",
-    "decamelize": "npm:decamelize@^1.1.1",
-    "os-locale": "npm:os-locale@^1.4.0",
-    "string-width": "npm:string-width@^1.0.1",
-    "window-size": "npm:window-size@^0.1.4",
-    "y18n": "npm:y18n@^3.2.0",
-    "fs": "github:jspm/nodelibs-fs@^0.1.0",
-    "path": "github:jspm/nodelibs-path@^0.1.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0",
-    "assert": "github:jspm/nodelibs-assert@^0.1.0"
-  },
   "github:jspm/nodelibs-path@0.1.0": {
     "path-browserify": "npm:path-browserify@0.0.0"
   },
@@ -42,7 +29,6 @@
   "github:jspm/nodelibs-buffer@0.1.0": {
     "buffer": "npm:buffer@^3.0.1"
   },
-  "npm:camelcase@2.1.1": {},
   "npm:cliui@3.2.0": {
     "string-width": "npm:string-width@^1.0.1",
     "strip-ansi": "npm:strip-ansi@^3.0.1",
@@ -62,10 +48,6 @@
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
   "npm:decamelize@1.2.0": {},
-  "npm:window-size@0.1.4": {
-    "process": "github:jspm/nodelibs-process@^0.1.0",
-    "tty": "github:jspm/nodelibs-tty@^0.1.0"
-  },
   "github:jspm/nodelibs-child_process@0.1.0": {},
   "github:jspm/nodelibs-util@0.1.0": {
     "util": "npm:util@^0.10.3"
@@ -723,15 +705,151 @@
     "vm": "github:jspm/nodelibs-vm@^0.1.0",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
   },
-  "npm:showdown@1.5.5": {
-    "yargs": "npm:yargs@^3.15.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0",
-    "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
-    "fs": "github:jspm/nodelibs-fs@^0.1.0"
-  },
   "npm:rxjs@5.0.3": {
     "symbol-observable": "npm:symbol-observable@^1.0.1",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:get-caller-file@1.0.2": {},
+  "npm:camelcase@3.0.0": {},
+  "npm:read-pkg-up@1.0.1": {
+    "find-up": "npm:find-up@^1.0.0",
+    "read-pkg": "npm:read-pkg@^1.0.0"
+  },
+  "npm:which-module@1.0.0": {},
+  "npm:set-blocking@2.0.0": {
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:require-main-filename@1.0.1": {
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:find-up@1.1.2": {
+    "path-exists": "npm:path-exists@^2.0.0",
+    "pinkie-promise": "npm:pinkie-promise@^2.0.0",
+    "path": "github:jspm/nodelibs-path@^0.1.0"
+  },
+  "npm:read-pkg@1.1.0": {
+    "load-json-file": "npm:load-json-file@^1.0.0",
+    "normalize-package-data": "npm:normalize-package-data@^2.3.2",
+    "path-type": "npm:path-type@^1.0.0",
+    "path": "github:jspm/nodelibs-path@^0.1.0"
+  },
+  "npm:require-directory@2.1.1": {
+    "fs": "github:jspm/nodelibs-fs@^0.1.0",
+    "path": "github:jspm/nodelibs-path@^0.1.0"
+  },
+  "npm:pinkie-promise@2.0.1": {
+    "pinkie": "npm:pinkie@^2.0.0"
+  },
+  "npm:path-exists@2.1.0": {
+    "pinkie-promise": "npm:pinkie-promise@^2.0.0",
+    "fs": "github:jspm/nodelibs-fs@^0.1.0"
+  },
+  "npm:path-type@1.1.0": {
+    "graceful-fs": "npm:graceful-fs@^4.1.2",
+    "pify": "npm:pify@^2.0.0",
+    "pinkie-promise": "npm:pinkie-promise@^2.0.0"
+  },
+  "npm:load-json-file@1.1.0": {
+    "graceful-fs": "npm:graceful-fs@^4.1.2",
+    "parse-json": "npm:parse-json@^2.2.0",
+    "pify": "npm:pify@^2.0.0",
+    "pinkie-promise": "npm:pinkie-promise@^2.0.0",
+    "strip-bom": "npm:strip-bom@^2.0.0",
+    "path": "github:jspm/nodelibs-path@^0.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:strip-bom@2.0.0": {
+    "is-utf8": "npm:is-utf8@^0.2.0",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0"
+  },
+  "npm:pify@2.3.0": {
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:is-builtin-module@1.0.0": {
+    "builtin-modules": "npm:builtin-modules@^1.0.0"
+  },
+  "npm:pinkie@2.0.4": {},
+  "npm:is-utf8@0.2.1": {},
+  "npm:validate-npm-package-license@3.0.1": {
+    "spdx-correct": "npm:spdx-correct@~1.0.0",
+    "spdx-expression-parse": "npm:spdx-expression-parse@~1.0.0"
+  },
+  "npm:yargs-parser@4.2.1": {
+    "camelcase": "npm:camelcase@^3.0.0",
+    "path": "github:jspm/nodelibs-path@^0.1.0",
+    "util": "github:jspm/nodelibs-util@^0.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:error-ex@1.3.0": {
+    "is-arrayish": "npm:is-arrayish@^0.2.1",
+    "util": "github:jspm/nodelibs-util@^0.1.0"
+  },
+  "npm:builtin-modules@1.1.1": {
+    "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:spdx-license-ids@1.2.2": {
+    "systemjs-json": "github:systemjs/plugin-json@^0.1.0"
+  },
+  "npm:spdx-correct@1.0.2": {
+    "spdx-license-ids": "npm:spdx-license-ids@^1.0.2"
+  },
+  "npm:hosted-git-info@2.1.5": {
+    "url": "github:jspm/nodelibs-url@^0.1.0"
+  },
+  "npm:is-arrayish@0.2.1": {},
+  "npm:graceful-fs@4.1.11": {
+    "fs": "github:jspm/nodelibs-fs@^0.1.0",
+    "util": "github:jspm/nodelibs-util@^0.1.0",
+    "assert": "github:jspm/nodelibs-assert@^0.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "stream": "github:jspm/nodelibs-stream@^0.1.0",
+    "constants": "github:jspm/nodelibs-constants@^0.1.0"
+  },
+  "npm:parse-json@2.2.0": {
+    "error-ex": "npm:error-ex@^1.2.0"
+  },
+  "npm:spdx-expression-parse@1.0.4": {
+    "fs": "github:jspm/nodelibs-fs@^0.1.0",
+    "path": "github:jspm/nodelibs-path@^0.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:semver@5.3.0": {
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:normalize-package-data@2.3.5": {
+    "hosted-git-info": "npm:hosted-git-info@^2.1.4",
+    "is-builtin-module": "npm:is-builtin-module@^1.0.0",
+    "semver": "npm:semver@^5.0.0",
+    "validate-npm-package-license": "npm:validate-npm-package-license@^3.0.1",
+    "url": "github:jspm/nodelibs-url@^0.1.0",
+    "systemjs-json": "github:systemjs/plugin-json@^0.1.0",
+    "util": "github:jspm/nodelibs-util@^0.1.0"
+  },
+  "npm:yargs@6.6.0": {
+    "camelcase": "npm:camelcase@^3.0.0",
+    "cliui": "npm:cliui@^3.2.0",
+    "decamelize": "npm:decamelize@^1.1.1",
+    "get-caller-file": "npm:get-caller-file@^1.0.1",
+    "os-locale": "npm:os-locale@^1.4.0",
+    "read-pkg-up": "npm:read-pkg-up@^1.0.1",
+    "require-directory": "npm:require-directory@^2.1.1",
+    "require-main-filename": "npm:require-main-filename@^1.0.1",
+    "set-blocking": "npm:set-blocking@^2.0.0",
+    "string-width": "npm:string-width@^1.0.2",
+    "which-module": "npm:which-module@^1.0.0",
+    "y18n": "npm:y18n@^3.2.1",
+    "yargs-parser": "npm:yargs-parser@^4.2.0",
+    "path": "github:jspm/nodelibs-path@^0.1.0",
+    "util": "github:jspm/nodelibs-util@^0.1.0",
+    "fs": "github:jspm/nodelibs-fs@^0.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:showdown@1.6.0": {
+    "yargs": "npm:yargs@^6.6.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0",
+    "fs": "github:jspm/nodelibs-fs@^0.1.0",
+    "systemjs-json": "github:systemjs/plugin-json@^0.1.0"
   }
 }

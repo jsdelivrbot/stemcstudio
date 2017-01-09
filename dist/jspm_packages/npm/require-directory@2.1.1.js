@@ -1,0 +1,1 @@
+module.exports = require("npm:require-directory@2.1.1/index.js");

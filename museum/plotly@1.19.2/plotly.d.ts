@@ -1,7 +1,7 @@
 //
 // TypeScript definitions for plot.ly 1.19.2
 //
-// Copyright (c) 2016 David Geo Holmes
+// Copyright (c) 2016-2017 David Geo Holmes
 // Definitions by: David Geo Holmes <https://github.com/geometryzen>
 //
 declare module Plotly {
@@ -68,14 +68,25 @@ declare module Plotly {
         type?: 'bar' | 'contour' | 'heatmap' | 'histogram' | 'histogram2dcontour' | 'scatter';
         uid?: string;
         x?: number[];
+        error_x?: Error;
         xaxis?: string;
         y?: number[];
+        error_y?: Error;
         yaxis?: string;
-        z?: number[];
+        z?: number[] | number[][];
         r?: number[];
         t?: number[];
         zmin?: number;
         zmax?: number;
+    }
+
+    /**
+     * 
+     */
+    interface Error {
+        type?: 'data',
+        array?: number[],
+        visible?: boolean;
     }
 
     /**
