@@ -1110,6 +1110,19 @@ declare module JXG {
     export interface Tapemeasure extends Segment {
     }
 
+    /**
+     * 
+     */
+    export interface TapemeasureAttributes extends LineAttributes {
+        label?;
+        point1?;
+        point2?;
+        precision?;
+        ticks?;
+        withLabel?;
+        withTicks?;
+    }
+
     export interface Transform extends GeometryElement {
         bindTo(element: GeometryElement): void;
     }
@@ -1565,7 +1578,7 @@ declare module JXG {
         /**
          *
          */
-        create(elementType: "tapemeasure", parents?: any[], attributes?: {}): Tapemeasure;
+        create(elementType: "tapemeasure", parents?: [PointSpecification, PointSpecification], attributes?: TapemeasureAttributes): Tapemeasure;
         /**
          *
          */
