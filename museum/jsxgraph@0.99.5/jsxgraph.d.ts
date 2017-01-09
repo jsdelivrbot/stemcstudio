@@ -1105,6 +1105,80 @@ declare module JXG {
     }
 
     /**
+     * 
+     */
+    export interface TicksAttributes extends GeometryElementAttributes {
+        /**
+         * 
+         */
+        anchor?: 'left' | 'middle' | 'right';
+        /**
+         * 
+         */
+        drawLabels?: boolean;
+        /**
+         * 
+         */
+        drawZero?: boolean;
+        /**
+         * 
+         */
+        generateLableText?: (labeled: Coords, center: Coords) => string;
+        /**
+         * 
+         */
+        generateLableValue?: (labeled: Coords, center: Coords) => string;
+        /**
+         * 
+         */
+        includeBoundaries?: boolean;
+        /**
+         * 
+         */
+        insertTicks?: boolean;
+        /**
+         * 
+         */
+        labels?: string[];
+        /**
+         * 
+         */
+        majorHeight?: number;
+        /**
+         * 
+         */
+        maxLabelLength?: number;
+        /**
+         * 
+         */
+        minorHeight?: number;
+        /**
+         * 
+         */
+        minorTicks?: number;
+        /**
+         * 
+         */
+        precision?: number;
+        /**
+         * 
+         */
+        scale?: number;
+        /**
+         * 
+         */
+        tickEndings?: number[];
+        /**
+         * 
+         */
+        ticksDistance?: number;
+        /**
+         * 
+         */
+        useUnicodeMinus?: boolean;
+    }
+
+    /**
      *
      */
     export interface Tapemeasure extends Segment {
@@ -1321,7 +1395,7 @@ declare module JXG {
     /**
      * 
      */
-    type ElementType = 'angle' | 'arc' | 'arrow' | 'axis' | 'button' | 'chart' | 'checkbox' | 'circle' | 'conic' | 'curve' | 'ellipse' | 'functiongraph' | 'glider' | 'grid' | 'group' | 'hatch' | 'hyperbola' | 'image' | 'input' | 'integral' | 'line' | 'plot' | 'point' | 'polygon' | 'reflection' | 'riemannsum' | 'segment' | 'slider' | 'slopetriangle' | 'stepfunction' | 'tangent' | 'tapemeasure' | 'text' | 'transform' | 'turtle';
+    type ElementType = 'angle' | 'arc' | 'arrow' | 'axis' | 'button' | 'chart' | 'checkbox' | 'circle' | 'conic' | 'curve' | 'ellipse' | 'functiongraph' | 'glider' | 'grid' | 'group' | 'hatch' | 'hyperbola' | 'image' | 'input' | 'integral' | 'line' | 'plot' | 'point' | 'polygon' | 'reflection' | 'riemannsum' | 'segment' | 'slider' | 'slopetriangle' | 'stepfunction' | 'tangent' | 'tapemeasure' | 'text' | 'ticks' | 'transform' | 'turtle';
 
     /**
      * GEONExT syntax for coordinates.
@@ -1583,6 +1657,10 @@ declare module JXG {
          *
          */
         create(elementType: "text", parents?: [number | NumberFunction, number | NumberFunction, string | StringFunction], attributes?: TextAttributes): Text;
+        /**
+         *
+         */
+        create(elementType: "ticks", parents: [Line] | [Line, number], attributes?: TicksAttributes): Ticks;
         /**
          *
          */
