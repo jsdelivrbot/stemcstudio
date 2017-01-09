@@ -1674,6 +1674,22 @@ declare module JXG {
          */
         emulateColorBlindness(deficiency: 'protanopia' | 'deuteranopia' | 'tritanopia'): Board;
         /**
+         * 
+         */
+        setBoundingBox(bbox: [number, number, number, number], keepaspectratio?: boolean): Board;
+        /**
+         * Removes object from board and renderer.
+         */
+        removeObject(object: GeometryElement): Board;
+        /**
+         * 
+         */
+        setZoom(fX: number, fY: number): Board;
+        /**
+         * Cancels all running animations.
+         */
+        stopAllAnimation(): Board;
+        /**
          * Stop updates of the board.
          * return Reference to the board
          */
@@ -1767,6 +1783,10 @@ declare module JXG {
                  * default false
                  */
                 keepAspectRatio?: boolean;
+                /**
+                 * Alias for keepAspectRatio.
+                 */
+                keepaspectratio?: boolean;
 
                 /**
                  * Maximum number of digits in automatic label generation.
