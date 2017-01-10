@@ -7,6 +7,15 @@
 declare module Plotly {
 
     /**
+     * 
+     */
+    interface Font {
+        family?: string;
+        size?: number;
+        color?: string;
+    }
+
+    /**
      *
      */
     interface Annotation {
@@ -22,12 +31,22 @@ declare module Plotly {
      *
      */
     interface Axis {
-        autorange?: boolean;
+        autorange?: boolean | 'reversed';
+        autotick?: boolean;
+        dtick?: number;
         domain?: number[];
+        range?: [number, number];
+        rangemode?: 'nonnegative' | 'tozero' | 'normal';
+        tick0?: number;
+        tickangle?: number;
+        ticklen?: number;
+        tickwidth?: number;
         title?: string;
+        titlefont?: Font;
         type?: 'log';
         showgrid?: boolean;
         showline?: boolean;
+        showticklabels?: boolean;
         mirror?: string;
         ticks?: string;
         zeroline?: boolean;
@@ -59,11 +78,13 @@ declare module Plotly {
         colorbar?: ColorBar;
         colorscale?: string | (number | string)[][];
         contours?: Contours;
+        fill?: 'tonexty' | 'tozeroy';
         marker?: Marker;
-        mode?: 'lines' | 'markers';
+        mode?: 'lines' | 'markers' | 'none';
         name?: string;
         ncontours?: number;
         reversescale?: boolean;
+        showlegend?: boolean;
         showscale?: boolean;
         type?: 'bar' | 'contour' | 'heatmap' | 'histogram' | 'histogram2dcontour' | 'scatter';
         uid?: string;
@@ -99,14 +120,16 @@ declare module Plotly {
         annotations?: Annotation[];
         autosize?: boolean;
         bargap?: number;
-        font?: {
-            family?: string;
-            size?: number;
-            color?: string;
-        };
+        font?: Font;
         hovermode?: 'closest';
+        legend?: {
+            x: number;
+            y: number;
+            orientation: 'h';
+        };
         showlegend?: boolean;
         title?: string;
+        traceorder?: 'normal';
         margin?: Margin;
         xaxis?: Axis;
         yaxis?: Axis;
@@ -164,7 +187,14 @@ declare module Plotly {
          * 
          */
         line?: {
+            /**
+             * 
+             */
             color?: string;
+            /**
+             * 
+             */
+            width?: number;
         };
 
         /**
