@@ -77,7 +77,6 @@
     "inherits": "npm:inherits@2.0.1",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "npm:ansi-regex@2.0.0": {},
   "npm:invert-kv@1.0.0": {},
   "npm:isarray@1.0.0": {},
   "npm:base64-js@0.0.8": {},
@@ -851,5 +850,6 @@
     "process": "github:jspm/nodelibs-process@^0.1.0",
     "fs": "github:jspm/nodelibs-fs@^0.1.0",
     "systemjs-json": "github:systemjs/plugin-json@^0.1.0"
-  }
+  },
+  "npm:ansi-regex@2.1.1": {}
 }

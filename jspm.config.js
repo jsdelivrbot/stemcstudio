@@ -720,7 +720,7 @@ System.config({
       "buffer": "github:jspm/nodelibs-buffer@0.1.0"
     },
     "npm:strip-ansi@3.0.1": {
-      "ansi-regex": "npm:ansi-regex@2.0.0"
+      "ansi-regex": "npm:ansi-regex@2.1.1"
     },
     "npm:strip-bom@2.0.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",

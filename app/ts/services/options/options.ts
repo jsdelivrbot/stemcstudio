@@ -26,6 +26,7 @@ app.factory('options', [
         const VERSION_JASMINE = '2.4.1';
         const VERSION_JQUERY = '2.1.4';
         const VERSION_JSXGRAPH = '0.99.5';
+        const VERSION_NEWTON = '0.0.0';
         const VERSION_PLOTLY = '1.21.3';
         // const VERSION_REQUIREJS = '2.1.9';
         const VERSION_SOCKETIO_CLIENT = '1.5.1';
@@ -98,6 +99,9 @@ app.factory('options', [
         }
         function jsxgraph(fileName: string): string {
             return vendorFolder('jsxgraph', VERSION_JSXGRAPH, void 0, fileName);
+        }
+        function newton(subFolder: string, fileName: string): string {
+            return vendorFolder('davinci-newton', VERSION_NEWTON, subFolder, fileName);
         }
         function plotly(fileName: string): string {
             return vendorFolder('plotly', VERSION_PLOTLY, void 0, fileName);
@@ -222,6 +226,19 @@ app.factory('options', [
                 dts: eight('dist', 'davinci-eight.d.ts'),
                 js: [eight('dist', 'davinci-eight.js')],
                 minJs: [eight('dist', 'davinci-eight.js')],
+                dependencies: {}
+            },
+            {
+                name: 'davinci-newton',
+                moniker: 'NEWTON',
+                description: "Experimental Physics Engine.",
+                homepage: 'https://www.stemcstudio.com/docs/davinci-newton/index.html',
+                version: VERSION_NEWTON,
+                visible: true,
+                css: [],
+                dts: newton('dist', 'davinci-newton.d.ts'),
+                js: [newton('dist', 'davinci-newton.js')],
+                minJs: [newton('dist', 'davinci-newton.js')],
                 dependencies: {}
             },
             {
