@@ -6,7 +6,7 @@
 // variable, 'NEWTON'.
 //
 /**
- * JavaScript library for mathematical physics using Geometric Algebra.
+ * JavaScript Physics Engine library for mathematical physics using Geometric Algebra.
  */
 declare module NEWTON {
 

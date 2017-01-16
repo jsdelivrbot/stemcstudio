@@ -544,27 +544,27 @@ function copies(target) {
         },
         {
             src: "bower_components/davinci-newton/dist/davinci-newton.d.ts",
-            dest: prepend(target, 'vendor/davinci-newton@0.0.0/dist/davinci-newton.d.ts')
+            dest: prepend(target, 'vendor/davinci-newton@0.0.1/dist/davinci-newton.d.ts')
         },
         {
             src: "bower_components/davinci-newton/dist/davinci-newton.js",
-            dest: prepend(target, 'vendor/davinci-newton@0.0.0/dist/davinci-newton.js')
+            dest: prepend(target, 'vendor/davinci-newton@0.0.1/dist/davinci-newton.js')
         },
         {
             src: "bower_components/davinci-newton/dist/davinci-newton.css",
-            dest: prepend(target, 'vendor/davinci-newton@0.0.0/dist/davinci-newton.css')
+            dest: prepend(target, 'vendor/davinci-newton@0.0.1/dist/davinci-newton.css')
         },
         {
             src: "../davinci-newton/dist/davinci-newton.d.ts",
-            dest: prepend(target, 'vendor/davinci-newton@0.0.0/dist/davinci-newton.d.ts')
+            dest: prepend(target, 'vendor/davinci-newton@0.0.1/dist/davinci-newton.d.ts')
         },
         {
             src: "../davinci-newton/dist/davinci-newton.js",
-            dest: prepend(target, 'vendor/davinci-newton@0.0.0/dist/davinci-newton.js')
+            dest: prepend(target, 'vendor/davinci-newton@0.0.1/dist/davinci-newton.js')
         },
         {
             src: "../davinci-newton/dist/davinci-newton.css",
-            dest: prepend(target, 'vendor/davinci-newton@0.0.0/dist/davinci-newton.css')
+            dest: prepend(target, 'vendor/davinci-newton@0.0.1/dist/davinci-newton.css')
         },
         {
             expand: true,

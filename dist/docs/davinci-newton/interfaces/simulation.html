@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ClockTask | NEWTON 0.0.1</title>
+	<title>Simulation | NEWTON 0.0.1</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,10 +54,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="clocktask.html">ClockTask</a>
+					<a href="simulation.html">Simulation</a>
 				</li>
 			</ul>
-			<h1>Class ClockTask</h1>
+			<h1>Interface Simulation</h1>
 		</div>
 	</div>
 </header>
@@ -68,8 +68,14 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">ClockTask</span>
+						<span class="target">Simulation</span>
 					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel">
+				<h3>Implemented by</h3>
+				<ul class="tsd-hierarchy">
+					<li><a href="../classes/rigidbodysim.html" class="tsd-signature-type">RigidBodySim</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -77,136 +83,149 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section tsd-is-external">
-							<h3>Constructors</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-external"><a href="clocktask.html#constructor" class="tsd-kind-icon">constructor</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section tsd-is-external">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="clocktask.html#cancel" class="tsd-kind-icon">cancel</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="clocktask.html#gettime" class="tsd-kind-icon">get<wbr>Time</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="clocktask.html#schedule" class="tsd-kind-icon">schedule</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="simulation.html#evaluate" class="tsd-kind-icon">evaluate</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="simulation.html#getsimlist" class="tsd-kind-icon">get<wbr>Sim<wbr>List</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="simulation.html#gettime" class="tsd-kind-icon">get<wbr>Time</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="simulation.html#getvarslist" class="tsd-kind-icon">get<wbr>Vars<wbr>List</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="simulation.html#modifyobjects" class="tsd-kind-icon">modify<wbr>Objects</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="simulation.html#restorestate" class="tsd-kind-icon">restore<wbr>State</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="simulation.html#savestate" class="tsd-kind-icon">save<wbr>State</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
-				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
-					<a name="constructor" class="tsd-anchor"></a>
-					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Clock<wbr>Task<span class="tsd-signature-symbol">(</span>time_<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, callBack_<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="clocktask.html" class="tsd-signature-type">ClockTask</a></li>
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+					<a name="evaluate" class="tsd-anchor"></a>
+					<h3>evaluate</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">evaluate<span class="tsd-signature-symbol">(</span>vars<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span>, change<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span>, timeStep<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/375e2ff/src/davinci-newton/runner/ClockTask.ts#L9">davinci-newton/runner/ClockTask.ts:9</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/375e2ff/src/davinci-newton/core/Simulation.ts#L11">davinci-newton/core/Simulation.ts:11</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>time_: <span class="tsd-signature-type">number</span></h5>
+									<h5>vars: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 								<li>
-									<h5>callBack_: <span class="tsd-signature-type">function</span></h5>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
-											</ul>
-											<ul class="tsd-descriptions">
-												<li class="tsd-description">
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
-												</li>
-											</ul>
-										</li>
-									</ul>
+									<h5>change: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+								<li>
+									<h5>timeStep: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="clocktask.html" class="tsd-signature-type">ClockTask</a></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-external">
-				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="cancel" class="tsd-anchor"></a>
-					<h3>cancel</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">cancel<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+					<a name="getsimlist" class="tsd-anchor"></a>
+					<h3>get<wbr>Sim<wbr>List</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Sim<wbr>List<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/simlist.html" class="tsd-signature-type">SimList</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/375e2ff/src/davinci-newton/runner/ClockTask.ts#L21">davinci-newton/runner/ClockTask.ts:21</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/375e2ff/src/davinci-newton/core/Simulation.ts#L15">davinci-newton/core/Simulation.ts:15</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Cancels the scheduled execution of this task.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../classes/simlist.html" class="tsd-signature-type">SimList</a></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
 					<a name="gettime" class="tsd-anchor"></a>
 					<h3>get<wbr>Time</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
 						<li class="tsd-signature tsd-kind-icon">get<wbr>Time<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/375e2ff/src/davinci-newton/runner/ClockTask.ts#L31">davinci-newton/runner/ClockTask.ts:31</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/375e2ff/src/davinci-newton/core/Simulation.ts#L31">davinci-newton/core/Simulation.ts:31</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Returns the clock time in seconds when the task should be executed.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="schedule" class="tsd-anchor"></a>
-					<h3>schedule</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">schedule<span class="tsd-signature-symbol">(</span>delay<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+					<a name="getvarslist" class="tsd-anchor"></a>
+					<h3>get<wbr>Vars<wbr>List</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Vars<wbr>List<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/varslist.html" class="tsd-signature-type">VarsList</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/375e2ff/src/davinci-newton/runner/ClockTask.ts#L39">davinci-newton/runner/ClockTask.ts:39</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/375e2ff/src/davinci-newton/core/Simulation.ts#L19">davinci-newton/core/Simulation.ts:19</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Schedules the task to be executed after given time delay in seconds of system time.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>delay: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>time delay till execution in seconds of system time</p>
-									</div>
-								</li>
-							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../classes/varslist.html" class="tsd-signature-type">VarsList</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+					<a name="modifyobjects" class="tsd-anchor"></a>
+					<h3>modify<wbr>Objects</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">modify<wbr>Objects<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/375e2ff/src/davinci-newton/core/Simulation.ts#L35">davinci-newton/core/Simulation.ts:35</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+					<a name="restorestate" class="tsd-anchor"></a>
+					<h3>restore<wbr>State</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">restore<wbr>State<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/375e2ff/src/davinci-newton/core/Simulation.ts#L27">davinci-newton/core/Simulation.ts:27</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+					<a name="savestate" class="tsd-anchor"></a>
+					<h3>save<wbr>State</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">save<wbr>State<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/375e2ff/src/davinci-newton/core/Simulation.ts#L23">davinci-newton/core/Simulation.ts:23</a></li>
+								</ul>
+							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -225,20 +244,29 @@
 				<ul class="before-current">
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-class tsd-is-external">
-						<a href="clocktask.html" class="tsd-kind-icon">Clock<wbr>Task</a>
+					<li class="current tsd-kind-interface tsd-is-external">
+						<a href="simulation.html" class="tsd-kind-icon">Simulation</a>
 						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
-								<a href="clocktask.html#constructor" class="tsd-kind-icon">constructor</a>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+								<a href="simulation.html#evaluate" class="tsd-kind-icon">evaluate</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="clocktask.html#cancel" class="tsd-kind-icon">cancel</a>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+								<a href="simulation.html#getsimlist" class="tsd-kind-icon">get<wbr>Sim<wbr>List</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="clocktask.html#gettime" class="tsd-kind-icon">get<wbr>Time</a>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+								<a href="simulation.html#gettime" class="tsd-kind-icon">get<wbr>Time</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="clocktask.html#schedule" class="tsd-kind-icon">schedule</a>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+								<a href="simulation.html#getvarslist" class="tsd-kind-icon">get<wbr>Vars<wbr>List</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+								<a href="simulation.html#modifyobjects" class="tsd-kind-icon">modify<wbr>Objects</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+								<a href="simulation.html#restorestate" class="tsd-kind-icon">restore<wbr>State</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+								<a href="simulation.html#savestate" class="tsd-kind-icon">save<wbr>State</a>
 							</li>
 						</ul>
 					</li>
