@@ -19,16 +19,6 @@ declare module NEWTON {
          * 
          */
         getName(localized?: boolean): string;
-        /**
-         * 
-         */
-        isMassObject(): boolean;
-        /**
-         * Returns true if the given SimObject is similar to this SimObject for display purposes.
-         * SimObjects are similar when they are the same type and nearly the same size and location.
-         * Mainly used when showing forces - to avoid adding too many objects to the display.
-         */
-        similar(obj: SimObject, tolerance?: number): boolean;
     }
 
     class SimList {
@@ -81,41 +71,46 @@ declare module NEWTON {
         timeIndex(): number;
     }
 
-    class Vector implements GenericVector {
+    class Vector implements VectorE3 {
+        x: number;
+        y: number;
+        z: number;
         static ORIGIN: Vector;
         constructor(x_: number, y_: number, z: number);
-        getX(): number;
-        getY(): number;
-        getZ(): number;
-        add(rhs: GenericVector): Vector;
-        subtract(rhs: GenericVector): Vector;
+        add(rhs: VectorE3): Vector;
+        subtract(rhs: VectorE3): Vector;
         multiply(alpha: number): Vector;
-        distanceTo(rhs: GenericVector): number;
+        distanceTo(rhs: VectorE3): number;
         immutable(): Vector;
-        length(): number;
+        magnitude(): number;
         normalize(): Vector;
         rotate(cosAngle: number, sinAngle: number): Vector;
     }
 
-    interface GenericVector {
-        getX(): number;
-        getY(): number;
-        getZ(): number;
-        immutable(): Vector;
+    interface VectorE3 {
+        x: number;
+        y: number;
+        z: number;
     }
 
-    interface RigidBody extends SimObject {
+    class RigidBody implements SimObject {
+        constructor(name: string);
         eraseOldCopy(): void;
+        getName(): string;
+        getExpireTime(): number;
         getVarsIndex(): number;
         setVarsIndex(index: number): void;
         getVarName(index: number, localized: boolean): string;
-        getAngle(): number;
+        getPosition(): VectorE3;
+        setPosition(x: number, y: number, z: number): void;
+        getAttitude(): number;
+        setAttitude(angle?: number): void;
+        getVelocity(): VectorE3;
+        setVelocity(x: number, y: number, z: number): void;
         getAngularVelocity(): number;
-        getPosition(): GenericVector;
-        setPosition(worldLocation: GenericVector, angle?: number): void;
-        getVelocity(): GenericVector;
-        setVelocity(worldVelocity: GenericVector, angularVelocity?: number): void;
+        setAngularVelocity(angularVelocity?: number): void;
         getMass(): number;
+        setMass(mass: number): void;
         momentAboutCM(): number;
         rotationalEnergy(): number;
         translationalEnergy(): number;
@@ -124,12 +119,6 @@ declare module NEWTON {
 
     interface Collision {
 
-    }
-
-    interface MassObject {
-        bodyToWorld(point: GenericVector): Vector;
-        getVelocity(point: GenericVector): Vector;
-        rotateBodyToWorld(body: GenericVector): Vector;
     }
 
     enum CoordType {
@@ -142,21 +131,19 @@ declare module NEWTON {
          * 
          */
         constructor(name: string,
-            body: MassObject,
+            body: RigidBody,
             location: Vector,
             locationCoordType: CoordType,
             direction: Vector,
             directionCoordType: CoordType,
             torque?: number);
         getName(): string;
-        getBody(): MassObject;
+        getBody(): RigidBody;
         getVector(): Vector;
         getStartPoint(): Vector;
         getTorque(): number;
-        isMassObject(): boolean;
         getExpireTime(): number;
         setExpireTime(time: number): void;
-        similar(obj: SimObject, tolerance?: number): boolean;
     }
 
     interface ForceLaw {
@@ -252,6 +239,24 @@ declare module NEWTON {
          * 
          */
         memorize(): void;
+    }
+
+    /**
+     * 
+     */
+    class Spring implements ForceLaw {
+        /**
+         * 
+         */
+        constructor(name: string, body1: RigidBody, body2: RigidBody);
+        getName(): string;
+        getStartPoint(): Vector;
+        getEndPoint(): Vector;
+        getExpireTime(): number;
+        calculateForces(): Force[];
+        disconnect(): void;
+        getPotentialEnergy(): number;
+        getVector(): Vector;
     }
 }
 
