@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ClockTask | NEWTON 0.0.4</title>
+	<title>Spinor3 | NEWTON 0.0.4</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,10 +54,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="clocktask.html">ClockTask</a>
+					<a href="spinor3.html">Spinor3</a>
 				</li>
 			</ul>
-			<h1>Class ClockTask</h1>
+			<h1>Class Spinor3</h1>
 		</div>
 	</div>
 </header>
@@ -68,8 +68,14 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">ClockTask</span>
+						<span class="target">Spinor3</span>
 					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel">
+				<h3>Implements</h3>
+				<ul class="tsd-hierarchy">
+					<li><a href="../interfaces/spinore3.html" class="tsd-signature-type">SpinorE3</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -79,15 +85,23 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-external"><a href="clocktask.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-external">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#a" class="tsd-kind-icon">a</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#xy" class="tsd-kind-icon">xy</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#yz" class="tsd-kind-icon">yz</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#zx" class="tsd-kind-icon">zx</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="clocktask.html#cancel" class="tsd-kind-icon">cancel</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="clocktask.html#gettime" class="tsd-kind-icon">get<wbr>Time</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="clocktask.html#schedule" class="tsd-kind-icon">schedule</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#copy" class="tsd-kind-icon">copy</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#one" class="tsd-kind-icon">one</a></li>
 							</ul>
 						</section>
 					</div>
@@ -99,115 +113,119 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Clock<wbr>Task<span class="tsd-signature-symbol">(</span>time_<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, callBack_<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="clocktask.html" class="tsd-signature-type">ClockTask</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Spinor3<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, xy<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, yz<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span>, zx<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="spinor3.html" class="tsd-signature-type">Spinor3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/runner/ClockTask.ts#L9">davinci-newton/runner/ClockTask.ts:9</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/math/Spinor3.ts#L6">davinci-newton/math/Spinor3.ts:6</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>time_: <span class="tsd-signature-type">number</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> a: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></h5>
 								</li>
 								<li>
-									<h5>callBack_: <span class="tsd-signature-type">function</span></h5>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
-											</ul>
-											<ul class="tsd-descriptions">
-												<li class="tsd-description">
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
-												</li>
-											</ul>
-										</li>
-									</ul>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> xy: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> yz: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> zx: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="clocktask.html" class="tsd-signature-type">ClockTask</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="spinor3.html" class="tsd-signature-type">Spinor3</a></h4>
 						</li>
 					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
+					<a name="a" class="tsd-anchor"></a>
+					<h3>a</h3>
+					<div class="tsd-signature tsd-kind-icon">a<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/spinore3.html">SpinorE3</a>.<a href="../interfaces/spinore3.html#a">a</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/math/Spinor3.ts#L10">davinci-newton/math/Spinor3.ts:10</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
+					<a name="xy" class="tsd-anchor"></a>
+					<h3>xy</h3>
+					<div class="tsd-signature tsd-kind-icon">xy<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/spinore3.html">SpinorE3</a>.<a href="../interfaces/spinore3.html#xy">xy</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/math/Spinor3.ts#L10">davinci-newton/math/Spinor3.ts:10</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
+					<a name="yz" class="tsd-anchor"></a>
+					<h3>yz</h3>
+					<div class="tsd-signature tsd-kind-icon">yz<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/spinore3.html">SpinorE3</a>.<a href="../interfaces/spinore3.html#yz">yz</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/math/Spinor3.ts#L10">davinci-newton/math/Spinor3.ts:10</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
+					<a name="zx" class="tsd-anchor"></a>
+					<h3>zx</h3>
+					<div class="tsd-signature tsd-kind-icon">zx<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/spinore3.html">SpinorE3</a>.<a href="../interfaces/spinore3.html#zx">zx</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/math/Spinor3.ts#L10">davinci-newton/math/Spinor3.ts:10</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="cancel" class="tsd-anchor"></a>
-					<h3>cancel</h3>
+					<a name="copy" class="tsd-anchor"></a>
+					<h3>copy</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">cancel<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">copy<span class="tsd-signature-symbol">(</span>spinor<span class="tsd-signature-symbol">: </span><a href="../interfaces/spinore3.html" class="tsd-signature-type">SpinorE3</a><span class="tsd-signature-symbol">)</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/runner/ClockTask.ts#L21">davinci-newton/runner/ClockTask.ts:21</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/math/Spinor3.ts#L17">davinci-newton/math/Spinor3.ts:17</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Cancels the scheduled execution of this task.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="gettime" class="tsd-anchor"></a>
-					<h3>get<wbr>Time</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Time<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/runner/ClockTask.ts#L31">davinci-newton/runner/ClockTask.ts:31</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Returns the clock time in seconds when the task should be executed.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="schedule" class="tsd-anchor"></a>
-					<h3>schedule</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">schedule<span class="tsd-signature-symbol">(</span>delay<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/runner/ClockTask.ts#L39">davinci-newton/runner/ClockTask.ts:39</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Schedules the task to be executed after given time delay in seconds of system time.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>delay: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>time delay till execution in seconds of system time</p>
-									</div>
+									<h5>spinor: <a href="../interfaces/spinore3.html" class="tsd-signature-type">SpinorE3</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="one" class="tsd-anchor"></a>
+					<h3>one</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">one<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/math/Spinor3.ts#L28">davinci-newton/math/Spinor3.ts:28</a></li>
+								</ul>
+							</aside>
 						</li>
 					</ul>
 				</section>
@@ -226,19 +244,28 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-is-external">
-						<a href="clocktask.html" class="tsd-kind-icon">Clock<wbr>Task</a>
+						<a href="spinor3.html" class="tsd-kind-icon">Spinor3</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
-								<a href="clocktask.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="spinor3.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
+								<a href="spinor3.html#a" class="tsd-kind-icon">a</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
+								<a href="spinor3.html#xy" class="tsd-kind-icon">xy</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
+								<a href="spinor3.html#yz" class="tsd-kind-icon">yz</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
+								<a href="spinor3.html#zx" class="tsd-kind-icon">zx</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="clocktask.html#cancel" class="tsd-kind-icon">cancel</a>
+								<a href="spinor3.html#copy" class="tsd-kind-icon">copy</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="clocktask.html#gettime" class="tsd-kind-icon">get<wbr>Time</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="clocktask.html#schedule" class="tsd-kind-icon">schedule</a>
+								<a href="spinor3.html#one" class="tsd-kind-icon">one</a>
 							</li>
 						</ul>
 					</li>

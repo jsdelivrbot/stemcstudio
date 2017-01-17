@@ -23,8 +23,9 @@ declare module NEWTON {
 
     class SimList {
         constructor();
-        add(simObj: SimObject): void;
-        remove(simObj: SimObject): void;
+        add(simObject: SimObject): void;
+        forEach(callBack: (simObject: SimObject, index: number) => any): void;
+        remove(simObject: SimObject): void;
         removeTemporary(time: number): void;
     }
 
@@ -93,20 +94,37 @@ declare module NEWTON {
         z: number;
     }
 
+    interface BivectorE3 {
+        yz: number;
+        zx: number;
+        xy: number;
+    }
+
+    interface SpinorE3 extends BivectorE3 {
+        a: number;
+    }
+
     class RigidBody implements SimObject {
+        /**
+         * Position.
+         */
+        X: VectorE3;
+        /**
+         * Attitude (spinor)
+         */
+        R: SpinorE3;
+        /**
+         * Linear Momentum.
+         */
+        P: VectorE3;
+        /**
+         * 
+         */
         constructor(name: string);
-        eraseOldCopy(): void;
         getName(): string;
         getExpireTime(): number;
         getVarsIndex(): number;
         setVarsIndex(index: number): void;
-        getVarName(index: number, localized: boolean): string;
-        getPosition(): VectorE3;
-        setPosition(x: number, y: number, z: number): void;
-        getAttitude(): number;
-        setAttitude(angle?: number): void;
-        getVelocity(): VectorE3;
-        setVelocity(x: number, y: number, z: number): void;
         getAngularVelocity(): number;
         setAngularVelocity(angularVelocity?: number): void;
         getMass(): number;
@@ -114,7 +132,6 @@ declare module NEWTON {
         momentAboutCM(): number;
         rotationalEnergy(): number;
         translationalEnergy(): number;
-        saveOldCopy(): void;
     }
 
     interface Collision {
@@ -126,7 +143,18 @@ declare module NEWTON {
         WORLD = 1
     }
 
-    class Force implements SimObject {
+    /**
+     * The application of a force to a particle in a rigid body.
+     */
+    class ForceApp implements SimObject {
+        /**
+         * 
+         */
+        F: Vector;
+        /**
+         * 
+         */
+        x: Vector;
         /**
          * 
          */
@@ -135,24 +163,24 @@ declare module NEWTON {
             location: Vector,
             locationCoordType: CoordType,
             direction: Vector,
-            directionCoordType: CoordType,
-            torque?: number);
+            directionCoordType: CoordType);
         getName(): string;
         getBody(): RigidBody;
-        getVector(): Vector;
-        getStartPoint(): Vector;
-        getTorque(): number;
         getExpireTime(): number;
         setExpireTime(time: number): void;
     }
 
     interface ForceLaw {
-        calculateForces(): Force[];
+        calculateForces(): ForceApp[];
         disconnect(): void;
         getPotentialEnergy(): number;
     }
 
     class RigidBodySim implements Simulation {
+        /**
+         * Determines whether calculated forces will be added to the simulation list.
+         */
+        showForces: boolean;
         constructor();
         addBody(body: RigidBody): void;
         removeBody(body: RigidBody): void;
@@ -253,7 +281,7 @@ declare module NEWTON {
         getStartPoint(): Vector;
         getEndPoint(): Vector;
         getExpireTime(): number;
-        calculateForces(): Force[];
+        calculateForces(): ForceApp[];
         disconnect(): void;
         getPotentialEnergy(): number;
         getVector(): Vector;

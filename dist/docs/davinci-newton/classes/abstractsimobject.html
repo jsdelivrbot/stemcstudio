@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>AbstractSimObject | NEWTON 0.0.3</title>
+	<title>AbstractSimObject | NEWTON 0.0.4</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">NEWTON 0.0.3</a>
+					<a href="../index.html" class="title">NEWTON 0.0.4</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -74,7 +74,7 @@
 								<a href="rigidbody.html" class="tsd-signature-type">RigidBody</a>
 							</li>
 							<li>
-								<a href="force.html" class="tsd-signature-type">Force</a>
+								<a href="forceapp.html" class="tsd-signature-type">ForceApp</a>
 							</li>
 							<li>
 								<a href="spring.html" class="tsd-signature-type">Spring</a>
@@ -104,6 +104,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="abstractsimobject.html#getexpiretime" class="tsd-kind-icon">get<wbr>Expire<wbr>Time</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="abstractsimobject.html#getname" class="tsd-kind-icon">get<wbr>Name</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="abstractsimobject.html#setexpiretime" class="tsd-kind-icon">set<wbr>Expire<wbr>Time</a></li>
 							</ul>
 						</section>
 					</div>
@@ -121,7 +122,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/48e43ab/src/davinci-newton/objects/AbstractSimObject.ts#L24">davinci-newton/objects/AbstractSimObject.ts:24</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/objects/AbstractSimObject.ts#L24">davinci-newton/objects/AbstractSimObject.ts:24</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -148,7 +149,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/simobject.html">SimObject</a>.<a href="../interfaces/simobject.html#getexpiretime">getExpireTime</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/48e43ab/src/davinci-newton/objects/AbstractSimObject.ts#L36">davinci-newton/objects/AbstractSimObject.ts:36</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/objects/AbstractSimObject.ts#L36">davinci-newton/objects/AbstractSimObject.ts:36</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -165,10 +166,33 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/48e43ab/src/davinci-newton/objects/AbstractSimObject.ts#L43">davinci-newton/objects/AbstractSimObject.ts:43</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/objects/AbstractSimObject.ts#L46">davinci-newton/objects/AbstractSimObject.ts:46</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="setexpiretime" class="tsd-anchor"></a>
+					<h3>set<wbr>Expire<wbr>Time</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Expire<wbr>Time<span class="tsd-signature-symbol">(</span>expireTime<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/objects/AbstractSimObject.ts#L39">davinci-newton/objects/AbstractSimObject.ts:39</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>expireTime: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -197,6 +221,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="abstractsimobject.html#getname" class="tsd-kind-icon">get<wbr>Name</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="abstractsimobject.html#setexpiretime" class="tsd-kind-icon">set<wbr>Expire<wbr>Time</a>
 							</li>
 						</ul>
 					</li>
