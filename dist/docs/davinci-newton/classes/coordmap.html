@@ -1,0 +1,1020 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>CoordMap | NEWTON 0.0.6</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.js" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">NEWTON 0.0.6</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../globals.html">Globals</a>
+				</li>
+				<li>
+					<a href="coordmap.html">CoordMap</a>
+				</li>
+			</ul>
+			<h1>Class CoordMap</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Provides the mapping between screen (canvas) coordinates and simulation coordinates;
+						this is an immutable object.</p>
+					</div>
+					<ul>
+						<li><p><strong>Screen coordinates</strong> corresponds to pixels on an HTML canvas; the vertical
+							coordinate increases going down, with zero usually being the top of the canvas.</p>
+						</li>
+						<li><p><strong>Simulation coordinates</strong> the vertical coordinate increases going up; units can be any size.</p>
+						</li>
+					</ul>
+					<p>To create a CoordMap you specify translation and scaling factors for going between
+						screen and simulation coordinates. The CoordMap constructor maps the bottom-left point
+						on the canvas to the given bottom-left point in simulation space and then uses the given
+					scaling factors.</p>
+					<p>The static method {@link #make} calculates the translation and scaling factors in order
+					to fit a certain rectangle in simulation coords into another rectangle in screen coords.</p>
+					<p>From David Flanagan, <em>JavaScript: The Definitive Guide, 6th Edition</em> page 869:</p>
+					<blockquote>
+						<p>By default, the coordinate space for a canvas has its origin at <code>(0,0)</code> in the upper
+							left corner of the canvas, with <code>x</code> values increasing to the right and <code>y</code> values
+							increasing down. The <code>width</code> and <code>height</code> attributes of the <code>&lt;canvas&gt;</code> tag specify the
+							maximum X and Y coordinates, and a single unit in this coordinate space normally
+						translates to a single on-screen pixel.</p>
+					</blockquote>
+					<p>Note however that a canvas actually has
+					<a href="http://www.ckollars.org/canvas-two-coordinate-scales.html">two coordinate systems</a>:</p>
+					<blockquote>
+						<p>The <code>&lt;canvas...&gt;</code> element is unlike almost all other HTML/HTML5 elements in using two
+							different coordinate system scales simultaneously. The <em>model</em> coordinate system scale
+							is used whenever you want to draw anything on the canvas. The <em>display</em> coordinate
+							system scale is used to control how much physical screen space is dedicated to the
+							canvas. You should explicitly specify both, the <em>model</em> coordinate size as attributes in
+						your HTML, and the <em>display</em> coordinate size in your CSS.</p>
+					</blockquote>
+					<p>Essentially the <em>display</em> coordinates can be used to stretch a canvas to fit the screen
+						as desired. Here we ignore <em>display</em> coordinates and regard <em>screen coordinates</em> to be
+					what is called <em>model coordinates</em> in the above quote.</p>
+					<dl class="tsd-comment-tags">
+						<dt>param</dt>
+						<dd><p>the left edge of the canvas in screen coordinates</p>
+						</dd>
+						<dt>param</dt>
+						<dd><p>the bottom edge of the canvas in screen coordinates</p>
+						</dd>
+						<dt>param</dt>
+						<dd><p>the simulation coordinate corresponding to screen_left</p>
+						</dd>
+						<dt>param</dt>
+						<dd><p>the simulation coordinate corresponding to screen_bottom</p>
+						</dd>
+						<dt>param</dt>
+						<dd><p>canvas pixels per simulation space unit along x axis</p>
+						</dd>
+						<dt>param</dt>
+						<dd><p>canvas pixels per simulation space unit along y axis</p>
+						</dd>
+					</dl>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">CoordMap</span>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section tsd-is-external">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-external"><a href="coordmap.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-external">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="coordmap.html#getaffinetransform" class="tsd-kind-icon">get<wbr>Affine<wbr>Transform</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="coordmap.html#getscalex" class="tsd-kind-icon">get<wbr>ScaleX</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="coordmap.html#getscaley" class="tsd-kind-icon">get<wbr>ScaleY</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="coordmap.html#screentosim" class="tsd-kind-icon">screen<wbr>ToSim</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="coordmap.html#screentosimrect" class="tsd-kind-icon">screen<wbr>ToSim<wbr>Rect</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="coordmap.html#screentosimscalex" class="tsd-kind-icon">screen<wbr>ToSim<wbr>ScaleX</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="coordmap.html#screentosimscaley" class="tsd-kind-icon">screen<wbr>ToSim<wbr>ScaleY</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="coordmap.html#screentosimx" class="tsd-kind-icon">screen<wbr>ToSimX</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="coordmap.html#screentosimy" class="tsd-kind-icon">screen<wbr>ToSimY</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="coordmap.html#simtoscreen" class="tsd-kind-icon">sim<wbr>ToScreen</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="coordmap.html#simtoscreenrect" class="tsd-kind-icon">sim<wbr>ToScreen<wbr>Rect</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="coordmap.html#simtoscreenscalex" class="tsd-kind-icon">sim<wbr>ToScreen<wbr>ScaleX</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="coordmap.html#simtoscreenscaley" class="tsd-kind-icon">sim<wbr>ToScreen<wbr>ScaleY</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="coordmap.html#simtoscreenx" class="tsd-kind-icon">sim<wbr>ToScreenX</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="coordmap.html#simtoscreeny" class="tsd-kind-icon">sim<wbr>ToScreenY</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="coordmap.html#isducktype" class="tsd-kind-icon">is<wbr>Duck<wbr>Type</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="coordmap.html#make" class="tsd-kind-icon">make</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Coord<wbr>Map<span class="tsd-signature-symbol">(</span>screen_left<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, screen_bottom<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, sim_left<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, sim_bottom<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, pixel_per_unit_x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, pixel_per_unit_y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="coordmap.html" class="tsd-signature-type">CoordMap</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/view/CoordMap.ts#L65">davinci-newton/view/CoordMap.ts:65</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>screen_left: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>screen_bottom: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>sim_left: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>sim_bottom: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>pixel_per_unit_x: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>pixel_per_unit_y: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="coordmap.html" class="tsd-signature-type">CoordMap</a></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="getaffinetransform" class="tsd-anchor"></a>
+					<h3>get<wbr>Affine<wbr>Transform</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Affine<wbr>Transform<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="affinetransform.html" class="tsd-signature-type">AffineTransform</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/view/CoordMap.ts#L327">davinci-newton/view/CoordMap.ts:327</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns an AffineTransform that maps simulation coordinates to screen coordinates
+									using the mapping defined by this CoordMap.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="affinetransform.html" class="tsd-signature-type">AffineTransform</a></h4>
+							<p>the AffineTransform equivalent of this CoordMap</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="getscalex" class="tsd-anchor"></a>
+					<h3>get<wbr>ScaleX</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>ScaleX<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/view/CoordMap.ts#L337">davinci-newton/view/CoordMap.ts:337</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the horizontal scaling factor: the screen pixels per simulation space
+									unit along x axis.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+							<p>the horizontal scaling factor: screen pixels per unit of simulation
+							space in x direction</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="getscaley" class="tsd-anchor"></a>
+					<h3>get<wbr>ScaleY</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>ScaleY<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/view/CoordMap.ts#L347">davinci-newton/view/CoordMap.ts:347</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the vertical scaling factor: the screen pixels per simulation space
+									unit along y axis.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+							<p>the vertical scaling factor: screen pixels per unit of simulation
+							space in y direction</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="screentosim" class="tsd-anchor"></a>
+					<h3>screen<wbr>ToSim</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">screen<wbr>ToSim<span class="tsd-signature-symbol">(</span>scr_x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, scr_y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="point.html" class="tsd-signature-type">Point</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/view/CoordMap.ts#L356">davinci-newton/view/CoordMap.ts:356</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Translates a point in screen coordinates to simulation coordinates.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>scr_x: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>horizontal position in screen coordinates.</p>
+									</div>
+								</li>
+								<li>
+									<h5>scr_y: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>vertical position in screen coordinates</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="point.html" class="tsd-signature-type">Point</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="screentosimrect" class="tsd-anchor"></a>
+					<h3>screen<wbr>ToSim<wbr>Rect</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">screen<wbr>ToSim<wbr>Rect<span class="tsd-signature-symbol">(</span>rect<span class="tsd-signature-symbol">: </span><a href="screenrect.html" class="tsd-signature-type">ScreenRect</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="doublerect.html" class="tsd-signature-type">DoubleRect</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/view/CoordMap.ts#L365">davinci-newton/view/CoordMap.ts:365</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Translates the given screen coordinates rectangle into simulation coordinates.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>rect: <a href="screenrect.html" class="tsd-signature-type">ScreenRect</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the rectangle in screen coordinates</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="doublerect.html" class="tsd-signature-type">DoubleRect</a></h4>
+							<p>the equivalent rectangle in simulation coordinates</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="screentosimscalex" class="tsd-anchor"></a>
+					<h3>screen<wbr>ToSim<wbr>ScaleX</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">screen<wbr>ToSim<wbr>ScaleX<span class="tsd-signature-symbol">(</span>scr_x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/view/CoordMap.ts#L380">davinci-newton/view/CoordMap.ts:380</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the equivalent length in simulation coordinates of the given horizontal
+									length in screen coordinates.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>scr_x: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>a horizontal length in screen coordinates</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+							<p>the equivalent length in simulation coordinates</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="screentosimscaley" class="tsd-anchor"></a>
+					<h3>screen<wbr>ToSim<wbr>ScaleY</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">screen<wbr>ToSim<wbr>ScaleY<span class="tsd-signature-symbol">(</span>scr_y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/view/CoordMap.ts#L390">davinci-newton/view/CoordMap.ts:390</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the equivalent length in simulation coordinates of the given vertical
+									length in screen coordinates.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>scr_y: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>a vertical length in screen coordinates</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+							<p>the equivalent length in simulation coordinates</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="screentosimx" class="tsd-anchor"></a>
+					<h3>screen<wbr>ToSimX</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">screen<wbr>ToSimX<span class="tsd-signature-symbol">(</span>scr_x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/view/CoordMap.ts#L399">davinci-newton/view/CoordMap.ts:399</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Translates a horizontal screen coordinate to simulation coordinates.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>scr_x: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>horizontal position in screen coordinates</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+							<p>the equivalent position in simulation coordinates</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="screentosimy" class="tsd-anchor"></a>
+					<h3>screen<wbr>ToSimY</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">screen<wbr>ToSimY<span class="tsd-signature-symbol">(</span>scr_y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/view/CoordMap.ts#L408">davinci-newton/view/CoordMap.ts:408</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Translates a vertical screen coordinate to simulation coordinates.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>scr_y: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>vertical position in screen coordinates</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+							<p>the equivalent position in simulation coordinates</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="simtoscreen" class="tsd-anchor"></a>
+					<h3>sim<wbr>ToScreen</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">sim<wbr>ToScreen<span class="tsd-signature-symbol">(</span>p_sim<span class="tsd-signature-symbol">: </span><a href="point.html" class="tsd-signature-type">Point</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="point.html" class="tsd-signature-type">Point</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/view/CoordMap.ts#L417">davinci-newton/view/CoordMap.ts:417</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Translates a point from simulation coordinates to screen coordinates.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>p_sim: <a href="point.html" class="tsd-signature-type">Point</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the point in simulation coordinates to translate</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="point.html" class="tsd-signature-type">Point</a></h4>
+							<p>the point translated to screen coordinates</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="simtoscreenrect" class="tsd-anchor"></a>
+					<h3>sim<wbr>ToScreen<wbr>Rect</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">sim<wbr>ToScreen<wbr>Rect<span class="tsd-signature-symbol">(</span>r<span class="tsd-signature-symbol">: </span><a href="doublerect.html" class="tsd-signature-type">DoubleRect</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="screenrect.html" class="tsd-signature-type">ScreenRect</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/view/CoordMap.ts#L426">davinci-newton/view/CoordMap.ts:426</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Translates the given simulation coordinates rectangle into screen coordinates.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>r: <a href="doublerect.html" class="tsd-signature-type">DoubleRect</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the rectangle in simulation coordinates</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="screenrect.html" class="tsd-signature-type">ScreenRect</a></h4>
+							<p>the equivalent rectangle in screen coordinates</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="simtoscreenscalex" class="tsd-anchor"></a>
+					<h3>sim<wbr>ToScreen<wbr>ScaleX</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">sim<wbr>ToScreen<wbr>ScaleX<span class="tsd-signature-symbol">(</span>length_x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/view/CoordMap.ts#L441">davinci-newton/view/CoordMap.ts:441</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the equivalent length in screen coordinates of the given horizontal length
+									in simulation coordinates.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>length_x: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>a horizontal length in simulation coordinates</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+							<p>the equivalent length in screen coordinates</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="simtoscreenscaley" class="tsd-anchor"></a>
+					<h3>sim<wbr>ToScreen<wbr>ScaleY</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">sim<wbr>ToScreen<wbr>ScaleY<span class="tsd-signature-symbol">(</span>length_y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/view/CoordMap.ts#L451">davinci-newton/view/CoordMap.ts:451</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the equivalent length in screen coordinates of the given vertical length
+									in simulation coordinates.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>length_y: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>a vertical length in simulation coordinates</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+							<p>the equivalent length in screen coordinates</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="simtoscreenx" class="tsd-anchor"></a>
+					<h3>sim<wbr>ToScreenX</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">sim<wbr>ToScreenX<span class="tsd-signature-symbol">(</span>sim_x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/view/CoordMap.ts#L460">davinci-newton/view/CoordMap.ts:460</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Translates a horizontal simulation coordinate to screen coordinates.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>sim_x: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>horizontal position in simulation coordinates</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+							<p>the equivalent position in screen coordinates</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="simtoscreeny" class="tsd-anchor"></a>
+					<h3>sim<wbr>ToScreenY</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">sim<wbr>ToScreenY<span class="tsd-signature-symbol">(</span>sim_y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/view/CoordMap.ts#L469">davinci-newton/view/CoordMap.ts:469</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Translates a vertical simulation coordinate to screen coordinates.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>sim_y: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>vertical position in simulation coordinate</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+							<p>the equivalent position in screen coordinates</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="isducktype" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> is<wbr>Duck<wbr>Type</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Duck<wbr>Type<span class="tsd-signature-symbol">(</span>obj<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/view/CoordMap.ts#L309">davinci-newton/view/CoordMap.ts:309</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns true if the object is likely a CoordMap. Only works under simple
+									compilation, intended for interactive non-compiled code.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>obj: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the object of interest</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>true if the object is likely a CoordMap</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="make" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> make</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">make<span class="tsd-signature-symbol">(</span>screenRect<span class="tsd-signature-symbol">: </span><a href="screenrect.html" class="tsd-signature-type">ScreenRect</a>, simRect<span class="tsd-signature-symbol">: </span><a href="doublerect.html" class="tsd-signature-type">DoubleRect</a>, horizAlign<span class="tsd-signature-symbol">?: </span><a href="../enums/horizalign.html" class="tsd-signature-type">HorizAlign</a>, verticalAlign<span class="tsd-signature-symbol">?: </span><a href="../enums/verticalalign.html" class="tsd-signature-type">VerticalAlign</a>, aspectRatio<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="coordmap.html" class="tsd-signature-type">CoordMap</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/view/CoordMap.ts#L210">davinci-newton/view/CoordMap.ts:210</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates a CoordMap that fits a simulation coordinates rectangle inside a
+										screen coordinates rectangle in accordance with alignment options and aspect ratio.
+									Calculates the origin and scale, which define the coordinate mapping.</p>
+								</div>
+								<p>The mapping is calculated so that the given simulation rectangle transforms to be
+									the largest possible rectangle that fits inside the given screen rectangle, subject to
+									various alignment options. The alignment options are similar to typical word processor
+									alignment options such as left, center, right, or full justification. In the following
+									diagrams the simulation rectangle is the smaller bold bordered rectangle, inside the
+								larger screen rectangle.</p>
+								<p> ┌──────────────────────────────────────────────────┐
+									│┏━━━━━━━━━━━━━━━━┓                                │
+									│┃                ┃                                │
+									│┃                ┃                                │
+									│┃    x: left     ┃                                │
+									│┃                ┃                                │
+									│┃                ┃                                │
+									│┗━━━━━━━━━━━━━━━━┛                                │
+								└──────────────────────────────────────────────────┘</p>
+								<p> ┌──────────────────────────────────────────────────┐
+									│               ┏━━━━━━━━━━━━━━━━┓                 │
+									│               ┃                ┃                 │
+									│               ┃                ┃                 │
+									│               ┃   x: middle    ┃                 │
+									│               ┃                ┃                 │
+									│               ┃                ┃                 │
+									│               ┗━━━━━━━━━━━━━━━━┛                 │
+								└──────────────────────────────────────────────────┘</p>
+								<p> ┌──────────────────────────────────────────────────┐
+									│                                ┏━━━━━━━━━━━━━━━━┓│
+									│                                ┃                ┃│
+									│                                ┃                ┃│
+									│                                ┃    x: right    ┃│
+									│                                ┃                ┃│
+									│                                ┃                ┃│
+									│                                ┗━━━━━━━━━━━━━━━━┛│
+								└──────────────────────────────────────────────────┘</p>
+								<p>Both horizontal and vertical dimensions (x and y) have alignments. One of x or y
+									will determine the scale and will fully span the screen rectangle; the alignment
+									option only affects the other axis. In the diagrams above, the alignment of the y axis
+								is ignored; the alignment only matters for the x placement.</p>
+								<p>Suppose the first diagram above had <code>LEFT</code> horizontal alignment and
+									<code>TOP</code> vertical alignment, but then the screen rectangle changed to be tall
+									and narrow; then we would see the first picture below. Other vertical alignment
+								options are shown as well.</p>
+								<p> ┌──────────────────┐     ┌──────────────────┐     ┌──────────────────┐
+									│┏━━━━━━━━━━━━━━━━┓│     │                  │     │                  │
+									│┃                ┃│     │                  │     │                  │
+									│┃    x: left     ┃│     │                  │     │                  │
+									│┃    y: top      ┃│     │                  │     │                  │
+									│┃                ┃│     │┏━━━━━━━━━━━━━━━━┓│     │                  │
+									│┃                ┃│     │┃                ┃│     │                  │
+									│┗━━━━━━━━━━━━━━━━┛│     │┃    x: left     ┃│     │                  │
+									│                  │     │┃    y: middle   ┃│     │                  │
+									│                  │     │┃                ┃│     │                  │
+									│                  │     │┃                ┃│     │┏━━━━━━━━━━━━━━━━┓│
+									│                  │     │┗━━━━━━━━━━━━━━━━┛│     │┃                ┃│
+									│                  │     │                  │     │┃    x: left     ┃│
+									│                  │     │                  │     │┃    y: bottom   ┃│
+									│                  │     │                  │     │┃                ┃│
+									│                  │     │                  │     │┃                ┃│
+									│                  │     │                  │     │┗━━━━━━━━━━━━━━━━┛│
+								└──────────────────┘     └──────────────────┘     └──────────────────┘</p>
+								<p><code>FULL</code> ensures that for the chosen axis the simulation and screen rectangles
+									coincide. When both x and y have <code>FULL</code>, then the simulation and screen rectangles
+									will coincide but the aspect ratio is altered, so an image from the simulation may
+									appear squashed or stretched (see definition of aspect ratio below). For example, the
+								square simulation rectangle from our earlier examples is stretched out here:</p>
+								<p> ┌──────────────────────────────────────────────────┐
+									│┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓│
+									│┃                                                ┃│
+									│┃                                                ┃│
+									│┃             x:full, y:full                     ┃│
+									│┃                                                ┃│
+									│┃                                                ┃│
+									│┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛│
+								└──────────────────────────────────────────────────┘</p>
+								<p>When only one of the axes has <code>FULL</code>, the simulation rectangle
+									might not entirely fit into the screen rectangle as the following example shows, but
+								the aspect ratio is preserved.</p>
+								<p>  ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+									┃                                                ┃
+									┃                                                ┃
+									┃                                                ┃
+									┃                                                ┃
+									┃                                                ┃
+									┌┃────────────────────────────────────────────────┃┐
+									│┃                                                ┃│
+									│┃                                                ┃│
+									│┃            x:full, y:middle                    ┃│
+									│┃                                                ┃│
+									│┃                                                ┃│
+									└┃────────────────────────────────────────────────┃┘
+									┃                                                ┃
+									┃                                                ┃
+									┃                                                ┃
+									┃                                                ┃
+									┃                                                ┃
+								┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛</p>
+								<p>The aspect ratio is the ratio of &#39;pixels per simulation unit along y axis&#39; divided
+									by &#39;pixels per simulation unit along x axis&#39;. The default aspect ratio is 1.0, so x
+									and y are treated identically with distance being measured the same in each direction.
+									An aspect ratio other than 1.0 will squash or stretch the image.  Note that aspect
+								ratio is ignored when both x and y axes have <code>FULL</code> specified.</p>
+								<p>The simulation rectangle, screen rectangle, alignment options, and aspect ratio are
+									only used to initially determine the coordinate transformation; they are not stored by
+								the CoordMap.</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>screenRect: <a href="screenrect.html" class="tsd-signature-type">ScreenRect</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the screen space rectangle to fit the sim rect into</p>
+									</div>
+								</li>
+								<li>
+									<h5>simRect: <a href="doublerect.html" class="tsd-signature-type">DoubleRect</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the simulation space rectangle to be fit into the screenRect</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> horizAlign: <a href="../enums/horizalign.html" class="tsd-signature-type">HorizAlign</a><span class="tsd-signature-symbol"> =&nbsp;HorizAlign.MIDDLE</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>horizontal alignment option; default is <code>HorizAlign.MIDDLE</code></p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> verticalAlign: <a href="../enums/verticalalign.html" class="tsd-signature-type">VerticalAlign</a><span class="tsd-signature-symbol"> =&nbsp;VerticalAlign.MIDDLE</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>vertical alignment option; default is<code>VerticalAlign.MIDDLE</code></p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> aspectRatio: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the ratio of &#39;pixels per simulation unit along y axis&#39;
+										divided by &#39;pixels per simulation unit along x axis&#39;;  default is 1.0</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="coordmap.html" class="tsd-signature-type">CoordMap</a></h4>
+							<p>the CoordMap corresponding to the given options</p>
+						</li>
+					</ul>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="../globals.html"><em>Globals</em></a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class tsd-is-external">
+						<a href="coordmap.html" class="tsd-kind-icon">Coord<wbr>Map</a>
+						<ul>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
+								<a href="coordmap.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="coordmap.html#getaffinetransform" class="tsd-kind-icon">get<wbr>Affine<wbr>Transform</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="coordmap.html#getscalex" class="tsd-kind-icon">get<wbr>ScaleX</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="coordmap.html#getscaley" class="tsd-kind-icon">get<wbr>ScaleY</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="coordmap.html#screentosim" class="tsd-kind-icon">screen<wbr>ToSim</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="coordmap.html#screentosimrect" class="tsd-kind-icon">screen<wbr>ToSim<wbr>Rect</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="coordmap.html#screentosimscalex" class="tsd-kind-icon">screen<wbr>ToSim<wbr>ScaleX</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="coordmap.html#screentosimscaley" class="tsd-kind-icon">screen<wbr>ToSim<wbr>ScaleY</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="coordmap.html#screentosimx" class="tsd-kind-icon">screen<wbr>ToSimX</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="coordmap.html#screentosimy" class="tsd-kind-icon">screen<wbr>ToSimY</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="coordmap.html#simtoscreen" class="tsd-kind-icon">sim<wbr>ToScreen</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="coordmap.html#simtoscreenrect" class="tsd-kind-icon">sim<wbr>ToScreen<wbr>Rect</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="coordmap.html#simtoscreenscalex" class="tsd-kind-icon">sim<wbr>ToScreen<wbr>ScaleX</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="coordmap.html#simtoscreenscaley" class="tsd-kind-icon">sim<wbr>ToScreen<wbr>ScaleY</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="coordmap.html#simtoscreenx" class="tsd-kind-icon">sim<wbr>ToScreenX</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="coordmap.html#simtoscreeny" class="tsd-kind-icon">sim<wbr>ToScreenY</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="coordmap.html#isducktype" class="tsd-kind-icon">is<wbr>Duck<wbr>Type</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="coordmap.html#make" class="tsd-kind-icon">make</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer>
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="../assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>

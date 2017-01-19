@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>NEWTON 0.0.4</title>
+	<title>NEWTON 0.0.6</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">NEWTON 0.0.4</a>
+					<a href="index.html" class="title">NEWTON 0.0.6</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -54,7 +54,7 @@
 					<a href="globals.html">Globals</a>
 				</li>
 			</ul>
-			<h1> NEWTON 0.0.4</h1>
+			<h1> NEWTON 0.0.6</h1>
 		</div>
 	</div>
 </header>
@@ -69,6 +69,8 @@
 							<h3>Enumerations</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-enum tsd-is-external"><a href="enums/coordtype.html" class="tsd-kind-icon">Coord<wbr>Type</a></li>
+								<li class="tsd-kind-enum tsd-is-external"><a href="enums/horizalign.html" class="tsd-kind-icon">Horiz<wbr>Align</a></li>
+								<li class="tsd-kind-enum tsd-is-external"><a href="enums/verticalalign.html" class="tsd-kind-icon">Vertical<wbr>Align</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external">
@@ -77,22 +79,42 @@
 								<li class="tsd-kind-class tsd-has-type-parameter tsd-is-external"><a href="classes/abstractmatrix.html" class="tsd-kind-icon">Abstract<wbr>Matrix</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/abstractsimobject.html" class="tsd-kind-icon">Abstract<wbr>Sim<wbr>Object</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/abstractsubject.html" class="tsd-kind-icon">Abstract<wbr>Subject</a></li>
+								<li class="tsd-kind-class tsd-is-external"><a href="classes/affinetransform.html" class="tsd-kind-icon">Affine<wbr>Transform</a></li>
+								<li class="tsd-kind-class tsd-is-external"><a href="classes/autoscale.html" class="tsd-kind-icon">Auto<wbr>Scale</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/bivector3.html" class="tsd-kind-icon">Bivector3</a></li>
+								<li class="tsd-kind-class tsd-has-type-parameter tsd-is-external"><a href="classes/circularlist.html" class="tsd-kind-icon">Circular<wbr>List</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/clock.html" class="tsd-kind-icon">Clock</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/clocktask.html" class="tsd-kind-icon">Clock<wbr>Task</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/concretevariable.html" class="tsd-kind-icon">Concrete<wbr>Variable</a></li>
+								<li class="tsd-kind-class tsd-is-external"><a href="classes/coordmap.html" class="tsd-kind-icon">Coord<wbr>Map</a></li>
+								<li class="tsd-kind-class tsd-is-external"><a href="classes/displaygraph.html" class="tsd-kind-icon">Display<wbr>Graph</a></li>
+								<li class="tsd-kind-class tsd-is-external"><a href="classes/displaylist.html" class="tsd-kind-icon">Display<wbr>List</a></li>
+								<li class="tsd-kind-class tsd-is-external"><a href="classes/doublerect.html" class="tsd-kind-icon">Double<wbr>Rect</a></li>
+								<li class="tsd-kind-class tsd-is-external"><a href="classes/drawingmode.html" class="tsd-kind-icon">Drawing<wbr>Mode</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/energyinfo.html" class="tsd-kind-icon">Energy<wbr>Info</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/forceapp.html" class="tsd-kind-icon">Force<wbr>App</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/genericevent.html" class="tsd-kind-icon">Generic<wbr>Event</a></li>
+								<li class="tsd-kind-class tsd-is-external"><a href="classes/graph.html" class="tsd-kind-icon">Graph</a></li>
+								<li class="tsd-kind-class tsd-is-external"><a href="classes/graphline.html" class="tsd-kind-icon">Graph<wbr>Line</a></li>
+								<li class="tsd-kind-class tsd-is-external"><a href="classes/graphpoint.html" class="tsd-kind-icon">Graph<wbr>Point</a></li>
+								<li class="tsd-kind-class tsd-is-external"><a href="classes/graphstyle.html" class="tsd-kind-icon">Graph<wbr>Style</a></li>
+								<li class="tsd-kind-class tsd-is-external"><a href="classes/labcanvas.html" class="tsd-kind-icon">Lab<wbr>Canvas</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/matrix3.html" class="tsd-kind-icon">Matrix3</a></li>
+								<li class="tsd-kind-class tsd-is-external"><a href="classes/parameterboolean.html" class="tsd-kind-icon">Parameter<wbr>Boolean</a></li>
+								<li class="tsd-kind-class tsd-is-external"><a href="classes/parameternumber.html" class="tsd-kind-icon">Parameter<wbr>Number</a></li>
+								<li class="tsd-kind-class tsd-is-external"><a href="classes/parameterstring.html" class="tsd-kind-icon">Parameter<wbr>String</a></li>
+								<li class="tsd-kind-class tsd-is-external"><a href="classes/point.html" class="tsd-kind-icon">Point</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/rigidbody.html" class="tsd-kind-icon">Rigid<wbr>Body</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/rigidbodysim.html" class="tsd-kind-icon">Rigid<wbr>Body<wbr>Sim</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/rungekutta.html" class="tsd-kind-icon">Runge<wbr>Kutta</a></li>
+								<li class="tsd-kind-class tsd-is-external"><a href="classes/screenrect.html" class="tsd-kind-icon">Screen<wbr>Rect</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/simlist.html" class="tsd-kind-icon">Sim<wbr>List</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/simrunner.html" class="tsd-kind-icon">Sim<wbr>Runner</a></li>
+								<li class="tsd-kind-class tsd-is-external"><a href="classes/simview.html" class="tsd-kind-icon">Sim<wbr>View</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/simpleadvance.html" class="tsd-kind-icon">Simple<wbr>Advance</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/spinor3.html" class="tsd-kind-icon">Spinor3</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/spring.html" class="tsd-kind-icon">Spring</a></li>
+								<li class="tsd-kind-class tsd-is-external"><a href="classes/utilitycore.html" class="tsd-kind-icon">Utility<wbr>Core</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/varslist.html" class="tsd-kind-icon">Vars<wbr>List</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/vector.html" class="tsd-kind-icon">Vector</a></li>
 								<li class="tsd-kind-class tsd-is-external"><a href="classes/vector3.html" class="tsd-kind-icon">Vector3</a></li>
@@ -105,8 +127,13 @@
 								<li class="tsd-kind-interface tsd-is-external"><a href="interfaces/bivectore3.html" class="tsd-kind-icon">Bivector<wbr>E3</a></li>
 								<li class="tsd-kind-interface tsd-is-external"><a href="interfaces/collision.html" class="tsd-kind-icon">Collision</a></li>
 								<li class="tsd-kind-interface tsd-is-external"><a href="interfaces/diffeqsolver.html" class="tsd-kind-icon">Diff<wbr>EqSolver</a></li>
+								<li class="tsd-kind-interface tsd-is-external"><a href="interfaces/displayobject.html" class="tsd-kind-icon">Display<wbr>Object</a></li>
 								<li class="tsd-kind-interface tsd-is-external"><a href="interfaces/forcelaw.html" class="tsd-kind-icon">Force<wbr>Law</a></li>
+								<li class="tsd-kind-interface tsd-has-type-parameter tsd-is-external"><a href="interfaces/historyiterator.html" class="tsd-kind-icon">History<wbr>Iterator</a></li>
+								<li class="tsd-kind-interface tsd-has-type-parameter tsd-is-external"><a href="interfaces/historylist.html" class="tsd-kind-icon">History<wbr>List</a></li>
+								<li class="tsd-kind-interface tsd-is-external"><a href="interfaces/labview.html" class="tsd-kind-icon">Lab<wbr>View</a></li>
 								<li class="tsd-kind-interface tsd-is-external"><a href="interfaces/memolist.html" class="tsd-kind-icon">Memo<wbr>List</a></li>
+								<li class="tsd-kind-interface tsd-is-external"><a href="interfaces/memorizable.html" class="tsd-kind-icon">Memorizable</a></li>
 								<li class="tsd-kind-interface tsd-is-external"><a href="interfaces/observer.html" class="tsd-kind-icon">Observer</a></li>
 								<li class="tsd-kind-interface tsd-is-external"><a href="interfaces/parameter.html" class="tsd-kind-icon">Parameter</a></li>
 								<li class="tsd-kind-interface tsd-is-external"><a href="interfaces/scalar.html" class="tsd-kind-icon">Scalar</a></li>
@@ -122,23 +149,32 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-function tsd-has-type-parameter tsd-is-external"><a href="globals.html#clone" class="tsd-kind-icon">clone</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter tsd-is-external"><a href="globals.html#contains" class="tsd-kind-icon">contains</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#default" class="tsd-kind-icon">default</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter tsd-is-external"><a href="globals.html#expectarg" class="tsd-kind-icon">expect<wbr>Arg</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter tsd-is-external"><a href="globals.html#extendarray" class="tsd-kind-icon">extend<wbr>Array</a></li>
+								<li class="tsd-kind-function tsd-has-type-parameter tsd-is-external"><a href="globals.html#find" class="tsd-kind-icon">find</a></li>
+								<li class="tsd-kind-function tsd-has-type-parameter tsd-is-external"><a href="globals.html#findindex" class="tsd-kind-icon">find<wbr>Index</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#getsystemtime" class="tsd-kind-icon">get<wbr>System<wbr>Time</a></li>
+								<li class="tsd-kind-function tsd-has-type-parameter tsd-is-external"><a href="globals.html#insertat" class="tsd-kind-icon">insert<wbr>At</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#isarray" class="tsd-kind-icon">is<wbr>Array</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#isdefined" class="tsd-kind-icon">is<wbr>Defined</a></li>
+								<li class="tsd-kind-function tsd-has-type-parameter tsd-is-external"><a href="globals.html#isempty" class="tsd-kind-icon">is<wbr>Empty</a></li>
+								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#isfunction" class="tsd-kind-icon">is<wbr>Function</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#isinteger" class="tsd-kind-icon">is<wbr>Integer</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#isnumber" class="tsd-kind-icon">is<wbr>Number</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#isobject" class="tsd-kind-icon">is<wbr>Object</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#isstring" class="tsd-kind-icon">is<wbr>String</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#isundefined" class="tsd-kind-icon">is<wbr>Undefined</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#mustbedefined" class="tsd-kind-icon">must<wbr>BeDefined</a></li>
+								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#mustbefinite" class="tsd-kind-icon">must<wbr>BeFinite</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#mustbeinteger" class="tsd-kind-icon">must<wbr>BeInteger</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter tsd-is-external"><a href="globals.html#mustbeobject" class="tsd-kind-icon">must<wbr>BeObject</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#mustsatisfy" class="tsd-kind-icon">must<wbr>Satisfy</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter tsd-is-external"><a href="globals.html#remove" class="tsd-kind-icon">remove</a></li>
+								<li class="tsd-kind-function tsd-has-type-parameter tsd-is-external"><a href="globals.html#removeat" class="tsd-kind-icon">remove<wbr>At</a></li>
+								<li class="tsd-kind-function tsd-has-type-parameter tsd-is-external"><a href="globals.html#repeat" class="tsd-kind-icon">repeat</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#toname" class="tsd-kind-icon">to<wbr>Name</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#validname" class="tsd-kind-icon">valid<wbr>Name</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#verydifferent" class="tsd-kind-icon">very<wbr>Different</a></li>
@@ -154,6 +190,35 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Functions</h2>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-has-type-parameter tsd-is-external">
+					<a name="clone" class="tsd-anchor"></a>
+					<h3>clone</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-has-type-parameter tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">clone&lt;T&gt;<span class="tsd-signature-symbol">(</span>xs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/util/clone.ts#L1">davinci-newton/util/clone.ts:1</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T</h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>xs: <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-has-type-parameter tsd-is-external">
 					<a name="contains" class="tsd-anchor"></a>
 					<h3>contains</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-has-type-parameter tsd-is-external">
@@ -163,7 +228,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/util/contains.ts#L1">davinci-newton/util/contains.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/util/contains.ts#L1">davinci-newton/util/contains.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -189,40 +254,25 @@
 					<a name="default" class="tsd-anchor"></a>
 					<h3>default</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">default<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, contextBuilder<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+						<li class="tsd-signature tsd-kind-icon">default<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, limit<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/checks/mustBeNumber.ts#L6">davinci-newton/checks/mustBeNumber.ts:6</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/checks/isLE.ts#L1">davinci-newton/checks/isLE.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>name: <span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li>
 									<h5>value: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> contextBuilder: <span class="tsd-signature-type">function</span></h5>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-											</ul>
-											<ul class="tsd-descriptions">
-												<li class="tsd-description">
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-												</li>
-											</ul>
-										</li>
-									</ul>
+									<h5>limit: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -236,7 +286,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/checks/expectArg.ts#L8">davinci-newton/checks/expectArg.ts:8</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/checks/expectArg.ts#L8">davinci-newton/checks/expectArg.ts:8</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -270,7 +320,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/util/extendArray.ts#L8">davinci-newton/util/extendArray.ts:8</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/util/extendArray.ts#L8">davinci-newton/util/extendArray.ts:8</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -302,6 +352,126 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-has-type-parameter tsd-is-external">
+					<a name="find" class="tsd-anchor"></a>
+					<h3>find</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-has-type-parameter tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">find&lt;T&gt;<span class="tsd-signature-symbol">(</span>xs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span>, test<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/util/find.ts#L8">davinci-newton/util/find.ts:8</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Search an array for the first element that satisfies a given condition and
+										return that element. Returns the first array element that passes the test,
+									or null if no element is found.</p>
+								</div>
+							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T</h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>xs: <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+								<li>
+									<h5>test: <span class="tsd-signature-type">function</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-siganture">
+											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, index<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5>x: <span class="tsd-signature-type">T</span></h5>
+														</li>
+														<li>
+															<h5>index: <span class="tsd-signature-type">number</span></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-has-type-parameter tsd-is-external">
+					<a name="findindex" class="tsd-anchor"></a>
+					<h3>find<wbr>Index</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-has-type-parameter tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">find<wbr>Index&lt;T&gt;<span class="tsd-signature-symbol">(</span>xs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span>, test<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/util/findIndex.ts#L6">davinci-newton/util/findIndex.ts:6</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Search an array for the first element that satisfies a given condition and
+										return its index. Returns the index of the first array element that passes the test,
+									or -1 if no element is found.</p>
+								</div>
+							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T</h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>xs: <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+								<li>
+									<h5>test: <span class="tsd-signature-type">function</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-siganture">
+											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, index<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5>x: <span class="tsd-signature-type">T</span></h5>
+														</li>
+														<li>
+															<h5>index: <span class="tsd-signature-type">number</span></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external">
 					<a name="getsystemtime" class="tsd-anchor"></a>
 					<h3>get<wbr>System<wbr>Time</h3>
@@ -312,7 +482,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/util/getSystemTime.ts#L4">davinci-newton/util/getSystemTime.ts:4</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/util/getSystemTime.ts#L4">davinci-newton/util/getSystemTime.ts:4</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -321,6 +491,56 @@
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-has-type-parameter tsd-is-external">
+					<a name="insertat" class="tsd-anchor"></a>
+					<h3>insert<wbr>At</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-has-type-parameter tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">insert<wbr>At&lt;T&gt;<span class="tsd-signature-symbol">(</span>xs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span>, x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, index<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/util/insertAt.ts#L25">davinci-newton/util/insertAt.ts:25</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Inserts an object at the given index of the array.</p>
+								</div>
+							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T</h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>xs: <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The array to modify.</p>
+									</div>
+								</li>
+								<li>
+									<h5>x: <span class="tsd-signature-type">T</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The object to insert.</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> index: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The index at which to insert the object. If omitted,
+										treated as 0. A negative index is counted from the end of the array.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -334,7 +554,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/checks/isArray.ts#L1">davinci-newton/checks/isArray.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/checks/isArray.ts#L1">davinci-newton/checks/isArray.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -357,13 +577,65 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/checks/isDefined.ts#L1">davinci-newton/checks/isDefined.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/checks/isDefined.ts#L1">davinci-newton/checks/isDefined.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>arg: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-has-type-parameter tsd-is-external">
+					<a name="isempty" class="tsd-anchor"></a>
+					<h3>is<wbr>Empty</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-has-type-parameter tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Empty&lt;T&gt;<span class="tsd-signature-symbol">(</span>xs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/util/isEmpty.ts#L1">davinci-newton/util/isEmpty.ts:1</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T</h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>xs: <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external">
+					<a name="isfunction" class="tsd-anchor"></a>
+					<h3>is<wbr>Function</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Function<span class="tsd-signature-symbol">(</span>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/checks/isFunction.ts#L1">davinci-newton/checks/isFunction.ts:1</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>x: <span class="tsd-signature-type">any</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -380,7 +652,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/checks/isInteger.ts#L3">davinci-newton/checks/isInteger.ts:3</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/checks/isInteger.ts#L3">davinci-newton/checks/isInteger.ts:3</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -403,7 +675,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/checks/isNumber.ts#L1">davinci-newton/checks/isNumber.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/checks/isNumber.ts#L1">davinci-newton/checks/isNumber.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -426,7 +698,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/checks/isObject.ts#L1">davinci-newton/checks/isObject.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/checks/isObject.ts#L1">davinci-newton/checks/isObject.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -449,7 +721,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/checks/isString.ts#L1">davinci-newton/checks/isString.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/checks/isString.ts#L1">davinci-newton/checks/isString.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -472,7 +744,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/checks/isUndefined.ts#L1">davinci-newton/checks/isUndefined.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/checks/isUndefined.ts#L1">davinci-newton/checks/isUndefined.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -495,7 +767,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/checks/mustBeDefined.ts#L8">davinci-newton/checks/mustBeDefined.ts:8</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/checks/mustBeDefined.ts#L8">davinci-newton/checks/mustBeDefined.ts:8</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -527,6 +799,43 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external">
+					<a name="mustbefinite" class="tsd-anchor"></a>
+					<h3>must<wbr>BeFinite</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">must<wbr>BeFinite<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/checks/mustBeFinite.ts#L7">davinci-newton/checks/mustBeFinite.ts:7</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Throws an error if the argument is not a finite number.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p>if the argument is not a finite number</p>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>value: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the number to test</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+							<p>the value that passed the test</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external">
 					<a name="mustbeinteger" class="tsd-anchor"></a>
 					<h3>must<wbr>BeInteger</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-is-external">
@@ -536,7 +845,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/checks/mustBeInteger.ts#L8">davinci-newton/checks/mustBeInteger.ts:8</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/checks/mustBeInteger.ts#L8">davinci-newton/checks/mustBeInteger.ts:8</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -577,7 +886,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/checks/mustBeNonNullObject.ts#L9">davinci-newton/checks/mustBeNonNullObject.ts:9</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/checks/mustBeObject.ts#L8">davinci-newton/checks/mustBeObject.ts:8</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -624,7 +933,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/checks/mustSatisfy.ts#L1">davinci-newton/checks/mustSatisfy.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/checks/mustSatisfy.ts#L1">davinci-newton/checks/mustSatisfy.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -674,15 +983,20 @@
 					<a name="remove" class="tsd-anchor"></a>
 					<h3>remove</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-has-type-parameter tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">remove&lt;T&gt;<span class="tsd-signature-symbol">(</span>xs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span>, x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">remove&lt;T&gt;<span class="tsd-signature-symbol">(</span>xs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span>, x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/util/remove.ts#L1">davinci-newton/util/remove.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/util/remove.ts#L9">davinci-newton/util/remove.ts:9</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Removes the first occurrence of a particular value from an array.</p>
+								</div>
+							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
@@ -693,12 +1007,100 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>xs: <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Array from which to remove value.</p>
+									</div>
 								</li>
 								<li>
 									<h5>x: <span class="tsd-signature-type">T</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Object to remove.</p>
+									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>True if an element was removed.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-has-type-parameter tsd-is-external">
+					<a name="removeat" class="tsd-anchor"></a>
+					<h3>remove<wbr>At</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-has-type-parameter tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">remove<wbr>At&lt;T&gt;<span class="tsd-signature-symbol">(</span>xs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span>, index<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/util/removeAt.ts#L7">davinci-newton/util/removeAt.ts:7</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Removes from an array the element at the specified index.</p>
+								</div>
+							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T</h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>xs: <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Array or array like object from which to remove value.</p>
+									</div>
+								</li>
+								<li>
+									<h5>index: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The index to remove.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>True if an element was removed.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-has-type-parameter tsd-is-external">
+					<a name="repeat" class="tsd-anchor"></a>
+					<h3>repeat</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-has-type-parameter tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">repeat&lt;T&gt;<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, N<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/util/repeat.ts#L4">davinci-newton/util/repeat.ts:4</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns an array consisting of the given <code>value</code> repeated <code>N</code> times.</p>
+								</div>
+							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>T</h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>value: <span class="tsd-signature-type">T</span></h5>
+								</li>
+								<li>
+									<h5>N: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -712,7 +1114,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/util/toName.ts#L5">davinci-newton/util/toName.ts:5</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/util/toName.ts#L5">davinci-newton/util/toName.ts:5</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -741,7 +1143,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/util/validName.ts#L5">davinci-newton/util/validName.ts:5</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/util/validName.ts#L5">davinci-newton/util/validName.ts:5</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -770,7 +1172,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/util/veryDifferent.ts#L1">davinci-newton/util/veryDifferent.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/util/veryDifferent.ts#L1">davinci-newton/util/veryDifferent.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -802,7 +1204,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/math/wedge.ts#L11">davinci-newton/math/wedge.ts:11</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/math/wedge.ts#L11">davinci-newton/math/wedge.ts:11</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -828,7 +1230,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/math/wedge.ts#L3">davinci-newton/math/wedge.ts:3</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/math/wedge.ts#L3">davinci-newton/math/wedge.ts:3</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -854,7 +1256,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/math/wedge.ts#L7">davinci-newton/math/wedge.ts:7</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/math/wedge.ts#L7">davinci-newton/math/wedge.ts:7</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -880,7 +1282,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/util/zeroArray.ts#L1">davinci-newton/util/zeroArray.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/util/zeroArray.ts#L1">davinci-newton/util/zeroArray.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -908,6 +1310,12 @@
 					<li class=" tsd-kind-enum tsd-is-external">
 						<a href="enums/coordtype.html" class="tsd-kind-icon">Coord<wbr>Type</a>
 					</li>
+					<li class=" tsd-kind-enum tsd-is-external">
+						<a href="enums/horizalign.html" class="tsd-kind-icon">Horiz<wbr>Align</a>
+					</li>
+					<li class=" tsd-kind-enum tsd-is-external">
+						<a href="enums/verticalalign.html" class="tsd-kind-icon">Vertical<wbr>Align</a>
+					</li>
 					<li class=" tsd-kind-class tsd-has-type-parameter tsd-is-external">
 						<a href="classes/abstractmatrix.html" class="tsd-kind-icon">Abstract<wbr>Matrix</a>
 					</li>
@@ -918,7 +1326,16 @@
 						<a href="classes/abstractsubject.html" class="tsd-kind-icon">Abstract<wbr>Subject</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
+						<a href="classes/affinetransform.html" class="tsd-kind-icon">Affine<wbr>Transform</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="classes/autoscale.html" class="tsd-kind-icon">Auto<wbr>Scale</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
 						<a href="classes/bivector3.html" class="tsd-kind-icon">Bivector3</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter tsd-is-external">
+						<a href="classes/circularlist.html" class="tsd-kind-icon">Circular<wbr>List</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="classes/clock.html" class="tsd-kind-icon">Clock</a>
@@ -930,6 +1347,21 @@
 						<a href="classes/concretevariable.html" class="tsd-kind-icon">Concrete<wbr>Variable</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
+						<a href="classes/coordmap.html" class="tsd-kind-icon">Coord<wbr>Map</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="classes/displaygraph.html" class="tsd-kind-icon">Display<wbr>Graph</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="classes/displaylist.html" class="tsd-kind-icon">Display<wbr>List</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="classes/doublerect.html" class="tsd-kind-icon">Double<wbr>Rect</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="classes/drawingmode.html" class="tsd-kind-icon">Drawing<wbr>Mode</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
 						<a href="classes/energyinfo.html" class="tsd-kind-icon">Energy<wbr>Info</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
@@ -939,7 +1371,34 @@
 						<a href="classes/genericevent.html" class="tsd-kind-icon">Generic<wbr>Event</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
+						<a href="classes/graph.html" class="tsd-kind-icon">Graph</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="classes/graphline.html" class="tsd-kind-icon">Graph<wbr>Line</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="classes/graphpoint.html" class="tsd-kind-icon">Graph<wbr>Point</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="classes/graphstyle.html" class="tsd-kind-icon">Graph<wbr>Style</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="classes/labcanvas.html" class="tsd-kind-icon">Lab<wbr>Canvas</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
 						<a href="classes/matrix3.html" class="tsd-kind-icon">Matrix3</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="classes/parameterboolean.html" class="tsd-kind-icon">Parameter<wbr>Boolean</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="classes/parameternumber.html" class="tsd-kind-icon">Parameter<wbr>Number</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="classes/parameterstring.html" class="tsd-kind-icon">Parameter<wbr>String</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="classes/point.html" class="tsd-kind-icon">Point</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="classes/rigidbody.html" class="tsd-kind-icon">Rigid<wbr>Body</a>
@@ -951,10 +1410,16 @@
 						<a href="classes/rungekutta.html" class="tsd-kind-icon">Runge<wbr>Kutta</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
+						<a href="classes/screenrect.html" class="tsd-kind-icon">Screen<wbr>Rect</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
 						<a href="classes/simlist.html" class="tsd-kind-icon">Sim<wbr>List</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="classes/simrunner.html" class="tsd-kind-icon">Sim<wbr>Runner</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="classes/simview.html" class="tsd-kind-icon">Sim<wbr>View</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="classes/simpleadvance.html" class="tsd-kind-icon">Simple<wbr>Advance</a>
@@ -964,6 +1429,9 @@
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="classes/spring.html" class="tsd-kind-icon">Spring</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="classes/utilitycore.html" class="tsd-kind-icon">Utility<wbr>Core</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="classes/varslist.html" class="tsd-kind-icon">Vars<wbr>List</a>
@@ -987,10 +1455,25 @@
 						<a href="interfaces/diffeqsolver.html" class="tsd-kind-icon">Diff<wbr>EqSolver</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="interfaces/displayobject.html" class="tsd-kind-icon">Display<wbr>Object</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-external">
 						<a href="interfaces/forcelaw.html" class="tsd-kind-icon">Force<wbr>Law</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter tsd-is-external">
+						<a href="interfaces/historyiterator.html" class="tsd-kind-icon">History<wbr>Iterator</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter tsd-is-external">
+						<a href="interfaces/historylist.html" class="tsd-kind-icon">History<wbr>List</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="interfaces/labview.html" class="tsd-kind-icon">Lab<wbr>View</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-is-external">
 						<a href="interfaces/memolist.html" class="tsd-kind-icon">Memo<wbr>List</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="interfaces/memorizable.html" class="tsd-kind-icon">Memorizable</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-is-external">
 						<a href="interfaces/observer.html" class="tsd-kind-icon">Observer</a>
@@ -1023,6 +1506,9 @@
 						<a href="interfaces/vectore3.html" class="tsd-kind-icon">Vector<wbr>E3</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-external">
+						<a href="globals.html#clone" class="tsd-kind-icon">clone</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-external">
 						<a href="globals.html#contains" class="tsd-kind-icon">contains</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
@@ -1034,14 +1520,29 @@
 					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-external">
 						<a href="globals.html#extendarray" class="tsd-kind-icon">extend<wbr>Array</a>
 					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-external">
+						<a href="globals.html#find" class="tsd-kind-icon">find</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-external">
+						<a href="globals.html#findindex" class="tsd-kind-icon">find<wbr>Index</a>
+					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#getsystemtime" class="tsd-kind-icon">get<wbr>System<wbr>Time</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-external">
+						<a href="globals.html#insertat" class="tsd-kind-icon">insert<wbr>At</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#isarray" class="tsd-kind-icon">is<wbr>Array</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#isdefined" class="tsd-kind-icon">is<wbr>Defined</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-external">
+						<a href="globals.html#isempty" class="tsd-kind-icon">is<wbr>Empty</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#isfunction" class="tsd-kind-icon">is<wbr>Function</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#isinteger" class="tsd-kind-icon">is<wbr>Integer</a>
@@ -1062,6 +1563,9 @@
 						<a href="globals.html#mustbedefined" class="tsd-kind-icon">must<wbr>BeDefined</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#mustbefinite" class="tsd-kind-icon">must<wbr>BeFinite</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#mustbeinteger" class="tsd-kind-icon">must<wbr>BeInteger</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-external">
@@ -1072,6 +1576,12 @@
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-external">
 						<a href="globals.html#remove" class="tsd-kind-icon">remove</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-external">
+						<a href="globals.html#removeat" class="tsd-kind-icon">remove<wbr>At</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-external">
+						<a href="globals.html#repeat" class="tsd-kind-icon">repeat</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#toname" class="tsd-kind-icon">to<wbr>Name</a>

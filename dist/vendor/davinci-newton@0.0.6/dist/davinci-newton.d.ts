@@ -286,6 +286,44 @@ declare module NEWTON {
         getPotentialEnergy(): number;
         getVector(): Vector;
     }
+
+    /**
+     * 
+     */
+    interface AutoScale {
+
+    }
+
+    /**
+     * 
+     */
+    interface GraphLine {
+        setXVariable(index: number): void;
+        setYVariable(index: number): void;
+    }
+
+    /**
+     * 
+     */
+    class Graph {
+        constructor(canvasId: string, varsList: VarsList);
+        /**
+         * 
+         */
+        addTrace(name: string): GraphLine;
+        /**
+         * 
+         */
+        memorize(): void;
+        /**
+         * 
+         */
+        render(): void;
+        /**
+         * 
+         */
+        setAutoScale(trace: GraphLine): AutoScale;
+    }
 }
 
 declare module 'newton' {

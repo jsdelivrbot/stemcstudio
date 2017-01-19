@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>RigidBodySim | NEWTON 0.0.4</title>
+	<title>RigidBodySim | NEWTON 0.0.6</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">NEWTON 0.0.4</a>
+					<a href="../index.html" class="title">NEWTON 0.0.6</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -105,16 +105,23 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="rigidbodysim.html#addbody" class="tsd-kind-icon">add<wbr>Body</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="rigidbodysim.html#addforcelaw" class="tsd-kind-icon">add<wbr>Force<wbr>Law</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="rigidbodysim.html#addobserver" class="tsd-kind-icon">add<wbr>Observer</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="rigidbodysim.html#addparameter" class="tsd-kind-icon">add<wbr>Parameter</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="rigidbodysim.html#broadcast" class="tsd-kind-icon">broadcast</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="rigidbodysim.html#broadcastparameter" class="tsd-kind-icon">broadcast<wbr>Parameter</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="rigidbodysim.html#evaluate" class="tsd-kind-icon">evaluate</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="rigidbodysim.html#findcollisions" class="tsd-kind-icon">find<wbr>Collisions</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external"><a href="rigidbodysim.html#getbroadcast" class="tsd-kind-icon">get<wbr>Broadcast</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="rigidbodysim.html#getname" class="tsd-kind-icon">get<wbr>Name</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="rigidbodysim.html#getobservers" class="tsd-kind-icon">get<wbr>Observers</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="rigidbodysim.html#getparameter" class="tsd-kind-icon">get<wbr>Parameter</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="rigidbodysim.html#getsimlist" class="tsd-kind-icon">get<wbr>Sim<wbr>List</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="rigidbodysim.html#gettime" class="tsd-kind-icon">get<wbr>Time</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="rigidbodysim.html#getvarslist" class="tsd-kind-icon">get<wbr>Vars<wbr>List</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="rigidbodysim.html#modifyobjects" class="tsd-kind-icon">modify<wbr>Objects</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="rigidbodysim.html#removebody" class="tsd-kind-icon">remove<wbr>Body</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="rigidbodysim.html#removeforcelaw" class="tsd-kind-icon">remove<wbr>Force<wbr>Law</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="rigidbodysim.html#removeobserver" class="tsd-kind-icon">remove<wbr>Observer</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="rigidbodysim.html#restorestate" class="tsd-kind-icon">restore<wbr>State</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="rigidbodysim.html#savestate" class="tsd-kind-icon">save<wbr>State</a></li>
 							</ul>
@@ -135,7 +142,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="abstractsubject.html">AbstractSubject</a>.<a href="abstractsubject.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/engine/RigidBodySim.ts#L94">davinci-newton/engine/RigidBodySim.ts:94</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/engine/RigidBodySim.ts#L94">davinci-newton/engine/RigidBodySim.ts:94</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -162,7 +169,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/engine/RigidBodySim.ts#L107">davinci-newton/engine/RigidBodySim.ts:107</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/engine/RigidBodySim.ts#L107">davinci-newton/engine/RigidBodySim.ts:107</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -175,7 +182,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/engine/RigidBodySim.ts#L110">davinci-newton/engine/RigidBodySim.ts:110</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/engine/RigidBodySim.ts#L110">davinci-newton/engine/RigidBodySim.ts:110</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -206,7 +213,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/engine/RigidBodySim.ts#L117">davinci-newton/engine/RigidBodySim.ts:117</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/engine/RigidBodySim.ts#L117">davinci-newton/engine/RigidBodySim.ts:117</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -229,13 +236,74 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/engine/RigidBodySim.ts#L157">davinci-newton/engine/RigidBodySim.ts:157</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/engine/RigidBodySim.ts#L157">davinci-newton/engine/RigidBodySim.ts:157</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>forceLaw: <a href="../interfaces/forcelaw.html" class="tsd-signature-type">ForceLaw</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<a name="addobserver" class="tsd-anchor"></a>
+					<h3>add<wbr>Observer</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Observer<span class="tsd-signature-symbol">(</span>observer<span class="tsd-signature-symbol">: </span><a href="../interfaces/observer.html" class="tsd-signature-type">Observer</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="abstractsubject.html">AbstractSubject</a>.<a href="abstractsubject.html#addobserver">addObserver</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/util/AbstractSubject.ts#L53">davinci-newton/util/AbstractSubject.ts:53</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>observer: <a href="../interfaces/observer.html" class="tsd-signature-type">Observer</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<a name="addparameter" class="tsd-anchor"></a>
+					<h3>add<wbr>Parameter</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Parameter<span class="tsd-signature-symbol">(</span>parameter<span class="tsd-signature-symbol">: </span><a href="../interfaces/parameter.html" class="tsd-signature-type">Parameter</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="abstractsubject.html">AbstractSubject</a>.<a href="abstractsubject.html#addparameter">addParameter</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/util/AbstractSubject.ts#L68">davinci-newton/util/AbstractSubject.ts:68</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Adds the Parameter to the list of this Subject&#39;s available Parameters.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>throws</dt>
+									<dd><p>if a Parameter with the same name already exists.</p>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>parameter: <a href="../interfaces/parameter.html" class="tsd-signature-type">Parameter</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the Parameter to add</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -253,13 +321,37 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="abstractsubject.html">AbstractSubject</a>.<a href="abstractsubject.html#broadcast">broadcast</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/util/AbstractSubject.ts#L47">davinci-newton/util/AbstractSubject.ts:47</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/util/AbstractSubject.ts#L100">davinci-newton/util/AbstractSubject.ts:100</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>event: <a href="../interfaces/subjectevent.html" class="tsd-signature-type">SubjectEvent</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<a name="broadcastparameter" class="tsd-anchor"></a>
+					<h3>broadcast<wbr>Parameter</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">broadcast<wbr>Parameter<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="abstractsubject.html">AbstractSubject</a>.<a href="abstractsubject.html#broadcastparameter">broadcastParameter</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/util/AbstractSubject.ts#L109">davinci-newton/util/AbstractSubject.ts:109</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>name: <span class="tsd-signature-type">string</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -277,7 +369,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/simulation.html">Simulation</a>.<a href="../interfaces/simulation.html#evaluate">evaluate</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/engine/RigidBodySim.ts#L218">davinci-newton/engine/RigidBodySim.ts:218</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/engine/RigidBodySim.ts#L218">davinci-newton/engine/RigidBodySim.ts:218</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -313,7 +405,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/engine/RigidBodySim.ts#L411">davinci-newton/engine/RigidBodySim.ts:411</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/engine/RigidBodySim.ts#L411">davinci-newton/engine/RigidBodySim.ts:411</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -332,6 +424,30 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external">
+					<a name="getbroadcast" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagProtected">Protected</span> get<wbr>Broadcast</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Broadcast<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="abstractsubject.html">AbstractSubject</a>.<a href="abstractsubject.html#getbroadcast">getBroadcast</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/util/AbstractSubject.ts#L121">davinci-newton/util/AbstractSubject.ts:121</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns whether this Subject is broadcasting events.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>whether this Subject is broadcasting events</p>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="getname" class="tsd-anchor"></a>
 					<h3>get<wbr>Name</h3>
@@ -343,10 +459,52 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="abstractsubject.html">AbstractSubject</a>.<a href="abstractsubject.html#getname">getName</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/util/AbstractSubject.ts#L40">davinci-newton/util/AbstractSubject.ts:40</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/util/AbstractSubject.ts#L49">davinci-newton/util/AbstractSubject.ts:49</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<a name="getobservers" class="tsd-anchor"></a>
+					<h3>get<wbr>Observers</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Observers<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/observer.html" class="tsd-signature-type">Observer</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="abstractsubject.html">AbstractSubject</a>.<a href="abstractsubject.html#getobservers">getObservers</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/util/AbstractSubject.ts#L128">davinci-newton/util/AbstractSubject.ts:128</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/observer.html" class="tsd-signature-type">Observer</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<a name="getparameter" class="tsd-anchor"></a>
+					<h3>get<wbr>Parameter</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Parameter<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/parameter.html" class="tsd-signature-type">Parameter</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="abstractsubject.html">AbstractSubject</a>.<a href="abstractsubject.html#getparameter">getParameter</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/util/AbstractSubject.ts#L89">davinci-newton/util/AbstractSubject.ts:89</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>name: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/parameter.html" class="tsd-signature-type">Parameter</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -361,7 +519,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/simulation.html">Simulation</a>.<a href="../interfaces/simulation.html#getsimlist">getSimList</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/engine/RigidBodySim.ts#L355">davinci-newton/engine/RigidBodySim.ts:355</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/engine/RigidBodySim.ts#L355">davinci-newton/engine/RigidBodySim.ts:355</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="simlist.html" class="tsd-signature-type">SimList</a></h4>
@@ -379,7 +537,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/simulation.html">Simulation</a>.<a href="../interfaces/simulation.html#gettime">getTime</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/engine/RigidBodySim.ts#L304">davinci-newton/engine/RigidBodySim.ts:304</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/engine/RigidBodySim.ts#L304">davinci-newton/engine/RigidBodySim.ts:304</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -397,7 +555,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/simulation.html">Simulation</a>.<a href="../interfaces/simulation.html#getvarslist">getVarsList</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/engine/RigidBodySim.ts#L362">davinci-newton/engine/RigidBodySim.ts:362</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/engine/RigidBodySim.ts#L362">davinci-newton/engine/RigidBodySim.ts:362</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="varslist.html" class="tsd-signature-type">VarsList</a></h4>
@@ -415,7 +573,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/simulation.html">Simulation</a>.<a href="../interfaces/simulation.html#modifyobjects">modifyObjects</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/engine/RigidBodySim.ts#L341">davinci-newton/engine/RigidBodySim.ts:341</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/engine/RigidBodySim.ts#L341">davinci-newton/engine/RigidBodySim.ts:341</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -432,7 +590,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/engine/RigidBodySim.ts#L143">davinci-newton/engine/RigidBodySim.ts:143</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/engine/RigidBodySim.ts#L143">davinci-newton/engine/RigidBodySim.ts:143</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -449,19 +607,43 @@
 					<a name="removeforcelaw" class="tsd-anchor"></a>
 					<h3>remove<wbr>Force<wbr>Law</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">remove<wbr>Force<wbr>Law<span class="tsd-signature-symbol">(</span>forceLaw<span class="tsd-signature-symbol">: </span><a href="../interfaces/forcelaw.html" class="tsd-signature-type">ForceLaw</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">remove<wbr>Force<wbr>Law<span class="tsd-signature-symbol">(</span>forceLaw<span class="tsd-signature-symbol">: </span><a href="../interfaces/forcelaw.html" class="tsd-signature-type">ForceLaw</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/engine/RigidBodySim.ts#L168">davinci-newton/engine/RigidBodySim.ts:168</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/engine/RigidBodySim.ts#L168">davinci-newton/engine/RigidBodySim.ts:168</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>forceLaw: <a href="../interfaces/forcelaw.html" class="tsd-signature-type">ForceLaw</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<a name="removeobserver" class="tsd-anchor"></a>
+					<h3>remove<wbr>Observer</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">remove<wbr>Observer<span class="tsd-signature-symbol">(</span>observer<span class="tsd-signature-symbol">: </span><a href="../interfaces/observer.html" class="tsd-signature-type">Observer</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="abstractsubject.html">AbstractSubject</a>.<a href="abstractsubject.html#removeobserver">removeObserver</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/util/AbstractSubject.ts#L59">davinci-newton/util/AbstractSubject.ts:59</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>observer: <a href="../interfaces/observer.html" class="tsd-signature-type">Observer</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -479,7 +661,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/simulation.html">Simulation</a>.<a href="../interfaces/simulation.html#restorestate">restoreState</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/engine/RigidBodySim.ts#L399">davinci-newton/engine/RigidBodySim.ts:399</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/engine/RigidBodySim.ts#L399">davinci-newton/engine/RigidBodySim.ts:399</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -497,7 +679,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/simulation.html">Simulation</a>.<a href="../interfaces/simulation.html#savestate">saveState</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/b0ce07b/src/davinci-newton/engine/RigidBodySim.ts#L389">davinci-newton/engine/RigidBodySim.ts:389</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/0511b65/src/davinci-newton/engine/RigidBodySim.ts#L389">davinci-newton/engine/RigidBodySim.ts:389</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -534,7 +716,16 @@
 								<a href="rigidbodysim.html#addforcelaw" class="tsd-kind-icon">add<wbr>Force<wbr>Law</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="rigidbodysim.html#addobserver" class="tsd-kind-icon">add<wbr>Observer</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="rigidbodysim.html#addparameter" class="tsd-kind-icon">add<wbr>Parameter</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="rigidbodysim.html#broadcast" class="tsd-kind-icon">broadcast</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="rigidbodysim.html#broadcastparameter" class="tsd-kind-icon">broadcast<wbr>Parameter</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="rigidbodysim.html#evaluate" class="tsd-kind-icon">evaluate</a>
@@ -542,8 +733,17 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="rigidbodysim.html#findcollisions" class="tsd-kind-icon">find<wbr>Collisions</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external">
+								<a href="rigidbodysim.html#getbroadcast" class="tsd-kind-icon">get<wbr>Broadcast</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="rigidbodysim.html#getname" class="tsd-kind-icon">get<wbr>Name</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="rigidbodysim.html#getobservers" class="tsd-kind-icon">get<wbr>Observers</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="rigidbodysim.html#getparameter" class="tsd-kind-icon">get<wbr>Parameter</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="rigidbodysim.html#getsimlist" class="tsd-kind-icon">get<wbr>Sim<wbr>List</a>
@@ -562,6 +762,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="rigidbodysim.html#removeforcelaw" class="tsd-kind-icon">remove<wbr>Force<wbr>Law</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="rigidbodysim.html#removeobserver" class="tsd-kind-icon">remove<wbr>Observer</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="rigidbodysim.html#restorestate" class="tsd-kind-icon">restore<wbr>State</a>
