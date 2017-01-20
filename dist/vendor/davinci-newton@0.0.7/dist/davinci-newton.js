@@ -612,9 +612,9 @@ define('davinci-newton/config',["require", "exports"], function (require, export
     var Newton = (function () {
         function Newton() {
             this.GITHUB = 'https://github.com/geometryzen/davinci-newton';
-            this.LAST_MODIFIED = '2017-01-19';
+            this.LAST_MODIFIED = '2017-01-20';
             this.NAMESPACE = 'NEWTON';
-            this.VERSION = '0.0.6';
+            this.VERSION = '0.0.7';
         }
         Newton.prototype.log = function (message) {
             var optionalParams = [];
@@ -714,6 +714,139 @@ define('davinci-newton/util/find',["require", "exports", "./findIndex"], functio
     exports.default = find;
 });
 
+define('davinci-newton/util/toName',["require", "exports"], function (require, exports) {
+    "use strict";
+    function toName(text) {
+        return text.toUpperCase().replace(/[ -]/g, '_');
+    }
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = toName;
+});
+
+define('davinci-newton/util/validName',["require", "exports"], function (require, exports) {
+    "use strict";
+    function validName(text) {
+        if (!text.match(/^[A-Z_][A-Z_0-9]*$/)) {
+            throw new Error('not a valid name: ' + text);
+        }
+        return text;
+    }
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = validName;
+});
+
+define('davinci-newton/util/ParameterBoolean',["require", "exports", "./toName", "./validName"], function (require, exports, toName_1, validName_1) {
+    "use strict";
+    var ParameterBoolean = (function () {
+        function ParameterBoolean(subject, name, getter, setter, choices, values) {
+            this.subject_ = subject;
+            this.name_ = validName_1.default(toName_1.default(name));
+            this.getter_ = getter;
+            this.setter_ = setter;
+            this.isComputed_ = false;
+            this.choices_ = [];
+            this.values_ = [];
+        }
+        ParameterBoolean.prototype.getName = function () {
+            return this.name_;
+        };
+        ParameterBoolean.prototype.getSubject = function () {
+            return this.subject_;
+        };
+        ParameterBoolean.prototype.nameEquals = function (name) {
+            return this.name_ === toName_1.default(name);
+        };
+        ParameterBoolean.prototype.setComputed = function (value) {
+            this.isComputed_ = value;
+        };
+        return ParameterBoolean;
+    }());
+    exports.ParameterBoolean = ParameterBoolean;
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = ParameterBoolean;
+});
+
+define('davinci-newton/util/ParameterNumber',["require", "exports", "./toName", "./validName"], function (require, exports, toName_1, validName_1) {
+    "use strict";
+    var ParameterNumber = (function () {
+        function ParameterNumber(subject, name, getter, setter, choices, values) {
+            this.subject_ = subject;
+            this.name_ = validName_1.default(toName_1.default(name));
+            this.getter_ = getter;
+            this.setter_ = setter;
+            this.isComputed_ = false;
+            this.signifDigits_ = 3;
+            this.decimalPlaces_ = -1;
+            this.lowerLimit_ = 0;
+            this.upperLimit_ = Number.POSITIVE_INFINITY;
+            this.choices_ = [];
+            this.values_ = [];
+        }
+        ParameterNumber.prototype.getName = function () {
+            return this.name_;
+        };
+        ParameterNumber.prototype.getSubject = function () {
+            return this.subject_;
+        };
+        ParameterNumber.prototype.getValue = function () {
+            return this.getter_();
+        };
+        ParameterNumber.prototype.nameEquals = function (name) {
+            return this.name_ === toName_1.default(name);
+        };
+        ParameterNumber.prototype.setComputed = function (value) {
+            this.isComputed_ = value;
+        };
+        ParameterNumber.prototype.setLowerLimit = function (lowerLimit) {
+            if (lowerLimit > this.getValue() || lowerLimit > this.upperLimit_)
+                throw new Error('out of range');
+            this.lowerLimit_ = lowerLimit;
+            return this;
+        };
+        return ParameterNumber;
+    }());
+    exports.ParameterNumber = ParameterNumber;
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = ParameterNumber;
+});
+
+define('davinci-newton/util/ParameterString',["require", "exports", "./toName", "./validName"], function (require, exports, toName_1, validName_1) {
+    "use strict";
+    var ParameterString = (function () {
+        function ParameterString(subject, name, getter, setter, choices, values) {
+            this.subject_ = subject;
+            this.name_ = validName_1.default(toName_1.default(name));
+            this.getter_ = getter;
+            this.setter_ = setter;
+            this.isComputed_ = false;
+            this.suggestedLength_ = 20;
+            this.maxLength_ = Number.POSITIVE_INFINITY;
+            this.choices_ = [];
+            this.values_ = [];
+            this.inputFunction_ = null;
+        }
+        ParameterString.prototype.getName = function () {
+            return this.name_;
+        };
+        ParameterString.prototype.getSubject = function () {
+            return this.subject_;
+        };
+        ParameterString.prototype.getValue = function () {
+            return this.getter_();
+        };
+        ParameterString.prototype.nameEquals = function (name) {
+            return this.name_ === toName_1.default(name);
+        };
+        ParameterString.prototype.setComputed = function (value) {
+            this.isComputed_ = value;
+        };
+        return ParameterString;
+    }());
+    exports.ParameterString = ParameterString;
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = ParameterString;
+});
+
 define('davinci-newton/util/removeAt',["require", "exports"], function (require, exports) {
     "use strict";
     function removeAt(xs, index) {
@@ -737,28 +870,7 @@ define('davinci-newton/util/remove',["require", "exports", "./removeAt"], functi
     exports.default = remove;
 });
 
-define('davinci-newton/util/toName',["require", "exports"], function (require, exports) {
-    "use strict";
-    function toName(text) {
-        return text.toUpperCase().replace(/[ -]/g, '_');
-    }
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.default = toName;
-});
-
-define('davinci-newton/util/validName',["require", "exports"], function (require, exports) {
-    "use strict";
-    function validName(text) {
-        if (!text.match(/^[A-Z_][A-Z_0-9]*$/)) {
-            throw new Error('not a valid name: ' + text);
-        }
-        return text;
-    }
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.default = validName;
-});
-
-define('davinci-newton/util/AbstractSubject',["require", "exports", "./clone", "./contains", "./find", "./remove", "../util/toName", "../util/validName"], function (require, exports, clone_1, contains_1, find_1, remove_1, toName_1, validName_1) {
+define('davinci-newton/util/AbstractSubject',["require", "exports", "./clone", "./contains", "./find", "./ParameterBoolean", "./ParameterNumber", "./ParameterString", "./remove", "../util/toName", "../util/validName"], function (require, exports, clone_1, contains_1, find_1, ParameterBoolean_1, ParameterNumber_1, ParameterString_1, remove_1, toName_1, validName_1) {
     "use strict";
     var AbstractSubject = (function () {
         function AbstractSubject(name) {
@@ -801,6 +913,30 @@ define('davinci-newton/util/AbstractSubject',["require", "exports", "./clone", "
                 return p;
             }
             throw new Error('Parameter not found ' + name);
+        };
+        AbstractSubject.prototype.getParameterBoolean = function (name) {
+            var p = this.getParam(name);
+            if (p instanceof ParameterBoolean_1.default) {
+                return p;
+            }
+            throw new Error('ParameterBoolean not found ' + name);
+        };
+        AbstractSubject.prototype.getParameterNumber = function (name) {
+            var p = this.getParam(name);
+            if (p instanceof ParameterNumber_1.default) {
+                return p;
+            }
+            throw new Error('ParameterNumber not found ' + name);
+        };
+        AbstractSubject.prototype.getParameterString = function (name) {
+            var p = this.getParam(name);
+            if (p instanceof ParameterString_1.default) {
+                return p;
+            }
+            throw new Error('ParameterString not found ' + name);
+        };
+        AbstractSubject.prototype.getParameters = function () {
+            return clone_1.default(this.paramList_);
         };
         AbstractSubject.prototype.broadcast = function (event) {
             if (this.doBroadcast_) {
@@ -939,87 +1075,6 @@ define('davinci-newton/checks/mustBeObject',["require", "exports", "../checks/mu
     }
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = mustBeObject;
-});
-
-define('davinci-newton/util/ParameterNumber',["require", "exports", "./toName", "./validName"], function (require, exports, toName_1, validName_1) {
-    "use strict";
-    var ParameterNumber = (function () {
-        function ParameterNumber(subject, name, getter, setter, choices, values) {
-            this.subject_ = subject;
-            this.name_ = validName_1.default(toName_1.default(name));
-            this.getter_ = getter;
-            this.setter_ = setter;
-            this.isComputed_ = false;
-            this.signifDigits_ = 3;
-            this.decimalPlaces_ = -1;
-            this.lowerLimit_ = 0;
-            this.upperLimit_ = Number.POSITIVE_INFINITY;
-            this.choices_ = [];
-            this.values_ = [];
-        }
-        ParameterNumber.prototype.getName = function () {
-            return this.name_;
-        };
-        ParameterNumber.prototype.getSubject = function () {
-            return this.subject_;
-        };
-        ParameterNumber.prototype.getValue = function () {
-            return this.getter_();
-        };
-        ParameterNumber.prototype.nameEquals = function (name) {
-            return this.name_ === toName_1.default(name);
-        };
-        ParameterNumber.prototype.setComputed = function (value) {
-            this.isComputed_ = value;
-        };
-        ParameterNumber.prototype.setLowerLimit = function (lowerLimit) {
-            if (lowerLimit > this.getValue() || lowerLimit > this.upperLimit_)
-                throw new Error('out of range');
-            this.lowerLimit_ = lowerLimit;
-            return this;
-        };
-        return ParameterNumber;
-    }());
-    exports.ParameterNumber = ParameterNumber;
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.default = ParameterNumber;
-});
-
-define('davinci-newton/util/ParameterString',["require", "exports", "./toName", "./validName"], function (require, exports, toName_1, validName_1) {
-    "use strict";
-    var ParameterString = (function () {
-        function ParameterString(subject, name, getter, setter, choices, values) {
-            this.subject_ = subject;
-            this.name_ = validName_1.default(toName_1.default(name));
-            this.getter_ = getter;
-            this.setter_ = setter;
-            this.isComputed_ = false;
-            this.suggestedLength_ = 20;
-            this.maxLength_ = Number.POSITIVE_INFINITY;
-            this.choices_ = [];
-            this.values_ = [];
-            this.inputFunction_ = null;
-        }
-        ParameterString.prototype.getName = function () {
-            return this.name_;
-        };
-        ParameterString.prototype.getSubject = function () {
-            return this.subject_;
-        };
-        ParameterString.prototype.getValue = function () {
-            return this.getter_();
-        };
-        ParameterString.prototype.nameEquals = function (name) {
-            return this.name_ === toName_1.default(name);
-        };
-        ParameterString.prototype.setComputed = function (value) {
-            this.isComputed_ = value;
-        };
-        return ParameterString;
-    }());
-    exports.ParameterString = ParameterString;
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.default = ParameterString;
 });
 
 define('davinci-newton/util/veryDifferent',["require", "exports"], function (require, exports) {
@@ -2263,37 +2318,6 @@ define('davinci-newton/view/DisplayList',["require", "exports", "../util/Abstrac
     exports.default = DisplayList;
 });
 
-define('davinci-newton/util/ParameterBoolean',["require", "exports", "./toName", "./validName"], function (require, exports, toName_1, validName_1) {
-    "use strict";
-    var ParameterBoolean = (function () {
-        function ParameterBoolean(subject, name, getter, setter, choices, values) {
-            this.subject_ = subject;
-            this.name_ = validName_1.default(toName_1.default(name));
-            this.getter_ = getter;
-            this.setter_ = setter;
-            this.isComputed_ = false;
-            this.choices_ = [];
-            this.values_ = [];
-        }
-        ParameterBoolean.prototype.getName = function () {
-            return this.name_;
-        };
-        ParameterBoolean.prototype.getSubject = function () {
-            return this.subject_;
-        };
-        ParameterBoolean.prototype.nameEquals = function (name) {
-            return this.name_ === toName_1.default(name);
-        };
-        ParameterBoolean.prototype.setComputed = function (value) {
-            this.isComputed_ = value;
-        };
-        return ParameterBoolean;
-    }());
-    exports.ParameterBoolean = ParameterBoolean;
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.default = ParameterBoolean;
-});
-
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -2301,8 +2325,6 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 define('davinci-newton/view/SimView',["require", "exports", "../util/AbstractSubject", "../util/clone", "../util/contains", "./CoordMap", "./DisplayList", "./DoubleRect", "../util/GenericEvent", "./HorizAlign", "../util/ParameterBoolean", "../util/ParameterNumber", "../util/remove", "./ScreenRect", "./VerticalAlign", "../util/veryDifferent"], function (require, exports, AbstractSubject_1, clone_1, contains_1, CoordMap_1, DisplayList_1, DoubleRect_1, GenericEvent_1, HorizAlign_1, ParameterBoolean_1, ParameterNumber_1, remove_1, ScreenRect_1, VerticalAlign_1, veryDifferent_1) {
     "use strict";
-    var COORD_MAP_CHANGED = 'COORD_MAP_CHANGED';
-    var SCREEN_RECT_CHANGED = 'SCREEN_RECT_CHANGED';
     var SimView = (function (_super) {
         __extends(SimView, _super);
         function SimView(name, simRect) {
@@ -2397,7 +2419,7 @@ define('davinci-newton/view/SimView',["require", "exports", "../util/AbstractSub
             if (!CoordMap_1.default.isDuckType(map))
                 throw new Error('not a CoordMap: ' + map);
             this.coordMap_ = map;
-            this.broadcast(new GenericEvent_1.default(this, COORD_MAP_CHANGED));
+            this.broadcast(new GenericEvent_1.default(this, SimView.COORD_MAP_CHANGED));
         };
         SimView.prototype.setScreenRect = function (screenRect) {
             if (!ScreenRect_1.default.isDuckType(screenRect))
@@ -2408,7 +2430,7 @@ define('davinci-newton/view/SimView',["require", "exports", "../util/AbstractSub
             if (!this.screenRect_.equals(screenRect)) {
                 this.screenRect_ = screenRect;
                 this.realign();
-                this.broadcast(new GenericEvent_1.default(this, SCREEN_RECT_CHANGED));
+                this.broadcast(new GenericEvent_1.default(this, SimView.SCREEN_RECT_CHANGED));
             }
         };
         SimView.prototype.setSimRect = function (simRect) {
@@ -2530,6 +2552,8 @@ define('davinci-newton/view/SimView',["require", "exports", "../util/AbstractSub
     SimView.PARAM_NAME_VERTICAL_ALIGN = 'vertical-align';
     SimView.PARAM_NAME_ASPECT_RATIO = 'aspect-ratio';
     SimView.PARAM_NAME_SCALE_TOGETHER = 'scale X-Y together';
+    SimView.COORD_MAP_CHANGED = 'COORD_MAP_CHANGED';
+    SimView.SCREEN_RECT_CHANGED = 'SCREEN_RECT_CHANGED';
     SimView.SIM_RECT_CHANGED = 'SIM_RECT_CHANGED';
     exports.SimView = SimView;
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -2830,6 +2854,254 @@ define('davinci-newton/graph/AutoScale',["require", "exports", "../util/Abstract
     exports.default = AutoScale;
 });
 
+define('davinci-newton/graph/DisplayAxes',["require", "exports", "../view/DoubleRect", "../view/HorizAlign", "../checks/isDefined", "../view/VerticalAlign"], function (require, exports, DoubleRect_1, HorizAlign_1, isDefined_1, VerticalAlign_1) {
+    "use strict";
+    var DisplayAxes = (function () {
+        function DisplayAxes(simRect, font, color) {
+            if (simRect === void 0) { simRect = DoubleRect_1.default.EMPTY_RECT; }
+            if (font === void 0) { font = '14pt sans-serif'; }
+            if (color === void 0) { color = 'gray'; }
+            this.simRect_ = simRect;
+            this.numFont_ = font;
+            this.drawColor_ = color;
+            this.fontDescent = 8;
+            this.fontAscent = 12;
+            this.horizAxisAlignment_ = VerticalAlign_1.default.BOTTOM;
+            this.vertAxisAlignment_ = HorizAlign_1.default.LEFT;
+            this.numDecimal_ = 0;
+            this.needRedraw_ = true;
+            this.horizName_ = 'x';
+            this.verticalName_ = 'y';
+            this.zIndex = 100;
+        }
+        DisplayAxes.prototype.draw = function (context, map) {
+            context.save();
+            context.strokeStyle = this.drawColor_;
+            context.fillStyle = this.drawColor_;
+            context.font = this.numFont_;
+            context.textAlign = 'start';
+            context.textBaseline = 'alphabetic';
+            var x0, y0;
+            var r = this.simRect_;
+            var sim_x1 = r.getLeft();
+            var sim_x2 = r.getRight();
+            var sim_y1 = r.getBottom();
+            var sim_y2 = r.getTop();
+            switch (this.vertAxisAlignment_) {
+                case HorizAlign_1.default.RIGHT:
+                    x0 = map.simToScreenX(sim_x2 - 0.05 * (sim_x2 - sim_x1));
+                    break;
+                case HorizAlign_1.default.LEFT:
+                    x0 = map.simToScreenX(sim_x1 + 0.05 * (sim_x2 - sim_x1));
+                    break;
+                default:
+                    x0 = map.simToScreenX(r.getCenterX());
+            }
+            switch (this.horizAxisAlignment_) {
+                case VerticalAlign_1.default.TOP:
+                    y0 = map.simToScreenY(sim_y2) + (10 + this.fontDescent + this.fontAscent);
+                    break;
+                case VerticalAlign_1.default.BOTTOM:
+                    y0 = map.simToScreenY(sim_y1) - (10 + this.fontDescent + this.fontAscent);
+                    break;
+                default:
+                    y0 = map.simToScreenY(r.getCenterY());
+            }
+            context.beginPath();
+            context.moveTo(map.simToScreenX(sim_x1), y0);
+            context.lineTo(map.simToScreenX(sim_x2), y0);
+            context.stroke();
+            this.drawHorizTicks(y0, context, map, this.simRect_);
+            context.beginPath();
+            context.moveTo(x0, map.simToScreenY(sim_y1));
+            context.lineTo(x0, map.simToScreenY(sim_y2));
+            context.stroke();
+            this.drawVertTicks(x0, context, map, this.simRect_);
+            context.restore();
+            this.needRedraw_ = false;
+        };
+        DisplayAxes.prototype.drawHorizTicks = function (y0, context, map, r) {
+            var y1 = y0 - 4;
+            var y2 = y1 + 8;
+            var sim_x1 = r.getLeft();
+            var sim_x2 = r.getRight();
+            var graphDelta = this.getNiceIncrement(sim_x2 - sim_x1);
+            var x_sim = DisplayAxes.getNiceStart(sim_x1, graphDelta);
+            while (x_sim < sim_x2) {
+                var x_screen = map.simToScreenX(x_sim);
+                context.beginPath();
+                context.moveTo(x_screen, y1);
+                context.lineTo(x_screen, y2);
+                context.stroke();
+                var next_x_sim = x_sim + graphDelta;
+                if (next_x_sim > x_sim) {
+                    var s = x_sim.toFixed(this.numDecimal_);
+                    var textWidth = context.measureText(s).width;
+                    context.fillText(s, x_screen - textWidth / 2, y2 + this.fontAscent);
+                }
+                else {
+                    context.fillText('scale is too small', x_screen, y2 + this.fontAscent);
+                    break;
+                }
+                x_sim = next_x_sim;
+            }
+            var w = context.measureText(this.horizName_).width;
+            context.fillText(this.horizName_, map.simToScreenX(sim_x2) - w - 5, y0 - 8);
+        };
+        DisplayAxes.prototype.drawVertTicks = function (x0, context, map, r) {
+            var x1 = x0 - 4;
+            var x2 = x1 + 8;
+            var sim_y1 = r.getBottom();
+            var sim_y2 = r.getTop();
+            var graphDelta = this.getNiceIncrement(sim_y2 - sim_y1);
+            var y_sim = DisplayAxes.getNiceStart(sim_y1, graphDelta);
+            while (y_sim < sim_y2) {
+                var y_screen = map.simToScreenY(y_sim);
+                context.beginPath();
+                context.moveTo(x1, y_screen);
+                context.lineTo(x2, y_screen);
+                context.stroke();
+                var next_y_sim = y_sim + graphDelta;
+                if (next_y_sim > y_sim) {
+                    var s = y_sim.toFixed(this.numDecimal_);
+                    var textWidth = context.measureText(s).width;
+                    if (this.vertAxisAlignment_ === HorizAlign_1.default.RIGHT) {
+                        context.fillText(s, x2 - (textWidth + 10), y_screen + (this.fontAscent / 2));
+                    }
+                    else {
+                        context.fillText(s, x2 + 5, y_screen + (this.fontAscent / 2));
+                    }
+                }
+                else {
+                    context.fillText('scale is too small', x2, y_screen);
+                    break;
+                }
+                y_sim = next_y_sim;
+            }
+            var w = context.measureText(this.verticalName_).width;
+            if (this.vertAxisAlignment_ === HorizAlign_1.default.RIGHT) {
+                context.fillText(this.verticalName_, x0 - (w + 6), map.simToScreenY(sim_y2) + 13);
+            }
+            else {
+                context.fillText(this.verticalName_, x0 + 6, map.simToScreenY(sim_y2) + 13);
+            }
+        };
+        DisplayAxes.prototype.getColor = function () {
+            return this.drawColor_;
+        };
+        DisplayAxes.prototype.getFont = function () {
+            return this.numFont_;
+        };
+        DisplayAxes.prototype.getHorizName = function () {
+            return this.horizName_;
+        };
+        DisplayAxes.prototype.getNiceIncrement = function (range) {
+            var power = Math.pow(10, Math.floor(Math.log(range) / Math.LN10));
+            var logTot = range / power;
+            var incr;
+            if (logTot >= 8)
+                incr = 2;
+            else if (logTot >= 5)
+                incr = 1;
+            else if (logTot >= 3)
+                incr = 0.5;
+            else if (logTot >= 2)
+                incr = 0.4;
+            else
+                incr = 0.2;
+            incr *= power;
+            var dlog = Math.log(incr) / Math.LN10;
+            this.numDecimal_ = (dlog < 0) ? Math.ceil(-dlog) : 0;
+            return incr;
+        };
+        DisplayAxes.getNiceStart = function (start, incr) {
+            return Math.ceil(start / incr) * incr;
+        };
+        DisplayAxes.prototype.getSimRect = function () {
+            return this.simRect_;
+        };
+        DisplayAxes.prototype.getVerticalName = function () {
+            return this.verticalName_;
+        };
+        DisplayAxes.prototype.getXAxisAlignment = function () {
+            return this.horizAxisAlignment_;
+        };
+        DisplayAxes.prototype.getYAxisAlignment = function () {
+            return this.vertAxisAlignment_;
+        };
+        DisplayAxes.prototype.getZIndex = function () {
+            return this.zIndex;
+        };
+        DisplayAxes.prototype.isDragable = function () {
+            return false;
+        };
+        DisplayAxes.prototype.needsRedraw = function () {
+            return this.needRedraw_;
+        };
+        DisplayAxes.prototype.setColor = function (color) {
+            this.drawColor_ = color;
+            this.needRedraw_ = true;
+        };
+        DisplayAxes.prototype.setDragable = function (dragable) {
+        };
+        DisplayAxes.prototype.setFont = function (font) {
+            this.numFont_ = font;
+            this.needRedraw_ = true;
+        };
+        DisplayAxes.prototype.setHorizName = function (name) {
+            this.horizName_ = name;
+            this.needRedraw_ = true;
+        };
+        DisplayAxes.prototype.setSimRect = function (simRect) {
+            this.simRect_ = simRect;
+            this.needRedraw_ = true;
+        };
+        DisplayAxes.prototype.setVerticalName = function (name) {
+            this.verticalName_ = name;
+            this.needRedraw_ = true;
+        };
+        DisplayAxes.prototype.setXAxisAlignment = function (alignment) {
+            this.horizAxisAlignment_ = alignment;
+            this.needRedraw_ = true;
+            return this;
+        };
+        DisplayAxes.prototype.setYAxisAlignment = function (alignment) {
+            this.vertAxisAlignment_ = alignment;
+            this.needRedraw_ = true;
+            return this;
+        };
+        DisplayAxes.prototype.setZIndex = function (zIndex) {
+            if (isDefined_1.default(zIndex)) {
+                this.zIndex = zIndex;
+            }
+        };
+        return DisplayAxes;
+    }());
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = DisplayAxes;
+});
+
+define('davinci-newton/util/GenericObserver',["require", "exports"], function (require, exports) {
+    "use strict";
+    var GenericObserver = (function () {
+        function GenericObserver(subject, observeFn) {
+            this.subject_ = subject;
+            subject.addObserver(this);
+            this.observeFn_ = observeFn;
+        }
+        GenericObserver.prototype.disconnect = function () {
+            this.subject_.removeObserver(this);
+        };
+        GenericObserver.prototype.observe = function (event) {
+            this.observeFn_(event);
+        };
+        return GenericObserver;
+    }());
+    exports.GenericObserver = GenericObserver;
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = GenericObserver;
+});
+
 define('davinci-newton/util/isEmpty',["require", "exports"], function (require, exports) {
     "use strict";
     function isEmpty(xs) {
@@ -3050,7 +3322,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-define('davinci-newton/graph/Graph',["require", "exports", "../util/AbstractSubject", "./AutoScale", "./DisplayGraph", "../view/DoubleRect", "./GraphLine", "../view/HorizAlign", "../view/LabCanvas", "../view/SimView", "../view/VerticalAlign"], function (require, exports, AbstractSubject_1, AutoScale_1, DisplayGraph_1, DoubleRect_1, GraphLine_1, HorizAlign_1, LabCanvas_1, SimView_1, VerticalAlign_1) {
+define('davinci-newton/graph/Graph',["require", "exports", "../util/AbstractSubject", "./AutoScale", "./DisplayAxes", "./DisplayGraph", "../view/DoubleRect", "../util/GenericObserver", "./GraphLine", "../view/HorizAlign", "../view/LabCanvas", "../view/SimView", "../view/VerticalAlign"], function (require, exports, AbstractSubject_1, AutoScale_1, DisplayAxes_1, DisplayGraph_1, DoubleRect_1, GenericObserver_1, GraphLine_1, HorizAlign_1, LabCanvas_1, SimView_1, VerticalAlign_1) {
     "use strict";
     var Graph = (function (_super) {
         __extends(Graph, _super);
@@ -3067,11 +3339,20 @@ define('davinci-newton/graph/Graph',["require", "exports", "../util/AbstractSubj
             _this.displayGraph.setScreenRect(_this.view.getScreenRect());
             _this.view.getDisplayList().prepend(_this.displayGraph);
             _this.timeIdx_ = varsList.timeIndex();
+            var axes = new DisplayAxes_1.default(_this.view.getSimRect());
+            new GenericObserver_1.default(_this.view, function (event) {
+                if (event.nameEquals(SimView_1.default.COORD_MAP_CHANGED)) {
+                    var simRect = _this.view.getCoordMap().screenToSimRect(_this.view.getScreenRect());
+                    axes.setSimRect(simRect);
+                }
+            });
+            _this.view.getDisplayList().add(axes);
             return _this;
         }
         Graph.prototype.addTrace = function (name) {
             var trace = new GraphLine_1.default(name, this.varsList);
             this.view.addMemo(trace);
+            trace.setXVariable(this.timeIdx_);
             trace.setColor('black');
             this.displayGraph.addGraphLine(trace);
             this.displayGraph.setUseBuffer(trace.getXVariable() !== this.timeIdx_);
