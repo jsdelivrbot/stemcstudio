@@ -614,7 +614,7 @@ define('davinci-newton/config',["require", "exports"], function (require, export
             this.GITHUB = 'https://github.com/geometryzen/davinci-newton';
             this.LAST_MODIFIED = '2017-01-20';
             this.NAMESPACE = 'NEWTON';
-            this.VERSION = '0.0.7';
+            this.VERSION = '0.0.8';
         }
         Newton.prototype.log = function (message) {
             var optionalParams = [];
@@ -3847,6 +3847,12 @@ define('davinci-newton/math/Vector3',["require", "exports"], function (require, 
         Vector3.prototype.neg = function () {
             return this.mulByScalar(-1);
         };
+        Vector3.prototype.quadrance = function () {
+            var x = this.x;
+            var y = this.y;
+            var z = this.z;
+            return x * x + y * y + z * z;
+        };
         Vector3.dual = function (B) {
             return new Vector3().dual(B);
         };
@@ -3942,14 +3948,13 @@ define('davinci-newton/engine/RigidBody',["require", "exports", "../objects/Abst
             enumerable: true,
             configurable: true
         });
-        RigidBody.prototype.momentAboutCM = function () {
-            return 1;
-        };
         RigidBody.prototype.rotationalEnergy = function () {
             return 0;
         };
         RigidBody.prototype.translationalEnergy = function () {
-            return 0;
+            var P = this.linearMomentum_;
+            var m = this.mass_;
+            return 0.5 * P.quadrance() / m;
         };
         RigidBody.prototype.bodyToWorld = function (bodyPoint) {
             var r = Vector_1.default.fromVector(bodyPoint).subtract(this.cm_body_);
@@ -3972,19 +3977,31 @@ define('davinci-newton/engine/RigidBody',["require", "exports", "../objects/Abst
 define('davinci-newton/model/EnergyInfo',["require", "exports"], function (require, exports) {
     "use strict";
     var EnergyInfo = (function () {
-        function EnergyInfo(potential, translational, rotational) {
+        function EnergyInfo(potential_, translational_, rotational_) {
+            this.potential_ = potential_;
+            this.translational_ = translational_;
+            this.rotational_ = rotational_;
+            if (isNaN(potential_)) {
+                throw new Error("potential energy " + potential_ + " must be a number.");
+            }
+            if (isNaN(translational_)) {
+                throw new Error("translational energy " + translational_ + " must be a number.");
+            }
+            if (isNaN(rotational_)) {
+                throw new Error("rotational energy " + rotational_ + " must be a number.");
+            }
         }
         EnergyInfo.prototype.getPotential = function () {
-            return 0;
+            return this.potential_;
         };
         EnergyInfo.prototype.getTranslational = function () {
-            return 0;
+            return this.translational_;
         };
         EnergyInfo.prototype.getRotational = function () {
-            return 0;
+            return this.rotational_;
         };
         EnergyInfo.prototype.getTotalEnergy = function () {
-            return 0;
+            return this.potential_ + this.translational_ + this.rotational_;
         };
         return EnergyInfo;
     }());
@@ -4469,6 +4486,7 @@ define('davinci-newton/engine/RigidBodySim',["require", "exports", "../util/Abst
             _this.bodies_ = [];
             _this.forceLaws_ = [];
             _this.showForces_ = false;
+            _this.potentialOffset_ = 0;
             _this.varsList_ = new VarsList_1.default(var_names, i18n_names, _this.getName() + '_VARS');
             return _this;
         }
@@ -5013,8 +5031,15 @@ define('davinci-newton/objects/Spring',["require", "exports", "./AbstractSimObje
         };
         Spring.prototype.disconnect = function () {
         };
+        Spring.prototype.getLength = function () {
+            return this.getEndPoint().distanceTo(this.getStartPoint());
+        };
         Spring.prototype.getPotentialEnergy = function () {
-            return 0;
+            var stretch = this.getStretch();
+            return 0.5 * this.stiffness_ * stretch * stretch;
+        };
+        Spring.prototype.getStretch = function () {
+            return this.getLength() - this.restLength_;
         };
         Spring.prototype.getVector = function () {
             return this.getEndPoint().subtract(this.getStartPoint());
