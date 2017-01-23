@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>RigidBody | NEWTON 0.0.8</title>
+	<title>RigidBody | NEWTON 0.0.9</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">NEWTON 0.0.8</a>
+					<a href="../index.html" class="title">NEWTON 0.0.9</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -99,10 +99,8 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="rigidbody.html#ibody" class="tsd-kind-icon">Ibody</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="rigidbody.html#ibodyinv" class="tsd-kind-icon">Ibodyinv</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="rigidbody.html#iinv" class="tsd-kind-icon">Iinv</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="rigidbody.html#v" class="tsd-kind-icon">V</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-is-external"><a href="rigidbody.html#cm_body_" class="tsd-kind-icon">cm_<wbr>body_</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="rigidbody.html#_" class="tsd-kind-icon">Ω</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="rigidbody.html#_-1" class="tsd-kind-icon">ω</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external">
@@ -113,6 +111,7 @@
 								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="rigidbody.html#p" class="tsd-kind-icon">P</a></li>
 								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="rigidbody.html#r" class="tsd-kind-icon">R</a></li>
 								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="rigidbody.html#x" class="tsd-kind-icon">X</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="rigidbody.html#varsindex" class="tsd-kind-icon">vars<wbr>Index</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external">
@@ -120,14 +119,9 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="rigidbody.html#bodytoworld" class="tsd-kind-icon">body<wbr>ToWorld</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="rigidbody.html#getexpiretime" class="tsd-kind-icon">get<wbr>Expire<wbr>Time</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="rigidbody.html#getname" class="tsd-kind-icon">get<wbr>Name</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="rigidbody.html#getvarsindex" class="tsd-kind-icon">get<wbr>Vars<wbr>Index</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="rigidbody.html#rotatebodytoworld" class="tsd-kind-icon">rotate<wbr>Body<wbr>ToWorld</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="rigidbody.html#rotationalenergy" class="tsd-kind-icon">rotational<wbr>Energy</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="rigidbody.html#setexpiretime" class="tsd-kind-icon">set<wbr>Expire<wbr>Time</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="rigidbody.html#setvarsindex" class="tsd-kind-icon">set<wbr>Vars<wbr>Index</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="rigidbody.html#translationalenergy" class="tsd-kind-icon">translational<wbr>Energy</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="rigidbody.html#worldvelocityofbodypoint" class="tsd-kind-icon">world<wbr>Velocity<wbr>OfBody<wbr>Point</a></li>
 							</ul>
 						</section>
 					</div>
@@ -139,22 +133,16 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Rigid<wbr>Body<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="rigidbody.html" class="tsd-signature-type">RigidBody</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Rigid<wbr>Body<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="rigidbody.html" class="tsd-signature-type">RigidBody</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overrides <a href="abstractsimobject.html">AbstractSimObject</a>.<a href="abstractsimobject.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/engine/RigidBody.ts#L67">davinci-newton/engine/RigidBody.ts:67</a></li>
+									<li>Defined in davinci-newton/engine3D/RigidBody.ts:60</li>
 								</ul>
 							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>name: <span class="tsd-signature-type">string</span></h5>
-								</li>
-							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="rigidbody.html" class="tsd-signature-type">RigidBody</a></h4>
 						</li>
 					</ul>
@@ -168,7 +156,7 @@
 					<div class="tsd-signature tsd-kind-icon">Ibody<span class="tsd-signature-symbol">:</span> <a href="matrix3.html" class="tsd-signature-type">Matrix3</a><span class="tsd-signature-symbol"> =&nbsp;Matrix3.one()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/engine/RigidBody.ts#L38">davinci-newton/engine/RigidBody.ts:38</a></li>
+							<li>Defined in davinci-newton/engine3D/RigidBody.ts:36</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -183,7 +171,7 @@
 					<div class="tsd-signature tsd-kind-icon">Ibodyinv<span class="tsd-signature-symbol">:</span> <a href="matrix3.html" class="tsd-signature-type">Matrix3</a><span class="tsd-signature-symbol"> =&nbsp;Matrix3.one()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/engine/RigidBody.ts#L39">davinci-newton/engine/RigidBody.ts:39</a></li>
+							<li>Defined in davinci-newton/engine3D/RigidBody.ts:37</li>
 						</ul>
 					</aside>
 				</section>
@@ -193,22 +181,7 @@
 					<div class="tsd-signature tsd-kind-icon">Iinv<span class="tsd-signature-symbol">:</span> <a href="matrix3.html" class="tsd-signature-type">Matrix3</a><span class="tsd-signature-symbol"> =&nbsp;Matrix3.one()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/engine/RigidBody.ts#L57">davinci-newton/engine/RigidBody.ts:57</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Derived quantity (auxiliary variable).</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
-					<a name="v" class="tsd-anchor"></a>
-					<h3>V</h3>
-					<div class="tsd-signature tsd-kind-icon">V<span class="tsd-signature-symbol">:</span> <a href="vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> =&nbsp;new Vector3()</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/engine/RigidBody.ts#L53">davinci-newton/engine/RigidBody.ts:53</a></li>
+							<li>Defined in davinci-newton/engine3D/RigidBody.ts:51</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -223,7 +196,7 @@
 					<div class="tsd-signature tsd-kind-icon">cm_<wbr>body_<span class="tsd-signature-symbol">:</span> <a href="vector.html" class="tsd-signature-type">Vector</a><span class="tsd-signature-symbol"> =&nbsp;Vector.ORIGIN</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/engine/RigidBody.ts#L67">davinci-newton/engine/RigidBody.ts:67</a></li>
+							<li>Defined in davinci-newton/engine3D/RigidBody.ts:60</li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -238,19 +211,14 @@
 					<div class="tsd-signature tsd-kind-icon">Ω<span class="tsd-signature-symbol">:</span> <a href="bivector3.html" class="tsd-signature-type">Bivector3</a><span class="tsd-signature-symbol"> =&nbsp;new Bivector3()</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/engine/RigidBody.ts#L62">davinci-newton/engine/RigidBody.ts:62</a></li>
+							<li>Defined in davinci-newton/engine3D/RigidBody.ts:55</li>
 						</ul>
 					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
-					<a name="_-1" class="tsd-anchor"></a>
-					<h3>ω</h3>
-					<div class="tsd-signature tsd-kind-icon">ω<span class="tsd-signature-symbol">:</span> <a href="vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol"> =&nbsp;new Vector3()</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/engine/RigidBody.ts#L61">davinci-newton/engine/RigidBody.ts:61</a></li>
-						</ul>
-					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Angular velocity (bivector).</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
@@ -259,14 +227,14 @@
 					<a name="l" class="tsd-anchor"></a>
 					<h3>L</h3>
 					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> L<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/bivectore3.html" class="tsd-signature-type">BivectorE3</a></li>
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> L<span class="tsd-signature-symbol">(</span>angularMomentum<span class="tsd-signature-symbol">: </span><a href="../interfaces/bivectore3.html" class="tsd-signature-type">BivectorE3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> L<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="bivector3.html" class="tsd-signature-type">Bivector3</a></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> L<span class="tsd-signature-symbol">(</span>angularMomentum<span class="tsd-signature-symbol">: </span><a href="bivector3.html" class="tsd-signature-type">Bivector3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/engine/RigidBody.ts#L109">davinci-newton/engine/RigidBody.ts:109</a></li>
+									<li>Defined in davinci-newton/engine3D/RigidBody.ts:112</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -274,12 +242,12 @@
 									<p>Angular momentum (bivector).</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/bivectore3.html" class="tsd-signature-type">BivectorE3</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="bivector3.html" class="tsd-signature-type">Bivector3</a></h4>
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/engine/RigidBody.ts#L112">davinci-newton/engine/RigidBody.ts:112</a></li>
+									<li>Defined in davinci-newton/engine3D/RigidBody.ts:115</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -290,7 +258,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>angularMomentum: <a href="../interfaces/bivectore3.html" class="tsd-signature-type">BivectorE3</a></h5>
+									<h5>angularMomentum: <a href="bivector3.html" class="tsd-signature-type">Bivector3</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -308,7 +276,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/engine/RigidBody.ts#L140">davinci-newton/engine/RigidBody.ts:140</a></li>
+									<li>Defined in davinci-newton/engine3D/RigidBody.ts:72</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -321,7 +289,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/engine/RigidBody.ts#L143">davinci-newton/engine/RigidBody.ts:143</a></li>
+									<li>Defined in davinci-newton/engine3D/RigidBody.ts:75</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -343,14 +311,14 @@
 					<a name="p" class="tsd-anchor"></a>
 					<h3>P</h3>
 					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> P<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/vectore3.html" class="tsd-signature-type">VectorE3</a></li>
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> P<span class="tsd-signature-symbol">(</span>momentum<span class="tsd-signature-symbol">: </span><a href="../interfaces/vectore3.html" class="tsd-signature-type">VectorE3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> P<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="vector3.html" class="tsd-signature-type">Vector3</a></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> P<span class="tsd-signature-symbol">(</span>momentum<span class="tsd-signature-symbol">: </span><a href="vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/engine/RigidBody.ts#L99">davinci-newton/engine/RigidBody.ts:99</a></li>
+									<li>Defined in davinci-newton/engine3D/RigidBody.ts:102</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -358,12 +326,12 @@
 									<p>Linear momentum (vector).</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/vectore3.html" class="tsd-signature-type">VectorE3</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="vector3.html" class="tsd-signature-type">Vector3</a></h4>
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/engine/RigidBody.ts#L102">davinci-newton/engine/RigidBody.ts:102</a></li>
+									<li>Defined in davinci-newton/engine3D/RigidBody.ts:105</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -374,7 +342,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>momentum: <a href="../interfaces/vectore3.html" class="tsd-signature-type">VectorE3</a></h5>
+									<h5>momentum: <a href="vector3.html" class="tsd-signature-type">Vector3</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -385,14 +353,14 @@
 					<a name="r" class="tsd-anchor"></a>
 					<h3>R</h3>
 					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> R<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/spinore3.html" class="tsd-signature-type">SpinorE3</a></li>
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> R<span class="tsd-signature-symbol">(</span>attitude<span class="tsd-signature-symbol">: </span><a href="../interfaces/spinore3.html" class="tsd-signature-type">SpinorE3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> R<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="spinor3.html" class="tsd-signature-type">Spinor3</a></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> R<span class="tsd-signature-symbol">(</span>attitude<span class="tsd-signature-symbol">: </span><a href="spinor3.html" class="tsd-signature-type">Spinor3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/engine/RigidBody.ts#L89">davinci-newton/engine/RigidBody.ts:89</a></li>
+									<li>Defined in davinci-newton/engine3D/RigidBody.ts:92</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -400,12 +368,12 @@
 									<p>Attitude (spinor).</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/spinore3.html" class="tsd-signature-type">SpinorE3</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="spinor3.html" class="tsd-signature-type">Spinor3</a></h4>
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/engine/RigidBody.ts#L92">davinci-newton/engine/RigidBody.ts:92</a></li>
+									<li>Defined in davinci-newton/engine3D/RigidBody.ts:95</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -416,7 +384,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>attitude: <a href="../interfaces/spinore3.html" class="tsd-signature-type">SpinorE3</a></h5>
+									<h5>attitude: <a href="spinor3.html" class="tsd-signature-type">Spinor3</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -427,14 +395,14 @@
 					<a name="x" class="tsd-anchor"></a>
 					<h3>X</h3>
 					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> X<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/vectore3.html" class="tsd-signature-type">VectorE3</a></li>
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> X<span class="tsd-signature-symbol">(</span>position<span class="tsd-signature-symbol">: </span><a href="../interfaces/vectore3.html" class="tsd-signature-type">VectorE3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> X<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="vector3.html" class="tsd-signature-type">Vector3</a></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> X<span class="tsd-signature-symbol">(</span>position<span class="tsd-signature-symbol">: </span><a href="vector3.html" class="tsd-signature-type">Vector3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/engine/RigidBody.ts#L79">davinci-newton/engine/RigidBody.ts:79</a></li>
+									<li>Defined in davinci-newton/engine3D/RigidBody.ts:82</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -442,12 +410,12 @@
 									<p>Position (vector).</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/vectore3.html" class="tsd-signature-type">VectorE3</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="vector3.html" class="tsd-signature-type">Vector3</a></h4>
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/engine/RigidBody.ts#L82">davinci-newton/engine/RigidBody.ts:82</a></li>
+									<li>Defined in davinci-newton/engine3D/RigidBody.ts:85</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -458,7 +426,39 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>position: <a href="../interfaces/vectore3.html" class="tsd-signature-type">VectorE3</a></h5>
+									<h5>position: <a href="vector3.html" class="tsd-signature-type">Vector3</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
+					<a name="varsindex" class="tsd-anchor"></a>
+					<h3>vars<wbr>Index</h3>
+					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> varsIndex<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> varsIndex<span class="tsd-signature-symbol">(</span>index<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in davinci-newton/engine3D/RigidBody.ts:129</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in davinci-newton/engine3D/RigidBody.ts:132</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>index: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -472,13 +472,13 @@
 					<a name="bodytoworld" class="tsd-anchor"></a>
 					<h3>body<wbr>ToWorld</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">body<wbr>ToWorld<span class="tsd-signature-symbol">(</span>bodyPoint<span class="tsd-signature-symbol">: </span><a href="../interfaces/vectore3.html" class="tsd-signature-type">VectorE3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="vector.html" class="tsd-signature-type">Vector</a></li>
+						<li class="tsd-signature tsd-kind-icon">body<wbr>ToWorld<span class="tsd-signature-symbol">(</span>bodyPoint<span class="tsd-signature-symbol">: </span><a href="../interfaces/vectore3.html" class="tsd-signature-type">VectorE3</a>, out<span class="tsd-signature-symbol">: </span><a href="../interfaces/vectore3.html" class="tsd-signature-type">VectorE3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/engine/RigidBody.ts#L166">davinci-newton/engine/RigidBody.ts:166</a></li>
+									<li>Defined in davinci-newton/engine3D/RigidBody.ts:157</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -486,8 +486,11 @@
 								<li>
 									<h5>bodyPoint: <a href="../interfaces/vectore3.html" class="tsd-signature-type">VectorE3</a></h5>
 								</li>
+								<li>
+									<h5>out: <a href="../interfaces/vectore3.html" class="tsd-signature-type">VectorE3</a></h5>
+								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="vector.html" class="tsd-signature-type">Vector</a></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -503,68 +506,10 @@
 								<p>Implementation of <a href="../interfaces/simobject.html">SimObject</a>.<a href="../interfaces/simobject.html#getexpiretime">getExpireTime</a></p>
 								<p>Overrides <a href="abstractsimobject.html">AbstractSimObject</a>.<a href="abstractsimobject.html#getexpiretime">getExpireTime</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/engine/RigidBody.ts#L119">davinci-newton/engine/RigidBody.ts:119</a></li>
+									<li>Defined in davinci-newton/engine3D/RigidBody.ts:122</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-					<a name="getname" class="tsd-anchor"></a>
-					<h3>get<wbr>Name</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Name<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="abstractsimobject.html">AbstractSimObject</a>.<a href="abstractsimobject.html#getname">getName</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/objects/AbstractSimObject.ts#L61">davinci-newton/objects/AbstractSimObject.ts:61</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="getvarsindex" class="tsd-anchor"></a>
-					<h3>get<wbr>Vars<wbr>Index</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Vars<wbr>Index<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/engine/RigidBody.ts#L126">davinci-newton/engine/RigidBody.ts:126</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="rotatebodytoworld" class="tsd-anchor"></a>
-					<h3>rotate<wbr>Body<wbr>ToWorld</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">rotate<wbr>Body<wbr>ToWorld<span class="tsd-signature-symbol">(</span>bodyPoint<span class="tsd-signature-symbol">: </span><a href="../interfaces/vectore3.html" class="tsd-signature-type">VectorE3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="vector.html" class="tsd-signature-type">Vector</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/engine/RigidBody.ts#L198">davinci-newton/engine/RigidBody.ts:198</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>bodyPoint: <a href="../interfaces/vectore3.html" class="tsd-signature-type">VectorE3</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="vector.html" class="tsd-signature-type">Vector</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -578,9 +523,14 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/engine/RigidBody.ts#L150">davinci-newton/engine/RigidBody.ts:150</a></li>
+									<li>Defined in davinci-newton/engine3D/RigidBody.ts:139</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>(1/2) Ω <em> L(Ω) = (1/2) ω </em> J(ω)</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
 						</li>
 					</ul>
@@ -596,36 +546,13 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="abstractsimobject.html">AbstractSimObject</a>.<a href="abstractsimobject.html#setexpiretime">setExpireTime</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/objects/AbstractSimObject.ts#L54">davinci-newton/objects/AbstractSimObject.ts:54</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/9f9488d/src/davinci-newton/objects/AbstractSimObject.ts#L40">davinci-newton/objects/AbstractSimObject.ts:40</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>expireTime: <span class="tsd-signature-type">number</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="setvarsindex" class="tsd-anchor"></a>
-					<h3>set<wbr>Vars<wbr>Index</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Vars<wbr>Index<span class="tsd-signature-symbol">(</span>index<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/engine/RigidBody.ts#L133">davinci-newton/engine/RigidBody.ts:133</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>index: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -642,43 +569,15 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/engine/RigidBody.ts#L157">davinci-newton/engine/RigidBody.ts:157</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="worldvelocityofbodypoint" class="tsd-anchor"></a>
-					<h3>world<wbr>Velocity<wbr>OfBody<wbr>Point</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">world<wbr>Velocity<wbr>OfBody<wbr>Point<span class="tsd-signature-symbol">(</span>bodyPoint<span class="tsd-signature-symbol">: </span><a href="../interfaces/vectore3.html" class="tsd-signature-type">VectorE3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="vector.html" class="tsd-signature-type">Vector</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/engine/RigidBody.ts#L188">davinci-newton/engine/RigidBody.ts:188</a></li>
+									<li>Defined in davinci-newton/engine3D/RigidBody.ts:148</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Returns dx/dt where</p>
+									<p>(1/2) P^2 / M</p>
 								</div>
-								<p>dx/dt = ω x [R bodyPoint] + dX/dt (t argument suppressed)</p>
-								<p>The implementation uses the angular velocity bivector, Ω = I * ω, where I is the
-								unit pseudoscalar.</p>
-								<p>Using the identity, ω x r = r &lt;&lt; Ω, enables us to calculate directly.</p>
-								<p>This method is most often used to calculate damping.</p>
 							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>bodyPoint: <a href="../interfaces/vectore3.html" class="tsd-signature-type">VectorE3</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="vector.html" class="tsd-signature-type">Vector</a></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -711,17 +610,11 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
 								<a href="rigidbody.html#iinv" class="tsd-kind-icon">Iinv</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
-								<a href="rigidbody.html#v" class="tsd-kind-icon">V</a>
-							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-protected tsd-is-external">
 								<a href="rigidbody.html#cm_body_" class="tsd-kind-icon">cm_<wbr>body_</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
 								<a href="rigidbody.html#_" class="tsd-kind-icon">Ω</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
-								<a href="rigidbody.html#_-1" class="tsd-kind-icon">ω</a>
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
 								<a href="rigidbody.html#l" class="tsd-kind-icon">L</a>
@@ -738,20 +631,14 @@
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
 								<a href="rigidbody.html#x" class="tsd-kind-icon">X</a>
 							</li>
+							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
+								<a href="rigidbody.html#varsindex" class="tsd-kind-icon">vars<wbr>Index</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="rigidbody.html#bodytoworld" class="tsd-kind-icon">body<wbr>ToWorld</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
 								<a href="rigidbody.html#getexpiretime" class="tsd-kind-icon">get<wbr>Expire<wbr>Time</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="rigidbody.html#getname" class="tsd-kind-icon">get<wbr>Name</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="rigidbody.html#getvarsindex" class="tsd-kind-icon">get<wbr>Vars<wbr>Index</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="rigidbody.html#rotatebodytoworld" class="tsd-kind-icon">rotate<wbr>Body<wbr>ToWorld</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="rigidbody.html#rotationalenergy" class="tsd-kind-icon">rotational<wbr>Energy</a>
@@ -760,13 +647,7 @@
 								<a href="rigidbody.html#setexpiretime" class="tsd-kind-icon">set<wbr>Expire<wbr>Time</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="rigidbody.html#setvarsindex" class="tsd-kind-icon">set<wbr>Vars<wbr>Index</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="rigidbody.html#translationalenergy" class="tsd-kind-icon">translational<wbr>Energy</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="rigidbody.html#worldvelocityofbodypoint" class="tsd-kind-icon">world<wbr>Velocity<wbr>OfBody<wbr>Point</a>
 							</li>
 						</ul>
 					</li>

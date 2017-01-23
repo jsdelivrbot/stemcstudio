@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ForceLaw | NEWTON 0.0.8</title>
+	<title>ForceLaw | NEWTON 0.0.9</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">NEWTON 0.0.8</a>
+					<a href="../index.html" class="title">NEWTON 0.0.9</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -68,13 +68,19 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">ForceLaw</span>
+						<a href="simobject.html" class="tsd-signature-type">SimObject</a>
+						<ul class="tsd-hierarchy">
+							<li>
+								<span class="target">ForceLaw</span>
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</section>
 			<section class="tsd-panel">
 				<h3>Implemented by</h3>
 				<ul class="tsd-hierarchy">
+					<li><a href="../classes/gravitationlaw.html" class="tsd-signature-type">GravitationLaw</a></li>
 					<li><a href="../classes/spring.html" class="tsd-signature-type">Spring</a></li>
 				</ul>
 			</section>
@@ -87,6 +93,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="forcelaw.html#calculateforces" class="tsd-kind-icon">calculate<wbr>Forces</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="forcelaw.html#disconnect" class="tsd-kind-icon">disconnect</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external"><a href="forcelaw.html#getexpiretime" class="tsd-kind-icon">get<wbr>Expire<wbr>Time</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="forcelaw.html#getpotentialenergy" class="tsd-kind-icon">get<wbr>Potential<wbr>Energy</a></li>
 							</ul>
 						</section>
@@ -99,16 +106,16 @@
 					<a name="calculateforces" class="tsd-anchor"></a>
 					<h3>calculate<wbr>Forces</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">calculate<wbr>Forces<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/forceapp.html" class="tsd-signature-type">ForceApp</a><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">calculate<wbr>Forces<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/force.html" class="tsd-signature-type">Force</a><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/model/ForceLaw.ts#L19">davinci-newton/model/ForceLaw.ts:19</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/9f9488d/src/davinci-newton/model/ForceLaw.ts#L23">davinci-newton/model/ForceLaw.ts:23</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="../classes/forceapp.html" class="tsd-signature-type">ForceApp</a><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../classes/force.html" class="tsd-signature-type">Force</a><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -122,10 +129,28 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/model/ForceLaw.ts#L20">davinci-newton/model/ForceLaw.ts:20</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/9f9488d/src/davinci-newton/model/ForceLaw.ts#L24">davinci-newton/model/ForceLaw.ts:24</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
+					<a name="getexpiretime" class="tsd-anchor"></a>
+					<h3>get<wbr>Expire<wbr>Time</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Expire<wbr>Time<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="simobject.html">SimObject</a>.<a href="simobject.html#getexpiretime">getExpireTime</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/9f9488d/src/davinci-newton/core/SimObject.ts#L23">davinci-newton/core/SimObject.ts:23</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -139,7 +164,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/model/ForceLaw.ts#L21">davinci-newton/model/ForceLaw.ts:21</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/9f9488d/src/davinci-newton/model/ForceLaw.ts#L25">davinci-newton/model/ForceLaw.ts:25</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -168,6 +193,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
 								<a href="forcelaw.html#disconnect" class="tsd-kind-icon">disconnect</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
+								<a href="forcelaw.html#getexpiretime" class="tsd-kind-icon">get<wbr>Expire<wbr>Time</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
 								<a href="forcelaw.html#getpotentialenergy" class="tsd-kind-icon">get<wbr>Potential<wbr>Energy</a>

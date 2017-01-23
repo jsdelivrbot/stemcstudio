@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>GenericObserver | NEWTON 0.0.9</title>
+	<title>Massive | NEWTON 0.0.9</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,35 +54,27 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="genericobserver.html">GenericObserver</a>
+					<a href="massive.html">Massive</a>
 				</li>
 			</ul>
-			<h1>Class GenericObserver</h1>
+			<h1>Interface Massive</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>Observes a Subject; when the Subject broadcasts a SubjectEvent then this executes a specified function.</p>
-					</div>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">GenericObserver</span>
+						<a href="forcebody.html" class="tsd-signature-type">ForceBody</a>
+						<ul class="tsd-hierarchy">
+							<li>
+								<span class="target">Massive</span>
+							</li>
+						</ul>
 					</li>
-				</ul>
-			</section>
-			<section class="tsd-panel">
-				<h3>Implements</h3>
-				<ul class="tsd-hierarchy">
-					<li><a href="../interfaces/observer.html" class="tsd-signature-type">Observer</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -90,127 +82,61 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section tsd-is-external">
-							<h3>Constructors</h3>
+							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-external"><a href="genericobserver.html#constructor" class="tsd-kind-icon">constructor</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section tsd-is-external">
-							<h3>Methods</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="genericobserver.html#disconnect" class="tsd-kind-icon">disconnect</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="genericobserver.html#observe" class="tsd-kind-icon">observe</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="massive.html#m" class="tsd-kind-icon">M</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external"><a href="massive.html#r" class="tsd-kind-icon">R</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external"><a href="massive.html#x" class="tsd-kind-icon">X</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external"><a href="massive.html#varsindex" class="tsd-kind-icon">vars<wbr>Index</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
-				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
-					<a name="constructor" class="tsd-anchor"></a>
-					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Generic<wbr>Observer<span class="tsd-signature-symbol">(</span>subject<span class="tsd-signature-symbol">: </span><a href="../interfaces/subject.html" class="tsd-signature-type">Subject</a>, observeFn<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="genericobserver.html" class="tsd-signature-type">GenericObserver</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/9f9488d/src/davinci-newton/util/GenericObserver.ts#L25">davinci-newton/util/GenericObserver.ts:25</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>subject: <a href="../interfaces/subject.html" class="tsd-signature-type">Subject</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>the Subject to observe</p>
-										</div>
-									</div>
-								</li>
-								<li>
-									<h5>observeFn: <span class="tsd-signature-type">function</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>function to execute when a SubjectEvent is broadcast by Subject</p>
-										</div>
-									</div>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><a href="../interfaces/subjectevent.html" class="tsd-signature-type">SubjectEvent</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
-											</ul>
-											<ul class="tsd-descriptions">
-												<li class="tsd-description">
-													<h4 class="tsd-parameters-title">Parameters</h4>
-													<ul class="tsd-parameters">
-														<li>
-															<h5>event: <a href="../interfaces/subjectevent.html" class="tsd-signature-type">SubjectEvent</a></h5>
-														</li>
-													</ul>
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
-												</li>
-											</ul>
-										</li>
-									</ul>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="genericobserver.html" class="tsd-signature-type">GenericObserver</a></h4>
-						</li>
-					</ul>
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+					<a name="m" class="tsd-anchor"></a>
+					<h3>M</h3>
+					<div class="tsd-signature tsd-kind-icon">M<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in davinci-newton/objects/Massive.ts:6</li>
+						</ul>
+					</aside>
 				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-external">
-				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="disconnect" class="tsd-anchor"></a>
-					<h3>disconnect</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">disconnect<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/9f9488d/src/davinci-newton/util/GenericObserver.ts#L40">davinci-newton/util/GenericObserver.ts:40</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Disconnects this GenericObserver from the Subject.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
+					<a name="r" class="tsd-anchor"></a>
+					<h3>R</h3>
+					<div class="tsd-signature tsd-kind-icon">R<span class="tsd-signature-symbol">:</span> <a href="spinore3.html" class="tsd-signature-type">SpinorE3</a></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="forcebody.html">ForceBody</a>.<a href="forcebody.html#r">R</a></p>
+						<ul>
+							<li>Defined in davinci-newton/model/ForceBody.ts:6</li>
+						</ul>
+					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="observe" class="tsd-anchor"></a>
-					<h3>observe</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">observe<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><a href="../interfaces/subjectevent.html" class="tsd-signature-type">SubjectEvent</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/observer.html">Observer</a>.<a href="../interfaces/observer.html#observe">observe</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/9f9488d/src/davinci-newton/util/GenericObserver.ts#L44">davinci-newton/util/GenericObserver.ts:44</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>event: <a href="../interfaces/subjectevent.html" class="tsd-signature-type">SubjectEvent</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
+					<a name="x" class="tsd-anchor"></a>
+					<h3>X</h3>
+					<div class="tsd-signature tsd-kind-icon">X<span class="tsd-signature-symbol">:</span> <a href="vectore3.html" class="tsd-signature-type">VectorE3</a></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="forcebody.html">ForceBody</a>.<a href="forcebody.html#x">X</a></p>
+						<ul>
+							<li>Defined in davinci-newton/model/ForceBody.ts:5</li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
+					<a name="varsindex" class="tsd-anchor"></a>
+					<h3>vars<wbr>Index</h3>
+					<div class="tsd-signature tsd-kind-icon">vars<wbr>Index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="forcebody.html">ForceBody</a>.<a href="forcebody.html#varsindex">varsIndex</a></p>
+						<ul>
+							<li>Defined in davinci-newton/model/ForceBody.ts:7</li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 		</div>
@@ -226,17 +152,20 @@
 				<ul class="before-current">
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-class tsd-is-external">
-						<a href="genericobserver.html" class="tsd-kind-icon">Generic<wbr>Observer</a>
+					<li class="current tsd-kind-interface tsd-is-external">
+						<a href="massive.html" class="tsd-kind-icon">Massive</a>
 						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
-								<a href="genericobserver.html#constructor" class="tsd-kind-icon">constructor</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+								<a href="massive.html#m" class="tsd-kind-icon">M</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="genericobserver.html#disconnect" class="tsd-kind-icon">disconnect</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
+								<a href="massive.html#r" class="tsd-kind-icon">R</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="genericobserver.html#observe" class="tsd-kind-icon">observe</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
+								<a href="massive.html#x" class="tsd-kind-icon">X</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
+								<a href="massive.html#varsindex" class="tsd-kind-icon">vars<wbr>Index</a>
 							</li>
 						</ul>
 					</li>

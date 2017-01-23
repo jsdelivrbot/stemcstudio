@@ -15,10 +15,6 @@ declare module NEWTON {
          * 
          */
         getExpireTime(): number;
-        /**
-         * 
-         */
-        getName(localized?: boolean): string;
     }
 
     class SimList {
@@ -72,6 +68,9 @@ declare module NEWTON {
         timeIndex(): number;
     }
 
+    /**
+     * An immutable implementation of a vector with cartesian coordinates in 3D.
+     */
     class Vector implements VectorE3 {
         x: number;
         y: number;
@@ -88,6 +87,17 @@ declare module NEWTON {
         rotate(cosAngle: number, sinAngle: number): Vector;
     }
 
+    /**
+     * A mutable implementation of a vector with cartesian coordinates in 3D.
+     */
+    class Vector3 implements VectorE3 {
+        x: number;
+        y: number;
+        z: number;
+        constructor(x?: number, y?: number, z?: number);
+        copy(source: VectorE3): this;
+    }
+
     interface VectorE3 {
         x: number;
         y: number;
@@ -100,37 +110,73 @@ declare module NEWTON {
         xy: number;
     }
 
+    /**
+     * A mutable implementation of a bivector with cartesian coordinates in 3D.
+     */
+    class Bivector3 implements BivectorE3 {
+        yz: number;
+        zx: number;
+        xy: number;
+    }
+
+
     interface SpinorE3 extends BivectorE3 {
         a: number;
     }
 
+    /**
+     * A mutable implementation of a spinor with cartesian coordinates in 3D.
+     */
+    class Spinor3 implements SpinorE3 {
+        a: number;
+        yz: number;
+        zx: number;
+        xy: number;
+    }
+
+    /**
+     * 
+     */
     class RigidBody implements SimObject {
         /**
-         * Position.
+         * Mass (scalar).
          */
-        X: VectorE3;
+        M: number;
+        /**
+         * Position (vector).
+         */
+        X: Vector3;
         /**
          * Attitude (spinor)
          */
-        R: SpinorE3;
+        R: Spinor3;
         /**
-         * Linear Momentum.
+         * Linear Momentum (vector).
          */
-        P: VectorE3;
+        P: Vector3;
+        /**
+         * Angular Momentum (bivector).
+         */
+        L: Bivector3;
+        /**
+         * The starting index of this rigid body in the state variables.
+         */
+        varsIndex: number;
         /**
          * 
          */
-        constructor(name: string);
-        getName(): string;
+        constructor();
+        /**
+         * 
+         */
         getExpireTime(): number;
-        getVarsIndex(): number;
-        setVarsIndex(index: number): void;
-        getAngularVelocity(): number;
-        setAngularVelocity(angularVelocity?: number): void;
-        getMass(): number;
-        setMass(mass: number): void;
-        momentAboutCM(): number;
+        /**
+         * 
+         */
         rotationalEnergy(): number;
+        /**
+         * 
+         */
         translationalEnergy(): number;
     }
 
@@ -146,7 +192,7 @@ declare module NEWTON {
     /**
      * The application of a force to a particle in a rigid body.
      */
-    class ForceApp implements SimObject {
+    class Force implements SimObject {
         /**
          * 
          */
@@ -158,20 +204,14 @@ declare module NEWTON {
         /**
          * 
          */
-        constructor(name: string,
-            body: RigidBody,
-            location: Vector,
-            locationCoordType: CoordType,
-            direction: Vector,
-            directionCoordType: CoordType);
-        getName(): string;
+        constructor(body: RigidBody);
         getBody(): RigidBody;
         getExpireTime(): number;
         setExpireTime(time: number): void;
     }
 
-    interface ForceLaw {
-        calculateForces(): ForceApp[];
+    interface ForceLaw extends SimObject {
+        calculateForces(): Force[];
         disconnect(): void;
         getPotentialEnergy(): number;
     }
@@ -200,6 +240,25 @@ declare module NEWTON {
         step(stepSize: number): void;
     }
 
+    /**
+     * 
+     */
+    class EulerMethod implements DiffEqSolver {
+        constructor(simulation: Simulation);
+        step(stepSize: number): void;
+    }
+
+    /**
+     * 
+     */
+    class ModifiedEuler implements DiffEqSolver {
+        constructor(simulation: Simulation);
+        step(stepSize: number): void;
+    }
+
+    /**
+     * 
+     */
     class RungeKutta implements DiffEqSolver {
         constructor(simulation: Simulation);
         step(stepSize: number): void;
@@ -272,19 +331,49 @@ declare module NEWTON {
     /**
      * 
      */
+    interface ForceBody {
+        X: VectorE3;
+        R: SpinorE3;
+        varsIndex: number;
+    }
+
+    /**
+     * 
+     */
+    interface Massive extends ForceBody {
+        M: number;
+    }
+
+    /**
+     * 
+     */
+    class GravitationLaw implements ForceLaw {
+        /**
+         * 
+         */
+        G: number;
+        /**
+         * 
+         */
+        constructor(body1: RigidBody, body2: RigidBody);
+        calculateForces(): Force[];
+        disconnect(): void;
+        getExpireTime(): number;
+        getPotentialEnergy(): number;
+    }
+
+    /**
+     * 
+     */
     class Spring implements ForceLaw {
         /**
          * 
          */
-        constructor(name: string, body1: RigidBody, body2: RigidBody);
-        getName(): string;
-        getStartPoint(): Vector;
-        getEndPoint(): Vector;
-        getExpireTime(): number;
-        calculateForces(): ForceApp[];
+        constructor(body1: RigidBody, body2: RigidBody);
+        calculateForces(): Force[];
         disconnect(): void;
+        getExpireTime(): number;
         getPotentialEnergy(): number;
-        getVector(): Vector;
     }
 
     /**

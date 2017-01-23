@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Spring | NEWTON 0.0.8</title>
+	<title>Spring | NEWTON 0.0.9</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">NEWTON 0.0.8</a>
+					<a href="../index.html" class="title">NEWTON 0.0.9</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -99,14 +99,8 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spring.html#calculateforces" class="tsd-kind-icon">calculate<wbr>Forces</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spring.html#disconnect" class="tsd-kind-icon">disconnect</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spring.html#getendpoint" class="tsd-kind-icon">get<wbr>End<wbr>Point</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="spring.html#getexpiretime" class="tsd-kind-icon">get<wbr>Expire<wbr>Time</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spring.html#getlength" class="tsd-kind-icon">get<wbr>Length</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="spring.html#getname" class="tsd-kind-icon">get<wbr>Name</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spring.html#getpotentialenergy" class="tsd-kind-icon">get<wbr>Potential<wbr>Energy</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spring.html#getstartpoint" class="tsd-kind-icon">get<wbr>Start<wbr>Point</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spring.html#getstretch" class="tsd-kind-icon">get<wbr>Stretch</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spring.html#getvector" class="tsd-kind-icon">get<wbr>Vector</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="spring.html#setexpiretime" class="tsd-kind-icon">set<wbr>Expire<wbr>Time</a></li>
 							</ul>
 						</section>
@@ -119,21 +113,18 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Spring<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, body1_<span class="tsd-signature-symbol">: </span><a href="rigidbody.html" class="tsd-signature-type">RigidBody</a>, body2_<span class="tsd-signature-symbol">: </span><a href="rigidbody.html" class="tsd-signature-type">RigidBody</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="spring.html" class="tsd-signature-type">Spring</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Spring<span class="tsd-signature-symbol">(</span>body1_<span class="tsd-signature-symbol">: </span><a href="rigidbody.html" class="tsd-signature-type">RigidBody</a>, body2_<span class="tsd-signature-symbol">: </span><a href="rigidbody.html" class="tsd-signature-type">RigidBody</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="spring.html" class="tsd-signature-type">Spring</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overrides <a href="abstractsimobject.html">AbstractSimObject</a>.<a href="abstractsimobject.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/objects/Spring.ts#L36">davinci-newton/objects/Spring.ts:36</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/9f9488d/src/davinci-newton/objects/Spring.ts#L39">davinci-newton/objects/Spring.ts:39</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
-								<li>
-									<h5>name: <span class="tsd-signature-type">string</span></h5>
-								</li>
 								<li>
 									<h5>body1_: <a href="rigidbody.html" class="tsd-signature-type">RigidBody</a></h5>
 								</li>
@@ -152,17 +143,17 @@
 					<a name="calculateforces" class="tsd-anchor"></a>
 					<h3>calculate<wbr>Forces</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">calculate<wbr>Forces<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="forceapp.html" class="tsd-signature-type">ForceApp</a><span class="tsd-signature-symbol">[]</span></li>
+						<li class="tsd-signature tsd-kind-icon">calculate<wbr>Forces<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="force.html" class="tsd-signature-type">Force</a><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/forcelaw.html">ForceLaw</a>.<a href="../interfaces/forcelaw.html#calculateforces">calculateForces</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/objects/Spring.ts#L77">davinci-newton/objects/Spring.ts:77</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/9f9488d/src/davinci-newton/objects/Spring.ts#L74">davinci-newton/objects/Spring.ts:74</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="forceapp.html" class="tsd-signature-type">ForceApp</a><span class="tsd-signature-symbol">[]</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="force.html" class="tsd-signature-type">Force</a><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -177,27 +168,10 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/forcelaw.html">ForceLaw</a>.<a href="../interfaces/forcelaw.html#disconnect">disconnect</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/objects/Spring.ts#L105">davinci-newton/objects/Spring.ts:105</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/9f9488d/src/davinci-newton/objects/Spring.ts#L102">davinci-newton/objects/Spring.ts:102</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="getendpoint" class="tsd-anchor"></a>
-					<h3>get<wbr>End<wbr>Point</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>End<wbr>Point<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="vector.html" class="tsd-signature-type">Vector</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/objects/Spring.ts#L51">davinci-newton/objects/Spring.ts:51</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="vector.html" class="tsd-signature-type">Vector</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -210,54 +184,13 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/simobject.html">SimObject</a>.<a href="../interfaces/simobject.html#getexpiretime">getExpireTime</a></p>
+								<p>Implementation of <a href="../interfaces/forcelaw.html">ForceLaw</a>.<a href="../interfaces/forcelaw.html#getexpiretime">getExpireTime</a></p>
 								<p>Inherited from <a href="abstractsimobject.html">AbstractSimObject</a>.<a href="abstractsimobject.html#getexpiretime">getExpireTime</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/objects/AbstractSimObject.ts#L51">davinci-newton/objects/AbstractSimObject.ts:51</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/9f9488d/src/davinci-newton/objects/AbstractSimObject.ts#L37">davinci-newton/objects/AbstractSimObject.ts:37</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="getlength" class="tsd-anchor"></a>
-					<h3>get<wbr>Length</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Length<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/objects/Spring.ts#L113">davinci-newton/objects/Spring.ts:113</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Returns the distance between start and end points of this spring</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-							<p>the distance between start and end points of this spring</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-					<a name="getname" class="tsd-anchor"></a>
-					<h3>get<wbr>Name</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Name<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="abstractsimobject.html">AbstractSimObject</a>.<a href="abstractsimobject.html#getname">getName</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/objects/AbstractSimObject.ts#L61">davinci-newton/objects/AbstractSimObject.ts:61</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -272,67 +205,10 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/forcelaw.html">ForceLaw</a>.<a href="../interfaces/forcelaw.html#getpotentialenergy">getPotentialEnergy</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/objects/Spring.ts#L117">davinci-newton/objects/Spring.ts:117</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/9f9488d/src/davinci-newton/objects/Spring.ts#L109">davinci-newton/objects/Spring.ts:109</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="getstartpoint" class="tsd-anchor"></a>
-					<h3>get<wbr>Start<wbr>Point</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Start<wbr>Point<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="vector.html" class="tsd-signature-type">Vector</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/objects/Spring.ts#L44">davinci-newton/objects/Spring.ts:44</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="vector.html" class="tsd-signature-type">Vector</a></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="getstretch" class="tsd-anchor"></a>
-					<h3>get<wbr>Stretch</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Stretch<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/objects/Spring.ts#L127">davinci-newton/objects/Spring.ts:127</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Positive stretch means the spring is expanded, negative stretch means compressed.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-							<p>the amount that this line is stretched from its rest length</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="getvector" class="tsd-anchor"></a>
-					<h3>get<wbr>Vector</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Vector<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="vector.html" class="tsd-signature-type">Vector</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/objects/Spring.ts#L131">davinci-newton/objects/Spring.ts:131</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="vector.html" class="tsd-signature-type">Vector</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -347,7 +223,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="abstractsimobject.html">AbstractSimObject</a>.<a href="abstractsimobject.html#setexpiretime">setExpireTime</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a2355fe/src/davinci-newton/objects/AbstractSimObject.ts#L54">davinci-newton/objects/AbstractSimObject.ts:54</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/9f9488d/src/davinci-newton/objects/AbstractSimObject.ts#L40">davinci-newton/objects/AbstractSimObject.ts:40</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -386,29 +262,11 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="spring.html#disconnect" class="tsd-kind-icon">disconnect</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="spring.html#getendpoint" class="tsd-kind-icon">get<wbr>End<wbr>Point</a>
-							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="spring.html#getexpiretime" class="tsd-kind-icon">get<wbr>Expire<wbr>Time</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="spring.html#getlength" class="tsd-kind-icon">get<wbr>Length</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="spring.html#getname" class="tsd-kind-icon">get<wbr>Name</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="spring.html#getpotentialenergy" class="tsd-kind-icon">get<wbr>Potential<wbr>Energy</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="spring.html#getstartpoint" class="tsd-kind-icon">get<wbr>Start<wbr>Point</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="spring.html#getstretch" class="tsd-kind-icon">get<wbr>Stretch</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="spring.html#getvector" class="tsd-kind-icon">get<wbr>Vector</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="spring.html#setexpiretime" class="tsd-kind-icon">set<wbr>Expire<wbr>Time</a>
