@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ForceLaw | NEWTON 0.0.11</title>
+	<title>ForceBody3 | NEWTON 0.0.12</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">NEWTON 0.0.11</a>
+					<a href="../index.html" class="title">NEWTON 0.0.12</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -54,10 +54,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="forcelaw.html">ForceLaw</a>
+					<a href="forcebody3.html">ForceBody3</a>
 				</li>
 			</ul>
-			<h1>Interface ForceLaw</h1>
+			<h1>Interface ForceBody3</h1>
 		</div>
 	</div>
 </header>
@@ -68,109 +68,61 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="simobject.html" class="tsd-signature-type">SimObject</a>
+						<span class="target">ForceBody3</span>
 						<ul class="tsd-hierarchy">
 							<li>
-								<span class="target">ForceLaw</span>
+								<a href="massive3.html" class="tsd-signature-type">Massive3</a>
 							</li>
 						</ul>
 					</li>
-				</ul>
-			</section>
-			<section class="tsd-panel">
-				<h3>Implemented by</h3>
-				<ul class="tsd-hierarchy">
-					<li><a href="../classes/gravitationlaw.html" class="tsd-signature-type">GravitationLaw</a></li>
-					<li><a href="../classes/spring.html" class="tsd-signature-type">Spring</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section tsd-is-inherited tsd-is-external">
+						<section class="tsd-index-section tsd-is-external">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external"><a href="forcelaw.html#expiretime" class="tsd-kind-icon">expire<wbr>Time</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section tsd-is-external">
-							<h3>Methods</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="forcelaw.html#calculateforces" class="tsd-kind-icon">calculate<wbr>Forces</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="forcelaw.html#disconnect" class="tsd-kind-icon">disconnect</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="forcelaw.html#getpotentialenergy" class="tsd-kind-icon">get<wbr>Potential<wbr>Energy</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="forcebody3.html#r" class="tsd-kind-icon">R</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="forcebody3.html#x" class="tsd-kind-icon">X</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="forcebody3.html#varsindex" class="tsd-kind-icon">vars<wbr>Index</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited tsd-is-external">
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
-					<a name="expiretime" class="tsd-anchor"></a>
-					<h3>expire<wbr>Time</h3>
-					<div class="tsd-signature tsd-kind-icon">expire<wbr>Time<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+					<a name="r" class="tsd-anchor"></a>
+					<h3>R</h3>
+					<div class="tsd-signature tsd-kind-icon">R<span class="tsd-signature-symbol">:</span> <a href="spinore3.html" class="tsd-signature-type">SpinorE3</a></div>
 					<aside class="tsd-sources">
-						<p>Inherited from <a href="simobject.html">SimObject</a>.<a href="simobject.html#expiretime">expireTime</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/core/SimObject.ts#L23">davinci-newton/core/SimObject.ts:23</a></li>
+							<li>Defined in davinci-newton/engine3D/ForceBody3.ts:6</li>
 						</ul>
 					</aside>
 				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-external">
-				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-					<a name="calculateforces" class="tsd-anchor"></a>
-					<h3>calculate<wbr>Forces</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">calculate<wbr>Forces<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/force.html" class="tsd-signature-type">Force</a><span class="tsd-signature-symbol">[]</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/model/ForceLaw.ts#L23">davinci-newton/model/ForceLaw.ts:23</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="../classes/force.html" class="tsd-signature-type">Force</a><span class="tsd-signature-symbol">[]</span></h4>
-						</li>
-					</ul>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+					<a name="x" class="tsd-anchor"></a>
+					<h3>X</h3>
+					<div class="tsd-signature tsd-kind-icon">X<span class="tsd-signature-symbol">:</span> <a href="vectore3.html" class="tsd-signature-type">VectorE3</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in davinci-newton/engine3D/ForceBody3.ts:5</li>
+						</ul>
+					</aside>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-					<a name="disconnect" class="tsd-anchor"></a>
-					<h3>disconnect</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">disconnect<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/model/ForceLaw.ts#L24">davinci-newton/model/ForceLaw.ts:24</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-					<a name="getpotentialenergy" class="tsd-anchor"></a>
-					<h3>get<wbr>Potential<wbr>Energy</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Potential<wbr>Energy<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/model/ForceLaw.ts#L25">davinci-newton/model/ForceLaw.ts:25</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-						</li>
-					</ul>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+					<a name="varsindex" class="tsd-anchor"></a>
+					<h3>vars<wbr>Index</h3>
+					<div class="tsd-signature tsd-kind-icon">vars<wbr>Index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in davinci-newton/engine3D/ForceBody3.ts:7</li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 		</div>
@@ -187,19 +139,16 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-is-external">
-						<a href="forcelaw.html" class="tsd-kind-icon">Force<wbr>Law</a>
+						<a href="forcebody3.html" class="tsd-kind-icon">Force<wbr>Body3</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
-								<a href="forcelaw.html#expiretime" class="tsd-kind-icon">expire<wbr>Time</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+								<a href="forcebody3.html#r" class="tsd-kind-icon">R</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-								<a href="forcelaw.html#calculateforces" class="tsd-kind-icon">calculate<wbr>Forces</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+								<a href="forcebody3.html#x" class="tsd-kind-icon">X</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-								<a href="forcelaw.html#disconnect" class="tsd-kind-icon">disconnect</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-								<a href="forcelaw.html#getpotentialenergy" class="tsd-kind-icon">get<wbr>Potential<wbr>Energy</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+								<a href="forcebody3.html#varsindex" class="tsd-kind-icon">vars<wbr>Index</a>
 							</li>
 						</ul>
 					</li>

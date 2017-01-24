@@ -57,7 +57,7 @@ declare module NEWTON {
     }
 
     class VarsList {
-        constructor();
+        constructor(varNames: string[]);
         addVariables(names: string[]): number;
         deleteVariables(index: number, howMany: number): void;
         incrSequence(...indexes: number[]);
@@ -71,20 +71,29 @@ declare module NEWTON {
     /**
      * An immutable implementation of a vector with cartesian coordinates in 3D.
      */
-    class Vector implements VectorE3 {
+    class Vec3 implements VectorE3 {
+        /**
+         * readonly x coordinate.
+         */
         x: number;
+        /**
+         * readonly y coordinate.
+         */
         y: number;
+        /**
+         * readonly z coordinate.
+         */
         z: number;
-        static ORIGIN: Vector;
-        constructor(x_: number, y_: number, z: number);
-        add(rhs: VectorE3): Vector;
-        subtract(rhs: VectorE3): Vector;
-        multiply(alpha: number): Vector;
+        static ORIGIN: Vec3;
+        constructor(x: number, y: number, z: number);
+        add(rhs: VectorE3): Vec3;
+        subtract(rhs: VectorE3): Vec3;
+        multiply(alpha: number): Vec3;
         distanceTo(rhs: VectorE3): number;
-        immutable(): Vector;
+        immutable(): Vec3;
         magnitude(): number;
-        normalize(): Vector;
-        rotate(cosAngle: number, sinAngle: number): Vector;
+        normalize(): Vec3;
+        rotate(cosAngle: number, sinAngle: number): Vec3;
     }
 
     /**
@@ -137,7 +146,7 @@ declare module NEWTON {
     /**
      * 
      */
-    class RigidBody implements SimObject {
+    class RigidBody3 implements SimObject {
         /**
          * Mass (scalar).
          */
@@ -180,9 +189,11 @@ declare module NEWTON {
         translationalEnergy(): number;
     }
 
+    /*
     interface Collision {
 
     }
+    */
 
     enum CoordType {
         BODY = 0,
@@ -192,15 +203,15 @@ declare module NEWTON {
     /**
      * The application of a force to a particle in a rigid body.
      */
-    class Force implements SimObject {
+    class Force3 implements SimObject {
         /**
          * 
          */
-        F: Vector;
+        F: Vec3;
         /**
          * 
          */
-        x: Vector;
+        x: Vec3;
         /**
          * 
          */
@@ -208,17 +219,20 @@ declare module NEWTON {
         /**
          * 
          */
-        constructor(body: RigidBody);
-        getBody(): RigidBody;
+        constructor(body: RigidBody3);
+        getBody(): RigidBody3;
     }
 
-    interface ForceLaw extends SimObject {
-        calculateForces(): Force[];
+    interface ForceLaw3 extends SimObject {
+        updateForces(): Force3[];
         disconnect(): void;
-        getPotentialEnergy(): number;
+        potentialEnergy(): number;
     }
 
-    class RigidBodySim implements Simulation {
+    /**
+     * 
+     */
+    class Physics3 implements Simulation {
         /**
          * 
          */
@@ -231,17 +245,20 @@ declare module NEWTON {
          * Determines whether calculated forces will be added to the simulation list.
          */
         showForces: boolean;
+        /**
+         *
+         */
         constructor();
-        addBody(body: RigidBody): void;
-        removeBody(body: RigidBody): void;
-        addForceLaw(forceLaw: ForceLaw);
-        removeForceLaw(forceLaw: ForceLaw);
+        addBody(body: RigidBody3): void;
+        removeBody(body: RigidBody3): void;
+        addForceLaw(forceLaw: ForceLaw3): void;
+        removeForceLaw(forceLaw: ForceLaw3): void;
         evaluate(vars: number[], change: number[], time: number): void;
-        getTime();
-        modifyObjects();
+        getTime(): number;
+        modifyObjects(): void;
         saveState(): void;
         restoreState(): void;
-        findCollisions(collisions: Collision[], vars: number[], stepSize: number): void;
+        // findCollisions(collisions: Collision[], vars: number[], stepSize: number): void;
     }
 
     interface DiffEqSolver {
@@ -291,7 +308,7 @@ declare module NEWTON {
         getTimeStep(): number;
     }
 
-    class SimpleAdvance implements AdvanceStrategy {
+    class DefaultAdvanceStrategy implements AdvanceStrategy {
         /**
          * 
          */
@@ -339,7 +356,7 @@ declare module NEWTON {
     /**
      * 
      */
-    interface ForceBody {
+    interface ForceBody3 {
         X: VectorE3;
         R: SpinorE3;
         varsIndex: number;
@@ -348,14 +365,14 @@ declare module NEWTON {
     /**
      * 
      */
-    interface Massive extends ForceBody {
+    interface Massive3 extends ForceBody3 {
         M: number;
     }
 
     /**
      * 
      */
-    class GravitationLaw implements ForceLaw {
+    class GravitationLaw3 implements ForceLaw3 {
         /**
          * 
          */
@@ -367,16 +384,16 @@ declare module NEWTON {
         /**
          * 
          */
-        constructor(body1: RigidBody, body2: RigidBody);
-        calculateForces(): Force[];
+        constructor(body1: RigidBody3, body2: RigidBody3);
+        updateForces(): Force3[];
         disconnect(): void;
-        getPotentialEnergy(): number;
+        potentialEnergy(): number;
     }
 
     /**
      * 
      */
-    class Spring implements ForceLaw {
+    class Spring3 implements ForceLaw3 {
         /**
          * 
          */
@@ -384,10 +401,10 @@ declare module NEWTON {
         /**
          * 
          */
-        constructor(body1: RigidBody, body2: RigidBody);
-        calculateForces(): Force[];
+        constructor(body1: RigidBody3, body2: RigidBody3);
+        updateForces(): Force3[];
         disconnect(): void;
-        getPotentialEnergy(): number;
+        potentialEnergy(): number;
     }
 
     class DoubleRect {
@@ -526,6 +543,10 @@ declare module NEWTON {
         /**
          * 
          */
+        hotspotColor: string;
+        /**
+         * 
+         */
         lineWidth: number;
         /**
          * 
@@ -540,7 +561,6 @@ declare module NEWTON {
          */
         // getGraphPoints(): CircularList<GraphPoint>;
         // getGraphStyle(index: number): GraphStyle;
-        getHotSpotColor(): string;
         /**
          * 
          */
@@ -551,7 +571,6 @@ declare module NEWTON {
         getYVarName(): string;
         reset(): void;
         resetStyle(): void;
-        setHotSpotColor(color: string): void;
     }
 
     /**
@@ -573,7 +592,7 @@ declare module NEWTON {
         /**
          * 
          */
-        addGraphLine(): GraphLine;
+        addGraphLine(hCoordIndex: number, vCoordIndex: number, color?: string): GraphLine;
         /**
          * 
          */
@@ -581,7 +600,15 @@ declare module NEWTON {
         /**
          * 
          */
+        removeGraphLine(graphLine: GraphLine): void;
+        /**
+         * 
+         */
         render(): void;
+        /**
+         * 
+         */
+        reset(): void;
     }
 }
 
