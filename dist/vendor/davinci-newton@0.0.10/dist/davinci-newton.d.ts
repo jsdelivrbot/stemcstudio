@@ -313,7 +313,7 @@ declare module NEWTON {
         /**
          * 
          */
-        constructor(advanceStrategy: AdvanceStrategy, name?: string);
+        constructor(advanceStrategy: AdvanceStrategy);
         /**
          * 
          */
@@ -376,17 +376,89 @@ declare module NEWTON {
         getPotentialEnergy(): number;
     }
 
-    /**
-     * 
-     */
-    interface AutoScale {
+    class DoubleRect {
+
+    }
+
+    class SimView {
 
     }
 
     /**
      * 
      */
+    class AutoScale {
+        constructor(view: SimView);
+        getActive(): boolean;
+        setActive(value: boolean): void;
+        getAxis(): string;
+        setAxis(axis: string): void;
+        getEnabled(): boolean;
+        setEnabled(value: boolean): void;
+        getTimeWindow(): number;
+        setTimeWindow(timeWindow: number): void;
+        addGraphLine(graphLine: GraphLine): void;
+        clearRange(): void;
+        getRangeRect(): DoubleRect;
+        memorize(): void;
+        // observe(event: SubjectEvent): void;
+        removeGraphLine(graphLine: GraphLine): void;
+        reset(): void;
+    }
+
+    enum HorizAlign {
+        LEFT = 0,
+        MIDDLE = 1,
+        RIGHT = 2,
+        FULL = 3
+    }
+
+
+    enum VerticalAlign {
+        TOP = 0,
+        MIDDLE = 1,
+        BOTTOM = 2,
+        FULL = 3
+    }
+
+    /**
+     * 
+     */
+    class DisplayAxes {
+        getColor(): string;
+        setColor(color: string): void;
+        setHorizName(name: string): void;
+        setVerticalName(name: string): void;
+        setXAxisAlignment(alignment: VerticalAlign): this;
+        setYAxisAlignment(alignment: HorizAlign): this;
+    }
+
+    enum DrawingMode {
+        DOTS = 0,
+        LINES = 1
+    }
+
+    /**
+     * 
+     */
     interface GraphLine {
+        getColor(): string;
+        getDrawingMode(): DrawingMode;
+        // getGraphPoints(): CircularList<GraphPoint>;
+        // getGraphStyle(index: number): GraphStyle;
+        getHotSpotColor(): string;
+        getLineWidth(): number;
+        getVarsList(): VarsList;
+        getXVariable(): number;
+        getXVarName(): string;
+        getYVariable(): number;
+        getYVarName(): string;
+        reset(): void;
+        resetStyle(): void;
+        setColor(color: string): void;
+        setDrawingMode(drawingMode: DrawingMode): void;
+        setHotSpotColor(color: string): void;
+        setLineWidth(lineWidth: number): void;
         setXVariable(index: number): void;
         setYVariable(index: number): void;
     }
@@ -395,11 +467,22 @@ declare module NEWTON {
      * 
      */
     class Graph {
+        /**
+         * 
+         */
+        autoScale: AutoScale;
+        /**
+         * 
+         */
+        axes: DisplayAxes;
+        /**
+         * 
+         */
         constructor(canvasId: string, varsList: VarsList);
         /**
          * 
          */
-        addTrace(name: string): GraphLine;
+        addTrace(): GraphLine;
         /**
          * 
          */
@@ -408,10 +491,6 @@ declare module NEWTON {
          * 
          */
         render(): void;
-        /**
-         * 
-         */
-        setAutoScale(trace: GraphLine): AutoScale;
     }
 }
 
