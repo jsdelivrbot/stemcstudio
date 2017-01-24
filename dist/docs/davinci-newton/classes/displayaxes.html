@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>DisplayAxes | NEWTON 0.0.10</title>
+	<title>DisplayAxes | NEWTON 0.0.11</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">NEWTON 0.0.10</a>
+					<a href="../index.html" class="title">NEWTON 0.0.11</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -72,19 +72,14 @@
 						numbering scale shown.</p>
 					</div>
 					<p>Axes are drawn with numbered tick marks. Axes are labeled with
-						names which can be specified by <code>setHorizName</code> and <code>setVerticalName</code>. Axes
-					are drawn using specified font and color, see {@link #setColor} and {@link #setFont}.</p>
+						names which can be specified by <code>hAxisLabel</code> and <code>vAxisLabel</code>. Axes
+					are drawn using specified font and color.</p>
 					<p>Options exist for drawing the vertical axis near the left, center, or right, and for
 						drawing the horizontal axis near the top, center, or bottom of the screen. See
-					{@link #setXAxisAlignment} and {@link #setYAxisAlignment}.</p>
+					<code>hAxisAlign</code> and <code>vAxisAlign</code>.</p>
 					<p>To keep the DisplayAxes in sync with a LabView, when
 						doing for example pan/zoom of the LabView, you can arrange for {@link #setSimRect} to
 					be called by an Observer.</p>
-					<dl class="tsd-comment-tags">
-						<dt>todo</dt>
-						<dd><p>add option to set the number of tick marks (instead of automatic)?</p>
-						</dd>
-					</dl>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
@@ -112,29 +107,29 @@
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external">
+							<h3>Accessors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="displayaxes.html#color" class="tsd-kind-icon">color</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="displayaxes.html#haxisalign" class="tsd-kind-icon">h<wbr>Axis<wbr>Align</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="displayaxes.html#haxislabel" class="tsd-kind-icon">h<wbr>Axis<wbr>Label</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="displayaxes.html#vaxisalign" class="tsd-kind-icon">v<wbr>Axis<wbr>Align</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="displayaxes.html#vaxislabel" class="tsd-kind-icon">v<wbr>Axis<wbr>Label</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-external">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="displayaxes.html#draw" class="tsd-kind-icon">draw</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="displayaxes.html#drawhorizticks" class="tsd-kind-icon">draw<wbr>Horiz<wbr>Ticks</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="displayaxes.html#drawvertticks" class="tsd-kind-icon">draw<wbr>Vert<wbr>Ticks</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="displayaxes.html#getcolor" class="tsd-kind-icon">get<wbr>Color</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="displayaxes.html#getfont" class="tsd-kind-icon">get<wbr>Font</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="displayaxes.html#gethorizname" class="tsd-kind-icon">get<wbr>Horiz<wbr>Name</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="displayaxes.html#getsimrect" class="tsd-kind-icon">get<wbr>Sim<wbr>Rect</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="displayaxes.html#getverticalname" class="tsd-kind-icon">get<wbr>Vertical<wbr>Name</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="displayaxes.html#getxaxisalignment" class="tsd-kind-icon">getXAxis<wbr>Alignment</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="displayaxes.html#getyaxisalignment" class="tsd-kind-icon">getYAxis<wbr>Alignment</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="displayaxes.html#getzindex" class="tsd-kind-icon">getZIndex</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="displayaxes.html#isdragable" class="tsd-kind-icon">is<wbr>Dragable</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="displayaxes.html#needsredraw" class="tsd-kind-icon">needs<wbr>Redraw</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="displayaxes.html#setcolor" class="tsd-kind-icon">set<wbr>Color</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="displayaxes.html#setdragable" class="tsd-kind-icon">set<wbr>Dragable</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="displayaxes.html#setfont" class="tsd-kind-icon">set<wbr>Font</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="displayaxes.html#sethorizname" class="tsd-kind-icon">set<wbr>Horiz<wbr>Name</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="displayaxes.html#setsimrect" class="tsd-kind-icon">set<wbr>Sim<wbr>Rect</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="displayaxes.html#setverticalname" class="tsd-kind-icon">set<wbr>Vertical<wbr>Name</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="displayaxes.html#setxaxisalignment" class="tsd-kind-icon">setXAxis<wbr>Alignment</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="displayaxes.html#setyaxisalignment" class="tsd-kind-icon">setYAxis<wbr>Alignment</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="displayaxes.html#setzindex" class="tsd-kind-icon">setZIndex</a></li>
 							</ul>
 						</section>
@@ -153,7 +148,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/graph/DisplayAxes.ts#L93">davinci-newton/graph/DisplayAxes.ts:93</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/graph/DisplayAxes.ts#L91">davinci-newton/graph/DisplayAxes.ts:91</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -191,6 +186,230 @@
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
+				<h2>Accessors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
+					<a name="color" class="tsd-anchor"></a>
+					<h3>color</h3>
+					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> color<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> color<span class="tsd-signature-symbol">(</span>color<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/graph/DisplayAxes.ts#L264">davinci-newton/graph/DisplayAxes.ts:264</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the color to draw the graph axes with.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+							<p>the color to draw the graph axes with</p>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/graph/DisplayAxes.ts#L379">davinci-newton/graph/DisplayAxes.ts:379</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Set the color to draw the graph axes with.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>color: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>the color to draw the graph axes with</p>
+										</div>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+							<p>the color to draw the graph axes with</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
+					<a name="haxisalign" class="tsd-anchor"></a>
+					<h3>h<wbr>Axis<wbr>Align</h3>
+					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> hAxisAlign<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../enums/alignv.html" class="tsd-signature-type">AlignV</a></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> hAxisAlign<span class="tsd-signature-symbol">(</span>alignment<span class="tsd-signature-symbol">: </span><a href="../enums/alignv.html" class="tsd-signature-type">AlignV</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/graph/DisplayAxes.ts#L347">davinci-newton/graph/DisplayAxes.ts:347</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the X-axis alignment: whether it should appear at bottom, top or middle of
+									the simulation rectangle.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="../enums/alignv.html" class="tsd-signature-type">AlignV</a></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/graph/DisplayAxes.ts#L427">davinci-newton/graph/DisplayAxes.ts:427</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Sets the horizontal axis alignment: whether it should appear at bottom, top or middle of the
+									simulation rectangle.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>alignment: <a href="../enums/alignv.html" class="tsd-signature-type">AlignV</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
+					<a name="haxislabel" class="tsd-anchor"></a>
+					<h3>h<wbr>Axis<wbr>Label</h3>
+					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> hAxisLabel<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> hAxisLabel<span class="tsd-signature-symbol">(</span>hAxisLabel<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/graph/DisplayAxes.ts#L279">davinci-newton/graph/DisplayAxes.ts:279</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the label shown next to the horizontal axis.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/graph/DisplayAxes.ts#L400">davinci-newton/graph/DisplayAxes.ts:400</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Sets the label shown next to the horizontal axis.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>hAxisLabel: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
+					<a name="vaxisalign" class="tsd-anchor"></a>
+					<h3>v<wbr>Axis<wbr>Align</h3>
+					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> vAxisAlign<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../enums/alignh.html" class="tsd-signature-type">AlignH</a></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> vAxisAlign<span class="tsd-signature-symbol">(</span>alignment<span class="tsd-signature-symbol">: </span><a href="../enums/alignh.html" class="tsd-signature-type">AlignH</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/graph/DisplayAxes.ts#L355">davinci-newton/graph/DisplayAxes.ts:355</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the Y-axis alignment : whether it should appear at left, right or middle of
+									the simulation rectangle.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <a href="../enums/alignh.html" class="tsd-signature-type">AlignH</a></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/graph/DisplayAxes.ts#L436">davinci-newton/graph/DisplayAxes.ts:436</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Sets the vertical axis alignment: whether it should appear at left, right or middle of the
+									simulation rectangle.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>alignment: <a href="../enums/alignh.html" class="tsd-signature-type">AlignH</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
+					<a name="vaxislabel" class="tsd-anchor"></a>
+					<h3>v<wbr>Axis<wbr>Label</h3>
+					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> vAxisLabel<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> vAxisLabel<span class="tsd-signature-symbol">(</span>vAxisLabel<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/graph/DisplayAxes.ts#L339">davinci-newton/graph/DisplayAxes.ts:339</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the name shown next to the vertical axis.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/graph/DisplayAxes.ts#L418">davinci-newton/graph/DisplayAxes.ts:418</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Sets the name shown next to the vertical axis.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>vAxisLabel: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="draw" class="tsd-anchor"></a>
@@ -203,7 +422,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/displayobject.html">DisplayObject</a>.<a href="../interfaces/displayobject.html#draw">draw</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/graph/DisplayAxes.ts#L120">davinci-newton/graph/DisplayAxes.ts:120</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/graph/DisplayAxes.ts#L118">davinci-newton/graph/DisplayAxes.ts:118</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -229,7 +448,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/graph/DisplayAxes.ts#L181">davinci-newton/graph/DisplayAxes.ts:181</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/graph/DisplayAxes.ts#L179">davinci-newton/graph/DisplayAxes.ts:179</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -278,7 +497,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/graph/DisplayAxes.ts#L221">davinci-newton/graph/DisplayAxes.ts:221</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/graph/DisplayAxes.ts#L219">davinci-newton/graph/DisplayAxes.ts:219</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -318,29 +537,6 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="getcolor" class="tsd-anchor"></a>
-					<h3>get<wbr>Color</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Color<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/graph/DisplayAxes.ts#L265">davinci-newton/graph/DisplayAxes.ts:265</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Returns the color to draw the graph axes with.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-							<p>the color to draw the graph axes with</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="getfont" class="tsd-anchor"></a>
 					<h3>get<wbr>Font</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
@@ -350,7 +546,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/graph/DisplayAxes.ts#L273">davinci-newton/graph/DisplayAxes.ts:273</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/graph/DisplayAxes.ts#L272">davinci-newton/graph/DisplayAxes.ts:272</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -364,29 +560,6 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="gethorizname" class="tsd-anchor"></a>
-					<h3>get<wbr>Horiz<wbr>Name</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Horiz<wbr>Name<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/graph/DisplayAxes.ts#L281">davinci-newton/graph/DisplayAxes.ts:281</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Returns the name shown next to the horizontal axis.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-							<p>the name of the horizontal axis.</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="getsimrect" class="tsd-anchor"></a>
 					<h3>get<wbr>Sim<wbr>Rect</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
@@ -396,7 +569,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/graph/DisplayAxes.ts#L334">davinci-newton/graph/DisplayAxes.ts:334</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/graph/DisplayAxes.ts#L332">davinci-newton/graph/DisplayAxes.ts:332</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -411,77 +584,6 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="getverticalname" class="tsd-anchor"></a>
-					<h3>get<wbr>Vertical<wbr>Name</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Vertical<wbr>Name<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/graph/DisplayAxes.ts#L342">davinci-newton/graph/DisplayAxes.ts:342</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Returns the name shown next to the vertical axis.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-							<p>the name of the vertical axis.</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="getxaxisalignment" class="tsd-anchor"></a>
-					<h3>getXAxis<wbr>Alignment</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">getXAxis<wbr>Alignment<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../enums/verticalalign.html" class="tsd-signature-type">VerticalAlign</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/graph/DisplayAxes.ts#L351">davinci-newton/graph/DisplayAxes.ts:351</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Returns the X-axis alignment: whether it should appear at bottom, top or middle of
-									the simulation rectangle.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../enums/verticalalign.html" class="tsd-signature-type">VerticalAlign</a></h4>
-							<p>X-axis alignment option from VerticalAlign.</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="getyaxisalignment" class="tsd-anchor"></a>
-					<h3>getYAxis<wbr>Alignment</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">getYAxis<wbr>Alignment<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../enums/horizalign.html" class="tsd-signature-type">HorizAlign</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/graph/DisplayAxes.ts#L360">davinci-newton/graph/DisplayAxes.ts:360</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Returns the Y-axis alignment : whether it should appear at left, right or middle of
-									the simulation rectangle.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../enums/horizalign.html" class="tsd-signature-type">HorizAlign</a></h4>
-							<p>Y-axis alignment option from HorizAlign</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="getzindex" class="tsd-anchor"></a>
 					<h3>getZIndex</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
@@ -492,7 +594,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/displayobject.html">DisplayObject</a>.<a href="../interfaces/displayobject.html#getzindex">getZIndex</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/graph/DisplayAxes.ts#L364">davinci-newton/graph/DisplayAxes.ts:364</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/graph/DisplayAxes.ts#L359">davinci-newton/graph/DisplayAxes.ts:359</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -509,7 +611,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/graph/DisplayAxes.ts#L368">davinci-newton/graph/DisplayAxes.ts:368</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/graph/DisplayAxes.ts#L363">davinci-newton/graph/DisplayAxes.ts:363</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -526,7 +628,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/graph/DisplayAxes.ts#L376">davinci-newton/graph/DisplayAxes.ts:376</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/graph/DisplayAxes.ts#L371">davinci-newton/graph/DisplayAxes.ts:371</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -540,37 +642,6 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="setcolor" class="tsd-anchor"></a>
-					<h3>set<wbr>Color</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Color<span class="tsd-signature-symbol">(</span>color<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/graph/DisplayAxes.ts#L384">davinci-newton/graph/DisplayAxes.ts:384</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Set the color to draw the graph axes with.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>color: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>the color to draw the graph axes with</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="setdragable" class="tsd-anchor"></a>
 					<h3>set<wbr>Dragable</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
@@ -580,7 +651,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/graph/DisplayAxes.ts#L389">davinci-newton/graph/DisplayAxes.ts:389</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/graph/DisplayAxes.ts#L384">davinci-newton/graph/DisplayAxes.ts:384</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -603,7 +674,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/graph/DisplayAxes.ts#L397">davinci-newton/graph/DisplayAxes.ts:397</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/graph/DisplayAxes.ts#L392">davinci-newton/graph/DisplayAxes.ts:392</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -625,37 +696,6 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="sethorizname" class="tsd-anchor"></a>
-					<h3>set<wbr>Horiz<wbr>Name</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Horiz<wbr>Name<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/graph/DisplayAxes.ts#L406">davinci-newton/graph/DisplayAxes.ts:406</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Sets the name shown next to the horizontal axis</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>name: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>name of the horizontal axis</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="setsimrect" class="tsd-anchor"></a>
 					<h3>set<wbr>Sim<wbr>Rect</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
@@ -665,7 +705,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/graph/DisplayAxes.ts#L416">davinci-newton/graph/DisplayAxes.ts:416</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/graph/DisplayAxes.ts#L410">davinci-newton/graph/DisplayAxes.ts:410</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -688,99 +728,6 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="setverticalname" class="tsd-anchor"></a>
-					<h3>set<wbr>Vertical<wbr>Name</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Vertical<wbr>Name<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/graph/DisplayAxes.ts#L425">davinci-newton/graph/DisplayAxes.ts:425</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Sets the name shown next to the vertical axis</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>name: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>name of the vertical axis</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="setxaxisalignment" class="tsd-anchor"></a>
-					<h3>setXAxis<wbr>Alignment</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">setXAxis<wbr>Alignment<span class="tsd-signature-symbol">(</span>alignment<span class="tsd-signature-symbol">: </span><a href="../enums/verticalalign.html" class="tsd-signature-type">VerticalAlign</a><span class="tsd-signature-symbol">)</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/graph/DisplayAxes.ts#L436">davinci-newton/graph/DisplayAxes.ts:436</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Sets the X-axis alignment: whether it should appear at bottom, top or middle of the
-									simulation rectangle.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>alignment: <a href="../enums/verticalalign.html" class="tsd-signature-type">VerticalAlign</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>X-axis alignment option from VerticalAlign.</p>
-									</div>
-								</li>
-							</ul>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="setyaxisalignment" class="tsd-anchor"></a>
-					<h3>setYAxis<wbr>Alignment</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">setYAxis<wbr>Alignment<span class="tsd-signature-symbol">(</span>alignment<span class="tsd-signature-symbol">: </span><a href="../enums/horizalign.html" class="tsd-signature-type">HorizAlign</a><span class="tsd-signature-symbol">)</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/graph/DisplayAxes.ts#L448">davinci-newton/graph/DisplayAxes.ts:448</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Sets the Y-axis alignment: whether it should appear at left, right or middle of the
-									simulation rectangle.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>alignment: <a href="../enums/horizalign.html" class="tsd-signature-type">HorizAlign</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Y-axis alignment option from HorizAlign.</p>
-									</div>
-								</li>
-							</ul>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="setzindex" class="tsd-anchor"></a>
 					<h3>setZIndex</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
@@ -791,7 +738,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/displayobject.html">DisplayObject</a>.<a href="../interfaces/displayobject.html#setzindex">setZIndex</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/graph/DisplayAxes.ts#L454">davinci-newton/graph/DisplayAxes.ts:454</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/graph/DisplayAxes.ts#L441">davinci-newton/graph/DisplayAxes.ts:441</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -824,6 +771,21 @@
 							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
 								<a href="displayaxes.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
+							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
+								<a href="displayaxes.html#color" class="tsd-kind-icon">color</a>
+							</li>
+							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
+								<a href="displayaxes.html#haxisalign" class="tsd-kind-icon">h<wbr>Axis<wbr>Align</a>
+							</li>
+							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
+								<a href="displayaxes.html#haxislabel" class="tsd-kind-icon">h<wbr>Axis<wbr>Label</a>
+							</li>
+							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
+								<a href="displayaxes.html#vaxisalign" class="tsd-kind-icon">v<wbr>Axis<wbr>Align</a>
+							</li>
+							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
+								<a href="displayaxes.html#vaxislabel" class="tsd-kind-icon">v<wbr>Axis<wbr>Label</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="displayaxes.html#draw" class="tsd-kind-icon">draw</a>
 							</li>
@@ -834,25 +796,10 @@
 								<a href="displayaxes.html#drawvertticks" class="tsd-kind-icon">draw<wbr>Vert<wbr>Ticks</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="displayaxes.html#getcolor" class="tsd-kind-icon">get<wbr>Color</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="displayaxes.html#getfont" class="tsd-kind-icon">get<wbr>Font</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="displayaxes.html#gethorizname" class="tsd-kind-icon">get<wbr>Horiz<wbr>Name</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="displayaxes.html#getsimrect" class="tsd-kind-icon">get<wbr>Sim<wbr>Rect</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="displayaxes.html#getverticalname" class="tsd-kind-icon">get<wbr>Vertical<wbr>Name</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="displayaxes.html#getxaxisalignment" class="tsd-kind-icon">getXAxis<wbr>Alignment</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="displayaxes.html#getyaxisalignment" class="tsd-kind-icon">getYAxis<wbr>Alignment</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="displayaxes.html#getzindex" class="tsd-kind-icon">getZIndex</a>
@@ -864,28 +811,13 @@
 								<a href="displayaxes.html#needsredraw" class="tsd-kind-icon">needs<wbr>Redraw</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="displayaxes.html#setcolor" class="tsd-kind-icon">set<wbr>Color</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="displayaxes.html#setdragable" class="tsd-kind-icon">set<wbr>Dragable</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="displayaxes.html#setfont" class="tsd-kind-icon">set<wbr>Font</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="displayaxes.html#sethorizname" class="tsd-kind-icon">set<wbr>Horiz<wbr>Name</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="displayaxes.html#setsimrect" class="tsd-kind-icon">set<wbr>Sim<wbr>Rect</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="displayaxes.html#setverticalname" class="tsd-kind-icon">set<wbr>Vertical<wbr>Name</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="displayaxes.html#setxaxisalignment" class="tsd-kind-icon">setXAxis<wbr>Alignment</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="displayaxes.html#setyaxisalignment" class="tsd-kind-icon">setYAxis<wbr>Alignment</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="displayaxes.html#setzindex" class="tsd-kind-icon">setZIndex</a>

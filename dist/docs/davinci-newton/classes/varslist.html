@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>VarsList | NEWTON 0.0.10</title>
+	<title>VarsList | NEWTON 0.0.11</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">NEWTON 0.0.10</a>
+					<a href="../index.html" class="title">NEWTON 0.0.11</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -94,6 +94,15 @@
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="varslist.html#kinetic_energy" class="tsd-kind-icon">KINETIC_<wbr>ENERGY</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="varslist.html#potential_energy" class="tsd-kind-icon">POTENTIAL_<wbr>ENERGY</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="varslist.html#time" class="tsd-kind-icon">TIME</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="varslist.html#total_energy" class="tsd-kind-icon">TOTAL_<wbr>ENERGY</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-external">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="varslist.html#addobserver" class="tsd-kind-icon">add<wbr>Observer</a></li>
@@ -137,13 +146,13 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Vars<wbr>List<span class="tsd-signature-symbol">(</span>varNames<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, localNames<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="varslist.html" class="tsd-signature-type">VarsList</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Vars<wbr>List<span class="tsd-signature-symbol">(</span>varNames<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="varslist.html" class="tsd-signature-type">VarsList</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/core/VarsList.ts#L61">davinci-newton/core/VarsList.ts:61</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/core/VarsList.ts#L73">davinci-newton/core/VarsList.ts:73</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -151,13 +160,53 @@
 								<li>
 									<h5>varNames: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
-								<li>
-									<h5>localNames: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
-								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="varslist.html" class="tsd-signature-type">VarsList</a></h4>
 						</li>
 					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="kinetic_energy" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> KINETIC_<wbr>ENERGY</h3>
+					<div class="tsd-signature tsd-kind-icon">KINETIC_<wbr>ENERGY<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"KINETIC_ENERGY"</span><span class="tsd-signature-symbol"> =&nbsp;&quot;KINETIC_ENERGY&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/core/VarsList.ts#L44">davinci-newton/core/VarsList.ts:44</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="potential_energy" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> POTENTIAL_<wbr>ENERGY</h3>
+					<div class="tsd-signature tsd-kind-icon">POTENTIAL_<wbr>ENERGY<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"POTENTIAL_ENERGY"</span><span class="tsd-signature-symbol"> =&nbsp;&quot;POTENTIAL_ENERGY&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/core/VarsList.ts#L48">davinci-newton/core/VarsList.ts:48</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="time" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> TIME</h3>
+					<div class="tsd-signature tsd-kind-icon">TIME<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"TIME"</span><span class="tsd-signature-symbol"> =&nbsp;&quot;TIME&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/core/VarsList.ts#L40">davinci-newton/core/VarsList.ts:40</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="total_energy" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> TOTAL_<wbr>ENERGY</h3>
+					<div class="tsd-signature tsd-kind-icon">TOTAL_<wbr>ENERGY<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"TOTAL_ENERGY"</span><span class="tsd-signature-symbol"> =&nbsp;&quot;TOTAL_ENERGY&quot;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/core/VarsList.ts#L52">davinci-newton/core/VarsList.ts:52</a></li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
@@ -174,7 +223,7 @@
 								<p>Implementation of <a href="../interfaces/subject.html">Subject</a>.<a href="../interfaces/subject.html#addobserver">addObserver</a></p>
 								<p>Inherited from <a href="abstractsubject.html">AbstractSubject</a>.<a href="abstractsubject.html#addobserver">addObserver</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/util/AbstractSubject.ts#L48">davinci-newton/util/AbstractSubject.ts:48</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/util/AbstractSubject.ts#L48">davinci-newton/util/AbstractSubject.ts:48</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -198,7 +247,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="abstractsubject.html">AbstractSubject</a>.<a href="abstractsubject.html#addparameter">addParameter</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/util/AbstractSubject.ts#L63">davinci-newton/util/AbstractSubject.ts:63</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/util/AbstractSubject.ts#L63">davinci-newton/util/AbstractSubject.ts:63</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -234,7 +283,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/core/VarsList.ts#L289">davinci-newton/core/VarsList.ts:289</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/core/VarsList.ts#L292">davinci-newton/core/VarsList.ts:292</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -265,13 +314,13 @@
 					<a name="addvariables" class="tsd-anchor"></a>
 					<h3>add<wbr>Variables</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">add<wbr>Variables<span class="tsd-signature-symbol">(</span>names<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, localNames<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+						<li class="tsd-signature tsd-kind-icon">add<wbr>Variables<span class="tsd-signature-symbol">(</span>names<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/core/VarsList.ts#L138">davinci-newton/core/VarsList.ts:138</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/core/VarsList.ts#L145">davinci-newton/core/VarsList.ts:145</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -293,12 +342,6 @@
 										underscorized so the English name can be passed in here.</p>
 									</div>
 								</li>
-								<li>
-									<h5>localNames: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>localized names of variables</p>
-									</div>
-								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
 							<p>index index of first Variable that was added</p>
@@ -317,7 +360,7 @@
 								<p>Implementation of <a href="../interfaces/subject.html">Subject</a>.<a href="../interfaces/subject.html#broadcast">broadcast</a></p>
 								<p>Inherited from <a href="abstractsubject.html">AbstractSubject</a>.<a href="abstractsubject.html#broadcast">broadcast</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/util/AbstractSubject.ts#L123">davinci-newton/util/AbstractSubject.ts:123</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/util/AbstractSubject.ts#L123">davinci-newton/util/AbstractSubject.ts:123</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -342,7 +385,7 @@
 								<p>Implementation of <a href="../interfaces/subject.html">Subject</a>.<a href="../interfaces/subject.html#broadcastparameter">broadcastParameter</a></p>
 								<p>Inherited from <a href="abstractsubject.html">AbstractSubject</a>.<a href="abstractsubject.html#broadcastparameter">broadcastParameter</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/util/AbstractSubject.ts#L132">davinci-newton/util/AbstractSubject.ts:132</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/util/AbstractSubject.ts#L132">davinci-newton/util/AbstractSubject.ts:132</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -365,7 +408,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/core/VarsList.ts#L171">davinci-newton/core/VarsList.ts:171</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/core/VarsList.ts#L175">davinci-newton/core/VarsList.ts:175</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -406,7 +449,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="abstractsubject.html">AbstractSubject</a>.<a href="abstractsubject.html#getbroadcast">getBroadcast</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/util/AbstractSubject.ts#L144">davinci-newton/util/AbstractSubject.ts:144</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/util/AbstractSubject.ts#L144">davinci-newton/util/AbstractSubject.ts:144</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -429,7 +472,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/core/VarsList.ts#L309">davinci-newton/core/VarsList.ts:309</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/core/VarsList.ts#L312">davinci-newton/core/VarsList.ts:312</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -454,7 +497,7 @@
 								<p>Implementation of <a href="../interfaces/subject.html">Subject</a>.<a href="../interfaces/subject.html#getobservers">getObservers</a></p>
 								<p>Inherited from <a href="abstractsubject.html">AbstractSubject</a>.<a href="abstractsubject.html#getobservers">getObservers</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/util/AbstractSubject.ts#L151">davinci-newton/util/AbstractSubject.ts:151</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/util/AbstractSubject.ts#L151">davinci-newton/util/AbstractSubject.ts:151</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/observer.html" class="tsd-signature-type">Observer</a><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -473,7 +516,7 @@
 								<p>Implementation of <a href="../interfaces/subject.html">Subject</a>.<a href="../interfaces/subject.html#getparameter">getParameter</a></p>
 								<p>Overrides <a href="abstractsubject.html">AbstractSubject</a>.<a href="abstractsubject.html#getparameter">getParameter</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/core/VarsList.ts#L313">davinci-newton/core/VarsList.ts:313</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/core/VarsList.ts#L316">davinci-newton/core/VarsList.ts:316</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -498,7 +541,7 @@
 								<p>Implementation of <a href="../interfaces/subject.html">Subject</a>.<a href="../interfaces/subject.html#getparameterboolean">getParameterBoolean</a></p>
 								<p>Inherited from <a href="abstractsubject.html">AbstractSubject</a>.<a href="abstractsubject.html#getparameterboolean">getParameterBoolean</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/util/AbstractSubject.ts#L92">davinci-newton/util/AbstractSubject.ts:92</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/util/AbstractSubject.ts#L92">davinci-newton/util/AbstractSubject.ts:92</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -523,7 +566,7 @@
 								<p>Implementation of <a href="../interfaces/subject.html">Subject</a>.<a href="../interfaces/subject.html#getparameternumber">getParameterNumber</a></p>
 								<p>Inherited from <a href="abstractsubject.html">AbstractSubject</a>.<a href="abstractsubject.html#getparameternumber">getParameterNumber</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/util/AbstractSubject.ts#L100">davinci-newton/util/AbstractSubject.ts:100</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/util/AbstractSubject.ts#L100">davinci-newton/util/AbstractSubject.ts:100</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -548,7 +591,7 @@
 								<p>Implementation of <a href="../interfaces/subject.html">Subject</a>.<a href="../interfaces/subject.html#getparameterstring">getParameterString</a></p>
 								<p>Inherited from <a href="abstractsubject.html">AbstractSubject</a>.<a href="abstractsubject.html#getparameterstring">getParameterString</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/util/AbstractSubject.ts#L108">davinci-newton/util/AbstractSubject.ts:108</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/util/AbstractSubject.ts#L108">davinci-newton/util/AbstractSubject.ts:108</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -573,7 +616,7 @@
 								<p>Implementation of <a href="../interfaces/subject.html">Subject</a>.<a href="../interfaces/subject.html#getparameters">getParameters</a></p>
 								<p>Overrides <a href="abstractsubject.html">AbstractSubject</a>.<a href="abstractsubject.html#getparameters">getParameters</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/core/VarsList.ts#L324">davinci-newton/core/VarsList.ts:324</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/core/VarsList.ts#L327">davinci-newton/core/VarsList.ts:327</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="../interfaces/variable.html" class="tsd-signature-type">Variable</a><span class="tsd-signature-symbol">[]</span></h4>
@@ -590,7 +633,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/core/VarsList.ts#L336">davinci-newton/core/VarsList.ts:336</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/core/VarsList.ts#L339">davinci-newton/core/VarsList.ts:339</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -620,7 +663,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/core/VarsList.ts#L213">davinci-newton/core/VarsList.ts:213</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/core/VarsList.ts#L216">davinci-newton/core/VarsList.ts:216</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -652,7 +695,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/core/VarsList.ts#L221">davinci-newton/core/VarsList.ts:221</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/core/VarsList.ts#L224">davinci-newton/core/VarsList.ts:224</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -674,7 +717,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/core/VarsList.ts#L349">davinci-newton/core/VarsList.ts:349</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/core/VarsList.ts#L352">davinci-newton/core/VarsList.ts:352</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -707,7 +750,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/core/VarsList.ts#L192">davinci-newton/core/VarsList.ts:192</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/core/VarsList.ts#L195">davinci-newton/core/VarsList.ts:195</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -741,7 +784,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/core/VarsList.ts#L372">davinci-newton/core/VarsList.ts:372</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/core/VarsList.ts#L375">davinci-newton/core/VarsList.ts:375</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -767,7 +810,7 @@
 								<p>Implementation of <a href="../interfaces/subject.html">Subject</a>.<a href="../interfaces/subject.html#removeobserver">removeObserver</a></p>
 								<p>Inherited from <a href="abstractsubject.html">AbstractSubject</a>.<a href="abstractsubject.html#removeobserver">removeObserver</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/util/AbstractSubject.ts#L54">davinci-newton/util/AbstractSubject.ts:54</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/util/AbstractSubject.ts#L54">davinci-newton/util/AbstractSubject.ts:54</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -790,7 +833,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/core/VarsList.ts#L380">davinci-newton/core/VarsList.ts:380</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/core/VarsList.ts#L383">davinci-newton/core/VarsList.ts:383</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -813,7 +856,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/core/VarsList.ts#L396">davinci-newton/core/VarsList.ts:396</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/core/VarsList.ts#L399">davinci-newton/core/VarsList.ts:399</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -844,7 +887,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/core/VarsList.ts#L408">davinci-newton/core/VarsList.ts:408</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/core/VarsList.ts#L411">davinci-newton/core/VarsList.ts:411</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -875,7 +918,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/core/VarsList.ts#L417">davinci-newton/core/VarsList.ts:417</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/core/VarsList.ts#L420">davinci-newton/core/VarsList.ts:420</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -911,7 +954,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/core/VarsList.ts#L261">davinci-newton/core/VarsList.ts:261</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/core/VarsList.ts#L264">davinci-newton/core/VarsList.ts:264</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -963,7 +1006,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/core/VarsList.ts#L236">davinci-newton/core/VarsList.ts:236</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/core/VarsList.ts#L239">davinci-newton/core/VarsList.ts:239</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1010,7 +1053,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/core/VarsList.ts#L424">davinci-newton/core/VarsList.ts:424</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/core/VarsList.ts#L427">davinci-newton/core/VarsList.ts:427</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1032,7 +1075,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/core/VarsList.ts#L431">davinci-newton/core/VarsList.ts:431</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/core/VarsList.ts#L434">davinci-newton/core/VarsList.ts:434</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1063,6 +1106,18 @@
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
 								<a href="varslist.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="varslist.html#kinetic_energy" class="tsd-kind-icon">KINETIC_<wbr>ENERGY</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="varslist.html#potential_energy" class="tsd-kind-icon">POTENTIAL_<wbr>ENERGY</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="varslist.html#time" class="tsd-kind-icon">TIME</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="varslist.html#total_energy" class="tsd-kind-icon">TOTAL_<wbr>ENERGY</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="varslist.html#addobserver" class="tsd-kind-icon">add<wbr>Observer</a>

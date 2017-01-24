@@ -14,7 +14,7 @@ declare module NEWTON {
         /**
          * 
          */
-        getExpireTime(): number;
+        expireTime: number;
     }
 
     class SimList {
@@ -29,15 +29,15 @@ declare module NEWTON {
         /**
          * 
          */
+        simList: SimList;
+        /**
+         * 
+         */
+        varsList: VarsList;
+        /**
+         * 
+         */
         evaluate(vars: number[], change: number[], timeStep: number): void;
-        /**
-         * 
-         */
-        getSimList(): SimList;
-        /**
-         * 
-         */
-        getVarsList(): VarsList;
         /**
          * 
          */
@@ -58,7 +58,7 @@ declare module NEWTON {
 
     class VarsList {
         constructor();
-        addVariables(names: string[], localNames: string[]): number;
+        addVariables(names: string[]): number;
         deleteVariables(index: number, howMany: number): void;
         incrSequence(...indexes: number[]);
         getValues(): number[];
@@ -159,6 +159,10 @@ declare module NEWTON {
          */
         L: Bivector3;
         /**
+         * 
+         */
+        expireTime: number;
+        /**
          * The starting index of this rigid body in the state variables.
          */
         varsIndex: number;
@@ -166,10 +170,6 @@ declare module NEWTON {
          * 
          */
         constructor();
-        /**
-         * 
-         */
-        getExpireTime(): number;
         /**
          * 
          */
@@ -204,10 +204,12 @@ declare module NEWTON {
         /**
          * 
          */
+        expireTime: number;
+        /**
+         * 
+         */
         constructor(body: RigidBody);
         getBody(): RigidBody;
-        getExpireTime(): number;
-        setExpireTime(time: number): void;
     }
 
     interface ForceLaw extends SimObject {
@@ -217,6 +219,14 @@ declare module NEWTON {
     }
 
     class RigidBodySim implements Simulation {
+        /**
+         * 
+         */
+        simList: SimList;
+        /**
+         * 
+         */
+        varsList: VarsList;
         /**
          * Determines whether calculated forces will be added to the simulation list.
          */
@@ -229,8 +239,6 @@ declare module NEWTON {
         evaluate(vars: number[], change: number[], time: number): void;
         getTime();
         modifyObjects();
-        getSimList(): SimList;
-        getVarsList(): VarsList;
         saveState(): void;
         restoreState(): void;
         findCollisions(collisions: Collision[], vars: number[], stepSize: number): void;
@@ -355,10 +363,13 @@ declare module NEWTON {
         /**
          * 
          */
+        expireTime: number;
+        /**
+         * 
+         */
         constructor(body1: RigidBody, body2: RigidBody);
         calculateForces(): Force[];
         disconnect(): void;
-        getExpireTime(): number;
         getPotentialEnergy(): number;
     }
 
@@ -369,10 +380,13 @@ declare module NEWTON {
         /**
          * 
          */
+        expireTime: number;
+        /**
+         * 
+         */
         constructor(body1: RigidBody, body2: RigidBody);
         calculateForces(): Force[];
         disconnect(): void;
-        getExpireTime(): number;
         getPotentialEnergy(): number;
     }
 
@@ -387,26 +401,64 @@ declare module NEWTON {
     /**
      * 
      */
+    enum AxisChoice {
+        HORIZONTAL = 1,
+        VERTICAL = 2,
+        BOTH = 3
+    }
+
+    /**
+     * 
+     */
     class AutoScale {
+        /**
+         * 
+         */
+        active: boolean;
+        /**
+         * 
+         */
+        axisChoice: AxisChoice;
+        /**
+         * 
+         */
+        enabled: boolean;
+        /**
+         * 
+         */
+        timeWindow: number;
+        /**
+         * 
+         */
         constructor(view: SimView);
-        getActive(): boolean;
-        setActive(value: boolean): void;
-        getAxis(): string;
-        setAxis(axis: string): void;
-        getEnabled(): boolean;
-        setEnabled(value: boolean): void;
-        getTimeWindow(): number;
-        setTimeWindow(timeWindow: number): void;
+        /**
+         * 
+         */
         addGraphLine(graphLine: GraphLine): void;
+        /**
+         * 
+         */
         clearRange(): void;
+        /**
+         * 
+         */
         getRangeRect(): DoubleRect;
+        /**
+         * 
+         */
         memorize(): void;
         // observe(event: SubjectEvent): void;
+        /**
+         * 
+         */
         removeGraphLine(graphLine: GraphLine): void;
+        /**
+         * 
+         */
         reset(): void;
     }
 
-    enum HorizAlign {
+    enum AlignH {
         LEFT = 0,
         MIDDLE = 1,
         RIGHT = 2,
@@ -414,7 +466,7 @@ declare module NEWTON {
     }
 
 
-    enum VerticalAlign {
+    enum AlignV {
         TOP = 0,
         MIDDLE = 1,
         BOTTOM = 2,
@@ -425,14 +477,31 @@ declare module NEWTON {
      * 
      */
     class DisplayAxes {
-        getColor(): string;
-        setColor(color: string): void;
-        setHorizName(name: string): void;
-        setVerticalName(name: string): void;
-        setXAxisAlignment(alignment: VerticalAlign): this;
-        setYAxisAlignment(alignment: HorizAlign): this;
+        /**
+         * 
+         */
+        color: string;
+        /**
+         * The label for the horizontal axis.
+         */
+        hAxisLabel: string;
+        /**
+         * The label for the vertical axis.
+         */
+        vAxisLabel: string;
+        /**
+         * The alignment for the horizontal axis.
+         */
+        hAxisAlign: AlignV;
+        /**
+         * The alignment for the vertical axis.
+         */
+        vAxisAlign: AlignH;
     }
 
+    /**
+     * 
+     */
     enum DrawingMode {
         DOTS = 0,
         LINES = 1
@@ -442,25 +511,47 @@ declare module NEWTON {
      * 
      */
     interface GraphLine {
-        getColor(): string;
-        getDrawingMode(): DrawingMode;
+        /**
+         * 
+         */
+        color: string;
+        /**
+         * 
+         */
+        drawingMode: DrawingMode;
+        /**
+         * The variable index used for the horizontal coordinate.
+         */
+        hCoordIndex: number;
+        /**
+         * 
+         */
+        lineWidth: number;
+        /**
+         * 
+         */
+        varsList: VarsList;
+        /**
+         * The variable index used for the vertical coordinate.
+         */
+        vCoordIndex: number;
+        /**
+         * 
+         */
         // getGraphPoints(): CircularList<GraphPoint>;
         // getGraphStyle(index: number): GraphStyle;
         getHotSpotColor(): string;
-        getLineWidth(): number;
-        getVarsList(): VarsList;
-        getXVariable(): number;
+        /**
+         * 
+         */
         getXVarName(): string;
-        getYVariable(): number;
+        /**
+         * 
+         */
         getYVarName(): string;
         reset(): void;
         resetStyle(): void;
-        setColor(color: string): void;
-        setDrawingMode(drawingMode: DrawingMode): void;
         setHotSpotColor(color: string): void;
-        setLineWidth(lineWidth: number): void;
-        setXVariable(index: number): void;
-        setYVariable(index: number): void;
     }
 
     /**
@@ -482,7 +573,7 @@ declare module NEWTON {
         /**
          * 
          */
-        addTrace(): GraphLine;
+        addGraphLine(): GraphLine;
         /**
          * 
          */

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Variable | NEWTON 0.0.10</title>
+	<title>Variable | NEWTON 0.0.11</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">NEWTON 0.0.10</a>
+					<a href="../index.html" class="title">NEWTON 0.0.11</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -94,11 +94,16 @@
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
+						<section class="tsd-index-section tsd-is-inherited tsd-is-external">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external"><a href="variable.html#name" class="tsd-kind-icon">name</a></li>
+							</ul>
+						</section>
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="variable.html#getbroadcast" class="tsd-kind-icon">get<wbr>Broadcast</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external"><a href="variable.html#getname" class="tsd-kind-icon">get<wbr>Name</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="variable.html#getsequence" class="tsd-kind-icon">get<wbr>Sequence</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external"><a href="variable.html#getsubject" class="tsd-kind-icon">get<wbr>Subject</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="variable.html#getvalue" class="tsd-kind-icon">get<wbr>Value</a></li>
@@ -113,6 +118,20 @@
 					</div>
 				</section>
 			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-inherited tsd-is-external">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
+					<a name="name" class="tsd-anchor"></a>
+					<h3>name</h3>
+					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="subjectevent.html">SubjectEvent</a>.<a href="subjectevent.html#name">name</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/util/SubjectEvent.ts#L22">davinci-newton/util/SubjectEvent.ts:22</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
@@ -125,7 +144,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/model/Variable.ts#L26">davinci-newton/model/Variable.ts:26</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/model/Variable.ts#L26">davinci-newton/model/Variable.ts:26</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -135,24 +154,6 @@
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 							<p>whether the Variable is broadcast when it changes discontinuously</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
-					<a name="getname" class="tsd-anchor"></a>
-					<h3>get<wbr>Name</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Name<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="subjectevent.html">SubjectEvent</a>.<a href="subjectevent.html#getname">getName</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/util/SubjectEvent.ts#L26">davinci-newton/util/SubjectEvent.ts:26</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -166,7 +167,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/model/Variable.ts#L40">davinci-newton/model/Variable.ts:40</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/model/Variable.ts#L40">davinci-newton/model/Variable.ts:40</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -197,7 +198,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="subjectevent.html">SubjectEvent</a>.<a href="subjectevent.html#getsubject">getSubject</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/util/SubjectEvent.ts#L22">davinci-newton/util/SubjectEvent.ts:22</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/util/SubjectEvent.ts#L26">davinci-newton/util/SubjectEvent.ts:26</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -219,7 +220,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/model/Variable.ts#L45">davinci-newton/model/Variable.ts:45</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/model/Variable.ts#L45">davinci-newton/model/Variable.ts:45</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -241,7 +242,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/model/Variable.ts#L52">davinci-newton/model/Variable.ts:52</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/model/Variable.ts#L52">davinci-newton/model/Variable.ts:52</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -266,7 +267,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="subjectevent.html">SubjectEvent</a>.<a href="subjectevent.html#nameequals">nameEquals</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/util/SubjectEvent.ts#L30">davinci-newton/util/SubjectEvent.ts:30</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/util/SubjectEvent.ts#L30">davinci-newton/util/SubjectEvent.ts:30</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -289,7 +290,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/model/Variable.ts#L58">davinci-newton/model/Variable.ts:58</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/model/Variable.ts#L58">davinci-newton/model/Variable.ts:58</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -318,7 +319,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="parameter.html">Parameter</a>.<a href="parameter.html#setcomputed">setComputed</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/util/Parameter.ts#L23">davinci-newton/util/Parameter.ts:23</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/util/Parameter.ts#L23">davinci-newton/util/Parameter.ts:23</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -349,7 +350,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/model/Variable.ts#L63">davinci-newton/model/Variable.ts:63</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/model/Variable.ts#L63">davinci-newton/model/Variable.ts:63</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -377,7 +378,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5a57714/src/davinci-newton/model/Variable.ts#L69">davinci-newton/model/Variable.ts:69</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/475bdf6/src/davinci-newton/model/Variable.ts#L69">davinci-newton/model/Variable.ts:69</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -413,11 +414,11 @@
 					<li class="current tsd-kind-interface tsd-is-external">
 						<a href="variable.html" class="tsd-kind-icon">Variable</a>
 						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
+								<a href="variable.html#name" class="tsd-kind-icon">name</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
 								<a href="variable.html#getbroadcast" class="tsd-kind-icon">get<wbr>Broadcast</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
-								<a href="variable.html#getname" class="tsd-kind-icon">get<wbr>Name</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
 								<a href="variable.html#getsequence" class="tsd-kind-icon">get<wbr>Sequence</a>
