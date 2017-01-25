@@ -29,11 +29,15 @@ declare module NEWTON {
         /**
          * 
          */
-        simList: SimList;
+        time: number;
+        /**
+         * Handler for actions to be performed before getState and the evaluate calls.
+         */
+        prolog(): void;
         /**
          * 
          */
-        varsList: VarsList;
+        getState(): number[];
         /**
          * 
          */
@@ -41,19 +45,11 @@ declare module NEWTON {
         /**
          * 
          */
-        saveState(): void;
+        setState(vars: number[]): void;
         /**
-         * 
+         * Handler for actions to be performed after the evaluate calls and setState.
          */
-        restoreState(): void;
-        /**
-         * 
-         */
-        getTime(): number;
-        /**
-         * 
-         */
-        modifyObjects(): void;
+        epilog(): void;
     }
 
     class VarsList {
@@ -73,15 +69,15 @@ declare module NEWTON {
      */
     class Vec3 implements VectorE3 {
         /**
-         * readonly x coordinate.
+         * x coordinate.
          */
         x: number;
         /**
-         * readonly y coordinate.
+         * y coordinate.
          */
         y: number;
         /**
-         * readonly z coordinate.
+         * z coordinate.
          */
         z: number;
         static ORIGIN: Vec3;
@@ -266,6 +262,11 @@ declare module NEWTON {
      * 
      */
     class Physics3 implements Simulation {
+        static INDEX_TIME: number;
+        static INDEX_TRANSLATIONAL_KINETIC_ENERGY: number;
+        static INDEX_ROTATIONAL_KINETIC_ENERGY: number;
+        static INDEX_POTENTIAL_ENERGY: number;
+        static INDEX_TOTAL_ENERGY: number;
         /**
          * 
          */
@@ -279,6 +280,10 @@ declare module NEWTON {
          */
         showForces: boolean;
         /**
+         * 
+         */
+        time: number;
+        /**
          *
          */
         constructor();
@@ -286,11 +291,13 @@ declare module NEWTON {
         removeBody(body: RigidBody3): void;
         addForceLaw(forceLaw: ForceLaw3): void;
         removeForceLaw(forceLaw: ForceLaw3): void;
-        evaluate(vars: number[], change: number[], time: number): void;
-        getTime(): number;
-        modifyObjects(): void;
-        saveState(): void;
-        restoreState(): void;
+        prolog(): void;
+        getState(): number[];
+        evaluate(state: number[], change: number[], timeOffset: number): void;
+        setState(state: number[]): void;
+        epilog(): void;
+        // saveState(): void;
+        // restoreState(): void;
         // findCollisions(collisions: Collision[], vars: number[], stepSize: number): void;
     }
 

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Simulation | NEWTON 0.0.13</title>
+	<title>Simulation | NEWTON 0.0.14</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">NEWTON 0.0.13</a>
+					<a href="../index.html" class="title">NEWTON 0.0.14</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -85,18 +85,17 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="simulation.html#simlist" class="tsd-kind-icon">sim<wbr>List</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="simulation.html#varslist" class="tsd-kind-icon">vars<wbr>List</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="simulation.html#time" class="tsd-kind-icon">time</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="simulation.html#epilog" class="tsd-kind-icon">epilog</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="simulation.html#evaluate" class="tsd-kind-icon">evaluate</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="simulation.html#gettime" class="tsd-kind-icon">get<wbr>Time</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="simulation.html#modifyobjects" class="tsd-kind-icon">modify<wbr>Objects</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="simulation.html#restorestate" class="tsd-kind-icon">restore<wbr>State</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="simulation.html#savestate" class="tsd-kind-icon">save<wbr>State</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="simulation.html#getstate" class="tsd-kind-icon">get<wbr>State</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="simulation.html#prolog" class="tsd-kind-icon">prolog</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="simulation.html#setstate" class="tsd-kind-icon">set<wbr>State</a></li>
 							</ul>
 						</section>
 					</div>
@@ -105,22 +104,12 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-					<a name="simlist" class="tsd-anchor"></a>
-					<h3>sim<wbr>List</h3>
-					<div class="tsd-signature tsd-kind-icon">sim<wbr>List<span class="tsd-signature-symbol">:</span> <a href="../classes/simlist.html" class="tsd-signature-type">SimList</a></div>
+					<a name="time" class="tsd-anchor"></a>
+					<h3>time</h3>
+					<div class="tsd-signature tsd-kind-icon">time<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5ac18ce/src/davinci-newton/core/Simulation.ts#L26">davinci-newton/core/Simulation.ts:26</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-					<a name="varslist" class="tsd-anchor"></a>
-					<h3>vars<wbr>List</h3>
-					<div class="tsd-signature tsd-kind-icon">vars<wbr>List<span class="tsd-signature-symbol">:</span> <a href="../classes/varslist.html" class="tsd-signature-type">VarsList</a></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5ac18ce/src/davinci-newton/core/Simulation.ts#L30">davinci-newton/core/Simulation.ts:30</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/e6f6374/src/davinci-newton/core/Simulation.ts#L23">davinci-newton/core/Simulation.ts:23</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -128,28 +117,50 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-					<a name="evaluate" class="tsd-anchor"></a>
-					<h3>evaluate</h3>
+					<a name="epilog" class="tsd-anchor"></a>
+					<h3>epilog</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">evaluate<span class="tsd-signature-symbol">(</span>vars<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span>, change<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span>, timeStep<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">epilog<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5ac18ce/src/davinci-newton/core/Simulation.ts#L34">davinci-newton/core/Simulation.ts:34</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/e6f6374/src/davinci-newton/core/Simulation.ts#L43">davinci-newton/core/Simulation.ts:43</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Handler for actions to be performed after the evaluate calls and setState.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+					<a name="evaluate" class="tsd-anchor"></a>
+					<h3>evaluate</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">evaluate<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span>, change<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span>, timeOffset<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/e6f6374/src/davinci-newton/core/Simulation.ts#L35">davinci-newton/core/Simulation.ts:35</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>vars: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>state: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 								<li>
 									<h5>change: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 								<li>
-									<h5>timeStep: <span class="tsd-signature-type">number</span></h5>
+									<h5>timeOffset: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -157,69 +168,63 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-					<a name="gettime" class="tsd-anchor"></a>
-					<h3>get<wbr>Time</h3>
+					<a name="getstate" class="tsd-anchor"></a>
+					<h3>get<wbr>State</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Time<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>State<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5ac18ce/src/davinci-newton/core/Simulation.ts#L46">davinci-newton/core/Simulation.ts:46</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/e6f6374/src/davinci-newton/core/Simulation.ts#L31">davinci-newton/core/Simulation.ts:31</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-					<a name="modifyobjects" class="tsd-anchor"></a>
-					<h3>modify<wbr>Objects</h3>
+					<a name="prolog" class="tsd-anchor"></a>
+					<h3>prolog</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">modify<wbr>Objects<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">prolog<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5ac18ce/src/davinci-newton/core/Simulation.ts#L50">davinci-newton/core/Simulation.ts:50</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/e6f6374/src/davinci-newton/core/Simulation.ts#L27">davinci-newton/core/Simulation.ts:27</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Handler for actions to be performed before getState and the evaluate calls.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-					<a name="restorestate" class="tsd-anchor"></a>
-					<h3>restore<wbr>State</h3>
+					<a name="setstate" class="tsd-anchor"></a>
+					<h3>set<wbr>State</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">restore<wbr>State<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">set<wbr>State<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5ac18ce/src/davinci-newton/core/Simulation.ts#L42">davinci-newton/core/Simulation.ts:42</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/e6f6374/src/davinci-newton/core/Simulation.ts#L39">davinci-newton/core/Simulation.ts:39</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-					<a name="savestate" class="tsd-anchor"></a>
-					<h3>save<wbr>State</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">save<wbr>State<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5ac18ce/src/davinci-newton/core/Simulation.ts#L38">davinci-newton/core/Simulation.ts:38</a></li>
-								</ul>
-							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>state: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
+								</li>
+							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -242,25 +247,22 @@
 						<a href="simulation.html" class="tsd-kind-icon">Simulation</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-								<a href="simulation.html#simlist" class="tsd-kind-icon">sim<wbr>List</a>
+								<a href="simulation.html#time" class="tsd-kind-icon">time</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-								<a href="simulation.html#varslist" class="tsd-kind-icon">vars<wbr>List</a>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+								<a href="simulation.html#epilog" class="tsd-kind-icon">epilog</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
 								<a href="simulation.html#evaluate" class="tsd-kind-icon">evaluate</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-								<a href="simulation.html#gettime" class="tsd-kind-icon">get<wbr>Time</a>
+								<a href="simulation.html#getstate" class="tsd-kind-icon">get<wbr>State</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-								<a href="simulation.html#modifyobjects" class="tsd-kind-icon">modify<wbr>Objects</a>
+								<a href="simulation.html#prolog" class="tsd-kind-icon">prolog</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-								<a href="simulation.html#restorestate" class="tsd-kind-icon">restore<wbr>State</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-								<a href="simulation.html#savestate" class="tsd-kind-icon">save<wbr>State</a>
+								<a href="simulation.html#setstate" class="tsd-kind-icon">set<wbr>State</a>
 							</li>
 						</ul>
 					</li>
