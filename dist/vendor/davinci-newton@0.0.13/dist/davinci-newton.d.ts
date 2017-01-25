@@ -126,6 +126,7 @@ declare module NEWTON {
         yz: number;
         zx: number;
         xy: number;
+        copy(B: BivectorE3): this;
     }
 
 
@@ -143,6 +144,30 @@ declare module NEWTON {
         xy: number;
     }
 
+    interface MatrixLike {
+        dimensions: number;
+        getElement(row: number, column: number): number;
+    }
+
+    /**
+     * A mutable 3x3 matrix.
+     */
+    class Matrix3 implements MatrixLike {
+        dimensions: number;
+        /**
+         * Constructs a mutable 3x3 identity matrix.
+         */
+        constructor();
+        copy(source: MatrixLike): this;
+        getElement(row: number, column: number): number;
+        inv(): this;
+        mul(rhs: Matrix3): this;
+        rmul(lhs: Matrix3): this;
+        rotation(spinor: SpinorE3): this;
+        setElement(row: number, column: number, value: number): void;
+        transpose(): this;
+    }
+
     /**
      * 
      */
@@ -152,6 +177,10 @@ declare module NEWTON {
          */
         M: number;
         /**
+         * Inertia Tensor (in body coordinates) inverse (3x3 matrix).
+         */
+        Iinv: MatrixLike;
+        /**
          * Position (vector).
          */
         X: Vector3;
@@ -160,13 +189,17 @@ declare module NEWTON {
          */
         R: Spinor3;
         /**
-         * Linear Momentum (vector).
+         * Linear momentum (vector).
          */
         P: Vector3;
         /**
-         * Angular Momentum (bivector).
+         * Angular momentum (bivector).
          */
         L: Bivector3;
+        /**
+         * Angular velocity (bivector).
+         */
+        Ω: Bivector3;
         /**
          * 
          */
@@ -394,6 +427,22 @@ declare module NEWTON {
      * 
      */
     class Spring3 implements ForceLaw3 {
+        /**
+         * 
+         */
+        attach1: VectorE3;
+        /**
+         * 
+         */
+        attach2: VectorE3;
+        /**
+         * 
+         */
+        end1: Vec3;
+        /**
+         * 
+         */
+        end2: Vec3;
         /**
          * 
          */
