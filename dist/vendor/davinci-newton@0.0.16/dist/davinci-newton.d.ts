@@ -173,6 +173,10 @@ declare module NEWTON {
          */
         M: number;
         /**
+         * Inertia Tensor (in body coordinates) (3x3 matrix).
+         */
+        I: MatrixLike;
+        /**
          * Inertia Tensor (in body coordinates) inverse (3x3 matrix).
          */
         Iinv: MatrixLike;
@@ -211,11 +215,42 @@ declare module NEWTON {
         /**
          * 
          */
+        protected updateInertiaTensor(): void;
+        /**
+         * 
+         */
         rotationalEnergy(): number;
         /**
          * 
          */
         translationalEnergy(): number;
+    }
+
+    /**
+     * A rectangular block of uniform density.
+     */
+    class Block3 extends RigidBody3 {
+        width: number;
+        height: number;
+        depth: number;
+        constructor(width?: number, height?: number, depth?: number);
+    }
+
+    /**
+     * A solid cylinder of uniform density.
+     */
+    class Cylinder3 extends RigidBody3 {
+        radius: number;
+        height: number;
+        constructor(radius?: number, height?: number);
+    }
+
+    /**
+     * A solid sphere of uniform density.
+     */
+    class Sphere3 extends RigidBody3 {
+        radius: number;
+        constructor(radius?: number);
     }
 
     /*
@@ -267,6 +302,19 @@ declare module NEWTON {
         static INDEX_ROTATIONAL_KINETIC_ENERGY: number;
         static INDEX_POTENTIAL_ENERGY: number;
         static INDEX_TOTAL_ENERGY: number;
+        static OFFSET_POSITION_X: number;
+        static OFFSET_POSITION_Y: number;
+        static OFFSET_POSITION_Z: number;
+        static OFFSET_ATTITUDE_A: number;
+        static OFFSET_ATTITUDE_YZ: number;
+        static OFFSET_ATTITUDE_ZX: number;
+        static OFFSET_ATTITUDE_XY: number;
+        static OFFSET_LINEAR_MOMENTUM_X: number;
+        static OFFSET_LINEAR_MOMENTUM_Y: number;
+        static OFFSET_LINEAR_MOMENTUM_Z: number;
+        static OFFSET_ANGULAR_MOMENTUM_YZ: number;
+        static OFFSET_ANGULAR_MOMENTUM_ZX: number;
+        static OFFSET_ANGULAR_MOMENTUM_XY: number;
         /**
          * 
          */
@@ -407,6 +455,33 @@ declare module NEWTON {
      */
     interface Massive3 extends ForceBody3 {
         M: number;
+    }
+
+    class ConstantForceLaw3 implements ForceLaw3 {
+        /**
+         * 
+         */
+        expireTime: number;
+        /**
+         * The attachment point to the body in body coordinates.
+         */
+        location: VectorE3;
+        /**
+         * 
+         */
+        constructor(body: RigidBody3, vector: VectorE3, vectorCoordType?: CoordType);
+        /**
+         * 
+         */
+        updateForces(): Force3[];
+        /**
+         * 
+         */
+        disconnect(): void;
+        /**
+         * 
+         */
+        potentialEnergy(): number;
     }
 
     /**

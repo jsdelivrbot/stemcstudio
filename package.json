@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.21.53",
+  "version": "2.21.54",
   "private": true,
   "description": "Expressing Ideas through Computational Modeling",
   "engines": {
@@ -65,7 +65,7 @@
     "lactate": "0.13.12",
     "method-override": "^2.3.7",
     "morgan": "^1.7.0",
-    "multer": "^1.2.1",
+    "multer": "^1.3.0",
     "nconf": "^0.8.4",
     "redis": "^2.6.5",
     "reflect-metadata": "0.1.2",
