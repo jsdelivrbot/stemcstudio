@@ -101,6 +101,8 @@ declare module NEWTON {
         z: number;
         constructor(x?: number, y?: number, z?: number);
         copy(source: VectorE3): this;
+        neg(): this;
+        static dual(B: BivectorE3): Vector3;
     }
 
     interface VectorE3 {
@@ -296,12 +298,18 @@ declare module NEWTON {
     /**
      * 
      */
-    class Physics3 implements Simulation {
+    class Physics3 implements Simulation, EnergySystem {
         static INDEX_TIME: number;
         static INDEX_TRANSLATIONAL_KINETIC_ENERGY: number;
         static INDEX_ROTATIONAL_KINETIC_ENERGY: number;
         static INDEX_POTENTIAL_ENERGY: number;
         static INDEX_TOTAL_ENERGY: number;
+        static INDEX_TOTAL_LINEAR_MOMENTUM_X: number;
+        static INDEX_TOTAL_LINEAR_MOMENTUM_Y: number;
+        static INDEX_TOTAL_LINEAR_MOMENTUM_Z: number;
+        static INDEX_TOTAL_ANGULAR_MOMENTUM_YZ: number;
+        static INDEX_TOTAL_ANGULAR_MOMENTUM_ZX: number;
+        static INDEX_TOTAL_ANGULAR_MOMENTUM_XY: number;
         static OFFSET_POSITION_X: number;
         static OFFSET_POSITION_Y: number;
         static OFFSET_POSITION_Z: number;
@@ -344,6 +352,7 @@ declare module NEWTON {
         evaluate(state: number[], change: number[], timeOffset: number): void;
         setState(state: number[]): void;
         epilog(): void;
+        totalEnergy(): number;
         // saveState(): void;
         // restoreState(): void;
         // findCollisions(collisions: Collision[], vars: number[], stepSize: number): void;
@@ -374,6 +383,41 @@ declare module NEWTON {
      */
     class RungeKutta implements DiffEqSolver {
         constructor(simulation: Simulation);
+        step(stepSize: number): void;
+    }
+
+    interface EnergySystem {
+        totalEnergy(): number;
+    }
+
+    class AdaptiveStepSolver implements DiffEqSolver {
+        /**
+         * Whether to use second order differences for deciding when to reduce the step size.
+         * The first difference is the change in energy of the system over a time step.
+         * We can only use first differences when the energy of the system is constant.
+         * If the energy of the system changes over time, then we need to reduce the step size
+         * until the change of energy over the step stabilizes.  Put another way:  we reduce
+         * the step size until the change in the change in energy becomes small.
+         * true means use *change in change in energy* (second derivative)
+         * as the criteria for accuracy
+         */
+        secondDiff: boolean;
+        /**
+         * The smallest time step that will executed.
+         * Setting a reasonable lower bound prevents the solver from taking too long to give up.
+         * This value may be reduced incrementally to improve the accuracy.
+         * Default is 1E-5;
+         */
+        stepLBound: number;
+        /**
+         * Returns the tolerance used to decide if sufficient accuracy has been achieved.
+         * Default is 1E-6.
+         */
+        tolerance: number;
+        /**
+         * 
+         */
+        constructor(diffEq: Simulation, energySystem: EnergySystem, diffEqSolver: DiffEqSolver);
         step(stepSize: number): void;
     }
 

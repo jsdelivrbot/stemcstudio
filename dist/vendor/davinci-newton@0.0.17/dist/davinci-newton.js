@@ -437,6 +437,95 @@ var requirejs, require, define;
 
 define("../bower_components/almond/almond", function(){});
 
+define('davinci-newton/solvers/AdaptiveStepSolver',["require", "exports"], function (require, exports) {
+    "use strict";
+    var AdaptiveStepSolver = (function () {
+        function AdaptiveStepSolver(diffEq, energySystem, diffEqSolver) {
+            this.stepUBound = 1;
+            this.stepLBound = 1E-5;
+            this.diffEq_ = diffEq;
+            this.energySystem_ = energySystem;
+            this.odeSolver_ = diffEqSolver;
+            this.totSteps_ = 0;
+            this.secondDiff_ = true;
+            this.tolerance_ = 1E-6;
+        }
+        AdaptiveStepSolver.prototype.step = function (stepSize) {
+            this.savedState = this.diffEq_.getState();
+            var startTime = this.diffEq_.time;
+            var d_t = stepSize;
+            var steps = 0;
+            this.diffEq_.epilog();
+            var startEnergy = this.energySystem_.totalEnergy();
+            var lastEnergyDiff = Number.POSITIVE_INFINITY;
+            var value = Number.POSITIVE_INFINITY;
+            var firstTime = true;
+            if (stepSize < this.stepLBound) {
+                return;
+            }
+            do {
+                var t = startTime;
+                if (!firstTime) {
+                    this.diffEq_.setState(this.savedState);
+                    this.diffEq_.epilog();
+                    d_t = d_t / 5;
+                    if (d_t < this.stepLBound) {
+                        throw new Error("time step " + d_t + " too small. startEnergy => " + startEnergy + " lastEnergyDiff => " + lastEnergyDiff);
+                    }
+                }
+                steps = 0;
+                while (t < startTime + stepSize) {
+                    var h = d_t;
+                    if (t + h > startTime + stepSize - 1E-10) {
+                        h = startTime + stepSize - t;
+                    }
+                    steps++;
+                    this.odeSolver_.step(h);
+                    this.diffEq_.epilog();
+                    t += h;
+                }
+                var finishEnergy = this.energySystem_.totalEnergy();
+                var energyDiff = Math.abs(startEnergy - finishEnergy);
+                if (this.secondDiff_) {
+                    if (!firstTime) {
+                        value = Math.abs(energyDiff - lastEnergyDiff);
+                    }
+                }
+                else {
+                    value = energyDiff;
+                }
+                lastEnergyDiff = energyDiff;
+                firstTime = false;
+            } while (value > this.tolerance_);
+            this.totSteps_ += steps;
+        };
+        Object.defineProperty(AdaptiveStepSolver.prototype, "secondDiff", {
+            get: function () {
+                return this.secondDiff_;
+            },
+            set: function (value) {
+                this.secondDiff_ = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(AdaptiveStepSolver.prototype, "tolerance", {
+            get: function () {
+                return this.tolerance_;
+            },
+            set: function (value) {
+                this.tolerance_ = value;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        return AdaptiveStepSolver;
+    }());
+    exports.AdaptiveStepSolver = AdaptiveStepSolver;
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = AdaptiveStepSolver;
+});
+
 define('davinci-newton/view/AlignH',["require", "exports"], function (require, exports) {
     "use strict";
     var AlignH;
@@ -951,10 +1040,12 @@ define('davinci-newton/math/Bivector3',["require", "exports", "./wedge"], functi
             var x = this.yz;
             var y = this.zx;
             var z = this.xy;
-            var e = σ.elements;
-            this.yz = e[0x0] * x + e[0x3] * y + e[0x6] * z;
-            this.zx = e[0x1] * x + e[0x4] * y + e[0x7] * z;
-            this.xy = e[0x2] * x + e[0x5] * y + e[0x8] * z;
+            var n11 = σ.getElement(0, 0), n12 = σ.getElement(0, 1), n13 = σ.getElement(0, 2);
+            var n21 = σ.getElement(1, 0), n22 = σ.getElement(1, 1), n23 = σ.getElement(1, 2);
+            var n31 = σ.getElement(2, 0), n32 = σ.getElement(2, 1), n33 = σ.getElement(2, 2);
+            this.yz = n11 * x + n12 * y + n13 * z;
+            this.zx = n21 * x + n22 * y + n23 * z;
+            this.xy = n31 * x + n32 * y + n33 * z;
             return this;
         };
         Bivector3.prototype.copy = function (B) {
@@ -1109,12 +1200,40 @@ define('davinci-newton/math/Spinor3',["require", "exports"], function (require, 
             this.zx = spinor.zx;
             return this;
         };
+        Spinor3.prototype.divByScalar = function (alpha) {
+            if (alpha !== 1) {
+                this.a /= alpha;
+                this.xy /= alpha;
+                this.yz /= alpha;
+                this.zx /= alpha;
+            }
+            return this;
+        };
+        Spinor3.prototype.magnitude = function () {
+            return Math.sqrt(this.quadrance());
+        };
+        Spinor3.prototype.normalize = function () {
+            var m = this.magnitude();
+            if (m !== 1) {
+                return this.divByScalar(m);
+            }
+            else {
+                return this;
+            }
+        };
         Spinor3.prototype.one = function () {
             this.a = 1;
             this.xy = 0;
             this.yz = 0;
             this.zx = 0;
             return this;
+        };
+        Spinor3.prototype.quadrance = function () {
+            var a = this.a;
+            var x = this.yz;
+            var y = this.zx;
+            var z = this.xy;
+            return a * a + x * x + y * y + z * z;
         };
         return Spinor3;
     }());
@@ -1268,7 +1387,7 @@ define('davinci-newton/math/Vec3',["require", "exports", "../util/veryDifferent"
             }
         };
         Vec3.prototype.toString = function (radix) {
-            return "new Vector(" + this.x_.toString(radix) + ", " + this.y_.toString(radix) + ", " + this.z_.toString(radix) + ")";
+            return "new Vec3(" + this.x_.toString(radix) + ", " + this.y_.toString(radix) + ", " + this.z_.toString(radix) + ")";
         };
         Vec3.prototype.__add__ = function (rhs) {
             return new Vec3(this.x + rhs.x, this.y + rhs.y, this.z + rhs.z);
@@ -1317,10 +1436,12 @@ define('davinci-newton/math/Vector3',["require", "exports"], function (require, 
             var x = this.x;
             var y = this.y;
             var z = this.z;
-            var e = σ.elements;
-            this.x = e[0x0] * x + e[0x3] * y + e[0x6] * z;
-            this.y = e[0x1] * x + e[0x4] * y + e[0x7] * z;
-            this.z = e[0x2] * x + e[0x5] * y + e[0x8] * z;
+            var n11 = σ.getElement(0, 0), n12 = σ.getElement(0, 1), n13 = σ.getElement(0, 2);
+            var n21 = σ.getElement(1, 0), n22 = σ.getElement(1, 1), n23 = σ.getElement(1, 2);
+            var n31 = σ.getElement(2, 0), n32 = σ.getElement(2, 1), n33 = σ.getElement(2, 2);
+            this.x = n11 * x + n12 * y + n13 * z;
+            this.y = n21 * x + n22 * y + n23 * z;
+            this.z = n31 * x + n32 * y + n33 * z;
             return this;
         };
         Vector3.prototype.copy = function (source) {
@@ -1331,6 +1452,9 @@ define('davinci-newton/math/Vector3',["require", "exports"], function (require, 
         };
         Vector3.prototype.distanceTo = function (rhs) {
             return Math.sqrt(this.quadranceTo(rhs));
+        };
+        Vector3.prototype.dot = function (source) {
+            return this.x * source.x + this.y * source.y + this.z * source.z;
         };
         Vector3.prototype.dual = function (B) {
             this.x = -B.yz;
@@ -1405,6 +1529,9 @@ define('davinci-newton/math/Vector3',["require", "exports"], function (require, 
             this.y -= rhs.y;
             this.z -= rhs.z;
             return this;
+        };
+        Vector3.prototype.toString = function (radix) {
+            return "new Vector3(" + this.x.toString(radix) + ", " + this.y.toString(radix) + ", " + this.z.toString(radix) + ")";
         };
         Vector3.prototype.__add__ = function (rhs) {
             return new Vector3(this.x + rhs.x, this.y + rhs.y, this.z + rhs.z);
@@ -1550,7 +1677,9 @@ define('davinci-newton/engine3D/RigidBody3',["require", "exports", "../objects/A
         RigidBody3.prototype.rotationalEnergy = function () {
             var Ω = this.Ω;
             var L = this.L;
-            return 0.5 * (Ω.xy * L.xy + Ω.yz * L.yz + Ω.zx * L.zx);
+            var ω = Vector3_1.default.dual(Ω).neg();
+            var J = Vector3_1.default.dual(L).neg();
+            return 0.5 * ω.dot(J);
         };
         RigidBody3.prototype.translationalEnergy = function () {
             var PxP = this.linearMomentum_.quadrance();
@@ -1829,9 +1958,9 @@ define('davinci-newton/config',["require", "exports"], function (require, export
     var Newton = (function () {
         function Newton() {
             this.GITHUB = 'https://github.com/geometryzen/davinci-newton';
-            this.LAST_MODIFIED = '2017-01-25';
+            this.LAST_MODIFIED = '2017-01-27';
             this.NAMESPACE = 'NEWTON';
-            this.VERSION = '0.0.16';
+            this.VERSION = '0.0.17';
         }
         Newton.prototype.log = function (message) {
             var optionalParams = [];
@@ -2059,11 +2188,11 @@ define('davinci-newton/engine3D/Cylinder3',["require", "exports", "../math/Matri
             var rr = r * r;
             var hh = h * h;
             var Irr = this.M * (3 * rr + hh) / 12;
-            var Izz = this.M * rr / 2;
+            var Ihh = this.M * rr / 2;
             var I = Matrix3_1.default.zero();
             I.setElement(0, 0, Irr);
-            I.setElement(1, 1, Irr);
-            I.setElement(2, 2, Izz);
+            I.setElement(1, 1, Ihh);
+            I.setElement(2, 2, Irr);
             this.I = I;
         };
         return Cylinder3;
@@ -2083,10 +2212,7 @@ define('davinci-newton/strategy/DefaultAdvanceStrategy',["require", "exports"], 
         }
         DefaultAdvanceStrategy.prototype.advance = function (timeStep, memoList) {
             this.sim_.prolog();
-            var err = this.odeSolver_.step(timeStep);
-            if (err != null) {
-                throw new Error("error during advance " + err);
-            }
+            this.odeSolver_.step(timeStep);
             this.sim_.epilog();
             if (memoList !== undefined) {
                 memoList.memorize();
@@ -5224,14 +5350,20 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-define('davinci-newton/engine3D/Physics3',["require", "exports", "../util/AbstractSubject", "../math/Bivector3", "../util/contains", "../math/Matrix3", "../util/remove", "../core/SimList", "../core/VarsList", "../math/Vector3"], function (require, exports, AbstractSubject_1, Bivector3_1, contains_1, Matrix3_1, remove_1, SimList_1, VarsList_1, Vector3_1) {
+define('davinci-newton/engine3D/Physics3',["require", "exports", "../util/AbstractSubject", "../math/Bivector3", "../util/contains", "../math/Matrix3", "../util/remove", "../core/SimList", "../core/VarsList", "../math/Vector3", "../math/wedge"], function (require, exports, AbstractSubject_1, Bivector3_1, contains_1, Matrix3_1, remove_1, SimList_1, VarsList_1, Vector3_1, wedge_1) {
     "use strict";
     var var_names = [
         VarsList_1.default.TIME,
         "translational kinetic energy",
         "rotational kinetic energy",
         "potential energy",
-        "total energy"
+        "total energy",
+        "total linear momentum - x",
+        "total linear momentum - y",
+        "total linear momentum - z",
+        "total angular momentum - yz",
+        "total angular momentum - zx",
+        "total angular momentum - xy"
     ];
     function getVarName(index) {
         switch (index) {
@@ -5265,7 +5397,6 @@ define('davinci-newton/engine3D/Physics3',["require", "exports", "../util/Abstra
             _this.torque_ = new Bivector3_1.default();
             _this.R_ = Matrix3_1.default.one();
             _this.T_ = Matrix3_1.default.one();
-            _this.Iinv_ = Matrix3_1.default.one();
             _this.varsList_ = new VarsList_1.default(var_names);
             return _this;
         }
@@ -5315,12 +5446,11 @@ define('davinci-newton/engine3D/Physics3',["require", "exports", "../util/Abstra
             remove_1.default(this.forceLaws_, forceLaw);
         };
         Physics3.prototype.discontinuosChangeToEnergy = function () {
-            this.varsList_.incrSequence(Physics3.INDEX_TRANSLATIONAL_KINETIC_ENERGY, Physics3.INDEX_ROTATIONAL_KINETIC_ENERGY, Physics3.INDEX_POTENTIAL_ENERGY, Physics3.INDEX_TOTAL_ENERGY);
+            this.varsList_.incrSequence(Physics3.INDEX_TRANSLATIONAL_KINETIC_ENERGY, Physics3.INDEX_ROTATIONAL_KINETIC_ENERGY, Physics3.INDEX_POTENTIAL_ENERGY, Physics3.INDEX_TOTAL_ENERGY, Physics3.INDEX_TOTAL_LINEAR_MOMENTUM_X, Physics3.INDEX_TOTAL_LINEAR_MOMENTUM_Y, Physics3.INDEX_TOTAL_LINEAR_MOMENTUM_Z, Physics3.INDEX_TOTAL_ANGULAR_MOMENTUM_YZ, Physics3.INDEX_TOTAL_ANGULAR_MOMENTUM_ZX, Physics3.INDEX_TOTAL_ANGULAR_MOMENTUM_XY);
         };
         Physics3.prototype.moveObjects = function (vars) {
             var R = this.R_;
             var T = this.T_;
-            var Iinv = this.Iinv_;
             var bodies = this.bodies_;
             var N = bodies.length;
             for (var i = 0; i < N; i++) {
@@ -5336,6 +5466,7 @@ define('davinci-newton/engine3D/Physics3',["require", "exports", "../util/Abstra
                 body.R.xy = vars[idx + Physics3.OFFSET_ATTITUDE_XY];
                 body.R.yz = vars[idx + Physics3.OFFSET_ATTITUDE_YZ];
                 body.R.zx = vars[idx + Physics3.OFFSET_ATTITUDE_ZX];
+                body.R.normalize();
                 body.P.x = vars[idx + Physics3.OFFSET_LINEAR_MOMENTUM_X];
                 body.P.y = vars[idx + Physics3.OFFSET_LINEAR_MOMENTUM_Y];
                 body.P.z = vars[idx + Physics3.OFFSET_LINEAR_MOMENTUM_Z];
@@ -5344,8 +5475,11 @@ define('davinci-newton/engine3D/Physics3',["require", "exports", "../util/Abstra
                 body.L.zx = vars[idx + Physics3.OFFSET_ANGULAR_MOMENTUM_ZX];
                 R.rotation(body.R);
                 T.copy(R).transpose();
-                Iinv.copy(body.Iinv).mul(T).rmul(R);
-                body.Ω.copy(body.L).applyMatrix(Iinv);
+                var ω = Vector3_1.default.dual(body.L).neg();
+                ω.applyMatrix(T);
+                ω.applyMatrix(body.Iinv);
+                ω.applyMatrix(R);
+                body.Ω.dual(ω);
             }
         };
         Physics3.prototype.prolog = function () {
@@ -5455,6 +5589,12 @@ define('davinci-newton/engine3D/Physics3',["require", "exports", "../util/Abstra
             var pe = this.potentialOffset_;
             var re = 0;
             var te = 0;
+            var Px = 0;
+            var Py = 0;
+            var Pz = 0;
+            var Lyz = 0;
+            var Lzx = 0;
+            var Lxy = 0;
             var bs = this.bodies_;
             var Nb = bs.length;
             for (var i = 0; i < Nb; i++) {
@@ -5462,6 +5602,15 @@ define('davinci-newton/engine3D/Physics3',["require", "exports", "../util/Abstra
                 if (isFinite(b.M)) {
                     re += b.rotationalEnergy();
                     te += b.translationalEnergy();
+                    Px += b.P.x;
+                    Py += b.P.y;
+                    Pz += b.P.z;
+                    Lyz += wedge_1.wedgeYZ(b.X, b.P);
+                    Lzx += wedge_1.wedgeZX(b.X, b.P);
+                    Lxy += wedge_1.wedgeXY(b.X, b.P);
+                    Lyz += b.L.yz;
+                    Lzx += b.L.zx;
+                    Lxy += b.L.xy;
                 }
             }
             var fs = this.forceLaws_;
@@ -5473,6 +5622,12 @@ define('davinci-newton/engine3D/Physics3',["require", "exports", "../util/Abstra
             varsList.setValue(Physics3.INDEX_ROTATIONAL_KINETIC_ENERGY, re, true);
             varsList.setValue(Physics3.INDEX_POTENTIAL_ENERGY, pe, true);
             varsList.setValue(Physics3.INDEX_TOTAL_ENERGY, te + re + pe, true);
+            varsList.setValue(Physics3.INDEX_TOTAL_LINEAR_MOMENTUM_X, Px, true);
+            varsList.setValue(Physics3.INDEX_TOTAL_LINEAR_MOMENTUM_Y, Py, true);
+            varsList.setValue(Physics3.INDEX_TOTAL_LINEAR_MOMENTUM_Z, Pz, true);
+            varsList.setValue(Physics3.INDEX_TOTAL_ANGULAR_MOMENTUM_YZ, Lyz, true);
+            varsList.setValue(Physics3.INDEX_TOTAL_ANGULAR_MOMENTUM_ZX, Lzx, true);
+            varsList.setValue(Physics3.INDEX_TOTAL_ANGULAR_MOMENTUM_XY, Lxy, true);
         };
         Object.defineProperty(Physics3.prototype, "simList", {
             get: function () {
@@ -5488,13 +5643,25 @@ define('davinci-newton/engine3D/Physics3',["require", "exports", "../util/Abstra
             enumerable: true,
             configurable: true
         });
-        Physics3.prototype.saveState = function () {
-            this.recentState_ = this.varsList_.getValues();
-        };
-        Physics3.prototype.restoreState = function () {
-            if (this.recentState_ != null) {
-                this.varsList_.setValues(this.recentState_, true);
+        Physics3.prototype.totalEnergy = function () {
+            var pe = this.potentialOffset_;
+            var re = 0;
+            var te = 0;
+            var bs = this.bodies_;
+            var Nb = bs.length;
+            for (var i = 0; i < Nb; i++) {
+                var b = bs[i];
+                if (isFinite(b.M)) {
+                    re += b.rotationalEnergy();
+                    te += b.translationalEnergy();
+                }
             }
+            var fs = this.forceLaws_;
+            var Nf = fs.length;
+            for (var i = 0; i < Nf; i++) {
+                pe += fs[i].potentialEnergy();
+            }
+            return te + re + pe;
         };
         return Physics3;
     }(AbstractSubject_1.default));
@@ -5503,6 +5670,12 @@ define('davinci-newton/engine3D/Physics3',["require", "exports", "../util/Abstra
     Physics3.INDEX_ROTATIONAL_KINETIC_ENERGY = 2;
     Physics3.INDEX_POTENTIAL_ENERGY = 3;
     Physics3.INDEX_TOTAL_ENERGY = 4;
+    Physics3.INDEX_TOTAL_LINEAR_MOMENTUM_X = 5;
+    Physics3.INDEX_TOTAL_LINEAR_MOMENTUM_Y = 6;
+    Physics3.INDEX_TOTAL_LINEAR_MOMENTUM_Z = 7;
+    Physics3.INDEX_TOTAL_ANGULAR_MOMENTUM_YZ = 8;
+    Physics3.INDEX_TOTAL_ANGULAR_MOMENTUM_ZX = 9;
+    Physics3.INDEX_TOTAL_ANGULAR_MOMENTUM_XY = 10;
     Physics3.OFFSET_POSITION_X = 0;
     Physics3.OFFSET_POSITION_Y = 1;
     Physics3.OFFSET_POSITION_Z = 2;
@@ -5787,13 +5960,13 @@ define('davinci-newton/engine3D/Spring3',["require", "exports", "../objects/Abst
             _this.forces = [];
             _this.end1_ = new Vector3_1.default();
             _this.end2_ = new Vector3_1.default();
-            _this.F12 = new Force3_1.default(_this.body1_);
-            _this.F12.locationCoordType = CoordType_1.default.WORLD;
-            _this.F12.vectorCoordType = CoordType_1.default.WORLD;
-            _this.F21 = new Force3_1.default(_this.body2_);
-            _this.F21.locationCoordType = CoordType_1.default.WORLD;
-            _this.F21.vectorCoordType = CoordType_1.default.WORLD;
-            _this.forces = [_this.F12, _this.F21];
+            _this.F1 = new Force3_1.default(_this.body1_);
+            _this.F1.locationCoordType = CoordType_1.default.WORLD;
+            _this.F1.vectorCoordType = CoordType_1.default.WORLD;
+            _this.F2 = new Force3_1.default(_this.body2_);
+            _this.F2.locationCoordType = CoordType_1.default.WORLD;
+            _this.F2.vectorCoordType = CoordType_1.default.WORLD;
+            _this.forces = [_this.F1, _this.F2];
             return _this;
         }
         Spring3.prototype.computeBody1AttachPointInWorldCoords = function (x) {
@@ -5845,18 +6018,20 @@ define('davinci-newton/engine3D/Spring3',["require", "exports", "../objects/Abst
             configurable: true
         });
         Spring3.prototype.updateForces = function () {
-            this.computeBody1AttachPointInWorldCoords(this.F12.location);
-            this.computeBody2AttachPointInWorldCoords(this.F21.location);
-            var length = this.F12.location.distanceTo(this.F21.location);
+            this.computeBody1AttachPointInWorldCoords(this.F1.location);
+            this.computeBody2AttachPointInWorldCoords(this.F2.location);
+            var length = this.F1.location.distanceTo(this.F2.location);
             var sf = this.stiffness_ * (length - this.restLength_) / length;
-            this.F12.vector.copy(this.F21.location).subtract(this.F12.location).mulByScalar(sf);
-            this.F21.vector.copy(this.F12.vector).neg();
+            this.F1.vector.copy(this.F2.location).subtract(this.F1.location).mulByScalar(sf);
+            this.F2.vector.copy(this.F1.vector).neg();
             return this.forces;
         };
         Spring3.prototype.disconnect = function () {
         };
         Spring3.prototype.potentialEnergy = function () {
-            var stretch = this.F21.location.distanceTo(this.F12.location) - this.restLength_;
+            this.computeBody1AttachPointInWorldCoords(this.F1.location);
+            this.computeBody2AttachPointInWorldCoords(this.F2.location);
+            var stretch = this.F2.location.distanceTo(this.F1.location) - this.restLength_;
             return 0.5 * this.stiffness_ * stretch * stretch;
         };
         return Spring3;
@@ -5866,11 +6041,12 @@ define('davinci-newton/engine3D/Spring3',["require", "exports", "../objects/Abst
     exports.default = Spring3;
 });
 
-define('davinci-newton',["require", "exports", "./davinci-newton/view/AlignH", "./davinci-newton/view/AlignV", "./davinci-newton/graph/AxisChoice", "./davinci-newton/engine3D/Block3", "./davinci-newton/util/CircularList", "./davinci-newton/config", "./davinci-newton/engine3D/ConstantForceLaw3", "./davinci-newton/model/CoordType", "./davinci-newton/engine3D/Cylinder3", "./davinci-newton/strategy/DefaultAdvanceStrategy", "./davinci-newton/graph/DisplayGraph", "./davinci-newton/view/DrawingMode", "./davinci-newton/solvers/EulerMethod", "./davinci-newton/engine3D/Force3", "./davinci-newton/graph/Graph", "./davinci-newton/graph/GraphLine", "./davinci-newton/engine3D/GravitationLaw3", "./davinci-newton/view/LabCanvas", "./davinci-newton/math/Matrix3", "./davinci-newton/solvers/ModifiedEuler", "./davinci-newton/engine3D/RigidBody3", "./davinci-newton/engine3D/Physics3", "./davinci-newton/solvers/RungeKutta", "./davinci-newton/runner/SimRunner", "./davinci-newton/view/SimView", "./davinci-newton/engine3D/Sphere3", "./davinci-newton/engine3D/Spring3", "./davinci-newton/core/VarsList", "./davinci-newton/math/Vec3"], function (require, exports, AlignH_1, AlignV_1, AxisChoice_1, Block3_1, CircularList_1, config_1, ConstantForceLaw3_1, CoordType_1, Cylinder3_1, DefaultAdvanceStrategy_1, DisplayGraph_1, DrawingMode_1, EulerMethod_1, Force3_1, Graph_1, GraphLine_1, GravitationLaw3_1, LabCanvas_1, Matrix3_1, ModifiedEuler_1, RigidBody3_1, Physics3_1, RungeKutta_1, SimRunner_1, SimView_1, Sphere3_1, Spring3_1, VarsList_1, Vec3_1) {
+define('davinci-newton',["require", "exports", "./davinci-newton/solvers/AdaptiveStepSolver", "./davinci-newton/view/AlignH", "./davinci-newton/view/AlignV", "./davinci-newton/graph/AxisChoice", "./davinci-newton/engine3D/Block3", "./davinci-newton/util/CircularList", "./davinci-newton/config", "./davinci-newton/engine3D/ConstantForceLaw3", "./davinci-newton/model/CoordType", "./davinci-newton/engine3D/Cylinder3", "./davinci-newton/strategy/DefaultAdvanceStrategy", "./davinci-newton/graph/DisplayGraph", "./davinci-newton/view/DrawingMode", "./davinci-newton/solvers/EulerMethod", "./davinci-newton/engine3D/Force3", "./davinci-newton/graph/Graph", "./davinci-newton/graph/GraphLine", "./davinci-newton/engine3D/GravitationLaw3", "./davinci-newton/view/LabCanvas", "./davinci-newton/math/Matrix3", "./davinci-newton/solvers/ModifiedEuler", "./davinci-newton/engine3D/RigidBody3", "./davinci-newton/engine3D/Physics3", "./davinci-newton/solvers/RungeKutta", "./davinci-newton/runner/SimRunner", "./davinci-newton/view/SimView", "./davinci-newton/engine3D/Sphere3", "./davinci-newton/engine3D/Spring3", "./davinci-newton/core/VarsList", "./davinci-newton/math/Vec3", "./davinci-newton/math/Vector3"], function (require, exports, AdaptiveStepSolver_1, AlignH_1, AlignV_1, AxisChoice_1, Block3_1, CircularList_1, config_1, ConstantForceLaw3_1, CoordType_1, Cylinder3_1, DefaultAdvanceStrategy_1, DisplayGraph_1, DrawingMode_1, EulerMethod_1, Force3_1, Graph_1, GraphLine_1, GravitationLaw3_1, LabCanvas_1, Matrix3_1, ModifiedEuler_1, RigidBody3_1, Physics3_1, RungeKutta_1, SimRunner_1, SimView_1, Sphere3_1, Spring3_1, VarsList_1, Vec3_1, Vector3_1) {
     "use strict";
     var newton = {
         get LAST_MODIFIED() { return config_1.default.LAST_MODIFIED; },
         get VERSION() { return config_1.default.VERSION; },
+        get AdaptiveStepSolver() { return AdaptiveStepSolver_1.default; },
         get AlignH() { return AlignH_1.default; },
         get AlignV() { return AlignV_1.default; },
         get AxisChoice() { return AxisChoice_1.default; },
@@ -5898,7 +6074,8 @@ define('davinci-newton',["require", "exports", "./davinci-newton/view/AlignH", "
         get Sphere3() { return Sphere3_1.default; },
         get Spring3() { return Spring3_1.default; },
         get VarsList() { return VarsList_1.default; },
-        get Vec3() { return Vec3_1.default; }
+        get Vec3() { return Vec3_1.default; },
+        get Vector3() { return Vector3_1.default; }
     };
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = newton;

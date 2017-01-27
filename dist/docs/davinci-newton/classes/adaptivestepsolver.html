@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>GravitationLaw3 | NEWTON 0.0.17</title>
+	<title>AdaptiveStepSolver | NEWTON 0.0.17</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,10 +54,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="gravitationlaw3.html">GravitationLaw3</a>
+					<a href="adaptivestepsolver.html">AdaptiveStepSolver</a>
 				</li>
 			</ul>
-			<h1>Class GravitationLaw3</h1>
+			<h1>Class AdaptiveStepSolver</h1>
 		</div>
 	</div>
 </header>
@@ -68,20 +68,14 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="abstractsimobject.html" class="tsd-signature-type">AbstractSimObject</a>
-						<ul class="tsd-hierarchy">
-							<li>
-								<span class="target">GravitationLaw3</span>
-							</li>
-						</ul>
+						<span class="target">AdaptiveStepSolver</span>
 					</li>
 				</ul>
 			</section>
 			<section class="tsd-panel">
 				<h3>Implements</h3>
 				<ul class="tsd-hierarchy">
-					<li><a href="../interfaces/simobject.html" class="tsd-signature-type">SimObject</a></li>
-					<li><a href="../interfaces/forcelaw3.html" class="tsd-signature-type">ForceLaw3</a></li>
+					<li><a href="../interfaces/diffeqsolver.html" class="tsd-signature-type">DiffEqSolver</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -91,27 +85,27 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="gravitationlaw3.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-external"><a href="adaptivestepsolver.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="gravitationlaw3.html#g" class="tsd-kind-icon">G</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="adaptivestepsolver.html#steplbound" class="tsd-kind-icon">stepLBound</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="adaptivestepsolver.html#stepubound" class="tsd-kind-icon">stepUBound</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-inherited tsd-is-external">
+						<section class="tsd-index-section tsd-is-external">
 							<h3>Accessors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="gravitationlaw3.html#expiretime" class="tsd-kind-icon">expire<wbr>Time</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="adaptivestepsolver.html#seconddiff" class="tsd-kind-icon">second<wbr>Diff</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="adaptivestepsolver.html#tolerance" class="tsd-kind-icon">tolerance</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="gravitationlaw3.html#disconnect" class="tsd-kind-icon">disconnect</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="gravitationlaw3.html#potentialenergy" class="tsd-kind-icon">potential<wbr>Energy</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="gravitationlaw3.html#updateforces" class="tsd-kind-icon">update<wbr>Forces</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="adaptivestepsolver.html#step" class="tsd-kind-icon">step</a></li>
 							</ul>
 						</section>
 					</div>
@@ -119,30 +113,32 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Gravitation<wbr>Law3<span class="tsd-signature-symbol">(</span>body1_<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Massive</span>, body2_<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Massive</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="gravitationlaw3.html" class="tsd-signature-type">GravitationLaw3</a></li>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Adaptive<wbr>Step<wbr>Solver<span class="tsd-signature-symbol">(</span>diffEq<span class="tsd-signature-symbol">: </span><a href="../interfaces/simulation.html" class="tsd-signature-type">Simulation</a>, energySystem<span class="tsd-signature-symbol">: </span><a href="../interfaces/energysystem.html" class="tsd-signature-type">EnergySystem</a>, diffEqSolver<span class="tsd-signature-symbol">: </span><a href="../interfaces/diffeqsolver.html" class="tsd-signature-type">DiffEqSolver</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="adaptivestepsolver.html" class="tsd-signature-type">AdaptiveStepSolver</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overrides <a href="abstractsimobject.html">AbstractSimObject</a>.<a href="abstractsimobject.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/67d510a/src/davinci-newton/engine3D/GravitationLaw3.ts#L32">davinci-newton/engine3D/GravitationLaw3.ts:32</a></li>
+									<li>Defined in davinci-newton/solvers/AdaptiveStepSolver.ts:21</li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>body1_: <span class="tsd-signature-type">Massive</span></h5>
+									<h5>diffEq: <a href="../interfaces/simulation.html" class="tsd-signature-type">Simulation</a></h5>
 								</li>
 								<li>
-									<h5>body2_: <span class="tsd-signature-type">Massive</span></h5>
+									<h5>energySystem: <a href="../interfaces/energysystem.html" class="tsd-signature-type">EnergySystem</a></h5>
+								</li>
+								<li>
+									<h5>diffEqSolver: <a href="../interfaces/diffeqsolver.html" class="tsd-signature-type">DiffEqSolver</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="gravitationlaw3.html" class="tsd-signature-type">GravitationLaw3</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="adaptivestepsolver.html" class="tsd-signature-type">AdaptiveStepSolver</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -150,46 +146,132 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
-					<a name="g" class="tsd-anchor"></a>
-					<h3>G</h3>
-					<div class="tsd-signature tsd-kind-icon">G<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
+					<a name="steplbound" class="tsd-anchor"></a>
+					<h3>stepLBound</h3>
+					<div class="tsd-signature tsd-kind-icon">stepLBound<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0.00001</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/67d510a/src/davinci-newton/engine3D/GravitationLaw3.ts#L29">davinci-newton/engine3D/GravitationLaw3.ts:29</a></li>
+							<li>Defined in davinci-newton/solvers/AdaptiveStepSolver.ts:17</li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The smallest time step that will executed.
+							Setting a reasonable lower bound prevents the solver from taking too long to give up.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
+					<a name="stepubound" class="tsd-anchor"></a>
+					<h3>stepUBound</h3>
+					<div class="tsd-signature tsd-kind-icon">stepUBound<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;1</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in davinci-newton/solvers/AdaptiveStepSolver.ts:12</li>
 						</ul>
 					</aside>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited tsd-is-external">
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Accessors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-					<a name="expiretime" class="tsd-anchor"></a>
-					<h3>expire<wbr>Time</h3>
-					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> expireTime<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> expireTime<span class="tsd-signature-symbol">(</span>expireTime<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
+					<a name="seconddiff" class="tsd-anchor"></a>
+					<h3>second<wbr>Diff</h3>
+					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> secondDiff<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> secondDiff<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="abstractsimobject.html">AbstractSimObject</a>.<a href="abstractsimobject.html#expiretime">expireTime</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/67d510a/src/davinci-newton/objects/AbstractSimObject.ts#L37">davinci-newton/objects/AbstractSimObject.ts:37</a></li>
+									<li>Defined in davinci-newton/solvers/AdaptiveStepSolver.ts:103</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns whether to use second order differences for deciding when to reduce the step
+									size. i.e. whether to use change in change in energy as the criteria for accuracy.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in davinci-newton/solvers/AdaptiveStepSolver.ts:125</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Whether to use second order differences for deciding when to reduce the step size.
+										The first difference is the change in energy of the system over a time step.
+										We can only use first differences when the energy of the system is constant.
+										If the energy of the system changes over time, then we need to reduce the step size
+										until the change of energy over the step stabilizes.  Put another way:  we reduce
+									the step size until the change in the change in energy becomes small.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>value: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>true means use <em>change in change in energy</em> (second derivative)
+											as the criteria for accuracy</p>
+										</div>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
+					<a name="tolerance" class="tsd-anchor"></a>
+					<h3>tolerance</h3>
+					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> tolerance<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> tolerance<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in davinci-newton/solvers/AdaptiveStepSolver.ts:111</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Returns the tolerance used to decide if sufficient accuracy has been achieved.
+									Default is 1E-6.</p>
+								</div>
+							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="abstractsimobject.html">AbstractSimObject</a>.<a href="abstractsimobject.html#expiretime">expireTime</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/67d510a/src/davinci-newton/objects/AbstractSimObject.ts#L40">davinci-newton/objects/AbstractSimObject.ts:40</a></li>
+									<li>Defined in davinci-newton/solvers/AdaptiveStepSolver.ts:135</li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Sets the tolerance used to decide if sufficient accuracy has been achieved.
+									Default is 1E-6.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>expireTime: <span class="tsd-signature-type">number</span></h5>
+									<h5>value: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>the tolerance value for deciding if sufficient accuracy
+											has been achieved</p>
+										</div>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -200,56 +282,26 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="disconnect" class="tsd-anchor"></a>
-					<h3>disconnect</h3>
+					<a name="step" class="tsd-anchor"></a>
+					<h3>step</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">disconnect<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">step<span class="tsd-signature-symbol">(</span>stepSize<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/forcelaw3.html">ForceLaw3</a>.<a href="../interfaces/forcelaw3.html#disconnect">disconnect</a></p>
+								<p>Implementation of <a href="../interfaces/diffeqsolver.html">DiffEqSolver</a>.<a href="../interfaces/diffeqsolver.html#step">step</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/67d510a/src/davinci-newton/engine3D/GravitationLaw3.ts#L73">davinci-newton/engine3D/GravitationLaw3.ts:73</a></li>
+									<li>Defined in davinci-newton/solvers/AdaptiveStepSolver.ts:30</li>
 								</ul>
 							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>stepSize: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="potentialenergy" class="tsd-anchor"></a>
-					<h3>potential<wbr>Energy</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">potential<wbr>Energy<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/forcelaw3.html">ForceLaw3</a>.<a href="../interfaces/forcelaw3.html#potentialenergy">potentialEnergy</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/67d510a/src/davinci-newton/engine3D/GravitationLaw3.ts#L80">davinci-newton/engine3D/GravitationLaw3.ts:80</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="updateforces" class="tsd-anchor"></a>
-					<h3>update<wbr>Forces</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">update<wbr>Forces<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Force</span><span class="tsd-signature-symbol">[]</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/forcelaw3.html">ForceLaw3</a>.<a href="../interfaces/forcelaw3.html#updateforces">updateForces</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/67d510a/src/davinci-newton/engine3D/GravitationLaw3.ts#L53">davinci-newton/engine3D/GravitationLaw3.ts:53</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Force</span><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -268,25 +320,25 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-is-external">
-						<a href="gravitationlaw3.html" class="tsd-kind-icon">Gravitation<wbr>Law3</a>
+						<a href="adaptivestepsolver.html" class="tsd-kind-icon">Adaptive<wbr>Step<wbr>Solver</a>
 						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
-								<a href="gravitationlaw3.html#constructor" class="tsd-kind-icon">constructor</a>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
+								<a href="adaptivestepsolver.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
-								<a href="gravitationlaw3.html#g" class="tsd-kind-icon">G</a>
+								<a href="adaptivestepsolver.html#steplbound" class="tsd-kind-icon">stepLBound</a>
 							</li>
-							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="gravitationlaw3.html#expiretime" class="tsd-kind-icon">expire<wbr>Time</a>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
+								<a href="adaptivestepsolver.html#stepubound" class="tsd-kind-icon">stepUBound</a>
+							</li>
+							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
+								<a href="adaptivestepsolver.html#seconddiff" class="tsd-kind-icon">second<wbr>Diff</a>
+							</li>
+							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
+								<a href="adaptivestepsolver.html#tolerance" class="tsd-kind-icon">tolerance</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="gravitationlaw3.html#disconnect" class="tsd-kind-icon">disconnect</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="gravitationlaw3.html#potentialenergy" class="tsd-kind-icon">potential<wbr>Energy</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="gravitationlaw3.html#updateforces" class="tsd-kind-icon">update<wbr>Forces</a>
+								<a href="adaptivestepsolver.html#step" class="tsd-kind-icon">step</a>
 							</li>
 						</ul>
 					</li>
