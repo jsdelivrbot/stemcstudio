@@ -845,11 +845,11 @@
     "fs": "github:jspm/nodelibs-fs@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
-  "npm:showdown@1.6.0": {
+  "npm:ansi-regex@2.1.1": {},
+  "npm:showdown@1.6.1": {
     "yargs": "npm:yargs@^6.6.0",
     "process": "github:jspm/nodelibs-process@^0.1.0",
     "fs": "github:jspm/nodelibs-fs@^0.1.0",
     "systemjs-json": "github:systemjs/plugin-json@^0.1.0"
-  },
-  "npm:ansi-regex@2.1.1": {}
+  }
 }
