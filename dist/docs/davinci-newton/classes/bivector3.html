@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Bivector3 | NEWTON 0.0.19</title>
+	<title>Bivector3 | NEWTON 0.0.20</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">NEWTON 0.0.19</a>
+					<a href="../index.html" class="title">NEWTON 0.0.20</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -95,8 +95,10 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="bivector3.html#applymatrix" class="tsd-kind-icon">apply<wbr>Matrix</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="bivector3.html#copy" class="tsd-kind-icon">copy</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="bivector3.html#dual" class="tsd-kind-icon">dual</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="bivector3.html#iszero" class="tsd-kind-icon">is<wbr>Zero</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="bivector3.html#rev" class="tsd-kind-icon">rev</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="bivector3.html#rotate" class="tsd-kind-icon">rotate</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="bivector3.html#scp" class="tsd-kind-icon">scp</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="bivector3.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="bivector3.html#wedge" class="tsd-kind-icon">wedge</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="bivector3.html#write" class="tsd-kind-icon">write</a></li>
@@ -115,7 +117,7 @@
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/bivectore3.html">BivectorE3</a>.<a href="../interfaces/bivectore3.html#xy">xy</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/bbd56ca/src/davinci-newton/math/Bivector3.ts#L12">davinci-newton/math/Bivector3.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Bivector3.ts#L13">davinci-newton/math/Bivector3.ts:13</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -126,7 +128,7 @@
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/bivectore3.html">BivectorE3</a>.<a href="../interfaces/bivectore3.html#yz">yz</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/bbd56ca/src/davinci-newton/math/Bivector3.ts#L10">davinci-newton/math/Bivector3.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Bivector3.ts#L11">davinci-newton/math/Bivector3.ts:11</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -137,7 +139,7 @@
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/bivectore3.html">BivectorE3</a>.<a href="../interfaces/bivectore3.html#zx">zx</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/bbd56ca/src/davinci-newton/math/Bivector3.ts#L11">davinci-newton/math/Bivector3.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Bivector3.ts#L12">davinci-newton/math/Bivector3.ts:12</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -154,7 +156,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/bbd56ca/src/davinci-newton/math/Bivector3.ts#L20">davinci-newton/math/Bivector3.ts:20</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Bivector3.ts#L21">davinci-newton/math/Bivector3.ts:21</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -185,35 +187,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/bbd56ca/src/davinci-newton/math/Bivector3.ts#L39">davinci-newton/math/Bivector3.ts:39</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Bivector3.ts#L40">davinci-newton/math/Bivector3.ts:40</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>B: <a href="../interfaces/bivectore3.html" class="tsd-signature-type">BivectorE3</a></h5>
-								</li>
-							</ul>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="dual" class="tsd-anchor"></a>
-					<h3>dual</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">dual<span class="tsd-signature-symbol">(</span>v<span class="tsd-signature-symbol">: </span><a href="../interfaces/vectore3.html" class="tsd-signature-type">VectorE3</a><span class="tsd-signature-symbol">)</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/bbd56ca/src/davinci-newton/math/Bivector3.ts#L49">davinci-newton/math/Bivector3.ts:49</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>v: <a href="../interfaces/vectore3.html" class="tsd-signature-type">VectorE3</a></h5>
 								</li>
 							</ul>
 						</li>
@@ -229,10 +209,81 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/bbd56ca/src/davinci-newton/math/Bivector3.ts#L56">davinci-newton/math/Bivector3.ts:56</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Bivector3.ts#L47">davinci-newton/math/Bivector3.ts:47</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="rev" class="tsd-anchor"></a>
+					<h3>rev</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">rev<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Bivector3.ts#L51">davinci-newton/math/Bivector3.ts:51</a></li>
+								</ul>
+							</aside>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="rotate" class="tsd-anchor"></a>
+					<h3>rotate</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">rotate<span class="tsd-signature-symbol">(</span>R<span class="tsd-signature-symbol">: </span><a href="../interfaces/spinore3.html" class="tsd-signature-type">SpinorE3</a><span class="tsd-signature-symbol">)</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Bivector3.ts#L61">davinci-newton/math/Bivector3.ts:61</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>R <em> this </em> ~R</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>R: <a href="../interfaces/spinore3.html" class="tsd-signature-type">SpinorE3</a></h5>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="scp" class="tsd-anchor"></a>
+					<h3>scp</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">scp<span class="tsd-signature-symbol">(</span>B<span class="tsd-signature-symbol">: </span><a href="../interfaces/bivectore3.html" class="tsd-signature-type">BivectorE3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Bivector3.ts#L91">davinci-newton/math/Bivector3.ts:91</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Computes the scalar product of this bivector with B.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>B: <a href="../interfaces/bivectore3.html" class="tsd-signature-type">BivectorE3</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -246,7 +297,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/bbd56ca/src/davinci-newton/math/Bivector3.ts#L63">davinci-newton/math/Bivector3.ts:63</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Bivector3.ts#L98">davinci-newton/math/Bivector3.ts:98</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -274,7 +325,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/bbd56ca/src/davinci-newton/math/Bivector3.ts#L70">davinci-newton/math/Bivector3.ts:70</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Bivector3.ts#L105">davinci-newton/math/Bivector3.ts:105</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -299,7 +350,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/bbd56ca/src/davinci-newton/math/Bivector3.ts#L80">davinci-newton/math/Bivector3.ts:80</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Bivector3.ts#L115">davinci-newton/math/Bivector3.ts:115</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -321,7 +372,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/bbd56ca/src/davinci-newton/math/Bivector3.ts#L90">davinci-newton/math/Bivector3.ts:90</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Bivector3.ts#L125">davinci-newton/math/Bivector3.ts:125</a></li>
 								</ul>
 							</aside>
 						</li>
@@ -360,10 +411,16 @@
 								<a href="bivector3.html#copy" class="tsd-kind-icon">copy</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="bivector3.html#dual" class="tsd-kind-icon">dual</a>
+								<a href="bivector3.html#iszero" class="tsd-kind-icon">is<wbr>Zero</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="bivector3.html#iszero" class="tsd-kind-icon">is<wbr>Zero</a>
+								<a href="bivector3.html#rev" class="tsd-kind-icon">rev</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="bivector3.html#rotate" class="tsd-kind-icon">rotate</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="bivector3.html#scp" class="tsd-kind-icon">scp</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="bivector3.html#tostring" class="tsd-kind-icon">to<wbr>String</a>
