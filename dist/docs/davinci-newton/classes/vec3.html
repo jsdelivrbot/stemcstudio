@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Vec3 | NEWTON 0.0.20</title>
+	<title>Vec3 | NEWTON 0.0.21</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">NEWTON 0.0.20</a>
+					<a href="../index.html" class="title">NEWTON 0.0.21</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -98,7 +98,10 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="vec3.html#origin" class="tsd-kind-icon">ORIGIN</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="vec3.html#e1" class="tsd-kind-icon">e1</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="vec3.html#e2" class="tsd-kind-icon">e2</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="vec3.html#e3" class="tsd-kind-icon">e3</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="vec3.html#zero" class="tsd-kind-icon">zero</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external">
@@ -115,6 +118,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="vec3.html#___add__" class="tsd-kind-icon">___add__</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="vec3.html#___div__" class="tsd-kind-icon">___div__</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="vec3.html#___mul__" class="tsd-kind-icon">___mul__</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="vec3.html#___rmul__" class="tsd-kind-icon">___rmul__</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="vec3.html#___sub__" class="tsd-kind-icon">___sub__</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="vec3.html#add" class="tsd-kind-icon">add</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="vec3.html#cross" class="tsd-kind-icon">cross</a></li>
@@ -141,25 +145,32 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Vec3<span class="tsd-signature-symbol">(</span>x_<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y_<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, z_<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="vec3.html" class="tsd-signature-type">Vec3</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Vec3<span class="tsd-signature-symbol">(</span>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, y<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, z<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="vec3.html" class="tsd-signature-type">Vec3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L14">davinci-newton/math/Vec3.ts:14</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L34">davinci-newton/math/Vec3.ts:34</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>&quot;v corresponds to <code>new Vec3(x, y, z)</code> in the [e1, e2, e3] basis&quot;
+										means
+									v = x <em> e1 + y </em> e2 + z * e3</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>x_: <span class="tsd-signature-type">number</span></h5>
+									<h5>x: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>y_: <span class="tsd-signature-type">number</span></h5>
+									<h5>y: <span class="tsd-signature-type">number</span></h5>
 								</li>
 								<li>
-									<h5>z_: <span class="tsd-signature-type">number</span></h5>
+									<h5>z: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="vec3.html" class="tsd-signature-type">Vec3</a></h4>
@@ -170,14 +181,64 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
-					<a name="origin" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> ORIGIN</h3>
-					<div class="tsd-signature tsd-kind-icon">ORIGIN<span class="tsd-signature-symbol">:</span> <a href="vec3.html" class="tsd-signature-type">Vec3</a><span class="tsd-signature-symbol"> =&nbsp;new Vec3(0, 0, 0)</span></div>
+					<a name="e1" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> e1</h3>
+					<div class="tsd-signature tsd-kind-icon">e1<span class="tsd-signature-symbol">:</span> <a href="vec3.html" class="tsd-signature-type">Vec3</a><span class="tsd-signature-symbol"> =&nbsp;new Vec3(1, 0, 0)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L14">davinci-newton/math/Vec3.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L15">davinci-newton/math/Vec3.ts:15</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The basis vector corresponding to the x coordinate.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="e2" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> e2</h3>
+					<div class="tsd-signature tsd-kind-icon">e2<span class="tsd-signature-symbol">:</span> <a href="vec3.html" class="tsd-signature-type">Vec3</a><span class="tsd-signature-symbol"> =&nbsp;new Vec3(0, 1, 0)</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L20">davinci-newton/math/Vec3.ts:20</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The basis vector corresponding to the y coordinate.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="e3" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> e3</h3>
+					<div class="tsd-signature tsd-kind-icon">e3<span class="tsd-signature-symbol">:</span> <a href="vec3.html" class="tsd-signature-type">Vec3</a><span class="tsd-signature-symbol"> =&nbsp;new Vec3(0, 0, 1)</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L25">davinci-newton/math/Vec3.ts:25</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The basis vector corresponding to the z coordinate.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="zero" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> zero</h3>
+					<div class="tsd-signature tsd-kind-icon">zero<span class="tsd-signature-symbol">:</span> <a href="vec3.html" class="tsd-signature-type">Vec3</a><span class="tsd-signature-symbol"> =&nbsp;new Vec3(0, 0, 0)</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L30">davinci-newton/math/Vec3.ts:30</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The zero vector.</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
@@ -192,7 +253,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L26">davinci-newton/math/Vec3.ts:26</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L50">davinci-newton/math/Vec3.ts:50</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -214,7 +275,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L33">davinci-newton/math/Vec3.ts:33</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L57">davinci-newton/math/Vec3.ts:57</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -236,7 +297,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L40">davinci-newton/math/Vec3.ts:40</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L64">davinci-newton/math/Vec3.ts:64</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -261,7 +322,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L203">davinci-newton/math/Vec3.ts:203</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L227">davinci-newton/math/Vec3.ts:227</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -284,7 +345,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L215">davinci-newton/math/Vec3.ts:215</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L231">davinci-newton/math/Vec3.ts:231</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -307,13 +368,36 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L211">davinci-newton/math/Vec3.ts:211</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L235">davinci-newton/math/Vec3.ts:235</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>rhs: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="vec3.html" class="tsd-signature-type">Vec3</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="___rmul__" class="tsd-anchor"></a>
+					<h3>___rmul__</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">___rmul__<span class="tsd-signature-symbol">(</span>lhs<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="vec3.html" class="tsd-signature-type">Vec3</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L239">davinci-newton/math/Vec3.ts:239</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>lhs: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="vec3.html" class="tsd-signature-type">Vec3</a></h4>
@@ -330,7 +414,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L207">davinci-newton/math/Vec3.ts:207</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L243">davinci-newton/math/Vec3.ts:243</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -353,7 +437,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L47">davinci-newton/math/Vec3.ts:47</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L71">davinci-newton/math/Vec3.ts:71</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -376,7 +460,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L91">davinci-newton/math/Vec3.ts:91</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L115">davinci-newton/math/Vec3.ts:115</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -399,7 +483,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L150">davinci-newton/math/Vec3.ts:150</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L174">davinci-newton/math/Vec3.ts:174</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="vec3.html" class="tsd-signature-type">Vec3</a></h4>
@@ -416,7 +500,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L107">davinci-newton/math/Vec3.ts:107</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L131">davinci-newton/math/Vec3.ts:131</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -439,7 +523,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L54">davinci-newton/math/Vec3.ts:54</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L78">davinci-newton/math/Vec3.ts:78</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -462,7 +546,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L117">davinci-newton/math/Vec3.ts:117</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L141">davinci-newton/math/Vec3.ts:141</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -485,7 +569,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L61">davinci-newton/math/Vec3.ts:61</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L85">davinci-newton/math/Vec3.ts:85</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -513,7 +597,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L124">davinci-newton/math/Vec3.ts:124</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L148">davinci-newton/math/Vec3.ts:148</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -530,7 +614,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L84">davinci-newton/math/Vec3.ts:84</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L108">davinci-newton/math/Vec3.ts:108</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -553,7 +637,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L134">davinci-newton/math/Vec3.ts:134</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L158">davinci-newton/math/Vec3.ts:158</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -579,7 +663,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L169">davinci-newton/math/Vec3.ts:169</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L193">davinci-newton/math/Vec3.ts:193</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -602,7 +686,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L77">davinci-newton/math/Vec3.ts:77</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L101">davinci-newton/math/Vec3.ts:101</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -625,7 +709,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L199">davinci-newton/math/Vec3.ts:199</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L223">davinci-newton/math/Vec3.ts:223</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -653,7 +737,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L219">davinci-newton/math/Vec3.ts:219</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/math/Vec3.ts#L247">davinci-newton/math/Vec3.ts:247</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -687,7 +771,16 @@
 								<a href="vec3.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
-								<a href="vec3.html#origin" class="tsd-kind-icon">ORIGIN</a>
+								<a href="vec3.html#e1" class="tsd-kind-icon">e1</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="vec3.html#e2" class="tsd-kind-icon">e2</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="vec3.html#e3" class="tsd-kind-icon">e3</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="vec3.html#zero" class="tsd-kind-icon">zero</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-external">
 								<a href="vec3.html#x" class="tsd-kind-icon">x</a>
@@ -706,6 +799,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="vec3.html#___mul__" class="tsd-kind-icon">___mul__</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="vec3.html#___rmul__" class="tsd-kind-icon">___rmul__</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="vec3.html#___sub__" class="tsd-kind-icon">___sub__</a>

@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.21.58",
+  "version": "2.21.59",
   "private": true,
   "description": "Expressing Ideas through Computational Modeling",
   "engines": {
@@ -27,7 +27,7 @@
     "grunt-contrib-watch": "^1.0.0",
     "grunt-ts": "^5.5.1",
     "grunt-tslint": "^3.3.0",
-    "jspm": "^0.16.51",
+    "jspm": "^0.16.52",
     "karma": "^0.13.22",
     "karma-chrome-launcher": "^1.0.1",
     "karma-jasmine": "^1.1.0",
@@ -73,7 +73,7 @@
     "serve-favicon": "^2.3.2",
     "showdown": "^1.6.3",
     "socket.io": "^1.7.2",
-    "systemjs": "^0.20.3",
+    "systemjs": "^0.20.4",
     "zone.js": "^0.6.26"
   },
   "jspm": {

@@ -222,6 +222,14 @@ export default class ExamplesController extends AbstractPageController {
                 category: 'Physics'
             },
             {
+                gistId: '53738fb8d4860437814fe8738a585505',
+                title: "Binary Star using the NEWTON Physics Engine",
+                description: "A two-body simulation demonstrating gravitation, center of mass, and reduced-mass concepts.",
+                imageSrc: '/img/examples/binary-star.png',
+                imageAlt: '',
+                category: 'Physics'
+            },
+            {
                 gistId: '925701cc2a654bfefcf0',
                 title: "Earth-Moon",
                 description: "Demonstrates using two viewports to display a scene from different perspectives. Simulates the Earth-Moon gravitation system with directional lighting provided by the sun. The scene is rendered in plan view and and from the Earth.",

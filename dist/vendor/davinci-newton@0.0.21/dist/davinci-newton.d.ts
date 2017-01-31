@@ -69,11 +69,25 @@ declare module NEWTON {
      */
     class Vec3 implements VectorE3 {
         /**
-         * 
+         * The basis vector corresponding to the x coordinate.
          */
-        static ORIGIN: Vec3;
+        static e1: Vec3;
         /**
-         * 
+         * The basis vector corresponding to the y coordinate.
+         */
+        static e2: Vec3;
+        /**
+         * The basis vector corresponding to the z coordinate.
+         */
+        static e3: Vec3;
+        /**
+         * The zero vector.
+         */
+        static zero: Vec3;
+        /**
+         * "v corresponds to `new Vec3(x, y, z)` in the [e1, e2, e3] basis"
+         * means
+         * v = x * e1 + y * e2 + z * e3
          */
         constructor(x: number, y: number, z: number);
         /**
@@ -109,7 +123,9 @@ declare module NEWTON {
      */
     class Vector3 implements VectorE3 {
         /**
-         * 
+         * "v corresponds to `new Vector3(x, y, z)` in the [e1, e2, e3] basis"
+         * means
+         * v = x * e1 + y * e2 + z * e3
          */
         constructor(x?: number, y?: number, z?: number);
         /**
@@ -124,6 +140,9 @@ declare module NEWTON {
          * 
          */
         z: number;
+        /**
+         * 
+         */
         add(rhs: VectorE3): this;
         applyMatrix(σ: MatrixLike): this;
         copy(source: VectorE3): this;
@@ -135,9 +154,18 @@ declare module NEWTON {
         isZero(): boolean;
         magnitude(): number;
         neg(): this;
+        /**
+         * Computes the square of this vector.
+         * This is an alias for the `squaredNorm` method.
+         */
         quaditude(): number;
         quadranceTo(point: VectorE3): number;
         rotate(spinor: SpinorE3): this;
+        /**
+         * Computes the square of this vector.
+         * This is an alias for the `quaditude` method.
+         */
+        squaredNorm(): number;
         subtract(rhs: VectorE3): this;
         toString(radix?: number): string;
         write(destination: VectorE3): this;
@@ -490,6 +518,36 @@ declare module NEWTON {
          * 
          */
         constructor(diffEq: Simulation, energySystem: EnergySystem, diffEqSolver: DiffEqSolver);
+        /**
+         * 
+         */
+        step(stepSize: number): void;
+    }
+
+    /**
+     * An adaptive step solver that adjusts the step size in order to
+     * ensure that the energy change be less than a tolerance amount.
+     */
+    class ConstantEnergySolver implements DiffEqSolver {
+        /**
+         * The smallest time step that will executed.
+         * Setting a reasonable lower bound prevents the solver from taking too long to give up.
+         * This value may be reduced incrementally to improve the accuracy.
+         * Default is 1E-5;
+         */
+        stepLowerBound: number;
+        /**
+         * Returns the tolerance used to decide if sufficient accuracy has been achieved.
+         * Default is 1E-6.
+         */
+        tolerance: number;
+        /**
+         * 
+         */
+        constructor(simulation: Simulation, energySystem: EnergySystem, solverMethod: DiffEqSolver);
+        /**
+         * 
+         */
         step(stepSize: number): void;
     }
 
@@ -615,7 +673,7 @@ declare module NEWTON {
         /**
          * 
          */
-        constructor(body1: RigidBody3, body2: RigidBody3);
+        constructor(body1: RigidBody3, body2: RigidBody3, G?: number);
         updateForces(): Force3[];
         disconnect(): void;
         potentialEnergy(): number;

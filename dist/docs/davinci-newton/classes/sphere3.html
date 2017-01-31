@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Sphere3 | NEWTON 0.0.20</title>
+	<title>Sphere3 | NEWTON 0.0.21</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">NEWTON 0.0.20</a>
+					<a href="../index.html" class="title">NEWTON 0.0.21</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -129,7 +129,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="sphere3.html#localpointtoworldpoint" class="tsd-kind-icon">local<wbr>Point<wbr>ToWorld<wbr>Point</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="sphere3.html#rotationalenergy" class="tsd-kind-icon">rotational<wbr>Energy</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="sphere3.html#translationalenergy" class="tsd-kind-icon">translational<wbr>Energy</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="sphere3.html#updateangularvelocity" class="tsd-kind-icon">update<wbr>Angular<wbr>Velocity</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="sphere3.html#updateangularvelocity" class="tsd-kind-icon">update<wbr>Angular<wbr>Velocity</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected tsd-is-external"><a href="sphere3.html#updateinertiatensor" class="tsd-kind-icon">update<wbr>Inertia<wbr>Tensor</a></li>
 							</ul>
 						</section>
@@ -168,7 +168,7 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-protected tsd-is-external">
 					<a name="centerofmasslocal_" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagProtected">Protected</span> center<wbr>OfMass<wbr>Local_</h3>
-					<div class="tsd-signature tsd-kind-icon">center<wbr>OfMass<wbr>Local_<span class="tsd-signature-symbol">:</span> <a href="vec3.html" class="tsd-signature-type">Vec3</a><span class="tsd-signature-symbol"> =&nbsp;Vec3.ORIGIN</span></div>
+					<div class="tsd-signature tsd-kind-icon">center<wbr>OfMass<wbr>Local_<span class="tsd-signature-symbol">:</span> <a href="vec3.html" class="tsd-signature-type">Vec3</a><span class="tsd-signature-symbol"> =&nbsp;Vec3.zero</span></div>
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="rigidbody3.html">RigidBody3</a>.<a href="rigidbody3.html#centerofmasslocal_">centerOfMassLocal_</a></p>
 						<ul>
@@ -721,26 +721,20 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
 					<a name="updateangularvelocity" class="tsd-anchor"></a>
 					<h3>update<wbr>Angular<wbr>Velocity</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
 						<li class="tsd-signature tsd-kind-icon">update<wbr>Angular<wbr>Velocity<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="rigidbody3.html">RigidBody3</a>.<a href="rigidbody3.html#updateangularvelocity">updateAngularVelocity</a></p>
+								<p>Overrides <a href="rigidbody3.html">RigidBody3</a>.<a href="rigidbody3.html#updateangularvelocity">updateAngularVelocity</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/engine3D/RigidBody3.ts#L96">davinci-newton/engine3D/RigidBody3.ts:96</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/engine3D/Sphere3.ts#L45">davinci-newton/engine3D/Sphere3.ts:45</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Updates the angular velocity, Ω, bivector based upon the angular momentum.
-									Derived classes may override to provide more efficient implementations based upon symmetry.</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
@@ -756,7 +750,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="rigidbody3.html">RigidBody3</a>.<a href="rigidbody3.html#updateinertiatensor">updateInertiaTensor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/engine3D/Sphere3.ts#L48">davinci-newton/engine3D/Sphere3.ts:48</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/23670b0/src/davinci-newton/engine3D/Sphere3.ts#L56">davinci-newton/engine3D/Sphere3.ts:56</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -836,7 +830,7 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="sphere3.html#translationalenergy" class="tsd-kind-icon">translational<wbr>Energy</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
 								<a href="sphere3.html#updateangularvelocity" class="tsd-kind-icon">update<wbr>Angular<wbr>Velocity</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-protected tsd-is-external">
