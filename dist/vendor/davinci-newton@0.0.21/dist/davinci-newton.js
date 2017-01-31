@@ -1510,7 +1510,7 @@ define('davinci-newton/math/mustBeVectorE3',["require", "exports"], function (re
     exports.default = mustBeVectorE3;
 });
 
-define('davinci-newton/math/Vector3',["require", "exports", "./mustBeVectorE3"], function (require, exports, mustBeVectorE3_1) {
+define('davinci-newton/math/Vector3',["require", "exports", "./mustBeVectorE3", "./Vec3"], function (require, exports, mustBeVectorE3_1, Vec3_1) {
     "use strict";
     var Vector3 = (function () {
         function Vector3(x, y, z) {
@@ -1645,22 +1645,22 @@ define('davinci-newton/math/Vector3',["require", "exports", "./mustBeVectorE3"],
             return "new Vector3(" + this.x.toString(radix) + ", " + this.y.toString(radix) + ", " + this.z.toString(radix) + ")";
         };
         Vector3.prototype.__add__ = function (rhs) {
-            return new Vector3(this.x + rhs.x, this.y + rhs.y, this.z + rhs.z);
+            return new Vec3_1.default(this.x + rhs.x, this.y + rhs.y, this.z + rhs.z);
         };
         Vector3.prototype.__div__ = function (rhs) {
-            return new Vector3(this.x / rhs, this.y / rhs, this.z / rhs);
+            return new Vec3_1.default(this.x / rhs, this.y / rhs, this.z / rhs);
         };
         Vector3.prototype.__mul__ = function (rhs) {
-            return new Vector3(this.x * rhs, this.y * rhs, this.z * rhs);
+            return new Vec3_1.default(this.x * rhs, this.y * rhs, this.z * rhs);
         };
         Vector3.prototype.__neg__ = function () {
-            return new Vector3(-this.x, -this.y, -this.z);
+            return new Vec3_1.default(-this.x, -this.y, -this.z);
         };
         Vector3.prototype.__rmul__ = function (lhs) {
-            return new Vector3(lhs * this.x, lhs * this.y, lhs * this.z);
+            return new Vec3_1.default(lhs * this.x, lhs * this.y, lhs * this.z);
         };
         Vector3.prototype.__sub__ = function (rhs) {
-            return new Vector3(this.x - rhs.x, this.y - rhs.y, this.z - rhs.z);
+            return new Vec3_1.default(this.x - rhs.x, this.y - rhs.y, this.z - rhs.z);
         };
         Vector3.dual = function (B) {
             return new Vector3().dual(B);

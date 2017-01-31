@@ -150,11 +150,11 @@ export default class ExamplesController extends AbstractPageController {
                 category: 'Mathematics'
             },
             {
-                gistId: '54644519dcd556bf8bf779bfa084ced3',
-                title: "EIGHT Getting Started",
-                description: "An example that you can copy to create your own 3D graphics programs using the EIGHT library.",
-                imageSrc: '/img/examples/eight-starter-template.png',
-                imageAlt: 'Green cube illuminated by a directional light.',
+                gistId: 'b045d9390a4cdff7d3b048b0d9bc8bca',
+                title: "Newtonian Mechanics",
+                description: "Two blocks connected by a spring using the NEWTON Physics engine and realtime graphs.",
+                imageSrc: '/img/examples/newton-spring.png',
+                imageAlt: 'Two blocks connected by a spring.',
                 category: 'Physics'
             },
             {
@@ -163,30 +163,6 @@ export default class ExamplesController extends AbstractPageController {
                 description: "A laboratory exploration of particle kinematics in one dimension.",
                 imageSrc: '/img/examples/kinematics-1d-with-units.png',
                 imageAlt: 'Red, green, and blue arrows showng acceleration, velocity, and displacement.',
-                category: 'Physics'
-            },
-            {
-                gistId: 'f00a5fe08eb92b854c803184ec26d402',
-                title: "Ball in a Box using EIGHT and Units",
-                description: "An example made to look like Visual Python but with Units of Measure.",
-                imageSrc: '/img/examples/ball-in-a-box-with-units.png',
-                imageAlt: 'Ball bouncing off the inside walls of a box.',
-                category: 'Physics'
-            },
-            {
-                gistId: '1d23649589c69cd3c4668c5775fcafa3',
-                title: "Ball in a Box using three.js and Units",
-                description: "An example made to look like Visual Python but with Units of Measure.",
-                imageSrc: '/img/examples/ball-in-a-box-with-units.png',
-                imageAlt: 'Ball bouncing off the inside walls of a box.',
-                category: 'Physics'
-            },
-            {
-                gistId: 'dea0b84d306d956bc5fde22e9c0ba5c1',
-                title: "Geometric Algebra",
-                description: "An interactive visualization of vectors, bivectors, and trivectors.",
-                imageSrc: '/img/examples/eight-parallelepiped.png',
-                imageAlt: 'Trivector with arrows along edges.',
                 category: 'Physics'
             },
             {
@@ -211,6 +187,38 @@ export default class ExamplesController extends AbstractPageController {
                 description: "Motion of a proton in proximity to an electric dipole.",
                 imageSrc: '/img/examples/electric-dipole.png',
                 imageAlt: '',
+                category: 'Physics'
+            },
+            {
+                gistId: '54644519dcd556bf8bf779bfa084ced3',
+                title: "EIGHT Getting Started",
+                description: "An example that you can copy to create your own 3D graphics programs using the EIGHT library.",
+                imageSrc: '/img/examples/eight-starter-template.png',
+                imageAlt: 'Green cube illuminated by a directional light.',
+                category: 'Physics'
+            },
+            {
+                gistId: 'f00a5fe08eb92b854c803184ec26d402',
+                title: "Ball in a Box using EIGHT and Units",
+                description: "An example made to look like Visual Python but with Units of Measure.",
+                imageSrc: '/img/examples/ball-in-a-box-with-units.png',
+                imageAlt: 'Ball bouncing off the inside walls of a box.',
+                category: 'Physics'
+            },
+            {
+                gistId: '1d23649589c69cd3c4668c5775fcafa3',
+                title: "Ball in a Box using three.js and Units",
+                description: "An example made to look like Visual Python but with Units of Measure.",
+                imageSrc: '/img/examples/ball-in-a-box-with-units.png',
+                imageAlt: 'Ball bouncing off the inside walls of a box.',
+                category: 'Physics'
+            },
+            {
+                gistId: 'dea0b84d306d956bc5fde22e9c0ba5c1',
+                title: "Geometric Algebra",
+                description: "An interactive visualization of vectors, bivectors, and trivectors.",
+                imageSrc: '/img/examples/eight-parallelepiped.png',
+                imageAlt: 'Trivector with arrows along edges.',
                 category: 'Physics'
             },
             {
