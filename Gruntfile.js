@@ -544,19 +544,19 @@ function copies(target) {
         },
         {
             src: "bower_components/davinci-newton/dist/davinci-newton.d.ts",
-            dest: prepend(target, 'vendor/davinci-newton@0.0.21/dist/davinci-newton.d.ts')
+            dest: prepend(target, 'vendor/davinci-newton@0.0.22/dist/davinci-newton.d.ts')
         },
         {
             src: "bower_components/davinci-newton/dist/davinci-newton.js",
-            dest: prepend(target, 'vendor/davinci-newton@0.0.21/dist/davinci-newton.js')
+            dest: prepend(target, 'vendor/davinci-newton@0.0.22/dist/davinci-newton.js')
         },
         {
             src: "../davinci-newton/dist/davinci-newton.d.ts",
-            dest: prepend(target, 'vendor/davinci-newton@0.0.21/dist/davinci-newton.d.ts')
+            dest: prepend(target, 'vendor/davinci-newton@0.0.22/dist/davinci-newton.d.ts')
         },
         {
             src: "../davinci-newton/dist/davinci-newton.js",
-            dest: prepend(target, 'vendor/davinci-newton@0.0.21/dist/davinci-newton.js')
+            dest: prepend(target, 'vendor/davinci-newton@0.0.22/dist/davinci-newton.js')
         },
         {
             expand: true,

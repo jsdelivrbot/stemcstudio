@@ -145,6 +145,7 @@ declare module NEWTON {
          */
         add(rhs: VectorE3): this;
         applyMatrix(σ: MatrixLike): this;
+        clone(): Vector3;
         copy(source: VectorE3): this;
         direction(): this;
         distanceTo(point: VectorE3): number;
@@ -154,6 +155,10 @@ declare module NEWTON {
         isZero(): boolean;
         magnitude(): number;
         neg(): this;
+        /**
+         * 
+         */
+        normalize(magnitude?: number): this;
         /**
          * Computes the square of this vector.
          * This is an alias for the `squaredNorm` method.
@@ -166,7 +171,7 @@ declare module NEWTON {
          * This is an alias for the `quaditude` method.
          */
         squaredNorm(): number;
-        subtract(rhs: VectorE3): this;
+        sub(rhs: VectorE3): this;
         toString(radix?: number): string;
         write(destination: VectorE3): this;
         zero(): this;
@@ -683,6 +688,14 @@ declare module NEWTON {
      * 
      */
     class Spring3 implements ForceLaw3 {
+        /**
+         * 
+         */
+        restLength: number;
+        /**
+         * 
+         */
+        stiffness: number;
         /**
          * 
          */
