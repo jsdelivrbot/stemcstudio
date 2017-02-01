@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>NEWTON 0.0.22</title>
+	<title>NEWTON 0.0.23</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">NEWTON 0.0.22</a>
+					<a href="index.html" class="title">NEWTON 0.0.23</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -54,7 +54,7 @@
 					<a href="globals.html">Globals</a>
 				</li>
 			</ul>
-			<h1> NEWTON 0.0.22</h1>
+			<h1> NEWTON 0.0.23</h1>
 		</div>
 	</div>
 </header>
@@ -177,6 +177,7 @@
 								<li class="tsd-kind-function tsd-has-type-parameter tsd-is-external"><a href="globals.html#insertat" class="tsd-kind-icon">insert<wbr>At</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#inv3x3" class="tsd-kind-icon">inv3x3</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#isarray" class="tsd-kind-icon">is<wbr>Array</a></li>
+								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#isbivectore3" class="tsd-kind-icon">is<wbr>Bivector<wbr>E3</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#isdefined" class="tsd-kind-icon">is<wbr>Defined</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter tsd-is-external"><a href="globals.html#isempty" class="tsd-kind-icon">is<wbr>Empty</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#isfunction" class="tsd-kind-icon">is<wbr>Function</a></li>
@@ -188,6 +189,7 @@
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#isundefined" class="tsd-kind-icon">is<wbr>Undefined</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#isvectore3" class="tsd-kind-icon">is<wbr>Vector<wbr>E3</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#mul3x3" class="tsd-kind-icon">mul3x3</a></li>
+								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#mustbebivectore3" class="tsd-kind-icon">must<wbr>BeBivector<wbr>E3</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#mustbedefined" class="tsd-kind-icon">must<wbr>BeDefined</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#mustbefinite" class="tsd-kind-icon">must<wbr>BeFinite</a></li>
 								<li class="tsd-kind-function tsd-is-external"><a href="globals.html#mustbefunction" class="tsd-kind-icon">must<wbr>BeFunction</a></li>
@@ -225,7 +227,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/util/clone.ts#L1">davinci-newton/util/clone.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/util/clone.ts#L1">davinci-newton/util/clone.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -254,7 +256,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/util/contains.ts#L1">davinci-newton/util/contains.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/util/contains.ts#L1">davinci-newton/util/contains.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -280,40 +282,22 @@
 					<a name="default" class="tsd-anchor"></a>
 					<h3>default</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">default<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, contextBuilder<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+						<li class="tsd-signature tsd-kind-icon">default<span class="tsd-signature-symbol">(</span>x<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/checks/mustBeNumber.ts#L6">davinci-newton/checks/mustBeNumber.ts:6</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/checks/isNull.ts#L1">davinci-newton/checks/isNull.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>name: <span class="tsd-signature-type">string</span></h5>
-								</li>
-								<li>
-									<h5>value: <span class="tsd-signature-type">number</span></h5>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> contextBuilder: <span class="tsd-signature-type">function</span></h5>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-											</ul>
-											<ul class="tsd-descriptions">
-												<li class="tsd-description">
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-												</li>
-											</ul>
-										</li>
-									</ul>
+									<h5>x: <span class="tsd-signature-type">any</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -327,7 +311,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/math/det3x3.ts#L4">davinci-newton/math/det3x3.ts:4</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/math/det3x3.ts#L4">davinci-newton/math/det3x3.ts:4</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -355,7 +339,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/checks/expectArg.ts#L8">davinci-newton/checks/expectArg.ts:8</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/checks/expectArg.ts#L8">davinci-newton/checks/expectArg.ts:8</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -389,7 +373,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/util/extendArray.ts#L8">davinci-newton/util/extendArray.ts:8</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/util/extendArray.ts#L8">davinci-newton/util/extendArray.ts:8</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -431,7 +415,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/util/find.ts#L8">davinci-newton/util/find.ts:8</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/util/find.ts#L8">davinci-newton/util/find.ts:8</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -491,7 +475,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/util/findIndex.ts#L6">davinci-newton/util/findIndex.ts:6</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/util/findIndex.ts#L6">davinci-newton/util/findIndex.ts:6</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -551,7 +535,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/util/getSystemTime.ts#L4">davinci-newton/util/getSystemTime.ts:4</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/util/getSystemTime.ts#L4">davinci-newton/util/getSystemTime.ts:4</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -573,7 +557,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/util/insertAt.ts#L25">davinci-newton/util/insertAt.ts:25</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/util/insertAt.ts#L25">davinci-newton/util/insertAt.ts:25</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -623,7 +607,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/math/inv3x3.ts#L6">davinci-newton/math/inv3x3.ts:6</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/math/inv3x3.ts#L6">davinci-newton/math/inv3x3.ts:6</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -654,13 +638,42 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/checks/isArray.ts#L1">davinci-newton/checks/isArray.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/checks/isArray.ts#L1">davinci-newton/checks/isArray.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>x: <span class="tsd-signature-type">any</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external">
+					<a name="isbivectore3" class="tsd-anchor"></a>
+					<h3>is<wbr>Bivector<wbr>E3</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Bivector<wbr>E3<span class="tsd-signature-symbol">(</span>v<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in davinci-newton/math/isBivectorE3.ts:10</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Determines whether the argument supports the BivectorE3 interface.
+									The argument must be a non-null object and must support the yz, zx, and xy numeric properties.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>v: <span class="tsd-signature-type">any</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -677,7 +690,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/checks/isDefined.ts#L1">davinci-newton/checks/isDefined.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/checks/isDefined.ts#L1">davinci-newton/checks/isDefined.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -700,7 +713,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/util/isEmpty.ts#L1">davinci-newton/util/isEmpty.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/util/isEmpty.ts#L1">davinci-newton/util/isEmpty.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -729,7 +742,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/checks/isFunction.ts#L1">davinci-newton/checks/isFunction.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/checks/isFunction.ts#L1">davinci-newton/checks/isFunction.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -752,7 +765,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/checks/isInteger.ts#L3">davinci-newton/checks/isInteger.ts:3</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/checks/isInteger.ts#L3">davinci-newton/checks/isInteger.ts:3</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -775,7 +788,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/checks/isNumber.ts#L1">davinci-newton/checks/isNumber.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/checks/isNumber.ts#L1">davinci-newton/checks/isNumber.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -798,7 +811,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/checks/isObject.ts#L1">davinci-newton/checks/isObject.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/checks/isObject.ts#L1">davinci-newton/checks/isObject.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -821,7 +834,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in davinci-newton/math/isSpinorE3.ts:10</li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/math/isSpinorE3.ts#L10">davinci-newton/math/isSpinorE3.ts:10</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -850,7 +863,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/checks/isString.ts#L1">davinci-newton/checks/isString.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/checks/isString.ts#L1">davinci-newton/checks/isString.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -873,7 +886,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/checks/isUndefined.ts#L1">davinci-newton/checks/isUndefined.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/checks/isUndefined.ts#L1">davinci-newton/checks/isUndefined.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -896,7 +909,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in davinci-newton/math/isVectorE3.ts:10</li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/math/isVectorE3.ts#L10">davinci-newton/math/isVectorE3.ts:10</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -925,7 +938,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/math/mul3x3.ts#L1">davinci-newton/math/mul3x3.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/math/mul3x3.ts#L1">davinci-newton/math/mul3x3.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -945,6 +958,32 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external">
+					<a name="mustbebivectore3" class="tsd-anchor"></a>
+					<h3>must<wbr>BeBivector<wbr>E3</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">must<wbr>BeBivector<wbr>E3<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, B<span class="tsd-signature-symbol">: </span><a href="interfaces/bivectore3.html" class="tsd-signature-type">BivectorE3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/bivectore3.html" class="tsd-signature-type">BivectorE3</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in davinci-newton/math/mustBeBivectorE3.ts:3</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>name: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>B: <a href="interfaces/bivectore3.html" class="tsd-signature-type">BivectorE3</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="interfaces/bivectore3.html" class="tsd-signature-type">BivectorE3</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-is-external">
 					<a name="mustbedefined" class="tsd-anchor"></a>
 					<h3>must<wbr>BeDefined</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-is-external">
@@ -954,7 +993,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/checks/mustBeDefined.ts#L8">davinci-newton/checks/mustBeDefined.ts:8</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/checks/mustBeDefined.ts#L8">davinci-newton/checks/mustBeDefined.ts:8</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -995,7 +1034,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/checks/mustBeFinite.ts#L7">davinci-newton/checks/mustBeFinite.ts:7</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/checks/mustBeFinite.ts#L7">davinci-newton/checks/mustBeFinite.ts:7</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1032,7 +1071,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/checks/mustBeFunction.ts#L8">davinci-newton/checks/mustBeFunction.ts:8</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/checks/mustBeFunction.ts#L8">davinci-newton/checks/mustBeFunction.ts:8</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1073,7 +1112,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/checks/mustBeInteger.ts#L8">davinci-newton/checks/mustBeInteger.ts:8</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/checks/mustBeInteger.ts#L8">davinci-newton/checks/mustBeInteger.ts:8</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1114,7 +1153,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/checks/mustBeNonNullObject.ts#L9">davinci-newton/checks/mustBeNonNullObject.ts:9</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/checks/mustBeNonNullObject.ts#L9">davinci-newton/checks/mustBeNonNullObject.ts:9</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -1161,7 +1200,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/math/mustBeVectorE3.ts#L3">davinci-newton/math/mustBeVectorE3.ts:3</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/math/mustBeVectorE3.ts#L3">davinci-newton/math/mustBeVectorE3.ts:3</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1187,7 +1226,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/checks/mustSatisfy.ts#L1">davinci-newton/checks/mustSatisfy.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/checks/mustSatisfy.ts#L1">davinci-newton/checks/mustSatisfy.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1243,7 +1282,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/util/remove.ts#L9">davinci-newton/util/remove.ts:9</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/util/remove.ts#L9">davinci-newton/util/remove.ts:9</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1287,7 +1326,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/util/removeAt.ts#L7">davinci-newton/util/removeAt.ts:7</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/util/removeAt.ts#L7">davinci-newton/util/removeAt.ts:7</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1331,7 +1370,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/util/repeat.ts#L4">davinci-newton/util/repeat.ts:4</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/util/repeat.ts#L4">davinci-newton/util/repeat.ts:4</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1368,7 +1407,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/math/rotate3.ts#L3">davinci-newton/math/rotate3.ts:3</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/math/rotate3.ts#L3">davinci-newton/math/rotate3.ts:3</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1400,7 +1439,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/math/rotate3.ts#L17">davinci-newton/math/rotate3.ts:17</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/math/rotate3.ts#L17">davinci-newton/math/rotate3.ts:17</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1432,7 +1471,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/math/rotate3.ts#L31">davinci-newton/math/rotate3.ts:31</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/math/rotate3.ts#L31">davinci-newton/math/rotate3.ts:31</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1464,7 +1503,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/util/toName.ts#L20">davinci-newton/util/toName.ts:20</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/util/toName.ts#L20">davinci-newton/util/toName.ts:20</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1493,7 +1532,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/util/validName.ts#L20">davinci-newton/util/validName.ts:20</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/util/validName.ts#L20">davinci-newton/util/validName.ts:20</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1522,7 +1561,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/util/veryDifferent.ts#L16">davinci-newton/util/veryDifferent.ts:16</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/util/veryDifferent.ts#L16">davinci-newton/util/veryDifferent.ts:16</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1554,7 +1593,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/math/wedge3.ts#L11">davinci-newton/math/wedge3.ts:11</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/math/wedge3.ts#L11">davinci-newton/math/wedge3.ts:11</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1580,7 +1619,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/math/wedge3.ts#L3">davinci-newton/math/wedge3.ts:3</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/math/wedge3.ts#L3">davinci-newton/math/wedge3.ts:3</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1606,7 +1645,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/math/wedge3.ts#L7">davinci-newton/math/wedge3.ts:7</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/math/wedge3.ts#L7">davinci-newton/math/wedge3.ts:7</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1632,7 +1671,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/59ba671/src/davinci-newton/util/zeroArray.ts#L1">davinci-newton/util/zeroArray.ts:1</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/util/zeroArray.ts#L1">davinci-newton/util/zeroArray.ts:1</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1940,6 +1979,9 @@
 						<a href="globals.html#isarray" class="tsd-kind-icon">is<wbr>Array</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#isbivectore3" class="tsd-kind-icon">is<wbr>Bivector<wbr>E3</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#isdefined" class="tsd-kind-icon">is<wbr>Defined</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-external">
@@ -1971,6 +2013,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#mul3x3" class="tsd-kind-icon">mul3x3</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#mustbebivectore3" class="tsd-kind-icon">must<wbr>BeBivector<wbr>E3</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#mustbedefined" class="tsd-kind-icon">must<wbr>BeDefined</a>
