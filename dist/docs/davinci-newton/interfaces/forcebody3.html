@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ForceBody3 | NEWTON 0.0.23</title>
+	<title>ForceBody3 | NEWTON 0.0.24</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">NEWTON 0.0.23</a>
+					<a href="../index.html" class="title">NEWTON 0.0.24</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -68,13 +68,27 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">ForceBody3</span>
+						<a href="simobject.html" class="tsd-signature-type">SimObject</a>
 						<ul class="tsd-hierarchy">
 							<li>
-								<a href="massive3.html" class="tsd-signature-type">Massive3</a>
+								<span class="target">ForceBody3</span>
+								<ul class="tsd-hierarchy">
+									<li>
+										<a href="massive3.html" class="tsd-signature-type">Massive3</a>
+									</li>
+								</ul>
 							</li>
 						</ul>
 					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel">
+				<h3>Implemented by</h3>
+				<ul class="tsd-hierarchy">
+					<li><a href="../classes/block3.html" class="tsd-signature-type">Block3</a></li>
+					<li><a href="../classes/cylinder3.html" class="tsd-signature-type">Cylinder3</a></li>
+					<li><a href="../classes/rigidbody3.html" class="tsd-signature-type">RigidBody3</a></li>
+					<li><a href="../classes/sphere3.html" class="tsd-signature-type">Sphere3</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -84,9 +98,22 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="forcebody3.html#l" class="tsd-kind-icon">L</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="forcebody3.html#m" class="tsd-kind-icon">M</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="forcebody3.html#p" class="tsd-kind-icon">P</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="forcebody3.html#r" class="tsd-kind-icon">R</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="forcebody3.html#x" class="tsd-kind-icon">X</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external"><a href="forcebody3.html#expiretime" class="tsd-kind-icon">expire<wbr>Time</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="forcebody3.html#varsindex" class="tsd-kind-icon">vars<wbr>Index</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="forcebody3.html#_" class="tsd-kind-icon">Ω</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-external">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="forcebody3.html#rotationalenergy" class="tsd-kind-icon">rotational<wbr>Energy</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="forcebody3.html#translationalenergy" class="tsd-kind-icon">translational<wbr>Energy</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="forcebody3.html#updateangularvelocity" class="tsd-kind-icon">update<wbr>Angular<wbr>Velocity</a></li>
 							</ul>
 						</section>
 					</div>
@@ -95,12 +122,42 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+					<a name="l" class="tsd-anchor"></a>
+					<h3>L</h3>
+					<div class="tsd-signature tsd-kind-icon">L<span class="tsd-signature-symbol">:</span> <a href="bivectore3.html" class="tsd-signature-type">BivectorE3</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/engine3D/ForceBody3.ts#L13">davinci-newton/engine3D/ForceBody3.ts:13</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+					<a name="m" class="tsd-anchor"></a>
+					<h3>M</h3>
+					<div class="tsd-signature tsd-kind-icon">M<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">GeometricE3</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/engine3D/ForceBody3.ts#L9">davinci-newton/engine3D/ForceBody3.ts:9</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+					<a name="p" class="tsd-anchor"></a>
+					<h3>P</h3>
+					<div class="tsd-signature tsd-kind-icon">P<span class="tsd-signature-symbol">:</span> <a href="vectore3.html" class="tsd-signature-type">VectorE3</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/engine3D/ForceBody3.ts#L12">davinci-newton/engine3D/ForceBody3.ts:12</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
 					<a name="r" class="tsd-anchor"></a>
 					<h3>R</h3>
 					<div class="tsd-signature tsd-kind-icon">R<span class="tsd-signature-symbol">:</span> <a href="spinore3.html" class="tsd-signature-type">SpinorE3</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/engine3D/ForceBody3.ts#L6">davinci-newton/engine3D/ForceBody3.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/engine3D/ForceBody3.ts#L11">davinci-newton/engine3D/ForceBody3.ts:11</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -110,7 +167,18 @@
 					<div class="tsd-signature tsd-kind-icon">X<span class="tsd-signature-symbol">:</span> <a href="vectore3.html" class="tsd-signature-type">VectorE3</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/engine3D/ForceBody3.ts#L5">davinci-newton/engine3D/ForceBody3.ts:5</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/engine3D/ForceBody3.ts#L10">davinci-newton/engine3D/ForceBody3.ts:10</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
+					<a name="expiretime" class="tsd-anchor"></a>
+					<h3>expire<wbr>Time</h3>
+					<div class="tsd-signature tsd-kind-icon">expire<wbr>Time<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="simobject.html">SimObject</a>.<a href="simobject.html#expiretime">expireTime</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/core/SimObject.ts#L23">davinci-newton/core/SimObject.ts:23</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -120,9 +188,73 @@
 					<div class="tsd-signature tsd-kind-icon">vars<wbr>Index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/engine3D/ForceBody3.ts#L7">davinci-newton/engine3D/ForceBody3.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/engine3D/ForceBody3.ts#L15">davinci-newton/engine3D/ForceBody3.ts:15</a></li>
 						</ul>
 					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+					<a name="_" class="tsd-anchor"></a>
+					<h3>Ω</h3>
+					<div class="tsd-signature tsd-kind-icon">Ω<span class="tsd-signature-symbol">:</span> <a href="bivectore3.html" class="tsd-signature-type">BivectorE3</a></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/engine3D/ForceBody3.ts#L14">davinci-newton/engine3D/ForceBody3.ts:14</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+					<a name="rotationalenergy" class="tsd-anchor"></a>
+					<h3>rotational<wbr>Energy</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">rotational<wbr>Energy<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/geometric3.html" class="tsd-signature-type">Geometric3</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/engine3D/ForceBody3.ts#L16">davinci-newton/engine3D/ForceBody3.ts:16</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="../classes/geometric3.html" class="tsd-signature-type">Geometric3</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+					<a name="translationalenergy" class="tsd-anchor"></a>
+					<h3>translational<wbr>Energy</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">translational<wbr>Energy<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/geometric3.html" class="tsd-signature-type">Geometric3</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/engine3D/ForceBody3.ts#L17">davinci-newton/engine3D/ForceBody3.ts:17</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <a href="../classes/geometric3.html" class="tsd-signature-type">Geometric3</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+					<a name="updateangularvelocity" class="tsd-anchor"></a>
+					<h3>update<wbr>Angular<wbr>Velocity</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">update<wbr>Angular<wbr>Velocity<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/engine3D/ForceBody3.ts#L18">davinci-newton/engine3D/ForceBody3.ts:18</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
 				</section>
 			</section>
 		</div>
@@ -142,13 +274,37 @@
 						<a href="forcebody3.html" class="tsd-kind-icon">Force<wbr>Body3</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+								<a href="forcebody3.html#l" class="tsd-kind-icon">L</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+								<a href="forcebody3.html#m" class="tsd-kind-icon">M</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+								<a href="forcebody3.html#p" class="tsd-kind-icon">P</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
 								<a href="forcebody3.html#r" class="tsd-kind-icon">R</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
 								<a href="forcebody3.html#x" class="tsd-kind-icon">X</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
+								<a href="forcebody3.html#expiretime" class="tsd-kind-icon">expire<wbr>Time</a>
+							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
 								<a href="forcebody3.html#varsindex" class="tsd-kind-icon">vars<wbr>Index</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+								<a href="forcebody3.html#_" class="tsd-kind-icon">Ω</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+								<a href="forcebody3.html#rotationalenergy" class="tsd-kind-icon">rotational<wbr>Energy</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+								<a href="forcebody3.html#translationalenergy" class="tsd-kind-icon">translational<wbr>Energy</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+								<a href="forcebody3.html#updateangularvelocity" class="tsd-kind-icon">update<wbr>Angular<wbr>Velocity</a>
 							</li>
 						</ul>
 					</li>

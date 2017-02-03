@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Matrix3 | NEWTON 0.0.23</title>
+	<title>Matrix3 | NEWTON 0.0.24</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">NEWTON 0.0.23</a>
+					<a href="../index.html" class="title">NEWTON 0.0.24</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -97,6 +97,7 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="matrix3.html#modified" class="tsd-kind-icon">modified</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="matrix3.html#uom" class="tsd-kind-icon">uom</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-inherited tsd-is-external">
@@ -135,26 +136,30 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Matrix3<span class="tsd-signature-symbol">(</span>elements<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Float32Array</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix3.html" class="tsd-signature-type">Matrix3</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Matrix3<span class="tsd-signature-symbol">(</span>elements<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Float32Array</span>, uom<span class="tsd-signature-symbol">?: </span><a href="unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix3.html" class="tsd-signature-type">Matrix3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overrides <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/math/Matrix3.ts#L9">davinci-newton/math/Matrix3.ts:9</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/math/Matrix3.ts#L10">davinci-newton/math/Matrix3.ts:10</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
+								<dl class="tsd-comment-tags">
+									<dt>uom</dt>
+									<dd><p>The optional unit of measure.</p>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> elements: <span class="tsd-signature-type">Float32Array</span><span class="tsd-signature-symbol"> =&nbsp;new Float32Array([1, 0, 0, 0, 1, 0, 0, 0, 1])</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-										</div>
-									</div>
+									<h5>elements: <span class="tsd-signature-type">Float32Array</span></h5>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> uom: <a href="unit.html" class="tsd-signature-type">Unit</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
@@ -171,7 +176,19 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#modified">modified</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/math/AbstractMatrix.ts#L15">davinci-newton/math/AbstractMatrix.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/math/AbstractMatrix.ts#L16">davinci-newton/math/AbstractMatrix.ts:16</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<a name="uom" class="tsd-anchor"></a>
+					<h3>uom</h3>
+					<div class="tsd-signature tsd-kind-icon">uom<span class="tsd-signature-symbol">:</span> <a href="unit.html" class="tsd-signature-type">Unit</a></div>
+					<aside class="tsd-sources">
+						<p>Implementation of <a href="../interfaces/matrixlike.html">MatrixLike</a>.<a href="../interfaces/matrixlike.html#uom">uom</a></p>
+						<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#uom">uom</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/math/AbstractMatrix.ts#L17">davinci-newton/math/AbstractMatrix.ts:17</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -189,7 +206,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#dimensions">dimensions</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/math/AbstractMatrix.ts#L29">davinci-newton/math/AbstractMatrix.ts:29</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/math/AbstractMatrix.ts#L32">davinci-newton/math/AbstractMatrix.ts:32</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -208,7 +225,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#elements">elements</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/math/AbstractMatrix.ts#L33">davinci-newton/math/AbstractMatrix.ts:33</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/math/AbstractMatrix.ts#L36">davinci-newton/math/AbstractMatrix.ts:36</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Float32Array</span></h4>
@@ -217,7 +234,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#elements">elements</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/math/AbstractMatrix.ts#L36">davinci-newton/math/AbstractMatrix.ts:36</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/math/AbstractMatrix.ts#L39">davinci-newton/math/AbstractMatrix.ts:39</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -244,7 +261,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#copy">copy</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/math/AbstractMatrix.ts#L41">davinci-newton/math/AbstractMatrix.ts:41</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/math/AbstractMatrix.ts#L44">davinci-newton/math/AbstractMatrix.ts:44</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -269,7 +286,7 @@
 								<p>Implementation of <a href="../interfaces/matrixlike.html">MatrixLike</a>.<a href="../interfaces/matrixlike.html#getelement">getElement</a></p>
 								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#getelement">getElement</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/math/AbstractMatrix.ts#L57">davinci-newton/math/AbstractMatrix.ts:57</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/math/AbstractMatrix.ts#L61">davinci-newton/math/AbstractMatrix.ts:61</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -306,7 +323,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/math/Matrix3.ts#L20">davinci-newton/math/Matrix3.ts:20</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/math/Matrix3.ts#L22">davinci-newton/math/Matrix3.ts:22</a></li>
 								</ul>
 							</aside>
 						</li>
@@ -323,7 +340,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#isone">isOne</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/math/AbstractMatrix.ts#L64">davinci-newton/math/AbstractMatrix.ts:64</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/math/AbstractMatrix.ts#L68">davinci-newton/math/AbstractMatrix.ts:68</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -345,7 +362,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/math/Matrix3.ts#L28">davinci-newton/math/Matrix3.ts:28</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/math/Matrix3.ts#L30">davinci-newton/math/Matrix3.ts:30</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -371,7 +388,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/math/Matrix3.ts#L44">davinci-newton/math/Matrix3.ts:44</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/math/Matrix3.ts#L46">davinci-newton/math/Matrix3.ts:46</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -400,7 +417,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/math/Matrix3.ts#L35">davinci-newton/math/Matrix3.ts:35</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/math/Matrix3.ts#L37">davinci-newton/math/Matrix3.ts:37</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -426,7 +443,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/math/Matrix3.ts#L56">davinci-newton/math/Matrix3.ts:56</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/math/Matrix3.ts#L58">davinci-newton/math/Matrix3.ts:58</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -454,7 +471,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/math/Matrix3.ts#L89">davinci-newton/math/Matrix3.ts:89</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/math/Matrix3.ts#L91">davinci-newton/math/Matrix3.ts:91</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -482,7 +499,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/math/Matrix3.ts#L115">davinci-newton/math/Matrix3.ts:115</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/math/Matrix3.ts#L117">davinci-newton/math/Matrix3.ts:117</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -544,7 +561,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#setelement">setElement</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/math/AbstractMatrix.ts#L88">davinci-newton/math/AbstractMatrix.ts:88</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/math/AbstractMatrix.ts#L92">davinci-newton/math/AbstractMatrix.ts:92</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -584,7 +601,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/math/Matrix3.ts#L131">davinci-newton/math/Matrix3.ts:131</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/math/Matrix3.ts#L133">davinci-newton/math/Matrix3.ts:133</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -611,7 +628,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/math/Matrix3.ts#L142">davinci-newton/math/Matrix3.ts:142</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/math/Matrix3.ts#L144">davinci-newton/math/Matrix3.ts:144</a></li>
 								</ul>
 							</aside>
 						</li>
@@ -627,7 +644,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/math/Matrix3.ts#L156">davinci-newton/math/Matrix3.ts:156</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/math/Matrix3.ts#L158">davinci-newton/math/Matrix3.ts:158</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -649,7 +666,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/41047c7/src/davinci-newton/math/Matrix3.ts#L160">davinci-newton/math/Matrix3.ts:160</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/math/Matrix3.ts#L162">davinci-newton/math/Matrix3.ts:162</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="matrix3.html" class="tsd-signature-type">Matrix3</a></h4>
@@ -678,6 +695,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="matrix3.html#modified" class="tsd-kind-icon">modified</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="matrix3.html#uom" class="tsd-kind-icon">uom</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="matrix3.html#dimensions" class="tsd-kind-icon">dimensions</a>
