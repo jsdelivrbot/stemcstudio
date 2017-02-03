@@ -84,25 +84,25 @@ import translate from './translate/index';
 import wsmodel from './wsmodel/module';
 
 import BackgroundService from './services/background/BackgroundService';
-import {BACKGROUND_UUID} from './services/background/Background';
+import { BACKGROUND_UUID } from './services/background/Background';
 import GitHubAuthManager from './services/gham/GitHubAuthManager';
-import {GITHUB_AUTH_MANAGER} from './services/gham/IGitHubAuthManager';
+import { GITHUB_AUTH_MANAGER } from './services/gham/IGitHubAuthManager';
 import Iso8601 from './services/iso8601/Iso8601';
 import NavigationService from './modules/navigation/NavigationService';
-import {STATE_ABOUT} from './modules/navigation/NavigationService';
-import {STATE_COOKBOOK} from './modules/navigation/NavigationService';
-import {STATE_COPY} from './modules/navigation/NavigationService';
-import {STATE_DASHBOARD} from './modules/navigation/NavigationService';
-import {STATE_DOODLE} from './modules/navigation/NavigationService';
-import {STATE_DOWNLOAD} from './modules/navigation/NavigationService';
-import {STATE_EXAMPLES} from './modules/navigation/NavigationService';
-import {STATE_GIST} from './modules/navigation/NavigationService';
-import {STATE_HOME} from './modules/navigation/NavigationService';
-import {STATE_NEW} from './modules/navigation/NavigationService';
-import {STATE_OPEN} from './modules/navigation/NavigationService';
-import {STATE_REPO} from './modules/navigation/NavigationService';
-import {STATE_ROOM} from './modules/navigation/NavigationService';
-import {STATE_TUTORIALS} from './modules/navigation/NavigationService';
+import { STATE_ABOUT } from './modules/navigation/NavigationService';
+import { STATE_COOKBOOK } from './modules/navigation/NavigationService';
+import { STATE_COPY } from './modules/navigation/NavigationService';
+import { STATE_DASHBOARD } from './modules/navigation/NavigationService';
+import { STATE_DOODLE } from './modules/navigation/NavigationService';
+import { STATE_DOWNLOAD } from './modules/navigation/NavigationService';
+import { STATE_EXAMPLES } from './modules/navigation/NavigationService';
+import { STATE_GIST } from './modules/navigation/NavigationService';
+import { STATE_HOME } from './modules/navigation/NavigationService';
+import { STATE_NEW } from './modules/navigation/NavigationService';
+import { STATE_OPEN } from './modules/navigation/NavigationService';
+import { STATE_REPO } from './modules/navigation/NavigationService';
+import { STATE_ROOM } from './modules/navigation/NavigationService';
+import { STATE_TUTORIALS } from './modules/navigation/NavigationService';
 
 //
 // Create 'app' module and declare its Angular module dependencies.
@@ -140,7 +140,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version.
-app.constant('version', '2.21.63');
+app.constant('version', '2.21.64');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
