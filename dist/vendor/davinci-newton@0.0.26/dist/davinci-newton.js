@@ -3006,7 +3006,7 @@ define('davinci-newton/math/Geometric3',["require", "exports", "./Coords", "./ar
                     this.uom_ = Unit_1.default.mustBeUnit('uom', uom);
                 }
                 else {
-                    throw new Error(readOnly_1.default(name).message);
+                    throw new Error(readOnly_1.default('uom').message);
                 }
             },
             enumerable: true,
@@ -4160,18 +4160,6 @@ define('davinci-newton/math/Geometric3',["require", "exports", "./Coords", "./ar
         Geometric3.prototype.__neg__ = function () {
             return lock(Geometric3.copy(this).neg());
         };
-        Geometric3.zero = function () { return new Geometric3(); };
-        ;
-        Geometric3.one = function () { return new Geometric3().addScalar(1); };
-        ;
-        Geometric3.e1 = function () { return Geometric3.vector(1, 0, 0); };
-        ;
-        Geometric3.e2 = function () { return Geometric3.vector(0, 1, 0); };
-        ;
-        Geometric3.e3 = function () { return Geometric3.vector(0, 0, 1); };
-        ;
-        Geometric3.I = function () { return new Geometric3().addPseudo(1); };
-        ;
         Geometric3.bivector = function (yz, zx, xy, uom) {
             return Geometric3.spinor(0, yz, zx, xy, uom);
         };
@@ -4298,6 +4286,12 @@ define('davinci-newton/math/Geometric3',["require", "exports", "./Coords", "./ar
         };
         return Geometric3;
     }(Coords_1.Coords));
+    Geometric3.zero = lock(new Geometric3());
+    Geometric3.one = lock(new Geometric3().addScalar(1));
+    Geometric3.e1 = lock(Geometric3.vector(1, 0, 0));
+    Geometric3.e2 = lock(Geometric3.vector(0, 1, 0));
+    Geometric3.e3 = lock(Geometric3.vector(0, 0, 1));
+    Geometric3.I = lock(new Geometric3().addPseudo(1));
     exports.Geometric3 = Geometric3;
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Geometric3;
@@ -5207,21 +5201,22 @@ define('davinci-newton/engine3D/RigidBody3',["require", "exports", "../objects/A
         __extends(RigidBody3, _super);
         function RigidBody3() {
             var _this = _super.call(this) || this;
-            _this.M_ = Geometric3_1.default.one();
+            _this.mass_ = new Geometric3_1.default().addScalar(1);
+            _this.massLock_ = _this.mass_.lock();
             _this.inertiaTensorInverse_ = new Mat3_1.default(Matrix3_1.default.one());
             _this.varsIndex_ = -1;
-            _this.position_ = Geometric3_1.default.zero();
-            _this.attitude_ = Geometric3_1.default.one();
-            _this.linearMomentum_ = Geometric3_1.default.zero();
-            _this.angularMomentum_ = Geometric3_1.default.bivector(0, 0, 0);
+            _this.position_ = Geometric3_1.default.zero.clone();
+            _this.attitude_ = Geometric3_1.default.one.clone();
+            _this.linearMomentum_ = Geometric3_1.default.zero.clone();
+            _this.angularMomentum_ = Geometric3_1.default.zero.clone();
             _this.Ω_ = new Bivector3_1.default(0, 0, 0);
             _this.Ω = Geometric3_1.default.bivector(0, 0, 0);
             _this.centerOfMassLocal_ = Vec3_1.default.zero;
-            _this.rotationalEnergy_ = Geometric3_1.default.scalar(0);
+            _this.rotationalEnergy_ = Geometric3_1.default.zero.clone();
             _this.rotationalEnergyLock_ = _this.rotationalEnergy_.lock();
-            _this.translationalEnergy_ = Geometric3_1.default.scalar(0);
+            _this.translationalEnergy_ = Geometric3_1.default.zero.clone();
             _this.translationalEnergyLock_ = _this.translationalEnergy_.lock();
-            _this.worldPoint_ = Geometric3_1.default.zero();
+            _this.worldPoint_ = new Geometric3_1.default();
             return _this;
         }
         Object.defineProperty(RigidBody3.prototype, "centerOfMassLocal", {
@@ -5236,10 +5231,12 @@ define('davinci-newton/engine3D/RigidBody3',["require", "exports", "../objects/A
         });
         Object.defineProperty(RigidBody3.prototype, "M", {
             get: function () {
-                return this.M_;
+                return this.mass_;
             },
             set: function (M) {
-                this.M_.copy(M);
+                this.mass_.unlock(this.massLock_);
+                this.mass_.copy(M);
+                this.massLock_ = this.mass_.lock();
                 this.updateInertiaTensor();
             },
             enumerable: true,
@@ -5378,16 +5375,16 @@ define('davinci-newton/engine3D/Block3',["require", "exports", "../math/Geometri
     var Block3 = (function (_super) {
         __extends(Block3, _super);
         function Block3(width, height, depth) {
-            if (width === void 0) { width = Geometric3_1.default.one(); }
-            if (height === void 0) { height = Geometric3_1.default.one(); }
-            if (depth === void 0) { depth = Geometric3_1.default.one(); }
+            if (width === void 0) { width = Geometric3_1.default.one; }
+            if (height === void 0) { height = Geometric3_1.default.one; }
+            if (depth === void 0) { depth = Geometric3_1.default.one; }
             var _this = _super.call(this) || this;
-            _this.width_ = Geometric3_1.default.one();
-            _this.height_ = Geometric3_1.default.one();
-            _this.depth_ = Geometric3_1.default.one();
-            _this.width_.copy(width);
-            _this.height_.copy(height);
-            _this.depth_.copy(depth);
+            _this.width_ = Geometric3_1.default.copy(width);
+            _this.widthLock_ = _this.width_.lock();
+            _this.height_ = Geometric3_1.default.copy(height);
+            _this.heightLock_ = _this.height_.lock();
+            _this.depth_ = Geometric3_1.default.copy(depth);
+            _this.depthLock_ = _this.depth_.lock();
             _this.updateInertiaTensor();
             return _this;
         }
@@ -5396,7 +5393,9 @@ define('davinci-newton/engine3D/Block3',["require", "exports", "../math/Geometri
                 return this.width_;
             },
             set: function (width) {
+                this.width_.unlock(this.widthLock_);
                 this.width_.copy(width);
+                this.widthLock_ = this.width_.lock();
                 this.updateInertiaTensor();
             },
             enumerable: true,
@@ -5407,7 +5406,9 @@ define('davinci-newton/engine3D/Block3',["require", "exports", "../math/Geometri
                 return this.height_;
             },
             set: function (height) {
+                this.height_.unlock(this.heightLock_);
                 this.height_.copy(height);
+                this.heightLock_ = this.height_.lock();
                 this.updateInertiaTensor();
             },
             enumerable: true,
@@ -5418,7 +5419,9 @@ define('davinci-newton/engine3D/Block3',["require", "exports", "../math/Geometri
                 return this.depth_;
             },
             set: function (depth) {
+                this.depth_.unlock(this.depthLock_);
                 this.depth_.copy(depth);
+                this.depthLock_ = this.depth_.lock();
                 this.updateInertiaTensor();
             },
             enumerable: true,
@@ -5636,7 +5639,7 @@ define('davinci-newton/config',["require", "exports"], function (require, export
             this.GITHUB = 'https://github.com/geometryzen/davinci-newton';
             this.LAST_MODIFIED = '2017-02-04';
             this.NAMESPACE = 'NEWTON';
-            this.VERSION = '0.0.25';
+            this.VERSION = '0.0.26';
         }
         Newton.prototype.log = function (message) {
             var optionalParams = [];
@@ -5772,10 +5775,10 @@ define('davinci-newton/engine3D/Force3',["require", "exports", "../objects/Abstr
         function Force3(body_) {
             var _this = _super.call(this) || this;
             _this.body_ = body_;
-            _this.location = Geometric3_1.default.zero();
-            _this.vector = Geometric3_1.default.zero();
-            _this.position_ = Geometric3_1.default.zero();
-            _this.force_ = Geometric3_1.default.zero();
+            _this.location = new Geometric3_1.default();
+            _this.vector = new Geometric3_1.default();
+            _this.position_ = new Geometric3_1.default();
+            _this.force_ = new Geometric3_1.default();
             _this.torque_ = new Bivector3_1.default(0, 0, 0);
             return _this;
         }
@@ -5861,7 +5864,7 @@ define('davinci-newton/engine3D/ConstantForceLaw3',["require", "exports", "../ob
             var _this = _super.call(this) || this;
             _this.body_ = body_;
             _this.forces = [];
-            _this.potentialEnergy_ = Geometric3_1.default.zero();
+            _this.potentialEnergy_ = new Geometric3_1.default();
             _this.potentialEnergyLock_ = _this.potentialEnergy_.lock();
             _this.force_ = new Force3_1.default(_this.body_);
             _this.force_.locationCoordType = CoordType_1.default.BODY;
@@ -5913,13 +5916,13 @@ define('davinci-newton/engine3D/Cylinder3',["require", "exports", "../math/Geome
     var Cylinder3 = (function (_super) {
         __extends(Cylinder3, _super);
         function Cylinder3(radius, height) {
-            if (radius === void 0) { radius = Geometric3_1.default.one(); }
-            if (height === void 0) { height = Geometric3_1.default.one(); }
+            if (radius === void 0) { radius = Geometric3_1.default.one; }
+            if (height === void 0) { height = Geometric3_1.default.one; }
             var _this = _super.call(this) || this;
-            _this.radius_ = Geometric3_1.default.one();
-            _this.height_ = Geometric3_1.default.one();
-            _this.radius_.copy(radius);
-            _this.height_.copy(height);
+            _this.radius_ = Geometric3_1.default.copy(radius);
+            _this.radiusLock_ = _this.radius_.lock();
+            _this.height_ = Geometric3_1.default.copy(height);
+            _this.heightLock_ = _this.height_.lock();
             _this.updateInertiaTensor();
             return _this;
         }
@@ -5928,7 +5931,9 @@ define('davinci-newton/engine3D/Cylinder3',["require", "exports", "../math/Geome
                 return this.radius_;
             },
             set: function (radius) {
-                this.radius_ = radius;
+                this.radius_.unlock(this.radiusLock_);
+                this.radius_.copy(radius);
+                this.radiusLock_ = this.radius_.lock();
                 this.updateInertiaTensor();
             },
             enumerable: true,
@@ -5939,7 +5944,9 @@ define('davinci-newton/engine3D/Cylinder3',["require", "exports", "../math/Geome
                 return this.height_;
             },
             set: function (height) {
-                this.height_ = height;
+                this.height.unlock(this.heightLock_);
+                this.height_.copy(height);
+                this.heightLock_ = this.height_.lock();
                 this.updateInertiaTensor();
             },
             enumerable: true,
@@ -9019,7 +9026,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-define('davinci-newton/engine3D/Physics3',["require", "exports", "../util/AbstractSubject", "../util/contains", "../math/Geometric3", "../checks/isUndefined", "../math/isZeroBivectorE3", "../math/isZeroVectorE3", "../util/remove", "../core/SimList", "../math/Unit", "../core/VarsList", "../math/wedge3"], function (require, exports, AbstractSubject_1, contains_1, Geometric3_1, isUndefined_1, isZeroBivectorE3_1, isZeroVectorE3_1, remove_1, SimList_1, Unit_1, VarsList_1, wedge3_1) {
+define('davinci-newton/engine3D/Physics3',["require", "exports", "../util/AbstractSubject", "../util/contains", "../math/Geometric3", "../math/isZeroBivectorE3", "../math/isZeroVectorE3", "../util/remove", "../core/SimList", "../math/Unit", "../core/VarsList", "../math/wedge3"], function (require, exports, AbstractSubject_1, contains_1, Geometric3_1, isZeroBivectorE3_1, isZeroVectorE3_1, remove_1, SimList_1, Unit_1, VarsList_1, wedge3_1) {
     "use strict";
     var var_names = [
         VarsList_1.default.TIME,
@@ -9061,10 +9068,10 @@ define('davinci-newton/engine3D/Physics3',["require", "exports", "../util/Abstra
             _this.bodies_ = [];
             _this.forceLaws_ = [];
             _this.showForces_ = false;
-            _this.potentialOffset_ = Geometric3_1.default.zero();
-            _this.force_ = Geometric3_1.default.zero();
-            _this.torque_ = Geometric3_1.default.zero();
-            _this.totalEnergy_ = Geometric3_1.default.zero();
+            _this.potentialOffset_ = new Geometric3_1.default();
+            _this.force_ = new Geometric3_1.default();
+            _this.torque_ = new Geometric3_1.default();
+            _this.totalEnergy_ = new Geometric3_1.default();
             _this.totalEnergyLock_ = _this.totalEnergy_.lock();
             _this.varsList_ = new VarsList_1.default(var_names);
             return _this;
@@ -9115,7 +9122,7 @@ define('davinci-newton/engine3D/Physics3',["require", "exports", "../util/Abstra
         Physics3.prototype.discontinuosChangeToEnergy = function () {
             this.varsList_.incrSequence(Physics3.INDEX_TRANSLATIONAL_KINETIC_ENERGY, Physics3.INDEX_ROTATIONAL_KINETIC_ENERGY, Physics3.INDEX_POTENTIAL_ENERGY, Physics3.INDEX_TOTAL_ENERGY, Physics3.INDEX_TOTAL_LINEAR_MOMENTUM_X, Physics3.INDEX_TOTAL_LINEAR_MOMENTUM_Y, Physics3.INDEX_TOTAL_LINEAR_MOMENTUM_Z, Physics3.INDEX_TOTAL_ANGULAR_MOMENTUM_YZ, Physics3.INDEX_TOTAL_ANGULAR_MOMENTUM_ZX, Physics3.INDEX_TOTAL_ANGULAR_MOMENTUM_XY);
         };
-        Physics3.prototype.moveObjects = function (vars) {
+        Physics3.prototype.updateBodies = function (vars) {
             var bodies = this.bodies_;
             var N = bodies.length;
             for (var i = 0; i < N; i++) {
@@ -9155,8 +9162,8 @@ define('davinci-newton/engine3D/Physics3',["require", "exports", "../util/Abstra
         Physics3.prototype.setState = function (state) {
             this.varsList.setValues(state, true);
         };
-        Physics3.prototype.evaluate = function (state, change, Δt, uomTime) {
-            this.moveObjects(state);
+        Physics3.prototype.evaluate = function (vars, change, Δt, uomTime) {
+            this.updateBodies(vars);
             var bodies = this.bodies_;
             var Nb = bodies.length;
             for (var bodyIndex = 0; bodyIndex < Nb; bodyIndex++) {
@@ -9172,9 +9179,10 @@ define('davinci-newton/engine3D/Physics3',["require", "exports", "../util/Abstra
                     }
                 }
                 else {
-                    change[idx + Physics3.OFFSET_POSITION_X] = state[idx + Physics3.OFFSET_LINEAR_MOMENTUM_X] / mass;
-                    change[idx + Physics3.OFFSET_POSITION_Y] = state[idx + Physics3.OFFSET_LINEAR_MOMENTUM_Y] / mass;
-                    change[idx + Physics3.OFFSET_POSITION_Z] = state[idx + Physics3.OFFSET_LINEAR_MOMENTUM_Z] / mass;
+                    var P = body.P;
+                    change[idx + Physics3.OFFSET_POSITION_X] = P.x / mass;
+                    change[idx + Physics3.OFFSET_POSITION_Y] = P.y / mass;
+                    change[idx + Physics3.OFFSET_POSITION_Z] = P.z / mass;
                     var R = body.R;
                     var Ω = body.Ω;
                     change[idx + Physics3.OFFSET_ATTITUDE_A] = +0.5 * (Ω.xy * R.xy + Ω.yz * R.yz + Ω.zx * R.zx);
@@ -9213,7 +9221,7 @@ define('davinci-newton/engine3D/Physics3',["require", "exports", "../util/Abstra
             }
             forceApp.computeForce(this.force_);
             var F = this.force_;
-            if (isUndefined_1.default(body.P.uom) && isZeroVectorE3_1.default(body.P)) {
+            if (Unit_1.default.isOne(body.P.uom) && isZeroVectorE3_1.default(body.P)) {
                 body.P.uom = Unit_1.default.mul(F.uom, uomTime);
             }
             change[idx + Physics3.OFFSET_LINEAR_MOMENTUM_X] += F.x;
@@ -9221,7 +9229,7 @@ define('davinci-newton/engine3D/Physics3',["require", "exports", "../util/Abstra
             change[idx + Physics3.OFFSET_LINEAR_MOMENTUM_Z] += F.z;
             forceApp.computeTorque(this.torque_);
             var T = this.torque_;
-            if (isUndefined_1.default(body.L.uom) && isZeroBivectorE3_1.default(body.L)) {
+            if (Unit_1.default.isOne(body.L.uom) && isZeroBivectorE3_1.default(body.L)) {
                 body.L.uom = Unit_1.default.mul(T.uom, uomTime);
             }
             change[idx + Physics3.OFFSET_ANGULAR_MOMENTUM_YZ] += T.yz;
@@ -9269,7 +9277,7 @@ define('davinci-newton/engine3D/Physics3',["require", "exports", "../util/Abstra
         Physics3.prototype.epilog = function () {
             var varsList = this.varsList_;
             var vars = varsList.getValues();
-            this.moveObjects(vars);
+            this.updateBodies(vars);
             var pe = this.potentialOffset_.a;
             var re = 0;
             var te = 0;
@@ -9483,7 +9491,7 @@ define('davinci-newton/engine3D/GravitationLaw3',["require", "exports", "../obje
             _this.body1_ = body1_;
             _this.body2_ = body2_;
             _this.forces = [];
-            _this.potentialEnergy_ = Geometric3_1.default.zero();
+            _this.potentialEnergy_ = new Geometric3_1.default();
             _this.potentialEnergyLock_ = _this.potentialEnergy_.lock();
             _this.F1 = new Force3_1.default(_this.body1_);
             _this.F1.locationCoordType = CoordType_1.default.WORLD;
@@ -9643,10 +9651,10 @@ define('davinci-newton/engine3D/Sphere3',["require", "exports", "../math/Geometr
     var Sphere3 = (function (_super) {
         __extends(Sphere3, _super);
         function Sphere3(radius) {
-            if (radius === void 0) { radius = Geometric3_1.default.one(); }
+            if (radius === void 0) { radius = Geometric3_1.default.one; }
             var _this = _super.call(this) || this;
-            _this.radius_ = Geometric3_1.default.one();
-            _this.radius_.copy(radius);
+            _this.radius_ = Geometric3_1.default.copy(radius);
+            _this.radiusLock_ = _this.radius_.lock();
             _this.updateInertiaTensor();
             return _this;
         }
@@ -9655,7 +9663,9 @@ define('davinci-newton/engine3D/Sphere3',["require", "exports", "../math/Geometr
                 return this.radius_;
             },
             set: function (radius) {
-                this.radius_ = radius;
+                this.radius_.unlock(this.radiusLock_);
+                this.radius_.copy(radius);
+                this.radiusLock_ = this.radius_.lock();
                 this.updateInertiaTensor();
             },
             enumerable: true,
@@ -9713,16 +9723,16 @@ define('davinci-newton/engine3D/Spring3',["require", "exports", "../objects/Abst
             var _this = _super.call(this) || this;
             _this.body1_ = body1_;
             _this.body2_ = body2_;
-            _this.restLength = Geometric3_1.default.one();
-            _this.stiffness = Geometric3_1.default.one();
+            _this.restLength = Geometric3_1.default.one;
+            _this.stiffness = Geometric3_1.default.one;
             _this.attach1_ = Vec3_1.default.zero;
             _this.attach2_ = Vec3_1.default.zero;
             _this.forces = [];
-            _this.end1_ = Geometric3_1.default.zero();
+            _this.end1_ = new Geometric3_1.default();
             _this.end1Lock_ = _this.end1_.lock();
-            _this.end2_ = Geometric3_1.default.zero();
+            _this.end2_ = new Geometric3_1.default();
             _this.end2Lock_ = _this.end2_.lock();
-            _this.potentialEnergy_ = Geometric3_1.default.zero();
+            _this.potentialEnergy_ = new Geometric3_1.default();
             _this.potentialEnergyLock_ = _this.potentialEnergy_.lock();
             _this.F1 = new Force3_1.default(_this.body1_);
             _this.F1.locationCoordType = CoordType_1.default.WORLD;

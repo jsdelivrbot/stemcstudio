@@ -946,18 +946,21 @@ declare module NEWTON {
 
         /**
          * Standard Basis vector corresponding to the x coordinate.
+         * The returned multivector is locked.
          */
-        static e1(): Geometric3;
+        static e1: Geometric3;
 
         /**
          * Basis vector corresponding to the y coordinate.
+         * The returned multivector is locked.
          */
-        static e2(): Geometric3;
+        static e2: Geometric3;
 
         /**
          * Basis vector corresponding to the z coordinate.
+         * The returned multivector is locked.
          */
-        static e3(): Geometric3;
+        static e3: Geometric3;
 
         /**
          * Creates a copy of a bivector.
@@ -983,8 +986,9 @@ declare module NEWTON {
          * The identity element for multiplication, 1 (scalar).
          * e.g.
          * const one = EIGHT.Geometric3.one();
+         * The returned multivector is locked.
          */
-        static one(): Geometric3;
+        static one: Geometric3;
 
         /**
          * Computes a random multivector.
@@ -1021,8 +1025,9 @@ declare module NEWTON {
          * The identity element for addition, 0.
          * e.g.
          * const origin = EIGHT.Geometric3.zero();
+         * The returned multivector is locked.
          */
-        static zero(): Geometric3;
+        static zero: Geometric3;
     }
 
     interface MatrixLike {
