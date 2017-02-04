@@ -26,9 +26,8 @@ app.factory('options', [
         const VERSION_JASMINE = '2.4.1';
         const VERSION_JQUERY = '2.1.4';
         const VERSION_JSXGRAPH = '0.99.5';
-        const VERSION_NEWTON = '0.0.24';
+        const VERSION_NEWTON = '0.0.25';
         const VERSION_PLOTLY = '1.21.3';
-        // const VERSION_REQUIREJS = '2.1.9';
         const VERSION_SOCKETIO_CLIENT = '1.5.1';
         const VERSION_STATSJS = '0.16.0';
         const VERSION_SYSTEMJS = '0.19.37';
@@ -106,11 +105,6 @@ app.factory('options', [
         function plotly(fileName: string): string {
             return vendorFolder('plotly', VERSION_PLOTLY, void 0, fileName);
         }
-        /*
-        function requirejs(fileName: string): string {
-          return vendorFolder('requirejs', VERSION_REQUIREJS, void 0, fileName);
-        }
-        */
         function socketIoClient(fileName: string): string {
             return vendorFolder('socket.io-client', VERSION_SOCKETIO_CLIENT, void 0, fileName);
         }

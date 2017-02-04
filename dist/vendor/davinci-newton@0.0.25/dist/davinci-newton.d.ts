@@ -308,7 +308,7 @@ declare module NEWTON {
         /**
          * 
          */
-        evaluate(state: number[], change: number[], stepSize: number, uomStep: Unit): void;
+        evaluate(state: number[], change: number[], stepSize: number, uomStep?: Unit): void;
         /**
          * 
          */
@@ -1240,34 +1240,64 @@ declare module NEWTON {
         static OFFSET_ANGULAR_MOMENTUM_ZX: number;
         static OFFSET_ANGULAR_MOMENTUM_XY: number;
         /**
-         * 
-         */
-        simList: SimList;
-        /**
-         * 
-         */
-        varsList: VarsList;
-        /**
          * Determines whether calculated forces will be added to the simulation list.
          */
         showForces: boolean;
         /**
          * 
          */
+        simList: SimList;
+        /**
+         * 
+         */
         time: number;
+        /**
+         * 
+         */
+        varsList: VarsList;
         /**
          *
          */
         constructor();
-        addBody(body: RigidBody3): void;
+        /**
+         * 
+         */
+        addBody(body: ForceBody3): void;
+        /**
+         * 
+         */
         addForceLaw(forceLaw: ForceLaw3): void;
+        /**
+         * 
+         */
         epilog(): void;
-        evaluate(state: number[], change: number[], stepSize: number, uomStep: Unit): void;
+        /**
+         * 
+         */
+        evaluate(state: number[], change: number[], stepSize: number, uomStep?: Unit): void;
+        /**
+         * 
+         */
         getState(): number[];
+        /**
+         * 
+         */
         prolog(): void;
-        removeBody(body: RigidBody3): void;
+        /**
+         * 
+         */
+        removeBody(body: ForceBody3): void;
+        /**
+         * 
+         */
         removeForceLaw(forceLaw: ForceLaw3): void;
+        /**
+         * 
+         */
         setState(state: number[]): void;
+        /**
+         * 
+         */
         totalEnergy(): Geometric3;
         /**
          * Update the state variables following a change to the simulation bodies.
@@ -1375,7 +1405,7 @@ declare module NEWTON {
         /**
          * 
          */
-        advance(stepSize: number, uomStep: Unit): void;
+        advance(stepSize: number, uomStep?: Unit): void;
     }
 
     class DefaultAdvanceStrategy implements AdvanceStrategy {
@@ -1383,22 +1413,56 @@ declare module NEWTON {
          * 
          */
         constructor(simulation: Simulation, solver: DiffEqSolver);
-        advance(stepSize: number, uomStep: Unit): void;
+        advance(stepSize: number, uomStep?: Unit): void;
     }
 
     /**
      * 
      */
     interface ForceBody3 {
-        M: GeometricE3;
-        X: VectorE3;
-        R: SpinorE3;
-        P: VectorE3;
+        /**
+         * 
+         */
         L: BivectorE3;
-        Ω: BivectorE3;
+        /**
+         * 
+         */
+        M: GeometricE3;
+        /**
+         * 
+         */
+        P: VectorE3;
+        /**
+         * 
+         */
+        R: SpinorE3;
+        /**
+         * 
+         */
+        X: VectorE3;
+        /**
+         * 
+         */
+        expireTime: number;
+        /**
+         * 
+         */
         varsIndex: number;
+        /**
+         * 
+         */
+        Ω: BivectorE3;
+        /**
+         * 
+         */
         rotationalEnergy(): Geometric3;
+        /**
+         * 
+         */
         translationalEnergy(): Geometric3;
+        /**
+         * 
+         */
         updateAngularVelocity(): void;
     }
 
@@ -1494,8 +1558,23 @@ declare module NEWTON {
         potentialEnergy(): Geometric3;
     }
 
+    /**
+     * A rectangle whose boundaries are stored with double floating point precision.
+     * This is an immutable class: once an instance is created it cannot be changed.
+     * 
+     * Note that for DoubleRect we regard the vertical coordinate as increasing upwards,
+     * so the top coordinate is greater than the bottom coordinate.
+     * This is in contrast to HTML5 canvas where vertical coordinates increase downwards.
+     */
     class DoubleRect {
-
+        /**
+         * 
+         */
+        static EMPTY_RECT: DoubleRect;
+        /**
+         * 
+         */
+        constructor(left: number, bottom: number, right: number, top: number);
     }
 
     class SimView {
@@ -1711,6 +1790,37 @@ declare module NEWTON {
          * 
          */
         reset(): void;
+    }
+
+    /**
+     * 
+     */
+    class EnergyTimeGraph extends Graph {
+
+        /**
+         * 
+         */
+        public translationalEnergyGraphLine: GraphLine;
+
+        /**
+         * 
+         */
+        public rotationalEnergyGraphLine: GraphLine;
+
+        /**
+         * 
+         */
+        public potentialEnergyGraphLine: GraphLine;
+
+        /**
+         * 
+         */
+        public totalEnergyGraphLine: GraphLine;
+
+        /**
+         * 
+         */
+        constructor(canvasId: string, varsList: VarsList);
     }
 }
 

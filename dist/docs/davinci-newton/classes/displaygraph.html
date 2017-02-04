@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>DisplayGraph | NEWTON 0.0.24</title>
+	<title>DisplayGraph | NEWTON 0.0.25</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">NEWTON 0.0.24</a>
+					<a href="../index.html" class="title">NEWTON 0.0.25</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -89,19 +89,6 @@
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external">
-							<h3>Properties</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="displaygraph.html#graphlines_" class="tsd-kind-icon">graph<wbr>Lines_</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="displaygraph.html#lastmap_" class="tsd-kind-icon">last<wbr>Map_</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="displaygraph.html#memdraw_" class="tsd-kind-icon">mem<wbr>Draw_</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="displaygraph.html#needredraw_" class="tsd-kind-icon">need<wbr>Redraw_</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="displaygraph.html#offscreen_" class="tsd-kind-icon">off<wbr>Screen_</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="displaygraph.html#screenrect_" class="tsd-kind-icon">screen<wbr>Rect_</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="displaygraph.html#usebuffer_" class="tsd-kind-icon">use<wbr>Buffer_</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="displaygraph.html#zindex" class="tsd-kind-icon">z<wbr>Index</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section tsd-is-external">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="displaygraph.html#addgraphline" class="tsd-kind-icon">add<wbr>Graph<wbr>Line</a></li>
@@ -134,115 +121,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/graph/DisplayGraph.ts#L70">davinci-newton/graph/DisplayGraph.ts:70</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/7f7d221/src/davinci-newton/graph/DisplayGraph.ts#L70">davinci-newton/graph/DisplayGraph.ts:70</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="displaygraph.html" class="tsd-signature-type">DisplayGraph</a></h4>
 						</li>
 					</ul>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-external">
-				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
-					<a name="graphlines_" class="tsd-anchor"></a>
-					<h3>graph<wbr>Lines_</h3>
-					<div class="tsd-signature tsd-kind-icon">graph<wbr>Lines_<span class="tsd-signature-symbol">:</span> <a href="graphline.html" class="tsd-signature-type">GraphLine</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/graph/DisplayGraph.ts#L35">davinci-newton/graph/DisplayGraph.ts:35</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The GraphLines to draw.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
-					<a name="lastmap_" class="tsd-anchor"></a>
-					<h3>last<wbr>Map_</h3>
-					<div class="tsd-signature tsd-kind-icon">last<wbr>Map_<span class="tsd-signature-symbol">:</span> <a href="coordmap.html" class="tsd-signature-type">CoordMap</a><span class="tsd-signature-symbol"> =&nbsp;null</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/graph/DisplayGraph.ts#L50">davinci-newton/graph/DisplayGraph.ts:50</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>to detect when redraw needed;  when the coordmap changes, we need to redraw.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
-					<a name="memdraw_" class="tsd-anchor"></a>
-					<h3>mem<wbr>Draw_</h3>
-					<div class="tsd-signature tsd-kind-icon">mem<wbr>Draw_<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;repeat(-1, this.graphLines_.length)</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/graph/DisplayGraph.ts#L40">davinci-newton/graph/DisplayGraph.ts:40</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
-					<a name="needredraw_" class="tsd-anchor"></a>
-					<h3>need<wbr>Redraw_</h3>
-					<div class="tsd-signature tsd-kind-icon">need<wbr>Redraw_<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/graph/DisplayGraph.ts#L60">davinci-newton/graph/DisplayGraph.ts:60</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>set when the entire graph needs to be redrawn.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
-					<a name="offscreen_" class="tsd-anchor"></a>
-					<h3>off<wbr>Screen_</h3>
-					<div class="tsd-signature tsd-kind-icon">off<wbr>Screen_<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">HTMLCanvasElement</span><span class="tsd-signature-symbol"> =&nbsp;null</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/graph/DisplayGraph.ts#L45">davinci-newton/graph/DisplayGraph.ts:45</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
-					<a name="screenrect_" class="tsd-anchor"></a>
-					<h3>screen<wbr>Rect_</h3>
-					<div class="tsd-signature tsd-kind-icon">screen<wbr>Rect_<span class="tsd-signature-symbol">:</span> <a href="screenrect.html" class="tsd-signature-type">ScreenRect</a><span class="tsd-signature-symbol"> =&nbsp;ScreenRect.EMPTY_RECT</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/graph/DisplayGraph.ts#L55">davinci-newton/graph/DisplayGraph.ts:55</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
-					<a name="usebuffer_" class="tsd-anchor"></a>
-					<h3>use<wbr>Buffer_</h3>
-					<div class="tsd-signature tsd-kind-icon">use<wbr>Buffer_<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> =&nbsp;false</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/graph/DisplayGraph.ts#L65">davinci-newton/graph/DisplayGraph.ts:65</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>set when the entire graph needs to be redrawn.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
-					<a name="zindex" class="tsd-anchor"></a>
-					<h3>z<wbr>Index</h3>
-					<div class="tsd-signature tsd-kind-icon">z<wbr>Index<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/graph/DisplayGraph.ts#L70">davinci-newton/graph/DisplayGraph.ts:70</a></li>
-						</ul>
-					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
@@ -257,7 +141,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/graph/DisplayGraph.ts#L273">davinci-newton/graph/DisplayGraph.ts:273</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/7f7d221/src/davinci-newton/graph/DisplayGraph.ts#L273">davinci-newton/graph/DisplayGraph.ts:273</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -289,7 +173,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/displayobject.html">DisplayObject</a>.<a href="../interfaces/displayobject.html#draw">draw</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/graph/DisplayGraph.ts#L82">davinci-newton/graph/DisplayGraph.ts:82</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/7f7d221/src/davinci-newton/graph/DisplayGraph.ts#L82">davinci-newton/graph/DisplayGraph.ts:82</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -315,7 +199,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/graph/DisplayGraph.ts#L152">davinci-newton/graph/DisplayGraph.ts:152</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/7f7d221/src/davinci-newton/graph/DisplayGraph.ts#L152">davinci-newton/graph/DisplayGraph.ts:152</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -344,7 +228,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/graph/DisplayGraph.ts#L237">davinci-newton/graph/DisplayGraph.ts:237</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/7f7d221/src/davinci-newton/graph/DisplayGraph.ts#L237">davinci-newton/graph/DisplayGraph.ts:237</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -371,7 +255,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/displayobject.html">DisplayObject</a>.<a href="../interfaces/displayobject.html#getzindex">getZIndex</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/graph/DisplayGraph.ts#L243">davinci-newton/graph/DisplayGraph.ts:243</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/7f7d221/src/davinci-newton/graph/DisplayGraph.ts#L243">davinci-newton/graph/DisplayGraph.ts:243</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -388,7 +272,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/graph/DisplayGraph.ts#L254">davinci-newton/graph/DisplayGraph.ts:254</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/7f7d221/src/davinci-newton/graph/DisplayGraph.ts#L254">davinci-newton/graph/DisplayGraph.ts:254</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -414,7 +298,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/graph/DisplayGraph.ts#L265">davinci-newton/graph/DisplayGraph.ts:265</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/7f7d221/src/davinci-newton/graph/DisplayGraph.ts#L265">davinci-newton/graph/DisplayGraph.ts:265</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -431,7 +315,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/graph/DisplayGraph.ts#L289">davinci-newton/graph/DisplayGraph.ts:289</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/7f7d221/src/davinci-newton/graph/DisplayGraph.ts#L289">davinci-newton/graph/DisplayGraph.ts:289</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -462,7 +346,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/graph/DisplayGraph.ts#L330">davinci-newton/graph/DisplayGraph.ts:330</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/7f7d221/src/davinci-newton/graph/DisplayGraph.ts#L330">davinci-newton/graph/DisplayGraph.ts:330</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -484,7 +368,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/graph/DisplayGraph.ts#L301">davinci-newton/graph/DisplayGraph.ts:301</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/7f7d221/src/davinci-newton/graph/DisplayGraph.ts#L301">davinci-newton/graph/DisplayGraph.ts:301</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -507,7 +391,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/graph/DisplayGraph.ts#L310">davinci-newton/graph/DisplayGraph.ts:310</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/7f7d221/src/davinci-newton/graph/DisplayGraph.ts#L310">davinci-newton/graph/DisplayGraph.ts:310</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -539,7 +423,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/graph/DisplayGraph.ts#L320">davinci-newton/graph/DisplayGraph.ts:320</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/7f7d221/src/davinci-newton/graph/DisplayGraph.ts#L320">davinci-newton/graph/DisplayGraph.ts:320</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -572,7 +456,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/displayobject.html">DisplayObject</a>.<a href="../interfaces/displayobject.html#setzindex">setZIndex</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/543cecc/src/davinci-newton/graph/DisplayGraph.ts#L247">davinci-newton/graph/DisplayGraph.ts:247</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/7f7d221/src/davinci-newton/graph/DisplayGraph.ts#L247">davinci-newton/graph/DisplayGraph.ts:247</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -604,30 +488,6 @@
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
 								<a href="displaygraph.html#constructor" class="tsd-kind-icon">constructor</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
-								<a href="displaygraph.html#graphlines_" class="tsd-kind-icon">graph<wbr>Lines_</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
-								<a href="displaygraph.html#lastmap_" class="tsd-kind-icon">last<wbr>Map_</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
-								<a href="displaygraph.html#memdraw_" class="tsd-kind-icon">mem<wbr>Draw_</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
-								<a href="displaygraph.html#needredraw_" class="tsd-kind-icon">need<wbr>Redraw_</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
-								<a href="displaygraph.html#offscreen_" class="tsd-kind-icon">off<wbr>Screen_</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
-								<a href="displaygraph.html#screenrect_" class="tsd-kind-icon">screen<wbr>Rect_</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
-								<a href="displaygraph.html#usebuffer_" class="tsd-kind-icon">use<wbr>Buffer_</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
-								<a href="displaygraph.html#zindex" class="tsd-kind-icon">z<wbr>Index</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="displaygraph.html#addgraphline" class="tsd-kind-icon">add<wbr>Graph<wbr>Line</a>
