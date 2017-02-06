@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Matrix1 | EIGHT 6.0.2</title>
+	<title>Matrix1 | EIGHT 6.0.3</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">EIGHT 6.0.2</a>
+					<a href="../index.html" class="title">EIGHT 6.0.3</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -77,6 +77,12 @@
 					</li>
 				</ul>
 			</section>
+			<section class="tsd-panel">
+				<h3>Implements</h3>
+				<ul class="tsd-hierarchy">
+					<li><a href="../interfaces/lockable.html" class="tsd-signature-type">Lockable</a></li>
+				</ul>
+			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
@@ -98,6 +104,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="matrix1.html#dimensions" class="tsd-kind-icon">dimensions</a></li>
 								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="matrix1.html#elements" class="tsd-kind-icon">elements</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="matrix1.html#islocked" class="tsd-kind-icon">is<wbr>Locked</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-inherited tsd-is-external">
@@ -106,7 +113,9 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="matrix1.html#copy" class="tsd-kind-icon">copy</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="matrix1.html#getelement" class="tsd-kind-icon">get<wbr>Element</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="matrix1.html#isone" class="tsd-kind-icon">is<wbr>One</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="matrix1.html#lock" class="tsd-kind-icon">lock</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="matrix1.html#setelement" class="tsd-kind-icon">set<wbr>Element</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="matrix1.html#unlock" class="tsd-kind-icon">unlock</a></li>
 							</ul>
 						</section>
 					</div>
@@ -125,7 +134,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/AbstractMatrix.ts#L15">davinci-eight/math/AbstractMatrix.ts:15</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/AbstractMatrix.ts#L21">davinci-eight/math/AbstractMatrix.ts:21</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -157,7 +166,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#modified">modified</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/AbstractMatrix.ts#L15">davinci-eight/math/AbstractMatrix.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/AbstractMatrix.ts#L21">davinci-eight/math/AbstractMatrix.ts:21</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -176,7 +185,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#dimensions">dimensions</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/AbstractMatrix.ts#L29">davinci-eight/math/AbstractMatrix.ts:29</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/AbstractMatrix.ts#L47">davinci-eight/math/AbstractMatrix.ts:47</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -185,7 +194,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#dimensions">dimensions</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/AbstractMatrix.ts#L32">davinci-eight/math/AbstractMatrix.ts:32</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/AbstractMatrix.ts#L50">davinci-eight/math/AbstractMatrix.ts:50</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -210,7 +219,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#elements">elements</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/AbstractMatrix.ts#L36">davinci-eight/math/AbstractMatrix.ts:36</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/AbstractMatrix.ts#L54">davinci-eight/math/AbstractMatrix.ts:54</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Float32Array</span></h4>
@@ -219,7 +228,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#elements">elements</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/AbstractMatrix.ts#L39">davinci-eight/math/AbstractMatrix.ts:39</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/AbstractMatrix.ts#L57">davinci-eight/math/AbstractMatrix.ts:57</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -229,6 +238,24 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<a name="islocked" class="tsd-anchor"></a>
+					<h3>is<wbr>Locked</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> isLocked<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#islocked">isLocked</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/AbstractMatrix.ts#L35">davinci-eight/math/AbstractMatrix.ts:35</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -246,7 +273,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#copy">copy</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/AbstractMatrix.ts#L44">davinci-eight/math/AbstractMatrix.ts:44</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/AbstractMatrix.ts#L65">davinci-eight/math/AbstractMatrix.ts:65</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -270,7 +297,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#getelement">getElement</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/AbstractMatrix.ts#L53">davinci-eight/math/AbstractMatrix.ts:53</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/AbstractMatrix.ts#L77">davinci-eight/math/AbstractMatrix.ts:77</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -305,7 +332,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#isone">isOne</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/AbstractMatrix.ts#L60">davinci-eight/math/AbstractMatrix.ts:60</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/AbstractMatrix.ts#L84">davinci-eight/math/AbstractMatrix.ts:84</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -314,6 +341,25 @@
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<a name="lock" class="tsd-anchor"></a>
+					<h3>lock</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">lock<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/lockable.html">Lockable</a>.<a href="../interfaces/lockable.html#lock">lock</a></p>
+								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#lock">lock</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/AbstractMatrix.ts#L39">davinci-eight/math/AbstractMatrix.ts:39</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -328,7 +374,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#setelement">setElement</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/AbstractMatrix.ts#L84">davinci-eight/math/AbstractMatrix.ts:84</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/AbstractMatrix.ts#L108">davinci-eight/math/AbstractMatrix.ts:108</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -352,6 +398,31 @@
 									<div class="tsd-comment tsd-typography">
 										<p>The value of the element.</p>
 									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<a name="unlock" class="tsd-anchor"></a>
+					<h3>unlock</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">unlock<span class="tsd-signature-symbol">(</span>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/lockable.html">Lockable</a>.<a href="../interfaces/lockable.html#unlock">unlock</a></p>
+								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#unlock">unlock</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/AbstractMatrix.ts#L43">davinci-eight/math/AbstractMatrix.ts:43</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>token: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -387,6 +458,9 @@
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="matrix1.html#elements" class="tsd-kind-icon">elements</a>
 							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="matrix1.html#islocked" class="tsd-kind-icon">is<wbr>Locked</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="matrix1.html#copy" class="tsd-kind-icon">copy</a>
 							</li>
@@ -397,7 +471,13 @@
 								<a href="matrix1.html#isone" class="tsd-kind-icon">is<wbr>One</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="matrix1.html#lock" class="tsd-kind-icon">lock</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="matrix1.html#setelement" class="tsd-kind-icon">set<wbr>Element</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="matrix1.html#unlock" class="tsd-kind-icon">unlock</a>
 							</li>
 						</ul>
 					</li>

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Matrix4 | EIGHT 6.0.2</title>
+	<title>Matrix4 | EIGHT 6.0.3</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">EIGHT 6.0.2</a>
+					<a href="../index.html" class="title">EIGHT 6.0.3</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -67,13 +67,9 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>
-							A 4x4 (square) matrix of numbers.
-						</p>
-						<p>
-							An adapter for a <code>Float32Array</code>.
-						</p>
+						<p>A 4x4 (square) matrix of numbers.</p>
 					</div>
+					<p>An adapter for a <code>Float32Array</code>.</p>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
@@ -89,6 +85,12 @@
 					</li>
 				</ul>
 			</section>
+			<section class="tsd-panel">
+				<h3>Implements</h3>
+				<ul class="tsd-hierarchy">
+					<li><a href="../interfaces/lockable.html" class="tsd-signature-type">Lockable</a></li>
+				</ul>
+			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
@@ -99,10 +101,12 @@
 								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="matrix4.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-inherited tsd-is-external">
+						<section class="tsd-index-section tsd-is-external">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="matrix4.html#modified" class="tsd-kind-icon">modified</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="matrix4.html#one" class="tsd-kind-icon">one</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="matrix4.html#zero" class="tsd-kind-icon">zero</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-inherited tsd-is-external">
@@ -110,6 +114,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="matrix4.html#dimensions" class="tsd-kind-icon">dimensions</a></li>
 								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="matrix4.html#elements" class="tsd-kind-icon">elements</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="matrix4.html#islocked" class="tsd-kind-icon">is<wbr>Locked</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external">
@@ -127,9 +132,10 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="matrix4.html#getelement" class="tsd-kind-icon">get<wbr>Element</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix4.html#inv" class="tsd-kind-icon">inv</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="matrix4.html#isone" class="tsd-kind-icon">is<wbr>One</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="matrix4.html#lock" class="tsd-kind-icon">lock</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix4.html#mul" class="tsd-kind-icon">mul</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix4.html#mul2" class="tsd-kind-icon">mul2</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix4.html#one" class="tsd-kind-icon">one</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix4.html#one-1" class="tsd-kind-icon">one</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix4.html#perspective" class="tsd-kind-icon">perspective</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix4.html#reflection" class="tsd-kind-icon">reflection</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix4.html#rmul" class="tsd-kind-icon">rmul</a></li>
@@ -149,12 +155,11 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix4.html#translate" class="tsd-kind-icon">translate</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix4.html#translation" class="tsd-kind-icon">translation</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix4.html#transpose" class="tsd-kind-icon">transpose</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix4.html#zero" class="tsd-kind-icon">zero</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="matrix4.html#one-1" class="tsd-kind-icon">one</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="matrix4.html#unlock" class="tsd-kind-icon">unlock</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="matrix4.html#zero-1" class="tsd-kind-icon">zero</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="matrix4.html#rotation-1" class="tsd-kind-icon">rotation</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="matrix4.html#scaling-1" class="tsd-kind-icon">scaling</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="matrix4.html#translation-1" class="tsd-kind-icon">translation</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="matrix4.html#zero-1" class="tsd-kind-icon">zero</a></li>
 							</ul>
 						</section>
 					</div>
@@ -173,7 +178,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L50">davinci-eight/math/Matrix4.ts:50</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L48">davinci-eight/math/Matrix4.ts:48</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -187,7 +192,7 @@
 					</ul>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-inherited tsd-is-external">
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="modified" class="tsd-anchor"></a>
@@ -196,9 +201,41 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#modified">modified</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/AbstractMatrix.ts#L15">davinci-eight/math/AbstractMatrix.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/AbstractMatrix.ts#L21">davinci-eight/math/AbstractMatrix.ts:21</a></li>
 						</ul>
 					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="one" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> one</h3>
+					<div class="tsd-signature tsd-kind-icon">one<span class="tsd-signature-symbol">:</span> <a href="matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol"> =&nbsp;lock(new Matrix4(new Float32Array([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1])))</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L67">davinci-eight/math/Matrix4.ts:67</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The identity matrix for multiplication, 1.
+							The matrix is locked (immutable), but may be cloned.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="zero" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> zero</h3>
+					<div class="tsd-signature tsd-kind-icon">zero<span class="tsd-signature-symbol">:</span> <a href="matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol"> =&nbsp;lock(new Matrix4(new Float32Array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])))</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L73">davinci-eight/math/Matrix4.ts:73</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The identity matrix for addition, 0.
+							The matrix is locked (immutable), but may be cloned.</p>
+						</div>
+					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-inherited tsd-is-external">
@@ -215,7 +252,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#dimensions">dimensions</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/AbstractMatrix.ts#L29">davinci-eight/math/AbstractMatrix.ts:29</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/AbstractMatrix.ts#L47">davinci-eight/math/AbstractMatrix.ts:47</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -224,7 +261,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#dimensions">dimensions</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/AbstractMatrix.ts#L32">davinci-eight/math/AbstractMatrix.ts:32</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/AbstractMatrix.ts#L50">davinci-eight/math/AbstractMatrix.ts:50</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -249,7 +286,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#elements">elements</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/AbstractMatrix.ts#L36">davinci-eight/math/AbstractMatrix.ts:36</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/AbstractMatrix.ts#L54">davinci-eight/math/AbstractMatrix.ts:54</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Float32Array</span></h4>
@@ -258,7 +295,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#elements">elements</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/AbstractMatrix.ts#L39">davinci-eight/math/AbstractMatrix.ts:39</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/AbstractMatrix.ts#L57">davinci-eight/math/AbstractMatrix.ts:57</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -268,6 +305,24 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<a name="islocked" class="tsd-anchor"></a>
+					<h3>is<wbr>Locked</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> isLocked<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#islocked">isLocked</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/AbstractMatrix.ts#L35">davinci-eight/math/AbstractMatrix.ts:35</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -284,7 +339,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L549">davinci-eight/math/Matrix4.ts:549</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L484">davinci-eight/math/Matrix4.ts:484</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -307,7 +362,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L561">davinci-eight/math/Matrix4.ts:561</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L496">davinci-eight/math/Matrix4.ts:496</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -324,18 +379,18 @@
 					<a name="add" class="tsd-anchor"></a>
 					<h3>add</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">add<span class="tsd-signature-symbol">(</span>rhs<span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a></li>
+						<li class="tsd-signature tsd-kind-icon">add<span class="tsd-signature-symbol">(</span>rhs<span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol">)</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L119">davinci-eight/math/Matrix4.ts:119</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L99">davinci-eight/math/Matrix4.ts:99</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Sets this matrix to (this + rhs).</p>
+									<p>Sets this matrix to <code>this + rhs</code>.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -344,7 +399,6 @@
 									<h5>rhs: <a href="matrix4.html" class="tsd-signature-type">Matrix4</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="matrix4.html" class="tsd-signature-type">Matrix4</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -352,23 +406,19 @@
 					<a name="add2" class="tsd-anchor"></a>
 					<h3>add2</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">add2<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a>, b<span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a></li>
+						<li class="tsd-signature tsd-kind-icon">add2<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a>, b<span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol">)</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L130">davinci-eight/math/Matrix4.ts:130</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L109">davinci-eight/math/Matrix4.ts:109</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>add2</p>
-									</dd>
-									<dt>chainable</dt>
-									<dd></dd>
-								</dl>
+								<div class="lead">
+									<p>Sets this matrix to <code>a + b</code>.</p>
+								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -379,7 +429,6 @@
 									<h5>b: <a href="matrix4.html" class="tsd-signature-type">Matrix4</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="matrix4.html" class="tsd-signature-type">Matrix4</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -393,7 +442,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L138">davinci-eight/math/Matrix4.ts:138</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L117">davinci-eight/math/Matrix4.ts:117</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -409,37 +458,32 @@
 					<a name="compose" class="tsd-anchor"></a>
 					<h3>compose</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">compose<span class="tsd-signature-symbol">(</span>scale<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">VectorE3</span>, attitude<span class="tsd-signature-symbol">: </span><a href="../interfaces/spinore3.html" class="tsd-signature-type">SpinorE3</a>, position<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">VectorE3</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a></li>
+						<li class="tsd-signature tsd-kind-icon">compose<span class="tsd-signature-symbol">(</span>S<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">VectorE3</span>, R<span class="tsd-signature-symbol">: </span><a href="../interfaces/spinore3.html" class="tsd-signature-type">SpinorE3</a>, T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">VectorE3</span><span class="tsd-signature-symbol">)</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L150">davinci-eight/math/Matrix4.ts:150</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L124">davinci-eight/math/Matrix4.ts:124</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>compose</p>
-									</dd>
-									<dt>chainable</dt>
-									<dd></dd>
-								</dl>
+								<div class="lead">
+									<p>Sets this matrix to perform the specified scaling, rotation, and translation.</p>
+								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>scale: <span class="tsd-signature-type">VectorE3</span></h5>
+									<h5>S: <span class="tsd-signature-type">VectorE3</span></h5>
 								</li>
 								<li>
-									<h5>attitude: <a href="../interfaces/spinore3.html" class="tsd-signature-type">SpinorE3</a></h5>
+									<h5>R: <a href="../interfaces/spinore3.html" class="tsd-signature-type">SpinorE3</a></h5>
 								</li>
 								<li>
-									<h5>position: <span class="tsd-signature-type">VectorE3</span></h5>
+									<h5>T: <span class="tsd-signature-type">VectorE3</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="matrix4.html" class="tsd-signature-type">Matrix4</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -447,24 +491,20 @@
 					<a name="copy" class="tsd-anchor"></a>
 					<h3>copy</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">copy<span class="tsd-signature-symbol">(</span>m<span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a></li>
+						<li class="tsd-signature tsd-kind-icon">copy<span class="tsd-signature-symbol">(</span>m<span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol">)</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overrides <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#copy">copy</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L166">davinci-eight/math/Matrix4.ts:166</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L134">davinci-eight/math/Matrix4.ts:134</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>copy</p>
-									</dd>
-									<dt>chainable</dt>
-									<dd></dd>
-								</dl>
+								<div class="lead">
+									<p>Copies the specified matrix into this matrix.</p>
+								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -472,7 +512,6 @@
 									<h5>m: <a href="matrix4.html" class="tsd-signature-type">Matrix4</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="matrix4.html" class="tsd-signature-type">Matrix4</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -486,18 +525,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L176">davinci-eight/math/Matrix4.ts:176</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L142">davinci-eight/math/Matrix4.ts:142</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Computes the determinant.</p>
 								</div>
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>det</p>
-									</dd>
-								</dl>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
 						</li>
@@ -507,23 +541,16 @@
 					<a name="frustum" class="tsd-anchor"></a>
 					<h3>frustum</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">frustum<span class="tsd-signature-symbol">(</span>left<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, right<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, bottom<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, top<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, near<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, far<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a></li>
+						<li class="tsd-signature tsd-kind-icon">frustum<span class="tsd-signature-symbol">(</span>left<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, right<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, bottom<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, top<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, near<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, far<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L245">davinci-eight/math/Matrix4.ts:245</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L199">davinci-eight/math/Matrix4.ts:199</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>frustum</p>
-									</dd>
-									<dt>chainable</dt>
-									<dd></dd>
-								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -544,9 +571,10 @@
 								</li>
 								<li>
 									<h5>far: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="matrix4.html" class="tsd-signature-type">Matrix4</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -561,7 +589,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#getelement">getElement</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/AbstractMatrix.ts#L53">davinci-eight/math/AbstractMatrix.ts:53</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/AbstractMatrix.ts#L77">davinci-eight/math/AbstractMatrix.ts:77</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -589,23 +617,20 @@
 					<a name="inv" class="tsd-anchor"></a>
 					<h3>inv</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">inv<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a></li>
+						<li class="tsd-signature tsd-kind-icon">inv<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L184">davinci-eight/math/Matrix4.ts:184</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L149">davinci-eight/math/Matrix4.ts:149</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>inv</p>
-									</dd>
-								</dl>
+								<div class="lead">
+									<p>Sets the elements of this matrix to that of its inverse.</p>
+								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <a href="matrix4.html" class="tsd-signature-type">Matrix4</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -620,7 +645,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#isone">isOne</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/AbstractMatrix.ts#L60">davinci-eight/math/AbstractMatrix.ts:60</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/AbstractMatrix.ts#L84">davinci-eight/math/AbstractMatrix.ts:84</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -632,35 +657,44 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<a name="lock" class="tsd-anchor"></a>
+					<h3>lock</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">lock<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/lockable.html">Lockable</a>.<a href="../interfaces/lockable.html#lock">lock</a></p>
+								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#lock">lock</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/AbstractMatrix.ts#L39">davinci-eight/math/AbstractMatrix.ts:39</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="mul" class="tsd-anchor"></a>
 					<h3>mul</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">mul<span class="tsd-signature-symbol">(</span>rhs<span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a></li>
+						<li class="tsd-signature tsd-kind-icon">mul<span class="tsd-signature-symbol">(</span>rhs<span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol">)</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L301">davinci-eight/math/Matrix4.ts:301</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L252">davinci-eight/math/Matrix4.ts:252</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>mul</p>
-									</dd>
-									<dt>chainable</dt>
-									<dd></dd>
-								</dl>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>rhs: <a href="matrix4.html" class="tsd-signature-type">Matrix4</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="matrix4.html" class="tsd-signature-type">Matrix4</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -668,24 +702,15 @@
 					<a name="mul2" class="tsd-anchor"></a>
 					<h3>mul2</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">mul2<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a>, b<span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a></li>
+						<li class="tsd-signature tsd-kind-icon">mul2<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a>, b<span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol">)</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L312">davinci-eight/math/Matrix4.ts:312</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L259">davinci-eight/math/Matrix4.ts:259</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>mul2</p>
-									</dd>
-									<dt>chainable</dt>
-									<dd></dd>
-								</dl>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -695,36 +720,27 @@
 									<h5>b: <a href="matrix4.html" class="tsd-signature-type">Matrix4</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="matrix4.html" class="tsd-signature-type">Matrix4</a></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="one" class="tsd-anchor"></a>
+					<a name="one-1" class="tsd-anchor"></a>
 					<h3>one</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">one<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a></li>
+						<li class="tsd-signature tsd-kind-icon">one<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L195">davinci-eight/math/Matrix4.ts:195</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L157">davinci-eight/math/Matrix4.ts:157</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Sets this matrix to the identity element for multiplication, <b>1</b>.</p>
 								</div>
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>one</p>
-									</dd>
-									<dt>chainable</dt>
-									<dd></dd>
-								</dl>
 							</div>
-							<h4 class="tsd-returns-title">Returns <a href="matrix4.html" class="tsd-signature-type">Matrix4</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -732,13 +748,13 @@
 					<a name="perspective" class="tsd-anchor"></a>
 					<h3>perspective</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">perspective<span class="tsd-signature-symbol">(</span>fov<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, aspect<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, near<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, far<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a></li>
+						<li class="tsd-signature tsd-kind-icon">perspective<span class="tsd-signature-symbol">(</span>fov<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, aspect<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, near<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, far<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L268">davinci-eight/math/Matrix4.ts:268</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L222">davinci-eight/math/Matrix4.ts:222</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -763,7 +779,6 @@
 									<h5>far: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="matrix4.html" class="tsd-signature-type">Matrix4</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -771,38 +786,30 @@
 					<a name="reflection" class="tsd-anchor"></a>
 					<h3>reflection</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">reflection<span class="tsd-signature-symbol">(</span>n<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">VectorE3</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a></li>
+						<li class="tsd-signature tsd-kind-icon">reflection<span class="tsd-signature-symbol">(</span>n<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">VectorE3</span><span class="tsd-signature-symbol">)</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L338">davinci-eight/math/Matrix4.ts:338</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L279">davinci-eight/math/Matrix4.ts:279</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Sets this matrix to the transformation for a
 									reflection in the plane normal to the unit vector <code>n</code>.</p>
-									<p>
-										<code>this ⟼ reflection(n)</code>
-									</p>
 								</div>
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>reflection</p>
-									</dd>
-									<dt>chainable</dt>
-									<dd></dd>
-								</dl>
+								<p>this ⟼ reflection(n)</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>n: <span class="tsd-signature-type">VectorE3</span></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="matrix4.html" class="tsd-signature-type">Matrix4</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -810,31 +817,21 @@
 					<a name="rmul" class="tsd-anchor"></a>
 					<h3>rmul</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">rmul<span class="tsd-signature-symbol">(</span>lhs<span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a></li>
+						<li class="tsd-signature tsd-kind-icon">rmul<span class="tsd-signature-symbol">(</span>lhs<span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a><span class="tsd-signature-symbol">)</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L323">davinci-eight/math/Matrix4.ts:323</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L267">davinci-eight/math/Matrix4.ts:267</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>rmul</p>
-									</dd>
-									<dt>chainable</dt>
-									<dd></dd>
-								</dl>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>lhs: <a href="matrix4.html" class="tsd-signature-type">Matrix4</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="matrix4.html" class="tsd-signature-type">Matrix4</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -842,36 +839,28 @@
 					<a name="rotate" class="tsd-anchor"></a>
 					<h3>rotate</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">rotate<span class="tsd-signature-symbol">(</span>spinor<span class="tsd-signature-symbol">: </span><a href="../interfaces/spinore3.html" class="tsd-signature-type">SpinorE3</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a></li>
+						<li class="tsd-signature tsd-kind-icon">rotate<span class="tsd-signature-symbol">(</span>spinor<span class="tsd-signature-symbol">: </span><a href="../interfaces/spinore3.html" class="tsd-signature-type">SpinorE3</a><span class="tsd-signature-symbol">)</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L369">davinci-eight/math/Matrix4.ts:369</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L306">davinci-eight/math/Matrix4.ts:306</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>
-										<code>this ⟼ rotation(spinor) * this</code>
-									</p>
+									<p>this ⟼ rotation(spinor) * this</p>
 								</div>
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>rotate</p>
-									</dd>
-									<dt>chainable</dt>
-									<dd></dd>
-								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>spinor: <a href="../interfaces/spinore3.html" class="tsd-signature-type">SpinorE3</a></h5>
+									<div class="tsd-comment tsd-typography">
+									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="matrix4.html" class="tsd-signature-type">Matrix4</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -885,7 +874,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L380">davinci-eight/math/Matrix4.ts:380</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L317">davinci-eight/math/Matrix4.ts:317</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -907,13 +896,13 @@
 					<a name="rotationaxis" class="tsd-anchor"></a>
 					<h3>rotation<wbr>Axis</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">rotation<wbr>Axis<span class="tsd-signature-symbol">(</span>axis<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">VectorE3</span>, angle<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a></li>
+						<li class="tsd-signature tsd-kind-icon">rotation<wbr>Axis<span class="tsd-signature-symbol">(</span>axis<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">VectorE3</span>, angle<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L277">davinci-eight/math/Matrix4.ts:277</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L231">davinci-eight/math/Matrix4.ts:231</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -929,7 +918,6 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="matrix4.html" class="tsd-signature-type">Matrix4</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -943,15 +931,10 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L416">davinci-eight/math/Matrix4.ts:416</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L351">davinci-eight/math/Matrix4.ts:351</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>row</p>
-									</dd>
-								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -970,23 +953,19 @@
 					<a name="scale" class="tsd-anchor"></a>
 					<h3>scale</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">scale<span class="tsd-signature-symbol">(</span>s<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a></li>
+						<li class="tsd-signature tsd-kind-icon">scale<span class="tsd-signature-symbol">(</span>s<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L205">davinci-eight/math/Matrix4.ts:205</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L164">davinci-eight/math/Matrix4.ts:164</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>scale</p>
-									</dd>
-									<dt>chainable</dt>
-									<dd></dd>
-								</dl>
+								<div class="lead">
+									<p>Multiplies all elements of this matrix by the specified value.</p>
+								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -994,7 +973,6 @@
 									<h5>s: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="matrix4.html" class="tsd-signature-type">Matrix4</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -1002,13 +980,13 @@
 					<a name="scalexyz" class="tsd-anchor"></a>
 					<h3>scaleXYZ</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">scaleXYZ<span class="tsd-signature-symbol">(</span>scale<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">VectorE3</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a></li>
+						<li class="tsd-signature tsd-kind-icon">scaleXYZ<span class="tsd-signature-symbol">(</span>scale<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">VectorE3</span><span class="tsd-signature-symbol">)</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L424">davinci-eight/math/Matrix4.ts:424</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L359">davinci-eight/math/Matrix4.ts:359</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1017,7 +995,6 @@
 									<h5>scale: <span class="tsd-signature-type">VectorE3</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="matrix4.html" class="tsd-signature-type">Matrix4</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -1025,13 +1002,13 @@
 					<a name="scaling" class="tsd-anchor"></a>
 					<h3>scaling</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">scaling<span class="tsd-signature-symbol">(</span>scale<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">VectorE3</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a></li>
+						<li class="tsd-signature tsd-kind-icon">scaling<span class="tsd-signature-symbol">(</span>scale<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">VectorE3</span><span class="tsd-signature-symbol">)</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L442">davinci-eight/math/Matrix4.ts:442</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L377">davinci-eight/math/Matrix4.ts:377</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1040,7 +1017,6 @@
 									<h5>scale: <span class="tsd-signature-type">VectorE3</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="matrix4.html" class="tsd-signature-type">Matrix4</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -1048,13 +1024,13 @@
 					<a name="set" class="tsd-anchor"></a>
 					<h3>set</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">set<span class="tsd-signature-symbol">(</span>n11<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n12<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n13<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n14<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n21<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n22<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n23<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n24<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n31<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n32<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n33<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n34<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n41<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n42<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n43<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n44<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a></li>
+						<li class="tsd-signature tsd-kind-icon">set<span class="tsd-signature-symbol">(</span>n11<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n12<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n13<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n14<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n21<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n22<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n23<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n24<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n31<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n32<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n33<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n34<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n41<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n42<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n43<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, n44<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L449">davinci-eight/math/Matrix4.ts:449</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L384">davinci-eight/math/Matrix4.ts:384</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1108,7 +1084,6 @@
 									<h5>n44: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="matrix4.html" class="tsd-signature-type">Matrix4</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -1123,7 +1098,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#setelement">setElement</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/AbstractMatrix.ts#L84">davinci-eight/math/AbstractMatrix.ts:84</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/AbstractMatrix.ts#L108">davinci-eight/math/AbstractMatrix.ts:108</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1163,7 +1138,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L480">davinci-eight/math/Matrix4.ts:480</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L415">davinci-eight/math/Matrix4.ts:415</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1186,7 +1161,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L491">davinci-eight/math/Matrix4.ts:491</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L426">davinci-eight/math/Matrix4.ts:426</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1209,7 +1184,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L502">davinci-eight/math/Matrix4.ts:502</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L437">davinci-eight/math/Matrix4.ts:437</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1232,7 +1207,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L513">davinci-eight/math/Matrix4.ts:513</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L448">davinci-eight/math/Matrix4.ts:448</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1249,13 +1224,13 @@
 					<a name="translate" class="tsd-anchor"></a>
 					<h3>translate</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">translate<span class="tsd-signature-symbol">(</span>d<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">VectorE3</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a></li>
+						<li class="tsd-signature tsd-kind-icon">translate<span class="tsd-signature-symbol">(</span>d<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">VectorE3</span><span class="tsd-signature-symbol">)</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L524">davinci-eight/math/Matrix4.ts:524</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L459">davinci-eight/math/Matrix4.ts:459</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1269,7 +1244,6 @@
 									<h5>d: <span class="tsd-signature-type">VectorE3</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="matrix4.html" class="tsd-signature-type">Matrix4</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -1277,13 +1251,13 @@
 					<a name="translation" class="tsd-anchor"></a>
 					<h3>translation</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">translation<span class="tsd-signature-symbol">(</span>displacement<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">VectorE3</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a></li>
+						<li class="tsd-signature tsd-kind-icon">translation<span class="tsd-signature-symbol">(</span>displacement<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">VectorE3</span><span class="tsd-signature-symbol">)</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L531">davinci-eight/math/Matrix4.ts:531</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L466">davinci-eight/math/Matrix4.ts:466</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1297,7 +1271,6 @@
 									<h5>displacement: <span class="tsd-signature-type">VectorE3</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="matrix4.html" class="tsd-signature-type">Matrix4</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -1305,39 +1278,59 @@
 					<a name="transpose" class="tsd-anchor"></a>
 					<h3>transpose</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">transpose<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a></li>
+						<li class="tsd-signature tsd-kind-icon">transpose<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L219">davinci-eight/math/Matrix4.ts:219</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L176">davinci-eight/math/Matrix4.ts:176</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>transpose</p>
-									</dd>
-									<dt>chainable</dt>
-									<dd></dd>
-								</dl>
+								<div class="lead">
+									<p>Sets this matrix to its transpose.</p>
+								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <a href="matrix4.html" class="tsd-signature-type">Matrix4</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<a name="unlock" class="tsd-anchor"></a>
+					<h3>unlock</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">unlock<span class="tsd-signature-symbol">(</span>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/lockable.html">Lockable</a>.<a href="../interfaces/lockable.html#unlock">unlock</a></p>
+								<p>Inherited from <a href="abstractmatrix.html">AbstractMatrix</a>.<a href="abstractmatrix.html#unlock">unlock</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/AbstractMatrix.ts#L43">davinci-eight/math/AbstractMatrix.ts:43</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>token: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="zero" class="tsd-anchor"></a>
+					<a name="zero-1" class="tsd-anchor"></a>
 					<h3>zero</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">zero<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a></li>
+						<li class="tsd-signature tsd-kind-icon">zero<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L545">davinci-eight/math/Matrix4.ts:545</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L480">davinci-eight/math/Matrix4.ts:480</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1345,31 +1338,6 @@
 									<p>Sets this matrix to the identity element for addition, 0.</p>
 								</div>
 							</div>
-							<h4 class="tsd-returns-title">Returns <a href="matrix4.html" class="tsd-signature-type">Matrix4</a></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
-					<a name="one-1" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> one</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">one<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L70">davinci-eight/math/Matrix4.ts:70</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>
-										Creates a new matrix with all elements zero except those along the main diagonal which have the value unity.
-									</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <a href="matrix4.html" class="tsd-signature-type">Matrix4</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -1383,19 +1351,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L112">davinci-eight/math/Matrix4.ts:112</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L92">davinci-eight/math/Matrix4.ts:92</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>rotation</p>
-									</dd>
-									<dt>chainable</dt>
-									<dd></dd>
-									<dt>static</dt>
-									<dd></dd>
-								</dl>
+								<div class="lead">
+									<p>Constructs a 4x4 matrix that performs the rotation specified by the spinor.</p>
+								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -1417,19 +1379,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L90">davinci-eight/math/Matrix4.ts:90</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L78">davinci-eight/math/Matrix4.ts:78</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>scaling</p>
-									</dd>
-									<dt>chainable</dt>
-									<dd></dd>
-									<dt>static</dt>
-									<dd></dd>
-								</dl>
+								<div class="lead">
+									<p>Constructs a 4x4 matrix that performs the scaling specified by the vector.</p>
+								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -1451,19 +1407,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L101">davinci-eight/math/Matrix4.ts:101</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Matrix4.ts#L85">davinci-eight/math/Matrix4.ts:85</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>translation</p>
-									</dd>
-									<dt>chainable</dt>
-									<dd></dd>
-									<dt>static</dt>
-									<dd></dd>
-								</dl>
+								<div class="lead">
+									<p>Constructs a 4x4 matrix that performs the translation specified by the vector.</p>
+								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -1471,30 +1421,6 @@
 									<h5>vector: <span class="tsd-signature-type">VectorE3</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="matrix4.html" class="tsd-signature-type">Matrix4</a></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
-					<a name="zero-1" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> zero</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">zero<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="matrix4.html" class="tsd-signature-type">Matrix4</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/101bee0/src/davinci-eight/math/Matrix4.ts#L79">davinci-eight/math/Matrix4.ts:79</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>
-										Creates a new matrix with all elements zero.
-									</p>
-								</div>
-							</div>
 							<h4 class="tsd-returns-title">Returns <a href="matrix4.html" class="tsd-signature-type">Matrix4</a></h4>
 						</li>
 					</ul>
@@ -1522,11 +1448,20 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="matrix4.html#modified" class="tsd-kind-icon">modified</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="matrix4.html#one" class="tsd-kind-icon">one</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="matrix4.html#zero" class="tsd-kind-icon">zero</a>
+							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="matrix4.html#dimensions" class="tsd-kind-icon">dimensions</a>
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="matrix4.html#elements" class="tsd-kind-icon">elements</a>
+							</li>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="matrix4.html#islocked" class="tsd-kind-icon">is<wbr>Locked</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="matrix4.html#___mul__" class="tsd-kind-icon">___mul__</a>
@@ -1564,6 +1499,9 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="matrix4.html#isone" class="tsd-kind-icon">is<wbr>One</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="matrix4.html#lock" class="tsd-kind-icon">lock</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="matrix4.html#mul" class="tsd-kind-icon">mul</a>
 							</li>
@@ -1571,7 +1509,7 @@
 								<a href="matrix4.html#mul2" class="tsd-kind-icon">mul2</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="matrix4.html#one" class="tsd-kind-icon">one</a>
+								<a href="matrix4.html#one-1" class="tsd-kind-icon">one</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="matrix4.html#perspective" class="tsd-kind-icon">perspective</a>
@@ -1630,11 +1568,11 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="matrix4.html#transpose" class="tsd-kind-icon">transpose</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="matrix4.html#zero" class="tsd-kind-icon">zero</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="matrix4.html#unlock" class="tsd-kind-icon">unlock</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
-								<a href="matrix4.html#one-1" class="tsd-kind-icon">one</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="matrix4.html#zero-1" class="tsd-kind-icon">zero</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
 								<a href="matrix4.html#rotation-1" class="tsd-kind-icon">rotation</a>
@@ -1644,9 +1582,6 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
 								<a href="matrix4.html#translation-1" class="tsd-kind-icon">translation</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
-								<a href="matrix4.html#zero-1" class="tsd-kind-icon">zero</a>
 							</li>
 						</ul>
 					</li>

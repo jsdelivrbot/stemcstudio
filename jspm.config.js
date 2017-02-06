@@ -23,7 +23,7 @@ System.config({
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.1.1",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.1.1",
     "jquery": "npm:jquery@2.2.4",
-    "showdown": "npm:showdown@1.6.3",
+    "showdown": "npm:showdown@1.6.4",
     "socket.io": "npm:socket.io@1.4.6",
     "socket.io-client": "npm:socket.io-client@1.7.2",
     "ui-select": "npm:ui-select@0.17.1",
@@ -409,7 +409,7 @@ System.config({
     "npm:hash.js@1.0.3": {
       "inherits": "npm:inherits@2.0.1"
     },
-    "npm:hosted-git-info@2.1.5": {
+    "npm:hosted-git-info@2.2.0": {
       "url": "github:jspm/nodelibs-url@0.1.0"
     },
     "npm:https-browserify@0.0.0": {
@@ -455,7 +455,7 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:normalize-package-data@2.3.5": {
-      "hosted-git-info": "npm:hosted-git-info@2.1.5",
+      "hosted-git-info": "npm:hosted-git-info@2.2.0",
       "is-builtin-module": "npm:is-builtin-module@1.0.0",
       "semver": "npm:semver@5.3.0",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2",
@@ -618,7 +618,7 @@ System.config({
       "inherits": "npm:inherits@2.0.1",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:showdown@1.6.3": {
+    "npm:showdown@1.6.4": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "process": "github:jspm/nodelibs-process@0.1.2",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2",
