@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Geometric3 | EIGHT 6.0.3</title>
+	<title>Geometric3 | EIGHT 6.0.4</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">EIGHT 6.0.3</a>
+					<a href="../index.html" class="title">EIGHT 6.0.4</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -68,21 +68,17 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="coords.html" class="tsd-signature-type">Coords</a>
-						<ul class="tsd-hierarchy">
-							<li>
-								<span class="target">Geometric3</span>
-							</li>
-						</ul>
+						<span class="target">Geometric3</span>
 					</li>
 				</ul>
 			</section>
 			<section class="tsd-panel">
 				<h3>Implements</h3>
 				<ul class="tsd-hierarchy">
-					<li><a href="../interfaces/lockable.html" class="tsd-signature-type">Lockable</a></li>
 					<li><a href="../interfaces/cartesiang3.html" class="tsd-signature-type">CartesianG3</a></li>
 					<li><a href="../interfaces/geometrice3.html" class="tsd-signature-type">GeometricE3</a></li>
+					<li><a href="lockablemixin.html" class="tsd-signature-type">LockableMixin</a></li>
+					<li><a href="vectorn.html" class="tsd-signature-type">VectorN</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -92,12 +88,15 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="geometric3.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#islocked" class="tsd-kind-icon">is<wbr>Locked</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#lock" class="tsd-kind-icon">lock</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#unlock" class="tsd-kind-icon">unlock</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="geometric3.html#e1" class="tsd-kind-icon">E1</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="geometric3.html#e2" class="tsd-kind-icon">E2</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="geometric3.html#e3" class="tsd-kind-icon">E3</a></li>
@@ -111,11 +110,9 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#a" class="tsd-kind-icon">a</a></li>
 								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#b" class="tsd-kind-icon">b</a></li>
-								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="geometric3.html#coords" class="tsd-kind-icon">coords</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="geometric3.html#islocked" class="tsd-kind-icon">is<wbr>Locked</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="geometric3.html#length" class="tsd-kind-icon">length</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#length" class="tsd-kind-icon">length</a></li>
 								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#maskg3" class="tsd-kind-icon">mask<wbr>G3</a></li>
-								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="geometric3.html#modified" class="tsd-kind-icon">modified</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#modified" class="tsd-kind-icon">modified</a></li>
 								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#x" class="tsd-kind-icon">x</a></li>
 								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#xy" class="tsd-kind-icon">xy</a></li>
 								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#y" class="tsd-kind-icon">y</a></li>
@@ -153,9 +150,9 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#addpseudo" class="tsd-kind-icon">add<wbr>Pseudo</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#addscalar" class="tsd-kind-icon">add<wbr>Scalar</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#addvector" class="tsd-kind-icon">add<wbr>Vector</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="geometric3.html#approx" class="tsd-kind-icon">approx</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#approx" class="tsd-kind-icon">approx</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#arg" class="tsd-kind-icon">arg</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="geometric3.html#clone" class="tsd-kind-icon">clone</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#clone" class="tsd-kind-icon">clone</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#conj" class="tsd-kind-icon">conj</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#copy" class="tsd-kind-icon">copy</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#copycoordinates" class="tsd-kind-icon">copy<wbr>Coordinates</a></li>
@@ -170,11 +167,11 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#divbyscalar" class="tsd-kind-icon">div<wbr>ByScalar</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#divbyvector" class="tsd-kind-icon">div<wbr>ByVector</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#dual" class="tsd-kind-icon">dual</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="geometric3.html#equals" class="tsd-kind-icon">equals</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#equals" class="tsd-kind-icon">equals</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#exp" class="tsd-kind-icon">exp</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#ext" class="tsd-kind-icon">ext</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#ext2" class="tsd-kind-icon">ext2</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="geometric3.html#getcomponent" class="tsd-kind-icon">get<wbr>Component</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#getcomponent" class="tsd-kind-icon">get<wbr>Component</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#grade" class="tsd-kind-icon">grade</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#inv" class="tsd-kind-icon">inv</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#isone" class="tsd-kind-icon">is<wbr>One</a></li>
@@ -183,7 +180,6 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#lco2" class="tsd-kind-icon">lco2</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#lerp" class="tsd-kind-icon">lerp</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#lerp2" class="tsd-kind-icon">lerp2</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="geometric3.html#lock" class="tsd-kind-icon">lock</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#log" class="tsd-kind-icon">log</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#magnitude" class="tsd-kind-icon">magnitude</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#mul" class="tsd-kind-icon">mul</a></li>
@@ -192,8 +188,6 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#norm" class="tsd-kind-icon">norm</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#normalize" class="tsd-kind-icon">normalize</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#one-1" class="tsd-kind-icon">one</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="geometric3.html#pop" class="tsd-kind-icon">pop</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="geometric3.html#push" class="tsd-kind-icon">push</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#quaditude" class="tsd-kind-icon">quaditude</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#quadranceto" class="tsd-kind-icon">quadrance<wbr>To</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#rco" class="tsd-kind-icon">rco</a></li>
@@ -209,19 +203,16 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#scale" class="tsd-kind-icon">scale</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#scp" class="tsd-kind-icon">scp</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#scp2" class="tsd-kind-icon">scp2</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="geometric3.html#setcomponent" class="tsd-kind-icon">set<wbr>Component</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#squarednorm" class="tsd-kind-icon">squared<wbr>Norm</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#stress" class="tsd-kind-icon">stress</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#sub" class="tsd-kind-icon">sub</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#sub2" class="tsd-kind-icon">sub2</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#subvector" class="tsd-kind-icon">sub<wbr>Vector</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="geometric3.html#toarray" class="tsd-kind-icon">to<wbr>Array</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#toarray" class="tsd-kind-icon">to<wbr>Array</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#toexponential" class="tsd-kind-icon">to<wbr>Exponential</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#tofixed" class="tsd-kind-icon">to<wbr>Fixed</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="geometric3.html#tolocalestring" class="tsd-kind-icon">to<wbr>Locale<wbr>String</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#toprecision" class="tsd-kind-icon">to<wbr>Precision</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="geometric3.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="geometric3.html#unlock" class="tsd-kind-icon">unlock</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#versor" class="tsd-kind-icon">versor</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="geometric3.html#zero-1" class="tsd-kind-icon">zero</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="geometric3.html#bivector" class="tsd-kind-icon">bivector</a></li>
@@ -254,26 +245,35 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Geometric3<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="geometric3.html" class="tsd-signature-type">Geometric3</a></li>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Geometric3<span class="tsd-signature-symbol">(</span>coords<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span>, code<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="geometric3.html" class="tsd-signature-type">Geometric3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overrides <a href="coords.html">Coords</a>.<a href="coords.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L74">davinci-eight/math/Geometric3.ts:74</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L151">davinci-eight/math/Geometric3.ts:151</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Constructs a <code>Geometric3</code>.
-									The multivector is initialized to zero.</p>
+										The multivector is initialized to zero.
+									coords [a, x, y, z, xy, yz, zx, b]</p>
 								</div>
 							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> coords: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;[0, 0, 0, 0, 0, 0, 0, 0]</span></h5>
+								</li>
+								<li>
+									<h5>code: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="geometric3.html" class="tsd-signature-type">Geometric3</a></h4>
 						</li>
 					</ul>
@@ -281,13 +281,94 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
+					<a name="islocked" class="tsd-anchor"></a>
+					<h3>is<wbr>Locked</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Locked<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L139">davinci-eight/math/Geometric3.ts:139</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
+					<a name="lock" class="tsd-anchor"></a>
+					<h3>lock</h3>
+					<div class="tsd-signature tsd-kind-icon">lock<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L140">davinci-eight/math/Geometric3.ts:140</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
+					<a name="unlock" class="tsd-anchor"></a>
+					<h3>unlock</h3>
+					<div class="tsd-signature tsd-kind-icon">unlock<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L141">davinci-eight/math/Geometric3.ts:141</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5>token: <span class="tsd-signature-type">number</span></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="e1" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> E1</h3>
-					<div class="tsd-signature tsd-kind-icon">E1<span class="tsd-signature-symbol">:</span> <a href="geometric3.html" class="tsd-signature-type">Geometric3</a><span class="tsd-signature-symbol"> =&nbsp;lock(Geometric3.vector(1, 0, 0))</span></div>
+					<div class="tsd-signature tsd-kind-icon">E1<span class="tsd-signature-symbol">:</span> <a href="geometric3.html" class="tsd-signature-type">Geometric3</a><span class="tsd-signature-symbol"> =&nbsp;new Geometric3(vector(1, 0, 0), magicCode)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L2033">davinci-eight/math/Geometric3.ts:2033</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2140">davinci-eight/math/Geometric3.ts:2140</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -300,10 +381,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="e2" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> E2</h3>
-					<div class="tsd-signature tsd-kind-icon">E2<span class="tsd-signature-symbol">:</span> <a href="geometric3.html" class="tsd-signature-type">Geometric3</a><span class="tsd-signature-symbol"> =&nbsp;lock(Geometric3.vector(0, 1, 0))</span></div>
+					<div class="tsd-signature tsd-kind-icon">E2<span class="tsd-signature-symbol">:</span> <a href="geometric3.html" class="tsd-signature-type">Geometric3</a><span class="tsd-signature-symbol"> =&nbsp;new Geometric3(vector(0, 1, 0), magicCode)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L2047">davinci-eight/math/Geometric3.ts:2047</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2154">davinci-eight/math/Geometric3.ts:2154</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -316,10 +397,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="e3" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> E3</h3>
-					<div class="tsd-signature tsd-kind-icon">E3<span class="tsd-signature-symbol">:</span> <a href="geometric3.html" class="tsd-signature-type">Geometric3</a><span class="tsd-signature-symbol"> =&nbsp;lock(Geometric3.vector(0, 0, 1))</span></div>
+					<div class="tsd-signature tsd-kind-icon">E3<span class="tsd-signature-symbol">:</span> <a href="geometric3.html" class="tsd-signature-type">Geometric3</a><span class="tsd-signature-symbol"> =&nbsp;new Geometric3(vector(0, 0, 1), magicCode)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L2061">davinci-eight/math/Geometric3.ts:2061</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2168">davinci-eight/math/Geometric3.ts:2168</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -332,10 +413,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="i" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> I</h3>
-					<div class="tsd-signature tsd-kind-icon">I<span class="tsd-signature-symbol">:</span> <a href="geometric3.html" class="tsd-signature-type">Geometric3</a><span class="tsd-signature-symbol"> =&nbsp;lock(Geometric3.pseudo(1))</span></div>
+					<div class="tsd-signature tsd-kind-icon">I<span class="tsd-signature-symbol">:</span> <a href="geometric3.html" class="tsd-signature-type">Geometric3</a><span class="tsd-signature-symbol"> =&nbsp;new Geometric3(pseudo(1), magicCode)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L2075">davinci-eight/math/Geometric3.ts:2075</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2182">davinci-eight/math/Geometric3.ts:2182</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -348,10 +429,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="one" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> ONE</h3>
-					<div class="tsd-signature tsd-kind-icon">ONE<span class="tsd-signature-symbol">:</span> <a href="geometric3.html" class="tsd-signature-type">Geometric3</a><span class="tsd-signature-symbol"> =&nbsp;lock(Geometric3.scalar(1))</span></div>
+					<div class="tsd-signature tsd-kind-icon">ONE<span class="tsd-signature-symbol">:</span> <a href="geometric3.html" class="tsd-signature-type">Geometric3</a><span class="tsd-signature-symbol"> =&nbsp;new Geometric3(scalar(1), magicCode)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L2020">davinci-eight/math/Geometric3.ts:2020</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2127">davinci-eight/math/Geometric3.ts:2127</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -364,10 +445,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="zero" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> ZERO</h3>
-					<div class="tsd-signature tsd-kind-icon">ZERO<span class="tsd-signature-symbol">:</span> <a href="geometric3.html" class="tsd-signature-type">Geometric3</a><span class="tsd-signature-symbol"> =&nbsp;lock(new Geometric3())</span></div>
+					<div class="tsd-signature tsd-kind-icon">ZERO<span class="tsd-signature-symbol">:</span> <a href="geometric3.html" class="tsd-signature-type">Geometric3</a><span class="tsd-signature-symbol"> =&nbsp;new Geometric3(scalar(0), magicCode)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L2014">davinci-eight/math/Geometric3.ts:2014</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2121">davinci-eight/math/Geometric3.ts:2121</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -391,7 +472,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L105">davinci-eight/math/Geometric3.ts:105</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L206">davinci-eight/math/Geometric3.ts:206</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -404,7 +485,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L108">davinci-eight/math/Geometric3.ts:108</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L209">davinci-eight/math/Geometric3.ts:209</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -433,7 +514,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L175">davinci-eight/math/Geometric3.ts:175</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L276">davinci-eight/math/Geometric3.ts:276</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -446,7 +527,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L178">davinci-eight/math/Geometric3.ts:178</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L279">davinci-eight/math/Geometric3.ts:279</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -464,70 +545,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-					<a name="coords" class="tsd-anchor"></a>
-					<h3>coords</h3>
-					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> coords<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></li>
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> coords<span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="vectorn.html">VectorN</a>.<a href="vectorn.html#coords">coords</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/VectorN.ts#L84">davinci-eight/math/VectorN.ts:84</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h4>
-						</li>
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="vectorn.html">VectorN</a>.<a href="vectorn.html#coords">coords</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/VectorN.ts#L87">davinci-eight/math/VectorN.ts:87</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>data: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-					<a name="islocked" class="tsd-anchor"></a>
-					<h3>is<wbr>Locked</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> isLocked<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="vectorn.html">VectorN</a>.<a href="vectorn.html#islocked">isLocked</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/VectorN.ts#L69">davinci-eight/math/VectorN.ts:69</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-external">
 					<a name="length" class="tsd-anchor"></a>
 					<h3>length</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-external">
 						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> length<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="vectorn.html">VectorN</a>.<a href="vectorn.html#length">length</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/VectorN.ts#L105">davinci-eight/math/VectorN.ts:105</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L167">davinci-eight/math/Geometric3.ts:167</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -544,7 +572,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L191">davinci-eight/math/Geometric3.ts:191</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L292">davinci-eight/math/Geometric3.ts:292</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -561,28 +589,26 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
 					<a name="modified" class="tsd-anchor"></a>
 					<h3>modified</h3>
-					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
 						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> modified<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> modified<span class="tsd-signature-symbol">(</span>modified<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="vectorn.html">VectorN</a>.<a href="vectorn.html#modified">modified</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/VectorN.ts#L95">davinci-eight/math/VectorN.ts:95</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L171">davinci-eight/math/Geometric3.ts:171</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="vectorn.html">VectorN</a>.<a href="vectorn.html#modified">modified</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/VectorN.ts#L98">davinci-eight/math/VectorN.ts:98</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L174">davinci-eight/math/Geometric3.ts:174</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -606,7 +632,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L115">davinci-eight/math/Geometric3.ts:115</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L216">davinci-eight/math/Geometric3.ts:216</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -619,7 +645,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L118">davinci-eight/math/Geometric3.ts:118</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L219">davinci-eight/math/Geometric3.ts:219</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -648,7 +674,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L165">davinci-eight/math/Geometric3.ts:165</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L266">davinci-eight/math/Geometric3.ts:266</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -661,7 +687,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L168">davinci-eight/math/Geometric3.ts:168</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L269">davinci-eight/math/Geometric3.ts:269</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -690,7 +716,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L125">davinci-eight/math/Geometric3.ts:125</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L226">davinci-eight/math/Geometric3.ts:226</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -703,7 +729,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L128">davinci-eight/math/Geometric3.ts:128</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L229">davinci-eight/math/Geometric3.ts:229</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -732,7 +758,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L145">davinci-eight/math/Geometric3.ts:145</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L246">davinci-eight/math/Geometric3.ts:246</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -745,7 +771,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L148">davinci-eight/math/Geometric3.ts:148</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L249">davinci-eight/math/Geometric3.ts:249</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -774,7 +800,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L135">davinci-eight/math/Geometric3.ts:135</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L236">davinci-eight/math/Geometric3.ts:236</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -787,7 +813,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L138">davinci-eight/math/Geometric3.ts:138</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L239">davinci-eight/math/Geometric3.ts:239</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -816,7 +842,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L155">davinci-eight/math/Geometric3.ts:155</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L256">davinci-eight/math/Geometric3.ts:256</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -829,7 +855,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L158">davinci-eight/math/Geometric3.ts:158</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L259">davinci-eight/math/Geometric3.ts:259</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -860,7 +886,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1726">davinci-eight/math/Geometric3.ts:1726</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1833">davinci-eight/math/Geometric3.ts:1833</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -889,7 +915,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1982">davinci-eight/math/Geometric3.ts:1982</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2089">davinci-eight/math/Geometric3.ts:2089</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -912,7 +938,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1762">davinci-eight/math/Geometric3.ts:1762</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1869">davinci-eight/math/Geometric3.ts:1869</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -941,7 +967,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1886">davinci-eight/math/Geometric3.ts:1886</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1993">davinci-eight/math/Geometric3.ts:1993</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -970,7 +996,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1792">davinci-eight/math/Geometric3.ts:1792</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1899">davinci-eight/math/Geometric3.ts:1899</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -999,7 +1025,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1998">davinci-eight/math/Geometric3.ts:1998</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2105">davinci-eight/math/Geometric3.ts:2105</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1022,7 +1048,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1990">davinci-eight/math/Geometric3.ts:1990</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2097">davinci-eight/math/Geometric3.ts:2097</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1045,7 +1071,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1743">davinci-eight/math/Geometric3.ts:1743</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1850">davinci-eight/math/Geometric3.ts:1850</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1074,7 +1100,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1776">davinci-eight/math/Geometric3.ts:1776</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1883">davinci-eight/math/Geometric3.ts:1883</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1103,7 +1129,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1902">davinci-eight/math/Geometric3.ts:1902</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2009">davinci-eight/math/Geometric3.ts:2009</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1132,7 +1158,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1806">davinci-eight/math/Geometric3.ts:1806</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1913">davinci-eight/math/Geometric3.ts:1913</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1161,7 +1187,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1934">davinci-eight/math/Geometric3.ts:1934</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2041">davinci-eight/math/Geometric3.ts:2041</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1190,7 +1216,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1918">davinci-eight/math/Geometric3.ts:1918</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2025">davinci-eight/math/Geometric3.ts:2025</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1219,7 +1245,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1836">davinci-eight/math/Geometric3.ts:1836</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1943">davinci-eight/math/Geometric3.ts:1943</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1248,7 +1274,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1966">davinci-eight/math/Geometric3.ts:1966</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2073">davinci-eight/math/Geometric3.ts:2073</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1277,7 +1303,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1869">davinci-eight/math/Geometric3.ts:1869</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1976">davinci-eight/math/Geometric3.ts:1976</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1306,7 +1332,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1822">davinci-eight/math/Geometric3.ts:1822</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1929">davinci-eight/math/Geometric3.ts:1929</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1335,7 +1361,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L2006">davinci-eight/math/Geometric3.ts:2006</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2113">davinci-eight/math/Geometric3.ts:2113</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1358,7 +1384,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1950">davinci-eight/math/Geometric3.ts:1950</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2057">davinci-eight/math/Geometric3.ts:2057</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1387,7 +1413,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1852">davinci-eight/math/Geometric3.ts:1852</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1959">davinci-eight/math/Geometric3.ts:1959</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1416,7 +1442,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L227">davinci-eight/math/Geometric3.ts:227</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L328">davinci-eight/math/Geometric3.ts:328</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1455,7 +1481,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L324">davinci-eight/math/Geometric3.ts:324</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L425">davinci-eight/math/Geometric3.ts:425</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1489,7 +1515,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L251">davinci-eight/math/Geometric3.ts:251</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L352">davinci-eight/math/Geometric3.ts:352</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1519,7 +1545,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L271">davinci-eight/math/Geometric3.ts:271</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L372">davinci-eight/math/Geometric3.ts:372</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1552,7 +1578,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L287">davinci-eight/math/Geometric3.ts:287</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L388">davinci-eight/math/Geometric3.ts:388</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1584,7 +1610,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L304">davinci-eight/math/Geometric3.ts:304</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L405">davinci-eight/math/Geometric3.ts:405</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1612,18 +1638,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="approx" class="tsd-anchor"></a>
 					<h3>approx</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
 						<li class="tsd-signature tsd-kind-icon">approx<span class="tsd-signature-symbol">(</span>n<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="geometric3.html" class="tsd-signature-type">Geometric3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overrides <a href="coords.html">Coords</a>.<a href="coords.html#approx">approx</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L356">davinci-eight/math/Geometric3.ts:356</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L457">davinci-eight/math/Geometric3.ts:457</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1651,7 +1676,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L344">davinci-eight/math/Geometric3.ts:344</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L445">davinci-eight/math/Geometric3.ts:445</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1664,18 +1689,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="clone" class="tsd-anchor"></a>
 					<h3>clone</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
 						<li class="tsd-signature tsd-kind-icon">clone<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="geometric3.html" class="tsd-signature-type">Geometric3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overrides <a href="vectorn.html">VectorN</a>.<a href="vectorn.html#clone">clone</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L369">davinci-eight/math/Geometric3.ts:369</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L470">davinci-eight/math/Geometric3.ts:470</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1695,7 +1719,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L380">davinci-eight/math/Geometric3.ts:380</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L481">davinci-eight/math/Geometric3.ts:481</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1720,7 +1744,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L505">davinci-eight/math/Geometric3.ts:505</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L606">davinci-eight/math/Geometric3.ts:606</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1747,7 +1771,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L404">davinci-eight/math/Geometric3.ts:404</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L505">davinci-eight/math/Geometric3.ts:505</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1777,7 +1801,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L527">davinci-eight/math/Geometric3.ts:527</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L628">davinci-eight/math/Geometric3.ts:628</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1808,7 +1832,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L548">davinci-eight/math/Geometric3.ts:548</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L649">davinci-eight/math/Geometric3.ts:649</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1839,7 +1863,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L569">davinci-eight/math/Geometric3.ts:569</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L670">davinci-eight/math/Geometric3.ts:670</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1870,7 +1894,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L590">davinci-eight/math/Geometric3.ts:590</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L691">davinci-eight/math/Geometric3.ts:691</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1901,10 +1925,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1097">davinci-eight/math/Geometric3.ts:1097</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1198">davinci-eight/math/Geometric3.ts:1198</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+							</div>
 							<h4 class="tsd-returns-title">Returns <a href="geometric3.html" class="tsd-signature-type">Geometric3</a></h4>
+							<p>this / magnitude(this)</p>
 						</li>
 					</ul>
 				</section>
@@ -1918,7 +1945,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L423">davinci-eight/math/Geometric3.ts:423</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L524">davinci-eight/math/Geometric3.ts:524</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1945,7 +1972,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L609">davinci-eight/math/Geometric3.ts:609</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L710">davinci-eight/math/Geometric3.ts:710</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1979,7 +2006,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L729">davinci-eight/math/Geometric3.ts:729</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L830">davinci-eight/math/Geometric3.ts:830</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2009,7 +2036,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L690">davinci-eight/math/Geometric3.ts:690</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L791">davinci-eight/math/Geometric3.ts:791</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2038,7 +2065,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L713">davinci-eight/math/Geometric3.ts:713</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L814">davinci-eight/math/Geometric3.ts:814</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2070,7 +2097,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L757">davinci-eight/math/Geometric3.ts:757</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L858">davinci-eight/math/Geometric3.ts:858</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2088,18 +2115,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="equals" class="tsd-anchor"></a>
 					<h3>equals</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
 						<li class="tsd-signature tsd-kind-icon">equals<span class="tsd-signature-symbol">(</span>other<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overrides <a href="coords.html">Coords</a>.<a href="coords.html#equals">equals</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L793">davinci-eight/math/Geometric3.ts:793</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L894">davinci-eight/math/Geometric3.ts:894</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2124,7 +2150,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L806">davinci-eight/math/Geometric3.ts:806</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L907">davinci-eight/math/Geometric3.ts:907</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2146,7 +2172,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1684">davinci-eight/math/Geometric3.ts:1684</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1791">davinci-eight/math/Geometric3.ts:1791</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2172,7 +2198,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1697">davinci-eight/math/Geometric3.ts:1697</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1804">davinci-eight/math/Geometric3.ts:1804</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2193,28 +2219,23 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="getcomponent" class="tsd-anchor"></a>
 					<h3>get<wbr>Component</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Component<span class="tsd-signature-symbol">(</span>index<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Component<span class="tsd-signature-symbol">(</span>i<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="vectorn.html">VectorN</a>.<a href="vectorn.html#getcomponent">getComponent</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/VectorN.ts#L119">davinci-eight/math/VectorN.ts:119</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L181">davinci-eight/math/Geometric3.ts:181</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>index: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-									</div>
+									<h5>i: <span class="tsd-signature-type">number</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -2231,7 +2252,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1625">davinci-eight/math/Geometric3.ts:1625</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1732">davinci-eight/math/Geometric3.ts:1732</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2263,7 +2284,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L845">davinci-eight/math/Geometric3.ts:845</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L946">davinci-eight/math/Geometric3.ts:946</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2283,7 +2304,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L890">davinci-eight/math/Geometric3.ts:890</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L991">davinci-eight/math/Geometric3.ts:991</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2305,7 +2326,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L897">davinci-eight/math/Geometric3.ts:897</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L998">davinci-eight/math/Geometric3.ts:998</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2327,7 +2348,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L452">davinci-eight/math/Geometric3.ts:452</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L553">davinci-eight/math/Geometric3.ts:553</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2356,7 +2377,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L468">davinci-eight/math/Geometric3.ts:468</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L569">davinci-eight/math/Geometric3.ts:569</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2386,7 +2407,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L904">davinci-eight/math/Geometric3.ts:904</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1005">davinci-eight/math/Geometric3.ts:1005</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2415,7 +2436,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L925">davinci-eight/math/Geometric3.ts:925</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1026">davinci-eight/math/Geometric3.ts:1026</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2439,25 +2460,6 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-					<a name="lock" class="tsd-anchor"></a>
-					<h3>lock</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">lock<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/lockable.html">Lockable</a>.<a href="../interfaces/lockable.html#lock">lock</a></p>
-								<p>Inherited from <a href="vectorn.html">VectorN</a>.<a href="vectorn.html#lock">lock</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/VectorN.ts#L73">davinci-eight/math/VectorN.ts:73</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="log" class="tsd-anchor"></a>
 					<h3>log</h3>
@@ -2468,7 +2470,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L938">davinci-eight/math/Geometric3.ts:938</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1039">davinci-eight/math/Geometric3.ts:1039</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2491,7 +2493,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L961">davinci-eight/math/Geometric3.ts:961</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1062">davinci-eight/math/Geometric3.ts:1062</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2513,7 +2515,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L970">davinci-eight/math/Geometric3.ts:970</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1071">davinci-eight/math/Geometric3.ts:1071</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2542,7 +2544,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1014">davinci-eight/math/Geometric3.ts:1014</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1115">davinci-eight/math/Geometric3.ts:1115</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2572,7 +2574,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1053">davinci-eight/math/Geometric3.ts:1053</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1154">davinci-eight/math/Geometric3.ts:1154</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2595,7 +2597,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1077">davinci-eight/math/Geometric3.ts:1077</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1178">davinci-eight/math/Geometric3.ts:1178</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2613,13 +2615,13 @@
 					<a name="normalize" class="tsd-anchor"></a>
 					<h3>normalize</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">normalize<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span></li>
+						<li class="tsd-signature tsd-kind-icon">normalize<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="geometric3.html" class="tsd-signature-type">Geometric3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1111">davinci-eight/math/Geometric3.ts:1111</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1209">davinci-eight/math/Geometric3.ts:1209</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2630,6 +2632,7 @@
 									Since the metric is Euclidean, this will only happen if the multivector is also the
 								zero multivector.</p>
 							</div>
+							<h4 class="tsd-returns-title">Returns <a href="geometric3.html" class="tsd-signature-type">Geometric3</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -2643,7 +2646,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1132">davinci-eight/math/Geometric3.ts:1132</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1232">davinci-eight/math/Geometric3.ts:1232</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2651,50 +2654,6 @@
 									<p>Sets this multivector to the identity element for multiplication, 1.</p>
 								</div>
 							</div>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-					<a name="pop" class="tsd-anchor"></a>
-					<h3>pop</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">pop<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="vectorn.html">VectorN</a>.<a href="vectorn.html#pop">pop</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/VectorN.ts#L126">davinci-eight/math/VectorN.ts:126</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-					<a name="push" class="tsd-anchor"></a>
-					<h3>push</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">push<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="vectorn.html">VectorN</a>.<a href="vectorn.html#push">push</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/VectorN.ts#L142">davinci-eight/math/VectorN.ts:142</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>value: <span class="tsd-signature-type">number</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -2708,7 +2667,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1180">davinci-eight/math/Geometric3.ts:1180</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1280">davinci-eight/math/Geometric3.ts:1280</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2730,7 +2689,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L435">davinci-eight/math/Geometric3.ts:435</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L536">davinci-eight/math/Geometric3.ts:536</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2758,7 +2717,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L482">davinci-eight/math/Geometric3.ts:482</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L583">davinci-eight/math/Geometric3.ts:583</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2786,7 +2745,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L494">davinci-eight/math/Geometric3.ts:494</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L595">davinci-eight/math/Geometric3.ts:595</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2820,7 +2779,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1199">davinci-eight/math/Geometric3.ts:1199</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1299">davinci-eight/math/Geometric3.ts:1299</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2856,7 +2815,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1241">davinci-eight/math/Geometric3.ts:1241</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1341">davinci-eight/math/Geometric3.ts:1341</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2878,7 +2837,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1264">davinci-eight/math/Geometric3.ts:1264</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1364">davinci-eight/math/Geometric3.ts:1364</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2907,7 +2866,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1298">davinci-eight/math/Geometric3.ts:1298</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1398">davinci-eight/math/Geometric3.ts:1398</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2943,7 +2902,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1329">davinci-eight/math/Geometric3.ts:1329</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1429">davinci-eight/math/Geometric3.ts:1429</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2981,7 +2940,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1358">davinci-eight/math/Geometric3.ts:1358</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1458">davinci-eight/math/Geometric3.ts:1458</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3006,7 +2965,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1394">davinci-eight/math/Geometric3.ts:1394</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1494">davinci-eight/math/Geometric3.ts:1494</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3043,7 +3002,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1422">davinci-eight/math/Geometric3.ts:1422</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1522">davinci-eight/math/Geometric3.ts:1522</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3077,7 +3036,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1456">davinci-eight/math/Geometric3.ts:1456</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1556">davinci-eight/math/Geometric3.ts:1556</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3105,7 +3064,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1434">davinci-eight/math/Geometric3.ts:1434</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1534">davinci-eight/math/Geometric3.ts:1534</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3134,7 +3093,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1446">davinci-eight/math/Geometric3.ts:1446</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1546">davinci-eight/math/Geometric3.ts:1546</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3154,37 +3113,6 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-					<a name="setcomponent" class="tsd-anchor"></a>
-					<h3>set<wbr>Component</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Component<span class="tsd-signature-symbol">(</span>index<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="vectorn.html">VectorN</a>.<a href="vectorn.html#setcomponent">setComponent</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/VectorN.ts#L161">davinci-eight/math/VectorN.ts:161</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>index: <span class="tsd-signature-type">number</span></h5>
-								</li>
-								<li>
-									<h5>value: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="squarednorm" class="tsd-anchor"></a>
 					<h3>squared<wbr>Norm</h3>
@@ -3195,7 +3123,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1160">davinci-eight/math/Geometric3.ts:1160</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1260">davinci-eight/math/Geometric3.ts:1260</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3223,7 +3151,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1478">davinci-eight/math/Geometric3.ts:1478</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1578">davinci-eight/math/Geometric3.ts:1578</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3253,7 +3181,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1525">davinci-eight/math/Geometric3.ts:1525</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1625">davinci-eight/math/Geometric3.ts:1625</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3282,7 +3210,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1571">davinci-eight/math/Geometric3.ts:1571</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1671">davinci-eight/math/Geometric3.ts:1671</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3316,7 +3244,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1551">davinci-eight/math/Geometric3.ts:1551</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1651">davinci-eight/math/Geometric3.ts:1651</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3340,31 +3268,19 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="toarray" class="tsd-anchor"></a>
 					<h3>to<wbr>Array</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">to<wbr>Array<span class="tsd-signature-symbol">(</span>array<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span>, offset<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></li>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">to<wbr>Array<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="vectorn.html">VectorN</a>.<a href="vectorn.html#toarray">toArray</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/VectorN.ts#L179">davinci-eight/math/VectorN.ts:179</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1689">davinci-eight/math/Geometric3.ts:1689</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> array: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></h5>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> offset: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></h5>
-								</li>
-							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
@@ -3379,7 +3295,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1589">davinci-eight/math/Geometric3.ts:1589</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1696">davinci-eight/math/Geometric3.ts:1696</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3407,7 +3323,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1597">davinci-eight/math/Geometric3.ts:1597</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1704">davinci-eight/math/Geometric3.ts:1704</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3425,26 +3341,6 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-					<a name="tolocalestring" class="tsd-anchor"></a>
-					<h3>to<wbr>Locale<wbr>String</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">to<wbr>Locale<wbr>String<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="vectorn.html">VectorN</a>.<a href="vectorn.html#tolocalestring">toLocaleString</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/VectorN.ts#L191">davinci-eight/math/VectorN.ts:191</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="toprecision" class="tsd-anchor"></a>
 					<h3>to<wbr>Precision</h3>
@@ -3455,7 +3351,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1605">davinci-eight/math/Geometric3.ts:1605</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1712">davinci-eight/math/Geometric3.ts:1712</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3468,18 +3364,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="tostring" class="tsd-anchor"></a>
 					<h3>to<wbr>String</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
 						<li class="tsd-signature tsd-kind-icon">to<wbr>String<span class="tsd-signature-symbol">(</span>radix<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overrides <a href="vectorn.html">VectorN</a>.<a href="vectorn.html#tostring">toString</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1613">davinci-eight/math/Geometric3.ts:1613</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1720">davinci-eight/math/Geometric3.ts:1720</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3497,31 +3392,6 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-					<a name="unlock" class="tsd-anchor"></a>
-					<h3>unlock</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">unlock<span class="tsd-signature-symbol">(</span>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/lockable.html">Lockable</a>.<a href="../interfaces/lockable.html#unlock">unlock</a></p>
-								<p>Inherited from <a href="vectorn.html">VectorN</a>.<a href="vectorn.html#unlock">unlock</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/VectorN.ts#L77">davinci-eight/math/VectorN.ts:77</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>token: <span class="tsd-signature-type">number</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="versor" class="tsd-anchor"></a>
 					<h3>versor</h3>
@@ -3532,7 +3402,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1502">davinci-eight/math/Geometric3.ts:1502</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1602">davinci-eight/math/Geometric3.ts:1602</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3570,7 +3440,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L1707">davinci-eight/math/Geometric3.ts:1707</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L1814">davinci-eight/math/Geometric3.ts:1814</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3591,7 +3461,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L2080">davinci-eight/math/Geometric3.ts:2080</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2187">davinci-eight/math/Geometric3.ts:2187</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3625,7 +3495,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L2092">davinci-eight/math/Geometric3.ts:2092</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2194">davinci-eight/math/Geometric3.ts:2194</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3653,7 +3523,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L2108">davinci-eight/math/Geometric3.ts:2108</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2201">davinci-eight/math/Geometric3.ts:2201</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3681,7 +3551,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L2119">davinci-eight/math/Geometric3.ts:2119</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2208">davinci-eight/math/Geometric3.ts:2208</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3709,7 +3579,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L2039">davinci-eight/math/Geometric3.ts:2039</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2146">davinci-eight/math/Geometric3.ts:2146</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3738,7 +3608,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L2053">davinci-eight/math/Geometric3.ts:2053</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2160">davinci-eight/math/Geometric3.ts:2160</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3767,7 +3637,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L2067">davinci-eight/math/Geometric3.ts:2067</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2174">davinci-eight/math/Geometric3.ts:2174</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3796,7 +3666,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L2130">davinci-eight/math/Geometric3.ts:2130</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2215">davinci-eight/math/Geometric3.ts:2215</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3824,7 +3694,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L2137">davinci-eight/math/Geometric3.ts:2137</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2222">davinci-eight/math/Geometric3.ts:2222</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3852,7 +3722,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L2144">davinci-eight/math/Geometric3.ts:2144</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2229">davinci-eight/math/Geometric3.ts:2229</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3880,7 +3750,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L2151">davinci-eight/math/Geometric3.ts:2151</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2236">davinci-eight/math/Geometric3.ts:2236</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3908,7 +3778,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L2158">davinci-eight/math/Geometric3.ts:2158</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2243">davinci-eight/math/Geometric3.ts:2243</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3942,7 +3812,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L2025">davinci-eight/math/Geometric3.ts:2025</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2132">davinci-eight/math/Geometric3.ts:2132</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3965,7 +3835,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L2165">davinci-eight/math/Geometric3.ts:2165</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2250">davinci-eight/math/Geometric3.ts:2250</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3993,7 +3863,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L2175">davinci-eight/math/Geometric3.ts:2175</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2257">davinci-eight/math/Geometric3.ts:2257</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -4024,7 +3894,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L2192">davinci-eight/math/Geometric3.ts:2192</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2273">davinci-eight/math/Geometric3.ts:2273</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -4056,7 +3926,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L2196">davinci-eight/math/Geometric3.ts:2196</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2277">davinci-eight/math/Geometric3.ts:2277</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4082,7 +3952,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L2205">davinci-eight/math/Geometric3.ts:2205</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2286">davinci-eight/math/Geometric3.ts:2286</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -4118,7 +3988,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L2212">davinci-eight/math/Geometric3.ts:2212</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2293">davinci-eight/math/Geometric3.ts:2293</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -4146,7 +4016,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L2222">davinci-eight/math/Geometric3.ts:2222</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2300">davinci-eight/math/Geometric3.ts:2300</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -4183,7 +4053,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L2235">davinci-eight/math/Geometric3.ts:2235</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2307">davinci-eight/math/Geometric3.ts:2307</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -4217,7 +4087,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L2247">davinci-eight/math/Geometric3.ts:2247</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2314">davinci-eight/math/Geometric3.ts:2314</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -4248,7 +4118,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Geometric3.ts#L2266">davinci-eight/math/Geometric3.ts:2266</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Geometric3.ts#L2333">davinci-eight/math/Geometric3.ts:2333</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -4278,8 +4148,17 @@
 					<li class="current tsd-kind-class tsd-is-external">
 						<a href="geometric3.html" class="tsd-kind-icon">Geometric3</a>
 						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
 								<a href="geometric3.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
+								<a href="geometric3.html#islocked" class="tsd-kind-icon">is<wbr>Locked</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
+								<a href="geometric3.html#lock" class="tsd-kind-icon">lock</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
+								<a href="geometric3.html#unlock" class="tsd-kind-icon">unlock</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 								<a href="geometric3.html#e1" class="tsd-kind-icon">E1</a>
@@ -4305,19 +4184,13 @@
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
 								<a href="geometric3.html#b" class="tsd-kind-icon">b</a>
 							</li>
-							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="geometric3.html#coords" class="tsd-kind-icon">coords</a>
-							</li>
-							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="geometric3.html#islocked" class="tsd-kind-icon">is<wbr>Locked</a>
-							</li>
-							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-external">
 								<a href="geometric3.html#length" class="tsd-kind-icon">length</a>
 							</li>
 							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-external">
 								<a href="geometric3.html#maskg3" class="tsd-kind-icon">mask<wbr>G3</a>
 							</li>
-							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
 								<a href="geometric3.html#modified" class="tsd-kind-icon">modified</a>
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
@@ -4416,13 +4289,13 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="geometric3.html#addvector" class="tsd-kind-icon">add<wbr>Vector</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="geometric3.html#approx" class="tsd-kind-icon">approx</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="geometric3.html#arg" class="tsd-kind-icon">arg</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="geometric3.html#clone" class="tsd-kind-icon">clone</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
@@ -4467,7 +4340,7 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="geometric3.html#dual" class="tsd-kind-icon">dual</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="geometric3.html#equals" class="tsd-kind-icon">equals</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
@@ -4479,7 +4352,7 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="geometric3.html#ext2" class="tsd-kind-icon">ext2</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="geometric3.html#getcomponent" class="tsd-kind-icon">get<wbr>Component</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
@@ -4506,9 +4379,6 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="geometric3.html#lerp2" class="tsd-kind-icon">lerp2</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="geometric3.html#lock" class="tsd-kind-icon">lock</a>
-							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="geometric3.html#log" class="tsd-kind-icon">log</a>
 							</li>
@@ -4532,12 +4402,6 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="geometric3.html#one-1" class="tsd-kind-icon">one</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="geometric3.html#pop" class="tsd-kind-icon">pop</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="geometric3.html#push" class="tsd-kind-icon">push</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="geometric3.html#quaditude" class="tsd-kind-icon">quaditude</a>
@@ -4584,9 +4448,6 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="geometric3.html#scp2" class="tsd-kind-icon">scp2</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="geometric3.html#setcomponent" class="tsd-kind-icon">set<wbr>Component</a>
-							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="geometric3.html#squarednorm" class="tsd-kind-icon">squared<wbr>Norm</a>
 							</li>
@@ -4602,7 +4463,7 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="geometric3.html#subvector" class="tsd-kind-icon">sub<wbr>Vector</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="geometric3.html#toarray" class="tsd-kind-icon">to<wbr>Array</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
@@ -4611,17 +4472,11 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="geometric3.html#tofixed" class="tsd-kind-icon">to<wbr>Fixed</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="geometric3.html#tolocalestring" class="tsd-kind-icon">to<wbr>Locale<wbr>String</a>
-							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="geometric3.html#toprecision" class="tsd-kind-icon">to<wbr>Precision</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="geometric3.html#tostring" class="tsd-kind-icon">to<wbr>String</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="geometric3.html#unlock" class="tsd-kind-icon">unlock</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="geometric3.html#versor" class="tsd-kind-icon">versor</a>

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Lockable | EIGHT 6.0.3</title>
+	<title>Lockable | EIGHT 6.0.4</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">EIGHT 6.0.3</a>
+					<a href="../index.html" class="title">EIGHT 6.0.4</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -78,18 +78,12 @@
 					<li><a href="../classes/abstractmatrix.html" class="tsd-signature-type">AbstractMatrix</a></li>
 					<li><a href="../classes/color.html" class="tsd-signature-type">Color</a></li>
 					<li><a href="../classes/coords.html" class="tsd-signature-type">Coords</a></li>
-					<li><a href="../classes/geometric2.html" class="tsd-signature-type">Geometric2</a></li>
-					<li><a href="../classes/geometric3.html" class="tsd-signature-type">Geometric3</a></li>
 					<li><a href="../classes/lockablemixin.html" class="tsd-signature-type">LockableMixin</a></li>
 					<li><a href="../classes/matrix1.html" class="tsd-signature-type">Matrix1</a></li>
 					<li><a href="../classes/matrix2.html" class="tsd-signature-type">Matrix2</a></li>
 					<li><a href="../classes/matrix3.html" class="tsd-signature-type">Matrix3</a></li>
 					<li><a href="../classes/matrix4.html" class="tsd-signature-type">Matrix4</a></li>
-					<li><a href="../classes/spinor2.html" class="tsd-signature-type">Spinor2</a></li>
-					<li><a href="../classes/spinor3.html" class="tsd-signature-type">Spinor3</a></li>
 					<li><a href="../classes/vector1.html" class="tsd-signature-type">Vector1</a></li>
-					<li><a href="../classes/vector2.html" class="tsd-signature-type">Vector2</a></li>
-					<li><a href="../classes/vector3.html" class="tsd-signature-type">Vector3</a></li>
 					<li><a href="../classes/vector4.html" class="tsd-signature-type">Vector4</a></li>
 					<li><a href="../classes/vectorn.html" class="tsd-signature-type">VectorN</a></li>
 				</ul>
@@ -99,14 +93,9 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section tsd-is-external">
-							<h3>Properties</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="lockable.html#islocked" class="tsd-kind-icon">is<wbr>Locked</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section tsd-is-external">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="lockable.html#islocked" class="tsd-kind-icon">is<wbr>Locked</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="lockable.html#lock" class="tsd-kind-icon">lock</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="lockable.html#unlock" class="tsd-kind-icon">unlock</a></li>
 							</ul>
@@ -115,27 +104,31 @@
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
-				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
 					<a name="islocked" class="tsd-anchor"></a>
 					<h3>is<wbr>Locked</h3>
-					<div class="tsd-signature tsd-kind-icon">is<wbr>Locked<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in davinci-eight/core/Lockable.ts:33</li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Determines whether this <code>Lockable</code> is locked.
-								If the <code>Lockable</code> is in the unlocked state then it is mutable.
-							If the <code>Lockable</code> is in the locked state then it is immutable.</p>
-						</div>
-					</div>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">is<wbr>Locked<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/core/Lockable.ts#L33">davinci-eight/core/Lockable.ts:33</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Determines whether this <code>Lockable</code> is locked.
+										If the <code>Lockable</code> is in the unlocked state then it is mutable.
+									If the <code>Lockable</code> is in the locked state then it is immutable.</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
 				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-external">
-				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
 					<a name="lock" class="tsd-anchor"></a>
 					<h3>lock</h3>
@@ -146,7 +139,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in davinci-eight/core/Lockable.ts:38</li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/core/Lockable.ts#L38">davinci-eight/core/Lockable.ts:38</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -169,7 +162,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in davinci-eight/core/Lockable.ts:43</li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/core/Lockable.ts#L43">davinci-eight/core/Lockable.ts:43</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -205,7 +198,7 @@
 					<li class="current tsd-kind-interface tsd-is-external">
 						<a href="lockable.html" class="tsd-kind-icon">Lockable</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
 								<a href="lockable.html#islocked" class="tsd-kind-icon">is<wbr>Locked</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">

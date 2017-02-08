@@ -11,10 +11,10 @@ System.config({
     "@angular/router": "npm:@angular/router@0.2.0",
     "ace2ts/ace-workers": "github:ace2ts/ace-workers@1.0.4",
     "angular": "github:angular/bower-angular@1.5.9",
-    "angular-animate": "github:angular/bower-angular-animate@1.6.1",
+    "angular-animate": "github:angular/bower-angular-animate@1.6.2",
     "angular-bootstrap": "github:angular-ui/bootstrap-bower@1.3.3",
     "angular-material-icons": "npm:angular-material-icons@0.7.1",
-    "angular-sanitize": "github:angular/bower-angular-sanitize@1.6.1",
+    "angular-sanitize": "github:angular/bower-angular-sanitize@1.6.2",
     "angular-ui-router": "github:angular-ui/ui-router@0.2.18",
     "angular2": "npm:angular2@2.0.0-beta.21",
     "bootstrap": "vendor/bootstrap/dist/js/npm",
@@ -31,10 +31,10 @@ System.config({
     "github:angular-ui/ui-router@0.2.18": {
       "angular": "github:angular/bower-angular@1.5.9"
     },
-    "github:angular/bower-angular-animate@1.6.1": {
+    "github:angular/bower-angular-animate@1.6.2": {
       "angular": "github:angular/bower-angular@1.5.9"
     },
-    "github:angular/bower-angular-sanitize@1.6.1": {
+    "github:angular/bower-angular-sanitize@1.6.2": {
       "angular": "github:angular/bower-angular@1.5.9"
     },
     "github:jspm/nodelibs-assert@0.1.0": {
@@ -104,7 +104,7 @@ System.config({
       "negotiator": "npm:negotiator@0.6.0"
     },
     "npm:angular-material-icons@0.7.1": {
-      "angular": "npm:angular@1.6.1"
+      "angular": "npm:angular@1.6.2"
     },
     "npm:angular2@2.0.0-beta.21": {
       "reflect-metadata": "npm:reflect-metadata@0.1.2",
@@ -188,7 +188,7 @@ System.config({
       "create-hash": "npm:create-hash@1.1.2",
       "create-hmac": "npm:create-hmac@1.1.4",
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
-      "elliptic": "npm:elliptic@6.3.2",
+      "elliptic": "npm:elliptic@6.3.3",
       "inherits": "npm:inherits@2.0.1",
       "parse-asn1": "npm:parse-asn1@5.0.0",
       "stream": "github:jspm/nodelibs-stream@0.1.0"
@@ -250,7 +250,7 @@ System.config({
       "bn.js": "npm:bn.js@4.11.6",
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
-      "elliptic": "npm:elliptic@6.3.2"
+      "elliptic": "npm:elliptic@6.3.3"
     },
     "npm:create-hash@1.1.2": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.0",
@@ -303,9 +303,9 @@ System.config({
       "randombytes": "npm:randombytes@2.0.3",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
     },
-    "npm:elliptic@6.3.2": {
+    "npm:elliptic@6.3.3": {
       "bn.js": "npm:bn.js@4.11.6",
-      "brorand": "npm:brorand@1.0.6",
+      "brorand": "npm:brorand@1.0.7",
       "hash.js": "npm:hash.js@1.0.3",
       "inherits": "npm:inherits@2.0.1",
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"
@@ -439,7 +439,7 @@ System.config({
     },
     "npm:miller-rabin@4.0.0": {
       "bn.js": "npm:bn.js@4.11.6",
-      "brorand": "npm:brorand@1.0.6"
+      "brorand": "npm:brorand@1.0.7"
     },
     "npm:mime-db@1.23.0": {
       "systemjs-json": "github:systemjs/plugin-json@0.1.2"

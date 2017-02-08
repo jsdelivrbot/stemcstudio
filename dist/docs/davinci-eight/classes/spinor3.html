@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Spinor3 | EIGHT 6.0.3</title>
+	<title>Spinor3 | EIGHT 6.0.4</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">EIGHT 6.0.3</a>
+					<a href="../index.html" class="title">EIGHT 6.0.4</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -67,7 +67,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>A <em>mutable</em> Geometric Number representing the even sub-algebra of G3.</p>
+						<p>A Geometric Number representing the even sub-algebra of G3.</p>
 					</div>
 				</div>
 			</section>
@@ -75,21 +75,17 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<a href="coords.html" class="tsd-signature-type">Coords</a>
-						<ul class="tsd-hierarchy">
-							<li>
-								<span class="target">Spinor3</span>
-							</li>
-						</ul>
+						<span class="target">Spinor3</span>
 					</li>
 				</ul>
 			</section>
 			<section class="tsd-panel">
 				<h3>Implements</h3>
 				<ul class="tsd-hierarchy">
-					<li><a href="../interfaces/lockable.html" class="tsd-signature-type">Lockable</a></li>
 					<li><a href="../interfaces/cartesiang3.html" class="tsd-signature-type">CartesianG3</a></li>
 					<li><a href="../interfaces/spinore3.html" class="tsd-signature-type">SpinorE3</a></li>
+					<li><a href="lockablemixin.html" class="tsd-signature-type">LockableMixin</a></li>
+					<li><a href="vectorn.html" class="tsd-signature-type">VectorN</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -99,12 +95,15 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="spinor3.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#islocked" class="tsd-kind-icon">is<wbr>Locked</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#lock" class="tsd-kind-icon">lock</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#unlock" class="tsd-kind-icon">unlock</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="spinor3.html#one" class="tsd-kind-icon">one</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="spinor3.html#zero" class="tsd-kind-icon">zero</a></li>
 							</ul>
@@ -113,11 +112,9 @@
 							<h3>Accessors</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#a" class="tsd-kind-icon">a</a></li>
-								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="spinor3.html#coords" class="tsd-kind-icon">coords</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="spinor3.html#islocked" class="tsd-kind-icon">is<wbr>Locked</a></li>
-								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="spinor3.html#length" class="tsd-kind-icon">length</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#length" class="tsd-kind-icon">length</a></li>
 								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#maskg3" class="tsd-kind-icon">mask<wbr>G3</a></li>
-								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="spinor3.html#modified" class="tsd-kind-icon">modified</a></li>
+								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#modified" class="tsd-kind-icon">modified</a></li>
 								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#xy" class="tsd-kind-icon">xy</a></li>
 								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#yz" class="tsd-kind-icon">yz</a></li>
 								<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#zx" class="tsd-kind-icon">zx</a></li>
@@ -130,9 +127,9 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#add2" class="tsd-kind-icon">add2</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#addpseudo" class="tsd-kind-icon">add<wbr>Pseudo</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#addscalar" class="tsd-kind-icon">add<wbr>Scalar</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="spinor3.html#approx" class="tsd-kind-icon">approx</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#approx" class="tsd-kind-icon">approx</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#arg" class="tsd-kind-icon">arg</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="spinor3.html#clone" class="tsd-kind-icon">clone</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#clone" class="tsd-kind-icon">clone</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#conj" class="tsd-kind-icon">conj</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#copy" class="tsd-kind-icon">copy</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#copycoordinates" class="tsd-kind-icon">copy<wbr>Coordinates</a></li>
@@ -143,11 +140,11 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#div2" class="tsd-kind-icon">div2</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#divbyscalar" class="tsd-kind-icon">div<wbr>ByScalar</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#dual" class="tsd-kind-icon">dual</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="spinor3.html#equals" class="tsd-kind-icon">equals</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#equals" class="tsd-kind-icon">equals</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#exp" class="tsd-kind-icon">exp</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#ext" class="tsd-kind-icon">ext</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#ext2" class="tsd-kind-icon">ext2</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="spinor3.html#getcomponent" class="tsd-kind-icon">get<wbr>Component</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#getcomponent" class="tsd-kind-icon">get<wbr>Component</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#grade" class="tsd-kind-icon">grade</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#inv" class="tsd-kind-icon">inv</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#isone" class="tsd-kind-icon">is<wbr>One</a></li>
@@ -156,7 +153,6 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#lco2" class="tsd-kind-icon">lco2</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#lerp" class="tsd-kind-icon">lerp</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#lerp2" class="tsd-kind-icon">lerp2</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="spinor3.html#lock" class="tsd-kind-icon">lock</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#log" class="tsd-kind-icon">log</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#magnitude" class="tsd-kind-icon">magnitude</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#magnitudesansunits" class="tsd-kind-icon">magnitude<wbr>Sans<wbr>Units</a></li>
@@ -166,8 +162,6 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#norm" class="tsd-kind-icon">norm</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#normalize" class="tsd-kind-icon">normalize</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#one-1" class="tsd-kind-icon">one</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="spinor3.html#pop" class="tsd-kind-icon">pop</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="spinor3.html#push" class="tsd-kind-icon">push</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#quad" class="tsd-kind-icon">quad</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#rco" class="tsd-kind-icon">rco</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#rco2" class="tsd-kind-icon">rco2</a></li>
@@ -180,19 +174,16 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#scale" class="tsd-kind-icon">scale</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#scp" class="tsd-kind-icon">scp</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#scp2" class="tsd-kind-icon">scp2</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="spinor3.html#setcomponent" class="tsd-kind-icon">set<wbr>Component</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#squarednorm" class="tsd-kind-icon">squared<wbr>Norm</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#squarednormsansunits" class="tsd-kind-icon">squared<wbr>Norm<wbr>Sans<wbr>Units</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#stress" class="tsd-kind-icon">stress</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#sub" class="tsd-kind-icon">sub</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#sub2" class="tsd-kind-icon">sub2</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="spinor3.html#toarray" class="tsd-kind-icon">to<wbr>Array</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#toarray" class="tsd-kind-icon">to<wbr>Array</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#toexponential" class="tsd-kind-icon">to<wbr>Exponential</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#tofixed" class="tsd-kind-icon">to<wbr>Fixed</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="spinor3.html#tolocalestring" class="tsd-kind-icon">to<wbr>Locale<wbr>String</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#toprecision" class="tsd-kind-icon">to<wbr>Precision</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="spinor3.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="spinor3.html#unlock" class="tsd-kind-icon">unlock</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#versor" class="tsd-kind-icon">versor</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#wedge" class="tsd-kind-icon">wedge</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="spinor3.html#zero-1" class="tsd-kind-icon">zero</a></li>
@@ -212,18 +203,17 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Spinor3<span class="tsd-signature-symbol">(</span>coordinates<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span>, code<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="spinor3.html" class="tsd-signature-type">Spinor3</a></li>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Spinor3<span class="tsd-signature-symbol">(</span>coords<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span>, code<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="spinor3.html" class="tsd-signature-type">Spinor3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overrides <a href="coords.html">Coords</a>.<a href="coords.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L48">davinci-eight/math/Spinor3.ts:48</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L64">davinci-eight/math/Spinor3.ts:64</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -231,7 +221,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>coordinates: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>coords: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 								<li>
 									<h5>code: <span class="tsd-signature-type">number</span></h5>
@@ -248,13 +238,94 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
+					<a name="islocked" class="tsd-anchor"></a>
+					<h3>is<wbr>Locked</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Locked<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L52">davinci-eight/math/Spinor3.ts:52</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
+					<a name="lock" class="tsd-anchor"></a>
+					<h3>lock</h3>
+					<div class="tsd-signature tsd-kind-icon">lock<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L53">davinci-eight/math/Spinor3.ts:53</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
+					<a name="unlock" class="tsd-anchor"></a>
+					<h3>unlock</h3>
+					<div class="tsd-signature tsd-kind-icon">unlock<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">function</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L54">davinci-eight/math/Spinor3.ts:54</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-siganture">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-property">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-parameters-title">Parameters</h4>
+										<ul class="tsd-parameters">
+											<li>
+												<h5>token: <span class="tsd-signature-type">number</span></h5>
+											</li>
+										</ul>
+										<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="one" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> one</h3>
 					<div class="tsd-signature tsd-kind-icon">one<span class="tsd-signature-symbol">:</span> <a href="spinor3.html" class="tsd-signature-type">Spinor3</a><span class="tsd-signature-symbol"> =&nbsp;Spinor3.spinor(0, 0, 0, 1)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L1097">davinci-eight/math/Spinor3.ts:1097</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L1129">davinci-eight/math/Spinor3.ts:1129</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -264,7 +335,7 @@
 					<div class="tsd-signature tsd-kind-icon">zero<span class="tsd-signature-symbol">:</span> <a href="spinor3.html" class="tsd-signature-type">Spinor3</a><span class="tsd-signature-symbol"> =&nbsp;Spinor3.spinor(0, 0, 0, 0)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L1156">davinci-eight/math/Spinor3.ts:1156</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L1188">davinci-eight/math/Spinor3.ts:1188</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -282,7 +353,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L108">davinci-eight/math/Spinor3.ts:108</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L139">davinci-eight/math/Spinor3.ts:139</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -295,7 +366,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L111">davinci-eight/math/Spinor3.ts:111</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L142">davinci-eight/math/Spinor3.ts:142</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -313,70 +384,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-					<a name="coords" class="tsd-anchor"></a>
-					<h3>coords</h3>
-					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> coords<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></li>
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> coords<span class="tsd-signature-symbol">(</span>data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="vectorn.html">VectorN</a>.<a href="vectorn.html#coords">coords</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/VectorN.ts#L84">davinci-eight/math/VectorN.ts:84</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h4>
-						</li>
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="vectorn.html">VectorN</a>.<a href="vectorn.html#coords">coords</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/VectorN.ts#L87">davinci-eight/math/VectorN.ts:87</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>data: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-					<a name="islocked" class="tsd-anchor"></a>
-					<h3>is<wbr>Locked</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> isLocked<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="vectorn.html">VectorN</a>.<a href="vectorn.html#islocked">isLocked</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/VectorN.ts#L69">davinci-eight/math/VectorN.ts:69</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-external">
 					<a name="length" class="tsd-anchor"></a>
 					<h3>length</h3>
-					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-external">
 						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> length<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="vectorn.html">VectorN</a>.<a href="vectorn.html#length">length</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/VectorN.ts#L105">davinci-eight/math/VectorN.ts:105</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L152">davinci-eight/math/Spinor3.ts:152</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -394,7 +412,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L123">davinci-eight/math/Spinor3.ts:123</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L159">davinci-eight/math/Spinor3.ts:159</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -402,7 +420,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L138">davinci-eight/math/Spinor3.ts:138</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L174">davinci-eight/math/Spinor3.ts:174</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -415,28 +433,26 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
 					<a name="modified" class="tsd-anchor"></a>
 					<h3>modified</h3>
-					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
 						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> modified<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">set</span> modified<span class="tsd-signature-symbol">(</span>modified<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="vectorn.html">VectorN</a>.<a href="vectorn.html#modified">modified</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/VectorN.ts#L95">davinci-eight/math/VectorN.ts:95</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L78">davinci-eight/math/Spinor3.ts:78</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="vectorn.html">VectorN</a>.<a href="vectorn.html#modified">modified</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/VectorN.ts#L98">davinci-eight/math/VectorN.ts:98</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L81">davinci-eight/math/Spinor3.ts:81</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -460,7 +476,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L93">davinci-eight/math/Spinor3.ts:93</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L123">davinci-eight/math/Spinor3.ts:123</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -473,7 +489,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L96">davinci-eight/math/Spinor3.ts:96</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L126">davinci-eight/math/Spinor3.ts:126</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -502,7 +518,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L63">davinci-eight/math/Spinor3.ts:63</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L91">davinci-eight/math/Spinor3.ts:91</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -515,7 +531,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L66">davinci-eight/math/Spinor3.ts:66</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L94">davinci-eight/math/Spinor3.ts:94</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -544,7 +560,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L78">davinci-eight/math/Spinor3.ts:78</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L107">davinci-eight/math/Spinor3.ts:107</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -557,7 +573,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L81">davinci-eight/math/Spinor3.ts:81</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L110">davinci-eight/math/Spinor3.ts:110</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -588,7 +604,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L150">davinci-eight/math/Spinor3.ts:150</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L186">davinci-eight/math/Spinor3.ts:186</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -620,7 +636,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L169">davinci-eight/math/Spinor3.ts:169</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L205">davinci-eight/math/Spinor3.ts:205</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -629,11 +645,6 @@
 										<code>this ⟼ a + b</code>
 									</p>
 								</div>
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>add2</p>
-									</dd>
-								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -645,7 +656,7 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="spinor3.html" class="tsd-signature-type">Spinor3</a></h4>
-							<p>this</p>
+							<p>a + b</p>
 						</li>
 					</ul>
 				</section>
@@ -659,7 +670,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L180">davinci-eight/math/Spinor3.ts:180</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L217">davinci-eight/math/Spinor3.ts:217</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -674,6 +685,7 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="spinor3.html" class="tsd-signature-type">Spinor3</a></h4>
+							<p>this + I * β</p>
 						</li>
 					</ul>
 				</section>
@@ -687,7 +699,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L191">davinci-eight/math/Spinor3.ts:191</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L228">davinci-eight/math/Spinor3.ts:228</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -702,33 +714,23 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="spinor3.html" class="tsd-signature-type">Spinor3</a></h4>
-							<p>this</p>
+							<p>this + α</p>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="approx" class="tsd-anchor"></a>
 					<h3>approx</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
 						<li class="tsd-signature tsd-kind-icon">approx<span class="tsd-signature-symbol">(</span>n<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overrides <a href="coords.html">Coords</a>.<a href="coords.html#approx">approx</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L217">davinci-eight/math/Spinor3.ts:217</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L251">davinci-eight/math/Spinor3.ts:251</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>approx</p>
-									</dd>
-									<dt>chainable</dt>
-									<dd></dd>
-								</dl>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -748,7 +750,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L202">davinci-eight/math/Spinor3.ts:202</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L239">davinci-eight/math/Spinor3.ts:239</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -761,18 +763,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="clone" class="tsd-anchor"></a>
 					<h3>clone</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
 						<li class="tsd-signature tsd-kind-icon">clone<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="spinor3.html" class="tsd-signature-type">Spinor3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overrides <a href="vectorn.html">VectorN</a>.<a href="vectorn.html#clone">clone</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L225">davinci-eight/math/Spinor3.ts:225</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L259">davinci-eight/math/Spinor3.ts:259</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -794,7 +795,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L236">davinci-eight/math/Spinor3.ts:236</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L270">davinci-eight/math/Spinor3.ts:270</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -819,7 +820,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L253">davinci-eight/math/Spinor3.ts:253</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L287">davinci-eight/math/Spinor3.ts:287</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -857,7 +858,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L266">davinci-eight/math/Spinor3.ts:266</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L300">davinci-eight/math/Spinor3.ts:300</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -880,7 +881,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L283">davinci-eight/math/Spinor3.ts:283</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L317">davinci-eight/math/Spinor3.ts:317</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -918,7 +919,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L290">davinci-eight/math/Spinor3.ts:290</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L324">davinci-eight/math/Spinor3.ts:324</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -946,7 +947,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L297">davinci-eight/math/Spinor3.ts:297</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L331">davinci-eight/math/Spinor3.ts:331</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -974,7 +975,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L311">davinci-eight/math/Spinor3.ts:311</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L345">davinci-eight/math/Spinor3.ts:345</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1012,7 +1013,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L326">davinci-eight/math/Spinor3.ts:326</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L360">davinci-eight/math/Spinor3.ts:360</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1053,7 +1054,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L355">davinci-eight/math/Spinor3.ts:355</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L389">davinci-eight/math/Spinor3.ts:389</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1091,7 +1092,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L374">davinci-eight/math/Spinor3.ts:374</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L408">davinci-eight/math/Spinor3.ts:408</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1125,18 +1126,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="equals" class="tsd-anchor"></a>
 					<h3>equals</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
 						<li class="tsd-signature tsd-kind-icon">equals<span class="tsd-signature-symbol">(</span>other<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overrides <a href="coords.html">Coords</a>.<a href="coords.html#equals">equals</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L385">davinci-eight/math/Spinor3.ts:385</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L419">davinci-eight/math/Spinor3.ts:419</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1159,7 +1159,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L400">davinci-eight/math/Spinor3.ts:400</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L434">davinci-eight/math/Spinor3.ts:434</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1182,7 +1182,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L1016">davinci-eight/math/Spinor3.ts:1016</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L1061">davinci-eight/math/Spinor3.ts:1061</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1205,7 +1205,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L1020">davinci-eight/math/Spinor3.ts:1020</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L1065">davinci-eight/math/Spinor3.ts:1065</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1221,28 +1221,23 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="getcomponent" class="tsd-anchor"></a>
 					<h3>get<wbr>Component</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
 						<li class="tsd-signature tsd-kind-icon">get<wbr>Component<span class="tsd-signature-symbol">(</span>index<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="vectorn.html">VectorN</a>.<a href="vectorn.html#getcomponent">getComponent</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/VectorN.ts#L119">davinci-eight/math/VectorN.ts:119</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L452">davinci-eight/math/Spinor3.ts:452</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>index: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
@@ -1259,7 +1254,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L953">davinci-eight/math/Spinor3.ts:953</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L991">davinci-eight/math/Spinor3.ts:991</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1290,7 +1285,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L427">davinci-eight/math/Spinor3.ts:427</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L465">davinci-eight/math/Spinor3.ts:465</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1322,7 +1317,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L437">davinci-eight/math/Spinor3.ts:437</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L475">davinci-eight/math/Spinor3.ts:475</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1346,7 +1341,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L445">davinci-eight/math/Spinor3.ts:445</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L483">davinci-eight/math/Spinor3.ts:483</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1370,7 +1365,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L455">davinci-eight/math/Spinor3.ts:455</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L493">davinci-eight/math/Spinor3.ts:493</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1402,7 +1397,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L462">davinci-eight/math/Spinor3.ts:462</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L500">davinci-eight/math/Spinor3.ts:500</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1428,7 +1423,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L479">davinci-eight/math/Spinor3.ts:479</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L517">davinci-eight/math/Spinor3.ts:517</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1469,7 +1464,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L502">davinci-eight/math/Spinor3.ts:502</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L540">davinci-eight/math/Spinor3.ts:540</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1503,25 +1498,6 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-					<a name="lock" class="tsd-anchor"></a>
-					<h3>lock</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">lock<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/lockable.html">Lockable</a>.<a href="../interfaces/lockable.html#lock">lock</a></p>
-								<p>Inherited from <a href="vectorn.html">VectorN</a>.<a href="vectorn.html#lock">lock</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/VectorN.ts#L73">davinci-eight/math/VectorN.ts:73</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="log" class="tsd-anchor"></a>
 					<h3>log</h3>
@@ -1532,7 +1508,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L510">davinci-eight/math/Spinor3.ts:510</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L548">davinci-eight/math/Spinor3.ts:548</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1553,7 +1529,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L541">davinci-eight/math/Spinor3.ts:541</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L579">davinci-eight/math/Spinor3.ts:579</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1585,7 +1561,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L548">davinci-eight/math/Spinor3.ts:548</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L586">davinci-eight/math/Spinor3.ts:586</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1607,7 +1583,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L562">davinci-eight/math/Spinor3.ts:562</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L600">davinci-eight/math/Spinor3.ts:600</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1645,7 +1621,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L588">davinci-eight/math/Spinor3.ts:588</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L626">davinci-eight/math/Spinor3.ts:626</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1686,7 +1662,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L609">davinci-eight/math/Spinor3.ts:609</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L647">davinci-eight/math/Spinor3.ts:647</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1713,7 +1689,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L626">davinci-eight/math/Spinor3.ts:626</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L664">davinci-eight/math/Spinor3.ts:664</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1745,7 +1721,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L640">davinci-eight/math/Spinor3.ts:640</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L678">davinci-eight/math/Spinor3.ts:678</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1777,7 +1753,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L656">davinci-eight/math/Spinor3.ts:656</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L694">davinci-eight/math/Spinor3.ts:694</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1794,50 +1770,6 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-					<a name="pop" class="tsd-anchor"></a>
-					<h3>pop</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">pop<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="vectorn.html">VectorN</a>.<a href="vectorn.html#pop">pop</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/VectorN.ts#L126">davinci-eight/math/VectorN.ts:126</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-					<a name="push" class="tsd-anchor"></a>
-					<h3>push</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">push<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="vectorn.html">VectorN</a>.<a href="vectorn.html#push">push</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/VectorN.ts#L142">davinci-eight/math/VectorN.ts:142</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>value: <span class="tsd-signature-type">number</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="quad" class="tsd-anchor"></a>
 					<h3>quad</h3>
@@ -1848,7 +1780,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L673">davinci-eight/math/Spinor3.ts:673</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L711">davinci-eight/math/Spinor3.ts:711</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1880,7 +1812,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L711">davinci-eight/math/Spinor3.ts:711</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L749">davinci-eight/math/Spinor3.ts:749</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1903,7 +1835,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L715">davinci-eight/math/Spinor3.ts:715</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L753">davinci-eight/math/Spinor3.ts:753</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1929,7 +1861,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L746">davinci-eight/math/Spinor3.ts:746</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L784">davinci-eight/math/Spinor3.ts:784</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1966,7 +1898,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L730">davinci-eight/math/Spinor3.ts:730</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L768">davinci-eight/math/Spinor3.ts:768</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1998,7 +1930,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L773">davinci-eight/math/Spinor3.ts:773</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L811">davinci-eight/math/Spinor3.ts:811</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2036,7 +1968,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L794">davinci-eight/math/Spinor3.ts:794</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L832">davinci-eight/math/Spinor3.ts:832</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2084,7 +2016,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L806">davinci-eight/math/Spinor3.ts:806</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L844">davinci-eight/math/Spinor3.ts:844</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2123,7 +2055,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L816">davinci-eight/math/Spinor3.ts:816</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L854">davinci-eight/math/Spinor3.ts:854</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2152,7 +2084,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L841">davinci-eight/math/Spinor3.ts:841</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L879">davinci-eight/math/Spinor3.ts:879</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2190,7 +2122,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L821">davinci-eight/math/Spinor3.ts:821</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L859">davinci-eight/math/Spinor3.ts:859</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2213,7 +2145,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L825">davinci-eight/math/Spinor3.ts:825</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L863">davinci-eight/math/Spinor3.ts:863</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2229,37 +2161,6 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-					<a name="setcomponent" class="tsd-anchor"></a>
-					<h3>set<wbr>Component</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Component<span class="tsd-signature-symbol">(</span>index<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, value<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="vectorn.html">VectorN</a>.<a href="vectorn.html#setcomponent">setComponent</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/VectorN.ts#L161">davinci-eight/math/VectorN.ts:161</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>index: <span class="tsd-signature-type">number</span></h5>
-								</li>
-								<li>
-									<h5>value: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="squarednorm" class="tsd-anchor"></a>
 					<h3>squared<wbr>Norm</h3>
@@ -2270,7 +2171,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L686">davinci-eight/math/Spinor3.ts:686</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L724">davinci-eight/math/Spinor3.ts:724</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2299,7 +2200,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L693">davinci-eight/math/Spinor3.ts:693</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L731">davinci-eight/math/Spinor3.ts:731</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2321,7 +2222,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L703">davinci-eight/math/Spinor3.ts:703</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L741">davinci-eight/math/Spinor3.ts:741</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2353,7 +2254,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L861">davinci-eight/math/Spinor3.ts:861</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L899">davinci-eight/math/Spinor3.ts:899</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2394,7 +2295,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L882">davinci-eight/math/Spinor3.ts:882</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L920">davinci-eight/math/Spinor3.ts:920</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2425,31 +2326,19 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="toarray" class="tsd-anchor"></a>
 					<h3>to<wbr>Array</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">to<wbr>Array<span class="tsd-signature-symbol">(</span>array<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span>, offset<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></li>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">to<wbr>Array<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="vectorn.html">VectorN</a>.<a href="vectorn.html#toarray">toArray</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/VectorN.ts#L179">davinci-eight/math/VectorN.ts:179</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L1017">davinci-eight/math/Spinor3.ts:1017</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> array: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></h5>
-								</li>
-								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> offset: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;0</span></h5>
-								</li>
-							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h4>
 						</li>
 					</ul>
@@ -2464,7 +2353,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L981">davinci-eight/math/Spinor3.ts:981</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L1026">davinci-eight/math/Spinor3.ts:1026</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2494,7 +2383,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L991">davinci-eight/math/Spinor3.ts:991</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L1036">davinci-eight/math/Spinor3.ts:1036</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2514,26 +2403,6 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-					<a name="tolocalestring" class="tsd-anchor"></a>
-					<h3>to<wbr>Locale<wbr>String</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">to<wbr>Locale<wbr>String<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="vectorn.html">VectorN</a>.<a href="vectorn.html#tolocalestring">toLocaleString</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/VectorN.ts#L191">davinci-eight/math/VectorN.ts:191</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="toprecision" class="tsd-anchor"></a>
 					<h3>to<wbr>Precision</h3>
@@ -2544,7 +2413,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L1001">davinci-eight/math/Spinor3.ts:1001</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L1046">davinci-eight/math/Spinor3.ts:1046</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2564,18 +2433,17 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="tostring" class="tsd-anchor"></a>
 					<h3>to<wbr>String</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
 						<li class="tsd-signature tsd-kind-icon">to<wbr>String<span class="tsd-signature-symbol">(</span>radix<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Overrides <a href="vectorn.html">VectorN</a>.<a href="vectorn.html#tostring">toString</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L1011">davinci-eight/math/Spinor3.ts:1011</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L1056">davinci-eight/math/Spinor3.ts:1056</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2596,31 +2464,6 @@
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-					<a name="unlock" class="tsd-anchor"></a>
-					<h3>unlock</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">unlock<span class="tsd-signature-symbol">(</span>token<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Implementation of <a href="../interfaces/lockable.html">Lockable</a>.<a href="../interfaces/lockable.html#unlock">unlock</a></p>
-								<p>Inherited from <a href="vectorn.html">VectorN</a>.<a href="vectorn.html#unlock">unlock</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/VectorN.ts#L77">davinci-eight/math/VectorN.ts:77</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>token: <span class="tsd-signature-type">number</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="versor" class="tsd-anchor"></a>
 					<h3>versor</h3>
@@ -2631,7 +2474,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L900">davinci-eight/math/Spinor3.ts:900</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L938">davinci-eight/math/Spinor3.ts:938</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2666,7 +2509,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L930">davinci-eight/math/Spinor3.ts:930</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L968">davinci-eight/math/Spinor3.ts:968</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2707,17 +2550,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L1032">davinci-eight/math/Spinor3.ts:1032</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L1076">davinci-eight/math/Spinor3.ts:1076</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Sets this spinor to the identity element for addition, <b>0</b>.</p>
 								</div>
-								<dl class="tsd-comment-tags">
-									<dt>chainable</dt>
-									<dd></dd>
-								</dl>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="spinor3.html" class="tsd-signature-type">Spinor3</a></h4>
 							<p><code>this</code></p>
@@ -2734,28 +2573,22 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L1047">davinci-eight/math/Spinor3.ts:1047</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L1088">davinci-eight/math/Spinor3.ts:1088</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>copy</p>
-									</dd>
-									<dt>static</dt>
-									<dd></dd>
-									<dt>chainable</dt>
-									<dd></dd>
-								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>spinor: <a href="../interfaces/spinore3.html" class="tsd-signature-type">SpinorE3</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The spinor to be copied.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="spinor3.html" class="tsd-signature-type">Spinor3</a></h4>
-							<p>A copy of the <code>spinor</code> argument.</p>
+							<p>A copy of the spinor argument.</p>
 						</li>
 					</ul>
 				</section>
@@ -2769,22 +2602,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L1063">davinci-eight/math/Spinor3.ts:1063</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L1101">davinci-eight/math/Spinor3.ts:1101</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Computes I * <code>v</code>, the dual of <code>v</code>.</p>
+									<p>Computes I * v, the dual of v.</p>
 								</div>
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>dual</p>
-									</dd>
-									<dt>static</dt>
-									<dd></dd>
-									<dt>chainable</dt>
-									<dd></dd>
-								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -2796,6 +2620,7 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="spinor3.html" class="tsd-signature-type">Spinor3</a></h4>
+							<p>I * v</p>
 						</li>
 					</ul>
 				</section>
@@ -2809,7 +2634,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L1067">davinci-eight/math/Spinor3.ts:1067</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L1105">davinci-eight/math/Spinor3.ts:1105</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2832,18 +2657,9 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L1077">davinci-eight/math/Spinor3.ts:1077</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L1112">davinci-eight/math/Spinor3.ts:1112</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>isOne</p>
-									</dd>
-									<dt>static</dt>
-									<dd></dd>
-								</dl>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -2864,19 +2680,10 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L1090">davinci-eight/math/Spinor3.ts:1090</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L1122">davinci-eight/math/Spinor3.ts:1122</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
-								<dl class="tsd-comment-tags">
-									<dt>method</dt>
-									<dd><p>lerp</p>
-									</dd>
-									<dt>static</dt>
-									<dd></dd>
-									<dt>chainable</dt>
-									<dd></dd>
-								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -2891,7 +2698,7 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="spinor3.html" class="tsd-signature-type">Spinor3</a></h4>
-							<p><code>a + α * (b - a)</code></p>
+							<p>a + α * (b - a)</p>
 						</li>
 					</ul>
 				</section>
@@ -2905,7 +2712,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L1104">davinci-eight/math/Spinor3.ts:1104</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L1136">davinci-eight/math/Spinor3.ts:1136</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2929,7 +2736,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L1118">davinci-eight/math/Spinor3.ts:1118</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L1150">davinci-eight/math/Spinor3.ts:1150</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2966,7 +2773,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L1129">davinci-eight/math/Spinor3.ts:1129</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L1161">davinci-eight/math/Spinor3.ts:1161</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3015,7 +2822,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/ce53b6a/src/davinci-eight/math/Spinor3.ts#L1137">davinci-eight/math/Spinor3.ts:1137</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-eight/blob/67f448b/src/davinci-eight/math/Spinor3.ts#L1169">davinci-eight/math/Spinor3.ts:1169</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3052,8 +2859,17 @@
 					<li class="current tsd-kind-class tsd-is-external">
 						<a href="spinor3.html" class="tsd-kind-icon">Spinor3</a>
 						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
 								<a href="spinor3.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
+								<a href="spinor3.html#islocked" class="tsd-kind-icon">is<wbr>Locked</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
+								<a href="spinor3.html#lock" class="tsd-kind-icon">lock</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
+								<a href="spinor3.html#unlock" class="tsd-kind-icon">unlock</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 								<a href="spinor3.html#one" class="tsd-kind-icon">one</a>
@@ -3064,19 +2880,13 @@
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
 								<a href="spinor3.html#a" class="tsd-kind-icon">a</a>
 							</li>
-							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="spinor3.html#coords" class="tsd-kind-icon">coords</a>
-							</li>
-							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="spinor3.html#islocked" class="tsd-kind-icon">is<wbr>Locked</a>
-							</li>
-							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-external">
 								<a href="spinor3.html#length" class="tsd-kind-icon">length</a>
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
 								<a href="spinor3.html#maskg3" class="tsd-kind-icon">mask<wbr>G3</a>
 							</li>
-							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
 								<a href="spinor3.html#modified" class="tsd-kind-icon">modified</a>
 							</li>
 							<li class=" tsd-kind-accessor tsd-parent-kind-class tsd-is-external">
@@ -3100,13 +2910,13 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="spinor3.html#addscalar" class="tsd-kind-icon">add<wbr>Scalar</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="spinor3.html#approx" class="tsd-kind-icon">approx</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="spinor3.html#arg" class="tsd-kind-icon">arg</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="spinor3.html#clone" class="tsd-kind-icon">clone</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
@@ -3139,7 +2949,7 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="spinor3.html#dual" class="tsd-kind-icon">dual</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="spinor3.html#equals" class="tsd-kind-icon">equals</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
@@ -3151,7 +2961,7 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="spinor3.html#ext2" class="tsd-kind-icon">ext2</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="spinor3.html#getcomponent" class="tsd-kind-icon">get<wbr>Component</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
@@ -3177,9 +2987,6 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="spinor3.html#lerp2" class="tsd-kind-icon">lerp2</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="spinor3.html#lock" class="tsd-kind-icon">lock</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="spinor3.html#log" class="tsd-kind-icon">log</a>
@@ -3207,12 +3014,6 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="spinor3.html#one-1" class="tsd-kind-icon">one</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="spinor3.html#pop" class="tsd-kind-icon">pop</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="spinor3.html#push" class="tsd-kind-icon">push</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="spinor3.html#quad" class="tsd-kind-icon">quad</a>
@@ -3250,9 +3051,6 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="spinor3.html#scp2" class="tsd-kind-icon">scp2</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="spinor3.html#setcomponent" class="tsd-kind-icon">set<wbr>Component</a>
-							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="spinor3.html#squarednorm" class="tsd-kind-icon">squared<wbr>Norm</a>
 							</li>
@@ -3268,7 +3066,7 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="spinor3.html#sub2" class="tsd-kind-icon">sub2</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="spinor3.html#toarray" class="tsd-kind-icon">to<wbr>Array</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
@@ -3277,17 +3075,11 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="spinor3.html#tofixed" class="tsd-kind-icon">to<wbr>Fixed</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="spinor3.html#tolocalestring" class="tsd-kind-icon">to<wbr>Locale<wbr>String</a>
-							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="spinor3.html#toprecision" class="tsd-kind-icon">to<wbr>Precision</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="spinor3.html#tostring" class="tsd-kind-icon">to<wbr>String</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="spinor3.html#unlock" class="tsd-kind-icon">unlock</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="spinor3.html#versor" class="tsd-kind-icon">versor</a>
