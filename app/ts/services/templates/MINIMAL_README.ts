@@ -27,7 +27,7 @@ export default function (options: {}, tabString: string): string {
         "the modules that comprise your application so that the system-wide module loader, `System` ",
         "can load them strictly according to their dependencies."].join(''));
     lines.push("");
-    lines.push("## Documentaion");
+    lines.push("## Documentation");
     lines.push("");
     lines.push([
         "Documentation of your software can take many forms. STEMCstudio supports the *Markdown* format ",

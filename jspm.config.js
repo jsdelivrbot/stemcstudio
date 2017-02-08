@@ -19,7 +19,7 @@ System.config({
     "angular2": "npm:angular2@2.0.0-beta.21",
     "bootstrap": "vendor/bootstrap/dist/js/npm",
     "bootstrap-dialog": "npm:bootstrap-dialog@1.34.6",
-    "clipboard": "npm:clipboard@1.5.16",
+    "clipboard": "npm:clipboard@1.6.0",
     "davinci-mathscript": "github:geometryzen/davinci-mathscript@1.1.1",
     "geometryzen/davinci-mathscript": "github:geometryzen/davinci-mathscript@1.1.1",
     "jquery": "npm:jquery@2.2.4",
@@ -230,9 +230,9 @@ System.config({
       "stream": "github:jspm/nodelibs-stream@0.1.0",
       "string_decoder": "github:jspm/nodelibs-string_decoder@0.1.0"
     },
-    "npm:clipboard@1.5.16": {
+    "npm:clipboard@1.6.0": {
       "good-listener": "npm:good-listener@1.2.1",
-      "select": "npm:select@1.1.0",
+      "select": "npm:select@1.1.2",
       "tiny-emitter": "npm:tiny-emitter@1.1.0"
     },
     "npm:cliui@3.2.0": {

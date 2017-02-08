@@ -3,9 +3,9 @@ const NEWLINE = '\n';
 export default function (options: {}, tabString: string): string {
     const _ = tabString;
     const lines: string[] = [];
-    lines.push("const e1 = EIGHT.Geometric3.e1()");
-    lines.push("const e2 = EIGHT.Geometric3.e2()");
-    lines.push("const e3 = EIGHT.Geometric3.e3()");
+    lines.push("const e1 = EIGHT.Geometric3.e1(true)");
+    lines.push("const e2 = EIGHT.Geometric3.e2(true)");
+    lines.push("const e3 = EIGHT.Geometric3.e3(true)");
     lines.push("");
     lines.push("const engine = new EIGHT.Engine('canvas3D')");
     lines.push(_ + ".size(500, 500)");
