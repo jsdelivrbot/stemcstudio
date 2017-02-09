@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>HistoryIterator | NEWTON 0.0.28</title>
+	<title>Scalar3 | NEWTON 0.0.28</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,30 +54,28 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="historyiterator.html">HistoryIterator</a>
+					<a href="scalar3.html">Scalar3</a>
 				</li>
 			</ul>
-			<h1>Interface HistoryIterator&lt;T&gt;</h1>
+			<h1>Class Scalar3</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-type-parameters">
-				<h3>Type parameters</h3>
-				<ul class="tsd-type-parameters">
-					<li>
-						<h4>T</h4>
-					</li>
-				</ul>
-			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">HistoryIterator</span>
+						<span class="target">Scalar3</span>
 					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel">
+				<h3>Implements</h3>
+				<ul class="tsd-hierarchy">
+					<li><a href="../interfaces/scalar.html" class="tsd-signature-type">Scalar</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -85,120 +83,115 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section tsd-is-external">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-external"><a href="scalar3.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-external">
+							<h3>Accessors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-external"><a href="scalar3.html#a" class="tsd-kind-icon">a</a></li>
+								<li class="tsd-kind-get-signature tsd-parent-kind-class tsd-is-external"><a href="scalar3.html#uom" class="tsd-kind-icon">uom</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-external">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="historyiterator.html#getindex" class="tsd-kind-icon">get<wbr>Index</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="historyiterator.html#getvalue" class="tsd-kind-icon">get<wbr>Value</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="historyiterator.html#hasnext" class="tsd-kind-icon">has<wbr>Next</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="historyiterator.html#hasprevious" class="tsd-kind-icon">has<wbr>Previous</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="historyiterator.html#nextvalue" class="tsd-kind-icon">next<wbr>Value</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="historyiterator.html#previousvalue" class="tsd-kind-icon">previous<wbr>Value</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="scalar3.html#mulbynumber" class="tsd-kind-icon">mul<wbr>ByNumber</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
-				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-					<a name="getindex" class="tsd-anchor"></a>
-					<h3>get<wbr>Index</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Index<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Scalar3<span class="tsd-signature-symbol">(</span>a<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, uom<span class="tsd-signature-symbol">: </span><a href="unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="scalar3.html" class="tsd-signature-type">Scalar3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/util/HistoryIterator.ts#L17">davinci-newton/util/HistoryIterator.ts:17</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Scalar3.ts#L6">davinci-newton/math/Scalar3.ts:6</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>a: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>uom: <a href="unit.html" class="tsd-signature-type">Unit</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="scalar3.html" class="tsd-signature-type">Scalar3</a></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
+				<h2>Accessors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-external">
+					<a name="a" class="tsd-anchor"></a>
+					<h3>a</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> a<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Scalar3.ts#L11">davinci-newton/math/Scalar3.ts:11</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-					<a name="getvalue" class="tsd-anchor"></a>
-					<h3>get<wbr>Value</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Value<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-get-signature tsd-parent-kind-class tsd-is-external">
+					<a name="uom" class="tsd-anchor"></a>
+					<h3>uom</h3>
+					<ul class="tsd-signatures tsd-kind-get-signature tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">get</span> uom<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="unit.html" class="tsd-signature-type">Unit</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/util/HistoryIterator.ts#L18">davinci-newton/util/HistoryIterator.ts:18</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Scalar3.ts#L14">davinci-newton/math/Scalar3.ts:14</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="unit.html" class="tsd-signature-type">Unit</a></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-					<a name="hasnext" class="tsd-anchor"></a>
-					<h3>has<wbr>Next</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">has<wbr>Next<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="mulbynumber" class="tsd-anchor"></a>
+					<h3>mul<wbr>ByNumber</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">mul<wbr>ByNumber<span class="tsd-signature-symbol">(</span>alpha<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="scalar3.html" class="tsd-signature-type">Scalar3</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/util/HistoryIterator.ts#L19">davinci-newton/util/HistoryIterator.ts:19</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Scalar3.ts#L17">davinci-newton/math/Scalar3.ts:17</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-					<a name="hasprevious" class="tsd-anchor"></a>
-					<h3>has<wbr>Previous</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">has<wbr>Previous<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/util/HistoryIterator.ts#L20">davinci-newton/util/HistoryIterator.ts:20</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-					<a name="nextvalue" class="tsd-anchor"></a>
-					<h3>next<wbr>Value</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">next<wbr>Value<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/util/HistoryIterator.ts#L21">davinci-newton/util/HistoryIterator.ts:21</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-					<a name="previousvalue" class="tsd-anchor"></a>
-					<h3>previous<wbr>Value</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">previous<wbr>Value<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/util/HistoryIterator.ts#L22">davinci-newton/util/HistoryIterator.ts:22</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">T</span></h4>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>alpha: <span class="tsd-signature-type">number</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="scalar3.html" class="tsd-signature-type">Scalar3</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -216,26 +209,20 @@
 				<ul class="before-current">
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface tsd-has-type-parameter tsd-is-external">
-						<a href="historyiterator.html" class="tsd-kind-icon">History<wbr>Iterator</a>
+					<li class="current tsd-kind-class tsd-is-external">
+						<a href="scalar3.html" class="tsd-kind-icon">Scalar3</a>
 						<ul>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-								<a href="historyiterator.html#getindex" class="tsd-kind-icon">get<wbr>Index</a>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
+								<a href="scalar3.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-								<a href="historyiterator.html#getvalue" class="tsd-kind-icon">get<wbr>Value</a>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-external">
+								<a href="scalar3.html#a" class="tsd-kind-icon">a</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-								<a href="historyiterator.html#hasnext" class="tsd-kind-icon">has<wbr>Next</a>
+							<li class=" tsd-kind-get-signature tsd-parent-kind-class tsd-is-external">
+								<a href="scalar3.html#uom" class="tsd-kind-icon">uom</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-								<a href="historyiterator.html#hasprevious" class="tsd-kind-icon">has<wbr>Previous</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-								<a href="historyiterator.html#nextvalue" class="tsd-kind-icon">next<wbr>Value</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-								<a href="historyiterator.html#previousvalue" class="tsd-kind-icon">previous<wbr>Value</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="scalar3.html#mulbynumber" class="tsd-kind-icon">mul<wbr>ByNumber</a>
 							</li>
 						</ul>
 					</li>

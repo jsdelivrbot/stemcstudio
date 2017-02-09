@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Scalar | NEWTON 0.0.28</title>
+	<title>CartesianG3 | NEWTON 0.0.28</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,36 +54,39 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="scalar.html">Scalar</a>
+					<a href="cartesiang3.html">CartesianG3</a>
 				</li>
 			</ul>
-			<h1>Interface Scalar</h1>
+			<h1>Interface CartesianG3</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Marker interface</p>
+					</div>
+					<p>Cartesian coordinates
+						3 linear dimensions
+						No units of measure
+					Euclidean metric.</p>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">Scalar</span>
-						<ul class="tsd-hierarchy">
-							<li>
-								<a href="spinore3.html" class="tsd-signature-type">SpinorE3</a>
-							</li>
-							<li>
-								<a href="geometrice3.html" class="tsd-signature-type">GeometricE3</a>
-							</li>
-						</ul>
+						<span class="target">CartesianG3</span>
 					</li>
 				</ul>
 			</section>
 			<section class="tsd-panel">
 				<h3>Implemented by</h3>
 				<ul class="tsd-hierarchy">
-					<li><a href="../classes/scalar3.html" class="tsd-signature-type">Scalar3</a></li>
+					<li><a href="../classes/geometric3.html" class="tsd-signature-type">Geometric3</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -93,8 +96,7 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="scalar.html#a" class="tsd-kind-icon">a</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="scalar.html#uom" class="tsd-kind-icon">uom</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="cartesiang3.html#maskg3" class="tsd-kind-icon">mask<wbr>G3</a></li>
 							</ul>
 						</section>
 					</div>
@@ -103,33 +105,23 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-					<a name="a" class="tsd-anchor"></a>
-					<h3>a</h3>
-					<div class="tsd-signature tsd-kind-icon">a<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="maskg3" class="tsd-anchor"></a>
+					<h3>mask<wbr>G3</h3>
+					<div class="tsd-signature tsd-kind-icon">mask<wbr>G3<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Scalar.ts#L7">davinci-newton/math/Scalar.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/CartesianG3.ts#L19">davinci-newton/math/CartesianG3.ts:19</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The scalar coordinate as a number.</p>
+							<p>A bitmask describing the grades.</p>
 						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-					<a name="uom" class="tsd-anchor"></a>
-					<h3>uom</h3>
-					<div class="tsd-signature tsd-kind-icon">uom<span class="tsd-signature-symbol">:</span> <a href="../classes/unit.html" class="tsd-signature-type">Unit</a></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Scalar.ts#L11">davinci-newton/math/Scalar.ts:11</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The unit of measure.</p>
-						</div>
+						<p>0x0 = zero
+							0x1 = scalar
+							0x2 = vector
+							0x4 = bivector
+						0x8 = pseudoscalar</p>
 					</div>
 				</section>
 			</section>
@@ -147,13 +139,10 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-is-external">
-						<a href="scalar.html" class="tsd-kind-icon">Scalar</a>
+						<a href="cartesiang3.html" class="tsd-kind-icon">Cartesian<wbr>G3</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-								<a href="scalar.html#a" class="tsd-kind-icon">a</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-								<a href="scalar.html#uom" class="tsd-kind-icon">uom</a>
+								<a href="cartesiang3.html#maskg3" class="tsd-kind-icon">mask<wbr>G3</a>
 							</li>
 						</ul>
 					</li>

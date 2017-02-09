@@ -5024,6 +5024,37 @@ define('davinci-newton/checks/mustBeNonNullObject',["require", "exports", "../ch
     exports.default = mustBeObject;
 });
 
+define('davinci-newton/math/Scalar3',["require", "exports"], function (require, exports) {
+    "use strict";
+    var Scalar3 = (function () {
+        function Scalar3(a, uom) {
+            this.a_ = a;
+            this.uom_ = uom;
+        }
+        Object.defineProperty(Scalar3.prototype, "a", {
+            get: function () {
+                return this.a_;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Scalar3.prototype, "uom", {
+            get: function () {
+                return this.uom_;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Scalar3.prototype.mulByNumber = function (alpha) {
+            return new Scalar3(alpha * this.a, this.uom);
+        };
+        return Scalar3;
+    }());
+    exports.Scalar3 = Scalar3;
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = Scalar3;
+});
+
 define('davinci-newton/util/veryDifferent',["require", "exports"], function (require, exports) {
     "use strict";
     function veryDifferent(arg1, arg2, epsilon, magnitude) {
@@ -5043,20 +5074,20 @@ define('davinci-newton/util/veryDifferent',["require", "exports"], function (req
     exports.default = veryDifferent;
 });
 
-define('davinci-newton/math/Vec3',["require", "exports", "../checks/mustBeNumber", "./Unit", "../util/veryDifferent"], function (require, exports, mustBeNumber_1, Unit_1, veryDifferent_1) {
+define('davinci-newton/math/Vec3',["require", "exports", "../checks/mustBeNumber", "./Scalar3", "./Unit", "../util/veryDifferent"], function (require, exports, mustBeNumber_1, Scalar3_1, Unit_1, veryDifferent_1) {
     "use strict";
     var Vec3 = (function () {
         function Vec3(x, y, z, uom) {
             this.x_ = mustBeNumber_1.default('x', x);
             this.y_ = mustBeNumber_1.default('y', y);
             this.z_ = mustBeNumber_1.default('z', z);
-            this.uom = Unit_1.default.mustBeUnit('uom', uom);
-            if (this.uom && this.uom.multiplier !== 1) {
-                var multiplier = this.uom.multiplier;
+            this.uom_ = Unit_1.default.mustBeUnit('uom', uom);
+            if (this.uom_ && this.uom_.multiplier !== 1) {
+                var multiplier = this.uom_.multiplier;
                 this.x_ *= multiplier;
                 this.y_ *= multiplier;
                 this.z_ *= multiplier;
-                this.uom = new Unit_1.default(1, uom.dimensions, uom.labels);
+                this.uom_ = new Unit_1.default(1, uom.dimensions, uom.labels);
             }
         }
         Object.defineProperty(Vec3.prototype, "x", {
@@ -5080,12 +5111,19 @@ define('davinci-newton/math/Vec3',["require", "exports", "../checks/mustBeNumber
             enumerable: true,
             configurable: true
         });
+        Object.defineProperty(Vec3.prototype, "uom", {
+            get: function () {
+                return this.uom_;
+            },
+            enumerable: true,
+            configurable: true
+        });
         Vec3.prototype.add = function (rhs) {
-            var uom = Unit_1.default.compatible(this.uom, rhs.uom);
+            var uom = Unit_1.default.compatible(this.uom_, rhs.uom);
             return new Vec3(this.x + rhs.x, this.y + rhs.y, this.z + rhs.z, uom);
         };
         Vec3.prototype.divByScalar = function (alpha) {
-            return new Vec3(this.x / alpha, this.y / alpha, this.z / alpha, this.uom);
+            return new Vec3(this.x / alpha, this.y / alpha, this.z / alpha, this.uom_);
         };
         Vec3.prototype.lco = function (B) {
             var ax = B.yz;
@@ -5097,14 +5135,14 @@ define('davinci-newton/math/Vec3',["require", "exports", "../checks/mustBeNumber
             var x = ay * bz - az * by;
             var y = az * bx - ax * bz;
             var z = ax * by - ay * bx;
-            return new Vec3(x, y, z, Unit_1.default.mul(this.uom, B.uom));
+            return new Vec3(x, y, z, Unit_1.default.mul(this.uom_, B.uom));
         };
         Vec3.prototype.subtract = function (rhs) {
-            var uom = Unit_1.default.compatible(this.uom, rhs.uom);
+            var uom = Unit_1.default.compatible(this.uom_, rhs.uom);
             return new Vec3(this.x - rhs.x, this.y - rhs.y, this.z - rhs.z, uom);
         };
         Vec3.prototype.mulByScalar = function (alpha) {
-            return new Vec3(alpha * this.x, alpha * this.y, alpha * this.z, this.uom);
+            return new Vec3(alpha * this.x, alpha * this.y, alpha * this.z, this.uom_);
         };
         Vec3.prototype.cross = function (rhs) {
             var ax = this.x;
@@ -5116,16 +5154,20 @@ define('davinci-newton/math/Vec3',["require", "exports", "../checks/mustBeNumber
             var x = ay * bz - az * by;
             var y = az * bx - ax * bz;
             var z = ax * by - ay * bx;
-            return new Vec3(x, y, z, Unit_1.default.mul(this.uom, rhs.uom));
+            return new Vec3(x, y, z, Unit_1.default.mul(this.uom_, rhs.uom));
         };
         Vec3.prototype.distanceTo = function (point) {
             var Δx = this.x - point.x;
             var Δy = this.y - point.y;
             var Δz = this.z - point.z;
-            return Math.sqrt(Δx * Δx + Δy * Δy + Δz * Δz);
+            var a = Math.sqrt(Δx * Δx + Δy * Δy + Δz * Δz);
+            var uom = Unit_1.default.compatible(this.uom_, point.uom);
+            return new Scalar3_1.default(a, uom);
         };
         Vec3.prototype.dot = function (v) {
-            return this.x * v.x + this.y * v.y + this.z * v.z;
+            var a = this.x * v.x + this.y * v.y + this.z * v.z;
+            var uom = Unit_1.default.mul(this.uom_, v.uom);
+            return new Scalar3_1.default(a, uom);
         };
         Vec3.prototype.magnitude = function () {
             var x = this.x;
@@ -5159,18 +5201,18 @@ define('davinci-newton/math/Vec3',["require", "exports", "../checks/mustBeNumber
                 return this;
             }
         };
-        Vec3.prototype.rotate = function (spinor) {
-            if (spinor.a === 1 && spinor.xy === 0 && spinor.yz === 0 && spinor.zx === 0) {
+        Vec3.prototype.rotate = function (R) {
+            if (R.a === 1 && R.xy === 0 && R.yz === 0 && R.zx === 0) {
                 return this;
             }
             else {
                 var x = this.x;
                 var y = this.y;
                 var z = this.z;
-                var a = spinor.xy;
-                var b = spinor.yz;
-                var c = spinor.zx;
-                var w = spinor.a;
+                var a = R.xy;
+                var b = R.yz;
+                var c = R.zx;
+                var w = R.a;
                 var ix = w * x - c * z + a * y;
                 var iy = w * y - a * x + b * z;
                 var iz = w * z - b * y + c * x;
@@ -5178,7 +5220,7 @@ define('davinci-newton/math/Vec3',["require", "exports", "../checks/mustBeNumber
                 var xPrimed = ix * w + iw * b + iy * a - iz * c;
                 var yPrimed = iy * w + iw * c + iz * b - ix * a;
                 var zPrimed = iz * w + iw * a + ix * c - iy * b;
-                return new Vec3(xPrimed, yPrimed, zPrimed, this.uom);
+                return new Vec3(xPrimed, yPrimed, zPrimed, this.uom_);
             }
         };
         Vec3.prototype.toString = function (radix) {
@@ -5679,9 +5721,9 @@ define('davinci-newton/config',["require", "exports"], function (require, export
     var Newton = (function () {
         function Newton() {
             this.GITHUB = 'https://github.com/geometryzen/davinci-newton';
-            this.LAST_MODIFIED = '2017-02-08';
+            this.LAST_MODIFIED = '2017-02-09';
             this.NAMESPACE = 'NEWTON';
-            this.VERSION = '0.0.27';
+            this.VERSION = '0.0.28';
         }
         Newton.prototype.log = function (message) {
             var optionalParams = [];
@@ -5793,7 +5835,7 @@ define('davinci-newton/model/CoordType',["require", "exports"], function (requir
     "use strict";
     var CoordType;
     (function (CoordType) {
-        CoordType[CoordType["BODY"] = 0] = "BODY";
+        CoordType[CoordType["LOCAL"] = 0] = "LOCAL";
         CoordType[CoordType["WORLD"] = 1] = "WORLD";
     })(CoordType = exports.CoordType || (exports.CoordType = {}));
     Object.defineProperty(exports, "__esModule", { value: true });
@@ -5829,7 +5871,7 @@ define('davinci-newton/engine3D/Force3',["require", "exports", "../objects/Abstr
         };
         Force3.prototype.computeForce = function (force) {
             switch (this.vectorCoordType) {
-                case CoordType_1.default.BODY: {
+                case CoordType_1.default.LOCAL: {
                     this.force_.copyVector(this.vector);
                     this.force_.rotate(this.body_.R);
                     this.force_.writeVector(force);
@@ -5860,7 +5902,7 @@ define('davinci-newton/engine3D/Force3',["require", "exports", "../objects/Abstr
         });
         Force3.prototype.computePosition = function (position) {
             switch (this.locationCoordType) {
-                case CoordType_1.default.BODY: {
+                case CoordType_1.default.LOCAL: {
                     this.position_.copyVector(this.location);
                     this.position_.rotate(this.body_.R);
                     this.position_.addVector(this.body_.X);
@@ -5909,7 +5951,7 @@ define('davinci-newton/engine3D/ConstantForceLaw3',["require", "exports", "../ob
             _this.potentialEnergy_ = Geometric3_1.default.scalar(0);
             _this.potentialEnergyLock_ = _this.potentialEnergy_.lock();
             _this.force_ = new Force3_1.default(_this.body_);
-            _this.force_.locationCoordType = CoordType_1.default.BODY;
+            _this.force_.locationCoordType = CoordType_1.default.LOCAL;
             _this.force_.vector.copyVector(vector);
             _this.force_.vectorCoordType = vectorCoordType;
             _this.forces = [_this.force_];
