@@ -12,7 +12,7 @@ import Document from '../../editor/Document';
 import Editor from '../../editor/Editor';
 import EditSession from '../../editor/EditSession';
 import EventBus from './EventBus';
-import {get} from '../../editor/lib/net';
+import { get } from '../../editor/lib/net';
 import getPosition from '../../editor/workspace/getPosition';
 import LanguageServiceProxy from '../../editor/workspace/LanguageServiceProxy';
 import IDoodleConfig from '../../services/doodles/IDoodleConfig';
@@ -21,8 +21,8 @@ import IOptionManager from '../../services/options/IOptionManager';
 import Position from '../../editor/Position';
 import Marker from '../../editor/Marker';
 import modeFromName from '../../utils/modeFromName';
-import {LANGUAGE_HTML} from '../../languages/modes';
-import {LANGUAGE_MARKDOWN} from '../../languages/modes';
+import { LANGUAGE_HTML } from '../../languages/modes';
+import { LANGUAGE_MARKDOWN } from '../../languages/modes';
 import MwEditor from '../../synchronization/MwEditor';
 import MwEdits from '../../synchronization/MwEdits';
 import MwUnit from '../../synchronization/MwUnit';
@@ -1203,6 +1203,10 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         return this.files.exists(path);
     }
 
+    /**
+     * Sets the `isOpen` property of the file specified by the `path` argument to `true`.
+     * Many files can be open at any one time.
+     */
     openFile(path: string): void {
         const file = this.files.getWeakRef(path);
         if (file) {
@@ -1268,6 +1272,10 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         }
     }
 
+    /**
+     * Sets the `selected` property of the file specified by the `path` parameter to `true`.
+     * Only one file can be selected at any one time.
+     */
     selectFile(path: string): void {
         const file = this.files.getWeakRef(path);
         if (file) {

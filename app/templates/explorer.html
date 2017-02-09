@@ -31,7 +31,7 @@
 			<!-- workspace.filesByPath exits because workspace is set on the scope by the explorer component -->
 			<li ng-repeat='(path, file) in workspace.filesByPath' ng-class='{open: file.isOpen && !file.selected, selected: file.selected, tainted: file.tainted}'
 				context-menu='menu(path, file)'>
-				<a href ng-click='$ctrl.selectFile(path)' ng-dblclick='$ctrl.openFile(path)'>{{path}}</a>
+				<a href ng-click='$ctrl.openFile(path)'>{{path}}</a>
 			</li>
 		</ul>
 		<!-- problems ng-model='workspace' class='problems' ng-show='isProblemsVisible'></problems -->

@@ -785,7 +785,7 @@ app.run(['$templateCache', function($templateCache: angular.ITemplateCacheServic
     "			<!-- workspace.filesByPath exits because workspace is set on the scope by the explorer component -->\n" +
     "			<li ng-repeat='(path, file) in workspace.filesByPath' ng-class='{open: file.isOpen && !file.selected, selected: file.selected, tainted: file.tainted}'\n" +
     "				context-menu='menu(path, file)'>\n" +
-    "				<a href ng-click='$ctrl.selectFile(path)' ng-dblclick='$ctrl.openFile(path)'>{{path}}</a>\n" +
+    "				<a href ng-click='$ctrl.openFile(path)'>{{path}}</a>\n" +
     "			</li>\n" +
     "		</ul>\n" +
     "		<!-- problems ng-model='workspace' class='problems' ng-show='isProblemsVisible'></problems -->\n" +
