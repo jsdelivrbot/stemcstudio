@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.21.70",
+  "version": "2.21.71",
   "private": true,
   "description": "Expressing Ideas through Computational Modeling",
   "engines": {
@@ -18,7 +18,7 @@
   "license": "MIT",
   "devDependencies": {
     "bootstrap": "^3.3.7",
-    "concurrently": "^3.1.0",
+    "concurrently": "^3.2.0",
     "grunt": "^1.0.1",
     "grunt-angular-templates": "^1.1.0",
     "grunt-contrib-clean": "^1.0.0",

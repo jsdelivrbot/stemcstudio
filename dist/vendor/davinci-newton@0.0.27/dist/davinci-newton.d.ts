@@ -363,24 +363,10 @@ declare module NEWTON {
 
     }
 
-    class VectorN<T> {
-        coords: T[];
-        modified: boolean;
-        constructor(coords: T[], modified?: boolean, size?: number);
-        clone(): VectorN<T>;
-        getComponent(index: number): T;
-        pop(): T;
-        push(value: T): number;
-        setComponent(index: number, value: T): void;
-        toArray(array?: T[], offset?: number): T[];
-        toLocaleString(): string;
-        toString(): string;
-    }
-
     /**
      * A mutable multivector in 3D with a Euclidean metric and optional unit of measure.
      */
-    class Geometric3 extends VectorN<number> implements GeometricE3 {
+    class Geometric3 implements GeometricE3 {
         /**
          * The coordinate corresponding to the unit standard basis scalar.
          */
@@ -427,10 +413,9 @@ declare module NEWTON {
         uom: Unit;
 
         /**
-         * Constructs a Geometric3.
-         * The multivector is initialized to zero.
+         * Do not call this constructor. Use the static construction methods instead.
          */
-        constructor();
+        constructor(coords?: number[], uom?: Unit, code?: number);
 
         /**
          * Adds M * α to this multivector.
@@ -567,12 +552,8 @@ declare module NEWTON {
 
         /**
          * 
-         * this ⟼ dual(m) = I * m
-         * 
-         * Notice that the dual of a vector is related to the spinor by the right-hand rule.
-         * m The vector whose dual will be used to set this spinor.
          */
-        dual(m: VectorE3): Geometric3;
+        dual(m?: GeometricE3): Geometric3;
 
         /**
          * 
@@ -602,21 +583,6 @@ declare module NEWTON {
          * b
          */
         ext2(a: GeometricE3, b: GeometricE3): Geometric3;
-
-        /**
-         * Constructs the standard basis unit vector corresponding to the x coordinate.
-         */
-        e1(): Geometric3;
-
-        /**
-         * Constructs the standard basis unit vector corresponding to the y coordinate.
-         */
-        e2(): Geometric3;
-
-        /**
-         * Constructs the standard basis unit vector corresponding to the z coordinate.
-         */
-        e3(): Geometric3;
 
         /**
          * Sets this multivector to the result of keeping only the specified grade.
@@ -929,20 +895,7 @@ declare module NEWTON {
         /**
          * Basis vector corresponding to the β coordinate.
          */
-        static I(): Geometric3;
-
-        /**
-         * Creates a grade 2 (bivector) multivector from the specified cartesian coordinates.
-         */
-        static bivector(yz: number, zx: number, xy: number, uom?: Unit): Geometric3;
-
-        static copy(m: GeometricE3): Geometric3;
-
-        static dual(m: GeometricE3): Geometric3;
-
-        static dualOfBivector(B: BivectorE3): Geometric3;
-
-        static dualOfVector(v: VectorE3): Geometric3;
+        static I: Geometric3;
 
         /**
          * Standard Basis vector corresponding to the x coordinate.
@@ -963,6 +916,35 @@ declare module NEWTON {
         static e3: Geometric3;
 
         /**
+         * The identity element for multiplication, 1 (scalar).
+         * e.g.
+         * const one = EIGHT.Geometric3.one();
+         * The returned multivector is locked.
+         */
+        static one: Geometric3;
+
+        /**
+         * The identity element for addition, 0.
+         * e.g.
+         * const origin = EIGHT.Geometric3.zero();
+         * The returned multivector is locked.
+         */
+        static zero: Geometric3;
+
+        /**
+         * Creates a grade 2 (bivector) multivector from the specified cartesian coordinates.
+         */
+        static bivector(yz: number, zx: number, xy: number, uom?: Unit): Geometric3;
+
+        static copy(m: GeometricE3): Geometric3;
+
+        static dual(m: GeometricE3): Geometric3;
+
+        static dualOfBivector(B: BivectorE3): Geometric3;
+
+        static dualOfVector(v: VectorE3): Geometric3;
+
+        /**
          * Creates a copy of a bivector.
          */
         static fromBivector(B: BivectorE3): Geometric3;
@@ -981,14 +963,6 @@ declare module NEWTON {
          * Creates a copy of a vector.
          */
         static fromVector(vector: VectorE3): Geometric3;
-
-        /**
-         * The identity element for multiplication, 1 (scalar).
-         * e.g.
-         * const one = EIGHT.Geometric3.one();
-         * The returned multivector is locked.
-         */
-        static one: Geometric3;
 
         /**
          * Computes a random multivector.
@@ -1020,14 +994,6 @@ declare module NEWTON {
         static vector(x: number, y: number, z: number, uom?: Unit): Geometric3;
 
         static wedge(a: Geometric3, b: Geometric3): Geometric3;
-
-        /**
-         * The identity element for addition, 0.
-         * e.g.
-         * const origin = EIGHT.Geometric3.zero();
-         * The returned multivector is locked.
-         */
-        static zero: Geometric3;
     }
 
     interface MatrixLike {
