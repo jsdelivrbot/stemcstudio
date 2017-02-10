@@ -52,9 +52,9 @@ interface Command {
     aceCommandGroup?: 'fileJump';
 
     /**
-     * "forEach" | "forEachLine" | function | undefined
+     * 'single' is an instruction to exit the multi selection mode.
      */
-    multiSelectAction?: 'forEach' | 'forEachLine' | EditorAction;
+    multiSelectAction?: 'forEach' | 'forEachLine' | 'single' | EditorAction;
 
     /**
      *

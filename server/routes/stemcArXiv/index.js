@@ -1,6 +1,6 @@
 "use strict";
-var AWS = require('aws-sdk');
-var putDoodleRef_1 = require('./aws/dynamodb/putDoodleRef');
+var AWS = require("aws-sdk");
+var putDoodleRef_1 = require("./aws/dynamodb/putDoodleRef");
 AWS.config.region = 'us-east-1';
 function mapToString(fields) {
     if (typeof fields === 'object') {

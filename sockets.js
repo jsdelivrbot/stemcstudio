@@ -1,6 +1,6 @@
 "use strict";
-var sio = require('socket.io');
-var rooms = require('./server/routes/rooms/index');
+var sio = require("socket.io");
+var rooms = require("./server/routes/rooms/index");
 var socketByNodeId = {};
 function sockets(app, server) {
     var io = sio(server, {});

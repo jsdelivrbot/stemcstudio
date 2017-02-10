@@ -143,7 +143,7 @@ export default class FontMetrics implements EventBus<any, FontMetrics>, Shareabl
         if (this.$pollSizeChangesTimer) {
             return this.$pollSizeChangesTimer;
         }
-        return this.$pollSizeChangesTimer = setInterval(() => {
+        return this.$pollSizeChangesTimer = window.setInterval(() => {
             this.checkForSizeChanges();
         }, 500);
     }

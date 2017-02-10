@@ -12,6 +12,8 @@ module.exports = function (grunt) {
             }
         },
 
+        // Copying the tsconfig file is for the benefit of the IDE.
+        // The build simply uses the appropriate tsconfig.(app/web).json file.
         copy: {
             dev: {
                 files: copies('generated')

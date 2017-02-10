@@ -79,7 +79,7 @@ export default class BackgroundTokenizer implements EventBus<any, BackgroundToke
                 // Only check every 5 lines.
                 processedLines++;
                 if ((processedLines % 5 === 0) && (new Date().getTime() - workerStart.getTime()) > 20) {
-                    this.running = setTimeout(this.$worker, 20);
+                    this.running = window.setTimeout(this.$worker, 20);
                     break;
                 }
             }
@@ -228,7 +228,7 @@ export default class BackgroundTokenizer implements EventBus<any, BackgroundToke
 
         this.stop();
         // Pretty long delay to prevent the tokenizer from interfering with the user.
-        this.running = setTimeout(this.$worker, 700);
+        this.running = window.setTimeout(this.$worker, 700);
     }
 
     /**
@@ -250,7 +250,7 @@ export default class BackgroundTokenizer implements EventBus<any, BackgroundToke
      */
     public scheduleStart(): void {
         if (!this.running) {
-            this.running = setTimeout(this.$worker, 700);
+            this.running = window.setTimeout(this.$worker, 700);
         }
     }
 

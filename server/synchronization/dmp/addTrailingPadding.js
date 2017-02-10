@@ -1,5 +1,5 @@
 "use strict";
-var DIFF_EQUAL_1 = require('../DIFF_EQUAL');
+var DIFF_EQUAL_1 = require("../DIFF_EQUAL");
 function addTrailingPadding(patches, paddingLength, nullPadding) {
     var patch = patches[patches.length - 1];
     var diffs = patch.diffs;

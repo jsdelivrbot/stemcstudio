@@ -1,11 +1,11 @@
 import Anchor from "./Anchor";
-import {mixin} from "./lib/oop";
-import {computedStyle, hasCssClass} from "./lib/dom";
+import { mixin } from "./lib/oop";
+import { computedStyle, hasCssClass } from "./lib/dom";
 import createDelayedCall from './lib/lang/createDelayedCall';
 import DelayedCall from './lib/lang/DelayedCall';
 import Disposable from './base/Disposable';
-import {stringRepeat} from "./lib/lang";
-import {isIE, isMac, isOldIE, isWebKit} from "./lib/useragent";
+import { stringRepeat } from "./lib/lang";
+import { isIE, isMac, isOldIE, isWebKit } from "./lib/useragent";
 import GutterLayer from "./layer/GutterLayer";
 import GutterTooltip from './GutterTooltip';
 import KeyboardHandler from "./keyboard/KeyboardHandler";
@@ -15,7 +15,7 @@ import Delta from "./Delta";
 import EditorAction from "./keyboard/EditorAction";
 import EditSession from "./EditSession";
 import Search from "./Search";
-import {assembleRegExp} from './Search';
+import { assembleRegExp } from './Search';
 import FirstAndLast from "./FirstAndLast";
 import Position from "./Position";
 import Range from "./Range";
@@ -27,17 +27,17 @@ import Command from "./commands/Command";
 import CommandManager from "./commands/CommandManager";
 import defaultCommands from "./commands/default_commands";
 import TokenIterator from "./TokenIterator";
-import {COMMAND_NAME_AUTO_COMPLETE} from './editor_protocol';
-import {COMMAND_NAME_BACKSPACE} from './editor_protocol';
-import {COMMAND_NAME_DEL} from './editor_protocol';
-import {COMMAND_NAME_INSERT_STRING} from './editor_protocol';
+import { COMMAND_NAME_AUTO_COMPLETE } from './editor_protocol';
+import { COMMAND_NAME_BACKSPACE } from './editor_protocol';
+import { COMMAND_NAME_DEL } from './editor_protocol';
+import { COMMAND_NAME_INSERT_STRING } from './editor_protocol';
 import Renderer from './Renderer';
 import Completer from "./autocomplete/Completer";
 import CompletionManager from "./autocomplete/CompletionManager";
 import SearchOptions from './SearchOptions';
 import Selection from './Selection';
 import SnippetManager from './SnippetManager';
-import {addListener, addMouseWheelListener, addMultiMouseDownListener, capture, getButton, preventDefault, stopEvent, stopPropagation} from "./lib/event";
+import { addListener, addMouseWheelListener, addMultiMouseDownListener, capture, getButton, preventDefault, stopEvent, stopPropagation } from "./lib/event";
 import TabstopManager from './TabstopManager';
 import EditorChangeSessionEvent from './events/EditorChangeSessionEvent';
 import SessionChangeEditorEvent from './events/SessionChangeEditorEvent';
@@ -4104,7 +4104,7 @@ class MouseHandler implements IGestureHandler {
 
         this.$onCaptureMouseMove = onMouseMove;
         this.releaseMouse = capture(this.editor.container, onMouseMove, onCaptureEnd);
-        timerId = setInterval(onCaptureInterval, 20);
+        timerId = window.setInterval(onCaptureInterval, 20);
     }
 
     cancelContextMenu(): void {
@@ -4621,7 +4621,7 @@ class GutterHandler {
             if (tooltipTimeout) {
                 return;
             }
-            tooltipTimeout = setTimeout(function () {
+            tooltipTimeout = window.setTimeout(function () {
                 tooltipTimeout = null;
                 if (mouseEvent && !mouseHandler.isMousePressed)
                     showTooltip();
@@ -4635,7 +4635,7 @@ class GutterHandler {
             if (!tooltipAnnotation || tooltipTimeout)
                 return;
 
-            tooltipTimeout = setTimeout(function () {
+            tooltipTimeout = window.setTimeout(function () {
                 tooltipTimeout = null;
                 hideTooltip(void 0, editor);
             }, 50);

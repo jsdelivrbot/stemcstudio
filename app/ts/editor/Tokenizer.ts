@@ -12,19 +12,35 @@ let MAX_TOKEN_COUNT = 2000;
  */
 export default class Tokenizer {
     // Mode wants access to the states (rules)
-    public states: { [stateName: string]: Rule[] };
-    private regExps: { [stateName: string]: RegExp };
-    private matchMappings: { [stateName: string]: Rule };
+    public readonly states: { [stateName: string]: Rule[] };
+
+    /**
+     * 
+     */
+    private readonly regExps: { [stateName: string]: RegExp };
+    /**
+     * 
+     */
+    private readonly matchMappings: { [stateName: string]: Rule };
+    /**
+     * 
+     */
     private tokenArray: string[];
+    /**
+     * 
+     */
     private splitRegex: RegExp;
-    private token: any;
+
+    /**
+     * All we know is that this has an apply method!
+     * But it's always undefined.
+     */
+    private readonly token_: Function;
 
     /**
      * Constructs a new tokenizer based on the given rules and flags.
      *
-     * @class Tokenizer
-     * @constructor
-     * @param states {{[name:string]: Rule[]}} The highlighting rules for each state (rulesByState).
+     * @param states The highlighting rules for each state (rulesByState).
      */
     constructor(rules: { [name: string]: Rule[] }) {
         this.states = rules;
@@ -81,7 +97,7 @@ export default class Tokenizer {
                     if (matchcount > 1) {
                         if (/\\\d/.test(<string>rule.regex)) {
                             // Replace any backreferences and offset appropriately.
-                            adjustedregex = (<string>rule.regex).replace(/\\([0-9]+)/g, function(match, digit) {
+                            adjustedregex = (<string>rule.regex).replace(/\\([0-9]+)/g, function (match, digit) {
                                 return "\\" + (parseInt(digit, 10) + matchTotal + 1);
                             });
                         } else {
@@ -107,7 +123,7 @@ export default class Tokenizer {
                     ruleRegExps.push("$");
                 }
 
-                splitterRurles.forEach(function(rule) {
+                splitterRurles.forEach(function (rule) {
                     rule.splitRegex = this.createSplitterRegexp(rule.regex, flag);
                 }, this);
 
@@ -126,15 +142,16 @@ export default class Tokenizer {
     }
 
     private $applyToken(str: string): Token[] {
-        var values = this.splitRegex.exec(str).slice(1);
-        var types = this.token.apply(this, values);
+        const values = this.splitRegex.exec(str).slice(1);
+        const types: string | string[] = this.token_.apply(this, values);
 
         // required for compatibility with old modes
-        if (typeof types === "string")
+        if (typeof types === "string") {
             return [{ type: types, value: str }];
+        }
 
-        var tokens = [];
-        for (var i = 0, l = types.length; i < l; i++) {
+        const tokens: Token[] = [];
+        for (let i = 0, l = types.length; i < l; i++) {
             if (values[i])
                 tokens[tokens.length] = {
                     type: types[i],
@@ -144,15 +161,17 @@ export default class Tokenizer {
         return tokens;
     }
 
-    private $arrayTokens(str: string): string | Token[] {
-        if (!str)
+    private $arrayTokens(str: string): 'text' | Token[] {
+        if (!str) {
             return [];
-        var values = this.splitRegex.exec(str);
-        if (!values)
-            return "text";
-        var tokens = [];
-        var types = this.tokenArray;
-        for (var i = 0, l = types.length; i < l; i++) {
+        }
+        const values = this.splitRegex.exec(str);
+        if (!values) {
+            return 'text';
+        }
+        const tokens: Token[] = [];
+        const types = this.tokenArray;
+        for (let i = 0, l = types.length; i < l; i++) {
             if (values[i + 1])
                 tokens[tokens.length] = {
                     type: types[i],
@@ -165,7 +184,7 @@ export default class Tokenizer {
     private removeCapturingGroups(src: string): string {
         var r = src.replace(
             /\[(?:\\.|[^\]])*?\]|\\.|\(\?[:=!]|(\()/g,
-            function(x, y) { return y ? "(?:" : x; }
+            function (x, y) { return y ? "(?:" : x; }
         );
         return r;
     }
@@ -178,7 +197,7 @@ export default class Tokenizer {
             var stack = 0;
             var inChClass = false;
             var lastCapture: { stack?: number, start?: number; end?: number } = {};
-            src.replace(/(\\.)|(\((?:\?[=!])?)|(\))|([\[\]])/g, function(
+            src.replace(/(\\.)|(\((?:\?[=!])?)|(\))|([\[\]])/g, function (
                 m, esc, parenOpen, parenClose, square, index
             ) {
                 if (inChClass) {

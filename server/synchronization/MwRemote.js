@@ -1,7 +1,7 @@
 "use strict";
-var DMP_1 = require('./DMP');
-var isChanged_1 = require('./isChanged');
-var MwShadow_1 = require('./MwShadow');
+var DMP_1 = require("./DMP");
+var isChanged_1 = require("./isChanged");
+var MwShadow_1 = require("./MwShadow");
 var dmp = new DMP_1.default();
 var MwRemote = (function () {
     function MwRemote() {

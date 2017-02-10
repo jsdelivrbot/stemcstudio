@@ -1,13 +1,13 @@
 "use strict";
-var redis = require('redis');
-var url = require('url');
-var asserts_1 = require('../../synchronization/asserts');
-var isBoolean_1 = require('../../utils/isBoolean');
-var isNumber_1 = require('../../utils/isNumber');
-var isString_1 = require('../../utils/isString');
-var uniqueId_1 = require('./uniqueId');
-var DMP_1 = require('../../synchronization/DMP');
-var MwRemote_1 = require('../../synchronization/MwRemote');
+var redis = require("redis");
+var url = require("url");
+var asserts_1 = require("../../synchronization/asserts");
+var isBoolean_1 = require("../../utils/isBoolean");
+var isNumber_1 = require("../../utils/isNumber");
+var isString_1 = require("../../utils/isString");
+var uniqueId_1 = require("./uniqueId");
+var DMP_1 = require("../../synchronization/DMP");
+var MwRemote_1 = require("../../synchronization/MwRemote");
 var EXPIRE_DURATION_IN_SECONDS = 1800;
 var ROOM_PATHS_PROPERTY_NAME = 'paths';
 var ROOM_PATH_CONTENT_PROPERTY_NAME = 'content';
@@ -342,7 +342,7 @@ function getBroadcast(roomId, path, callback) {
         if (!err) {
             var iLen = nodeIds.length;
             var outstanding = [];
-            var _loop_1 = function(i) {
+            var _loop_1 = function (i) {
                 var nodeId = nodeIds[i];
                 outstanding.push(new Promise(function (resolve, reject) {
                     getRemote(roomId, path, nodeId, function (err, remote) {
@@ -397,7 +397,7 @@ function setEdits(nodeId, roomId, path, edits, callback) {
                 if (!err) {
                     var iLen = edits.x.length;
                     var outstanding = [];
-                    var _loop_2 = function(i) {
+                    var _loop_2 = function (i) {
                         var change = edits.x[i];
                         var action = change.a;
                         if (action) {
@@ -522,7 +522,7 @@ exports.setEdits = setEdits;
 function getEdits(nodeId, roomId, callback) {
     getPaths(roomId, function (err, paths) {
         var outstanding = [];
-        var _loop_3 = function(i) {
+        var _loop_3 = function (i) {
             var path = paths[i];
             outstanding.push(new Promise(function (resolve, reject) {
                 ensureRemote(roomId, path, nodeId, function (err, remote) {

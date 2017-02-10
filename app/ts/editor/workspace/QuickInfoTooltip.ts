@@ -61,7 +61,7 @@ export default class QuickInfoTooltip extends Tooltip {
 
             if (event.srcElement['className'] === 'ace_content') {
 
-                this.mouseMoveTimer = setTimeout(() => {
+                this.mouseMoveTimer = window.setTimeout(() => {
                     const documentPosition = getDocumentPositionFromScreenOffset(this.editor, event.offsetX, event.offsetY);
                     if (documentPosition) {
                         const position: number = EditorPosition.getPositionChars(this.editor, documentPosition);

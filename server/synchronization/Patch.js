@@ -1,7 +1,7 @@
 "use strict";
-var DIFF_DELETE_1 = require('./DIFF_DELETE');
-var DIFF_INSERT_1 = require('./DIFF_INSERT');
-var DIFF_EQUAL_1 = require('./DIFF_EQUAL');
+var DIFF_DELETE_1 = require("./DIFF_DELETE");
+var DIFF_INSERT_1 = require("./DIFF_INSERT");
+var DIFF_EQUAL_1 = require("./DIFF_EQUAL");
 var Patch = (function () {
     function Patch() {
         this.diffs = [];

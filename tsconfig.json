@@ -9,8 +9,13 @@
         "removeComments": true,
         "noImplicitAny": false,
         "noLib": true,
-        "outDir": "generated/js"
+        "outDir": "generated/js",
+        "suppressImplicitAnyIndexErrors": true,
+        "traceResolution": true
     },
+    "exclude": [
+        "./node_modules/@types/node/index.d.ts"
+    ],
     "files": [
         "app/ts/app.ts",
         "app/ts/bootstrap.ts",
@@ -21,6 +26,7 @@
         "app/ts/controllers/ExamplesController.ts",
         "app/ts/controllers/HomeController.ts",
         "app/ts/fugly/ga/ga.ts",
+        "app/ts/services/base64/Base64.ts",
         "app/ts/services/cookie/cookie.ts",
         "app/ts/services/doodles/doodles.ts",
         "app/ts/services/gham/GitHubAuthManager.ts",
@@ -37,6 +43,6 @@
         "app/ts/template-cache.ts",
         "typings/browser.d.ts",
         "typings-manual/browser.d.ts",
-        "./node_modules/typescript/lib/lib.dom.d.ts"
+        "./node_modules/typescript/lib/lib.d.ts"
     ]
 }

@@ -10,6 +10,9 @@ import toPixelString from './dom/toPixelString';
  */
 export default class VScrollBar extends ScrollBar {
 
+    /**
+     * This may get set to null.
+     */
     private _scrollTop = 0;
     private _width: number;
     /**
@@ -79,6 +82,7 @@ export default class VScrollBar extends ScrollBar {
      */
     // on chrome 17+ for small zoom levels after calling this function
     // this.element.scrollTop != scrollTop which makes page to scroll up.
+    // FIXME: We don't need a method and a property! The code does use both!!
     setScrollTop(scrollTop: number) {
         if (this._scrollTop !== scrollTop) {
             this.skipEvent = true;
@@ -88,5 +92,8 @@ export default class VScrollBar extends ScrollBar {
 
     get scrollTop(): number {
         return this._scrollTop;
+    }
+    set scrollTop(scrollTop: number) {
+        this.setScrollTop(scrollTop);
     }
 }

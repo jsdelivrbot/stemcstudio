@@ -1,15 +1,15 @@
-import {addCssClass, createElement, createHTMLDivElement, removeCssClass, setCssClass} from "./lib/dom";
+import { addCssClass, createElement, createHTMLDivElement, removeCssClass, setCssClass } from "./lib/dom";
 import appendHTMLLinkElement from './dom/appendHTMLLinkElement';
 import removeHTMLLinkElement from './dom/removeHTMLLinkElement';
 import Disposable from '../base/Disposable';
 import ensureHTMLStyleElement from './dom/ensureHTMLStyleElement';
 import hasHTMLLinkElement from './dom/hasHTMLLinkElement';
-import {isOldIE} from "./lib/useragent";
+import { isOldIE } from "./lib/useragent";
 import Annotation from './Annotation';
 
 import CursorLayer from "./layer/CursorLayer";
 import FontMetrics from "./layer/FontMetrics";
-import {changeCharacterSize} from './layer/FontMetrics';
+import { changeCharacterSize } from './layer/FontMetrics';
 import GutterLayer from "./layer/GutterLayer";
 import MarkerLayer from "./layer/MarkerLayer";
 // import PrintMarginLayer from "./layer/PrintMarginLayer";
@@ -1610,7 +1610,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         this.session.setScrollTop(steps.shift());
         // trick session to think it's already scrolled to not loose toValue
         this.session.$scrollTop = toValue;
-        this.$timer = setInterval(() => {
+        this.$timer = window.setInterval(() => {
             if (steps.length) {
                 this.session.setScrollTop(steps.shift());
                 this.session.$scrollTop = toValue;

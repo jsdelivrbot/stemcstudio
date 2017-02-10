@@ -1,14 +1,14 @@
 "use strict";
-var AWS = require('aws-sdk');
-var DoodleRefTable_1 = require('./DoodleRefTable');
-var DoodleRefTable_2 = require('./DoodleRefTable');
-var DoodleRefTable_3 = require('./DoodleRefTable');
-var DoodleRefTable_4 = require('./DoodleRefTable');
-var DoodleRefTable_5 = require('./DoodleRefTable');
-var DoodleRefTable_6 = require('./DoodleRefTable');
-var DoodleRefTable_7 = require('./DoodleRefTable');
-var isArray_1 = require('../../../../utils/isArray');
-var isString_1 = require('../../../../utils/isString');
+var AWS = require("aws-sdk");
+var DoodleRefTable_1 = require("./DoodleRefTable");
+var DoodleRefTable_2 = require("./DoodleRefTable");
+var DoodleRefTable_3 = require("./DoodleRefTable");
+var DoodleRefTable_4 = require("./DoodleRefTable");
+var DoodleRefTable_5 = require("./DoodleRefTable");
+var DoodleRefTable_6 = require("./DoodleRefTable");
+var DoodleRefTable_7 = require("./DoodleRefTable");
+var isArray_1 = require("../../../../utils/isArray");
+var isString_1 = require("../../../../utils/isString");
 function putDoodleRef(doodle, next) {
     var db = new AWS.DynamoDB();
     var Item = {};

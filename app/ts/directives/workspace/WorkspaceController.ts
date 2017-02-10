@@ -133,10 +133,10 @@ export default class WorkspaceController implements WorkspaceMixin {
     /**
      * Keep track of the dependencies that are loaded in the workspace.
      */
-    private olds: string[] = [];
+    private readonly olds: string[] = [];
 
     private outputFilesWatchRemover: () => void;
-    private previewChangeHandlers: { [path: string]: EditSessionChangeHandler } = {};
+    private readonly previewChangeHandlers: { [path: string]: EditSessionChangeHandler } = {};
 
     /**
      * Promise to update the README view for throttling.
@@ -145,14 +145,20 @@ export default class WorkspaceController implements WorkspaceMixin {
     /**
      * Keep track of the README handlers that are registered for cleanup.
      */
-    private markdownChangeHandlers: { [path: string]: DocumentChangeHandler } = {};
+    private readonly markdownChangeHandlers: { [path: string]: DocumentChangeHandler } = {};
 
     private resizeListener: (unused: UIEvent) => any;
 
     /**
      * Keep track of watches so that we can clean them up.
      */
-    private watches: (() => any)[] = [];
+    private readonly watches: (() => any)[] = [];
+
+    /**
+     * Convenient flag used for debugging.
+     * Normally set to true for production.
+     */
+    private readonly trace = false;
 
     /**
      *
@@ -407,8 +413,9 @@ export default class WorkspaceController implements WorkspaceMixin {
      * initialization work of a controller.
      */
     $onInit(): void {
-
-        // console.log("WorkspaceController.$onInit called");
+        if (this.trace) {
+            console.log("WorkspaceController.$onInit called");
+        }
         // console.log(`$stateParams=${JSON.stringify(this.$stateParams)}`);
 
         const owner: string = this.$stateParams['owner'];
@@ -445,6 +452,11 @@ export default class WorkspaceController implements WorkspaceMixin {
         // This flag prevents the editors from being being 
         this.$scope.doodleLoaded = false;
 
+        // Example of how to enable tracing in the main and worker thread.
+        this.wsModel.setTrace(this.trace, (err) => {
+            // Do nothing.
+        });
+
         this.wsModel.recycle((err) => {
             if (!err) {
                 this.background.loadWsModel(owner, repo, gistId, roomId, (err: Error) => {
@@ -469,11 +481,6 @@ export default class WorkspaceController implements WorkspaceMixin {
                     else {
                         this.modalDialog.alert({ title: "Load Workspace Error", message: err.message });
                     }
-                });
-
-                // Example of how to enable tracing in the worker thread.
-                this.wsModel.setTrace(false, (err) => {
-                    // Do nothing.
                 });
 
                 this.wsModel.setDefaultLibrary('/typings/lib.es6.d.ts', (err) => {
@@ -528,7 +535,9 @@ export default class WorkspaceController implements WorkspaceMixin {
      * 
      */
     private afterWorkspaceLoaded(): void {
-        // const startTime = performance.now();
+        if (this.trace) {
+            console.log("afterWorkspaceLoaded called");
+        }
 
         this.resizeListener = (unused: UIEvent) => {
             this.resize();
@@ -610,14 +619,23 @@ export default class WorkspaceController implements WorkspaceMixin {
             this.$http,
             this.$location,
             this.VENDOR_FOLDER_MARKER, () => {
+                if (this.trace) {
+                    console.log(`updateWorkspaceTypings complete`);
+                }
                 // Set the module kind for transpilation consistent with the version.
                 const moduleKind = detect1x(this.wsModel) ? MODULE_KIND_NONE : MODULE_KIND_SYSTEM;
                 this.wsModel.setModuleKind(moduleKind, (err) => {
+                    if (this.trace) {
+                        console.log(`setModuleKind(${moduleKind}) complete`);
+                    }
 
                     // Set the script target for transpilation consistent with the version.
                     const scriptTarget = detect1x(this.wsModel) ? SCRIPT_TARGET_ES5 : SCRIPT_TARGET;
 
                     this.wsModel.setScriptTarget(scriptTarget, (err) => {
+                        if (this.trace) {
+                            console.log(`setScriptTarget(${scriptTarget}) complete`);
+                        }
                         this.wsModel.semanticDiagnostics((err) => {
                             this.$scope.$applyAsync();
                         });

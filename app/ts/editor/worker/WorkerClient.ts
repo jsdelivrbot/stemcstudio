@@ -1,6 +1,6 @@
 "use strict";
 
-import {qualifyURL} from '../lib/net';
+import { qualifyURL } from '../lib/net';
 import Delta from "../Delta";
 import Document from "../Document";
 import EventBus from "../EventBus";
@@ -86,14 +86,14 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
             if (e instanceof window['DOMException']) {
                 // Likely same origin problem. Use importScripts from a shim Worker.
                 const blob: Blob = this.createBlob(workerUrl);
-                const URL: URL = window['URL'] || window['webkitURL'];
+                const URL = window.URL || window['webkitURL'];
                 const blobURL: string = URL.createObjectURL(blob);
 
                 this.worker = new Worker(blobURL);
                 URL.revokeObjectURL(blobURL);
             }
             else {
-                setTimeout(function() { callback(e); }, 0);
+                setTimeout(function () { callback(e); }, 0);
                 return;
             }
         }
@@ -256,7 +256,7 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
         if (doc instanceof Document) {
             this.$doc = doc;
             this.$doc.addRef();
-            this.call("setValue", [doc.getValue()], function(data: any) {
+            this.call("setValue", [doc.getValue()], function (data: any) {
                 console.log(`setValue => ${data}`);
             });
             doc.addChangeListener(this.changeListener);
@@ -347,7 +347,7 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
         if (queue.length > 20 && queue.length > doc.getLength() >> 1) {
             // TODO: If there is no callback then call is the same as send,
             // which is a postCommand.
-            this.call("setValue", [doc.getValue()], function(data: any) {
+            this.call("setValue", [doc.getValue()], function (data: any) {
                 console.log(`setValue => ${data}`);
             });
         }

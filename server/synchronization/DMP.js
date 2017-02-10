@@ -1,10 +1,10 @@
 "use strict";
-var addLeadingPadding_1 = require('./dmp/addLeadingPadding');
-var addTrailingPadding_1 = require('./dmp/addTrailingPadding');
-var Patch_1 = require('./Patch');
-var DIFF_DELETE_1 = require('./DIFF_DELETE');
-var DIFF_INSERT_1 = require('./DIFF_INSERT');
-var DIFF_EQUAL_1 = require('./DIFF_EQUAL');
+var addLeadingPadding_1 = require("./dmp/addLeadingPadding");
+var addTrailingPadding_1 = require("./dmp/addTrailingPadding");
+var Patch_1 = require("./Patch");
+var DIFF_DELETE_1 = require("./DIFF_DELETE");
+var DIFF_INSERT_1 = require("./DIFF_INSERT");
+var DIFF_EQUAL_1 = require("./DIFF_EQUAL");
 var nonAlphaNumericRegex_ = /[^a-zA-Z0-9]/;
 var whitespaceRegex_ = /\s/;
 var linebreakRegex_ = /[\r\n]/;

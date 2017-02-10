@@ -1,4 +1,4 @@
-import {addCssClass, createElement, removeCssClass, setCssClass} from "../lib/dom";
+import { addCssClass, createElement, removeCssClass, setCssClass } from "../lib/dom";
 import AbstractLayer from './AbstractLayer';
 import Disposable from '../base/Disposable';
 import EditSession from '../EditSession';
@@ -181,12 +181,12 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
         }
 
         const blink = () => {
-            this.timeoutId = setTimeout(() => {
+            this.timeoutId = window.setTimeout(() => {
                 update(false);
             }, 0.6 * this.blinkInterval);
         };
 
-        this.intervalId = setInterval(function() {
+        this.intervalId = window.setInterval(function () {
             update(true);
             blink();
         }, this.blinkInterval);

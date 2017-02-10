@@ -4,8 +4,8 @@ import { createElement } from "../lib/dom";
 import createDelayedCall from "../lib/lang/createDelayedCall";
 import DelayedCall from "../lib/lang/DelayedCall";
 import Editor from "../Editor";
-import {COMMAND_NAME_BACKSPACE} from '../editor_protocol';
-import {COMMAND_NAME_DEL} from '../editor_protocol';
+import { COMMAND_NAME_BACKSPACE } from '../editor_protocol';
+import { COMMAND_NAME_DEL } from '../editor_protocol';
 import Range from '../Range';
 
 const BROKEN_SETDATA = isChrome < 18;
@@ -144,9 +144,9 @@ export default class TextInput {
             return text.selectionStart === 0 && text.selectionEnd === text.value.length;
         };
         // IE8 does not support setSelectionRange
-        if (!this.text.setSelectionRange && this.text.createTextRange) {
+        if (!this.text.setSelectionRange && this.text['createTextRange']) {
             this.text.setSelectionRange = function (selectionStart: number, selectionEnd: number) {
-                var range = this.createTextRange();
+                const range = this.createTextRange();
                 range.collapse(true);
                 range.moveStart('character', selectionStart);
                 range.moveEnd('character', selectionEnd);

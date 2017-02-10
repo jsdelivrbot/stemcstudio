@@ -1,5 +1,5 @@
 "use strict";
-var DMP_1 = require('./DMP');
+var DMP_1 = require("./DMP");
 var INITIAL_VERSION = 1;
 var dmp = new DMP_1.default();
 var MwShadow = (function () {

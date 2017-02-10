@@ -388,10 +388,10 @@ if (window.postMessage && !isOldIE) {
 }
 */
 
-var nextFrameCandidate: (callback: () => void, $window: Window) => void = window.requestAnimationFrame ||
+let nextFrameCandidate: (callback: () => void, $window: Window) => void = window.requestAnimationFrame ||
     window['mozRequestAnimationFrame'] ||
     window['webkitRequestAnimationFrame'] ||
-    window.msRequestAnimationFrame ||
+    window['msRequestAnimationFrame'] ||
     window['oRequestAnimationFrame'];
 
 if (nextFrameCandidate) {
@@ -406,4 +406,4 @@ else {
 /**
  * A backwards-compatible, browser-neutral, requestAnimationFrame.
  */
-export var requestAnimationFrame: (callback: () => void, $window: Window) => void = nextFrameCandidate;
+export const requestAnimationFrame: (callback: () => void, $window: Window) => void = nextFrameCandidate;
