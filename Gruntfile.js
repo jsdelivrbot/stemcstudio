@@ -231,12 +231,16 @@ function copies(target) {
             dest: prepend(target, 'js/typescriptServices.js')
         },
         {
-            src: 'manual/typescript/lib.es6.d.ts',
+            src: 'manual/typescript@1.8.0/typescriptServices.js.map',
+            dest: prepend(target, 'js/typescriptServices.js.map')
+        },
+        {
+            src: 'manual/typescript@1.8.0/lib.es6.d.ts',
             dest: prepend(target, 'typings/lib.es6.d.ts')
         },
         {
-            src: 'museum/typescript@1.4.1.3/lib.d.ts',
-            dest: prepend(target, 'vendor/typescript@1.4.1.3/lib.d.ts')
+            src: 'manual/typescript@1.8.0/lib.d.ts',
+            dest: prepend(target, 'vendor/typescript@1.8.0/lib.d.ts')
         },
         {
             src: 'museum/jasmine@2.4.1/lib/boot.js',

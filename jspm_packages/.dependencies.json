@@ -587,7 +587,6 @@
     "crypto": "github:jspm/nodelibs-crypto@^0.1.0"
   },
   "npm:symbol-observable@1.0.4": {},
-  "github:ace2ts/ace-workers@1.0.4": {},
   "npm:zone.js@0.6.26": {
     "process": "github:jspm/nodelibs-process@^0.1.0",
     "events": "github:jspm/nodelibs-events@^0.1.1",
@@ -851,5 +850,6 @@
     "good-listener": "npm:good-listener@^1.2.0",
     "select": "npm:select@^1.1.2",
     "tiny-emitter": "npm:tiny-emitter@^1.0.0"
-  }
+  },
+  "github:ace2ts/ace-workers@1.0.4": {}
 }

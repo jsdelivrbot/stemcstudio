@@ -10,7 +10,7 @@ import EditSession from '../../editor/EditSession';
 import EditSessionChangeHandler from './EditSessionChangeHandler';
 import OutputFile from '../../editor/workspace/OutputFile';
 import Background from '../../services/background/BackgroundService';
-import {BACKGROUND_UUID} from '../../services/background/Background';
+import { BACKGROUND_UUID } from '../../services/background/Background';
 import CloudService from '../../services/cloud/CloudService';
 import detect1x from './detect1x';
 import Doodle from '../../services/doodles/Doodle';
@@ -23,7 +23,7 @@ import PropertiesDialog from '../../modules/properties/PropertiesDialog';
 import PropertiesFlow from './PropertiesFlow';
 import PublishFlow from './PublishFlow';
 import IGitHubAuthManager from '../../services/gham/IGitHubAuthManager';
-import {GITHUB_AUTH_MANAGER} from '../../services/gham/IGitHubAuthManager';
+import { GITHUB_AUTH_MANAGER } from '../../services/gham/IGitHubAuthManager';
 import IOptionManager from '../../services/options/IOptionManager';
 import isHtmlFilePath from '../../utils/isHtmlFilePath';
 import isMarkdownFilePath from '../../utils/isMarkdownFilePath';
@@ -31,9 +31,9 @@ import isMarkdownFilePath from '../../utils/isMarkdownFilePath';
 import OutputFileHandler from './OutputFileHandler';
 import ModalDialog from '../../services/modalService/ModalDialog';
 import NavigationService from '../../modules/navigation/NavigationService';
-import {STATE_GIST} from '../../modules/navigation/NavigationService';
-import {STATE_REPO} from '../../modules/navigation/NavigationService';
-import {STATE_ROOM} from '../../modules/navigation/NavigationService';
+import { STATE_GIST } from '../../modules/navigation/NavigationService';
+import { STATE_REPO } from '../../modules/navigation/NavigationService';
+import { STATE_ROOM } from '../../modules/navigation/NavigationService';
 import PublishDialog from '../../modules/publish/PublishDialog';
 import StemcArXiv from '../../stemcArXiv/StemcArXiv';
 import FlowService from '../../services/flow/FlowService';
@@ -42,18 +42,18 @@ import WorkspaceScope from '../../scopes/WorkspaceScope';
 import WorkspaceMixin from '../editor/WorkspaceMixin';
 import WsFile from '../../wsmodel/services/WsFile';
 import WsModel from '../../wsmodel/services/WsModel';
-import {LANGUAGE_CSS} from '../../languages/modes';
-import {LANGUAGE_GLSL} from '../../languages/modes';
-import {LANGUAGE_HASKELL} from '../../languages/modes';
-import {LANGUAGE_HTML} from '../../languages/modes';
-import {LANGUAGE_JSON} from '../../languages/modes';
-import {LANGUAGE_JAVA_SCRIPT} from '../../languages/modes';
-import {LANGUAGE_LESS} from '../../languages/modes';
-import {LANGUAGE_MARKDOWN} from '../../languages/modes';
-import {LANGUAGE_PYTHON} from '../../languages/modes';
-import {LANGUAGE_SCHEME} from '../../languages/modes';
-import {LANGUAGE_TYPE_SCRIPT} from '../../languages/modes';
-import {LANGUAGE_TEXT} from '../../languages/modes';
+import { LANGUAGE_CSS } from '../../languages/modes';
+import { LANGUAGE_GLSL } from '../../languages/modes';
+import { LANGUAGE_HASKELL } from '../../languages/modes';
+import { LANGUAGE_HTML } from '../../languages/modes';
+import { LANGUAGE_JSON } from '../../languages/modes';
+import { LANGUAGE_JAVA_SCRIPT } from '../../languages/modes';
+import { LANGUAGE_LESS } from '../../languages/modes';
+import { LANGUAGE_MARKDOWN } from '../../languages/modes';
+import { LANGUAGE_PYTHON } from '../../languages/modes';
+import { LANGUAGE_SCHEME } from '../../languages/modes';
+import { LANGUAGE_TYPE_SCRIPT } from '../../languages/modes';
+import { LANGUAGE_TEXT } from '../../languages/modes';
 import updateWorkspaceTypings from './updateWorkspaceTypings';
 import rebuildPreview from './rebuildPreview';
 import rebuildMarkdownView from './rebuildMarkdownView';
@@ -471,9 +471,14 @@ export default class WorkspaceController implements WorkspaceMixin {
                     }
                 });
 
+                // Example of how to enable tracing in the worker thread.
+                this.wsModel.setTrace(false, (err) => {
+                    // Do nothing.
+                });
+
                 this.wsModel.setDefaultLibrary('/typings/lib.es6.d.ts', (err) => {
                     if (err) {
-                        this.modalDialog.alert({ title: "Default Library Error", message: err.message });
+                        this.modalDialog.alert({ title: "Default Library Error", message: `${err}` });
                     }
                 });
 

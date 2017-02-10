@@ -158,7 +158,7 @@ function debounce(next: () => any, delay: number) {
     /**
      * The timer handle.
      */
-    let timer: number;
+    let timer: any;
 
     return function (delta: Delta, doc: Document) {
         if (timer) {
