@@ -2,7 +2,7 @@ import * as angular from 'angular';
 import AbstractPageController from './AbstractPageController';
 import ExamplesScope from '../scopes/ExamplesScope';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
-import {GITHUB_AUTH_MANAGER} from '../services/gham/IGitHubAuthManager';
+import { GITHUB_AUTH_MANAGER } from '../services/gham/IGitHubAuthManager';
 import ModalDialog from '../services/modalService/ModalDialog';
 
 /**
@@ -246,9 +246,9 @@ export default class ExamplesController extends AbstractPageController {
                 category: 'Physics'
             },
             {
-                gistId: 'a1ee16bc6b1c98317ba1',
-                title: "Units of Measure",
-                description: "The UNITS library includes Geometric Algebra measures that include optional units of measure. The units are based upon the seven S.I. base units and is also able to recognize some common derived units.",
+                gistId: '6d337555572454c211182c5b45aed418',
+                title: "Units of Measure using NEWTON",
+                description: "The NEWTON library includes Geometric Algebra measures that include optional units of measure. The units are based upon the seven S.I. base units and is also able to recognize common derived units.",
                 imageSrc: '/img/examples/units-of-measure.png',
                 imageAlt: '',
                 category: 'Physics'

@@ -893,43 +893,84 @@ declare module NEWTON {
         zero(): Geometric3;
 
         /**
-         * Basis vector corresponding to the β coordinate.
-         */
-        static I: Geometric3;
-
-        /**
          * Standard Basis vector corresponding to the x coordinate.
          * The returned multivector is locked.
          */
-        static e1: Geometric3;
+        static readonly e1: Geometric3;
 
         /**
          * Basis vector corresponding to the y coordinate.
          * The returned multivector is locked.
          */
-        static e2: Geometric3;
+        static readonly e2: Geometric3;
 
         /**
          * Basis vector corresponding to the z coordinate.
          * The returned multivector is locked.
          */
-        static e3: Geometric3;
+        static readonly e3: Geometric3;
+
+        /**
+         * Basis vector corresponding to the pseudoscalar coordinate.
+         * The returned multivector is locked.
+         */
+        static readonly I: Geometric3;
 
         /**
          * The identity element for multiplication, 1 (scalar).
-         * e.g.
-         * const one = EIGHT.Geometric3.one();
          * The returned multivector is locked.
          */
-        static one: Geometric3;
+        static readonly one: Geometric3;
 
         /**
          * The identity element for addition, 0.
-         * e.g.
-         * const origin = EIGHT.Geometric3.zero();
          * The returned multivector is locked.
          */
-        static zero: Geometric3;
+        static readonly zero: Geometric3;
+
+        /**
+         * SI base unit of length.
+         * The meter is the length of the path travelled by light in vacuum during a time interval of 1 / 299 792 458 of a second.
+         */
+        static readonly meter: Geometric3;
+
+        /**
+         * SI base unit of masss.
+         * The kilogram is the unit of mass; it is equal to the mass of the international prototype of the kilogram.
+         */
+        static readonly kilogram: Geometric3;
+
+        /**
+         * SI base unit of time.
+         * The second is the duration of 9 192 631 770 periods of the radiation corresponding to the transition between the two hyperfine levels of the ground state of the cesium 133 atom.
+         */
+        static readonly second: Geometric3;
+
+        /**
+         * SI base unit of electric current.
+         * The ampere is that constant current which, if maintained in two straight parallel conductors of infinite length, of negligible circular cross-section, and placed 1 meter apart in vacuum, would produce between these conductors a force equal to 2E-7 newton per meter of length.
+         */
+        static readonly ampere: Geometric3;
+
+        /**
+         * SI base unit of thermodynamic temperature.
+         * The kelvin, unit of thermodynamic temperature, is the fraction 1 / 273.16 of the thermodynamic temperature of the triple point of water.
+         */
+        static readonly kelvin: Geometric3;
+
+        /**
+         * SI base unit of amount of substance.
+         * 1. The mole is the amount of substance of a system which contains as many elementary entities as there are atoms in 0.012 kilogram of carbon 12; its symbol is "mol."
+         * 
+         * 2. When the mole is used, the elementary entities must be specified and may be atoms, molecules, ions, electrons, other particles, or specified groups of such particles.
+         */
+        static readonly mole: Geometric3;
+
+        /**
+         * SI base unit of luminous intensity.
+         * The candela is the luminous intensity, in a given direction, of a source that emits monochromatic radiation of frequency 540 x 10E12 hertz and that has a radiant intensity in that direction of 1 / 683 watt per steradian.
+         */
+        static readonly candela: Geometric3;
 
         /**
          * Creates a grade 2 (bivector) multivector from the specified cartesian coordinates.

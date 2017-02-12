@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Geometric3 | NEWTON 0.0.28</title>
+	<title>Geometric3 | NEWTON 0.0.30</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">NEWTON 0.0.28</a>
+					<a href="../index.html" class="title">NEWTON 0.0.30</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -100,10 +100,17 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="geometric3.html#i" class="tsd-kind-icon">I</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="geometric3.html#ampere" class="tsd-kind-icon">ampere</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="geometric3.html#candela" class="tsd-kind-icon">candela</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="geometric3.html#e1" class="tsd-kind-icon">e1</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="geometric3.html#e2" class="tsd-kind-icon">e2</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="geometric3.html#e3" class="tsd-kind-icon">e3</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="geometric3.html#kelvin" class="tsd-kind-icon">kelvin</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="geometric3.html#kilogram" class="tsd-kind-icon">kilogram</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="geometric3.html#meter" class="tsd-kind-icon">meter</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="geometric3.html#mole" class="tsd-kind-icon">mole</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="geometric3.html#one" class="tsd-kind-icon">one</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="geometric3.html#second" class="tsd-kind-icon">second</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="geometric3.html#zero" class="tsd-kind-icon">zero</a></li>
 							</ul>
 						</section>
@@ -252,7 +259,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L183">davinci-newton/math/Geometric3.ts:183</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L200">davinci-newton/math/Geometric3.ts:200</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -285,7 +292,7 @@
 					<div class="tsd-signature tsd-kind-icon">I<span class="tsd-signature-symbol">:</span> <a href="geometric3.html" class="tsd-signature-type">Geometric3</a><span class="tsd-signature-symbol"> =&nbsp;lock(new Geometric3(pseudo(1), void 0, magicCode))</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2337">davinci-newton/math/Geometric3.ts:2337</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2354">davinci-newton/math/Geometric3.ts:2354</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -296,12 +303,44 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="ampere" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> ampere</h3>
+					<div class="tsd-signature tsd-kind-icon">ampere<span class="tsd-signature-symbol">:</span> <a href="geometric3.html" class="tsd-signature-type">Geometric3</a><span class="tsd-signature-symbol"> =&nbsp;lock(new Geometric3(scalar(1), Unit.AMPERE, magicCode))</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2378">davinci-newton/math/Geometric3.ts:2378</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>SI base unit of electric current.
+							The ampere is that constant current which, if maintained in two straight parallel conductors of infinite length, of negligible circular cross-section, and placed 1 meter apart in vacuum, would produce between these conductors a force equal to 2 x 10<sup>-7</sup> newton per meter of length.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="candela" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> candela</h3>
+					<div class="tsd-signature tsd-kind-icon">candela<span class="tsd-signature-symbol">:</span> <a href="geometric3.html" class="tsd-signature-type">Geometric3</a><span class="tsd-signature-symbol"> =&nbsp;lock(new Geometric3(scalar(1), Unit.CANDELA, magicCode))</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2398">davinci-newton/math/Geometric3.ts:2398</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>SI base unit of luminous intensity.
+							The candela is the luminous intensity, in a given direction, of a source that emits monochromatic radiation of frequency 540 x 10<sup>12</sup> hertz and that has a radiant intensity in that direction of 1 / 683 watt per steradian.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="e1" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> e1</h3>
 					<div class="tsd-signature tsd-kind-icon">e1<span class="tsd-signature-symbol">:</span> <a href="geometric3.html" class="tsd-signature-type">Geometric3</a><span class="tsd-signature-symbol"> =&nbsp;lock(new Geometric3(vector(1, 0, 0), void 0, magicCode))</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2319">davinci-newton/math/Geometric3.ts:2319</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2336">davinci-newton/math/Geometric3.ts:2336</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -317,7 +356,7 @@
 					<div class="tsd-signature tsd-kind-icon">e2<span class="tsd-signature-symbol">:</span> <a href="geometric3.html" class="tsd-signature-type">Geometric3</a><span class="tsd-signature-symbol"> =&nbsp;lock(new Geometric3(vector(0, 1, 0), void 0, magicCode))</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2325">davinci-newton/math/Geometric3.ts:2325</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2342">davinci-newton/math/Geometric3.ts:2342</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -333,7 +372,7 @@
 					<div class="tsd-signature tsd-kind-icon">e3<span class="tsd-signature-symbol">:</span> <a href="geometric3.html" class="tsd-signature-type">Geometric3</a><span class="tsd-signature-symbol"> =&nbsp;lock(new Geometric3(vector(0, 0, 1), void 0, magicCode))</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2331">davinci-newton/math/Geometric3.ts:2331</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2348">davinci-newton/math/Geometric3.ts:2348</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -344,12 +383,81 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="kelvin" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> kelvin</h3>
+					<div class="tsd-signature tsd-kind-icon">kelvin<span class="tsd-signature-symbol">:</span> <a href="geometric3.html" class="tsd-signature-type">Geometric3</a><span class="tsd-signature-symbol"> =&nbsp;lock(new Geometric3(scalar(1), Unit.KELVIN, magicCode))</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2384">davinci-newton/math/Geometric3.ts:2384</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>SI base unit of thermodynamic temperature.
+							The kelvin, unit of thermodynamic temperature, is the fraction 1 / 273.16 of the thermodynamic temperature of the triple point of water.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="kilogram" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> kilogram</h3>
+					<div class="tsd-signature tsd-kind-icon">kilogram<span class="tsd-signature-symbol">:</span> <a href="geometric3.html" class="tsd-signature-type">Geometric3</a><span class="tsd-signature-symbol"> =&nbsp;lock(new Geometric3(scalar(1), Unit.KILOGRAM, magicCode))</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2366">davinci-newton/math/Geometric3.ts:2366</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>SI base unit of mass.
+							The kilogram is the unit of mass; it is equal to the mass of the international prototype of the kilogram.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="meter" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> meter</h3>
+					<div class="tsd-signature tsd-kind-icon">meter<span class="tsd-signature-symbol">:</span> <a href="geometric3.html" class="tsd-signature-type">Geometric3</a><span class="tsd-signature-symbol"> =&nbsp;lock(new Geometric3(scalar(1), Unit.METER, magicCode))</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2360">davinci-newton/math/Geometric3.ts:2360</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>SI base unit of length.
+							The meter is the length of the path travelled by light in vacuum during a time interval of 1 / 299 792 458 of a second.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="mole" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> mole</h3>
+					<div class="tsd-signature tsd-kind-icon">mole<span class="tsd-signature-symbol">:</span> <a href="geometric3.html" class="tsd-signature-type">Geometric3</a><span class="tsd-signature-symbol"> =&nbsp;lock(new Geometric3(scalar(1), Unit.MOLE, magicCode))</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2392">davinci-newton/math/Geometric3.ts:2392</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>SI base unit of amount of substance.</p>
+							<ol>
+								<li>The mole is the amount of substance of a system which contains as many elementary entities as there are atoms in 0.012 kilogram of carbon 12; its symbol is &quot;mol.&quot;</li>
+							</ol>
+						</div>
+						<ol>
+							<li>When the mole is used, the elementary entities must be specified and may be atoms, molecules, ions, electrons, other particles, or specified groups of such particles.</li>
+						</ol>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="one" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> one</h3>
 					<div class="tsd-signature tsd-kind-icon">one<span class="tsd-signature-symbol">:</span> <a href="geometric3.html" class="tsd-signature-type">Geometric3</a><span class="tsd-signature-symbol"> =&nbsp;lock(new Geometric3(scalar(1), void 0, magicCode))</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2313">davinci-newton/math/Geometric3.ts:2313</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2330">davinci-newton/math/Geometric3.ts:2330</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -361,12 +469,28 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="second" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> second</h3>
+					<div class="tsd-signature tsd-kind-icon">second<span class="tsd-signature-symbol">:</span> <a href="geometric3.html" class="tsd-signature-type">Geometric3</a><span class="tsd-signature-symbol"> =&nbsp;lock(new Geometric3(scalar(1), Unit.SECOND, magicCode))</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2372">davinci-newton/math/Geometric3.ts:2372</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>SI base unit of time.
+							The second is the duration of 9 192 631 770 periods of the radiation corresponding to the transition between the two hyperfine levels of the ground state of the cesium 133 atom.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="zero" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> zero</h3>
 					<div class="tsd-signature tsd-kind-icon">zero<span class="tsd-signature-symbol">:</span> <a href="geometric3.html" class="tsd-signature-type">Geometric3</a><span class="tsd-signature-symbol"> =&nbsp;lock(new Geometric3(zero(), void 0, magicCode))</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2306">davinci-newton/math/Geometric3.ts:2306</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2323">davinci-newton/math/Geometric3.ts:2323</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -391,7 +515,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L261">davinci-newton/math/Geometric3.ts:261</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L278">davinci-newton/math/Geometric3.ts:278</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -404,7 +528,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L264">davinci-newton/math/Geometric3.ts:264</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L281">davinci-newton/math/Geometric3.ts:281</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -433,7 +557,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L271">davinci-newton/math/Geometric3.ts:271</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L288">davinci-newton/math/Geometric3.ts:288</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -446,7 +570,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L274">davinci-newton/math/Geometric3.ts:274</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L291">davinci-newton/math/Geometric3.ts:291</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -474,7 +598,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L287">davinci-newton/math/Geometric3.ts:287</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L304">davinci-newton/math/Geometric3.ts:304</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -502,7 +626,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L316">davinci-newton/math/Geometric3.ts:316</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L333">davinci-newton/math/Geometric3.ts:333</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -515,7 +639,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L319">davinci-newton/math/Geometric3.ts:319</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L336">davinci-newton/math/Geometric3.ts:336</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -544,7 +668,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L333">davinci-newton/math/Geometric3.ts:333</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L350">davinci-newton/math/Geometric3.ts:350</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -557,7 +681,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L336">davinci-newton/math/Geometric3.ts:336</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L353">davinci-newton/math/Geometric3.ts:353</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -586,7 +710,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L383">davinci-newton/math/Geometric3.ts:383</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L400">davinci-newton/math/Geometric3.ts:400</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -599,7 +723,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L386">davinci-newton/math/Geometric3.ts:386</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L403">davinci-newton/math/Geometric3.ts:403</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -628,7 +752,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L343">davinci-newton/math/Geometric3.ts:343</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L360">davinci-newton/math/Geometric3.ts:360</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -641,7 +765,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L346">davinci-newton/math/Geometric3.ts:346</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L363">davinci-newton/math/Geometric3.ts:363</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -670,7 +794,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L363">davinci-newton/math/Geometric3.ts:363</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L380">davinci-newton/math/Geometric3.ts:380</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -683,7 +807,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L366">davinci-newton/math/Geometric3.ts:366</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L383">davinci-newton/math/Geometric3.ts:383</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -712,7 +836,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L353">davinci-newton/math/Geometric3.ts:353</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L370">davinci-newton/math/Geometric3.ts:370</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -725,7 +849,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L356">davinci-newton/math/Geometric3.ts:356</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L373">davinci-newton/math/Geometric3.ts:373</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -754,7 +878,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L373">davinci-newton/math/Geometric3.ts:373</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L390">davinci-newton/math/Geometric3.ts:390</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -767,7 +891,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L376">davinci-newton/math/Geometric3.ts:376</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L393">davinci-newton/math/Geometric3.ts:393</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -798,7 +922,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2036">davinci-newton/math/Geometric3.ts:2036</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2053">davinci-newton/math/Geometric3.ts:2053</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -826,7 +950,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2283">davinci-newton/math/Geometric3.ts:2283</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2300">davinci-newton/math/Geometric3.ts:2300</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -848,7 +972,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2052">davinci-newton/math/Geometric3.ts:2052</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2069">davinci-newton/math/Geometric3.ts:2069</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -876,7 +1000,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2193">davinci-newton/math/Geometric3.ts:2193</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2210">davinci-newton/math/Geometric3.ts:2210</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -904,7 +1028,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2080">davinci-newton/math/Geometric3.ts:2080</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2097">davinci-newton/math/Geometric3.ts:2097</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -932,7 +1056,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2297">davinci-newton/math/Geometric3.ts:2297</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2314">davinci-newton/math/Geometric3.ts:2314</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -954,7 +1078,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2290">davinci-newton/math/Geometric3.ts:2290</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2307">davinci-newton/math/Geometric3.ts:2307</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -976,7 +1100,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2108">davinci-newton/math/Geometric3.ts:2108</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2125">davinci-newton/math/Geometric3.ts:2125</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1004,7 +1128,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2065">davinci-newton/math/Geometric3.ts:2065</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2082">davinci-newton/math/Geometric3.ts:2082</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1032,7 +1156,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2208">davinci-newton/math/Geometric3.ts:2208</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2225">davinci-newton/math/Geometric3.ts:2225</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1060,7 +1184,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2093">davinci-newton/math/Geometric3.ts:2093</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2110">davinci-newton/math/Geometric3.ts:2110</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1088,7 +1212,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2238">davinci-newton/math/Geometric3.ts:2238</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2255">davinci-newton/math/Geometric3.ts:2255</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1116,7 +1240,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2223">davinci-newton/math/Geometric3.ts:2223</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2240">davinci-newton/math/Geometric3.ts:2240</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1144,7 +1268,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2139">davinci-newton/math/Geometric3.ts:2139</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2156">davinci-newton/math/Geometric3.ts:2156</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1172,7 +1296,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2268">davinci-newton/math/Geometric3.ts:2268</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2285">davinci-newton/math/Geometric3.ts:2285</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1200,7 +1324,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2177">davinci-newton/math/Geometric3.ts:2177</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2194">davinci-newton/math/Geometric3.ts:2194</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1228,7 +1352,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2126">davinci-newton/math/Geometric3.ts:2126</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2143">davinci-newton/math/Geometric3.ts:2143</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1256,7 +1380,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2154">davinci-newton/math/Geometric3.ts:2154</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2171">davinci-newton/math/Geometric3.ts:2171</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1278,7 +1402,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2253">davinci-newton/math/Geometric3.ts:2253</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2270">davinci-newton/math/Geometric3.ts:2270</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1306,7 +1430,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2161">davinci-newton/math/Geometric3.ts:2161</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2178">davinci-newton/math/Geometric3.ts:2178</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1334,7 +1458,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L397">davinci-newton/math/Geometric3.ts:397</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L414">davinci-newton/math/Geometric3.ts:414</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1372,7 +1496,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L439">davinci-newton/math/Geometric3.ts:439</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L456">davinci-newton/math/Geometric3.ts:456</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1402,7 +1526,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L467">davinci-newton/math/Geometric3.ts:467</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L484">davinci-newton/math/Geometric3.ts:484</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1440,7 +1564,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L493">davinci-newton/math/Geometric3.ts:493</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L510">davinci-newton/math/Geometric3.ts:510</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1478,7 +1602,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L517">davinci-newton/math/Geometric3.ts:517</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L534">davinci-newton/math/Geometric3.ts:534</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1513,7 +1637,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L542">davinci-newton/math/Geometric3.ts:542</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L559">davinci-newton/math/Geometric3.ts:559</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1536,7 +1660,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L551">davinci-newton/math/Geometric3.ts:551</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L568">davinci-newton/math/Geometric3.ts:568</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1565,7 +1689,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L564">davinci-newton/math/Geometric3.ts:564</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L581">davinci-newton/math/Geometric3.ts:581</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1585,7 +1709,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L571">davinci-newton/math/Geometric3.ts:571</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L588">davinci-newton/math/Geometric3.ts:588</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1607,7 +1731,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L611">davinci-newton/math/Geometric3.ts:611</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L628">davinci-newton/math/Geometric3.ts:628</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1639,7 +1763,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L631">davinci-newton/math/Geometric3.ts:631</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L648">davinci-newton/math/Geometric3.ts:648</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1671,7 +1795,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L591">davinci-newton/math/Geometric3.ts:591</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L608">davinci-newton/math/Geometric3.ts:608</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1701,7 +1825,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L651">davinci-newton/math/Geometric3.ts:651</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L668">davinci-newton/math/Geometric3.ts:668</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1738,7 +1862,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L670">davinci-newton/math/Geometric3.ts:670</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L687">davinci-newton/math/Geometric3.ts:687</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1769,7 +1893,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L689">davinci-newton/math/Geometric3.ts:689</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L706">davinci-newton/math/Geometric3.ts:706</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1800,7 +1924,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L707">davinci-newton/math/Geometric3.ts:707</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L724">davinci-newton/math/Geometric3.ts:724</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1829,7 +1953,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L721">davinci-newton/math/Geometric3.ts:721</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L738">davinci-newton/math/Geometric3.ts:738</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1849,7 +1973,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L746">davinci-newton/math/Geometric3.ts:746</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L763">davinci-newton/math/Geometric3.ts:763</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1878,7 +2002,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L890">davinci-newton/math/Geometric3.ts:890</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L907">davinci-newton/math/Geometric3.ts:907</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1916,7 +2040,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L825">davinci-newton/math/Geometric3.ts:825</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L842">davinci-newton/math/Geometric3.ts:842</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1939,7 +2063,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L850">davinci-newton/math/Geometric3.ts:850</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L867">davinci-newton/math/Geometric3.ts:867</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1978,7 +2102,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L868">davinci-newton/math/Geometric3.ts:868</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L885">davinci-newton/math/Geometric3.ts:885</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2001,7 +2125,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L916">davinci-newton/math/Geometric3.ts:916</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L933">davinci-newton/math/Geometric3.ts:933</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2030,7 +2154,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L952">davinci-newton/math/Geometric3.ts:952</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L969">davinci-newton/math/Geometric3.ts:969</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2055,7 +2179,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L967">davinci-newton/math/Geometric3.ts:967</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L984">davinci-newton/math/Geometric3.ts:984</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2079,7 +2203,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1996">davinci-newton/math/Geometric3.ts:1996</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2013">davinci-newton/math/Geometric3.ts:2013</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2105,7 +2229,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2013">davinci-newton/math/Geometric3.ts:2013</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2030">davinci-newton/math/Geometric3.ts:2030</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2139,7 +2263,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1934">davinci-newton/math/Geometric3.ts:1934</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1951">davinci-newton/math/Geometric3.ts:1951</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2172,7 +2296,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1008">davinci-newton/math/Geometric3.ts:1008</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1025">davinci-newton/math/Geometric3.ts:1025</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2195,7 +2319,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L205">davinci-newton/math/Geometric3.ts:205</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L222">davinci-newton/math/Geometric3.ts:222</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2219,7 +2343,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1055">davinci-newton/math/Geometric3.ts:1055</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1072">davinci-newton/math/Geometric3.ts:1072</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2241,7 +2365,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1067">davinci-newton/math/Geometric3.ts:1067</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1084">davinci-newton/math/Geometric3.ts:1084</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2263,7 +2387,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1076">davinci-newton/math/Geometric3.ts:1076</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1093">davinci-newton/math/Geometric3.ts:1093</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2289,7 +2413,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1093">davinci-newton/math/Geometric3.ts:1093</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1110">davinci-newton/math/Geometric3.ts:1110</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2323,7 +2447,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1102">davinci-newton/math/Geometric3.ts:1102</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1119">davinci-newton/math/Geometric3.ts:1119</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2352,7 +2476,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1137">davinci-newton/math/Geometric3.ts:1137</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1154">davinci-newton/math/Geometric3.ts:1154</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2389,7 +2513,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L213">davinci-newton/math/Geometric3.ts:213</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L230">davinci-newton/math/Geometric3.ts:230</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2412,7 +2536,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1147">davinci-newton/math/Geometric3.ts:1147</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1164">davinci-newton/math/Geometric3.ts:1164</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2436,7 +2560,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1173">davinci-newton/math/Geometric3.ts:1173</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1190">davinci-newton/math/Geometric3.ts:1190</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2460,7 +2584,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1203">davinci-newton/math/Geometric3.ts:1203</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1220">davinci-newton/math/Geometric3.ts:1220</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2492,7 +2616,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1259">davinci-newton/math/Geometric3.ts:1259</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1276">davinci-newton/math/Geometric3.ts:1276</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2526,7 +2650,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1688">davinci-newton/math/Geometric3.ts:1688</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1705">davinci-newton/math/Geometric3.ts:1705</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2552,7 +2676,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1711">davinci-newton/math/Geometric3.ts:1711</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1728">davinci-newton/math/Geometric3.ts:1728</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2581,7 +2705,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1298">davinci-newton/math/Geometric3.ts:1298</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1315">davinci-newton/math/Geometric3.ts:1315</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2601,7 +2725,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1322">davinci-newton/math/Geometric3.ts:1322</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1339">davinci-newton/math/Geometric3.ts:1339</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2626,7 +2750,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1343">davinci-newton/math/Geometric3.ts:1343</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1360">davinci-newton/math/Geometric3.ts:1360</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2647,7 +2771,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1361">davinci-newton/math/Geometric3.ts:1361</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1378">davinci-newton/math/Geometric3.ts:1378</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2671,7 +2795,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1383">davinci-newton/math/Geometric3.ts:1383</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1400">davinci-newton/math/Geometric3.ts:1400</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2697,7 +2821,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1400">davinci-newton/math/Geometric3.ts:1400</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1417">davinci-newton/math/Geometric3.ts:1417</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2731,7 +2855,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1435">davinci-newton/math/Geometric3.ts:1435</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1452">davinci-newton/math/Geometric3.ts:1452</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2767,7 +2891,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1479">davinci-newton/math/Geometric3.ts:1479</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1496">davinci-newton/math/Geometric3.ts:1496</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2787,7 +2911,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1502">davinci-newton/math/Geometric3.ts:1502</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1519">davinci-newton/math/Geometric3.ts:1519</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2816,7 +2940,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1538">davinci-newton/math/Geometric3.ts:1538</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1555">davinci-newton/math/Geometric3.ts:1555</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2852,7 +2976,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1569">davinci-newton/math/Geometric3.ts:1569</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1586">davinci-newton/math/Geometric3.ts:1586</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2892,7 +3016,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1595">davinci-newton/math/Geometric3.ts:1595</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1612">davinci-newton/math/Geometric3.ts:1612</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2917,7 +3041,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1628">davinci-newton/math/Geometric3.ts:1628</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1645">davinci-newton/math/Geometric3.ts:1645</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2954,7 +3078,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1654">davinci-newton/math/Geometric3.ts:1654</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1671">davinci-newton/math/Geometric3.ts:1671</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -2988,7 +3112,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1663">davinci-newton/math/Geometric3.ts:1663</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1680">davinci-newton/math/Geometric3.ts:1680</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3014,7 +3138,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1680">davinci-newton/math/Geometric3.ts:1680</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1697">davinci-newton/math/Geometric3.ts:1697</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3048,7 +3172,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1409">davinci-newton/math/Geometric3.ts:1409</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1426">davinci-newton/math/Geometric3.ts:1426</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3071,7 +3195,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1734">davinci-newton/math/Geometric3.ts:1734</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1751">davinci-newton/math/Geometric3.ts:1751</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3101,7 +3225,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1788">davinci-newton/math/Geometric3.ts:1788</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1805">davinci-newton/math/Geometric3.ts:1805</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3130,7 +3254,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1848">davinci-newton/math/Geometric3.ts:1848</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1865">davinci-newton/math/Geometric3.ts:1865</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3164,7 +3288,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1819">davinci-newton/math/Geometric3.ts:1819</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1836">davinci-newton/math/Geometric3.ts:1836</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3199,7 +3323,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1891">davinci-newton/math/Geometric3.ts:1891</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1908">davinci-newton/math/Geometric3.ts:1908</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3227,7 +3351,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1902">davinci-newton/math/Geometric3.ts:1902</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1919">davinci-newton/math/Geometric3.ts:1919</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3255,7 +3379,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1911">davinci-newton/math/Geometric3.ts:1911</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1928">davinci-newton/math/Geometric3.ts:1928</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3280,7 +3404,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1922">davinci-newton/math/Geometric3.ts:1922</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1939">davinci-newton/math/Geometric3.ts:1939</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3308,7 +3432,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L227">davinci-newton/math/Geometric3.ts:227</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L244">davinci-newton/math/Geometric3.ts:244</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3337,7 +3461,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1757">davinci-newton/math/Geometric3.ts:1757</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1774">davinci-newton/math/Geometric3.ts:1774</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3372,7 +3496,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L1776">davinci-newton/math/Geometric3.ts:1776</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L1793">davinci-newton/math/Geometric3.ts:1793</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3395,7 +3519,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2020">davinci-newton/math/Geometric3.ts:2020</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2037">davinci-newton/math/Geometric3.ts:2037</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3416,7 +3540,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2346">davinci-newton/math/Geometric3.ts:2346</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2407">davinci-newton/math/Geometric3.ts:2407</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3465,7 +3589,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2353">davinci-newton/math/Geometric3.ts:2353</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2414">davinci-newton/math/Geometric3.ts:2414</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3493,7 +3617,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2357">davinci-newton/math/Geometric3.ts:2357</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2418">davinci-newton/math/Geometric3.ts:2418</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3516,7 +3640,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2361">davinci-newton/math/Geometric3.ts:2361</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2422">davinci-newton/math/Geometric3.ts:2422</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3539,7 +3663,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2365">davinci-newton/math/Geometric3.ts:2365</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2426">davinci-newton/math/Geometric3.ts:2426</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3562,7 +3686,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2369">davinci-newton/math/Geometric3.ts:2369</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2430">davinci-newton/math/Geometric3.ts:2430</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3585,7 +3709,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2376">davinci-newton/math/Geometric3.ts:2376</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2437">davinci-newton/math/Geometric3.ts:2437</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3612,7 +3736,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2383">davinci-newton/math/Geometric3.ts:2383</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2444">davinci-newton/math/Geometric3.ts:2444</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3637,7 +3761,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2391">davinci-newton/math/Geometric3.ts:2391</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2452">davinci-newton/math/Geometric3.ts:2452</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3662,7 +3786,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2401">davinci-newton/math/Geometric3.ts:2401</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2462">davinci-newton/math/Geometric3.ts:2462</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3694,7 +3818,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2410">davinci-newton/math/Geometric3.ts:2410</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2471">davinci-newton/math/Geometric3.ts:2471</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3718,7 +3842,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2430">davinci-newton/math/Geometric3.ts:2430</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2491">davinci-newton/math/Geometric3.ts:2491</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3755,7 +3879,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2434">davinci-newton/math/Geometric3.ts:2434</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2495">davinci-newton/math/Geometric3.ts:2495</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3781,7 +3905,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2438">davinci-newton/math/Geometric3.ts:2438</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2499">davinci-newton/math/Geometric3.ts:2499</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3810,7 +3934,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2447">davinci-newton/math/Geometric3.ts:2447</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2508">davinci-newton/math/Geometric3.ts:2508</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3847,7 +3971,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2459">davinci-newton/math/Geometric3.ts:2459</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2520">davinci-newton/math/Geometric3.ts:2520</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3902,7 +4026,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2470">davinci-newton/math/Geometric3.ts:2470</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2531">davinci-newton/math/Geometric3.ts:2531</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3951,7 +4075,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/64b4fe5/src/davinci-newton/math/Geometric3.ts#L2478">davinci-newton/math/Geometric3.ts:2478</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Geometric3.ts#L2539">davinci-newton/math/Geometric3.ts:2539</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3995,6 +4119,12 @@
 								<a href="geometric3.html#i" class="tsd-kind-icon">I</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="geometric3.html#ampere" class="tsd-kind-icon">ampere</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="geometric3.html#candela" class="tsd-kind-icon">candela</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 								<a href="geometric3.html#e1" class="tsd-kind-icon">e1</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
@@ -4004,7 +4134,22 @@
 								<a href="geometric3.html#e3" class="tsd-kind-icon">e3</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="geometric3.html#kelvin" class="tsd-kind-icon">kelvin</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="geometric3.html#kilogram" class="tsd-kind-icon">kilogram</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="geometric3.html#meter" class="tsd-kind-icon">meter</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="geometric3.html#mole" class="tsd-kind-icon">mole</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 								<a href="geometric3.html#one" class="tsd-kind-icon">one</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="geometric3.html#second" class="tsd-kind-icon">second</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 								<a href="geometric3.html#zero" class="tsd-kind-icon">zero</a>
