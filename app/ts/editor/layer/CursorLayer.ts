@@ -28,9 +28,7 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
     public $pixelPos: PixelPosition;
 
     /**
-     * @class CursorLayer
-     * @constructor
-     * @param parent {HTMLElement}
+     * @param parent
      */
     constructor(parent: HTMLElement) {
         super(parent, "ace_layer ace_cursor-layer");
@@ -67,9 +65,7 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
     }
 
     /**
-     * @method setPadding
-     * @param padding {number}
-     * @return {void}
+     * @param padding
      */
     public setPadding(padding: number): void {
         if (typeof padding === 'number') {
@@ -81,9 +77,7 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
     }
 
     /**
-     * @method setSession
-     * @param session {EditSession}
-     * @return {void}
+     * @param session
      */
     public setSession(session: EditSession): void {
         this.session = session;
@@ -104,9 +98,7 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
     }
 
     /**
-     * @method setSmoothBlinking
-     * @param smoothBlinking {boolean}
-     * @return {void}
+     * @param smoothBlinking
      */
     public setSmoothBlinking(smoothBlinking: boolean): void {
         if (smoothBlinking !== this.smoothBlinking && !isIE8) {
@@ -138,8 +130,7 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
     }
 
     /**
-     * @method hideCursor
-     * @return {void}
+     *
      */
     public hideCursor(): void {
         this.isVisible = false;
@@ -148,8 +139,7 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
     }
 
     /**
-     * @method showCursor
-     * @return {void}
+     *
      */
     public showCursor(): void {
         this.isVisible = true;
@@ -158,8 +148,7 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
     }
 
     /**
-     * @method restartTimer
-     * @return {void}
+     *
      */
     public restartTimer(): void {
         const update = this.$updateCursors;
@@ -200,10 +189,8 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
      * The number of columns is multiplied by the character width.
      * The padding is added to the left property only.
      *
-     * @method getPixelPosition
-     * @param [position] {Position}
-     * @param [onScreen] {boolean}
-     * @return {PixelPosition}
+     * @param position
+     * @param onScreen
      */
     public getPixelPosition(position?: Position, onScreen?: boolean): PixelPosition {
 
@@ -224,9 +211,7 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
     }
 
     /**
-     * @method update
-     * @param config {CursorConfig}
-     * @return {void}
+     * @param config
      */
     public update(config: CursorConfig): void {
 

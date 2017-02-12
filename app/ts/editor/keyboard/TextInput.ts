@@ -13,28 +13,22 @@ const USE_IE_MIME_TYPE = isIE;
 const PLACEHOLDER = "\x01\x01";
 
 /**
- * @class TextInput
+ *
  */
 export default class TextInput {
 
     /**
-     * @property text
-     * @type HTMLTextAreaElement
-     * @private
+     *
      */
     private text: HTMLTextAreaElement;
 
     /**
-     * @property editor
-     * @type Editor
-     * @private
+     *
      */
     private editor: Editor;
 
     /**
-     * @property _isFocused
-     * @type boolean
-     * @private
+     *
      */
     public _isFocused: boolean;
 
@@ -51,13 +45,11 @@ export default class TextInput {
 
     private pasted: boolean;
 
-    private syncValue: any;
+    private syncValue: DelayedCall;
 
     /**
-     * @class TextInput
-     * @constructor
-     * @param container {Element}
-     * @param editor {Editor}
+     * @param container
+     * @param editor
      */
     constructor(container: Element, editor: Editor) {
 
@@ -426,16 +418,14 @@ export default class TextInput {
     }
 
     /**
-     * @method getElement
-     * @return {HTMLTextAreaElement}
+     *
      */
     getElement(): HTMLTextAreaElement {
         return this.text;
     }
 
     /**
-     * @method isFocused
-     * @return {boolean}
+     *
      */
     isFocused(): boolean {
         return this._isFocused;
@@ -479,33 +469,28 @@ export default class TextInput {
     }
 
     /**
-     * @method setReadOnly
-     * @param readOnly {boolean}
-     * @return {void}
+     * @param readOnly
      */
     setReadOnly(readOnly: boolean): void {
         this.text.readOnly = readOnly;
     }
 
     /**
-     * @method focus
-     * @return {void}
+     *
      */
     focus(): void {
         return this.text.focus();
     }
 
     /**
-     * @method blur
-     * @return {void}
+     *
      */
     blur() {
         return this.text.blur();
     }
 
     /**
-     * @method onContextMenuClose
-     * @return {void}
+     *
      */
     onContextMenuClose(): void {
         setTimeout(() => {
@@ -521,9 +506,7 @@ export default class TextInput {
     }
 
     /**
-     * @method onContextMenu
-     * @param e {MouseEvent}
-     * @return {void}
+     * @param e
      */
     onContextMenu(e: MouseEvent): void {
         this.afterContextMenu = true;
@@ -533,9 +516,7 @@ export default class TextInput {
     }
 
     /**
-     * @method sendText
-     * @param data {string}
-     * @return {void}
+     * @param data
      */
     sendText(data: string): void {
         if (this.inputHandler) {
@@ -602,25 +583,21 @@ export default class TextInput {
     }
 
     /**
-     * @method setInputHandler
-     * @param inputHandler {(data: string)=>string}
-     * @return {void}
+     * @param inputHandler
      */
     setInputHandler(inputHandler: (data: string) => string): void {
         this.inputHandler = inputHandler;
     }
 
     /**
-     * @method getInputHandler
-     * @return {(data: string)=>string}
+     *
      */
     getInputHandler(): (data: string) => string {
         return this.inputHandler;
     }
 
     /**
-     * @method resetValue
-     * @return {void}
+     *
      */
     resetValue(): void {
         if (this.inComposition) {

@@ -7,9 +7,9 @@ import Editor from "../Editor";
 import PixelPosition from "../PixelPosition";
 import Range from "../Range";
 import Token from "../Token";
-import {addListener} from "../lib/event";
-import {stringRepeat} from "../lib/lang";
-import {addCssClass, createElement, removeCssClass} from "../lib/dom";
+import { addListener } from "../lib/event";
+import { stringRepeat } from "../lib/lang";
+import { addCssClass, createElement, removeCssClass } from "../lib/dom";
 import ListView from "./ListView";
 
 const noop = function () { /* Do nothing. */ };
@@ -29,33 +29,21 @@ const noop = function () { /* Do nothing. */ };
  * This implementation is strongly coupled to <code>Completion</code> as the list item.
  * With an appropriate type parameter and a conversio function, this could be generalized.
  * Generalizing by simply allowing strings is not recommended.
- *
- * @class ListViewPopup
  */
 export default class ListViewPopup implements ListView {
 
     /**
-     * @property editor
-     * @type Editor
-     * @private
+     *
      */
     private editor: Editor;
 
     /**
      * The border size is currently fixed at 1 pixel.
-     *
-     * @property borderSize
-     * @type number
-     * @private
      */
     private $borderSize = 1;
 
     /**
      * The image size is currently fixed at 0 pixel.
-     *
-     * @property imageSize
-     * @type number
-     * @private
      */
     private imageSize = 0;
 
@@ -65,22 +53,19 @@ export default class ListViewPopup implements ListView {
     private selectionMarkerId: number;
     public isOpen = false;
     private isTopdown = false;
-    // FIXME: Type.
+    // FIXME: Type needs to be more than just MouseEvent.
     private lastMouseEvent: any;
-    private lastMouseEventScrollTop;
+    private lastMouseEventScrollTop: number;
 
     /**
-     * @property data
-     * @type Completion[]
+     *
      */
     public data: Completion[] = [];
 
     private screenWidth: number;
 
     /**
-     * @class ListViewPopup
-     * @constructor
-     * @param container {HTMLElement}
+     * @param container
      */
     constructor(container: HTMLElement) {
 
@@ -241,11 +226,9 @@ export default class ListViewPopup implements ListView {
     }
 
     /**
-     * @method show
-     * @param pos {PixelPosition}
-     * @param lineHeight {number}
-     * @param [topdownOnly] {boolean}
-     * @return {void}
+     * @param pos
+     * @param lineHeight
+     * @param topdownOnly
      */
     show(pos: PixelPosition, lineHeight: number, topdownOnly?: boolean): void {
         var el = this.editor.container;
@@ -283,8 +266,7 @@ export default class ListViewPopup implements ListView {
     }
 
     /**
-     * @method hide
-     * @return {void}
+     *
      */
     hide(): void {
         this.editor.container.style.display = "none";
@@ -293,9 +275,7 @@ export default class ListViewPopup implements ListView {
     }
 
     /**
-     * @method setData
-     * @param items {Completion[]}
-     * @return {void}
+     * @param items
      */
     setData(items: Completion[]): void {
         this.editor.setValue(stringRepeat("\n", items.length), -1);
@@ -304,9 +284,7 @@ export default class ListViewPopup implements ListView {
     }
 
     /**
-     * @method getData
-     * @param row {number}
-     * @return {Completion}
+     * @param row
      */
     getData(row: number): Completion {
         return this.data[row];
@@ -321,8 +299,7 @@ export default class ListViewPopup implements ListView {
     }
 
     /**
-     * @method getTextLeftOffset
-     * @return {number}
+     *
      */
     getTextLeftOffset(): number {
         // The imageSize is currently always zero.
@@ -330,9 +307,7 @@ export default class ListViewPopup implements ListView {
     }
 
     /**
-     * @method setSelectOnHover
-     * @param selectOnHover {boolean}
-     * @return {void}
+     * @param selectOnHover
      */
     setSelectOnHover(selectOnHover: boolean): void {
         if (!selectOnHover) {

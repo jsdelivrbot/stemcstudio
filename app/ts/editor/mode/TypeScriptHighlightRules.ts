@@ -28,7 +28,7 @@ export default class TypeScriptHighlightRiles extends JavaScriptHighlightRules {
             },
             {
                 token: ["keyword.operator.ts"],
-                regex: "(?:\\b(constructor|declare|interface|as|AS|public|private|class|extends|export|super)\\b)"
+                regex: "(?:\\b(constructor|declare|interface|as|AS|public|private|readonly|class|extends|export|super)\\b)"
             },
             {
                 token: ["storage.type.variable.ts"],

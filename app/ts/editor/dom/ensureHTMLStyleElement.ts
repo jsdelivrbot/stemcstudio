@@ -1,5 +1,6 @@
 import getDocumentHead from './getDocumentHead';
 import hasHTMLStyleElement from './hasHTMLStyleElement';
+
 /**
  *
  */

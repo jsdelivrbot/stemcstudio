@@ -14,7 +14,7 @@ import PixelPosition from '../PixelPosition';
 import Position from '../Position';
 import Range from '../Range';
 // import retrievePrecedingIdentifier from "./retrievePrecedingIdentifier";
-import {COMMAND_NAME_INSERT_STRING} from '../editor_protocol';
+import { COMMAND_NAME_INSERT_STRING } from '../editor_protocol';
 
 const completionCompareFn = function (a: Completion, b: Completion) {
     return a.caption.toLowerCase() > b.caption.toLowerCase() ? +1 : -1;
@@ -45,17 +45,12 @@ export default class CompletionManager {
 
     /**
      * The completion manager
-     *
-     * @property keyboardHandler
-     * @type KeyboardHandler
      */
-    private keyboardHandler = new KeyboardHandler();
-    // FIXME: Make this a readOnly property.
+    private readonly keyboardHandler = new KeyboardHandler();
+
     /**
      * The completion manager is activated when the attach(editor) method is invoked and remains
      * so until the completion manager is detached from the editor.
-     * @property activated
-     * @type boolean
      */
     public activated: boolean;
     private changeTimer: DelayedCall;
@@ -66,23 +61,16 @@ export default class CompletionManager {
 
     /**
      * Determines what happens when the autocomplete list is presented.
-     *
-     * @property autoSelect
-     * @type boolean
      */
     public autoSelect: boolean;
 
     /**
      * Determines what happens when there is only one completion.
-     *
-     * @property autoInsert
-     * @type boolean
      */
     public autoInsert: boolean;
 
     /**
-     * @property exactMatch
-     * @type boolean
+     *
      */
     private exactMatch: boolean;
 
@@ -155,9 +143,7 @@ export default class CompletionManager {
      * This method is called in order to display the completions list.
      * It is typically called as part of an editor action.
      *
-     * @method attach
-     * @param editor {Editor}
-     * @return {void}
+     * @param editor
      */
     public attach(editor: Editor): void {
 
@@ -187,8 +173,7 @@ export default class CompletionManager {
     }
 
     /**
-     * @method detach
-     * @return {void}
+     *
      */
     public detach(): void {
         this.editor.keyBinding.removeKeyboardHandler(this.keyboardHandler);
@@ -217,10 +202,7 @@ export default class CompletionManager {
     }
 
     /**
-     * @method insertMatch
-     * @param [data] {Completion}
-     * @return {void}
-     * @private
+     * @param data
      */
     private insertMatch(data?: Completion): void {
         if (!data) {
@@ -260,11 +242,9 @@ export default class CompletionManager {
     }
 
     /**
-     * @method goTo
-     * @param where {string}
-     * @return {void}
+     * @param where
      */
-    private goTo(where: string): void {
+    private goTo(where: 'up' | 'down' | 'start' | 'end' | 'pageUp' | 'pageDown'): void {
 
         let row = this.popup.getRow();
         const max = this.popup.getLength() - 1;
@@ -283,9 +263,7 @@ export default class CompletionManager {
     }
 
     /**
-     * @method down
-     * @return {void}
-     * @private
+     *
      */
     private down(): void {
         let row = this.popup.getRow();
@@ -329,12 +307,8 @@ export default class CompletionManager {
         return true;
     }
 
-    // FIXME: Probably should have an async callback for handling errors.
     /**
-     * @method updateCompletions
-     * @param keepPopupPosition {boolean}
-     * @return {void}
-     * @private
+     * @param keepPopupPosition
      */
     private updateCompletions(keepPopupPosition: boolean): void {
         const editor = this.editor;
@@ -413,12 +387,9 @@ export default class CompletionManager {
     }
 
     /**
-     * @method openPopup
-     * @param editor {Editor}
-     * @param prefix {string}
-     * @param keepPopupPosition {boolean}
-     * @return {void}
-     * @private
+     * @param editor
+     * @param prefix
+     * @param keepPopupPosition
      */
     private openPopup(editor: Editor, prefix: string, keepPopupPosition: boolean): void {
 
@@ -506,23 +477,20 @@ export default class CompletionManager {
     }
 
     /**
-     * @method cancelContextMenu
-     * @return {void}
+     *
      */
     public cancelContextMenu(): void {
         this.editor.cancelMouseContextMenu();
     }
 
     /**
-     * @method updateDocTooltip
-     * @return {void}
-     * @private
+     *
      */
     private updateDocTooltip(): void {
-        var popup = this.popup;
-        var all = popup.data;
-        var selected = all && (all[popup.getHoveredRow()] || all[popup.getRow()]);
-        var doc = null;
+        const popup = this.popup;
+        const all = popup.data;
+        const selected = all && (all[popup.getHoveredRow()] || all[popup.getRow()]);
+        let doc = null;
         if (!selected || !this.editor || !this.popup.isOpen)
             return this.hideDocTooltip();
         this.editor.completers.some(function (completer) {
@@ -544,9 +512,7 @@ export default class CompletionManager {
     }
 
     /**
-     * @method showDocTooltip
      * @param item
-     * @return {void}
      */
     private showDocTooltip(item: { docHTML?: string; docText?: string }): void {
         if (!this.tooltipNode) {
@@ -558,7 +524,7 @@ export default class CompletionManager {
             this.tooltipNode.onblur = this.blurListener.bind(this);
         }
 
-        var tooltipNode = this.tooltipNode;
+        const tooltipNode = this.tooltipNode;
         if (item.docHTML) {
             tooltipNode.innerHTML = item.docHTML;
         } else if (item.docText) {
@@ -568,8 +534,8 @@ export default class CompletionManager {
         if (!tooltipNode.parentNode) {
             document.body.appendChild(tooltipNode);
         }
-        var popup = this.popup;
-        var rect = popup.container.getBoundingClientRect();
+        const popup = this.popup;
+        const rect = popup.container.getBoundingClientRect();
         tooltipNode.style.top = popup.container.style.top;
         tooltipNode.style.bottom = popup.container.style.bottom;
 
@@ -585,9 +551,7 @@ export default class CompletionManager {
     }
 
     /**
-     * @param hideDocTooltip
-     * @return {void}
-     * @private
+     *
      */
     private hideDocTooltip(): void {
         this.tooltipTimer.cancel();

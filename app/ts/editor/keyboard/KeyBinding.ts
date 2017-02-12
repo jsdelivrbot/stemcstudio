@@ -33,42 +33,38 @@ import { keyCodeToString } from "../lib/keys";
 import { stopEvent } from "../lib/event";
 import Editor from "../Editor";
 import KeyboardHandler from "./KeyboardHandler";
-import {COMMAND_NAME_INSERT_STRING} from "../editor_protocol";
+import { COMMAND_NAME_INSERT_STRING } from "../editor_protocol";
 import KeyboardResponse from './KeyboardResponse';
 
 /**
- * @class KeyBinding
+ *
  */
 export default class KeyBinding {
     /**
-     * @property editor
-     * @type Editor
-     * @private
+     *
      */
-    private editor: Editor;
-    private $data;
+    private readonly editor: Editor;
+    private readonly $data: { editor: Editor };
     /**
      * Used by getEditorKeyboardShortcuts
      */
-    public $handlers: KeyboardHandler[];
+    public readonly $handlers: KeyboardHandler[] = [];
+    /**
+     * 
+     */
     private $defaultHandler: KeyboardHandler;
 
     /**
-     * @class KeyBinding
-     * @constructor
-     * @param editor {Editor}
+     * @param editor
      */
     constructor(editor: Editor) {
         this.editor = editor;
         this.$data = { editor: editor };
-        this.$handlers = [];
         this.setDefaultHandler(editor.commands.hashHandler);
     }
 
     /**
-     * @method setDefaultHandler
-     * @param kb {KeyboardHandler}
-     * @return {void}
+     * @param kb
      */
     setDefaultHandler(kb: KeyboardHandler): void {
         this.removeKeyboardHandler(this.$defaultHandler);
@@ -77,9 +73,7 @@ export default class KeyBinding {
     }
 
     /**
-     * @method setKeyboardHandler
-     * @param kb {KeyboardHandler}
-     * @return {void}
+     * @param kb
      */
     setKeyboardHandler(kb: KeyboardHandler): void {
         var h = this.$handlers;
@@ -138,27 +132,23 @@ export default class KeyBinding {
     }
 
     /**
-     * @method getKeyboardHandler
-     * @return {KeyboardHandler}
+     *
      */
     getKeyboardHandler(): KeyboardHandler {
         return this.$handlers[this.$handlers.length - 1];
     }
 
     /**
-     * @method $callKeyboardHandlers
-     * @param hashId {number}
-     * @param keyString {string}
-     * @param [keyCode] {number}
-     * @param [e]
-     * @return {boolean}
-     * @private
+     * @param hashId
+     * @param keyString
+     * @param keyCode
+     * @param e
      */
     private $callKeyboardHandlers(hashId: number, keyString: string, keyCode?: number, e?): boolean {
 
-        var toExecute: KeyboardResponse;
-        var success = false;
-        var commands = this.editor.commands;
+        let toExecute: KeyboardResponse;
+        let success = false;
+        const commands = this.editor.commands;
 
         for (var i = this.$handlers.length; i--;) {
             toExecute = this.$handlers[i].handleKeyboard(this.$data, hashId, keyString, keyCode, e);
@@ -183,24 +173,20 @@ export default class KeyBinding {
     }
 
     /**
-     * @method onCommandKey
-     * @param e {KeyboardEvent}
-     * @param hashId {number}
-     * @param keyCode {number}
-     * @return {void}
+     * @param e
+     * @param hashId
+     * @param keyCode
      */
     onCommandKey(e: KeyboardEvent, hashId: number, keyCode: number): void {
-        var keyString = keyCodeToString(keyCode);
+        const keyString = keyCodeToString(keyCode);
         this.$callKeyboardHandlers(hashId, keyString, keyCode, e);
     }
 
     /**
-     * @method onTextInput
-     * @param text {string}
-     * @return {void}
+     * @param text
      */
     onTextInput(text: string): void {
-        var success = this.$callKeyboardHandlers(-1, text);
+        const success = this.$callKeyboardHandlers(-1, text);
         if (!success) {
             let command = this.editor.commands.getCommandByName(COMMAND_NAME_INSERT_STRING);
             this.editor.commands.exec(command, this.editor, text);

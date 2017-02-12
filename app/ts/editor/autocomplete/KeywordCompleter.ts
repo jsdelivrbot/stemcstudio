@@ -59,34 +59,32 @@ import Editor from '../Editor';
 import Position from "../Position";
 
 /**
- * @class KeywordCompleter
+ *
  */
 export default class KeywordCompleter implements Completer {
 
     /**
-     * @method getCompletionsAtPosition
-     * @param editor {Editor}
-     * @param position {Position}
-     * @param prefix {string}
-     * @return {Promise}
+     * @param editor
+     * @param position
+     * @param prefix
      */
     getCompletionsAtPosition(editor: Editor, position: Position, prefix: string): Promise<Completion[]> {
 
-        var session = editor.getSession();
+        const session = editor.getSession();
 
-        return new Promise<Completion[]>(function(resolve, reject) {
-            var state = session.getState(position.row);
-            var completions = session.$mode.getCompletions(state, session, position, prefix);
+        return new Promise<Completion[]>(function (resolve, reject) {
+            const state = session.getState(position.row);
+            const completions = session.$mode.getCompletions(state, session, position, prefix);
             resolve(completions);
         });
     }
 
     getCompletions(editor: Editor, session: EditSession, position: Position, prefix: string, callback: (err: any, completions?: Completion[]) => void) {
         return this.getCompletionsAtPosition(editor, position, prefix)
-            .then(function(completions) {
+            .then(function (completions) {
                 callback(void 0, completions);
             })
-            .catch(function(err) {
+            .catch(function (err) {
                 callback(err);
             });
     }

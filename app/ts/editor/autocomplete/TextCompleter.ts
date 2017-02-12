@@ -99,16 +99,14 @@ function wordDistance(position: Position, session: EditSession): WordScores {
 }
 
 /**
- * @class TextCompleter
+ *
  */
 export default class TextCompleter implements Completer {
 
     /**
-     * @method getCompletionsAtPosition
-     * @param editor {Editor}
-     * @param position {Position}
-     * @param prefix {string}
-     * @return {Promise}
+     * @param editor
+     * @param position
+     * @param prefix
      */
     getCompletionsAtPosition(editor: Editor, position: Position, prefix: string): Promise<Completion[]> {
 

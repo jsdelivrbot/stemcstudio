@@ -205,27 +205,27 @@ function copies(target) {
             dest: prepend(target, 'index.html')
         },
         {
-            src: 'manual/typescript@1.8.0/typescriptServices.js',
+            src: 'manual/typescript@2.2.0/typescriptServices.js',
             dest: prepend(target, 'js/typescriptServices.js')
         },
         {
-            src: 'manual/typescript@1.8.0/typescriptServices.js.map',
+            src: 'manual/typescript@2.2.0/typescriptServices.js.map',
             dest: prepend(target, 'js/typescriptServices.js.map')
         },
         {
-            src: 'manual/typescript@1.8.0/lib.es6.d.ts',
+            src: 'manual/typescript@2.2.0/lib.es6.d.ts',
             dest: prepend(target, 'typings/lib.es6.d.ts')
         },
         {
-            src: 'manual/typescript@1.8.0/lib.d.ts',
-            dest: prepend(target, 'vendor/typescript@1.8.0/lib.d.ts')
+            src: 'manual/typescript@2.2.0/lib.d.ts',
+            dest: prepend(target, 'vendor/typescript@2.2.0/lib.d.ts')
         },
         {
-            src: 'jspm_packages/github/ace2ts/ace-workers@1.0.4/src/worker.js',
+            src: 'jspm_packages/github/ace2ts/ace-workers@2.0.5/src/worker.js',
             dest: prepend(target, 'js/worker.js')
         },
         {
-            src: 'jspm_packages/github/ace2ts/ace-workers@1.0.4/dist/ace-workers.js',
+            src: 'jspm_packages/github/ace2ts/ace-workers@2.0.5/dist/ace-workers.js',
             dest: prepend(target, 'js/ace-workers.js')
         },
         {

@@ -14,11 +14,9 @@ interface Completer {
     identifierRegexps?: RegExp[];
 
     /**
-     * @method getCompletionsAtPosition
-     * @param editor {Editor}
-     * @param position {Position}
-     * @param prefix {string}
-     * @return {Promise} Completion[]
+     * @param editor
+     * @param position
+     * @param prefix
      */
     getCompletionsAtPosition(editor: Editor, position: Position, prefix: string): Promise<Completion[]>;
 
@@ -29,7 +27,7 @@ interface Completer {
 
     /**
      * The completer may, optionally, define how it wants insertions to be performed.
-     * TODO: But how does it know what the insertion is?u
+     * TODO: But how does it know what the insertion is?
      */
     insertMatch?(editor: Editor): void;
 

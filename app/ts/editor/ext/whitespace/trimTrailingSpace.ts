@@ -2,16 +2,16 @@ import Document from '../../Document';
 import EditSession from '../../EditSession';
 
 export default function trimTrailingSpace(session: EditSession, trimEmpty: boolean): void {
-    var doc: Document = session.getDocument();
-    var lines: string[] = doc.getAllLines();
+    const doc: Document = session.getDocument();
+    const lines: string[] = doc.getAllLines();
 
-    var min = trimEmpty ? -1 : 0;
+    const min = trimEmpty ? -1 : 0;
 
-    for (var row = 0, rows = lines.length; row < rows; row++) {
-        var line = lines[row];
+    for (let row = 0, rows = lines.length; row < rows; row++) {
+        const line = lines[row];
 
-        var startColumn = line.search(/\s+$/);
-        var endColumn = line.length;
+        const startColumn = line.search(/\s+$/);
+        const endColumn = line.length;
 
         if (startColumn > min) {
             doc.removeInLine(row, startColumn, endColumn);

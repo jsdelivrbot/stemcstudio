@@ -29,9 +29,9 @@
  * ***** END LICENSE BLOCK ***** */
 "use strict";
 
-import {FUNCTION_KEYS, KEY_MODS} from "../lib/keys";
+import { FUNCTION_KEYS, KEY_MODS } from "../lib/keys";
 import keyCodes from "../lib/keys";
-import {isMac} from "../lib/useragent";
+import { isMac } from "../lib/useragent";
 import Editor from '../Editor';
 import EditorAction from "./EditorAction";
 import KeyHash from './KeyHash';
@@ -126,10 +126,8 @@ export default class KeyboardHandler {
     }
 
     /**
-     * @method bindCommand
-     * @param key {string}
-     * @param command {Command}
-     * @return {void}
+     * @param key
+     * @param command
      */
     bindCommand(key: string, command: Command): void {
         var self = this;
@@ -148,9 +146,7 @@ export default class KeyboardHandler {
     }
 
     /**
-     * @method addCommands
-     * @param commands {Command[]}
-     * @return {void}
+     * @param commands
      */
     addCommands(commands: Command[]): void {
         for (let i = 0, iLength = commands.length; i < iLength; i++) {
@@ -173,9 +169,7 @@ export default class KeyboardHandler {
     */
 
     /**
-     * @method removeCommands
      * @param commands
-     * @return {void}
      */
     removeCommands(commands: { [name: string]: string | Command }): void {
         Object.keys(commands).forEach((name) => {
@@ -184,9 +178,7 @@ export default class KeyboardHandler {
     }
 
     /**
-     * @method bindKeys
      * @param keyList
-     * @return {void}
      */
     bindKeys(keyList: { [name: string]: EditorAction }): void {
         var self = this;
@@ -196,16 +188,14 @@ export default class KeyboardHandler {
     }
 
     /**
-     * @method _buildKeyHash
-     * @param command {Command}
-     * @return {void}
+     * @param command
      */
     public _buildKeyHash(command: Command): void {
-        var binding = command.bindKey;
+        const binding = command.bindKey;
         if (!binding)
             return;
 
-        var key = typeof binding === "string" ? binding : binding[this.platform];
+        const key = typeof binding === "string" ? binding : binding[this.platform];
         this.bindCommand(key, command);
     }
 
@@ -213,9 +203,7 @@ export default class KeyboardHandler {
      * accepts keys in the form ctrl+Enter or ctrl-Enter
      * keys without modifiers or shift only.
      *
-     * @method parseKeys
-     * @param keys {string}
-     * @return {KeyHash}
+     * @param keys
      */
     parseKeys(keys: string): KeyHash {
         // todo support keychains 
@@ -245,10 +233,8 @@ export default class KeyboardHandler {
     }
 
     /**
-     * @method findKeyCommand
-     * @param hashId {number}
-     * @param keyString {string}
-     * @return {Command}
+     * @param hashId
+     * @param keyString
      */
     findKeyCommand(hashId: number, keyString: string): Command {
         var ckbr = this.commandKeyBinding;
@@ -257,9 +243,9 @@ export default class KeyboardHandler {
 
     /**
      * @method handleKeyboard
-     * @param data {any}
-     * @param hashId {number}
-     * @param keyString {string}
+     * @param data
+     * @param hashId
+     * @param keyString
      * @param keyCode
      * @param e
      */
@@ -271,18 +257,14 @@ export default class KeyboardHandler {
     }
 
     /**
-     * @method attach
-     * @param editor {Editor}
-     * @return {void}
+     * @param editor
      */
     public attach(editor: Editor): void {
         // This implementation does nothing.
     }
 
     /**
-     * @method detach
-     * @param editor {Editor}
-     * @return {void}
+     * @param editor
      */
     public detach(editor: Editor): void {
         // This implementation does nothing.

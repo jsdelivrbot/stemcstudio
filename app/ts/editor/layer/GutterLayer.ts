@@ -1,4 +1,4 @@
-import {addCssClass, createElement, removeCssClass} from "../lib/dom";
+import { addCssClass, createElement, removeCssClass } from "../lib/dom";
 
 import AbstractLayer from './AbstractLayer';
 import escapeHTML from "../lib/escapeHTML";
@@ -58,10 +58,8 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
     }
 
     /**
-     * @method off
-     * @param eventName {string}
-     * @param callback {(event, source: GutterLayer) => any}
-     * @return {void}
+     * @param eventName
+     * @param callback
      */
     off(eventName: string, callback: (event: any, source: GutterLayer) => any): void {
         this.eventBus.off(eventName, callback);
@@ -252,9 +250,7 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
     }
 
     /**
-     * @method setShowLineNumbers
-     * @param show {boolean}
-     * @return {void}
+     * @param show
      */
     setShowLineNumbers(show: boolean): void {
         this.$renderer = !show && {
@@ -264,8 +260,7 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
     }
 
     /**
-     * @method getShowLineNumbers
-     * @return {boolean}
+     *
      */
     getShowLineNumbers(): boolean {
         return this.$showLineNumbers;

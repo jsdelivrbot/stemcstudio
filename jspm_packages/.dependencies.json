@@ -851,5 +851,5 @@
     "select": "npm:select@^1.1.2",
     "tiny-emitter": "npm:tiny-emitter@^1.0.0"
   },
-  "github:ace2ts/ace-workers@1.0.4": {}
+  "github:ace2ts/ace-workers@2.0.5": {}
 }
