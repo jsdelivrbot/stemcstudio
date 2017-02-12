@@ -30,6 +30,7 @@ npm install -g karma-cli
 The following projects are required as peer dependencies of STEMCstudio in order to stage their documentation.
 
 * davinci-eight
+* davinci-newton
 * davinci-units
 
 These projects are available from the geometryzen GitHub repository.
@@ -83,6 +84,25 @@ Update versions in
 2. Gruntfile.js
 3. package.json
 4. jspm.config.js
+
+### Upgrading ace-workers
+
+Make sure that the version references are correct in the following files:
+
+1. package.json
+2. Gruntfile.js
+3. jspm.config.js
+
+### Upgrading TypeScript (version used at runtime)
+
+1. Grintfile.js
+2. app.ts
+
+### Tested versions of TypeScript and ace-workers
+
+|TypeScript|ace-workers|
+------------------------
+|1.8.0     |1.0.4      |
 
 ```
 npm install

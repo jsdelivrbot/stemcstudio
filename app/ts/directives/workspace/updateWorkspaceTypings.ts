@@ -90,7 +90,12 @@ export default function updateWorkspaceTypings(
 
     rmvUnits.forEach((rmvUnit) => {
         wsModel.removeScript(rmvUnit.fileName, (err) => {
-            olds.splice(olds.indexOf(rmvUnit.name), 1);
+            if (!err) {
+                olds.splice(olds.indexOf(rmvUnit.name), 1);
+            }
+            else {
+                console.warn(`removeScript(${rmvUnit.fileName}) failed. ${err}`);
+            }
         });
     });
 
@@ -107,7 +112,12 @@ export default function updateWorkspaceTypings(
             readFile(addUnit.fileName, (err, content) => {
                 if (!err) {
                     wsModel.ensureScript(addUnit.fileName, content.replace(/\r\n?/g, '\n'), (err) => {
-                        olds.unshift(addUnit.name);
+                        if (!err) {
+                            olds.unshift(addUnit.name);
+                        }
+                        else {
+                            console.warn(`ensureScript(${addUnit.fileName}) failed. ${err}`);
+                        }
                     });
                 }
                 inFlightCount--;

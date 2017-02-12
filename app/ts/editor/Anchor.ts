@@ -5,12 +5,12 @@ import Position from "./Position";
 import EventEmitterClass from './lib/EventEmitterClass';
 import EventBus from "./EventBus";
 
-function pointsInOrder(point1: Position, point2: Position, equalPointsInOrder: boolean): boolean {
+function pointsInOrder(this: void, point1: Position, point2: Position, equalPointsInOrder: boolean): boolean {
     const bColIsAfter = equalPointsInOrder ? point1.column <= point2.column : point1.column < point2.column;
     return (point1.row < point2.row) || (point1.row === point2.row && bColIsAfter);
 }
 
-function getTransformedPoint(delta: Delta, point: Position, moveIfEqual: boolean): Position {
+function getTransformedPoint(this: void, delta: Delta, point: Position, moveIfEqual: boolean): Position {
     // Get delta info.
     const deltaIsInsert = delta.action === "insert";
     const deltaRowShift = (deltaIsInsert ? 1 : -1) * (delta.end.row - delta.start.row);
@@ -39,27 +39,21 @@ function getTransformedPoint(delta: Delta, point: Position, moveIfEqual: boolean
 
 /**
  * An anchor adjusts its position as text is changed around it.
- *
- * @class Anchor
  */
 export default class Anchor implements EventBus<AnchorChangeEvent, Anchor>, Position {
 
     /**
-     * @property row
-     * @type number
+     *
      */
     public row: number;
 
     /**
-     * @property column
-     * @type number
+     *
      */
     public column: number;
 
     /**
-     * @property document
-     * @type {Document}
-     * @private
+     *
      */
     private document: Document;
 
@@ -74,19 +68,13 @@ export default class Anchor implements EventBus<AnchorChangeEvent, Anchor>, Posi
 
     /**
      * Experimental: Allows anchor to stick to the next on the left.
-     *
-     * @property $insertRight
-     * @type boolean
-     * @default false
      */
     public insertRight: boolean;
 
     /**
-     * @property eventBus
-     * @type EventEmitterClass<Anchor>
-     * @private
+     *
      */
-    private eventBus: EventEmitterClass<AnchorChangeEvent, Anchor>;
+    private readonly eventBus: EventEmitterClass<AnchorChangeEvent, Anchor>;
 
     /**
      * <p>
@@ -97,11 +85,9 @@ export default class Anchor implements EventBus<AnchorChangeEvent, Anchor>, Posi
      * Creates a new <code>Anchor</code> and associates it with a document.
      * </p>
      *
-     * @class Anchor
-     * @constructor
-     * @param doc {Document} The document to associate with the anchor.
-     * @param row {number} The starting row position.
-     * @param column {number} The starting column position.
+     * @param doc The document to associate with the anchor.
+     * @param row The starting row position.
+     * @param column The starting column position.
      */
     constructor(doc: Document, row: number, column: number) {
 

@@ -14,13 +14,16 @@ export default class VScrollBar extends ScrollBar {
      * This may get set to null.
      */
     private _scrollTop = 0;
+
+    /**
+     * 
+     */
     private _width: number;
+
     /**
      * Creates a new `VScrollBar`. `parent` is the owner of the scroll bar.
-     * @param {DOMElement} parent A DOM element
-     * @param {Object} renderer An editor renderer
-     *
-     * @constructor
+     * @param parent A DOM element
+     * @param renderer An editor renderer
      */
     constructor(parent: HTMLElement, renderer: Renderer) {
         super(parent, '-v');
@@ -54,7 +57,6 @@ export default class VScrollBar extends ScrollBar {
 
     /**
      * Returns the width of the scroll bar.
-     * @return {Number}
      */
     get width(): number {
         return this.isVisible ? this._width : 0;
@@ -62,7 +64,7 @@ export default class VScrollBar extends ScrollBar {
 
     /**
      * Sets the height of the scroll bar, in pixels.
-     * @param {Number} height The new height
+     * @param height The new height
      */
     setHeight(height: number) {
         this.element.style.height = toPixelString(height);
@@ -70,7 +72,7 @@ export default class VScrollBar extends ScrollBar {
 
     /**
      * Sets the scroll height of the scroll bar, in pixels.
-     * @param {Number} height The new scroll height
+     * @param height The new scroll height
      */
     setScrollHeight(height: number) {
         this.inner.style.height = toPixelString(height);
@@ -78,7 +80,7 @@ export default class VScrollBar extends ScrollBar {
 
     /**
      * Sets the scroll top of the scroll bar.
-     * @param {Number} scrollTop The new scroll top
+     * @param scrollTop The new scroll top
      */
     // on chrome 17+ for small zoom levels after calling this function
     // this.element.scrollTop != scrollTop which makes page to scroll up.

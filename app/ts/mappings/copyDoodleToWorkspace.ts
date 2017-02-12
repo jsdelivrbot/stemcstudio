@@ -5,25 +5,47 @@ import WsModel from '../wsmodel/services/WsModel';
 /**
  * 
  */
-function copyFilesToWorkspace(dudeFiles: { [path: string]: DoodleFile }, workspace: WsModel): void {
+function copyFilesToWorkspace(dudeFiles: { [path: string]: DoodleFile }, workspace: WsModel, callback: (reason: Error) => any): void {
     if (dudeFiles) {
         const paths = Object.keys(dudeFiles);
-        for (let i = 0; i < paths.length; i++) {
-            const path = paths[i];
-            const dudeFile = dudeFiles[path];
-            const wsFile = workspace.newFile(path);
-            try {
-                wsFile.setText(dudeFile.content);
-                wsFile.isOpen = dudeFile.isOpen;
-                wsFile.mode = dudeFile.language;
-                wsFile.htmlChoice = dudeFile.htmlChoice;
-                wsFile.markdownChoice = dudeFile.markdownChoice;
-                wsFile.existsInGitHub = !!dudeFile.raw_url;
-                wsFile.selected = dudeFile.selected;
+        const iLen = paths.length;
+        let outstanding = iLen;
+        if (iLen > 0) {
+            for (let i = 0; i < iLen; i++) {
+                const path = paths[i];
+                const dudeFile = dudeFiles[path];
+                const wsFile = workspace.newFile(path);
+                try {
+                    wsFile.setText(dudeFile.content);
+                    wsFile.isOpen = dudeFile.isOpen;
+                    wsFile.mode = dudeFile.language;
+                    wsFile.htmlChoice = dudeFile.htmlChoice;
+                    wsFile.markdownChoice = dudeFile.markdownChoice;
+                    wsFile.existsInGitHub = !!dudeFile.raw_url;
+                    wsFile.selected = dudeFile.selected;
+                    workspace.beginDocumentMonitoring(path, function (beginMonitoringError) {
+                        if (!beginMonitoringError) {
+                            // Do nothing.
+                        }
+                        else {
+                            console.warn(`Failed to begin monitoring for ${path}`);
+                        }
+                        outstanding--;
+                        if (outstanding === 0) {
+                            // TODO: Error propagation.
+                            callback(void 0);
+                        }
+                    });
+                }
+                finally {
+                    wsFile.release();
+                }
             }
-            finally {
-                wsFile.release();
-            }
+        }
+        else {
+            window.setTimeout(function () {
+                callback(void 0);
+            });
         }
     }
 }
@@ -37,16 +59,14 @@ function copyTrashToWorkspace(dudeFiles: { [path: string]: DoodleFile }, workspa
 }
 
 /**
- * 
+ * Copies from the doodle to the workspace.
+ * The callback is use to report that monitoring of all files has completed.
  */
-export default function copyDoodleToWorkspace(doodle: Doodle, workspace: WsModel): void {
+export default function copyDoodleToWorkspace(doodle: Doodle, workspace: WsModel, callback: (reason: Error) => any): void {
 
-    // console.lg("copyDoodleToWorkspace");
-    // console.lg(`files => ${doodle.files ? Object.keys(doodle.files) : []}`);
-    // console.lg(`trash => ${doodle.trash ? Object.keys(doodle.trash) : []}`);
     workspace.emptyTrash();
 
-    copyFilesToWorkspace(doodle.files, workspace);
+    copyFilesToWorkspace(doodle.files, workspace, callback);
 
     copyTrashToWorkspace(doodle.trash, workspace);
 

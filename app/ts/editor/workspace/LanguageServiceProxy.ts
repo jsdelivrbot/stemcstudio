@@ -34,12 +34,12 @@ export default class LanguageServiceProxy {
     /**
      *
      */
-    private worker: WorkerClient;
+    private readonly worker: WorkerClient;
 
     /**
      *
      */
-    private callbacks: { [id: number]: (err: any, results?: any) => any } = {};
+    private readonly callbacks: { [id: number]: (err: any, results?: any) => any } = {};
 
     /**
      * The identifier for the next callback.
@@ -132,12 +132,15 @@ export default class LanguageServiceProxy {
     }
 
     initialize(scriptImports: string[], callback: (err: any) => any): void {
-        // console.lg(`LanguageServiceProxy.initialize()`);
-        this.worker.init(scriptImports, 'ace-workers.js', 'LanguageServiceWorker', callback);
+        this.worker.init(scriptImports, 'ace-workers.js', 'LanguageServiceWorker', function (err: any) {
+            if (err) {
+                console.warn(`worker.init() failed ${err}`);
+            }
+            callback(err);
+        });
     }
 
     terminate(): void {
-        // console.lg(`LanguageServiceProxy.terminate()`);
         this.worker.dispose();
     }
 
@@ -170,7 +173,6 @@ export default class LanguageServiceProxy {
     }
 
     ensureScript(path: string, content: string, callback: (err: any) => any): void {
-        // console.lg(`LanguageServiceProxy.ensureScript(${path})`);
         const callbackId = this.captureCallback(callback);
         // content = content.replace(/\r\n?/g, '\n');
         const message = { data: { fileName: path, content, callbackId } };
@@ -178,27 +180,29 @@ export default class LanguageServiceProxy {
     }
 
     applyDelta(path: string, delta: Delta, callback: (err: any) => any): void {
-        // console.lg(`LanguageServiceProxy.applyDelta(${path})`);
         const callbackId = this.captureCallback(callback);
         const message = { data: { fileName: path, delta, callbackId } };
         this.worker.emit(EVENT_APPLY_DELTA, message);
     }
 
     removeScript(path: string, callback: (err: any) => any): void {
-        // console.lg(`LanguageServiceProxy.removeScript(${path})`);
-        const callbackId = this.captureCallback(callback);
+        function hook(err: any) {
+            if (err) {
+                console.warn(`LanguageServiceProxy.removeScript(${path}) failed. ${err}`);
+            }
+            callback(err);
+        }
+        const callbackId = this.captureCallback(hook);
         this.worker.emit(EVENT_REMOVE_SCRIPT, { data: { fileName: path, callbackId } });
     }
 
     public setModuleKind(moduleKind: string, callback: setModuleKindCallback): void {
-        // console.lg(`LanguageServiceProxy.setModuleKind(${moduleKind})`);
         const callbackId = this.captureCallback(callback);
         const message = { data: { moduleKind, callbackId } };
         this.worker.emit(EVENT_SET_MODULE_KIND, message);
     }
 
     public setScriptTarget(scriptTarget: string, callback: setScriptTargetCallback): void {
-        // console.lg(`LanguageServiceProxy.setScriptTarget(${scriptTarget})`);
         const callbackId = this.captureCallback(callback);
         const message = { data: { scriptTarget, callbackId } };
         this.worker.emit(EVENT_SET_SCRIPT_TARGET, message);
@@ -211,14 +215,12 @@ export default class LanguageServiceProxy {
     }
 
     public getSyntaxErrors(fileName: string, callback: (err: any, results: Diagnostic[]) => void): void {
-        // console.lg(`LanguageServiceProxy.getSyntaxErrors(${fileName})`);
         const callbackId = this.captureCallback(callback);
         const message = { data: { fileName, callbackId } };
         this.worker.emit(EVENT_GET_SYNTAX_ERRORS, message);
     }
 
     public getSemanticErrors(fileName: string, callback: (err: any, results: Diagnostic[]) => void): void {
-        // console.lg(`LanguageServiceProxy.getSemanticErrors(${fileName})`);
         const callbackId = this.captureCallback(callback);
         const message = { data: { fileName, callbackId } };
         this.worker.emit(EVENT_GET_SEMANTIC_ERRORS, message);

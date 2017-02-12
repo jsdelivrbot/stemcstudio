@@ -140,7 +140,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version.
-app.constant('version', '2.21.74');
+app.constant('version', '2.21.75');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -208,8 +208,8 @@ app.constant('GITHUB_TOKEN_COOKIE_NAME', 'github-token');
 app.constant('GITHUB_LOGIN_COOKIE_NAME', 'github-login');
 
 // The TypeScript d.ts library provides the type checking of global JavaScript types.
+// WARNING: The Gruntfile.js must also copy the same version.
 app.constant('FILENAME_TYPESCRIPT_CURRENT_LIB_DTS', vendorPath('typescript@1.8.0', 'lib.d.ts'));
-// app.constant('FILENAME_TYPESCRIPT_CURRENT_LIB_DTS', vendorPath('typescript@2.2.0', 'lib.d.ts'));
 
 // The MathScript js library provides operator overloading at runtime.
 // The version should match the value in the Gruntfile.js

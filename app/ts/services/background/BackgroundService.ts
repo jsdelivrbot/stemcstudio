@@ -36,11 +36,12 @@ export default class BackgroundService implements Background {
      * @param repo The name of the GitHub repository.
      * @param gistId The identifier of the GitHub Gist.
      * @param roomId The identifier of the room (collaboration).
+     * @param callback Use to report when monitoring of the files has begun.
      */
-    loadWsModel(owner: string, repo: string, gistId: string, roomId: string, callback: (err: Error) => any) {
+    loadWsModel(owner: string, repo: string, gistId: string, roomId: string, monitor: boolean, callback: (err: Error) => any) {
         // If there is a doodle in Local Storage with the specified keys, we load that
         // so as not to trample on any existing work.
-        const matches = this.doodles.filter(function(doodle: Doodle) {
+        const matches = this.doodles.filter(function (doodle: Doodle) {
             if (isString(owner) && isString(repo)) {
                 return doodle.owner === owner && doodle.repo === repo;
             }
@@ -59,9 +60,7 @@ export default class BackgroundService implements Background {
             // The user should be advised and then may delete manually from local storage.
             const match = matches[0];
             this.doodles.makeCurrent(match);
-            copyDoodleToWorkspace(match, this.wsModel);
-            // We can also assume that we are already in the correct state.
-            setTimeout(callback, 0);
+            copyDoodleToWorkspace(match, this.wsModel, callback);
         }
         else {
             if (owner && repo) {
@@ -69,11 +68,10 @@ export default class BackgroundService implements Background {
                     .then((doodle) => {
                         this.doodles.addHead(doodle);
                         this.doodles.updateStorage();
-                        copyDoodleToWorkspace(doodle, this.wsModel);
-                        callback(void 0);
+                        copyDoodleToWorkspace(doodle, this.wsModel, callback);
                     }, (reason) => {
                         callback(new Error(`Error attempting to download repository '${repo}':  ${JSON.stringify(reason, null, 2)}`));
-                    }, function(state) {
+                    }, function (state) {
                         // The state is {doneCount: number; todoCount: number}
                     });
             }
@@ -82,8 +80,7 @@ export default class BackgroundService implements Background {
                     if (!reason) {
                         this.doodles.addHead(doodle);
                         this.doodles.updateStorage();
-                        copyDoodleToWorkspace(doodle, this.wsModel);
-                        callback(void 0);
+                        copyDoodleToWorkspace(doodle, this.wsModel, callback);
                     }
                     else {
                         callback(new Error(`Error attempting to download gist '${gistId}':  ${JSON.stringify(reason, null, 2)}`));
@@ -101,7 +98,16 @@ export default class BackgroundService implements Background {
                                 for (let i = 0; i < paths.length; i++) {
                                     const path = paths[i];
                                     if (!this.wsModel.existsFile(path)) {
-                                        this.wsModel.newFile(path).release();
+                                        const newFile = this.wsModel.newFile(path);
+                                        this.wsModel.beginDocumentMonitoring(path, function (monitoringError) {
+                                            if (!monitoringError) {
+                                                // Nothing to do.
+                                            }
+                                            else {
+                                                console.warn(`Unexpected file ${path} in workspace`);
+                                            }
+                                        });
+                                        newFile.release();
                                     }
                                     else {
                                         console.warn(`Unexpected file ${path} in workspace`);
@@ -139,15 +145,14 @@ export default class BackgroundService implements Background {
             else {
                 if (this.doodles.length > 0) {
                     const doodle = this.doodles.current();
-                    copyDoodleToWorkspace(doodle, this.wsModel);
+                    copyDoodleToWorkspace(doodle, this.wsModel, callback);
                 }
                 else {
                     const doodle = this.doodles.createDoodle();
                     this.doodles.addHead(doodle);
                     this.doodles.updateStorage();
-                    copyDoodleToWorkspace(doodle, this.wsModel);
+                    copyDoodleToWorkspace(doodle, this.wsModel, callback);
                 }
-                setTimeout(callback, 0);
             }
         }
     }

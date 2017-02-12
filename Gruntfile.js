@@ -205,30 +205,6 @@ function copies(target) {
             dest: prepend(target, 'index.html')
         },
         {
-            src: 'jspm_packages/github/ace2ts/ace-workers@1.0.4/src/worker.js',
-            dest: prepend(target, 'js/worker.js')
-        },
-        {
-            src: 'manual/aws/js/aws-sdk-2.3.12.min.js',
-            dest: prepend(target, 'js/aws-sdk-2.3.12.min.js')
-        },
-        {
-            src: 'jspm_packages/github/ace2ts/ace-workers@1.0.4/dist/ace-workers.js',
-            dest: prepend(target, 'js/ace-workers.js')
-        },
-        {
-            // Maintain the same relative path with jspm.config.js.
-            expand: true,
-            cwd: "jspm_packages",
-            src: ["**"],
-            dest: prepend(target, 'jspm_packages')
-        },
-        {
-            // Maintain the same relative path with jspm_packages.
-            src: 'jspm.config.js',
-            dest: prepend(target, 'jspm.config.js')
-        },
-        {
             src: 'manual/typescript@1.8.0/typescriptServices.js',
             dest: prepend(target, 'js/typescriptServices.js')
         },
@@ -243,6 +219,30 @@ function copies(target) {
         {
             src: 'manual/typescript@1.8.0/lib.d.ts',
             dest: prepend(target, 'vendor/typescript@1.8.0/lib.d.ts')
+        },
+        {
+            src: 'jspm_packages/github/ace2ts/ace-workers@1.0.4/src/worker.js',
+            dest: prepend(target, 'js/worker.js')
+        },
+        {
+            src: 'jspm_packages/github/ace2ts/ace-workers@1.0.4/dist/ace-workers.js',
+            dest: prepend(target, 'js/ace-workers.js')
+        },
+        {
+            src: 'manual/aws/js/aws-sdk-2.3.12.min.js',
+            dest: prepend(target, 'js/aws-sdk-2.3.12.min.js')
+        },
+        {
+            // Maintain the same relative path with jspm.config.js.
+            expand: true,
+            cwd: "jspm_packages",
+            src: ["**"],
+            dest: prepend(target, 'jspm_packages')
+        },
+        {
+            // Maintain the same relative path with jspm_packages.
+            src: 'jspm.config.js',
+            dest: prepend(target, 'jspm.config.js')
         },
         {
             src: 'museum/jasmine@2.4.1/lib/boot.js',

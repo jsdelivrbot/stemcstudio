@@ -3,7 +3,7 @@ import Range from './Range';
 import Renderer from './Renderer';
 import Token from './Token';
 import Tooltip from './Tooltip';
-import {addListener, removeListener} from './lib/event';
+import { addListener, removeListener } from './lib/event';
 
 interface TokenEx extends Token {
     state?: string;
@@ -110,7 +110,7 @@ export default class TokenTooltip extends Tooltip {
                 this.setPosition(this.x, this.y);
             }
             if (!this.$timer) {
-                this.$timer = setTimeout(update, 100);
+                this.$timer = window.setTimeout(update, 100);
             }
         };
 
@@ -137,7 +137,7 @@ export default class TokenTooltip extends Tooltip {
     }
 
     destroy() {
-        this.onMouseOut();
+        this.onMouseOut(void 0);
         removeListener(this.editor.renderer.scroller, "mousemove", this.onMouseMove);
         removeListener(this.editor.renderer.content, "mouseout", this.onMouseOut);
         delete this.editor['tokenTooltip'];

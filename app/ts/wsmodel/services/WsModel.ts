@@ -158,13 +158,13 @@ function debounce(next: () => any, delay: number) {
     /**
      * The timer handle.
      */
-    let timer: any;
+    let timer: number;
 
     return function (delta: Delta, doc: Document) {
         if (timer) {
             window.clearTimeout(timer);
         }
-        timer = setTimeout(function () {
+        timer = window.setTimeout(function () {
             timer = void 0;
             next();
         }, delay);
@@ -180,6 +180,9 @@ function uploadFileEditsToRoom(path: string, unit: MwUnit, room: RoomAgent) {
 
 /**
  * The workspace data model.
+ * This class is exposed as a service which implies there will be one long-running instance of it
+ * for the lifetime of the application. At the same time, the user may serally edit multiple models 
+ * and so this instance must have state so that it can manage the associated worker threads.
  */
 export default class WsModel implements Disposable, MwWorkspace, QuickInfoTooltipHost, Shareable, WorkspaceCompleterHost {
 
@@ -304,6 +307,8 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
 
     public static $inject: string[] = ['options', '$q', 'doodles'];
 
+    public trace_ = false;
+
     constructor(private options: IOptionManager, private $q: ng.IQService, private doodles: IDoodleManager) {
         // This will be called once, lazily, when this class is deployed as a singleton service.
         // We do nothing. There is no destructor; it would never be called.
@@ -341,7 +346,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             this.languageServiceProxy.initialize(scriptImports, (err: any) => {
                 this.inFlight--;
                 if (!err) {
-                    this.languageServiceProxy.setTrace(false, callback);
+                    this.languageServiceProxy.setTrace(this.trace_, callback);
                 }
                 else {
                     callback(err);
@@ -648,7 +653,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     }
 
     /**
-     * Ends monitoring the Document at the specified path for changes and removes the script from the LanguageService.
+     * Begins monitoring the Document at the specified path for changes and adds the script to the LanguageService.
      */
     beginDocumentMonitoring(path: string, callback: (err: any) => any): void {
         checkPath(path);
@@ -679,7 +684,18 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
                 }
 
                 // Ensure the script in the language service.
-                this.ensureScript(path, doc.getValue(), callback);
+                const hook = function (err: any) {
+                    if (err) {
+                        console.warn(`WsModel.beginDocumentMonitoring(${path}) failed ${err}`);
+                    }
+                    callback(err);
+                };
+                this.ensureScript(path, doc.getValue(), hook);
+            }
+            else {
+                window.setTimeout(function () {
+                    callback(void 0);
+                }, 0);
             }
 
             // Monitoring for Local Storage.
@@ -695,38 +711,49 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      * Ends monitoring the Document at the specified path for changes and removes the script from the LanguageService.
      */
     endDocumentMonitoring(path: string, callback: (err: any) => any) {
-        checkPath(path);
-        checkCallback(callback);
-
-        const doc = this.getFileDocument(path);
         try {
-            checkDocument(doc);
+            checkPath(path);
+            checkCallback(callback);
 
-            // Monitoring for Language Analysis.
-            if (isTypeScript(path)) {
-                if (this.langDocumentChangeListenerRemovers[path]) {
-                    this.langDocumentChangeListenerRemovers[path]();
-                    delete this.langDocumentChangeListenerRemovers[path];
+            const doc = this.getFileDocument(path);
+            try {
+                checkDocument(doc);
 
-                    // Remove the script from the language service.
-                    this.removeScript(path, callback);
+                // Monitoring for Language Analysis.
+                if (isTypeScript(path)) {
+                    if (this.langDocumentChangeListenerRemovers[path]) {
+                        this.langDocumentChangeListenerRemovers[path]();
+                        delete this.langDocumentChangeListenerRemovers[path];
+
+                        // Remove the script from the language service.
+                        const hook = function (err: any) {
+                            if (err) {
+                                console.warn(`WsModel.endDocumentMonitoring(${path}) failed ${err}`);
+                            }
+                            callback(err);
+                        };
+                        this.removeScript(path, hook);
+                    }
+                    else {
+                        setTimeout(callback, 0);
+                    }
                 }
                 else {
                     setTimeout(callback, 0);
                 }
-            }
-            else {
-                setTimeout(callback, 0);
-            }
 
-            // Monitoring for Local Storage.
-            if (this.saveDocumentChangeListenerRemovers[path]) {
-                this.saveDocumentChangeListenerRemovers[path]();
-                delete this.saveDocumentChangeListenerRemovers[path];
+                // Monitoring for Local Storage.
+                if (this.saveDocumentChangeListenerRemovers[path]) {
+                    this.saveDocumentChangeListenerRemovers[path]();
+                    delete this.saveDocumentChangeListenerRemovers[path];
+                }
+            }
+            finally {
+                doc.release();
             }
         }
-        finally {
-            doc.release();
+        catch (e) {
+            console.warn(`Exeption while processing endDocumentMonitoring(${path}) ${e}`);
         }
     }
 
@@ -735,12 +762,17 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         const iLen = paths.length;
         let outstanding = iLen;
         if (outstanding > 0) {
-            for (let i = 0; i < paths.length; i++) {
+            for (let i = 0; i < iLen; i++) {
                 const path = paths[i];
                 this.endDocumentMonitoring(path, function (err) {
-                    outstanding--;
-                    if (outstanding === 0) {
-                        callback();
+                    if (!err) {
+                        outstanding--;
+                        if (outstanding === 0) {
+                            callback();
+                        }
+                    }
+                    else {
+                        console.warn(`endDocumentMonitoring(${path}) => ${err}`);
                     }
                 });
             }
@@ -780,12 +812,10 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         this.inFlight++;
         this.languageServiceProxy.removeScript(path, (err: any) => {
             this.inFlight--;
-            if (!err) {
-                callback(void 0);
+            if (err) {
+                window.console.warn(`WsModel.removeScript(${path}) failed ${err}`);
             }
-            else {
-                callback(err);
-            }
+            callback(err);
         });
     }
 
@@ -1133,6 +1163,9 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         // This may never be called when this class is deployed as a singleton service.
     }
 
+    /**
+     * Creates a new file. The file is not monitored.
+     */
     newFile(path: string): WsFile {
         const mode = modeFromName(path);
         if (!this.existsFile(path)) {
@@ -1146,18 +1179,12 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
                 }
                 // The file is captured by the files collection (incrementing the reference count).
                 this.files.put(path, file);
-                this.beginDocumentMonitoring(path, (err) => {
-                    // FIXME: We should be returning the file in the callback.
-                });
                 // We return the other reference.
                 return file;
             }
             else {
                 this.restoreFileFromTrash(path);
                 trashedFile.mode = mode;
-                this.beginDocumentMonitoring(path, (err) => {
-                    // FIXME: We should be returning the file in the callback.
-                });
                 return trashedFile;
             }
         }
@@ -1219,9 +1246,10 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     }
 
     /**
-     * 
+     * Renames a file.
+     * The file should not be being monitored.
      */
-    renameFile(oldPath: string, newPath: string): void {
+    renameFileUnmonitored(oldPath: string, newPath: string): void {
         const mode = modeFromName(newPath);
         if (!mode) {
             throw new Error(`${newPath} is not a recognized language.`);

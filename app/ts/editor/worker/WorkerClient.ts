@@ -73,7 +73,7 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
 
         if (this.worker) {
             console.warn("The worker is already initialized");
-            setTimeout(callback, 0);
+            window.setTimeout(callback, 0);
             return;
         }
 
@@ -93,7 +93,7 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
                 URL.revokeObjectURL(blobURL);
             }
             else {
-                setTimeout(function () { callback(e); }, 0);
+                window.setTimeout(function () { callback(e); }, 0);
                 return;
             }
         }
@@ -113,13 +113,8 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
     /**
      * This method is is used as the callback function for the Worker thread
      * and so it receives all messages posted back from that thread.
-     *
-     * @method onMessage
-     * @param event {MessageEvent}
-     * @return {void}
-     * @private
      */
-    private onMessage(event: MessageEvent): void {
+    private onMessage(/* this: Worker, */ event: MessageEvent): void {
         // const origin: string = event.origin;
         // const source: Window = event.source;
         const msg = event.data;
@@ -169,10 +164,10 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
     }
 
     /**
-     * Calls the terminate method of the underlying Worker and sets the worker propert to undefined.
+     * Calls the terminate method of the underlying Worker and sets the worker property to undefined.
      */
     dispose(): void {
-        // One a Web Worker has been terminated, there is no way to restart it.
+        // Once a Web Worker has been terminated, there is no way to restart it.
         // We also don't get any notification that it has shut down.
         if (this.worker) {
             /**
@@ -188,11 +183,6 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
 
     /**
      * Posts a message to the worker thread with a specific command data structure.
-     *
-     * @method send
-     * @param command {string}
-     * @param args {any}
-     * @return {void}
      */
     send(command: string, args: any): void {
         if (this.worker) {
@@ -223,9 +213,8 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
      * Posts a message to the worker thread with a specific event data structure.
      *
      * @method emit
-     * @param event {string} The name of the event.
+     * @param event The name of the event.
      * @param data
-     * @return {void}
      */
     emit(event: string, data: { data: any }): void {
         try {
@@ -257,7 +246,7 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
             this.$doc = doc;
             this.$doc.addRef();
             this.call("setValue", [doc.getValue()], function (data: any) {
-                console.log(`setValue => ${data}`);
+                // Do nothing.
             });
             doc.addChangeListener(this.changeListener);
         }
@@ -348,7 +337,7 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
             // TODO: If there is no callback then call is the same as send,
             // which is a postCommand.
             this.call("setValue", [doc.getValue()], function (data: any) {
-                console.log(`setValue => ${data}`);
+                // Do nothing.
             });
         }
         else {

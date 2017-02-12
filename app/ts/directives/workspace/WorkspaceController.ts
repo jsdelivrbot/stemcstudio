@@ -156,7 +156,7 @@ export default class WorkspaceController implements WorkspaceMixin {
 
     /**
      * Convenient flag used for debugging.
-     * Normally set to true for production.
+     * Normally set to false for production.
      */
     private readonly trace = false;
 
@@ -402,9 +402,6 @@ export default class WorkspaceController implements WorkspaceMixin {
                 wsModel);
             publishFlow.execute();
         };
-
-        // const endTime = performance.now();
-        // console.lg(`Workspace.controller took ${endTime - startTime} ms.`);
     }
 
     /**
@@ -413,53 +410,23 @@ export default class WorkspaceController implements WorkspaceMixin {
      * initialization work of a controller.
      */
     $onInit(): void {
-        if (this.trace) {
-            console.log("WorkspaceController.$onInit called");
-        }
-        // console.log(`$stateParams=${JSON.stringify(this.$stateParams)}`);
-
         const owner: string = this.$stateParams['owner'];
         const repo: string = this.$stateParams['repo'];
         const gistId: string = this.$stateParams['gistId'];
         const roomId: string = this.$stateParams['roomId'];
 
-        /**
-         * Determine whether goHome should be enabled (based upon the output query parameter).
-         */
-        /*
-        function isGoHomeEnabled(output: string): boolean {
-            if (isString(output)) {
-                if (output === 'embed') {
-                    return false;
-                }
-                else {
-                    console.warn(`Unknown 'output' query parameter: ${output}`);
-                    return false;
-                }
-            }
-            else {
-                return true;
-            }
-        }
-
-        this.$scope.isGoHomeEnabled = isGoHomeEnabled(this.$stateParams['output']);
-        console.log(`isGoHomeEnabled => ${this.$scope.isGoHomeEnabled}`);
-        */
-
-        // TODO: It's a bit wierd that this looks like it has a side effect on the workspace.
-        // If we had multiple workspace then the workspace would be a parameter.
-
-        // This flag prevents the editors from being being 
+        // This flag prevents the editors from being being...?
         this.$scope.doodleLoaded = false;
 
         // Example of how to enable tracing in the main and worker thread.
+        // TODO: Will this do any good if we haven't recycled?
         this.wsModel.setTrace(this.trace, (err) => {
             // Do nothing.
         });
 
         this.wsModel.recycle((err) => {
             if (!err) {
-                this.background.loadWsModel(owner, repo, gistId, roomId, (err: Error) => {
+                this.background.loadWsModel(owner, repo, gistId, roomId, true, (err: Error) => {
                     if (!err) {
                         // We don't need to load anything, but are we in the correct state for the Doodle?
                         // We end up here, e.g., when user presses Cancel from New dialog.
@@ -475,24 +442,26 @@ export default class WorkspaceController implements WorkspaceMixin {
                         else {
                             // We are in the correct state.
                             this.$scope.doodleLoaded = true;
-                            this.afterWorkspaceLoaded();
+                            const defaultLibURL = '/typings/lib.es6.d.ts';
+                            this.wsModel.setDefaultLibrary(defaultLibURL, (err) => {
+                                if (!err) {
+                                    this.afterWorkspaceLoaded();
+                                }
+                                else {
+                                    this.modalDialog.alert({ title: "Default Library Error", message: `${err}` });
+                                }
+                            });
                         }
                     }
                     else {
-                        this.modalDialog.alert({ title: "Load Workspace Error", message: err.message });
-                    }
-                });
-
-                this.wsModel.setDefaultLibrary('/typings/lib.es6.d.ts', (err) => {
-                    if (err) {
-                        this.modalDialog.alert({ title: "Default Library Error", message: `${err}` });
+                        this.modalDialog.alert({ title: "Load Workspace Error", message: `${err}` });
                     }
                 });
 
                 this.outputFilesWatchRemover = this.wsModel.watch('outputFiles', this.createOutputFilesEventHandler());
             }
             else {
-                this.modalDialog.alert({ title: "Start Workspace Error", message: err.message });
+                this.modalDialog.alert({ title: "Start Workspace Error", message: `${err}` });
             }
         });
     }
@@ -502,11 +471,6 @@ export default class WorkspaceController implements WorkspaceMixin {
      * We can use this hook to release external resources, watches and event handlers.
      */
     $onDestroy(): void {
-
-        // console.lg("WorkspaceController.$onDestroy");
-
-        // const startTime = performance.now();
-
         // Cancel all of the watches.
         for (let w = 0; w < this.watches.length; w++) {
             const watch = this.watches[w];
@@ -526,18 +490,12 @@ export default class WorkspaceController implements WorkspaceMixin {
 
         // This method is called BEFORE the child directives make their detachEditor calls!
         this.wsModel.dispose();
-
-        // const endTime = performance.now();
-        // console.lg(`Workspace.$onDestroy took ${endTime - startTime} ms.`);
     }
 
     /**
      * 
      */
     private afterWorkspaceLoaded(): void {
-        if (this.trace) {
-            console.log("afterWorkspaceLoaded called");
-        }
 
         this.resizeListener = (unused: UIEvent) => {
             this.resize();
@@ -619,30 +577,35 @@ export default class WorkspaceController implements WorkspaceMixin {
             this.$http,
             this.$location,
             this.VENDOR_FOLDER_MARKER, () => {
-                if (this.trace) {
-                    console.log(`updateWorkspaceTypings complete`);
-                }
                 // Set the module kind for transpilation consistent with the version.
                 const moduleKind = detect1x(this.wsModel) ? MODULE_KIND_NONE : MODULE_KIND_SYSTEM;
-                this.wsModel.setModuleKind(moduleKind, (err) => {
-                    if (this.trace) {
-                        console.log(`setModuleKind(${moduleKind}) complete`);
-                    }
+                this.wsModel.setModuleKind(moduleKind, (moduleKindError) => {
+                    if (!moduleKindError) {
+                        // Set the script target for transpilation consistent with the version.
+                        const scriptTarget = detect1x(this.wsModel) ? SCRIPT_TARGET_ES5 : SCRIPT_TARGET;
 
-                    // Set the script target for transpilation consistent with the version.
-                    const scriptTarget = detect1x(this.wsModel) ? SCRIPT_TARGET_ES5 : SCRIPT_TARGET;
-
-                    this.wsModel.setScriptTarget(scriptTarget, (err) => {
-                        if (this.trace) {
-                            console.log(`setScriptTarget(${scriptTarget}) complete`);
-                        }
-                        this.wsModel.semanticDiagnostics((err) => {
-                            this.$scope.$applyAsync();
+                        this.wsModel.setScriptTarget(scriptTarget, (scriptTargetError) => {
+                            if (!scriptTargetError) {
+                                this.wsModel.semanticDiagnostics((diagnosticsError) => {
+                                    if (!diagnosticsError) {
+                                        this.$scope.$applyAsync();
+                                    }
+                                    else {
+                                        console.warn(`semanticDiagnostics() failed ${diagnosticsError}`);
+                                    }
+                                });
+                                this.wsModel.outputFiles();
+                                this.$scope.workspaceLoaded = true;
+                                this.$scope.updatePreview(WAIT_NO_MORE);
+                            }
+                            else {
+                                console.warn(`setScriptTarget(${scriptTarget}) failed ${scriptTargetError}`);
+                            }
                         });
-                        this.wsModel.outputFiles();
-                        this.$scope.workspaceLoaded = true;
-                        this.$scope.updatePreview(WAIT_NO_MORE);
-                    });
+                    }
+                    else {
+                        console.warn(`setModuleKind(${moduleKind}) failed ${moduleKindError}`);
+                    }
                 });
             });
     }
@@ -703,8 +666,6 @@ export default class WorkspaceController implements WorkspaceMixin {
         // The editors are attached after $onInit and so we miss the initial resize.
         editor.resize(true);
 
-        // const endTime = performance.now();
-        // console.lg(`Workspace.attachEditor(${filename}) ${endTime - startTime} ms.`);
         return () => {
             this.detachEditor(path, mode, editor);
         };

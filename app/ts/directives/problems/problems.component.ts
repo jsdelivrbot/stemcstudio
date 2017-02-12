@@ -5,10 +5,10 @@ import EditSession from '../../editor/EditSession';
 import ProblemsScope from './ProblemsScope';
 import Renderer from '../../editor/Renderer';
 import TextMode from '../../editor/mode/TextMode';
-import {EDITOR_PREFERENCES_SERVICE} from '../../modules/editors/constants';
+import { EDITOR_PREFERENCES_SERVICE } from '../../modules/editors/constants';
 import EditorPreferencesService from '../../modules/editors/EditorPreferencesService';
 import EditorPreferencesEvent from '../../modules/editors/EditorPreferencesEvent';
-import {currentTheme} from '../../modules/editors/EditorPreferencesEvent';
+import { currentTheme } from '../../modules/editors/EditorPreferencesEvent';
 import WsModel from '../../wsmodel/services/WsModel';
 
 const noop = function () { /* Do nothing. */ };
@@ -88,10 +88,7 @@ function factory($timeout: ng.ITimeoutService, editorPreferencesService: EditorP
 
                 editSession.setLanguageMode(new TextMode('/js/worker.js', workerImports), function (err: any) {
                     if (err) {
-                        console.warn(`err => ${err}`);
-                    }
-                    else {
-                        console.log("setLanguageMode completed successfully.");
+                        console.warn(`setLanguageMode failed. ${err}`);
                     }
                 });
 
@@ -143,7 +140,6 @@ function factory($timeout: ng.ITimeoutService, editorPreferencesService: EditorP
                 }
 
                 function resizeEditor() {
-                    console.log("resizeEditor()");
                     editor.resize(true);
                     editor.renderer.updateFull();
                 }

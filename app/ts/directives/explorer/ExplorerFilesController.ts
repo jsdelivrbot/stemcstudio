@@ -42,9 +42,17 @@ export default class ExplorerFilesController {
             .then((path) => {
                 try {
                     this.wsModel.newFile(path);
-                    this.wsModel.openFile(path);
-                    this.wsModel.selectFile(path);
-                    this.wsModel.updateStorage();
+                    this.wsModel.beginDocumentMonitoring(path, function (monitoringError) {
+                        if (!monitoringError) {
+                            this.wsModel.openFile(path);
+                            this.wsModel.selectFile(path);
+                            this.wsModel.updateStorage();
+                        }
+                        else {
+                            const alertOptions: AlertOptions = { title: "Error", message: `${monitoringError}` };
+                            this.modalService.alert(alertOptions);
+                        }
+                    });
                 }
                 catch (e) {
                     const alertOptions: AlertOptions = { title: "Error", message: e.toString() };
@@ -87,8 +95,22 @@ export default class ExplorerFilesController {
         this.modalService.prompt(options)
             .then((newName) => {
                 try {
-                    this.wsModel.renameFile(oldName, newName);
-                    this.wsModel.updateStorage();
+                    this.wsModel.endDocumentMonitoring(oldName, (endMonitoringError) => {
+                        if (!endMonitoringError) {
+                            this.wsModel.renameFileUnmonitored(oldName, newName);
+                            this.wsModel.beginDocumentMonitoring(newName, (beginMonitoringError) => {
+                                if (!beginMonitoringError) {
+                                    this.wsModel.updateStorage();
+                                }
+                                else {
+                                    this.modalService.alert({ title: "Error", message: `${beginMonitoringError}` });
+                                }
+                            });
+                        }
+                        else {
+                            this.modalService.alert({ title: "Error", message: `${endMonitoringError}` });
+                        }
+                    });
                 }
                 catch (e) {
                     this.modalService.alert({ title: "Error", message: e.toString() });
