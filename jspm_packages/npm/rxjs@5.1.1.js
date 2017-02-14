@@ -1,0 +1,1 @@
+module.exports = require("npm:rxjs@5.1.1/Rx.js");

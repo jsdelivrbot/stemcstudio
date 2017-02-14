@@ -816,11 +816,6 @@
     "process": "github:jspm/nodelibs-process@^0.1.0"
   },
   "npm:ansi-regex@2.1.1": {},
-  "npm:rxjs@5.1.0": {
-    "symbol-observable": "npm:symbol-observable@^1.0.1",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0"
-  },
   "npm:hosted-git-info@2.2.0": {
     "url": "github:jspm/nodelibs-url@^0.1.0"
   },
@@ -851,5 +846,10 @@
     "select": "npm:select@^1.1.2",
     "tiny-emitter": "npm:tiny-emitter@^1.0.0"
   },
-  "github:ace2ts/ace-workers@2.0.5": {}
+  "github:ace2ts/ace-workers@2.0.5": {},
+  "npm:rxjs@5.1.1": {
+    "symbol-observable": "npm:symbol-observable@^1.0.1",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  }
 }

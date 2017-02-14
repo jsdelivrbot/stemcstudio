@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Dimensions | NEWTON 0.0.30</title>
+	<title>Dimensions | NEWTON 0.0.31</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">NEWTON 0.0.30</a>
+					<a href="../index.html" class="title">NEWTON 0.0.31</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -85,12 +85,6 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section tsd-is-external">
-							<h3>Constructors</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-external"><a href="dimensions.html#constructor" class="tsd-kind-icon">constructor</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section tsd-is-external">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="dimensions.html#l" class="tsd-kind-icon">L</a></li>
@@ -101,6 +95,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="dimensions.html#intensity" class="tsd-kind-icon">intensity</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="dimensions.html#temperature" class="tsd-kind-icon">temperature</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="dimensions.html#amount-1" class="tsd-kind-icon">AMOUNT</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="dimensions.html#area" class="tsd-kind-icon">AREA</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="dimensions.html#charge" class="tsd-kind-icon">CHARGE</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="dimensions.html#current" class="tsd-kind-icon">CURRENT</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="dimensions.html#intensity-1" class="tsd-kind-icon">INTENSITY</a></li>
@@ -134,93 +129,10 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="dimensions.html#pow" class="tsd-kind-icon">pow</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="dimensions.html#sqrt" class="tsd-kind-icon">sqrt</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="dimensions.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="dimensions.html#valueof" class="tsd-kind-icon">value<wbr>Of</a></li>
 							</ul>
 						</section>
 					</div>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-external">
-				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
-					<a name="constructor" class="tsd-anchor"></a>
-					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Dimensions<span class="tsd-signature-symbol">(</span>M<span class="tsd-signature-symbol">: </span><a href="qq.html" class="tsd-signature-type">QQ</a>, L<span class="tsd-signature-symbol">: </span><a href="qq.html" class="tsd-signature-type">QQ</a>, T<span class="tsd-signature-symbol">: </span><a href="qq.html" class="tsd-signature-type">QQ</a>, Q<span class="tsd-signature-symbol">: </span><a href="qq.html" class="tsd-signature-type">QQ</a>, temperature<span class="tsd-signature-symbol">: </span><a href="qq.html" class="tsd-signature-type">QQ</a>, amount<span class="tsd-signature-symbol">: </span><a href="qq.html" class="tsd-signature-type">QQ</a>, intensity<span class="tsd-signature-symbol">: </span><a href="qq.html" class="tsd-signature-type">QQ</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="dimensions.html" class="tsd-signature-type">Dimensions</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L75">davinci-newton/math/Dimensions.ts:75</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>The Dimensions class captures the physical dimensions associated with a unit of measure.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>M: <a href="qq.html" class="tsd-signature-type">QQ</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The mass component of the dimensions object.</p>
-										</div>
-									</div>
-								</li>
-								<li>
-									<h5>L: <a href="qq.html" class="tsd-signature-type">QQ</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The length component of the dimensions object.</p>
-										</div>
-									</div>
-								</li>
-								<li>
-									<h5>T: <a href="qq.html" class="tsd-signature-type">QQ</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The time component of the dimensions object.</p>
-										</div>
-									</div>
-								</li>
-								<li>
-									<h5>Q: <a href="qq.html" class="tsd-signature-type">QQ</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The charge component of the dimensions object.</p>
-										</div>
-									</div>
-								</li>
-								<li>
-									<h5>temperature: <a href="qq.html" class="tsd-signature-type">QQ</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The temperature component of the dimensions object.</p>
-										</div>
-									</div>
-								</li>
-								<li>
-									<h5>amount: <a href="qq.html" class="tsd-signature-type">QQ</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The amount component of the dimensions object.</p>
-										</div>
-									</div>
-								</li>
-								<li>
-									<h5>intensity: <a href="qq.html" class="tsd-signature-type">QQ</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The intensity component of the dimensions object.</p>
-										</div>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="dimensions.html" class="tsd-signature-type">Dimensions</a></h4>
-						</li>
-					</ul>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
@@ -231,7 +143,7 @@
 					<div class="tsd-signature tsd-kind-icon">L<span class="tsd-signature-symbol">:</span> <a href="qq.html" class="tsd-signature-type">QQ</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L70">davinci-newton/math/Dimensions.ts:70</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L137">davinci-newton/math/Dimensions.ts:137</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -241,7 +153,7 @@
 					<div class="tsd-signature tsd-kind-icon">M<span class="tsd-signature-symbol">:</span> <a href="qq.html" class="tsd-signature-type">QQ</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L69">davinci-newton/math/Dimensions.ts:69</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L136">davinci-newton/math/Dimensions.ts:136</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -251,7 +163,7 @@
 					<div class="tsd-signature tsd-kind-icon">Q<span class="tsd-signature-symbol">:</span> <a href="qq.html" class="tsd-signature-type">QQ</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L72">davinci-newton/math/Dimensions.ts:72</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L139">davinci-newton/math/Dimensions.ts:139</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -261,7 +173,7 @@
 					<div class="tsd-signature tsd-kind-icon">T<span class="tsd-signature-symbol">:</span> <a href="qq.html" class="tsd-signature-type">QQ</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L71">davinci-newton/math/Dimensions.ts:71</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L138">davinci-newton/math/Dimensions.ts:138</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -271,7 +183,7 @@
 					<div class="tsd-signature tsd-kind-icon">amount<span class="tsd-signature-symbol">:</span> <a href="qq.html" class="tsd-signature-type">QQ</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L74">davinci-newton/math/Dimensions.ts:74</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L141">davinci-newton/math/Dimensions.ts:141</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -281,7 +193,7 @@
 					<div class="tsd-signature tsd-kind-icon">intensity<span class="tsd-signature-symbol">:</span> <a href="qq.html" class="tsd-signature-type">QQ</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L75">davinci-newton/math/Dimensions.ts:75</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L142">davinci-newton/math/Dimensions.ts:142</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -291,27 +203,42 @@
 					<div class="tsd-signature tsd-kind-icon">temperature<span class="tsd-signature-symbol">:</span> <a href="qq.html" class="tsd-signature-type">QQ</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L73">davinci-newton/math/Dimensions.ts:73</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L140">davinci-newton/math/Dimensions.ts:140</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="amount-1" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> AMOUNT</h3>
-					<div class="tsd-signature tsd-kind-icon">AMOUNT<span class="tsd-signature-symbol">:</span> <a href="dimensions.html" class="tsd-signature-type">Dimensions</a><span class="tsd-signature-symbol"> =&nbsp;new Dimensions(R0, R0, R0, R0, R0, R1, R0)</span></div>
+					<div class="tsd-signature tsd-kind-icon">AMOUNT<span class="tsd-signature-symbol">:</span> <a href="dimensions.html" class="tsd-signature-type">Dimensions</a><span class="tsd-signature-symbol"> =&nbsp;new Dimensions(R0, R0, R0, R0, R0, R1, R0, magicCode)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L62">davinci-newton/math/Dimensions.ts:62</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L69">davinci-newton/math/Dimensions.ts:69</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
-					<a name="charge" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagStatic">Static</span> CHARGE</h3>
-					<div class="tsd-signature tsd-kind-icon">CHARGE<span class="tsd-signature-symbol">:</span> <a href="dimensions.html" class="tsd-signature-type">Dimensions</a><span class="tsd-signature-symbol"> =&nbsp;new Dimensions(R0, R0, R0, R1, R0, R0, R0)</span></div>
+					<a name="area" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> AREA</h3>
+					<div class="tsd-signature tsd-kind-icon">AREA<span class="tsd-signature-symbol">:</span> <a href="dimensions.html" class="tsd-signature-type">Dimensions</a><span class="tsd-signature-symbol"> =&nbsp;new Dimensions(R0, R2, R0, R0, R0, R0, R0, magicCode)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L47">davinci-newton/math/Dimensions.ts:47</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L44">davinci-newton/math/Dimensions.ts:44</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>L<sup>2</sup></p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="charge" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> CHARGE</h3>
+					<div class="tsd-signature tsd-kind-icon">CHARGE<span class="tsd-signature-symbol">:</span> <a href="dimensions.html" class="tsd-signature-type">Dimensions</a><span class="tsd-signature-symbol"> =&nbsp;new Dimensions(R0, R0, R0, R1, R0, R0, R0, magicCode)</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L54">davinci-newton/math/Dimensions.ts:54</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -323,10 +250,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="current" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> CURRENT</h3>
-					<div class="tsd-signature tsd-kind-icon">CURRENT<span class="tsd-signature-symbol">:</span> <a href="dimensions.html" class="tsd-signature-type">Dimensions</a><span class="tsd-signature-symbol"> =&nbsp;new Dimensions(R0, R0, M1, R1, R0, R0, R0)</span></div>
+					<div class="tsd-signature tsd-kind-icon">CURRENT<span class="tsd-signature-symbol">:</span> <a href="dimensions.html" class="tsd-signature-type">Dimensions</a><span class="tsd-signature-symbol"> =&nbsp;new Dimensions(R0, R0, M1, R1, R0, R0, R0, magicCode)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L52">davinci-newton/math/Dimensions.ts:52</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L59">davinci-newton/math/Dimensions.ts:59</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -338,20 +265,20 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="intensity-1" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> INTENSITY</h3>
-					<div class="tsd-signature tsd-kind-icon">INTENSITY<span class="tsd-signature-symbol">:</span> <a href="dimensions.html" class="tsd-signature-type">Dimensions</a><span class="tsd-signature-symbol"> =&nbsp;new Dimensions(R0, R0, R0, R0, R0, R0, R1)</span></div>
+					<div class="tsd-signature tsd-kind-icon">INTENSITY<span class="tsd-signature-symbol">:</span> <a href="dimensions.html" class="tsd-signature-type">Dimensions</a><span class="tsd-signature-symbol"> =&nbsp;new Dimensions(R0, R0, R0, R0, R0, R0, R1, magicCode)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L67">davinci-newton/math/Dimensions.ts:67</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L74">davinci-newton/math/Dimensions.ts:74</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="length" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> LENGTH</h3>
-					<div class="tsd-signature tsd-kind-icon">LENGTH<span class="tsd-signature-symbol">:</span> <a href="dimensions.html" class="tsd-signature-type">Dimensions</a><span class="tsd-signature-symbol"> =&nbsp;new Dimensions(R0, R1, R0, R0, R0, R0, R0)</span></div>
+					<div class="tsd-signature tsd-kind-icon">LENGTH<span class="tsd-signature-symbol">:</span> <a href="dimensions.html" class="tsd-signature-type">Dimensions</a><span class="tsd-signature-symbol"> =&nbsp;new Dimensions(R0, R1, R0, R0, R0, R0, R0, magicCode)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L37">davinci-newton/math/Dimensions.ts:37</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L40">davinci-newton/math/Dimensions.ts:40</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -363,10 +290,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="mass" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> MASS</h3>
-					<div class="tsd-signature tsd-kind-icon">MASS<span class="tsd-signature-symbol">:</span> <a href="dimensions.html" class="tsd-signature-type">Dimensions</a><span class="tsd-signature-symbol"> =&nbsp;new Dimensions(R1, R0, R0, R0, R0, R0, R0)</span></div>
+					<div class="tsd-signature tsd-kind-icon">MASS<span class="tsd-signature-symbol">:</span> <a href="dimensions.html" class="tsd-signature-type">Dimensions</a><span class="tsd-signature-symbol"> =&nbsp;new Dimensions(R1, R0, R0, R0, R0, R0, R0, magicCode)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L32">davinci-newton/math/Dimensions.ts:32</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L35">davinci-newton/math/Dimensions.ts:35</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -378,10 +305,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="one" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> ONE</h3>
-					<div class="tsd-signature tsd-kind-icon">ONE<span class="tsd-signature-symbol">:</span> <a href="dimensions.html" class="tsd-signature-type">Dimensions</a><span class="tsd-signature-symbol"> =&nbsp;new Dimensions(R0, R0, R0, R0, R0, R0, R0)</span></div>
+					<div class="tsd-signature tsd-kind-icon">ONE<span class="tsd-signature-symbol">:</span> <a href="dimensions.html" class="tsd-signature-type">Dimensions</a><span class="tsd-signature-symbol"> =&nbsp;new Dimensions(R0, R0, R0, R0, R0, R0, R0, magicCode)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L27">davinci-newton/math/Dimensions.ts:27</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L30">davinci-newton/math/Dimensions.ts:30</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -393,20 +320,20 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="temperature-1" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> TEMPERATURE</h3>
-					<div class="tsd-signature tsd-kind-icon">TEMPERATURE<span class="tsd-signature-symbol">:</span> <a href="dimensions.html" class="tsd-signature-type">Dimensions</a><span class="tsd-signature-symbol"> =&nbsp;new Dimensions(R0, R0, R0, R0, R1, R0, R0)</span></div>
+					<div class="tsd-signature tsd-kind-icon">TEMPERATURE<span class="tsd-signature-symbol">:</span> <a href="dimensions.html" class="tsd-signature-type">Dimensions</a><span class="tsd-signature-symbol"> =&nbsp;new Dimensions(R0, R0, R0, R0, R1, R0, R0, magicCode)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L57">davinci-newton/math/Dimensions.ts:57</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L64">davinci-newton/math/Dimensions.ts:64</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="time" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> TIME</h3>
-					<div class="tsd-signature tsd-kind-icon">TIME<span class="tsd-signature-symbol">:</span> <a href="dimensions.html" class="tsd-signature-type">Dimensions</a><span class="tsd-signature-symbol"> =&nbsp;new Dimensions(R0, R0, R1, R0, R0, R0, R0)</span></div>
+					<div class="tsd-signature tsd-kind-icon">TIME<span class="tsd-signature-symbol">:</span> <a href="dimensions.html" class="tsd-signature-type">Dimensions</a><span class="tsd-signature-symbol"> =&nbsp;new Dimensions(R0, R0, R1, R0, R0, R0, R0, magicCode)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L42">davinci-newton/math/Dimensions.ts:42</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L49">davinci-newton/math/Dimensions.ts:49</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -428,7 +355,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L229">davinci-newton/math/Dimensions.ts:229</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L308">davinci-newton/math/Dimensions.ts:308</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -440,6 +367,7 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="dimensions.html" class="tsd-signature-type">Dimensions</a></h4>
+							<p>this + rhs</p>
 						</li>
 					</ul>
 				</section>
@@ -453,7 +381,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L312">davinci-newton/math/Dimensions.ts:312</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L390">davinci-newton/math/Dimensions.ts:390</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -478,7 +406,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L284">davinci-newton/math/Dimensions.ts:284</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L362">davinci-newton/math/Dimensions.ts:362</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -503,7 +431,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L345">davinci-newton/math/Dimensions.ts:345</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L423">davinci-newton/math/Dimensions.ts:423</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -522,7 +450,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L337">davinci-newton/math/Dimensions.ts:337</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L415">davinci-newton/math/Dimensions.ts:415</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -541,7 +469,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L242">davinci-newton/math/Dimensions.ts:242</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L320">davinci-newton/math/Dimensions.ts:320</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -553,6 +481,7 @@
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="dimensions.html" class="tsd-signature-type">Dimensions</a></h4>
+							<p>lhs + this</p>
 						</li>
 					</ul>
 				</section>
@@ -566,7 +495,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L325">davinci-newton/math/Dimensions.ts:325</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L403">davinci-newton/math/Dimensions.ts:403</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -591,7 +520,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L298">davinci-newton/math/Dimensions.ts:298</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L376">davinci-newton/math/Dimensions.ts:376</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -616,7 +545,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L270">davinci-newton/math/Dimensions.ts:270</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L348">davinci-newton/math/Dimensions.ts:348</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -641,7 +570,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L256">davinci-newton/math/Dimensions.ts:256</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L334">davinci-newton/math/Dimensions.ts:334</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -666,7 +595,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L107">davinci-newton/math/Dimensions.ts:107</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L177">davinci-newton/math/Dimensions.ts:177</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -694,7 +623,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L151">davinci-newton/math/Dimensions.ts:151</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L226">davinci-newton/math/Dimensions.ts:226</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -723,7 +652,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L131">davinci-newton/math/Dimensions.ts:131</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L201">davinci-newton/math/Dimensions.ts:201</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -746,7 +675,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L190">davinci-newton/math/Dimensions.ts:190</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L270">davinci-newton/math/Dimensions.ts:270</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -756,6 +685,7 @@
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <a href="dimensions.html" class="tsd-signature-type">Dimensions</a></h4>
+							<p>The multiplicative inverse of this dimensions number.</p>
 						</li>
 					</ul>
 				</section>
@@ -769,7 +699,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L180">davinci-newton/math/Dimensions.ts:180</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L255">davinci-newton/math/Dimensions.ts:255</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -793,7 +723,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L141">davinci-newton/math/Dimensions.ts:141</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L216">davinci-newton/math/Dimensions.ts:216</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -822,7 +752,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L197">davinci-newton/math/Dimensions.ts:197</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L277">davinci-newton/math/Dimensions.ts:277</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -844,7 +774,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L161">davinci-newton/math/Dimensions.ts:161</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L236">davinci-newton/math/Dimensions.ts:236</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -873,7 +803,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L170">davinci-newton/math/Dimensions.ts:170</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L245">davinci-newton/math/Dimensions.ts:245</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -895,7 +825,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/15ea619/src/davinci-newton/math/Dimensions.ts#L206">davinci-newton/math/Dimensions.ts:206</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L286">davinci-newton/math/Dimensions.ts:286</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -904,6 +834,70 @@
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="valueof" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> value<wbr>Of</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">value<wbr>Of<span class="tsd-signature-symbol">(</span>M<span class="tsd-signature-symbol">: </span><a href="qq.html" class="tsd-signature-type">QQ</a>, L<span class="tsd-signature-symbol">: </span><a href="qq.html" class="tsd-signature-type">QQ</a>, T<span class="tsd-signature-symbol">: </span><a href="qq.html" class="tsd-signature-type">QQ</a>, Q<span class="tsd-signature-symbol">: </span><a href="qq.html" class="tsd-signature-type">QQ</a>, temperature<span class="tsd-signature-symbol">: </span><a href="qq.html" class="tsd-signature-type">QQ</a>, amount<span class="tsd-signature-symbol">: </span><a href="qq.html" class="tsd-signature-type">QQ</a>, intensity<span class="tsd-signature-symbol">: </span><a href="qq.html" class="tsd-signature-type">QQ</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="dimensions.html" class="tsd-signature-type">Dimensions</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Dimensions.ts#L437">davinci-newton/math/Dimensions.ts:437</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>M: <a href="qq.html" class="tsd-signature-type">QQ</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The mass component of the dimensions object.</p>
+									</div>
+								</li>
+								<li>
+									<h5>L: <a href="qq.html" class="tsd-signature-type">QQ</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The length component of the dimensions object.</p>
+									</div>
+								</li>
+								<li>
+									<h5>T: <a href="qq.html" class="tsd-signature-type">QQ</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The time component of the dimensions object.</p>
+									</div>
+								</li>
+								<li>
+									<h5>Q: <a href="qq.html" class="tsd-signature-type">QQ</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The charge component of the dimensions object.</p>
+									</div>
+								</li>
+								<li>
+									<h5>temperature: <a href="qq.html" class="tsd-signature-type">QQ</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The temperature component of the dimensions object.</p>
+									</div>
+								</li>
+								<li>
+									<h5>amount: <a href="qq.html" class="tsd-signature-type">QQ</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The amount component of the dimensions object.</p>
+									</div>
+								</li>
+								<li>
+									<h5>intensity: <a href="qq.html" class="tsd-signature-type">QQ</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The intensity component of the dimensions object.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="dimensions.html" class="tsd-signature-type">Dimensions</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -924,9 +918,6 @@
 					<li class="current tsd-kind-class tsd-is-external">
 						<a href="dimensions.html" class="tsd-kind-icon">Dimensions</a>
 						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
-								<a href="dimensions.html#constructor" class="tsd-kind-icon">constructor</a>
-							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
 								<a href="dimensions.html#l" class="tsd-kind-icon">L</a>
 							</li>
@@ -950,6 +941,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 								<a href="dimensions.html#amount-1" class="tsd-kind-icon">AMOUNT</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="dimensions.html#area" class="tsd-kind-icon">AREA</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 								<a href="dimensions.html#charge" class="tsd-kind-icon">CHARGE</a>
@@ -1034,6 +1028,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="dimensions.html#tostring" class="tsd-kind-icon">to<wbr>String</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="dimensions.html#valueof" class="tsd-kind-icon">value<wbr>Of</a>
 							</li>
 						</ul>
 					</li>
