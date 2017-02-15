@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Unit | NEWTON 0.0.31</title>
+	<title>Unit | NEWTON 0.0.32</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">NEWTON 0.0.31</a>
+					<a href="../index.html" class="title">NEWTON 0.0.32</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -86,17 +86,8 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section tsd-is-external">
-							<h3>Constructors</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-external"><a href="unit.html#constructor" class="tsd-kind-icon">constructor</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section tsd-is-external">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="unit.html#dimensions" class="tsd-kind-icon">dimensions</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="unit.html#labels" class="tsd-kind-icon">labels</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="unit.html#multiplier" class="tsd-kind-icon">multiplier</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="unit.html#ampere" class="tsd-kind-icon">AMPERE</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="unit.html#candela" class="tsd-kind-icon">CANDELA</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="unit.html#coulomb" class="tsd-kind-icon">COULOMB</a></li>
@@ -136,164 +127,91 @@
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="unit.html#mustbeunit" class="tsd-kind-icon">must<wbr>BeUnit</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="unit.html#pow" class="tsd-kind-icon">pow</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="unit.html#sqrt" class="tsd-kind-icon">sqrt</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external"><a href="unit.html#valueof" class="tsd-kind-icon">value<wbr>Of</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
-				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
-					<a name="constructor" class="tsd-anchor"></a>
-					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Unit<span class="tsd-signature-symbol">(</span>multiplier<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, dimensions<span class="tsd-signature-symbol">: </span><a href="dimensions.html" class="tsd-signature-type">Dimensions</a>, labels<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="unit.html" class="tsd-signature-type">Unit</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L223">davinci-newton/math/Unit.ts:223</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>multiplier: <span class="tsd-signature-type">number</span></h5>
-								</li>
-								<li>
-									<h5>dimensions: <a href="dimensions.html" class="tsd-signature-type">Dimensions</a></h5>
-								</li>
-								<li>
-									<h5>labels: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The label strings to use for each dimension.</p>
-										</div>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="unit.html" class="tsd-signature-type">Unit</a></h4>
-						</li>
-					</ul>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
-					<a name="dimensions" class="tsd-anchor"></a>
-					<h3>dimensions</h3>
-					<div class="tsd-signature tsd-kind-icon">dimensions<span class="tsd-signature-symbol">:</span> <a href="dimensions.html" class="tsd-signature-type">Dimensions</a></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L230">davinci-newton/math/Unit.ts:230</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
-					<a name="labels" class="tsd-anchor"></a>
-					<h3>labels</h3>
-					<div class="tsd-signature tsd-kind-icon">labels<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L230">davinci-newton/math/Unit.ts:230</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The label strings to use for each dimension.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
-					<a name="multiplier" class="tsd-anchor"></a>
-					<h3>multiplier</h3>
-					<div class="tsd-signature tsd-kind-icon">multiplier<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L230">davinci-newton/math/Unit.ts:230</a></li>
-						</ul>
-					</aside>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="ampere" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> AMPERE</h3>
-					<div class="tsd-signature tsd-kind-icon">AMPERE<span class="tsd-signature-symbol">:</span> <a href="unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol"> =&nbsp;new Unit(1, Dimensions.CURRENT, SYMBOLS_SI)</span></div>
+					<div class="tsd-signature tsd-kind-icon">AMPERE<span class="tsd-signature-symbol">:</span> <a href="unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol"> =&nbsp;new Unit(1, Dimensions.CURRENT, SYMBOLS_SI, magicCode)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L208">davinci-newton/math/Unit.ts:208</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L213">davinci-newton/math/Unit.ts:213</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="candela" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> CANDELA</h3>
-					<div class="tsd-signature tsd-kind-icon">CANDELA<span class="tsd-signature-symbol">:</span> <a href="unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol"> =&nbsp;new Unit(1, Dimensions.INTENSITY, SYMBOLS_SI)</span></div>
+					<div class="tsd-signature tsd-kind-icon">CANDELA<span class="tsd-signature-symbol">:</span> <a href="unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol"> =&nbsp;new Unit(1, Dimensions.INTENSITY, SYMBOLS_SI, magicCode)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L223">davinci-newton/math/Unit.ts:223</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L228">davinci-newton/math/Unit.ts:228</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="coulomb" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> COULOMB</h3>
-					<div class="tsd-signature tsd-kind-icon">COULOMB<span class="tsd-signature-symbol">:</span> <a href="unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol"> =&nbsp;new Unit(1, Dimensions.CHARGE, SYMBOLS_SI)</span></div>
+					<div class="tsd-signature tsd-kind-icon">COULOMB<span class="tsd-signature-symbol">:</span> <a href="unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol"> =&nbsp;new Unit(1, Dimensions.CHARGE, SYMBOLS_SI, magicCode)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L203">davinci-newton/math/Unit.ts:203</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L208">davinci-newton/math/Unit.ts:208</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="kelvin" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> KELVIN</h3>
-					<div class="tsd-signature tsd-kind-icon">KELVIN<span class="tsd-signature-symbol">:</span> <a href="unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol"> =&nbsp;new Unit(1, Dimensions.TEMPERATURE, SYMBOLS_SI)</span></div>
+					<div class="tsd-signature tsd-kind-icon">KELVIN<span class="tsd-signature-symbol">:</span> <a href="unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol"> =&nbsp;new Unit(1, Dimensions.TEMPERATURE, SYMBOLS_SI, magicCode)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L213">davinci-newton/math/Unit.ts:213</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L218">davinci-newton/math/Unit.ts:218</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="kilogram" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> KILOGRAM</h3>
-					<div class="tsd-signature tsd-kind-icon">KILOGRAM<span class="tsd-signature-symbol">:</span> <a href="unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol"> =&nbsp;new Unit(1, Dimensions.MASS, SYMBOLS_SI)</span></div>
+					<div class="tsd-signature tsd-kind-icon">KILOGRAM<span class="tsd-signature-symbol">:</span> <a href="unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol"> =&nbsp;new Unit(1, Dimensions.MASS, SYMBOLS_SI, magicCode)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L188">davinci-newton/math/Unit.ts:188</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L193">davinci-newton/math/Unit.ts:193</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="meter" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> METER</h3>
-					<div class="tsd-signature tsd-kind-icon">METER<span class="tsd-signature-symbol">:</span> <a href="unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol"> =&nbsp;new Unit(1, Dimensions.LENGTH, SYMBOLS_SI)</span></div>
+					<div class="tsd-signature tsd-kind-icon">METER<span class="tsd-signature-symbol">:</span> <a href="unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol"> =&nbsp;new Unit(1, Dimensions.LENGTH, SYMBOLS_SI, magicCode)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L193">davinci-newton/math/Unit.ts:193</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L198">davinci-newton/math/Unit.ts:198</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="mole" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> MOLE</h3>
-					<div class="tsd-signature tsd-kind-icon">MOLE<span class="tsd-signature-symbol">:</span> <a href="unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol"> =&nbsp;new Unit(1, Dimensions.AMOUNT, SYMBOLS_SI)</span></div>
+					<div class="tsd-signature tsd-kind-icon">MOLE<span class="tsd-signature-symbol">:</span> <a href="unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol"> =&nbsp;new Unit(1, Dimensions.AMOUNT, SYMBOLS_SI, magicCode)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L218">davinci-newton/math/Unit.ts:218</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L223">davinci-newton/math/Unit.ts:223</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 					<a name="second" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagStatic">Static</span> SECOND</h3>
-					<div class="tsd-signature tsd-kind-icon">SECOND<span class="tsd-signature-symbol">:</span> <a href="unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol"> =&nbsp;new Unit(1, Dimensions.TIME, SYMBOLS_SI)</span></div>
+					<div class="tsd-signature tsd-kind-icon">SECOND<span class="tsd-signature-symbol">:</span> <a href="unit.html" class="tsd-signature-type">Unit</a><span class="tsd-signature-symbol"> =&nbsp;new Unit(1, Dimensions.TIME, SYMBOLS_SI, magicCode)</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L198">davinci-newton/math/Unit.ts:198</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L203">davinci-newton/math/Unit.ts:203</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -310,7 +228,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L258">davinci-newton/math/Unit.ts:258</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L284">davinci-newton/math/Unit.ts:284</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -333,7 +251,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L332">davinci-newton/math/Unit.ts:332</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L358">davinci-newton/math/Unit.ts:358</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -356,7 +274,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L301">davinci-newton/math/Unit.ts:301</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L327">davinci-newton/math/Unit.ts:327</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -379,7 +297,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L396">davinci-newton/math/Unit.ts:396</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L422">davinci-newton/math/Unit.ts:422</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="unit.html" class="tsd-signature-type">Unit</a></h4>
@@ -396,7 +314,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L392">davinci-newton/math/Unit.ts:392</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L418">davinci-newton/math/Unit.ts:418</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <a href="unit.html" class="tsd-signature-type">Unit</a></h4>
@@ -413,7 +331,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L267">davinci-newton/math/Unit.ts:267</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L293">davinci-newton/math/Unit.ts:293</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -436,7 +354,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L344">davinci-newton/math/Unit.ts:344</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L370">davinci-newton/math/Unit.ts:370</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -459,7 +377,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L313">davinci-newton/math/Unit.ts:313</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L339">davinci-newton/math/Unit.ts:339</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -482,7 +400,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L285">davinci-newton/math/Unit.ts:285</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L311">davinci-newton/math/Unit.ts:311</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -505,7 +423,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L276">davinci-newton/math/Unit.ts:276</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L302">davinci-newton/math/Unit.ts:302</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -528,7 +446,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L328">davinci-newton/math/Unit.ts:328</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L354">davinci-newton/math/Unit.ts:354</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -556,7 +474,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L297">davinci-newton/math/Unit.ts:297</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L323">davinci-newton/math/Unit.ts:323</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -584,7 +502,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L376">davinci-newton/math/Unit.ts:376</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L402">davinci-newton/math/Unit.ts:402</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -610,7 +528,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L380">davinci-newton/math/Unit.ts:380</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L406">davinci-newton/math/Unit.ts:406</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -636,7 +554,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L384">davinci-newton/math/Unit.ts:384</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L410">davinci-newton/math/Unit.ts:410</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -662,7 +580,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L388">davinci-newton/math/Unit.ts:388</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L414">davinci-newton/math/Unit.ts:414</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -688,7 +606,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L418">davinci-newton/math/Unit.ts:418</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L444">davinci-newton/math/Unit.ts:444</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -716,7 +634,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L429">davinci-newton/math/Unit.ts:429</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L455">davinci-newton/math/Unit.ts:455</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -744,7 +662,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L516">davinci-newton/math/Unit.ts:516</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L542">davinci-newton/math/Unit.ts:542</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -774,7 +692,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L538">davinci-newton/math/Unit.ts:538</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L564">davinci-newton/math/Unit.ts:564</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -802,7 +720,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L458">davinci-newton/math/Unit.ts:458</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L484">davinci-newton/math/Unit.ts:484</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -828,7 +746,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L403">davinci-newton/math/Unit.ts:403</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L429">davinci-newton/math/Unit.ts:429</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -856,7 +774,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L492">davinci-newton/math/Unit.ts:492</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L518">davinci-newton/math/Unit.ts:518</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -884,7 +802,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L555">davinci-newton/math/Unit.ts:555</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L581">davinci-newton/math/Unit.ts:581</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -910,7 +828,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L570">davinci-newton/math/Unit.ts:570</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L596">davinci-newton/math/Unit.ts:596</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -941,7 +859,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/a3e7dd7/src/davinci-newton/math/Unit.ts#L593">davinci-newton/math/Unit.ts:593</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L619">davinci-newton/math/Unit.ts:619</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -950,6 +868,40 @@
 							<ul class="tsd-parameters">
 								<li>
 									<h5>uom: <a href="unit.html" class="tsd-signature-type">Unit</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="unit.html" class="tsd-signature-type">Unit</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
+					<a name="valueof" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagStatic">Static</span> value<wbr>Of</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">value<wbr>Of<span class="tsd-signature-symbol">(</span>multiplier<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, dimensions<span class="tsd-signature-symbol">: </span><a href="dimensions.html" class="tsd-signature-type">Dimensions</a>, labels<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="unit.html" class="tsd-signature-type">Unit</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/5896b9e/src/davinci-newton/math/Unit.ts#L636">davinci-newton/math/Unit.ts:636</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Constructs a Unit.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>multiplier: <span class="tsd-signature-type">number</span></h5>
+								</li>
+								<li>
+									<h5>dimensions: <a href="dimensions.html" class="tsd-signature-type">Dimensions</a></h5>
+								</li>
+								<li>
+									<h5>labels: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="unit.html" class="tsd-signature-type">Unit</a></h4>
@@ -973,18 +925,6 @@
 					<li class="current tsd-kind-class tsd-is-external">
 						<a href="unit.html" class="tsd-kind-icon">Unit</a>
 						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
-								<a href="unit.html#constructor" class="tsd-kind-icon">constructor</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
-								<a href="unit.html#dimensions" class="tsd-kind-icon">dimensions</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
-								<a href="unit.html#labels" class="tsd-kind-icon">labels</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
-								<a href="unit.html#multiplier" class="tsd-kind-icon">multiplier</a>
-							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-static tsd-is-external">
 								<a href="unit.html#ampere" class="tsd-kind-icon">AMPERE</a>
 							</li>
@@ -1086,6 +1026,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
 								<a href="unit.html#sqrt" class="tsd-kind-icon">sqrt</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-static tsd-is-external">
+								<a href="unit.html#valueof" class="tsd-kind-icon">value<wbr>Of</a>
 							</li>
 						</ul>
 					</li>

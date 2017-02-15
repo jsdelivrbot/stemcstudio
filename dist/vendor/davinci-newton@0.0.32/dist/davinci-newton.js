@@ -829,60 +829,45 @@ define('davinci-newton/math/compG3Set',["require", "exports"], function (require
     exports.default = compG3Set;
 });
 
-define('davinci-newton/checks/mustSatisfy',["require", "exports"], function (require, exports) {
+define('davinci-newton/math/DimensionsSummary',["require", "exports"], function (require, exports) {
     "use strict";
-    function mustSatisfy(name, condition, messageBuilder, contextBuilder) {
-        if (!condition) {
-            var message = messageBuilder ? messageBuilder() : "satisfy some condition";
-            var context = contextBuilder ? " in " + contextBuilder() : "";
-            throw new Error(name + " must " + message + context + ".");
-        }
-    }
+    var DimensionsSummary;
+    (function (DimensionsSummary) {
+        DimensionsSummary[DimensionsSummary["Unknown"] = -1] = "Unknown";
+        DimensionsSummary[DimensionsSummary["INV_MOMENT_OF_INERTIA"] = 0] = "INV_MOMENT_OF_INERTIA";
+        DimensionsSummary[DimensionsSummary["INV_MASS"] = 1] = "INV_MASS";
+        DimensionsSummary[DimensionsSummary["INV_TIME"] = 2] = "INV_TIME";
+        DimensionsSummary[DimensionsSummary["ONE"] = 3] = "ONE";
+        DimensionsSummary[DimensionsSummary["TIME_SQUARED"] = 4] = "TIME_SQUARED";
+        DimensionsSummary[DimensionsSummary["LENGTH"] = 5] = "LENGTH";
+        DimensionsSummary[DimensionsSummary["RATE_OF_CHANGE_OF_AREA"] = 6] = "RATE_OF_CHANGE_OF_AREA";
+        DimensionsSummary[DimensionsSummary["AREA"] = 7] = "AREA";
+        DimensionsSummary[DimensionsSummary["STIFFNESS"] = 8] = "STIFFNESS";
+        DimensionsSummary[DimensionsSummary["FORCE"] = 9] = "FORCE";
+        DimensionsSummary[DimensionsSummary["MOMENTUM"] = 10] = "MOMENTUM";
+        DimensionsSummary[DimensionsSummary["ENERGY_OR_TORQUE"] = 11] = "ENERGY_OR_TORQUE";
+        DimensionsSummary[DimensionsSummary["ANGULAR_MOMENTUM"] = 12] = "ANGULAR_MOMENTUM";
+        DimensionsSummary[DimensionsSummary["MOMENT_OF_INERTIA"] = 13] = "MOMENT_OF_INERTIA";
+        DimensionsSummary[DimensionsSummary["MOMENTUM_SQUARED"] = 14] = "MOMENTUM_SQUARED";
+        DimensionsSummary[DimensionsSummary["MASS"] = 15] = "MASS";
+        DimensionsSummary[DimensionsSummary["TIME"] = 16] = "TIME";
+        DimensionsSummary[DimensionsSummary["CHARGE"] = 17] = "CHARGE";
+        DimensionsSummary[DimensionsSummary["CURRENT"] = 18] = "CURRENT";
+        DimensionsSummary[DimensionsSummary["TEMPERATURE"] = 19] = "TEMPERATURE";
+        DimensionsSummary[DimensionsSummary["AMOUNT"] = 20] = "AMOUNT";
+        DimensionsSummary[DimensionsSummary["INTENSITY"] = 21] = "INTENSITY";
+        DimensionsSummary[DimensionsSummary["INV_LENGTH"] = 22] = "INV_LENGTH";
+        DimensionsSummary[DimensionsSummary["VELOCITY"] = 23] = "VELOCITY";
+        DimensionsSummary[DimensionsSummary["VELOCITY_SQUARED"] = 24] = "VELOCITY_SQUARED";
+    })(DimensionsSummary = exports.DimensionsSummary || (exports.DimensionsSummary = {}));
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.default = mustSatisfy;
+    exports.default = DimensionsSummary;
 });
 
-define('davinci-newton/checks/isNumber',["require", "exports"], function (require, exports) {
+define('davinci-newton/math/QQ',["require", "exports"], function (require, exports) {
     "use strict";
-    function isNumber(x) {
-        return (typeof x === 'number');
-    }
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.default = isNumber;
-});
-
-define('davinci-newton/checks/isInteger',["require", "exports", "../checks/isNumber"], function (require, exports, isNumber_1) {
-    "use strict";
-    function isInteger(x) {
-        return isNumber_1.default(x) && x % 1 === 0;
-    }
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.default = isInteger;
-});
-
-define('davinci-newton/checks/mustBeInteger',["require", "exports", "../checks/mustSatisfy", "../checks/isInteger"], function (require, exports, mustSatisfy_1, isInteger_1) {
-    "use strict";
-    function beAnInteger() {
-        return "be an integer";
-    }
-    function mustBeInteger(name, value, contextBuilder) {
-        mustSatisfy_1.default(name, isInteger_1.default(value), beAnInteger, contextBuilder);
-        return value;
-    }
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.default = mustBeInteger;
-});
-
-define('davinci-newton/math/QQ',["require", "exports", "../checks/mustBeInteger"], function (require, exports, mustBeInteger_1) {
-    "use strict";
-    var magicCode = Math.random();
     var QQ = (function () {
-        function QQ(n, d, code) {
-            if (code !== magicCode) {
-                throw new Error("Use the static create method instead of the constructor");
-            }
-            mustBeInteger_1.default('n', n);
-            mustBeInteger_1.default('d', d);
+        function QQ(n, d) {
             var g;
             var gcd = function (a, b) {
                 var temp;
@@ -1152,91 +1137,571 @@ define('davinci-newton/math/QQ',["require", "exports", "../checks/mustBeInteger"
                     return QQ.POS_08_01;
                 }
             }
-            return new QQ(n, d, magicCode);
+            return new QQ(n, d);
         };
         return QQ;
     }());
-    QQ.POS_08_01 = new QQ(8, 1, magicCode);
-    QQ.POS_07_01 = new QQ(7, 1, magicCode);
-    QQ.POS_06_01 = new QQ(6, 1, magicCode);
-    QQ.POS_05_01 = new QQ(5, 1, magicCode);
-    QQ.POS_04_01 = new QQ(4, 1, magicCode);
-    QQ.POS_03_01 = new QQ(3, 1, magicCode);
-    QQ.POS_02_01 = new QQ(2, 1, magicCode);
-    QQ.ONE = new QQ(1, 1, magicCode);
-    QQ.POS_01_02 = new QQ(1, 2, magicCode);
-    QQ.POS_01_03 = new QQ(1, 3, magicCode);
-    QQ.POS_01_04 = new QQ(1, 4, magicCode);
-    QQ.POS_01_05 = new QQ(1, 5, magicCode);
-    QQ.ZERO = new QQ(0, 1, magicCode);
-    QQ.NEG_01_03 = new QQ(-1, 3, magicCode);
-    QQ.NEG_01_01 = new QQ(-1, 1, magicCode);
-    QQ.NEG_02_01 = new QQ(-2, 1, magicCode);
-    QQ.NEG_03_01 = new QQ(-3, 1, magicCode);
-    QQ.POS_02_03 = new QQ(2, 3, magicCode);
+    QQ.POS_08_01 = new QQ(8, 1);
+    QQ.POS_07_01 = new QQ(7, 1);
+    QQ.POS_06_01 = new QQ(6, 1);
+    QQ.POS_05_01 = new QQ(5, 1);
+    QQ.POS_04_01 = new QQ(4, 1);
+    QQ.POS_03_01 = new QQ(3, 1);
+    QQ.POS_02_01 = new QQ(2, 1);
+    QQ.ONE = new QQ(1, 1);
+    QQ.POS_01_02 = new QQ(1, 2);
+    QQ.POS_01_03 = new QQ(1, 3);
+    QQ.POS_01_04 = new QQ(1, 4);
+    QQ.POS_01_05 = new QQ(1, 5);
+    QQ.ZERO = new QQ(0, 1);
+    QQ.NEG_01_03 = new QQ(-1, 3);
+    QQ.NEG_01_01 = new QQ(-1, 1);
+    QQ.NEG_02_01 = new QQ(-2, 1);
+    QQ.NEG_03_01 = new QQ(-3, 1);
+    QQ.POS_02_03 = new QQ(2, 3);
     exports.QQ = QQ;
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = QQ;
 });
 
-define('davinci-newton/checks/isString',["require", "exports"], function (require, exports) {
+define('davinci-newton/math/detectDimensions',["require", "exports", "./DimensionsSummary"], function (require, exports, DimensionsSummary_1) {
     "use strict";
-    function isString(s) {
-        return (typeof s === 'string');
-    }
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.default = isString;
-});
-
-define('davinci-newton/checks/mustBeString',["require", "exports", "../checks/mustSatisfy", "../checks/isString"], function (require, exports, mustSatisfy_1, isString_1) {
-    "use strict";
-    function beAString() {
-        return "be a string";
-    }
-    function default_1(name, value, contextBuilder) {
-        mustSatisfy_1.default(name, isString_1.default(value), beAString, contextBuilder);
-        return value;
-    }
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.default = default_1;
-});
-
-define('davinci-newton/i18n/notSupported',["require", "exports", "../checks/mustBeString"], function (require, exports, mustBeString_1) {
-    "use strict";
-    function default_1(name) {
-        mustBeString_1.default('name', name);
-        var message = {
-            get message() {
-                return "Method `" + name + "` is not supported.";
+    function detectDimensions(M, L, T, Q, temperature, amount, intensity) {
+        if (M.numer === -1) {
+            if (M.denom === 1) {
+                if (L.numer === -2) {
+                    if (L.denom === 1) {
+                        if (T.numer === 0) {
+                            if (T.denom === 1) {
+                                if (Q.numer === 0) {
+                                    if (Q.denom === 1) {
+                                        if (temperature.numer === 0) {
+                                            if (temperature.denom === 1) {
+                                                if (amount.numer === 0) {
+                                                    if (amount.denom === 1) {
+                                                        if (intensity.numer === 0) {
+                                                            if (intensity.denom === 1) {
+                                                                return DimensionsSummary_1.default.INV_MOMENT_OF_INERTIA;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (L.numer === 0) {
+                    if (L.denom === 1) {
+                        if (T.numer === 0) {
+                            if (T.denom === 1) {
+                                if (Q.numer === 0) {
+                                    if (Q.denom === 1) {
+                                        if (temperature.numer === 0) {
+                                            if (temperature.denom === 1) {
+                                                if (amount.numer === 0) {
+                                                    if (amount.denom === 1) {
+                                                        if (intensity.numer === 0) {
+                                                            if (intensity.denom === 1) {
+                                                                return DimensionsSummary_1.default.INV_MASS;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
-        };
-        return message;
+        }
+        else if (M.numer === 0) {
+            if (M.denom === 1) {
+                if (L.numer === 0) {
+                    if (L.denom === 1) {
+                        if (T.numer === -1) {
+                            if (T.denom === 1) {
+                                if (Q.numer === 0) {
+                                    if (Q.denom === 1) {
+                                        if (temperature.numer === 0) {
+                                            if (temperature.denom === 1) {
+                                                if (amount.numer === 0) {
+                                                    if (amount.denom === 1) {
+                                                        if (intensity.numer === 0) {
+                                                            if (intensity.denom === 1) {
+                                                                return DimensionsSummary_1.default.INV_TIME;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                else if (Q.numer === 1) {
+                                    if (Q.denom === 1) {
+                                        if (temperature.numer === 0) {
+                                            if (temperature.denom === 1) {
+                                                if (amount.numer === 0) {
+                                                    if (amount.denom === 1) {
+                                                        if (intensity.numer === 0) {
+                                                            if (intensity.denom === 1) {
+                                                                return DimensionsSummary_1.default.CURRENT;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else if (T.numer === 0) {
+                            if (T.denom === 1) {
+                                if (Q.numer === 0) {
+                                    if (Q.denom === 1) {
+                                        if (temperature.numer === 0) {
+                                            if (temperature.denom === 1) {
+                                                if (amount.numer === 0) {
+                                                    if (amount.denom === 1) {
+                                                        if (intensity.numer === 0) {
+                                                            if (intensity.denom === 1) {
+                                                                return DimensionsSummary_1.default.ONE;
+                                                            }
+                                                        }
+                                                        else if (intensity.numer === 1) {
+                                                            if (intensity.denom === 1) {
+                                                                return DimensionsSummary_1.default.INTENSITY;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                else if (amount.numer === 1) {
+                                                    if (amount.denom === 1) {
+                                                        if (intensity.numer === 0) {
+                                                            if (intensity.denom === 1) {
+                                                                return DimensionsSummary_1.default.AMOUNT;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else if (temperature.numer === 1) {
+                                            if (temperature.denom === 1) {
+                                                if (amount.numer === 0) {
+                                                    if (amount.denom === 1) {
+                                                        if (intensity.numer === 0) {
+                                                            if (intensity.denom === 1) {
+                                                                return DimensionsSummary_1.default.TEMPERATURE;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                else if (Q.numer === 1) {
+                                    if (Q.denom === 1) {
+                                        if (temperature.numer === 0) {
+                                            if (temperature.denom === 1) {
+                                                if (amount.numer === 0) {
+                                                    if (amount.denom === 1) {
+                                                        if (intensity.numer === 0) {
+                                                            if (intensity.denom === 1) {
+                                                                return DimensionsSummary_1.default.CHARGE;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else if (T.numer === 1) {
+                            if (T.denom === 1) {
+                                if (Q.numer === 0) {
+                                    if (Q.denom === 1) {
+                                        if (temperature.numer === 0) {
+                                            if (temperature.denom === 1) {
+                                                if (amount.numer === 0) {
+                                                    if (amount.denom === 1) {
+                                                        if (intensity.numer === 0) {
+                                                            if (intensity.denom === 1) {
+                                                                return DimensionsSummary_1.default.TIME;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else if (T.numer === 2) {
+                            if (T.denom === 1) {
+                                if (Q.numer === 0) {
+                                    if (Q.denom === 1) {
+                                        if (temperature.numer === 0) {
+                                            if (temperature.denom === 1) {
+                                                if (amount.numer === 0) {
+                                                    if (amount.denom === 1) {
+                                                        if (intensity.numer === 0) {
+                                                            if (intensity.denom === 1) {
+                                                                return DimensionsSummary_1.default.TIME_SQUARED;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (L.numer === 1) {
+                    if (L.denom === 1) {
+                        if (T.numer === -1) {
+                            if (T.denom === 1) {
+                                if (Q.numer === 0) {
+                                    if (Q.denom === 1) {
+                                        if (temperature.numer === 0) {
+                                            if (temperature.denom === 1) {
+                                                if (amount.numer === 0) {
+                                                    if (amount.denom === 1) {
+                                                        if (intensity.numer === 0) {
+                                                            if (intensity.denom === 1) {
+                                                                return DimensionsSummary_1.default.VELOCITY;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else if (T.numer === 0) {
+                            if (T.denom === 1) {
+                                if (Q.numer === 0) {
+                                    if (Q.denom === 1) {
+                                        if (temperature.numer === 0) {
+                                            if (temperature.denom === 1) {
+                                                if (amount.numer === 0) {
+                                                    if (amount.denom === 1) {
+                                                        if (intensity.numer === 0) {
+                                                            if (intensity.denom === 1) {
+                                                                return DimensionsSummary_1.default.LENGTH;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (L.numer === 2) {
+                    if (L.denom === 1) {
+                        if (T.numer === -2) {
+                            if (T.denom === 1) {
+                                if (Q.numer === 0) {
+                                    if (Q.denom === 1) {
+                                        if (temperature.numer === 0) {
+                                            if (temperature.denom === 1) {
+                                                if (amount.numer === 0) {
+                                                    if (amount.denom === 1) {
+                                                        if (intensity.numer === 0) {
+                                                            if (intensity.denom === 1) {
+                                                                return DimensionsSummary_1.default.VELOCITY_SQUARED;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (T.numer === -1) {
+                            if (T.denom === 1) {
+                                if (Q.numer === 0) {
+                                    if (Q.denom === 1) {
+                                        if (temperature.numer === 0) {
+                                            if (temperature.denom === 1) {
+                                                if (amount.numer === 0) {
+                                                    if (amount.denom === 1) {
+                                                        if (intensity.numer === 0) {
+                                                            if (intensity.denom === 1) {
+                                                                return DimensionsSummary_1.default.RATE_OF_CHANGE_OF_AREA;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else if (T.numer === 0) {
+                            if (T.denom === 1) {
+                                if (Q.numer === 0) {
+                                    if (Q.denom === 1) {
+                                        if (temperature.numer === 0) {
+                                            if (temperature.denom === 1) {
+                                                if (amount.numer === 0) {
+                                                    if (amount.denom === 1) {
+                                                        if (intensity.numer === 0) {
+                                                            if (intensity.denom === 1) {
+                                                                return DimensionsSummary_1.default.AREA;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else if (M.numer === 1) {
+            if (M.denom === 1) {
+                if (L.numer === 0) {
+                    if (L.denom === 1) {
+                        if (T.numer === -2) {
+                            if (T.denom === 1) {
+                                if (Q.numer === 0) {
+                                    if (Q.denom === 1) {
+                                        if (temperature.numer === 0) {
+                                            if (temperature.denom === 1) {
+                                                if (amount.numer === 0) {
+                                                    if (amount.denom === 1) {
+                                                        if (intensity.numer === 0) {
+                                                            if (intensity.denom === 1) {
+                                                                return DimensionsSummary_1.default.STIFFNESS;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else if (T.numer === 0) {
+                            if (T.denom === 1) {
+                                if (Q.numer === 0) {
+                                    if (Q.denom === 1) {
+                                        if (temperature.numer === 0) {
+                                            if (temperature.denom === 1) {
+                                                if (amount.numer === 0) {
+                                                    if (amount.denom === 1) {
+                                                        if (intensity.numer === 0) {
+                                                            if (intensity.denom === 1) {
+                                                                return DimensionsSummary_1.default.MASS;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (L.numer === 1) {
+                    if (L.denom === 1) {
+                        if (T.numer === -2) {
+                            if (T.denom === 1) {
+                                if (Q.numer === 0) {
+                                    if (Q.denom === 1) {
+                                        if (temperature.numer === 0) {
+                                            if (temperature.denom === 1) {
+                                                if (amount.numer === 0) {
+                                                    if (amount.denom === 1) {
+                                                        if (intensity.numer === 0) {
+                                                            if (intensity.denom === 1) {
+                                                                return DimensionsSummary_1.default.FORCE;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else if (T.numer === -1) {
+                            if (T.denom === 1) {
+                                if (Q.numer === 0) {
+                                    if (Q.denom === 1) {
+                                        if (temperature.numer === 0) {
+                                            if (temperature.denom === 1) {
+                                                if (amount.numer === 0) {
+                                                    if (amount.denom === 1) {
+                                                        if (intensity.numer === 0) {
+                                                            if (intensity.denom === 1) {
+                                                                return DimensionsSummary_1.default.MOMENTUM;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (L.numer === 2) {
+                    if (L.denom === 1) {
+                        if (T.numer === -2) {
+                            if (T.denom === 1) {
+                                if (Q.numer === 0) {
+                                    if (Q.denom === 1) {
+                                        if (temperature.numer === 0) {
+                                            if (temperature.denom === 1) {
+                                                if (amount.numer === 0) {
+                                                    if (amount.denom === 1) {
+                                                        if (intensity.numer === 0) {
+                                                            if (intensity.denom === 1) {
+                                                                return DimensionsSummary_1.default.ENERGY_OR_TORQUE;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else if (T.numer === -1) {
+                            if (T.denom === 1) {
+                                if (Q.numer === 0) {
+                                    if (Q.denom === 1) {
+                                        if (temperature.numer === 0) {
+                                            if (temperature.denom === 1) {
+                                                if (amount.numer === 0) {
+                                                    if (amount.denom === 1) {
+                                                        if (intensity.numer === 0) {
+                                                            if (intensity.denom === 1) {
+                                                                return DimensionsSummary_1.default.ANGULAR_MOMENTUM;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else if (T.numer === 0) {
+                            if (T.denom === 1) {
+                                if (Q.numer === 0) {
+                                    if (Q.denom === 1) {
+                                        if (temperature.numer === 0) {
+                                            if (temperature.denom === 1) {
+                                                if (amount.numer === 0) {
+                                                    if (amount.denom === 1) {
+                                                        if (intensity.numer === 0) {
+                                                            if (intensity.denom === 1) {
+                                                                return DimensionsSummary_1.default.MOMENT_OF_INERTIA;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else if (M.numer === 2) {
+            if (M.denom === 1) {
+                if (L.numer === 2) {
+                    if (L.denom === 1) {
+                        if (T.numer === -2) {
+                            if (T.denom === 1) {
+                                if (Q.numer === 0) {
+                                    if (Q.denom === 1) {
+                                        if (temperature.numer === 0) {
+                                            if (temperature.denom === 1) {
+                                                if (amount.numer === 0) {
+                                                    if (amount.denom === 1) {
+                                                        if (intensity.numer === 0) {
+                                                            if (intensity.denom === 1) {
+                                                                return DimensionsSummary_1.default.MOMENTUM_SQUARED;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return DimensionsSummary_1.default.Unknown;
     }
     Object.defineProperty(exports, "__esModule", { value: true });
-    exports.default = default_1;
+    exports.default = detectDimensions;
 });
 
-define('davinci-newton/math/Dimensions',["require", "exports", "../math/QQ", "../i18n/notSupported"], function (require, exports, QQ_1, notSupported_1) {
+define('davinci-newton/math/Dimensions',["require", "exports", "./DimensionsSummary", "../math/QQ", "./detectDimensions"], function (require, exports, DimensionsSummary_1, QQ_1, detectDimensions_1) {
     "use strict";
-    var R0 = QQ_1.QQ.valueOf(0, 1);
-    var R1 = QQ_1.QQ.valueOf(1, 1);
-    var R2 = QQ_1.QQ.valueOf(2, 1);
-    var M1 = QQ_1.QQ.valueOf(-1, 1);
-    var M2 = QQ_1.QQ.valueOf(-2, 1);
+    var R0 = QQ_1.default.valueOf(0, 1);
+    var R1 = QQ_1.default.valueOf(1, 1);
+    var R2 = QQ_1.default.valueOf(2, 1);
+    var M1 = QQ_1.default.valueOf(-1, 1);
+    var M2 = QQ_1.default.valueOf(-2, 1);
     function assertArgRational(name, arg) {
-        if (arg instanceof QQ_1.QQ) {
+        if (arg instanceof QQ_1.default) {
             return arg;
         }
         else {
-            throw new Error("Argument '" + arg + "' must be a QQ");
+            throw new Error("Argument " + name + " => " + arg + " must be a QQ");
         }
     }
-    var magicCode = Math.random();
     var Dimensions = (function () {
-        function Dimensions(M, L, T, Q, temperature, amount, intensity, code) {
-            if (code !== magicCode) {
-                throw new Error("Use the static create method instead of the constructor");
-            }
+        function Dimensions(M, L, T, Q, temperature, amount, intensity, summary) {
             this.M = assertArgRational('M', M);
             this.L = assertArgRational('L', L);
             this.T = assertArgRational('T', T);
@@ -1244,12 +1709,20 @@ define('davinci-newton/math/Dimensions',["require", "exports", "../math/QQ", "..
             this.temperature = assertArgRational('temperature', temperature);
             this.amount = assertArgRational('amount', amount);
             this.intensity = assertArgRational('intensity', intensity);
-            if (arguments.length !== 8) {
-                throw new Error("Expecting 8 arguments");
-            }
+            this.summary_ = summary;
         }
+        Object.defineProperty(Dimensions.prototype, "summary", {
+            get: function () {
+                return this.summary_;
+            },
+            enumerable: true,
+            configurable: true
+        });
         Dimensions.prototype.compatible = function (rhs) {
-            if (this.M.equals(rhs.M) && this.L.equals(rhs.L) && this.T.equals(rhs.T) && this.Q.equals(rhs.Q) && this.temperature.equals(rhs.temperature) && this.amount.equals(rhs.amount) && this.intensity.equals(rhs.intensity)) {
+            if (this.summary_ !== DimensionsSummary_1.default.Unknown && this.summary_ === rhs.summary_) {
+                return this;
+            }
+            else if (this.M.equals(rhs.M) && this.L.equals(rhs.L) && this.T.equals(rhs.T) && this.Q.equals(rhs.Q) && this.temperature.equals(rhs.temperature) && this.amount.equals(rhs.amount) && this.intensity.equals(rhs.intensity)) {
                 return this;
             }
             else {
@@ -1301,9 +1774,6 @@ define('davinci-newton/math/Dimensions',["require", "exports", "../math/QQ", "..
         };
         Dimensions.prototype.inv = function () {
             return Dimensions.valueOf(this.M.neg(), this.L.neg(), this.T.neg(), this.Q.neg(), this.temperature.neg(), this.amount.neg(), this.intensity.neg());
-        };
-        Dimensions.prototype.neg = function () {
-            throw new Error(notSupported_1.default('neg').message);
         };
         Dimensions.prototype.toString = function () {
             var stringify = function (rational, label) {
@@ -1395,230 +1865,61 @@ define('davinci-newton/math/Dimensions',["require", "exports", "../math/QQ", "..
             return this;
         };
         Dimensions.valueOf = function (M, L, T, Q, temperature, amount, intensity) {
-            if (temperature.isZero() && amount.isZero() && intensity.isZero()) {
-                if (M.numer === -1) {
-                    if (M.denom === 1) {
-                        if (L.numer === -2) {
-                            if (L.denom === 1) {
-                                if (T.numer === 0) {
-                                    if (T.denom === 1) {
-                                        if (Q.numer === 0) {
-                                            if (Q.denom === 1) {
-                                                return Dimensions.INV_MOMENT_OF_INERTIA;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        else if (L.numer === 0) {
-                            if (L.denom === 1) {
-                                if (T.numer === 0) {
-                                    if (T.denom === 1) {
-                                        if (Q.numer === 0) {
-                                            if (Q.denom === 1) {
-                                                return Dimensions.INV_MASS;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                else if (M.numer === 0) {
-                    if (M.denom === 1) {
-                        if (L.numer === 0) {
-                            if (L.denom === 1) {
-                                if (T.numer === -1) {
-                                    if (T.denom === 1) {
-                                        if (Q.numer === 0) {
-                                            if (Q.denom === 1) {
-                                                return Dimensions.INV_TIME;
-                                            }
-                                        }
-                                    }
-                                }
-                                else if (T.numer === 0) {
-                                    if (T.denom === 1) {
-                                        if (Q.numer === 0) {
-                                            if (Q.denom === 1) {
-                                                return Dimensions.ONE;
-                                            }
-                                        }
-                                    }
-                                }
-                                else if (T.numer === 2) {
-                                    if (T.denom === 1) {
-                                        if (Q.numer === 0) {
-                                            if (Q.denom === 1) {
-                                                return Dimensions.TIME_SQUARED;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        else if (L.numer === 1) {
-                            if (L.denom === 1) {
-                                if (T.numer === 0) {
-                                    if (T.denom === 1) {
-                                        if (Q.numer === 0) {
-                                            if (Q.denom === 1) {
-                                                return Dimensions.LENGTH;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        else if (L.numer === 2) {
-                            if (L.denom === 1) {
-                                if (T.numer === -1) {
-                                    if (T.denom === 1) {
-                                        if (Q.numer === 0) {
-                                            if (Q.denom === 1) {
-                                                return Dimensions.RATE_OF_CHANGE_OF_AREA;
-                                            }
-                                        }
-                                    }
-                                }
-                                else if (T.numer === 0) {
-                                    if (T.denom === 1) {
-                                        if (Q.numer === 0) {
-                                            if (Q.denom === 1) {
-                                                return Dimensions.AREA;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                else if (M.numer === 1) {
-                    if (M.denom === 1) {
-                        if (L.numer === 0) {
-                            if (L.denom === 1) {
-                                if (T.numer === -2) {
-                                    if (T.denom === 1) {
-                                        if (Q.numer === 0) {
-                                            if (Q.denom === 1) {
-                                                return Dimensions.STIFFNESS;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        else if (L.numer === 1) {
-                            if (L.denom === 1) {
-                                if (T.numer === -2) {
-                                    if (T.denom === 1) {
-                                        if (Q.numer === 0) {
-                                            if (Q.denom === 1) {
-                                                return Dimensions.FORCE;
-                                            }
-                                        }
-                                    }
-                                }
-                                else if (T.numer === -1) {
-                                    if (T.denom === 1) {
-                                        if (Q.numer === 0) {
-                                            if (Q.denom === 1) {
-                                                return Dimensions.MOMENTUM;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        else if (L.numer === 2) {
-                            if (L.denom === 1) {
-                                if (T.numer === -2) {
-                                    if (T.denom === 1) {
-                                        if (Q.numer === 0) {
-                                            if (Q.denom === 1) {
-                                                return Dimensions.ENERGY_OR_TORQUE;
-                                            }
-                                        }
-                                    }
-                                }
-                                else if (T.numer === -1) {
-                                    if (T.denom === 1) {
-                                        if (Q.numer === 0) {
-                                            if (Q.denom === 1) {
-                                                return Dimensions.ANGULAR_MOMENTUM;
-                                            }
-                                        }
-                                    }
-                                }
-                                else if (T.numer === 0) {
-                                    if (T.denom === 1) {
-                                        if (Q.numer === 0) {
-                                            if (Q.denom === 1) {
-                                                return Dimensions.MOMENT_OF_INERTIA;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                else if (M.numer === 2) {
-                    if (M.denom === 1) {
-                        if (L.numer === 2) {
-                            if (L.denom === 1) {
-                                if (T.numer === -2) {
-                                    if (T.denom === 1) {
-                                        if (Q.numer === 0) {
-                                            if (Q.denom === 1) {
-                                                return Dimensions.MOMENTUM_SQUARED;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+            var summary = detectDimensions_1.default(M, L, T, Q, temperature, amount, intensity);
+            switch (summary) {
+                case DimensionsSummary_1.default.ANGULAR_MOMENTUM: return Dimensions.ANGULAR_MOMENTUM;
+                case DimensionsSummary_1.default.AREA: return Dimensions.AREA;
+                case DimensionsSummary_1.default.ENERGY_OR_TORQUE: return Dimensions.ENERGY_OR_TORQUE;
+                case DimensionsSummary_1.default.FORCE: return Dimensions.FORCE;
+                case DimensionsSummary_1.default.INV_MOMENT_OF_INERTIA: return Dimensions.INV_MOMENT_OF_INERTIA;
+                case DimensionsSummary_1.default.INV_MASS: return Dimensions.INV_MASS;
+                case DimensionsSummary_1.default.INV_TIME: return Dimensions.INV_TIME;
+                case DimensionsSummary_1.default.LENGTH: return Dimensions.LENGTH;
+                case DimensionsSummary_1.default.MOMENTUM: return Dimensions.MOMENTUM;
+                case DimensionsSummary_1.default.MOMENTUM_SQUARED: return Dimensions.MOMENTUM_SQUARED;
+                case DimensionsSummary_1.default.MOMENT_OF_INERTIA: return Dimensions.MOMENT_OF_INERTIA;
+                case DimensionsSummary_1.default.ONE: return Dimensions.ONE;
+                case DimensionsSummary_1.default.RATE_OF_CHANGE_OF_AREA: return Dimensions.RATE_OF_CHANGE_OF_AREA;
+                case DimensionsSummary_1.default.STIFFNESS: return Dimensions.STIFFNESS;
+                case DimensionsSummary_1.default.TIME_SQUARED: return Dimensions.TIME_SQUARED;
+                case DimensionsSummary_1.default.VELOCITY: return Dimensions.VELOCITY;
+                case DimensionsSummary_1.default.VELOCITY_SQUARED: return Dimensions.VELOCITY_SQUARED;
+                default: return new Dimensions(M, L, T, Q, temperature, amount, intensity, summary);
             }
-            else {
-                return new Dimensions(M, L, T, Q, temperature, amount, intensity, magicCode);
-            }
-            return new Dimensions(M, L, T, Q, temperature, amount, intensity, magicCode);
         };
         return Dimensions;
     }());
-    Dimensions.ONE = new Dimensions(R0, R0, R0, R0, R0, R0, R0, magicCode);
-    Dimensions.MASS = new Dimensions(R1, R0, R0, R0, R0, R0, R0, magicCode);
-    Dimensions.LENGTH = new Dimensions(R0, R1, R0, R0, R0, R0, R0, magicCode);
-    Dimensions.AREA = new Dimensions(R0, R2, R0, R0, R0, R0, R0, magicCode);
-    Dimensions.TIME = new Dimensions(R0, R0, R1, R0, R0, R0, R0, magicCode);
-    Dimensions.CHARGE = new Dimensions(R0, R0, R0, R1, R0, R0, R0, magicCode);
-    Dimensions.CURRENT = new Dimensions(R0, R0, M1, R1, R0, R0, R0, magicCode);
-    Dimensions.TEMPERATURE = new Dimensions(R0, R0, R0, R0, R1, R0, R0, magicCode);
-    Dimensions.AMOUNT = new Dimensions(R0, R0, R0, R0, R0, R1, R0, magicCode);
-    Dimensions.INTENSITY = new Dimensions(R0, R0, R0, R0, R0, R0, R1, magicCode);
-    Dimensions.ANGULAR_MOMENTUM = new Dimensions(R1, R2, M1, R0, R0, R0, R0, magicCode);
-    Dimensions.RATE_OF_CHANGE_OF_AREA = new Dimensions(R0, R2, M1, R0, R0, R0, R0, magicCode);
-    Dimensions.ENERGY_OR_TORQUE = new Dimensions(R1, R2, M2, R0, R0, R0, R0, magicCode);
-    Dimensions.FORCE = new Dimensions(R1, R1, M2, R0, R0, R0, R0, magicCode);
-    Dimensions.INV_MASS = new Dimensions(M1, R0, R0, R0, R0, R0, R0, magicCode);
-    Dimensions.INV_MOMENT_OF_INERTIA = new Dimensions(M1, M2, R0, R0, R0, R0, R0, magicCode);
-    Dimensions.INV_TIME = new Dimensions(R0, R0, M1, R0, R0, R0, R0, magicCode);
-    Dimensions.MOMENT_OF_INERTIA = new Dimensions(R1, R2, R0, R0, R0, R0, R0, magicCode);
-    Dimensions.MOMENTUM = new Dimensions(R1, R1, M1, R0, R0, R0, R0, magicCode);
-    Dimensions.MOMENTUM_SQUARED = new Dimensions(R2, R2, M2, R0, R0, R0, R0, magicCode);
-    Dimensions.STIFFNESS = new Dimensions(R1, R0, M2, R0, R0, R0, R0, magicCode);
-    Dimensions.TIME_SQUARED = new Dimensions(R0, R0, R2, R0, R0, R0, R0, magicCode);
+    Dimensions.ONE = new Dimensions(R0, R0, R0, R0, R0, R0, R0, DimensionsSummary_1.default.ONE);
+    Dimensions.MASS = new Dimensions(R1, R0, R0, R0, R0, R0, R0, DimensionsSummary_1.default.MASS);
+    Dimensions.LENGTH = new Dimensions(R0, R1, R0, R0, R0, R0, R0, DimensionsSummary_1.default.LENGTH);
+    Dimensions.AREA = new Dimensions(R0, R2, R0, R0, R0, R0, R0, DimensionsSummary_1.default.AREA);
+    Dimensions.INV_LENGTH = new Dimensions(R0, M1, R0, R0, R0, R0, R0, DimensionsSummary_1.default.INV_LENGTH);
+    Dimensions.TIME = new Dimensions(R0, R0, R1, R0, R0, R0, R0, DimensionsSummary_1.default.TIME);
+    Dimensions.CHARGE = new Dimensions(R0, R0, R0, R1, R0, R0, R0, DimensionsSummary_1.default.CHARGE);
+    Dimensions.CURRENT = new Dimensions(R0, R0, M1, R1, R0, R0, R0, DimensionsSummary_1.default.CURRENT);
+    Dimensions.TEMPERATURE = new Dimensions(R0, R0, R0, R0, R1, R0, R0, DimensionsSummary_1.default.TEMPERATURE);
+    Dimensions.AMOUNT = new Dimensions(R0, R0, R0, R0, R0, R1, R0, DimensionsSummary_1.default.AMOUNT);
+    Dimensions.INTENSITY = new Dimensions(R0, R0, R0, R0, R0, R0, R1, DimensionsSummary_1.default.INTENSITY);
+    Dimensions.ANGULAR_MOMENTUM = new Dimensions(R1, R2, M1, R0, R0, R0, R0, DimensionsSummary_1.default.ANGULAR_MOMENTUM);
+    Dimensions.RATE_OF_CHANGE_OF_AREA = new Dimensions(R0, R2, M1, R0, R0, R0, R0, DimensionsSummary_1.default.RATE_OF_CHANGE_OF_AREA);
+    Dimensions.ENERGY_OR_TORQUE = new Dimensions(R1, R2, M2, R0, R0, R0, R0, DimensionsSummary_1.default.ENERGY_OR_TORQUE);
+    Dimensions.FORCE = new Dimensions(R1, R1, M2, R0, R0, R0, R0, DimensionsSummary_1.default.FORCE);
+    Dimensions.INV_MASS = new Dimensions(M1, R0, R0, R0, R0, R0, R0, DimensionsSummary_1.default.INV_MASS);
+    Dimensions.INV_MOMENT_OF_INERTIA = new Dimensions(M1, M2, R0, R0, R0, R0, R0, DimensionsSummary_1.default.INV_MOMENT_OF_INERTIA);
+    Dimensions.INV_TIME = new Dimensions(R0, R0, M1, R0, R0, R0, R0, DimensionsSummary_1.default.INV_TIME);
+    Dimensions.MOMENT_OF_INERTIA = new Dimensions(R1, R2, R0, R0, R0, R0, R0, DimensionsSummary_1.default.MOMENT_OF_INERTIA);
+    Dimensions.MOMENTUM = new Dimensions(R1, R1, M1, R0, R0, R0, R0, DimensionsSummary_1.default.MOMENTUM);
+    Dimensions.MOMENTUM_SQUARED = new Dimensions(R2, R2, M2, R0, R0, R0, R0, DimensionsSummary_1.default.MOMENTUM_SQUARED);
+    Dimensions.STIFFNESS = new Dimensions(R1, R0, M2, R0, R0, R0, R0, DimensionsSummary_1.default.STIFFNESS);
+    Dimensions.TIME_SQUARED = new Dimensions(R0, R0, R2, R0, R0, R0, R0, DimensionsSummary_1.default.TIME_SQUARED);
+    Dimensions.VELOCITY = new Dimensions(R0, R1, M1, R0, R0, R0, R0, DimensionsSummary_1.default.VELOCITY);
+    Dimensions.VELOCITY_SQUARED = new Dimensions(R0, R2, M2, R0, R0, R0, R0, DimensionsSummary_1.default.VELOCITY_SQUARED);
     exports.Dimensions = Dimensions;
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Dimensions;
 });
 
-define('davinci-newton/math/Unit',["require", "exports", "../math/Dimensions", "../checks/isUndefined"], function (require, exports, Dimensions_1, isUndefined_1) {
+define('davinci-newton/math/Unit',["require", "exports", "../math/Dimensions", "../math/DimensionsSummary", "../checks/isUndefined"], function (require, exports, Dimensions_1, DimensionsSummary_1, isUndefined_1) {
     "use strict";
     var SYMBOLS_SI = ['kg', 'm', 's', 'C', 'K', 'mol', 'cd'];
     var patterns = [
@@ -1672,7 +1973,7 @@ define('davinci-newton/math/Unit',["require", "exports", "../math/Dimensions", "
         ["m/s**2"],
         ["m/s"],
         ["kg·m/s"],
-        ["Pa or N/m**2"],
+        ["Pa or N/m**2 or J/m**3"],
         ["Pa·s"],
         ["W/m**2"],
         ["N/m"],
@@ -1701,17 +2002,19 @@ define('davinci-newton/math/Unit',["require", "exports", "../math/Dimensions", "
             else if (rational.denom === 1) {
                 if (rational.numer === 1) {
                     if (compact) {
-                        return "" + label;
+                        return label;
                     }
                     else {
-                        return "" + label;
+                        return label;
                     }
                 }
                 else {
-                    return "" + label + " ** " + rational.numer;
+                    return label + "**" + rational.numer;
                 }
             }
-            return "" + label + " ** " + rational;
+            else {
+                return label + "**" + rational;
+            }
         };
         var operatorStr = multiplier === 1 || dimensions.isOne() ? (compact ? "" : " ") : " ";
         var scaleString = multiplier === 1 ? (compact ? "" : formatted) : formatted;
@@ -1753,25 +2056,29 @@ define('davinci-newton/math/Unit',["require", "exports", "../math/Dimensions", "
         return dumbString(multiplier, formatted, dimensions, labels, compact);
     };
     function add(lhs, rhs) {
-        return new Unit(lhs.multiplier + rhs.multiplier, lhs.dimensions.compatible(rhs.dimensions), lhs.labels);
+        return Unit.valueOf(lhs.multiplier + rhs.multiplier, lhs.dimensions.compatible(rhs.dimensions), lhs.labels);
     }
     function sub(lhs, rhs) {
-        return new Unit(lhs.multiplier - rhs.multiplier, lhs.dimensions.compatible(rhs.dimensions), lhs.labels);
+        return Unit.valueOf(lhs.multiplier - rhs.multiplier, lhs.dimensions.compatible(rhs.dimensions), lhs.labels);
     }
     function mul(lhs, rhs) {
-        return new Unit(lhs.multiplier * rhs.multiplier, lhs.dimensions.mul(rhs.dimensions), lhs.labels);
+        return Unit.valueOf(lhs.multiplier * rhs.multiplier, lhs.dimensions.mul(rhs.dimensions), lhs.labels);
     }
     function scale(α, unit) {
-        return new Unit(α * unit.multiplier, unit.dimensions, unit.labels);
+        return Unit.valueOf(α * unit.multiplier, unit.dimensions, unit.labels);
     }
     function div(lhs, rhs) {
-        return new Unit(lhs.multiplier / rhs.multiplier, lhs.dimensions.div(rhs.dimensions), lhs.labels);
+        return Unit.valueOf(lhs.multiplier / rhs.multiplier, lhs.dimensions.div(rhs.dimensions), lhs.labels);
     }
+    var magicCode = Math.random();
     var Unit = (function () {
-        function Unit(multiplier, dimensions, labels) {
+        function Unit(multiplier, dimensions, labels, code) {
             this.multiplier = multiplier;
             this.dimensions = dimensions;
             this.labels = labels;
+            if (code !== magicCode) {
+                throw new Error("Use the static valueOf method instead of the constructor");
+            }
             if (labels.length !== 7) {
                 throw new Error("Expecting 7 elements in the labels array.");
             }
@@ -1861,7 +2168,7 @@ define('davinci-newton/math/Unit',["require", "exports", "../math/Dimensions", "
                 return div(this, rhs);
             }
             else if (typeof rhs === 'number') {
-                return new Unit(this.multiplier / rhs, this.dimensions, this.labels);
+                return Unit.valueOf(this.multiplier / rhs, this.dimensions, this.labels);
             }
             else {
                 return void 0;
@@ -1872,26 +2179,26 @@ define('davinci-newton/math/Unit',["require", "exports", "../math/Dimensions", "
                 return div(lhs, this);
             }
             else if (typeof lhs === 'number') {
-                return new Unit(lhs / this.multiplier, this.dimensions.inv(), this.labels);
+                return Unit.valueOf(lhs / this.multiplier, this.dimensions.inv(), this.labels);
             }
             else {
                 return void 0;
             }
         };
         Unit.prototype.pow = function (exponent) {
-            return new Unit(Math.pow(this.multiplier, exponent.numer / exponent.denom), this.dimensions.pow(exponent), this.labels);
+            return Unit.valueOf(Math.pow(this.multiplier, exponent.numer / exponent.denom), this.dimensions.pow(exponent), this.labels);
         };
         Unit.prototype.inv = function () {
-            return new Unit(1 / this.multiplier, this.dimensions.inv(), this.labels);
+            return Unit.valueOf(1 / this.multiplier, this.dimensions.inv(), this.labels);
         };
         Unit.prototype.neg = function () {
-            return new Unit(-this.multiplier, this.dimensions, this.labels);
+            return Unit.valueOf(-this.multiplier, this.dimensions, this.labels);
         };
         Unit.prototype.isOne = function () {
             return this.dimensions.isOne() && (this.multiplier === 1);
         };
         Unit.prototype.sqrt = function () {
-            return new Unit(Math.sqrt(this.multiplier), this.dimensions.sqrt(), this.labels);
+            return Unit.valueOf(Math.sqrt(this.multiplier), this.dimensions.sqrt(), this.labels);
         };
         Unit.prototype.toExponential = function (fractionDigits, compact) {
             return unitString(this.multiplier, this.multiplier.toExponential(fractionDigits), this.dimensions, this.labels, compact);
@@ -2075,17 +2382,68 @@ define('davinci-newton/math/Unit',["require", "exports", "../math/Dimensions", "
                 return void 0;
             }
         };
+        Unit.valueOf = function (multiplier, dimensions, labels) {
+            if (multiplier === 1) {
+                switch (dimensions.summary) {
+                    case DimensionsSummary_1.default.AMOUNT: return Unit.MOLE;
+                    case DimensionsSummary_1.default.ANGULAR_MOMENTUM: return Unit.JOULE_SECOND;
+                    case DimensionsSummary_1.default.AREA: return Unit.METER_SQUARED;
+                    case DimensionsSummary_1.default.CHARGE: return Unit.COULOMB;
+                    case DimensionsSummary_1.default.CURRENT: return Unit.AMPERE;
+                    case DimensionsSummary_1.default.ENERGY_OR_TORQUE: return Unit.JOULE;
+                    case DimensionsSummary_1.default.FORCE: return Unit.NEWTON;
+                    case DimensionsSummary_1.default.INTENSITY: return Unit.CANDELA;
+                    case DimensionsSummary_1.default.INV_LENGTH: return Unit.INV_METER;
+                    case DimensionsSummary_1.default.INV_MASS: return Unit.INV_KILOGRAM;
+                    case DimensionsSummary_1.default.INV_MOMENT_OF_INERTIA: return Unit.INV_KILOGRAM_METER_SQUARED;
+                    case DimensionsSummary_1.default.INV_TIME: return Unit.INV_SECOND;
+                    case DimensionsSummary_1.default.LENGTH: return Unit.METER;
+                    case DimensionsSummary_1.default.MASS: return Unit.KILOGRAM;
+                    case DimensionsSummary_1.default.MOMENT_OF_INERTIA: return Unit.KILOGRAM_METER_SQUARED;
+                    case DimensionsSummary_1.default.MOMENTUM: return Unit.KILOGRAM_METER_PER_SECOND;
+                    case DimensionsSummary_1.default.MOMENTUM_SQUARED: return Unit.KILOGRAM_SQUARED_METER_SQUARED_PER_SECOND_SQUARED;
+                    case DimensionsSummary_1.default.ONE: return Unit.ONE;
+                    case DimensionsSummary_1.default.RATE_OF_CHANGE_OF_AREA: return Unit.METER_SQUARED_PER_SECOND;
+                    case DimensionsSummary_1.default.STIFFNESS: return Unit.STIFFNESS;
+                    case DimensionsSummary_1.default.TEMPERATURE: return Unit.KELVIN;
+                    case DimensionsSummary_1.default.TIME: return Unit.SECOND;
+                    case DimensionsSummary_1.default.TIME_SQUARED: return Unit.SECOND_SQUARED;
+                    case DimensionsSummary_1.default.VELOCITY: return Unit.METER_PER_SECOND;
+                    case DimensionsSummary_1.default.VELOCITY_SQUARED: return Unit.METER_SQUARED_PER_SECOND_SQUARED;
+                    default: {
+                    }
+                }
+            }
+            console.warn("Unit.valueOf(" + multiplier + "," + dimensions + ") is not cached.");
+            return new Unit(multiplier, dimensions, labels, magicCode);
+        };
         return Unit;
     }());
-    Unit.ONE = new Unit(1, Dimensions_1.Dimensions.ONE, SYMBOLS_SI);
-    Unit.KILOGRAM = new Unit(1, Dimensions_1.Dimensions.MASS, SYMBOLS_SI);
-    Unit.METER = new Unit(1, Dimensions_1.Dimensions.LENGTH, SYMBOLS_SI);
-    Unit.SECOND = new Unit(1, Dimensions_1.Dimensions.TIME, SYMBOLS_SI);
-    Unit.COULOMB = new Unit(1, Dimensions_1.Dimensions.CHARGE, SYMBOLS_SI);
-    Unit.AMPERE = new Unit(1, Dimensions_1.Dimensions.CURRENT, SYMBOLS_SI);
-    Unit.KELVIN = new Unit(1, Dimensions_1.Dimensions.TEMPERATURE, SYMBOLS_SI);
-    Unit.MOLE = new Unit(1, Dimensions_1.Dimensions.AMOUNT, SYMBOLS_SI);
-    Unit.CANDELA = new Unit(1, Dimensions_1.Dimensions.INTENSITY, SYMBOLS_SI);
+    Unit.ONE = new Unit(1, Dimensions_1.default.ONE, SYMBOLS_SI, magicCode);
+    Unit.KILOGRAM = new Unit(1, Dimensions_1.default.MASS, SYMBOLS_SI, magicCode);
+    Unit.METER = new Unit(1, Dimensions_1.default.LENGTH, SYMBOLS_SI, magicCode);
+    Unit.SECOND = new Unit(1, Dimensions_1.default.TIME, SYMBOLS_SI, magicCode);
+    Unit.COULOMB = new Unit(1, Dimensions_1.default.CHARGE, SYMBOLS_SI, magicCode);
+    Unit.AMPERE = new Unit(1, Dimensions_1.default.CURRENT, SYMBOLS_SI, magicCode);
+    Unit.KELVIN = new Unit(1, Dimensions_1.default.TEMPERATURE, SYMBOLS_SI, magicCode);
+    Unit.MOLE = new Unit(1, Dimensions_1.default.AMOUNT, SYMBOLS_SI, magicCode);
+    Unit.CANDELA = new Unit(1, Dimensions_1.default.INTENSITY, SYMBOLS_SI, magicCode);
+    Unit.NEWTON = new Unit(1, Dimensions_1.default.FORCE, SYMBOLS_SI, magicCode);
+    Unit.JOULE = new Unit(1, Dimensions_1.default.ENERGY_OR_TORQUE, SYMBOLS_SI, magicCode);
+    Unit.JOULE_SECOND = new Unit(1, Dimensions_1.default.ANGULAR_MOMENTUM, SYMBOLS_SI, magicCode);
+    Unit.METER_SQUARED = new Unit(1, Dimensions_1.default.AREA, SYMBOLS_SI, magicCode);
+    Unit.SECOND_SQUARED = new Unit(1, Dimensions_1.default.TIME_SQUARED, SYMBOLS_SI, magicCode);
+    Unit.INV_KILOGRAM = new Unit(1, Dimensions_1.default.INV_MASS, SYMBOLS_SI, magicCode);
+    Unit.INV_METER = new Unit(1, Dimensions_1.default.INV_LENGTH, SYMBOLS_SI, magicCode);
+    Unit.INV_SECOND = new Unit(1, Dimensions_1.default.INV_TIME, SYMBOLS_SI, magicCode);
+    Unit.KILOGRAM_METER_SQUARED = new Unit(1, Dimensions_1.default.MOMENT_OF_INERTIA, SYMBOLS_SI, magicCode);
+    Unit.KILOGRAM_METER_PER_SECOND = new Unit(1, Dimensions_1.default.MOMENTUM, SYMBOLS_SI, magicCode);
+    Unit.KILOGRAM_SQUARED_METER_SQUARED_PER_SECOND_SQUARED = new Unit(1, Dimensions_1.default.MOMENTUM_SQUARED, SYMBOLS_SI, magicCode);
+    Unit.INV_KILOGRAM_METER_SQUARED = new Unit(1, Dimensions_1.default.INV_MOMENT_OF_INERTIA, SYMBOLS_SI, magicCode);
+    Unit.STIFFNESS = new Unit(1, Dimensions_1.default.STIFFNESS, SYMBOLS_SI, magicCode);
+    Unit.METER_PER_SECOND = new Unit(1, Dimensions_1.default.VELOCITY, SYMBOLS_SI, magicCode);
+    Unit.METER_SQUARED_PER_SECOND = new Unit(1, Dimensions_1.default.RATE_OF_CHANGE_OF_AREA, SYMBOLS_SI, magicCode);
+    Unit.METER_SQUARED_PER_SECOND_SQUARED = new Unit(1, Dimensions_1.default.VELOCITY_SQUARED, SYMBOLS_SI, magicCode);
     exports.Unit = Unit;
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Unit;
@@ -2196,6 +2554,15 @@ define('davinci-newton/math/isScalarG3',["require", "exports"], function (requir
     }
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = isScalarG3;
+});
+
+define('davinci-newton/checks/isNumber',["require", "exports"], function (require, exports) {
+    "use strict";
+    function isNumber(x) {
+        return (typeof x === 'number');
+    }
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = isNumber;
 });
 
 define('davinci-newton/checks/isObject',["require", "exports"], function (require, exports) {
@@ -2462,6 +2829,41 @@ define('davinci-newton/math/randomRange',["require", "exports"], function (requi
     "use strict";
     function default_1(a, b) {
         return (b - a) * Math.random() + a;
+    }
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = default_1;
+});
+
+define('davinci-newton/checks/mustSatisfy',["require", "exports"], function (require, exports) {
+    "use strict";
+    function mustSatisfy(name, condition, messageBuilder, contextBuilder) {
+        if (!condition) {
+            var message = messageBuilder ? messageBuilder() : "satisfy some condition";
+            var context = contextBuilder ? " in " + contextBuilder() : "";
+            throw new Error(name + " must " + message + context + ".");
+        }
+    }
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = mustSatisfy;
+});
+
+define('davinci-newton/checks/isString',["require", "exports"], function (require, exports) {
+    "use strict";
+    function isString(s) {
+        return (typeof s === 'string');
+    }
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = isString;
+});
+
+define('davinci-newton/checks/mustBeString',["require", "exports", "../checks/mustSatisfy", "../checks/isString"], function (require, exports, mustSatisfy_1, isString_1) {
+    "use strict";
+    function beAString() {
+        return "be a string";
+    }
+    function default_1(name, value, contextBuilder) {
+        mustSatisfy_1.default(name, isString_1.default(value), beAString, contextBuilder);
+        return value;
     }
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = default_1;
@@ -4635,6 +5037,28 @@ define('davinci-newton/checks/mustBeDefined',["require", "exports", "../checks/m
     exports.default = mustBeDefined;
 });
 
+define('davinci-newton/checks/isInteger',["require", "exports", "../checks/isNumber"], function (require, exports, isNumber_1) {
+    "use strict";
+    function isInteger(x) {
+        return isNumber_1.default(x) && x % 1 === 0;
+    }
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = isInteger;
+});
+
+define('davinci-newton/checks/mustBeInteger',["require", "exports", "../checks/mustSatisfy", "../checks/isInteger"], function (require, exports, mustSatisfy_1, isInteger_1) {
+    "use strict";
+    function beAnInteger() {
+        return "be an integer";
+    }
+    function mustBeInteger(name, value, contextBuilder) {
+        mustSatisfy_1.default(name, isInteger_1.default(value), beAnInteger, contextBuilder);
+        return value;
+    }
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = mustBeInteger;
+});
+
 define('davinci-newton/checks/mustBeNumber',["require", "exports", "../checks/mustSatisfy", "../checks/isNumber"], function (require, exports, mustSatisfy_1, isNumber_1) {
     "use strict";
     function beANumber() {
@@ -5370,7 +5794,7 @@ define('davinci-newton/math/Vec3',["require", "exports", "../checks/mustBeNumber
                 this.x_ *= multiplier;
                 this.y_ *= multiplier;
                 this.z_ *= multiplier;
-                this.uom_ = new Unit_1.default(1, uom.dimensions, uom.labels);
+                this.uom_ = Unit_1.default.valueOf(1, uom.dimensions, uom.labels);
             }
         }
         Object.defineProperty(Vec3.prototype, "x", {
@@ -6004,9 +6428,9 @@ define('davinci-newton/config',["require", "exports"], function (require, export
     var Newton = (function () {
         function Newton() {
             this.GITHUB = 'https://github.com/geometryzen/davinci-newton';
-            this.LAST_MODIFIED = '2017-02-14';
+            this.LAST_MODIFIED = '2017-02-15';
             this.NAMESPACE = 'NEWTON';
-            this.VERSION = '0.0.31';
+            this.VERSION = '0.0.32';
         }
         Newton.prototype.log = function (message) {
             var optionalParams = [];
@@ -6747,38 +7171,6 @@ define('davinci-newton/graph/GraphStyle',["require", "exports"], function (requi
     exports.default = GraphStyle;
 });
 
-define('davinci-newton/checks/isLE',["require", "exports"], function (require, exports) {
-    "use strict";
-    function default_1(value, limit) {
-        return value <= limit;
-    }
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.default = default_1;
-});
-
-define('davinci-newton/checks/mustBeLE',["require", "exports", "../checks/mustSatisfy", "../checks/isLE"], function (require, exports, mustSatisfy_1, isLE_1) {
-    "use strict";
-    function default_1(name, value, limit, contextBuilder) {
-        mustSatisfy_1.default(name, isLE_1.default(value, limit), function () { return "be less than or equal to " + limit; }, contextBuilder);
-        return value;
-    }
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.default = default_1;
-});
-
-define('davinci-newton/checks/mustBeObject',["require", "exports", "../checks/mustSatisfy", "../checks/isObject"], function (require, exports, mustSatisfy_1, isObject_1) {
-    "use strict";
-    function beObject() {
-        return "be an `object`";
-    }
-    function mustBeObject(name, value, contextBuilder) {
-        mustSatisfy_1.default(name, isObject_1.default(value), beObject, contextBuilder);
-        return value;
-    }
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.default = mustBeObject;
-});
-
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -6789,7 +7181,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-define('davinci-newton/graph/GraphLine',["require", "exports", "../util/AbstractSubject", "../util/CircularList", "../view/DrawingMode", "../util/GenericEvent", "./GraphPoint", "./GraphStyle", "../checks/isObject", "../checks/mustBeLE", "../checks/mustBeObject", "../util/ParameterNumber", "../util/ParameterString", "../util/veryDifferent"], function (require, exports, AbstractSubject_1, CircularList_1, DrawingMode_1, GenericEvent_1, GraphPoint_1, GraphStyle_1, isObject_1, mustBeLE_1, mustBeObject_1, ParameterNumber_1, ParameterString_1, veryDifferent_1) {
+define('davinci-newton/graph/GraphLine',["require", "exports", "../util/AbstractSubject", "../util/CircularList", "../view/DrawingMode", "../util/GenericEvent", "./GraphPoint", "./GraphStyle", "../checks/isObject", "../util/ParameterNumber", "../util/ParameterString", "../util/veryDifferent"], function (require, exports, AbstractSubject_1, CircularList_1, DrawingMode_1, GenericEvent_1, GraphPoint_1, GraphStyle_1, isObject_1, ParameterNumber_1, ParameterString_1, veryDifferent_1) {
     "use strict";
     var GraphLine = (function (_super) {
         __extends(GraphLine, _super);
@@ -6874,12 +7266,11 @@ define('davinci-newton/graph/GraphLine',["require", "exports", "../util/Abstract
             var last = styles[0];
             for (var i = 1, len = styles.length; i < len; i++) {
                 var s = styles[i];
-                mustBeLE_1.default('', last.index_, s.index_);
-                if (s.index_ > index)
+                if (s.index_ > index) {
                     break;
+                }
                 last = s;
             }
-            mustBeObject_1.default('last', last);
             return last;
         };
         Object.defineProperty(GraphLine.prototype, "hotspotColor", {
@@ -7102,7 +7493,7 @@ define('davinci-newton/view/ScreenRect',["require", "exports", "../checks/isFunc
     exports.default = ScreenRect;
 });
 
-define('davinci-newton/graph/DisplayGraph',["require", "exports", "../util/contains", "../view/DrawingMode", "./GraphLine", "../checks/isDefined", "../checks/mustBeNonNullObject", "../util/removeAt", "../util/repeat", "../view/ScreenRect"], function (require, exports, contains_1, DrawingMode_1, GraphLine_1, isDefined_1, mustBeNonNullObject_1, removeAt_1, repeat_1, ScreenRect_1) {
+define('davinci-newton/graph/DisplayGraph',["require", "exports", "../util/contains", "../view/DrawingMode", "./GraphLine", "../checks/isDefined", "../util/removeAt", "../util/repeat", "../view/ScreenRect"], function (require, exports, contains_1, DrawingMode_1, GraphLine_1, isDefined_1, removeAt_1, repeat_1, ScreenRect_1) {
     "use strict";
     var DisplayGraph = (function () {
         function DisplayGraph() {
@@ -7186,7 +7577,6 @@ define('davinci-newton/graph/DisplayGraph',["require", "exports", "../util/conta
                 return from;
             }
             var next = iter.nextValue();
-            mustBeNonNullObject_1.default('first', next);
             var style = graphLine.getGraphStyle(iter.getIndex());
             if (style.drawingMode === DrawingMode_1.default.DOTS) {
                 var x = coordMap.simToScreenX(next.x);
@@ -7198,7 +7588,6 @@ define('davinci-newton/graph/DisplayGraph',["require", "exports", "../util/conta
             while (iter.hasNext()) {
                 var last = next;
                 next = iter.nextValue();
-                mustBeNonNullObject_1.default('next', next);
                 if (next.x === last.x && next.y === last.y) {
                     continue;
                 }
@@ -8424,7 +8813,9 @@ define('davinci-newton/graph/DisplayAxes',["require", "exports", "../view/AlignH
             this.numDecimal_ = 0;
             this.needRedraw_ = true;
             this.hLabel_ = 'x';
+            this.hLabelScaleCache_ = makeLabelScale(this.hLabel_, this.hScale_);
             this.vLabel_ = 'y';
+            this.vLabelScaleCache_ = makeLabelScale(this.vLabel_, this.vScale_);
             this.zIndex_ = 100;
         }
         DisplayAxes.prototype.draw = function (context, map) {
@@ -8434,7 +8825,8 @@ define('davinci-newton/graph/DisplayAxes',["require", "exports", "../view/AlignH
             context.font = this.numFont_;
             context.textAlign = 'start';
             context.textBaseline = 'alphabetic';
-            var x0, y0;
+            var x0;
+            var y0;
             var r = this.simRect_;
             var sim_x1 = r.getLeft();
             var sim_x2 = r.getRight();
@@ -8498,7 +8890,7 @@ define('davinci-newton/graph/DisplayAxes',["require", "exports", "../view/AlignH
                 }
                 x_sim = next_x_sim;
             }
-            var hLabel = makeLabelScale(this.hLabel_, this.hScale_);
+            var hLabel = this.hLabelScaleCache_;
             var w = context.measureText(hLabel).width;
             context.fillText(hLabel, map.simToScreenX(sim_x2) - w - 5, y0 - 8);
         };
@@ -8532,7 +8924,7 @@ define('davinci-newton/graph/DisplayAxes',["require", "exports", "../view/AlignH
                 }
                 y_sim = next_y_sim;
             }
-            var vLabel = makeLabelScale(this.vLabel_, this.vScale_);
+            var vLabel = this.vLabelScaleCache_;
             var w = context.measureText(vLabel).width;
             if (this.vAxisAlign_ === AlignH_1.default.RIGHT) {
                 context.fillText(vLabel, x0 - (w + 6), map.simToScreenY(sim_y2) + 13);
@@ -8561,6 +8953,7 @@ define('davinci-newton/graph/DisplayAxes',["require", "exports", "../view/AlignH
             },
             set: function (hAxisLabel) {
                 this.hLabel_ = hAxisLabel;
+                this.hLabelScaleCache_ = makeLabelScale(this.hLabel_, this.hScale_);
                 this.needRedraw_ = true;
             },
             enumerable: true,
@@ -8572,6 +8965,7 @@ define('davinci-newton/graph/DisplayAxes',["require", "exports", "../view/AlignH
             },
             set: function (hAxisScale) {
                 this.hScale_ = hAxisScale;
+                this.hLabelScaleCache_ = makeLabelScale(this.hLabel_, this.hScale_);
                 this.needRedraw_ = true;
             },
             enumerable: true,
@@ -8608,6 +9002,7 @@ define('davinci-newton/graph/DisplayAxes',["require", "exports", "../view/AlignH
             },
             set: function (vAxisLabel) {
                 this.vLabel_ = vAxisLabel;
+                this.vLabelScaleCache_ = makeLabelScale(this.vLabel_, this.vScale_);
                 this.needRedraw_ = true;
             },
             enumerable: true,
@@ -8619,6 +9014,7 @@ define('davinci-newton/graph/DisplayAxes',["require", "exports", "../view/AlignH
             },
             set: function (vAxisScale) {
                 this.vScale_ = vAxisScale;
+                this.vLabelScaleCache_ = makeLabelScale(this.vLabel_, this.vScale_);
                 this.needRedraw_ = true;
             },
             enumerable: true,

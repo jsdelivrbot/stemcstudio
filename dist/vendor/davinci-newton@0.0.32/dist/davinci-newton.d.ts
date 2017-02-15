@@ -202,7 +202,12 @@ declare module NEWTON {
         /**
          * 
          */
-        constructor(multiplier: number, dimensions: Dimensions, labels: string[]);
+        public static valueOf(multiplier: number, dimensions: Dimensions, labels: string[]): Unit;
+
+        /**
+         * 
+         */
+        private constructor(multiplier: number, dimensions: Dimensions, labels: string[]);
 
         /**
          * Computes the unit equal to `this / rhs`.
