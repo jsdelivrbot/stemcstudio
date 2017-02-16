@@ -2070,15 +2070,11 @@ define('davinci-newton/math/Unit',["require", "exports", "../math/Dimensions", "
     function div(lhs, rhs) {
         return Unit.valueOf(lhs.multiplier / rhs.multiplier, lhs.dimensions.div(rhs.dimensions), lhs.labels);
     }
-    var magicCode = Math.random();
     var Unit = (function () {
-        function Unit(multiplier, dimensions, labels, code) {
+        function Unit(multiplier, dimensions, labels) {
             this.multiplier = multiplier;
             this.dimensions = dimensions;
             this.labels = labels;
-            if (code !== magicCode) {
-                throw new Error("Use the static valueOf method instead of the constructor");
-            }
             if (labels.length !== 7) {
                 throw new Error("Expecting 7 elements in the labels array.");
             }
@@ -2414,36 +2410,35 @@ define('davinci-newton/math/Unit',["require", "exports", "../math/Dimensions", "
                     }
                 }
             }
-            console.warn("Unit.valueOf(" + multiplier + "," + dimensions + ") is not cached.");
-            return new Unit(multiplier, dimensions, labels, magicCode);
+            return new Unit(multiplier, dimensions, labels);
         };
         return Unit;
     }());
-    Unit.ONE = new Unit(1, Dimensions_1.default.ONE, SYMBOLS_SI, magicCode);
-    Unit.KILOGRAM = new Unit(1, Dimensions_1.default.MASS, SYMBOLS_SI, magicCode);
-    Unit.METER = new Unit(1, Dimensions_1.default.LENGTH, SYMBOLS_SI, magicCode);
-    Unit.SECOND = new Unit(1, Dimensions_1.default.TIME, SYMBOLS_SI, magicCode);
-    Unit.COULOMB = new Unit(1, Dimensions_1.default.CHARGE, SYMBOLS_SI, magicCode);
-    Unit.AMPERE = new Unit(1, Dimensions_1.default.CURRENT, SYMBOLS_SI, magicCode);
-    Unit.KELVIN = new Unit(1, Dimensions_1.default.TEMPERATURE, SYMBOLS_SI, magicCode);
-    Unit.MOLE = new Unit(1, Dimensions_1.default.AMOUNT, SYMBOLS_SI, magicCode);
-    Unit.CANDELA = new Unit(1, Dimensions_1.default.INTENSITY, SYMBOLS_SI, magicCode);
-    Unit.NEWTON = new Unit(1, Dimensions_1.default.FORCE, SYMBOLS_SI, magicCode);
-    Unit.JOULE = new Unit(1, Dimensions_1.default.ENERGY_OR_TORQUE, SYMBOLS_SI, magicCode);
-    Unit.JOULE_SECOND = new Unit(1, Dimensions_1.default.ANGULAR_MOMENTUM, SYMBOLS_SI, magicCode);
-    Unit.METER_SQUARED = new Unit(1, Dimensions_1.default.AREA, SYMBOLS_SI, magicCode);
-    Unit.SECOND_SQUARED = new Unit(1, Dimensions_1.default.TIME_SQUARED, SYMBOLS_SI, magicCode);
-    Unit.INV_KILOGRAM = new Unit(1, Dimensions_1.default.INV_MASS, SYMBOLS_SI, magicCode);
-    Unit.INV_METER = new Unit(1, Dimensions_1.default.INV_LENGTH, SYMBOLS_SI, magicCode);
-    Unit.INV_SECOND = new Unit(1, Dimensions_1.default.INV_TIME, SYMBOLS_SI, magicCode);
-    Unit.KILOGRAM_METER_SQUARED = new Unit(1, Dimensions_1.default.MOMENT_OF_INERTIA, SYMBOLS_SI, magicCode);
-    Unit.KILOGRAM_METER_PER_SECOND = new Unit(1, Dimensions_1.default.MOMENTUM, SYMBOLS_SI, magicCode);
-    Unit.KILOGRAM_SQUARED_METER_SQUARED_PER_SECOND_SQUARED = new Unit(1, Dimensions_1.default.MOMENTUM_SQUARED, SYMBOLS_SI, magicCode);
-    Unit.INV_KILOGRAM_METER_SQUARED = new Unit(1, Dimensions_1.default.INV_MOMENT_OF_INERTIA, SYMBOLS_SI, magicCode);
-    Unit.STIFFNESS = new Unit(1, Dimensions_1.default.STIFFNESS, SYMBOLS_SI, magicCode);
-    Unit.METER_PER_SECOND = new Unit(1, Dimensions_1.default.VELOCITY, SYMBOLS_SI, magicCode);
-    Unit.METER_SQUARED_PER_SECOND = new Unit(1, Dimensions_1.default.RATE_OF_CHANGE_OF_AREA, SYMBOLS_SI, magicCode);
-    Unit.METER_SQUARED_PER_SECOND_SQUARED = new Unit(1, Dimensions_1.default.VELOCITY_SQUARED, SYMBOLS_SI, magicCode);
+    Unit.ONE = new Unit(1, Dimensions_1.default.ONE, SYMBOLS_SI);
+    Unit.KILOGRAM = new Unit(1, Dimensions_1.default.MASS, SYMBOLS_SI);
+    Unit.METER = new Unit(1, Dimensions_1.default.LENGTH, SYMBOLS_SI);
+    Unit.SECOND = new Unit(1, Dimensions_1.default.TIME, SYMBOLS_SI);
+    Unit.COULOMB = new Unit(1, Dimensions_1.default.CHARGE, SYMBOLS_SI);
+    Unit.AMPERE = new Unit(1, Dimensions_1.default.CURRENT, SYMBOLS_SI);
+    Unit.KELVIN = new Unit(1, Dimensions_1.default.TEMPERATURE, SYMBOLS_SI);
+    Unit.MOLE = new Unit(1, Dimensions_1.default.AMOUNT, SYMBOLS_SI);
+    Unit.CANDELA = new Unit(1, Dimensions_1.default.INTENSITY, SYMBOLS_SI);
+    Unit.NEWTON = new Unit(1, Dimensions_1.default.FORCE, SYMBOLS_SI);
+    Unit.JOULE = new Unit(1, Dimensions_1.default.ENERGY_OR_TORQUE, SYMBOLS_SI);
+    Unit.JOULE_SECOND = new Unit(1, Dimensions_1.default.ANGULAR_MOMENTUM, SYMBOLS_SI);
+    Unit.METER_SQUARED = new Unit(1, Dimensions_1.default.AREA, SYMBOLS_SI);
+    Unit.SECOND_SQUARED = new Unit(1, Dimensions_1.default.TIME_SQUARED, SYMBOLS_SI);
+    Unit.INV_KILOGRAM = new Unit(1, Dimensions_1.default.INV_MASS, SYMBOLS_SI);
+    Unit.INV_METER = new Unit(1, Dimensions_1.default.INV_LENGTH, SYMBOLS_SI);
+    Unit.INV_SECOND = new Unit(1, Dimensions_1.default.INV_TIME, SYMBOLS_SI);
+    Unit.KILOGRAM_METER_SQUARED = new Unit(1, Dimensions_1.default.MOMENT_OF_INERTIA, SYMBOLS_SI);
+    Unit.KILOGRAM_METER_PER_SECOND = new Unit(1, Dimensions_1.default.MOMENTUM, SYMBOLS_SI);
+    Unit.KILOGRAM_SQUARED_METER_SQUARED_PER_SECOND_SQUARED = new Unit(1, Dimensions_1.default.MOMENTUM_SQUARED, SYMBOLS_SI);
+    Unit.INV_KILOGRAM_METER_SQUARED = new Unit(1, Dimensions_1.default.INV_MOMENT_OF_INERTIA, SYMBOLS_SI);
+    Unit.STIFFNESS = new Unit(1, Dimensions_1.default.STIFFNESS, SYMBOLS_SI);
+    Unit.METER_PER_SECOND = new Unit(1, Dimensions_1.default.VELOCITY, SYMBOLS_SI);
+    Unit.METER_SQUARED_PER_SECOND = new Unit(1, Dimensions_1.default.RATE_OF_CHANGE_OF_AREA, SYMBOLS_SI);
+    Unit.METER_SQUARED_PER_SECOND_SQUARED = new Unit(1, Dimensions_1.default.VELOCITY_SQUARED, SYMBOLS_SI);
     exports.Unit = Unit;
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Unit;
@@ -3465,17 +3460,13 @@ define('davinci-newton/math/Geometric3',["require", "exports", "./approx", "./ar
         }
     }
     var cosines = [];
-    var magicCode = Math.random();
     var UNLOCKED = -1 * Math.random();
     var Geometric3 = (function () {
-        function Geometric3(coords, uom, code) {
+        function Geometric3(coords, uom) {
             if (coords === void 0) { coords = zero(); }
             this.lock_ = UNLOCKED;
             if (coords.length !== 8) {
                 throw new Error("coords.length must be 8");
-            }
-            if (isDefined_1.default(code) && code !== magicCode) {
-                throw new Error("Use the static creation methods instead of the constructor");
             }
             this.coords_ = coords;
             this.uom_ = uom;
@@ -4207,6 +4198,34 @@ define('davinci-newton/math/Geometric3',["require", "exports", "./approx", "./ar
                 return this.mul2(this, rhs);
             }
         };
+        Geometric3.prototype.mulByBivector = function (B) {
+            if (this.lock_ !== UNLOCKED) {
+                return lock(this.clone().mulByBivector(B));
+            }
+            else {
+                this.uom = Unit_1.default.mul(this.uom, B.uom);
+                var a0 = this.a;
+                var a1 = this.x;
+                var a2 = this.y;
+                var a3 = this.z;
+                var a4 = this.xy;
+                var a5 = this.yz;
+                var a6 = this.zx;
+                var a7 = this.b;
+                var b4 = B.xy;
+                var b5 = B.yz;
+                var b6 = B.zx;
+                this.a = -a4 * b4 - a5 * b5 - a6 * b6;
+                this.x = -a2 * b4 + a3 * b6 - a7 * b5;
+                this.y = +a1 * b4 - a3 * b5 - a7 * b6;
+                this.z = -a1 * b6 + a2 * b5 - a7 * b4;
+                this.xy = a0 * b4 - a5 * b6 + a6 * b5;
+                this.yz = a0 * b5 + a4 * b6 - a6 * b4;
+                this.zx = a0 * b6 - a4 * b5 + a5 * b4;
+                this.b = +a1 * b5 + a2 * b6 + a3 * b4;
+                return this;
+            }
+        };
         Geometric3.prototype.mulByVector = function (v) {
             if (this.lock_ !== UNLOCKED) {
                 return lock(this.clone().mulByVector(v));
@@ -4221,22 +4240,17 @@ define('davinci-newton/math/Geometric3',["require", "exports", "./approx", "./ar
                 var a5 = this.yz;
                 var a6 = this.zx;
                 var a7 = this.b;
-                var b0 = 0;
                 var b1 = v.x;
                 var b2 = v.y;
                 var b3 = v.z;
-                var b4 = 0;
-                var b5 = 0;
-                var b6 = 0;
-                var b7 = 0;
-                this.a = mulE3_1.default(a0, a1, a2, a3, a4, a5, a6, a7, b0, b1, b2, b3, b4, b5, b6, b7, 0);
-                this.x = mulE3_1.default(a0, a1, a2, a3, a4, a5, a6, a7, b0, b1, b2, b3, b4, b5, b6, b7, 1);
-                this.y = mulE3_1.default(a0, a1, a2, a3, a4, a5, a6, a7, b0, b1, b2, b3, b4, b5, b6, b7, 2);
-                this.z = mulE3_1.default(a0, a1, a2, a3, a4, a5, a6, a7, b0, b1, b2, b3, b4, b5, b6, b7, 3);
-                this.xy = mulE3_1.default(a0, a1, a2, a3, a4, a5, a6, a7, b0, b1, b2, b3, b4, b5, b6, b7, 4);
-                this.yz = mulE3_1.default(a0, a1, a2, a3, a4, a5, a6, a7, b0, b1, b2, b3, b4, b5, b6, b7, 5);
-                this.zx = mulE3_1.default(a0, a1, a2, a3, a4, a5, a6, a7, b0, b1, b2, b3, b4, b5, b6, b7, 6);
-                this.b = mulE3_1.default(a0, a1, a2, a3, a4, a5, a6, a7, b0, b1, b2, b3, b4, b5, b6, b7, 7);
+                this.a = a1 * b1 + a2 * b2 + a3 * b3;
+                this.x = a0 * b1 + a4 * b2 - a6 * b3;
+                this.y = a0 * b2 - a4 * b1 + a5 * b3;
+                this.z = a0 * b3 - a5 * b2 + a6 * b1;
+                this.xy = a1 * b2 - a2 * b1 + a7 * b3;
+                this.yz = a2 * b3 - a3 * b2 + a7 * b1;
+                this.zx = -a1 * b3 + a3 * b1 + a7 * b2;
+                this.b = a4 * b3 + a5 * b1 + a6 * b2;
                 return this;
             }
         };
@@ -4594,6 +4608,22 @@ define('davinci-newton/math/Geometric3',["require", "exports", "./approx", "./ar
                 return this;
             }
         };
+        Geometric3.prototype.subScalar = function (M, α) {
+            if (α === void 0) { α = 1; }
+            if (this.lock_ !== UNLOCKED) {
+                return lock(this.clone().subScalar(M, α));
+            }
+            else {
+                if (this.isZero()) {
+                    this.uom = M.uom;
+                }
+                else {
+                    this.uom = Unit_1.default.compatible(this.uom, M.uom);
+                }
+                this.a -= M.a * α;
+                return this;
+            }
+        };
         Geometric3.prototype.subVector = function (v, α) {
             if (α === void 0) { α = 1; }
             if (this.lock_ !== UNLOCKED) {
@@ -4935,31 +4965,34 @@ define('davinci-newton/math/Geometric3',["require", "exports", "./approx", "./ar
             return Geometric3.spinor(0, yz, zx, xy, uom);
         };
         Geometric3.copy = function (mv) {
-            return new Geometric3(coordinates(mv), mv.uom, magicCode);
+            return new Geometric3(coordinates(mv), mv.uom);
         };
         Geometric3.dual = function (m) {
-            return new Geometric3(zero(), m.uom, magicCode).dual(m);
+            return new Geometric3(zero(), m.uom).dual(m);
         };
         Geometric3.dualOfBivector = function (B) {
-            return new Geometric3(vector(-B.yz, -B.zx, -B.xy), B.uom, magicCode);
+            return new Geometric3(vector(-B.yz, -B.zx, -B.xy), B.uom);
         };
         Geometric3.dualOfVector = function (v) {
-            return new Geometric3(bivector(v.x, v.y, v.z), v.uom, magicCode);
+            return new Geometric3(bivector(v.x, v.y, v.z), v.uom);
         };
         Geometric3.fromBivector = function (B) {
-            return new Geometric3(bivector(B.yz, B.zx, B.xy), B.uom, magicCode);
+            return new Geometric3(bivector(B.yz, B.zx, B.xy), B.uom);
         };
         Geometric3.fromScalar = function (alpha) {
-            return new Geometric3(scalar(alpha.a), alpha.uom, magicCode);
+            return new Geometric3(scalar(alpha.a), alpha.uom);
         };
         Geometric3.fromSpinor = function (R) {
-            return new Geometric3(spinor(R.a, R.yz, R.zx, R.xy), R.uom, magicCode);
+            return new Geometric3(spinor(R.a, R.yz, R.zx, R.xy), R.uom);
         };
         Geometric3.fromVector = function (v) {
-            return new Geometric3(vector(v.x, v.y, v.z), v.uom, magicCode);
+            return new Geometric3(vector(v.x, v.y, v.z), v.uom);
         };
         Geometric3.lerp = function (A, B, α) {
             return Geometric3.copy(A).lerp(B, α);
+        };
+        Geometric3.pseudo = function (b, uom) {
+            return new Geometric3(pseudo(b), uom);
         };
         Geometric3.random = function () {
             var lowerBound = -1;
@@ -4972,25 +5005,25 @@ define('davinci-newton/math/Geometric3',["require", "exports", "./approx", "./ar
             var zx = randomRange_1.default(lowerBound, upperBound);
             var xy = randomRange_1.default(lowerBound, upperBound);
             var b = randomRange_1.default(lowerBound, upperBound);
-            return new Geometric3(multivector(a, x, y, z, yz, zx, xy, b), void 0, magicCode);
+            return new Geometric3(multivector(a, x, y, z, yz, zx, xy, b), void 0);
         };
         Geometric3.rotorFromDirections = function (a, b) {
-            return new Geometric3(zero(), void 0, magicCode).rotorFromDirections(a, b);
+            return new Geometric3(zero(), void 0).rotorFromDirections(a, b);
         };
         Geometric3.rotorFromFrameToFrame = function (es, fs) {
-            return new Geometric3(zero(), void 0, magicCode).rotorFromFrameToFrame(es, fs);
+            return new Geometric3(zero(), void 0).rotorFromFrameToFrame(es, fs);
         };
         Geometric3.rotorFromVectorToVector = function (a, b, B) {
-            return new Geometric3(zero(), void 0, magicCode).rotorFromVectorToVector(a, b, B);
+            return new Geometric3(zero(), void 0).rotorFromVectorToVector(a, b, B);
         };
         Geometric3.scalar = function (a, uom) {
-            return new Geometric3(scalar(a), uom, magicCode);
+            return new Geometric3(scalar(a), uom);
         };
         Geometric3.spinor = function (a, yz, zx, xy, uom) {
-            return new Geometric3(spinor(a, yz, zx, xy), uom, magicCode);
+            return new Geometric3(spinor(a, yz, zx, xy), uom);
         };
         Geometric3.vector = function (x, y, z, uom) {
-            return new Geometric3(vector(x, y, z), uom, magicCode);
+            return new Geometric3(vector(x, y, z), uom);
         };
         Geometric3.wedge = function (a, b) {
             var ax = a.x;
@@ -5006,19 +5039,19 @@ define('davinci-newton/math/Geometric3',["require", "exports", "./approx", "./ar
         };
         return Geometric3;
     }());
-    Geometric3.zero = lock(new Geometric3(zero(), void 0, magicCode));
-    Geometric3.one = lock(new Geometric3(scalar(1), void 0, magicCode));
-    Geometric3.e1 = lock(new Geometric3(vector(1, 0, 0), void 0, magicCode));
-    Geometric3.e2 = lock(new Geometric3(vector(0, 1, 0), void 0, magicCode));
-    Geometric3.e3 = lock(new Geometric3(vector(0, 0, 1), void 0, magicCode));
-    Geometric3.I = lock(new Geometric3(pseudo(1), void 0, magicCode));
-    Geometric3.meter = lock(new Geometric3(scalar(1), Unit_1.default.METER, magicCode));
-    Geometric3.kilogram = lock(new Geometric3(scalar(1), Unit_1.default.KILOGRAM, magicCode));
-    Geometric3.second = lock(new Geometric3(scalar(1), Unit_1.default.SECOND, magicCode));
-    Geometric3.ampere = lock(new Geometric3(scalar(1), Unit_1.default.AMPERE, magicCode));
-    Geometric3.kelvin = lock(new Geometric3(scalar(1), Unit_1.default.KELVIN, magicCode));
-    Geometric3.mole = lock(new Geometric3(scalar(1), Unit_1.default.MOLE, magicCode));
-    Geometric3.candela = lock(new Geometric3(scalar(1), Unit_1.default.CANDELA, magicCode));
+    Geometric3.zero = lock(new Geometric3(zero(), void 0));
+    Geometric3.one = lock(new Geometric3(scalar(1), void 0));
+    Geometric3.e1 = lock(new Geometric3(vector(1, 0, 0), void 0));
+    Geometric3.e2 = lock(new Geometric3(vector(0, 1, 0), void 0));
+    Geometric3.e3 = lock(new Geometric3(vector(0, 0, 1), void 0));
+    Geometric3.I = lock(new Geometric3(pseudo(1), void 0));
+    Geometric3.meter = lock(new Geometric3(scalar(1), Unit_1.default.METER));
+    Geometric3.kilogram = lock(new Geometric3(scalar(1), Unit_1.default.KILOGRAM));
+    Geometric3.second = lock(new Geometric3(scalar(1), Unit_1.default.SECOND));
+    Geometric3.ampere = lock(new Geometric3(scalar(1), Unit_1.default.AMPERE));
+    Geometric3.kelvin = lock(new Geometric3(scalar(1), Unit_1.default.KELVIN));
+    Geometric3.mole = lock(new Geometric3(scalar(1), Unit_1.default.MOLE));
+    Geometric3.candela = lock(new Geometric3(scalar(1), Unit_1.default.CANDELA));
     exports.Geometric3 = Geometric3;
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Geometric3;
@@ -6128,20 +6161,20 @@ define('davinci-newton/engine3D/RigidBody3',["require", "exports", "../objects/A
         RigidBody3.prototype.rotationalEnergy = function () {
             assertConsistentUnits('Ω', this.Ω, 'L', this.L);
             this.rotationalEnergy_.unlock(this.rotationalEnergyLock_);
-            this.rotationalEnergy_.copy(this.Ω).rev().scp(this.L).mulByNumber(0.5);
+            this.rotationalEnergy_.copyBivector(this.Ω).rev().scp(this.L).mulByNumber(0.5);
             this.rotationalEnergyLock_ = this.rotationalEnergy_.lock();
             return this.rotationalEnergy_;
         };
         RigidBody3.prototype.translationalEnergy = function () {
             assertConsistentUnits('M', this.M, 'P', this.P);
             this.translationalEnergy_.unlock(this.translationalEnergyLock_);
-            this.translationalEnergy_.copy(this.P).mul(this.P).div(this.M).mulByNumber(0.5);
+            this.translationalEnergy_.copyVector(this.P).mulByVector(this.P).divByScalar(this.M.a, this.M.uom).mulByNumber(0.5);
             this.translationalEnergyLock_ = this.translationalEnergy_.lock();
             return this.translationalEnergy_;
         };
         RigidBody3.prototype.localPointToWorldPoint = function (localPoint, worldPoint) {
             this.worldPoint_.copyVector(localPoint).subVector(this.centerOfMassLocal_);
-            this.worldPoint_.rotate(this.attitude_).add(this.position_);
+            this.worldPoint_.rotate(this.attitude_).addVector(this.position_);
             this.worldPoint_.writeVector(worldPoint);
         };
         return RigidBody3;
@@ -6430,7 +6463,7 @@ define('davinci-newton/config',["require", "exports"], function (require, export
             this.GITHUB = 'https://github.com/geometryzen/davinci-newton';
             this.LAST_MODIFIED = '2017-02-15';
             this.NAMESPACE = 'NEWTON';
-            this.VERSION = '0.0.32';
+            this.VERSION = '0.0.33';
         }
         Newton.prototype.log = function (message) {
             var optionalParams = [];
@@ -10271,9 +10304,9 @@ define('davinci-newton/engine3D/GravitationLaw3',["require", "exports", "../obje
             var denom = this.F2.location;
             numer.copyVector(this.body2_.X).subVector(this.body1_.X);
             denom.copyVector(numer).quaditude();
-            numer.direction().mul(this.G).mul(this.body1_.M).mul(this.body2_.M);
+            numer.direction().mulByScalar(this.G.a, this.G.uom).mulByScalar(this.body1_.M.a, this.body1_.M.uom).mulByScalar(this.body2_.M.a, this.body2_.M.uom);
             this.F1.vector.copyVector(numer).divByScalar(denom.a, denom.uom);
-            this.F2.vector.copy(this.F1.vector).neg();
+            this.F2.vector.copyVector(this.F1.vector).neg();
             this.F1.location.copyVector(this.body1_.X);
             this.F2.location.copyVector(this.body2_.X);
             return this.forces;
@@ -10284,9 +10317,9 @@ define('davinci-newton/engine3D/GravitationLaw3',["require", "exports", "../obje
             this.potentialEnergy_.unlock(this.potentialEnergyLock_);
             var numer = this.F1.location;
             var denom = this.F2.location;
-            numer.copy(this.G).mul(this.body1_.M).mul(this.body2_.M).neg();
+            numer.copyScalar(this.G.a, this.G.uom).mulByScalar(this.body1_.M.a, this.body1_.M.uom).mulByScalar(this.body2_.M.a, this.body2_.M.uom).neg();
             denom.copyVector(this.body1_.X).subVector(this.body2_.X).magnitude();
-            this.potentialEnergy_.copy(numer).div(denom);
+            this.potentialEnergy_.copyScalar(numer.a, numer.uom).divByScalar(denom.a, denom.uom);
             this.F1.location.copyVector(this.body1_.X);
             this.F2.location.copyVector(this.body2_.X);
             this.potentialEnergyLock_ = this.potentialEnergy_.lock();
@@ -10416,7 +10449,7 @@ define('davinci-newton/engine3D/Sphere3',["require", "exports", "../math/Geometr
         function Sphere3(radius) {
             if (radius === void 0) { radius = Geometric3_1.default.one; }
             var _this = _super.call(this) || this;
-            _this.radius_ = Geometric3_1.default.copy(radius);
+            _this.radius_ = Geometric3_1.default.fromScalar(radius);
             _this.radiusLock_ = _this.radius_.lock();
             _this.updateInertiaTensor();
             return _this;
@@ -10427,7 +10460,7 @@ define('davinci-newton/engine3D/Sphere3',["require", "exports", "../math/Geometr
             },
             set: function (radius) {
                 this.radius_.unlock(this.radiusLock_);
-                this.radius_.copy(radius);
+                this.radius_.copyScalar(radius.a, radius.uom);
                 this.radiusLock_ = this.radius_.lock();
                 this.updateInertiaTensor();
             },
@@ -10435,7 +10468,12 @@ define('davinci-newton/engine3D/Sphere3',["require", "exports", "../math/Geometr
             configurable: true
         });
         Sphere3.prototype.updateAngularVelocity = function () {
-            this.Ω.copy(this.radius_).quaditude().mul(this.M).mulByNumber(2 / 5).inv().mul(this.L);
+            this.Ω.copyScalar(this.radius_.a, this.radius_.uom);
+            this.Ω.quaditude();
+            this.Ω.mulByScalar(this.M.a, this.M.uom);
+            this.Ω.mulByNumber(2 / 5);
+            this.Ω.inv();
+            this.Ω.mulByBivector(this.L);
         };
         Sphere3.prototype.updateInertiaTensor = function () {
             var r = this.radius_;
@@ -10561,11 +10599,11 @@ define('davinci-newton/engine3D/Spring3',["require", "exports", "../objects/Abst
         Spring3.prototype.updateForces = function () {
             this.computeBody1AttachPointInWorldCoords(this.F1.location);
             this.computeBody2AttachPointInWorldCoords(this.F2.location);
-            this.F2.vector.copy(this.F2.location).sub(this.F1.location).direction();
-            this.F1.vector.copyVector(this.F1.location).subVector(this.F2.location).magnitude().sub(this.restLength);
-            this.F1.vector.mul(this.stiffness);
-            this.F1.vector.mul(this.F2.vector);
-            this.F2.vector.copy(this.F1.vector).neg();
+            this.F2.vector.copyVector(this.F2.location).subVector(this.F1.location).direction();
+            this.F1.vector.copyVector(this.F1.location).subVector(this.F2.location).magnitude().subScalar(this.restLength);
+            this.F1.vector.mulByScalar(this.stiffness.a, this.stiffness.uom);
+            this.F1.vector.mulByVector(this.F2.vector);
+            this.F2.vector.copyVector(this.F1.vector).neg();
             return this.forces;
         };
         Spring3.prototype.disconnect = function () {
@@ -10579,7 +10617,7 @@ define('davinci-newton/engine3D/Spring3',["require", "exports", "../objects/Abst
             assertConsistentUnits('length', this.potentialEnergy_, 'restLength', this.restLength);
             this.potentialEnergy_.sub(this.restLength);
             this.potentialEnergy_.quaditude();
-            this.potentialEnergy_.mul(this.stiffness);
+            this.potentialEnergy_.mulByScalar(this.stiffness.a, this.stiffness.uom);
             this.potentialEnergy_.mulByNumber(0.5);
             this.potentialEnergyLock_ = this.potentialEnergy_.lock();
             return this.potentialEnergy_;
