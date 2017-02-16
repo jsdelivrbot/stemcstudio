@@ -1,10 +1,10 @@
 import { addCssClass, createElement, removeCssClass, setCssClass } from "../lib/dom";
 import AbstractLayer from './AbstractLayer';
+import CursorConfig from './CursorConfig';
 import Disposable from '../base/Disposable';
 import EditSession from '../EditSession';
-import Position from '../Position';
 import PixelPosition from '../PixelPosition';
-import CursorConfig from './CursorConfig';
+import Position from '../Position';
 
 let isIE8;
 
@@ -218,24 +218,26 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
         this.config = config;
 
         // Selection markers is a concept from multi selection.
-        // FIXME: Why can't we type the selections as Range[]?
-        var selections: any[] = this.session.$selectionMarkers;
-        var i = 0, cursorIndex = 0;
+        let selections: { cursor: Position }[] = this.session.$selectionMarkers;
+
+        let cursorIndex = 0;
 
         if (selections === undefined || selections.length === 0) {
             selections = [{ cursor: null }];
         }
 
-        for (var i = 0, n = selections.length; i < n; i++) {
+        let pixelPos: PixelPosition;
 
-            var pixelPos = this.getPixelPosition(selections[i].cursor, true);
+        const n = selections.length;
+        for (let i = 0; i < n; i++) {
+            pixelPos = this.getPixelPosition(selections[i].cursor, true);
 
             if ((pixelPos.top > config.height + config.offset ||
                 pixelPos.top < 0) && i > 1) {
                 continue;
             }
 
-            var style = (this.cursors[cursorIndex++] || this.addCursor()).style;
+            const style = (this.cursors[cursorIndex++] || this.addCursor()).style;
 
             style.left = pixelPos.left + "px";
             style.top = pixelPos.top + "px";
@@ -247,7 +249,7 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
             this.removeCursor();
         }
 
-        var overwrite = this.session.getOverwrite();
+        const overwrite = this.session.getOverwrite();
         this.$setOverwrite(overwrite);
 
         // cache for textarea and gutter highlight

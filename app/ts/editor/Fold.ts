@@ -5,8 +5,6 @@ import Position from "./Position";
 
 /**
  * Simple fold-data struct.
- * @class Fold
- * @extends RangeList
  */
 export default class Fold extends RangeList {
     foldLine: FoldLine;
@@ -20,10 +18,8 @@ export default class Fold extends RangeList {
     collapseChildren: number;
 
     /**
-     * @class Fold
-     * @constructor
-     * @param range {Range}
-     * @param placeholder {string}
+     * @param range
+     * @param placeholder
      */
     constructor(range: Range, placeholder: string) {
         super();
@@ -38,17 +34,14 @@ export default class Fold extends RangeList {
     }
 
     /**
-     * @method toString
-     * @return {string}
+     *
      */
     toString(): string {
         return '"' + this.placeholder + '" ' + this.range.toString();
     }
 
     /**
-     * @method setFoldLine
-     * @param foldLine {FoldLine}
-     * @return {void}
+     * @param foldLine
      */
     setFoldLine(foldLine: FoldLine): void {
         this.foldLine = foldLine;
@@ -58,8 +51,7 @@ export default class Fold extends RangeList {
     }
 
     /**
-     * @method clone
-     * @return {Fold}
+     *
      */
     clone(): Fold {
         var range = this.range.clone();
@@ -72,9 +64,7 @@ export default class Fold extends RangeList {
     }
 
     /**
-     * @method addSubFold
-     * @param fold {Fold}
-     * @return {Fold}
+     * @param fold
      */
     addSubFold(fold: Fold): Fold {
         if (this.range.isEqual(fold))

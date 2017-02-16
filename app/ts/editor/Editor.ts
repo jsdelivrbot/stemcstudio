@@ -3856,8 +3856,8 @@ class FoldHandler {
             if (gutterRegion === 'foldWidgets') {
                 const row = e.getDocumentPosition().row;
                 const session = editor.getSession();
-                if (session['foldWidgets'] && session['foldWidgets'][row]) {
-                    session['onFoldWidgetClick'](row, e);
+                if (session.foldWidgets && session.foldWidgets[row]) {
+                    session.onFoldWidgetClick(row, e);
                 }
                 if (!editor.isFocused()) {
                     editor.focus();
@@ -3872,7 +3872,7 @@ class FoldHandler {
             if (gutterRegion === 'foldWidgets') {
                 let row = e.getDocumentPosition().row;
                 const session = editor.getSession();
-                const data = session['getParentFoldRangeData'](row, true);
+                const data = session.getParentFoldRangeData(row, true);
                 const range = data.range || data.firstRange;
 
                 if (range) {
@@ -3883,7 +3883,7 @@ class FoldHandler {
                         session.removeFold(fold);
                     }
                     else {
-                        session['addFold']("...", range);
+                        session.addFold("...", range);
                         editor.renderer.scrollCursorIntoView({ row: range.start.row, column: 0 });
                     }
                 }
@@ -3926,7 +3926,7 @@ class MouseHandler implements IGestureHandler {
     constructor(editor: Editor) {
         // FIXME: Did I mention that `this`, `new`, `class`, `bind` are the 4 horsemen?
         // FIXME: Function Scoping is the answer.
-        var _self = this;
+        const _self = this;
         this.editor = editor;
 
         // FIXME: We should be cleaning up these handlers in a dispose method...

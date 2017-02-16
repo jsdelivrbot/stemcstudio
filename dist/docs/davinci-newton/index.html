@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>NEWTON 0.0.33</title>
+	<title>NEWTON 0.0.35</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">NEWTON 0.0.33</a>
+					<a href="index.html" class="title">NEWTON 0.0.35</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -54,7 +54,7 @@
 					<a href="globals.html">Globals</a>
 				</li>
 			</ul>
-			<h1> NEWTON 0.0.33</h1>
+			<h1> NEWTON 0.0.35</h1>
 		</div>
 	</div>
 </header>
@@ -63,7 +63,270 @@
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
 				<h1 id="davinci-newton">davinci-newton</h1>
-				<p>Physics Modeling and Engine using Geometric Algebra</p>
+				<p>3D Physics Modeling and Engine using Geometric Algebra, Units of Measure, and TypeScript.</p>
+				<h1 id="getting-started">Getting Started</h1>
+				<p>The following code illustrates the basic flow. For a working example see <a href="https://www.stemcstudio.com">STEMCstudio</a>.
+				Look for examples with <code>NEWTON</code> in the title. </p>
+				<h2 id="constructing-the-core-simulation-using-the-physics3-engine-">Constructing the core simulation using the <code>Physics3</code> engine.</h2>
+				<pre><code class="lang-typescript"><span class="hljs-comment">//</span>
+<span class="hljs-comment">// Constants</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-keyword">const</span> e1 = NEWTON.Geometric3.e1
+<span class="hljs-keyword">const</span> e2 = NEWTON.Geometric3.e2
+<span class="hljs-keyword">const</span> e3 = NEWTON.Geometric3.e3
+<span class="hljs-keyword">const</span> kilogram = NEWTON.Geometric3.kilogram
+<span class="hljs-keyword">const</span> meter = NEWTON.Geometric3.meter
+<span class="hljs-keyword">const</span> second = NEWTON.Geometric3.second
+
+<span class="hljs-comment">//</span>
+<span class="hljs-comment">// Initialization</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-keyword">const</span> sim = <span class="hljs-keyword">new</span> NEWTON.Physics3()
+<span class="hljs-keyword">const</span> rk4 = <span class="hljs-keyword">new</span> NEWTON.RungeKutta(sim)
+<span class="hljs-keyword">const</span> ads = <span class="hljs-keyword">new</span> NEWTON.ConstantEnergySolver(sim, sim, rk4)
+ads.tolerance = <span class="hljs-number">1E-5</span>
+ads.stepLowerBound = <span class="hljs-number">1E-7</span>
+<span class="hljs-keyword">const</span> strategy = <span class="hljs-keyword">new</span> NEWTON.DefaultAdvanceStrategy(sim, ads)
+<span class="hljs-keyword">const</span> Δt = <span class="hljs-number">0.01</span> * second
+sim.showForces = <span class="hljs-literal">true</span>
+
+<span class="hljs-comment">//</span>
+<span class="hljs-comment">// Add objects</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-keyword">const</span> width = <span class="hljs-number">0.5</span> * meter
+<span class="hljs-keyword">const</span> height = <span class="hljs-number">0.1</span> * meter
+<span class="hljs-keyword">const</span> depth = <span class="hljs-number">0.5</span> * meter
+<span class="hljs-keyword">const</span> block1 = <span class="hljs-keyword">new</span> NEWTON.Block3(width, height, depth)
+<span class="hljs-keyword">const</span> block2 = <span class="hljs-keyword">new</span> NEWTON.Block3(width, height, depth)
+
+block1.M = <span class="hljs-number">1</span> * kilogram
+block2.M = <span class="hljs-number">1</span> * kilogram
+
+block1.X = <span class="hljs-number">-1.0</span> * e1 * meter
+block2.X = +<span class="hljs-number">1.0</span> * e1 * meter
+
+sim.addBody(block1)
+sim.addBody(block2)
+
+<span class="hljs-comment">//</span>
+<span class="hljs-comment">// Add forces</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-keyword">const</span> spring = <span class="hljs-keyword">new</span> NEWTON.Spring3(block1, block2)
+spring.restLength = <span class="hljs-number">1</span> * meter
+spring.stiffness = <span class="hljs-number">1</span> * kilogram / (second * second)
+sim.addForceLaw(spring)
+spring.attach1 = (block1.width * e1 + <span class="hljs-number">0</span> * block1.height * e2 + block1.depth * e3) / <span class="hljs-number">2</span>
+
+<span class="hljs-comment">// Inside animation "loop"</span>
+strategy.advance(Δt.a, Δt.uom)
+</code></pre>
+				<h2 id="visualizing-the-simulation-using-the-eight-library-">Visualizing the simulation using the <code>EIGHT</code> library.</h2>
+				<p>The <code>Block3</code> class provides objects for modeling; they do not have a graphics role.
+				You must add your own diagram. This can be done using the <code>EIGHT</code> library, for example.</p>
+				<pre><code class="lang-typescript"><span class="hljs-comment">/**
+ * Returns an event listener function for handling the 'resize' event.
+ * The returned function, when invoked, modifies the canvas size of the engine
+ * and updates the aspect ratio of the camera.
+ */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">makeResizeToWindowListener</span>(<span class="hljs-params">engine: EIGHT.Engine, camera: EIGHT.PerspectiveCamera</span>): (<span class="hljs-params"></span>) =&gt; <span class="hljs-title">void</span> </span>{
+    <span class="hljs-keyword">const</span> resizeListener = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+      engine.size(<span class="hljs-built_in">window</span>.innerWidth, <span class="hljs-built_in">window</span>.innerHeight)
+      engine.canvas.style.width = <span class="hljs-string">`<span class="hljs-subst">${window.innerWidth}</span>px`</span>
+      engine.canvas.style.height = <span class="hljs-string">`<span class="hljs-subst">${window.innerHeight}</span>px`</span>
+      camera.aspect    = <span class="hljs-built_in">window</span>.innerWidth / <span class="hljs-built_in">window</span>.innerHeight
+    }
+    <span class="hljs-keyword">return</span> resizeListener
+}
+
+<span class="hljs-keyword">const</span> e1 = EIGHT.Geometric3.e1(<span class="hljs-literal">true</span>)
+<span class="hljs-keyword">const</span> e2 = EIGHT.Geometric3.e2(<span class="hljs-literal">true</span>)
+<span class="hljs-keyword">const</span> e3 = EIGHT.Geometric3.e3(<span class="hljs-literal">true</span>)
+
+<span class="hljs-comment">/**
+ * A utility for dynamicall rendering a list of simulation objects.
+ */</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> MotionDiagram {
+    <span class="hljs-keyword">private</span> readonly engine: EIGHT.Engine
+    <span class="hljs-keyword">private</span> readonly scene: EIGHT.Scene
+    <span class="hljs-keyword">private</span> readonly ambients: EIGHT.Facet[] = []
+    <span class="hljs-keyword">private</span> readonly camera = <span class="hljs-keyword">new</span> EIGHT.PerspectiveCamera()
+    <span class="hljs-keyword">private</span> readonly trackball: EIGHT.TrackballControls
+    <span class="hljs-keyword">private</span> readonly dirLight = <span class="hljs-keyword">new</span> EIGHT.DirectionalLight()
+    <span class="hljs-keyword">private</span> readonly arrow: EIGHT.Arrow
+    <span class="hljs-keyword">private</span> readonly ball: EIGHT.Sphere
+    <span class="hljs-keyword">private</span> readonly box: EIGHT.Box
+    <span class="hljs-keyword">private</span> readonly rod: EIGHT.Cylinder
+
+    <span class="hljs-comment">/**
+     * 
+     */</span>
+    <span class="hljs-keyword">constructor</span>(<span class="hljs-params">canvasId: <span class="hljs-built_in">string</span>, <span class="hljs-keyword">private</span> simList: NEWTON.SimList</span>) {
+        <span class="hljs-keyword">this</span>.engine = <span class="hljs-keyword">new</span> EIGHT.Engine(canvasId)
+            .size(<span class="hljs-number">500</span>, <span class="hljs-number">500</span>)
+            .clearColor(<span class="hljs-number">0.1</span>, <span class="hljs-number">0.1</span>, <span class="hljs-number">0.1</span>, <span class="hljs-number">1.0</span>)
+            .enable(EIGHT.Capability.DEPTH_TEST)
+
+        <span class="hljs-keyword">this</span>.scene = <span class="hljs-keyword">new</span> EIGHT.Scene(<span class="hljs-keyword">this</span>.engine)
+
+        <span class="hljs-keyword">this</span>.camera.eye.copyVector(<span class="hljs-number">3</span> * e3 + <span class="hljs-number">2</span> * e2)
+        <span class="hljs-keyword">this</span>.ambients.push(<span class="hljs-keyword">this</span>.camera)
+
+        <span class="hljs-comment">// The trackball captures the camera position for resetting.</span>
+        <span class="hljs-keyword">this</span>.trackball = <span class="hljs-keyword">new</span> EIGHT.TrackballControls(<span class="hljs-keyword">this</span>.camera)
+
+        <span class="hljs-keyword">this</span>.ambients.push(<span class="hljs-keyword">this</span>.dirLight)
+
+        <span class="hljs-keyword">this</span>.trackball.subscribe(<span class="hljs-keyword">this</span>.engine.canvas)
+        <span class="hljs-comment">// trackball.enableContextMenu()</span>
+        <span class="hljs-comment">// trackball.noPan = true</span>
+
+        <span class="hljs-keyword">const</span> marker = <span class="hljs-keyword">new</span> EIGHT.Sphere(<span class="hljs-keyword">this</span>.engine, {mode: <span class="hljs-string">'mesh'</span>})
+
+        <span class="hljs-keyword">const</span> grid = <span class="hljs-keyword">new</span> EIGHT.GridZX(<span class="hljs-keyword">this</span>.engine)
+        <span class="hljs-keyword">this</span>.scene.add(grid)
+        <span class="hljs-keyword">this</span>.arrow = <span class="hljs-keyword">new</span> EIGHT.Arrow(<span class="hljs-keyword">this</span>.engine)
+        <span class="hljs-keyword">this</span>.ball = <span class="hljs-keyword">new</span> EIGHT.Sphere(<span class="hljs-keyword">this</span>.engine, {mode: <span class="hljs-string">'wire'</span>})
+        <span class="hljs-keyword">this</span>.box = <span class="hljs-keyword">new</span> EIGHT.Box(<span class="hljs-keyword">this</span>.engine, {mode: <span class="hljs-string">'wire'</span>})
+        <span class="hljs-keyword">this</span>.rod = <span class="hljs-keyword">new</span> EIGHT.Cylinder(<span class="hljs-keyword">this</span>.engine, {mode: <span class="hljs-string">'wire'</span>})
+    }
+
+    <span class="hljs-comment">/**
+     * 
+     */</span>
+    clear(): <span class="hljs-built_in">void</span> {
+        <span class="hljs-keyword">this</span>.engine.clear()
+    }
+
+    <span class="hljs-comment">/**
+     * 
+     */</span>
+    makeResizeToWindowListener(): () =&gt; <span class="hljs-built_in">void</span> {
+        <span class="hljs-keyword">return</span> makeResizeToWindowListener(<span class="hljs-keyword">this</span>.engine, <span class="hljs-keyword">this</span>.camera)
+    }
+
+    <span class="hljs-comment">/**
+     * 
+     */</span>
+    render(): <span class="hljs-built_in">void</span> {
+        <span class="hljs-keyword">this</span>.trackball.update()
+
+        <span class="hljs-keyword">this</span>.dirLight.direction.copyVector(<span class="hljs-keyword">this</span>.camera.look).subVector(<span class="hljs-keyword">this</span>.camera.eye)
+
+        <span class="hljs-keyword">const</span> arrow = <span class="hljs-keyword">this</span>.arrow
+        <span class="hljs-keyword">const</span> ball = <span class="hljs-keyword">this</span>.ball
+        <span class="hljs-keyword">const</span> box = <span class="hljs-keyword">this</span>.box
+        <span class="hljs-keyword">const</span> rod = <span class="hljs-keyword">this</span>.rod
+        <span class="hljs-keyword">this</span>.simList.forEach((simObject) =&gt; {
+            <span class="hljs-keyword">if</span> (simObject <span class="hljs-keyword">instanceof</span> NEWTON.Block3) {
+                box.position.copyVector(simObject.X)
+                box.attitude.copySpinor(simObject.R)
+                box.width = simObject.width.a
+                box.height = simObject.height.a
+                box.depth = simObject.depth.a
+                box.color = simObject[<span class="hljs-string">'color'</span>]
+                box.render(<span class="hljs-keyword">this</span>.ambients)
+                <span class="hljs-comment">// Show linear momentum</span>
+                arrow.position.copyVector(simObject.X)
+                arrow.vector = simObject.P * <span class="hljs-number">0.8</span>
+                arrow.color = EIGHT.Color.red
+                arrow.render(<span class="hljs-keyword">this</span>.ambients)
+                <span class="hljs-comment">// Show angular momentum.</span>
+                <span class="hljs-comment">// <span class="hljs-doctag">TODO:</span> a bivector representation would be better here.</span>
+                <span class="hljs-keyword">const</span> J = <span class="hljs-keyword">new</span> NEWTON.Geometric3().dual(simObject.L).neg()
+                arrow.position.copyVector(simObject.X)
+                arrow.vector = J * <span class="hljs-number">10</span>
+                arrow.color = simObject[<span class="hljs-string">'color'</span>]
+                <span class="hljs-comment">// arrow.render(ambients)</span>
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (simObject <span class="hljs-keyword">instanceof</span> NEWTON.Sphere3) {
+                ball.position.copyVector(simObject.X)
+                ball.attitude.copySpinor(simObject.R)
+                ball.radius = simObject.radius.a
+                ball.color = simObject[<span class="hljs-string">'color'</span>]
+                ball.render(<span class="hljs-keyword">this</span>.ambients)
+                <span class="hljs-comment">// Show the momenta</span>
+                arrow.position.copyVector(simObject.X)
+                arrow.vector = simObject.P * <span class="hljs-number">0.8</span>
+                arrow.color = EIGHT.Color.red
+                arrow.render(<span class="hljs-keyword">this</span>.ambients)
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (simObject <span class="hljs-keyword">instanceof</span> NEWTON.Cylinder3) {
+                rod.position.copyVector(simObject.X)
+                rod.attitude.copySpinor(simObject.R)
+                rod.radius = simObject.radius.a
+                rod.length = simObject.height.a
+                rod.color = simObject[<span class="hljs-string">'color'</span>]
+                rod.render(<span class="hljs-keyword">this</span>.ambients)
+                <span class="hljs-comment">// Show the momenta</span>
+                arrow.position.copyVector(simObject.X)
+                arrow.vector = simObject.P * <span class="hljs-number">0.8</span>
+                arrow.color = EIGHT.Color.red
+                arrow.render(<span class="hljs-keyword">this</span>.ambients)
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (simObject <span class="hljs-keyword">instanceof</span> NEWTON.Spring3) {
+                <span class="hljs-keyword">const</span> spring = simObject;
+                <span class="hljs-keyword">const</span> end1 = spring.end1;
+                <span class="hljs-keyword">const</span> end2 = spring.end2;
+                <span class="hljs-keyword">const</span> s = end2 - end1;
+                rod.X.copyVector(end1+end2).divByScalar(<span class="hljs-number">2</span>)
+                rod.axis = end2 - end1
+                rod.length = s.magnitude().a
+                rod.render(<span class="hljs-keyword">this</span>.ambients)
+            }
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (simObject <span class="hljs-keyword">instanceof</span> NEWTON.Force3) {
+                <span class="hljs-keyword">const</span> forceApp = simObject
+                <span class="hljs-keyword">const</span> body = forceApp.getBody()
+                <span class="hljs-keyword">const</span> F = forceApp.F
+                <span class="hljs-keyword">const</span> x = forceApp.x
+                arrow.position.copyVector(x)
+                arrow.vector = F * <span class="hljs-number">1</span>
+                arrow.color = EIGHT.Color.blue
+                arrow.render(<span class="hljs-keyword">this</span>.ambients)
+            } 
+            <span class="hljs-keyword">else</span> {
+            }
+        })
+        <span class="hljs-keyword">this</span>.scene.render(<span class="hljs-keyword">this</span>.ambients)
+    }
+
+    <span class="hljs-comment">/**
+     * Resets the the viewing position.
+     */</span>
+    resetView(): <span class="hljs-built_in">void</span> {
+        <span class="hljs-keyword">this</span>.trackball.reset()
+    }
+}
+</code></pre>
+				<h2 id="adding-an-energy-time-graph-to-the-simulation-">Adding an energy-time graph to the simulation.</h2>
+				<pre><code class="lang-typescript"><span class="hljs-comment">//</span>
+<span class="hljs-comment">// Initialization. 'graph' is the identifier of a canvas element.</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-keyword">const</span> graph = <span class="hljs-keyword">new</span> NEWTON.EnergyTimeGraph(<span class="hljs-string">'graph'</span>, sim.varsList)
+
+graph.axes.hAxisScale = second.uom
+graph.axes.vAxisScale = sim.totalEnergy().uom
+
+<span class="hljs-comment">/**
+ * Counter used to throttle data capture by the graph.
+ */</span>
+<span class="hljs-keyword">let</span> frame = <span class="hljs-number">0</span>
+
+<span class="hljs-comment">// Inside animation "loop"</span>
+frame++
+<span class="hljs-keyword">if</span> (frame % <span class="hljs-number">5</span> === <span class="hljs-number">0</span>) {
+    graph.memorize()
+}
+graph.render()
+</code></pre>
+				<h1 id="thanks">Thanks</h1>
+				<p>Erik Neumann at <a href="www.myphysicslab.com">myPhysicsLαb.com</a> for the original 2D code and graphing.</p>
+				<p>This project adds:</p>
+				<ul>
+					<li>3D</li>
+					<li>Geometric Algebra</li>
+					<li>Units of Measure</li>
+					<li>TypeScript integration</li>
+				</ul>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -132,6 +395,9 @@
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="classes/coordmap.html" class="tsd-kind-icon">Coord<wbr>Map</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="classes/coulomblaw3.html" class="tsd-kind-icon">Coulomb<wbr>Law3</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="classes/cylinder3.html" class="tsd-kind-icon">Cylinder3</a>
@@ -263,6 +529,9 @@
 						<a href="interfaces/cartesiang3.html" class="tsd-kind-icon">Cartesian<wbr>G3</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="interfaces/charged3.html" class="tsd-kind-icon">Charged3</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-external">
 						<a href="interfaces/diffeqsolver.html" class="tsd-kind-icon">Diff<wbr>EqSolver</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-is-external">
@@ -338,6 +607,9 @@
 						<a href="globals.html#clone" class="tsd-kind-icon">clone</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
+						<a href="globals.html#compg3get" class="tsd-kind-icon">comp<wbr>G3Get</a>
+					</li>
+					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#compg3set" class="tsd-kind-icon">comp<wbr>G3Set</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-external">
@@ -375,9 +647,6 @@
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="globals.html#gauss" class="tsd-kind-icon">gauss</a>
-					</li>
-					<li class=" tsd-kind-function tsd-is-external">
-						<a href="globals.html#gcompe3" class="tsd-kind-icon">gcomp<wbr>E3</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter tsd-is-external">
 						<a href="globals.html#insertat" class="tsd-kind-icon">insert<wbr>At</a>

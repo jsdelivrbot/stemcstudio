@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>DiffEqSolver | NEWTON 0.0.33</title>
+	<title>DiffEqSolver | NEWTON 0.0.35</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">NEWTON 0.0.33</a>
+					<a href="../index.html" class="title">NEWTON 0.0.35</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -64,6 +64,21 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>
+							The solver integrates the derivatives of the kinematic variables (usually X, R, P, and J).
+							The solver can ask the simulation for derivatives at one or more system configurations
+							between the current configuration, Y(t), and the configuration Y(t + stepSize * uomStep), where
+							Y(t) is the state &quot;vector&quot; for the system at time t.
+						</p>
+						<p>
+							Different solvers may manage the Local Truncation Error (LTE) in different ways.
+						</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -107,7 +122,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/9a9e42f/src/davinci-newton/core/DiffEqSolver.ts#L22">davinci-newton/core/DiffEqSolver.ts:22</a></li>
+									<li>Defined in <a href="https://github.com/geometryzen/davinci-newton/blob/1e91305/src/davinci-newton/core/DiffEqSolver.ts#L30">davinci-newton/core/DiffEqSolver.ts:30</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>

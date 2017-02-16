@@ -228,9 +228,8 @@ export default class Range {
     /**
      * Checks the row and column points of `p` with the row and column points of the calling range.
      *
-     * @method comparePoint
-     * @param p {Position} A point to compare with
-     * @return {number} This method returns one of the following numbers:<br/>
+     * @param p A point to compare with
+     * @returns This method returns one of the following numbers:<br/>
      * `0` if the two points are exactly equal<br/>
      * `-1` if `p.row` is less then the calling range<br/>
      * `1` if `p.row` is greater than the calling range<br/>
@@ -250,20 +249,17 @@ export default class Range {
     /**
      * Checks the start and end points of `range` and compares them to the calling range.
      *
-     * @method containsRange
-     * @param range {Range} A range to compare with
-     * @return {boolean} Returns `true` if the `range` is contained within the caller's range.
+     * @param range A range to compare with
+     * @returns `true` if the `range` is contained within the caller's range.
      */
     containsRange(range: { start: Position; end: Position }) {
         return this.comparePoint(range.start) === 0 && this.comparePoint(range.end) === 0;
     }
 
     /**
-     * Returns `true` if passed in `range` intersects with the one calling this method.
+     * @returns `true` if passed in `range` intersects with the one calling this method.
      *
-     * @method intersects
-     * @param range {Range} A range to compare with.
-     * @return {boolean}
+     * @param range A range to compare with.
      */
     intersects(range: Range): boolean {
         var cmp = this.compareRange(range);
@@ -271,24 +267,20 @@ export default class Range {
     }
 
     /**
-     * Returns `true` if the caller's ending row point is the same as `row`, and if the caller's ending column is the same as `column`.
+     * @returns `true` if the caller's ending row point is the same as `row`, and if the caller's ending column is the same as `column`.
      *
-     * @method isEnd
-     * @param row {number} A row point to compare with.
-     * @param column {number} A column point to compare with.
-     * @return {boolean}
+     * @param row A row point to compare with.
+     * @param column A column point to compare with.
      */
     isEnd(row: number, column: number): boolean {
         return this.end.row === row && this.end.column === column;
     }
 
     /**
-     * Returns `true` if the caller's starting row point is the same as `row`, and if the caller's starting column is the same as `column`.
+     * @returns `true` if the caller's starting row point is the same as `row`, and if the caller's starting column is the same as `column`.
      *
-     * @method isStart
-     * @param row {number} A row point to compare with.
-     * @param column {number} A column point to compare with.
-     * @return {boolean}
+     * @param row A row point to compare with.
+     * @param column A column point to compare with.
      */
     isStart(row: number, column: number): boolean {
         return this.start.row === row && this.start.column === column;
@@ -297,10 +289,8 @@ export default class Range {
     /**
      * Sets the starting row and column for the range.
      *
-     * @method setStart
-     * @param row {number} A row point to set.
-     * @param column {number} A column point to set.
-     * @return {void}
+     * @param row A row point to set.
+     * @param column A column point to set.
      */
     setStart(row: number, column: number): void {
         this.start.row = row;
@@ -310,10 +300,8 @@ export default class Range {
     /**
      * Sets the starting row and column for the range.
      *
-     * @method setEnd
-     * @param row {number} A row point to set.
-     * @param column {number} A column point to set.
-     * @return {void}
+     * @param row A row point to set.
+     * @param column A column point to set.
      */
     setEnd(row: number, column: number): void {
         this.end.row = row;
@@ -321,12 +309,10 @@ export default class Range {
     }
 
     /**
-     * Returns `true` if the `row` and `column` are within the given range.
+     * @returns `true` if the `row` and `column` are within the given range.
      *
-     * @method inside
-     * @param row {number} A row point to compare with.
-     * @param column {number} A column point to compare with.
-     * @return {boolean}
+     * @param row A row point to compare with.
+     * @param column A column point to compare with.
      */
     inside(row: number, column: number): boolean {
         if (this.compare(row, column) === 0) {
@@ -341,12 +327,10 @@ export default class Range {
     }
 
     /**
-     * Returns `true` if the `row` and `column` are within the given range's starting points.
+     * @returns `true` if the `row` and `column` are within the given range's starting points.
      *
-     * @method insideStart
-     * @param row {number} A row point to compare with.
-     * @param column {number} A column point to compare with.
-     * @return {boolean}
+     * @param row A row point to compare with.
+     * @param column A column point to compare with.
      */
     insideStart(row: number, column: number): boolean {
         if (this.compare(row, column) === 0) {
@@ -361,12 +345,10 @@ export default class Range {
     }
 
     /**
-     * Returns `true` if the `row` and `column` are within the given range's ending points.
+     * @returns `true` if the `row` and `column` are within the given range's ending points.
      *
-     * @method insideEnd
-     * @param row {number} A row point to compare with.
-     * @param column {number} A column point to compare with.
-     * @return {boolean}
+     * @param row A row point to compare with.
+     * @param column A column point to compare with.
      */
     insideEnd(row: number, column: number): boolean {
         if (this.compare(row, column) === 0) {
@@ -383,10 +365,9 @@ export default class Range {
     /**
      * Checks the row and column points with the row and column points of the calling range.
      *
-     * @method compare
-     * @param row {number} A row point to compare with
-     * @param column {number} A column point to compare with
-     * @return {number} This method returns one of the following numbers:<br/>
+     * @param row A row point to compare with
+     * @param column A column point to compare with
+     * @returns This method returns one of the following numbers:<br/>
      * `0` if the two points are exactly equal <br/>
      * `-1` if `p.row` is less then the calling range <br/>
      * `1` if `p.row` is greater than the calling range <br/>
@@ -424,11 +405,10 @@ export default class Range {
     /**
      * Checks the row and column points with the row and column points of the calling range.
      *
-     * @method compareStart
-     * @param {Number} row A row point to compare with
-     * @param {Number} column A column point to compare with
+     * @param row A row point to compare with
+     * @param column A column point to compare with
      *
-     * @return {Number} This method returns one of the following numbers:<br/>
+     * @returns This method returns one of the following numbers:<br/>
      * <br/>
      * `0` if the two points are exactly equal<br/>
      * `-1` if `p.row` is less then the calling range<br/>
@@ -454,12 +434,11 @@ export default class Range {
     /**
      * Checks the row and column points with the row and column points of the calling range.
      *
-     * @method compareEnd
-     * @param {Number} row A row point to compare with
-     * @param {Number} column A column point to compare with
+     * @param row A row point to compare with
+     * @param column A column point to compare with
      *
      *
-     * @return {Number} This method returns one of the following numbers:<br/>
+     * @returns This method returns one of the following numbers:<br/>
      * `0` if the two points are exactly equal<br/>
      * `-1` if `p.row` is less then the calling range<br/>
      * `1` if `p.row` is greater than the calling range, or if `isEnd` is `true.<br/>
@@ -485,11 +464,11 @@ export default class Range {
      * Checks the row and column points with the row and column points of the calling range.
      *
      * @method compareInside
-     * @param {Number} row A row point to compare with
-     * @param {Number} column A column point to compare with
+     * @param row A row point to compare with
+     * @param column A column point to compare with
      *
      *
-     * @return {Number} This method returns one of the following numbers:<br/>
+     * @returns This method returns one of the following numbers:<br/>
      * * `1` if the ending row of the calling range is equal to `row`, and the ending column of the calling range is equal to `column`<br/>
      * * `-1` if the starting row of the calling range is equal to `row`, and the starting column of the calling range is equal to `column`<br/>
      * <br/>
@@ -510,10 +489,8 @@ export default class Range {
     /**
      * Returns the part of the current `EditorRange` that occurs within the boundaries of `firstRow` and `lastRow` as a new `EditorRange` object.
      *
-     * @method clipRows
-     * @param firstRow {number} The starting row
-     * @param lastRow {number} The ending row
-     * @return {Range}
+     * @param firstRow The starting row
+     * @param lastRow The ending row
      */
     clipRows(firstRow: number, lastRow: number): Range {
         if (typeof firstRow !== 'number') {
@@ -540,10 +517,9 @@ export default class Range {
     /**
      * Changes the row and column points for the calling range for both the starting and ending points.
      *
-     * @method extend
-     * @param {Number} row A new row to extend to
-     * @param {Number} column A new column to extend to
-     * @return {Range} The original range with the new row
+     * @param row A new row to extend to
+     * @param column A new column to extend to
+     * @returns The original range with the new row
      */
     extend(row: number, column: number): Range {
         var cmp = this.compare(row, column);
@@ -561,8 +537,7 @@ export default class Range {
     }
 
     /**
-     * @method isEmpty
-     * @return {boolean}
+     *
      */
     isEmpty(): boolean {
         return (this.start.row === this.end.row && this.start.column === this.end.column);
@@ -570,9 +545,6 @@ export default class Range {
 
     /**
      * Returns `true` if the range spans across multiple lines.
-     *
-     * @method isMultiLine
-     * @return {Boolean}
      */
     isMultiLine(): boolean {
         return (this.start.row !== this.end.row);
@@ -580,9 +552,6 @@ export default class Range {
 
     /**
      * Returns a duplicate of the calling range.
-     *
-     * @method clone
-     * @return {Range}
      */
     clone() {
         return Range.fromPoints(this.start, this.end);
@@ -590,9 +559,6 @@ export default class Range {
 
     /**
      * Returns a range containing the starting and ending rows of the original range, but with a column value of `0`.
-     *
-     * @method collapseRows
-     * @return {Range}
      */
     collapseRows(): Range {
         if (this.end.column === 0) {
@@ -613,21 +579,16 @@ export default class Range {
 
     /**
      * Creates and returns a new `EditorRange` based on the row and column of the given parameters.
-     * @param start {Position} A starting point to use
-     * @param end {Position} An ending point to use
-     * @return {Range}
-     * @static
+     * @param start A starting point to use
+     * @param end An ending point to use
      */
     public static fromPoints(start: Position, end: Position): Range {
         return new Range(start.row, start.column, end.row, end.column);
     }
 
     /**
-     * @method comparePoints
-     * @param p1 {Position}
-     * @param p2 {Position}
-     * @return {number}
-     * @static
+     * @param p1
+     * @param p2
      */
     public static comparePoints(p1: Position, p2: Position): number {
         return p1.row - p2.row || p1.column - p2.column;

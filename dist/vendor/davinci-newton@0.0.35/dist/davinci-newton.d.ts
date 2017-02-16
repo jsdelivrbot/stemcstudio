@@ -297,29 +297,38 @@ declare module NEWTON {
         removeTemporary(time: number): void;
     }
 
+    /**
+     * 
+     */
     interface Simulation {
         /**
          * 
          */
-        time: number;
+        readonly time: number;
+
         /**
          * Handler for actions to be performed before getState and the evaluate calls.
          */
         prolog(): void;
+
         /**
-         * 
+         * Gets the state vector, Y(t).
          */
         getState(): number[];
+
         /**
-         * 
+         * Computes the derivatives of the state variables based upon the specified state.
          */
-        evaluate(state: number[], change: number[], stepSize: number, uomStep?: Unit): void;
+        evaluate(state: number[], rateOfChange: number[], Δt: number, uomTime?: Unit): void;
+
         /**
-         * 
+         * Sets the state vector, Y(t).
          */
-        setState(vars: number[]): void;
+        setState(state: number[]): void;
+
         /**
          * Handler for actions to be performed after the evaluate calls and setState.
+         * Computes the system energy, linear momentum and angular momentum.
          */
         epilog(): void;
     }
@@ -1089,6 +1098,10 @@ declare module NEWTON {
          */
         M: Geometric3;
         /**
+         * Electric Charge (scalar).
+         */
+        Q: Geometric3;
+        /**
          * Inertia Tensor (in body coordinates) (3x3 matrix).
          */
         I: MatrixLike;
@@ -1235,7 +1248,8 @@ declare module NEWTON {
     }
 
     /**
-     * 
+     * The Physics3 engine computes the derivatives of the kinematic variables X, R, P, J for each body,
+     * based upon the state of the system and the known forces, torques, masses, and moments of inertia.
      */
     class Physics3 implements Simulation, EnergySystem {
         static INDEX_TIME: number;
@@ -1279,7 +1293,7 @@ declare module NEWTON {
          */
         varsList: VarsList;
         /**
-         *
+         * Constructs a Physics engine for 3D simulations.
          */
         constructor();
         /**
@@ -1291,13 +1305,14 @@ declare module NEWTON {
          */
         addForceLaw(forceLaw: ForceLaw3): void;
         /**
-         * 
+         * Handler for actions to be performed after the evaluate calls and setState.
+         * Computes the system energy, linear momentum and angular momentum.
          */
         epilog(): void;
         /**
          * 
          */
-        evaluate(state: number[], change: number[], stepSize: number, uomStep?: Unit): void;
+        evaluate(state: number[], rateOfChange: number[], Δt: number, uomTime?: Unit): void;
         /**
          * 
          */
@@ -1315,7 +1330,7 @@ declare module NEWTON {
          */
         removeForceLaw(forceLaw: ForceLaw3): void;
         /**
-         * 
+         * Sets the 
          */
         setState(state: number[]): void;
         /**
@@ -1349,10 +1364,17 @@ declare module NEWTON {
     }
 
     /**
-     * 
+     * A differential equation solver that achieves O(h*h*h) Local Truncation Error (LTE),
+     * where h is the step size.
      */
     class RungeKutta implements DiffEqSolver {
+        /**
+         * Constructs a differential equation solver (integrator) that uses the classical Runge-Kutta method.
+         */
         constructor(simulation: Simulation);
+        /**
+         * 
+         */
         step(stepSize: number, uomStep: Unit): void;
     }
 
@@ -1415,7 +1437,8 @@ declare module NEWTON {
          */
         tolerance: number;
         /**
-         * 
+         * Constructs an adaptive step solver that adjusts the step size in order to
+         * ensure that the energy change be less than a tolerance amount.
          */
         constructor(simulation: Simulation, energySystem: EnergySystem, solverMethod: DiffEqSolver);
         /**
@@ -1516,6 +1539,27 @@ declare module NEWTON {
         /**
          * 
          */
+        potentialEnergy(): Geometric3;
+    }
+
+    /**
+     * 
+     */
+    class CoulombLaw3 implements ForceLaw3 {
+        /**
+         * 
+         */
+        k: Geometric3;
+        /**
+         * 
+         */
+        expireTime: number;
+        /**
+         * 
+         */
+        constructor(body1: RigidBody3, body2: RigidBody3, G?: Geometric3);
+        updateForces(): Force3[];
+        disconnect(): void;
         potentialEnergy(): Geometric3;
     }
 

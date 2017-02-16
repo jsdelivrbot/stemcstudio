@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.21.80",
+  "version": "2.21.81",
   "private": true,
   "description": "Expressing Ideas through Computational Modeling",
   "engines": {
@@ -31,7 +31,7 @@
     "karma": "^0.13.22",
     "karma-chrome-launcher": "^1.0.1",
     "karma-jasmine": "^1.1.0",
-    "karma-jspm": "^2.2.0",
+    "karma-jspm": "^2.2.1",
     "lite-server": "^2.2.2",
     "plotly.js": "^1.23.1",
     "protractor": "^3.3.0",
