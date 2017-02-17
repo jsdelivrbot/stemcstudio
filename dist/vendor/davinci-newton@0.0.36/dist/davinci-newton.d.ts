@@ -526,7 +526,7 @@ declare module NEWTON {
         /**
          * Normalizes this multivector by dividing it by its magnitude.
          */
-        direction(): Geometric3;
+        direction(mutate?: boolean): Geometric3;
 
         /**
          * Sets this multivector to the result of division by another multivector.
@@ -677,7 +677,7 @@ declare module NEWTON {
         /**
          * Computes the <em>square root</em> of the <em>squared norm</em>.
          */
-        magnitude(): Geometric3;
+        magnitude(mutate?: boolean): Geometric3;
 
         /**
          * 
@@ -730,7 +730,7 @@ declare module NEWTON {
          * this ⟼ this | ~this = scp(this, rev(this))
          * 
          */
-        quaditude(): Geometric3;
+        quaditude(mutate?: boolean): Geometric3;
 
         /**
          * Sets this multivector to the right contraction with another multivector.
@@ -833,7 +833,7 @@ declare module NEWTON {
         /**
          * Computes the <em>squared norm</em> of this multivector.
          */
-        squaredNorm(): Geometric3;
+        squaredNorm(mutate?: boolean): Geometric3;
 
         /**
          * 
