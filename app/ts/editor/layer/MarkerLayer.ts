@@ -209,8 +209,8 @@ export default class MarkerLayer extends AbstractLayer {
     }
 
     private drawFullLineMarker(stringBuilder: (number | string)[], range: Range, clazz: string, config: MarkerConfig, extraStyle?: string): void {
-        var top = this.$getTop(range.start.row, config);
-        var height = config.lineHeight;
+        const top = this.$getTop(range.start.row, config);
+        let height = config.lineHeight;
         if (range.start.row !== range.end.row) {
             height += this.$getTop(range.end.row, config) - top;
         }
@@ -224,8 +224,8 @@ export default class MarkerLayer extends AbstractLayer {
     }
 
     private drawScreenLineMarker(stringBuilder: (number | string)[], range: Range, clazz: string, config: MarkerConfig, extraStyle?: string): void {
-        var top = this.$getTop(range.start.row, config);
-        var height = config.lineHeight;
+        const top = this.$getTop(range.start.row, config);
+        const height = config.lineHeight;
 
         stringBuilder.push(
             "<div class='", clazz, "' style='",

@@ -40,9 +40,9 @@ export function addCssClass(element: HTMLElement, name: string): void {
  * Remove a CSS class from the list of classes on the given node
  */
 export function removeCssClass(element: HTMLElement, name: string): void {
-    var classes: string[] = element.className.split(/\s+/g);
+    const classes: string[] = element.className.split(/\s+/g);
     while (true) {
-        var index = classes.indexOf(name);
+        const index = classes.indexOf(name);
         if (index === -1) {
             break;
         }
@@ -138,7 +138,7 @@ function makeComputedStyle(): (element: HTMLElement, style: string) => CSSStyleD
     }
 }
 
-export var computedStyle = makeComputedStyle();
+export const computedStyle = makeComputedStyle();
 // FIXME
 /*
 if (window.getComputedStyle)
@@ -155,14 +155,14 @@ else
     };
 */
 export function scrollbarWidth(document: Document): number {
-    var inner: HTMLElement = <HTMLElement>createElement("ace_inner");
+    const inner: HTMLElement = <HTMLElement>createElement("ace_inner");
     inner.style.width = "100%";
     inner.style.minWidth = "0px";
     inner.style.height = "200px";
     inner.style.display = "block";
 
-    var outer: HTMLElement = <HTMLElement>createElement("ace_outer");
-    var style = outer.style;
+    const outer: HTMLElement = <HTMLElement>createElement("ace_outer");
+    const style = outer.style;
 
     style.position = "absolute";
     style.left = "-10000px";
@@ -174,13 +174,13 @@ export function scrollbarWidth(document: Document): number {
 
     outer.appendChild(inner);
 
-    var body = document.documentElement;
+    const body = document.documentElement;
     body.appendChild(outer);
 
-    var noScrollbar = inner.offsetWidth;
+    const noScrollbar = inner.offsetWidth;
 
     style.overflow = "scroll";
-    var withScrollbar = inner.offsetWidth;
+    let withScrollbar = inner.offsetWidth;
 
     if (noScrollbar === withScrollbar) {
         withScrollbar = outer.clientWidth;
@@ -198,7 +198,7 @@ export function scrollbarWidth(document: Document): number {
  * See http://blog.stevenlevithan.com/archives/faster-than-innerhtml for details
  */
 export function setInnerHtml(element: HTMLElement, innerHTML: string) {
-    var clonedElement = <HTMLElement>element.cloneNode(false);
+    const clonedElement = <HTMLElement>element.cloneNode(false);
     clonedElement.innerHTML = innerHTML;
     element.parentNode.replaceChild(clonedElement, element);
     return clonedElement;
@@ -230,8 +230,8 @@ function makeSetInnerText(): (el: HTMLElement, innerText: string) => void {
     }
 }
 
-export var getInnerText: (el: HTMLElement) => string = makeGetInnerText();
-export var setInnerText: (el: HTMLElement, innerText: string) => void = makeSetInnerText();
+export const getInnerText: (el: HTMLElement) => string = makeGetInnerText();
+export const setInnerText: (el: HTMLElement, innerText: string) => void = makeSetInnerText();
 
 export function getParentWindow(document: Document): Window {
     // This is a bit redundant now that parentWindow has been removed.

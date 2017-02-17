@@ -1464,7 +1464,7 @@
           function _hasBinary(obj) {
             if (!obj)
               return false;
-            if ((global.Buffer && global.Buffer.isBuffer && global.Buffer.isBuffer(obj)) || (global.ArrayBuffer && obj instanceof ArrayBuffer) || (global.Blob && obj instanceof Blob) || (global.File && obj instanceof File)) {
+            if ((global.Buffer && global.Buffer.isBuffer(obj)) || (global.ArrayBuffer && obj instanceof ArrayBuffer) || (global.Blob && obj instanceof Blob) || (global.File && obj instanceof File)) {
               return true;
             }
             if (isArray(obj)) {
@@ -1474,7 +1474,7 @@
                 }
               }
             } else if (obj && 'object' == typeof obj) {
-              if (obj.toJSON && 'function' == typeof obj.toJSON) {
+              if (obj.toJSON) {
                 obj = obj.toJSON();
               }
               for (var key in obj) {

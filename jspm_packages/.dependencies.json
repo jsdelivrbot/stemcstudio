@@ -646,35 +646,6 @@
   "npm:good-listener@1.2.1": {
     "delegate": "npm:delegate@^3.1.1"
   },
-  "npm:engine.io-client@1.8.2": {
-    "component-emitter": "npm:component-emitter@1.2.1",
-    "component-inherit": "npm:component-inherit@0.0.3",
-    "debug": "npm:debug@2.3.3",
-    "engine.io-parser": "npm:engine.io-parser@1.3.2",
-    "has-cors": "npm:has-cors@1.1.0",
-    "indexof": "npm:indexof@0.0.1",
-    "parsejson": "npm:parsejson@0.0.3",
-    "parseqs": "npm:parseqs@0.0.5",
-    "parseuri": "npm:parseuri@0.0.5",
-    "yeast": "npm:yeast@0.1.2",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0"
-  },
-  "npm:socket.io-client@1.7.2": {
-    "backo2": "npm:backo2@1.0.2",
-    "component-bind": "npm:component-bind@1.0.0",
-    "component-emitter": "npm:component-emitter@1.2.1",
-    "debug": "npm:debug@2.3.3",
-    "engine.io-client": "npm:engine.io-client@1.8.2",
-    "has-binary": "npm:has-binary@0.1.7",
-    "indexof": "npm:indexof@0.0.1",
-    "object-component": "npm:object-component@0.0.3",
-    "parseuri": "npm:parseuri@0.0.5",
-    "socket.io-parser": "npm:socket.io-parser@2.3.1",
-    "to-array": "npm:to-array@0.1.4",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0"
-  },
   "npm:asn1.js@4.9.1": {
     "bn.js": "npm:bn.js@^4.0.0",
     "inherits": "npm:inherits@^2.0.1",
@@ -849,6 +820,35 @@
   "github:ace2ts/ace-workers@2.0.5": {},
   "npm:rxjs@5.1.1": {
     "symbol-observable": "npm:symbol-observable@^1.0.1",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:engine.io-client@1.8.3": {
+    "component-emitter": "npm:component-emitter@1.2.1",
+    "component-inherit": "npm:component-inherit@0.0.3",
+    "debug": "npm:debug@2.3.3",
+    "engine.io-parser": "npm:engine.io-parser@1.3.2",
+    "has-cors": "npm:has-cors@1.1.0",
+    "indexof": "npm:indexof@0.0.1",
+    "parsejson": "npm:parsejson@0.0.3",
+    "parseqs": "npm:parseqs@0.0.5",
+    "parseuri": "npm:parseuri@0.0.5",
+    "yeast": "npm:yeast@0.1.2",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:socket.io-client@1.7.3": {
+    "backo2": "npm:backo2@1.0.2",
+    "component-bind": "npm:component-bind@1.0.0",
+    "component-emitter": "npm:component-emitter@1.2.1",
+    "debug": "npm:debug@2.3.3",
+    "engine.io-client": "npm:engine.io-client@1.8.3",
+    "has-binary": "npm:has-binary@0.1.7",
+    "indexof": "npm:indexof@0.0.1",
+    "object-component": "npm:object-component@0.0.3",
+    "parseuri": "npm:parseuri@0.0.5",
+    "socket.io-parser": "npm:socket.io-parser@2.3.1",
+    "to-array": "npm:to-array@0.1.4",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   }

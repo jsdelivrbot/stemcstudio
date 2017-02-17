@@ -1,4 +1,4 @@
-import {createHTMLDivElement} from '../lib/dom';
+import { createHTMLDivElement } from '../lib/dom';
 import Annotation from '../Annotation';
 import Editor from '../Editor';
 import EditSession from '../EditSession';
@@ -123,7 +123,7 @@ export default function showErrorMarker(editor: Editor, direction: number): void
         return;
     }
     else {
-        gutterAnno = { text: ["Looks good!"], className: "ace_ok" };
+        gutterAnno = { text: ["Looks good! Press Esc key to cancel."], className: "ace_ok" };
     }
     editor.session.unfold(pos.row);
     editor.selection.moveToPosition(pos);

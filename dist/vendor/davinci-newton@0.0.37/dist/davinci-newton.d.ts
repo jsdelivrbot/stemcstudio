@@ -124,27 +124,27 @@ declare module NEWTON {
         /**
          *
          */
-        static readonly CHARGE: Dimensions;
+        static readonly ELECTRIC_CHARGE: Dimensions;
 
         /**
          *
          */
-        static readonly CURRENT: Dimensions;
+        static readonly ELECTRIC_CURRENT: Dimensions;
 
         /**
          *
          */
-        static readonly TEMPERATURE: Dimensions;
+        static readonly THERMODYNAMIC_TEMPERATURE: Dimensions;
 
         /**
          *
          */
-        static readonly AMOUNT: Dimensions;
+        static readonly AMOUNT_OF_SUBSTANCE: Dimensions;
 
         /**
          *
          */
-        static readonly INTENSITY: Dimensions;
+        static readonly LUMINOUS_INTENSITY: Dimensions;
     }
 
     /**
@@ -908,67 +908,72 @@ declare module NEWTON {
 
         /**
          * Standard Basis vector corresponding to the x coordinate.
-         * The returned multivector is locked.
+         * The multivector (vector) is locked.
          */
         static readonly e1: Geometric3;
 
         /**
          * Basis vector corresponding to the y coordinate.
-         * The returned multivector is locked.
+         * The multivector (vector) is locked.
          */
         static readonly e2: Geometric3;
 
         /**
          * Basis vector corresponding to the z coordinate.
-         * The returned multivector is locked.
+         * The multivector (vector) is locked.
          */
         static readonly e3: Geometric3;
 
         /**
          * Basis vector corresponding to the pseudoscalar coordinate.
-         * The returned multivector is locked.
+         * The multivector (pseudoscalar) is locked.
          */
         static readonly I: Geometric3;
 
         /**
          * The identity element for multiplication, 1 (scalar).
-         * The returned multivector is locked.
+         * The multivector (scalar) is locked.
          */
         static readonly one: Geometric3;
 
         /**
          * The identity element for addition, 0.
-         * The returned multivector is locked.
+         * The multivector is locked.
          */
         static readonly zero: Geometric3;
 
         /**
          * SI base unit of length.
          * The meter is the length of the path travelled by light in vacuum during a time interval of 1 / 299 792 458 of a second.
+         * The multivector (scalar) is locked.
          */
         static readonly meter: Geometric3;
 
         /**
          * SI base unit of masss.
          * The kilogram is the unit of mass; it is equal to the mass of the international prototype of the kilogram.
+         * The multivector (scalar) is locked.
          */
         static readonly kilogram: Geometric3;
 
         /**
          * SI base unit of time.
          * The second is the duration of 9 192 631 770 periods of the radiation corresponding to the transition between the two hyperfine levels of the ground state of the cesium 133 atom.
+         * The multivector (scalar) is locked.
          */
         static readonly second: Geometric3;
 
         /**
          * SI base unit of electric current.
          * The ampere is that constant current which, if maintained in two straight parallel conductors of infinite length, of negligible circular cross-section, and placed 1 meter apart in vacuum, would produce between these conductors a force equal to 2E-7 newton per meter of length.
+         * The multivector (scalar) is locked.
          */
         static readonly ampere: Geometric3;
 
         /**
          * SI base unit of thermodynamic temperature.
          * The kelvin, unit of thermodynamic temperature, is the fraction 1 / 273.16 of the thermodynamic temperature of the triple point of water.
+         * The multivector (scalar) is locked.
          */
         static readonly kelvin: Geometric3;
 
@@ -977,14 +982,34 @@ declare module NEWTON {
          * 1. The mole is the amount of substance of a system which contains as many elementary entities as there are atoms in 0.012 kilogram of carbon 12; its symbol is "mol."
          * 
          * 2. When the mole is used, the elementary entities must be specified and may be atoms, molecules, ions, electrons, other particles, or specified groups of such particles.
+         * The multivector (scalar) is locked.
          */
         static readonly mole: Geometric3;
 
         /**
          * SI base unit of luminous intensity.
          * The candela is the luminous intensity, in a given direction, of a source that emits monochromatic radiation of frequency 540 x 10E12 hertz and that has a radiant intensity in that direction of 1 / 683 watt per steradian.
+         * The multivector (scalar) is locked.
          */
         static readonly candela: Geometric3;
+
+        /**
+         * SI derived unit of electric charge, quantity of electricity.
+         * The multivector (scalar) is locked.
+         */
+        static readonly coulomb: Geometric3;
+
+        /**
+         * SI derived unit of force.
+         * The multivector (scalar) is locked.
+         */
+        static readonly newton: Geometric3;
+
+        /**
+         * SI derived unit of energy, work, quantity of heat.
+         * The multivector (scalar) is locked.
+         */
+        static readonly joule: Geometric3;
 
         /**
          * Creates a grade 2 (bivector) multivector from the specified cartesian coordinates.
@@ -1026,18 +1051,22 @@ declare module NEWTON {
 
         /**
          * Computes the rotor that rotates vector a to vector b.
-         * a The <em>from</em> vector.
-         * b The <em>to</em> vector.
+         * a The from vector.
+         * b The to vector.
          */
         static rotorFromDirections(a: VectorE3, b: VectorE3): Geometric3;
 
         /**
-         * 
+         * Computes the rotor that rotates vector a to vector b.
+         * a The from vector.
+         * b The to vector.
+         * B The plane of rotation when the rotation plane is ambiguous.
          */
         static rotorFromVectorToVector(a: VectorE3, b: VectorE3, B: BivectorE3): Geometric3;
 
         /**
          * Constructs a new scalar from a number and a unit of measure.
+         * The multivector (scalar) is mutable (unlocked).
          */
         static scalar(α: number, uom?: Unit): Geometric3;
 
@@ -1045,6 +1074,7 @@ declare module NEWTON {
 
         /**
          * Constructs a new vector from Cartesian coordinates and a unit of measure.
+         * The multivector (vector) is mutable (unlocked).
          */
         static vector(x: number, y: number, z: number, uom?: Unit): Geometric3;
 
@@ -1191,6 +1221,18 @@ declare module NEWTON {
          * 
          */
         constructor(radius?: GeometricE3, height?: GeometricE3);
+    }
+
+    /**
+     * An object with no internal structure.
+     */
+    class Particle3 extends RigidBody3 {
+
+        /**
+         * M is the mass of the particle. Defaults to 1.
+         * Q is the electric charge of the particle. Defaults to 0.
+         */
+        constructor(M?: Geometric3, Q?: Geometric3);
     }
 
     /**

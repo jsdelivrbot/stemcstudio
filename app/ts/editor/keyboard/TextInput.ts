@@ -132,7 +132,7 @@ export default class TextInput {
         }
 
 
-        var isAllSelected = function (text: HTMLTextAreaElement) {
+        let isAllSelected = function (text: HTMLTextAreaElement) {
             return text.selectionStart === 0 && text.selectionEnd === text.value.length;
         };
         // IE8 does not support setSelectionRange
@@ -146,13 +146,13 @@ export default class TextInput {
             };
             isAllSelected = function (text: HTMLTextAreaElement) {
                 try {
-                    var range = text.ownerDocument['selection'].createRange();
+                    const range = text.ownerDocument['selection'].createRange();
+                    if (!range || range.parentElement() !== text) return false;
+                    return range.text === text.value;
                 }
                 catch (e) {
                     // Do nothing.
                 }
-                if (!range || range.parentElement() !== text) return false;
-                return range.text === text.value;
             };
         }
         const onCompositionUpdate = () => {
@@ -196,11 +196,11 @@ export default class TextInput {
         const onCompositionEnd = (e, editor: Editor) => {
             if (!editor.onCompositionEnd || editor.$readOnly) return;
 
-            var c = this.inComposition;
+            const c = this.inComposition;
             this.inComposition = false;
-            var timer = setTimeout(() => {
+            let timer = window.setTimeout(() => {
                 timer = null;
-                var str = this.text.value.replace(/\x01/g, "");
+                const str = this.text.value.replace(/\x01/g, "");
 
                 if (this.inComposition)
                     return;
@@ -257,7 +257,7 @@ export default class TextInput {
             const onPropertyChange = (e?) => {
                 if (inPropertyChange)
                     return;
-                var data = this.text.value;
+                const data = this.text.value;
                 if (this.inComposition || !data || data === PLACEHOLDER)
                     return;
                 // can happen either after delete or during insert operation
@@ -273,7 +273,7 @@ export default class TextInput {
             syncProperty = createDelayedCall(onPropertyChange);
             addListener(this.text, "propertychange", onPropertyChange);
 
-            var keytable = { 13: 1, 27: 1 };
+            const keytable = { 13: 1, 27: 1 };
             addListener(this.text, "keyup", (e) => {
                 if (this.inComposition && (!this.text.value || keytable[e.keyCode]))
                     setTimeout(onCompositionEnd, 0);
@@ -289,7 +289,7 @@ export default class TextInput {
             });
         }
 
-        var onSelect = (e) => {
+        const onSelect = (e) => {
             if (copied) {
                 copied = false;
             }
@@ -302,13 +302,13 @@ export default class TextInput {
             }
         };
 
-        var handleClipboardData = function (e, data?) {
-            var clipboardData = e.clipboardData || window['clipboardData'];
+        const handleClipboardData = function handleClipboardData(e: ClipboardEvent, data?: string): boolean | string {
+            const clipboardData: DataTransfer = e.clipboardData || window['clipboardData'];
             if (!clipboardData || BROKEN_SETDATA)
                 return;
             // using "Text" doesn't work on legacy webkit but ie needs it
             // TODO are there other browsers that require "Text"?
-            var mime = USE_IE_MIME_TYPE ? "Text" : "text/plain";
+            const mime = USE_IE_MIME_TYPE ? "Text" : "text/plain";
             if (data) {
                 // Safari 5 has clipboardData object, but does not handle setData()
                 return clipboardData.setData(mime, data) !== false;
@@ -318,8 +318,8 @@ export default class TextInput {
             }
         };
 
-        var doCopy = (e: KeyboardEvent, isCut: boolean) => {
-            var data: string = editor.getSelectedText();
+        const doCopy = (e: ClipboardEvent, isCut: boolean) => {
+            const data: string = editor.getSelectedText();
             if (!data)
                 return preventDefault(e);
 
@@ -340,16 +340,16 @@ export default class TextInput {
             }
         };
 
-        var onCut = function (e: KeyboardEvent) {
+        const onCut = function onCut(e: ClipboardEvent) {
             doCopy(e, true);
         };
 
-        var onCopy = function (e: KeyboardEvent) {
+        const onCopy = function onCopy(e: ClipboardEvent) {
             doCopy(e, false);
         };
 
-        var onPaste = (e: KeyboardEvent) => {
-            var data = handleClipboardData(e);
+        const onPaste = (e: ClipboardEvent) => {
+            const data = handleClipboardData(e);
             if (typeof data === "string") {
                 if (data)
                     editor.onPaste(data);
@@ -376,18 +376,20 @@ export default class TextInput {
         // Opera has no clipboard events
         if (!('oncut' in this.text) || !('oncopy' in this.text) || !('onpaste' in this.text)) {
             addListener(container, "keydown", function (e: KeyboardEvent) {
-                if ((isMac && !e.metaKey) || !e.ctrlKey)
+                if ((isMac && !e.metaKey) || !e.ctrlKey) {
                     return;
+                }
 
+                // FIXME: This casting looks suspect. 
                 switch (e.keyCode) {
                     case 67:
-                        onCopy(e);
+                        onCopy(<any>e);
                         break;
                     case 86:
-                        onPaste(e);
+                        onPaste(<any>e);
                         break;
                     case 88:
-                        onCut(e);
+                        onCut(<any>e);
                         break;
                     default: {
                         // Do nothing.
@@ -408,7 +410,7 @@ export default class TextInput {
         }
         addListener(this.text, "compositionend", onCompositionEnd);
 
-        var onContextMenu = (e: MouseEvent) => {
+        const onContextMenu = (e: MouseEvent) => {
             editor.textInput.onContextMenu(e);
             this.onContextMenuClose();
         };

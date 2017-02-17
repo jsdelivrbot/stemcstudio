@@ -9,8 +9,8 @@ import IOptionManager from '../../services/options/IOptionManager';
 import currentJavaScript from './currentJavaScript';
 import detect1x from './detect1x';
 import detectMarker from './detectMarker';
-import {LANGUAGE_GLSL} from '../../languages/modes';
-import {LANGUAGE_SCHEME} from '../../languages/modes';
+import { LANGUAGE_GLSL } from '../../languages/modes';
+import { LANGUAGE_SCHEME } from '../../languages/modes';
 import replaceMarker from './replaceMarker';
 import scriptURL from './scriptURL';
 import schemeTypeFromContent from './schemeTypeFromContent';
@@ -18,7 +18,7 @@ import shaderTypeFromContent from './shaderTypeFromContent';
 import WorkspaceScope from '../../scopes/WorkspaceScope';
 import WsModel from '../../wsmodel/services/WsModel';
 import mathscript from 'davinci-mathscript';
-import {CODE_MARKER, SCHEMES_MARKER, SCRIPTS_MARKER, SHADERS_MARKER, STYLE_MARKER} from '../../features/preview/index';
+import { CODE_MARKER, SCHEMES_MARKER, SCRIPTS_MARKER, SHADERS_MARKER, STYLE_MARKER } from '../../features/preview/index';
 
 export default function rebuildPreview(
     workspace: WsModel,
@@ -145,8 +145,13 @@ export default function rebuildPreview(
                             for (let i = 0; i < iLen; i++) {
                                 const name = names[i];
                                 const moduleJs = workspace.lastKnownJs[name];
-                                const moduleMs = workspace.operatorOverloading ? mathscript.transpile(moduleJs) : moduleJs;
-                                modulesJs.push(moduleMs);
+                                try {
+                                    const moduleMs = workspace.operatorOverloading ? mathscript.transpile(moduleJs) : moduleJs;
+                                    modulesJs.push(moduleMs);
+                                }
+                                catch (e) {
+                                    console.warn(`Error applying operator overloading: ${e}`);
+                                }
                             }
                             html = html.replace(CODE_MARKER, modulesJs.join('\n'));
                         }

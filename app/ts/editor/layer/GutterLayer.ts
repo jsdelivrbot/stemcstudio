@@ -87,7 +87,7 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
         for (let i = 0; i < annotations.length; i++) {
             const annotation = annotations[i];
             const row = annotation.row;
-            var rowInfo: any = this.$annotations[row];
+            let rowInfo = this.$annotations[row];
             if (!rowInfo) {
                 rowInfo = this.$annotations[row] = { className: void 0, text: [] };
             }
@@ -144,7 +144,7 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
         const breakpoints = session.$breakpoints;
         const decorations = session.$decorations;
         const firstLineNumber = session.$firstLineNumber;
-        var lastLineNumber = 0;
+        let lastLineNumber = 0;
 
         const gutterRenderer: GutterRenderer = session.gutterRenderer || this.$renderer;
 
@@ -189,8 +189,9 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
             if (height !== cell.element.style.height)
                 cell.element.style.height = height;
 
+            let c: string;
             if (foldWidgets) {
-                var c = foldWidgets[row];
+                c = foldWidgets[row];
                 // check if cached value is invalidated and we need to recompute
                 if (c == null)
                     c = foldWidgets[row] = session.getFoldWidget(row);

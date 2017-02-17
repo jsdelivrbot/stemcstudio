@@ -1,28 +1,29 @@
-import {stringRepeat} from "../../lib/lang";
+import { stringRepeat } from "../../lib/lang";
 import Document from '../../Document';
 import EditSession from '../../EditSession';
 
 export default function convertIndentation(session: EditSession, ch: string, len: number): void {
-    var oldCh = session.getTabString()[0];
-    var oldLen = session.getTabSize();
+    const oldCh = session.getTabString()[0];
+    const oldLen = session.getTabSize();
     if (!len) len = oldLen;
     if (!ch) ch = oldCh;
 
-    var tab = ch === "\t" ? ch : stringRepeat(ch, len);
+    const tab = ch === "\t" ? ch : stringRepeat(ch, len);
 
-    var doc: Document = session.doc;
-    var lines: string[] = doc.getAllLines();
+    const doc: Document = session.doc;
+    const lines: string[] = doc.getAllLines();
 
-    var cache: { [tabCount: number]: string } = {};
-    var spaceCache: { [remainder: number]: string } = {};
-    for (var i = 0, l = lines.length; i < l; i++) {
-        var line = lines[i];
-        var match = line.match(/^\s*/)[0];
+    const cache: { [tabCount: number]: string } = {};
+    const spaceCache: { [remainder: number]: string } = {};
+    const iLen = lines.length;
+    for (let i = 0; i < iLen; i++) {
+        const line = lines[i];
+        const match = line.match(/^\s*/)[0];
         if (match) {
-            var w = session.$getStringScreenWidth(match)[0];
-            var tabCount = Math.floor(w / oldLen);
-            var remainder = w % oldLen;
-            var toInsert = cache[tabCount] || (cache[tabCount] = stringRepeat(tab, tabCount));
+            const w = session.$getStringScreenWidth(match)[0];
+            const tabCount = Math.floor(w / oldLen);
+            const remainder = w % oldLen;
+            let toInsert = cache[tabCount] || (cache[tabCount] = stringRepeat(tab, tabCount));
             toInsert += spaceCache[remainder] || (spaceCache[remainder] = stringRepeat(" ", remainder));
 
             if (toInsert !== match) {

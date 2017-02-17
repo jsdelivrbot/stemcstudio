@@ -3,13 +3,13 @@ import Indentation from './Indentation';
 
 // based on http://www.freehackers.org/Indent_Finder
 function $detectIndentation(lines: string[], fallback?: any): Indentation {
-    var stats: number[] = [];
-    var changes: number[] = [];
-    var tabIndents = 0;
-    var prevSpaces = 0;
-    var max = Math.min(lines.length, 1000);
-    for (var i = 0; i < max; i++) {
-        var line = lines[i];
+    const stats: number[] = [];
+    const changes: number[] = [];
+    let tabIndents = 0;
+    let prevSpaces = 0;
+    const max = Math.min(lines.length, 1000);
+    for (let i = 0; i < max; i++) {
+        let line = lines[i];
         // ignore empty and comment lines
         if (!/^\s*[^*+\-\s]/.test(line))
             continue;
@@ -17,9 +17,9 @@ function $detectIndentation(lines: string[], fallback?: any): Indentation {
         if (line[0] === "\t")
             tabIndents++;
 
-        var spaces = line.match(/^ */)[0].length;
+        const spaces = line.match(/^ */)[0].length;
         if (spaces && line[spaces] !== "\t") {
-            var diff = spaces - prevSpaces;
+            const diff = spaces - prevSpaces;
             if (diff > 0 && !(prevSpaces % diff) && !(spaces % diff))
                 changes[diff] = (changes[diff] || 0) + 1;
 
@@ -33,18 +33,18 @@ function $detectIndentation(lines: string[], fallback?: any): Indentation {
     }
 
     function getScore(indent: number): number {
-        var score = 0;
-        for (var i = indent; i < stats.length; i += indent)
+        let score = 0;
+        for (let i = indent; i < stats.length; i += indent)
             score += stats[i] || 0;
         return score;
     }
 
-    var changesTotal = changes.reduce(function (a, b) { return a + b; }, 0);
+    const changesTotal = changes.reduce(function (a, b) { return a + b; }, 0);
 
-    var first = { score: 0, length: 0 };
-    var spaceIndents = 0;
-    for (var i = 1; i < 12; i++) {
-        var score = getScore(i);
+    let first = { score: 0, length: 0 };
+    let spaceIndents = 0;
+    for (let i = 1; i < 12; i++) {
+        let score = getScore(i);
         if (i === 1) {
             spaceIndents = score;
             score = stats[1] ? 0.9 : 0.8;
@@ -60,8 +60,7 @@ function $detectIndentation(lines: string[], fallback?: any): Indentation {
             first = { score: score, length: i };
     }
 
-    if (first.score && first.score > 1.4)
-        var tabLength = first.length;
+    const tabLength: number = (first.score && first.score > 1.4) ? first.length : void 0;
 
     if (tabIndents > spaceIndents + 1)
         return { ch: "\t", length: tabLength };
@@ -71,8 +70,8 @@ function $detectIndentation(lines: string[], fallback?: any): Indentation {
 };
 
 export default function detectIndentation(session: EditSession) {
-    var lines: string[] = session.getLines(0, 1000);
-    var indent: Indentation = $detectIndentation(lines) || {};
+    const lines: string[] = session.getLines(0, 1000);
+    const indent: Indentation = $detectIndentation(lines) || {};
 
     if (indent.ch)
         session.setUseSoftTabs(indent.ch === " ");

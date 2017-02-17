@@ -1,5 +1,5 @@
-import {createElement} from "../lib/dom";
-import {stringRepeat} from "../lib/lang";
+import { createElement } from "../lib/dom";
+import { stringRepeat } from "../lib/lang";
 import AbstractLayer from './AbstractLayer';
 import Disposable from '../base/Disposable';
 import EditSession from "../EditSession";
@@ -7,7 +7,7 @@ import EventBus from "../EventBus";
 import EventEmitterClass from "../lib/EventEmitterClass";
 import FoldLine from "../FoldLine";
 import FontMetrics from "../layer/FontMetrics";
-import {changeCharacterSize} from '../layer/FontMetrics';
+import { changeCharacterSize } from '../layer/FontMetrics';
 import TextConfig from './TextConfig';
 import Token from "../Token";
 
@@ -278,11 +278,11 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
         }
         this.config = config;
 
-        var first = Math.max(firstRow, config.firstRow);
-        var last = Math.min(lastRow, config.lastRow);
+        let first = Math.max(firstRow, config.firstRow);
+        const last = Math.min(lastRow, config.lastRow);
 
-        var lineElements = this.element.childNodes;
-        var lineElementsIdx = 0;
+        const lineElements = this.element.childNodes;
+        let lineElementsIdx = 0;
 
         for (let row = config.firstRow; row < first; row++) {
             const foldLine = this.session.getFoldLine(row);
@@ -327,7 +327,7 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
      * @param config
      */
     public scrollLines(config: TextConfig): void {
-        var oldConfig = this.config;
+        const oldConfig = this.config;
         this.config = config;
 
         if (!oldConfig || oldConfig.lastRow < config.firstRow)
@@ -336,23 +336,21 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
         if (config.lastRow < oldConfig.firstRow)
             return this.update(config);
 
-        var el = this.element;
+        const el = this.element;
         if (oldConfig.firstRow < config.firstRow) {
-            // FIXME: DGH getFoldedRowCount does not exist on EditSession
-            for (var row = this.session['getFoldedRowCount'](oldConfig.firstRow, config.firstRow - 1); row > 0; row--) {
+            for (let row = this.session.getFoldedRowCount(oldConfig.firstRow, config.firstRow - 1); row > 0; row--) {
                 el.removeChild(el.firstChild);
             }
         }
 
         if (oldConfig.lastRow > config.lastRow) {
-            // FIXME: DGH getFoldedRowCount does not exist on EditSession
-            for (var row = this.session['getFoldedRowCount'](config.lastRow + 1, oldConfig.lastRow); row > 0; row--) {
+            for (let row = this.session.getFoldedRowCount(config.lastRow + 1, oldConfig.lastRow); row > 0; row--) {
                 el.removeChild(el.lastChild);
             }
         }
 
         if (config.firstRow < oldConfig.firstRow) {
-            var fragment = this.$renderLinesFragment(config, config.firstRow, oldConfig.firstRow - 1);
+            const fragment = this.$renderLinesFragment(config, config.firstRow, oldConfig.firstRow - 1);
             if (el.firstChild)
                 el.insertBefore(fragment, el.firstChild);
             else
@@ -360,16 +358,16 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
         }
 
         if (config.lastRow > oldConfig.lastRow) {
-            var fragment = this.$renderLinesFragment(config, oldConfig.lastRow + 1, config.lastRow);
+            const fragment = this.$renderLinesFragment(config, oldConfig.lastRow + 1, config.lastRow);
             el.appendChild(fragment);
         }
     }
 
     private $renderLinesFragment(config: TextConfig, firstRow: number, lastRow: number) {
-        var fragment = this.element.ownerDocument.createDocumentFragment();
-        var row = firstRow;
-        var foldLine = this.session.getNextFoldLine(row);
-        var foldStart = foldLine ? foldLine.start.row : Infinity;
+        const fragment = this.element.ownerDocument.createDocumentFragment();
+        let row = firstRow;
+        let foldLine = this.session.getNextFoldLine(row);
+        let foldStart = foldLine ? foldLine.start.row : Infinity;
 
         while (true) {
             if (row > foldStart) {
@@ -380,9 +378,9 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
             if (row > lastRow)
                 break;
 
-            var container = <HTMLDivElement>createElement("div");
+            const container = <HTMLDivElement>createElement("div");
 
-            var html: (number | string)[] = [];
+            const html: (number | string)[] = [];
             // Get the tokens per line as there might be some lines in between
             // beeing folded.
             this.$renderLine(html, row, false, row === foldStart ? foldLine : false);
@@ -414,13 +412,13 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
 
         this.config = config;
 
-        var html: (number | string)[] = [];
-        var firstRow = config.firstRow;
-        var lastRow = config.lastRow;
+        const html: (number | string)[] = [];
+        const firstRow = config.firstRow;
+        const lastRow = config.lastRow;
 
-        var row = firstRow;
-        var foldLine = this.session.getNextFoldLine(row);
-        var foldStart = foldLine ? foldLine.start.row : Infinity;
+        let row = firstRow;
+        let foldLine = this.session.getNextFoldLine(row);
+        let foldStart = foldLine ? foldLine.start.row : Infinity;
 
         while (true) {
             if (row > foldStart) {
@@ -449,8 +447,8 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
 
 
     private $renderToken(stringBuilder: (number | string)[], screenColumn: number, token: Token, value: string): number {
-        var replaceReg = /\t|&|<|( +)|([\x00-\x1f\x80-\xa0\u1680\u180E\u2000-\u200f\u2028\u2029\u202F\u205F\u3000\uFEFF])|[\u1100-\u115F\u11A3-\u11A7\u11FA-\u11FF\u2329-\u232A\u2E80-\u2E99\u2E9B-\u2EF3\u2F00-\u2FD5\u2FF0-\u2FFB\u3000-\u303E\u3041-\u3096\u3099-\u30FF\u3105-\u312D\u3131-\u318E\u3190-\u31BA\u31C0-\u31E3\u31F0-\u321E\u3220-\u3247\u3250-\u32FE\u3300-\u4DBF\u4E00-\uA48C\uA490-\uA4C6\uA960-\uA97C\uAC00-\uD7A3\uD7B0-\uD7C6\uD7CB-\uD7FB\uF900-\uFAFF\uFE10-\uFE19\uFE30-\uFE52\uFE54-\uFE66\uFE68-\uFE6B\uFF01-\uFF60\uFFE0-\uFFE6]/g;
-        var replaceFunc = (c: string, a, b, tabIdx, idx4) => {
+        const replaceReg = /\t|&|<|( +)|([\x00-\x1f\x80-\xa0\u1680\u180E\u2000-\u200f\u2028\u2029\u202F\u205F\u3000\uFEFF])|[\u1100-\u115F\u11A3-\u11A7\u11FA-\u11FF\u2329-\u232A\u2E80-\u2E99\u2E9B-\u2EF3\u2F00-\u2FD5\u2FF0-\u2FFB\u3000-\u303E\u3041-\u3096\u3099-\u30FF\u3105-\u312D\u3131-\u318E\u3190-\u31BA\u31C0-\u31E3\u31F0-\u321E\u3220-\u3247\u3250-\u32FE\u3300-\u4DBF\u4E00-\uA48C\uA490-\uA4C6\uA960-\uA97C\uAC00-\uD7A3\uD7B0-\uD7C6\uD7CB-\uD7FB\uF900-\uFAFF\uFE10-\uFE19\uFE30-\uFE52\uFE54-\uFE66\uFE68-\uFE6B\uFF01-\uFF60\uFFE0-\uFFE6]/g;
+        const replaceFunc = (c: string, a, b, tabIdx, idx4) => {
             if (a) {
                 return this.showInvisibles ?
                     "<span class='ace_invisible ace_invisible_space'>" + stringRepeat(SPACE_CHAR, c.length) + "</span>" :
@@ -469,8 +467,8 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
             }
             else if (c === "\u3000") {
                 // U+3000 is both invisible AND full-width, so must be handled uniquely
-                var classToUse = this.showInvisibles ? "ace_cjk ace_invisible ace_invisible_space" : "ace_cjk";
-                var space = this.showInvisibles ? SPACE_CHAR : "";
+                const classToUse = this.showInvisibles ? "ace_cjk ace_invisible ace_invisible_space" : "ace_cjk";
+                const space = this.showInvisibles ? SPACE_CHAR : "";
                 screenColumn += 1;
                 return "<span class='" + classToUse + "' style='width:" +
                     (this.config.characterWidth * 2) +
@@ -487,11 +485,11 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
             }
         };
 
-        var output = value.replace(replaceReg, replaceFunc);
+        const output = value.replace(replaceReg, replaceFunc);
 
         if (!this.$textToken[token.type]) {
-            var classes = "ace_" + token.type.replace(/\./g, " ace_");
-            var style = "";
+            const classes = "ace_" + token.type.replace(/\./g, " ace_");
+            let style = "";
             if (token.type === "fold")
                 style = " style='width:" + (token.value.length * this.config.characterWidth) + "px;' ";
             stringBuilder.push("<span class='", classes, "'", style, ">", output, "</span>");
@@ -519,14 +517,14 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
     }
 
     private $renderWrappedLine(stringBuilder: (number | string)[], tokens: Token[], splits: number[], onlyContents) {
-        var chars = 0;
-        var split = 0;
-        var splitChars = splits[0];
-        var screenColumn = 0;
+        let chars = 0;
+        let split = 0;
+        let splitChars = splits[0];
+        let screenColumn = 0;
 
-        for (var i = 0; i < tokens.length; i++) {
-            var token = tokens[i];
-            var value = token.value;
+        for (let i = 0; i < tokens.length; i++) {
+            const token = tokens[i];
+            let value = token.value;
             if (i === 0 && this.displayIndentGuides) {
                 chars = value.length;
                 value = this.renderIndentGuide(stringBuilder, value, splitChars);
@@ -569,14 +567,14 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
     }
 
     private $renderSimpleLine(stringBuilder: (number | string)[], tokens: Token[]): void {
-        var screenColumn = 0;
-        var token = tokens[0];
-        var value = token.value;
+        let screenColumn = 0;
+        let token = tokens[0];
+        let value = token.value;
         if (this.displayIndentGuides)
             value = this.renderIndentGuide(stringBuilder, value);
         if (value)
             screenColumn = this.$renderToken(stringBuilder, screenColumn, token, value);
-        for (var i = 1; i < tokens.length; i++) {
+        for (let i = 1; i < tokens.length; i++) {
             token = tokens[i];
             value = token.value;
             screenColumn = this.$renderToken(stringBuilder, screenColumn, token, value);
@@ -624,11 +622,11 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
     }
 
     private $getFoldLineTokens(row: number, foldLine: FoldLine): Token[] {
-        var session = this.session;
-        var renderTokens: Token[] = [];
+        const session = this.session;
+        const renderTokens: Token[] = [];
 
         function addTokens(tokens: Token[], from: number, to: number): void {
-            var idx = 0, col = 0;
+            let idx = 0, col = 0;
             while ((col + tokens[idx].value.length) < from) {
                 col += tokens[idx].value.length;
                 idx++;
@@ -637,7 +635,7 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
                     return;
             }
             if (col !== from) {
-                var value = tokens[idx].value.substring(from - col);
+                let value = tokens[idx].value.substring(from - col);
                 // Check if the token value is longer then the from...to spacing.
                 if (value.length > (to - from))
                     value = value.substring(0, to - from);
@@ -652,7 +650,7 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
             }
 
             while (col < to && idx < tokens.length) {
-                var value = tokens[idx].value;
+                let value = tokens[idx].value;
                 if (value.length + col > to) {
                     renderTokens.push({
                         type: tokens[idx].type,
@@ -665,7 +663,7 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
             }
         }
 
-        var tokens = session.getTokens(row);
+        let tokens = session.getTokens(row);
         foldLine.walk(function (placeholder, row, column, lastColumn, isNewRow) {
             if (placeholder != null) {
                 renderTokens.push({

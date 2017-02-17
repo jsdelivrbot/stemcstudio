@@ -92,16 +92,16 @@ export default class KeyboardHandler {
      * @param command
      */
     removeCommand(command: string | Command): void {
-        var name = (typeof command === 'string' ? command : command.name);
+        const name = (typeof command === 'string' ? command : command.name);
         command = this.commands[name];
         delete this.commands[name];
 
         // exhaustive search is brute force but since removeCommand is
         // not a performance critical operation this should be OK
-        var ckb = this.commandKeyBinding;
-        for (var hashId in ckb) {
+        const ckb = this.commandKeyBinding;
+        for (const hashId in ckb) {
             if (ckb.hasOwnProperty(hashId)) {
-                for (var key in ckb[hashId]) {
+                for (const key in ckb[hashId]) {
                     if (ckb[hashId][key] === command) {
                         delete ckb[hashId][key];
                     }
@@ -130,19 +130,18 @@ export default class KeyboardHandler {
      * @param command
      */
     bindCommand(key: string, command: Command): void {
-        var self = this;
 
         if (!key) {
             return;
         }
 
-        var ckb = this.commandKeyBinding;
+        const ckb = this.commandKeyBinding;
 
-        key.split("|").forEach(function (keyPart) {
-            var binding: KeyHash = self.parseKeys(keyPart/*, command*/);
-            var hashId = binding.hashId;
+        key.split("|").forEach((keyPart) => {
+            const binding: KeyHash = this.parseKeys(keyPart/*, command*/);
+            const hashId = binding.hashId;
             (ckb[hashId] || (ckb[hashId] = {}))[binding.key] = command;
-        }, self);
+        });
     }
 
     /**
@@ -159,9 +158,9 @@ export default class KeyboardHandler {
   
       commands && Object.keys(commands).forEach((name) => {
   
-        var binding: EditorAction = commands[name];
+        const binding: EditorAction = commands[name];
   
-        var command: Command = { name: name, exec: binding }
+        const command: Command = { name: name, exec: binding }
   
         this.addCommand(command);
       });
@@ -181,10 +180,9 @@ export default class KeyboardHandler {
      * @param keyList
      */
     bindKeys(keyList: { [name: string]: EditorAction }): void {
-        var self = this;
-        Object.keys(keyList).forEach(function (key) {
-            self.bindKey(key, keyList[key]);
-        }, self);
+        Object.keys(keyList).forEach((key) => {
+            this.bindKey(key, keyList[key]);
+        });
     }
 
     /**
@@ -210,10 +208,10 @@ export default class KeyboardHandler {
         if (keys.indexOf(" ") !== -1)
             keys = keys.split(/\s+/).pop();
 
-        var parts = keys.toLowerCase().split(/[\-\+]([\-\+])?/).filter(function (x: any) { return x; });
-        var key = parts.pop();
+        const parts = keys.toLowerCase().split(/[\-\+]([\-\+])?/).filter(function (x: any) { return x; });
+        let key = parts.pop();
 
-        var keyCode = keyCodes[key];
+        const keyCode = keyCodes[key];
         if (FUNCTION_KEYS[keyCode])
             key = FUNCTION_KEYS[keyCode].toLowerCase();
         else if (!parts.length)
@@ -221,9 +219,9 @@ export default class KeyboardHandler {
         else if (parts.length === 1 && parts[0] === "shift")
             return { key: key.toUpperCase(), hashId: -1 };
 
-        var hashId = 0;
-        for (var i = parts.length; i--;) {
-            var modifier = KEY_MODS[parts[i]];
+        let hashId = 0;
+        for (let i = parts.length; i--;) {
+            const modifier = KEY_MODS[parts[i]];
             if (modifier === null) {
                 throw new Error("invalid modifier " + parts[i] + " in " + keys);
             }
@@ -237,7 +235,7 @@ export default class KeyboardHandler {
      * @param keyString
      */
     findKeyCommand(hashId: number, keyString: string): Command {
-        var ckbr = this.commandKeyBinding;
+        const ckbr = this.commandKeyBinding;
         return ckbr[hashId] && ckbr[hashId][keyString];
     }
 

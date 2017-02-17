@@ -76,7 +76,7 @@ export default class KeyBinding {
      * @param kb
      */
     setKeyboardHandler(kb: KeyboardHandler): void {
-        var h = this.$handlers;
+        const h = this.$handlers;
         if (h[h.length - 1] === kb)
             return;
 
@@ -150,7 +150,7 @@ export default class KeyBinding {
         let success = false;
         const commands = this.editor.commands;
 
-        for (var i = this.$handlers.length; i--;) {
+        for (let i = this.$handlers.length; i--;) {
             toExecute = this.$handlers[i].handleKeyboard(this.$data, hashId, keyString, keyCode, e);
             if (!toExecute || !toExecute.command)
                 continue;

@@ -65,7 +65,7 @@ export function stopPropagation(e: Event): void {
 
 export function preventDefault(e: Event): void {
     // returnValue is no longer documented in typings.
-    var RETURN_VALUE_DEPRECATED = 'returnValue';
+    const RETURN_VALUE_DEPRECATED = 'returnValue';
     if (e.preventDefault) {
         e.preventDefault();
     }
@@ -99,7 +99,7 @@ export function getButton(e: MouseEvent): number {
  */
 export function capture(unused: HTMLElement, acquireCaptureHandler: (event: MouseEvent) => void, releaseCaptureHandler: (event: MouseEvent) => void): (event: MouseEvent) => void {
     // FIXME: 'Document' is missing property 'onmouseleave' from 'HTMLElement'.
-    var element: any = document;
+    const element: any = document;
 
     function releaseMouse(e: MouseEvent) {
 
@@ -129,7 +129,7 @@ export function capture(unused: HTMLElement, acquireCaptureHandler: (event: Mous
 export function addMouseWheelListener(element: HTMLElement, callback: (event: MouseWheelEvent) => void): void {
     if ("onmousewheel" in element) {
         addListener(element, "mousewheel", function (e: MouseWheelEvent) {
-            var factor = 8;
+            const factor = 8;
             if (e['wheelDeltaX'] !== undefined) {
                 e['wheelX'] = -e['wheelDeltaX'] / factor;
                 e['wheelY'] = -e['wheelDeltaY'] / factor;
@@ -143,7 +143,7 @@ export function addMouseWheelListener(element: HTMLElement, callback: (event: Mo
     }
     else if ("onwheel" in element) {
         addListener(element, "wheel", function (e) {
-            var factor = 0.35;
+            const factor = 0.35;
             switch (e.deltaMode) {
                 case e.DOM_DELTA_PIXEL:
                     e.wheelX = e.deltaX * factor || 0;
@@ -175,9 +175,11 @@ export function addMouseWheelListener(element: HTMLElement, callback: (event: Mo
 }
 
 export function addMultiMouseDownListener(el, timeouts, eventHandler, callbackName) {
-    var clicks = 0;
-    var startX, startY, timer;
-    var eventNames = {
+    let clicks = 0;
+    let startX: number;
+    let startY: number;
+    let timer: number;
+    const eventNames = {
         2: "dblclick",
         3: "tripleclick",
         4: "quadclick"
@@ -194,7 +196,7 @@ export function addMultiMouseDownListener(el, timeouts, eventHandler, callbackNa
             clicks = 1;
         }
         if (isIE) {
-            var isNewClick = Math.abs(e.clientX - startX) > 5 || Math.abs(e.clientY - startY) > 5;
+            const isNewClick = Math.abs(e.clientX - startX) > 5 || Math.abs(e.clientY - startY) > 5;
             if (!timer || isNewClick)
                 clicks = 1;
             if (timer)
@@ -230,7 +232,7 @@ export function addMultiMouseDownListener(el, timeouts, eventHandler, callbackNa
     }
 }
 
-var getModifierHash = isMac && isOpera && !("KeyboardEvent" in window)
+const getModifierHash = isMac && isOpera && !("KeyboardEvent" in window)
     ? function (e) {
         return 0 | (e.metaKey ? 1 : 0) | (e.altKey ? 2 : 0) | (e.shiftKey ? 4 : 0) | (e.ctrlKey ? 8 : 0);
     }
@@ -251,7 +253,7 @@ function resetPressedKeys(e) {
 let ts = 0;
 
 function normalizeCommandKeys(callback, e: KeyboardEvent, keyCode: number) {
-    var hashId = getModifierHash(e);
+    let hashId = getModifierHash(e);
 
     if (!isMac && pressedKeys) {
         if (pressedKeys[91] || pressedKeys[92])
@@ -266,7 +268,7 @@ function normalizeCommandKeys(callback, e: KeyboardEvent, keyCode: number) {
             if (keyCode === 17 && e.location === 1) {
                 ts = e.timeStamp;
             } else if (keyCode === 18 && hashId === 3 && e.location === 2) {
-                var dt = -ts;
+                let dt = -ts;
                 ts = e.timeStamp;
                 dt += ts;
                 if (dt < 3)
@@ -331,7 +333,7 @@ export function addCommandKeyListener(el, callback) {
         // To emulate the 'right' keydown behavior, the keyCode of the initial
         // keyDown event is stored and in the following keypress events the
         // stores keyCode is used to emulate a keyDown event.
-        var lastKeyDownKeyCode = null;
+        let lastKeyDownKeyCode: number = null;
         addListener(el, "keydown", function (e: KeyboardEvent) {
             lastKeyDownKeyCode = e.keyCode;
         });
@@ -340,11 +342,11 @@ export function addCommandKeyListener(el, callback) {
         });
     }
     else {
-        var lastDefaultPrevented = null;
+        let lastDefaultPrevented: boolean = null;
 
         addListener(el, "keydown", function (e: KeyboardEvent) {
             pressedKeys[e.keyCode] = true;
-            var result = normalizeCommandKeys(callback, e, e.keyCode);
+            const result = normalizeCommandKeys(callback, e, e.keyCode);
             lastDefaultPrevented = e.defaultPrevented;
             return result;
         });
@@ -368,13 +370,13 @@ export function addCommandKeyListener(el, callback) {
 }
 
 // FIXME: Conditional exports not supported by TypeScript or Harmony/ES6.
-// declare var exports: any;
+// declare const exports: any;
 /*
 if (window.postMessage && !isOldIE) {
-    var postMessageId = 1;
+    const postMessageId = 1;
     exports.nextTick = function(callback, win) {
         win = win || window;
-        var messageName = "zero-timeout-message-" + postMessageId;
+        const messageName = "zero-timeout-message-" + postMessageId;
         addListener(win, "message", function listener(e) {
             if (e.data == messageName) {
                 stopPropagation(e);

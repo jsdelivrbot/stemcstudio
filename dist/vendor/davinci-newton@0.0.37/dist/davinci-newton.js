@@ -833,16 +833,16 @@ define('davinci-newton/math/DimensionsSummary',["require", "exports"], function 
     "use strict";
     var DimensionsSummary;
     (function (DimensionsSummary) {
-        DimensionsSummary[DimensionsSummary["AMOUNT"] = 0] = "AMOUNT";
+        DimensionsSummary[DimensionsSummary["AMOUNT_OF_SUBSTANCE"] = 0] = "AMOUNT_OF_SUBSTANCE";
         DimensionsSummary[DimensionsSummary["ANGULAR_MOMENTUM"] = 1] = "ANGULAR_MOMENTUM";
         DimensionsSummary[DimensionsSummary["AREA"] = 2] = "AREA";
-        DimensionsSummary[DimensionsSummary["CHARGE"] = 3] = "CHARGE";
-        DimensionsSummary[DimensionsSummary["CURRENT"] = 4] = "CURRENT";
+        DimensionsSummary[DimensionsSummary["ELECTRIC_CHARGE"] = 3] = "ELECTRIC_CHARGE";
+        DimensionsSummary[DimensionsSummary["ELECTRIC_CURRENT"] = 4] = "ELECTRIC_CURRENT";
         DimensionsSummary[DimensionsSummary["ELECTRIC_FIELD"] = 5] = "ELECTRIC_FIELD";
         DimensionsSummary[DimensionsSummary["ELECTRIC_PERMITTIVITY_TIMES_AREA"] = 6] = "ELECTRIC_PERMITTIVITY_TIMES_AREA";
         DimensionsSummary[DimensionsSummary["ENERGY_OR_TORQUE"] = 7] = "ENERGY_OR_TORQUE";
         DimensionsSummary[DimensionsSummary["FORCE"] = 8] = "FORCE";
-        DimensionsSummary[DimensionsSummary["INTENSITY"] = 9] = "INTENSITY";
+        DimensionsSummary[DimensionsSummary["LUMINOUS_INTENSITY"] = 9] = "LUMINOUS_INTENSITY";
         DimensionsSummary[DimensionsSummary["INV_LENGTH"] = 10] = "INV_LENGTH";
         DimensionsSummary[DimensionsSummary["INV_MOMENT_OF_INERTIA"] = 11] = "INV_MOMENT_OF_INERTIA";
         DimensionsSummary[DimensionsSummary["INV_MASS"] = 12] = "INV_MASS";
@@ -857,9 +857,10 @@ define('davinci-newton/math/DimensionsSummary',["require", "exports"], function 
         DimensionsSummary[DimensionsSummary["STIFFNESS"] = 21] = "STIFFNESS";
         DimensionsSummary[DimensionsSummary["TIME"] = 22] = "TIME";
         DimensionsSummary[DimensionsSummary["TIME_SQUARED"] = 23] = "TIME_SQUARED";
-        DimensionsSummary[DimensionsSummary["TEMPERATURE"] = 24] = "TEMPERATURE";
+        DimensionsSummary[DimensionsSummary["THERMODYNAMIC_TEMPERATURE"] = 24] = "THERMODYNAMIC_TEMPERATURE";
         DimensionsSummary[DimensionsSummary["VELOCITY"] = 25] = "VELOCITY";
         DimensionsSummary[DimensionsSummary["VELOCITY_SQUARED"] = 26] = "VELOCITY_SQUARED";
+        DimensionsSummary[DimensionsSummary["VOLUME"] = 27] = "VOLUME";
     })(DimensionsSummary = exports.DimensionsSummary || (exports.DimensionsSummary = {}));
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = DimensionsSummary;
@@ -1303,7 +1304,7 @@ define('davinci-newton/math/detectDimensions',["require", "exports", "./Dimensio
                                                     if (amount.denom === 1) {
                                                         if (intensity.numer === 0) {
                                                             if (intensity.denom === 1) {
-                                                                return DimensionsSummary_1.default.CURRENT;
+                                                                return DimensionsSummary_1.default.ELECTRIC_CURRENT;
                                                             }
                                                         }
                                                     }
@@ -1329,7 +1330,7 @@ define('davinci-newton/math/detectDimensions',["require", "exports", "./Dimensio
                                                         }
                                                         else if (intensity.numer === 1) {
                                                             if (intensity.denom === 1) {
-                                                                return DimensionsSummary_1.default.INTENSITY;
+                                                                return DimensionsSummary_1.default.LUMINOUS_INTENSITY;
                                                             }
                                                         }
                                                     }
@@ -1338,7 +1339,7 @@ define('davinci-newton/math/detectDimensions',["require", "exports", "./Dimensio
                                                     if (amount.denom === 1) {
                                                         if (intensity.numer === 0) {
                                                             if (intensity.denom === 1) {
-                                                                return DimensionsSummary_1.default.AMOUNT;
+                                                                return DimensionsSummary_1.default.AMOUNT_OF_SUBSTANCE;
                                                             }
                                                         }
                                                     }
@@ -1351,7 +1352,7 @@ define('davinci-newton/math/detectDimensions',["require", "exports", "./Dimensio
                                                     if (amount.denom === 1) {
                                                         if (intensity.numer === 0) {
                                                             if (intensity.denom === 1) {
-                                                                return DimensionsSummary_1.default.TEMPERATURE;
+                                                                return DimensionsSummary_1.default.THERMODYNAMIC_TEMPERATURE;
                                                             }
                                                         }
                                                     }
@@ -1368,7 +1369,7 @@ define('davinci-newton/math/detectDimensions',["require", "exports", "./Dimensio
                                                     if (amount.denom === 1) {
                                                         if (intensity.numer === 0) {
                                                             if (intensity.denom === 1) {
-                                                                return DimensionsSummary_1.default.CHARGE;
+                                                                return DimensionsSummary_1.default.ELECTRIC_CHARGE;
                                                             }
                                                         }
                                                     }
@@ -1524,6 +1525,31 @@ define('davinci-newton/math/detectDimensions',["require", "exports", "./Dimensio
                                                         if (intensity.numer === 0) {
                                                             if (intensity.denom === 1) {
                                                                 return DimensionsSummary_1.default.AREA;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (L.numer === 3) {
+                    if (L.denom === 1) {
+                        if (T.numer === 0) {
+                            if (T.denom === 1) {
+                                if (Q.numer === 0) {
+                                    if (Q.denom === 1) {
+                                        if (temperature.numer === 0) {
+                                            if (temperature.denom === 1) {
+                                                if (amount.numer === 0) {
+                                                    if (amount.denom === 1) {
+                                                        if (intensity.numer === 0) {
+                                                            if (intensity.denom === 1) {
+                                                                return DimensionsSummary_1.default.VOLUME;
                                                             }
                                                         }
                                                     }
@@ -1758,6 +1784,7 @@ define('davinci-newton/math/Dimensions',["require", "exports", "./DimensionsSumm
     var R0 = QQ_1.default.valueOf(0, 1);
     var R1 = QQ_1.default.valueOf(1, 1);
     var R2 = QQ_1.default.valueOf(2, 1);
+    var R3 = QQ_1.default.valueOf(3, 1);
     var M1 = QQ_1.default.valueOf(-1, 1);
     var M2 = QQ_1.default.valueOf(-2, 1);
     function assertArgRational(name, arg) {
@@ -1935,16 +1962,16 @@ define('davinci-newton/math/Dimensions',["require", "exports", "./DimensionsSumm
         Dimensions.valueOf = function (M, L, T, Q, temperature, amount, intensity) {
             var summary = detectDimensions_1.default(M, L, T, Q, temperature, amount, intensity);
             switch (summary) {
-                case DimensionsSummary_1.default.AMOUNT: return Dimensions.AMOUNT;
+                case DimensionsSummary_1.default.AMOUNT_OF_SUBSTANCE: return Dimensions.AMOUNT_OF_SUBSTANCE;
                 case DimensionsSummary_1.default.ANGULAR_MOMENTUM: return Dimensions.ANGULAR_MOMENTUM;
                 case DimensionsSummary_1.default.AREA: return Dimensions.AREA;
-                case DimensionsSummary_1.default.CHARGE: return Dimensions.CHARGE;
-                case DimensionsSummary_1.default.CURRENT: return Dimensions.CURRENT;
+                case DimensionsSummary_1.default.ELECTRIC_CHARGE: return Dimensions.ELECTRIC_CHARGE;
+                case DimensionsSummary_1.default.ELECTRIC_CURRENT: return Dimensions.ELECTRIC_CURRENT;
                 case DimensionsSummary_1.default.ELECTRIC_FIELD: return Dimensions.ELECTRIC_FIELD;
                 case DimensionsSummary_1.default.ELECTRIC_PERMITTIVITY_TIMES_AREA: return Dimensions.ELECTRIC_PERMITTIVITY_TIMES_AREA;
                 case DimensionsSummary_1.default.ENERGY_OR_TORQUE: return Dimensions.ENERGY_OR_TORQUE;
                 case DimensionsSummary_1.default.FORCE: return Dimensions.FORCE;
-                case DimensionsSummary_1.default.INTENSITY: return Dimensions.INTENSITY;
+                case DimensionsSummary_1.default.LUMINOUS_INTENSITY: return Dimensions.LUMINOUS_INTENSITY;
                 case DimensionsSummary_1.default.INV_LENGTH: return Dimensions.INV_LENGTH;
                 case DimensionsSummary_1.default.INV_MASS: return Dimensions.INV_MASS;
                 case DimensionsSummary_1.default.INV_MOMENT_OF_INERTIA: return Dimensions.INV_MOMENT_OF_INERTIA;
@@ -1957,7 +1984,7 @@ define('davinci-newton/math/Dimensions',["require", "exports", "./DimensionsSumm
                 case DimensionsSummary_1.default.ONE: return Dimensions.ONE;
                 case DimensionsSummary_1.default.RATE_OF_CHANGE_OF_AREA: return Dimensions.RATE_OF_CHANGE_OF_AREA;
                 case DimensionsSummary_1.default.STIFFNESS: return Dimensions.STIFFNESS;
-                case DimensionsSummary_1.default.TEMPERATURE: return Dimensions.TEMPERATURE;
+                case DimensionsSummary_1.default.THERMODYNAMIC_TEMPERATURE: return Dimensions.THERMODYNAMIC_TEMPERATURE;
                 case DimensionsSummary_1.default.TIME: return Dimensions.TIME;
                 case DimensionsSummary_1.default.TIME_SQUARED: return Dimensions.TIME_SQUARED;
                 case DimensionsSummary_1.default.VELOCITY: return Dimensions.VELOCITY;
@@ -1973,13 +2000,14 @@ define('davinci-newton/math/Dimensions',["require", "exports", "./DimensionsSumm
     Dimensions.MASS = new Dimensions(R1, R0, R0, R0, R0, R0, R0, DimensionsSummary_1.default.MASS);
     Dimensions.LENGTH = new Dimensions(R0, R1, R0, R0, R0, R0, R0, DimensionsSummary_1.default.LENGTH);
     Dimensions.AREA = new Dimensions(R0, R2, R0, R0, R0, R0, R0, DimensionsSummary_1.default.AREA);
+    Dimensions.VOLUME = new Dimensions(R0, R3, R0, R0, R0, R0, R0, DimensionsSummary_1.default.VOLUME);
     Dimensions.INV_LENGTH = new Dimensions(R0, M1, R0, R0, R0, R0, R0, DimensionsSummary_1.default.INV_LENGTH);
     Dimensions.TIME = new Dimensions(R0, R0, R1, R0, R0, R0, R0, DimensionsSummary_1.default.TIME);
-    Dimensions.CHARGE = new Dimensions(R0, R0, R0, R1, R0, R0, R0, DimensionsSummary_1.default.CHARGE);
-    Dimensions.CURRENT = new Dimensions(R0, R0, M1, R1, R0, R0, R0, DimensionsSummary_1.default.CURRENT);
-    Dimensions.TEMPERATURE = new Dimensions(R0, R0, R0, R0, R1, R0, R0, DimensionsSummary_1.default.TEMPERATURE);
-    Dimensions.AMOUNT = new Dimensions(R0, R0, R0, R0, R0, R1, R0, DimensionsSummary_1.default.AMOUNT);
-    Dimensions.INTENSITY = new Dimensions(R0, R0, R0, R0, R0, R0, R1, DimensionsSummary_1.default.INTENSITY);
+    Dimensions.ELECTRIC_CHARGE = new Dimensions(R0, R0, R0, R1, R0, R0, R0, DimensionsSummary_1.default.ELECTRIC_CHARGE);
+    Dimensions.ELECTRIC_CURRENT = new Dimensions(R0, R0, M1, R1, R0, R0, R0, DimensionsSummary_1.default.ELECTRIC_CURRENT);
+    Dimensions.THERMODYNAMIC_TEMPERATURE = new Dimensions(R0, R0, R0, R0, R1, R0, R0, DimensionsSummary_1.default.THERMODYNAMIC_TEMPERATURE);
+    Dimensions.AMOUNT_OF_SUBSTANCE = new Dimensions(R0, R0, R0, R0, R0, R1, R0, DimensionsSummary_1.default.AMOUNT_OF_SUBSTANCE);
+    Dimensions.LUMINOUS_INTENSITY = new Dimensions(R0, R0, R0, R0, R0, R0, R1, DimensionsSummary_1.default.LUMINOUS_INTENSITY);
     Dimensions.ANGULAR_MOMENTUM = new Dimensions(R1, R2, M1, R0, R0, R0, R0, DimensionsSummary_1.default.ANGULAR_MOMENTUM);
     Dimensions.RATE_OF_CHANGE_OF_AREA = new Dimensions(R0, R2, M1, R0, R0, R0, R0, DimensionsSummary_1.default.RATE_OF_CHANGE_OF_AREA);
     Dimensions.ELECTRIC_FIELD = new Dimensions(R1, R1, M2, M1, R0, R0, R0, DimensionsSummary_1.default.ELECTRIC_FIELD);
@@ -2467,16 +2495,16 @@ define('davinci-newton/math/Unit',["require", "exports", "../math/Dimensions", "
         Unit.valueOf = function (multiplier, dimensions, labels) {
             if (multiplier === 1) {
                 switch (dimensions.summary) {
-                    case DimensionsSummary_1.default.AMOUNT: return Unit.MOLE;
+                    case DimensionsSummary_1.default.AMOUNT_OF_SUBSTANCE: return Unit.MOLE;
                     case DimensionsSummary_1.default.ANGULAR_MOMENTUM: return Unit.JOULE_SECOND;
                     case DimensionsSummary_1.default.AREA: return Unit.METER_SQUARED;
-                    case DimensionsSummary_1.default.CHARGE: return Unit.COULOMB;
-                    case DimensionsSummary_1.default.CURRENT: return Unit.AMPERE;
+                    case DimensionsSummary_1.default.ELECTRIC_CHARGE: return Unit.COULOMB;
+                    case DimensionsSummary_1.default.ELECTRIC_CURRENT: return Unit.AMPERE;
                     case DimensionsSummary_1.default.ELECTRIC_FIELD: return Unit.ELECTRIC_FIELD;
                     case DimensionsSummary_1.default.ELECTRIC_PERMITTIVITY_TIMES_AREA: return Unit.COULOMB_SQUARED_PER_NEWTON;
                     case DimensionsSummary_1.default.ENERGY_OR_TORQUE: return Unit.JOULE;
                     case DimensionsSummary_1.default.FORCE: return Unit.NEWTON;
-                    case DimensionsSummary_1.default.INTENSITY: return Unit.CANDELA;
+                    case DimensionsSummary_1.default.LUMINOUS_INTENSITY: return Unit.CANDELA;
                     case DimensionsSummary_1.default.INV_LENGTH: return Unit.INV_METER;
                     case DimensionsSummary_1.default.INV_MASS: return Unit.INV_KILOGRAM;
                     case DimensionsSummary_1.default.INV_MOMENT_OF_INERTIA: return Unit.INV_KILOGRAM_METER_SQUARED;
@@ -2489,11 +2517,12 @@ define('davinci-newton/math/Unit',["require", "exports", "../math/Dimensions", "
                     case DimensionsSummary_1.default.ONE: return Unit.ONE;
                     case DimensionsSummary_1.default.RATE_OF_CHANGE_OF_AREA: return Unit.METER_SQUARED_PER_SECOND;
                     case DimensionsSummary_1.default.STIFFNESS: return Unit.STIFFNESS;
-                    case DimensionsSummary_1.default.TEMPERATURE: return Unit.KELVIN;
+                    case DimensionsSummary_1.default.THERMODYNAMIC_TEMPERATURE: return Unit.KELVIN;
                     case DimensionsSummary_1.default.TIME: return Unit.SECOND;
                     case DimensionsSummary_1.default.TIME_SQUARED: return Unit.SECOND_SQUARED;
                     case DimensionsSummary_1.default.VELOCITY: return Unit.METER_PER_SECOND;
                     case DimensionsSummary_1.default.VELOCITY_SQUARED: return Unit.METER_SQUARED_PER_SECOND_SQUARED;
+                    case DimensionsSummary_1.default.VOLUME: return Unit.METER_CUBED;
                     default: {
                     }
                 }
@@ -2506,17 +2535,18 @@ define('davinci-newton/math/Unit',["require", "exports", "../math/Dimensions", "
     Unit.KILOGRAM = new Unit(1, Dimensions_1.default.MASS, SYMBOLS_SI);
     Unit.METER = new Unit(1, Dimensions_1.default.LENGTH, SYMBOLS_SI);
     Unit.SECOND = new Unit(1, Dimensions_1.default.TIME, SYMBOLS_SI);
-    Unit.COULOMB = new Unit(1, Dimensions_1.default.CHARGE, SYMBOLS_SI);
-    Unit.AMPERE = new Unit(1, Dimensions_1.default.CURRENT, SYMBOLS_SI);
-    Unit.KELVIN = new Unit(1, Dimensions_1.default.TEMPERATURE, SYMBOLS_SI);
-    Unit.MOLE = new Unit(1, Dimensions_1.default.AMOUNT, SYMBOLS_SI);
-    Unit.CANDELA = new Unit(1, Dimensions_1.default.INTENSITY, SYMBOLS_SI);
+    Unit.COULOMB = new Unit(1, Dimensions_1.default.ELECTRIC_CHARGE, SYMBOLS_SI);
+    Unit.AMPERE = new Unit(1, Dimensions_1.default.ELECTRIC_CURRENT, SYMBOLS_SI);
+    Unit.KELVIN = new Unit(1, Dimensions_1.default.THERMODYNAMIC_TEMPERATURE, SYMBOLS_SI);
+    Unit.MOLE = new Unit(1, Dimensions_1.default.AMOUNT_OF_SUBSTANCE, SYMBOLS_SI);
+    Unit.CANDELA = new Unit(1, Dimensions_1.default.LUMINOUS_INTENSITY, SYMBOLS_SI);
     Unit.COULOMB_SQUARED_PER_NEWTON = new Unit(1, Dimensions_1.default.ELECTRIC_PERMITTIVITY_TIMES_AREA, SYMBOLS_SI);
     Unit.ELECTRIC_FIELD = new Unit(1, Dimensions_1.default.ELECTRIC_FIELD, SYMBOLS_SI);
     Unit.NEWTON = new Unit(1, Dimensions_1.default.FORCE, SYMBOLS_SI);
     Unit.JOULE = new Unit(1, Dimensions_1.default.ENERGY_OR_TORQUE, SYMBOLS_SI);
     Unit.JOULE_SECOND = new Unit(1, Dimensions_1.default.ANGULAR_MOMENTUM, SYMBOLS_SI);
     Unit.METER_SQUARED = new Unit(1, Dimensions_1.default.AREA, SYMBOLS_SI);
+    Unit.METER_CUBED = new Unit(1, Dimensions_1.default.VOLUME, SYMBOLS_SI);
     Unit.SECOND_SQUARED = new Unit(1, Dimensions_1.default.TIME_SQUARED, SYMBOLS_SI);
     Unit.INV_KILOGRAM = new Unit(1, Dimensions_1.default.INV_MASS, SYMBOLS_SI);
     Unit.INV_METER = new Unit(1, Dimensions_1.default.INV_LENGTH, SYMBOLS_SI);
@@ -3536,19 +3566,6 @@ define('davinci-newton/math/Geometric3',["require", "exports", "./approx", "./ar
         m.lock();
         return m;
     }
-    function compatibleUnit(a, b) {
-        if (Unit_1.default.isCompatible(a.uom, b.uom)) {
-            return Unit_1.default.compatible(a.uom, b.uom);
-        }
-        else {
-            try {
-                return Unit_1.default.compatible(a.uom, b.uom);
-            }
-            catch (e) {
-                throw new Error(Geometric3.copy(a) + " and " + Geometric3.copy(b) + " must have compatible units of measure. Cause: " + e);
-            }
-        }
-    }
     var cosines = [];
     var UNLOCKED = -1 * Math.random();
     var Geometric3 = (function () {
@@ -3752,7 +3769,7 @@ define('davinci-newton/math/Geometric3',["require", "exports", "./approx", "./ar
                     this.zx += M.zx * α;
                     this.xy += M.xy * α;
                     this.b += M.b * α;
-                    this.uom = compatibleUnit(this, M);
+                    this.uom = Unit_1.default.compatible(this.uom, M.uom);
                     return this;
                 }
             }
@@ -3765,7 +3782,7 @@ define('davinci-newton/math/Geometric3',["require", "exports", "./approx", "./ar
                 this.uom = a.uom;
             }
             else {
-                this.uom = compatibleUnit(a, b);
+                this.uom = Unit_1.default.compatible(a.uom, b.uom);
             }
             this.a = a.a + b.a;
             this.x = a.x + b.x;
@@ -4234,7 +4251,7 @@ define('davinci-newton/math/Geometric3',["require", "exports", "./approx", "./ar
                 else if (isZeroGeometricE3_1.default(target)) {
                 }
                 else {
-                    this.uom = compatibleUnit(this, target);
+                    this.uom = Unit_1.default.compatible(this.uom, target.uom);
                 }
                 this.a += (target.a - this.a) * α;
                 this.x += (target.x - this.x) * α;
@@ -4715,7 +4732,7 @@ define('davinci-newton/math/Geometric3',["require", "exports", "./approx", "./ar
                     return this;
                 }
                 else {
-                    this.uom = compatibleUnit(this, M);
+                    this.uom = Unit_1.default.compatible(this.uom, M.uom);
                 }
                 this.a -= M.a * α;
                 this.x -= M.x * α;
@@ -4797,7 +4814,7 @@ define('davinci-newton/math/Geometric3',["require", "exports", "./approx", "./ar
                 this.zx = a.zx - b.zx;
                 this.xy = a.xy - b.xy;
                 this.b = a.b - b.b;
-                this.uom = compatibleUnit(a, b);
+                this.uom = Unit_1.default.compatible(a.uom, b.uom);
             }
             return this;
         };
@@ -5172,6 +5189,9 @@ define('davinci-newton/math/Geometric3',["require", "exports", "./approx", "./ar
     Geometric3.kelvin = lock(new Geometric3(scalar(1), Unit_1.default.KELVIN));
     Geometric3.mole = lock(new Geometric3(scalar(1), Unit_1.default.MOLE));
     Geometric3.candela = lock(new Geometric3(scalar(1), Unit_1.default.CANDELA));
+    Geometric3.coulomb = lock(new Geometric3(scalar(1), Unit_1.default.COULOMB));
+    Geometric3.newton = lock(new Geometric3(scalar(1), Unit_1.default.NEWTON));
+    Geometric3.joule = lock(new Geometric3(scalar(1), Unit_1.default.JOULE));
     exports.Geometric3 = Geometric3;
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Geometric3;
@@ -6141,6 +6161,14 @@ define('davinci-newton/engine3D/RigidBody3',["require", "exports", "../objects/A
             }
         }
     }
+    function mustBeDimensionlessOrCorrectUnits(name, value, unit) {
+        if (!Unit_1.default.isOne(value.uom) && !Unit_1.default.isCompatible(value.uom, unit)) {
+            throw new Error(name + " unit of measure, " + value.uom + ", must be compatible with " + unit);
+        }
+        else {
+            return value;
+        }
+    }
     var RigidBody3 = (function (_super) {
         __extends(RigidBody3, _super);
         function RigidBody3() {
@@ -6180,6 +6208,7 @@ define('davinci-newton/engine3D/RigidBody3',["require", "exports", "../objects/A
                 return this.mass_;
             },
             set: function (M) {
+                mustBeDimensionlessOrCorrectUnits('M', M, Unit_1.default.KILOGRAM);
                 this.mass_.unlock(this.massLock_);
                 this.mass_.copy(M);
                 this.massLock_ = this.mass_.lock();
@@ -6193,6 +6222,7 @@ define('davinci-newton/engine3D/RigidBody3',["require", "exports", "../objects/A
                 return this.charge_;
             },
             set: function (Q) {
+                mustBeDimensionlessOrCorrectUnits('Q', Q, Unit_1.default.COULOMB);
                 this.charge_.unlock(this.chargeLock_);
                 this.charge_.copy(Q);
                 this.chargeLock_ = this.charge_.lock();
@@ -6240,6 +6270,7 @@ define('davinci-newton/engine3D/RigidBody3',["require", "exports", "../objects/A
                 return this.position_;
             },
             set: function (position) {
+                mustBeDimensionlessOrCorrectUnits('position', position, Unit_1.default.METER);
                 this.position_.copy(position);
             },
             enumerable: true,
@@ -6250,6 +6281,7 @@ define('davinci-newton/engine3D/RigidBody3',["require", "exports", "../objects/A
                 return this.attitude_;
             },
             set: function (attitude) {
+                mustBeDimensionlessOrCorrectUnits('attitude', attitude, Unit_1.default.ONE);
                 this.attitude_.copy(attitude);
             },
             enumerable: true,
@@ -6260,6 +6292,7 @@ define('davinci-newton/engine3D/RigidBody3',["require", "exports", "../objects/A
                 return this.linearMomentum_;
             },
             set: function (momentum) {
+                mustBeDimensionlessOrCorrectUnits('momentum', momentum, Unit_1.default.KILOGRAM_METER_PER_SECOND);
                 this.linearMomentum_.copy(momentum);
             },
             enumerable: true,
@@ -6270,6 +6303,7 @@ define('davinci-newton/engine3D/RigidBody3',["require", "exports", "../objects/A
                 return this.angularMomentum_;
             },
             set: function (angularMomentum) {
+                mustBeDimensionlessOrCorrectUnits('angularMomentum', angularMomentum, Unit_1.default.JOULE_SECOND);
                 this.angularMomentum_.copy(angularMomentum);
             },
             enumerable: true,
@@ -6595,9 +6629,9 @@ define('davinci-newton/config',["require", "exports"], function (require, export
     var Newton = (function () {
         function Newton() {
             this.GITHUB = 'https://github.com/geometryzen/davinci-newton';
-            this.LAST_MODIFIED = '2017-02-16';
+            this.LAST_MODIFIED = '2017-02-17';
             this.NAMESPACE = 'NEWTON';
-            this.VERSION = '0.0.36';
+            this.VERSION = '0.0.37';
         }
         Newton.prototype.log = function (message) {
             var optionalParams = [];
@@ -10576,6 +10610,45 @@ define('davinci-newton/solvers/ModifiedEuler',["require", "exports", "../util/ze
     exports.default = ModifiedEuler;
 });
 
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+define('davinci-newton/engine3D/Particle3',["require", "exports", "../math/Geometric3", "./RigidBody3"], function (require, exports, Geometric3_1, RigidBody3_1) {
+    "use strict";
+    var Particle3 = (function (_super) {
+        __extends(Particle3, _super);
+        function Particle3(M, Q) {
+            if (M === void 0) { M = Geometric3_1.default.one; }
+            if (Q === void 0) { Q = Geometric3_1.default.zero; }
+            var _this = _super.call(this) || this;
+            _this.M = M;
+            _this.Q = Q;
+            return _this;
+        }
+        Particle3.prototype.updateAngularVelocity = function () {
+            this.Ω.copyScalar(0, void 0);
+            this.Ω.quaditude(true);
+            this.Ω.mulByScalar(this.M.a, this.M.uom);
+            this.Ω.mulByNumber(2 / 5);
+            this.Ω.inv();
+            this.Ω.mulByBivector(this.L);
+        };
+        Particle3.prototype.updateInertiaTensor = function () {
+        };
+        return Particle3;
+    }(RigidBody3_1.default));
+    exports.Particle3 = Particle3;
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = Particle3;
+});
+
 define('davinci-newton/solvers/RungeKutta',["require", "exports", "../util/zeroArray"], function (require, exports, zeroArray_1) {
     "use strict";
     var RungeKutta = (function () {
@@ -10831,7 +10904,7 @@ define('davinci-newton/engine3D/Spring3',["require", "exports", "../objects/Abst
     exports.default = Spring3;
 });
 
-define('davinci-newton',["require", "exports", "./davinci-newton/solvers/AdaptiveStepSolver", "./davinci-newton/view/AlignH", "./davinci-newton/view/AlignV", "./davinci-newton/graph/AxisChoice", "./davinci-newton/engine3D/Block3", "./davinci-newton/util/CircularList", "./davinci-newton/config", "./davinci-newton/solvers/ConstantEnergySolver", "./davinci-newton/engine3D/ConstantForceLaw3", "./davinci-newton/model/CoordType", "./davinci-newton/engine3D/CoulombLaw3", "./davinci-newton/engine3D/Cylinder3", "./davinci-newton/strategy/DefaultAdvanceStrategy", "./davinci-newton/math/Dimensions", "./davinci-newton/graph/DisplayGraph", "./davinci-newton/view/DrawingMode", "./davinci-newton/graph/EnergyTimeGraph", "./davinci-newton/solvers/EulerMethod", "./davinci-newton/engine3D/Force3", "./davinci-newton/math/Geometric3", "./davinci-newton/graph/Graph", "./davinci-newton/graph/GraphLine", "./davinci-newton/engine3D/GravitationLaw3", "./davinci-newton/view/LabCanvas", "./davinci-newton/math/Matrix3", "./davinci-newton/solvers/ModifiedEuler", "./davinci-newton/math/QQ", "./davinci-newton/engine3D/RigidBody3", "./davinci-newton/engine3D/Physics3", "./davinci-newton/solvers/RungeKutta", "./davinci-newton/view/SimView", "./davinci-newton/engine3D/Sphere3", "./davinci-newton/engine3D/Spring3", "./davinci-newton/math/Unit", "./davinci-newton/core/VarsList", "./davinci-newton/math/Vec3"], function (require, exports, AdaptiveStepSolver_1, AlignH_1, AlignV_1, AxisChoice_1, Block3_1, CircularList_1, config_1, ConstantEnergySolver_1, ConstantForceLaw3_1, CoordType_1, CoulombLaw3_1, Cylinder3_1, DefaultAdvanceStrategy_1, Dimensions_1, DisplayGraph_1, DrawingMode_1, EnergyTimeGraph_1, EulerMethod_1, Force3_1, Geometric3_1, Graph_1, GraphLine_1, GravitationLaw3_1, LabCanvas_1, Matrix3_1, ModifiedEuler_1, QQ_1, RigidBody3_1, Physics3_1, RungeKutta_1, SimView_1, Sphere3_1, Spring3_1, Unit_1, VarsList_1, Vec3_1) {
+define('davinci-newton',["require", "exports", "./davinci-newton/solvers/AdaptiveStepSolver", "./davinci-newton/view/AlignH", "./davinci-newton/view/AlignV", "./davinci-newton/graph/AxisChoice", "./davinci-newton/engine3D/Block3", "./davinci-newton/util/CircularList", "./davinci-newton/config", "./davinci-newton/solvers/ConstantEnergySolver", "./davinci-newton/engine3D/ConstantForceLaw3", "./davinci-newton/model/CoordType", "./davinci-newton/engine3D/CoulombLaw3", "./davinci-newton/engine3D/Cylinder3", "./davinci-newton/strategy/DefaultAdvanceStrategy", "./davinci-newton/math/Dimensions", "./davinci-newton/graph/DisplayGraph", "./davinci-newton/view/DrawingMode", "./davinci-newton/graph/EnergyTimeGraph", "./davinci-newton/solvers/EulerMethod", "./davinci-newton/engine3D/Force3", "./davinci-newton/math/Geometric3", "./davinci-newton/graph/Graph", "./davinci-newton/graph/GraphLine", "./davinci-newton/engine3D/GravitationLaw3", "./davinci-newton/view/LabCanvas", "./davinci-newton/math/Matrix3", "./davinci-newton/solvers/ModifiedEuler", "./davinci-newton/math/QQ", "./davinci-newton/engine3D/RigidBody3", "./davinci-newton/engine3D/Particle3", "./davinci-newton/engine3D/Physics3", "./davinci-newton/solvers/RungeKutta", "./davinci-newton/view/SimView", "./davinci-newton/engine3D/Sphere3", "./davinci-newton/engine3D/Spring3", "./davinci-newton/math/Unit", "./davinci-newton/core/VarsList", "./davinci-newton/math/Vec3"], function (require, exports, AdaptiveStepSolver_1, AlignH_1, AlignV_1, AxisChoice_1, Block3_1, CircularList_1, config_1, ConstantEnergySolver_1, ConstantForceLaw3_1, CoordType_1, CoulombLaw3_1, Cylinder3_1, DefaultAdvanceStrategy_1, Dimensions_1, DisplayGraph_1, DrawingMode_1, EnergyTimeGraph_1, EulerMethod_1, Force3_1, Geometric3_1, Graph_1, GraphLine_1, GravitationLaw3_1, LabCanvas_1, Matrix3_1, ModifiedEuler_1, QQ_1, RigidBody3_1, Particle3_1, Physics3_1, RungeKutta_1, SimView_1, Sphere3_1, Spring3_1, Unit_1, VarsList_1, Vec3_1) {
     "use strict";
     var newton = {
         get LAST_MODIFIED() { return config_1.default.LAST_MODIFIED; },
@@ -10862,6 +10935,7 @@ define('davinci-newton',["require", "exports", "./davinci-newton/solvers/Adaptiv
         get Matrix3() { return Matrix3_1.default; },
         get ModifiedEuler() { return ModifiedEuler_1.default; },
         get QQ() { return QQ_1.default; },
+        get Particle3() { return Particle3_1.default; },
         get Physics3() { return Physics3_1.default; },
         get RigidBody3() { return RigidBody3_1.default; },
         get RungeKutta() { return RungeKutta_1.default; },
