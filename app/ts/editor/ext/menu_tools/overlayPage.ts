@@ -1,8 +1,8 @@
 // Generates an overlay for displaying menus. The overlay is an absolutely
 
-import {createHTMLDivElement} from "../../lib/dom";
+import { createHTMLDivElement } from "../../lib/dom";
 import Editor from '../../Editor';
-// var cssText = require("../../requirejs/text!./settings_menu.css");
+// cssText = require("../../requirejs/text!./settings_menu.css");
 // dom.importCssString(cssText);
 
 /**
@@ -17,13 +17,13 @@ import Editor from '../../Editor';
  */
 export default function overlayPage(editor: Editor, contentElement: Node, top: string | number, right: string | number, bottom: string | number, left: string | number) {
 
-    var topStyle = top ? 'top: ' + top + ';' : '';
-    var bottomStyle = bottom ? 'bottom: ' + bottom + ';' : '';
-    var rightStyle = right ? 'right: ' + right + ';' : '';
-    var leftStyle = left ? 'left: ' + left + ';' : '';
+    const topStyle = top ? 'top: ' + top + ';' : '';
+    const bottomStyle = bottom ? 'bottom: ' + bottom + ';' : '';
+    const rightStyle = right ? 'right: ' + right + ';' : '';
+    const leftStyle = left ? 'left: ' + left + ';' : '';
 
-    var closer = document.createElement('div');
-    var contentContainer = document.createElement('div');
+    let closer = document.createElement('div');
+    const contentContainer = document.createElement('div');
 
     function documentEscListener(e: KeyboardEvent) {
         if (e.keyCode === 27) {
@@ -49,10 +49,10 @@ export default function overlayPage(editor: Editor, contentElement: Node, top: s
         e.stopPropagation();
     });
 
-    var wrapper = createHTMLDivElement();
+    const wrapper = createHTMLDivElement();
     wrapper.style.position = "relative";
 
-    var closeButton = createHTMLDivElement();
+    const closeButton = createHTMLDivElement();
     closeButton.className = "ace_closeButton";
     closeButton.addEventListener('click', function () {
         closer.click();

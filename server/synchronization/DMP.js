@@ -525,8 +525,7 @@ var DMP = (function () {
         var pointermid = pointermax;
         var pointerstart = 0;
         while (pointermin < pointermid) {
-            if (text1.substring(pointerstart, pointermid) ===
-                text2.substring(pointerstart, pointermid)) {
+            if (text1.substring(pointerstart, pointermid) === text2.substring(pointerstart, pointermid)) {
                 pointermin = pointermid;
                 pointerstart = pointermin;
             }
@@ -547,8 +546,7 @@ var DMP = (function () {
         var pointermid = pointermax;
         var pointerend = 0;
         while (pointermin < pointermid) {
-            if (text1.substring(text1.length - pointermid, text1.length - pointerend) ===
-                text2.substring(text2.length - pointermid, text2.length - pointerend)) {
+            if (text1.substring(text1.length - pointermid, text1.length - pointerend) === text2.substring(text2.length - pointermid, text2.length - pointerend)) {
                 pointermin = pointermid;
                 pointerend = pointermin;
             }
@@ -605,7 +603,10 @@ var DMP = (function () {
             var seed = longtext.substring(i, i + Math.floor(longtext.length / 4));
             var j = -1;
             var best_common = "";
-            var best_longtext_a, best_longtext_b, best_shorttext_a, best_shorttext_b;
+            var best_longtext_a;
+            var best_longtext_b;
+            var best_shorttext_a;
+            var best_shorttext_b;
             while ((j = shorttext.indexOf(seed, j + 1)) !== -1) {
                 var prefixLength = self.diff_commonPrefix(longtext.substring(i), shorttext.substring(j));
                 var suffixLength = self.diff_commonSuffix(longtext.substring(0, i), shorttext.substring(0, j));
@@ -1200,7 +1201,8 @@ var DMP = (function () {
         }
         var matchmask = 1 << (pattern.length - 1);
         best_loc = -1;
-        var bin_min, bin_mid;
+        var bin_min;
+        var bin_mid;
         var bin_max = pattern.length + text.length;
         var last_rd;
         for (var d = 0; d < pattern.length; d++) {
@@ -1410,7 +1412,7 @@ var DMP = (function () {
         for (var x = 0; x < patches.length; x++) {
             var expected_loc = patches[x].start2 + delta;
             var text1 = this.sourceText(patches[x].diffs);
-            var start_loc;
+            var start_loc = void 0;
             var end_loc = -1;
             if (text1.length > this.Match_MaxBits) {
                 start_loc = this.match_main(text, text1.substring(0, this.Match_MaxBits), expected_loc);
@@ -1453,7 +1455,7 @@ var DMP = (function () {
                     else {
                         this.diff_cleanupSemanticLossless(diffs);
                         var index1 = 0;
-                        var index2;
+                        var index2 = void 0;
                         for (var y = 0; y < patches[x].diffs.length; y++) {
                             var mod = patches[x].diffs[y];
                             if (mod[0] !== DIFF_EQUAL_1.default) {
@@ -1558,8 +1560,7 @@ var DMP = (function () {
                     precontext = this.resultText(patch.diffs);
                     precontext =
                         precontext.substring(precontext.length - this.Patch_Margin);
-                    var postcontext = this.sourceText(bigpatch.diffs)
-                        .substring(0, this.Patch_Margin);
+                    var postcontext = this.sourceText(bigpatch.diffs).substring(0, this.Patch_Margin);
                     if (postcontext !== '') {
                         patch.length1 += postcontext.length;
                         patch.length2 += postcontext.length;
@@ -1627,8 +1628,9 @@ var DMP = (function () {
             textPointer++;
             while (textPointer < text.length) {
                 var sign = text[textPointer].charAt(0);
+                var line = void 0;
                 try {
-                    var line = decodeURI(text[textPointer].substring(1));
+                    line = decodeURI(text[textPointer].substring(1));
                 }
                 catch (ex) {
                     throw new Error('Illegal escape in patch_fromText: ' + line);

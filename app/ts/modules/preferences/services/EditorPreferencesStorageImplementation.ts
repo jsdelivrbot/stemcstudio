@@ -43,7 +43,7 @@ interface Preferences {
 }
 
 function mixin(obj: Preferences, base: Preferences) {
-    for (var key in base) {
+    for (const key in base) {
         if (typeof obj[key] === 'undefined') {
             obj[key] = base[key];
         }

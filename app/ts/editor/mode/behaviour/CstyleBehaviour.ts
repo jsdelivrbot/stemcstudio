@@ -1,6 +1,7 @@
 import Behaviour from "../Behaviour";
+import { BehaviorCallbackThis } from '../../BehaviourCallback';
 import TokenIterator from "../../TokenIterator";
-import {stringRepeat} from "../../lib/lang";
+import { stringRepeat } from "../../lib/lang";
 import Editor from "../../Editor";
 import EditSession from "../../EditSession";
 import Position from "../../Position";
@@ -22,10 +23,10 @@ interface BehaviourContext {
     maybeInsertedLineEnd: string;
 }
 
-var context: BehaviourContext;
+let context: BehaviourContext;
 let contextCache: { rangeCount?: number } = {};
-var initContext = function(editor: Editor): void {
-    var id = -1;
+const initContext = function (editor: Editor): void {
+    let id = -1;
     // FIXME: multiSelect looks like a kind of Selection.
     // rangeCount is a property of Selection.
     if (editor.multiSelect) {
@@ -49,24 +50,22 @@ var initContext = function(editor: Editor): void {
 };
 
 /**
- * @class CstyleBehaviour
- * @extends Behaviour
+ *
  */
 export default class CstyleBehaviour extends Behaviour {
 
     /**
-     * @class CstyleBehaviour
-     * @constructor
+     *
      */
     constructor() {
         super();
-        this.add("braces", "insertion", function(state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] } {
-            var cursor = editor.getCursorPosition();
-            var line = session.doc.getLine(cursor.row);
+        this.add("braces", "insertion", function (this: BehaviorCallbackThis, state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] } {
+            const cursor = editor.getCursorPosition();
+            const line = session.doc.getLine(cursor.row);
             if (text === '{') {
                 initContext(editor);
-                var selection = editor.getSelectionRange();
-                var selected = session.doc.getTextRange(selection);
+                const selection = editor.getSelectionRange();
+                const selected = session.doc.getTextRange(selection);
                 if (selected !== "" && selected !== "{" && editor.getWrapBehavioursEnabled()) {
                     return {
                         text: '{' + selected + '}',
@@ -90,9 +89,9 @@ export default class CstyleBehaviour extends Behaviour {
             }
             else if (text === '}') {
                 initContext(editor);
-                var rightChar = line.substring(cursor.column, cursor.column + 1);
+                const rightChar = line.substring(cursor.column, cursor.column + 1);
                 if (rightChar === '}') {
-                    var matching = session.findOpeningBracket('}', { column: cursor.column + 1, row: cursor.row });
+                    const matching = session.findOpeningBracket('}', { column: cursor.column + 1, row: cursor.row });
                     if (matching !== null && CstyleBehaviour.isAutoInsertedClosing(cursor, line, text)) {
                         CstyleBehaviour.popAutoInsertedClosing();
                         return { text: '', selection: [1, 1] };
@@ -101,26 +100,27 @@ export default class CstyleBehaviour extends Behaviour {
             }
             else if (text === "\n" || text === "\r\n") {
                 initContext(editor);
-                var closing = "";
+                let closing = "";
                 if (CstyleBehaviour.isMaybeInsertedClosing(cursor, line)) {
                     closing = stringRepeat("}", context.maybeInsertedBrackets);
                     CstyleBehaviour.clearMaybeInsertedClosing();
                 }
-                var rightChar = line.substring(cursor.column, cursor.column + 1);
+                const rightChar = line.substring(cursor.column, cursor.column + 1);
+                let next_indent: string;
                 if (rightChar === '}') {
-                    var openBracePos = session.findMatchingBracket({ row: cursor.row, column: cursor.column + 1 }, '}');
+                    const openBracePos = session.findMatchingBracket({ row: cursor.row, column: cursor.column + 1 }, '}');
                     if (!openBracePos)
                         return null;
-                    var next_indent = this.$getIndent(session.getLine(openBracePos.row));
+                    next_indent = this.$getIndent(session.getLine(openBracePos.row));
                 }
                 else if (closing) {
-                    var next_indent = this.$getIndent(line);
+                    next_indent = this.$getIndent(line);
                 }
                 else {
                     CstyleBehaviour.clearMaybeInsertedClosing();
                     return;
                 }
-                var indent = next_indent + session.getTabString();
+                const indent = next_indent + session.getTabString();
 
                 return {
                     text: '\n' + indent + '\n' + next_indent + closing,
@@ -131,12 +131,12 @@ export default class CstyleBehaviour extends Behaviour {
             }
         });
 
-        this.add("braces", "deletion", function(state: string, action: string, editor: Editor, session: EditSession, range: Range) {
-            var selected: string = session.doc.getTextRange(range);
+        this.add("braces", "deletion", function (this: void, state: string, action: string, editor: Editor, session: EditSession, range: Range) {
+            const selected: string = session.doc.getTextRange(range);
             if (!range.isMultiLine() && selected === '{') {
                 initContext(editor);
-                var line = session.doc.getLine(range.start.row);
-                var rightChar = line.substring(range.end.column, range.end.column + 1);
+                const line = session.doc.getLine(range.start.row);
+                const rightChar = line.substring(range.end.column, range.end.column + 1);
                 if (rightChar === '}') {
                     range.end.column++;
                     return range;
@@ -147,11 +147,11 @@ export default class CstyleBehaviour extends Behaviour {
             }
         });
 
-        this.add("parens", "insertion", function(state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] } {
+        this.add("parens", "insertion", function (this: void, state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] } {
             if (text === '(') {
                 initContext(editor);
-                var selectionRange = editor.getSelectionRange();
-                var selected: string = session.doc.getTextRange(selectionRange);
+                const selectionRange = editor.getSelectionRange();
+                const selected: string = session.doc.getTextRange(selectionRange);
                 if (selected !== "" && editor.getWrapBehavioursEnabled()) {
                     return { text: '(' + selected + ')', selection: void 0 };
                 }
@@ -162,11 +162,11 @@ export default class CstyleBehaviour extends Behaviour {
             }
             else if (text === ')') {
                 initContext(editor);
-                var cursor = editor.getCursorPosition();
-                var line = session.doc.getLine(cursor.row);
-                var rightChar = line.substring(cursor.column, cursor.column + 1);
+                const cursor = editor.getCursorPosition();
+                const line = session.doc.getLine(cursor.row);
+                const rightChar = line.substring(cursor.column, cursor.column + 1);
                 if (rightChar === ')') {
-                    var matching = session.findOpeningBracket(')', { column: cursor.column + 1, row: cursor.row });
+                    const matching = session.findOpeningBracket(')', { column: cursor.column + 1, row: cursor.row });
                     if (matching !== null && CstyleBehaviour.isAutoInsertedClosing(cursor, line, text)) {
                         CstyleBehaviour.popAutoInsertedClosing();
                         return { text: '', selection: [1, 1] };
@@ -175,12 +175,12 @@ export default class CstyleBehaviour extends Behaviour {
             }
         });
 
-        this.add("parens", "deletion", function(state: string, action: string, editor: Editor, session: EditSession, range: Range) {
-            var selected: string = session.doc.getTextRange(range);
+        this.add("parens", "deletion", function (this: void, state: string, action: string, editor: Editor, session: EditSession, range: Range) {
+            const selected: string = session.doc.getTextRange(range);
             if (!range.isMultiLine() && selected === '(') {
                 initContext(editor);
-                var line = session.doc.getLine(range.start.row);
-                var rightChar = line.substring(range.start.column + 1, range.start.column + 2);
+                const line = session.doc.getLine(range.start.row);
+                const rightChar = line.substring(range.start.column + 1, range.start.column + 2);
                 if (rightChar === ')') {
                     range.end.column++;
                     return range;
@@ -188,11 +188,11 @@ export default class CstyleBehaviour extends Behaviour {
             }
         });
 
-        this.add("brackets", "insertion", function(state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] } {
+        this.add("brackets", "insertion", function (this: void, state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] } {
             if (text === '[') {
                 initContext(editor);
-                var selectionRange: Range = editor.getSelectionRange();
-                var selected: string = session.doc.getTextRange(selectionRange);
+                const selectionRange: Range = editor.getSelectionRange();
+                const selected: string = session.doc.getTextRange(selectionRange);
                 if (selected !== "" && editor.getWrapBehavioursEnabled()) {
                     return { text: '[' + selected + ']', selection: void 0 };
                 }
@@ -216,12 +216,12 @@ export default class CstyleBehaviour extends Behaviour {
             }
         });
 
-        this.add("brackets", "deletion", function(state: string, action: string, editor: Editor, session: EditSession, range: Range): Range {
-            var selected: string = session.doc.getTextRange(range);
+        this.add("brackets", "deletion", function (this: void, state: string, action: string, editor: Editor, session: EditSession, range: Range): Range {
+            const selected: string = session.doc.getTextRange(range);
             if (!range.isMultiLine() && selected === '[') {
                 initContext(editor);
-                var line = session.doc.getLine(range.start.row);
-                var rightChar = line.substring(range.start.column + 1, range.start.column + 2);
+                const line = session.doc.getLine(range.start.row);
+                const rightChar = line.substring(range.start.column + 1, range.start.column + 2);
                 if (rightChar === ']') {
                     range.end.column++;
                     return range;
@@ -229,7 +229,7 @@ export default class CstyleBehaviour extends Behaviour {
             }
         });
 
-        this.add("string_dquotes", "insertion", function(state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] } {
+        this.add("string_dquotes", "insertion", function (this: void, state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] } {
             if (text === '"' || text === "'") {
                 initContext(editor);
                 const quote = text;
@@ -285,7 +285,7 @@ export default class CstyleBehaviour extends Behaviour {
             }
         });
 
-        this.add("string_dquotes", "deletion", function(state: string, action: string, editor: Editor, session: EditSession, range: Range) {
+        this.add("string_dquotes", "deletion", function (this: void, state: string, action: string, editor: Editor, session: EditSession, range: Range) {
             const selected: string = session.doc.getTextRange(range);
             if (!range.isMultiLine() && (selected === '"' || selected === "'")) {
                 initContext(editor);
@@ -299,13 +299,13 @@ export default class CstyleBehaviour extends Behaviour {
         });
     }
     static isSaneInsertion(editor: Editor, session: EditSession): boolean {
-        var cursor = editor.getCursorPosition();
-        var iterator = new TokenIterator(session, cursor.row, cursor.column);
+        const cursor = editor.getCursorPosition();
+        const iterator = new TokenIterator(session, cursor.row, cursor.column);
 
         // Don't insert in the middle of a keyword/identifier/lexical.
         if (!this.$matchTokenType(iterator.getCurrentToken() || "text", SAFE_INSERT_IN_TOKENS)) {
             // Look ahead in case we're at the end of a token.
-            var iterator2 = new TokenIterator(session, cursor.row, cursor.column + 1);
+            const iterator2 = new TokenIterator(session, cursor.row, cursor.column + 1);
             if (!this.$matchTokenType(iterator2.getCurrentToken() || "text", SAFE_INSERT_IN_TOKENS)) {
                 return false;
             }
@@ -327,8 +327,8 @@ export default class CstyleBehaviour extends Behaviour {
     }
 
     static recordAutoInsert(editor: Editor, session: EditSession, bracket: string): void {
-        var cursor = editor.getCursorPosition();
-        var line = session.doc.getLine(cursor.row);
+        const cursor = editor.getCursorPosition();
+        const line = session.doc.getLine(cursor.row);
         // Reset previous state if text or context changed too much.
         if (!this.isAutoInsertedClosing(cursor, line, context.autoInsertedLineEnd[0])) {
             context.autoInsertedBrackets = 0;
@@ -339,8 +339,8 @@ export default class CstyleBehaviour extends Behaviour {
     }
 
     static recordMaybeInsert(editor: Editor, session: EditSession, bracket: string): void {
-        var cursor = editor.getCursorPosition();
-        var line = session.doc.getLine(cursor.row);
+        const cursor = editor.getCursorPosition();
+        const line = session.doc.getLine(cursor.row);
         if (!this.isMaybeInsertedClosing(cursor, line)) {
             context.maybeInsertedBrackets = 0;
         }

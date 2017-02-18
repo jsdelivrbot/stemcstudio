@@ -57,10 +57,7 @@ export default class MatchingBraceOutdent {
 
     /**
      * FIXME: Why isn't this a static method?
-     *
-     * @method $getIndent
-     * @param line {string}
-     * @return {string}
+     * @param line
      */
     $getIndent(line: string): string {
         return line.match(/^\s*/)[0];

@@ -52,8 +52,8 @@ function assertEquivalent(expected: any, actual: any, msg?: string) {
 
 function diff_rebuildtexts(diffs: (number | string)[][]) {
     // Construct the two texts which made up the diff originally.
-    var text1 = "";
-    var text2 = "";
+    let text1 = "";
+    let text2 = "";
     for (let x = 0; x < diffs.length; x++) {
         if (diffs[x][0] !== DIFF_INSERT) {
             text1 += diffs[x][1];
@@ -67,65 +67,65 @@ function diff_rebuildtexts(diffs: (number | string)[][]) {
 
 const dmp = new DMP();
 
-describe("diff", function() {
+describe("diff", function () {
 
-    describe("commonPrefix", function() {
-        it("Null case", function() {
+    describe("commonPrefix", function () {
+        it("Null case", function () {
             expect(dmp.diff_commonPrefix("abc", "xyz")).toBe(0);
         });
-        it("Non-null case", function() {
+        it("Non-null case", function () {
             expect(dmp.diff_commonPrefix("1234abcdef", "1234xyz")).toBe(4);
         });
-        it("Whole case LHS", function() {
+        it("Whole case LHS", function () {
             expect(dmp.diff_commonPrefix("1234", "1234xyz")).toBe(4);
         });
-        it("Whole case RHS", function() {
+        it("Whole case RHS", function () {
             expect(dmp.diff_commonPrefix("1234xyz", "1234")).toBe(4);
         });
     });
 
-    describe("commonSuffix", function() {
-        it("Null case", function() {
+    describe("commonSuffix", function () {
+        it("Null case", function () {
             expect(dmp.diff_commonSuffix("abc", "xyz")).toBe(0);
         });
-        it("Non-null case", function() {
+        it("Non-null case", function () {
             expect(dmp.diff_commonSuffix("abcdef1234", "xyz1234")).toBe(4);
         });
-        it("Whole case LHS", function() {
+        it("Whole case LHS", function () {
             expect(dmp.diff_commonSuffix("1234", "xyz1234")).toBe(4);
         });
-        it("Whole case RHS", function() {
+        it("Whole case RHS", function () {
             expect(dmp.diff_commonSuffix("xyz1234", "1234")).toBe(4);
         });
     });
 
-    describe("commonOverlap", function() {
-        it("Null case", function() {
+    describe("commonOverlap", function () {
+        it("Null case", function () {
             expect(dmp.diff_commonOverlap_("", "abcd")).toBe(0);
         });
-        it("Whole case", function() {
+        it("Whole case", function () {
             expect(dmp.diff_commonOverlap_("abc", "abcd")).toBe(3);
         });
-        it("No overlap", function() {
+        it("No overlap", function () {
             expect(dmp.diff_commonOverlap_("123456", "abcd")).toBe(0);
         });
-        it("Overlap", function() {
+        it("Overlap", function () {
             expect(dmp.diff_commonOverlap_("123456xxx", "xxxabcd")).toBe(3);
         });
-        it("Unicode", function() {
+        it("Unicode", function () {
             // Some overly clever languages (C#) may treat ligatures as equal to their
             // component letters.  E.g. U+FB01 == "fi"
             expect(dmp.diff_commonOverlap_("fi", "\ufb01i")).toBe(0);
         });
     });
 
-    describe("halfMatch", function() {
+    describe("halfMatch", function () {
         dmp.Diff_Timeout = 1;
-        it("No match", function() {
+        it("No match", function () {
             expect(dmp.diff_halfMatch_("1234567890", "abcdef")).toBeNull();
             expect(dmp.diff_halfMatch_("12345", "23")).toBeNull();
         });
-        it("Single Match", function() {
+        it("Single Match", function () {
             assertEquivalent(["12", "90", "a", "z", "345678"], dmp.diff_halfMatch_("1234567890", "a345678z"));
 
             assertEquivalent(["a", "z", "12", "90", "345678"], dmp.diff_halfMatch_("a345678z", "1234567890"));
@@ -134,37 +134,37 @@ describe("diff", function() {
 
             assertEquivalent(["a", "xyz", "1", "7890", "23456"], dmp.diff_halfMatch_("a23456xyz", "1234567890"));
         });
-        it("Multiple Matches", function() {
+        it("Multiple Matches", function () {
             assertEquivalent(["12123", "123121", "a", "z", "1234123451234"], dmp.diff_halfMatch_("121231234123451234123121", "a1234123451234z"));
 
             assertEquivalent(["", "-=-=-=-=-=", "x", "", "x-=-=-=-=-=-=-="], dmp.diff_halfMatch_("x-=-=-=-=-=-=-=-=-=-=-=-=", "xx-=-=-=-=-=-=-="));
 
             assertEquivalent(["-=-=-=-=-=", "", "", "y", "-=-=-=-=-=-=-=y"], dmp.diff_halfMatch_("-=-=-=-=-=-=-=-=-=-=-=-=y", "-=-=-=-=-=-=-=yy"));
         });
-        it("Non-optimal halfmatch", function() {
+        it("Non-optimal halfmatch", function () {
             // Optimal diff would be -q+x=H-i+e=lloHe+Hu=llo-Hew+y not -qHillo+x=HelloHe-w+Hulloy
             assertEquivalent(["qHillo", "w", "x", "Hulloy", "HelloHe"], dmp.diff_halfMatch_("qHilloHelloHew", "xHelloHeHulloy"));
         });
-        it("Optimal no halfmatch", function() {
+        it("Optimal no halfmatch", function () {
             dmp.Diff_Timeout = 0;
             expect(dmp.diff_halfMatch_("qHilloHelloHew", "xHelloHeHulloy")).toBeNull();
         });
     });
 
-    describe("linesToChars", function() {
+    describe("linesToChars", function () {
         function assertLinesToCharsResultEquals(expected: LinesToCharsResult, actual: LinesToCharsResult) {
             expect(actual.chars1).toBe(expected.chars1);
             expect(actual.chars2).toBe(expected.chars2);
             assertEquivalent(expected.lineArray, actual.lineArray);
         }
-        it("Convert lines down to characters", function() {
+        it("Convert lines down to characters", function () {
             assertLinesToCharsResultEquals({ chars1: "\x01\x02\x01", chars2: "\x02\x01\x02", lineArray: ["", "alpha\n", "beta\n"] }, dmp.diff_linesToChars_("alpha\nbeta\nalpha\n", "beta\nalpha\nbeta\n"));
 
             assertLinesToCharsResultEquals({ chars1: "", chars2: "\x01\x02\x03\x03", lineArray: ["", "alpha\r\n", "beta\r\n", "\r\n"] }, dmp.diff_linesToChars_("", "alpha\r\nbeta\r\n\r\n\r\n"));
 
             assertLinesToCharsResultEquals({ chars1: "\x01", chars2: "\x02", lineArray: ["", "a", "b"] }, dmp.diff_linesToChars_("a", "b"));
         });
-        it("More than 256 to reveal any 8-bit limitations", function() {
+        it("More than 256 to reveal any 8-bit limitations", function () {
             const n = 300;
             const lineList = [];
             const charList = [];
@@ -181,13 +181,13 @@ describe("diff", function() {
         });
     });
 
-    describe("charsToLines", function() {
-        it("Convert chars up to lines", function() {
+    describe("charsToLines", function () {
+        it("Convert chars up to lines", function () {
             const diffs: Diff[] = [[DIFF_EQUAL, "\x01\x02\x01"], [DIFF_INSERT, "\x02\x01\x02"]];
             dmp.diff_charsToLines_(diffs, ["", "alpha\n", "beta\n"]);
             assertEquivalent([[DIFF_EQUAL, "alpha\nbeta\nalpha\n"], [DIFF_INSERT, "beta\nalpha\nbeta\n"]], diffs);
         });
-        it("More than 256 to reveal any 8-bit limitations", function() {
+        it("More than 256 to reveal any 8-bit limitations", function () {
             const n = 300;
             const lineList = [];
             const charList = [];
@@ -206,63 +206,63 @@ describe("diff", function() {
         });
     });
 
-    describe("cleanupMerge", function() {
-        it("Null case", function() {
+    describe("cleanupMerge", function () {
+        it("Null case", function () {
             const diffs = [];
             dmp.diff_cleanupMerge(diffs);
             assertEquivalent([], diffs);
         });
-        it("No change case", function() {
+        it("No change case", function () {
             const diffs = [[DIFF_EQUAL, "a"], [DIFF_DELETE, "b"], [DIFF_INSERT, "c"]];
             dmp.diff_cleanupMerge(diffs);
             assertEquivalent([[DIFF_EQUAL, "a"], [DIFF_DELETE, "b"], [DIFF_INSERT, "c"]], diffs);
         });
-        it("Merge equalities", function() {
+        it("Merge equalities", function () {
             const diffs = [[DIFF_EQUAL, "a"], [DIFF_EQUAL, "b"], [DIFF_EQUAL, "c"]];
             dmp.diff_cleanupMerge(diffs);
             assertEquivalent([[DIFF_EQUAL, "abc"]], diffs);
         });
-        it("Merge deletions", function() {
+        it("Merge deletions", function () {
             const diffs = [[DIFF_DELETE, "a"], [DIFF_DELETE, "b"], [DIFF_DELETE, "c"]];
             dmp.diff_cleanupMerge(diffs);
             assertEquivalent([[DIFF_DELETE, "abc"]], diffs);
         });
-        it("Merge insertions", function() {
+        it("Merge insertions", function () {
             const diffs = [[DIFF_INSERT, "a"], [DIFF_INSERT, "b"], [DIFF_INSERT, "c"]];
             dmp.diff_cleanupMerge(diffs);
             assertEquivalent([[DIFF_INSERT, "abc"]], diffs);
         });
-        it("Merge interweave", function() {
+        it("Merge interweave", function () {
             const diffs = [[DIFF_DELETE, "a"], [DIFF_INSERT, "b"], [DIFF_DELETE, "c"], [DIFF_INSERT, "d"], [DIFF_EQUAL, "e"], [DIFF_EQUAL, "f"]];
             dmp.diff_cleanupMerge(diffs);
             assertEquivalent([[DIFF_DELETE, "ac"], [DIFF_INSERT, "bd"], [DIFF_EQUAL, "ef"]], diffs);
         });
-        it("Prefix and suffix detection", function() {
+        it("Prefix and suffix detection", function () {
             const diffs = [[DIFF_DELETE, "a"], [DIFF_INSERT, "abc"], [DIFF_DELETE, "dc"]];
             dmp.diff_cleanupMerge(diffs);
             assertEquivalent([[DIFF_EQUAL, "a"], [DIFF_DELETE, "d"], [DIFF_INSERT, "b"], [DIFF_EQUAL, "c"]], diffs);
         });
-        it("Prefix and suffix detection with equalities", function() {
+        it("Prefix and suffix detection with equalities", function () {
             const diffs = [[DIFF_EQUAL, "x"], [DIFF_DELETE, "a"], [DIFF_INSERT, "abc"], [DIFF_DELETE, "dc"], [DIFF_EQUAL, "y"]];
             dmp.diff_cleanupMerge(diffs);
             assertEquivalent([[DIFF_EQUAL, "xa"], [DIFF_DELETE, "d"], [DIFF_INSERT, "b"], [DIFF_EQUAL, "cy"]], diffs);
         });
-        it("Slide edit left", function() {
+        it("Slide edit left", function () {
             const diffs = [[DIFF_EQUAL, "a"], [DIFF_INSERT, "ba"], [DIFF_EQUAL, "c"]];
             dmp.diff_cleanupMerge(diffs);
             assertEquivalent([[DIFF_INSERT, "ab"], [DIFF_EQUAL, "ac"]], diffs);
         });
-        it("Slide edit right", function() {
+        it("Slide edit right", function () {
             const diffs = [[DIFF_EQUAL, "c"], [DIFF_INSERT, "ab"], [DIFF_EQUAL, "a"]];
             dmp.diff_cleanupMerge(diffs);
             assertEquivalent([[DIFF_EQUAL, "ca"], [DIFF_INSERT, "ba"]], diffs);
         });
-        it("Slide edit left recursive", function() {
+        it("Slide edit left recursive", function () {
             const diffs = [[DIFF_EQUAL, "a"], [DIFF_DELETE, "b"], [DIFF_EQUAL, "c"], [DIFF_DELETE, "ac"], [DIFF_EQUAL, "x"]];
             dmp.diff_cleanupMerge(diffs);
             assertEquivalent([[DIFF_DELETE, "abc"], [DIFF_EQUAL, "acx"]], diffs);
         });
-        it("Slide edit right recursive", function() {
+        it("Slide edit right recursive", function () {
             const diffs = [[DIFF_EQUAL, "x"], [DIFF_DELETE, "ca"], [DIFF_EQUAL, "c"], [DIFF_DELETE, "b"], [DIFF_EQUAL, "a"]];
             dmp.diff_cleanupMerge(diffs);
             assertEquivalent([[DIFF_EQUAL, "xca"], [DIFF_DELETE, "cba"]], diffs);
@@ -270,135 +270,135 @@ describe("diff", function() {
     });
 
     // Slide diffs to match logical boundaries.
-    describe("cleanupSemanticLossless", function() {
-        it("Null case", function() {
+    describe("cleanupSemanticLossless", function () {
+        it("Null case", function () {
             const diffs = [];
             dmp.diff_cleanupSemanticLossless(diffs);
             assertEquivalent([], diffs);
         });
-        it("Blank lines", function() {
+        it("Blank lines", function () {
             const diffs = [[DIFF_EQUAL, "AAA\r\n\r\nBBB"], [DIFF_INSERT, "\r\nDDD\r\n\r\nBBB"], [DIFF_EQUAL, "\r\nEEE"]];
             dmp.diff_cleanupSemanticLossless(diffs);
             assertEquivalent([[DIFF_EQUAL, "AAA\r\n\r\n"], [DIFF_INSERT, "BBB\r\nDDD\r\n\r\n"], [DIFF_EQUAL, "BBB\r\nEEE"]], diffs);
         });
-        it("Line boundaries", function() {
+        it("Line boundaries", function () {
             const diffs = [[DIFF_EQUAL, "AAA\r\nBBB"], [DIFF_INSERT, " DDD\r\nBBB"], [DIFF_EQUAL, " EEE"]];
             dmp.diff_cleanupSemanticLossless(diffs);
             assertEquivalent([[DIFF_EQUAL, "AAA\r\n"], [DIFF_INSERT, "BBB DDD\r\n"], [DIFF_EQUAL, "BBB EEE"]], diffs);
         });
-        it("Word boundaries", function() {
+        it("Word boundaries", function () {
             const diffs = [[DIFF_EQUAL, "The c"], [DIFF_INSERT, "ow and the c"], [DIFF_EQUAL, "at."]];
             dmp.diff_cleanupSemanticLossless(diffs);
             assertEquivalent([[DIFF_EQUAL, "The "], [DIFF_INSERT, "cow and the "], [DIFF_EQUAL, "cat."]], diffs);
         });
-        it("Alphanumeric boundaries", function() {
+        it("Alphanumeric boundaries", function () {
             const diffs = [[DIFF_EQUAL, "The-c"], [DIFF_INSERT, "ow-and-the-c"], [DIFF_EQUAL, "at."]];
             dmp.diff_cleanupSemanticLossless(diffs);
             assertEquivalent([[DIFF_EQUAL, "The-"], [DIFF_INSERT, "cow-and-the-"], [DIFF_EQUAL, "cat."]], diffs);
         });
-        it("Hitting the start", function() {
+        it("Hitting the start", function () {
             const diffs = [[DIFF_EQUAL, "a"], [DIFF_DELETE, "a"], [DIFF_EQUAL, "ax"]];
             dmp.diff_cleanupSemanticLossless(diffs);
             assertEquivalent([[DIFF_DELETE, "a"], [DIFF_EQUAL, "aax"]], diffs);
         });
-        it("Hitting the end", function() {
+        it("Hitting the end", function () {
             const diffs = [[DIFF_EQUAL, "xa"], [DIFF_DELETE, "a"], [DIFF_EQUAL, "a"]];
             dmp.diff_cleanupSemanticLossless(diffs);
             assertEquivalent([[DIFF_EQUAL, "xaa"], [DIFF_DELETE, "a"]], diffs);
         });
-        it("Sentence boundaries", function() {
+        it("Sentence boundaries", function () {
             const diffs = [[DIFF_EQUAL, "The xxx. The "], [DIFF_INSERT, "zzz. The "], [DIFF_EQUAL, "yyy."]];
             dmp.diff_cleanupSemanticLossless(diffs);
             assertEquivalent([[DIFF_EQUAL, "The xxx."], [DIFF_INSERT, " The zzz."], [DIFF_EQUAL, " The yyy."]], diffs);
         });
     });
 
-    describe("cleanupSemantic", function() {
-        it("Null case", function() {
+    describe("cleanupSemantic", function () {
+        it("Null case", function () {
             const diffs = [];
             dmp.diff_cleanupSemantic(diffs);
             assertEquivalent([], diffs);
         });
-        it("No elimination #1", function() {
+        it("No elimination #1", function () {
             const diffs = [[DIFF_DELETE, "ab"], [DIFF_INSERT, "cd"], [DIFF_EQUAL, "12"], [DIFF_DELETE, "e"]];
             dmp.diff_cleanupSemantic(diffs);
             assertEquivalent([[DIFF_DELETE, "ab"], [DIFF_INSERT, "cd"], [DIFF_EQUAL, "12"], [DIFF_DELETE, "e"]], diffs);
         });
-        it("No elimination #2", function() {
+        it("No elimination #2", function () {
             const diffs = [[DIFF_DELETE, "abc"], [DIFF_INSERT, "ABC"], [DIFF_EQUAL, "1234"], [DIFF_DELETE, "wxyz"]];
             dmp.diff_cleanupSemantic(diffs);
             assertEquivalent([[DIFF_DELETE, "abc"], [DIFF_INSERT, "ABC"], [DIFF_EQUAL, "1234"], [DIFF_DELETE, "wxyz"]], diffs);
         });
-        it("Simple elimination", function() {
+        it("Simple elimination", function () {
             const diffs = [[DIFF_DELETE, "a"], [DIFF_EQUAL, "b"], [DIFF_DELETE, "c"]];
             dmp.diff_cleanupSemantic(diffs);
             assertEquivalent([[DIFF_DELETE, "abc"], [DIFF_INSERT, "b"]], diffs);
         });
-        it("Backpass elimination", function() {
+        it("Backpass elimination", function () {
             const diffs = [[DIFF_DELETE, "ab"], [DIFF_EQUAL, "cd"], [DIFF_DELETE, "e"], [DIFF_EQUAL, "f"], [DIFF_INSERT, "g"]];
             dmp.diff_cleanupSemantic(diffs);
             assertEquivalent([[DIFF_DELETE, "abcdef"], [DIFF_INSERT, "cdfg"]], diffs);
         });
-        it("Multiple eliminations", function() {
+        it("Multiple eliminations", function () {
             const diffs = [[DIFF_INSERT, "1"], [DIFF_EQUAL, "A"], [DIFF_DELETE, "B"], [DIFF_INSERT, "2"], [DIFF_EQUAL, "_"], [DIFF_INSERT, "1"], [DIFF_EQUAL, "A"], [DIFF_DELETE, "B"], [DIFF_INSERT, "2"]];
             dmp.diff_cleanupSemantic(diffs);
             assertEquivalent([[DIFF_DELETE, "AB_AB"], [DIFF_INSERT, "1A2_1A2"]], diffs);
         });
-        it("Word boundaries", function() {
+        it("Word boundaries", function () {
             const diffs = [[DIFF_EQUAL, "The c"], [DIFF_DELETE, "ow and the c"], [DIFF_EQUAL, "at."]];
             dmp.diff_cleanupSemantic(diffs);
             assertEquivalent([[DIFF_EQUAL, "The "], [DIFF_DELETE, "cow and the "], [DIFF_EQUAL, "cat."]], diffs);
         });
-        it("No overlap elimination", function() {
+        it("No overlap elimination", function () {
             const diffs = [[DIFF_DELETE, "abcxx"], [DIFF_INSERT, "xxdef"]];
             dmp.diff_cleanupSemantic(diffs);
             assertEquivalent([[DIFF_DELETE, "abcxx"], [DIFF_INSERT, "xxdef"]], diffs);
         });
-        it("Overlap elimination", function() {
+        it("Overlap elimination", function () {
             const diffs = [[DIFF_DELETE, "abcxxx"], [DIFF_INSERT, "xxxdef"]];
             dmp.diff_cleanupSemantic(diffs);
             assertEquivalent([[DIFF_DELETE, "abc"], [DIFF_EQUAL, "xxx"], [DIFF_INSERT, "def"]], diffs);
         });
-        it("Reverse overlap elimination", function() {
+        it("Reverse overlap elimination", function () {
             const diffs = [[DIFF_DELETE, "xxxabc"], [DIFF_INSERT, "defxxx"]];
             dmp.diff_cleanupSemantic(diffs);
             assertEquivalent([[DIFF_INSERT, "def"], [DIFF_EQUAL, "xxx"], [DIFF_DELETE, "abc"]], diffs);
         });
-        it("Two overlap eliminations", function() {
+        it("Two overlap eliminations", function () {
             const diffs = [[DIFF_DELETE, "abcd1212"], [DIFF_INSERT, "1212efghi"], [DIFF_EQUAL, "----"], [DIFF_DELETE, "A3"], [DIFF_INSERT, "3BC"]];
             dmp.diff_cleanupSemantic(diffs);
             assertEquivalent([[DIFF_DELETE, "abcd"], [DIFF_EQUAL, "1212"], [DIFF_INSERT, "efghi"], [DIFF_EQUAL, "----"], [DIFF_DELETE, "A"], [DIFF_EQUAL, "3"], [DIFF_INSERT, "BC"]], diffs);
         });
     });
 
-    describe("cleanupEfficiency", function() {
+    describe("cleanupEfficiency", function () {
         dmp.Diff_EditCost = 4;
-        it("Null case", function() {
+        it("Null case", function () {
             const diffs = [];
             dmp.diff_cleanupEfficiency(diffs);
             assertEquivalent([], diffs);
         });
-        it("No elimination", function() {
+        it("No elimination", function () {
             const diffs = [[DIFF_DELETE, "ab"], [DIFF_INSERT, "12"], [DIFF_EQUAL, "wxyz"], [DIFF_DELETE, "cd"], [DIFF_INSERT, "34"]];
             dmp.diff_cleanupEfficiency(diffs);
             assertEquivalent([[DIFF_DELETE, "ab"], [DIFF_INSERT, "12"], [DIFF_EQUAL, "wxyz"], [DIFF_DELETE, "cd"], [DIFF_INSERT, "34"]], diffs);
         });
-        it("Four-edit elimination", function() {
+        it("Four-edit elimination", function () {
             const diffs = [[DIFF_DELETE, "ab"], [DIFF_INSERT, "12"], [DIFF_EQUAL, "xyz"], [DIFF_DELETE, "cd"], [DIFF_INSERT, "34"]];
             dmp.diff_cleanupEfficiency(diffs);
             assertEquivalent([[DIFF_DELETE, "abxyzcd"], [DIFF_INSERT, "12xyz34"]], diffs);
         });
-        it("Three-edit elimination", function() {
+        it("Three-edit elimination", function () {
             const diffs = [[DIFF_INSERT, "12"], [DIFF_EQUAL, "x"], [DIFF_DELETE, "cd"], [DIFF_INSERT, "34"]];
             dmp.diff_cleanupEfficiency(diffs);
             assertEquivalent([[DIFF_DELETE, "xcd"], [DIFF_INSERT, "12x34"]], diffs);
         });
-        it("Backpass elimination", function() {
+        it("Backpass elimination", function () {
             const diffs = [[DIFF_DELETE, "ab"], [DIFF_INSERT, "12"], [DIFF_EQUAL, "xy"], [DIFF_INSERT, "34"], [DIFF_EQUAL, "z"], [DIFF_DELETE, "cd"], [DIFF_INSERT, "56"]];
             dmp.diff_cleanupEfficiency(diffs);
             assertEquivalent([[DIFF_DELETE, "abxyzcd"], [DIFF_INSERT, "12xy34z56"]], diffs);
         });
-        it("High cost elimination", function() {
+        it("High cost elimination", function () {
             dmp.Diff_EditCost = 5;
             const diffs = [[DIFF_DELETE, "ab"], [DIFF_INSERT, "12"], [DIFF_EQUAL, "wxyz"], [DIFF_DELETE, "cd"], [DIFF_INSERT, "34"]];
             dmp.diff_cleanupEfficiency(diffs);
@@ -407,28 +407,28 @@ describe("diff", function() {
         });
     });
 
-    describe("prettyHtml", function() {
-        it("Pretty print", function() {
+    describe("prettyHtml", function () {
+        it("Pretty print", function () {
             const diffs = [[DIFF_EQUAL, "a\n"], [DIFF_DELETE, "<B>b</B>"], [DIFF_INSERT, "c&d"]];
             assertEquals("<span>a&para;<br></span><del style=\"background:#ffe6e6;\">&lt;B&gt;b&lt;/B&gt;</del><ins style=\"background:#e6ffe6;\">c&amp;d</ins>", dmp.diff_prettyHtml(diffs));
         });
     });
 
-    describe("Computing source or result text from diffs", function() {
+    describe("Computing source or result text from diffs", function () {
         const diffs = [[DIFF_EQUAL, "jump"], [DIFF_DELETE, "s"], [DIFF_INSERT, "ed"], [DIFF_EQUAL, " over "], [DIFF_DELETE, "the"], [DIFF_INSERT, "a"], [DIFF_EQUAL, " lazy"]];
-        it("sourceText", function() {
+        it("sourceText", function () {
             assertEquals("jumps over the lazy", dmp.sourceText(diffs));
         });
-        it("resultText", function() {
+        it("resultText", function () {
             assertEquals("jumped over a lazy", dmp.resultText(diffs));
         });
     });
 
-    describe("Conversion of diffs to delta and back", function() {
-        it("diffsToDelta and diffsFromDelta", function() {
+    describe("Conversion of diffs to delta and back", function () {
+        it("diffsToDelta and diffsFromDelta", function () {
             // Convert a diff into delta string.
-            var diffs = [[DIFF_EQUAL, "jump"], [DIFF_DELETE, "s"], [DIFF_INSERT, "ed"], [DIFF_EQUAL, " over "], [DIFF_DELETE, "the"], [DIFF_INSERT, "a"], [DIFF_EQUAL, " lazy"], [DIFF_INSERT, "old dog"]];
-            var text1 = dmp.sourceText(diffs);
+            let diffs = [[DIFF_EQUAL, "jump"], [DIFF_DELETE, "s"], [DIFF_INSERT, "ed"], [DIFF_EQUAL, " over "], [DIFF_DELETE, "the"], [DIFF_INSERT, "a"], [DIFF_EQUAL, " lazy"], [DIFF_INSERT, "old dog"]];
+            let text1 = dmp.sourceText(diffs);
             assertEquals("jumps over the lazy", text1);
 
             let delta = dmp.diffsToDeltaString(diffs);
@@ -485,8 +485,8 @@ describe("diff", function() {
         });
     });
 
-    describe("xIndex", function() {
-        it("Translate a location in text1 to text2", function() {
+    describe("xIndex", function () {
+        it("Translate a location in text1 to text2", function () {
             // Translation on equality.
             assertEquals(5, dmp.diff_xIndex([[DIFF_DELETE, "a"], [DIFF_INSERT, "1234"], [DIFF_EQUAL, "xyz"]], 2));
 
@@ -495,8 +495,8 @@ describe("diff", function() {
         });
     });
 
-    describe("levenshtein", function() {
-        it("", function() {
+    describe("levenshtein", function () {
+        it("", function () {
             // Levenshtein with trailing equality.
             assertEquals(4, dmp.diff_levenshtein([[DIFF_DELETE, "abc"], [DIFF_INSERT, "1234"], [DIFF_EQUAL, "xyz"]]));
             // Levenshtein with leading equality.
@@ -506,11 +506,11 @@ describe("diff", function() {
         });
     });
 
-    describe("bisect", function() {
-        it("", function() {
+    describe("bisect", function () {
+        it("", function () {
             // Normal.
-            var a = "cat";
-            var b = "map";
+            const a = "cat";
+            const b = "map";
             // Since the resulting diff hasn't been normalized, it would be ok if
             // the insertion and deletion pairs are swapped.
             // If the order changes, tweak this test as required.
@@ -521,8 +521,8 @@ describe("diff", function() {
         });
     });
 
-    describe("main", function() {
-        it("", function() {
+    describe("main", function () {
+        it("", function () {
             // Perform a trivial diff.
             // Null case.
             assertEquivalent([], dmp.diff_main("", "", false));
@@ -616,10 +616,10 @@ describe("diff", function() {
     });
 });
 
-describe("match", function() {
+describe("match", function () {
 
-    describe("alphabet", function() {
-        it("", function() {
+    describe("alphabet", function () {
+        it("", function () {
             // Initialise the bitmasks for Bitap.
             // Unique.
             assertEquivalent({ a: 4, b: 2, c: 1 }, dmp.match_alphabet_("abc"));
@@ -629,8 +629,8 @@ describe("match", function() {
         });
     });
 
-    describe("bitap", function() {
-        it("", function() {
+    describe("bitap", function () {
+        it("", function () {
             // Bitap algorithm.
             dmp.Match_Distance = 100;
             dmp.Match_Threshold = 0.5;
@@ -676,8 +676,8 @@ describe("match", function() {
         });
     });
 
-    describe("main", function() {
-        it("", function() {
+    describe("main", function () {
+        it("", function () {
             // Full match.
             // Shortcut matches.
             assertEquals(0, dmp.match_main("abcdef", "abcdef", 1000));
@@ -709,13 +709,13 @@ describe("match", function() {
 
 });
 
-describe("patch", function() {
+describe("patch", function () {
 
-    describe("Patch", function() {
-        it("toString", function() {
+    describe("Patch", function () {
+        it("toString", function () {
             // Patch Object.
             /* eslint-disable new-cap */
-            var p = new Patch();
+            const p = new Patch();
             /* eslint-enable new-cap */
             p.start1 = 20;
             p.start2 = 21;
@@ -726,9 +726,9 @@ describe("patch", function() {
         });
     });
 
-    describe("fromText", function() {
-        it("", function() {
-            var strp = "";
+    describe("fromText", function () {
+        it("", function () {
+            let strp = "";
             assertEquivalent([], dmp.patch_fromText(strp));
 
             strp = "@@ -21,18 +22,17 @@\n jump\n-s\n+ed\n  over \n-the\n+a\n %0Alaz\n";
@@ -750,10 +750,10 @@ describe("patch", function() {
         });
     });
 
-    describe("toText", function() {
-        it("", function() {
-            var strp = "@@ -21,18 +22,17 @@\n jump\n-s\n+ed\n  over \n-the\n+a\n  laz\n";
-            var p = dmp.patch_fromText(strp);
+    describe("toText", function () {
+        it("", function () {
+            let strp = "@@ -21,18 +22,17 @@\n jump\n-s\n+ed\n  over \n-the\n+a\n  laz\n";
+            let p = dmp.patch_fromText(strp);
             assertEquals(strp, dmp.patch_toText(p));
 
             strp = "@@ -1,9 +1,9 @@\n-f\n+F\n oo+fooba\n@@ -7,9 +7,9 @@\n obar\n-,\n+.\n  tes\n";
@@ -762,8 +762,8 @@ describe("patch", function() {
         });
     });
 
-    describe("addContext", function() {
-        it("", function() {
+    describe("addContext", function () {
+        it("", function () {
             dmp.Patch_Margin = 4;
             let p = dmp.patch_fromText("@@ -21,4 +21,10 @@\n-jump\n+somersault\n")[0];
             dmp.patch_addContext_(p, "The quick brown fox jumps over the lazy dog.");
@@ -786,10 +786,10 @@ describe("patch", function() {
         });
     });
 
-    describe("make", function() {
-        it("", function() {
+    describe("make", function () {
+        it("", function () {
             // Null case.
-            var patches = dmp.patch_make("", "");
+            let patches = dmp.patch_make("", "");
             assertEquals("", dmp.patch_toText(patches));
 
             let text1 = "The quick brown fox jumps over the lazy dog.";
@@ -846,10 +846,10 @@ describe("patch", function() {
         });
     });
 
-    describe("splitMax", function() {
-        it("", function() {
+    describe("splitMax", function () {
+        it("", function () {
             // Assumes that dmp.Match_MaxBits is 32.
-            var patches = dmp.patch_make("abcdefghijklmnopqrstuvwxyz01234567890", "XabXcdXefXghXijXklXmnXopXqrXstXuvXwxXyzX01X23X45X67X89X0");
+            let patches = dmp.patch_make("abcdefghijklmnopqrstuvwxyz01234567890", "XabXcdXefXghXijXklXmnXopXqrXstXuvXwxXyzX01X23X45X67X89X0");
             dmp.patch_splitMax(patches);
             assertEquals("@@ -1,32 +1,46 @@\n+X\n ab\n+X\n cd\n+X\n ef\n+X\n gh\n+X\n ij\n+X\n kl\n+X\n mn\n+X\n op\n+X\n qr\n+X\n st\n+X\n uv\n+X\n wx\n+X\n yz\n+X\n 012345\n@@ -25,13 +39,18 @@\n zX01\n+X\n 23\n+X\n 45\n+X\n 67\n+X\n 89\n+X\n 0\n", dmp.patch_toText(patches));
 
@@ -868,8 +868,8 @@ describe("patch", function() {
         });
     });
 
-    describe("computeNullPadding", function() {
-        it("should generate a string of possibly non-printing characters.", function() {
+    describe("computeNullPadding", function () {
+        it("should generate a string of possibly non-printing characters.", function () {
             // This could be an implementation detail that we shouldn't be seeing.
             // Don't worry if this test goes away.
             expect(dmp.computeNullPadding(1)).toBe([String.fromCharCode(1)].join(''));
@@ -877,10 +877,10 @@ describe("patch", function() {
         });
     });
 
-    describe("addPadding", function() {
-        it("", function() {
+    describe("addPadding", function () {
+        it("", function () {
             // Both edges full.
-            var patches = dmp.patch_make("", "test");
+            let patches = dmp.patch_make("", "test");
             assertEquals("@@ -0,0 +1,4 @@\n+test\n", dmp.patch_toText(patches));
             dmp.patch_addPadding(patches);
             assertEquals("@@ -1,8 +1,12 @@\n %01%02%03%04\n+test\n %01%02%03%04\n", dmp.patch_toText(patches));
@@ -899,8 +899,8 @@ describe("patch", function() {
         });
     });
 
-    describe("apply", function() {
-        it("", function() {
+    describe("apply", function () {
+        it("", function () {
             dmp.Match_Distance = 1000;
             dmp.Match_Threshold = 0.5;
             dmp.Patch_DeleteThreshold = 0.5;

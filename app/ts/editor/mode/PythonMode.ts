@@ -5,6 +5,7 @@ import MatchingBraceOutdent from "./MatchingBraceOutdent";
 import WorkerClient from "../worker/WorkerClient";
 import EditSession from "../EditSession";
 import Range from '../Range';
+import Token from '../Token';
 import PythonFoldMode from './folding/PythonFoldMode';
 
 const outdents = {
@@ -59,8 +60,9 @@ export default class PythonMode extends TextMode {
             return false;
 
         // ignore trailing comments
+        let last: Token;
         do {
-            var last = tokens.pop();
+            last = tokens.pop();
         } while (last && (last.type === "comment" || (last.type === "text" && last.value.match(/^\s+$/))));
 
         if (!last)
@@ -74,8 +76,8 @@ export default class PythonMode extends TextMode {
         // to the next line and only of a new line is inserted
 
         row += 1;
-        var indent = this.$getIndent(doc.getLine(row));
-        var tab = doc.getTabString();
+        const indent = this.$getIndent(doc.getLine(row));
+        const tab = doc.getTabString();
         if (indent.slice(-tab.length) === tab)
             doc.remove(new Range(row, indent.length - tab.length, row, indent.length));
         // TODO

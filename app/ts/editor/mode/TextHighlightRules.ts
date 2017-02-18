@@ -1,9 +1,9 @@
-import {deepCopy} from "../lib/lang";
+import { deepCopy } from "../lib/lang";
 import Rule from '../Rule';
 import HighlightRules from './HighlightRules';
 
 /**
- * @class TextHighlightRules
+ *
  */
 export default class TextHighlightRules implements HighlightRules {
     /**
@@ -16,8 +16,7 @@ export default class TextHighlightRules implements HighlightRules {
     $keywordList: string[];
 
     /**
-     * @class TextHighlightRules
-     * @constructor
+     *
      */
     constructor() {
 
@@ -38,9 +37,8 @@ export default class TextHighlightRules implements HighlightRules {
     }
 
     /**
-     * @method addRules
      * @param rulesByState
-     * @param [prefix] {string}
+     * @param prefix
      */
     addRules(rulesByState: { [name: string]: Rule[] }, prefix?: string) {
         const stateNames = Object.keys(rulesByState);
@@ -55,7 +53,7 @@ export default class TextHighlightRules implements HighlightRules {
         for (let s = 0; s < sLen; s++) {
             const stateName = stateNames[s];
             const rules: Rule[] = rulesByState[stateName];
-            for (var i = 0; i < rules.length; i++) {
+            for (let i = 0; i < rules.length; i++) {
                 const rule = rules[i];
                 if (rule.next || rule.onMatch) {
                     if (typeof rule.next !== "string") {
@@ -78,8 +76,6 @@ export default class TextHighlightRules implements HighlightRules {
 
     /**
      * FIXME: Rename getRulesByState
-     * @method getRules
-     * @return {{[name:string]:Rule[]}}
      */
     getRules(): { [name: string]: Rule[] } {
         return this.$rules;
@@ -121,8 +117,7 @@ export default class TextHighlightRules implements HighlightRules {
     }
 
     /**
-     * @method getEmbeds
-     * @return {string[]}
+     *
      */
     getEmbeds(): string[] {
         return this.$embeds;
@@ -136,7 +131,7 @@ export default class TextHighlightRules implements HighlightRules {
         // WARNING: The following functions are intended to be executed with a Rule object
         // as the `this` reference. They cannot be type checked here.
         // DO NOT USE A FAT ARROW.
-        const pushState = function(currentState: string, stack: string[]): string {
+        const pushState = function (currentState: string, stack: string[]): string {
             // FIXME: Could be a bug here because nextState is untyped.
             // Fix by using => ?
             if (currentState !== "start" || stack.length) {
@@ -144,20 +139,20 @@ export default class TextHighlightRules implements HighlightRules {
             }
             return this.nextState;
         };
-        const popState = function(currentState: string, stack: string[]): string {
+        const popState = function (currentState: string, stack: string[]): string {
             // if (stack[0] === currentState)
             stack.shift();
             return stack.shift() || "start";
         };
 
-        var id = 0;
-        var rules = this.$rules;
+        let id = 0;
+        const rules = this.$rules;
         function processState(key) {
-            var state = rules[key];
+            const state = rules[key];
             state['processed'] = true;
-            for (var i = 0; i < state.length; i++) {
-                var rule = state[i];
-                var toInsert = null;
+            for (let i = 0; i < state.length; i++) {
+                let rule = state[i];
+                let toInsert = null;
                 if (Array.isArray(rule)) {
                     toInsert = rule;
                     rule = {};
@@ -176,9 +171,9 @@ export default class TextHighlightRules implements HighlightRules {
                     rule.token = rule.token + ".start";
                     (<any>rule)['push'] = true;
                 }
-                var next = rule.next || rule.push;
+                const next = rule.next || rule.push;
                 if (next && Array.isArray(next)) {
-                    var stateName = rule['stateName'];
+                    let stateName = rule['stateName'];
                     if (!stateName) {
                         stateName = rule.token;
                         if (typeof stateName !== "string")
@@ -200,7 +195,7 @@ export default class TextHighlightRules implements HighlightRules {
                 }
 
                 if (rule['rules']) {
-                    for (var r in rule['rules']) {
+                    for (const r in rule['rules']) {
                         if (rules[r]) {
                             if (rules[r].push)
                                 rules[r].push.apply(rules[r], rule['rules'][r]);
@@ -209,7 +204,7 @@ export default class TextHighlightRules implements HighlightRules {
                         }
                     }
                 }
-                var includeName = typeof rule === "string"
+                const includeName = typeof rule === "string"
                     ? rule
                     : typeof rule.include === "string"
                         ? rule.include
@@ -219,9 +214,9 @@ export default class TextHighlightRules implements HighlightRules {
                 }
 
                 if (toInsert) {
-                    var args = [i, 1].concat(toInsert);
+                    let args = [i, 1].concat(toInsert);
                     if (rule.noEscape)
-                        args = args.filter(function(x) { return !x['next']; });
+                        args = args.filter(function (x) { return !x['next']; });
                     state.splice.apply(state, args);
                     // skip included rules since they are already processed
                     // i += args.length - 3;
@@ -241,7 +236,7 @@ export default class TextHighlightRules implements HighlightRules {
 
     createKeywordMapper(map: { [key: string]: string }, defaultToken: string, ignoreCase?: boolean, splitChar?: string): (value: string) => string {
         const keywords: { [key: string]: string } = Object.create(null);
-        Object.keys(map).forEach(function(className: string) {
+        Object.keys(map).forEach(function (className: string) {
             let a = map[className];
             if (ignoreCase) {
                 a = a.toLowerCase();
@@ -259,8 +254,8 @@ export default class TextHighlightRules implements HighlightRules {
         this.$keywordList = Object.keys(keywords);
         map = null;
         return ignoreCase
-            ? function(value: string) { return keywords[value.toLowerCase()] || defaultToken; }
-            : function(value: string) { return keywords[value] || defaultToken; };
+            ? function (value: string) { return keywords[value.toLowerCase()] || defaultToken; }
+            : function (value: string) { return keywords[value] || defaultToken; };
     }
 
     getKeywords(): string[] {

@@ -1,4 +1,4 @@
-import {arrayToMap} from "../lib/lang";
+import { arrayToMap } from "../lib/lang";
 import Annotation from "../Annotation";
 import Completion from "../Completion";
 import Position from "../Position";
@@ -17,8 +17,7 @@ const voidElements = ["area", "base", "br", "col", "embed", "hr", "img", "input"
 const optionalEndTags = ["li", "dt", "dd", "p", "rt", "rp", "optgroup", "option", "colgroup", "td", "th"];
 
 /**
- * @class HtmlMode
- * @extends TextMode
+ *
  */
 export default class HtmlMode extends TextMode {
     protected blockComment = { start: "<!--", end: "-->" };
@@ -33,11 +32,9 @@ export default class HtmlMode extends TextMode {
     $completer: HtmlCompletions;
 
     /**
-     * @class HtmlMode
-     * @constructor
-     * @param workerUrl {string}
-     * @param scriptImports {string[]}
-     * @param [options]
+     * @param workerUrl
+     * @param scriptImports
+     * @param options
      */
     constructor(workerUrl: string, scriptImports: string[], options?: { fragmentContext: string }) {
         super(workerUrl, scriptImports);
@@ -70,8 +67,8 @@ export default class HtmlMode extends TextMode {
 
         const worker = new WorkerClient(workerUrl);
 
-        worker.on('annotations', function(event: { data: Annotation[] }) {
-            var annotations: Annotation[] = event.data;
+        worker.on('annotations', function (event: { data: Annotation[] }) {
+            const annotations: Annotation[] = event.data;
             if (annotations.length > 0) {
                 session.setAnnotations(annotations);
             }
@@ -81,7 +78,7 @@ export default class HtmlMode extends TextMode {
             session._emit("annotations", { data: annotations });
         });
 
-        worker.on("terminate", function() {
+        worker.on("terminate", function () {
             worker.detachFromDocument();
             session.clearAnnotations();
         });
@@ -93,7 +90,7 @@ export default class HtmlMode extends TextMode {
                 if (!err) {
                     worker.attachToDocument(session.getDocument());
                     if (this.fragmentContext) {
-                        worker.call("setOptions", [{ context: this.fragmentContext }], function(data: any) {
+                        worker.call("setOptions", [{ context: this.fragmentContext }], function (data: any) {
                             // Do nothing?
                         });
                     }
@@ -108,5 +105,5 @@ export default class HtmlMode extends TextMode {
         catch (e) {
             callback(e, void 0);
         }
-    };
+    }
 }

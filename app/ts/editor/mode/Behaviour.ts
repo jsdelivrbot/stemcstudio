@@ -1,33 +1,26 @@
 import BehaviourCallback from "../BehaviourCallback";
 
 /**
- * @class Behaviour
+ *
  */
 export default class Behaviour {
 
     /**
      * A map from name to a map from action to a BehaviourCallback.
-     *
-     * @property $behaviours
-     * @type { [name: string]: { [action: string]: BehaviourCallback } }
-     * @private
      */
     private $behaviours: { [name: string]: { [action: string]: BehaviourCallback } } = {};
 
     /**
-     * @class Behaviour
-     * @constructor
+     *
      */
     constructor() {
         // Do nothing.
     }
 
     /**
-     * @method add
-     * @param bName {string}
-     * @param aName {string}
-     * @param action {BehaviourCallback}
-     * @return {void}
+     * @param bName
+     * @param aName
+     * @param action
      */
     add(bName: string, aName: string, action: BehaviourCallback): void {
         if (!this.$behaviours) {
@@ -56,9 +49,7 @@ export default class Behaviour {
     }
 
     /**
-     * @method remove
-     * @param bName {string}
-     * @return {void}
+     * @param bName
      */
     remove(bName: string): void {
         if (this.$behaviours && this.$behaviours[bName]) {
@@ -67,10 +58,8 @@ export default class Behaviour {
     }
 
     /**
-     * @method inherit
-     * @param base {Behaviour}
-     * @param [filter] {string[]}
-     * @return {void}
+     * @param base
+     * @param filter
      */
     inherit(base: Behaviour, filter?: string[]): void {
         const behaviours = base.getBehaviours(filter);
@@ -78,8 +67,7 @@ export default class Behaviour {
     }
 
     /**
-     * @method getBehaviours
-     * @param [filter] {string[]} An optional list of behaviour names.
+     * @param filter An optional list of behaviour names.
      * @return behaviourName to action to BehaviorCallaback
      */
     getBehaviours(filter?: string[]): { [name: string]: { [action: string]: BehaviourCallback } } {
@@ -88,7 +76,7 @@ export default class Behaviour {
         }
         else {
             const ret: { [name: string]: { [action: string]: BehaviourCallback } } = {};
-            for (var i = 0; i < filter.length; i++) {
+            for (let i = 0; i < filter.length; i++) {
                 if (this.$behaviours[filter[i]]) {
                     ret[filter[i]] = this.$behaviours[filter[i]];
                 }

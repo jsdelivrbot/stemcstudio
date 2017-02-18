@@ -4,32 +4,28 @@ import EditSession from "../../EditSession";
 import Token from "../../Token";
 
 /**
- * @class MarkdownFoldMode
+ *
  */
 export default class MarkdownFoldMode extends FoldMode {
     /**
-     * @property foldingStartMarker
-     * @type RegExp
+     *
      */
     foldingStartMarker: RegExp = /^(?:[=-]+\s*$|#{1,6} |`{3})/;
 
     /**
-     * @class MarkdownFoldMode
-     * @constructor
+     *
      */
     constructor() {
         super();
     }
 
     /**
-     * @method getFoldWidget
-     * @param session {EditSession}
-     * @param foldStyle {string}
-     * @param row {number}
-     * @return {string}
+     * @param session
+     * @param foldStyle
+     * @param row
      */
     getFoldWidget(session: EditSession, foldStyle: string, row: number): string {
-        var line = session.getLine(row);
+        const line = session.getLine(row);
         if (!this.foldingStartMarker.test(line))
             return "";
 
@@ -43,11 +39,9 @@ export default class MarkdownFoldMode extends FoldMode {
     }
 
     /**
-     * @method getFoldWidgetRange
-     * @param session {EditSession}
-     * @param foldStyle {string}
-     * @param row {number}
-     * @return {Range}
+     * @param session
+     * @param foldStyle
+     * @param row
      */
     getFoldWidgetRange(session: EditSession, foldStyle: string, row: number): Range {
         let line = session.getLine(row);
@@ -76,14 +70,14 @@ export default class MarkdownFoldMode extends FoldMode {
             }
         }
 
-        var token: Token;
+        let token: Token;
         const heading = "markup.heading";
-        function isHeading(row) {
+        function isHeading(row: number): boolean {
             token = session.getTokens(row)[0];
             return token && token.type.lastIndexOf(heading, 0) === 0;
         }
 
-        function getLevel() {
+        function getLevel(): number {
             const ch = token.value[0];
             if (ch === "=") return 6;
             if (ch === "-") return 5;
@@ -91,11 +85,11 @@ export default class MarkdownFoldMode extends FoldMode {
         }
 
         if (isHeading(row)) {
-            var startHeadingLevel = getLevel();
+            const startHeadingLevel = getLevel();
             while (++row < maxRow) {
                 if (!isHeading(row))
                     continue;
-                var level = getLevel();
+                const level = getLevel();
                 if (level >= startHeadingLevel)
                     break;
             }
@@ -108,7 +102,7 @@ export default class MarkdownFoldMode extends FoldMode {
             }
 
             if (endRow > startRow) {
-                var endColumn = session.getLine(endRow).length;
+                const endColumn = session.getLine(endRow).length;
                 return new Range(startRow, startColumn, endRow, endColumn);
             }
         }

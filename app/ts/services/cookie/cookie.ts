@@ -2,14 +2,14 @@ import app from '../../app';
 import CookieService from './CookieService';
 
 app.factory('cookie', [
-    function(): CookieService {
+    function (): CookieService {
         return {
-            getItem: function(name: string): string {
+            getItem: function (name: string): string {
                 const escapedName = encodeURI(name).replace(/[\-\.\+\*]/g, "\\$&");
                 return decodeURI(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + escapedName + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
             },
-            setItem: function(name: string, value: string, end?, path?, domain?, secure?): void {
-                var cookie, expires;
+            setItem: function (name: string, value: string, end?, path?, domain?, secure?): void {
+                let expires: string;
                 if (!name || /^(?:expires|max\-age|path|domain|secure)$/i.test(name)) {
                     throw new Error("Illegal name");
                 }
@@ -33,16 +33,16 @@ app.factory('cookie', [
                 domain = domain ? "; domain=" + domain : "";
                 path = path ? "; path=" + path : "";
                 secure = secure ? "; secure" : "";
-                cookie = "" + (encodeURI(name)) + "=" + (encodeURI(value)) + expires + domain + path + secure;
+                const cookie = "" + (encodeURI(name)) + "=" + (encodeURI(value)) + expires + domain + path + secure;
                 document.cookie = cookie;
             },
-            removeItem: function(name: string, path?) {
+            removeItem: function (name: string, path?) {
                 if (!name || !this.hasItem(name)) {
                     return false;
                 }
                 return this.setItem(name, "", new Date(0), path);
             },
-            hasItem: function(name: string): boolean {
+            hasItem: function (name: string): boolean {
                 return (new RegExp("(?:^|;\\s*)" + encodeURI(name).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie);
             }
         };

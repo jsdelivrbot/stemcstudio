@@ -100,13 +100,13 @@ export default class CssCompletions {
   defineCompletions() {
     // Fill in missing properties.
     if (document) {
-      var style = document.createElement('c').style;
+      const style = document.createElement('c').style;
 
-      for (var i in style) {
+      for (const i in style) {
         if (typeof style[i] !== 'string')
           continue;
 
-        var name = i.replace(/[A-Z]/g, function (x) {
+        const name = i.replace(/[A-Z]/g, function (x) {
           return '-' + x.toLowerCase();
         });
 
@@ -122,13 +122,13 @@ export default class CssCompletions {
       this.defineCompletions();
     }
 
-    var token = session.getTokenAt(pos.row, pos.column);
+    const token = session.getTokenAt(pos.row, pos.column);
 
     if (!token)
       return [];
     if (state === 'ruleset') {
       // CSS attribute value.
-      var line = session.getLine(pos.row).substr(0, pos.column);
+      const line = session.getLine(pos.row).substr(0, pos.column);
       if (/:[^;]+$/.test(line)) {
         /([\w\-]+):[^:]*$/.test(line);
 
@@ -141,7 +141,7 @@ export default class CssCompletions {
     return [];
   }
   getPropertyCompletions(state: string, session: EditSession, pos: Position, prefix: string) {
-    var properties = Object.keys(propertyMap);
+    const properties = Object.keys(propertyMap);
     return properties.map(function (property) {
       return {
         caption: property,

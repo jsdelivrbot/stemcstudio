@@ -3,7 +3,7 @@ import FoldMode from "./FoldMode";
 import EditSession from "../../EditSession";
 
 /**
- * @class PythonFoldMode
+ *
  */
 export default class PythonFoldMode extends FoldMode {
     foldingStartMarker: RegExp;
@@ -12,8 +12,8 @@ export default class PythonFoldMode extends FoldMode {
         this.foldingStartMarker = new RegExp("([\\[{])(?:\\s*)$|(" + markers + ")(?:\\s*)(?:#.*)?$");
     }
     getFoldWidgetRange(session: EditSession, foldStyle, row: number): Range {
-        var line = session.getLine(row);
-        var match = line.match(this.foldingStartMarker);
+        const line = session.getLine(row);
+        const match = line.match(this.foldingStartMarker);
         if (match) {
             if (match[1])
                 return this.openingBracketBlock(session, match[1], row, match.index);

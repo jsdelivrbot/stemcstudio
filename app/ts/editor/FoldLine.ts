@@ -1,13 +1,12 @@
+import Position from './Position';
 import Range from "./Range";
 import Fold from "./Fold";
 
 /**
  * If an array is passed in, the folds are expected to be sorted already.
- * @class FoldLine
  */
 export default class FoldLine {
-    // FIXME: Typing.
-    foldData;
+    foldData: FoldLine[];
     folds: Fold[];
     range: Range;
     start: { row: number; column: number };
@@ -16,12 +15,10 @@ export default class FoldLine {
     endRow: number;
 
     /**
-     * @class FoldLine
-     * @constructor
      * @param foldData
-     * @param folds {Fold[]}
+     * @param folds
      */
-    constructor(foldData, folds: Fold[]) {
+    constructor(foldData: FoldLine[], folds: Fold[]) {
         this.foldData = foldData;
         if (Array.isArray(folds)) {
             this.folds = folds;
@@ -30,7 +27,7 @@ export default class FoldLine {
             throw new Error("folds must have type Fold[]");
         }
 
-        var last: Fold = folds[folds.length - 1];
+        const last: Fold = folds[folds.length - 1];
         this.range = new Range(folds[0].start.row, folds[0].start.column, last.end.row, last.end.column);
         this.start = this.range.start;
         this.end = this.range.end;
@@ -40,9 +37,8 @@ export default class FoldLine {
 
     /**
      * Note: This doesn't update wrapData!
-     * @method shiftRow
-     * @param shift {number}
-     * @return {void}
+     *
+     * @param shift
      */
     shiftRow(shift: number): void {
         this.start.row += shift;
@@ -92,9 +88,7 @@ export default class FoldLine {
     }
 
     /**
-     * @method containsRow
-     * @param row {number}
-     * @return {boolean}
+     * @param row
      */
     containsRow(row: number): boolean {
         return row >= this.start.row && row <= this.end.row;
@@ -142,7 +136,7 @@ export default class FoldLine {
         callback(null, endRow, endColumn, lastEnd, isNewRow);
     }
 
-    getNextFoldTo(row: number, column: number): { fold: Fold; kind: string } {
+    getNextFoldTo(row: number, column: number): { fold: Fold; kind: 'after' | 'inside' } {
         for (let i = 0; i < this.folds.length; i++) {
             const fold = this.folds[i];
             const cmp = fold.range.compareEnd(row, column);
@@ -161,10 +155,10 @@ export default class FoldLine {
         return null;
     }
 
-    addRemoveChars(row: number, column: number, len: number) {
-        var ret = this.getNextFoldTo(row, column);
-        var fold: Fold;
-        var folds;
+    addRemoveChars(row: number, column: number, len: number): void {
+        const ret = this.getNextFoldTo(row, column);
+        let fold: Fold;
+        let folds: Fold[];
 
         if (ret) {
             fold = ret.fold;
@@ -175,7 +169,7 @@ export default class FoldLine {
             }
             else if (fold.start.row === row) {
                 folds = this.folds;
-                var i = folds.indexOf(fold);
+                let i = folds.indexOf(fold);
                 if (i === 0) {
                     this.start.column += len;
                 }
@@ -192,18 +186,18 @@ export default class FoldLine {
         }
     }
 
-    split(row, column) {
-        var pos = this.getNextFoldTo(row, column);
+    split(row: number, column: number): FoldLine {
+        const pos = this.getNextFoldTo(row, column);
 
         if (!pos || pos.kind === "inside")
             return null;
 
-        var fold = pos.fold;
-        var folds = this.folds;
-        var foldData = this.foldData;
+        const fold = pos.fold;
+        let folds = this.folds;
+        const foldData = this.foldData;
 
-        var i = folds.indexOf(fold);
-        var foldBefore = folds[i - 1];
+        const i = folds.indexOf(fold);
+        const foldBefore = folds[i - 1];
         this.end.row = foldBefore.end.row;
         this.end.column = foldBefore.end.column;
 
@@ -211,24 +205,24 @@ export default class FoldLine {
         // containing these removed folds.
         folds = folds.splice(i, folds.length - i);
 
-        var newFoldLine = new FoldLine(foldData, folds);
+        const newFoldLine = new FoldLine(foldData, folds);
         foldData.splice(foldData.indexOf(this) + 1, 0, newFoldLine);
         return newFoldLine;
     }
 
-    merge(foldLineNext) {
-        var folds = foldLineNext.folds;
-        for (var i = 0; i < folds.length; i++) {
+    merge(foldLineNext: FoldLine): void {
+        const folds = foldLineNext.folds;
+        for (let i = 0; i < folds.length; i++) {
             this.addFold(folds[i]);
         }
         // Remove the foldLineNext - no longer needed, as
         // it's merged now with foldLineNext.
-        var foldData = this.foldData;
+        const foldData = this.foldData;
         foldData.splice(foldData.indexOf(foldLineNext), 1);
     }
 
     toString() {
-        var ret = [this.range.toString() + ": ["];
+        const ret = [this.range.toString() + ": ["];
 
         this.folds.forEach(function (fold) {
             ret.push("  " + fold.toString());
@@ -237,11 +231,11 @@ export default class FoldLine {
         return ret.join("\n");
     }
 
-    idxToPosition(idx) {
-        var lastFoldEndColumn = 0;
+    idxToPosition(idx: number): Position {
+        let lastFoldEndColumn = 0;
 
-        for (var i = 0; i < this.folds.length; i++) {
-            var fold = this.folds[i];
+        for (let i = 0; i < this.folds.length; i++) {
+            const fold = this.folds[i];
 
             idx -= fold.start.column - lastFoldEndColumn;
             if (idx < 0) {

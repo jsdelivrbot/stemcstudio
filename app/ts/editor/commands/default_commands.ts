@@ -1,10 +1,10 @@
-import {stringRepeat, stringTrimLeft, stringTrimRight} from "../lib/lang";
+import { stringRepeat, stringTrimLeft, stringTrimRight } from "../lib/lang";
 import Range from "../Range";
 import Command from './Command';
 import Editor from '../Editor';
-import {COMMAND_NAME_BACKSPACE} from '../editor_protocol';
-import {COMMAND_NAME_DEL} from '../editor_protocol';
-import {COMMAND_NAME_INSERT_STRING} from "../editor_protocol";
+import { COMMAND_NAME_BACKSPACE } from '../editor_protocol';
+import { COMMAND_NAME_DEL } from '../editor_protocol';
+import { COMMAND_NAME_INSERT_STRING } from "../editor_protocol";
 
 function bindKey(win: string, mac: string): { win: string; mac: string } {
     return { win, mac };
@@ -401,7 +401,7 @@ const commands: Command[] = [
     {
         name: "cut",
         exec: function (editor: Editor) {
-            var range = editor.getSelectionRange();
+            const range = editor.getSelectionRange();
             editor._emit("cut", range);
 
             if (!editor.selection.isEmpty()) {
@@ -672,7 +672,7 @@ const commands: Command[] = [
         bindKey: bindKey(null, null),
         exec: function (editor: Editor) {
             const endRow = editor.session.doc.getLength() - 1;
-            var endCol = editor.session.doc.getLine(endRow).length;
+            const endCol = editor.session.doc.getLine(endRow).length;
             let ranges = editor.selection.rangeList.ranges;
             const newRanges: Range[] = [];
 
@@ -702,7 +702,7 @@ const commands: Command[] = [
             editor.exitMultiSelectMode();
             editor.clearSelection();
 
-            for (var i = 0; i < newRanges.length; i++) {
+            for (let i = 0; i < newRanges.length; i++) {
                 editor.selection.addRange(newRanges[i], false);
             }
         },

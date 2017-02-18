@@ -28,7 +28,7 @@ const $split: (text: string) => string[] = (function () {
 
 /*
 function clipPosition(doc: Document, position: Position): Position {
-    var length = doc.getLength();
+    const length = doc.getLength();
     if (position.row >= length) {
         position.row = Math.max(0, length - 1);
         position.column = doc.getLine(length - 1).length;
@@ -253,7 +253,7 @@ export default class Document implements Shareable {
      * @param range The range to work with.
      */
     getLinesForRange(range: { start: Position; end: Position }): string[] {
-        var lines: string[];
+        let lines: string[];
         if (range.start.row === range.end.row) {
             // Handle a single-line range.
             lines = [this.getLine(range.start.row).substring(range.start.column, range.end.column)];
@@ -327,7 +327,7 @@ export default class Document implements Shareable {
             row = length - 1;
             column = void 0;
         }
-        var line = this.getLine(row);
+        const line = this.getLine(row);
         if (column === void 0)
             column = line.length;
         column = Math.min(Math.max(column, 0), line.length);
@@ -417,12 +417,13 @@ export default class Document implements Shareable {
         row = Math.min(Math.max(row, 0), this.getLength());
 
         // Calculate insertion point.
-        var column = 0;
+        let column = 0;
         if (row < this.getLength()) {
             // Insert before the specified row.
             lines = lines.concat([""]);
             column = 0;
-        } else {
+        }
+        else {
             // Insert after the last row in the document.
             lines = [""].concat(lines);
             row--;
@@ -498,8 +499,8 @@ export default class Document implements Shareable {
      *
      */
     removeInLine(row: number, startColumn: number, endColumn: number): Position {
-        var start = this.clippedPos(row, startColumn);
-        var end = this.clippedPos(row, endColumn);
+        const start = this.clippedPos(row, startColumn);
+        const end = this.clippedPos(row, endColumn);
 
         this.applyDelta({
             start: start,
@@ -527,16 +528,16 @@ export default class Document implements Shareable {
         // Calculate deletion range.
         // Delete the ending new line unless we're at the end of the document.
         // If we're at the end of the document, delete the starting new line.
-        var deleteFirstNewLine = lastRow === this.getLength() - 1 && firstRow > 0;
-        var deleteLastNewLine = lastRow < this.getLength() - 1;
-        var startRow = (deleteFirstNewLine ? firstRow - 1 : firstRow);
-        var startCol = (deleteFirstNewLine ? this.getLine(startRow).length : 0);
-        var endRow = (deleteLastNewLine ? lastRow + 1 : lastRow);
-        var endCol = (deleteLastNewLine ? 0 : this.getLine(endRow).length);
-        var range = new Range(startRow, startCol, endRow, endCol);
+        const deleteFirstNewLine = lastRow === this.getLength() - 1 && firstRow > 0;
+        const deleteLastNewLine = lastRow < this.getLength() - 1;
+        const startRow = (deleteFirstNewLine ? firstRow - 1 : firstRow);
+        const startCol = (deleteFirstNewLine ? this.getLine(startRow).length : 0);
+        const endRow = (deleteLastNewLine ? lastRow + 1 : lastRow);
+        const endCol = (deleteLastNewLine ? 0 : this.getLine(endRow).length);
+        const range = new Range(startRow, startCol, endRow, endCol);
 
         // Store delelted lines with bounding newlines ommitted (maintains previous behavior).
-        var deletedLines = this._lines.slice(firstRow, lastRow + 1);
+        const deletedLines = this._lines.slice(firstRow, lastRow + 1);
 
         this.applyDelta({
             start: range.start,
@@ -593,24 +594,20 @@ export default class Document implements Shareable {
         this.remove(range);
 
         if (text) {
-            var end = this.insert(range.start, text);
+            return this.insert(range.start, text);
         }
         else {
-            end = range.start;
+            return range.start;
         }
-
-        return end;
     }
 
     /**
      * Applies all the changes previously accumulated.
      *
-     * @method applyDeltas
-     * @param deltas {Delta[]}
-     * @return {void}
+     * @param deltas
      */
     applyDeltas(deltas: Delta[]): void {
-        for (var i = 0; i < deltas.length; i++) {
+        for (let i = 0; i < deltas.length; i++) {
             this.applyDelta(deltas[i]);
         }
     }
@@ -618,12 +615,10 @@ export default class Document implements Shareable {
     /**
      * Reverts any changes previously applied.
      *
-     * @method revertDeltas
-     * @param deltas {Delta[]}
-     * @return {void}
+     * @param deltas
      */
     revertDeltas(deltas: Delta[]): void {
-        for (var i = deltas.length - 1; i >= 0; i--) {
+        for (let i = deltas.length - 1; i >= 0; i--) {
             this.revertDelta(deltas[i]);
         }
     }
@@ -637,7 +632,7 @@ export default class Document implements Shareable {
      */
     applyDelta(delta: Delta, doNotValidate?: boolean): void {
 
-        var isInsert = delta.action === "insert";
+        const isInsert = delta.action === "insert";
         // An empty range is a NOOP.
         if (isInsert ? delta.lines.length <= 1 && !delta.lines[0]
             : !Range.comparePoints(delta.start, delta.end)) {
@@ -661,15 +656,15 @@ export default class Document implements Shareable {
         //        delta handling is too slow. If we make delete delta handling faster we can split all large deltas
         //        as shown in https://gist.github.com/aldendaniels/8367109#file-document-snippet-js
         //        If we do this, update validateDelta() to limit the number of lines in a delete delta.
-        var lines = delta.lines;
-        var l = lines.length;
-        var row = delta.start.row;
-        var column = delta.start.column;
-        var from = 0, to = 0;
+        const lines = delta.lines;
+        const l = lines.length;
+        const row = delta.start.row;
+        let column = delta.start.column;
+        let from = 0, to = 0;
         do {
             from = to;
             to += MAX - 1;
-            var chunk = lines.slice(from, to);
+            const chunk = lines.slice(from, to);
             if (to > l) {
                 // Update remaining delta.
                 delta.lines = chunk;
@@ -706,21 +701,21 @@ export default class Document implements Shareable {
      * Index refers to the "absolute position" of a character in the document. For example:
      *
      * ```javascript
-     * var x = 0; // 10 characters, plus one for newline
-     * var y = -1;
+     * x = 0; // 10 characters, plus one for newline
+     * y = -1;
      * ```
      * 
      * Here, `y` is an index 15: 11 characters for the first row, and 5 characters until `y` in the second.
      *
-     * @method indexToPosition
-     * @param index {number} An index to convert
-     * @param startRow {number} The row from which to start the conversion
-     * @return {Position} A `{row, column}` object of the `index` position.
+     * @param index An index to convert
+     * @param startRow The row from which to start the conversion
+     * @returns An object of the `index` position.
      */
     indexToPosition(index: number, startRow: number): Position {
-        var lines = this._lines || this.getAllLines();
-        var newlineLength = this.getNewLineCharacter().length;
-        for (var i = startRow || 0, l = lines.length; i < l; i++) {
+        const lines = this._lines || this.getAllLines();
+        const newlineLength = this.getNewLineCharacter().length;
+        const l = lines.length;
+        for (let i = startRow || 0; i < l; i++) {
             index -= lines[i].length + newlineLength;
             if (index < 0)
                 return { row: i, column: index + lines[i].length + newlineLength };
@@ -734,23 +729,22 @@ export default class Document implements Shareable {
      * Index refers to the "absolute position" of a character in the document. For example:
      *
      * ```javascript
-     * var x = 0; // 10 characters, plus one for newline
-     * var y = -1;
+     * x = 0; // 10 characters, plus one for newline
+     * y = -1;
      * ```
      * 
      * Here, `y` is an index 15: 11 characters for the first row, and 5 characters until `y` in the second.
      *
-     * @method positionToIndex
-     * @param {Position} pos The `{row, column}` to convert.
-     * @param startRow {number} The row from which to start the conversion
-     * @return {number} The index position in the document.
+     * @param pos The `{row, column}` to convert.
+     * @param startRow The row from which to start the conversion
+     * @returns The index position in the document.
      */
     positionToIndex(pos: Position, startRow: number): number {
-        var lines = this._lines || this.getAllLines();
-        var newlineLength = this.getNewLineCharacter().length;
-        var index = 0;
-        var row = Math.min(pos.row, lines.length);
-        for (var i = startRow || 0; i < row; ++i)
+        const lines = this._lines || this.getAllLines();
+        const newlineLength = this.getNewLineCharacter().length;
+        let index = 0;
+        const row = Math.min(pos.row, lines.length);
+        for (let i = startRow || 0; i < row; ++i)
             index += lines[i].length + newlineLength;
 
         return index + pos.column;

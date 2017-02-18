@@ -4,49 +4,43 @@ import comparePoints from "./comparePoints";
 import Position from "./Position";
 
 /**
- * @class RangeList
+ *
  */
 export default class RangeList {
 
     /**
-     * @property ranges
-     * @type Range[]
+     *
      */
     public ranges: Range[] = [];
 
     /**
-     * @property session
-     * @type {EditSession}
-     * @private
+     *
      */
     private session: EditSession;
     private onChange;
 
     /**
-     * @class RangeList
-     * @constructor
+     *
      */
     constructor() {
         // Do nothing.
     }
 
     /**
-     * @method pointIndex
-     * @param pos {Position}
-     * @param [excludeEdges] {boolean}
-     * @param [startIndex] {number}
-     * @return {number}
+     * @param pos
+     * @param excludeEdges
+     * @param startIndex
      */
     pointIndex(pos: Position, excludeEdges?: boolean, startIndex?: number): number {
-        var list = this.ranges;
-
-        for (var i = startIndex || 0; i < list.length; i++) {
-            var range = list[i];
-            var cmpEnd = comparePoints(pos, range.end);
+        const list = this.ranges;
+        let i: number;
+        for (i = startIndex || 0; i < list.length; i++) {
+            const range = list[i];
+            const cmpEnd = comparePoints(pos, range.end);
             if (cmpEnd > 0) {
                 continue;
             }
-            var cmpStart = comparePoints(pos, range.start);
+            const cmpStart = comparePoints(pos, range.start);
             if (cmpEnd === 0) {
                 return excludeEdges && cmpStart !== 0 ? -i - 2 : i;
             }
@@ -59,12 +53,12 @@ export default class RangeList {
     }
 
     add(range: Range): Range[] {
-        var excludeEdges = !range.isEmpty();
-        var startIndex = this.pointIndex(range.start, excludeEdges);
+        const excludeEdges = !range.isEmpty();
+        let startIndex = this.pointIndex(range.start, excludeEdges);
         if (startIndex < 0)
             startIndex = -startIndex - 1;
 
-        var endIndex = this.pointIndex(range.end, excludeEdges, startIndex);
+        let endIndex = this.pointIndex(range.end, excludeEdges, startIndex);
 
         if (endIndex < 0) {
             endIndex = -endIndex - 1;
@@ -76,15 +70,15 @@ export default class RangeList {
     }
 
     addList(list: Range[]): Range[] {
-        var removed: Range[] = [];
-        for (var i = list.length; i--;) {
+        const removed: Range[] = [];
+        for (let i = list.length; i--;) {
             removed.push.call(removed, this.add(list[i]));
         }
         return removed;
     }
 
     substractPoint(pos: Position): Range[] {
-        var i = this.pointIndex(pos);
+        const i = this.pointIndex(pos);
         if (i >= 0) {
             return this.ranges.splice(i, 1);
         }
@@ -94,18 +88,18 @@ export default class RangeList {
      * merge overlapping ranges
      */
     merge(): Range[] {
-        var removed: Range[] = [];
-        var list = this.ranges;
+        const removed: Range[] = [];
+        let list = this.ranges;
 
-        list = list.sort(function(a, b) {
+        list = list.sort(function (a, b) {
             return comparePoints(a.start, b.start);
         });
 
-        var next = list[0], range;
-        for (var i = 1; i < list.length; i++) {
+        let next = list[0], range;
+        for (let i = 1; i < list.length; i++) {
             range = next;
             next = list[i];
-            var cmp = comparePoints(range.end, next.start);
+            const cmp = comparePoints(range.end, next.start);
             if (cmp < 0)
                 continue;
 
@@ -137,31 +131,31 @@ export default class RangeList {
     }
 
     rangeAtPoint(pos: Position): Range {
-        var i = this.pointIndex(pos);
+        const i = this.pointIndex(pos);
         if (i >= 0) {
             return this.ranges[i];
         }
     }
 
     clipRows(startRow: number, endRow: number): Range[] {
-        var list = this.ranges;
+        const list = this.ranges;
         if (list[0].start.row > endRow || list[list.length - 1].start.row < startRow) {
             return [];
         }
 
-        var startIndex = this.pointIndex({ row: startRow, column: 0 });
+        let startIndex = this.pointIndex({ row: startRow, column: 0 });
         if (startIndex < 0) {
             startIndex = -startIndex - 1;
         }
         // TODO: Had to make a guess here, excludeEdges was not provided.
-        var excludeEdges = true;
-        var endIndex = this.pointIndex({ row: endRow, column: 0 }, excludeEdges, startIndex);
+        const excludeEdges = true;
+        let endIndex = this.pointIndex({ row: endRow, column: 0 }, excludeEdges, startIndex);
         if (endIndex < 0) {
             endIndex = -endIndex - 1;
         }
 
-        var clipped: Range[] = [];
-        for (var i = startIndex; i < endIndex; i++) {
+        const clipped: Range[] = [];
+        for (let i = startIndex; i < endIndex; i++) {
             clipped.push(list[i]);
         }
         return clipped;
@@ -202,24 +196,28 @@ export default class RangeList {
      * @param session
      */
     private $onChange(e: { data: { action: string; range: Range } }, unused: EditSession) {
-        var changeRange: Range = e.data.range;
+        const changeRange: Range = e.data.range;
+        let start: Position;
+        let end: Position;
         if (e.data.action[0] === "i") {
-            var start = changeRange.start;
-            var end = changeRange.end;
+            start = changeRange.start;
+            end = changeRange.end;
         }
         else {
-            var end = changeRange.start;
-            var start = changeRange.end;
+            end = changeRange.start;
+            start = changeRange.end;
         }
-        var startRow = start.row;
-        var endRow = end.row;
-        var lineDif = endRow - startRow;
+        const startRow = start.row;
+        const endRow = end.row;
+        const lineDif = endRow - startRow;
 
-        var colDiff = -start.column + end.column;
-        var ranges = this.ranges;
+        const colDiff = -start.column + end.column;
+        const ranges = this.ranges;
 
-        for (var i = 0, n = ranges.length; i < n; i++) {
-            var r = ranges[i];
+        let i: number;
+        const n = ranges.length;
+        for (i = 0; i < n; i++) {
+            const r = ranges[i];
             if (r.end.row < startRow) {
                 continue;
             }

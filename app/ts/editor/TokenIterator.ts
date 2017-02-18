@@ -5,8 +5,6 @@ import Token from './Token';
  * This class provides an easy way to treat the document as a stream of tokens.
  * Provides methods to iterate over these tokens.
  * The heavy lifting is really being done by the edit session.
- *
- * @class TokenIterator
  */
 export default class TokenIterator {
     private session: EditSession;
@@ -17,11 +15,9 @@ export default class TokenIterator {
     /**
      * Creates a new token iterator object. The inital token index is set to the provided row and column coordinates.
      *
-     * @class TokenIterator
-     * @constructor
-     * @param {EditSession} session The session to associate with
-     * @param {Number} initialRow The row to start the tokenizing at
-     * @param {Number} initialColumn The column to start the tokenizing at
+     * @param session The session to associate with
+     * @param initialRow The row to start the tokenizing at
+     * @param initialColumn The column to start the tokenizing at
      *
      */
     constructor(session: EditSession, initialRow: number, initialColumn: number) {
@@ -29,15 +25,14 @@ export default class TokenIterator {
         this.$row = initialRow;
         this.$rowTokens = session.getTokens(initialRow);
 
-        var token: Token = session.getTokenAt(initialRow, initialColumn);
+        const token: Token = session.getTokenAt(initialRow, initialColumn);
         this.$tokenIndex = token ? token.index : -1;
     }
 
     /** 
      * Tokenizes all the items from the current point to the row prior in the document.
-     *
-     * @method stepBackward 
-     * @return {Token} If the current point is not at the top of the file, this function returns `null`.
+     * 
+     * @returns If the current point is not at the top of the file, this function returns `null`.
      *                 Otherwise, it returns an array of the tokenized strings.
      */
     stepBackward(): Token {
@@ -60,14 +55,13 @@ export default class TokenIterator {
     /**
      * Tokenizes all the items from the current point until the next row in the document.
      *
-     * @method stepForward
-     * @return {Token} If the current point is at the end of the file, this function returns `null`.
+     * @returns If the current point is at the end of the file, this function returns `null`.
      *                 Otherwise, it returns the tokenized string.
      */
     stepForward(): Token {
         if (this.$rowTokens) {
             this.$tokenIndex += 1;
-            var rowCount: number;
+            let rowCount: number;
             while (this.$tokenIndex >= this.$rowTokens.length) {
                 this.$row += 1;
                 if (!rowCount) {
@@ -91,9 +85,6 @@ export default class TokenIterator {
 
     /** 
      * Returns the current token.
-     *
-     * @method getCurrentToken
-     * @return {Token}
      */
     getCurrentToken(): Token {
         if (this.$rowTokens) {
@@ -106,9 +97,6 @@ export default class TokenIterator {
 
     /**
      * Returns the current row.
-     *
-     * @method getCurrentTokenRow
-     * @return {number}
      */
     getCurrentTokenRow(): number {
         return this.$row;
@@ -116,9 +104,6 @@ export default class TokenIterator {
 
     /** 
      * Returns the current column.
-     *
-     * @method getCurrentTokenColumn
-     * @return {number}
      */
     getCurrentTokenColumn(): number {
         const rowTokens = this.$rowTokens;

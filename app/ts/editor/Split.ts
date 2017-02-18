@@ -35,11 +35,11 @@ export default class Split {
     }
 
     $createEditor() {
-        var el = document.createElement("div");
+        const el = document.createElement("div");
         el.className = this.$editorCSS;
         el.style.cssText = "position: absolute; top:0px; bottom:0px";
         this.$container.appendChild(el);
-        var editor = new Editor(new Renderer(el/*, this.$theme*/), void 0);
+        const editor = new Editor(new Renderer(el/*, this.$theme*/), void 0);
 
         editor.on("focus", function () {
             this._emit("focus", editor);
@@ -163,7 +163,7 @@ export default class Split {
 
         const undoManager = session.getUndoManager();
         if (undoManager) {
-            var undoManagerProxy = new UndoManagerProxy(undoManager, s);
+            const undoManagerProxy = new UndoManagerProxy(undoManager, s);
             s.setUndoManager(undoManagerProxy);
         }
 
@@ -193,7 +193,7 @@ export default class Split {
      * @param idx The editor's index you're interested in
      */
     setSession(session: EditSession, idx: number): EditSession {
-        var editor;
+        let editor;
         if (idx == null) {
             editor = this.$cEditor;
         }
@@ -284,7 +284,7 @@ class UndoManagerProxy {
     }
 
     undo(dontSelect?: boolean) {
-        var selectionRange = this.$u.undo(true);
+        const selectionRange = this.$u.undo(true);
         if (selectionRange) {
             this.$doc.selection.setSelectionRange(selectionRange);
         }

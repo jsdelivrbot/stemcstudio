@@ -3,15 +3,13 @@ import FoldMode from "./FoldMode";
 import EditSession from "../../EditSession";
 
 /**
- * @class CstyleFoldMode
+ *
  */
 export default class CstyleFoldMode extends FoldMode {
     foldingStartMarker: RegExp = /(\{|\[)[^\}\]]*$|^\s*(\/\*)/;
     foldingStopMarker: RegExp = /^[^\[\{]*(\}|\])|^[\s\*]*(\*\/)/;
 
     /**
-     * @class CstyleFoldMode
-     * @constructor
      * @param commentRegex
      */
     constructor(commentRegex?: { start: RegExp; end: RegExp }) {
@@ -27,14 +25,12 @@ export default class CstyleFoldMode extends FoldMode {
     }
 
     /**
-     * @method getFoldWidgetRange
-     * @param session {EditSession}
-     * @param foldStyle {string} "markbegin" or
-     * @param row {number} zero-based row number.
-     * @param forceMultiline {boolean}
-     * @return {Range}
+     * @param session
+     * @param foldStyle
+     * @param row zero-based row number.
+     * @param forceMultiline
      */
-    getFoldWidgetRange(session: EditSession, foldStyle: string, row: number, forceMultiline?: boolean): Range {
+    getFoldWidgetRange(session: EditSession, foldStyle: 'markbegin' | 'all', row: number, forceMultiline?: boolean): Range {
         /**
          * The text on the line where the folding was requested.
          */
@@ -92,7 +88,7 @@ export default class CstyleFoldMode extends FoldMode {
                 continue;
             if (startIndent > indent)
                 break;
-            var subRange = this.getFoldWidgetRange(session, "all", row);
+            const subRange = this.getFoldWidgetRange(session, "all", row);
 
             if (subRange) {
                 if (subRange.start.row <= startRow) {

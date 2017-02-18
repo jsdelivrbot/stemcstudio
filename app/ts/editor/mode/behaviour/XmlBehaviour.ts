@@ -10,22 +10,20 @@ function is(token: Token, type: string): boolean {
 }
 
 /**
- * @class XmlBehaviour
- * @extends Behaviour
+ *
  */
 export default class XmlBehaviour extends Behaviour {
 
     /**
-     * @class XmlBehaviour
-     * @constructor
+     *
      */
     constructor() {
         super();
 
-        this.add("string_dquotes", "insertion", function(state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] } {
+        this.add("string_dquotes", "insertion", function (state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] } {
             if (text === '"' || text === "'") {
-                var quote = text;
-                var selected = session.doc.getTextRange(editor.getSelectionRange());
+                const quote = text;
+                const selected = session.doc.getTextRange(editor.getSelectionRange());
                 if (selected !== "" && selected !== "'" && selected !== '"' && editor.getWrapBehavioursEnabled()) {
                     return {
                         text: quote + selected + quote,
@@ -33,11 +31,11 @@ export default class XmlBehaviour extends Behaviour {
                     };
                 }
 
-                var cursor = editor.getCursorPosition();
-                var line = session.doc.getLine(cursor.row);
-                var rightChar = line.substring(cursor.column, cursor.column + 1);
-                var iterator = new TokenIterator(session, cursor.row, cursor.column);
-                var token = iterator.getCurrentToken();
+                const cursor = editor.getCursorPosition();
+                const line = session.doc.getLine(cursor.row);
+                const rightChar = line.substring(cursor.column, cursor.column + 1);
+                const iterator = new TokenIterator(session, cursor.row, cursor.column);
+                let token = iterator.getCurrentToken();
 
                 if (rightChar === quote && (is(token, "attribute-value") || is(token, "string"))) {
                     // Ignore input and move right one if we're typing over the closing quote.
@@ -56,7 +54,7 @@ export default class XmlBehaviour extends Behaviour {
                 while (is(token, "tag-whitespace") || is(token, "whitespace")) {
                     token = iterator.stepBackward();
                 }
-                var rightSpace = !rightChar || rightChar.match(/\s/);
+                const rightSpace = !rightChar || rightChar.match(/\s/);
                 if (is(token, "attribute-equals") && (rightSpace || rightChar === '>') || (is(token, "decl-attribute-equals") && (rightSpace || rightChar === '?'))) {
                     return {
                         text: quote + quote,
@@ -66,7 +64,7 @@ export default class XmlBehaviour extends Behaviour {
             }
         });
 
-        this.add("string_dquotes", "deletion", function(state: string, action: string, editor: Editor, session: EditSession, range: Range): Range {
+        this.add("string_dquotes", "deletion", function (state: string, action: string, editor: Editor, session: EditSession, range: Range): Range {
             const selected: string = session.doc.getTextRange(range);
             if (!range.isMultiLine() && (selected === '"' || selected === "'")) {
                 const line = session.doc.getLine(range.start.row);
@@ -78,7 +76,7 @@ export default class XmlBehaviour extends Behaviour {
             }
         });
 
-        this.add("autoclosing", "insertion", function(state: string, action: string, editor: Editor, session: EditSession, text: string) {
+        this.add("autoclosing", "insertion", function (state: string, action: string, editor: Editor, session: EditSession, text: string) {
             if (text === '>') {
                 const position = editor.getCursorPosition();
                 const iterator = new TokenIterator(session, position.row, position.column);
@@ -128,7 +126,7 @@ export default class XmlBehaviour extends Behaviour {
             }
         });
 
-        this.add('autoindent', 'insertion', function(state: string, action, editor: Editor, session: EditSession, text: string) {
+        this.add('autoindent', 'insertion', function (state: string, action, editor: Editor, session: EditSession, text: string) {
             if (text === "\n") {
                 const cursor = editor.getCursorPosition();
                 const line = session.getLine(cursor.row);

@@ -95,7 +95,7 @@ export default class StringShareableMap<V extends Shareable> implements Shareabl
      */
     public forEach(callback: (key: string, value: V) => void): void {
         const keys: string[] = this.keys;
-        for (var i = 0, iLength = keys.length; i < iLength; i++) {
+        for (let i = 0, iLength = keys.length; i < iLength; i++) {
             let key: string = keys[i];
             callback(key, this.elements[key]);
         }
@@ -114,7 +114,7 @@ export default class StringShareableMap<V extends Shareable> implements Shareabl
     get values(): V[] {
         const values: V[] = [];
         const keys: string[] = this.keys;
-        for (var i = 0, iLength = keys.length; i < iLength; i++) {
+        for (let i = 0, iLength = keys.length; i < iLength; i++) {
             let key: string = keys[i];
             values.push(this.elements[key]);
         }

@@ -21,13 +21,33 @@ function escape(ch: string): string {
     return "(?:[^\\\\" + ch + "]|\\\\.)";
 }
 
-function tabstopTokenArray(str: string, _, stack): any[] {
-    str = str.substr(1);
-    if (/^\d+$/.test(str) && !stack.inFormatString) {
-        return [{ tabstopId: parseInt(str, 10) }];
+/**
+ * 
+ */
+function tabstopTokenArray(value: string, state: string, stack): { tabstopId: number }[] | { text: string }[] {
+    value = value.substr(1);
+    if (/^\d+$/.test(value) && !stack.inFormatString) {
+        return [{ tabstopId: parseInt(value, 10) }];
     }
-    return [{ text: str }];
+    return [{ text: value }];
 }
+
+/**
+ * I don't know what this is yet.
+ */
+/*
+interface Blobby {
+    changeCase?: 'u' | 'l' | 'U' | 'L' | 'E';
+    local?: boolean;
+    skip?: boolean;
+    processed?: number;
+    text?: string;
+    fmtString?;
+    elseBranch?: Blobby;
+    expectIf?;
+    tabstopId?: number;
+}
+*/
 
 /**
  *
@@ -39,37 +59,26 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
      * FIXME: Mapping to an array does not properly admit additional properties
      * At the level of a collection of snippets, e.g., includeScopes: string[],
      * which is used by the velocity language (Java templating).
-     *
-     * @property snippetMap
-     * @type { [scope: string]: Snippet[] }
      */
     public snippetMap: { [scope: string]: Snippet[] } = {};
 
     /**
      * A map from name to Snippet.
-     *
-     * @property snippetNameMap
-     * @private
      */
     private snippetNameMap: { [scope: string]: { [name: string]: Snippet } } = {};
 
     /**
      *
-     * @property vaiables
-     * @private
      */
     private variables: { [varName: string]: any } = {};
 
     /**
-     * @property eventBus
-     * @type {EventEmitterClass}
-     * @private
+     *
      */
     private eventBus: EventEmitterClass<any, SnippetManager>;
 
     /**
-     * @class SnippetManager
-     * @constructor
+     *
      */
     constructor() {
         this.eventBus = new EventEmitterClass<any, SnippetManager>(this);
@@ -79,19 +88,22 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
         start: [
             {
                 regex: /:/,
-                onMatch: function (value: string, state: string, stack: string[]): any {
+                onMatch: function (value: string, state: string, stack: any[]): string | any[] {
                     if (stack.length && stack[0]['expectIf']) {
-                        stack[0]['expectIf'] = false;
-                        stack[0]['elseBranch'] = stack[0];
-                        return [stack[0]];
+                        const blobby = stack[0];
+                        blobby.expectIf = false;
+                        blobby.elseBranch = blobby;
+                        // stack[0]['expectIf'] = false;
+                        // stack[0]['elseBranch'] = stack[0];
+                        return [blobby];
                     }
                     return ":";
                 }
             },
             {
                 regex: /\\./,
-                onMatch: function (value: string, state: string, stack): string[] | { changeCase: string; local: boolean }[] {
-                    var ch = value[1];
+                onMatch: function (value: string, state: string, stack: any[]): string[] | any[] {
+                    const ch = value[1];
                     if (ch === "}" && stack.length) {
                         return [ch];
                     }
@@ -114,8 +126,8 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
             },
             {
                 regex: /}/,
-                onMatch: function (val, state, stack: string[]) {
-                    return [stack.length ? stack.shift() : val];
+                onMatch: function (value: string, state: string, stack: any[]) {
+                    return [stack.length ? stack.shift() : value];
                 }
             },
             {
@@ -124,8 +136,8 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
             },
             {
                 regex: /\$\{[\dA-Z_a-z]+/,
-                onMatch: function (value: string, state, stack) {
-                    var tokens = tabstopTokenArray(value.substr(1), state, stack);
+                onMatch: function (value: string, state, stack: any[]) {
+                    const tokens = tabstopTokenArray(value.substr(1), state, stack);
                     stack.unshift(tokens[0]);
                     return tokens;
                 },
@@ -140,17 +152,17 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
         snippetVar: [
             {
                 regex: "\\|" + escape("\\|") + "*\\|",
-                onMatch: function (val, state, stack: any) {
+                onMatch: function (value: string, state: string, stack: any[]) {
                     // FIXME: Wierd typing.
-                    stack[0].choices = val.slice(1, -1).split(",");
+                    stack[0].choices = value.slice(1, -1).split(",");
                 },
                 next: "start"
             },
             {
                 regex: "/(" + escape("/") + "+)/(?:(" + escape("/") + "*)/)(\\w*):?",
-                onMatch: function (value: string, state, stack) {
+                onMatch: function (value: string, state: string, stack: any[]) {
                     // It would seem that we have a very decorated Range!
-                    var ts = <Range>(<any>stack[0]);
+                    const ts = <Range>(<any>stack[0]);
                     ts.fmtString = value;
 
                     // FIXME: What does his refer to? 
@@ -170,7 +182,7 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
             {
                 regex: "\\?",
                 // FIXME: Wierd typing.
-                onMatch: function (val, state, stack: any) {
+                onMatch: function (value: string, state: string, stack: any[]) {
                     if (stack[0]) {
                         stack[0].expectIf = true;
                     }
@@ -207,7 +219,7 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
     private $getDefaultValue(editor: Editor, name: string) {
 
         if (/^[A-Z]\d+$/.test(name)) {
-            var i = name.substr(1);
+            const i = name.substr(1);
             return (this.variables[name[0] + "__"] || {})[i];
         }
 
@@ -219,10 +231,10 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
 
         if (!editor)
             return;
-        var s = editor.session;
+        const s = editor.session;
         switch (name) {
             case "CURRENT_WORD":
-                var r = s.getWordRange(editor.getCursorPosition().row, editor.getCursorPosition().column);
+                const r = s.getWordRange(editor.getCursorPosition().row, editor.getCursorPosition().column);
             /* falls through */
             case "SELECTION":
             case "SELECTED_TEXT":
@@ -249,10 +261,8 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
     }
 
     /**
-     * @method getVariableValue
-     * @param editor {Editor}
-     * @param varName {string}
-     * @return {any}
+     * @param editor
+     * @param varName
      */
     private getVariableValue(editor: Editor, varName: string): any {
         if (this.variables.hasOwnProperty(varName))
@@ -264,32 +274,38 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
      * Formats according to
      * http://manual.macromates.com/en/regular_expressions#replacement_string_syntax_format_strings
      *
-     * @method tmStrFormat
-     * @param str {string}
-     * @param ch {{ flag: string; guard: string, fmt: string }}
-     * @param [editor] {Editor}
-     * @return {string}
+     * @param str
+     * @param ch
+     * @param editor
      */
-    public tmStrFormat(str: string, ch: { flag: string; guard: string, fmt: string }, editor?: Editor): string {
+    public tmStrFormat(str: string, ch: { flag?: string; guard: string, fmt: string }, editor?: Editor): string {
 
-        var flag = ch.flag || "";
-        var re = new RegExp(ch.guard, flag.replace(/[^gi]/, ""));
-        var fmtTokens = this.tokenizeTmSnippet(ch.fmt, "formatString");
+        const flag = ch.flag || "";
+        const re = new RegExp(ch.guard, flag.replace(/[^gi]/, ""));
+        const fmtTokens = this.tokenizeTmSnippet(ch.fmt, "formatString");
 
-        let self = this;
-        var formatted = str.replace(re, function () {
+        const self = this;
+        const formatted = str.replace(re, function () {
             // TS2496: The 'arguments' object cannot be referenced in an arrow function.
-            // Instead, we use a standard function and capture this.
+            // Instead, we use a standard function and capture this in the self variable.
             self.variables['__'] = arguments;
             // FIXME: Why is editor a required parameter in this method call?
-            var fmtParts = self.resolveVariables(fmtTokens, editor);
-            var gChangeCase = "E";
-            for (var i = 0; i < fmtParts.length; i++) {
-                var ch = fmtParts[i];
-                if (typeof ch === "object") {
+            const fmtParts = self.resolveVariables(fmtTokens, editor);
+            let gChangeCase = "E";
+            for (let i = 0; i < fmtParts.length; i++) {
+                const ch = fmtParts[i];
+                if (typeof ch === 'string') {
+                    if (gChangeCase === "U") {
+                        fmtParts[i] = ch.toUpperCase();
+                    }
+                    else if (gChangeCase === "L") {
+                        fmtParts[i] = ch.toLowerCase();
+                    }
+                }
+                else {
                     fmtParts[i] = "";
                     if (ch.changeCase && ch.local) {
-                        var next = fmtParts[i + 1];
+                        const next = fmtParts[i + 1];
                         if (next && typeof next === "string") {
                             if (ch.changeCase === "u")
                                 fmtParts[i] = next[0].toUpperCase();
@@ -302,12 +318,6 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
                         gChangeCase = ch.changeCase;
                     }
                 }
-                else if (gChangeCase === "U") {
-                    fmtParts[i] = ch.toUpperCase();
-                }
-                else if (gChangeCase === "L") {
-                    fmtParts[i] = ch.toLowerCase();
-                }
             }
             return fmtParts.join("");
         });
@@ -316,15 +326,14 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
     }
 
     /**
-     * @method resolveVariables
      * @param snippet
-     * @param editor {Editor}
-     * @return {any[]}
+     * @param editor
      */
     private resolveVariables(snippet: any[], editor: Editor): any[] {
-        var result: any[] = [];
-        for (var i = 0; i < snippet.length; i++) {
-            var ch = snippet[i];
+        const result: string[] = [];
+        let i: number;
+        for (i = 0; i < snippet.length; i++) {
+            const ch = snippet[i];
             if (typeof ch === "string") {
                 result.push(ch);
             }
@@ -338,7 +347,7 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
                 continue;
             }
             else if (ch.text) {
-                var value = this.getVariableValue(editor, ch.text);
+                let value = this.getVariableValue(editor, ch.text);
                 if (value && ch.fmtString)
                     value = this.tmStrFormat(value, ch);
                 ch.processed = i;
@@ -373,26 +382,23 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
     /**
      * FIXME: The choice of string | Token makes it very difficult to impose type safety.
      *
-     * @method insertSnippetForSelection
-     * @param editor {Editor}
-     * @param snippetText {string}
-     * @return {void}
-     * @private
+     * @param editor
+     * @param snippetText
      */
     private insertSnippetForSelection(editor: Editor, snippetText: string): void {
-        var cursor = editor.getCursorPosition();
-        var session = editor.getSession();
-        var line = session.getLine(cursor.row);
-        var tabString = session.getTabString();
-        var indentString = line.match(/^\s*/)[0];
+        const cursor = editor.getCursorPosition();
+        const session = editor.getSession();
+        const line = session.getLine(cursor.row);
+        const tabString = session.getTabString();
+        let indentString = line.match(/^\s*/)[0];
 
         if (cursor.column < indentString.length)
             indentString = indentString.slice(0, cursor.column);
 
-        var tokens = this.tokenizeTmSnippet(snippetText);
+        let tokens = this.tokenizeTmSnippet(snippetText);
         tokens = this.resolveVariables(tokens, editor);
         // indent
-        tokens = tokens.map(function (x: /* string | Token*/any) {
+        tokens = tokens.map(function (x) {
             if (x === "\n") {
                 return x + indentString;
             }
@@ -403,12 +409,12 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
         });
 
         // tabstop values
-        var tabstops: Tabstop[] = [];
+        const tabstops: Tabstop[] = [];
         tokens.forEach(function (p: any, i: number) {
             if (typeof p !== "object")
                 return;
-            var id = p.tabstopId;
-            var ts = tabstops[id];
+            const id = p.tabstopId;
+            let ts = tabstops[id];
             if (!ts) {
                 // The cast is required because a Tabstop is more than just an Array<Range>.
                 ts = tabstops[id] = <Tabstop>[];
@@ -418,12 +424,12 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
             if (ts.indexOf(p) !== -1)
                 return;
             ts.push(p);
-            var i1 = tokens.indexOf(p, i + 1);
+            const i1 = tokens.indexOf(p, i + 1);
             if (i1 === -1)
                 return;
 
-            var value = tokens.slice(i + 1, i1);
-            var isNested = value.some(function (t) { return typeof t === "object"; });
+            const value = tokens.slice(i + 1, i1);
+            const isNested = value.some(function (t) { return typeof t === "object"; });
             if (isNested && !ts.value) {
                 // TODO: Don't know why we need the cast.
                 ts.value = <any>value;
@@ -435,27 +441,27 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
 
         // expand tabstop values
         tabstops.forEach(function (ts) { ts.length = 0; });
-        var expanding = {};
+        const expanding = {};
         function copyValue(val: any[]) {
-            var copy = [];
-            for (var i = 0; i < val.length; i++) {
-                var p = val[i];
+            const copy = [];
+            for (let i = 0; i < val.length; i++) {
+                let p = val[i];
                 if (typeof p === "object") {
                     if (expanding[p.tabstopId])
                         continue;
-                    var j = val.lastIndexOf(p, i - 1);
+                    const j = val.lastIndexOf(p, i - 1);
                     p = copy[j] || { tabstopId: p.tabstopId };
                 }
                 copy[i] = p;
             }
             return copy;
         }
-        for (var i = 0; i < tokens.length; i++) {
-            var p: any = tokens[i];
+        for (let i = 0; i < tokens.length; i++) {
+            const p: any = tokens[i];
             if (typeof p !== "object")
                 continue;
-            var id = p.tabstopId;
-            var i1 = tokens.indexOf(p, i + 1);
+            const id = p.tabstopId;
+            const i1 = tokens.indexOf(p, i + 1);
             if (expanding[id]) {
                 // if reached closing bracket clear expanding state
                 if (expanding[id] === p)
@@ -464,8 +470,8 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
                 continue;
             }
 
-            var ts = tabstops[id];
-            var arg = (typeof ts.value === "string") ? [ts.value] : copyValue(<any[]>ts.value);
+            const ts = tabstops[id];
+            const arg = (typeof ts.value === "string") ? [ts.value] : copyValue(<any[]>ts.value);
             arg.unshift(i + 1, Math.max(0, i1 - i));
             arg.push(p);
             expanding[id] = p;
@@ -476,8 +482,8 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
         }
 
         // convert to plain text
-        var row = 0, column = 0;
-        var text = "";
+        let row = 0, column = 0;
+        let text = "";
         // FIXME: t should be string or Token, but below we use start and end.
         // That looks more like a Range!
         tokens.forEach(function (t: any) {
@@ -497,20 +503,18 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
             }
         });
 
-        let range = editor.getSelectionRange();
-        let end = editor.getSession().replace(range, text);
+        const range = editor.getSelectionRange();
+        const end = editor.getSession().replace(range, text);
 
-        let tsManager = editor.tabstopManager ? editor.tabstopManager : new TabstopManager(editor);
-        let selectionId = editor.inVirtualSelectionMode && editor.selection.index;
+        const tsManager = editor.tabstopManager ? editor.tabstopManager : new TabstopManager(editor);
+        const selectionId = editor.inVirtualSelectionMode && editor.selection.index;
         tsManager.addTabstops(tabstops, range.start, end, selectionId);
     }
 
     /**
-     * @method insertSnippet
-     * @param editor {Editor}
+     * @param editor
      * @param snippetText
-     * @param [options] {SnippetOptions}
-     * @return {void}
+     * @param options
      */
     public insertSnippet(editor: Editor, snippetText: string, options?: SnippetOptions): void {
 
@@ -530,22 +534,19 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
      * There is some additional logic for HTML and PHP that should be generalized
      * through the LanguageMode for languages with embedded languages.
      *
-     * @method $getScope
-     * @param editor {Editor}
-     * @return {string}
-     * @private
+     * @param editor
      */
     private $getScope(editor: Editor): string {
-        var session = editor.getSession();
-        var scope = session.$mode.$id || "";
+        const session = editor.getSession();
+        let scope = session.$mode.$id || "";
         scope = scope.split("/").pop();
         if (scope === "html" || scope === "php") {
             // FIXME: Coupling to PHP?
             // PHP is actually HTML
             if (scope === "php" && !session.$mode['inlinePhp'])
                 scope = "html";
-            var c = editor.getCursorPosition();
-            var state = session.getState(c.row);
+            const c = editor.getCursorPosition();
+            let state = session.getState(c.row);
             if (typeof state === "object") {
                 state = state[0];
             }
@@ -568,14 +569,12 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
      * 2) an underscore '_' (don't know why)
      * 3) other language modes in the special case of embedded languages.
      *
-     * @method getActiveScopes
-     * @param editor {Editor}
-     * @return {string[]}
+     * @param editor
      */
     public getActiveScopes(editor: Editor): string[] {
-        var scope = this.$getScope(editor);
-        var scopes = [scope];
-        var snippetMap = this.snippetMap;
+        const scope = this.$getScope(editor);
+        const scopes = [scope];
+        const snippetMap = this.snippetMap;
         if (snippetMap[scope] && snippetMap[scope][INCLUDE_SCOPES]) {
             scopes.push.apply(scopes, snippetMap[scope][INCLUDE_SCOPES]);
         }
@@ -584,14 +583,11 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
     }
 
     /**
-     * @method expandWithTab
-     * @param editor {Editor}
-     * @param [options] {SnippetOptions}
-     * @return {boolean}
+     * @param editor
+     * @param options
      */
     public expandWithTab(editor: Editor, options?: SnippetOptions): boolean {
-        // FIXME: The result needs some attention.
-        var result: boolean = editor.forEachSelection(() => { return this.expandSnippetForSelection(editor, options); }, null, { keepOrder: true });
+        const result: boolean = editor.forEachSelection(() => { return this.expandSnippetForSelection(editor, options); }, null, { keepOrder: true });
         if (result && editor.tabstopManager) {
             editor.tabstopManager.tabNext();
         }
@@ -599,25 +595,23 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
     }
 
     /**
-     * @method expandSnippetForSelection
-     * @param editor {Editor}
-     * @param [options] {SnippetOptions}
-     * @return {boolean}
+     * @param editor
+     * @param options
      */
     private expandSnippetForSelection(editor: Editor, options?: SnippetOptions): boolean {
 
-        var cursor: Position = editor.getCursorPosition();
-        var session: EditSession = editor.getSession();
-        var line: string = session.getLine(cursor.row);
-        var before: string = line.substring(0, cursor.column);
-        var after: string = line.substr(cursor.column);
+        const cursor: Position = editor.getCursorPosition();
+        const session: EditSession = editor.getSession();
+        const line: string = session.getLine(cursor.row);
+        const before: string = line.substring(0, cursor.column);
+        const after: string = line.substr(cursor.column);
 
-        var snippetMap = this.snippetMap;
-        var snippet;
-        var scopes = this.getActiveScopes(editor);
+        const snippetMap = this.snippetMap;
+        let snippet: Snippet;
+        const scopes = this.getActiveScopes(editor);
 
         scopes.some((scope: string) => {
-            var snippets = snippetMap[scope];
+            const snippets = snippetMap[scope];
             if (snippets) {
                 snippet = this.findMatchingSnippet(snippets, before, after);
             }
@@ -643,8 +637,8 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
     }
 
     private findMatchingSnippet(snippetList: Snippet[], before: string, after: string): Snippet {
-        for (var i = snippetList.length; i--;) {
-            var s = snippetList[i];
+        for (let i = snippetList.length; i--;) {
+            const s = snippetList[i];
             if (s.startRe && !s.startRe.test(before))
                 continue;
             if (s.endRe && !s.endRe.test(after))
@@ -661,35 +655,29 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
     }
 
     /**
-     * @method on
-     * @param eventName {string}
-     * @param callback {(event, source: SnippetManager) => any}
-     * @return {void}
+     * @param eventName
+     * @param callback
      */
     on(eventName: string, callback: (event: any, source: SnippetManager) => any): void {
         this.eventBus.on(eventName, callback, false);
     }
 
     /**
-     * @method off
-     * @param eventName {string}
-     * @param callback {(event, source: SnippetManager) => any}
-     * @return {void}
+     * @param eventName
+     * @param callback
      */
     off(eventName: string, callback: (event: any, source: SnippetManager) => any): void {
         this.eventBus.off(eventName, callback);
     }
 
     /**
-     * @method register
-     * @param snippets {Snippet[]}
-     * @param [scope] {string}
-     * @return {void}
+     * @param snippets
+     * @param scope
      */
     public register(snippets: Snippet[], scope?: string): void {
-        var snippetMap = this.snippetMap;
-        var snippetNameMap = this.snippetNameMap;
-        var self = this;
+        const snippetMap = this.snippetMap;
+        const snippetNameMap = this.snippetNameMap;
+        const self = this;
 
         function wrapRegexp(src: string): string {
             if (src && !/^\^?\(.*\)\$?$|^\\b$/.test(src))
@@ -722,7 +710,7 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
                 snippetNameMap[scope] = {};
             }
 
-            var map: { [name: string]: Snippet } = snippetNameMap[scope];
+            const map: { [name: string]: Snippet } = snippetNameMap[scope];
             if (s.name) {
                 let existingSnippet: Snippet = map[s.name];
                 if (existingSnippet) {
@@ -759,21 +747,19 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
     }
 
     /**
-     * @method unregister
-     * @param snippets {Snippet[]}
-     * @param [scope] {string}
-     * @return {void}
+     * @param snippets
+     * @param scope
      */
     unregister(snippets: Snippet[], scope?: string): void {
-        var snippetMap = this.snippetMap;
-        var snippetNameMap = this.snippetNameMap;
+        const snippetMap = this.snippetMap;
+        const snippetNameMap = this.snippetNameMap;
 
         function removeSnippet(s: Snippet) {
-            var nameMap = snippetNameMap[s.scope || scope];
+            const nameMap = snippetNameMap[s.scope || scope];
             if (nameMap && nameMap[s.name]) {
                 delete nameMap[s.name];
-                var map = snippetMap[s.scope || scope];
-                var i = map && map.indexOf(s);
+                const map = snippetMap[s.scope || scope];
+                const i = map && map.indexOf(s);
                 if (i >= 0)
                     map.splice(i, 1);
             }
@@ -791,24 +777,24 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
      * Note: The format of the string is critical (tabs, newlines, etc).
      *
      * @method parseSnippetFile
-     * @param str {string}
-     * @return {Snippet[]} An array of snippets.
+     * @param str
+     * @returns An array of snippets.
      */
     public parseSnippetFile(str: string): Snippet[] {
 
         str = str.replace(/\r/g, "");
 
-        var list: Snippet[] = [];
+        const list: Snippet[] = [];
 
-        var snippet: Snippet = {};
+        let snippet: Snippet = {};
 
         // Group 1 is like { \s \S }
         // Group 2 is like \S
         // Group 3 is like .
         // Group 4 is like \n \t .
-        var re: RegExp = /^#.*|^({[\s\S]*})\s*$|^(\S+) (.*)$|^((?:\n*\t.*)+)/gm;
+        const re: RegExp = /^#.*|^({[\s\S]*})\s*$|^(\S+) (.*)$|^((?:\n*\t.*)+)/gm;
 
-        var m: RegExpExecArray;
+        let m: RegExpExecArray;
 
         while (m = re.exec(str)) {
 
@@ -827,11 +813,11 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
                 snippet = {};
             }
             else {
-                var key: string = m[2];
-                var val: string = m[3];
+                const key: string = m[2];
+                const val: string = m[3];
                 if (typeof key === 'string') {
                     if (key === "regex") {
-                        var guardRe = /\/((?:[^\/\\]|\\.)*)|$/g;
+                        const guardRe = /\/((?:[^\/\\]|\\.)*)|$/g;
                         snippet.guard = guardRe.exec(val)[1];
                         snippet.trigger = guardRe.exec(val)[1];
                         snippet.endTrigger = guardRe.exec(val)[1];
@@ -859,14 +845,14 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
      *
      */
     public getSnippetByName(name: string, editor: Editor): Snippet {
-        var snippet: Snippet;
+        let snippet: Snippet;
         this.getActiveScopes(editor).some((scope: string) => {
-            var snippets: { [sname: string]: Snippet } = this.snippetNameMap[scope];
+            const snippets: { [sname: string]: Snippet } = this.snippetNameMap[scope];
             if (snippets) {
                 snippet = snippets[name];
             }
             return !!snippet;
-        }, this);
+        });
         return snippet;
     }
 }

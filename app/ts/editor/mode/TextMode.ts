@@ -7,8 +7,8 @@ import Behaviour from "./Behaviour";
 // import BehaviourCallback from "../BehaviourCallback";
 import CstyleBehaviour from './behaviour/CstyleBehaviour';
 import FoldMode from './folding/FoldMode';
-import {packages} from "../unicode";
-import {escapeRegExp} from "../lib/lang";
+import { packages } from "../unicode";
+import { escapeRegExp } from "../lib/lang";
 import TokenIterator from "../TokenIterator";
 import Range from "../Range";
 import TextAndSelection from "../TextAndSelection";
@@ -110,11 +110,11 @@ export default class TextMode implements LanguageMode {
     public toggleCommentLines(state: string, session: EditSession, startRow: number, endRow: number): boolean {
         const doc = session.doc;
 
-        var ignoreBlankLines = true;
-        var shouldRemove = true;
-        var minIndent = Infinity;
-        var tabSize = session.getTabSize();
-        var insertAtTabStop = false;
+        let ignoreBlankLines = true;
+        let shouldRemove = true;
+        let minIndent = Infinity;
+        const tabSize = session.getTabSize();
+        let insertAtTabStop = false;
         let comment: (line: string, i: number) => any;
         let uncomment: (line: string, i: number) => any;
         let testRemove: (line: string, i: number) => any;
@@ -157,12 +157,13 @@ export default class TextMode implements LanguageMode {
             };
         }
         else {
+            let regexpStartString: string;
             if (Array.isArray(this.lineCommentStart)) {
-                var regexpStartString: string = (<string[]>this.lineCommentStart).map(escapeRegExp).join("|");
+                regexpStartString = (<string[]>this.lineCommentStart).map(escapeRegExp).join("|");
                 lineCommentStart = (<string[]>this.lineCommentStart)[0];
             }
             else {
-                var regexpStartString: string = escapeRegExp(<string>this.lineCommentStart);
+                regexpStartString = escapeRegExp(<string>this.lineCommentStart);
                 lineCommentStart = <string>this.lineCommentStart;
             }
 
@@ -221,9 +222,9 @@ export default class TextMode implements LanguageMode {
         }
 
 
-        var minEmptyLength = Infinity;
+        let minEmptyLength = Infinity;
         iter(function (line: string, row: number) {
-            var indent = line.search(/\S/);
+            const indent = line.search(/\S/);
             if (indent !== -1) {
                 if (indent < minIndent)
                     minIndent = indent;
@@ -367,7 +368,7 @@ export default class TextMode implements LanguageMode {
                 scope[delegations[k]] = function () {
                     return this.$delegator(functionName, arguments, defaultHandler);
                 };
-            } (this));
+            }(this));
         }
     }
 
@@ -410,8 +411,8 @@ export default class TextMode implements LanguageMode {
             for (let key in behaviours) {
                 if (behaviours[key][action]) {
                     // FIXME: Make this type-safe?
-                    // var callback: BehaviourCallback = behaviours[key][action];
-                    // var transformed = callback(state, action, editor, session, unused);
+                    // callback: BehaviourCallback = behaviours[key][action];
+                    // transformed = callback(state, action, editor, session, unused);
                     const ret = behaviours[key][action].apply(this, arguments);
                     if (ret) {
                         return ret;

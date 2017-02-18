@@ -6,10 +6,10 @@ import Editor from "../../Editor";
 import EditSession from "../../EditSession";
 
 function hasType(token: { type: string }, type: string) {
-    var hasType = true;
-    var typeList = token.type.split('.');
-    var needleList = type.split('.');
-    needleList.forEach(function(needle) {
+    let hasType = true;
+    const typeList = token.type.split('.');
+    const needleList = type.split('.');
+    needleList.forEach(function (needle) {
         if (typeList.indexOf(needle) === -1) {
             hasType = false;
             return false;
@@ -24,12 +24,12 @@ export default class XQueryBehaviour extends Behaviour {
         this.inherit(new CstyleBehaviour(), ["braces", "parens", "string_dquotes"]);
         this.inherit(new XmlBehaviour());
 
-        this.add("autoclosing", "insertion", function(state: string, action, editor: Editor, session: EditSession, text: string) {
+        this.add("autoclosing", "insertion", function (state: string, action, editor: Editor, session: EditSession, text: string) {
             if (text === '>') {
-                var position = editor.getCursorPosition();
-                var iterator = new TokenIterator(session, position.row, position.column);
-                var token = iterator.getCurrentToken();
-                var atCursor = false;
+                const position = editor.getCursorPosition();
+                const iterator = new TokenIterator(session, position.row, position.column);
+                let token = iterator.getCurrentToken();
+                let atCursor = false;
                 const stateStr: string = JSON.parse(state).pop();
                 if ((token && token.value === '>') || stateStr !== "StartTag") return;
                 if (!token || !hasType(token, 'meta.tag') && !(hasType(token, 'text') && token.value.match('/'))) {
@@ -39,13 +39,13 @@ export default class XQueryBehaviour extends Behaviour {
                 } else {
                     atCursor = true;
                 }
-                var previous = iterator.stepBackward();
+                const previous = iterator.stepBackward();
                 if (!token || !hasType(token, 'meta.tag') || (previous !== null && previous.value.match('/'))) {
                     return;
                 }
-                var tag = token.value.substring(1);
+                let tag = token.value.substring(1);
                 if (atCursor) {
-                    var tag = tag.substring(0, position.column - token.start);
+                    tag = tag.substring(0, position.column - token.start);
                 }
 
                 return {

@@ -102,7 +102,7 @@ export default class ListViewPopup implements ListView {
             return editor;
         }
 
-        var el: HTMLDivElement = <HTMLDivElement>createElement("div");
+        const el: HTMLDivElement = <HTMLDivElement>createElement("div");
         this.editor = createEditor(el);
 
         if (container) {
@@ -112,7 +112,7 @@ export default class ListViewPopup implements ListView {
 
         // FIXME: The event must be exposed.
         this.editor.on("mousedown", (e) => {
-            var pos = e.getDocumentPosition();
+            const pos = e.getDocumentPosition();
             this.editor.selection.moveToPosition(pos);
             this.selectionMarker.start.row = this.selectionMarker.end.row = pos.row;
             e.stop();
@@ -132,7 +132,7 @@ export default class ListViewPopup implements ListView {
             }
             this.lastMouseEvent = e;
             this.lastMouseEventScrollTop = this.editor.renderer.scrollTop;
-            var row = this.lastMouseEvent.getDocumentPosition().row;
+            const row = this.lastMouseEvent.getDocumentPosition().row;
             if (this.hoverMarker.start.row !== row) {
                 if (!this.hoverMarkerId) {
                     this.setRow(row);
@@ -143,7 +143,7 @@ export default class ListViewPopup implements ListView {
         this.editor.renderer.on("beforeRender", () => {
             if (this.lastMouseEvent && this.hoverMarker.start.row !== -1) {
                 this.lastMouseEvent.$pos = null;
-                var row = this.lastMouseEvent.getDocumentPosition().row;
+                const row = this.lastMouseEvent.getDocumentPosition().row;
                 if (!this.hoverMarkerId) {
                     this.setRow(row);
                 }
@@ -163,7 +163,7 @@ export default class ListViewPopup implements ListView {
                 addCssClass(selected, "ace_selected");
         });
 
-        var hideHoverMarker = () => { this.setHoverMarker(-1); };
+        const hideHoverMarker = () => { this.setHoverMarker(-1); };
 
         addListener(this.editor.container, "mouseout", hideHoverMarker);
         this.editor.on("hide", hideHoverMarker);
@@ -174,24 +174,24 @@ export default class ListViewPopup implements ListView {
             return this.data.length;
         };
         this.editor.getSession().doc.getLine = (i: number) => {
-            var data = this.data[i];
+            const data = this.data[i];
             return (data && data.value) || "";
         };
 
-        var bgTokenizer: BackgroundTokenizer = this.editor.getSession().bgTokenizer;
+        const bgTokenizer: BackgroundTokenizer = this.editor.getSession().bgTokenizer;
         bgTokenizer.tokenizeRow = (row: number) => {
-            var data: Completion = this.data[row];
-            var tokens: Token[] = [];
+            const data: Completion = this.data[row];
+            const tokens: Token[] = [];
             if (!data)
                 return tokens;
             if (!data.caption) {
                 data.caption = data.value || data.name;
             }
 
-            var last = -1;
-            var flag: number;
-            var c: string;
-            for (var cIndex = 0, length = data.caption.length; cIndex < length; cIndex++) {
+            let last = -1;
+            let flag: number;
+            let c: string;
+            for (let cIndex = 0, length = data.caption.length; cIndex < length; cIndex++) {
                 c = data.caption[cIndex];
                 flag = data.matchMask & (1 << cIndex) ? 1 : 0;
                 if (last !== flag) {
@@ -204,7 +204,7 @@ export default class ListViewPopup implements ListView {
             }
 
             if (data.meta) {
-                var maxW = this.editor.renderer.$size.scrollerWidth / this.editor.renderer.layerConfig.characterWidth;
+                const maxW = this.editor.renderer.$size.scrollerWidth / this.editor.renderer.layerConfig.characterWidth;
                 if (data.meta.length + data.caption.length < maxW - 2) {
                     tokens.push({ type: "rightAlignedText", value: data.meta });
                 }
@@ -231,13 +231,13 @@ export default class ListViewPopup implements ListView {
      * @param topdownOnly
      */
     show(pos: PixelPosition, lineHeight: number, topdownOnly?: boolean): void {
-        var el = this.editor.container;
-        var screenHeight = window.innerHeight;
-        var screenWidth = window.innerWidth;
-        var renderer = this.editor.renderer;
-        // var maxLines = Math.min(renderer.$maxLines, this.session.getLength());
-        var maxH = renderer.maxLines * lineHeight * 1.4;
-        var top = pos.top + this.$borderSize;
+        const el = this.editor.container;
+        const screenHeight = window.innerHeight;
+        const screenWidth = window.innerWidth;
+        const renderer = this.editor.renderer;
+        // maxLines = Math.min(renderer.$maxLines, this.session.getLength());
+        const maxH = renderer.maxLines * lineHeight * 1.4;
+        let top = pos.top + this.$borderSize;
         if (top + maxH > screenHeight - lineHeight && !topdownOnly) {
             el.style.top = "";
             el.style.bottom = screenHeight - top + "px";
@@ -253,7 +253,7 @@ export default class ListViewPopup implements ListView {
         el.style.display = "";
         renderer.textLayer.checkForSizeChanges();
 
-        var left = pos.left;
+        let left = pos.left;
         if (left + el.offsetWidth > screenWidth) {
             left = screenWidth - el.offsetWidth;
         }

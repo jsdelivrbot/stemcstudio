@@ -54,8 +54,8 @@ export default class Fold extends RangeList {
      *
      */
     clone(): Fold {
-        var range = this.range.clone();
-        var fold = new Fold(range, this.placeholder);
+        const range = this.range.clone();
+        const fold = new Fold(range, this.placeholder);
         this.subFolds.forEach(function (subFold) {
             fold.subFolds.push(subFold.clone());
         });
@@ -78,12 +78,14 @@ export default class Fold extends RangeList {
 
         let row = fold.start.row;
         let column = fold.start.column;
-        for (var i = 0, cmp = -1; i < this.subFolds.length; i++) {
+        let i: number;
+        let cmp: number;
+        for (i = 0, cmp = -1; i < this.subFolds.length; i++) {
             cmp = this.subFolds[i].range.compare(row, column);
             if (cmp !== 1)
                 break;
         }
-        var afterStart = this.subFolds[i];
+        const afterStart = this.subFolds[i];
 
         if (cmp === 0) {
             return afterStart.addSubFold(fold);
@@ -92,18 +94,19 @@ export default class Fold extends RangeList {
         // cmp == -1
         row = fold.range.end.row;
         column = fold.range.end.column;
-        for (var j = i, cmp = -1; j < this.subFolds.length; j++) {
+        let j: number;
+        for (j = i, cmp = -1; j < this.subFolds.length; j++) {
             cmp = this.subFolds[j].range.compare(row, column);
             if (cmp !== 1)
                 break;
         }
-        /* var afterEnd = this.subFolds[j]; */
+        /* afterEnd = this.subFolds[j]; */
 
         if (cmp === 0) {
             throw new Error("A fold can't intersect already existing fold" + fold.range + this.range);
         }
 
-        /*var consumedFolds =*/ this.subFolds.splice(i, j - i, fold);
+        /* consumedFolds = */ this.subFolds.splice(i, j - i, fold);
         fold.setFoldLine(this.foldLine);
 
         return fold;

@@ -1,17 +1,15 @@
-import {ContinuousRecognizer} from './attribute';
-import {PanRecognizer} from './pan';
+import { ContinuousRecognizer } from './attribute';
+import { PanRecognizer } from './pan';
 import {
     DIRECTION_HORIZONTAL,
     DIRECTION_VERTICAL,
     IComputedEvent,
     INPUT_END
 } from '../hammer';
-import {} from '../utils';
+import { } from '../utils';
 /**
  * Swipe
  * Recognized when the pointer is moving fast enough in the allowed direction.
- * @constructor
- * @extends ContinuousRecognizer
  */
 export class SwipeRecognizer extends ContinuousRecognizer {
     private displacementThreshold: number = 10;
@@ -27,7 +25,7 @@ export class SwipeRecognizer extends ContinuousRecognizer {
     }
 
     attributeTest(input: IComputedEvent): boolean {
-        var speed: number;
+        let speed: number;
 
         if (this.direction & (DIRECTION_HORIZONTAL | DIRECTION_VERTICAL)) {
             speed = input.velocity.norm();
@@ -39,17 +37,17 @@ export class SwipeRecognizer extends ContinuousRecognizer {
             speed = Math.abs(input.velocity.y);
         }
 
-        var isParallel: boolean = (this.direction & input.direction) > 0;
-        var isFarEnough: boolean = input.distance > this.displacementThreshold;
-        var isFastEnough: boolean = speed > this.speedThreshold;
-        var isEndEventType: boolean = (input.eventType & INPUT_END) > 0;
+        const isParallel: boolean = (this.direction & input.direction) > 0;
+        const isFarEnough: boolean = input.distance > this.displacementThreshold;
+        const isFastEnough: boolean = speed > this.speedThreshold;
+        const isEndEventType: boolean = (input.eventType & INPUT_END) > 0;
 
         return super.attributeTest(input) && isParallel && isFarEnough && isFastEnough && isEndEventType;
     }
 
     emit(): void {
-        var direction = undefined; // hammer.directionStr(input.direction);
-        var event = new Event('swipe');
+        const direction = undefined; // hammer.directionStr(input.direction);
+        const event = new Event('swipe');
         if (direction) {
             this.manager.emit(this.eventName + direction, event);
         }

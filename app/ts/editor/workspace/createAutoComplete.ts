@@ -7,20 +7,20 @@ import Editor from '../Editor';
 import EventEmitterClass from '../lib/EventEmitterClass';
 import KeyboardHandler from '../keyboard/KeyboardHandler';
 import Position from '../Position';
-import {COMMAND_NAME_BACKSPACE} from '../editor_protocol';
+import { COMMAND_NAME_BACKSPACE } from '../editor_protocol';
 
 /**
  * Makes a function that can be used to compare completion entries for sorting purposes.
  */
 function makeCompareFn(text: string) {
     return function (a: CompletionEntry, b: CompletionEntry) {
-        var matchFunc = function (entry: CompletionEntry): number {
+        const matchFunc = function (entry: CompletionEntry): number {
             return entry.name.indexOf(text) === 0 ? 1 : 0;
         };
-        var matchCompare = function (): number {
+        const matchCompare = function (): number {
             return matchFunc(b) - matchFunc(a);
         };
-        var textCompare = function (): number {
+        const textCompare = function (): number {
             if (a.name === b.name) {
                 return 0;
             }
@@ -28,7 +28,7 @@ function makeCompareFn(text: string) {
                 return (a.name > b.name) ? 1 : -1;
             }
         };
-        var ret = matchCompare();
+        const ret = matchCompare();
         return (ret !== 0) ? ret : textCompare();
     };
 }
@@ -44,10 +44,10 @@ export default function createAutoComplete(editor: Editor, fileNameProvider: () 
      * The any type declartion avoids the noImplicitAny error.
      * May be better to define a class here?
      */
-    var AutoComplete: any = function () {
+    const AutoComplete: any = function () {
         // Do nothing.
     };
-    var that: { activate: () => void; deactivate: () => void; isActive: () => boolean } = new AutoComplete();
+    const that: { activate: () => void; deactivate: () => void; isActive: () => boolean } = new AutoComplete();
     that.isActive = isActive;
     that.activate = activate;
     that.deactivate = deactivate;
@@ -55,27 +55,27 @@ export default function createAutoComplete(editor: Editor, fileNameProvider: () 
     /**
      *
      */
-    var _eventEmitter = new EventEmitterClass(that);
+    const _eventEmitter = new EventEmitterClass(that);
 
     /**
      *
      */
-    var _active = false;
+    let _active = false;
 
     /**
      *
      */
-    var _handler: KeyboardHandler = new KeyboardHandler();
+    const _handler: KeyboardHandler = new KeyboardHandler();
 
     /**
      *
      */
-    var _view = new AutoCompleteView(editor);
+    const _view = new AutoCompleteView(editor);
 
     /**
      *
      */
-    var _inputText = '';
+    let _inputText = '';
 
     _handler.attach = function () {
 
@@ -101,11 +101,11 @@ export default function createAutoComplete(editor: Editor, fileNameProvider: () 
             return null;
         }
 
-        var command: Command = _handler.findKeyCommand(hashId, key);
+        const command: Command = _handler.findKeyCommand(hashId, key);
 
         if (!command) {
 
-            var defaultCommand: Command = editor.commands.findKeyCommand(hashId, key);
+            const defaultCommand: Command = editor.commands.findKeyCommand(hashId, key);
             if (defaultCommand) {
                 if (defaultCommand.name === COMMAND_NAME_BACKSPACE) {
                     return null;
@@ -134,13 +134,13 @@ export default function createAutoComplete(editor: Editor, fileNameProvider: () 
 
         editor.off("change", onEditorChange);
 
-        for (var i = 0; i < _inputText.length; i++) {
+        for (let i = 0; i < _inputText.length; i++) {
             editor.remove("left");
         }
 
-        var curr: HTMLElement = _view.current();
+        const curr: HTMLElement = _view.current();
         if (curr) {
-            var text = curr.getAttribute('data-name');
+            const text = curr.getAttribute('data-name');
             editor.insert(text, false);
         }
         deactivate();
@@ -158,13 +158,13 @@ export default function createAutoComplete(editor: Editor, fileNameProvider: () 
         completionService.getCompletionsAtCursor(fileNameProvider(), position)
             .then(function (completions: CompletionEntry[]) {
 
-                var text = completionService.matchText;
+                const text = completionService.matchText;
 
                 function showCompletions(infos: CompletionEntry[]) {
 
                     if (infos && infos.length > 0) {
                         editor.container.appendChild(_view.wrap);
-                        var html = '';
+                        let html = '';
                         for (let n = 0, nLength = infos.length; n < nLength; n++) {
                             const info: CompletionEntry = infos[n];
                             const name = '<span class="label-name">' + info.name + '</span>';
@@ -172,10 +172,10 @@ export default function createAutoComplete(editor: Editor, fileNameProvider: () 
                             html += '<li data-name="' + info.name + '">' + kind + name + '</li>';
                         }
 
-                        var pos = editor.renderer.getPixelPosition(position, true);
-                        var lineHeight = editor.renderer.layerConfig.lineHeight;
+                        const pos = editor.renderer.getPixelPosition(position, true);
+                        const lineHeight = editor.renderer.layerConfig.lineHeight;
 
-                        var rect: ClientRect = editor.container.getBoundingClientRect();
+                        const rect: ClientRect = editor.container.getBoundingClientRect();
                         pos.top += rect.top - editor.renderer.layerConfig.offset;
                         pos.left += rect.left - editor.renderer.scrollLeft;
                         pos.left += editor.renderer.$gutterLayer.gutterWidth;
@@ -202,7 +202,7 @@ export default function createAutoComplete(editor: Editor, fileNameProvider: () 
 
                 showCompletions(completions);
 
-                var count = completions ? completions.length : 0;
+                const count = completions ? completions.length : 0;
                 if (count > 0) {
                     editor.keyBinding.addKeyboardHandler(_handler);
                 }
@@ -218,7 +218,7 @@ export default function createAutoComplete(editor: Editor, fileNameProvider: () 
      */
     function onEditorChange(delta: Delta): void {
 
-        var position: Position = editor.getCursorPosition();
+        const position: Position = editor.getCursorPosition();
 
         if (delta.action === "insert") {
             activateUsingCursor({ row: position.row, column: position.column + 1 });

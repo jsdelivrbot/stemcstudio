@@ -86,6 +86,9 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         gutterOffset: 1
     };
 
+    /**
+     *
+     */
     private $maxLines: number;
     private $minLines: number;
 

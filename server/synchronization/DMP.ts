@@ -88,9 +88,9 @@ export default class DMP {
          * @return {number} Max bits
          */
         function getMaxBits() {
-            var maxbits = 0;
-            var oldi = 1;
-            var newi = 2;
+            let maxbits = 0;
+            let oldi = 1;
+            let newi = 2;
             while (oldi !== newi) {
                 maxbits++;
                 oldi = newi;
@@ -202,8 +202,8 @@ export default class DMP {
         if (i !== -1) {
             // Shorter text is inside the longer text (speedup).
             const diffs: Diff[] = [[DIFF_INSERT, longtext.substring(0, i)],
-                [DIFF_EQUAL, shorttext],
-                [DIFF_INSERT, longtext.substring(i + shorttext.length)]];
+            [DIFF_EQUAL, shorttext],
+            [DIFF_INSERT, longtext.substring(i + shorttext.length)]];
             // Swap insertions for deletions if diff is reversed.
             if (text1.length > text2.length) {
                 diffs[0][0] = diffs[2][0] = DIFF_DELETE;
@@ -555,29 +555,29 @@ export default class DMP {
      */
     public diff_map(text1: string, text2: string): Diff[] {
         // Don't run for too long.
-        var ms_end = (new Date()).getTime() + this.Diff_Timeout * 1000;
+        const ms_end = (new Date()).getTime() + this.Diff_Timeout * 1000;
         // Cache the text lengths to prevent multiple calls.
-        var text1_length = text1.length;
-        var text2_length = text2.length;
-        var max_d = text1_length + text2_length - 1;
-        var doubleEnd = this.Diff_DualThreshold * 2 < max_d;
-        var v_map1: {}[] = [];
-        var v_map2 = [];
-        var v1 = {};
-        var v2 = {};
+        const text1_length = text1.length;
+        const text2_length = text2.length;
+        const max_d = text1_length + text2_length - 1;
+        const doubleEnd = this.Diff_DualThreshold * 2 < max_d;
+        let v_map1: { [index: number]: { [key: string]: string } }[] = [];
+        let v_map2: { [index: number]: { [key: string]: string } }[] = [];
+        const v1: { [index: number]: number } = {};
+        const v2: { [index: number]: number } = {};
         v1[1] = 0;
         v2[1] = 0;
-        var x: number;
-        var y: number;
-        var footstep;  // Used to track overlapping paths.
-        var footsteps = {};
-        var done = false;
+        let x: number;
+        let y: number;
+        let footstep: string;  // Used to track overlapping paths.
+        const footsteps: { [footstep: string]: number } = {};
+        let done = false;
         // Safari 1.x doesn't have hasOwnProperty
-        var hasOwnProperty = !!(footsteps.hasOwnProperty);
+        const hasOwnProperty = !!(footsteps.hasOwnProperty);
         // If the total number of characters is odd, then the front path will collide
         // with the reverse path.
-        var front = (text1_length + text2_length) % 2;
-        for (var d = 0; d < max_d; d++) {
+        const front = (text1_length + text2_length) % 2;
+        for (let d = 0; d < max_d; d++) {
             // Bail out if timeout reached.
             if (this.Diff_Timeout > 0 && (new Date()).getTime() > ms_end) {
                 return null;
@@ -585,7 +585,7 @@ export default class DMP {
 
             // Walk the front path one step.
             v_map1[d] = {};
-            for (var k = -d; k <= d; k += 2) {
+            for (let k = -d; k <= d; k += 2) {
                 if (k === -d || k !== d && v1[k - 1] < v1[k + 1]) {
                     x = v1[k + 1];
                 } else {
@@ -622,20 +622,19 @@ export default class DMP {
                 if (x === text1_length && y === text2_length) {
                     // Reached the end in single-path mode.
                     return this.diff_path1(v_map1, text1, text2);
-                } else if (done) {
+                }
+                else if (done) {
                     // Front path ran over reverse path.
                     v_map2 = v_map2.slice(0, footsteps[footstep] + 1);
-                    var a = this.diff_path1(v_map1, text1.substring(0, x),
-                        text2.substring(0, y));
-                    return a.concat(this.diff_path2(v_map2, text1.substring(x),
-                        text2.substring(y)));
+                    const a = this.diff_path1(v_map1, text1.substring(0, x), text2.substring(0, y));
+                    return a.concat(this.diff_path2(v_map2, text1.substring(x), text2.substring(y)));
                 }
             }
 
             if (doubleEnd) {
                 // Walk the reverse path one step.
                 v_map2[d] = {};
-                for (var k = -d; k <= d; k += 2) {
+                for (let k = -d; k <= d; k += 2) {
                     if (k === -d || k !== d && v2[k - 1] < v2[k + 1]) {
                         x = v2[k + 1];
                     } else {
@@ -669,11 +668,8 @@ export default class DMP {
                     if (done) {
                         // Reverse path ran over front path.
                         v_map1 = v_map1.slice(0, footsteps[footstep] + 1);
-                        var a = this.diff_path1(v_map1, text1.substring(0, text1_length - x),
-                            text2.substring(0, text2_length - y));
-                        return a.concat(this.diff_path2(v_map2,
-                            text1.substring(text1_length - x),
-                            text2.substring(text2_length - y)));
+                        const a = this.diff_path1(v_map1, text1.substring(0, text1_length - x), text2.substring(0, text2_length - y));
+                        return a.concat(this.diff_path2(v_map2, text1.substring(text1_length - x), text2.substring(text2_length - y)));
                     }
                 }
             }
@@ -693,7 +689,7 @@ export default class DMP {
      * @return {Array.<Array.<number|string>>} Array of diff tuples.
      * @private
      */
-    private diff_path1(v_map: {}[], text1: string, text2: string): Diff[] {
+    private diff_path1(v_map: { [index: number]: { [key: string]: any } }[], text1: string, text2: string): Diff[] {
         const path: Diff[] = [];
         let x = text1.length;
         let y = text2.length;
@@ -753,12 +749,11 @@ export default class DMP {
      */
     private diff_path2(v_map: {}[], text1: string, text2: string): Diff[] {
         const path: Diff[] = [];
-        var pathLength = 0;
-        var x = text1.length;
-        var y = text2.length;
-        /** @type {number?} */
-        var last_op = null;
-        for (var d = v_map.length - 2; d >= 0; d--) {
+        let pathLength = 0;
+        let x = text1.length;
+        let y = text2.length;
+        let last_op: number = null;
+        for (let d = v_map.length - 2; d >= 0; d--) {
             while (1) {
                 if (v_map[d].hasOwnProperty ? v_map[d].hasOwnProperty((x - 1) + ',' + y) :
                     (v_map[d][(x - 1) + ',' + y] !== undefined)) {
@@ -807,11 +802,9 @@ export default class DMP {
     /**
      * Determine the common prefix of two strings
      *
-     * @method diff_commonPrefix
-     * @param {string} text1 First string.
-     * @param {string} text2 Second string.
-     * @return {number} The number of characters common to the start of each
-     *     string.
+     * @param text1 First string.
+     * @param text2 Second string.
+     * @returns The number of characters common to the start of each string.
      */
     diff_commonPrefix(text1: string, text2: string): number {
         // Quick check for common null cases.
@@ -820,16 +813,16 @@ export default class DMP {
         }
         // Binary search.
         // Performance analysis: http://neil.fraser.name/news/2007/10/09/
-        var pointermin = 0;
-        var pointermax = Math.min(text1.length, text2.length);
-        var pointermid = pointermax;
-        var pointerstart = 0;
+        let pointermin = 0;
+        let pointermax = Math.min(text1.length, text2.length);
+        let pointermid = pointermax;
+        let pointerstart = 0;
         while (pointermin < pointermid) {
-            if (text1.substring(pointerstart, pointermid) ===
-                text2.substring(pointerstart, pointermid)) {
+            if (text1.substring(pointerstart, pointermid) === text2.substring(pointerstart, pointermid)) {
                 pointermin = pointermid;
                 pointerstart = pointermin;
-            } else {
+            }
+            else {
                 pointermax = pointermid;
             }
             pointermid = Math.floor((pointermax - pointermin) / 2 + pointermin);
@@ -841,10 +834,9 @@ export default class DMP {
     /**
      * Determine the common suffix of two strings
      *
-     * @method diff_commonSuffix
-     * @param {string} text1 First string.
-     * @param {string} text2 Second string.
-     * @return {number} The number of characters common to the end of each string.
+     * @param teext1 First string.
+     * @param text2 Second string.
+     * @returns The number of characters common to the end of each string.
      */
     diff_commonSuffix(text1: string, text2: string): number {
         // Quick check for common null cases.
@@ -854,16 +846,16 @@ export default class DMP {
         }
         // Binary search.
         // Performance analysis: http://neil.fraser.name/news/2007/10/09/
-        var pointermin = 0;
-        var pointermax = Math.min(text1.length, text2.length);
-        var pointermid = pointermax;
-        var pointerend = 0;
+        let pointermin = 0;
+        let pointermax = Math.min(text1.length, text2.length);
+        let pointermid = pointermax;
+        let pointerend = 0;
         while (pointermin < pointermid) {
-            if (text1.substring(text1.length - pointermid, text1.length - pointerend) ===
-                text2.substring(text2.length - pointermid, text2.length - pointerend)) {
+            if (text1.substring(text1.length - pointermid, text1.length - pointerend) === text2.substring(text2.length - pointermid, text2.length - pointerend)) {
                 pointermin = pointermid;
                 pointerend = pointermin;
-            } else {
+            }
+            else {
                 pointermax = pointermid;
             }
             pointermid = Math.floor((pointermax - pointermin) / 2 + pointermin);
@@ -959,10 +951,13 @@ export default class DMP {
          */
         function diff_halfMatchI_(longtext: string, shorttext: string, i: number): string[] {
             // Start with a 1/4 length substring at position i as a seed.
-            var seed = longtext.substring(i, i + Math.floor(longtext.length / 4));
-            var j = -1;
-            var best_common = "";
-            var best_longtext_a, best_longtext_b, best_shorttext_a, best_shorttext_b;
+            const seed = longtext.substring(i, i + Math.floor(longtext.length / 4));
+            let j = -1;
+            let best_common = "";
+            let best_longtext_a: string;
+            let best_longtext_b: string;
+            let best_shorttext_a: string;
+            let best_shorttext_b: string;
             while ((j = shorttext.indexOf(seed, j + 1)) !== -1) {
                 const prefixLength = self.diff_commonPrefix(longtext.substring(i), shorttext.substring(j));
                 const suffixLength = self.diff_commonSuffix(longtext.substring(0, i), shorttext.substring(0, j));
@@ -1020,23 +1015,21 @@ export default class DMP {
     /**
      * Reduce the number of edits by eliminating semantically trivial equalities.
      *
-     * @param {diffs Array of diff tuples.
-     * @returns
+     * @param diffs Array of diff tuples.
      */
     diff_cleanupSemantic(diffs: Diff[]): void {
-        var changes = false;
-        var equalities = [];  // Stack of indices where equalities are found.
-        var equalitiesLength = 0;  // Keeping our own length var is faster in JS.
-        /** @type {?string} */
-        var lastequality = null;
+        let changes = false;
+        const equalities: number[] = [];  // Stack of indices where equalities are found.
+        let equalitiesLength = 0;  // Keeping our own length variable is faster in JS.
+        let lastequality: string = null;
         // Always equal to diffs[equalities[equalitiesLength - 1]][1]
-        var pointer = 0;  // Index of current position.
+        let pointer = 0;  // Index of current position.
         // Number of characters that changed prior to the equality.
-        var length_insertions1 = 0;
-        var length_deletions1 = 0;
+        let length_insertions1 = 0;
+        let length_deletions1 = 0;
         // Number of characters that changed after the equality.
-        var length_insertions2 = 0;
-        var length_deletions2 = 0;
+        let length_insertions2 = 0;
+        let length_deletions2 = 0;
         while (pointer < diffs.length) {
             if (diffs[pointer][0] === DIFF_EQUAL) {  // Equality found.
                 equalities[equalitiesLength++] = pointer;
@@ -1044,11 +1037,13 @@ export default class DMP {
                 length_deletions1 = length_deletions2;
                 length_insertions2 = 0;
                 length_deletions2 = 0;
-                lastequality = diffs[pointer][1];
-            } else {  // An insertion or deletion.
+                lastequality = <string>diffs[pointer][1];
+            }
+            else {  // An insertion or deletion.
                 if (diffs[pointer][0] === DIFF_INSERT) {
                     length_insertions2 += (<string>diffs[pointer][1]).length;
-                } else {
+                }
+                else {
                     length_deletions2 += (<string>diffs[pointer][1]).length;
                 }
                 // Eliminate an equality that is smaller or equal to the edits on both
@@ -1254,19 +1249,19 @@ export default class DMP {
      * @return {void}
      */
     diff_cleanupEfficiency(diffs: Diff[]): void {
-        var changes = false;
-        var equalities = [];  // Stack of indices where equalities are found.
-        var equalitiesLength = 0;  // Keeping our own length var is faster in JS.
-        var lastequality = '';  // Always equal to equalities[equalitiesLength-1][1]
-        var pointer = 0;  // Index of current position.
+        let changes = false;
+        const equalities: number[] = [];  // Stack of indices where equalities are found.
+        let equalitiesLength = 0;  // Keeping our own length variable is faster in JS.
+        let lastequality = '';  // Always equal to equalities[equalitiesLength-1][1]
+        let pointer = 0;  // Index of current position.
         // Is there an insertion operation before the last equality.
-        var pre_ins = false;
+        let pre_ins = false;
         // Is there a deletion operation before the last equality.
-        var pre_del = false;
+        let pre_del = false;
         // Is there an insertion operation after the last equality.
-        var post_ins = false;
+        let post_ins = false;
         // Is there a deletion operation after the last equality.
-        var post_del = false;
+        let post_del = false;
         while (pointer < diffs.length) {
             if (diffs[pointer][0] === DIFF_EQUAL) {  // equality found
                 if ((<string>diffs[pointer][1]).length < this.Diff_EditCost &&
@@ -1276,16 +1271,19 @@ export default class DMP {
                     pre_ins = post_ins;
                     pre_del = post_del;
                     lastequality = <string>diffs[pointer][1];
-                } else {
+                }
+                else {
                     // Not a candidate, and can never become one.
                     equalitiesLength = 0;
                     lastequality = '';
                 }
                 post_ins = post_del = false;
-            } else {  // an insertion or deletion
+            }
+            else {  // an insertion or deletion
                 if (diffs[pointer][0] === DIFF_DELETE) {
                     post_del = true;
-                } else {
+                }
+                else {
                     post_ins = true;
                 }
                 /*
@@ -1337,12 +1335,12 @@ export default class DMP {
      */
     diff_cleanupMerge(diffs: Diff[]): void {
         diffs.push([DIFF_EQUAL, '']);  // Add a dummy entry at the end.
-        var pointer = 0;
-        var count_delete = 0;
-        var count_insert = 0;
-        var text_delete = '';
-        var text_insert = '';
-        var commonlength;
+        let pointer = 0;
+        let count_delete = 0;
+        let count_insert = 0;
+        let text_delete = '';
+        let text_insert = '';
+        let commonlength: number;
         while (pointer < diffs.length) {
             switch (diffs[pointer][0]) {
                 case DIFF_INSERT:
@@ -1421,7 +1419,7 @@ export default class DMP {
         // Second pass: look for single edits surrounded on both sides by equalities
         // which can be shifted sideways to eliminate an equality.
         // e.g: A<ins>BA</ins>C -> <ins>AB</ins>AC
-        var changes = false;
+        let changes = false;
         pointer = 1;
         // Intentionally ignore the first and last element (don't need checking).
         while (pointer < diffs.length - 1) {
@@ -1462,17 +1460,16 @@ export default class DMP {
      * text2.
      * e.g. 'The cat' vs 'The big cat', 1->1, 5->8
      *
-     * @method diff_xIndex
-     * @param {Array.<Array.<number|string>>} diffs Array of diff tuples.
-     * @param {number} loc Location within text1.
-     * @return {number} Location within text2.
+     * @param diffs Array of diff tuples.
+     * @param loc Location within text1.
+     * @returns Location within text2.
      */
     diff_xIndex(diffs: Diff[], loc: number): number {
-        var chars1 = 0;
-        var chars2 = 0;
-        var last_chars1 = 0;
-        var last_chars2 = 0;
-        var x;
+        let chars1 = 0;
+        let chars2 = 0;
+        let last_chars1 = 0;
+        let last_chars2 = 0;
+        let x: number;
         for (x = 0; x < diffs.length; x++) {
             if (diffs[x][0] !== DIFF_INSERT) {  // Equality or deletion.
                 chars1 += (<string>diffs[x][1]).length;
@@ -1505,9 +1502,9 @@ export default class DMP {
     diff_prettyHtml(diffs: Diff[]): string {
         const html: string[] = [];
         const pattern_amp = /&/g;
-        var pattern_lt = /</g;
-        var pattern_gt = />/g;
-        var pattern_para = /\n/g;
+        const pattern_lt = /</g;
+        const pattern_gt = />/g;
+        const pattern_para = /\n/g;
         for (let x = 0; x < diffs.length; x++) {
             const op = <number>diffs[x][0];    // Operation (insert, delete, equal)
             const data = <string>diffs[x][1];  // Text of change.
@@ -1575,12 +1572,12 @@ export default class DMP {
      * @return {number} Number of changes.
      */
     diff_levenshtein(diffs: Diff[]): number {
-        var levenshtein = 0;
-        var insertions = 0;
-        var deletions = 0;
-        for (var x = 0; x < diffs.length; x++) {
-            var op = diffs[x][0];
-            var data = diffs[x][1];
+        let levenshtein = 0;
+        let insertions = 0;
+        let deletions = 0;
+        for (let x = 0; x < diffs.length; x++) {
+            const op = diffs[x][0];
+            const data = diffs[x][1];
             switch (op) {
                 case DIFF_INSERT:
                     insertions += (<string>data).length;
@@ -1646,7 +1643,7 @@ export default class DMP {
      */
     deltaArrayToDiffs(baseText: string, tokens: string[]): Diff[] {
         const diffs: Diff[] = [];
-        let diffsLength = 0;  // Keeping our own length var is faster in JS.
+        let diffsLength = 0;  // Keeping our own length variable is faster in JS.
         let pointer = 0;  // Cursor in baseText
         const xLen = tokens.length;
         for (let x = 0; x < xLen; x++) {
@@ -1665,11 +1662,11 @@ export default class DMP {
                 case '-':
                 // Fall through.
                 case '=':
-                    var n = parseInt(param, 10);
+                    const n = parseInt(param, 10);
                     if (isNaN(n) || n < 0) {
                         throw new Error('Invalid number in deltaToDiffs: ' + param);
                     }
-                    var text = baseText.substring(pointer, pointer += n);
+                    const text = baseText.substring(pointer, pointer += n);
                     if (tokens[x].charAt(0) === '=') {
                         diffs[diffsLength++] = [DIFF_EQUAL, text];
                     } else {
@@ -1751,21 +1748,21 @@ export default class DMP {
         }
 
         // Initialise the alphabet.
-        var s = this.match_alphabet_(pattern);
+        const s = this.match_alphabet_(pattern);
 
-        var dmp = this;  // 'this' becomes 'window' in a closure.
+        const dmp = this;  // 'this' becomes 'window' in a closure.
 
         /**
          * Compute and return the score for a match with e errors and x location.
          * Accesses loc and pattern through being a closure.
-         * @param {number} e Number of errors in match.
-         * @param {number} x Location of match.
-         * @return {number} Overall score for match (0.0 = good, 1.0 = bad).
+         * @param e Number of errors in match.
+         * @param x Location of match.
+         * @return Overall score for match (0.0 = good, 1.0 = bad).
          * @private
          */
-        function match_bitapScore(e, x) {
-            var accuracy = e / pattern.length;
-            var proximity = Math.abs(loc - x);
+        function match_bitapScore(e: number, x: number): number {
+            const accuracy = e / pattern.length;
+            const proximity = Math.abs(loc - x);
             if (!dmp.Match_Distance) {
                 // Dodge divide by zero error.
                 return proximity ? 1.0 : accuracy;
@@ -1774,9 +1771,9 @@ export default class DMP {
         }
 
         // Highest score beyond which we give up.
-        var score_threshold = this.Match_Threshold;
+        let score_threshold = this.Match_Threshold;
         // Is there a nearby exact match? (speedup)
-        var best_loc = text.indexOf(pattern, loc);
+        let best_loc = text.indexOf(pattern, loc);
         if (best_loc !== -1) {
             score_threshold = Math.min(match_bitapScore(0, best_loc), score_threshold);
         }
@@ -1787,13 +1784,14 @@ export default class DMP {
         }
 
         // Initialise the bit arrays.
-        var matchmask = 1 << (pattern.length - 1);
+        const matchmask = 1 << (pattern.length - 1);
         best_loc = -1;
 
-        var bin_min, bin_mid;
-        var bin_max = pattern.length + text.length;
-        var last_rd;
-        for (var d = 0; d < pattern.length; d++) {
+        let bin_min: number;
+        let bin_mid: number;
+        let bin_max = pattern.length + text.length;
+        let last_rd: number[];
+        for (let d = 0; d < pattern.length; d++) {
             // Scan for the best match; each iteration allows for one more error.
             // Run a binary search to determine how far from 'loc' we can stray at this
             // error level.
@@ -1809,15 +1807,15 @@ export default class DMP {
             }
             // Use the result from this iteration as the maximum for the next.
             bin_max = bin_mid;
-            var start = Math.max(1, loc - bin_mid + 1);
-            var finish = Math.min(loc + bin_mid, text.length) + pattern.length;
+            let start = Math.max(1, loc - bin_mid + 1);
+            const finish = Math.min(loc + bin_mid, text.length) + pattern.length;
 
-            var rd = Array(finish + 2);
+            const rd = Array(finish + 2);
             rd[finish + 1] = (1 << d) - 1;
-            for (var j = finish; j >= start; j--) {
+            for (let j = finish; j >= start; j--) {
                 // The alphabet (s) is a sparse hash, so the following line generates
                 // warnings.
-                var charMatch = s[text.charAt(j - 1)];
+                const charMatch = s[text.charAt(j - 1)];
                 if (d === 0) {  // First pass: exact match.
                     rd[j] = ((rd[j + 1] << 1) | 1) & charMatch;
                 } else {  // Subsequent passes: fuzzy match.
@@ -1826,7 +1824,7 @@ export default class DMP {
                         last_rd[j + 1];
                 }
                 if (rd[j] & matchmask) {
-                    var score = match_bitapScore(d, j - 1);
+                    const score = match_bitapScore(d, j - 1);
                     // This match will almost certainly be better than any existing match.
                     // But check anyway.
                     if (score <= score_threshold) {
@@ -1856,17 +1854,16 @@ export default class DMP {
     /**
      * Initialise the alphabet for the Bitap algorithm.
      *
-     * @method match_alphabet_
-     * @param {string} pattern The text to encode.
-     * @return {Object} Hash of character locations.
+     * @param pattern The text to encode.
+     * @returns Hash of character locations.
      * @private
      */
     match_alphabet_(pattern: string): { [key: string]: number } {
-        var s: { [key: string]: number } = {};
-        for (var i = 0; i < pattern.length; i++) {
+        const s: { [key: string]: number } = {};
+        for (let i = 0; i < pattern.length; i++) {
             s[pattern.charAt(i)] = 0;
         }
-        for (var i = 0; i < pattern.length; i++) {
+        for (let i = 0; i < pattern.length; i++) {
             s[pattern.charAt(i)] |= 1 << (pattern.length - i - 1);
         }
         return s;
@@ -1880,15 +1877,13 @@ export default class DMP {
      * Increase the context until it is unique,
      * but don't let the pattern expand beyond Match_MaxBits.
      *
-     * @method patch_addContext_
-     * @param {Patch} patch The patch to grow.
-     * @param {string} text Source text.
-     * @rerurn {void}
+     * @param patch The patch to grow.
+     * @param text Source text.
      * @private
      */
     public patch_addContext_(patch: Patch, text: string): void {
-        var pattern = text.substring(patch.start2, patch.start2 + patch.length1);
-        var padding = 0;
+        let pattern = text.substring(patch.start2, patch.start2 + patch.length1);
+        let padding = 0;
         while (text.indexOf(pattern) !== text.lastIndexOf(pattern) &&
             pattern.length < this.Match_MaxBits - this.Patch_Margin -
             this.Patch_Margin) {
@@ -1899,13 +1894,12 @@ export default class DMP {
         // Add one chunk for good luck.
         padding += this.Patch_Margin;
         // Add the prefix.
-        var prefix = text.substring(patch.start2 - padding, patch.start2);
+        const prefix = text.substring(patch.start2 - padding, patch.start2);
         if (prefix) {
             patch.diffs.unshift([DIFF_EQUAL, prefix]);
         }
         // Add the suffix.
-        var suffix = text.substring(patch.start2 + patch.length1,
-            patch.start2 + patch.length1 + padding);
+        const suffix = text.substring(patch.start2 + patch.length1, patch.start2 + patch.length1 + padding);
         if (suffix) {
             patch.diffs.push([DIFF_EQUAL, suffix]);
         }
@@ -1942,9 +1936,9 @@ export default class DMP {
      * text1 to text2 (method 4) or undefined (methods 1,2,3).
      * @return {Patch[]} Array of patch objects.
      */
-    patch_make(a, opt_b?, opt_c?): Patch[] {
-        var text1;
-        var diffs;
+    patch_make(a: string, opt_b?: string, opt_c?): Patch[] {
+        let text1: string;
+        let diffs: Diff[];
         if (typeof a === 'string' && typeof opt_b === 'string' &&
             typeof opt_c === 'undefined') {
             // Method 1: text1, text2
@@ -1988,18 +1982,18 @@ export default class DMP {
      */
     computePatches(text1: string, diffs: Diff[]): Patch[] {
         const patches: Patch[] = [];
-        var patch = new Patch();
-        var patchDiffLength = 0;  // Keeping our own length var is faster in JS.
-        var char_count1 = 0;  // Number of characters into the text1 string.
-        var char_count2 = 0;  // Number of characters into the text2 string.
+        let patch = new Patch();
+        let patchDiffLength = 0;  // Keeping our own length variable is faster in JS.
+        let char_count1 = 0;  // Number of characters into the text1 string.
+        let char_count2 = 0;  // Number of characters into the text2 string.
         // Start with text1 (prepatch_text) and apply the diffs until we arrive at
         // text2 (postpatch_text).  We recreate the patches one by one to determine
         // context info.
-        var prepatch_text = text1;
-        var postpatch_text = text1;
-        for (var x = 0; x < diffs.length; x++) {
-            var diff_type = <number>diffs[x][0];
-            var diff_text = <string>diffs[x][1];
+        let prepatch_text = text1;
+        let postpatch_text = text1;
+        for (let x = 0; x < diffs.length; x++) {
+            const diff_type = <number>diffs[x][0];
+            const diff_text = <string>diffs[x][1];
 
             if (!patchDiffLength && diff_type !== DIFF_EQUAL) {
                 // A new patch starts here.
@@ -2066,18 +2060,17 @@ export default class DMP {
     /**
      * Given an array of patches, return another array that is identical.
      *
-     * @method patch_deepCopy
-     * @param {Patch[]} patches Array of patch objects.
-     * @return {Patch[]} Array of patch objects.
+     * @param patches Array of patch objects.
+     * @returns Array of patch objects.
      */
     patch_deepCopy(patches: Patch[]): Patch[] {
         // Making deep copies is hard in JavaScript.
-        var patchesCopy = [];
-        for (var x = 0; x < patches.length; x++) {
-            var patch = patches[x];
-            var patchCopy = new Patch();
+        const patchesCopy: Patch[] = [];
+        for (let x = 0; x < patches.length; x++) {
+            const patch = patches[x];
+            const patchCopy = new Patch();
             patchCopy.diffs = [];
-            for (var y = 0; y < patch.diffs.length; y++) {
+            for (let y = 0; y < patch.diffs.length; y++) {
                 patchCopy.diffs[y] = patch.diffs[y].slice();
             }
             patchCopy.start1 = patch.start1;
@@ -2114,13 +2107,13 @@ export default class DMP {
         // of the previous patch.  If there are patches expected at positions 10 and
         // 20, but the first patch was found at 12, delta is 2 and the second patch
         // has an effective expected position of 22.
-        var delta = 0;
-        var results: boolean[] = [];
-        for (var x = 0; x < patches.length; x++) {
-            var expected_loc = patches[x].start2 + delta;
-            var text1 = this.sourceText(patches[x].diffs);
-            var start_loc: number;
-            var end_loc = -1;
+        let delta = 0;
+        const results: boolean[] = [];
+        for (let x = 0; x < patches.length; x++) {
+            const expected_loc = patches[x].start2 + delta;
+            const text1 = this.sourceText(patches[x].diffs);
+            let start_loc: number;
+            let end_loc = -1;
             if (text1.length > this.Match_MaxBits) {
                 // patch_splitMax will only provide an oversized pattern in the case of
                 // a monster delete.
@@ -2161,7 +2154,7 @@ export default class DMP {
                 } else {
                     // Imperfect match.  Run a diff to get a framework of equivalent
                     // indices.
-                    var diffs = this.diff_main(text1, text2, false);
+                    const diffs = this.diff_main(text1, text2, false);
                     if (text1.length > this.Match_MaxBits &&
                         this.diff_levenshtein(diffs) / text1.length >
                         this.Patch_DeleteThreshold) {
@@ -2169,10 +2162,10 @@ export default class DMP {
                         results[x] = false;
                     } else {
                         this.diff_cleanupSemanticLossless(diffs);
-                        var index1 = 0;
-                        var index2;
-                        for (var y = 0; y < patches[x].diffs.length; y++) {
-                            var mod = patches[x].diffs[y];
+                        let index1 = 0;
+                        let index2: number;
+                        for (let y = 0; y < patches[x].diffs.length; y++) {
+                            const mod = patches[x].diffs[y];
                             if (mod[0] !== DIFF_EQUAL) {
                                 index2 = this.diff_xIndex(diffs, index1);
                             }
@@ -2246,19 +2239,19 @@ export default class DMP {
      * @return {void}
      */
     patch_splitMax(patches: Patch[]) {
-        for (var x = 0; x < patches.length; x++) {
+        for (let x = 0; x < patches.length; x++) {
             if (patches[x].length1 > this.Match_MaxBits) {
-                var bigpatch = patches[x];
+                const bigpatch = patches[x];
                 // Remove the big old patch.
                 patches.splice(x--, 1);
-                var patch_size = this.Match_MaxBits;
-                var start1 = bigpatch.start1;
-                var start2 = bigpatch.start2;
-                var precontext = '';
+                const patch_size = this.Match_MaxBits;
+                let start1 = bigpatch.start1;
+                let start2 = bigpatch.start2;
+                let precontext = '';
                 while (bigpatch.diffs.length !== 0) {
                     // Create one of several smaller patches.
-                    var patch = new Patch();
-                    var empty = true;
+                    const patch = new Patch();
+                    let empty = true;
                     patch.start1 = start1 - precontext.length;
                     patch.start2 = start2 - precontext.length;
                     if (precontext !== '') {
@@ -2267,8 +2260,8 @@ export default class DMP {
                     }
                     while (bigpatch.diffs.length !== 0 &&
                         patch.length1 < patch_size - this.Patch_Margin) {
-                        var diff_type = <number>bigpatch.diffs[0][0];
-                        var diff_text = <string>bigpatch.diffs[0][1];
+                        const diff_type = <number>bigpatch.diffs[0][0];
+                        let diff_text = <string>bigpatch.diffs[0][1];
                         if (diff_type === DIFF_INSERT) {
                             // Insertions are harmless.
                             patch.length2 += diff_text.length;
@@ -2310,8 +2303,7 @@ export default class DMP {
                     precontext =
                         precontext.substring(precontext.length - this.Patch_Margin);
                     // Append the end context for this patch.
-                    var postcontext = this.sourceText(bigpatch.diffs)
-                        .substring(0, this.Patch_Margin);
+                    const postcontext = this.sourceText(bigpatch.diffs).substring(0, this.Patch_Margin);
                     if (postcontext !== '') {
                         patch.length1 += postcontext.length;
                         patch.length2 += postcontext.length;
@@ -2334,13 +2326,12 @@ export default class DMP {
     /**
      * Take a list of patches and return a textual representation.
      *
-     * @method patch_toText
-     * @param {Patch[]} patches Array of patch objects.
-     * @return {string} Text representation of patches.
+     * @param patches Array of patch objects.
+     * @returns Text representation of patches.
      */
     patch_toText(patches: Patch[]): string {
-        var text = [];
-        for (var x = 0; x < patches.length; x++) {
+        const text: Patch[] = [];
+        for (let x = 0; x < patches.length; x++) {
             text[x] = patches[x];
         }
         return text.join('');
@@ -2349,26 +2340,25 @@ export default class DMP {
     /**
      * Parse a textual representation of patches and return a list of patch objects.
      *
-     * @method patch_fromText
-     * @param {string} textline Text representation of patches.
-     * @return {Patch[]} Array of patch objects.
-     * @throws {Error} If invalid input.
+     * @param textline Text representation of patches.
+     * @return Array of patch objects.
+     * @throws If invalid input.
      */
     patch_fromText(textline: string): Patch[] {
-        var patches: Patch[] = [];
+        const patches: Patch[] = [];
         if (!textline) {
             return patches;
         }
         // Opera doesn't know how to decode char 0.
         textline = textline.replace(/%00/g, '\0');
-        var text = textline.split('\n');
-        var textPointer = 0;
+        const text = textline.split('\n');
+        let textPointer = 0;
         while (textPointer < text.length) {
-            var m = text[textPointer].match(/^@@ -(\d+),?(\d*) \+(\d+),?(\d*) @@$/);
+            const m = text[textPointer].match(/^@@ -(\d+),?(\d*) \+(\d+),?(\d*) @@$/);
             if (!m) {
                 throw new Error('Invalid patch string: ' + text[textPointer]);
             }
-            var patch = new Patch();
+            const patch = new Patch();
             patches.push(patch);
             patch.start1 = parseInt(m[1], 10);
             if (m[2] === '') {
@@ -2395,9 +2385,11 @@ export default class DMP {
 
             while (textPointer < text.length) {
                 const sign = text[textPointer].charAt(0);
+                let line: string;
                 try {
-                    var line = decodeURI(text[textPointer].substring(1));
-                } catch (ex) {
+                    line = decodeURI(text[textPointer].substring(1));
+                }
+                catch (ex) {
                     // Malformed URI sequence.
                     throw new Error('Illegal escape in patch_fromText: ' + line);
                 }

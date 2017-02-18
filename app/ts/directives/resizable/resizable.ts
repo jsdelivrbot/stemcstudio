@@ -10,14 +10,14 @@ import ResizableScope from './ResizableScope';
 // of logic that is superficially similar. For example, try to take advantage of the differences between mouse and
 // touch handling rather than forcing them to do the same thing.
 //
-export default function() {
-    var toCall: () => any;
+export default function () {
+    let toCall: () => any;
 
     // This function is used to regulate the resizing events that are broadcast.
     function throttle(fun: () => any) {
         if (toCall === void 0) {
             toCall = fun;
-            setTimeout(function() {
+            setTimeout(function () {
                 toCall();
                 toCall = void 0;
             }, 100);
@@ -40,17 +40,17 @@ export default function() {
             rDisabled: '@',
             rNoThrottle: '='
         },
-        link: function(scope: ResizableScope, element: angular.IAugmentedJQuery, attr: angular.IAttributes) {
+        link: function (scope: ResizableScope, element: angular.IAugmentedJQuery, attr: angular.IAttributes) {
             const flexBasis =
                 'flexBasis' in document.documentElement.style ? 'flexBasis' :
                     'webkitFlexBasis' in document.documentElement.style ? 'webkitFlexBasis' :
                         'msFlexPreferredSize' in document.documentElement.style ? 'msFlexPreferredSize' : 'flexBasis';
 
             // Register watchers on width and height attributes if they are set.
-            scope.$watch('rWidth', function(value) {
+            scope.$watch('rWidth', function (value) {
                 element[0].style[scope.rFlex ? flexBasis : 'width'] = scope.rWidth + 'px';
             });
-            scope.$watch('rHeight', function(value) {
+            scope.$watch('rHeight', function (value) {
                 element[0].style[scope.rFlex ? flexBasis : 'height'] = scope.rHeight + 'px';
             });
 
@@ -61,12 +61,12 @@ export default function() {
             /**
              * The style width property value captured at dragStart.
              */
-            var w: number;
+            let w: number;
 
             /**
              * The style height property value captured at dragStart.
              */
-            var h: number;
+            let h: number;
 
             const dir: string[] = scope.rDirections || ['right'];
 
@@ -81,18 +81,18 @@ export default function() {
             /**
              * Initialized to clientX or clientY according to the drag axis.
              */
-            var start: number;
+            let start: number;
 
             /**
              * 'top', 'right', 'bottom', or 'left'.
              * Records the dragging direction which is current at dragStart.
              */
-            var dragDir: string;
+            let dragDir: string;
 
             /**
              * 'x' or 'y' according to the direction which may be left, right, top or bottom.
              */
-            var axis: string;
+            let axis: string;
 
             const info: { id: string; height: (boolean | number); width: (boolean | number) } = { id: void 0, width: false, height: false };
 
@@ -100,7 +100,7 @@ export default function() {
              * `updateInfo` is called for all mouse events.
              * It appears to be recording the state of the resized element.
              */
-            const updateInfo = function() {
+            const updateInfo = function () {
                 info.width = false;
                 info.height = false;
                 if (axis === 'x') {
@@ -112,19 +112,19 @@ export default function() {
                 info.id = element[0].id;
             };
 
-            const getTouchClientX = function(e: TouchEvent) {
+            const getTouchClientX = function (e: TouchEvent) {
                 return e.touches[0].clientX;
             };
 
-            const getTouchClientY = function(e: TouchEvent) {
+            const getTouchClientY = function (e: TouchEvent) {
                 return e.touches[0].clientY;
             };
 
-            const draggingMouse = function(e: MouseEvent) {
+            const draggingMouse = function (e: MouseEvent) {
                 /**
                  * `offset` holds the movement (in pixels) since dragStart in the appropriate axis.
                  */
-                var offset = axis === 'x' ? start - e.clientX : start - e.clientY;
+                const offset = axis === 'x' ? start - e.clientX : start - e.clientY;
                 switch (dragDir) {
                     case 'top':
                         if (scope.rFlex) {
@@ -171,11 +171,11 @@ export default function() {
                 }
             };
 
-            const draggingTouch = function(e: TouchEvent) {
+            const draggingTouch = function (e: TouchEvent) {
                 /**
                  * `offset` holds the movement (in pixels) since dragStart in the appropriate axis.
                  */
-                var offset = axis === 'x' ? start - getTouchClientX(e) : start - getTouchClientY(e);
+                const offset = axis === 'x' ? start - getTouchClientX(e) : start - getTouchClientY(e);
                 switch (dragDir) {
                     case 'top':
                         if (scope.rFlex) {
@@ -222,7 +222,7 @@ export default function() {
                 }
             };
 
-            const dragMouseEnd = function(e: MouseEvent) {
+            const dragMouseEnd = function (e: MouseEvent) {
                 updateInfo();
                 // Dispatch the event upwards through the scope hierarchy.
                 scope.$emit("angular-resizable.resizeEnd", info);
@@ -232,7 +232,7 @@ export default function() {
                 element.removeClass('no-transition');
             };
 
-            const dragTouchEnd = function(e: TouchEvent) {
+            const dragTouchEnd = function (e: TouchEvent) {
                 updateInfo();
                 // Dispatch the event upwards through the scope hierarchy.
                 scope.$emit("angular-resizable.resizeEnd", info);
@@ -242,7 +242,7 @@ export default function() {
                 element.removeClass('no-transition');
             };
 
-            const dragMouseStart = function(e: MouseEvent, direction: string) {
+            const dragMouseStart = function (e: MouseEvent, direction: string) {
                 dragDir = direction;
                 axis = (dragDir === 'left' || dragDir === 'right') ? 'x' : 'y';
                 start = (axis === 'x') ? e.clientX : e.clientY;
@@ -272,7 +272,7 @@ export default function() {
                 scope.$apply();
             };
 
-            const dragTouchStart = function(e: TouchEvent, direction: string) {
+            const dragTouchStart = function (e: TouchEvent, direction: string) {
                 dragDir = direction;
                 axis = (dragDir === 'left' || dragDir === 'right') ? 'x' : 'y';
                 start = (axis === 'x') ? getTouchClientX(e) : getTouchClientY(e);
@@ -303,7 +303,7 @@ export default function() {
             };
 
             for (let i = 0, iLength = dir.length; i < iLength; i++) {
-                (function() {
+                (function () {
                     const grabber = document.createElement('div');
                     const direction = dir[i];
 
@@ -311,22 +311,22 @@ export default function() {
                     grabber.setAttribute('class', 'rg-' + dir[i]);
                     grabber.innerHTML = inner;
                     element[0].appendChild(grabber);
-                    const mouseDown = function(e: MouseEvent) {
+                    const mouseDown = function (e: MouseEvent) {
                         const disabled = (scope.rDisabled === 'true');
                         if (!disabled && (e.which === 1)) {
                             dragMouseStart(e, direction);
                         }
                     };
-                    const touchStart = function(e: TouchEvent) {
+                    const touchStart = function (e: TouchEvent) {
                         const disabled = (scope.rDisabled === 'true');
                         if (!disabled && (e.touches)) {
                             dragTouchStart(e, direction);
                         }
                     };
-                    grabber.ondragstart = function(e: DragEvent) { return false; };
+                    grabber.ondragstart = function (e: DragEvent) { return false; };
                     grabber.addEventListener('mousedown', mouseDown, false);
                     grabber.addEventListener('touchstart', touchStart, false);
-                } ());
+                }());
             }
         }
     };

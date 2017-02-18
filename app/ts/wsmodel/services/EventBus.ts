@@ -23,7 +23,7 @@ export default class EventBus<E, T> {
     watch(eventName: string, callback: (event: E, source: T) => any): () => void {
         this._eventRegistry = this._eventRegistry || {};
 
-        var listeners = this._eventRegistry[eventName];
+        let listeners = this._eventRegistry[eventName];
         if (!listeners) {
             listeners = this._eventRegistry[eventName] = [];
         }
@@ -51,7 +51,7 @@ export default class EventBus<E, T> {
 
         // Make a copy in order to avoid race conditions?
         listeners = listeners.slice();
-        for (var i = 0; i < listeners.length; i++) {
+        for (let i = 0; i < listeners.length; i++) {
             listeners[i](event, this.owner);
         }
     }

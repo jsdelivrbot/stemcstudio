@@ -17,11 +17,11 @@ export default class EditorPosition {
         this.editor = editor;
     }
     getPositionChars(pos: Position): number {
-        var doc = this.editor.getSession().getDocument();
+        const doc = this.editor.getSession().getDocument();
         return EditorPosition.getChars(doc, pos);
     }
     getPositionFromChars(chars: number): Position {
-        var doc = this.editor.getSession().getDocument();
+        const doc = this.editor.getSession().getDocument();
         return getPosition(doc, chars);
     }
     getCurrentPositionChars(): number {
@@ -31,12 +31,12 @@ export default class EditorPosition {
         return this.getPositionLeftChar(this.editor.getCursorPosition());
     }
     getTextAtCursorPosition(cursor: Position): string {
-        var range = new Range(cursor.row, cursor.column, cursor.row, cursor.column + 1);
+        const range = new Range(cursor.row, cursor.column, cursor.row, cursor.column + 1);
         // The final function would probably have been better named 'getTextInRange'.
         return this.editor.getSession().getDocument().getTextRange(range);
     }
     getPositionLeftChar(cursor: Position): string {
-        var range = new Range(cursor.row, cursor.column, cursor.row, cursor.column - 1);
+        const range = new Range(cursor.row, cursor.column, cursor.row, cursor.column - 1);
         return this.editor.getSession().getDocument().getTextRange(range);
     }
 
@@ -45,15 +45,15 @@ export default class EditorPosition {
     }
 
     static getLinesChars(lines: string[]): number {
-        var count = 0;
-        lines.forEach(function(line) {
+        let count = 0;
+        lines.forEach(function (line) {
             // I assume we are adding 1 for the implicit newline character.
             return count += line.length + 1;
         });
         return count;
     }
     static getPositionChars(editor: Editor, pos: Position): number {
-        var doc = editor.getSession().getDocument();
+        const doc = editor.getSession().getDocument();
         return EditorPosition.getChars(doc, pos);
     }
 

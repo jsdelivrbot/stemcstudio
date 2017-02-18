@@ -1,6 +1,6 @@
 import createDelayedCall from './lib/lang/createDelayedCall';
 import DelayedCall from './lib/lang/DelayedCall';
-import {stringRepeat} from "./lib/lang";
+import { stringRepeat } from "./lib/lang";
 import Annotation from './Annotation';
 import Delta from "./Delta";
 import DeltaGroup from './DeltaGroup';
@@ -390,8 +390,8 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
             this.$screenRowCache = [];
             return;
         }
-        var l = this.$docRowCache.length;
-        var i = this.$getRowCacheIndex(this.$docRowCache, docRow) + 1;
+        const l = this.$docRowCache.length;
+        const i = this.$getRowCacheIndex(this.$docRowCache, docRow) + 1;
         if (l > i) {
             this.$docRowCache.splice(i, l);
             this.$screenRowCache.splice(i, l);
@@ -399,12 +399,12 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     }
 
     private $getRowCacheIndex(cacheArray: number[], val: number): number {
-        var low = 0;
-        var hi = cacheArray.length - 1;
+        let low = 0;
+        let hi = cacheArray.length - 1;
 
         while (low <= hi) {
-            var mid = (low + hi) >> 1;
-            var c = cacheArray[mid];
+            const mid = (low + hi) >> 1;
+            const c = cacheArray[mid];
 
             if (val > c) {
                 low = mid + 1;
@@ -428,7 +428,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     }
 
     private onChangeFold(event: FoldEvent): void {
-        var fold = event.data;
+        const fold = event.data;
         this.$resetRowCache(fold.start.row);
     }
 
@@ -978,11 +978,11 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @return {void}
      */
     public removeMarker(markerId: number): void {
-        var marker: Marker = this.$frontMarkers[markerId] || this.$backMarkers[markerId];
+        const marker: Marker = this.$frontMarkers[markerId] || this.$backMarkers[markerId];
         if (!marker)
             return;
 
-        var markers: { [id: number]: Marker } = marker.inFront ? this.$frontMarkers : this.$backMarkers;
+        const markers: { [id: number]: Marker } = marker.inFront ? this.$frontMarkers : this.$backMarkers;
         if (marker) {
             delete (markers[markerId]);
             this.eventBus._signal(marker.inFront ? "changeFrontMarker" : "changeBackMarker");
@@ -1092,23 +1092,25 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @return {Range}
      */
     public getWordRange(row: number, column: number): Range {
-        var line: string = this.getLine(row);
+        const line: string = this.getLine(row);
 
-        var inToken = false;
+        let inToken = false;
         if (column > 0)
             inToken = !!line.charAt(column - 1).match(this.tokenRe);
 
-        if (!inToken)
+        if (!inToken) {
             inToken = !!line.charAt(column).match(this.tokenRe);
+        }
 
+        let re: RegExp;
         if (inToken)
-            var re = this.tokenRe;
+            re = this.tokenRe;
         else if (/^\s+$/.test(line.slice(column - 1, column + 1)))
-            var re = /\s/;
+            re = /\s/;
         else
-            var re = this.nonTokenRe;
+            re = this.nonTokenRe;
 
-        var start = column;
+        let start = column;
         if (start > 0) {
             do {
                 start--;
@@ -1117,7 +1119,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
             start++;
         }
 
-        var end = column;
+        let end = column;
         while (end < line.length && line.charAt(end).match(re)) {
             end++;
         }
@@ -1134,8 +1136,8 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @return {Range}
      */
     public getAWordRange(row: number, column: number): Range {
-        var wordRange = this.getWordRange(row, column);
-        var line = this.getLine(wordRange.end.row);
+        const wordRange = this.getWordRange(row, column);
+        const line = this.getLine(wordRange.end.row);
 
         while (line.charAt(wordRange.end.column).match(/[ \t]/)) {
             wordRange.end.column += 1;
@@ -1196,7 +1198,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      */
     // TODO: strontype the event.
     private onReloadTokenizer(e) {
-        var rows = e.data;
+        const rows = e.data;
         this.bgTokenizer.start(rows.first);
         /**
          * @event tokenizerUpdate
@@ -1227,7 +1229,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         const tokenizer: Tokenizer = mode.getTokenizer();
 
         if (tokenizer['addEventListener'] !== undefined) {
-            var onReloadTokenizer = this.onReloadTokenizer.bind(this);
+            const onReloadTokenizer = this.onReloadTokenizer.bind(this);
             tokenizer['addEventListener']("update", onReloadTokenizer);
         }
 
@@ -1395,7 +1397,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      */
     private getLineWidgetMaxWidth(): number {
         if (this.lineWidgetsWidth != null) return this.lineWidgetsWidth;
-        var width = 0;
+        let width = 0;
         this.lineWidgets.forEach(function (w) {
             if (w && w.screenWidth > width)
                 width = w.screenWidth;
@@ -1411,15 +1413,15 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
                 return this.screenWidth = this.$wrapLimit;
             }
 
-            var lines = this.doc.getAllLines();
-            var cache = this.$rowLengthCache;
-            var longestScreenLine = 0;
-            var foldIndex = 0;
-            var foldLine = this.$foldData[foldIndex];
-            var foldStart = foldLine ? foldLine.start.row : Infinity;
-            var len = lines.length;
+            const lines = this.doc.getAllLines();
+            const cache = this.$rowLengthCache;
+            let longestScreenLine = 0;
+            let foldIndex = 0;
+            let foldLine = this.$foldData[foldIndex];
+            let foldStart = foldLine ? foldLine.start.row : Infinity;
+            const len = lines.length;
 
-            for (var i = 0; i < len; i++) {
+            for (let i = 0; i < len; i++) {
                 if (i > foldStart) {
                     i = foldLine.end.row + 1;
                     if (i >= len)
@@ -1607,7 +1609,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
             lastDeltaIsInsert = false;
         }
 
-        for (var i = 1; i < deltas.length; i++) {
+        for (let i = 1; i < deltas.length; i++) {
             delta = deltas[i];
             if (isInsert(delta)) {
                 point = delta.start;
@@ -1673,12 +1675,12 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @return {Range} The new range where the text was moved to.
      */
     public moveText(fromRange: Range, toPosition: Position, copy: boolean): Range {
-        var text = this.getTextRange(fromRange);
-        var folds = this.getFoldsInRange(fromRange);
-        var rowDiff: number;
-        var colDiff: number;
+        const text = this.getTextRange(fromRange);
+        const folds = this.getFoldsInRange(fromRange);
+        let rowDiff: number;
+        let colDiff: number;
 
-        var toRange = Range.fromPoints(toPosition, toPosition);
+        const toRange = Range.fromPoints(toPosition, toPosition);
         if (!copy) {
             this.remove(fromRange);
             rowDiff = fromRange.start.row - fromRange.end.row;
@@ -1699,8 +1701,8 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
         toRange.end = this.insert(toRange.start, text);
         if (folds.length) {
-            var oldStart = fromRange.start;
-            var newStart = toRange.start;
+            const oldStart = fromRange.start;
+            const newStart = toRange.start;
             rowDiff = newStart.row - oldStart.row;
             colDiff = newStart.column - oldStart.column;
             this.addFolds(folds.map(function (x) {
@@ -1733,7 +1735,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      */
     public indentRows(startRow: number, endRow: number, indentString: string): void {
         indentString = indentString.replace(/\t/g, this.getTabString());
-        for (var row = startRow; row <= endRow; row++)
+        for (let row = startRow; row <= endRow; row++)
             this.insert({ row: row, column: 0 }, indentString);
     }
 
@@ -1772,20 +1774,21 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     private $moveLines(firstRow: number, lastRow: number, dir: number): number {
         firstRow = this.getRowFoldStart(firstRow);
         lastRow = this.getRowFoldEnd(lastRow);
+        let diff: number;
         if (dir < 0) {
-            var row = this.getRowFoldStart(firstRow + dir);
+            const row = this.getRowFoldStart(firstRow + dir);
             if (row < 0) return 0;
-            var diff = row - firstRow;
+            diff = row - firstRow;
         }
         else if (dir > 0) {
-            var row = this.getRowFoldEnd(lastRow + dir);
+            const row = this.getRowFoldEnd(lastRow + dir);
             if (row > this.doc.getLength() - 1) return 0;
-            var diff = row - lastRow;
+            diff = row - lastRow;
         }
         else {
             firstRow = this.$clipRowToDocument(firstRow);
             lastRow = this.$clipRowToDocument(lastRow);
-            var diff = lastRow - firstRow + 1;
+            diff = lastRow - firstRow + 1;
         }
 
         const range = new Range(firstRow, 0, lastRow, Number.MAX_VALUE);
@@ -1868,7 +1871,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
             column = 0;
         }
         else {
-            var len = this.doc.getLength();
+            const len = this.doc.getLength();
             if (row >= len) {
                 row = len - 1;
                 column = this.doc.getLine(len - 1).length;
@@ -1898,7 +1901,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
             );
         }
 
-        var len = this.doc.getLength() - 1;
+        const len = this.doc.getLength() - 1;
         if (range.end.row > len) {
             range.end.row = len;
             range.end.column = this.doc.getLine(len).length;
@@ -2069,31 +2072,31 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @private
      */
     private $updateInternalDataOnChange(delta: Delta): Fold[] {
-        var useWrapMode = this.$useWrapMode;
-        var action = delta.action;
-        var start = delta.start;
-        var end = delta.end;
-        var firstRow = start.row;
-        var lastRow = end.row;
-        var len = lastRow - firstRow;
-        var removedFolds: Fold[] = null;
+        const useWrapMode = this.$useWrapMode;
+        const action = delta.action;
+        const start = delta.start;
+        const end = delta.end;
+        const firstRow = start.row;
+        let lastRow = end.row;
+        let len = lastRow - firstRow;
+        let removedFolds: Fold[] = null;
 
         this.$updating = true;
         if (len !== 0) {
             if (action === "remove") {
                 this[useWrapMode ? "$wrapData" : "$rowLengthCache"].splice(firstRow, len);
 
-                var foldLines = this.$foldData;
+                const foldLines = this.$foldData;
                 removedFolds = this.getFoldsInRange(delta);
                 this.removeFolds(removedFolds);
 
-                var foldLine = this.getFoldLine(end.row);
-                var idx = 0;
+                let foldLine = this.getFoldLine(end.row);
+                let idx = 0;
                 if (foldLine) {
                     foldLine.addRemoveChars(end.row, end.column, start.column - end.column);
                     foldLine.shiftRow(-len);
 
-                    var foldLineBefore = this.getFoldLine(firstRow);
+                    const foldLineBefore = this.getFoldLine(firstRow);
                     if (foldLineBefore && foldLineBefore !== foldLine) {
                         foldLineBefore.merge(foldLine);
                         foldLine = foldLineBefore;
@@ -2102,7 +2105,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
                 }
 
                 for (idx; idx < foldLines.length; idx++) {
-                    var foldLine = foldLines[idx];
+                    const foldLine = foldLines[idx];
                     if (foldLine.start.row >= end.row) {
                         foldLine.shiftRow(-len);
                     }
@@ -2111,16 +2114,16 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
                 lastRow = firstRow;
             }
             else {
-                var args = Array(len);
+                const args = Array(len);
                 args.unshift(firstRow, 0);
                 const arr = useWrapMode ? this.$wrapData : this.$rowLengthCache;
                 arr.splice.apply(arr, args);
 
                 // If some new line is added inside of a foldLine, then split
                 // the fold line up.
-                var foldLines = this.$foldData;
-                var foldLine = this.getFoldLine(firstRow);
-                var idx = 0;
+                const foldLines = this.$foldData;
+                let foldLine = this.getFoldLine(firstRow);
+                let idx = 0;
                 if (foldLine) {
                     const cmp = foldLine.range.compareInside(start.row, start.column);
                     // Inside of the foldLine range. Need to split stuff up.
@@ -2141,7 +2144,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
                 }
 
                 for (idx; idx < foldLines.length; idx++) {
-                    var foldLine = foldLines[idx];
+                    const foldLine = foldLines[idx];
                     if (foldLine.start.row >= firstRow) {
                         foldLine.shiftRow(len);
                     }
@@ -2159,7 +2162,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
                 len = -len;
             }
-            var foldLine = this.getFoldLine(firstRow);
+            const foldLine = this.getFoldLine(firstRow);
             if (foldLine) {
                 foldLine.addRemoveChars(firstRow, start.column, len);
             }
@@ -2184,14 +2187,14 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     }
 
     public $updateWrapData(firstRow: number, lastRow: number) {
-        var lines = this.doc.getAllLines();
-        var tabSize = this.getTabSize();
-        var wrapData = this.$wrapData;
-        var wrapLimit = this.$wrapLimit;
-        var tokens: number[];
-        var foldLine: FoldLine;
+        const lines = this.doc.getAllLines();
+        const tabSize = this.getTabSize();
+        const wrapData = this.$wrapData;
+        const wrapLimit = this.$wrapLimit;
+        let tokens: number[];
+        let foldLine: FoldLine;
 
-        var row = firstRow;
+        let row = firstRow;
         lastRow = Math.min(lastRow, lines.length - 1);
         while (row <= lastRow) {
             foldLine = this.getFoldLine(row, foldLine);
@@ -2202,15 +2205,16 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
             } else {
                 tokens = [];
                 foldLine.walk(function (placeholder, row, column, lastColumn) {
-                    var walkTokens: number[];
+                    let walkTokens: number[];
                     if (placeholder != null) {
                         walkTokens = this.$getDisplayTokens(
                             placeholder, tokens.length);
                         walkTokens[0] = PLACEHOLDER_START;
-                        for (var i = 1; i < walkTokens.length; i++) {
+                        for (let i = 1; i < walkTokens.length; i++) {
                             walkTokens[i] = PLACEHOLDER_BODY;
                         }
-                    } else {
+                    }
+                    else {
                         walkTokens = this.$getDisplayTokens(
                             lines[row].substring(lastColumn, column),
                             tokens.length);
@@ -2232,18 +2236,18 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
             return [];
         }
 
-        var splits: number[] = [];
-        var displayLength = tokens.length;
-        var lastSplit = 0, lastDocSplit = 0;
+        const splits: number[] = [];
+        const displayLength = tokens.length;
+        let lastSplit = 0, lastDocSplit = 0;
 
-        var isCode: boolean = this.$wrapAsCode;
+        const isCode: boolean = this.$wrapAsCode;
 
         function addSplit(screenPos: number) {
-            var displayed = tokens.slice(lastSplit, screenPos);
+            const displayed = tokens.slice(lastSplit, screenPos);
 
             // The document size is the current size - the extra width for tabs
             // and multipleWidth characters.
-            var len = displayed.length;
+            let len = displayed.length;
             displayed.join("").
                 // Get all the TAB_SPACEs.
                 replace(/12/g, function () {
@@ -2263,7 +2267,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
         while (displayLength - lastSplit > wrapLimit) {
             // This is, where the split should be.
-            var split = lastSplit + wrapLimit;
+            let split = lastSplit + wrapLimit;
 
             // If there is a space or tab at this split position, then making
             // a split is simple.
@@ -2323,7 +2327,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
             // === ELSE ===
             // Search for the first non space/tab/placeholder/punctuation token backwards.
-            var minSplit = Math.max(split - (isCode ? 10 : wrapLimit - (wrapLimit >> 2)), lastSplit - 1);
+            const minSplit = Math.max(split - (isCode ? 10 : wrapLimit - (wrapLimit >> 2)), lastSplit - 1);
             while (split > minSplit && tokens[split] < PLACEHOLDER_START) {
                 split--;
             }
@@ -2374,7 +2378,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
             if (c === 9) {
                 tabSize = this.getScreenTabSize(arr.length + offset);
                 arr.push(TAB);
-                for (var n = 1; n < tabSize; n++) {
+                for (let n = 1; n < tabSize; n++) {
                     arr.push(TAB_SPACE);
                 }
             }
@@ -2414,8 +2418,8 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
             maxScreenColumn = Infinity;
         screenColumn = screenColumn || 0;
 
-        var c: number;
-        var column: number;
+        let c: number;
+        let column: number;
         for (column = 0; column < str.length; column++) {
             c = str.charCodeAt(column);
             // tab
@@ -2444,10 +2448,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @return {Number}
      */
     public getRowLength(row: number): number {
-        if (this.lineWidgets)
-            var h = this.lineWidgets[row] && this.lineWidgets[row].rowCount || 0;
-        else
-            h = 0;
+        const h = this.lineWidgets ? (this.lineWidgets[row] && this.lineWidgets[row].rowCount || 0) : 0;
         if (!this.$useWrapMode || !this.$wrapData[row]) {
             return 1 + h;
         }
@@ -2577,27 +2578,29 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
             return { row: 0, column: 0 };
         }
 
-        var line: string;
-        var docRow = 0;
-        var docColumn = 0;
-        var column: number;
-        var row = 0;
-        var rowLength = 0;
+        let line: string;
+        let docRow = 0;
+        let docColumn = 0;
+        let column: number;
+        let row = 0;
+        let rowLength = 0;
 
-        var rowCache = this.$screenRowCache;
-        var i = this.$getRowCacheIndex(rowCache, screenRow);
-        var l = rowCache.length;
+        const rowCache = this.$screenRowCache;
+        const i = this.$getRowCacheIndex(rowCache, screenRow);
+        const l = rowCache.length;
+        let doCache: boolean;
         if (l && i >= 0) {
-            var row = rowCache[i];
-            var docRow = this.$docRowCache[i];
-            var doCache = screenRow > rowCache[l - 1];
-        } else {
-            var doCache = !l;
+            row = rowCache[i];
+            docRow = this.$docRowCache[i];
+            doCache = screenRow > rowCache[l - 1];
+        }
+        else {
+            doCache = !l;
         }
 
-        var maxRow = this.getLength() - 1;
-        var foldLine = this.getNextFoldLine(docRow);
-        var foldStart = foldLine ? foldLine.start.row : Infinity;
+        const maxRow = this.getLength() - 1;
+        let foldLine = this.getNextFoldLine(docRow);
+        let foldStart = foldLine ? foldLine.start.row : Infinity;
 
         while (row <= screenRow) {
             rowLength = this.getRowLength(docRow);
@@ -2637,9 +2640,9 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         }
 
         if (this.$useWrapMode) {
-            var splits = this.$wrapData[docRow];
+            const splits = this.$wrapData[docRow];
             if (splits) {
-                var splitIndex = Math.floor(screenRow - row);
+                const splitIndex = Math.floor(screenRow - row);
                 column = splits[splitIndex];
                 if (splitIndex > 0 && splits.length) {
                     docColumn = splits[splitIndex - 1] || splits[splits.length - 1];
@@ -2691,7 +2694,6 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         }
 
         let screenRow = 0;
-        let foldStartRow: number = null;
         let fold: Fold = null;
 
         // Clamp the docRow position in case it's inside of a folded block.
@@ -2707,17 +2709,18 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         const rowCache = this.$docRowCache;
         const i = this.$getRowCacheIndex(rowCache, docRow);
         const l = rowCache.length;
+        let doCache: boolean;
         if (l && i >= 0) {
             row = rowCache[i];
             screenRow = this.$screenRowCache[i];
-            var doCache = docRow > rowCache[l - 1];
+            doCache = docRow > rowCache[l - 1];
         }
         else {
-            var doCache = !l;
+            doCache = !l;
         }
 
-        var foldLine = this.getNextFoldLine(row);
-        var foldStart = foldLine ? foldLine.start.row : Infinity;
+        let foldLine = this.getNextFoldLine(row);
+        let foldStart = foldLine ? foldLine.start.row : Infinity;
 
         while (row < docRow) {
             if (row >= foldStart) {
@@ -2741,8 +2744,9 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         }
 
         // Calculate the text line that is displayed in docRow on the screen.
-        var textLine = "";
+        let textLine = "";
         // Check if the final row we want to reach is inside of a fold.
+        let foldStartRow: number = null;
         if (foldLine && row >= foldStart) {
             textLine = this.getFoldDisplayLine(foldLine, docRow, docColumn);
             foldStartRow = foldLine.start.row;
@@ -2753,9 +2757,9 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         }
         // Clamp textLine if in wrapMode.
         if (this.$useWrapMode) {
-            var wrapRow = this.$wrapData[foldStartRow];
+            const wrapRow = this.$wrapData[foldStartRow];
             if (wrapRow) {
-                var screenRowOffset = 0;
+                let screenRowOffset = 0;
                 while (textLine.length >= wrapRow[screenRowOffset]) {
                     screenRow++;
                     screenRowOffset++;
@@ -2812,26 +2816,26 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @return {number}
      */
     public getScreenLength(): number {
-        var screenRows = 0;
-        var fold: FoldLine = null;
+        let screenRows = 0;
+        // let fold: FoldLine = null;
         if (!this.$useWrapMode) {
             screenRows = this.getLength();
 
             // Remove the folded lines again.
-            var foldData = this.$foldData;
-            for (var i = 0; i < foldData.length; i++) {
-                fold = foldData[i];
+            const foldData = this.$foldData;
+            for (let i = 0; i < foldData.length; i++) {
+                const fold = foldData[i];
                 screenRows -= fold.end.row - fold.start.row;
             }
         }
         else {
-            var lastRow = this.$wrapData.length;
-            var row = 0, i = 0;
-            var fold = this.$foldData[i++];
-            var foldStart = fold ? fold.start.row : Infinity;
+            const lastRow = this.$wrapData.length;
+            let row = 0, i = 0;
+            let fold = this.$foldData[i++];
+            let foldStart = fold ? fold.start.row : Infinity;
 
             while (row < lastRow) {
-                var splits = this.$wrapData[row];
+                const splits = this.$wrapData[row];
                 screenRows += splits ? splits.length + 1 : 1;
                 row++;
                 if (row > foldStart) {
@@ -2913,13 +2917,13 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @return {Fold}
      */
     getFoldAt(row: number, column: number, side?: number): Fold {
-        var foldLine = this.getFoldLine(row);
+        const foldLine = this.getFoldLine(row);
         if (!foldLine)
             return null;
 
-        var folds = foldLine.folds;
-        for (var i = 0; i < folds.length; i++) {
-            var fold = folds[i];
+        const folds = foldLine.folds;
+        for (let i = 0; i < folds.length; i++) {
+            const fold = folds[i];
             if (fold.range.contains(row, column)) {
                 if (side === 1 && fold.range.isEnd(row, column)) {
                     continue;
@@ -2940,15 +2944,15 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @return {Fold[]}
      */
     getFoldsInRange(range: RangeBasic): Fold[] {
-        var start = range.start;
-        var end = range.end;
-        var foldLines = this.$foldData;
-        var foundFolds: Fold[] = [];
+        const start = range.start;
+        const end = range.end;
+        const foldLines = this.$foldData;
+        const foundFolds: Fold[] = [];
 
         start.column += 1;
         end.column -= 1;
 
-        for (var i = 0; i < foldLines.length; i++) {
+        for (let i = 0; i < foldLines.length; i++) {
             let cmp = foldLines[i].range.compareRange(range);
             if (cmp === 2) {
                 // Range is before foldLine. No intersection. This means,
@@ -2961,9 +2965,9 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
                 break;
             }
 
-            var folds = foldLines[i].folds;
-            for (var j = 0; j < folds.length; j++) {
-                var fold = folds[j];
+            const folds = foldLines[i].folds;
+            for (let j = 0; j < folds.length; j++) {
+                const fold = folds[j];
                 cmp = fold.range.compareRange(range);
                 if (cmp === -2) {
                     break;
@@ -2989,7 +2993,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @return {Fold[]}
      */
     getFoldsInRangeList(ranges: RangeBasic[]): Fold[] {
-        var folds: Fold[] = [];
+        let folds: Fold[] = [];
         if (Array.isArray(ranges)) {
             ranges.forEach((range) => {
                 folds = folds.concat(this.getFoldsInRange(range));
@@ -3008,11 +3012,11 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @return {Fold[]}
      */
     getAllFolds(): Fold[] {
-        var folds = [];
-        var foldLines = this.$foldData;
+        const folds: Fold[] = [];
+        const foldLines = this.$foldData;
 
-        for (var i = 0; i < foldLines.length; i++)
-            for (var j = 0; j < foldLines[i].folds.length; j++)
+        for (let i = 0; i < foldLines.length; i++)
+            for (let j = 0; j < foldLines[i].folds.length; j++)
                 folds.push(foldLines[i].folds[j]);
 
         return folds;
@@ -3040,13 +3044,13 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         if (!foldLine)
             return null;
 
-        var lastFold = {
+        let lastFold = {
             end: { column: 0 }
         };
         // TODO: Refactor to use getNextFoldTo function.
-        var str: string;
-        var fold: Fold;
-        for (var i = 0; i < foldLine.folds.length; i++) {
+        let str: string;
+        let fold: Fold;
+        for (let i = 0; i < foldLine.folds.length; i++) {
             fold = foldLine.folds[i];
             const cmp = fold.range.compareEnd(row, column);
             if (cmp === -1) {
@@ -3070,14 +3074,14 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     }
 
     getFoldLine(docRow: number, startFoldLine?: FoldLine): FoldLine {
-        var foldData = this.$foldData;
-        var i = 0;
+        const foldData = this.$foldData;
+        let i = 0;
         if (startFoldLine)
             i = foldData.indexOf(startFoldLine);
         if (i === -1)
             i = 0;
         for (i; i < foldData.length; i++) {
-            var foldLine = foldData[i];
+            const foldLine = foldData[i];
             if (foldLine.start.row <= docRow && foldLine.end.row >= docRow) {
                 return foldLine;
             } else if (foldLine.end.row > docRow) {
@@ -3089,14 +3093,14 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     // returns the fold which starts after or contains docRow
     getNextFoldLine(docRow: number, startFoldLine?: FoldLine): FoldLine {
-        var foldData = this.$foldData;
-        var i = 0;
+        const foldData = this.$foldData;
+        let i = 0;
         if (startFoldLine)
             i = foldData.indexOf(startFoldLine);
         if (i === -1)
             i = 0;
         for (i; i < foldData.length; i++) {
-            var foldLine = foldData[i];
+            const foldLine = foldData[i];
             if (foldLine.end.row >= docRow) {
                 return foldLine;
             }
@@ -3145,9 +3149,9 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      *      passed in range fits an existing fold exactly.
      */
     addFold(placeholder: string | Fold, range: Range): Fold {
-        var foldData = this.$foldData;
-        var added = false;
-        var fold: Fold;
+        const foldData = this.$foldData;
+        let added = false;
+        let fold: Fold;
 
         if (placeholder instanceof Fold)
             fold = placeholder;
@@ -3162,18 +3166,18 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         // fold.range = this.clipRange(fold.range);
         fold.range = this.$clipRangeToDocument(fold.range);
 
-        var startRow = fold.start.row;
-        var startColumn = fold.start.column;
-        var endRow = fold.end.row;
-        var endColumn = fold.end.column;
+        const startRow = fold.start.row;
+        const startColumn = fold.start.column;
+        const endRow = fold.end.row;
+        const endColumn = fold.end.column;
 
         // --- Some checking ---
         if (!(startRow < endRow ||
             startRow === endRow && startColumn <= endColumn - 2))
             throw new Error("The range has to be at least 2 characters width");
 
-        var startFold = this.getFoldAt(startRow, startColumn, 1);
-        var endFold = this.getFoldAt(endRow, endColumn, -1);
+        const startFold = this.getFoldAt(startRow, startColumn, 1);
+        const endFold = this.getFoldAt(endRow, endColumn, -1);
         if (startFold && endFold === startFold)
             return startFold.addSubFold(fold);
 
@@ -3185,7 +3189,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         }
 
         // Check if there are folds in the range we create the new fold for.
-        var folds = this.getFoldsInRange(fold.range);
+        const folds = this.getFoldsInRange(fold.range);
         if (folds.length > 0) {
             // Remove the folds from fold data.
             this.removeFolds(folds);
@@ -3195,8 +3199,9 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
             });
         }
 
-        for (var i = 0; i < foldData.length; i++) {
-            var foldLine = foldData[i];
+        let foldLine: FoldLine;
+        for (let i = 0; i < foldData.length; i++) {
+            foldLine = foldData[i];
             if (endRow === foldLine.start.row) {
                 foldLine.addFold(fold);
                 added = true;
@@ -3207,7 +3212,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
                 added = true;
                 if (!fold.sameRow) {
                     // Check if we might have to merge two FoldLines.
-                    var foldLineNext = foldData[i + 1];
+                    const foldLineNext = foldData[i + 1];
                     if (foldLineNext && foldLineNext.start.row === endRow) {
                         // We need to merge!
                         foldLine.merge(foldLineNext);
@@ -3235,7 +3240,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
          * @event changeFold
          * @param foldEvent {FoldEvent}
          */
-        var foldEvent: FoldEvent = { data: fold, action: "add" };
+        const foldEvent: FoldEvent = { data: fold, action: "add" };
         this.eventBus._emit("changeFold", foldEvent);
 
         return fold;
@@ -3319,8 +3324,8 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         // We need to clone the folds array passed in as it might be the folds
         // array of a fold line and as we call this.removeFold(fold), folds
         // are removed from folds and changes the current index.
-        var cloneFolds = [];
-        for (var i = 0; i < folds.length; i++) {
+        const cloneFolds: Fold[] = [];
+        for (let i = 0; i < folds.length; i++) {
             cloneFolds.push(folds[i]);
         }
 
@@ -3364,8 +3369,8 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @return {Fold[]}
      */
     unfold(location?: number | Position | Range, expandInner?: boolean): Fold[] {
-        var range: Range;
-        var folds: Fold[];
+        let range: Range;
+        let folds: Fold[];
         // FIXME: Not handling undefined.
         if (location == null) {
             range = new Range(0, 0, this.getLength(), 0);
@@ -3387,7 +3392,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
             this.removeFolds(folds);
         }
         else {
-            var subFolds = folds;
+            let subFolds = folds;
             // TODO: might be better to remove and add folds in one go instead of using
             // expandFolds several times.
             while (subFolds.length) {
@@ -3408,12 +3413,12 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     }
 
     getRowFoldEnd(docRow: number, startFoldRow?: FoldLine): number {
-        var foldLine = this.getFoldLine(docRow, startFoldRow);
+        const foldLine = this.getFoldLine(docRow, startFoldRow);
         return foldLine ? foldLine.end.row : docRow;
     }
 
     getRowFoldStart(docRow: number, startFoldRow?: FoldLine): number {
-        var foldLine = this.getFoldLine(docRow, startFoldRow);
+        const foldLine = this.getFoldLine(docRow, startFoldRow);
         return foldLine ? foldLine.start.row : docRow;
     }
 
@@ -3449,11 +3454,10 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     }
 
     getDisplayLine(row: number, endColumn: number, startRow: number, startColumn: number): string {
-        var foldLine = this.getFoldLine(row);
+        const foldLine = this.getFoldLine(row);
 
         if (!foldLine) {
-            var line: string;
-            line = this.getLine(row);
+            const line = this.getLine(row);
             return line.substring(startColumn || 0, endColumn || line.length);
         } else {
             return this.getFoldDisplayLine(
@@ -3464,7 +3468,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     $cloneFoldData(): FoldLine[] {
         let fd: FoldLine[] = [];
         fd = this.$foldData.map(function (foldLine) {
-            var folds = foldLine.folds.map(function (fold) {
+            const folds = foldLine.folds.map(function (fold) {
                 return fold.clone();
             });
             return new FoldLine(fd, folds);
@@ -3474,13 +3478,13 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     }
 
     toggleFold(tryToUnfold: boolean): void {
-        var selection = this.selection;
-        var range: Range = selection.getRange();
-        var fold: Fold;
-        var bracketPos: { row: number; column: number };
+        const selection = this.selection;
+        let range: Range = selection.getRange();
+        let fold: Fold;
+        let bracketPos: { row: number; column: number };
 
         if (range.isEmpty()) {
-            var cursor = range.start;
+            const cursor = range.start;
             fold = this.getFoldAt(cursor.row, cursor.column);
 
             if (fold) {
@@ -3506,7 +3510,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
             }
         }
         else {
-            var folds = this.getFoldsInRange(range);
+            const folds = this.getFoldsInRange(range);
             if (tryToUnfold && folds.length) {
                 this.expandFolds(folds);
                 return;
@@ -3524,7 +3528,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
             return;
         }
 
-        var placeholder = "...";
+        let placeholder = "...";
         if (!range.isMultiLine()) {
             placeholder = this.getTextRange(range);
             if (placeholder.length < 4)
@@ -3536,11 +3540,11 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     }
 
     getCommentFoldRange(row: number, column: number, dir?: number): Range {
-        var iterator = new TokenIterator(this, row, column);
-        var token = iterator.getCurrentToken();
+        let iterator = new TokenIterator(this, row, column);
+        let token = iterator.getCurrentToken();
         if (token && /^comment|string/.test(token.type)) {
-            var range = new Range(0, 0, 0, 0);
-            var re = new RegExp(token.type.replace(/\..*/, "\\."));
+            const range = new Range(0, 0, 0, 0);
+            const re = new RegExp(token.type.replace(/\..*/, "\\."));
             if (dir !== 1) {
                 do {
                     token = iterator.stepBackward();
@@ -3623,7 +3627,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
             this.unfold();
 
         // reset folding
-        var mode = this.$foldMode;
+        const mode = this.$foldMode;
         this.$setFolding(null);
         this.$setFolding(mode);
     }
@@ -3652,20 +3656,21 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     }
 
     getParentFoldRangeData(row: number, ignoreCurrent?: boolean): { range?: Range; firstRange?: Range } {
-        var fw = this.foldWidgets;
+        const fw = this.foldWidgets;
         if (!fw || (ignoreCurrent && fw[row])) {
             return {};
         }
 
-        var i = row - 1;
-        var firstRange: Range;
+        let i = row - 1;
+        let firstRange: Range;
+        let range: Range;
         while (i >= 0) {
-            var c = fw[i];
+            let c = fw[i];
             if (c == null)
                 c = fw[i] = this.getFoldWidget(i);
 
             if (c === "start") {
-                var range = this.getFoldWidgetRange(i);
+                range = this.getFoldWidgetRange(i);
                 if (!firstRange)
                     firstRange = range;
                 if (range && range.end.row >= row)

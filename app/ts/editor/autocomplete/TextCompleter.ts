@@ -70,24 +70,24 @@ interface WordScores {
  * Does a distance analysis of the word at position `pos` in `doc`.
  */
 function wordDistance(position: Position, session: EditSession): WordScores {
-    var splitRegex: RegExp = /[^a-zA-Z_0-9\$\-\u00C0-\u1FFF\u2C00-\uD7FF\w]+/;
+    const splitRegex: RegExp = /[^a-zA-Z_0-9\$\-\u00C0-\u1FFF\u2C00-\uD7FF\w]+/;
 
     function getWordIndex(): number {
-        var textBefore = session.getTextRange(Range.fromPoints({ row: 0, column: 0 }, position));
+        const textBefore = session.getTextRange(Range.fromPoints({ row: 0, column: 0 }, position));
         return textBefore.split(splitRegex).length - 1;
     }
 
-    var prefixPos: number = getWordIndex();
-    var words: string[] = session.getValue().split(splitRegex);
-    var wordScores: WordScores = Object.create(null);
+    const prefixPos: number = getWordIndex();
+    const words: string[] = session.getValue().split(splitRegex);
+    const wordScores: WordScores = Object.create(null);
 
-    var currentWord: string = words[prefixPos];
+    const currentWord: string = words[prefixPos];
 
-    words.forEach(function(word: string, index: number) {
+    words.forEach(function (word: string, index: number) {
         if (!word || word === currentWord) return;
 
-        var distance = Math.abs(prefixPos - index);
-        var score = words.length - distance;
+        const distance = Math.abs(prefixPos - index);
+        const score = words.length - distance;
         if (wordScores[word]) {
             wordScores[word] = Math.max(score, wordScores[word]);
         }
@@ -110,15 +110,15 @@ export default class TextCompleter implements Completer {
      */
     getCompletionsAtPosition(editor: Editor, position: Position, prefix: string): Promise<Completion[]> {
 
-        var session = editor.getSession();
+        const session = editor.getSession();
 
-        return new Promise<Completion[]>(function(resolve, reject) {
+        return new Promise<Completion[]>(function (resolve, reject) {
 
-            var wordScore: WordScores = wordDistance(position, session);
+            const wordScore: WordScores = wordDistance(position, session);
 
-            var wordList: string[] = Object.keys(wordScore);
+            const wordList: string[] = Object.keys(wordScore);
 
-            resolve(wordList.map(function(word: string) {
+            resolve(wordList.map(function (word: string) {
                 return {
                     caption: word,
                     value: word,
@@ -131,10 +131,10 @@ export default class TextCompleter implements Completer {
     }
     getCompletions(editor: Editor, session: EditSession, position: Position, prefix: string, callback: (err: any, completions?: Completion[]) => void) {
         return this.getCompletionsAtPosition(editor, position, prefix)
-            .then(function(completions) {
+            .then(function (completions) {
                 callback(void 0, completions);
             })
-            .catch(function(err) {
+            .catch(function (err) {
                 callback(err);
             });
     }

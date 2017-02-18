@@ -908,106 +908,117 @@ declare module NEWTON {
 
         /**
          * Standard Basis vector corresponding to the x coordinate.
-         * The multivector (vector) is locked.
+         * The e1 multivector (vector) is immutable (locked).
          */
         static readonly e1: Geometric3;
 
         /**
          * Basis vector corresponding to the y coordinate.
-         * The multivector (vector) is locked.
+         * The e2 multivector (vector) is immutable (locked).
          */
         static readonly e2: Geometric3;
 
         /**
          * Basis vector corresponding to the z coordinate.
-         * The multivector (vector) is locked.
+         * The e3 multivector (vector) is immutable (locked).
          */
         static readonly e3: Geometric3;
 
         /**
          * Basis vector corresponding to the pseudoscalar coordinate.
-         * The multivector (pseudoscalar) is locked.
+         * The I multivector (pseudoscalar) is immutable (locked).
          */
         static readonly I: Geometric3;
 
         /**
          * The identity element for multiplication, 1 (scalar).
-         * The multivector (scalar) is locked.
+         * The one multivector (scalar) is immutable (locked).
          */
         static readonly one: Geometric3;
 
         /**
          * The identity element for addition, 0.
-         * The multivector is locked.
+         * The zero multivector is immutable (locked).
          */
         static readonly zero: Geometric3;
 
         /**
          * SI base unit of length.
-         * The meter is the length of the path travelled by light in vacuum during a time interval of 1 / 299 792 458 of a second.
-         * The multivector (scalar) is locked.
+         * The meter is the length of the path travelled by light in vacuum
+         * during a time interval of 1 / 299 792 458 of a second.
+         * The meter multivector (scalar) is immutable (locked).
          */
         static readonly meter: Geometric3;
 
         /**
-         * SI base unit of masss.
-         * The kilogram is the unit of mass; it is equal to the mass of the international prototype of the kilogram.
-         * The multivector (scalar) is locked.
+         * SI base unit of mass.
+         * The kilogram is the unit of mass; it is equal to the mass of the
+         * international prototype of the kilogram.
+         * The kilogram multivector (scalar) is immutable (locked).
          */
         static readonly kilogram: Geometric3;
 
         /**
          * SI base unit of time.
-         * The second is the duration of 9 192 631 770 periods of the radiation corresponding to the transition between the two hyperfine levels of the ground state of the cesium 133 atom.
-         * The multivector (scalar) is locked.
+         * The second is the duration of 9 192 631 770 periods of the radiation
+         * corresponding to the transition between
+         * the two hyperfine levels of the ground state of the cesium 133 atom.
+         * The second multivector (scalar) is immutable (locked).
          */
         static readonly second: Geometric3;
 
         /**
          * SI base unit of electric current.
-         * The ampere is that constant current which, if maintained in two straight parallel conductors of infinite length, of negligible circular cross-section, and placed 1 meter apart in vacuum, would produce between these conductors a force equal to 2E-7 newton per meter of length.
-         * The multivector (scalar) is locked.
+         * The ampere is that constant current which, if maintained in two straight parallel
+         * conductors of infinite length, of negligible circular cross-section, and placed 1 meter apart in vacuum,
+         * would produce between these conductors a force equal to 2E-7 newton per meter of length.
+         * The ampere multivector (scalar) is immutable (locked).
          */
         static readonly ampere: Geometric3;
 
         /**
          * SI base unit of thermodynamic temperature.
-         * The kelvin, unit of thermodynamic temperature, is the fraction 1 / 273.16 of the thermodynamic temperature of the triple point of water.
-         * The multivector (scalar) is locked.
+         * The kelvin, unit of thermodynamic temperature, is the fraction 1 / 273.16 of the thermodynamic temperature
+         * of the triple point of water.
+         * The kelvin multivector (scalar) is immutable (locked).
          */
         static readonly kelvin: Geometric3;
 
         /**
          * SI base unit of amount of substance.
-         * 1. The mole is the amount of substance of a system which contains as many elementary entities as there are atoms in 0.012 kilogram of carbon 12; its symbol is "mol."
+         * 1. The mole is the amount of substance of a system which contains as many elementary entities as there are
+         * atoms in 0.012 kilogram of carbon 12; its symbol is "mol."
          * 
-         * 2. When the mole is used, the elementary entities must be specified and may be atoms, molecules, ions, electrons, other particles, or specified groups of such particles.
-         * The multivector (scalar) is locked.
+         * 2. When the mole is used, the elementary entities must be specified and may be atoms, molecules, ions,
+         * electrons, other particles, or specified groups of such particles.
+         * The mole multivector (scalar) is immutable (locked).
          */
         static readonly mole: Geometric3;
 
         /**
          * SI base unit of luminous intensity.
-         * The candela is the luminous intensity, in a given direction, of a source that emits monochromatic radiation of frequency 540 x 10E12 hertz and that has a radiant intensity in that direction of 1 / 683 watt per steradian.
-         * The multivector (scalar) is locked.
+         * The candela is the luminous intensity, in a given direction,
+         * of a source that emits monochromatic radiation of frequency 540 x 10E12
+         * hertz and that has a radiant intensity in that direction of 1 / 683 watt per steradian.
+         * The candela multivector (scalar) is immutable (locked).
          */
         static readonly candela: Geometric3;
 
         /**
          * SI derived unit of electric charge, quantity of electricity.
-         * The multivector (scalar) is locked.
+         * The coulomb multivector (scalar) is immutable (locked).
          */
         static readonly coulomb: Geometric3;
 
         /**
          * SI derived unit of force.
-         * The multivector (scalar) is locked.
+         * The newton multivector (scalar) is immutable (locked).
          */
         static readonly newton: Geometric3;
 
         /**
          * SI derived unit of energy, work, quantity of heat.
-         * The multivector (scalar) is locked.
+         * The joule multivector (scalar) is immutable (locked).
          */
         static readonly joule: Geometric3;
 

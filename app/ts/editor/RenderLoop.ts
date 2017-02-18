@@ -16,13 +16,12 @@ export default class RenderLoop {
         this.changes = this.changes | change;
         if (!this.pending && this.changes) {
             this.pending = true;
-            var self = this;
-            requestAnimationFrame(function() {
-                self.pending = false;
-                var changes: number;
-                while (changes = self.changes) {
-                    self.changes = 0;
-                    self.onRender(changes);
+            requestAnimationFrame(() => {
+                this.pending = false;
+                let changes: number;
+                while (changes = this.changes) {
+                    this.changes = 0;
+                    this.onRender(changes);
                 }
             }, this.$window);
         }

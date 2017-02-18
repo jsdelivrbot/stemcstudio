@@ -242,7 +242,8 @@ export default class Tokenizer {
                 stack.shift();
                 startState = stack.shift();
             }
-        } else
+        }
+        else
             stack = [];
 
         let currentState: string = <string>startState || "start";

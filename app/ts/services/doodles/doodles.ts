@@ -91,7 +91,7 @@ app.factory('doodles', [
     ) {
 
         // The doodles from local storage must be converted into classes in order to support the methods.
-        var _doodles: Doodle[] = deserializeDoodles($window.localStorage[doodlesKey] !== undefined ? JSON.parse($window.localStorage[doodlesKey]) : [], options);
+        let _doodles: Doodle[] = deserializeDoodles($window.localStorage[doodlesKey] !== undefined ? JSON.parse($window.localStorage[doodlesKey]) : [], options);
 
         const suggestName = function (): string {
             const UNTITLED = "Project";

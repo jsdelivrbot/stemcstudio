@@ -4,9 +4,9 @@ import IUuidService from './IUuidService';
 
 // RFC4122 version 4 compliant UUID generator.
 // Based on: https://github.com/pnegri/uuid-js
-app.factory('uuid4', function() {
+app.factory('uuid4', function () {
 
-    const maxFromBits = function(bits: number): number {
+    const maxFromBits = function (bits: number): number {
         return Math.pow(2, bits);
     };
 
@@ -20,38 +20,38 @@ app.factory('uuid4', function() {
     // const limitUI40 = maxFromBits(40);
     // const limitUI48 = maxFromBits(48);
 
-    const getRandomInt = function(min: number, max: number): number {
+    const getRandomInt = function (min: number, max: number): number {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     };
 
-    const randomUI06 = function() {
+    const randomUI06 = function () {
         return getRandomInt(0, limitUI06 - 1);
     };
 
-    const randomUI08 = function() {
+    const randomUI08 = function () {
         return getRandomInt(0, limitUI08 - 1);
     };
 
-    const randomUI12 = function() {
+    const randomUI12 = function () {
         return getRandomInt(0, limitUI12 - 1);
     };
 
-    const randomUI16 = function() {
+    const randomUI16 = function () {
         return getRandomInt(0, limitUI16 - 1);
     };
 
-    const randomUI32 = function() {
+    const randomUI32 = function () {
         return getRandomInt(0, limitUI32 - 1);
     };
 
-    const randomUI48 = function() {
+    const randomUI48 = function () {
         return (0 | Math.random() * (1 << 30)) + (0 | Math.random() * (1 << 48 - 30)) * (1 << 30);
     };
 
-    const paddedString = function(s: string, length: number, z?: string) {
+    const paddedString = function (s: string, length: number, z?: string) {
         s = String(s);
         z = (!z) ? '0' : z;
-        var i = length - s.length;
+        let i = length - s.length;
         for (; i > 0; i >>>= 1, z += z) {
             if (i & 1) {
                 s = z + s;
@@ -60,7 +60,7 @@ app.factory('uuid4', function() {
         return s;
     };
 
-    const fromParts = function(timeLow: number, timeMid: number, timeHiAndVersion: number, clockSeqHiAndReserved: number, clockSeqLow: number, node: number) {
+    const fromParts = function (timeLow: number, timeMid: number, timeHiAndVersion: number, clockSeqHiAndReserved: number, clockSeqLow: number, node: number) {
         const hex = paddedString(timeLow.toString(16), 8) +
             '-' +
             paddedString(timeMid.toString(16), 4) +

@@ -1,5 +1,5 @@
 import Document from "./Document";
-import {stringReverse} from "./lib/lang";
+import { stringReverse } from "./lib/lang";
 import EventEmitterClass from "./lib/EventEmitterClass";
 import Position from "./Position";
 import Range from "./Range";
@@ -183,35 +183,41 @@ export default class Selection implements EventBus<any, Selection> {
      */
     splitIntoLines(): void {
         if (this.rangeCount > 1) {
-            var ranges = this.rangeList.ranges;
-            var lastRange = ranges[ranges.length - 1];
-            var range = Range.fromPoints(ranges[0].start, lastRange.end);
+            const ranges = this.rangeList.ranges;
+            const lastRange = ranges[ranges.length - 1];
+            const range = Range.fromPoints(ranges[0].start, lastRange.end);
 
             this.toSingleRange();
             this.setSelectionRange(range, lastRange.cursor === lastRange.start);
         }
         else {
-            var range = this.getRange();
-            var isBackwards = this.isBackwards();
-            var startRow = range.start.row;
-            var endRow = range.end.row;
+            const range = this.getRange();
+            const isBackwards = this.isBackwards();
+            const startRow = range.start.row;
+            const endRow = range.end.row;
+            let start: Position;
+            let end: Position;
             if (startRow === endRow) {
-                if (isBackwards)
-                    var start = range.end, end = range.start;
-                else
-                    var start = range.start, end = range.end;
+                if (isBackwards) {
+                    start = range.end;
+                    end = range.start;
+                }
+                else {
+                    start = range.start;
+                    end = range.end;
+                }
 
                 this.addRange(Range.fromPoints(end, end));
                 this.addRange(Range.fromPoints(start, start));
                 return;
             }
 
-            var rectSel: Range[] = [];
-            var r = this.getLineRange(startRow, true);
+            const rectSel: Range[] = [];
+            let r = this.getLineRange(startRow, true);
             r.start.column = range.start.column;
             rectSel.push(r);
 
-            for (var i = startRow + 1; i < endRow; i++) {
+            for (let i = startRow + 1; i < endRow; i++) {
                 rectSel.push(this.getLineRange(i, true));
             }
 
@@ -333,7 +339,7 @@ export default class Selection implements EventBus<any, Selection> {
         const anchor = this.getSelectionAnchor();
         const lead = this.getSelectionLead();
 
-        var isBackwards = this.isBackwards();
+        const isBackwards = this.isBackwards();
 
         if (!isBackwards || anchor.column !== 0)
             this.setSelectionAnchor(anchor.row, anchor.column + columns);
@@ -412,12 +418,9 @@ export default class Selection implements EventBus<any, Selection> {
 
     /**
      * Selects all the text in the document.
-     *
-     * @method selectAll
-     * @return {void}
      */
     selectAll(): void {
-        var lastRow = this.doc.getLength() - 1;
+        const lastRow = this.doc.getLength() - 1;
         this.setSelectionAnchor(0, 0);
         this.moveCursorTo(lastRow, this.doc.getLine(lastRow).length);
     }
@@ -448,7 +451,7 @@ export default class Selection implements EventBus<any, Selection> {
     }
 
     $moveSelection(mover) {
-        var lead = this.lead;
+        const lead = this.lead;
         if (this.$isEmpty)
             this.setSelectionAnchor(lead.row, lead.column);
 
@@ -472,14 +475,11 @@ export default class Selection implements EventBus<any, Selection> {
     /**
      * Moves the selection cursor to the row and column indicated by `pos`.
      *
-     * @method selectToPosition
-     * @param position {Position} An object containing the row and column
-     * @return {void}
+     * @param position An object containing the row and column
      */
     selectToPosition(position: Position): void {
-        var self = this;
-        this.$moveSelection(function () {
-            self.moveCursorToPosition(position);
+        this.$moveSelection(() => {
+            this.moveCursorToPosition(position);
         });
     }
 
@@ -604,7 +604,7 @@ export default class Selection implements EventBus<any, Selection> {
      */
     getWordRange(row?: number, column?: number): Range {
         if (typeof column === "undefined") {
-            var cursor: Anchor = this.lead;
+            const cursor: Anchor = this.lead;
             row = cursor.row;
             column = cursor.column;
         }
@@ -643,7 +643,7 @@ export default class Selection implements EventBus<any, Selection> {
         let rowStart = typeof row === "number" ? row : this.lead.row;
         let rowEnd: number;
 
-        var foldLine = this.session.getFoldLine(rowStart);
+        const foldLine = this.session.getFoldLine(rowStart);
         if (foldLine) {
             rowStart = foldLine.start.row;
             rowEnd = foldLine.end.row;
@@ -677,7 +677,7 @@ export default class Selection implements EventBus<any, Selection> {
      * @return {void}
      */
     mergeOverlappingRanges(): void {
-        var removed = this.rangeList.merge();
+        const removed = this.rangeList.merge();
         if (removed.length) {
             this.$onRemoveRange(removed);
         }
@@ -726,7 +726,7 @@ export default class Selection implements EventBus<any, Selection> {
             }
         }
         else {
-            var tabSize = this.session.getTabSize();
+            const tabSize = this.session.getTabSize();
             if (this.session.isTabStop(cursor) && this.doc.getLine(cursor.row).slice(cursor.column - tabSize, cursor.column).split(" ").length - 1 === tabSize)
                 this.moveCursorBy(0, -tabSize);
             else
@@ -741,8 +741,8 @@ export default class Selection implements EventBus<any, Selection> {
      * @return {void}
      */
     moveCursorRight(): void {
-        var pos = this.lead.getPosition();
-        var fold = this.session.getFoldAt(pos.row, pos.column, 1);
+        const pos = this.lead.getPosition();
+        const fold = this.session.getFoldAt(pos.row, pos.column, 1);
         if (fold) {
             this.moveCursorTo(fold.end.row, fold.end.column);
         }
@@ -752,8 +752,8 @@ export default class Selection implements EventBus<any, Selection> {
             }
         }
         else {
-            var tabSize = this.session.getTabSize();
-            var cursor = this.lead;
+            const tabSize = this.session.getTabSize();
+            const cursor = this.lead;
             if (this.session.isTabStop(cursor) && this.doc.getLine(cursor.row).slice(cursor.column, cursor.column + tabSize).split(" ").length - 1 === tabSize) {
                 this.moveCursorBy(0, tabSize);
             }
@@ -899,7 +899,7 @@ export default class Selection implements EventBus<any, Selection> {
         }
 
         // How does this get from the folding adapter onto the session?
-        var str = this.session.getFoldStringAt(row, column, -1);
+        let str = this.session.getFoldStringAt(row, column, -1);
         if (str == null) {
             str = this.doc.getLine(row).substring(0, column);
         }
@@ -935,10 +935,7 @@ export default class Selection implements EventBus<any, Selection> {
     }
 
     /**
-     * @method $shortWordEndIndex
-     * @param rightOfCursor {string}
-     * @return {number}
-     * @private
+     * @param rightOfCursor
      */
     private $shortWordEndIndex(rightOfCursor: string): number {
         let match: RegExpMatchArray;
@@ -979,17 +976,17 @@ export default class Selection implements EventBus<any, Selection> {
     }
 
     moveCursorShortWordRight() {
-        var row = this.lead.row;
-        var column = this.lead.column;
-        var line = this.doc.getLine(row);
-        var rightOfCursor = line.substring(column);
+        let row = this.lead.row;
+        let column = this.lead.column;
+        const line = this.doc.getLine(row);
+        let rightOfCursor = line.substring(column);
 
-        var fold = this.session.getFoldAt(row, column, 1);
+        const fold = this.session.getFoldAt(row, column, 1);
         if (fold)
             return this.moveCursorTo(fold.end.row, fold.end.column);
 
         if (column === line.length) {
-            var l = this.doc.getLength();
+            const l = this.doc.getLength();
             do {
                 row++;
                 rightOfCursor = this.doc.getLine(row);
@@ -1006,14 +1003,14 @@ export default class Selection implements EventBus<any, Selection> {
     }
 
     moveCursorShortWordLeft() {
-        var row = this.lead.row;
-        var column = this.lead.column;
+        let row = this.lead.row;
+        let column = this.lead.column;
 
-        var fold;
+        let fold: Fold;
         if (fold = this.session.getFoldAt(row, column, -1))
             return this.moveCursorTo(fold.start.row, fold.start.column);
 
-        var line = this.session.getLine(row).substring(0, column);
+        let line = this.session.getLine(row).substring(0, column);
         if (column === 0) {
             do {
                 row--;
@@ -1025,8 +1022,8 @@ export default class Selection implements EventBus<any, Selection> {
                 line = "";
         }
 
-        var leftOfCursor = stringReverse(line);
-        var index = this.$shortWordEndIndex(leftOfCursor);
+        const leftOfCursor = stringReverse(line);
+        const index = this.$shortWordEndIndex(leftOfCursor);
 
         return this.moveCursorTo(row, column - index);
     }
@@ -1101,7 +1098,7 @@ export default class Selection implements EventBus<any, Selection> {
      */
     moveCursorTo(row: number, column: number, keepDesiredColumn?: boolean): void {
         // Ensure the row/column is not inside of a fold.
-        var fold = this.session.getFoldAt(row, column, 1);
+        const fold = this.session.getFoldAt(row, column, 1);
         if (fold) {
             row = fold.start.row;
             column = fold.start.column;
@@ -1125,7 +1122,7 @@ export default class Selection implements EventBus<any, Selection> {
      * @return {void}
      */
     moveCursorToScreen(row: number, column: number, keepDesiredColumn: boolean): void {
-        var pos = this.session.screenToDocumentPosition(row, column);
+        const pos = this.session.screenToDocumentPosition(row, column);
         this.moveCursorTo(pos.row, pos.column, keepDesiredColumn);
     }
 
@@ -1173,7 +1170,7 @@ export default class Selection implements EventBus<any, Selection> {
      * @method toOrientedRange
      */
     toOrientedRange(range?: Range) {
-        var r = this.getRange();
+        const r = this.getRange();
         if (range) {
             range.start.column = r.start.column;
             range.start.row = r.start.row;
@@ -1236,7 +1233,7 @@ export default class Selection implements EventBus<any, Selection> {
      */
     public toSingleRange(range?: Range): void {
         range = range || this.ranges[0];
-        var removed = this.rangeList.removeAll();
+        const removed = this.rangeList.removeAll();
         if (removed.length) {
             this.$onRemoveRange(removed);
         }
@@ -1260,7 +1257,7 @@ export default class Selection implements EventBus<any, Selection> {
         }
 
         if (!this.inMultiSelectMode && this.rangeCount === 0) {
-            var oldRange = this.toOrientedRange();
+            const oldRange = this.toOrientedRange();
             this.rangeList.add(oldRange);
             this.rangeList.add(range);
             if (this.rangeList.ranges.length !== 2) {
@@ -1315,14 +1312,15 @@ export default class Selection implements EventBus<any, Selection> {
      */
     private $onRemoveRange(removed: Range[]): void {
         this.rangeCount = this.rangeList.ranges.length;
+        let lastRange: Range;
         if (this.rangeCount === 1 && this.inMultiSelectMode) {
-            var lastRange: Range = this.rangeList.ranges.pop();
+            lastRange = this.rangeList.ranges.pop();
             removed.push(lastRange);
             this.rangeCount = 0;
         }
 
-        for (var i = removed.length; i--;) {
-            var index = this.ranges.indexOf(removed[i]);
+        for (let i = removed.length; i--;) {
+            const index = this.ranges.indexOf(removed[i]);
             this.ranges.splice(index, 1);
         }
 
@@ -1347,8 +1345,8 @@ export default class Selection implements EventBus<any, Selection> {
         if (data.start === void 0) {
             if (this.rangeList) {
                 this.toSingleRange(data[0]);
-                for (var i = data.length; i--;) {
-                    var r: any = Range.fromPoints(data[i].start, data[i].end);
+                for (let i = data.length; i--;) {
+                    const r: any = Range.fromPoints(data[i].start, data[i].end);
                     if (data.isBackwards)
                         r.cursor = r.start;
                     this.addRange(r, true);
@@ -1369,7 +1367,7 @@ export default class Selection implements EventBus<any, Selection> {
         if (!data.length || !this.ranges)
             return this.getRange().isEqual(data);
 
-        for (var i = this.ranges.length; i--;) {
+        for (let i = this.ranges.length; i--;) {
             if (!this.ranges[i].isEqual(data[i]))
                 return false;
         }

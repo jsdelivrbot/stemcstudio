@@ -13,7 +13,7 @@ export function stringReverse(s: string): string {
 }
 
 export function stringRepeat(s: string, count: number) {
-    var result = '';
+    let result = '';
     while (count > 0) {
         if (count & 1) {
             result += s;
@@ -26,8 +26,8 @@ export function stringRepeat(s: string, count: number) {
     return result;
 }
 
-var trimBeginRegexp = /^\s\s*/;
-var trimEndRegexp = /\s\s*$/;
+const trimBeginRegexp = /^\s\s*/;
+const trimEndRegexp = /\s\s*$/;
 
 export function stringTrimLeft(s: string): string {
     return s.replace(trimBeginRegexp, '');
@@ -61,12 +61,12 @@ export function copyArray<T>(array: T[]): T[] {
 export function deepCopy<T>(obj: T): T {
     if (typeof obj !== "object" || !obj)
         return obj;
-    var cons = obj.constructor;
+    const cons = obj.constructor;
     if (cons === RegExp)
         return obj;
 
-    var copy = cons();
-    for (var key in obj) {
+    const copy = cons();
+    for (const key in obj) {
         if (typeof obj[key] === "object") {
             copy[key] = deepCopy(obj[key]);
         } else {
@@ -98,7 +98,7 @@ export function createMap(props) {
  * splice out of 'array' anything that === 'value'
  */
 export function arrayRemove(array, value) {
-    for (var i = 0; i <= array.length; i++) {
+    for (let i = 0; i <= array.length; i++) {
         if (value === array[i]) {
             array.splice(i, 1);
         }
@@ -131,13 +131,13 @@ export function getMatchOffsets(s: string, searchValue: RegExp): MatchOffset[] {
 /* deprecated */
 export function deferredCall(fcn) {
 
-    var timer = null;
-    var callback = function () {
+    let timer = null;
+    const callback = function () {
         timer = null;
         fcn();
     };
 
-    var deferred: any = function (timeout) {
+    const deferred: any = function (timeout) {
         deferred.cancel();
         timer = setTimeout(callback, timeout || 0);
         return deferred;

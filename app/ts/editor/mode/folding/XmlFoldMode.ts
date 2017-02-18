@@ -1,4 +1,4 @@
-import {mixin} from "../../lib/oop";
+import { mixin } from "../../lib/oop";
 import Range from "../../Range";
 import FoldMode from "./FoldMode";
 import TokenIterator from "../../TokenIterator";
@@ -6,14 +6,13 @@ import EditSession from "../../EditSession";
 import Position from "../../Position";
 
 /**
- * @class XmlFoldMode
+ *
  */
 export default class XmlFoldMode extends FoldMode {
     voidElements: { [name: string]: number };
     optionalEndTags: { [name: string]: number };
     /**
-     * @class XmlFoldMode
-     * @constructor
+     *
      */
     constructor(voidElements: { [name: string]: number } = {}, optionalEndTags?: { [name: string]: number }) {
         super();
@@ -25,14 +24,12 @@ export default class XmlFoldMode extends FoldMode {
     }
 
     /**
-     * @method getFoldWidget
-     * @param session {EditSession}
-     * @param foldStyle {string}
-     * @param row {number}
-     * @return {string}
+     * @param session
+     * @param foldStyle
+     * @param row
      */
     getFoldWidget(session: EditSession, foldStyle: string, row: number): string {
-        var tag = this._getFirstTagInLine(session, row);
+        const tag = this._getFirstTagInLine(session, row);
 
         if (!tag)
             return "";
@@ -53,11 +50,11 @@ export default class XmlFoldMode extends FoldMode {
      * returns a first tag (or a fragment) in a line
      */
     _getFirstTagInLine(session: EditSession, row: number): Tag {
-        var tokens = session.getTokens(row);
-        var tag = new Tag();
+        const tokens = session.getTokens(row);
+        const tag = new Tag();
 
-        for (var i = 0; i < tokens.length; i++) {
-            var token = tokens[i];
+        for (let i = 0; i < tokens.length; i++) {
+            let token = tokens[i];
             if (is(token, "tag-open")) {
                 tag.end.column = tag.start.column + token.value.length;
                 tag.closing = is(token, "end-tag-open");
@@ -106,11 +103,11 @@ export default class XmlFoldMode extends FoldMode {
      * reads a full tag and places the iterator after the tag
      */
     _readTagForward(iterator: TokenIterator): Tag {
-        var token = iterator.getCurrentToken();
+        let token = iterator.getCurrentToken();
         if (!token)
             return null;
 
-        var tag = new Tag();
+        const tag = new Tag();
         do {
             if (is(token, "tag-open")) {
                 tag.closing = is(token, "end-tag-open");
@@ -133,11 +130,11 @@ export default class XmlFoldMode extends FoldMode {
     }
 
     _readTagBackward(iterator: TokenIterator): Tag {
-        var token = iterator.getCurrentToken();
+        let token = iterator.getCurrentToken();
         if (!token)
             return null;
 
-        var tag = new Tag();
+        const tag = new Tag();
         do {
             if (is(token, "tag-open")) {
                 tag.closing = is(token, "end-tag-open");
@@ -179,19 +176,19 @@ export default class XmlFoldMode extends FoldMode {
     }
 
     getFoldWidgetRange(session: EditSession, foldStyle: string, row: number): Range {
-        var firstTag = this._getFirstTagInLine(session, row);
+        const firstTag = this._getFirstTagInLine(session, row);
 
         if (!firstTag) {
             return null;
         }
 
-        var isBackward = firstTag.closing || firstTag.selfClosing;
-        var stack: Tag[] = [];
-        var tag: Tag;
+        const isBackward = firstTag.closing || firstTag.selfClosing;
+        const stack: Tag[] = [];
+        let tag: Tag;
 
         if (!isBackward) {
-            var iterator = new TokenIterator(session, row, firstTag.start.column);
-            var start = {
+            const iterator = new TokenIterator(session, row, firstTag.start.column);
+            const start = {
                 row: row,
                 column: firstTag.start.column + firstTag.tagName.length + 2
             };
@@ -216,8 +213,8 @@ export default class XmlFoldMode extends FoldMode {
             }
         }
         else {
-            var iterator = new TokenIterator(session, row, firstTag.end.column);
-            var end = {
+            const iterator = new TokenIterator(session, row, firstTag.end.column);
+            const end = {
                 row: row,
                 column: firstTag.start.column
             };

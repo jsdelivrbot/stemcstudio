@@ -260,7 +260,7 @@ export default class HtmlCompletions {
             return this.getAttributeValueCompletions(state, session, pos, prefix);
 
         // HTML entities
-        var line = session.getLine(pos.row).substr(0, pos.column);
+        const line = session.getLine(pos.row).substr(0, pos.column);
         if (/&[a-z]*$/i.test(line))
             return this.getHTMLEntityCompletions(state, session, pos, prefix);
         return [];

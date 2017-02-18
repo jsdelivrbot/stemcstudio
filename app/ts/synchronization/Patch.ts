@@ -50,8 +50,8 @@ export default class Patch {
      * @returns The GNU diff string.
      */
     toString(): string {
-        var coords1: string;
-        var coords2: string;
+        let coords1: string;
+        let coords2: string;
         if (this.length1 === 0) {
             coords1 = this.start1 + ',0';
         } else if (this.length1 === 1) {
@@ -69,7 +69,7 @@ export default class Patch {
         const text = ['@@ -' + coords1 + ' +' + coords2 + ' @@\n'];
         let op: string;
         // Escape the body of the patch with %xx notation.
-        for (var x = 0; x < this.diffs.length; x++) {
+        for (let x = 0; x < this.diffs.length; x++) {
             switch (this.diffs[x][0]) {
                 case DIFF_INSERT:
                     op = '+';

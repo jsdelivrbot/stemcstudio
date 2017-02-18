@@ -1,26 +1,22 @@
-"use strict";
-
 import {
-decodeEventType,
-IComputedEvent,
-INPUT_CANCEL,
-INPUT_END,
-INPUT_MOVE,
-INPUT_START,
-Recognizer,
-STATE_BEGAN,
-STATE_CANCELLED,
-STATE_CHANGED,
-STATE_FAILED,
-STATE_RECOGNIZED
+    decodeEventType,
+    IComputedEvent,
+    INPUT_CANCEL,
+    INPUT_END,
+    INPUT_MOVE,
+    INPUT_START,
+    Recognizer,
+    STATE_BEGAN,
+    STATE_CANCELLED,
+    STATE_CHANGED,
+    STATE_FAILED,
+    STATE_RECOGNIZED
 } from '../hammer';
 
 export class ContinuousRecognizer extends Recognizer {
     private pointers: number;
     /**
      * This recognizer is just used as a base for the simple attribute recognizers.
-     * @constructor
-     * @extends Recognizer
      */
     constructor(eventName: string, enabled: boolean, pointers: number) {
         super(eventName, enabled);
@@ -61,11 +57,11 @@ export class ContinuousRecognizer extends Recognizer {
      */
     process(input: IComputedEvent): number {
 
-        var state = this.state;
-        var eventType = input.eventType;
+        const state = this.state;
+        const eventType = input.eventType;
 
-        var isRecognized = state & (STATE_BEGAN | STATE_CHANGED);
-        var isValid = this.attributeTest(input);
+        const isRecognized = state & (STATE_BEGAN | STATE_CHANGED);
+        const isValid = this.attributeTest(input);
 
         // on cancel input and we've recognized before, return STATE_CANCELLED
         if (isRecognized && (eventType & INPUT_CANCEL || !isValid)) {

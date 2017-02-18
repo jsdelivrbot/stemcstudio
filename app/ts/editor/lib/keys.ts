@@ -37,7 +37,7 @@ import { mixin } from './oop';
 /*
  * Helper functions and hashes for key handling.
  */
-var Keys = {
+const Keys = {
     MODIFIER_KEYS: {
         16: 'Shift', 17: 'Ctrl', 18: 'Alt', 224: 'Meta'
     },
@@ -145,19 +145,19 @@ Keys[173] = '-';
     }
 })();
 
-export var FUNCTION_KEYS = Keys.FUNCTION_KEYS;
-export var PRINTABLE_KEYS = Keys.PRINTABLE_KEYS;
-export var MODIFIER_KEYS = Keys.MODIFIER_KEYS;
-export var KEY_MODS = Keys.KEY_MODS;
+export const FUNCTION_KEYS = Keys.FUNCTION_KEYS;
+export const PRINTABLE_KEYS = Keys.PRINTABLE_KEYS;
+export const MODIFIER_KEYS = Keys.MODIFIER_KEYS;
+export const KEY_MODS = Keys.KEY_MODS;
 
 // aliases
-export var enter = Keys["return"];
-export var escape = Keys.esc;
-export var del = Keys["delete"];
+export const enter = Keys["return"];
+export const escape = Keys.esc;
+export const del = Keys["delete"];
 
 export function keyCodeToString(keyCode: number): string {
     // Language-switching keystroke in Chrome/Linux emits keyCode 0.
-    var keyString = Keys[keyCode];
+    let keyString = Keys[keyCode];
     if (typeof keyString !== "string") {
         keyString = String.fromCharCode(keyCode);
     }

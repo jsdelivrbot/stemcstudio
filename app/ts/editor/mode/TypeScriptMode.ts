@@ -8,18 +8,15 @@ import WorkerClient from "../worker/WorkerClient";
 import EditSession from "../EditSession";
 
 /**
- * @class TypeScriptMode
- * @extends JavaScriptMode
+ *
  */
 export default class TypeScriptMode extends JavaScriptMode {
 
     $id = "ace/mode/typescript";
 
     /**
-     * @class TypeScriptMode
-     * @constructor
-     * @param workerUrl {string}
-     * @param scriptImports {sring[]}
+     * @param workerUrl
+     * @param scriptImports
      */
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
@@ -37,13 +34,13 @@ export default class TypeScriptMode extends JavaScriptMode {
 
         const worker = new WorkerClient(workerUrl);
 
-        worker.on("terminate", function() {
+        worker.on("terminate", function () {
             worker.detachFromDocument();
             session.clearAnnotations();
         });
 
-        worker.on('annotations', function(event: { data: Annotation[] }) {
-            var annotations: Annotation[] = event.data;
+        worker.on('annotations', function (event: { data: Annotation[] }) {
+            const annotations: Annotation[] = event.data;
             if (annotations.length > 0) {
                 // session.setAnnotations(annotations);
             }
@@ -53,14 +50,14 @@ export default class TypeScriptMode extends JavaScriptMode {
             session._emit("annotations", { data: annotations });
         });
 
-        worker.on("getFileNames", function(event) {
+        worker.on("getFileNames", function (event) {
             session._emit("getFileNames", { data: event.data });
         });
 
         // FIXME: Must be able to inject the module name.
         const moduleName = 'ace-workers.js';
         try {
-            worker.init(scriptImports, moduleName, 'TypeScriptWorker', function(err: any) {
+            worker.init(scriptImports, moduleName, 'TypeScriptWorker', function (err: any) {
                 if (!err) {
                     worker.attachToDocument(session.getDocument());
                     callback(void 0, worker);

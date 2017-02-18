@@ -10,122 +10,85 @@ import Tabstop from './Tabstop';
 export default class Range {
 
     /**
-     * @property start
-     * @type Position
+     *
      */
     public start: Position;
 
     /**
-     * @property end
-     * @type Position
+     *
      */
     public end: Position;
 
     /**
      * A marker id that is being sneaked onto the Range.
      *
-     * @property markerId
-     * @type number
      * @deprecated
      */
     public markerId: number;
 
     /**
-     * @property collapseChildren
-     * @type number
+     *
      * @deprecated
      */
     public collapseChildren: number;
 
     /**
-     * @property isBackwards
-     * @type boolean
+     *
      */
     public isBackwards: boolean;
 
     /**
      * The cursor position is an optional property making an oriented range.
-     *
-     * @property cursor
-     * @type Position
      */
     public cursor: Position;
 
     /**
      * The desired column is an optional property making an oriented range.
-     *
-     * @property desirecColumn
-     * @type number
      */
     public desiredColumn: number;
 
     /**
      * Used by the TabstopManager.
-     *
-     * @property tabstop
-     * @type Tabstop
-     * @optional
      */
-    public tabstop: Tabstop;
+    public tabstop?: Tabstop;
 
     /**
      * Used by the TabstopManager.
-     *
-     * @property original
-     * @type Range
-     * @optional
      */
-    public original: Range;
+    public original?: Range;
 
     /**
      * Used by the TabstopManager.
-     *
-     * @property linked
-     * @type boolean
      */
     public linked: boolean;
 
     /**
      * Used by the TabstopManager.
-     *
-     * @propery fmtString
-     * @type string
      */
     public fmtString: string;
 
     /**
      * Used by the TabstopManager.
-     *
-     * @propery guard
-     * @type string
      */
     public guard: string;
 
     /**
      * Used by the TabstopManager.
-     *
-     * @propery fmt
-     * @type string
      */
     public fmt: string;
 
     /**
      * Used by the TabstopManager.
-     *
-     * @propery flag
-     * @type string
      */
     public flag: string;
 
     /**
      * Creates a new `EditorRange` object with the given starting and ending row and column points.
      *
-     * @class Range
-     * @constructor
-     * @param {Number} startRow The starting row
-     * @param {Number} startColumn The starting column
-     * @param {Number} endRow The ending row
-     * @param {Number} endColumn The ending column
+     * @param startRow The starting row
+     * @param startColumn The starting column
+     * @param endRow The ending row
+     * @param endColumn The ending column
      */
     constructor(startRow: number, startColumn: number, endRow: number, endColumn: number) {
         this.start = {
@@ -142,9 +105,7 @@ export default class Range {
     /**
      * Returns `true` if and only if the starting row and column, and ending row and column, are equivalent to those given by `range`.
      *
-     * @method isEqual
-     * @param range {Range} A range to check against.
-     * @return {boolean}
+     * @param range A range to check against.
      */
     isEqual(range: { start: Position; end: Position }): boolean {
         return this.start.row === range.start.row &&
@@ -262,7 +223,7 @@ export default class Range {
      * @param range A range to compare with.
      */
     intersects(range: Range): boolean {
-        var cmp = this.compareRange(range);
+        const cmp = this.compareRange(range);
         return (cmp === -1 || cmp === 0 || cmp === 1);
     }
 
@@ -522,16 +483,18 @@ export default class Range {
      * @returns The original range with the new row
      */
     extend(row: number, column: number): Range {
-        var cmp = this.compare(row, column);
+        const cmp = this.compare(row, column);
+        let start: Position;
+        let end: Position;
 
         if (cmp === 0) {
             return this;
         }
         else if (cmp === -1) {
-            var start = { row: row, column: column };
+            start = { row, column };
         }
         else {
-            var end = { row: row, column: column };
+            end = { row, column };
         }
         return Range.fromPoints(start || this.start, end || this.end);
     }

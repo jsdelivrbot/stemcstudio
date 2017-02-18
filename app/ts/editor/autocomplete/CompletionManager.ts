@@ -100,7 +100,7 @@ export default class CompletionManager {
             "Return": (editor: Editor) => { return this.insertMatch(); },
             "Shift-Return": (editor: Editor) => { this.insertMatch(true); },
             "Tab": (editor: Editor) => {
-                var result = this.insertMatch();
+                const result = this.insertMatch();
                 if (!result && !editor.tabstopManager) {
                     this.goTo("down");
                 }
@@ -345,7 +345,7 @@ export default class CompletionManager {
                 }
                 else {
                     // Only detach if result gathering is finished
-                    var detachIfFinished = () => {
+                    const detachIfFinished = () => {
                         if (!results.finished) return;
                         return this.detach();
                     };

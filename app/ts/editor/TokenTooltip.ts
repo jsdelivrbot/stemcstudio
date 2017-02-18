@@ -48,7 +48,7 @@ export default class TokenTooltip extends Tooltip {
         const update = () => {
             this.$timer = null;
 
-            var r: RendererEx = this.editor.renderer;
+            const r: RendererEx = this.editor.renderer;
             if (this.lastT - (r.timeStamp || 0) > 1000) {
                 r.rect = null;
                 r.timeStamp = this.lastT;
@@ -56,14 +56,14 @@ export default class TokenTooltip extends Tooltip {
                 this.maxWidth = window.innerWidth;
             }
 
-            var canvasPos: ClientRect = r.rect || (r.rect = r.scroller.getBoundingClientRect());
-            var offset = (this.x + r.scrollLeft - canvasPos.left - r.$padding) / r.characterWidth;
-            var row = Math.floor((this.y + r.scrollTop - canvasPos.top) / r.lineHeight);
-            var col = Math.round(offset);
+            const canvasPos: ClientRect = r.rect || (r.rect = r.scroller.getBoundingClientRect());
+            const offset = (this.x + r.scrollLeft - canvasPos.left - r.$padding) / r.characterWidth;
+            const row = Math.floor((this.y + r.scrollTop - canvasPos.top) / r.lineHeight);
+            const col = Math.round(offset);
 
-            var screenPos = { row: row, column: col, side: offset - col > 0 ? 1 : -1 };
-            var session = this.editor.session;
-            var docPos = session.screenToDocumentPosition(screenPos.row, screenPos.column);
+            const screenPos = { row: row, column: col, side: offset - col > 0 ? 1 : -1 };
+            const session = this.editor.session;
+            const docPos = session.screenToDocumentPosition(screenPos.row, screenPos.column);
             let token: TokenEx = session.getTokenAt(docPos.row, docPos.column);
 
             if (!token && !session.getLine(docPos.row)) {
@@ -79,7 +79,7 @@ export default class TokenTooltip extends Tooltip {
                 return;
             }
 
-            var tokenText = token.type;
+            let tokenText = token.type;
             if (token.state)
                 tokenText += "|" + token.state;
             if (token.merge)

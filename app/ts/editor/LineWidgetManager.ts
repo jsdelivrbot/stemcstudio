@@ -1,4 +1,4 @@
-import {addCssClass, createHTMLDivElement} from "./lib/dom";
+import { addCssClass, createHTMLDivElement } from "./lib/dom";
 import Delta from "./Delta";
 import Editor from "./Editor";
 import EditSession from "./EditSession";
@@ -40,7 +40,7 @@ export default class LineWidgetManager {
     }
 
     getRowLength(row: number): number {
-        var h: number;
+        let h: number;
 
         if (this.lineWidgets)
             h = this.lineWidgets[row] && this.lineWidgets[row].rowCount || 0;
@@ -56,7 +56,7 @@ export default class LineWidgetManager {
     }
 
     private $getWidgetScreenLength(): number {
-        var screenRows = 0;
+        let screenRows = 0;
         this.lineWidgets.forEach(function (w) {
             if (w && w.rowCount && !w.hidden)
                 screenRows += w.rowCount;
@@ -92,7 +92,7 @@ export default class LineWidgetManager {
      *
      */
     detach(unused?: any): void {
-        var editor = this.editor;
+        const editor = this.editor;
         if (!editor) {
             return;
         }
@@ -118,14 +118,14 @@ export default class LineWidgetManager {
      * @param session
      */
     updateOnFold(e: Change, session: EditSession): void {
-        var lineWidgets = session.lineWidgets;
+        const lineWidgets = session.lineWidgets;
         if (!lineWidgets || !e.action)
             return;
-        var fold = e.data;
-        var start = fold.start.row;
-        var end = fold.end.row;
-        var hide = e.action === "add";
-        for (var i = start + 1; i < end; i++) {
+        const fold = e.data;
+        const start = fold.start.row;
+        const end = fold.end.row;
+        const hide = e.action === "add";
+        for (let i = start + 1; i < end; i++) {
             if (lineWidgets[i])
                 lineWidgets[i].hidden = hide;
         }
@@ -236,7 +236,7 @@ export default class LineWidgetManager {
         const fold = this.session.getFoldAt(w.row, 0);
         w.$fold = fold;
         if (fold) {
-            var lineWidgets = this.session.lineWidgets;
+            const lineWidgets = this.session.lineWidgets;
             if (w.row === fold.end.row && !lineWidgets[fold.start.row])
                 lineWidgets[fold.start.row] = w;
             else
@@ -311,8 +311,8 @@ export default class LineWidgetManager {
 
         if (!changedWidgets || !changedWidgets.length) return;
         let min = Infinity;
-        for (var i = 0; i < changedWidgets.length; i++) {
-            var w = changedWidgets[i];
+        for (let i = 0; i < changedWidgets.length; i++) {
+            const w = changedWidgets[i];
             if (!w || !w.el) continue;
             if (w.session !== this.session) continue;
             if (!w._inDocument) {
@@ -329,7 +329,7 @@ export default class LineWidgetManager {
                 w.screenWidth = Math.ceil(w.w / config.characterWidth);
             }
 
-            var rowCount = w.h / config.lineHeight;
+            let rowCount = w.h / config.lineHeight;
             if (w.coverLine) {
                 rowCount -= this.session.getRowLineCount(w.row);
                 if (rowCount < 0)

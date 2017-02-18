@@ -1,5 +1,3 @@
-"use strict";
-
 import Editor from '../Editor';
 import PixelPosition from '../PixelPosition';
 
@@ -42,16 +40,16 @@ function paddingBottom(element: HTMLElement): number {
 }
 
 function outerHeight(element: HTMLElement): number {
-    var h = height(element);
-    var p = paddingTop(element) + paddingBottom(element);
-    var m = marginTop(element) + marginBottom(element);
-    var b = borderTop(element) + borderBottom(element);
+    const h = height(element);
+    const p = paddingTop(element) + paddingBottom(element);
+    const m = marginTop(element) + marginBottom(element);
+    const b = borderTop(element) + borderBottom(element);
     return h + p + m + b;
 }
 
 function position(el: HTMLElement): PixelPosition {
-    var left = 0;
-    var top = 0;
+    let left = 0;
+    let top = 0;
     while (el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
         left += el.offsetLeft - el.scrollLeft;
         top += el.offsetTop - el.scrollTop;
@@ -92,20 +90,18 @@ export default class AutoCompleteView {
     }
 
     /**
-     * @method show
-     * @param pos {PixelPosition}
-     * @param lineHeight {number}
-     * @param [topdownOnly] {boolean}
-     * @return {void}
+     * @param pos
+     * @param lineHeight
+     * @param topdownOnly
      */
     public show(pos: PixelPosition, lineHeight: number, topdownOnly?: boolean): void {
-        var el = this.wrap;
-        var screenHeight = window.innerHeight;
-        var screenWidth = window.innerWidth;
-        var renderer = this.editor.renderer;
-        // var maxLines = Math.min(renderer.$maxLines, this.session.getLength());
-        var maxH = renderer.$maxLines * lineHeight * 1.4;
-        var top = pos.top/* + this.$borderSize*/;
+        const el = this.wrap;
+        const screenHeight = window.innerHeight;
+        const screenWidth = window.innerWidth;
+        const renderer = this.editor.renderer;
+        // const maxLines = Math.min(renderer.maxLines, this.editor.session.getLength());
+        const maxH = renderer.maxLines * lineHeight * 1.4;
+        let top = pos.top/* + this.$borderSize*/;
         if (top + maxH > screenHeight - lineHeight && !topdownOnly) {
             el.style.top = "";
             el.style.bottom = screenHeight - top + "px";
@@ -121,9 +117,9 @@ export default class AutoCompleteView {
         el.style.display = "block";
         // FIXME: This seems to be correct. Why is it not caught by TypeScript?
         // renderer.textLayer.checkForSizeChanges();
-        renderer.$textLayer.checkForSizeChanges();
+        renderer.textLayer.checkForSizeChanges();
 
-        var left = pos.left;
+        let left = pos.left;
         if (left + el.offsetWidth > screenWidth) {
             left = screenWidth - el.offsetWidth;
         }
@@ -134,16 +130,14 @@ export default class AutoCompleteView {
     }
 
     /**
-     * @method hide
-     * @return {void}
+     *
      */
     public hide(): void {
         this.wrap.style.display = 'none';
     }
 
     /**
-     * @method current
-     * @return {HTMLElement}
+     *
      */
     public current(): HTMLElement {
         const children = this.listElement.childNodes;
@@ -157,14 +151,11 @@ export default class AutoCompleteView {
     }
 
     /**
-     * @method focusNext
-     * @return {void}
+     *
      */
     public focusNext(): void {
-        var curr: HTMLElement;
-        var focus: Element;
-        curr = this.current();
-        focus = <Element>curr.nextSibling;
+        const curr = this.current();
+        const focus = <Element>curr.nextSibling;
         if (focus) {
             curr.className = '';
             focus.className = CLASSNAME_SELECTED;
@@ -173,14 +164,11 @@ export default class AutoCompleteView {
     }
 
     /**
-     * @method focusPrev
-     * @return {void}
+     *
      */
     public focusPrev(): void {
-        var curr: HTMLElement;
-        var focus: Element;
-        curr = this.current();
-        focus = <Element>curr.previousSibling;
+        const curr = this.current();
+        const focus = <Element>curr.previousSibling;
         if (focus) {
             curr.className = '';
             focus.className = CLASSNAME_SELECTED;
@@ -189,13 +177,12 @@ export default class AutoCompleteView {
     }
 
     /**
-     * @method ensureFocus
-     * @return {void}
+     *
      */
     public ensureFocus(): void {
         if (!this.current()) {
             if (this.listElement.firstChild) {
-                var firstChild: HTMLElement = <HTMLElement>this.listElement.firstChild;
+                const firstChild: HTMLElement = <HTMLElement>this.listElement.firstChild;
                 firstChild.className = CLASSNAME_SELECTED;
                 return this.adjustPosition();
             }
@@ -203,9 +190,7 @@ export default class AutoCompleteView {
     }
 
     /**
-     * @method adjustPosition
-     * @return {void}
-     * @private
+     *
      */
     private adjustPosition(): void {
 

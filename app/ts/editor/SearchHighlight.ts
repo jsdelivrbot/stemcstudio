@@ -6,10 +6,10 @@ import MarkerLayer from "./layer/MarkerLayer";
 import MarkerConfig from "./layer/MarkerConfig";
 
 // needed to prevent long lines from freezing the browser
-var MAX_RANGES = 500;
+const MAX_RANGES = 500;
 
 /**
- * @class SearchHighlight
+ *
  */
 export default class SearchHighlight implements Marker {
     private regExp: RegExp;
@@ -19,11 +19,9 @@ export default class SearchHighlight implements Marker {
     private _range: Range;
 
     /**
-     * @class SearchHighlight
-     * @constructor
-     * @param regExpr {RegExp}
-     * @param clazz {string}
-     * @param type {string}
+     * @param regExpr
+     * @param clazz
+     * @param type
      */
     constructor(regExp: RegExp, clazz: string, type: string) {
         this.setRegexp(regExp);
@@ -32,8 +30,7 @@ export default class SearchHighlight implements Marker {
     }
 
     /**
-     * @method setRegexp
-     * @param regExp {RegExp}
+     * @param regExp
      */
     setRegexp(regExp: RegExp): void {
         if (this.regExp + "" === regExp + "") {
@@ -52,12 +49,10 @@ export default class SearchHighlight implements Marker {
     }
 
     /**
-     * @method update
-     * @param html {(number|string)[]}
-     * @param markerLayer {MarkerLayer}
-     * @param session {EditSession}
-     * @param config {MarkerConfig}
-     * @return {void}
+     * @param html
+     * @param markerLayer
+     * @param session
+     * @param config
      */
     update(html: (number | string)[], markerLayer: MarkerLayer, session: EditSession, config: MarkerConfig): void {
         if (!this.regExp) {

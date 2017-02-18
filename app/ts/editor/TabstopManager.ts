@@ -72,7 +72,7 @@ export default class TabstopManager {
                 "Esc": (editor: Editor) => {
                     this.detach();
                 },
-                "Return": function(editor: Editor) {
+                "Return": function (editor: Editor) {
                     editor.tabstopManager.tabNext(1);
                     return false;
                 }
@@ -80,10 +80,7 @@ export default class TabstopManager {
     }
 
     /**
-     * @method attach
-     * @param editor {Editor}
-     * @return {void}
-     * @private
+     * @param editor
      */
     private attach(editor: Editor): void {
         editor.tabstopManager = this;
@@ -102,9 +99,7 @@ export default class TabstopManager {
     }
 
     /**
-     * @method detach
-     * @return {void}
-     * @private
+     *
      */
     private detach(): void {
         this.tabstops.forEach(this.removeTabstopMarkers, this);
@@ -122,29 +117,29 @@ export default class TabstopManager {
 
     private onChange(delta: Delta, editor: Editor) {
 
-        var isRemove = delta.action === "remove";
+        const isRemove = delta.action === "remove";
 
-        var start = delta.start;
-        var end = delta.end;
-        var startRow = start.row;
-        var endRow = end.row;
-        var lineDif = endRow - startRow;
-        var colDiff = end.column - start.column;
+        const start = delta.start;
+        const end = delta.end;
+        const startRow = start.row;
+        const endRow = end.row;
+        let lineDif = endRow - startRow;
+        let colDiff = end.column - start.column;
 
         if (isRemove) {
             lineDif = -lineDif;
             colDiff = -colDiff;
         }
         if (!this.$inChange && isRemove) {
-            var ts = this.selectedTabstop;
-            var changedOutside = ts && !ts.some(function(range: Range) {
+            const ts = this.selectedTabstop;
+            const changedOutside = ts && !ts.some(function (range: Range) {
                 return comparePoints(range.start, start) <= 0 && comparePoints(range.end, end) >= 0;
             });
             if (changedOutside)
                 return this.detach();
         }
-        var ranges = this.ranges;
-        for (var i = 0; i < ranges.length; i++) {
+        const ranges = this.ranges;
+        for (let i = 0; i < ranges.length; i++) {
             let r = ranges[i];
             if (r.end.row < start.row)
                 continue;
@@ -173,21 +168,21 @@ export default class TabstopManager {
 
     private updateLinkedFields() {
 
-        var ts = this.selectedTabstop;
+        const ts = this.selectedTabstop;
 
         if (!ts || !ts.hasLinkedRanges) {
             return;
         }
 
         this.$inChange = true;
-        var session = this.editor.getSession();
-        var text = session.getTextRange(ts.firstNonLinked);
-        for (var i = ts.length; i--;) {
-            var range = ts[i];
+        const session = this.editor.getSession();
+        const text = session.getTextRange(ts.firstNonLinked);
+        for (let i = ts.length; i--;) {
+            const range = ts[i];
             if (!range.linked) {
                 continue;
             }
-            var fmt = this.editor.snippetManager.tmStrFormat(text, range.original);
+            const fmt = this.editor.snippetManager.tmStrFormat(text, range.original);
             session.replace(range, fmt);
         }
         this.$inChange = false;
@@ -203,14 +198,14 @@ export default class TabstopManager {
     private onChangeSelection(event, editor: Editor) {
         if (!this.editor)
             return;
-        var lead = this.editor.selection.lead;
-        var anchor = this.editor.selection.anchor;
-        var isEmpty = this.editor.selection.isEmpty();
-        for (var i = this.ranges.length; i--;) {
+        const lead = this.editor.selection.lead;
+        const anchor = this.editor.selection.anchor;
+        const isEmpty = this.editor.selection.isEmpty();
+        for (let i = this.ranges.length; i--;) {
             if (this.ranges[i].linked)
                 continue;
-            var containsLead = this.ranges[i].contains(lead.row, lead.column);
-            var containsAnchor = isEmpty || this.ranges[i].contains(anchor.row, anchor.column);
+            const containsLead = this.ranges[i].contains(lead.row, lead.column);
+            const containsAnchor = isEmpty || this.ranges[i].contains(anchor.row, anchor.column);
             if (containsLead && containsAnchor)
                 return;
         }
@@ -223,13 +218,11 @@ export default class TabstopManager {
     }
 
     /**
-     * @method tabNext
-     * @param [dir] {number}
-     * @return {void}
+     * @param dir
      */
     public tabNext(dir?: number): void {
-        var max = this.tabstops.length;
-        var index = this.index + (dir || 1);
+        const max = this.tabstops.length;
+        let index = this.index + (dir || 1);
         index = Math.min(Math.max(index, 1), max);
         if (index === max) {
             index = 0;
@@ -241,14 +234,11 @@ export default class TabstopManager {
     }
 
     /**
-     * @method selectTabstop
-     * @param index {number}
-     * @return {void}
-     * @private
+     * @param index
      */
     private selectTabstop(index: number): void {
         this.$openTabstops = null;
-        var ts = this.tabstops[this.index];
+        let ts = this.tabstops[this.index];
         if (ts) {
             this.addTabstopMarkers(ts);
         }
@@ -261,9 +251,9 @@ export default class TabstopManager {
         this.selectedTabstop = ts;
 
         if (!this.editor.inVirtualSelectionMode) {
-            var sel: Selection = this.editor.multiSelect;
+            const sel: Selection = this.editor.multiSelect;
             sel.toSingleRange(ts.firstNonLinked.clone());
-            for (var i = ts.length; i--;) {
+            for (let i = ts.length; i--;) {
                 if (ts.hasLinkedRanges && ts[i].linked) {
                     continue;
                 }
@@ -281,12 +271,10 @@ export default class TabstopManager {
     }
 
     /**
-     * @method addTabstops
-     * @param tabstops {Tabstop[]}
-     * @param start {Position}
-     * @param end {Position}
-     * @param selectionIndex {number} This parameter is not being used.
-     * @return {void}
+     * @param tabstops
+     * @param start
+     * @param end
+     * @param selectionIndex This parameter is not being used.
      */
     public addTabstops(tabstops: Tabstop[], start: Position, end: Position, selectionIndex: number): void {
         if (!this.$openTabstops) {
@@ -302,15 +290,15 @@ export default class TabstopManager {
             tabstops[0].index = 0;
         }
 
-        var i = this.index;
-        var arg: any[] = [i + 1, 0];
-        var ranges = this.ranges;
+        const i = this.index;
+        const arg: any[] = [i + 1, 0];
+        const ranges = this.ranges;
         tabstops.forEach((ts: Tabstop, index: number) => {
-            var dest = this.$openTabstops[index] || ts;
+            const dest = this.$openTabstops[index] || ts;
 
-            for (var i = ts.length; i--;) {
+            for (let i = ts.length; i--;) {
                 let originalRange = ts[i];
-                var range: Range = Range.fromPoints(originalRange.start, originalRange.end || originalRange.start);
+                const range: Range = Range.fromPoints(originalRange.start, originalRange.end || originalRange.start);
                 movePoint(range.start, start);
                 movePoint(range.end, start);
                 range.original = originalRange;
@@ -348,14 +336,11 @@ export default class TabstopManager {
     }
 
     /**
-     * @method addTabstopMarker
-     * @param ts {Tabstop}
-     * @return {void}
-     * @private
+     * @param ts
      */
     private addTabstopMarkers(ts: Tabstop): void {
-        var session = this.editor.session;
-        ts.forEach(function(range: Range) {
+        const session = this.editor.session;
+        ts.forEach(function (range: Range) {
             if (!range.markerId) {
                 range.markerId = session.addMarker(range, "ace_snippet-marker", "text");
             }
@@ -363,27 +348,21 @@ export default class TabstopManager {
     }
 
     /**
-     * @method removeTabstopMarkers
-     * @param ts {Tabstop}
-     * @return {void}
-     * @private
+     * @param ts
      */
     private removeTabstopMarkers(ts: Tabstop): void {
-        var session = this.editor.session;
-        ts.forEach(function(range: Range) {
+        const session = this.editor.session;
+        ts.forEach(function (range: Range) {
             session.removeMarker(range.markerId);
             range.markerId = null;
         });
     }
 
     /**
-     * @method removeRange
-     * @param range {Range}
-     * @return {void}
-     * @private
+     * @param range
      */
     private removeRange(range: Range): void {
-        var i = range.tabstop.indexOf(range);
+        let i = range.tabstop.indexOf(range);
         range.tabstop.splice(i, 1);
         i = this.ranges.indexOf(range);
         this.ranges.splice(i, 1);

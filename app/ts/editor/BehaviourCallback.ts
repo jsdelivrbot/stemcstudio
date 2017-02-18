@@ -1,22 +1,25 @@
-import Editor from  "./Editor";
+import Editor from "./Editor";
 import EditSession from "./EditSession";
 
+export interface BehaviorCallbackThis {
+    $getIndent: (line: string) => string;
+    voidElements: { [name: string]: number };
+}
+
 /**
- * @class BehaviourCallback
+ *
  */
-interface BehaviourCallback {
+export interface BehaviourCallback {
     /**
      * Executing the callback function returns a polymorphic value.
      *
-     * @method
-     * @param state {string}
-     * @param action {string}
-     * @param editor {Editor}
-     * @param editSession {EditSession}
-     * @param data {string | Range}
-     * @return {void}
+     * @param state
+     * @param action
+     * @param editor
+     * @param editSession
+     * @param data
      */
-    (state: string, action: string, editor: Editor, session: EditSession, data: any): any;
+    (this: BehaviorCallbackThis, state: string, action: string, editor: Editor, session: EditSession, data: any): any;
 }
 
 export default BehaviourCallback;

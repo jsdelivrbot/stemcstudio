@@ -14,15 +14,15 @@ export interface TouchEvent extends Event {
 }
 
 // magical touchAction value
-export var TOUCH_ACTION_COMPUTE = 'compute';
-export var TOUCH_ACTION_AUTO = 'auto';
-export var TOUCH_ACTION_MANIPULATION = 'manipulation'; // not implemented
-export var TOUCH_ACTION_NONE = 'none';
-export var TOUCH_ACTION_PAN_X = 'pan-x';
-export var TOUCH_ACTION_PAN_Y = 'pan-y';
+export const TOUCH_ACTION_COMPUTE = 'compute';
+export const TOUCH_ACTION_AUTO = 'auto';
+export const TOUCH_ACTION_MANIPULATION = 'manipulation'; // not implemented
+export const TOUCH_ACTION_NONE = 'none';
+export const TOUCH_ACTION_PAN_X = 'pan-x';
+export const TOUCH_ACTION_PAN_Y = 'pan-y';
 
-var STOP = 1;
-var FORCED_STOP = 2;
+const STOP = 1;
+const FORCED_STOP = 2;
 
 export class VectorE2 {
     public x;
@@ -112,7 +112,7 @@ export class Session {
     computeMovement(center: ClientLocation): VectorE2 {
         if (center) {
             if (this.compEvents.length > 0) {
-                var prev: IComputedEvent = this.compEvents[this.compEvents.length - 1];
+                const prev: IComputedEvent = this.compEvents[this.compEvents.length - 1];
                 return center.sub(prev.center);
             }
             else {
@@ -126,7 +126,7 @@ export class Session {
     computeVelocity(center: ClientLocation, deltaTime: number): VectorE2 {
         if (center) {
             if (this.compEvents.length > 0) {
-                var prev: IComputedEvent = this.compEvents[this.compEvents.length - 1];
+                const prev: IComputedEvent = this.compEvents[this.compEvents.length - 1];
                 return center.sub(prev.center).div(deltaTime - prev.deltaTime);
             }
             else {
@@ -212,7 +212,7 @@ export class Manager implements IRecognizerCallback {
      * @param {Object} inputData
      */
     recognize(inputData: IComputedEvent, touchEvent: TouchEvent): void {
-        var session = this.session;
+        const session = this.session;
         if (session.stopped) {
             return;
         }
@@ -220,13 +220,13 @@ export class Manager implements IRecognizerCallback {
         // run the touch-action polyfill
         this.touchAction.preventDefaults(inputData, touchEvent);
 
-        var recognizer: IRecognizer;
-        var recognizers = this.recognizers;
+        let recognizer: IRecognizer;
+        const recognizers = this.recognizers;
 
         // this holds the recognizer that is being recognized.
         // so the recognizer's state needs to be BEGAN, CHANGED, ENDED or RECOGNIZED
         // if no recognizer is detecting a thing, it is set to `null`
-        var curRecognizer = session.curRecognizer;
+        let curRecognizer = session.curRecognizer;
 
         // reset when the last recognizer is recognized
         // or when we're in a new session
@@ -234,7 +234,7 @@ export class Manager implements IRecognizerCallback {
             curRecognizer = session.curRecognizer = null;
         }
 
-        var i = 0;
+        let i = 0;
         while (i < recognizers.length) {
             recognizer = recognizers[i];
 
@@ -267,8 +267,8 @@ export class Manager implements IRecognizerCallback {
      * get a recognizer by its event name.
      */
     get(eventName: string): IRecognizer {
-        var recognizers = this.recognizers;
-        for (var i = 0; i < recognizers.length; i++) {
+        const recognizers = this.recognizers;
+        for (let i = 0; i < recognizers.length; i++) {
             if (recognizers[i].eventName === eventName) {
                 return recognizers[i];
             }
@@ -282,7 +282,7 @@ export class Manager implements IRecognizerCallback {
      * @param {Recognizer} recognizer
      */
     add(recognizer: IRecognizer): IRecognizer {
-        var existing = this.get(recognizer.eventName);
+        const existing = this.get(recognizer.eventName);
         if (existing) {
             this.remove(existing);
         }
@@ -300,7 +300,7 @@ export class Manager implements IRecognizerCallback {
      * @return {Manager}
      */
     remove(recognizer: IRecognizer) {
-        var recognizers = this.recognizers;
+        const recognizers = this.recognizers;
         recognizer = this.get(recognizer.eventName);
         recognizers.splice(inArray(recognizers, recognizer), 1);
 
@@ -315,7 +315,7 @@ export class Manager implements IRecognizerCallback {
      * @return {EventEmitter} this
      */
     on(events: string, handler): Manager {
-        var handlers = this.handlers;
+        const handlers = this.handlers;
         each(splitStr(events), function (event) {
             handlers[event] = handlers[event] || [];
             handlers[event].push(handler);
@@ -330,7 +330,7 @@ export class Manager implements IRecognizerCallback {
      * @return {EventEmitter} this
      */
     off(events: string, handler): Manager {
-        var handlers = this.handlers;
+        const handlers = this.handlers;
         each(splitStr(events), function (event) {
             if (!handler) {
                 delete handlers[event];
@@ -354,7 +354,7 @@ export class Manager implements IRecognizerCallback {
         }
 
         // no handlers, so skip it all
-        var handlers = this.handlers[eventName] && this.handlers[eventName].slice();
+        const handlers = this.handlers[eventName] && this.handlers[eventName].slice();
         if (!handlers || !handlers.length) {
             return;
         }
@@ -367,7 +367,7 @@ export class Manager implements IRecognizerCallback {
         };
         */
 
-        var i = 0;
+        let i = 0;
         while (i < handlers.length) {
             handlers[i](data);
             i++;
@@ -397,7 +397,7 @@ export class Manager implements IRecognizerCallback {
         if (!this.element.style) {
             return;
         }
-        var element = this.element;
+        const element = this.element;
         each(this.cssProps, function (value, name) {
             element.style[prefixed(element.style, name)] = add ? value : '';
         });
@@ -414,20 +414,20 @@ export class Manager implements IRecognizerCallback {
  * @param {Object} data
  */
 function triggerDomEvent(event, data) {
-    var gestureEvent = document.createEvent('Event');
+    const gestureEvent = document.createEvent('Event');
     gestureEvent.initEvent(event, true, true);
     gestureEvent['gesture'] = data;
     data.target.dispatchEvent(gestureEvent);
 }
 
-// var MOBILE_REGEX = /mobile|tablet|ip(ad|hone|od)|android/i;
+// const MOBILE_REGEX = /mobile|tablet|ip(ad|hone|od)|android/i;
 
-// var SUPPORT_TOUCH = ('ontouchstart' in window);
-// var SUPPORT_POINTER_EVENTS = prefixed(window, 'PointerEvent') !== undefined;
-// var SUPPORT_ONLY_TOUCH = SUPPORT_TOUCH && MOBILE_REGEX.test(navigator.userAgent);
+// const SUPPORT_TOUCH = ('ontouchstart' in window);
+// const SUPPORT_POINTER_EVENTS = prefixed(window, 'PointerEvent') !== undefined;
+// const SUPPORT_ONLY_TOUCH = SUPPORT_TOUCH && MOBILE_REGEX.test(navigator.userAgent);
 
-var PREFIXED_TOUCH_ACTION = prefixed(TEST_ELEMENT.style, 'touchAction');
-var NATIVE_TOUCH_ACTION = PREFIXED_TOUCH_ACTION !== undefined;
+const PREFIXED_TOUCH_ACTION = prefixed(TEST_ELEMENT.style, 'touchAction');
+const NATIVE_TOUCH_ACTION = PREFIXED_TOUCH_ACTION !== undefined;
 
 class TouchAction {
     public manager: Manager;
@@ -472,7 +472,7 @@ class TouchAction {
      * @return {String} value
      */
     compute() {
-        var actions: string[] = [];
+        let actions: string[] = [];
         // FIXME: Make this type-safe automagically
         each(this.manager.recognizers, function (recognizer: Recognizer) {
             if (recognizer.enabled) {
@@ -492,17 +492,17 @@ class TouchAction {
             return;
         }
 
-        // var direction = input.offsetDirection;
+        // const direction = input.offsetDirection;
 
         if (this.prevented) {
             touchEvent.preventDefault();
             return;
         }
         /*
-        var actions = this.actions;
-        var hasNone = inStr(actions, TOUCH_ACTION_NONE);
-        var hasPanY = inStr(actions, TOUCH_ACTION_PAN_Y);
-        var hasPanX = inStr(actions, TOUCH_ACTION_PAN_X);
+        const actions = this.actions;
+        const hasNone = inStr(actions, TOUCH_ACTION_NONE);
+        const hasPanY = inStr(actions, TOUCH_ACTION_PAN_Y);
+        const hasPanX = inStr(actions, TOUCH_ACTION_PAN_X);
 
         if (hasNone ||
             (hasPanY && direction & DIRECTION_HORIZONTAL) ||
@@ -533,8 +533,8 @@ function cleanTouchActions(actions: string): string {
         return TOUCH_ACTION_NONE;
     }
 
-    var hasPanX = inStr(actions, TOUCH_ACTION_PAN_X);
-    var hasPanY = inStr(actions, TOUCH_ACTION_PAN_Y);
+    const hasPanX = inStr(actions, TOUCH_ACTION_PAN_X);
+    const hasPanY = inStr(actions, TOUCH_ACTION_PAN_Y);
 
     // pan-x and pan-y can be combined
     if (hasPanX && hasPanY) {
@@ -554,17 +554,17 @@ function cleanTouchActions(actions: string): string {
     return TOUCH_ACTION_AUTO;
 }
 
-export var INPUT_TYPE_TOUCH = 'touch';
-export var INPUT_TYPE_PEN = 'pen';
-export var INPUT_TYPE_MOUSE = 'mouse';
-export var INPUT_TYPE_KINECT = 'kinect';
+export const INPUT_TYPE_TOUCH = 'touch';
+export const INPUT_TYPE_PEN = 'pen';
+export const INPUT_TYPE_MOUSE = 'mouse';
+export const INPUT_TYPE_KINECT = 'kinect';
 
-// var COMPUTE_INTERVAL = 25;
+// const COMPUTE_INTERVAL = 25;
 
-export var INPUT_START = 1;
-export var INPUT_MOVE = 2;
-export var INPUT_END = 4;
-export var INPUT_CANCEL = 8;
+export const INPUT_START = 1;
+export const INPUT_MOVE = 2;
+export const INPUT_END = 4;
+export const INPUT_CANCEL = 8;
 
 export function decodeEventType(eventType: number) {
     switch (eventType) {
@@ -586,18 +586,18 @@ export function decodeEventType(eventType: number) {
     }
 }
 
-export var DIRECTION_UNDEFINED = 0;
-export var DIRECTION_LEFT = 1;
-export var DIRECTION_RIGHT = 2;
-export var DIRECTION_UP = 4;
-export var DIRECTION_DOWN = 8;
+export const DIRECTION_UNDEFINED = 0;
+export const DIRECTION_LEFT = 1;
+export const DIRECTION_RIGHT = 2;
+export const DIRECTION_UP = 4;
+export const DIRECTION_DOWN = 8;
 
-export var DIRECTION_HORIZONTAL = DIRECTION_LEFT | DIRECTION_RIGHT;
-export var DIRECTION_VERTICAL = DIRECTION_UP | DIRECTION_DOWN;
-export var DIRECTION_ALL = DIRECTION_HORIZONTAL | DIRECTION_VERTICAL;
+export const DIRECTION_HORIZONTAL = DIRECTION_LEFT | DIRECTION_RIGHT;
+export const DIRECTION_VERTICAL = DIRECTION_UP | DIRECTION_DOWN;
+export const DIRECTION_ALL = DIRECTION_HORIZONTAL | DIRECTION_VERTICAL;
 
-var PROPS_XY = ['x', 'y'];
-// var PROPS_CLIENT_XY = ['clientX', 'clientY'];
+const PROPS_XY = ['x', 'y'];
+// const PROPS_CLIENT_XY = ['clientX', 'clientY'];
 
 class Input {
     public manager: Manager;
@@ -618,7 +618,7 @@ class Input {
         touchElementEvents: string,
         touchTargetEvents: string,
         touchWindowEvents: string) {
-        var self = this;
+
         this.manager = manager;
         this.evEl = touchElementEvents;
         this.evTarget = touchTargetEvents;
@@ -628,9 +628,9 @@ class Input {
 
         // smaller wrapper around the handler, for the scope and the enabled state of the manager,
         // so when disabled the input events are completely bypassed.
-        this.domHandler = function (event: TouchEvent) {
+        this.domHandler = (event: TouchEvent) => {
             if (manager.enable) {
-                self.handler(event);
+                this.handler(event);
             }
         };
 
@@ -683,7 +683,7 @@ class Input {
  */
 function inputHandler(manager: Manager, eventType: number, touchEvent: TouchEvent) {
 
-    var compEvent: IComputedEvent = computeIComputedEvent(manager, eventType, touchEvent);
+    const compEvent: IComputedEvent = computeIComputedEvent(manager, eventType, touchEvent);
 
     manager.recognize(compEvent, touchEvent);
 
@@ -699,9 +699,9 @@ function computeIComputedEvent(manager: Manager, eventType: number, touchEvent: 
     const touchesLength = touchEvent.touches.length;
     const changedPointersLen = touchEvent.changedTouches.length;
     const isFirst: boolean = (eventType & INPUT_START && (touchesLength - changedPointersLen === 0));
-    // var isFinal: boolean = (eventType & (INPUT_END | INPUT_CANCEL) && (touchesLength - changedPointersLen === 0));
+    // const isFinal: boolean = (eventType & (INPUT_END | INPUT_CANCEL) && (touchesLength - changedPointersLen === 0));
 
-    // var compEvent: any/*IComputedEvent*/ = {};
+    // const compEvent: any/*IComputedEvent*/ = {};
     // compEvent.isFirst = !!isFirst;
     // compEvent.isFinal = !!isFinal;
 
@@ -711,12 +711,12 @@ function computeIComputedEvent(manager: Manager, eventType: number, touchEvent: 
 
     // source event is the normalized value of the domEvents
     // like 'touchstart, mouseup, pointerdown'
-    var session = manager.session;
-    //  var pointers = input.pointers;
-    //  var pointersLength = pointers.length;
+    const session = manager.session;
+    //  const pointers = input.pointers;
+    //  const pointersLength = pointers.length;
 
-    var center: ClientLocation = computeCenter(touchEvent.touches);
-    var movement: VectorE2 = session.computeMovement(center);
+    const center: ClientLocation = computeCenter(touchEvent.touches);
+    const movement: VectorE2 = session.computeMovement(center);
 
     // store the first input to calculate the distance and direction
     /*
@@ -732,32 +732,32 @@ function computeIComputedEvent(manager: Manager, eventType: number, touchEvent: 
       session.firstMultiple = undefined;
     }
   
-    var firstInput = session.firstInput;
-    var firstMultiple = session.firstMultiple;
-    var offsetCenter = firstMultiple ? firstMultiple.center : firstInput.center;
+    const firstInput = session.firstInput;
+    const firstMultiple = session.firstMultiple;
+    const offsetCenter = firstMultiple ? firstMultiple.center : firstInput.center;
     */
 
-    var timeStamp = Date.now();
-    var movementTime = timeStamp - session.startTime;
+    const timeStamp = Date.now();
+    const movementTime = timeStamp - session.startTime;
 
-    // var angle = getAngle(offsetCenter, center);
-    var distance: number = movement ? movement.norm() : 0;
-    var direction: number = getDirection(movement);
+    // const angle = getAngle(offsetCenter, center);
+    const distance: number = movement ? movement.norm() : 0;
+    const direction: number = getDirection(movement);
 
-    // var scale = firstMultiple ? getScale(firstMultiple.pointers, touchEvent.touches) : 1;
-    // var rotation = firstMultiple ? getRotation(firstMultiple.pointers, touchEvent.touches) : 0;
+    // const scale = firstMultiple ? getScale(firstMultiple.pointers, touchEvent.touches) : 1;
+    // const rotation = firstMultiple ? getRotation(firstMultiple.pointers, touchEvent.touches) : 0;
 
-    var velocity: VectorE2 = session.computeVelocity(center, movementTime);
+    const velocity: VectorE2 = session.computeVelocity(center, movementTime);
 
     // find the correct target
     /*
-    var target = manager.element;
+    const target = manager.element;
     if (hasParent(touchEvent.target, target)) {
         target = input.srcEvent.target;
     }
     */
     //  input.target = target;
-    var compEvent: IComputedEvent = {
+    const compEvent: IComputedEvent = {
         center: center,
         movement: movement,
         deltaTime: movementTime,
@@ -780,7 +780,7 @@ function computeIComputedEvent(manager: Manager, eventType: number, touchEvent: 
  * @return {ClientLocation} center contains `clientX` and `clientY` properties
  */
 function computeCenter(touches: Touch[]): ClientLocation {
-    var touchesLength = touches.length;
+    const touchesLength = touches.length;
     if (touchesLength === 1) {
         return ClientLocation.fromTouch(touches[0]);
     }
@@ -788,7 +788,7 @@ function computeCenter(touches: Touch[]): ClientLocation {
         return undefined;
     }
     else {
-        var x = 0, y = 0, i = 0;
+        let x = 0, y = 0, i = 0;
         while (i < touchesLength) {
             x += touches[i].clientX;
             y += touches[i].clientY;
@@ -811,16 +811,16 @@ function getVelocity(deltaTime: number, x: number, y: number): { x: number; y: n
  * get the direction between two points
  */
 function getDirection(movement: VectorE2): number {
-    var N = new VectorE2(0, -1);
-    var S = new VectorE2(0, +1);
-    var E = new VectorE2(+1, 0);
-    var W = new VectorE2(-1, 0);
+    const N = new VectorE2(0, -1);
+    const S = new VectorE2(0, +1);
+    const E = new VectorE2(+1, 0);
+    const W = new VectorE2(-1, 0);
     // Allow combinations of the cardinal directions.
     // A cardinal direction matches if we are within 22.5 degrees either side.
-    var cosineThreshold = Math.cos(7 * Math.PI / 16);
+    const cosineThreshold = Math.cos(7 * Math.PI / 16);
     if (movement) {
-        var unit = movement.div(movement.norm());
-        var direction = DIRECTION_UNDEFINED;
+        const unit = movement.div(movement.norm());
+        let direction = DIRECTION_UNDEFINED;
         if (unit.dot(N) > cosineThreshold) {
             direction |= DIRECTION_UP;
         }
@@ -851,7 +851,7 @@ export function getDistance(p1, p2, props?) {
     if (!props) {
         props = PROPS_XY;
     }
-    var x = p2[props[0]] - p1[props[0]],
+    const x = p2[props[0]] - p1[props[0]],
         y = p2[props[1]] - p1[props[1]];
 
     return Math.sqrt((x * x) + (y * y));
@@ -869,7 +869,7 @@ function getAngle(p1, p2, props?) {
     if (!props) {
         props = PROPS_XY;
     }
-    var x = p2[props[0]] - p1[props[0]],
+    const x = p2[props[0]] - p1[props[0]],
         y = p2[props[1]] - p1[props[1]];
     return Math.atan2(y, x) * 180 / Math.PI;
 }
@@ -897,14 +897,14 @@ function getScale(start, end) {
 }
 */
 
-var TOUCH_INPUT_MAP: { [s: string]: number; } = {
+const TOUCH_INPUT_MAP: { [s: string]: number; } = {
     touchstart: INPUT_START,
     touchmove: INPUT_MOVE,
     touchend: INPUT_END,
     touchcancel: INPUT_CANCEL
 };
 
-var TOUCH_TARGET_EVENTS = 'touchstart touchmove touchend touchcancel';
+const TOUCH_TARGET_EVENTS = 'touchstart touchmove touchend touchcancel';
 
 class TouchInput extends Input {
     // private targetIds = {};
@@ -919,7 +919,7 @@ class TouchInput extends Input {
         this.callback = callback;
     }
     handler(event: TouchEvent) {
-        var eventType: number = TOUCH_INPUT_MAP[event.type];
+        const eventType: number = TOUCH_INPUT_MAP[event.type];
         this.callback(this.manager, eventType, event);
     }
 }
@@ -932,8 +932,8 @@ class TouchInput extends Input {
  */
 /*
 function getTouches(event: TouchEvent, type: number) {
-    var allTouches = toArray(event.touches);
-    var targetIds = this.targetIds;
+    allTouches = toArray(event.touches);
+    targetIds = this.targetIds;
 
     // when there is only one touch, the process can be simplified
     if (type & (INPUT_START | INPUT_MOVE) && allTouches.length === 1) {
@@ -941,7 +941,7 @@ function getTouches(event: TouchEvent, type: number) {
         return [allTouches, allTouches];
     }
 
-    var i,
+    i,
         targetTouches,
         changedTouches = toArray(event.changedTouches),
         changedTargetTouches = [],
@@ -1057,7 +1057,7 @@ export class Recognizer implements IRecognizer {
      * @return {Recognizer} this
      */
     recognizeWith(otherRecognizer: IRecognizer): IRecognizer {
-        var simultaneous = this.simultaneous;
+        const simultaneous = this.simultaneous;
         otherRecognizer = getRecognizerByNameIfManager(otherRecognizer, this.manager);
         if (!simultaneous[otherRecognizer.id]) {
             simultaneous[otherRecognizer.id] = otherRecognizer;
@@ -1081,7 +1081,7 @@ export class Recognizer implements IRecognizer {
      * recognizer can only run when an other is failing
      */
     requireFailure(otherRecognizer: IRecognizer): IRecognizer {
-        var requireFail = this.requireFail;
+        const requireFail = this.requireFail;
         otherRecognizer = getRecognizerByNameIfManager(otherRecognizer, this.manager);
         if (inArray(requireFail, otherRecognizer) === -1) {
             requireFail.push(otherRecognizer);
@@ -1097,7 +1097,7 @@ export class Recognizer implements IRecognizer {
      */
     dropRequireFailure(otherRecognizer: IRecognizer) {
         otherRecognizer = getRecognizerByNameIfManager(otherRecognizer, this.manager);
-        var index = inArray(this.requireFail, otherRecognizer);
+        const index = inArray(this.requireFail, otherRecognizer);
         if (index > -1) {
             this.requireFail.splice(index, 1);
         }
@@ -1127,11 +1127,11 @@ export class Recognizer implements IRecognizer {
      * @param {Object} input
      */
     emit(): void {
-        var self = this;
-        var state = this.state;
+        const self = this;
+        const state = this.state;
 
         function emit(withState?: boolean) {
-            var eventName = self.eventName + (withState ? stateStr(state) : '');
+            const eventName = self.eventName + (withState ? stateStr(state) : '');
             self.manager.emit(eventName, undefined);
         }
 
@@ -1171,7 +1171,7 @@ export class Recognizer implements IRecognizer {
      * @return {boolean}
      */
     canEmit() {
-        var i = 0;
+        let i = 0;
         while (i < this.requireFail.length) {
             if (!(this.requireFail[i].state & (STATE_FAILED | STATE_POSSIBLE))) {
                 return false;
@@ -1262,7 +1262,7 @@ export function stateStr(state: number): string {
  * Sine the state is a bit field, show all bits even though they may/should be exclusive.
  */
 export function stateDecode(state: number): string {
-    var states: string[] = [];
+    const states: string[] = [];
     if (state & STATE_POSSIBLE) {
         states.push('STATE_POSSIBLE');
     }
@@ -1297,7 +1297,7 @@ export function stateDecode(state: number): string {
  * @return {String}
  */
 export function directionStr(direction: number): string {
-    var ds: string[] = [];
+    const ds: string[] = [];
     if (direction & DIRECTION_DOWN) {
         ds.push('down');
     }

@@ -74,7 +74,7 @@ export default class EventEmitterClass<E, T> implements EventBus<E, T> {
 
         // Make a copy in order to avoid race conditions.
         listeners = listeners.slice();
-        for (var i = 0; i < listeners.length; i++) {
+        for (let i = 0; i < listeners.length; i++) {
             listeners[i](event, this.owner);
             if (event['propagationStopped']) {
                 break;
@@ -92,8 +92,8 @@ export default class EventEmitterClass<E, T> implements EventBus<E, T> {
      * @return {boolean}
      */
     hasListeners(eventName: string): boolean {
-        var registry = this._eventRegistry;
-        var listeners = registry && registry[eventName];
+        const registry = this._eventRegistry;
+        const listeners = registry && registry[eventName];
         return listeners && listeners.length > 0;
     }
 
@@ -115,7 +115,7 @@ export default class EventEmitterClass<E, T> implements EventBus<E, T> {
      */
     _signal(eventName: string, event?: E) {
 
-        var listeners = (this._eventRegistry || {})[eventName];
+        let listeners = (this._eventRegistry || {})[eventName];
 
         if (!listeners) {
             return;
@@ -124,7 +124,7 @@ export default class EventEmitterClass<E, T> implements EventBus<E, T> {
         // slice just makes a copy so that we don't mess up on array bounds.
         // It's a bit expensive though?
         listeners = listeners.slice();
-        for (var i = 0, iLength = listeners.length; i < iLength; i++) {
+        for (let i = 0, iLength = listeners.length; i < iLength; i++) {
             // FIXME: When used standalone, EventEmitter is not the source.
             listeners[i](event, this.owner);
         }
@@ -154,7 +154,7 @@ export default class EventEmitterClass<E, T> implements EventBus<E, T> {
                 handlers._disabled_[eventName] = disabled = [];
             }
             disabled.push(existingHandler);
-            var i = disabled.indexOf(callback);
+            const i = disabled.indexOf(callback);
             if (i !== -1)
                 disabled.splice(i, 1);
         }
@@ -163,15 +163,15 @@ export default class EventEmitterClass<E, T> implements EventBus<E, T> {
 
     removeDefaultHandler(eventName: string, callback: (event: E, source: T) => any) {
         // FIXME: All this casting is creepy.
-        var handlers: any = this._defaultHandlers;
+        const handlers: any = this._defaultHandlers;
         if (!handlers) {
             return;
         }
-        var disabled = handlers._disabled_[eventName];
+        const disabled = handlers._disabled_[eventName];
 
         if (handlers[eventName] === callback) {
             // FIXME: Something wrong here.
-            // var unused = handlers[eventName];
+            // unused = handlers[eventName];
             if (disabled) {
                 this.setDefaultHandler(eventName, disabled.pop());
             }
@@ -188,7 +188,7 @@ export default class EventEmitterClass<E, T> implements EventBus<E, T> {
     private addEventListener(eventName: string, callback: (event: E, source: T) => void, capturing?: boolean) {
         this._eventRegistry = this._eventRegistry || {};
 
-        var listeners = this._eventRegistry[eventName];
+        let listeners = this._eventRegistry[eventName];
         if (!listeners) {
             listeners = this._eventRegistry[eventName] = [];
         }

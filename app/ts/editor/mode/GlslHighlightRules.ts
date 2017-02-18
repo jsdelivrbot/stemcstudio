@@ -31,14 +31,14 @@ export default class GlslHighlightRules extends CppHighlightRules {
     constructor() {
         super();
 
-        var keywordMapper = this.createKeywordMapper({
+        const keywordMapper = this.createKeywordMapper({
             "variable.language": "this",
             "keyword": keywords,
             "constant.language": buildinConstants
         }, "identifier");
 
         this.$rules = new CppHighlightRules().$rules;
-        this.$rules['start'].forEach(function(rule: Rule) {
+        this.$rules['start'].forEach(function (rule: Rule) {
             if (typeof rule.token === "function")
                 rule.token = keywordMapper;
         });

@@ -32,8 +32,8 @@ export function get(url: string, callback: (err: Error, responseText?: string) =
  */
 export function loadScript(src: string, callback: () => any, doc: Document): void {
 
-    var head: HTMLHeadElement = getDocumentHead(doc);
-    var s: HTMLScriptElement = doc.createElement('script');
+    const head: HTMLHeadElement = getDocumentHead(doc);
+    let s: HTMLScriptElement = doc.createElement('script');
 
     s.src = src;
     head.appendChild(s);
@@ -53,7 +53,7 @@ export function loadScript(src: string, callback: () => any, doc: Document): voi
  * This function does not work in IE6.
  */
 export function qualifyURL(url: string): string {
-    var a: HTMLAnchorElement = document.createElement('a');
+    const a: HTMLAnchorElement = document.createElement('a');
     a.href = url;
     return a.href;
 }

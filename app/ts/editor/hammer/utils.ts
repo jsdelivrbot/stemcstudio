@@ -36,7 +36,7 @@ export function invokeArrayArg(arg, fn, context) {
  * param {Object} context
  */
 export function each(obj, iterator, context?) {
-    var i;
+    let i: number;
 
     if (!obj) {
         return;
@@ -51,7 +51,7 @@ export function each(obj, iterator, context?) {
             i++;
         }
     } else {
-        for (i in obj) {
+        for (const i in obj) {
             if (obj.hasOwnProperty(i)) {
                 iterator.call(context, obj[i], i, obj);
             }
@@ -68,8 +68,8 @@ export function each(obj, iterator, context?) {
  * return {Object} dest
  */
 export function extend(dest, src, merge?: boolean) {
-    var keys = Object.keys(src);
-    var i = 0;
+    const keys = Object.keys(src);
+    let i = 0;
     while (i < keys.length) {
         if (!merge || (merge && dest[keys[i]] === undefined)) {
             dest[keys[i]] = src[keys[i]];
@@ -97,10 +97,8 @@ export function merge(dest, src) {
  * param {Object} [properties]
  */
 export function inherit(child, base, properties) {
-    var baseP = base.prototype,
-        childP;
-
-    childP = child.prototype = Object.create(baseP);
+    const baseP = base.prototype;
+    const childP = child.prototype = Object.create(baseP);
     childP.constructor = child;
     childP._super = baseP;
 
@@ -202,7 +200,7 @@ export function inArray(src: any[], find, findByKey?: string) {
     if (src.indexOf && !findByKey) {
         return src.indexOf(find);
     } else {
-        var i = 0;
+        let i = 0;
         while (i < src.length) {
             if ((findByKey && src[i][findByKey] === find) || (!findByKey && src[i] === find)) {
                 return i;
@@ -230,12 +228,12 @@ export function toArray(obj) {
  * return {Array} [{id:1},{id:2}]
  */
 export function uniqueArray(src, key, sort) {
-    var results = [];
-    var values = [];
-    var i = 0;
+    let results = [];
+    const values = [];
+    let i = 0;
 
     while (i < src.length) {
-        var val = key ? src[i][key] : src[i];
+        const val = key ? src[i][key] : src[i];
         if (inArray(values, val) < 0) {
             results.push(src[i]);
         }
@@ -263,13 +261,11 @@ export function uniqueArray(src, key, sort) {
  * return {String|Undefined} prefixed
  */
 export function prefixed(obj, property) {
-    var prefix, prop;
-    var camelProp = property[0].toUpperCase() + property.slice(1);
-
-    var i = 0;
+    const camelProp = property[0].toUpperCase() + property.slice(1);
+    let i = 0;
     while (i < VENDOR_PREFIXES.length) {
-        prefix = VENDOR_PREFIXES[i];
-        prop = (prefix) ? prefix + camelProp : property;
+        const prefix = VENDOR_PREFIXES[i];
+        const prop = (prefix) ? prefix + camelProp : property;
 
         if (prop in obj) {
             return prop;
@@ -283,7 +279,7 @@ export function prefixed(obj, property) {
  * get a unique id
  * return {number} uniqueId
  */
-var _uniqueId = 1;
+let _uniqueId = 1;
 export function uniqueId() {
     return _uniqueId++;
 }
@@ -294,7 +290,7 @@ export function uniqueId() {
  * return {Window}
  */
 export function getWindowForElement(element: HTMLElement): Window {
-    var doc = element.ownerDocument;
+    const doc = element.ownerDocument;
     if (doc) {
         return doc.defaultView || window;
     }

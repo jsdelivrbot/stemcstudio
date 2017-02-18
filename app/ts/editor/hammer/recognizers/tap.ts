@@ -15,7 +15,7 @@ import {
     STATE_RECOGNIZED,
     TOUCH_ACTION_MANIPULATION
 } from '../hammer';
-import {setTimeoutContext} from '../utils';
+import { setTimeoutContext } from '../utils';
 
 function isCorrectTouchCount(input: IComputedEvent): boolean {
     switch (input.eventType) {
@@ -88,8 +88,8 @@ export class TapRecognizer extends Recognizer {
             // We are in the end state so there will be no touches.
         }
 
-        var validInterval = this.pTime ? (input.timeStamp - this.pTime < this.interval) : true;
-        var validMultiTap = !this.pCenter || getDistance(this.pCenter, input.center) < this.posThreshold;
+        const validInterval = this.pTime ? (input.timeStamp - this.pTime < this.interval) : true;
+        const validMultiTap = !this.pCenter || getDistance(this.pCenter, input.center) < this.posThreshold;
 
         this.pTime = input.timeStamp;
         this.pCenter = input.center;
@@ -103,7 +103,7 @@ export class TapRecognizer extends Recognizer {
 
         // if tap count matches we have recognized it,
         // else it has began recognizing...
-        var tapCount = this.count % this.taps;
+        const tapCount = this.count % this.taps;
         if (tapCount === 0) {
             // no failing requirements, immediately trigger the tap event
             // or wait as long as the multitap interval to trigger

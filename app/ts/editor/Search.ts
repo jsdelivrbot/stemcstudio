@@ -122,19 +122,19 @@ export default class Search {
         if (options.$isMultiLine) {
             // When multiLine, re is an array of RegExp.
             const re = <RegExp[]>options.re;
-            var len = re.length;
-            var maxRow = lines.length - len;
-            var prevRange: Range;
+            const len = re.length;
+            const maxRow = lines.length - len;
+            let prevRange: Range;
             // TODO: What is this offset property?
-            outer: for (var row = re['offset'] || 0; row <= maxRow; row++) {
-                for (var j = 0; j < len; j++)
+            outer: for (let row = re['offset'] || 0; row <= maxRow; row++) {
+                for (let j = 0; j < len; j++)
                     if (lines[row + j].search(re[j]) === -1)
                         continue outer;
 
-                var startLine = lines[row];
-                var line = lines[row + len - 1];
-                var startIndex = startLine.length - startLine.match(re[0])[0].length;
-                var endIndex = line.match(re[len - 1])[0].length;
+                const startLine = lines[row];
+                const line = lines[row + len - 1];
+                const startIndex = startLine.length - startLine.match(re[0])[0].length;
+                const endIndex = line.match(re[len - 1])[0].length;
 
                 if (prevRange && prevRange.end.row === row && prevRange.end.column > startIndex) {
                     continue;
@@ -150,18 +150,18 @@ export default class Search {
             // TODO: How did we eliminate the case when options.re is false (boolean)?
             const re = <RegExp>options.re;
             for (let i = 0; i < lines.length; i++) {
-                var matches = getMatchOffsets(lines[i], re);
-                for (var j = 0; j < matches.length; j++) {
-                    var match = matches[j];
+                const matches = getMatchOffsets(lines[i], re);
+                for (let j = 0; j < matches.length; j++) {
+                    const match = matches[j];
                     ranges.push(new Range(i, match.offset, i, match.offset + match.length));
                 }
             }
         }
 
         if (range) {
-            var startColumn = range.start.column;
-            var endColumn = range.start.column;
-            var i = 0, j = ranges.length - 1;
+            const startColumn = range.start.column;
+            const endColumn = range.start.column;
+            let i = 0, j = ranges.length - 1;
             while (i < j && ranges[i].start.column < startColumn && ranges[i].start.row === range.start.row)
                 i++;
 
@@ -181,12 +181,10 @@ export default class Search {
     /**
      * Searches for `options.needle` in `input`, and, if found, replaces it with `replacement`.
      *
-     * @method replace
-     * @param {String} input The text to search in
-     * @param {String} replacement The replacing text
+     * @param input The text to search in
+     * @param replacement The replacing text
      * + (String): If `options.regExp` is `true`, this function returns `input` with the replacement already made. Otherwise, this function just returns `replacement`.<br/>
      * If `options.needle` was not found, this function returns `null`.
-     * @return {String}
      */
     replace(input: string, replacement: string): string {
         const options = this.$options;
@@ -209,9 +207,9 @@ export default class Search {
 
         replacement = input.replace(<RegExp>re, replacement);
         if (options.preserveCase) {
-            var parts: string[] = replacement.split("");
-            for (var i = Math.min(input.length, input.length); i--;) {
-                var ch = input[i];
+            const parts: string[] = replacement.split("");
+            for (let i = Math.min(input.length, input.length); i--;) {
+                const ch = input[i];
                 if (ch && ch.toLowerCase() !== ch)
                     parts[i] = parts[i].toUpperCase();
                 else
@@ -225,7 +223,7 @@ export default class Search {
 }
 
 function $matchIterator(session: EditSession, options: SearchOptions): boolean | { forEach: (callback: MatchHandler) => void } {
-    var re: boolean | RegExp | RegExp[] = assembleRegExp(options);
+    const re: boolean | RegExp | RegExp[] = assembleRegExp(options);
 
     if (!re) {
         // This eliminates the case where re is a boolean.

@@ -33,7 +33,8 @@ export default class ClojureMode extends TextMode {
         let isParen: boolean;
         let ch: string;
         // Walk back from end of line, find matching braces
-        for (var i = line.length - 1; i >= 0; i--) {
+        let i: number;
+        for (i = line.length - 1; i >= 0; i--) {
             ch = line[i];
             if (ch === '(') {
                 delta--;

@@ -38,7 +38,7 @@ export class PanRecognizer extends ContinuousRecognizer {
         return this;
     }
     getTouchAction(): string[] {
-        var actions: string[] = [];
+        const actions: string[] = [];
         if (this.direction & DIRECTION_HORIZONTAL) {
             actions.push(TOUCH_ACTION_PAN_Y);
         }
