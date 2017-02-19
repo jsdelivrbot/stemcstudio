@@ -221,11 +221,11 @@ function copies(target) {
             dest: prepend(target, 'vendor/typescript@2.2.0/lib.d.ts')
         },
         {
-            src: 'jspm_packages/github/ace2ts/ace-workers@2.0.5/src/worker.js',
+            src: 'jspm_packages/github/ace2ts/ace-workers@2.0.7/src/worker.js',
             dest: prepend(target, 'js/worker.js')
         },
         {
-            src: 'jspm_packages/github/ace2ts/ace-workers@2.0.5/dist/ace-workers.js',
+            src: 'jspm_packages/github/ace2ts/ace-workers@2.0.7/dist/ace-workers.js',
             dest: prepend(target, 'js/ace-workers.js')
         },
         {
