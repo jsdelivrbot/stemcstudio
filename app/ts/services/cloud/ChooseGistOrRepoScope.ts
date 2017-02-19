@@ -2,9 +2,9 @@ import ChooseGistOrRepoOptions from './ChooseGistOrRepoOptions';
 
 interface CommitMessageScope {
     options: ChooseGistOrRepoOptions;
-    gist();
-    repo();
-    cancel();
+    gist(): void;
+    repo(): void;
+    cancel(): void;
 }
 
 export default CommitMessageScope;

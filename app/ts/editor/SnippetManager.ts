@@ -24,7 +24,7 @@ function escape(ch: string): string {
 /**
  * 
  */
-function tabstopTokenArray(value: string, state: string, stack): { tabstopId: number }[] | { text: string }[] {
+function tabstopTokenArray(value: string, state: string, stack: any): { tabstopId: number }[] | { text: string }[] {
     value = value.substr(1);
     if (/^\d+$/.test(value) && !stack.inFormatString) {
         return [{ tabstopId: parseInt(value, 10) }];
@@ -371,7 +371,7 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
                 result.push(ch);
             }
         }
-        function gotoNext(ch) {
+        function gotoNext(ch: string): void {
             const i1 = snippet.indexOf(ch, i + 1);
             if (i1 !== -1)
                 i = i1;

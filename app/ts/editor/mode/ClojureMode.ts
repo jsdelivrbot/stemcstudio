@@ -94,8 +94,8 @@ export default class ClojureMode extends TextMode {
         return outdent.checkOutdent(line, text);
     }
 
-    autoOutdent(state: string, session: EditSession, row: number): number {
-        return outdent.autoOutdent(session, row);
+    autoOutdent(state: string, session: EditSession, row: number): void {
+        outdent.autoOutdent(session, row);
     }
 
     createWorker(session: EditSession, callback: (err: any, worker: WorkerClient) => any): void {

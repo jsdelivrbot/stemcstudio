@@ -23,11 +23,11 @@ interface PropertiesModalScope {
          */
         dependencies: string[];
     };
-    toggleDependency(name: string);
+    toggleDependency(name: string): void;
     options: IOption[];
     ok(): void;
     submit(): void;
-    cancel(); void;
+    cancel(): void;
 }
 
 export default PropertiesModalScope;

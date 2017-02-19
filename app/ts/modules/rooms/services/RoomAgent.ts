@@ -43,40 +43,40 @@ export default class RoomAgent implements Shareable {
         // If we don't autoConnect, then how do we connect?
         // Maybe can't use secure if doing localhost?
         this._socket = io.connect({ autoConnect: false/*, secure: true*/ });
-        this._socket.on('message', function(socket) {
+        this._socket.on('message', function message(socket: any) {
             // console.lg("RoomAgent socket message");
         });
-        this._socket.on('disconnect', function() {
+        this._socket.on('disconnect', function disconnect() {
             // We do get this if the server goes down.
             // console.lg("RoomAgent got disconnect");
         });
-        this._socket.on('connect', function() {
+        this._socket.on('connect', function connect() {
             // This is received when we connect to a server that is already running.
             // We also get this message as the last message when the server comes back up.
             // console.lg("RoomAgent successfully established a working connection.");
         });
-        this._socket.on('connecting', function() {
+        this._socket.on('connecting', function () {
             // I see this message when I don't auto connect.
             // console.lg("RoomAgent socket connecting");
         });
-        this._socket.on('connect_failed', function() {
+        this._socket.on('connect_failed', function () {
             // Haven't seen this.
             // console.lg("RoomAgent socket connect_failed");
         });
-        this._socket.on('error', function(reason) {
+        this._socket.on('error', function error(reason: any) {
             // Haven't seen this.
             console.error("Unable to connect Socket.IO", reason);
         });
-        this._socket.on('reconnect_failed', function() {
+        this._socket.on('reconnect_failed', function () {
             // Haven't seen this.
             // console.lg("RoomAgent socket reconnect_failed");
         });
-        this._socket.on('reconnect', function() {
+        this._socket.on('reconnect', function () {
             // We get this event first when the server goes down.
             // We also get it as the server comes up before we get another connect message.
             // console.lg("RoomAgent socket reconnect");
         });
-        this._socket.on('reconnecting', function() {
+        this._socket.on('reconnecting', function () {
             // We get this repeatedly when the server is down.
             // console.lg("RoomAgent socket reconnecting");
         });
@@ -141,7 +141,7 @@ export default class RoomAgent implements Shareable {
     /**
      * Initiate a download of the remote room.
      */
-    download(callback: (err, files: { [path: string]: MwEdits }) => any) {
+    download(callback: (err: any, files: { [path: string]: MwEdits }) => any) {
         const params = { fromId: this.nodeId, roomId: this.roomId };
         this._socket.emit('download', params, (err: any, files: { [path: string]: MwEdits }) => {
             callback(err, files);

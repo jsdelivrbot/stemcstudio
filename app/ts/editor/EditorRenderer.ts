@@ -71,7 +71,7 @@ interface EditorRenderer {
     /**
      * Scrolls the cursor into the first visibile area of the editor
      */
-    scrollCursorIntoView(cursor?: Position, offset?, $viewMargin?): void;
+    scrollCursorIntoView(cursor?: Position, offset?: number, $viewMargin?: { top?: number; bottom?: number }): void;
 }
 
 export default EditorRenderer;

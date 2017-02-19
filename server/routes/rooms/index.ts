@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as redis from 'redis';
 import * as url from 'url';
-import {mustBeTruthy} from '../../synchronization/asserts';
+import { mustBeTruthy } from '../../synchronization/asserts';
 import isBoolean from '../../utils/isBoolean';
 import isNumber from '../../utils/isNumber';
 import isString from '../../utils/isString';
@@ -36,27 +36,27 @@ else {
     client = redis.createClient();
 }
 
-client.on('ready', function(err) {
+client.on('ready', function ready(err: any) {
     console.log("Redis client is 'ready'.");
 });
 
-client.on('connect', function(err) {
+client.on('connect', function connect(err: any) {
     console.log("Redis client has connected to the server.");
 });
 
-client.on('reconnecting', function(err) {
+client.on('reconnecting', function reconnecting(err: any) {
     console.log("Trying to reconnect to the Redis server after losing the connection.");
 });
 
-client.on('error', function(err) {
+client.on('error', function error(err: any) {
     console.log("Error " + err);
 });
 
-client.on('warning', function(err) {
+client.on('warning', function warning(err: any) {
     console.log("Warning " + err);
 });
 
-client.on('end', function(err) {
+client.on('end', function end(err: any) {
     console.log("Established Redis server connection has been closed.");
 });
 
@@ -115,9 +115,9 @@ export function createRoom(request: express.Request, response: express.Response)
         units: {}
     };
 
-    client.set(roomKey, JSON.stringify(value), function(err: Error, reply: any) {
+    client.set(roomKey, JSON.stringify(value), function (err: Error, reply: any) {
         if (!err) {
-            client.expire(roomKey, EXPIRE_DURATION_IN_SECONDS, function(err: Error, reply: any) {
+            client.expire(roomKey, EXPIRE_DURATION_IN_SECONDS, function (err: Error, reply: any) {
                 if (!err) {
                     const room: Room = {
                         id: roomId,
@@ -142,7 +142,7 @@ export function getRoom(request: express.Request, response: express.Response): v
     const params: Room = request.params;
     const roomId = params.id;
     const roomKey = createRoomKey(roomId);
-    client.get(roomKey, function(err: Error, reply: string) {
+    client.get(roomKey, function (err: Error, reply: string) {
         if (!err) {
             redis.print(err, reply);
             // TODO: Do we use more fine-grained objects in redis
@@ -172,16 +172,16 @@ export function getRoom(request: express.Request, response: express.Response): v
 
 function ensurePathKey(roomId: string, path: string, callback: (err: Error) => any): void {
     const paths = createRoomPropertyKey(roomId, ROOM_PATHS_PROPERTY_NAME);
-    client.sismember([paths, path], function(reason: Error, exists: number) {
+    client.sismember([paths, path], function (reason: Error, exists: number) {
         if (!reason) {
             mustBeTruthy(isNumber(exists), `exists must be a number`);
             if (exists > 0) {
                 callback(void 0);
             }
             else {
-                client.sadd([paths, path], function(reason: Error, reply: any) {
+                client.sadd([paths, path], function (reason: Error, reply: any) {
                     if (!reason) {
-                        client.expire(paths, EXPIRE_DURATION_IN_SECONDS, function(reason: Error, reply: any) {
+                        client.expire(paths, EXPIRE_DURATION_IN_SECONDS, function (reason: Error, reply: any) {
                             callback(reason);
                         });
                     }
@@ -201,19 +201,19 @@ function ensurePathKey(roomId: string, path: string, callback: (err: Error) => a
  * Ensures that the remote is being tracked at the unit level.
  */
 function ensureRemoteKey(roomId: string, path: string, nodeId: string, callback: (err: Error) => any) {
-    ensurePathKey(roomId, path, function(err: Error) {
+    ensurePathKey(roomId, path, function (err: Error) {
         if (!err) {
             const remotes = createRoomPathPropertyKey(roomId, path, ROOM_PATH_REMOTES_PROPERTY_NAME);
-            client.sismember([remotes, nodeId], function(reason: Error, exists: number) {
+            client.sismember([remotes, nodeId], function (reason: Error, exists: number) {
                 if (!reason) {
                     mustBeTruthy(isNumber(exists), `exists must be a number`);
                     if (exists > 0) {
                         callback(void 0);
                     }
                     else {
-                        client.sadd([remotes, nodeId], function(reason: Error, reply: any) {
+                        client.sadd([remotes, nodeId], function (reason: Error, reply: any) {
                             if (!reason) {
-                                client.expire(remotes, EXPIRE_DURATION_IN_SECONDS, function(reason: Error, reply: any) {
+                                client.expire(remotes, EXPIRE_DURATION_IN_SECONDS, function (reason: Error, reply: any) {
                                     callback(reason);
                                 });
                             }
@@ -236,7 +236,7 @@ function ensureRemoteKey(roomId: string, path: string, nodeId: string, callback:
 
 function getRemote(roomId: string, path: string, nodeId: string, callback: (err: Error, remote: MwRemote) => any): void {
     const remoteKey = createRoomPathRemoteKey(roomId, path, nodeId);
-    client.get(remoteKey, function(err: Error, remoteText: string) {
+    client.get(remoteKey, function (err: Error, remoteText: string) {
         if (!err) {
             const remote = new MwRemote();
             remote.rehydrate(JSON.parse(remoteText));
@@ -252,8 +252,8 @@ function setRemote(roomId: string, path: string, nodeId: string, remote: MwRemot
     const remoteKey = createRoomPathRemoteKey(roomId, path, nodeId);
     const dehydrated = remote.dehydrate();
     const remoteText = JSON.stringify(dehydrated);
-    client.set(remoteKey, remoteText, function(err: Error, reply: any) {
-        client.expire(remoteKey, EXPIRE_DURATION_IN_SECONDS, function(err, reply) {
+    client.set(remoteKey, remoteText, function (err: Error, reply: any) {
+        client.expire(remoteKey, EXPIRE_DURATION_IN_SECONDS, function expire(err: Error, reply: any) {
             callback(err);
         });
     });
@@ -264,7 +264,7 @@ function setRemote(roomId: string, path: string, nodeId: string, remote: MwRemot
  */
 function ensureRemote(roomId: string, path: string, nodeId: string, callback: (err: Error, remote: MwRemote) => any) {
     const key = createRoomPathRemoteKey(roomId, path, nodeId);
-    client.exists(key, function(err: Error, exists: number) {
+    client.exists(key, function (err: Error, exists: number) {
         if (!err) {
             mustBeTruthy(isNumber(exists), `exists must be a number`);
             if (exists > 0) {
@@ -272,7 +272,7 @@ function ensureRemote(roomId: string, path: string, nodeId: string, callback: (e
             }
             else {
                 const remote = new MwRemote();
-                setRemote(roomId, path, nodeId, remote, function(err: Error) {
+                setRemote(roomId, path, nodeId, remote, function (err: Error) {
                     if (!err) {
                         getRemote(roomId, path, nodeId, callback);
                     }
@@ -296,13 +296,13 @@ class RedisEditor implements MwEditor {
         this.contentKey = createRoomPathPropertyKey(this.roomId, this.path, ROOM_PATH_CONTENT_PROPERTY_NAME);
     }
     getText(callback: (err: Error, text: string) => any): void {
-        client.get(this.contentKey, function(err: Error, reply: string) {
+        client.get(this.contentKey, function (err: Error, reply: string) {
             callback(err, reply);
         });
     }
     setText(text: string, callback: (err: Error) => any): void {
         client.set(this.contentKey, text, (err, reply) => {
-            client.expire(this.contentKey, EXPIRE_DURATION_IN_SECONDS, function(err, reply) {
+            client.expire(this.contentKey, EXPIRE_DURATION_IN_SECONDS, function (err: Error, reply: any) {
                 callback(err);
             });
         });
@@ -316,7 +316,7 @@ class RedisEditor implements MwEditor {
             if (oldText !== newText) {
                 // The following will probably destroy any cursor or selection.
                 // Widgets with cursors should override and patch more delicately.
-                this.setText(newText, function(err: Error) {
+                this.setText(newText, function (err: Error) {
                     callback(err, flags);
                 });
             }
@@ -334,7 +334,7 @@ class RedisEditor implements MwEditor {
 function createDocument(roomId: string, path: string, text: string, callback: (err: Error, editor: MwEditor) => any) {
     const contentKey = createRoomPathPropertyKey(roomId, path, ROOM_PATH_CONTENT_PROPERTY_NAME);
     client.set(contentKey, text, (err, reply) => {
-        client.expire(contentKey, EXPIRE_DURATION_IN_SECONDS, function(err, reply) {
+        client.expire(contentKey, EXPIRE_DURATION_IN_SECONDS, function (err: Error, reply: any) {
             const editor = new RedisEditor(roomId, path);
             callback(err, editor);
             editor.release();
@@ -344,7 +344,7 @@ function createDocument(roomId: string, path: string, text: string, callback: (e
 
 function getDocument(roomId: string, path: string, callback: (err: Error, editor: MwEditor) => any) {
     const contentKey = createRoomPathPropertyKey(roomId, path, ROOM_PATH_CONTENT_PROPERTY_NAME);
-    client.get(contentKey, function(err, reply) {
+    client.get(contentKey, function (err, reply) {
         const editor = new RedisEditor(roomId, path);
         callback(err, editor);
         editor.release();
@@ -353,30 +353,30 @@ function getDocument(roomId: string, path: string, callback: (err: Error, editor
 
 function deleteDocument(roomId: string, path: string, callback: (err: Error) => any) {
     const contentKey = createRoomPathPropertyKey(roomId, path, ROOM_PATH_CONTENT_PROPERTY_NAME);
-    client.del(contentKey, function(err, reply) {
+    client.del(contentKey, function (err: Error, reply: any) {
         callback(err);
     });
 }
 
 function getPaths(roomId: string, callback: (err: Error, paths: string[]) => any): void {
     const paths = createRoomPropertyKey(roomId, ROOM_PATHS_PROPERTY_NAME);
-    client.smembers(paths, function(err: Error, reply: string[]) {
+    client.smembers(paths, function (err: Error, reply: string[]) {
         callback(err, reply);
     });
 }
 
 function getRemoteNodeIds(roomId: string, path: string, callback: (err: Error, nodeIds: string[]) => any): void {
     const remotes = createRoomPathPropertyKey(roomId, path, ROOM_PATH_REMOTES_PROPERTY_NAME);
-    client.smembers(remotes, function(err: Error, reply: string[]) {
+    client.smembers(remotes, function (err: Error, reply: string[]) {
         callback(err, reply);
     });
 }
 
 function captureFile(roomId: string, path: string, nodeId: string, remote: MwRemote, callback: (err: Error, change: MwChange) => any): void {
     const shadow: MwShadow = remote.shadow;
-    getDocument(roomId, path, function(err: Error, editor: MwEditor) {
+    getDocument(roomId, path, function (err: Error, editor: MwEditor) {
         if (editor) {
-            editor.getText(function(err: Error, text: string) {
+            editor.getText(function (err: Error, text: string) {
                 if (!err) {
                     if (shadow) {
                         if (shadow.happy) {
@@ -413,20 +413,20 @@ function captureFile(roomId: string, path: string, nodeId: string, remote: MwRem
 }
 
 function getBroadcast(roomId: string, path: string, callback: (err: Error, broadcast: MwBroadcast) => any): void {
-    getRemoteNodeIds(roomId, path, function(err: Error, nodeIds: string[]) {
+    getRemoteNodeIds(roomId, path, function (err: Error, nodeIds: string[]) {
         if (!err) {
             const iLen = nodeIds.length;
             const outstanding: Promise<{ nodeId: string, edits: MwEdits }>[] = [];
             for (let i = 0; i < iLen; i++) {
                 const nodeId = nodeIds[i];
-                outstanding.push(new Promise<{ nodeId: string, edits: MwEdits }>(function(resolve, reject) {
-                    getRemote(roomId, path, nodeId, function(err: Error, remote: MwRemote) {
+                outstanding.push(new Promise<{ nodeId: string, edits: MwEdits }>(function (resolve, reject) {
+                    getRemote(roomId, path, nodeId, function (err: Error, remote: MwRemote) {
                         if (!err) {
-                            captureFile(roomId, path, nodeId, remote, function(err: Error, change: MwChange) {
+                            captureFile(roomId, path, nodeId, remote, function (err: Error, change: MwChange) {
                                 if (!err) {
                                     remote.addChange(nodeId, change);
                                     const edits = remote.getEdits(nodeId);
-                                    setRemote(roomId, path, nodeId, remote, function(err: Error) {
+                                    setRemote(roomId, path, nodeId, remote, function (err: Error) {
                                         if (!err) {
                                             resolve({ nodeId, edits });
                                         }
@@ -448,14 +448,14 @@ function getBroadcast(roomId: string, path: string, callback: (err: Error, broad
             }
             // tsc v1.8.10 has problems with this! Visual Studio Code seems OK without the casting to any[].
             // I'd like to either have the type of nodeEdits inferred or explicit.
-            Promise.all(outstanding).then(function(nodeEdits: any[]) {
+            Promise.all(outstanding).then(function (nodeEdits: any[]) {
                 const broadcast: MwBroadcast = {};
                 for (let i = 0; i < nodeEdits.length; i++) {
                     const nodeEdit = nodeEdits[i];
                     broadcast[nodeEdit.nodeId] = nodeEdit.edits;
                 }
                 callback(void 0, broadcast);
-            }).catch(function(err) {
+            }).catch(function (err) {
                 callback(new Error(""), void 0);
             });
         }
@@ -472,7 +472,7 @@ function getBroadcast(roomId: string, path: string, callback: (err: Error, broad
  * @param path
  */
 export function setEdits(nodeId: string, roomId: string, path: string, edits: MwEdits, callback: (err: Error, data: { roomId: string; path: string; broadcast: MwBroadcast }) => any) {
-    ensureRemoteKey(roomId, path, nodeId, function(err: Error) {
+    ensureRemoteKey(roomId, path, nodeId, function (err: Error) {
         if (!err) {
             ensureRemote(roomId, path, nodeId, (err: Error, remote: MwRemote) => {
                 if (!err) {
@@ -484,9 +484,9 @@ export function setEdits(nodeId: string, roomId: string, path: string, edits: Mw
                         if (action) {
                             switch (action.c) {
                                 case 'R': {
-                                    outstanding.push(new Promise<string>(function(resolve, reject) {
+                                    outstanding.push(new Promise<string>(function (resolve, reject) {
                                         const text = decodeURI(<string>action.x);
-                                        createDocument(roomId, path, text, function(err: Error, unused: MwEditor) {
+                                        createDocument(roomId, path, text, function (err: Error, unused: MwEditor) {
                                             if (!err) {
                                                 const shadow = remote.ensureShadow();
                                                 // The action local version becomes our remote version.
@@ -513,14 +513,14 @@ export function setEdits(nodeId: string, roomId: string, path: string, edits: Mw
                                     break;
                                 case 'D':
                                 case 'd': {
-                                    outstanding.push(new Promise<any>(function(resolve, reject) {
-                                        getDocument(roomId, path, function(err: Error, doc: MwEditor) {
+                                    outstanding.push(new Promise<any>(function (resolve, reject) {
+                                        getDocument(roomId, path, function (err: Error, doc: MwEditor) {
                                             if (!err) {
                                                 const shadow = remote.shadow;
                                                 const backup = remote.backup;
                                                 // The change remote version becomes our local version.
                                                 // The action local version becomes our remote version.
-                                                remote.patchDelta(nodeId, doc, action.c, <string[]>action.x, change.m, action.n, function(err: Error) {
+                                                remote.patchDelta(nodeId, doc, action.c, <string[]>action.x, change.m, action.n, function (err: Error) {
                                                     if (!err) {
                                                         backup.copy(shadow);
                                                         if (typeof change.m === 'number') {
@@ -542,8 +542,8 @@ export function setEdits(nodeId: string, roomId: string, path: string, edits: Mw
                                     break;
                                 case 'N':
                                 case 'n': {
-                                    outstanding.push(new Promise<any>(function(resolve, reject) {
-                                        deleteDocument(roomId, path, function(err: Error) {
+                                    outstanding.push(new Promise<any>(function (resolve, reject) {
+                                        deleteDocument(roomId, path, function (err: Error) {
                                             if (!err) {
                                                 if (typeof change.m === 'number') {
                                                     remote.discardActionsLe(nodeId, change.m);
@@ -569,10 +569,10 @@ export function setEdits(nodeId: string, roomId: string, path: string, edits: Mw
                             }
                         }
                     }
-                    Promise.all(outstanding).then(function(unused) {
-                        setRemote(roomId, path, nodeId, remote, function(err: Error) {
+                    Promise.all(outstanding).then(function (unused) {
+                        setRemote(roomId, path, nodeId, remote, function (err: Error) {
                             if (!err) {
-                                getBroadcast(roomId, path, function(err: Error, broadcast: MwBroadcast) {
+                                getBroadcast(roomId, path, function (err: Error, broadcast: MwBroadcast) {
                                     if (!err) {
                                         callback(err, { roomId, path, broadcast });
                                     }
@@ -585,7 +585,7 @@ export function setEdits(nodeId: string, roomId: string, path: string, edits: Mw
                                 callback(err, void 0);
                             }
                         });
-                    }).catch(function(err) {
+                    }).catch(function (err) {
                         callback(new Error(`Unable to apply the edits: ${err}`), void 0);
                     });
                 }
@@ -603,18 +603,18 @@ export function setEdits(nodeId: string, roomId: string, path: string, edits: Mw
 /**
  * After a user (remote room) has joined the room, they will require the edits that generate their workspace.
  */
-export function getEdits(nodeId: string, roomId: string, callback: (err, data: { fromId: string, roomId: string, files: { [path: string]: MwEdits } }) => any) {
-    getPaths(roomId, function(err: Error, paths: string[]) {
+export function getEdits(nodeId: string, roomId: string, callback: (err: any, data: { fromId: string, roomId: string, files: { [path: string]: MwEdits } }) => any) {
+    getPaths(roomId, function (err: Error, paths: string[]) {
         const outstanding: Promise<{ path: string, edits: MwEdits }>[] = [];
         for (let i = 0; i < paths.length; i++) {
             const path = paths[i];
-            outstanding.push(new Promise<{ path: string, edits: MwEdits }>(function(resolve, reject) {
-                ensureRemote(roomId, path, nodeId, function(err: Error, remote: MwRemote) {
-                    captureFile(roomId, path, nodeId, remote, function(err: Error, change: MwChange) {
+            outstanding.push(new Promise<{ path: string, edits: MwEdits }>(function (resolve, reject) {
+                ensureRemote(roomId, path, nodeId, function (err: Error, remote: MwRemote) {
+                    captureFile(roomId, path, nodeId, remote, function (err: Error, change: MwChange) {
                         if (!err) {
                             remote.addChange(nodeId, change);
                             const edits = remote.getEdits(nodeId);
-                            setRemote(roomId, path, nodeId, remote, function(err: Error) {
+                            setRemote(roomId, path, nodeId, remote, function (err: Error) {
                                 if (!err) {
                                     resolve({ path, edits });
                                 }
@@ -632,7 +632,7 @@ export function getEdits(nodeId: string, roomId: string, callback: (err, data: {
         }
         // tsc v1.8.10 has problems with this! Visual Studio Code seems OK without the casting to any[].
         // I'd like to either have the type of pathEdits inferred or explicit.
-        Promise.all(outstanding).then(function(pathEdits: /*{ path: string; edits: MwEdits }*/any[]) {
+        Promise.all(outstanding).then(function (pathEdits: /*{ path: string; edits: MwEdits }*/any[]) {
             const files: { [path: string]: MwEdits } = {};
             for (let i = 0; i < pathEdits.length; i++) {
                 const pathEdit = <{ path: string; edits: MwEdits }>pathEdits[i];
@@ -640,7 +640,7 @@ export function getEdits(nodeId: string, roomId: string, callback: (err, data: {
             }
             // The roomId parameter is the `from` room because the broadcast contains all the `to` rooms.
             callback(void 0, { fromId: roomId, roomId: nodeId, files });
-        }).catch(function(err) {
+        }).catch(function (err) {
             callback(err, void 0);
         });
     });
@@ -653,7 +653,7 @@ export function destroyRoom(request: express.Request, response: express.Response
     const params: Room = request.params;
     const roomId = params.id;
     const roomKey = createRoomKey(roomId);
-    client.del(roomKey, function(err, reply) {
+    client.del(roomKey, function (err: any, reply: any) {
         if (!err) {
             response.status(200).send({});
         }

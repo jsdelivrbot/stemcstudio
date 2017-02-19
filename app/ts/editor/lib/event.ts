@@ -33,13 +33,23 @@ import { isChromeOS, isIE, isMac, isOldGecko, isOldIE, isOpera } from './userage
 export interface ListenerTarget extends EventTarget {
 }
 
-export function addListener(target: ListenerTarget, type: string, callback, useCapture?: boolean) {
+/**
+ * https://developer.apple.com/reference/webkit/domwheelevent/1420223-wheeldeltax
+ */
+interface DOMWheelEvent extends MouseWheelEvent {
+    wheelX: number;
+    wheelY: number;
+    axis: number;
+    HORIZONTAL_AXIS: number;
+}
+
+export function addListener(target: ListenerTarget, type: string, callback: EventListenerOrEventListenerObject, useCapture?: boolean) {
     if (target.addEventListener) {
         return target.addEventListener(type, callback, false);
     }
 }
 
-export function removeListener(target: ListenerTarget, type, callback, useCapture?: boolean) {
+export function removeListener(target: ListenerTarget, type: string, callback: EventListenerOrEventListenerObject, useCapture?: boolean) {
     if (target.removeEventListener) {
         return target.removeEventListener(type, callback, false);
     }
@@ -128,21 +138,21 @@ export function capture(unused: HTMLElement, acquireCaptureHandler: (event: Mous
  */
 export function addMouseWheelListener(element: HTMLElement, callback: (event: MouseWheelEvent) => void): void {
     if ("onmousewheel" in element) {
-        addListener(element, "mousewheel", function (e: MouseWheelEvent) {
+        addListener(element, "mousewheel", function (e: DOMWheelEvent) {
             const factor = 8;
-            if (e['wheelDeltaX'] !== undefined) {
-                e['wheelX'] = -e['wheelDeltaX'] / factor;
-                e['wheelY'] = -e['wheelDeltaY'] / factor;
+            if (e.wheelDeltaX !== undefined) {
+                e.wheelX = -e.wheelDeltaX / factor;
+                e.wheelY = -e.wheelDeltaY / factor;
             }
             else {
-                e['wheelX'] = 0;
-                e['wheelY'] = -e.wheelDelta / factor;
+                e.wheelX = 0;
+                e.wheelY = -e.wheelDelta / factor;
             }
             callback(e);
         });
     }
     else if ("onwheel" in element) {
-        addListener(element, "wheel", function (e) {
+        addListener(element, "wheel", function wheel(e: DOMWheelEvent) {
             const factor = 0.35;
             switch (e.deltaMode) {
                 case e.DOM_DELTA_PIXEL:
@@ -160,7 +170,7 @@ export function addMouseWheelListener(element: HTMLElement, callback: (event: Mo
     }
     else {
         // TODO: Define interface for DOMMouseScroll.
-        addListener(element, "DOMMouseScroll", function (e) {
+        addListener(element, "DOMMouseScroll", function (e: DOMWheelEvent) {
             if (e.axis && e.axis === e.HORIZONTAL_AXIS) {
                 e.wheelX = (e.detail || 0) * 5;
                 e.wheelY = 0;
@@ -174,7 +184,7 @@ export function addMouseWheelListener(element: HTMLElement, callback: (event: Mo
     }
 }
 
-export function addMultiMouseDownListener(el, timeouts, eventHandler, callbackName) {
+export function addMultiMouseDownListener(el: ListenerTarget, timeouts: number[], eventHandler: Object, callbackName: string) {
     let clicks = 0;
     let startX: number;
     let startY: number;
@@ -201,7 +211,7 @@ export function addMultiMouseDownListener(el, timeouts, eventHandler, callbackNa
                 clicks = 1;
             if (timer)
                 clearTimeout(timer);
-            timer = setTimeout(function () { timer = null; }, timeouts[clicks - 1] || 600);
+            timer = window.setTimeout(function () { timer = null; }, timeouts[clicks - 1] || 600);
 
             if (clicks === 1) {
                 startX = e.clientX;
@@ -225,7 +235,7 @@ export function addMultiMouseDownListener(el, timeouts, eventHandler, callbackNa
             clicks = 2;
             if (timer)
                 clearTimeout(timer);
-            timer = setTimeout(function () { timer = null; }, timeouts[clicks - 1] || 600);
+            timer = window.setTimeout(function () { timer = null; }, timeouts[clicks - 1] || 600);
             eventHandler[callbackName]("mousedown", e);
             eventHandler[callbackName](eventNames[clicks], e);
         });
@@ -233,26 +243,29 @@ export function addMultiMouseDownListener(el, timeouts, eventHandler, callbackNa
 }
 
 const getModifierHash = isMac && isOpera && !("KeyboardEvent" in window)
-    ? function (e) {
+    ? function (e: KeyboardEvent) {
         return 0 | (e.metaKey ? 1 : 0) | (e.altKey ? 2 : 0) | (e.shiftKey ? 4 : 0) | (e.ctrlKey ? 8 : 0);
     }
-    : function (e) {
+    : function (e: KeyboardEvent) {
         return 0 | (e.ctrlKey ? 1 : 0) | (e.altKey ? 2 : 0) | (e.shiftKey ? 4 : 0) | (e.metaKey ? 8 : 0);
     };
 
-export function getModifierString(e) {
+export function getModifierString(e: KeyboardEvent) {
     return KEY_MODS[getModifierHash(e)];
 }
 
-let pressedKeys = null;
+let pressedKeys: {
+    [keyCode: number]: boolean;
+    altGr: boolean | number;
+} = null;
 
-function resetPressedKeys(e) {
+function resetPressedKeys(e: any) {
     pressedKeys = Object.create(null);
 }
 
 let ts = 0;
 
-function normalizeCommandKeys(callback, e: KeyboardEvent, keyCode: number) {
+function normalizeCommandKeys(callback: (e: KeyboardEvent, hashId: number, keyCode: number) => any, e: KeyboardEvent, keyCode: number) {
     let hashId = getModifierHash(e);
 
     if (!isMac && pressedKeys) {
@@ -325,7 +338,7 @@ function normalizeCommandKeys(callback, e: KeyboardEvent, keyCode: number) {
     return callback(e, hashId, keyCode);
 }
 
-export function addCommandKeyListener(el, callback) {
+export function addCommandKeyListener(el: ListenerTarget, callback: (e: KeyboardEvent, hashId: number, keyCode: number) => any) {
     if (isOldGecko || (isOpera && !("KeyboardEvent" in window))) {
         // Old versions of Gecko aka. Firefox < 4.0 didn't repeat the keydown
         // event if the user pressed the key for a longer time. Instead, the

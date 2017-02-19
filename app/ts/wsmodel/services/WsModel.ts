@@ -158,7 +158,7 @@ function debounce(next: () => any, delay: number) {
     /**
      * The timer handle.
      */
-    let timer: number;
+    let timer: number | undefined;
 
     return function (delta: Delta, doc: Document) {
         if (timer) {
@@ -255,7 +255,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      */
     private errorMarkerIds: number[] = [];
 
-    private languageServiceProxy: LanguageServiceProxy;
+    private languageServiceProxy: LanguageServiceProxy | undefined;
 
     /**
      * The room that this workspace is currently connected to.
@@ -289,7 +289,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      * This promise is defined once the refCount has reached zero.
      * It is resolved when monitoring has ended on all documents.
      */
-    private windingDown: ng.IPromise<any>;
+    private windingDown: ng.IPromise<any> | undefined;
 
     /**
      * This promise is defined once the reference count goes above zero
@@ -297,8 +297,8 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      * It's a promise that the reference count will fall to zero, eventually.
      * This is used to prevent re-initialization before all references have been dropped.
      */
-    private zeroRefCount: ng.IPromise<any>;
-    private zeroRefCountDeferred: ng.IDeferred<any>;
+    private zeroRefCount: ng.IPromise<any> | undefined;
+    private zeroRefCountDeferred: ng.IDeferred<any> | undefined;
 
     /**
      * 
@@ -342,16 +342,20 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
                 console.warn("recycle happening while refCount non-zero.");
             }
             this.addRef();
-            this.inFlight++;
-            this.languageServiceProxy.initialize(scriptImports, (err: any) => {
-                this.inFlight--;
-                if (!err) {
-                    this.languageServiceProxy.setTrace(this.trace_, callback);
-                }
-                else {
-                    callback(err);
-                }
-            });
+            if (this.languageServiceProxy) {
+                this.inFlight++;
+                this.languageServiceProxy.initialize(scriptImports, (err: any) => {
+                    this.inFlight--;
+                    if (!err) {
+                        if (this.languageServiceProxy) {
+                            this.languageServiceProxy.setTrace(this.trace_, callback);
+                        }
+                    }
+                    else {
+                        callback(err);
+                    }
+                });
+            }
         }
     }
 
@@ -384,8 +388,10 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             const deferred = this.$q.defer();
             this.endMonitoring(() => {
                 this.eventBus.reset();
-                this.languageServiceProxy.terminate();
-                this.languageServiceProxy = void 0;
+                if (this.languageServiceProxy) {
+                    this.languageServiceProxy.terminate();
+                    this.languageServiceProxy = void 0;
+                }
                 if (this.files) {
                     this.files.release();
                     this.files = void 0;
@@ -427,10 +433,12 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
 
     get filesByPath(): { [path: string]: WsFile } {
         const files: { [path: string]: WsFile } = {};
-        const paths = this.files.keys;
-        for (let i = 0; i < paths.length; i++) {
-            const path = paths[i];
-            files[path] = this.files.getWeakRef(path);
+        if (this.files) {
+            const paths = this.files.keys;
+            for (let i = 0; i < paths.length; i++) {
+                const path = paths[i];
+                files[path] = this.files.getWeakRef(path);
+            }
         }
         return files;
     }
@@ -440,10 +448,12 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      */
     get trashByPath(): { [path: string]: WsFile } {
         const trash: { [path: string]: WsFile } = {};
-        const paths = this.trash.keys;
-        for (let i = 0; i < paths.length; i++) {
-            const path = paths[i];
-            trash[path] = this.trash.getWeakRef(path);
+        if (this.trash) {
+            const paths = this.trash.keys;
+            for (let i = 0; i < paths.length; i++) {
+                const path = paths[i];
+                trash[path] = this.trash.getWeakRef(path);
+            }
         }
         return trash;
     }
@@ -1509,7 +1519,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         });
     }
 
-    setFileEditor(path: string, editor: Editor): void {
+    setFileEditor(path: string, editor: Editor | undefined): void {
         if (this.files) {
             const file = this.files.getWeakRef(path);
             if (file) {
@@ -1518,7 +1528,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         }
     }
 
-    getFileSession(path: string): EditSession {
+    getFileSession(path: string): EditSession | undefined {
         if (this.files) {
             const file = this.files.getWeakRef(path);
             if (file) {

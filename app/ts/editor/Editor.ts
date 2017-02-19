@@ -17,6 +17,7 @@ import EditSession from "./EditSession";
 import Search from "./Search";
 import { assembleRegExp } from './Search';
 import FirstAndLast from "./FirstAndLast";
+import LineWidgetManager from './LineWidgetManager';
 import Position from "./Position";
 import Range from "./Range";
 import RangeList from './RangeList';
@@ -81,33 +82,28 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * Have to make this public to support error marker extension.
      */
     public $mouseHandler: IGestureHandler;
-    public $isFocused;
 
     /**
-     * @property commands
-     * @type CommandManager
+     *
      */
     public commands: CommandManager;
 
     /**
-     * @property keyBinding
-     * @type KeyBinding
+     *
      */
     public keyBinding: KeyBinding;
 
     /**
-     * @property completers
-     * @type Completer[]
+     *
      */
     public completers: Completer[] = [];
 
     /**
-     * @property completionManager
-     * @type {CompletionManager}
+     *
      */
     public completionManager: CompletionManager;
 
-    public widgetManager;
+    public widgetManager: LineWidgetManager;
 
     /**
      * The renderer container element.
@@ -117,8 +113,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     public inMultiSelectMode: boolean;
 
     /**
-     * @property multiSelect
-     * @type Selection
+     *
      */
     public multiSelect: Selection;
 
@@ -126,7 +121,12 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     public $blockSelectEnabled: boolean;
 
     private $cursorStyle: string;
-    private $keybindingId;
+    // FIXME:
+    public $isFocused: boolean;
+    /**
+     * FIXME: Dead code?
+     */
+    private $keybindingId: any;
     /**
      *
      */
@@ -137,7 +137,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     private $highlightPending: boolean;
     private $highlightSelectedWord = true;
     private $highlightTagPending: boolean;
-    private $mergeUndoDeltas;
+    private $mergeUndoDeltas: boolean | 'always';
     public $readOnly = false;
     private $scrollAnchor: HTMLDivElement;
     /**
@@ -153,28 +153,33 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      */
     private $selectionStyle: 'line' | 'text' = 'line';
     private $opResetTimer: DelayedCall;
-    private curOp: { command: /*Command*/any; args; scrollTop: number; docChanged?: boolean; selectionChanged?: boolean };
-    private prevOp: { command?: Command; args?};
+    private curOp: { command: /*Command*/any; args: any; scrollTop: number; docChanged?: boolean; selectionChanged?: boolean };
+    private prevOp: { command?: Command; args?: any };
     private lastFileJumpPos: Range;
-    private previousCommand;
+    /**
+     * FIXME: Dead code?
+     */
+    private previousCommand: Command;
     private $mergeableCommands: string[];
     private mergeNextCommand: boolean;
     private $mergeNextCommand: boolean;
     private sequenceStartTime: number;
-    private $onDocumentChange;
-    private $onChangeMode;
-    private $onTokenizerUpdate;
-    private $onChangeTabSize: (event, editSession: EditSession) => any;
-    private $onChangeWrapLimit;
-    private $onChangeWrapMode;
-    private $onChangeFold;
-    private $onChangeFrontMarker;
-    private $onChangeBackMarker;
-    private $onChangeBreakpoint;
-    private $onChangeAnnotation;
-    private $onCursorChange;
-    private $onScrollTopChange;
-    private $onScrollLeftChange;
+    private $onDocumentChange: (event: any, session: EditSession) => void;
+    private $onChangeMode: (event: any, session: EditSession) => void;
+    private $onTokenizerUpdate: (event: any, session: EditSession) => void;
+    private $onChangeTabSize: (event: any, editSession: EditSession) => any;
+    private $onChangeWrapLimit: (event: any, session: EditSession) => void;
+    private $onChangeWrapMode: (event: any, session: EditSession) => void;
+    private $onChangeFold: (event: any, session: EditSession) => void;
+    private $onChangeFrontMarker: (event: any, session: EditSession) => void;
+    private $onChangeBackMarker: (event: any, session: EditSession) => void;
+    private $onChangeBreakpoint: (event: any, session: EditSession) => void;
+    private $onChangeAnnotation: (event: any, session: EditSession) => void;
+    private $onChangeOverwrite: (event: any, session: EditSession) => void;
+    private $onScrollTopChange: (event: any, session: EditSession) => void;
+    private $onScrollLeftChange: (event: any, session: EditSession) => void;
+
+    private $onSelectionChangeCursor: (event: any, selection: Selection) => void;
 
     /**
      * 
@@ -187,10 +192,9 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     public exitMultiSelectMode: () => any;
 
     /**
-     * @property snippetManager
-     * @type SnippetManager
+     *
      */
-    public snippetManager = new SnippetManager();
+    public readonly snippetManager = new SnippetManager();
     public tabstopManager: TabstopManager;
 
     /**
@@ -391,8 +395,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     }
 
     /**
-     * @method cancelMouseContextMenu
-     * @return {void}
+     *
      */
     cancelMouseContextMenu(): void {
         this.$mouseHandler.cancelContextMenu();
@@ -418,9 +421,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     /** 
      * Adds the selection and cursor.
      *
-     * @method addSelectionMarker
-     * @param {Range} orientedRange A range containing a cursor.
-     * @returns {Range}
+     * @param orientedRange A range containing a cursor.
      */
     addSelectionMarker(orientedRange: Range): Range {
         if (!orientedRange.cursor) {
@@ -461,7 +462,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * @param args Any arguments for the command.
      * @param options
      */
-    forEachSelection(action: EditorAction, args, options?: { keepOrder?: boolean; $byLines?: boolean }): any {
+    forEachSelection(action: EditorAction, args: any, options?: { keepOrder?: boolean; $byLines?: boolean }): any {
 
         if (this.inVirtualSelectionMode) {
             return;
@@ -507,7 +508,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
         selection.mergeOverlappingRanges();
 
         const anim = this.renderer.$scrollAnimation;
-        this.onCursorChange(void 0, this.session);
+        this.onChangeOverwrite(void 0, this.session);
         this.onSelectionChange(void 0, this.selection);
         if (anim && anim.from === anim.to) {
             this.renderer.animateScrolling(anim.from);
@@ -805,7 +806,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     /**
      * By the end of this method, the curOp property should be defined.
      */
-    private startOperation(commandEvent?: { command?: Command; args?}): void {
+    private startOperation(commandEvent?: { command?: Command; args?: any }): void {
         if (this.curOp) {
             if (!commandEvent || this.curOp.command) {
                 return;
@@ -873,7 +874,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     /**
      * @param e
      */
-    private $historyTracker(e: { command: Command; args }): void {
+    private $historyTracker(e: { command: Command; args?: any }): void {
         if (!this.$mergeUndoDeltas)
             return;
 
@@ -956,12 +957,12 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
             this.session.off("changeBackMarker", this.$onChangeBackMarker);
             this.session.off("changeBreakpoint", this.$onChangeBreakpoint);
             this.session.off("changeAnnotation", this.$onChangeAnnotation);
-            this.session.off("changeOverwrite", this.$onCursorChange);
+            this.session.off("changeOverwrite", this.$onChangeOverwrite);
             this.session.off("changeScrollTop", this.$onScrollTopChange);
             this.session.off("changeScrollLeft", this.$onScrollLeftChange);
 
             const selection = this.session.getSelection();
-            selection.off("changeCursor", this.$onCursorChange);
+            selection.off("changeCursor", this.$onSelectionChangeCursor);
 
             if (this.removeChangeSelectionHandler) {
                 this.removeChangeSelectionHandler();
@@ -1005,8 +1006,8 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
             this.$onChangeAnnotation = this.onChangeAnnotation.bind(this);
             session.on("changeAnnotation", this.$onChangeAnnotation);
 
-            this.$onCursorChange = this.onCursorChange.bind(this);
-            session.on("changeOverwrite", this.$onCursorChange);
+            this.$onChangeOverwrite = this.onChangeOverwrite.bind(this);
+            session.on("changeOverwrite", this.$onChangeOverwrite);
 
             this.$onScrollTopChange = this.onScrollTopChange.bind(this);
             session.on("changeScrollTop", this.$onScrollTopChange);
@@ -1014,8 +1015,9 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
             this.$onScrollLeftChange = this.onScrollLeftChange.bind(this);
             session.on("changeScrollLeft", this.$onScrollLeftChange);
 
+            this.$onSelectionChangeCursor = this.onSelectionChangeCursor.bind(this);
             this.selection = session.getSelection();
-            this.selection.on("changeCursor", this.$onCursorChange);
+            this.selection.on("changeCursor", this.$onSelectionChangeCursor);
 
             const onSelectionChange = (unused: any, selection: Selection) => {
                 this.onSelectionChange(unused, selection);
@@ -1026,7 +1028,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
             this.$blockScrolling += 1;
             try {
-                this.onCursorChange(void 0, this.session);
+                this.onChangeOverwrite(void 0, this.session);
             }
             finally {
                 this.$blockScrolling -= 1;
@@ -1078,28 +1080,22 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     }
 
     /**
-     * @method setPadding
-     * @param padding {number}
-     * @return {void}
+     * @param padding
      */
     setPadding(padding: number): void {
         return this.renderer.setPadding(padding);
     }
 
     /**
-     * @method setThemeCss
-     * @param themeId {string}
-     * @param [href] {string}
-     * @return {void}
+     * @param themeId
+     * @param href
      */
     setThemeCss(themeId: string, href?: string): void {
         return this.renderer.setThemeCss(themeId, href);
     }
 
     /**
-     * @method setThemeDark
-     * @param isDark {boolean}
-     * @return {void}
+     * @param isDark
      */
     setThemeDark(isDark: boolean): void {
         return this.renderer.setThemeDark(isDark);
@@ -1135,9 +1131,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Returns the current session's content.
-     *
-     * @method getValue
-     * @return {string}
      */
     getValue(): string {
         return this.session.getValue();
@@ -1146,43 +1139,35 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     /**
      * Returns the currently highlighted selection.
      *
-     * @method getSelection
-     * @return {Selection} The highlighted selection
+     * @returns The highlighted selection
      */
     getSelection(): Selection {
         return this.selection;
     }
 
     /**
-     * @method resize
-     * @param [force] {boolean} force If `true`, recomputes the size, even if the height and width haven't changed.
-     * @return {void}
+     * @param force If `true`, recomputes the size, even if the height and width haven't changed.
      */
     resize(force?: boolean): void {
         this.renderer.onResize(force);
     }
 
     /**
-     * @method getTheme
-     * @return {string} The set theme
+     * @returns The set theme
      */
     getTheme(): string {
         return this.renderer.getTheme();
     }
 
     /**
-     * @method setStyle
-     * @param style {string} A class name
-     * @return {void}
+     * @param style A class name.
      */
     setStyle(style: string): void {
         this.renderer.setStyle(style);
     }
 
     /**
-     * @method unsetStyle
-     * @param style {string}
-     * @return {void}
+     * @param style
      */
     unsetStyle(style: string): void {
         this.renderer.unsetStyle(style);
@@ -1205,28 +1190,22 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     }
 
     /**
-     * @method insertSnippet
-     * @param content {string}
-     * @param [options]
-     * @return {void}
+     * @param content
+     * @param options
      */
     insertSnippet(content: string, options?: any): void {
         return this.snippetManager.insertSnippet(this, content, options);
     }
 
     /**
-     * @method expandSnippet
-     * @param [options]
-     * @return {boolean}
+     * @param options
      */
     expandSnippet(options?: any): boolean {
         return this.snippetManager.expandWithTab(this, options);
     }
 
     /**
-     * @method $highlightBrackets
-     * @return {void}
-     * @private
+     *
      */
     private $highlightBrackets(): void {
         if (this.session.$bracketHighlight) {
@@ -1261,9 +1240,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     }
 
     /**
-     * @method $highlightTags
-     * @return {void}
-     * @private
+     *
      */
     private $highlightTags(): void {
 
@@ -1357,9 +1334,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Brings the current `textInput` into focus.
-     *
-     * @method focus
-     * @return {void}
      */
     focus(): void {
         // Safari needs the timeout
@@ -1371,9 +1345,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Returns `true` if the current `textInput` is in focus.
-     *
-     * @method isFocused
-     * @return {boolean}
      */
     isFocused(): boolean {
         return this.textInput.isFocused();
@@ -1381,9 +1352,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Blurs the current `textInput`.
-     *
-     * @method blur
-     * @return {void}
      */
     blur(): void {
         this.textInput.blur();
@@ -1391,9 +1359,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Emitted once the editor comes into focus.
-     *
-     * @method onFocus
-     * @return {void}
      */
     onFocus(): void {
         if (this.$isFocused) {
@@ -1410,8 +1375,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Emitted once the editor has been blurred.
-     * @method onBlur
-     * @return {void}
      */
     onBlur(): void {
         if (!this.$isFocused) {
@@ -1428,10 +1391,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Calls the renderer updateCursor method.
-     *
-     * @method $cursorChange
-     * @return {void}
-     * @private
      */
     private $cursorChange(): void {
         this.renderer.updateCursor();
@@ -1440,11 +1399,8 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     /**
      * Emitted whenever the document is changed.
      *
-     * @method onDocumentChange
-     * @param delta {Delta}
-     * @param session {EditSession}
-     * @return {void}
-     * @private
+     * @param delta
+     * @param session
      */
     private onDocumentChange(delta: Delta, session: EditSession): void {
         // Rerender and emit "change" event.
@@ -1469,24 +1425,45 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     }
 
 
-    private onScrollTopChange(event, session: EditSession) {
+    private onScrollTopChange(event: any, session: EditSession): void {
         this.renderer.scrollToY(session.getScrollTop());
     }
 
-    private onScrollLeftChange(event, session: EditSession) {
+    private onScrollLeftChange(event: any, session: EditSession): void {
         this.renderer.scrollToX(session.getScrollLeft());
     }
 
     /**
      * Handler for cursor or selection changes.
      * 
-     * @method onCursorChange
-     * @param event {SessionChangeCursorEvent}
-     * @param session {EditSession}
-     * @return {void}
-     * @private
+     * @param event
+     * @param session
      */
-    private onCursorChange(event: SessionChangeCursorEvent, session: EditSession): void {
+    private onChangeOverwrite(event: SessionChangeCursorEvent, session: EditSession): void {
+
+        this.$cursorChange();
+
+        if (this.$blockScrolling === 0) {
+            this.renderer.scrollCursorIntoView();
+        }
+
+        this.$highlightBrackets();
+        this.$highlightTags();
+        this.$updateHighlightActiveLine();
+        // TODO; How is signal different from emit?
+        /**
+         * @event changeOverwrite
+         */
+        this.eventBus._signal("changeOverwrite");
+    }
+
+    /**
+     * Handler for cursor or selection changes.
+     * 
+     * @param event
+     * @param session
+     */
+    private onSelectionChangeCursor(event: SessionChangeCursorEvent, selection: Selection): void {
 
         this.$cursorChange();
 
@@ -1505,8 +1482,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     }
 
     /**
-     * @method $updateHighlightActiveLine
-     * @return {void}
+     *
      */
     public $updateHighlightActiveLine(): void {
 
@@ -1545,7 +1521,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * @param unused
      * @param selection
      */
-    private onSelectionChange(unused, selection: Selection): void {
+    private onSelectionChange(event: any, selection: Selection): void {
 
         const session = this.session;
 
@@ -1602,7 +1578,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * @param event
      * @param session
      */
-    private onChangeFrontMarker(event, session: EditSession): void {
+    private onChangeFrontMarker(event: any, session: EditSession): void {
         this.renderer.updateFrontMarkers();
     }
 
@@ -1610,11 +1586,11 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * @param event
      * @param session
      */
-    private onChangeBackMarker(event, session: EditSession): void {
+    private onChangeBackMarker(event: any, session: EditSession): void {
         this.renderer.updateBackMarkers();
     }
 
-    private onChangeBreakpoint(event, editSession: EditSession) {
+    private onChangeBreakpoint(event: any, editSession: EditSession): void {
         this.renderer.updateBreakpoints();
         /**
          * @event changeBreakpoint
@@ -1622,7 +1598,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
         this.eventBus._emit("changeBreakpoint", event);
     }
 
-    private onChangeAnnotation(event, session: EditSession) {
+    private onChangeAnnotation(event: any, session: EditSession): void {
         // The Editor (this) is acting as a controller in MVC.
         // When the session notifies that has changed its annotations,
         // the controller applies them to the renderer.
@@ -1635,7 +1611,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     }
 
 
-    private onChangeMode(event, session: EditSession) {
+    private onChangeMode(event: any, session: EditSession): void {
 
         this.renderer.updateText();
 
@@ -1646,16 +1622,16 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     }
 
 
-    private onChangeWrapLimit(event, session: EditSession) {
+    private onChangeWrapLimit(event: any, session: EditSession): void {
         this.renderer.updateFull();
     }
 
-    private onChangeWrapMode(event, session: EditSession) {
+    private onChangeWrapMode(event: any, session: EditSession): void {
         this.renderer.onResize(true);
     }
 
 
-    private onChangeFold(event, session: EditSession) {
+    private onChangeFold(event: any, session: EditSession): void {
         // Update the active line marker as due to folding changes the current
         // line range on the screen might have changed.
         this.$updateHighlightActiveLine();
@@ -1665,9 +1641,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Returns the string of text currently highlighted.
-     *
-     * @method getSelectedText
-     * @return {string}
      */
     getSelectedText(): string {
         return this.session.getTextRange(this.getSelectionRange());
@@ -1675,9 +1648,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Called whenever a text "copy" happens.
-     *
-     * @method onCopy
-     * @return {void} 
      */
     public onCopy(): void {
         const copyCommand = this.commands.getCommandByName("copy");
@@ -1688,9 +1658,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Called whenever a text "cut" happens.
-     *
-     * @method onCut
-     * @return {void}
      */
     public onCut(): void {
         const cutCommand = this.commands.getCommandByName("cut");
@@ -1702,9 +1669,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     /**
      * Called whenever a text "paste" happens.
      *
-     * @method onPaste
-     * @param text {string} The pasted text
-     * @return {void}
+     * @param text The pasted text.
      */
     onPaste(text: string): void {
         // todo this should change when paste becomes a command
@@ -1719,10 +1684,8 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     }
 
     /**
-     * @method execCommand
-     * @param command {Command}
-     * @param [args] {any}
-     * @return {void}
+     * @param command
+     * @param args
      */
     execCommand(command: Command, args?: any): void {
         this.commands.exec(command, this, args);
@@ -1731,10 +1694,8 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     /**
      * Inserts `text` into wherever the cursor is pointing.
      *
-     * @method insert
-     * @param text {string} The new text to add.
-     * @param [pasted] {boolean}
-     * @return {void}
+     * @param text The new text to add.
+     * @param pasted
      */
     insert(text: string, pasted?: boolean): void {
 
@@ -1825,10 +1786,8 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     }
 
     /**
-     * @method off
      * @param eventName {string}
      * @param callback
-     * @return {void}
      */
     off(eventName: string, callback: (data: any, source: Editor) => any, capturing?: boolean): void {
         this.eventBus.off(eventName, callback/*, capturing*/);
@@ -1901,9 +1860,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Returns `true` if overwrites are enabled; `false` otherwise.
-     *
-     * @method getOverwrite
-     * @return {boolean}
      */
     getOverwrite(): boolean {
         return this.session.getOverwrite();
@@ -2017,17 +1973,14 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     }
 
     /**
-     * @method setAnimatedScroll
-     * @param animatedScroll {boolean}
-     * @return {void}
+     * @param animatedScroll
      */
     setAnimatedScroll(animatedScroll: boolean): void {
         this.renderer.setAnimatedScroll(animatedScroll);
     }
 
     /**
-     * @method getAnimatedScroll
-     * @return {boolean}
+     *
      */
     getAnimatedScroll(): boolean {
         return this.renderer.getAnimatedScroll();
@@ -2096,9 +2049,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     /**
      * Sets the column defining where the print margin should be.
      *
-     * @method setPrintMarginColumn
-     * @param printMarginColumn {number} Specifies the new print margin column.
-     * @return {void}
+     * @param printMarginColumn Specifies the new print margin column.
      */
     setPrintMarginColumn(printMarginColumn: number): void {
         this.renderer.setPrintMarginColumn(printMarginColumn);
@@ -2106,9 +2057,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Returns the column number of where the print margin is.
-     *
-     * @method getPrintMarginColumn
-     * @return {number}
      */
     getPrintMarginColumn(): number {
         return this.renderer.getPrintMarginColumn();
@@ -2133,9 +2081,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     /**
      * If `readOnly` is true, then the editor is set to read-only mode, and none of the content can change.
      *
-     * @method setReadOnly
-     * @param {Boolean} readOnly Specifies whether the editor can be modified or not.
-     * @return {void}
+     * @param readOnly Specifies whether the editor can be modified or not.
      */
     setReadOnly(readOnly: boolean): void {
         this.$readOnly = readOnly;
@@ -2146,9 +2092,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Returns `true` if the editor is set to read-only mode.
-     *
-     * @method getReadOnly
-     * @return {boolean}
      */
     getReadOnly(): boolean {
         return this.$readOnly;
@@ -2216,11 +2159,9 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * Removes words of text from the editor.
      * A "word" is defined as a string of characters bookended by whitespace.
      *
-     * @method remove
-     * @param direction {string} The direction of the deletion to occur, either "left" or "right".
-     * @return {void}
+     * @param direction The direction of the deletion to occur, either "left" or "right".
      */
-    remove(direction: string): void {
+    remove(direction: 'left' | 'right'): void {
         if (this.selection.isEmpty()) {
             if (direction === "left")
                 this.selection.selectLeft();
@@ -2319,9 +2260,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Transposes current line.
-     *
-     * @method transposeLetters
-     * @return {void}
      */
     transposeLetters(): void {
         if (!this.selection.isEmpty()) {
@@ -2422,9 +2360,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Indents the current line.
-     *
-     * @method blockIndent
-     * @return {void}
      */
     blockIndent(): void {
         const rows = this.$getSelectedRows();
@@ -2433,9 +2368,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Outdents the current line.
-     *
-     * @method blockOutdent
-     * @return {void}
      */
     blockOutdent(): void {
         const selection = this.session.getSelection();
@@ -2472,9 +2404,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Given the currently selected range, this function either comments all the lines, or uncomments all of them.
-     *
-     * @method toggleCommentLines
-     * @return {void}
      */
     toggleCommentLines(): void {
         const state = this.session.getState(this.getCursorPosition().row);
@@ -2483,8 +2412,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     }
 
     /**
-     * @method toggleBlockComment
-     * @return {void}
+     *
      */
     toggleBlockComment(): void {
         const cursor = this.getCursorPosition();
@@ -2496,10 +2424,8 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     /**
      * Works like [[EditSession.getTokenAt]], except it returns a number.
      *
-     * @method getNumberAt
-     * @param row {number}
-     * @param column {number}
-     * @return {{value: string; start: number; end: number}}
+     * @param row
+     * @param column
      */
     getNumberAt(row: number, column: number): { value: string; start: number; end: number } {
         const _numberRx = /[\-]?[0-9]+(?:\.[0-9]+)?/g;
@@ -2609,7 +2535,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     /**
      * Shifts all the selected lines down one row.
      *
-     * @return On success, it returns -1.
+     * @returns On success, it returns -1.
      */
     moveLinesDown() {
         // FIXME: Return type is broken.
@@ -2621,7 +2547,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     /**
      * Shifts all the selected lines up one row.
      *
-     * @return On success, it returns -1.
+     * @returns On success, it returns -1.
      */
     moveLinesUp(): void {
         // FIXME: Return type is broken.
@@ -2633,11 +2559,10 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     /**
      * Moves a range of text from the given range to the given position.
      *
-     * @method moveText
-     * @param range {Range} The range of text you want moved within the document
-     * @param toPosition {Position} The location (row and column) where you want to move the text to
-     * @param copy {boolean}
-     * @return {Range} The new range where the text was moved to.
+     * @param range The range of text you want moved within the document
+     * @param toPosition The location (row and column) where you want to move the text to
+     * @param copy
+     * @returns The new range where the text was moved to.
      */
     moveText(range: Range, toPosition: Position, copy: boolean): Range {
         return this.session.moveText(range, toPosition, copy);
@@ -2646,8 +2571,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     /**
      * Copies all the selected lines up one row.
      *
-     * @method copyLinesUp
-     * @return {Number} On success, returns 0.
+     * @returns On success, returns 0.
      */
     copyLinesUp(): void {
         // FIXME: The return types are broken.
@@ -2660,8 +2584,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     /**
      * Copies all the selected lines down one row.
      *
-     * @method copyLinesDown
-     * @return {Number} On success, returns the number of new rows added; in other words, `lastRow - firstRow + 1`.
+     * @returns On success, returns the number of new rows added; in other words, `lastRow - firstRow + 1`.
      */
     copyLinesDown(): void {
         // FIXME: The return types are broken.
@@ -2673,10 +2596,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     /**
      * Executes a specific function, which can be anything that manipulates selected lines, such as copying them, duplicating them, or shifting them.
      *
-     * @method $moveLines
-     * @param {Function} mover A method to call on each selected row.
-     * @retrurn {void}
-     * @private
+     * @param mover A method to call on each selected row.
      */
     private $moveLines(mover: (firstRow: number, lastRow: number) => any): void {
         const selection = this.selection;
@@ -2718,10 +2638,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Returns an object indicating the currently selected rows.
-     *
-     * @method $getSelectedRows
-     * @return {FirstAndLast}
-     * @private
      */
     private $getSelectedRows(): FirstAndLast {
         const range = this.getSelectionRange().collapseRows();
@@ -2745,16 +2661,14 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     }
 
     /**
-     * @method getFirstVisibleRow
-     * @return {number}
+     *
      */
     getFirstVisibleRow(): number {
         return this.renderer.getFirstVisibleRow();
     }
 
     /**
-     * @method getLastVisibleRow
-     * @return {number}
+     *
      */
     getLastVisibleRow(): number {
         return this.renderer.getLastVisibleRow();
@@ -2783,13 +2697,8 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     }
 
     /**
-     * FIXME: The semantics of select are not easily understood.
-     *
-     * @method $moveByPage
-     * @param direction {number} +1 for page down, -1 for page up. Maybe N for N pages?
-     * @param [select] {boolean} true | false | undefined
-     * @return {void}
-     * @private
+     * @param direction +1 for page down, -1 for page up. Maybe N for N pages?
+     * @param select
      */
     private $moveByPage(direction: number, select?: boolean): void {
         const renderer = this.renderer;
@@ -2826,9 +2735,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Selects the text from the current position of the document until where a "page down" finishes.
-     *
-     * @method selectPageDown
-     * @return {void}
      */
     selectPageDown(): void {
         this.$moveByPage(+1, true);
@@ -2836,9 +2742,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Selects the text from the current position of the document until where a "page up" finishes.
-     *
-     * @method selectPageUp
-     * @return {void}
      */
     selectPageUp(): void {
         this.$moveByPage(-1, true);
@@ -2846,9 +2749,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Shifts the document to wherever "page down" is, as well as moving the cursor position.
-     *
-     * @method gotoPageDown
-     * @return {void}
      */
     gotoPageDown(): void {
         this.$moveByPage(+1, false);
@@ -2856,9 +2756,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Shifts the document to wherever "page up" is, as well as moving the cursor position.
-     *
-     * @method gotoPageUp
-     * @return {void}
      */
     gotoPageUp(): void {
         this.$moveByPage(-1, false);
@@ -2866,9 +2763,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Scrolls the document to wherever "page down" is, without changing the cursor position.
-     *
-     * @method scrollPageDown
-     * @return {void}
      */
     scrollPageDown(): void {
         this.$moveByPage(1);
@@ -2876,9 +2770,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Scrolls the document to wherever "page up" is, without changing the cursor position.
-     *
-     * @method scrollPageUp
-     * @return {void}
      */
     scrollPageUp(): void {
         this.$moveByPage(-1);
@@ -2887,9 +2778,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     /**
      * Moves the editor to the specified row.
      *
-     * @method scrollToRow
-     * @param row {number}
-     * @return {void}
+     * @param row
      */
     scrollToRow(row: number): void {
         this.renderer.scrollToRow(row);
@@ -2899,12 +2788,10 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * Scrolls to a line.
      * If `center` is `true`, it puts the line in middle of screen (or attempts to).
      *
-     * @method scrollToLine
-     * @param {Number} line The line to scroll to
-     * @param {Boolean} center If `true`
-     * @param {Boolean} animate If `true` animates scrolling
-     * @param {Function} callback Function to be called when the animation has finished
-     * @return {void}
+     * @param line The line to scroll to
+     * @param center If `true`
+     * @param animate If `true` animates scrolling
+     * @param callback Function to be called when the animation has finished.
      */
     scrollToLine(line: number, center: boolean, animate: boolean, callback?: () => any): void {
         this.renderer.scrollToLine(line, center, animate, callback);
@@ -2912,9 +2799,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Attempts to center the current selection on the screen.
-     *
-     * @method centerSelection
-     * @return {void}
      */
     centerSelection(): void {
         const range = this.getSelectionRange();
@@ -2940,9 +2824,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Returns the screen position of the cursor.
-     *
-     * @method getCursorPositionScreen
-     * @return {Position}
      */
     getCursorPositionScreen(): Position {
         const cursor = this.getCursorPosition();
@@ -2950,8 +2831,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     }
 
     /**
-     * @method getSelectionRange
-     * @return {Range}
+     *
      */
     getSelectionRange(): Range {
         return this.selection.getRange();
@@ -2959,9 +2839,6 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
     /**
      * Selects all the text in editor.
-     *
-     * @method selectAll
-     * @return {void}
      */
     selectAll(): void {
         this.$blockScrolling += 1;
@@ -2970,8 +2847,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     }
 
     /**
-     * @method clearSelection
-     * @return {void}
+     *
      */
     clearSelection(): void {
         this.selection.clearSelection();
@@ -2981,11 +2857,9 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * Moves the cursor to the specified row and column.
      * Note that this does not de-select the current selection.
      *
-     * @method moveCursorTo
-     * @param {Number} row The new row number
-     * @param {Number} column The new column number
-     * @param {boolean} animate
-     * @return {void}
+     * @param row The new row number
+     * @param column The new column number
+     * @param animate
      */
     moveCursorTo(row: number, column: number, animate?: boolean): void {
         this.selection.moveCursorTo(row, column, animate);
@@ -2994,9 +2868,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     /**
      * Moves the cursor to the position specified by `position.row` and `position.column`.
      *
-     * @method moveCursorToPosition
-     * @param position {Position} An object with two properties, row and column
-     * @return {void}
+     * @param position An object with two properties, row and column.
      */
     moveCursorToPosition(position: Position): void {
         return this.selection.moveCursorToPosition(position);
@@ -3218,10 +3090,8 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
      * Moves the cursor to the specified row and column.
      * Note that this does de-select the current selection.
      *
-     * @method navigateTo
-     * @param {Number} row The new row number
-     * @param {Number} column The new column number
-     * @return {void}
+     * @param row The new row number
+     * @param column The new column number
      */
     navigateTo(row: number, column: number): void {
         this.selection.moveTo(row, column);
@@ -3649,8 +3519,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
     }
 
     /**
-     * @method $resetCursorStyle
-     * @return {void}
+     *
      */
     public $resetCursorStyle(): void {
         const style = this.$cursorStyle || "ace";
@@ -3814,8 +3683,8 @@ class MouseHandler implements IGestureHandler {
     private releaseMouse: (event: MouseEvent) => void;
     private mouseEvent: EditorMouseEvent;
     public mousedownEvent: EditorMouseEvent;
-    private $mouseMoved;
-    private $onCaptureMouseMove;
+    private $mouseMoved: boolean;
+    private $onCaptureMouseMove: (event: MouseEvent) => void;
     public $clickSelection: Range = null;
     public $lastScrollTime: number;
     public selectByLines: () => void;
@@ -4173,10 +4042,7 @@ class EditorMouseEvent {
     }
 
     /**
-     * Get the document position below the mouse cursor
-     *
-     * @method getDocumentPosition
-     * @return {Position} 'row' and 'column' of the document position
+     * Get the document position below the mouse cursor.
      */
     getDocumentPosition(): Position {
         if (!this.$pos) {
@@ -4210,7 +4076,7 @@ class EditorMouseEvent {
     /*
      * Get the clicked mouse button
      * 
-     * @return 0 for left button, 1 for middle button, 2 for right button
+     * @returns 0 for left button, 1 for middle button, 2 for right button
      */
     getButton(): number {
         return getButton(this.domEvent);

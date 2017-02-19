@@ -32,11 +32,9 @@ export default class JavaScriptMode extends TextMode {
     }
 
     /**
-     * @method getNextLineIndent
-     * @param state {string}
-     * @param line {string}
-     * @param tab {string}
-     * @return {string}
+     * @param state
+     * @param line
+     * @param tab
      */
     getNextLineIndent(state: string, line: string, tab: string): string {
         let indent = this.$getIndent(line);
@@ -79,8 +77,8 @@ export default class JavaScriptMode extends TextMode {
         return this.$outdent.checkOutdent(line, text);
     };
 
-    autoOutdent(state: string, session: EditSession, row: number): number {
-        return this.$outdent.autoOutdent(session, row);
+    autoOutdent(state: string, session: EditSession, row: number): void {
+        this.$outdent.autoOutdent(session, row);
     };
 
     /**

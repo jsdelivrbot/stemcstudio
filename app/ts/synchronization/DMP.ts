@@ -1114,12 +1114,11 @@ export default class DMP {
          * boundary falls on logical boundaries.
          * Scores range from 6 (best) to 0 (worst).
          * Closure, but does not reference any external variables.
-         * @param {string} one First string.
-         * @param {string} two Second string.
-         * @returns {number} The score.
-         * @private
+         * @param one First string.
+         * @param two Second string.
+         * @returns The score.
          */
-        function diff_cleanupSemanticScore_(one, two) {
+        function diff_cleanupSemanticScore_(one: string, two: string): 6 | 5 | 4 | 3 | 2 | 1 | 0 {
             if (!one || !two) {
                 // Edges are the best.
                 return 6;
@@ -1891,15 +1890,12 @@ export default class DMP {
      * Method 4 (deprecated, use method 3):
      * a = text1, b = text2, c = diffs
      *
-     * @param {string|Array.<Array.<number|string>>} a text1 (methods 1,3,4) or
-     * Array of diff tuples for text1 to text2 (method 2).
-     * @param {string|Array.<Array.<number|string>>} opt_b text2 (methods 1,4) or
-     * Array of diff tuples for text1 to text2 (method 3) or undefined (method 2).
-     * @param {string|Array.<Array.<number|string>>} opt_c Array of diff tuples for
-     * text1 to text2 (method 4) or undefined (methods 1,2,3).
+     * @param a text1 (methods 1,3,4) or Array of diff tuples for text1 to text2 (method 2).
+     * @param opt_b text2 (methods 1,4) or Array of diff tuples for text1 to text2 (method 3) or undefined (method 2).
+     * @param opt_c Array of diff tuples for text1 to text2 (method 4) or undefined (methods 1,2,3).
      * @returns Array of patch objects.
      */
-    patch_make(a: string | Diff[], opt_b?: string, opt_c?): Patch[] {
+    patch_make(a: string | Diff[], opt_b?: string | Diff[], opt_c?: string | Diff[]): Patch[] {
         let text1: string;
         let diffs: Diff[];
         if (typeof a === 'string' && typeof opt_b === 'string' &&

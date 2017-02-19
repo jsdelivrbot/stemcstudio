@@ -110,7 +110,7 @@ export default class MarkerLayer extends AbstractLayer {
     }
 
     // Draws a marker, which spans a range of text on multiple lines 
-    private drawTextMarker(stringBuilder: (number | string)[], range: Range, clazz: string, layerConfig: MarkerConfig, extraStyle?) {
+    private drawTextMarker(stringBuilder: (number | string)[], range: Range, clazz: string, layerConfig: MarkerConfig, extraStyle?: string): void {
 
         function getBorderClass(tl: boolean, tr: boolean, br: boolean, bl: boolean): number {
             return (tl ? 1 : 0) | (tr ? 2 : 0) | (br ? 4 : 0) | (bl ? 8 : 0);
@@ -142,7 +142,7 @@ export default class MarkerLayer extends AbstractLayer {
     }
 
     // Draws a multi line marker, where lines span the full width
-    private drawMultiLineMarker(stringBuilder: (number | string)[], range: Range, clazz, config: MarkerConfig, extraStyle?: string): void {
+    private drawMultiLineMarker(stringBuilder: (number | string)[], range: Range, clazz: string, config: MarkerConfig, extraStyle?: string): void {
         // from selection start to the end of the line
         const padding = this.$padding;
         let height = config.lineHeight;

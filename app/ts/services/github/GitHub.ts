@@ -152,7 +152,7 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
                 const headers = requestHeaders();
                 return $http<PutFileResponse>({ method, url, data, headers });
             },
-            deleteFile: function (owner: string, repo: string, path: string, message: string, sha: string, done: (err: any, response) => any) {
+            deleteFile: function (owner: string, repo: string, path: string, message: string, sha: string, done: (err: any, response: any) => any) {
                 const url = "" + GITHUB_PROTOCOL + "://" + GITHUB_DOMAIN + "/repos/" + owner + "/" + repo + "/contents/" + path;
                 const data = {
                     message: message,
@@ -205,7 +205,7 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
                 const headers = requestHeaders();
                 return $http<Gist>({ method, url, data, headers });
             },
-            deleteGist: function (gistId: string, done: (err: any, response) => any) {
+            deleteGist: function (gistId: string, done: (err: any, response: any) => any) {
                 const url = `${gists()}/${gistId}`;
                 const method = HTTP_METHOD_DELETE;
                 const headers = requestHeaders();

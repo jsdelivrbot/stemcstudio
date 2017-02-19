@@ -77,7 +77,7 @@ export default function updateWorkspaceTypings(
     const DOMAIN = $location.protocol() + ':' + FWD_SLASH + FWD_SLASH + $location.host() + ":" + $location.port();
 
     // We're loading d.ts files here. Why don't we cache them so that we don't need the HTTP request?
-    const readFile = (fileName: string, callback: (err, data: string) => void) => {
+    const readFile = (fileName: string, callback: (err: any, data: string) => void) => {
         const url = scriptURL(DOMAIN, fileName, VENDOR_FOLDER_MARKER);
         $http.get<string>(url)
             .then(function successCallback(arg) {

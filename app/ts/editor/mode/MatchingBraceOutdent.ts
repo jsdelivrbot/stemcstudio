@@ -28,27 +28,22 @@ export default class MatchingBraceOutdent {
     }
 
     /**
-     * FIXME: The return value is either 0 or undefined.
-     * What are the semantics?
-     *
-     * @method autoOutdent
-     * @param session {EditSession}
-     * @param row {number}
-     * @return {number}
+     * @param session
+     * @param row
      */
-    autoOutdent(session: EditSession, row: number): number {
+    autoOutdent(session: EditSession, row: number): void {
         const line = session.getLine(row);
         const match = line.match(/^(\s*\})/);
 
         if (!match) {
-            return 0;
+            return;
         }
 
         const column = match[1].length;
         const openBracePos = session.findMatchingBracket({ row: row, column: column });
 
         if (!openBracePos || openBracePos.row === row) {
-            return 0;
+            return;
         }
 
         const indent = this.$getIndent(session.getLine(openBracePos.row));
@@ -60,6 +55,12 @@ export default class MatchingBraceOutdent {
      * @param line
      */
     $getIndent(line: string): string {
-        return line.match(/^\s*/)[0];
+        const match = line.match(/^\s*/);
+        if (match) {
+            return <string>match[0];
+        }
+        else {
+            return "";
+        }
     }
 }

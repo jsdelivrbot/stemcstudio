@@ -42,7 +42,7 @@ export default class ExplorerFilesController {
             .then((path) => {
                 try {
                     this.wsModel.newFile(path);
-                    this.wsModel.beginDocumentMonitoring(path, function (monitoringError) {
+                    this.wsModel.beginDocumentMonitoring(path, (monitoringError) => {
                         if (!monitoringError) {
                             this.wsModel.openFile(path);
                             this.wsModel.selectFile(path);

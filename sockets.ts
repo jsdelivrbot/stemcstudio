@@ -24,16 +24,16 @@ export default function sockets(app: express.Express, server: http.Server) {
         // transports: [/*'polling',*/ 'websocket']
     });
 
-    io.on('connection', function(socket: SocketIO.Socket) {
+    io.on('connection', function (socket: SocketIO.Socket) {
         console.log('A socket connected.');
 
         //
         //
         //
-        socket.on('download', function(data: { fromId: string, roomId: string }, ack: (err, data) => any) {
+        socket.on('download', function (data: { fromId: string, roomId: string }, ack: (err: any, data: any) => any) {
             const {fromId, roomId} = data;
             // console.lg(`download(${roomId}) request received from ${fromId}.`);
-            rooms.getEdits(fromId, roomId, function(err, data: { fromId: string; roomId: string; files: { [path: string]: MwEdits } }) {
+            rooms.getEdits(fromId, roomId, function (err, data: { fromId: string; roomId: string; files: { [path: string]: MwEdits } }) {
                 if (!err) {
                     const {files} = data;
                     ack(err, files);
@@ -47,16 +47,16 @@ export default function sockets(app: express.Express, server: http.Server) {
         //
         // @deprecated
         //
-        socket.on('join', function(data: { fromId: string, roomId: string }, ack: () => any) {
+        socket.on('join', function (data: { fromId: string, roomId: string }, ack: () => any) {
             const {fromId, roomId} = data;
             // console.lg(`join(${roomId}) request received from ${fromId}.`);
             socketByNodeId[fromId] = socket;
 
             socket.leaveAll();
 
-            socket.join(roomId, function(err) {
+            socket.join(roomId, function (err) {
                 ack();
-                rooms.getEdits(fromId, roomId, function(err, data: { fromId: string; roomId: string; files: { [path: string]: MwEdits } }) {
+                rooms.getEdits(fromId, roomId, function (err, data: { fromId: string; roomId: string; files: { [path: string]: MwEdits } }) {
                     const {fromId, roomId, files} = data;
                     const paths = Object.keys(files);
                     for (let i = 0; i < paths.length; i++) {
@@ -68,11 +68,11 @@ export default function sockets(app: express.Express, server: http.Server) {
             });
         });
 
-        socket.on('edits', function(data: { fromId: string; roomId: string; path: string, edits: MwEdits }, ack: () => any) {
+        socket.on('edits', function (data: { fromId: string; roomId: string; path: string, edits: MwEdits }, ack: () => any) {
             const {fromId, roomId, path, edits} = data;
             socketByNodeId[fromId] = socket;
             // TODO; Track the inverse mapping so that when a socket disconnects, we can clean up.
-            rooms.setEdits(fromId, roomId, path, edits, function(err: Error, data: { roomId: string; path: string; broadcast: MwBroadcast }) {
+            rooms.setEdits(fromId, roomId, path, edits, function (err: Error, data: { roomId: string; path: string; broadcast: MwBroadcast }) {
                 ack();
                 if (!err) {
                     if (data) {
@@ -104,11 +104,11 @@ export default function sockets(app: express.Express, server: http.Server) {
             });
         });
 
-        socket.on('error', function(err) {
+        socket.on('error', function error(err: any) {
             console.log(`Something is rotten in Denmark: ${err}`);
         });
 
-        socket.on('disconnect', function() {
+        socket.on('disconnect', function disconnet() {
             console.log('A socket disconnected.');
         });
     });

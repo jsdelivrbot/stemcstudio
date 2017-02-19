@@ -1314,7 +1314,7 @@ var DMP = (function () {
             diffs = opt_c;
         }
         else {
-            throw new Error('Unknown call format to patch_make.');
+            throw new Error('Unknown call format.');
         }
         if (diffs.length === 0) {
             return [];

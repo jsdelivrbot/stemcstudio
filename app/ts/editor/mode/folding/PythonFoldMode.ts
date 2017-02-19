@@ -11,7 +11,7 @@ export default class PythonFoldMode extends FoldMode {
         super();
         this.foldingStartMarker = new RegExp("([\\[{])(?:\\s*)$|(" + markers + ")(?:\\s*)(?:#.*)?$");
     }
-    getFoldWidgetRange(session: EditSession, foldStyle, row: number): Range {
+    getFoldWidgetRange(session: EditSession, foldStyle: string, row: number): Range {
         const line = session.getLine(row);
         const match = line.match(this.foldingStartMarker);
         if (match) {

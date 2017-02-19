@@ -64,7 +64,7 @@ export default class LineWidgetManager {
         return screenRows;
     }
 
-    private $onChangeEditor(e, session: EditSession) {
+    private $onChangeEditor(e: { editor: Editor }, session: EditSession) {
         this.attach(e.editor);
     }
 

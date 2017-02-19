@@ -144,7 +144,7 @@ export default class KeyBinding {
      * @param keyCode
      * @param e
      */
-    private $callKeyboardHandlers(hashId: number, keyString: string, keyCode?: number, e?): boolean {
+    private $callKeyboardHandlers(hashId: number, keyString: string, keyCode?: number, e?: KeyboardEvent): boolean {
 
         let toExecute: KeyboardResponse;
         let success = false;

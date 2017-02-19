@@ -106,7 +106,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     private $fromUndo: boolean;
 
     public widgetManager: LineWidgetManager;
-    private $updateFoldWidgets: (event, editSession: EditSession) => any;
+    private $updateFoldWidgets: (delta: Delta, editSession: EditSession) => any;
     private $foldData: FoldLine[];
     public foldWidgets: string[];
     /**
@@ -125,9 +125,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     public doc: Document;
 
     /**
-     * @property $defaultUndoManager
-     * @type UndoManager
-     * @private
+     *
      */
     private $defaultUndoManager = {
         undo: function () {
@@ -1196,8 +1194,8 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * Reloads all the tokens on the current session.
      * This function calls [[BackgroundTokenizer.start `BackgroundTokenizer.start ()`]] to all the rows; it also emits the `'tokenizerUpdate'` event.
      */
-    // TODO: strontype the event.
-    private onReloadTokenizer(e) {
+    // TODO: strongtype the event.
+    private onReloadTokenizer(e: any) {
         const rows = e.data;
         this.bgTokenizer.start(rows.first);
         /**
@@ -2181,7 +2179,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         return removedFolds;
     }
 
-    public $updateRowLengthCache(firstRow, lastRow, b?) {
+    private $updateRowLengthCache(firstRow: number, lastRow: number) {
         this.$rowLengthCache[firstRow] = null;
         this.$rowLengthCache[lastRow] = null;
     }
@@ -2204,23 +2202,20 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
                 row++;
             } else {
                 tokens = [];
-                foldLine.walk(function (placeholder, row, column, lastColumn) {
+                foldLine.walk((placeholder: string, row: number, column: number, lastColumn: number) => {
                     let walkTokens: number[];
                     if (placeholder != null) {
-                        walkTokens = this.$getDisplayTokens(
-                            placeholder, tokens.length);
+                        walkTokens = this.$getDisplayTokens(placeholder, tokens.length);
                         walkTokens[0] = PLACEHOLDER_START;
                         for (let i = 1; i < walkTokens.length; i++) {
                             walkTokens[i] = PLACEHOLDER_BODY;
                         }
                     }
                     else {
-                        walkTokens = this.$getDisplayTokens(
-                            lines[row].substring(lastColumn, column),
-                            tokens.length);
+                        walkTokens = this.$getDisplayTokens(lines[row].substring(lastColumn, column), tokens.length);
                     }
                     tokens = tokens.concat(walkTokens);
-                }.bind(this),
+                },
                     foldLine.end.row,
                     lines[foldLine.end.row].length + 1
                 );

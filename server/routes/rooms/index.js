@@ -22,22 +22,22 @@ if (process.env.REDISTOGO_URL) {
 else {
     client = redis.createClient();
 }
-client.on('ready', function (err) {
+client.on('ready', function ready(err) {
     console.log("Redis client is 'ready'.");
 });
-client.on('connect', function (err) {
+client.on('connect', function connect(err) {
     console.log("Redis client has connected to the server.");
 });
-client.on('reconnecting', function (err) {
+client.on('reconnecting', function reconnecting(err) {
     console.log("Trying to reconnect to the Redis server after losing the connection.");
 });
-client.on('error', function (err) {
+client.on('error', function error(err) {
     console.log("Error " + err);
 });
-client.on('warning', function (err) {
+client.on('warning', function warning(err) {
     console.log("Warning " + err);
 });
-client.on('end', function (err) {
+client.on('end', function end(err) {
     console.log("Established Redis server connection has been closed.");
 });
 function createRoomKey(roomId) {
@@ -195,7 +195,7 @@ function setRemote(roomId, path, nodeId, remote, callback) {
     var dehydrated = remote.dehydrate();
     var remoteText = JSON.stringify(dehydrated);
     client.set(remoteKey, remoteText, function (err, reply) {
-        client.expire(remoteKey, EXPIRE_DURATION_IN_SECONDS, function (err, reply) {
+        client.expire(remoteKey, EXPIRE_DURATION_IN_SECONDS, function expire(err, reply) {
             callback(err);
         });
     });

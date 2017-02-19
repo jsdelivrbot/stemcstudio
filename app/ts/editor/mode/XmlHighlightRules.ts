@@ -173,7 +173,7 @@ export default class XmlHighlightRules extends TextHighlightRules {
         }
     }
 
-    embedTagRules(HighlightRules, prefix: string, tag: string) {
+    embedTagRules(HighlightRules: any, prefix: string, tag: string) {
         this.$rules['tag'].unshift(<any>{
             token: ["meta.tag.punctuation.tag-open.xml", "meta.tag." + tag + ".tag-name.xml"],
             regex: "(<)(" + tag + "(?=\\s|>|$))",

@@ -2,8 +2,8 @@ import CommitMessageOptions from './CommitMessageOptions';
 
 interface CommitMessageScope {
     options: CommitMessageOptions;
-    ok();
-    cancel();
+    ok(): void;
+    cancel(): void;
 }
 
 export default CommitMessageScope;

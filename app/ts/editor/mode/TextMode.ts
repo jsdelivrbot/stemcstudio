@@ -328,19 +328,24 @@ export default class TextMode implements LanguageMode {
         return false;
     }
 
-    autoOutdent(state: string, session: EditSession, row: number): number {
-        return 0;
+    autoOutdent(state: string, session: EditSession, row: number): void {
+        // Do nothing.
     }
 
-    // FIXME: This should be standalone method.
     $getIndent(line: string): string {
-        return line.match(/^\s*/)[0];
+        const match = line.match(/^\s*/);
+        if (match) {
+            return match[0];
+        }
+        else {
+            return "";
+        }
     }
 
     /**
      *
      */
-    createWorker(session: EditSession, callback: (err: any, worker: WorkerClient) => any): void {
+    createWorker(session: EditSession, callback: (err: any, worker?: WorkerClient) => any): void {
         callback(void 0, void 0);
     }
 
@@ -373,7 +378,7 @@ export default class TextMode implements LanguageMode {
     }
 
     // We can't make this private because tslint would think that it is not being used.
-    $delegator(method: string, args, defaultHandler) {
+    $delegator(method: string, args: any[], defaultHandler: any): any {
         let state = args[0];
         if (typeof state !== "string")
             state = state[0];

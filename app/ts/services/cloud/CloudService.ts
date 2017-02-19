@@ -12,12 +12,12 @@ import WsModel from '../../wsmodel/services/WsModel';
 interface CloudService {
 
     /**
-     * @method downloadGist
+     *
      */
     downloadGist(gistId: string, callback: (reason: any, doodle: Doodle) => void): void;
 
     /**
-     * @method createGist
+     *
      */
     createGist(workspace: WsModel): ng.IHttpPromise<Gist>;
 
@@ -27,20 +27,18 @@ interface CloudService {
     updateGist(workspace: WsModel, gistId: string): ng.IHttpPromise<Gist>;
 
     /**
-     * @method deleteGist
+     *
      */
 
     /**
-     * @method createRepo
-     * @param data {RepoData}
-     * @return {IHttpPromise<RepoKey>}
+     * @param data
      */
     createRepo(data: RepoData): ng.IHttpPromise<RepoKey>;
 
     /**
      * TODO: Why is there no specification of the branch (commit).
      */
-    downloadRepo(owner: string, repo: string, callback: (reason: any, doodle: Doodle) => void);
+    downloadRepo(owner: string, repo: string, callback: (reason: any, doodle: Doodle) => void): void;
     downloadTree(owner: string, repo: string, ref: string): ng.IPromise<Doodle>;
 
     /**
@@ -56,21 +54,18 @@ interface CloudService {
     uploadToRepo(workspace: WsModel, owner: string, repo: string, ref: string, commitMessage: string, callback: (reason: any, facts: UploadToRepoFacts) => any): void;
 
     /**
-     * @method chooseGistOrRepo
-     * @param title {string} Provides the title and human readable context for the modal dialog.
+     * @param title Provides the title and human readable context for the modal dialog.
      */
     chooseGistOrRepo(title: string): ng.IPromise<string>;
 
     /**
-     * @method repoData
-     * @param title {string} Provides the title and human readable context for the modal dialog.
-     * @param data {RepoData} Provides the defaults.
+     * @param title Provides the title and human readable context for the modal dialog.
+     * @param data Provides the defaults.
      */
     repoData(title: string, data: RepoData): ng.IPromise<RepoData>;
 
     /**
-     * @method commitMessage
-     * @param title {string} Provides the title and human readable context for the modal dialog.
+     * @param title Provides the title and human readable context for the modal dialog.
      */
     commitMessage(title: string): ng.IPromise<string>;
 }

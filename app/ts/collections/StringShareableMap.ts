@@ -30,10 +30,14 @@ export default class StringShareableMap<V extends Shareable> implements Shareabl
     }
 
     protected destructor(): void {
+        const elements = this.elements;
         this.forEach((key: string) => {
-            this.putWeakRef(key, void 0);
+            const existing = elements[key];
+            if (existing) {
+                existing.release();
+            }
         });
-        this.elements = void 0;
+        this.elements = {};
     }
 
     /**
@@ -54,11 +58,8 @@ export default class StringShareableMap<V extends Shareable> implements Shareabl
         const element = this.elements[key];
         if (element) {
             element.addRef();
-            return element;
         }
-        else {
-            return void 0;
-        }
+        return element;
     }
 
     /**
@@ -93,7 +94,7 @@ export default class StringShareableMap<V extends Shareable> implements Shareabl
     /**
      *
      */
-    public forEach(callback: (key: string, value: V) => void): void {
+    public forEach(callback: (key: string, value: V | undefined) => void): void {
         const keys: string[] = this.keys;
         for (let i = 0, iLength = keys.length; i < iLength; i++) {
             let key: string = keys[i];
@@ -115,8 +116,11 @@ export default class StringShareableMap<V extends Shareable> implements Shareabl
         const values: V[] = [];
         const keys: string[] = this.keys;
         for (let i = 0, iLength = keys.length; i < iLength; i++) {
-            let key: string = keys[i];
-            values.push(this.elements[key]);
+            const key: string = keys[i];
+            const value = this.elements[key];
+            if (value) {
+                values.push(value);
+            }
         }
         return values;
     }

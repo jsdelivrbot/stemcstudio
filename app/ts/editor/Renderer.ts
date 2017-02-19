@@ -184,7 +184,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
     /**
      * A cache of various sizes TBA.
      */
-    public $size: { height: number; width: number; scrollerHeight: number; scrollerWidth; $dirty: boolean };
+    public $size: { height: number; width: number; scrollerHeight: number; scrollerWidth: number; $dirty: boolean };
 
     private $loop: RenderLoop;
     private $changedLines: { firstRow: number; lastRow: number; };
@@ -1528,10 +1528,10 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         this.session.setScrollTop(row * this.lineHeight);
     }
 
-    alignCursor(cursor/*: Position*/, alignment: number) {
-        // FIXME: Don't have polymorphic cursor parameter.
-        if (typeof cursor === "number")
+    alignCursor(cursor: number | Position, alignment: number): number {
+        if (typeof cursor === "number") {
             cursor = { row: cursor, column: 0 };
+        }
 
         const pos = this.getPixelPosition(cursor, false);
         const h = this.$size.scrollerHeight - this.lineHeight;

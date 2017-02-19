@@ -112,7 +112,7 @@ interface EditorPreferencesDialogScope {
 
     ok(): void;
     submit(): void;
-    cancel(); void;
+    cancel(): void;
 }
 
 export default EditorPreferencesDialogScope;

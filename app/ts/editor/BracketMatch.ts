@@ -6,7 +6,7 @@ import Range from "./Range";
 /**
  * Maps an opening(closing) bracket string to the corresponding closing(opening) bracket.
  */
-const $brackets: { [bracket: string]: string } = {
+const $brackets: { [bracket: string]: '(' | ')' | '[' | ']' | '{' | '}' } = {
     ")": "(",
     "(": ")",
     "]": "[",
@@ -16,33 +16,27 @@ const $brackets: { [bracket: string]: string } = {
 };
 
 /**
- * @class BracketMatch
+ *
  */
 export default class BracketMatch {
 
     /**
-     * @property editSession
-     * @type EditSession
-     * @private
+     *
      */
     private editSession: EditSession;
 
     /**
-     * @class BracketMatch
-     * @constructor
-     * @param editSession {EditSession}
+     * @param editSession
      */
     constructor(editSession: EditSession) {
         this.editSession = editSession;
     }
 
     /**
-     * @method findMatchingBracket
-     * @param position {Position}
-     * @param chr {string}
-     * @return {Position}
+     * @param position
+     * @param chr
      */
-    findMatchingBracket(position: Position, chr: string): Position {
+    findMatchingBracket(position: Position, chr: string): Position | null {
         if (position.column === 0) return null;
 
         const charBeforeCursor: string = chr || this.editSession.getLine(position.row).charAt(position.column - 1);
@@ -59,11 +53,9 @@ export default class BracketMatch {
     }
 
     /**
-     * @method getBracketRange
-     * @param pos {Position}
-     * @return {Range}
+     * @param pos
      */
-    getBracketRange(pos: Position): Range {
+    getBracketRange(pos: Position): Range | null {
         const line = this.editSession.getLine(pos.row);
         let before = true;
         let range: Range;
@@ -106,13 +98,11 @@ export default class BracketMatch {
     }
 
     /**
-     * @method findOpeningBracket
-     * @param bracket {string}
-     * @param position {Position}
-     * @param [typeRe] {RegExp}
-     * @return {Position}
+     * @param bracket
+     * @param position
+     * @param typeRe
      */
-    findOpeningBracket(closingBracket: string, position: Position, typeRe?: RegExp): Position {
+    findOpeningBracket(closingBracket: string, position: Position, typeRe?: RegExp): Position | null {
         const openingBracket = $brackets[closingBracket];
         let depth = 1;
 
@@ -122,7 +112,7 @@ export default class BracketMatch {
             token = iterator.stepForward();
         }
         if (!token) {
-            return;
+            return null;
         }
 
         if (!typeRe) {
@@ -174,13 +164,11 @@ export default class BracketMatch {
     /**
      * Finds the position of the closing bracket corresponding to the provided opening bracket and position.
      *
-     * @method findClosingBracket
-     * @param bracket {string} The opening bracket.
-     * @param position {Position} The position of the opening bracket.
-     * @param [typeRe] {RegExp}
-     * @return {Position}
+     * @param bracket The opening bracket.
+     * @param position The position of the opening bracket.
+     * @param typeRe
      */
-    findClosingBracket(openingBracket: string, position: Position, typeRe?: RegExp): Position {
+    findClosingBracket(openingBracket: string, position: Position, typeRe?: RegExp): Position | null {
         const closingBracket = $brackets[openingBracket];
         let depth = 1;
 
@@ -190,7 +178,7 @@ export default class BracketMatch {
             token = iterator.stepForward();
         }
         if (!token) {
-            return;
+            return null;
         }
 
         if (!typeRe) {

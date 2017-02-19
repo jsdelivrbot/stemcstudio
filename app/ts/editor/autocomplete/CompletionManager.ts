@@ -275,7 +275,7 @@ export default class CompletionManager {
     /**
      * 
      */
-    private gatherCompletions(editor: Editor, pos: Position, prefix: string, callback: (err, results?: { prefix: string; matches: Completion[]; finished: boolean }) => any): boolean {
+    private gatherCompletions(editor: Editor, pos: Position, prefix: string, callback: (err: any, results?: { prefix: string; matches: Completion[]; finished: boolean }) => any): boolean {
         const session: EditSession = editor.getSession();
 
         this.base = new Anchor(session.doc, pos.row, pos.column - prefix.length);
@@ -436,7 +436,7 @@ export default class CompletionManager {
         }
     }
 
-    private editorChangeSelectionListener(e) {
+    private editorChangeSelectionListener(e: any) {
 
         const cursor = this.editor.selection.lead;
         if (cursor.row !== this.base.row || cursor.column < this.base.column) {
@@ -468,11 +468,11 @@ export default class CompletionManager {
         }
     }
 
-    private mousedownListener(e) {
+    private mousedownListener(e: any) {
         this.detach();
     }
 
-    private mousewheelListener(e) {
+    private mousewheelListener(e: any) {
         this.detach();
     }
 
@@ -490,7 +490,7 @@ export default class CompletionManager {
         const popup = this.popup;
         const all = popup.data;
         const selected = all && (all[popup.getHoveredRow()] || all[popup.getRow()]);
-        let doc = null;
+        let doc: any = null;
         if (!selected || !this.editor || !this.popup.isOpen)
             return this.hideDocTooltip();
         this.editor.completers.some(function (completer) {

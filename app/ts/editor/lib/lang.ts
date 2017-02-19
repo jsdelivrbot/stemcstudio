@@ -37,7 +37,7 @@ export function stringTrimRight(s: string): string {
     return s.replace(trimEndRegexp, '');
 }
 
-export function copyObject(obj) {
+export function copyObject(obj: Object) {
     const copy = {};
     for (let key in obj) {
         if (obj.hasOwnProperty(key)) {
@@ -84,8 +84,8 @@ export function arrayToMap<T>(xs: string[], value: T): { [name: string]: T } {
     return map;
 }
 
-export function createMap(props) {
-    const map = Object.create(null);
+export function createMap(props: Object): { [name: string]: any } {
+    const map: { [name: string]: any } = Object.create(null);
     for (let i in props) {
         if (props.hasOwnProperty(i)) {
             map[i] = props[i];
@@ -97,7 +97,7 @@ export function createMap(props) {
 /**
  * splice out of 'array' anything that === 'value'
  */
-export function arrayRemove(array, value) {
+export function arrayRemove<T>(array: T[], value: T): void {
     for (let i = 0; i <= array.length; i++) {
         if (value === array[i]) {
             array.splice(i, 1);
@@ -129,17 +129,17 @@ export function getMatchOffsets(s: string, searchValue: RegExp): MatchOffset[] {
 };
 
 /* deprecated */
-export function deferredCall(fcn) {
+export function deferredCall(fcn: Function) {
 
-    let timer = null;
+    let timer: number = null;
     const callback = function () {
         timer = null;
         fcn();
     };
 
-    const deferred: any = function (timeout) {
+    const deferred: any = function (timeout: number) {
         deferred.cancel();
-        timer = setTimeout(callback, timeout || 0);
+        timer = window.setTimeout(callback, timeout || 0);
         return deferred;
     };
 

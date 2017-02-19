@@ -38,7 +38,7 @@ interface Rule {
      * FIXME: Something strange going on with SnippetManager and the stack?
      *        TypeScript 2.0 really starts to complain!
      */
-    onMatch?: (value, state: string, stack: string[]) => any;
+    onMatch?: (value: string, state: string, stack: string[]) => any;
 
     /**
      *

@@ -64,10 +64,10 @@ function sockets(app, server) {
                 }
             });
         });
-        socket.on('error', function (err) {
+        socket.on('error', function error(err) {
             console.log("Something is rotten in Denmark: " + err);
         });
-        socket.on('disconnect', function () {
+        socket.on('disconnect', function disconnet() {
             console.log('A socket disconnected.');
         });
     });

@@ -38,7 +38,7 @@ export function loadScript(src: string, callback: () => any, doc: Document): voi
     s.src = src;
     head.appendChild(s);
 
-    s.onload = s['onreadystatechange'] = function (_, isAbort?: boolean) {
+    s.onload = s['onreadystatechange'] = function (_: any, isAbort?: boolean) {
         if (isAbort || !s['readyState'] || s['readyState'] === "loaded" || s['readyState'] === "complete") {
             s = s.onload = s['onreadystatechange'] = null;
             if (!isAbort) {

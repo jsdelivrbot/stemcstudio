@@ -49,20 +49,16 @@ interface LanguageMode {
     tokenRe: RegExp;
 
     /**
-     * @method autoOutdent
-     * @param state {string}
-     * @param session {EditSession}
-     * @param row {number}
-     * @return {number}
+     * @param state
+     * @param session
+     * @param row
      */
-    autoOutdent(state: string, session: EditSession, row: number): number;
+    autoOutdent(state: string, session: EditSession, row: number): void;
 
     /**
-     * @method checkOutdent
-     * @param state {string}
-     * @param line {string}
-     * @param text {string}
-     * @return {boolean}
+     * @param state
+     * @param line
+     * @param text
      */
     checkOutdent(state: string, line: string, text: string): boolean;
 

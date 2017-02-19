@@ -43,7 +43,7 @@ function normalizePort(value: string): any {
 /**
  * Event listener for HTTP server "error" event.
  */
-function onError(error): void {
+function onError(error: { syscall: string; code: 'EACCES' | 'EADDRINUSE' }): void {
     if (error.syscall !== 'listen') {
         throw error;
     }
@@ -81,6 +81,6 @@ function onListening(): void {
 //
 // Log uncaught exceptions.
 //
-process.on('uncaughtException', function(err) {
+process.on('uncaughtException', function uncaughtException(err: Error) {
     console.log('Exception: ' + err.stack);
 });

@@ -24,7 +24,7 @@ interface LabelModalScope {
 
     ok(): void;
     submit(): void;
-    cancel(); void;
+    cancel(): void;
 }
 
 export default LabelModalScope;

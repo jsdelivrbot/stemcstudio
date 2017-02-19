@@ -21,7 +21,7 @@ export interface HomeScope extends BodyScope, SearchScope, ThumbnailsScope {
      */
     FEATURE_TUTORIALS_ENABLED: boolean;
 
-    onGoogleSignIn(googleUser): void;
+    onGoogleSignIn(googleUser: any): void;
 
     /**
      * Navigate to the Cookbook page.

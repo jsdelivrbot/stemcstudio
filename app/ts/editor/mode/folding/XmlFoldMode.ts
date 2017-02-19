@@ -1,6 +1,7 @@
 import { mixin } from "../../lib/oop";
 import Range from "../../Range";
 import FoldMode from "./FoldMode";
+import Token from '../../Token';
 import TokenIterator from "../../TokenIterator";
 import EditSession from "../../EditSession";
 import Position from "../../Position";
@@ -261,6 +262,6 @@ export class Tag {
     }
 }
 
-function is(token, type: string): boolean {
+function is(token: Token, type: string): boolean {
     return token.type.lastIndexOf(type + ".xml") > -1;
 }

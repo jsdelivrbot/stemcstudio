@@ -31,7 +31,7 @@
 /**
  * Classic ACE
  */
-export function inherits(ctor, superCtor) {
+export function inherits(ctor: any, superCtor: Function) {
     ctor.super_ = superCtor;
     ctor.prototype = Object.create(superCtor.prototype, {
         constructor: {
@@ -46,7 +46,7 @@ export function inherits(ctor, superCtor) {
 /**
  * Classic ACE
  */
-export function mixin(obj, base) {
+export function mixin<T>(obj: any, base: T) {
     for (let key in base) {
         if (base.hasOwnProperty(key)) {
             obj[key] = base[key];
@@ -58,6 +58,6 @@ export function mixin(obj, base) {
 /**
  * Classic ACE
  */
-export function implement(proto, base) {
+export function implement(proto: Object, base: Object) {
     mixin(proto, base);
 }

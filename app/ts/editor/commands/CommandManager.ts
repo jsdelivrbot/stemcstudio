@@ -1,4 +1,4 @@
-import {applyMixins} from "../lib/mix";
+import { applyMixins } from "../lib/mix";
 import KeyboardHandler from "../keyboard/KeyboardHandler";
 import KeyHash from "../keyboard/KeyHash";
 import EditorAction from '../keyboard/EditorAction';
@@ -26,10 +26,10 @@ export default class CommandManager implements EventBus<any, CommandManager> {
     public recording: boolean;
     private macro: { command: Command; args: any }[][];
     private oldMacro: { command: Command; args: any }[][];
-    private $addCommandToMacro: (event, cm: CommandManager) => any;
+    private $addCommandToMacro: (event: any, cm: CommandManager) => any;
     private eventBus: EventEmitterClass<any, CommandManager>;
 
-    _buildKeyHash;
+    _buildKeyHash: any;
 
     /**
      * @param platform Identifier for the platform; must be either `'mac'` or `'win'`
@@ -38,7 +38,7 @@ export default class CommandManager implements EventBus<any, CommandManager> {
     constructor(platform: string, commands: Command[]) {
         this.eventBus = new EventEmitterClass<any, CommandManager>(this);
         this.hashHandler = new KeyboardHandler(commands, platform);
-        this.eventBus.setDefaultHandler("exec", function (e: { command: Command; editor: Editor; args }) {
+        this.eventBus.setDefaultHandler("exec", function (e: { command: Command; editor: Editor; args: any }) {
             return e.command.exec(e.editor, e.args || {});
         });
     }
@@ -94,7 +94,7 @@ export default class CommandManager implements EventBus<any, CommandManager> {
         this.hashHandler.addCommands(commands);
     }
 
-    removeCommands(commands): void {
+    removeCommands(commands: { [name: string]: (string | Command) }): void {
         this.hashHandler.removeCommands(commands);
     }
 
@@ -192,7 +192,7 @@ export default class CommandManager implements EventBus<any, CommandManager> {
         }
     }
 
-    trimMacro(m) {
+    trimMacro(m: any[]) {
         return m.map(function (x) {
             if (typeof x[0] !== "string")
                 x[0] = x[0].name;

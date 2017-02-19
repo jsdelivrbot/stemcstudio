@@ -46,6 +46,6 @@ function onListening() {
         : 'port ' + addr.port;
     console.log("STEMCstudio HTTP server is listening on " + bind + ".");
 }
-process.on('uncaughtException', function (err) {
+process.on('uncaughtException', function uncaughtException(err) {
     console.log('Exception: ' + err.stack);
 });

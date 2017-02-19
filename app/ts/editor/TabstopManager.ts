@@ -38,10 +38,10 @@ export default class TabstopManager {
     private selectedTabstop: Tabstop;
     private editor: Editor;
     private keyboardHandler = new KeyboardHandler();
-    private $onChange;
-    private $onChangeSelection;
-    private $onChangeSession;
-    private $onAfterExec;
+    private $onChange: (delta: Delta, editor: Editor) => void;
+    private $onChangeSelection: (timeout: number) => void;
+    private $onChangeSession: (event: any, editor: Editor) => void;
+    private $onAfterExec: (e: { command: Command }) => void;
     private $inChange: boolean;
 
     /**
@@ -195,7 +195,7 @@ export default class TabstopManager {
     }
 
     // TODO: EditorChangeSelectionEvent?
-    private onChangeSelection(event, editor: Editor) {
+    private onChangeSelection(event: any, editor: Editor) {
         if (!this.editor)
             return;
         const lead = this.editor.selection.lead;
@@ -213,7 +213,7 @@ export default class TabstopManager {
     }
 
     // TODO: EditorChangeSessionEvent.
-    private onChangeSession(event, editor: Editor) {
+    private onChangeSession(event: any, editor: Editor) {
         this.detach();
     }
 

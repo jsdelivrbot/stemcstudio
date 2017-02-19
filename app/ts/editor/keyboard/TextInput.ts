@@ -183,7 +183,7 @@ export default class TextInput {
         /**
          * The event handler for the 'input' event of the text area.
          */
-        const onInput = (e?) => {
+        const onInput = (e?: any) => {
             if (this.inComposition) {
                 return;
             }
@@ -193,7 +193,7 @@ export default class TextInput {
             this.resetValue();
         };
 
-        const onCompositionEnd = (e, editor: Editor) => {
+        const onCompositionEnd: any = (e: Event, editor: Editor) => {
             if (!editor.onCompositionEnd || editor.$readOnly) return;
 
             const c = this.inComposition;
@@ -254,7 +254,7 @@ export default class TextInput {
         if (isOldIE) {
             let inPropertyChange = false;
             let syncProperty: DelayedCall;
-            const onPropertyChange = (e?) => {
+            const onPropertyChange = (e?: KeyboardEvent) => {
                 if (inPropertyChange)
                     return;
                 const data = this.text.value;
@@ -274,7 +274,7 @@ export default class TextInput {
             addListener(this.text, "propertychange", onPropertyChange);
 
             const keytable = { 13: 1, 27: 1 };
-            addListener(this.text, "keyup", (e) => {
+            addListener(this.text, "keyup", (e: KeyboardEvent) => {
                 if (this.inComposition && (!this.text.value || keytable[e.keyCode]))
                     setTimeout(onCompositionEnd, 0);
                 if ((this.text.value.charCodeAt(0) || 0) < 129) {
@@ -289,7 +289,7 @@ export default class TextInput {
             });
         }
 
-        const onSelect = (e) => {
+        const onSelect = (e: any) => {
             if (copied) {
                 copied = false;
             }

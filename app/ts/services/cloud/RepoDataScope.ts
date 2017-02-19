@@ -4,8 +4,8 @@ import RepoDataOptions from './RepoDataOptions';
 interface RepoDataScope {
     data: RepoData;
     options: RepoDataOptions;
-    ok();
-    cancel();
+    ok(): void;
+    cancel(): void;
 }
 
 export default RepoDataScope;

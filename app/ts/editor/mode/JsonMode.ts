@@ -36,17 +36,15 @@ export default class JsonMode extends TextMode {
         return this.$outdent.checkOutdent(line, input);
     }
 
-    autoOutdent(state: string, session: EditSession, row: number): number {
-        return this.$outdent.autoOutdent(session, row);
+    autoOutdent(state: string, session: EditSession, row: number): void {
+        this.$outdent.autoOutdent(session, row);
     }
 
     /**
-     * @method createWorker
-     * @param session {EditSession}
-     * @param callback {(err: any, worker?: WorkerClient) => any}
-     * @return {WorkerClient}
+     * @param session
+     * @param callback
      */
-    createWorker(session: EditSession, callback: (err: any, worker: WorkerClient) => any): void {
+    createWorker(session: EditSession, callback: (err: any, worker?: WorkerClient) => any): void {
 
         const worker = new WorkerClient(this.workerUrl);
 
@@ -75,12 +73,12 @@ export default class JsonMode extends TextMode {
                     callback(void 0, worker);
                 }
                 else {
-                    callback(err, void 0);
+                    callback(err);
                 }
             });
         }
         catch (e) {
-            callback(e, void 0);
+            callback(e);
         }
     }
 }

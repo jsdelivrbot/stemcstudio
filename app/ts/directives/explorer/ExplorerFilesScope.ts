@@ -8,7 +8,10 @@ import WsFile from '../../wsmodel/services/WsFile';
  * context-menu = 'menu(name, file)'
  */
 interface ExplorerFilesScope extends ng.IScope {
-    menu: (name: string, file: WsFile) => ContextMenuItem[];
+    /**
+     * The null entry in the returned array corresponds to a menu divider.
+     */
+    menu: (name: string, file: WsFile) => (ContextMenuItem | null)[];
 }
 
 export default ExplorerFilesScope;

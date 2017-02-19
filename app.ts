@@ -68,7 +68,7 @@ app.all('*', (req: express.Request, res: express.Response, next: Function) => {
     next();
 });
 
-const authenticate = (code, cb: (err: any, data?: any) => any) => {
+const authenticate = (code: any, cb: (err: any, data?: any) => any) => {
 
     // This is step two in the GitHub Web Application Flow and occurs
     // after GitHub redirects back to the site (assuming user accepts request).
@@ -123,7 +123,7 @@ app.get('/authenticate/:code', (req: express.Request, res: express.Response) => 
     });
 });
 
-app.get("/github_callback", (req: express.Request, res: express.Response, next) => {
+app.get("/github_callback", (req: express.Request, res: express.Response, next: any) => {
     // Set a cookie to communicate the GitHub Client ID back to the client.
     res.cookie('stemcstudio-github-application-client-id', clientId);
     res.render("github_callback", {

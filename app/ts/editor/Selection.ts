@@ -450,7 +450,7 @@ export default class Selection implements EventBus<any, Selection> {
         this.$desiredColumn = null;
     }
 
-    $moveSelection(mover) {
+    public $moveSelection(mover: Function): void {
         const lead = this.lead;
         if (this.$isEmpty)
             this.setSelectionAnchor(lead.row, lead.column);
@@ -1191,11 +1191,9 @@ export default class Selection implements EventBus<any, Selection> {
      * postion. The result is the range of the starting and eventual cursor position.
      * Will reset the cursor position.
      *
-     * @method getRangeOfMovements
-     * @param {Function} The callback that should change the cursor position
-     * @return {Range}
+     * @param The callback that should change the cursor position.
      */
-    getRangeOfMovements(func): Range {
+    getRangeOfMovements(func: Function): Range {
         const start = this.getCursor();
         try {
             func.call(null, this);
@@ -1341,7 +1339,7 @@ export default class Selection implements EventBus<any, Selection> {
     };
 
     // FIXME
-    fromJSON(data/*: {start;length;isBackards}*/) {
+    fromJSON(data: any/*: {start;length;isBackards}*/) {
         if (data.start === void 0) {
             if (this.rangeList) {
                 this.toSingleRange(data[0]);
@@ -1361,7 +1359,7 @@ export default class Selection implements EventBus<any, Selection> {
     }
 
     // FIXME
-    isEqual(data) {
+    isEqual(data: any) {
         if ((data.length || this.rangeCount) && data.length !== this.rangeCount)
             return false;
         if (!data.length || !this.ranges)

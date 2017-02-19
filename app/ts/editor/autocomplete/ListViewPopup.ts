@@ -290,11 +290,11 @@ export default class ListViewPopup implements ListView {
         return this.data[row];
     }
 
-    on(eventName: string, callback: (event, ee: Editor) => any, capturing?: boolean): () => void {
+    on(eventName: string, callback: (event: any, ee: Editor) => any, capturing?: boolean): () => void {
         return this.editor.on(eventName, callback, capturing);
     }
 
-    off(eventName: string, callback: (event, ee: Editor) => any): void {
+    off(eventName: string, callback: (event: any, ee: Editor) => any): void {
         return this.editor.off(eventName, callback);
     }
 

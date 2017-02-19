@@ -6,7 +6,7 @@ import EditSession from '../EditSession';
 import PixelPosition from '../PixelPosition';
 import Position from '../Position';
 
-let isIE8;
+let isIE8: boolean;
 
 /**
  * This class is the HTML representation of the CursorLayer.

@@ -23,7 +23,7 @@ interface Completer {
     /**
      *
      */
-    getCompletions(editor: Editor, session: EditSession, pos: Position, prefix: string, callback: (err, results: Completion[]) => any);
+    getCompletions(editor: Editor, session: EditSession, pos: Position, prefix: string, callback: (err: any, results: Completion[]) => any): void;
 
     /**
      * The completer may, optionally, define how it wants insertions to be performed.
@@ -34,7 +34,7 @@ interface Completer {
     /**
      *
      */
-    getDocTooltip?(completion: Completion);
+    getDocTooltip?(completion: Completion): any;
 }
 
 export default Completer;

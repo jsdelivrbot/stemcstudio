@@ -57,8 +57,8 @@ export default class CppMode extends TextMode {
         return this.$outdent.checkOutdent(line, text);
     }
 
-    autoOutdent(state: string, session: EditSession, row: number): number {
-        return this.$outdent.autoOutdent(session, row);
+    autoOutdent(state: string, session: EditSession, row: number): void {
+        this.$outdent.autoOutdent(session, row);
     }
 
     // TODO? getCompletions

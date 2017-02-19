@@ -60,31 +60,31 @@ export default class PythonMode extends TextMode {
             return false;
 
         // ignore trailing comments
-        let last: Token;
+        let last: Token | undefined;
         do {
             last = tokens.pop();
         } while (last && (last.type === "comment" || (last.type === "text" && last.value.match(/^\s+$/))));
 
-        if (!last)
+        if (!last) {
             return false;
+        }
 
         return (last.type === "keyword" && outdents[last.value]);
     }
 
-    autoOutdent(state: string, doc: EditSession, row: number): number {
+    autoOutdent(state: string, doc: EditSession, row: number): void {
         // outdenting in python is slightly different because it always applies
         // to the next line and only of a new line is inserted
 
         row += 1;
         const indent = this.$getIndent(doc.getLine(row));
         const tab = doc.getTabString();
-        if (indent.slice(-tab.length) === tab)
+        if (indent.slice(-tab.length) === tab) {
             doc.remove(new Range(row, indent.length - tab.length, row, indent.length));
-        // TODO
-        return 0;
+        }
     }
 
-    createWorker(session: EditSession, callback: (err: any, worker: WorkerClient) => any): void {
+    createWorker(session: EditSession, callback: (err: any, worker?: WorkerClient) => any): void {
         const worker = new WorkerClient(this.workerUrl);
 
         worker.on('annotations', function (event: { data: Annotation[] }) {
@@ -113,12 +113,12 @@ export default class PythonMode extends TextMode {
                 }
                 else {
                     console.warn(`PythonWorker init fail: ${err}`);
-                    callback(err, void 0);
+                    callback(err);
                 }
             });
         }
         catch (e) {
-            callback(e, void 0);
+            callback(e);
         }
     }
 }

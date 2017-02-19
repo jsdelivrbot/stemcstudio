@@ -62,8 +62,8 @@ export default class CssMode extends TextMode {
         return this.$outdent.checkOutdent(line, text);
     }
 
-    autoOutdent(state: string, session: EditSession, row: number): number {
-        return this.$outdent.autoOutdent(session, row);
+    autoOutdent(state: string, session: EditSession, row: number): void {
+        this.$outdent.autoOutdent(session, row);
     }
 
     getCompletions(state: string, session: EditSession, pos: Position, prefix: string) {
@@ -77,7 +77,7 @@ export default class CssMode extends TextMode {
 
         const worker = new WorkerClient(workerUrl);
 
-        worker.on('annotations', function(event: { data: Annotation[] }) {
+        worker.on('annotations', function (event: { data: Annotation[] }) {
             const annotations: Annotation[] = event.data;
             if (annotations.length > 0) {
                 session.setAnnotations(annotations);
@@ -88,14 +88,14 @@ export default class CssMode extends TextMode {
             session._emit("annotations", { data: annotations });
         });
 
-        worker.on("terminate", function() {
+        worker.on("terminate", function () {
             worker.detachFromDocument();
             session.clearAnnotations();
         });
 
         const moduleName = 'ace-workers.js';
         try {
-            worker.init(scriptImports, moduleName, 'CssWorker', function(err: any) {
+            worker.init(scriptImports, moduleName, 'CssWorker', function (err: any) {
                 if (!err) {
                     worker.attachToDocument(session.getDocument());
                     callback(void 0, worker);

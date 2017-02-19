@@ -8,7 +8,7 @@ app.factory('cookie', [
                 const escapedName = encodeURI(name).replace(/[\-\.\+\*]/g, "\\$&");
                 return decodeURI(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + escapedName + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
             },
-            setItem: function (name: string, value: string, end?, path?, domain?, secure?): void {
+            setItem: function (name: string, value: string, end?: String | Number | Date, path?: string, domain?: string, secure?: string): void {
                 let expires: string;
                 if (!name || /^(?:expires|max\-age|path|domain|secure)$/i.test(name)) {
                     throw new Error("Illegal name");
@@ -22,7 +22,7 @@ app.factory('cookie', [
                             expires = "; expires=" + end;
                             break;
                         case Date:
-                            expires = "; expires=" + end.toGMTString();
+                            expires = "; expires=" + (<Date>end).toUTCString();
                             break;
                         default:
                             expires = "";

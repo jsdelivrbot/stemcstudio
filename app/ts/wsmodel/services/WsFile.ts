@@ -35,19 +35,19 @@ import WsModel from './WsModel';
  */
 export default class WsFile implements MwEditor, Shareable {
 
-    public editor: Editor;
+    public editor: Editor | undefined;
 
     /**
      * The editSession is (almost) an implementation detail except that
      * it is bound to an ng-model. In all other cases, calls to getSession
      * will lazily create a session and the instance will be reference counted.
      */
-    private session: EditSession;
+    private session: EditSession | undefined;
 
     /**
      * The line-oriented textual content.
      */
-    public doc: Document;
+    public doc: Document | undefined;
 
     /**
      * The synchronization data (shadow, backup, versions, etc).
@@ -101,7 +101,7 @@ export default class WsFile implements MwEditor, Shareable {
     /**
      * A weak reference to the workspace that owns this file.
      */
-    private workspace: WsModel;
+    private workspace: WsModel | undefined;
 
     /**
      * @param workspace
@@ -121,7 +121,7 @@ export default class WsFile implements MwEditor, Shareable {
         this.workspace = void 0;
     }
 
-    public setSession(session: EditSession) {
+    public setSession(session: EditSession | undefined) {
         if (this.session === session) {
             return;
         }
@@ -141,7 +141,7 @@ export default class WsFile implements MwEditor, Shareable {
         }
     }
 
-    public setDocument(doc: Document) {
+    public setDocument(doc: Document | undefined) {
         if (this.doc === doc) {
             return;
         }
@@ -185,7 +185,7 @@ export default class WsFile implements MwEditor, Shareable {
     /**
      *
      */
-    getEditor(): Editor {
+    getEditor(): Editor | undefined {
         if (this.editor) {
             return this.editor;
         }
@@ -194,7 +194,7 @@ export default class WsFile implements MwEditor, Shareable {
         }
     }
 
-    setEditor(editor: Editor) {
+    setEditor(editor: Editor | undefined) {
         this.editor = editor;
     }
 
@@ -205,7 +205,7 @@ export default class WsFile implements MwEditor, Shareable {
     /**
      * FIXME: Really ensureSession
      */
-    getSession(): EditSession {
+    getSession(): EditSession | undefined {
         if (this.session) {
             this.session.addRef();
             return this.session;
@@ -230,7 +230,7 @@ export default class WsFile implements MwEditor, Shareable {
     /**
      * @returns The underlying document. This must be released when no longer required.
      */
-    getDocument(): Document {
+    getDocument(): Document | undefined {
         if (this.doc) {
             this.doc.addRef();
             return this.doc;
@@ -245,7 +245,7 @@ export default class WsFile implements MwEditor, Shareable {
         return this.doc ? true : false;
     }
 
-    getText(): string {
+    getText(): string | undefined {
         if (this.doc) {
             return this.doc.getValue();
         }
@@ -281,8 +281,10 @@ export default class WsFile implements MwEditor, Shareable {
     patch(patches: Patch[]): boolean[] {
         for (let i = 0; i < patches.length; i++) {
             const patch = patches[i];
+            if (this.doc) {
             /* const {start, length, applied} = */ applyPatchToDocument(patch, this.doc);
-            // The results of aplying the patch as a collection of diffs.
+                // The results of aplying the patch as a collection of diffs.
+            }
         }
         return [];
     }

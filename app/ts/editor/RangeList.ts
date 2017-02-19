@@ -17,7 +17,11 @@ export default class RangeList {
      *
      */
     private session: EditSession;
-    private onChange;
+
+    /**
+     * 
+     */
+    private onChange: (e: { data: { action: string; range: Range } }, unused: EditSession) => void;
 
     /**
      *
@@ -195,7 +199,7 @@ export default class RangeList {
      * @param e
      * @param session
      */
-    private $onChange(e: { data: { action: string; range: Range } }, unused: EditSession) {
+    private $onChange(e: { data: { action: string; range: Range } }, unused: EditSession): void {
         const changeRange: Range = e.data.range;
         let start: Position;
         let end: Position;

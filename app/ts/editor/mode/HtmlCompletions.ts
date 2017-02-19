@@ -88,7 +88,7 @@ const eventAttributes = [
 
 const globalAttributes = commonAttributes.concat(eventAttributes);
 
-const attributeMap = {
+const attributeMap: { [name: string]: string[] } = {
     "html": ["manifest"],
     "head": [],
     "title": [],

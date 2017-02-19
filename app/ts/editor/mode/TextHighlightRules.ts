@@ -84,7 +84,7 @@ export default class TextHighlightRules implements HighlightRules {
     /**
      * FIXME: typing of 1st parameter.
      */
-    embedRules(HighlightRules, prefix: string, escapeRules: Rule[], states?: string[], append?: boolean) {
+    embedRules(HighlightRules: any, prefix: string, escapeRules: Rule[], states?: string[], append?: boolean) {
         const embedRules: { [name: string]: Rule[] } = (typeof HighlightRules === "function") ? new HighlightRules().getRules() : HighlightRules;
         if (states) {
             for (let i = 0; i < states.length; i++) {
@@ -147,7 +147,7 @@ export default class TextHighlightRules implements HighlightRules {
 
         let id = 0;
         const rules = this.$rules;
-        function processState(key) {
+        function processState(key: string) {
             const state = rules[key];
             state['processed'] = true;
             for (let i = 0; i < state.length; i++) {
@@ -214,7 +214,8 @@ export default class TextHighlightRules implements HighlightRules {
                 }
 
                 if (toInsert) {
-                    let args = [i, 1].concat(toInsert);
+                    let args: any[] = [i, 1];
+                    args.concat(toInsert);
                     if (rule.noEscape)
                         args = args.filter(function (x) { return !x['next']; });
                     state.splice.apply(state, args);
