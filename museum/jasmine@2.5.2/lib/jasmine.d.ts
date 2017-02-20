@@ -1,5 +1,6 @@
 /**
  * Defines a suite of specifications.
+ * A suite is just a function.
  */
 declare function describe(description: string, specDefinitions: () => void): void;
 declare function fdescribe(description: string, specDefinitions: () => void): void;
@@ -10,6 +11,7 @@ declare function xdescribe(description: string, specDefinitions: () => void): vo
 
 /**
  * Defines a specification.
+ * A spec is just a function.
  */
 declare function it(expectation: string, assertion?: () => void, timeout?: number): void;
 declare function it(expectation: string, assertion?: (done: DoneFn) => void, timeout?: number): void;
@@ -131,8 +133,10 @@ declare namespace jasmine {
     interface Clock {
         install(): void;
         uninstall(): void;
+        useMock(): void;
+        uninstallMock(): void;
         /** Calls to any registered callback are triggered when the clock is ticked forward via the jasmine.clock().tick function, which takes a number of milliseconds. */
-        tick(ms: number): void;
+        tick(millis: number): void;
         mockDate(date?: Date): void;
     }
 
@@ -183,16 +187,32 @@ declare namespace jasmine {
         nextSpecId(): number;
         addReporter(reporter: Reporter): void;
         execute(): void;
+        /**
+         * 
+         */
         describe(description: string, specDefinitions: () => void): Suite;
-        // ddescribe(description: string, specDefinitions: () => void): Suite; Not a part of jasmine. Angular team adds these
+        /**
+         * 
+         */
         beforeEach(beforeEachFunction: () => void): void;
         beforeAll(beforeAllFunction: () => void): void;
         currentRunner(): Runner;
+        /**
+         * 
+         */
         afterEach(afterEachFunction: () => void): void;
         afterAll(afterAllFunction: () => void): void;
+        /**
+         * 
+         */
         xdescribe(desc: string, specDefinitions: () => void): XSuite;
+        /**
+         * 
+         */
         it(description: string, func: () => void): Spec;
-        // iit(description: string, func: () => void): Spec; Not a part of jasmine. Angular team adds these
+        /**
+         * 
+         */
         xit(desc: string, func: () => void): XSpec;
         compareRegExps_(a: RegExp, b: RegExp, mismatchKeys: string[], mismatchValues: string[]): boolean;
         compareObjects_(a: any, b: any, mismatchKeys: string[], mismatchValues: string[]): boolean;
@@ -334,48 +354,117 @@ declare namespace jasmine {
          * The 'toBe' matcher compares with ===
          */
         toBe(expected: any, expectationFailOutput?: any): boolean;
-        /**
-         * The 'toEqual' matcher compares objects by value.
-         */
-        toEqual(expected: any, expectationFailOutput?: any): boolean;
-        /**
-         * The 'toMatch' matcher is for regular expressions.
-         */
-        toMatch(expected: string | RegExp, expectationFailOutput?: any): boolean;
-        /**
-         * The 'toBeDefined' matcher compares against 'undefined'.
-         */
-        toBeDefined(expectationFailOutput?: any): boolean;
-        /**
-         * The 'toBeDefined' matcher compares against 'undefined'.
-         */
-        toBeUndefined(expectationFailOutput?: any): boolean;
-        /**
-         * The 'toBeNull' matcher compares against null.
-         */
-        toBeNull(expectationFailOutput?: any): boolean;
-        toBeNaN(): boolean;
-        /**
-         * The 'toBeTruthy' matcher is for boolean casting testing.
-         */
-        toBeTruthy(expectationFailOutput?: any): boolean;
-        /**
-         * The 'toBeFalsy' matcher is for boolean casting testing.
-         */
-        toBeFalsy(expectationFailOutput?: any): boolean;
-        toHaveBeenCalled(): boolean;
-        toHaveBeenCalledWith(...params: any[]): boolean;
-        toHaveBeenCalledTimes(expected: number): boolean;
-        toContain(expected: any, expectationFailOutput?: any): boolean;
-        toBeLessThan(expected: number, expectationFailOutput?: any): boolean;
-        toBeGreaterThan(expected: number, expectationFailOutput?: any): boolean;
+
         /**
          * 
          */
         toBeCloseTo(expected: number, precision: number, expectationFailOutput?: any): boolean;
+
+        /**
+         * The 'toBeDefined' matcher compares against 'undefined'.
+         */
+        toBeDefined(expectationFailOutput?: any): boolean;
+
+        /**
+         * The 'toBeFalsy' matcher is for boolean casting testing.
+         */
+        toBeFalsy(expectationFailOutput?: any): boolean;
+
+        /**
+         * The 'toBeGreaterThan' matcher is for mathematical comparisons.
+         * 
+         * const pi = 3.1415926;
+         * const e = 2.78;
+         * 
+         * expect(pi).toBeGreaterThan(e);
+         * expect(e).not.toBeGreaterThan(pi);
+         */
+        toBeGreaterThan(expected: number, expectationFailOutput?: any): boolean;
+
+        /**
+         * The 'toBeLessThan' matcher is for mathematical comparisons.
+         * 
+         * const pi = 3.1415926;
+         * const e = 2.78;
+         * 
+         * expect(e).toBeLessThan(pi);
+         * expect(pi).not.toBeLessThan(e);
+         */
+        toBeLessThan(expected: number, expectationFailOutput?: any): boolean;
+
+        /**
+         * 
+         */
+        toBeNaN(): boolean;
+
+        /**
+         * The 'toBeNull' matcher compares against null.
+         */
+        toBeNull(expectationFailOutput?: any): boolean;
+
+        /**
+         * The 'toBeTruthy' matcher is for boolean casting testing.
+         */
+        toBeTruthy(expectationFailOutput?: any): boolean;
+
+        /**
+         * The 'toBeDefined' matcher compares against 'undefined'.
+         */
+        toBeUndefined(expectationFailOutput?: any): boolean;
+
+        /**
+         * The 'toContain' matcher works for finding an item in an Array.
+         *
+         * const a = ["foo", "bar", "baz"];
+         * 
+         * expect(a).toContain("bar");
+         * expect(a).not.toContain("quux");
+         */
+        toContain(expected: any, expectationFailOutput?: any): boolean;
+
+        /**
+         * The 'toEqual' matcher compares objects by value.
+         */
+        toEqual(expected: any, expectationFailOutput?: any): boolean;
+
+        /**
+         * 
+         */
+        toHaveBeenCalled(): boolean;
+
+        /**
+         * 
+         */
+        toHaveBeenCalledWith(...params: any[]): boolean;
+
+        /**
+         * 
+         */
+        toHaveBeenCalledTimes(expected: number): boolean;
+
+        /**
+         * The 'toMatch' matcher is for regular expressions.
+         */
+        toMatch(expected: string | RegExp, expectationFailOutput?: any): boolean;
+
+        /**
+         * 
+         */
         toThrow(expected?: any): boolean;
+
+        /**
+         * 
+         */
         toThrowError(message?: string | RegExp): boolean;
+
+        /**
+         * 
+         */
         toThrowError(expected?: new (...args: any[]) => Error, message?: string | RegExp): boolean;
+
+        /**
+         * 
+         */
         not: Matchers;
 
         Any: Any;
@@ -478,7 +567,10 @@ declare namespace jasmine {
         runs(func: SpecFunction): Spec;
         addToQueue(block: Block): void;
         addMatcherResult(result: Result): void;
-        expect(actual: any): any;
+        /**
+         * 
+         */
+        expect(actual: any): jasmine.Matchers;
         waits(timeout: number): Spec;
         waitsFor(latchFunction: SpecFunction, timeoutMessage?: string, timeout?: number): Spec;
         fail(e?: any): void;
@@ -490,6 +582,9 @@ declare namespace jasmine {
         execute(onComplete?: () => void): any;
         addBeforesAndAftersToQueue(): void;
         explodes(): void;
+        /**
+         * 
+         */
         spyOn(obj: any, methodName: string, ignoreMethodDoesntExist: boolean): Spy;
         removeAllSpies(): void;
     }

@@ -1,6 +1,6 @@
 {
   "name": "stemcstudio",
-  "version": "2.21.89",
+  "version": "2.21.90",
   "private": true,
   "description": "Expressing Ideas through Computational Modeling",
   "engines": {
@@ -70,7 +70,7 @@
     "redis": "^2.6.5",
     "reflect-metadata": "0.1.2",
     "rxjs": "5.0.0-beta.6",
-    "serve-favicon": "^2.3.2",
+    "serve-favicon": "^2.4.0",
     "showdown": "^1.6.4",
     "socket.io": "^1.7.3",
     "systemjs": "0.20.4",

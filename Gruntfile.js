@@ -245,35 +245,35 @@ function copies(target) {
             dest: prepend(target, 'jspm.config.js')
         },
         {
-            src: 'museum/jasmine@2.4.1/lib/boot.js',
-            dest: prepend(target, 'vendor/jasmine@2.4.1/lib/boot.js')
+            src: 'museum/jasmine@2.5.2/lib/boot.js',
+            dest: prepend(target, 'vendor/jasmine@2.5.2/lib/boot.js')
         },
         {
-            src: 'museum/jasmine@2.4.1/lib/console.js',
-            dest: prepend(target, 'vendor/jasmine@2.4.1/lib/console.js')
+            src: 'museum/jasmine@2.5.2/lib/console.js',
+            dest: prepend(target, 'vendor/jasmine@2.5.2/lib/console.js')
         },
         {
-            src: 'museum/jasmine@2.4.1/lib/jasmine.css',
-            dest: prepend(target, 'vendor/jasmine@2.4.1/lib/jasmine.css')
+            src: 'museum/jasmine@2.5.2/lib/jasmine.css',
+            dest: prepend(target, 'vendor/jasmine@2.5.2/lib/jasmine.css')
         },
         {
-            src: 'museum/jasmine@2.4.1/lib/jasmine.js',
-            dest: prepend(target, 'vendor/jasmine@2.4.1/lib/jasmine.js')
+            src: 'museum/jasmine@2.5.2/lib/jasmine.js',
+            dest: prepend(target, 'vendor/jasmine@2.5.2/lib/jasmine.js')
         },
         {
-            src: 'museum/jasmine@2.4.1/lib/jasmine-html.js',
-            dest: prepend(target, 'vendor/jasmine@2.4.1/lib/jasmine-html.js')
+            src: 'museum/jasmine@2.5.2/lib/jasmine-html.js',
+            dest: prepend(target, 'vendor/jasmine@2.5.2/lib/jasmine-html.js')
         },
         {
-            src: 'museum/jasmine@2.4.1/lib/jasmine.d.ts',
-            dest: prepend(target, 'vendor/jasmine@2.4.1/lib/jasmine.d.ts')
+            src: 'museum/jasmine@2.5.2/lib/jasmine.d.ts',
+            dest: prepend(target, 'vendor/jasmine@2.5.2/lib/jasmine.d.ts')
         },
         {
-            src: 'museum/jasmine@2.4.1/lib/jasmine_favicon.png',
-            dest: prepend(target, 'vendor/jasmine@2.4.1/lib/jasmine_favicon.png')
+            src: 'museum/jasmine@2.5.2/lib/jasmine_favicon.png',
+            dest: prepend(target, 'vendor/jasmine@2.5.2/lib/jasmine_favicon.png')
         },
         {
-            src: 'museum/jasmine@2.4.1/package.json',
+            src: 'museum/jasmine@2.5.2/package.json',
             dest: prepend(target, 'vendor/jasmine@2.4.1/package.json')
         },
         {

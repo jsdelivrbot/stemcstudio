@@ -19,7 +19,7 @@ app.factory('options', [
         const VERSION_EIGHT = '6.0.6';
         const VERSION_GEOCAS = '1.13.0';
         const VERSION_GLMATRIX = '2.3.2';
-        const VERSION_JASMINE = '2.4.1';
+        const VERSION_JASMINE = '2.5.2';
         const VERSION_JQUERY = '2.1.4';
         const VERSION_JSXGRAPH = '0.99.5';
         const VERSION_NEWTON = '0.0.37';
@@ -273,7 +273,7 @@ app.factory('options', [
             {
                 name: 'jasmine',
                 moniker: 'Jasmine',
-                description: "Behavior-Driven JavaScript.",
+                description: "Behavior-Driven JavaScript",
                 homepage: 'https://jasmine.github.io',
                 version: VERSION_JASMINE,
                 visible: true,
