@@ -49,8 +49,9 @@ export default class MarkdownFoldMode extends FoldMode {
         const maxRow = session.getLength();
         const startRow = row;
         let endRow = row;
-        if (!line.match(this.foldingStartMarker))
-            return;
+        if (!line.match(this.foldingStartMarker)) {
+            return void 0;
+        }
 
         if (line[0] === "`") {
             if (session.bgTokenizer.getState(row) !== "start") {
@@ -106,6 +107,7 @@ export default class MarkdownFoldMode extends FoldMode {
                 return new Range(startRow, startColumn, endRow, endColumn);
             }
         }
+        return void 0;
     }
 }
 

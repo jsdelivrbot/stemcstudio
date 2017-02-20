@@ -2,25 +2,22 @@ import Range from "../../Range";
 import EditSession from "../../EditSession";
 
 /**
- * @class FoldMode
+ *
  */
 export default class FoldMode {
 
     /**
-     * @property foldingStartMarker
-     * @type RegExp
+     *
      */
     foldingStartMarker: RegExp = null;
 
     /**
-     * @property foldingStartMarker
-     * @type RegExp
+     *
      */
     foldingStopMarker: RegExp = null;
 
     /**
-     * @class FoldMode
-     * @constructor
+     *
      */
     constructor() {
         // Do nothing.
@@ -29,11 +26,9 @@ export default class FoldMode {
     /**
      * must return "" if there's no fold, to enable caching
      *
-     * @method getFoldWidget
-     * @param session {EditSession}
-     * @param foldStyle {string} "markbeginend"
-     * @param row {number}
-     * @return {string}
+     * @param session
+     * @param foldStyle "markbeginend"
+     * @param row
      */
     getFoldWidget(session: EditSession, foldStyle: string, row: number): string {
         const line = session.getLine(row);
@@ -47,11 +42,9 @@ export default class FoldMode {
     }
 
     /**
-     * @method getFoldWidgetRange
-     * @param session {EditSession}
-     * @param foldStyle {string}
-     * @param row {number}
-     * @return {Range}
+     * @param session
+     * @param foldStyle
+     * @param row
      */
     getFoldWidgetRange(session: EditSession, foldStyle: string, row: number): Range {
         return null;
@@ -59,17 +52,16 @@ export default class FoldMode {
 
     /**
      * @method indentationBlock
-     * @param session {EditSession}
-     * @param row {number}
-     * @param [column] {number}
-     * @return {Range}
+     * @param session
+     * @param row
+     * @param column
      */
     indentationBlock(session: EditSession, row: number, column?: number): Range {
         const re = /\S/;
         const line = session.getLine(row);
         const startLevel = line.search(re);
         if (startLevel === -1) {
-            return;
+            return void 0;
         }
 
         const startColumn = column || line.length;
@@ -95,23 +87,22 @@ export default class FoldMode {
             const endColumn = session.getLine(endRow).length;
             return new Range(startRow, startColumn, endRow, endColumn);
         }
+        return void 0;
     }
 
     /**
-     * @method openingBracketBlock
-     * @param session {EditSession}
-     * @param bracket {string}
-     * @param row {number}
-     * @param column {number}
-     * @param [typeRe] {RegExp}
-     * @return {Range}
+     * @param session
+     * @param bracket
+     * @param row
+     * @param column
+     * @param typeRe
      */
     openingBracketBlock(session: EditSession, bracket: string, row: number, column: number, typeRe?: RegExp): Range {
         const start = { row: row, column: column + 1 };
         const end = session.findClosingBracket(bracket, start, typeRe);
         if (!end) {
             // We cant find the close to the block, so the range is undefined.
-            return;
+            return void 0;
         }
 
         let fw: string = session.foldWidgets[end.row];
@@ -127,20 +118,18 @@ export default class FoldMode {
     }
 
     /**
-     * @method closingBracketBlock
-     * @param session {EditSession}
-     * @param bracket {string}
-     * @param row {number}
-     * @param column {number}
-     * @param [typeRe] {RegExp}
-     * @return {Range}
+     * @param session
+     * @param bracket
+     * @param row
+     * @param column
+     * @param typeRe
      */
     closingBracketBlock(session: EditSession, bracket: string, row: number, column: number, typeRe?: RegExp): Range {
         const end = { row: row, column: column };
         const start = session.findOpeningBracket(bracket, end);
 
         if (!start) {
-            return;
+            return void 0;
         }
 
         start.column++;

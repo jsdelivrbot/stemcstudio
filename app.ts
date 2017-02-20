@@ -118,7 +118,7 @@ app.get('/authenticate/:code', (req: express.Request, res: express.Response) => 
             return res.json(err);
         }
         else {
-            res.json(token ? { "token": token } : { "error": "bad_code" });
+            return res.json(token ? { "token": token } : { "error": "bad_code" });
         }
     });
 });

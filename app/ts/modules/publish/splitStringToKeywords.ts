@@ -9,13 +9,16 @@ export default function splitStringToKeywords(separator: string, value: string):
     if (isString(value)) {
         value = value.trim();
         if (value.length > 0) {
-            return value.split(separator).map(function(s) { return s.trim(); });
+            return value.split(separator).map(function (s) { return s.trim(); });
         }
         else {
             return [];
         }
     }
     else if (isUndefined(value)) {
-        return void 0;
+        return [];
+    }
+    else {
+        return [];
     }
 }

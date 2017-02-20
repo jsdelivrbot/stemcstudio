@@ -523,7 +523,9 @@ const commands: Command[] = [
         exec: function (editor: Editor) {
             if (editor.selection.isEmpty()) {
                 editor.remove("left");
-            } else {
+                return void 0;
+            }
+            else {
                 return false;
             }
         },

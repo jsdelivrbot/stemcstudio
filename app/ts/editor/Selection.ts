@@ -139,9 +139,7 @@ export default class Selection implements EventBus<any, Selection> {
     /**
      * Removes a Range containing pos (if it exists).
      *
-     * @method substractPoint
-     * @param pos {Position} The position to remove.
-     * @return {Range}
+     * @param pos The position to remove.
      */
     substractPoint(pos: Position): Range {
         const removed: Range[] = this.rangeList.substractPoint(pos);
@@ -149,13 +147,11 @@ export default class Selection implements EventBus<any, Selection> {
             this.$onRemoveRange(removed);
             return removed[0];
         }
+        return void 0;
     };
 
     /**
      * Returns a concatenation of all the ranges.
-     *
-     * @method getAllRanges
-     * @returns {Range[]}
      */
     public getAllRanges(): Range[] {
         return this.rangeCount ? this.rangeList.ranges.concat() : [this.getRange()];

@@ -218,6 +218,7 @@ function findTagName(session: EditSession, pos: Position): string | undefined {
     if (token) {
         return token.value;
     }
+    return void 0;
 }
 
 function findAttributeName(session: EditSession, pos: Position): string | undefined {
@@ -229,6 +230,7 @@ function findAttributeName(session: EditSession, pos: Position): string | undefi
     if (token) {
         return token.value;
     }
+    return void 0;
 }
 
 export default class HtmlCompletions {

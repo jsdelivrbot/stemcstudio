@@ -111,7 +111,7 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
         }
     }
 
-    private $updateAnnotations(delta: Delta) {
+    private $updateAnnotations(delta: Delta): void {
         if (!this.$annotations.length) {
             return;
         }
@@ -268,9 +268,7 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
     }
 
     /**
-     * @method setShowFoldWidgets
-     * @param show {boolean}
-     * @return {void}
+     * @param show
      */
     setShowFoldWidgets(show: boolean): void {
         if (show) {
@@ -285,29 +283,43 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
     }
 
     /**
-     * @method getShowFoldWidgets
-     * @return {boolean}
+     *
      */
     getShowFoldWidgets(): boolean {
         return this.$showFoldWidgets;
     }
 
-    $computePadding(): Padding {
+    /**
+     * Updates and returns a reference to the cached padding property.
+     * Always returns a Padding, but the left and right values may be zero.
+     */
+    private $computePadding(): Padding {
         if (!this.element.firstChild) {
             return { left: 0, right: 0 };
         }
         // FIXME: The firstChild may not be an HTMLElement.
         const style = window.getComputedStyle(<Element>this.element.firstChild);
         this.$padding = {};
-        this.$padding.left = parseInt(style.paddingLeft, 10) + 1 || 0;
-        this.$padding.right = parseInt(style.paddingRight, 10) || 0;
+        if (style.paddingLeft) {
+            this.$padding.left = parseInt(style.paddingLeft, 10) + 1 || 0;
+        }
+        else {
+            this.$padding.left = 0;
+        }
+        if (style.paddingRight) {
+            this.$padding.right = parseInt(style.paddingRight, 10) || 0;
+        }
+        else {
+            this.$padding.right = 0;
+        }
         return this.$padding;
     }
 
     /**
-     * Returns either "markers", "foldWidgets", or undefined.
+     * Determines the region of the gutter corresponding to the supplied point.
+     * Returns either "markers", "foldWidgets", or undefined (if in neither region).
      */
-    getRegion(point: { clientX: number; clientY: number }): 'markers' | 'foldWidgets' {
+    getRegion(point: { clientX: number; clientY: number }): 'markers' | 'foldWidgets' | undefined {
         const padding: Padding = this.$padding || this.$computePadding();
         const rect = this.element.getBoundingClientRect();
         if (point.clientX < padding.left + rect.left) {
@@ -316,5 +328,6 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
         if (this.$showFoldWidgets && point.clientX > rect.right - padding.right) {
             return "foldWidgets";
         }
+        return void 0;
     }
 }

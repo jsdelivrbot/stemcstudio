@@ -568,7 +568,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
      */
     public onResize(force?: boolean, gutterWidth?: number, width?: number, height?: number): number {
         if (this.resizing > 2)
-            return;
+            return void 0;
         else if (this.resizing > 0)
             this.resizing++;
         else
@@ -594,8 +594,10 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         else
             this.$loop.schedule(changes | this.$changes);
 
-        if (this.resizing)
+        if (this.resizing) {
             this.resizing = 0;
+        }
+        return void 0;
     }
 
     private $updateCachedSize(force: boolean, gutterWidth: number, width: number, height: number): number {
@@ -1088,7 +1090,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         }
         if ((!this.session || !this.container.offsetWidth || this.$frozen) || (!changes && !force)) {
             this.$changes |= changes;
-            return;
+            return void 0;
         }
         if (this.$size.$dirty) {
             this.$changes |= changes;
@@ -1159,7 +1161,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
              */
             this.eventBus._signal("afterRender");
 
-            return;
+            return void 0;
         }
 
         // scrolling
@@ -1182,7 +1184,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
              * @event afterRender
              */
             this.eventBus._signal("afterRender");
-            return;
+            return void 0;
         }
 
         if (changes & CHANGE_TEXT) {
@@ -1219,6 +1221,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
          * @event afterRender
          */
         this.eventBus._signal("afterRender");
+        return void 0;
     }
 
     private $autosize() {
@@ -1344,22 +1347,22 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
         return changes;
     }
 
-    private $updateLines() {
+    private $updateLines(): boolean {
         const firstRow = this.$changedLines.firstRow;
         const lastRow = this.$changedLines.lastRow;
         this.$changedLines = null;
 
         const layerConfig = this.layerConfig;
 
-        if (firstRow > layerConfig.lastRow + 1) { return; }
-        if (lastRow < layerConfig.firstRow) { return; }
+        if (firstRow > layerConfig.lastRow + 1) { return void 0; }
+        if (lastRow < layerConfig.firstRow) { return void 0; }
 
         // if the last row is unknown -> redraw everything
         if (lastRow === Infinity) {
             if (this.$showGutter)
                 this.$gutterLayer.update(layerConfig);
             this.textLayer.update(layerConfig);
-            return;
+            return void 0;
         }
 
         // else update only the changed rows
@@ -1697,9 +1700,9 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
             return true;
         if (deltaX < 0 && this.session.getScrollLeft() >= 1 - this.scrollMargin.left)
             return true;
-        if (deltaX > 0 && this.session.getScrollLeft() + this.$size.scrollerWidth
-            - this.layerConfig.width < -1 + this.scrollMargin.right)
+        if (deltaX > 0 && this.session.getScrollLeft() + this.$size.scrollerWidth - this.layerConfig.width < -1 + this.scrollMargin.right)
             return true;
+        return void 0;
     }
 
     pixelToScreenCoordinates(x: number, y: number) {

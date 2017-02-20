@@ -127,6 +127,7 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
             cursor.parentNode.removeChild(cursor);
             return cursor;
         }
+        return void 0;
     }
 
     /**

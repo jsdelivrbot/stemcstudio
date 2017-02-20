@@ -922,14 +922,13 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     /**
      * Adds a dynamic marker to the session.
      *
-     * @method addDynamicMarker
-     * @param marker {Marker} object with update method.
-     * @param [inFront] {boolean} Set to `true` to establish a front marker.
-     * @return {Marker} The added marker
+     * @param marker object with update method.
+     * @param inFront Set to `true` to establish a front marker.
+     * @return The added marker
      */
     private addDynamicMarker<T extends Marker>(marker: T, inFront?: boolean): T {
         if (!marker.update) {
-            return;
+            return void 0;
         }
         const id = this.$markerId++;
         marker.id = id;
@@ -1423,6 +1422,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
             }
             this.screenWidth = longestScreenLine;
         }
+        return void 0;
     }
 
     /**
@@ -1514,8 +1514,9 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      * @param dontSelect If `true`, doesn't select the range of where the change occured.
      */
     public undoChanges(deltaSets: DeltaGroup[], dontSelect?: boolean): Range {
-        if (!deltaSets.length)
-            return;
+        if (!deltaSets.length) {
+            return void 0;
+        }
 
         this.$fromUndo = true;
         let lastUndoRange: Range = null;
@@ -1546,7 +1547,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
      */
     public redoChanges(deltaSets: DeltaGroup[], dontSelect?: boolean): Range {
         if (!deltaSets.length) {
-            return;
+            return void 0;
         }
 
         this.$fromUndo = true;
@@ -2887,21 +2888,20 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     };
     $foldStyle = "markbegin";
 
-    /*
+    /**
      * Looks up a fold at a given row/column. Possible values for side:
      *   -1: ignore a fold if fold.start = row/column
      *   +1: ignore a fold if fold.end = row/column
      *
-     * @method getFoldAt
-     * @param row {number}
-     * @param column {number}
-     * @param [side] {number}
-     * @return {Fold}
+     * @param row
+     * @param column
+     * @param side
      */
     getFoldAt(row: number, column: number, side?: number): Fold {
         const foldLine = this.getFoldLine(row);
-        if (!foldLine)
+        if (!foldLine) {
             return null;
+        }
 
         const folds = foldLine.folds;
         for (let i = 0; i < folds.length; i++) {
@@ -2916,6 +2916,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
                 return fold;
             }
         }
+        return void 0;
     }
 
     /*
@@ -3383,8 +3384,10 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
                 subFolds = this.getFoldsInRangeList([range]);
             }
         }
-        if (folds.length)
+        if (folds.length) {
             return folds;
+        }
+        return void 0;
     }
 
     /*
@@ -3552,6 +3555,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
             range.end.column = iterator.getCurrentTokenColumn() + token.value.length - 2;
             return range;
         }
+        return void 0;
     }
 
     /**
@@ -3688,7 +3692,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     private $toggleFoldWidget(row: number, options: { children?: boolean; all?: boolean; siblings?: boolean }): Range {
         if (!this.getFoldWidget) {
-            return;
+            return void 0;
         }
 
         const type: string = this.getFoldWidget(row);
@@ -3703,7 +3707,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
             else {
                 this.expandFold(fold);
             }
-            return;
+            return void 0;
         }
 
         const range = this.getFoldWidgetRange(row, true);
@@ -3712,7 +3716,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
             const fold = this.getFoldAt(range.start.row, range.start.column, 1);
             if (fold && range.isEqual(fold.range)) {
                 this.removeFold(fold);
-                return;
+                return void 0;
             }
         }
 

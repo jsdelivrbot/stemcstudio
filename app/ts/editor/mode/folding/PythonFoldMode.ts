@@ -21,5 +21,6 @@ export default class PythonFoldMode extends FoldMode {
                 return this.indentationBlock(session, row, match.index + match[2].length);
             return this.indentationBlock(session, row);
         }
+        return void 0;
     }
 }

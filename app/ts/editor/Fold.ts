@@ -68,7 +68,7 @@ export default class Fold extends RangeList {
      */
     addSubFold(fold: Fold): Fold {
         if (this.range.isEqual(fold))
-            return;
+            return void 0;
 
         if (!this.range.containsRange(fold))
             throw new Error("A fold can't intersect already existing fold" + fold.range + this.range);

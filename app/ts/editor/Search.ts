@@ -197,7 +197,7 @@ export default class Search {
 
         if (!re) {
             // Presumably, the boolean is always false?
-            return;
+            return void 0;
         }
 
         const match: RegExpExecArray = (<RegExp>re).exec(input);
@@ -235,14 +235,14 @@ function $matchIterator(session: EditSession, options: SearchOptions): boolean |
     let lineFilter: LineFilter;
     if (options.$isMultiLine) {
         const len = (<RegExp[]>re).length;
-        lineFilter = function (line: string, row: number, offset: number) {
+        lineFilter = function (line: string, row: number, offset: number): true {
             const startIndex = line.search(re[0]);
             if (startIndex === -1)
-                return;
+                return void 0;
             for (let i = 1; i < len; i++) {
                 line = session.getLine(row + i);
                 if (line.search(re[i]) === -1)
-                    return;
+                    return void 0;
             }
 
             const endIndex = line.match(re[len - 1])[0].length;
@@ -256,25 +256,32 @@ function $matchIterator(session: EditSession, options: SearchOptions): boolean |
             else if (offset)
                 range.start.column += offset;
 
-            if (callback(range))
+            if (callback(range)) {
                 return true;
+            }
+            return void 0;
         };
     }
     else if (backwards) {
         lineFilter = function (line: string, row: number, startIndex: number): boolean {
             const matches = getMatchOffsets(line, <RegExp>re);
-            for (let i = matches.length - 1; i >= 0; i--)
-                if (callback(matches[i], row, startIndex))
+            for (let i = matches.length - 1; i >= 0; i--) {
+                if (callback(matches[i], row, startIndex)) {
                     return true;
+                }
+            }
+            return void 0;
         };
     }
     else {
         lineFilter = function (line: string, row: number, startIndex: number): boolean {
             const matches = getMatchOffsets(line, <RegExp>re);
-            for (let i = 0; i < matches.length; i++)
+            for (let i = 0; i < matches.length; i++) {
                 if (callback(matches[i], row, startIndex)) {
                     return true;
                 }
+            }
+            return void 0;
         };
     }
 

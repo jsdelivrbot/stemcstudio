@@ -6,9 +6,12 @@ const hypen = '-';
  * A filter for replacing hyphens and spaces with nothing.
  */
 function contiguous() {
-    return function(input: string) {
+    return function filter(input: string): string {
         if (input) {
             return input.replace(hypen, nothing).replace(space, nothing);
+        }
+        else {
+            return input;
         }
     };
 }

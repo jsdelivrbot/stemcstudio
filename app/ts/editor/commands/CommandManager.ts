@@ -145,7 +145,7 @@ export default class CommandManager implements EventBus<any, CommandManager> {
 
     toggleRecording(editor: Editor): boolean {
         if (this.$inReplay)
-            return;
+            return void 0;
 
         if (editor) {
             editor._emit("changeStatus");
@@ -174,7 +174,7 @@ export default class CommandManager implements EventBus<any, CommandManager> {
 
     replay(editor: Editor): boolean {
         if (this.$inReplay || !this.macro)
-            return;
+            return void 0;
 
         if (this.recording)
             return this.toggleRecording(editor);
@@ -192,9 +192,11 @@ export default class CommandManager implements EventBus<any, CommandManager> {
                     }
                 }
             });
-        } finally {
+        }
+        finally {
             this.$inReplay = false;
         }
+        return void 0;
     }
 
     trimMacro(m: any[]) {

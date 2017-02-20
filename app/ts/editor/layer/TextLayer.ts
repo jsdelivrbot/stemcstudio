@@ -25,8 +25,11 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
     private $padding = 0;
     private EOL_CHAR: string;
 
-    private fontMetrics: FontMetrics;
-    private removeChangeCharacterSizeHandler: () => void;
+    private fontMetrics: FontMetrics | undefined;
+    /**
+     * Used to remove the handler for when the character size changes.
+     */
+    private removeChangeCharacterSizeHandler: (() => void) | undefined;
 
     private session: EditSession;
     private $pollSizeChangesTimer: number;
@@ -41,16 +44,17 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
     private $indentGuideRe: RegExp;
     public config: TextConfig;
     /**
-     * TODO: I don't think that this is used.
+     *
      */
     private $measureNode: Node;
-    private eventBus: EventEmitterClass<any, TextLayer>;
+    /**
+     * 
+     */
+    private readonly eventBus: EventEmitterClass<any, TextLayer>;
     public selectedNode: HTMLElement;
 
     /**
-     * @class TextLayer
-     * @constructor
-     * @param parent {HTMLElement}
+     * @param parent
      */
     constructor(parent: HTMLElement) {
         super(parent, "ace_layer ace_text-layer");
@@ -72,15 +76,14 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
             this.fontMetrics = void 0;
         }
         clearInterval(this.$pollSizeChangesTimer);
-        if (this.$measureNode) {
+        if (this.$measureNode && this.$measureNode.parentNode) {
             this.$measureNode.parentNode.removeChild(this.$measureNode);
         }
         delete this.$measureNode;
     }
 
     /**
-     * @method updateEolChar
-     * @return {boolean}
+     *
      */
     updateEolChar(): boolean {
         const EOL_CHAR = this.session.doc.getNewLineCharacter() === "\n" ? EOL_CHAR_LF : EOL_CHAR_CRLF;
@@ -94,9 +97,7 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
     }
 
     /**
-     * @method setPadding
-     * @param padding {number}
-     * @return {void}
+     * @param padding
      */
     public setPadding(padding: number): void {
         this.$padding = padding;
@@ -104,19 +105,27 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
     }
 
     /**
-     * @method getLineHeight
-     * @return {number}
+     *
      */
     public getLineHeight(): number {
-        return this.fontMetrics.$characterSize.height || 0;
+        if (this.fontMetrics) {
+            return this.fontMetrics.$characterSize.height || 0;
+        }
+        else {
+            throw new Error("Must set font metrics before calling getLineHeight.");
+        }
     }
 
     /**
-     * @method getCharacterWidth
-     * @return {number}
+     *
      */
     public getCharacterWidth(): number {
-        return this.fontMetrics.$characterSize.width || 0;
+        if (this.fontMetrics) {
+            return this.fontMetrics.$characterSize.width || 0;
+        }
+        else {
+            throw new Error("Must set font metrics before calling getCharacterWidth.");
+        }
     }
 
     /**
@@ -136,15 +145,24 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
     }
 
     /**
-     * @method checkForSizeChanges
-     * @return {void}
+     *
      */
     public checkForSizeChanges(): void {
-        this.fontMetrics.checkForSizeChanges();
+        if (this.fontMetrics) {
+            this.fontMetrics.checkForSizeChanges();
+        }
+        else {
+            throw new Error("Must set font metrics before calling checkForSizeChanges.");
+        }
     }
 
     private $pollSizeChanges(): number {
-        return this.$pollSizeChangesTimer = this.fontMetrics.$pollSizeChanges();
+        if (this.fontMetrics) {
+            return this.$pollSizeChangesTimer = this.fontMetrics.$pollSizeChanges();
+        }
+        else {
+            throw new Error();
+        }
     }
 
     /**
@@ -339,13 +357,17 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
         const el = this.element;
         if (oldConfig.firstRow < config.firstRow) {
             for (let row = this.session.getFoldedRowCount(oldConfig.firstRow, config.firstRow - 1); row > 0; row--) {
-                el.removeChild(el.firstChild);
+                if (el.firstChild) {
+                    el.removeChild(el.firstChild);
+                }
             }
         }
 
         if (oldConfig.lastRow > config.lastRow) {
             for (let row = this.session.getFoldedRowCount(config.lastRow + 1, oldConfig.lastRow); row > 0; row--) {
-                el.removeChild(el.lastChild);
+                if (el.lastChild) {
+                    el.removeChild(el.lastChild);
+                }
             }
         }
 
@@ -404,9 +426,7 @@ export default class TextLayer extends AbstractLayer implements Disposable, Even
     }
 
     /**
-     * @method update
-     * @param config {TextConfig}
-     * @return {void}
+     * @param config
      */
     public update(config: TextConfig): void {
 

@@ -5,10 +5,11 @@
         "emitDecoratorMetadata": false,
         "experimentalDecorators": false,
         "noImplicitAny": true,
-        "noImplicitReturns": false,
+        "noImplicitReturns": true,
         "noImplicitThis": true,
         "noUnusedLocals": true,
         "noUnusedParameters": false,
+        "strictNullChecks": false,
         "suppressImplicitAnyIndexErrors": true
     },
     "files": [

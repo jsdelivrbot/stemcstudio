@@ -626,6 +626,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
             if (r.cursor.row === row)
                 return true;
             row = r.cursor.row;
+            return void 0;
         });
 
         if (!ranges.length || sameRowRanges.length === ranges.length - 1) {
@@ -1550,7 +1551,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
 
         const selection = this.getSelectionRange();
         if (selection.isEmpty() || selection.isMultiLine())
-            return;
+            return void 0;
 
         const startOuter = selection.start.column - 1;
         const endOuter = selection.end.column + 1;
@@ -1561,11 +1562,11 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
         // Make sure the outer characters are not part of the word.
         if ((startOuter >= 0 && /^[\w\d]/.test(needle)) ||
             (endOuter <= lineCols && /[\w\d]$/.test(needle)))
-            return;
+            return void 0;
 
         needle = line.substring(selection.start.column, selection.end.column);
         if (!/^[\w\d]+$/.test(needle))
-            return;
+            return void 0;
 
         // When the needle is a string, the return type will be a RegExp.
         // TODO: Split out this functionality for cleaner type safety.
@@ -3391,6 +3392,7 @@ export default class Editor implements Disposable, EventBus<any, Editor> {
             range.end = range.start;
         }
         this.selection.setRange(range);
+        return void 0;
     }
 
     /**
@@ -3798,7 +3800,7 @@ class MouseHandler implements IGestureHandler {
         return this.editor.renderer.screenToTextCoordinates(this.clientX, this.clientY);
     }
 
-    captureMouse(ev: EditorMouseEvent, mouseMoveHandler?: (mouseEvent: MouseEvent) => void) {
+    captureMouse(ev: EditorMouseEvent, mouseMoveHandler?: (mouseEvent: MouseEvent) => void): number {
         this.clientX = ev.clientX;
         this.clientY = ev.clientY;
 
@@ -3871,6 +3873,7 @@ class MouseHandler implements IGestureHandler {
         this.$onCaptureMouseMove = onMouseMove;
         this.releaseMouse = capture(this.editor.container, onMouseMove, onCaptureEnd);
         timerId = window.setInterval(onCaptureInterval, 20);
+        return void 0;
     }
 
     cancelContextMenu(): void {

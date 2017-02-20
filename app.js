@@ -81,7 +81,7 @@ app.get('/authenticate/:code', function (req, res) {
             return res.json(err);
         }
         else {
-            res.json(token ? { "token": token } : { "error": "bad_code" });
+            return res.json(token ? { "token": token } : { "error": "bad_code" });
         }
     });
 });

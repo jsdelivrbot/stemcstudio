@@ -118,9 +118,9 @@ export default class TextMode implements LanguageMode {
         let minIndent = Infinity;
         const tabSize = session.getTabSize();
         let insertAtTabStop = false;
-        let comment: (line: string, i: number) => any;
-        let uncomment: (line: string, i: number) => any;
-        let testRemove: (line: string, i: number) => any;
+        let comment: (line: string, i: number) => void;
+        let uncomment: (line: string, i: number) => void;
+        let testRemove: (line: string, i: number) => boolean;
         let lineCommentStart: string;
 
         if (!this.lineCommentStart) {
@@ -132,7 +132,7 @@ export default class TextMode implements LanguageMode {
             const regexpStart = new RegExp("^(\\s*)(?:" + escapeRegExp(lineCommentStart) + ")");
             const regexpEnd = new RegExp("(?:" + escapeRegExp(lineCommentEnd) + ")\\s*$");
 
-            comment = function (line: string, i: number) {
+            comment = function (line: string, i: number): void {
                 if (testRemove(line, i))
                     return;
                 if (!ignoreBlankLines || /\S/.test(line)) {
@@ -141,7 +141,7 @@ export default class TextMode implements LanguageMode {
                 }
             };
 
-            uncomment = function (line: string, i: number) {
+            uncomment = function (line: string, i: number): void {
                 let m: RegExpMatchArray;
                 if (m = line.match(regexpEnd))
                     doc.removeInLine(i, line.length - m[0].length, line.length);
@@ -149,7 +149,7 @@ export default class TextMode implements LanguageMode {
                     doc.removeInLine(i, m[1].length, m[0].length);
             };
 
-            testRemove = function (line: string, row: number) {
+            testRemove = function (line: string, row: number): boolean {
                 if (regexpStart.test(line))
                     return true;
                 const tokens = session.getTokens(row);
@@ -157,6 +157,7 @@ export default class TextMode implements LanguageMode {
                     if (tokens[i].type === 'comment')
                         return true;
                 }
+                return void 0;
             };
         }
         else {
@@ -248,6 +249,7 @@ export default class TextMode implements LanguageMode {
             minIndent = Math.floor(minIndent / tabSize) * tabSize;
 
         iter(shouldRemove ? uncomment : comment);
+        return void 0;
     }
 
     /**
@@ -428,6 +430,7 @@ export default class TextMode implements LanguageMode {
                 }
             }
         }
+        return void 0;
     }
 
     getKeywords(append: boolean): string[] {

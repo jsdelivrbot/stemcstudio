@@ -86,6 +86,7 @@ export default class RangeList {
         if (i >= 0) {
             return this.ranges.splice(i, 1);
         }
+        return void 0;
     }
 
     /**
@@ -139,6 +140,7 @@ export default class RangeList {
         if (i >= 0) {
             return this.ranges[i];
         }
+        return void 0;
     }
 
     clipRows(startRow: number, endRow: number): Range[] {

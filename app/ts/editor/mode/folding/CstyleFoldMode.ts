@@ -59,7 +59,7 @@ export default class CstyleFoldMode extends FoldMode {
         }
 
         if (foldStyle === "markbegin") {
-            return;
+            return void 0;
         }
 
         match = line.match(this.foldingStopMarker);
@@ -72,7 +72,9 @@ export default class CstyleFoldMode extends FoldMode {
 
             return session.getCommentFoldRange(row, i, -1);
         }
+        return void 0;
     }
+
     getSectionRange(session: EditSession, row: number): Range {
         let line = session.getLine(row);
         const startIndent = line.search(/\S/);

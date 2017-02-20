@@ -153,6 +153,7 @@ export default class TextInput {
                 catch (e) {
                     // Do nothing.
                 }
+                return void 0;
             };
         }
         const onCompositionUpdate = () => {
@@ -305,7 +306,7 @@ export default class TextInput {
         const handleClipboardData = function handleClipboardData(e: ClipboardEvent, data?: string): boolean | string {
             const clipboardData: DataTransfer = e.clipboardData || window['clipboardData'];
             if (!clipboardData || BROKEN_SETDATA)
-                return;
+                return void 0;
             // using "Text" doesn't work on legacy webkit but ie needs it
             // TODO are there other browsers that require "Text"?
             const mime = USE_IE_MIME_TYPE ? "Text" : "text/plain";

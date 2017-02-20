@@ -1872,6 +1872,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         }
         else {
             console.warn("No worries, you are already disconnected.");
+            return void 0;
         }
     }
 

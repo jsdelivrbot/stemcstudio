@@ -123,6 +123,7 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
                     else {
                         return [value];
                     }
+                    return void 0;
                 }
             },
             {
@@ -652,6 +653,7 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
             s.replaceAfter = s.endTriggerRe ? s.endTriggerRe.exec(after)[0] : "";
             return s;
         }
+        return void 0;
     }
 
     /**

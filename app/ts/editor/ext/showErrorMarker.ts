@@ -50,7 +50,7 @@ function binarySearch(array: Annotation[], needle: { row: number; column: number
 function findAnnotations(session: EditSession, row: number, direction: number): Annotation[] {
     const annotations = session.getAnnotations().sort(comparePoints);
     if (!annotations.length)
-        return;
+        return void 0;
 
     let i = binarySearch(annotations, { row: row, column: -1 }, comparePoints);
     if (i < 0)
@@ -63,7 +63,7 @@ function findAnnotations(session: EditSession, row: number, direction: number): 
 
     let annotation = annotations[i];
     if (!annotation || !direction)
-        return;
+        return void 0;
 
     if (annotation.row === row) {
         do {
@@ -157,6 +157,7 @@ export default function showErrorMarker(editor: Editor, direction: number): void
             w.destroy();
             return { command: null };
         }
+        return void 0;
     };
 
     w.destroy = function () {

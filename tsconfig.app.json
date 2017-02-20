@@ -10,7 +10,7 @@
         "pretty": false,
         "removeComments": true,
         "noImplicitAny": true,
-        "noImplicitReturns": false,
+        "noImplicitReturns": true,
         "noImplicitThis": true,
         "noLib": true,
         "noUnusedLocals": true,

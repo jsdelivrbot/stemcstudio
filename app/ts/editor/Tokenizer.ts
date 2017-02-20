@@ -26,6 +26,7 @@ function $applyToken(this: Rule, str: string): Token[] {
     }
     else {
         console.warn("expecting rule.token to be a function.");
+        return void 0;
     }
 }
 

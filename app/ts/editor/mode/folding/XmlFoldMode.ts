@@ -157,7 +157,7 @@ export default class XmlFoldMode extends FoldMode {
         return null;
     }
 
-    _pop(stack: Tag[], tag: Tag): Tag {
+    private _pop(stack: Tag[], tag: Tag): Tag {
         while (stack.length) {
 
             const top = stack[stack.length - 1];
@@ -165,15 +165,17 @@ export default class XmlFoldMode extends FoldMode {
                 return stack.pop();
             }
             else if (this.optionalEndTags.hasOwnProperty(tag.tagName)) {
-                return;
+                return null;
             }
             else if (this.optionalEndTags.hasOwnProperty(top.tagName)) {
                 stack.pop();
                 continue;
-            } else {
+            }
+            else {
                 return null;
             }
         }
+        return null;
     }
 
     getFoldWidgetRange(session: EditSession, foldStyle: string, row: number): Range {
@@ -244,6 +246,7 @@ export default class XmlFoldMode extends FoldMode {
                 }
             }
         }
+        return void 0;
     }
 }
 

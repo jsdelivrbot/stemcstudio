@@ -59,244 +59,272 @@ export default class CstyleBehaviour extends Behaviour {
      */
     constructor() {
         super();
-        this.add("braces", "insertion", function (this: BehaviorCallbackThis, state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] } {
-            const cursor = editor.getCursorPosition();
-            const line = session.doc.getLine(cursor.row);
-            if (text === '{') {
-                initContext(editor);
-                const selection = editor.getSelectionRange();
-                const selected = session.doc.getTextRange(selection);
-                if (selected !== "" && selected !== "{" && editor.getWrapBehavioursEnabled()) {
-                    return {
-                        text: '{' + selected + '}',
-                        selection: void 0
-                    };
-                } else if (CstyleBehaviour.isSaneInsertion(editor, session)) {
-                    if (/[\]\}\)]/.test(line[cursor.column]) || editor.inMultiSelectMode) {
-                        CstyleBehaviour.recordAutoInsert(editor, session, "}");
-                        return {
-                            text: '{}',
-                            selection: [1, 1]
-                        };
-                    } else {
-                        CstyleBehaviour.recordMaybeInsert(editor, session, "{");
-                        return {
-                            text: '{',
-                            selection: [1, 1]
-                        };
-                    }
-                }
-            }
-            else if (text === '}') {
-                initContext(editor);
-                const rightChar = line.substring(cursor.column, cursor.column + 1);
-                if (rightChar === '}') {
-                    const matching = session.findOpeningBracket('}', { column: cursor.column + 1, row: cursor.row });
-                    if (matching !== null && CstyleBehaviour.isAutoInsertedClosing(cursor, line, text)) {
-                        CstyleBehaviour.popAutoInsertedClosing();
-                        return { text: '', selection: [1, 1] };
-                    }
-                }
-            }
-            else if (text === "\n" || text === "\r\n") {
-                initContext(editor);
-                let closing = "";
-                if (CstyleBehaviour.isMaybeInsertedClosing(cursor, line)) {
-                    closing = stringRepeat("}", context.maybeInsertedBrackets);
-                    CstyleBehaviour.clearMaybeInsertedClosing();
-                }
-                const rightChar = line.substring(cursor.column, cursor.column + 1);
-                let next_indent: string;
-                if (rightChar === '}') {
-                    const openBracePos = session.findMatchingBracket({ row: cursor.row, column: cursor.column + 1 }, '}');
-                    if (!openBracePos)
-                        return null;
-                    next_indent = this.$getIndent(session.getLine(openBracePos.row));
-                }
-                else if (closing) {
-                    next_indent = this.$getIndent(line);
-                }
-                else {
-                    CstyleBehaviour.clearMaybeInsertedClosing();
-                    return;
-                }
-                const indent = next_indent + session.getTabString();
-
-                return {
-                    text: '\n' + indent + '\n' + next_indent + closing,
-                    selection: [1, indent.length, 1, indent.length]
-                };
-            } else {
-                CstyleBehaviour.clearMaybeInsertedClosing();
-            }
-        });
-
-        this.add("braces", "deletion", function (this: void, state: string, action: string, editor: Editor, session: EditSession, range: Range) {
-            const selected: string = session.doc.getTextRange(range);
-            if (!range.isMultiLine() && selected === '{') {
-                initContext(editor);
-                const line = session.doc.getLine(range.start.row);
-                const rightChar = line.substring(range.end.column, range.end.column + 1);
-                if (rightChar === '}') {
-                    range.end.column++;
-                    return range;
-                }
-                else {
-                    context.maybeInsertedBrackets--;
-                }
-            }
-        });
-
-        this.add("parens", "insertion", function (this: void, state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] } {
-            if (text === '(') {
-                initContext(editor);
-                const selectionRange = editor.getSelectionRange();
-                const selected: string = session.doc.getTextRange(selectionRange);
-                if (selected !== "" && editor.getWrapBehavioursEnabled()) {
-                    return { text: '(' + selected + ')', selection: void 0 };
-                }
-                else if (CstyleBehaviour.isSaneInsertion(editor, session)) {
-                    CstyleBehaviour.recordAutoInsert(editor, session, ")");
-                    return { text: '()', selection: [1, 1] };
-                }
-            }
-            else if (text === ')') {
-                initContext(editor);
+        this.add("braces", "insertion",
+            function (this: BehaviorCallbackThis, state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] } {
                 const cursor = editor.getCursorPosition();
                 const line = session.doc.getLine(cursor.row);
-                const rightChar = line.substring(cursor.column, cursor.column + 1);
-                if (rightChar === ')') {
-                    const matching = session.findOpeningBracket(')', { column: cursor.column + 1, row: cursor.row });
-                    if (matching !== null && CstyleBehaviour.isAutoInsertedClosing(cursor, line, text)) {
-                        CstyleBehaviour.popAutoInsertedClosing();
-                        return { text: '', selection: [1, 1] };
+                if (text === '{') {
+                    initContext(editor);
+                    const selection = editor.getSelectionRange();
+                    const selected = session.doc.getTextRange(selection);
+                    if (selected !== "" && selected !== "{" && editor.getWrapBehavioursEnabled()) {
+                        return {
+                            text: '{' + selected + '}',
+                            selection: void 0
+                        };
                     }
-                }
-            }
-        });
-
-        this.add("parens", "deletion", function (this: void, state: string, action: string, editor: Editor, session: EditSession, range: Range) {
-            const selected: string = session.doc.getTextRange(range);
-            if (!range.isMultiLine() && selected === '(') {
-                initContext(editor);
-                const line = session.doc.getLine(range.start.row);
-                const rightChar = line.substring(range.start.column + 1, range.start.column + 2);
-                if (rightChar === ')') {
-                    range.end.column++;
-                    return range;
-                }
-            }
-        });
-
-        this.add("brackets", "insertion", function (this: void, state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] } {
-            if (text === '[') {
-                initContext(editor);
-                const selectionRange: Range = editor.getSelectionRange();
-                const selected: string = session.doc.getTextRange(selectionRange);
-                if (selected !== "" && editor.getWrapBehavioursEnabled()) {
-                    return { text: '[' + selected + ']', selection: void 0 };
-                }
-                else if (CstyleBehaviour.isSaneInsertion(editor, session)) {
-                    CstyleBehaviour.recordAutoInsert(editor, session, "]");
-                    return { text: '[]', selection: [1, 1] };
-                }
-            }
-            else if (text === ']') {
-                initContext(editor);
-                const cursor = editor.getCursorPosition();
-                const line = session.doc.getLine(cursor.row);
-                const rightChar = line.substring(cursor.column, cursor.column + 1);
-                if (rightChar === ']') {
-                    const matching = session.findOpeningBracket(']', { column: cursor.column + 1, row: cursor.row });
-                    if (matching !== null && CstyleBehaviour.isAutoInsertedClosing(cursor, line, text)) {
-                        CstyleBehaviour.popAutoInsertedClosing();
-                        return { text: '', selection: [1, 1] };
-                    }
-                }
-            }
-        });
-
-        this.add("brackets", "deletion", function (this: void, state: string, action: string, editor: Editor, session: EditSession, range: Range): Range {
-            const selected: string = session.doc.getTextRange(range);
-            if (!range.isMultiLine() && selected === '[') {
-                initContext(editor);
-                const line = session.doc.getLine(range.start.row);
-                const rightChar = line.substring(range.start.column + 1, range.start.column + 2);
-                if (rightChar === ']') {
-                    range.end.column++;
-                    return range;
-                }
-            }
-        });
-
-        this.add("string_dquotes", "insertion", function (this: void, state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] } {
-            if (text === '"' || text === "'") {
-                initContext(editor);
-                const quote = text;
-                const selection = editor.getSelectionRange();
-                const selected = session.doc.getTextRange(selection);
-                if (selected !== "" && selected !== "'" && selected !== '"' && editor.getWrapBehavioursEnabled()) {
-                    return { text: quote + selected + quote, selection: void 0 };
-                }
-                else {
-                    const cursor = editor.getCursorPosition();
-                    const line = session.doc.getLine(cursor.row);
-                    const leftChar = line.substring(cursor.column - 1, cursor.column);
-
-                    // We're escaped.
-                    if (leftChar === '\\') {
-                        return null;
-                    }
-
-                    // Find what token we're inside.
-                    const tokens: Token[] = session.getTokens(selection.start.row);
-                    let col = 0;
-                    let token: Token;
-                    let quotepos = -1; // Track whether we're inside an open quote.
-
-                    for (let x = 0; x < tokens.length; x++) {
-                        token = tokens[x];
-                        if (token.type === "string") {
-                            quotepos = -1;
+                    else if (CstyleBehaviour.isSaneInsertion(editor, session)) {
+                        if (/[\]\}\)]/.test(line[cursor.column]) || editor.inMultiSelectMode) {
+                            CstyleBehaviour.recordAutoInsert(editor, session, "}");
+                            return {
+                                text: '{}',
+                                selection: [1, 1]
+                            };
                         }
-                        else if (quotepos < 0) {
-                            quotepos = token.value.indexOf(quote);
+                        else {
+                            CstyleBehaviour.recordMaybeInsert(editor, session, "{");
+                            return {
+                                text: '{',
+                                selection: [1, 1]
+                            };
                         }
-                        if ((token.value.length + col) > selection.start.column) {
-                            break;
-                        }
-                        col += tokens[x].value.length;
                     }
-
-                    // Try and be smart about when we auto insert.
-                    if (!token || (quotepos < 0 && token.type !== "comment" && (token.type !== "string" || ((selection.start.column !== token.value.length + col - 1) && token.value.lastIndexOf(quote) === token.value.length - 1)))) {
-                        if (!CstyleBehaviour.isSaneInsertion(editor, session))
-                            return;
-                        return { text: quote + quote, selection: [1, 1] };
-                    }
-                    else if (token && token.type === "string") {
-                        // Ignore input and move right one if we're typing over the closing quote.
-                        const rightChar = line.substring(cursor.column, cursor.column + 1);
-                        if (rightChar === quote) {
+                }
+                else if (text === '}') {
+                    initContext(editor);
+                    const rightChar = line.substring(cursor.column, cursor.column + 1);
+                    if (rightChar === '}') {
+                        const matching = session.findOpeningBracket('}', { column: cursor.column + 1, row: cursor.row });
+                        if (matching !== null && CstyleBehaviour.isAutoInsertedClosing(cursor, line, text)) {
+                            CstyleBehaviour.popAutoInsertedClosing();
                             return { text: '', selection: [1, 1] };
                         }
                     }
                 }
-            }
-        });
+                else if (text === "\n" || text === "\r\n") {
+                    initContext(editor);
+                    let closing = "";
+                    if (CstyleBehaviour.isMaybeInsertedClosing(cursor, line)) {
+                        closing = stringRepeat("}", context.maybeInsertedBrackets);
+                        CstyleBehaviour.clearMaybeInsertedClosing();
+                    }
+                    const rightChar = line.substring(cursor.column, cursor.column + 1);
+                    let next_indent: string;
+                    if (rightChar === '}') {
+                        const openBracePos = session.findMatchingBracket({ row: cursor.row, column: cursor.column + 1 }, '}');
+                        if (!openBracePos)
+                            return null;
+                        next_indent = this.$getIndent(session.getLine(openBracePos.row));
+                    }
+                    else if (closing) {
+                        next_indent = this.$getIndent(line);
+                    }
+                    else {
+                        CstyleBehaviour.clearMaybeInsertedClosing();
+                        return void 0;
+                    }
+                    const indent = next_indent + session.getTabString();
 
-        this.add("string_dquotes", "deletion", function (this: void, state: string, action: string, editor: Editor, session: EditSession, range: Range) {
-            const selected: string = session.doc.getTextRange(range);
-            if (!range.isMultiLine() && (selected === '"' || selected === "'")) {
-                initContext(editor);
-                const line = session.doc.getLine(range.start.row);
-                const rightChar = line.substring(range.start.column + 1, range.start.column + 2);
-                if (rightChar === selected) {
-                    range.end.column++;
-                    return range;
+                    return {
+                        text: '\n' + indent + '\n' + next_indent + closing,
+                        selection: [1, indent.length, 1, indent.length]
+                    };
                 }
+                else {
+                    CstyleBehaviour.clearMaybeInsertedClosing();
+                }
+                return void 0;
             }
-        });
+        );
+
+        this.add("braces", "deletion",
+            function callback(this: void, state: string, action: string, editor: Editor, session: EditSession, range: Range): Range {
+                const selected: string = session.doc.getTextRange(range);
+                if (!range.isMultiLine() && selected === '{') {
+                    initContext(editor);
+                    const line = session.doc.getLine(range.start.row);
+                    const rightChar = line.substring(range.end.column, range.end.column + 1);
+                    if (rightChar === '}') {
+                        range.end.column++;
+                        return range;
+                    }
+                    else {
+                        context.maybeInsertedBrackets--;
+                    }
+                }
+                return void 0;
+            }
+        );
+
+        this.add("parens", "insertion",
+            function callback(this: void, state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] } {
+                if (text === '(') {
+                    initContext(editor);
+                    const selectionRange = editor.getSelectionRange();
+                    const selected: string = session.doc.getTextRange(selectionRange);
+                    if (selected !== "" && editor.getWrapBehavioursEnabled()) {
+                        return { text: '(' + selected + ')', selection: void 0 };
+                    }
+                    else if (CstyleBehaviour.isSaneInsertion(editor, session)) {
+                        CstyleBehaviour.recordAutoInsert(editor, session, ")");
+                        return { text: '()', selection: [1, 1] };
+                    }
+                }
+                else if (text === ')') {
+                    initContext(editor);
+                    const cursor = editor.getCursorPosition();
+                    const line = session.doc.getLine(cursor.row);
+                    const rightChar = line.substring(cursor.column, cursor.column + 1);
+                    if (rightChar === ')') {
+                        const matching = session.findOpeningBracket(')', { column: cursor.column + 1, row: cursor.row });
+                        if (matching !== null && CstyleBehaviour.isAutoInsertedClosing(cursor, line, text)) {
+                            CstyleBehaviour.popAutoInsertedClosing();
+                            return { text: '', selection: [1, 1] };
+                        }
+                    }
+                }
+                return void 0;
+            }
+        );
+
+        this.add("parens", "deletion",
+            function callback(this: void, state: string, action: string, editor: Editor, session: EditSession, range: Range): Range {
+                const selected: string = session.doc.getTextRange(range);
+                if (!range.isMultiLine() && selected === '(') {
+                    initContext(editor);
+                    const line = session.doc.getLine(range.start.row);
+                    const rightChar = line.substring(range.start.column + 1, range.start.column + 2);
+                    if (rightChar === ')') {
+                        range.end.column++;
+                        return range;
+                    }
+                }
+                return void 0;
+            }
+        );
+
+        this.add("brackets", "insertion",
+            function (this: void, state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] } {
+                if (text === '[') {
+                    initContext(editor);
+                    const selectionRange: Range = editor.getSelectionRange();
+                    const selected: string = session.doc.getTextRange(selectionRange);
+                    if (selected !== "" && editor.getWrapBehavioursEnabled()) {
+                        return { text: '[' + selected + ']', selection: void 0 };
+                    }
+                    else if (CstyleBehaviour.isSaneInsertion(editor, session)) {
+                        CstyleBehaviour.recordAutoInsert(editor, session, "]");
+                        return { text: '[]', selection: [1, 1] };
+                    }
+                }
+                else if (text === ']') {
+                    initContext(editor);
+                    const cursor = editor.getCursorPosition();
+                    const line = session.doc.getLine(cursor.row);
+                    const rightChar = line.substring(cursor.column, cursor.column + 1);
+                    if (rightChar === ']') {
+                        const matching = session.findOpeningBracket(']', { column: cursor.column + 1, row: cursor.row });
+                        if (matching !== null && CstyleBehaviour.isAutoInsertedClosing(cursor, line, text)) {
+                            CstyleBehaviour.popAutoInsertedClosing();
+                            return { text: '', selection: [1, 1] };
+                        }
+                    }
+                }
+                return void 0;
+            }
+        );
+
+        this.add("brackets", "deletion",
+            function callback(this: void, state: string, action: string, editor: Editor, session: EditSession, range: Range): Range {
+                const selected: string = session.doc.getTextRange(range);
+                if (!range.isMultiLine() && selected === '[') {
+                    initContext(editor);
+                    const line = session.doc.getLine(range.start.row);
+                    const rightChar = line.substring(range.start.column + 1, range.start.column + 2);
+                    if (rightChar === ']') {
+                        range.end.column++;
+                        return range;
+                    }
+                }
+                return void 0;
+            }
+        );
+
+        this.add("string_dquotes", "insertion",
+            function callback(this: void, state: string, action: string, editor: Editor, session: EditSession, text: string): { text: string; selection: number[] } {
+                if (text === '"' || text === "'") {
+                    initContext(editor);
+                    const quote = text;
+                    const selection = editor.getSelectionRange();
+                    const selected = session.doc.getTextRange(selection);
+                    if (selected !== "" && selected !== "'" && selected !== '"' && editor.getWrapBehavioursEnabled()) {
+                        return { text: quote + selected + quote, selection: void 0 };
+                    }
+                    else {
+                        const cursor = editor.getCursorPosition();
+                        const line = session.doc.getLine(cursor.row);
+                        const leftChar = line.substring(cursor.column - 1, cursor.column);
+
+                        // We're escaped.
+                        if (leftChar === '\\') {
+                            return null;
+                        }
+
+                        // Find what token we're inside.
+                        const tokens: Token[] = session.getTokens(selection.start.row);
+                        let col = 0;
+                        let token: Token;
+                        let quotepos = -1; // Track whether we're inside an open quote.
+
+                        for (let x = 0; x < tokens.length; x++) {
+                            token = tokens[x];
+                            if (token.type === "string") {
+                                quotepos = -1;
+                            }
+                            else if (quotepos < 0) {
+                                quotepos = token.value.indexOf(quote);
+                            }
+                            if ((token.value.length + col) > selection.start.column) {
+                                break;
+                            }
+                            col += tokens[x].value.length;
+                        }
+
+                        // Try and be smart about when we auto insert.
+                        if (!token || (quotepos < 0 && token.type !== "comment" && (token.type !== "string" || ((selection.start.column !== token.value.length + col - 1) && token.value.lastIndexOf(quote) === token.value.length - 1)))) {
+                            if (!CstyleBehaviour.isSaneInsertion(editor, session)) {
+                                return void 0;
+                            }
+                            return { text: quote + quote, selection: [1, 1] };
+                        }
+                        else if (token && token.type === "string") {
+                            // Ignore input and move right one if we're typing over the closing quote.
+                            const rightChar = line.substring(cursor.column, cursor.column + 1);
+                            if (rightChar === quote) {
+                                return { text: '', selection: [1, 1] };
+                            }
+                        }
+                    }
+                }
+                return void 0;
+            }
+        );
+
+        this.add("string_dquotes", "deletion",
+            function callback(this: void, state: string, action: string, editor: Editor, session: EditSession, range: Range): Range {
+                const selected: string = session.doc.getTextRange(range);
+                if (!range.isMultiLine() && (selected === '"' || selected === "'")) {
+                    initContext(editor);
+                    const line = session.doc.getLine(range.start.row);
+                    const rightChar = line.substring(range.start.column + 1, range.start.column + 2);
+                    if (rightChar === selected) {
+                        range.end.column++;
+                        return range;
+                    }
+                }
+                return void 0;
+            }
+        );
     }
     static isSaneInsertion(editor: Editor, session: EditSession): boolean {
         const cursor = editor.getCursorPosition();
