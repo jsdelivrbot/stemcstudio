@@ -116,6 +116,23 @@ function stringifyInfo(metaInfo: IDoodleConfig): string {
  * All editors (files) are loaded in the workspace but only TypeScript
  * files are offered to the language service.
  */
+function isJavaScript(path: string): boolean {
+    const period = path.lastIndexOf('.');
+    if (period >= 0) {
+        const extension = path.substring(period + 1);
+        switch (extension) {
+            case 'js': {
+                return true;
+            }
+            default: {
+                return false;
+            }
+        }
+    }
+    console.warn(`isJavaScript('${path}') can't figure that one out.`);
+    return false;
+}
+
 function isTypeScript(path: string): boolean {
     const period = path.lastIndexOf('.');
     if (period >= 0) {
@@ -134,15 +151,26 @@ function isTypeScript(path: string): boolean {
 }
 
 /**
- * Synchronize after 0.25 seconds of inactivity.
+ * Synchronize after 0.75 seconds of inactivity.
  */
-const SYNCH_DELAY_MILLISECONDS = 250;
+const SYNCH_DELAY_MILLISECONDS = 750;
+
+/**
+ * Semantic validation waits 0.5 second to avoid flickering.
+ */
+const SEMANTIC_DELAY_MILLISECONDS = 500;
 
 /**
  * Persist to Local Storage after 2 seconds of inactivity.
  */
 const STORE_DELAY_MILLISECONDS = 2000;
 
+/**
+ * debounce is used for throttling...
+ * 1. Semantic Validation.
+ * 2. Persistence of changes to local storage.
+ * 3. Distributed synchronization.
+ */
 function debounce(next: () => any, delay: number) {
 
     /**
@@ -234,7 +262,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
     private inFlight = 0;
 
     private quickin: { [path: string]: QuickInfoTooltip } = {};
-    private annotationHandlers: { [path: string]: (event: any) => any } = {};
+    private annotationHandlers: { [path: string]: (event: { data: Annotation[], type: 'annotation' }) => any } = {};
 
     private refMarkers: number[] = [];
 
@@ -551,7 +579,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         }
 
         // This makes more sense; it is editor specific.
-        if (isTypeScript(path)) {
+        if (isTypeScript(path) || isJavaScript(path)) {
             // Enable auto completion using the Workspace.
             // The command seems to be required on order to enable method completion.
             // However, it has the side-effect of enabling global completions (Ctrl-Space, etc).
@@ -582,7 +610,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
 
             this.setFileEditor(path, void 0);
 
-            if (isTypeScript(path)) {
+            if (isTypeScript(path) || isJavaScript(path)) {
                 // Remove QuickInfo
                 if (this.quickin[path]) {
                     const quickInfo = this.quickin[path];
@@ -608,16 +636,32 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             return;
         }
 
-        if (isTypeScript(path)) {
+        if (isTypeScript(path) || isJavaScript(path)) {
             if (!this.annotationHandlers[path]) {
+
+                /**
+                 * Wrapper to throttle requests for semantic errors.
+                 */
+                const requestSemanticDiagnostics = debounce(() => {
+                    this.semanticDiagnostics(function (err) {
+                        if (err) {
+                            console.warn(`Error returned from request for semantic diagnostics for path => ${path}: ${err}`);
+                        }
+                    });
+                }, SEMANTIC_DELAY_MILLISECONDS);
+
                 // When the LanguageMode has completed syntax analysis, it emits annotations.
                 // This is our cue to begin semantic analysis and make use of transpiled files.
-                const annotationsHandler = () => {
-                    if (this.inFlight === 0) {
+                /**
+                 * Handler for annotations received from the language worker thread.
+                 */
+                const annotationsHandler = (event: { data: Annotation[], type: 'annotation' }) => {
+                    // Only make the request for semantic errors if there are no syntactic errors.
+                    // This doesn't make a lot of sense because we only consider one file.
+                    const annotations = event.data;
+                    if (annotations.length === 0) {
                         // A change in a single file triggers analysis of all files.
-                        this.semanticDiagnostics(function () {
-                            // Nothing to see.
-                        });
+                        requestSemanticDiagnostics();
                     }
                 };
                 session.on('annotations', annotationsHandler);
@@ -639,7 +683,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             return;
         }
 
-        if (isTypeScript(path)) {
+        if (isTypeScript(path) || isJavaScript(path)) {
             // Remove Annotation Handlers.
             if (this.annotationHandlers[path]) {
                 const annotationHandler = this.annotationHandlers[path];
@@ -664,7 +708,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             checkDocument(doc);
 
             // Monitoring for Language Analysis.
-            if (isTypeScript(path)) {
+            if (isTypeScript(path) || isJavaScript(path)) {
                 if (!this.langDocumentChangeListenerRemovers[path]) {
                     const changeHandler = (delta: Delta) => {
                         this.inFlight++;
@@ -720,7 +764,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
                 checkDocument(doc);
 
                 // Monitoring for Language Analysis.
-                if (isTypeScript(path)) {
+                if (isTypeScript(path) || isJavaScript(path)) {
                     if (this.langDocumentChangeListenerRemovers[path]) {
                         this.langDocumentChangeListenerRemovers[path]();
                         delete this.langDocumentChangeListenerRemovers[path];
@@ -918,7 +962,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         const paths = this.getFileDocumentPaths();
         for (let i = 0; i < paths.length; i++) {
             const path = paths[i];
-            if (isTypeScript(path)) {
+            if (isTypeScript(path) || isJavaScript(path)) {
                 this.outputFilesForPath(path);
             }
         }
@@ -1533,6 +1577,9 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         }
     }
 
+    /**
+     * A list of paths of all the files that have an edit session.
+     */
     getFileSessionPaths(): string[] {
         const all = this.files.keys;
         return all.filter((path) => {

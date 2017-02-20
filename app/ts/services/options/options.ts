@@ -16,7 +16,7 @@ app.factory('options', [
         const VERSION_DECKJS = '1.1.0';
         const VERSION_DOMREADY = '1.0.0';
         const VERSION_D3_V3 = '3.5.17';
-        const VERSION_EIGHT = '6.0.4';
+        const VERSION_EIGHT = '6.0.5';
         const VERSION_GEOCAS = '1.13.0';
         const VERSION_GLMATRIX = '2.3.2';
         const VERSION_JASMINE = '2.4.1';

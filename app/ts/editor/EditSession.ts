@@ -83,7 +83,7 @@ function isFullWidth(c: number): boolean {
 }
 
 /**
- * @class EditSession
+ *
  */
 export default class EditSession implements EventBus<any, EditSession>, Shareable {
     public $firstLineNumber = 1;
@@ -95,8 +95,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     private $markerId = 1;
 
     /**
-     * @property $undoSelect
-     * @type boolean
+     *
      */
     public $undoSelect = true;
 
@@ -145,28 +144,24 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     public $modified: boolean;
 
     /**
-     * @property selection
-     * @type Selection
+     *
      */
     public selection: Selection;
 
     // TODO: Why do we need to have a separate single and multi-selection?
 
     /**
-     * @property multiSelection
-     * @type Selection
+     *
      */
     public multiSelect: Selection;
 
     /**
-     * @property $selectionMarkers
-     * @type Range[]
+     *
      */
     public $selectionMarkers: Range[];
 
     /**
-     * @property selectionMarkerCount
-     * @type number
+     *
      */
     public selectionMarkerCount: number;
 
@@ -180,9 +175,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     private $autoNewLine: string;
 
     /**
-     * @property eventBus
-     * @type EventEmitterClass
-     * @private
+     *
      */
     private eventBus: EventEmitterClass<any, EditSession>;
 
@@ -302,20 +295,14 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     }
 
     /**
-     * @method on
-     * @param eventName {string}
-     * @param callback {(event, session: EditSession) => any}
-     * @return {void}
+     * @param callback
      */
     on(eventName: string, callback: (event: any, session: EditSession) => any): void {
         this.eventBus.on(eventName, callback, false);
     }
 
     /**
-     * @method off
-     * @param eventName {string}
-     * @param callback {(event, session: EditSession) => any}
-     * @return {void}
+     * @param callback
      */
     off(eventName: string, callback: (event: any, session: EditSession) => any): void {
         this.eventBus.off(eventName, callback);
