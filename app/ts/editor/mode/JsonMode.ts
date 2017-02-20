@@ -13,7 +13,7 @@ export default class JsonMode extends TextMode {
 
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
-        this.HighlightRules = JsonHighlightRules;
+        this.highlighter = JsonHighlightRules;
         this.$outdent = new MatchingBraceOutdent();
         this.$behaviour = new CstyleBehaviour();
         this.foldingRules = new CStyleFoldMode();

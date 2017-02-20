@@ -1,17 +1,17 @@
 const NEWLINE = '\n';
 
-export default function (options: {}, tabString: string): string {
+export default function (tabString: string): string {
     const _ = tabString;
     const lines: string[] = [];
     lines.push("import Example from './Example.spec'");
     lines.push("");
-    lines.push("window['jasmine'] = jasmineRequire.core(jasmineRequire)");
+    lines.push("(<any>window)['jasmine'] = jasmineRequire.core(jasmineRequire)");
     lines.push("");
-    lines.push("jasmineRequire.html(window['jasmine'])");
+    lines.push("jasmineRequire.html((<any>window)['jasmine'])");
     lines.push("");
     lines.push("const env = jasmine.getEnv()");
     lines.push("");
-    lines.push("const jasmineInterface = jasmineRequire.interface(window['jasmine'], env)");
+    lines.push("const jasmineInterface = jasmineRequire.interface((<any>window)['jasmine'], env)");
     lines.push("");
     lines.push("extend(window, jasmineInterface)");
     lines.push("");
@@ -36,7 +36,7 @@ export default function (options: {}, tabString: string): string {
     lines.push(" */");
     lines.push("export default function extend<T>(destination: T, source: any): T {");
     lines.push(_ + "for (let property in source) {");
-    lines.push(_ + _ + "destination[property] = source[property]");
+    lines.push(_ + _ + "(<any>destination)[property] = source[property]");
     lines.push(_ + "}");
     lines.push(_ + "return destination");
     lines.push("}");

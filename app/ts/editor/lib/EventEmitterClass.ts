@@ -1,7 +1,7 @@
 import EventBus from "../EventBus";
 
-const stopPropagation = function () { this.propagationStopped = true; };
-const preventDefault = function () { this.defaultPrevented = true; };
+const stopPropagation = function (this: { propagationStopped: boolean }) { this.propagationStopped = true; };
+const preventDefault = function (this: { defaultPrevented: boolean }) { this.defaultPrevented = true; };
 
 /**
  * Intended to be used as a Mixin.

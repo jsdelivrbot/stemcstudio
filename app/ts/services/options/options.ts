@@ -3,12 +3,8 @@ import IOption from './IOption';
 import IOptionManager from './IOptionManager';
 
 app.factory('options', [
-    '$window',
-    'doodlesKey',
     'VENDOR_FOLDER_MARKER',
     function (
-        $window: angular.IWindowService,
-        doodlesKey: string,
         VENDOR_FOLDER_MARKER: string
     ) {
 

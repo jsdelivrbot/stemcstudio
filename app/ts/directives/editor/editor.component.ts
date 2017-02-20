@@ -10,6 +10,7 @@ import MarkdownMode from '../../editor/mode/MarkdownMode';
 import PythonMode from '../../editor/mode/PythonMode';
 import TextMode from '../../editor/mode/TextMode';
 import TypeScriptMode from '../../editor/mode/TypeScriptMode';
+import XmlMode from '../../editor/mode/XmlMode';
 import EditSession from '../../editor/EditSession';
 import Renderer from '../../editor/Renderer';
 import UndoManager from '../../editor/UndoManager';
@@ -20,23 +21,24 @@ import showFindReplace from '../../editor/ext/showFindReplace';
 import showKeyboardShortcuts from '../../editor/ext/showKeyboardShortcuts';
 import ISettingsService from '../../services/settings/ISettingsService';
 import ITextService from '../../services/text/ITextService';
-import {EDITOR_PREFERENCES_SERVICE} from '../../modules/editors/constants';
+import { EDITOR_PREFERENCES_SERVICE } from '../../modules/editors/constants';
 import EditorPreferencesService from '../../modules/editors/EditorPreferencesService';
 import EditorPreferencesEvent from '../../modules/editors/EditorPreferencesEvent';
-import {currentTheme} from '../../modules/editors/EditorPreferencesEvent';
+import { currentTheme } from '../../modules/editors/EditorPreferencesEvent';
 import WorkspaceMixin from '../../directives/editor/WorkspaceMixin';
-import {LANGUAGE_CSS} from '../../languages/modes';
-import {LANGUAGE_GLSL} from '../../languages/modes';
-import {LANGUAGE_HASKELL} from '../../languages/modes';
-import {LANGUAGE_HTML} from '../../languages/modes';
-import {LANGUAGE_JAVA_SCRIPT} from '../../languages/modes';
-import {LANGUAGE_JSON} from '../../languages/modes';
-import {LANGUAGE_LESS} from '../../languages/modes';
-import {LANGUAGE_MARKDOWN} from '../../languages/modes';
-import {LANGUAGE_SCHEME} from '../../languages/modes';
-import {LANGUAGE_PYTHON} from '../../languages/modes';
-import {LANGUAGE_TYPE_SCRIPT} from '../../languages/modes';
-import {LANGUAGE_TEXT} from '../../languages/modes';
+import { LANGUAGE_CSS } from '../../languages/modes';
+import { LANGUAGE_GLSL } from '../../languages/modes';
+import { LANGUAGE_HASKELL } from '../../languages/modes';
+import { LANGUAGE_HTML } from '../../languages/modes';
+import { LANGUAGE_JAVA_SCRIPT } from '../../languages/modes';
+import { LANGUAGE_JSON } from '../../languages/modes';
+import { LANGUAGE_LESS } from '../../languages/modes';
+import { LANGUAGE_MARKDOWN } from '../../languages/modes';
+import { LANGUAGE_SCHEME } from '../../languages/modes';
+import { LANGUAGE_PYTHON } from '../../languages/modes';
+import { LANGUAGE_TYPE_SCRIPT } from '../../languages/modes';
+import { LANGUAGE_TEXT } from '../../languages/modes';
+import { LANGUAGE_XML } from '../../languages/modes';
 import WsFile from '../../wsmodel/services/WsFile';
 
 /**
@@ -298,6 +300,15 @@ function factory(
                             }
                             case LANGUAGE_TEXT: {
                                 session.setLanguageMode(new TextMode('/js/worker.js', workerImports), function (err: any) {
+                                    if (err) {
+                                        console.warn(`${file.mode} => ${err}`);
+                                    }
+                                    removeEditor = control.attachEditor($scope.path, file.mode, editor);
+                                });
+                                break;
+                            }
+                            case LANGUAGE_XML: {
+                                session.setLanguageMode(new XmlMode('/js/worker.js', workerImports), function (err: any) {
                                     if (err) {
                                         console.warn(`${file.mode} => ${err}`);
                                     }

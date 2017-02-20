@@ -27,7 +27,7 @@ export default class HtmlMode extends TextMode {
     /**
      * The name of the element for fragment parsing.
      */
-    private fragmentContext: string;
+    private fragmentContext: string | undefined;
 
     $completer: HtmlCompletions;
 
@@ -39,7 +39,7 @@ export default class HtmlMode extends TextMode {
     constructor(workerUrl: string, scriptImports: string[], options?: { fragmentContext: string }) {
         super(workerUrl, scriptImports);
         this.fragmentContext = options && options.fragmentContext;
-        this.HighlightRules = HtmlHighlightRules;
+        this.highlighter = HtmlHighlightRules;
         this.$behaviour = new HtmlBehaviour();
         this.$completer = new HtmlCompletions();
 
@@ -60,7 +60,7 @@ export default class HtmlMode extends TextMode {
         return this.$completer.getCompletions(state, session, pos, prefix);
     }
 
-    createWorker(session: EditSession, callback: (err: any, worker: WorkerClient) => any): void {
+    createWorker(session: EditSession, callback: (err: any, worker?: WorkerClient | undefined) => any): void {
 
         const workerUrl = this.workerUrl;
         const scriptImports = this.scriptImports;
@@ -98,12 +98,12 @@ export default class HtmlMode extends TextMode {
                 }
                 else {
                     console.warn(`HtmlWorker init failed: ${err}`);
-                    callback(err, void 0);
+                    callback(err);
                 }
             });
         }
         catch (e) {
-            callback(e, void 0);
+            callback(e);
         }
     }
 }

@@ -3,7 +3,7 @@ import AbstractPageController from './AbstractPageController';
 import Doodle from '../services/doodles/Doodle';
 import IDoodleManager from '../services/doodles/IDoodleManager';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
-import {GITHUB_AUTH_MANAGER} from '../services/gham/IGitHubAuthManager';
+import { GITHUB_AUTH_MANAGER } from '../services/gham/IGitHubAuthManager';
 import HomeScope from '../scopes/HomeScope';
 import ModalDialog from '../services/modalService/ModalDialog';
 import NavigationService from '../modules/navigation/NavigationService';
@@ -50,7 +50,7 @@ export default class HomeController extends AbstractPageController {
         FEATURE_TUTORIALS_ENABLED: boolean,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string
     ) {
-        super($scope, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
+        super($window, authManager, modalDialog, 'auto');
 
         $scope.FEATURE_COOKBOOK_ENABLED = FEATURE_COOKBOOK_ENABLED;
         $scope.FEATURE_DASHBOARD_ENABLED = FEATURE_DASHBOARD_ENABLED;
@@ -60,7 +60,7 @@ export default class HomeController extends AbstractPageController {
 
         $scope.goCookbook = () => {
             if (FEATURE_COOKBOOK_ENABLED) {
-                navigation.gotoCookbook().then(function (promiseValue: any) {
+                navigation.gotoCookbook().then(function () {
                     // Nothing to do.
                 }).catch(function (reason: any) {
                     console.warn(`gotoCookbook() failed: ${JSON.stringify(reason, null, 2)}`);
@@ -96,7 +96,7 @@ export default class HomeController extends AbstractPageController {
 
         $scope.goExamples = () => {
             if (FEATURE_EXAMPLES_ENABLED) {
-                navigation.gotoExamples().then(function (promiseValue: any) {
+                navigation.gotoExamples().then(function () {
                     // Nothing to do.
                 }).catch(function (reason: any) {
                     console.warn(`gotoExamples() failed: ${JSON.stringify(reason, null, 2)}`);
@@ -109,7 +109,7 @@ export default class HomeController extends AbstractPageController {
 
         $scope.goTutorials = () => {
             if (FEATURE_TUTORIALS_ENABLED) {
-                navigation.gotoTutorials().then(function (promiseValue: any) {
+                navigation.gotoTutorials().then(function () {
                     // Nothing to do.
                 }).catch(function (reason: any) {
                     console.warn(`gotoTutorials() failed: ${JSON.stringify(reason, null, 2)}`);
@@ -172,7 +172,7 @@ export default class HomeController extends AbstractPageController {
 
         $scope.doDelete = function (doodle: Doodle) {
             // TODO: DRY. This code also exists in the OpenController.
-            modalDialog.confirm({ title: 'Delete', message: `Are you sure you want to delete '${doodle.description}' from your Local Storage?` }).then(function (promiseValue) {
+            modalDialog.confirm({ title: 'Delete', message: `Are you sure you want to delete '${doodle.description}' from your Local Storage?` }).then(function () {
                 doodles.deleteDoodle(doodle);
                 doodles.updateStorage();
             }).catch(function (reason) {

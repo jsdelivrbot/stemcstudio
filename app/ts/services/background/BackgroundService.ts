@@ -38,7 +38,7 @@ export default class BackgroundService implements Background {
      * @param roomId The identifier of the room (collaboration).
      * @param callback Use to report when monitoring of the files has begun.
      */
-    loadWsModel(owner: string, repo: string, gistId: string, roomId: string, monitor: boolean, callback: (err: Error) => any) {
+    loadWsModel(owner: string, repo: string, gistId: string, roomId: string, callback: (err: Error) => any) {
         // If there is a doodle in Local Storage with the specified keys, we load that
         // so as not to trample on any existing work.
         const matches = this.doodles.filter(function (doodle: Doodle) {
@@ -71,7 +71,7 @@ export default class BackgroundService implements Background {
                         copyDoodleToWorkspace(doodle, this.wsModel, callback);
                     }, (reason) => {
                         callback(new Error(`Error attempting to download repository '${repo}':  ${JSON.stringify(reason, null, 2)}`));
-                    }, function (state) {
+                    }, function (/* state */) {
                         // The state is {doneCount: number; todoCount: number}
                     });
             }

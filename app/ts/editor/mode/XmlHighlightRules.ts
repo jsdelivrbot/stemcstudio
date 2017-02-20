@@ -1,3 +1,5 @@
+import HighlighterFactory from './HighlighterFactory';
+import Rule from '../Rule';
 import TextHighlightRules from "./TextHighlightRules";
 
 export default class XmlHighlightRules extends TextHighlightRules {
@@ -8,7 +10,7 @@ export default class XmlHighlightRules extends TextHighlightRules {
         // NameChar	   ::=   	NameStartChar | "-" | "." | [0-9] | #xB7 | [#x0300-#x036F] | [#x203F-#x2040]
         const tagRegex = "[_:a-zA-Z\xc0-\uffff][-_:.a-zA-Z0-9\xc0-\uffff]*";
 
-        this.$rules = <any>{
+        this.$rules = {
             start: [
                 { token: "string.cdata.xml", regex: "<\\!\\[CDATA\\[", next: "cdata" },
                 {
@@ -31,21 +33,27 @@ export default class XmlHighlightRules extends TextHighlightRules {
                 { defaultToken: "text.xml" }
             ],
 
-            xml_decl: [{
-                token: "entity.other.attribute-name.decl-attribute-name.xml",
-                regex: "(?:" + tagRegex + ":)?" + tagRegex + ""
-            }, {
-                token: "keyword.operator.decl-attribute-equals.xml",
-                regex: "="
-            }, {
-                include: "whitespace"
-            }, {
-                include: "string"
-            }, {
-                token: "punctuation.xml-decl.xml",
-                regex: "\\?>",
-                next: "start"
-            }],
+            xml_decl: [
+                {
+                    token: "entity.other.attribute-name.decl-attribute-name.xml",
+                    regex: "(?:" + tagRegex + ":)?" + tagRegex + ""
+                },
+                {
+                    token: "keyword.operator.decl-attribute-equals.xml",
+                    regex: "="
+                },
+                {
+                    include: "whitespace"
+                },
+                {
+                    include: "string"
+                },
+                {
+                    token: "punctuation.xml-decl.xml",
+                    regex: "\\?>",
+                    next: "start"
+                }
+            ],
 
             processing_instruction: [
                 { token: "punctuation.instruction.xml", regex: "\\?>", next: "start" },
@@ -103,14 +111,16 @@ export default class XmlHighlightRules extends TextHighlightRules {
                 regex: "(?:&#[0-9]+;)|(?:&#x[0-9a-fA-F]+;)|(?:&[a-zA-Z0-9_:\\.-]+;)"
             }],
 
-            tag: [{
-                token: ["meta.tag.punctuation.tag-open.xml", "meta.tag.punctuation.end-tag-open.xml", "meta.tag.tag-name.xml"],
-                regex: "(?:(<)|(</))((?:" + tagRegex + ":)?" + tagRegex + ")",
-                next: [
-                    { include: "attributes" },
-                    { token: "meta.tag.punctuation.tag-close.xml", regex: "/?>", next: "start" }
-                ]
-            }],
+            tag: [
+                {
+                    token: ["meta.tag.punctuation.tag-open.xml", "meta.tag.punctuation.end-tag-open.xml", "meta.tag.tag-name.xml"],
+                    regex: "(?:(<)|(</))((?:" + tagRegex + ":)?" + tagRegex + ")",
+                    next: [
+                        { include: "attributes" },
+                        { token: "meta.tag.punctuation.tag-close.xml", regex: "/?>", next: "start" }
+                    ]
+                }
+            ],
 
             tag_whitespace: [
                 { token: "text.tag-whitespace.xml", regex: "\\s+" }
@@ -173,8 +183,8 @@ export default class XmlHighlightRules extends TextHighlightRules {
         }
     }
 
-    embedTagRules(HighlightRules: any, prefix: string, tag: string) {
-        this.$rules['tag'].unshift(<any>{
+    embedTagRules(highlightRules: HighlighterFactory | { [stateName: string]: Rule[] }, prefix: string, tag: string): void {
+        this.$rules['tag'].unshift({
             token: ["meta.tag.punctuation.tag-open.xml", "meta.tag." + tag + ".tag-name.xml"],
             regex: "(<)(" + tag + "(?=\\s|>|$))",
             next: [
@@ -187,14 +197,14 @@ export default class XmlHighlightRules extends TextHighlightRules {
             { include: "attributes" },
             {
                 token: "meta.tag.punctuation.tag-close.xml", regex: "/?>", next: "start",
-                onMatch: function (value, currentState, stack) {
+                onMatch: function (this: Rule, value: string, currentState, stack) {
                     stack.splice(0);
                     return this.token;
                 }
             }
         ];
 
-        this.embedRules(HighlightRules, prefix, [{
+        this.embedRules(highlightRules, prefix, [{
             token: ["meta.tag.punctuation.end-tag-open.xml", "meta.tag." + tag + ".tag-name.xml"],
             regex: "(</)(" + tag + "(?=\\s|>|$))",
             next: tag + "-end"

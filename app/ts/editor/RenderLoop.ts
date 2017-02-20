@@ -4,9 +4,9 @@ import { requestAnimationFrame } from './lib/event';
  * Batches changes (that force something to be redrawn) in the background.
  */
 export default class RenderLoop {
-    public pending: boolean = false;
+    public pending = false;
     private onRender: (changes: number) => void;
-    private changes: number = 0;
+    private changes = 0;
     private $window: Window;
     constructor(onRender: (changes: number) => void, $window: Window = window) {
         this.onRender = onRender;

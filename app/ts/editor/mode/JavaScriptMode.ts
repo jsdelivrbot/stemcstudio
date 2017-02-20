@@ -20,7 +20,7 @@ export default class JavaScriptMode extends TextMode {
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
         // The Tokenizer will be built using these rules.
-        this.HighlightRules = JavaScriptHighlightRules;
+        this.highlighter = JavaScriptHighlightRules;
 
         this.$outdent = new MatchingBraceOutdent();
         this.$behaviour = new CstyleBehaviour();

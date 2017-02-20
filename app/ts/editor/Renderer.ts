@@ -120,7 +120,7 @@ export default class Renderer implements Disposable, EventBus<any, Renderer>, Ed
     /**
      * Used by TokenTooltip...
      */
-    public $padding: number = 0;
+    public $padding = 0;
 
     private $frozen = false;
 

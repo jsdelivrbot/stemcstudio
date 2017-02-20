@@ -1,6 +1,7 @@
-import {createMap} from "../lib/lang";
+import { createMap } from "../lib/lang";
 import CssHighlightRules from "./CssHighlightRules";
 import JavaScriptHighlightRules from "./JavaScriptHighlightRules";
+import TypeScriptHighlightRules from "./TypeScriptHighlightRules";
 import XmlHighlightRules from "./XmlHighlightRules";
 
 const tagMap: { [tagName: string]: string } = createMap({
@@ -24,13 +25,11 @@ const tagMap: { [tagName: string]: string } = createMap({
 });
 
 /**
- * @class HtmlHighlightRules
- * @extends XmlHighlightRules
+ *
  */
 export default class HtmlHighlightRules extends XmlHighlightRules {
     /**
-     * @class HtmlHighlightRules
-     * @constructor
+     *
      */
     constructor() {
         super();
@@ -69,7 +68,7 @@ export default class HtmlHighlightRules extends XmlHighlightRules {
             ],
             tag: [
                 {
-                    token: function(start: string, tag: string) {
+                    token: function (start: string, tag: string) {
                         const group = tagMap[tag];
                         return [
                             "meta.tag.punctuation." + (start === "<" ? "" : "end-") + "tag-open.xml",
@@ -93,7 +92,8 @@ export default class HtmlHighlightRules extends XmlHighlightRules {
         });
 
         this.embedTagRules(CssHighlightRules, "css-", "style");
-        this.embedTagRules(new JavaScriptHighlightRules({ noJSX: true }), "js-", "script");
+        this.embedTagRules(new JavaScriptHighlightRules({ noJSX: true }).getRules(), "js-", "script");
+        this.embedTagRules(new TypeScriptHighlightRules({ noJSX: true }).getRules(), "ts-", "script");
 
         if (this.constructor === HtmlHighlightRules) {
             this.normalizeRules();

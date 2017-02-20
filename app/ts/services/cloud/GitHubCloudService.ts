@@ -122,7 +122,7 @@ export default class GitHubCloudService implements CloudService {
                     // doodles.updateStorage();
                     // this.onInitDoodle(doodles.current())
                 }).catch((reason) => {
-                    callback(new Error(`Error attempting to download File`), void 0);
+                    callback(new Error(`Error attempting to download File: ${reason}`), void 0);
                 });
             }
             else {
@@ -184,7 +184,7 @@ export default class GitHubCloudService implements CloudService {
                                     case 'blob': {
                                         todoCount++;
                                         deferred.notify(state());
-                                        github.getBlob(owner, repo, child.sha).then(function(response) {
+                                        github.getBlob(owner, repo, child.sha).then(function (response) {
                                             doneCount++;
                                             const blob = response.data;
                                             switch (blob.encoding) {
@@ -203,7 +203,7 @@ export default class GitHubCloudService implements CloudService {
                                                 deferred.notify(state());
                                                 deferred.resolve(doodle);
                                             }
-                                        }).catch(function(reason) {
+                                        }).catch(function (reason) {
                                             doneCount++;
                                             deferred.notify(state());
                                             deferred.reject(`Unable to get blob because ${JSON.stringify(reason)}.`);
@@ -217,12 +217,12 @@ export default class GitHubCloudService implements CloudService {
                                 }
                             }
 
-                        }).catch(function(reason) {
+                        }).catch(function (reason) {
                             doneCount++;
                             deferred.notify(state());
                             deferred.reject(`Unable to get tree '${treeSHA}' because ${JSON.stringify(reason)}.`);
                         });
-                    }).catch(function(reason) {
+                    }).catch(function (reason) {
                         doneCount++;
                         deferred.notify(state());
                         deferred.reject(`Unable to get commit '${commitSHA}' because ${JSON.stringify(reason)}.`);
@@ -233,7 +233,7 @@ export default class GitHubCloudService implements CloudService {
                     deferred.reject(`Expecting reference '${ref}' to be for a commit, but was ${reference.object.type}.`);
                 }
             })
-            .catch(function(reason) {
+            .catch(function (reason) {
                 doneCount++;
                 deferred.notify(state());
                 deferred.reject(`Unable to get reference '${ref}' because ${JSON.stringify(reason)}.`);
@@ -242,12 +242,12 @@ export default class GitHubCloudService implements CloudService {
     }
 
     createGist(workspace: WsModel): ng.IHttpPromise<Gist> {
-        const data: GistData = workspaceToGistData(workspace, this.options);
+        const data: GistData = workspaceToGistData(workspace);
         return this.github.createGist(data);
     }
 
     updateGist(workspace: WsModel, gistId: string): ng.IHttpPromise<Gist> {
-        const data: GistData = workspaceToGistData(workspace, this.options);
+        const data: GistData = workspaceToGistData(workspace);
         return this.github.updateGist(gistId, data);
     }
 
@@ -283,15 +283,15 @@ export default class GitHubCloudService implements CloudService {
                     });
                 }
                 this.github.createTree(owner, repo, treeData)
-                    .then(function(response) {
+                    .then(function (response) {
                         const treeKey = response.data;
                         deferred.resolve(treeKey);
                     })
-                    .catch(function(reason: GitHubReason) {
+                    .catch(function (reason: GitHubReason) {
                         deferred.reject(`Unable to create tree because ${reason.data.message}.`);
                     });
             })
-            .catch(function(reason: GitHubReason) {
+            .catch(function (reason: GitHubReason) {
                 deferred.reject(`Unable to create blobs because ${reason.data.message}.`);
             });
         return deferred.promise;
@@ -333,7 +333,7 @@ export default class GitHubCloudService implements CloudService {
                             next(reason);
                         }
                     })
-                    .catch(function(reason: GitHubReason) {
+                    .catch(function (reason: GitHubReason) {
 
                         facts.status.resolve(reason.status);
                         facts.statusText.resolve(reason.statusText);
@@ -373,7 +373,7 @@ export default class GitHubCloudService implements CloudService {
                         facts.baseCommit.resolve(commit);
                         next();
                     })
-                    .catch(function(reason) {
+                    .catch(function (reason) {
                         facts.baseCommit.reject(reason);
                         next(`Unable to get commit '${commitSHA}' because ${JSON.stringify(reason)}.`);
                     });
@@ -429,11 +429,11 @@ export default class GitHubCloudService implements CloudService {
                 };
 
                 this.github.createCommit(owner, repo, commit)
-                    .then(function(response) {
+                    .then(function (response) {
                         facts.commit.resolve(response.data);
                         next();
                     })
-                    .catch(function(reason) {
+                    .catch(function (reason) {
                         facts.commit.reject(reason);
                         next(`Unable to create commit because ${JSON.stringify(reason)}.`);
                     });
@@ -450,13 +450,13 @@ export default class GitHubCloudService implements CloudService {
                     force: false
                 };
                 this.github.updateReference(owner, repo, ref, data)
-                    .then(function(response) {
+                    .then(function (response) {
                         facts.status.resolve(response.status);
                         facts.statusText.resolve(response.statusText);
                         facts.refUpdate.resolve(response.data);
                         next();
                     })
-                    .catch(function(reason: GitHubReason) {
+                    .catch(function (reason: GitHubReason) {
                         facts.refUpdate.reject(reason);
                         next(`Unable to update reference ${ref} because ${JSON.stringify(reason)}.`);
                     });
@@ -498,7 +498,7 @@ export default class GitHubCloudService implements CloudService {
         };
 
         settings.resolve = {
-            options: function() {
+            options: function () {
                 return options;
             }
         };
@@ -528,10 +528,10 @@ export default class GitHubCloudService implements CloudService {
         };
 
         settings.resolve = {
-            options: function() {
+            options: function () {
                 return options;
             },
-            data: function() {
+            data: function () {
                 return data;
             }
         };
@@ -561,7 +561,7 @@ export default class GitHubCloudService implements CloudService {
         };
 
         settings.resolve = {
-            options: function() {
+            options: function () {
                 return options;
             }
         };

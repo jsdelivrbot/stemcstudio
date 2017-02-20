@@ -245,7 +245,7 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
         if (doc instanceof Document) {
             this.$doc = doc;
             this.$doc.addRef();
-            this.call("setValue", [doc.getValue()], function (data: any) {
+            this.call("setValue", [doc.getValue()], function () {
                 // Do nothing.
             });
             doc.addChangeListener(this.changeListener);
@@ -274,13 +274,10 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
      *
      * This method is replaced in the constructor by a function that is bound to `this`.
      *
-     * @method changeListener
-     * @param delta {Delta}
-     * @param doc {Document}
-     * @return {void}
-     * @private
+     * @param delta
+     * @param doc
      */
-    private changeListener(delta: Delta, doc: Document): void {
+    private changeListener(delta: Delta/*, doc: Document*/): void {
         if (!this.deltaQueue) {
             this.deltaQueue = [delta];
             setTimeout(this.sendDeltaQueue, 0);
@@ -336,7 +333,7 @@ export default class WorkerClient implements EventBus<MessageEvent, WorkerClient
         if (queue.length > 20 && queue.length > doc.getLength() >> 1) {
             // TODO: If there is no callback then call is the same as send,
             // which is a postCommand.
-            this.call("setValue", [doc.getValue()], function (data: any) {
+            this.call("setValue", [doc.getValue()], function () {
                 // Do nothing.
             });
         }

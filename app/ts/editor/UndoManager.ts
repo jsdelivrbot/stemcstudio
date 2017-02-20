@@ -78,7 +78,7 @@ export default class UndoManager {
     /**
      *
      */
-    private dirtyCounter: number = 0;
+    private dirtyCounter = 0;
 
     /**
      *

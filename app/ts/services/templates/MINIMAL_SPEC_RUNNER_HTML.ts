@@ -1,6 +1,6 @@
 const NEWLINE = '\n';
 
-export default function (options: {}, tabString: string): string {
+export default function (tabString: string): string {
     const lines: string[] = [];
     const _ = tabString;
     lines.push("<!DOCTYPE html>");

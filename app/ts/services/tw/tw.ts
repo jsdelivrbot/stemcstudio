@@ -23,7 +23,7 @@ function twitterFactory(
     }('script', 'twitter-wjs'));
 
     // Wait for asynchronous resources to load.
-    $window[NAMESPACE_TWITTER_WIDGETS].ready(function (twttr: Twitter) {
+    $window[NAMESPACE_TWITTER_WIDGETS].ready(function () {
         // We could use this callback to register hooks. e.g. Google Analytics.
     });
 

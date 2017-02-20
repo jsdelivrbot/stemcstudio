@@ -17,8 +17,6 @@ import SelectionRemoveRangeEvent from "./events/SelectionRemoveRangeEvent";
  *
  * The row/columns used in the selection are in document coordinates representing
  * the coordinates as they appear in the document before applying soft wrap and folding.
- *
- * @class Selection
  */
 export default class Selection implements EventBus<any, Selection> {
     private session: EditSession;
@@ -27,14 +25,12 @@ export default class Selection implements EventBus<any, Selection> {
     private doc: Document;
 
     /**
-     * @property lead
-     * @type Anchor
+     *
      */
     public lead: Anchor;
 
     /**
-     * @property anchor
-     * @type Anchor
+     *
      */
     public anchor: Anchor;
 
@@ -44,47 +40,37 @@ export default class Selection implements EventBus<any, Selection> {
     private $keepDesiredColumnOnChange: boolean;
 
     /**
-     * @property $desiredColumn
-     * @type number
+     *
      */
     public $desiredColumn: number;
 
     /**
-     * @property index
-     * @type number
+     *
      */
     public index: number;
 
     /**
-     * @property _eventRegistry
+     *
      */
     public _eventRegistry: {};
 
     /**
-     * @property inMultiSelectMode
-     * @type boolean
+     *
      */
     public inMultiSelectMode: boolean;
 
     /**
-     * @property rangeCount
-     * @type number
+     *
      */
-    public rangeCount: number = 0;
+    public rangeCount = 0;
 
     /**
      * List of ranges in reverse addition order.
-     *
-     * @property ranges
-     * @type Range[]
      */
     public ranges: Range[] = [];
 
     /**
      * Automatically sorted list of ranges.
-     *
-     * @property rangeList
-     * @type RangeList
      */
     public rangeList: RangeList = new RangeList();
 
@@ -450,10 +436,11 @@ export default class Selection implements EventBus<any, Selection> {
         this.$desiredColumn = null;
     }
 
-    public $moveSelection(mover: Function): void {
+    public $moveSelection(mover: (this: Selection) => any): void {
         const lead = this.lead;
-        if (this.$isEmpty)
+        if (this.$isEmpty) {
             this.setSelectionAnchor(lead.row, lead.column);
+        }
 
         mover.call(this);
     }
@@ -461,10 +448,8 @@ export default class Selection implements EventBus<any, Selection> {
     /**
      * Moves the selection cursor to the indicated row and column.
      *
-     * @method selectTo
-     * @param {Number} row The row to select to
-     * @param {Number} column The column to select to
-     * @return {void}
+     * @param row The row to select to
+     * @param column The column to select to
      */
     selectTo(row: number, column: number): void {
         this.$moveSelection(function () {

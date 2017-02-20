@@ -3668,11 +3668,11 @@ interface IGestureHandler {
 
 class MouseHandler implements IGestureHandler {
     public editor: Editor;
-    public $scrollSpeed: number = 2;
-    public $dragDelay: number = 0;
-    private $dragEnabled: boolean = true;
-    public $focusTimout: number = 0;
-    public $tooltipFollowsMouse: boolean = true;
+    public $scrollSpeed = 2;
+    public $dragDelay = 0;
+    private $dragEnabled = true;
+    public $focusTimout = 0;
+    public $tooltipFollowsMouse = true;
     private state: string;
     private clientX: number;
     private clientY: number;
@@ -4089,7 +4089,7 @@ class EditorMouseEvent {
         return this.domEvent.shiftKey;
     }
 
-    getAccelKey = isMac ? function () { return this.domEvent.metaKey; } : function () { return this.domEvent.ctrlKey; };
+    getAccelKey = isMac ? () => { return this.domEvent.metaKey; } : () => { return this.domEvent.ctrlKey; };
 }
 
 function makeMouseDownHandler(editor: Editor, mouseHandler: MouseHandler) {

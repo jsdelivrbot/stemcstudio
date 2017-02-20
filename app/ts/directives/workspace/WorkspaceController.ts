@@ -1,7 +1,5 @@
 import * as ng from 'angular';
-// import BootstrapDialog from 'bootstrap-dialog';
 import CredentialsService from '../../services/credentials/CredentialsService';
-import Base64Service from '../../services/base64/Base64Service';
 import Delta from '../../editor/Delta';
 import Document from '../../editor/Document';
 import DocumentChangeHandler from './DocumentChangeHandler';
@@ -14,11 +12,9 @@ import { BACKGROUND_UUID } from '../../services/background/Background';
 import CloudService from '../../services/cloud/CloudService';
 import detect1x from './detect1x';
 import Doodle from '../../services/doodles/Doodle';
-import IDoodleManager from '../../services/doodles/IDoodleManager';
 import GitHubService from '../../services/github/GitHubService';
 import LabelDialog from '../../modules/publish/LabelDialog';
 import LabelFlow from './LabelFlow';
-// import linkToMap from '../../utils/linkToMap';
 import PropertiesDialog from '../../modules/properties/PropertiesDialog';
 import PropertiesFlow from './PropertiesFlow';
 import PublishFlow from './PublishFlow';
@@ -27,14 +23,12 @@ import { GITHUB_AUTH_MANAGER } from '../../services/gham/IGitHubAuthManager';
 import IOptionManager from '../../services/options/IOptionManager';
 import isHtmlFilePath from '../../utils/isHtmlFilePath';
 import isMarkdownFilePath from '../../utils/isMarkdownFilePath';
-// import isString from '../../utils/isString';
 import OutputFileHandler from './OutputFileHandler';
 import ModalDialog from '../../services/modalService/ModalDialog';
 import NavigationService from '../../modules/navigation/NavigationService';
 import { STATE_GIST } from '../../modules/navigation/NavigationService';
 import { STATE_REPO } from '../../modules/navigation/NavigationService';
 import { STATE_ROOM } from '../../modules/navigation/NavigationService';
-import PublishDialog from '../../modules/publish/PublishDialog';
 import StemcArXiv from '../../stemcArXiv/StemcArXiv';
 import FlowService from '../../services/flow/FlowService';
 import UploadFlow from './UploadFlow';
@@ -54,6 +48,7 @@ import { LANGUAGE_PYTHON } from '../../languages/modes';
 import { LANGUAGE_SCHEME } from '../../languages/modes';
 import { LANGUAGE_TYPE_SCRIPT } from '../../languages/modes';
 import { LANGUAGE_TEXT } from '../../languages/modes';
+import { LANGUAGE_XML } from '../../languages/modes';
 import updateWorkspaceTypings from './updateWorkspaceTypings';
 import rebuildPreview from './rebuildPreview';
 import rebuildMarkdownView from './rebuildMarkdownView';
@@ -81,54 +76,12 @@ const WAIT_FOR_MORE_README_KEYSTROKES = 1000;
 const MODULE_KIND_NONE = 'none';
 const MODULE_KIND_SYSTEM = 'system';
 const SCRIPT_TARGET_ES5 = 'es5';
-// const SCRIPT_TARGET_ES6 = 'es6';
 const SCRIPT_TARGET = SCRIPT_TARGET_ES5;
 
 /**
  *
  */
 export default class WorkspaceController implements WorkspaceMixin {
-    /**
-     *
-     */
-    public static $inject: string[] = [
-        '$scope',
-        '$state',
-        '$stateParams',
-        '$http',
-        '$location',
-        '$timeout',
-        '$window',
-        'credentials',
-        BACKGROUND_UUID,
-        'base64',
-        'GitHub',
-        GITHUB_AUTH_MANAGER,
-        'cloud',
-        'doodles',
-        'templates',
-        'flow',
-        'ga',
-        'labelDialog',
-        'modalDialog',
-        'navigation',
-        'options',
-        'propertiesDialog',
-        'publishDialog',
-        'stemcArXiv',
-        'FEATURE_GIST_ENABLED',
-        'FEATURE_REPO_ENABLED',
-        'FEATURE_ROOM_ENABLED',
-        'FILENAME_CODE',
-        'FILENAME_LIBS',
-        'FILENAME_LESS',
-        'FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS',
-        'FILENAME_TYPESCRIPT_CURRENT_LIB_DTS',
-        'STYLES_MARKER',
-        'LIBS_MARKER',
-        'VENDOR_FOLDER_MARKER',
-        'wsModel'
-    ];
 
     /**
      * Keep track of the dependencies that are loaded in the workspace.
@@ -159,6 +112,44 @@ export default class WorkspaceController implements WorkspaceMixin {
      * Normally set to false for production.
      */
     private readonly trace = false;
+    /**
+     *
+     */
+    public static $inject: string[] = [
+        '$scope',
+        '$state',
+        '$stateParams',
+        '$http',
+        '$location',
+        '$timeout',
+        '$window',
+        'credentials',
+        BACKGROUND_UUID,
+        'GitHub',
+        GITHUB_AUTH_MANAGER,
+        'cloud',
+        'templates',
+        'flow',
+        'ga',
+        'labelDialog',
+        'modalDialog',
+        'navigation',
+        'options',
+        'propertiesDialog',
+        'stemcArXiv',
+        'FEATURE_GIST_ENABLED',
+        'FEATURE_REPO_ENABLED',
+        'FEATURE_ROOM_ENABLED',
+        'FILENAME_CODE',
+        'FILENAME_LIBS',
+        'FILENAME_LESS',
+        'FILENAME_MATHSCRIPT_CURRENT_LIB_MIN_JS',
+        'FILENAME_TYPESCRIPT_CURRENT_LIB_DTS',
+        'STYLES_MARKER',
+        'LIBS_MARKER',
+        'VENDOR_FOLDER_MARKER',
+        'wsModel'
+    ];
 
     /**
      *
@@ -173,11 +164,9 @@ export default class WorkspaceController implements WorkspaceMixin {
         private $window: angular.IWindowService,
         private credentials: CredentialsService,
         private background: Background,
-        private base64: Base64Service,
         private github: GitHubService,
         authManager: IGitHubAuthManager,
         private cloud: CloudService,
-        private doodles: IDoodleManager,
         templates: Doodle[],
         private flowService: FlowService,
         ga: UniversalAnalytics.ga,
@@ -186,7 +175,6 @@ export default class WorkspaceController implements WorkspaceMixin {
         private navigation: NavigationService,
         private options: IOptionManager,
         private propertiesDialog: PropertiesDialog,
-        private publishDialog: PublishDialog,
         private stemcArXiv: StemcArXiv,
         private FEATURE_GIST_ENABLED: boolean,
         private FEATURE_REPO_ENABLED: boolean,
@@ -344,7 +332,7 @@ export default class WorkspaceController implements WorkspaceMixin {
                 return;
             }
             ga('send', 'event', 'doodle', 'label', label, value);
-            const labelFlow = new LabelFlow($scope.userLogin(), this.flowService, this.labelDialog, wsModel);
+            const labelFlow = new LabelFlow(this.flowService, this.labelDialog, wsModel);
             labelFlow.execute();
         };
 
@@ -354,7 +342,6 @@ export default class WorkspaceController implements WorkspaceMixin {
             }
             ga('send', 'event', 'doodle', 'properties', label, value);
             const propertiesFlow = new PropertiesFlow(
-                $scope.userLogin(),
                 this.options,
                 this.olds,
                 this.FILENAME_TYPESCRIPT_CURRENT_LIB_DTS,
@@ -396,7 +383,6 @@ export default class WorkspaceController implements WorkspaceMixin {
                 $scope.userLogin(),
                 this.flowService,
                 this.modalDialog,
-                this.publishDialog,
                 this.credentials,
                 this.stemcArXiv,
                 wsModel);
@@ -426,7 +412,7 @@ export default class WorkspaceController implements WorkspaceMixin {
 
         this.wsModel.recycle((err) => {
             if (!err) {
-                this.background.loadWsModel(owner, repo, gistId, roomId, true, (err: Error) => {
+                this.background.loadWsModel(owner, repo, gistId, roomId, (err: Error) => {
                     if (!err) {
                         // We don't need to load anything, but are we in the correct state for the Doodle?
                         // We end up here, e.g., when user presses Cancel from New dialog.
@@ -641,7 +627,8 @@ export default class WorkspaceController implements WorkspaceMixin {
             case LANGUAGE_HASKELL:
             case LANGUAGE_JAVA_SCRIPT:
             case LANGUAGE_PYTHON:
-            case LANGUAGE_TYPE_SCRIPT: {
+            case LANGUAGE_TYPE_SCRIPT:
+            case LANGUAGE_XML: {
                 // Ignore.
                 break;
             }
@@ -809,7 +796,8 @@ export default class WorkspaceController implements WorkspaceMixin {
             case LANGUAGE_HASKELL:
             case LANGUAGE_JAVA_SCRIPT:
             case LANGUAGE_PYTHON:
-            case LANGUAGE_TYPE_SCRIPT: {
+            case LANGUAGE_TYPE_SCRIPT:
+            case LANGUAGE_XML: {
                 // Ignore
                 break;
             }

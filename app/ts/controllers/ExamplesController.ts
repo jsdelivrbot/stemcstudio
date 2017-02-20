@@ -26,7 +26,7 @@ export default class ExamplesController extends AbstractPageController {
         ga: UniversalAnalytics.ga,
         modalDialog: ModalDialog,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string) {
-        super($scope, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
+        super($window, authManager, modalDialog, 'auto');
 
         $scope.examples = [
             {

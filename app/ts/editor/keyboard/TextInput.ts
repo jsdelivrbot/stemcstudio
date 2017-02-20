@@ -137,8 +137,8 @@ export default class TextInput {
         };
         // IE8 does not support setSelectionRange
         if (!this.text.setSelectionRange && this.text['createTextRange']) {
-            this.text.setSelectionRange = function (selectionStart: number, selectionEnd: number) {
-                const range = this.createTextRange();
+            this.text.setSelectionRange = function (this: HTMLTextAreaElement, selectionStart: number, selectionEnd: number) {
+                const range = this['createTextRange']();
                 range.collapse(true);
                 range.moveStart('character', selectionStart);
                 range.moveEnd('character', selectionEnd);

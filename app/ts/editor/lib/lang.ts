@@ -47,16 +47,18 @@ export function copyObject(obj: Object) {
     return copy;
 }
 
+/*
 export function copyArray<T>(array: T[]): T[] {
     const copy: T[] = [];
     for (let i = 0, l = array.length; i < l; i++) {
         if (array[i] && typeof array[i] === "object")
-            copy[i] = this.copyObject(array[i]);
+            copy[i] = <T[]>copyObject(array[i]);
         else
             copy[i] = array[i];
     }
     return copy;
 }
+*/
 
 export function deepCopy<T>(obj: T): T {
     if (typeof obj !== "object" || !obj)
@@ -146,7 +148,7 @@ export function deferredCall(fcn: Function) {
     deferred.schedule = deferred;
 
     deferred.call = function () {
-        this.cancel();
+        deferred.cancel();
         fcn();
         return deferred;
     };

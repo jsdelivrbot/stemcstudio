@@ -18,7 +18,7 @@ export default class BackgroundTokenizer implements EventBus<any, BackgroundToke
      * This is the value returned by setTimeout, so it's really a timer handle.
      * There are some conditionals looking for a falsey value, so we use zero where needed.
      */
-    private running: number = 0;
+    private running = 0;
 
     /**
      * This could be called tokensByLine.
@@ -27,7 +27,7 @@ export default class BackgroundTokenizer implements EventBus<any, BackgroundToke
     private lines: Token[][] = [];
 
     private states: (string | string[])[] = [];
-    private currentLine: number = 0;
+    private currentLine = 0;
     private tokenizer: Tokenizer;
     private doc: Document;
 
@@ -39,7 +39,7 @@ export default class BackgroundTokenizer implements EventBus<any, BackgroundToke
     private eventBus: EventEmitterClass<any, BackgroundTokenizer>;
 
     /**
-     * Creates a new `BackgroundTokenizer` object.
+     * Creates a new background tokenizer object.
      *
      * @param tokenizer The tokenizer to use, supplied by the LanguageMode.
      */
@@ -96,9 +96,8 @@ export default class BackgroundTokenizer implements EventBus<any, BackgroundToke
      * `firstRow` and `lastRow` are used to define the boundaries of the region to be updated.
      *
      * @method fireUpdateEvent
-     * @param firstRow {number} The starting row region.
-     * @param lastRow {number} The final row region.
-     * @return {void}
+     * @param firstRow The starting row region.
+     * @param lastRow The final row region.
      */
     public fireUpdateEvent(firstRow: number, lastRow: number): void {
         const data: FirstAndLast = { first: firstRow, last: lastRow };
@@ -113,20 +112,16 @@ export default class BackgroundTokenizer implements EventBus<any, BackgroundToke
     }
 
     /**
-     * @method on
-     * @param eventName {string}
-     * @param callback {(event, source: BackgroundTokenizer) => any}
-     * @return {void}
+     * @param eventName
+     * @param callback
      */
     on(eventName: string, callback: (event: any, source: BackgroundTokenizer) => any): void {
         this.eventBus.on(eventName, callback, false);
     }
 
     /**
-     * @method off
-     * @param eventName {string}
-     * @param callback {(event, source: BackgroundTokenizer) => any}
-     * @return {void}
+     * @param eventName
+     * @param callback
      */
     off(eventName: string, callback: (event: any, source: BackgroundTokenizer) => any): void {
         this.eventBus.off(eventName, callback);
@@ -136,8 +131,7 @@ export default class BackgroundTokenizer implements EventBus<any, BackgroundToke
      * Returns the state of tokenization at the end of a row.
      *
      * @method getState
-     * @param row {number} The row to get state at.
-     * @return {string}
+     * @param row The row to get state at.
      */
     getState(row: number): string {
         if (this.currentLine === row) {
@@ -285,9 +279,7 @@ export default class BackgroundTokenizer implements EventBus<any, BackgroundToke
     /**
      * For the given row, updates the lines[row] and sets the currentLine to row + 1.
      *
-     * @method tokenizeRow
-     * @param row {number}
-     * @return {Token[]}
+     * @param row
      */
     public tokenizeRow(row: number): Token[] {
 

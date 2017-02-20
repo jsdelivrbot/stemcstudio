@@ -20,7 +20,7 @@ export default class MarkdownMode extends TextMode {
      */
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
-        this.HighlightRules = MarkdownHighlightRules;
+        this.highlighter = MarkdownHighlightRules;
 
         this.createModeDelegates({
             "ts-": TypeScriptMode,

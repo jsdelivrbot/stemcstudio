@@ -20,7 +20,7 @@ export default class TypeScriptMode extends JavaScriptMode {
      */
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
-        this.HighlightRules = TypeScriptHighlightRules;
+        this.highlighter = TypeScriptHighlightRules;
 
         this.$outdent = new MatchingBraceOutdent();
         this.$behaviour = new CstyleBehaviour();

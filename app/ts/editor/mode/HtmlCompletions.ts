@@ -209,7 +209,7 @@ function is(token: Token, type: string): boolean {
     return token.type.lastIndexOf(type + ".xml") > -1;
 }
 
-function findTagName(session: EditSession, pos: Position): string {
+function findTagName(session: EditSession, pos: Position): string | undefined {
     const iterator = new TokenIterator(session, pos.row, pos.column);
     let token: Token = iterator.getCurrentToken();
     while (token && !is(token, "tag-name")) {
@@ -220,7 +220,7 @@ function findTagName(session: EditSession, pos: Position): string {
     }
 }
 
-function findAttributeName(session: EditSession, pos: Position): string {
+function findAttributeName(session: EditSession, pos: Position): string | undefined {
     const iterator = new TokenIterator(session, pos.row, pos.column);
     let token = iterator.getCurrentToken();
     while (token && !is(token, "attribute-name")) {
@@ -296,12 +296,17 @@ export default class HtmlCompletions {
     }
 
     getAttributeValueCompletions(state: string, session: EditSession, pos: Position, prefix: string): Completion[] {
-        const tagName = findTagName(session, pos);
-        const attributeName = findAttributeName(session, pos);
 
+        const tagName = findTagName(session, pos);
         if (!tagName) {
             return [];
         }
+
+        const attributeName = findAttributeName(session, pos);
+        if (!attributeName) {
+            return [];
+        }
+
         let values: string[] = [];
         if (tagName in attributeMap && attributeName in attributeMap[tagName] && typeof attributeMap[tagName][attributeName] === "object") {
             values = Object.keys(attributeMap[tagName][attributeName]);

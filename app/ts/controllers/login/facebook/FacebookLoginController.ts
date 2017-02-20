@@ -1,16 +1,9 @@
-import * as angular from 'angular';
-import FacebookLoginScope from './FacebookLoginScope';
-
 export default class FacebookLoginController {
     public static $inject: string[] = [
-        '$scope',
-        '$window',
         'ga',
         'FEATURE_FACEBOOK_SIGNIN_ENABLED'
     ];
     constructor(
-        private $scope: FacebookLoginScope,
-        private $window: angular.IWindowService,
         private ga: UniversalAnalytics.ga,
         private FEATURE_FACEBOOK_SIGNIN_ENABLED: boolean
     ) {
@@ -18,24 +11,21 @@ export default class FacebookLoginController {
     }
 
     /**
-     * @method $onInit
-     * @return {void}
+     *
      */
     $onInit(): void {
         // Do nothing.
     }
 
     /**
-     * @method $onDestroy
-     * @return {void}
+     *
      */
     $onDestroy(): void {
         // Do nothing.
     }
 
     /**
-     * @method login
-     * @return {void}
+     *
      */
     login(): void {
         if (this.FEATURE_FACEBOOK_SIGNIN_ENABLED) {
@@ -47,8 +37,7 @@ export default class FacebookLoginController {
     }
 
     /**
-     * @method logout
-     * @return {void}
+     *
      */
     logout(): void {
         if (this.FEATURE_FACEBOOK_SIGNIN_ENABLED) {

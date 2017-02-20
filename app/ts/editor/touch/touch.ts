@@ -1,6 +1,4 @@
-import { } from "../lib/useragent";
 import Editor from '../Editor';
-import { } from '../lib/event';
 import {
     ClientLocation,
     DIRECTION_VERTICAL,
@@ -8,10 +6,6 @@ import {
     VectorE2
 } from '../hammer/hammer';
 import { PanRecognizer } from '../hammer/recognizers/pan';
-import { } from '../hammer/recognizers/pinch';
-import { } from '../hammer/recognizers/press';
-import { } from '../hammer/recognizers/rotate';
-import { } from '../hammer/recognizers/swipe';
 import { TapRecognizer } from '../hammer/recognizers/tap';
 
 // It seems that TypeScript 1.0.0 doesn't know about TouchEvent.

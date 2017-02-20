@@ -36,7 +36,7 @@ app.factory('ga', [
           NAMESPACE_GOOGLE_ANALYTICS);
     */
     // FIXME: Might be better here to get an interface. 
-    const service = function () {
+    const service = function (this: any) {
       if (angular.isArray(arguments[0])) {
         for (var i = 0; i < arguments.length; ++i) {
           service.apply(this, arguments[i]);

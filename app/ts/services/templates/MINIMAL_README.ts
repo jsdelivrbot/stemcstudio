@@ -1,6 +1,6 @@
 const NEWLINE = '\n';
 
-export default function (options: {}, tabString: string): string {
+export default function MINIMAL_README(): string {
     // const _ = tabString;
     const lines: string[] = [];
     lines.push("# Getting Started with STEMCstudio");
@@ -49,7 +49,7 @@ export default function (options: {}, tabString: string): string {
     lines.push("");
     lines.push("Importing your top-level module, e.g. index.js using");
     lines.push("");
-    lines.push("```");
+    lines.push("```javascript");
     lines.push("System.import('./index.js')");
     lines.push("```");
     lines.push("");

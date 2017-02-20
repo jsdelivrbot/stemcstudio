@@ -9,6 +9,9 @@ import CstyleBehaviour from './behaviour/CstyleBehaviour';
 import FoldMode from './folding/FoldMode';
 import { packages } from "../unicode";
 import { escapeRegExp } from "../lib/lang";
+import Highlighter from './Highlighter';
+import HighlighterFactory from './HighlighterFactory';
+import LanguageModeFactory from "../LanguageModeFactory";
 import TokenIterator from "../TokenIterator";
 import Range from "../Range";
 import TextAndSelection from "../TextAndSelection";
@@ -32,7 +35,7 @@ export default class TextMode implements LanguageMode {
      */
     public wrap: 'auto' | 'code' | 'text' = 'text';
 
-    protected HighlightRules: any = TextHighlightRules;
+    protected highlighter: HighlighterFactory = TextHighlightRules;
 
     protected $behaviour = new Behaviour();
     protected $defaultBehaviour = new CstyleBehaviour();
@@ -61,7 +64,7 @@ export default class TextMode implements LanguageMode {
     protected blockComment: BlockComment;
     public $id = "ace/mode/text";
     private $tokenizer: Tokenizer;
-    private $highlightRules: any;
+    private $highlightRules: Highlighter;
     private $keywordList: string[];
     private $embeds: string[];
     private $modes: { [path: string]: LanguageMode };
@@ -98,7 +101,7 @@ export default class TextMode implements LanguageMode {
      */
     getTokenizer(): Tokenizer {
         if (!this.$tokenizer) {
-            this.$highlightRules = this.$highlightRules || new this.HighlightRules();
+            this.$highlightRules = this.$highlightRules || new this.highlighter();
             this.$tokenizer = new Tokenizer(this.$highlightRules.getRules());
         }
         return this.$tokenizer;
@@ -349,7 +352,7 @@ export default class TextMode implements LanguageMode {
         callback(void 0, void 0);
     }
 
-    createModeDelegates(mapping: { [prefix: string]: any }) {
+    createModeDelegates(mapping: { [prefix: string]: LanguageModeFactory }) {
         this.$embeds = [];
         this.$modes = {};
         for (let p in mapping) {
@@ -370,7 +373,7 @@ export default class TextMode implements LanguageMode {
             (function (scope) {
                 const functionName = delegations[k];
                 const defaultHandler = scope[functionName];
-                scope[delegations[k]] = function () {
+                scope[delegations[k]] = function (this: any) {
                     return this.$delegator(functionName, arguments, defaultHandler);
                 };
             }(this));
@@ -474,11 +477,11 @@ export default class TextMode implements LanguageMode {
         return completionKeywords.concat(this.$keywordList || []);
     }
 
-    $createKeywordList(): string[] {
+    private $createKeywordList(): string[] {
         if (!this.$highlightRules) {
             this.getTokenizer();
         }
-        return this.$keywordList = this.$highlightRules.$keywordList || [];
+        return this.$keywordList = this.$highlightRules.getKeywords() || [];
     }
 
     getCompletions(state: string, session: EditSession, pos: Position, prefix: string): Completion[] {

@@ -30,7 +30,7 @@ export default class GitHubAccountController {
 
         this.gitHub.getUser().then((response) => {
             this.$scope.user = response.data;
-        }).catch((reason) => {
+        }).catch(() => {
             this.$scope.user = <GitHubUser>{ name: "", login: "", avatar_url: void 0 };
         });
 

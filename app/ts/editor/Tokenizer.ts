@@ -6,24 +6,27 @@ import Token from './Token';
 let MAX_TOKEN_COUNT = 2000;
 
 function $applyToken(this: Rule, str: string): Token[] {
-    const values = this.splitRegex.exec(str).slice(1);
-    // FIXME: Don't want this cast.
-    const types: string | string[] = (<any>this.token).apply(this, values);
+    if (typeof this.token === 'function') {
+        const values = this.splitRegex.exec(str).slice(1);
+        // FIXME: Don't want this cast.
+        const types: string | string[] = this.token.apply(this, values);
 
-    // required for compatibility with old modes
-    if (typeof types === "string") {
-        return [{ type: types, value: str }];
-    }
+        // required for compatibility with old modes
+        if (typeof types === "string") {
+            return [{ type: types, value: str }];
+        }
 
-    const tokens: Token[] = [];
-    for (let i = 0, l = types.length; i < l; i++) {
-        if (values[i])
-            tokens[tokens.length] = {
-                type: types[i],
-                value: values[i]
-            };
+        const tokens: Token[] = [];
+        for (let i = 0, l = types.length; i < l; i++) {
+            if (values[i]) {
+                tokens[tokens.length] = { type: types[i], value: values[i] };
+            }
+        }
+        return tokens;
     }
-    return tokens;
+    else {
+        console.warn("expecting rule.token to be a function.");
+    }
 }
 
 function $arrayTokens(this: Rule, str: string): 'text' | Token[] {
@@ -37,16 +40,14 @@ function $arrayTokens(this: Rule, str: string): 'text' | Token[] {
     const tokens: Token[] = [];
     const types = this.tokenArray;
     for (let i = 0, l = types.length; i < l; i++) {
-        if (values[i + 1])
-            tokens[tokens.length] = {
-                type: types[i],
-                value: values[i + 1]
-            };
+        if (values[i + 1]) {
+            tokens[tokens.length] = { type: types[i], value: values[i + 1] };
+        }
     }
     return tokens;
 }
 
-function removeCapturingGroups(this: void, src: string): string {
+function removeCapturingGroups(src: string): string {
     const r = src.replace(
         /\[(?:\\.|[^\]])*?\]|\\.|\(\?[:=!]|(\()/g,
         function (x, y) { return y ? "(?:" : x; }
@@ -54,7 +55,7 @@ function removeCapturingGroups(this: void, src: string): string {
     return r;
 }
 
-function createSplitterRegexp(this: void, src: string, flag?: string): RegExp {
+function createSplitterRegexp(src: string, flag?: string): RegExp {
     if (src.indexOf("(?=") !== -1) {
         let stack = 0;
         let inChClass = false;
@@ -122,8 +123,8 @@ export default class Tokenizer {
      *
      * @param states The highlighting rules for each state (rulesByState).
      */
-    constructor(rules: { [name: string]: Rule[] }) {
-        this.states = rules;
+    constructor(rulesByState: { [stateName: string]: Rule[] }) {
+        this.states = rulesByState;
 
         for (const key in this.states) {
             if (this.states.hasOwnProperty(key)) {
@@ -173,7 +174,7 @@ export default class Tokenizer {
                         if (matchcount > 1)
                             rule.onMatch = $applyToken;
                         else
-                            rule.onMatch = <any>rule.token;
+                            rule.onMatch = rule.token;
                     }
 
                     if (matchcount > 1) {
@@ -211,8 +212,9 @@ export default class Tokenizer {
                         rule.splitRegex = createSplitterRegexp(rule.regex, flag);
                     }
                     else {
+                        console.warn("Ignoring rule.regex");
                         // Not sure if this is dead code.
-                        rule.splitRegex = rule.regex;
+                        // rule.splitRegex = rule.regex;
                     }
                 });
 
@@ -243,8 +245,9 @@ export default class Tokenizer {
                 startState = stack.shift();
             }
         }
-        else
+        else {
             stack = [];
+        }
 
         let currentState: string = <string>startState || "start";
         let rules = this.states[currentState];
@@ -264,13 +267,13 @@ export default class Tokenizer {
         let token: Token = { type: null, value: "" };
 
         while (match = re.exec(line)) {
-            let type = mapping.defaultToken;
+            let type: string | string[] | ((value: string, state: string, stack: string[]) => any) = mapping.defaultToken;
             let rule = null;
             const value = match[0];
             const index = re.lastIndex;
 
             if (index - value.length > lastIndex) {
-                const skipped: string = line.substring(lastIndex, index - value.length);
+                const skipped = line.substring(lastIndex, index - value.length);
                 if (token.type === type) {
                     token.value += skipped;
                 }
@@ -279,7 +282,12 @@ export default class Tokenizer {
                         tokens.push(token);
                     }
                     // FIXME: Is the cast valid?
-                    token = { type: <string>type, value: skipped };
+                    if (typeof type === 'string') {
+                        token = { type: type, value: skipped };
+                    }
+                    else {
+                        console.warn(`Unexpected type => ${type}`);
+                    }
                 }
             }
 
@@ -297,14 +305,19 @@ export default class Tokenizer {
                 if (rule.next) {
                     if (typeof rule.next === "string") {
                         currentState = rule.next;
-                    } else {
+                    }
+                    else if (Array.isArray(rule.next)) {
+                        // This case should not happen because or rule normalization?
+                        console.warn("rule.next: Rule[] is not being handled by the Tokenizer.");
+                    }
+                    else {
                         currentState = rule.next(currentState, stack);
                     }
 
                     rules = this.states[currentState];
                     if (!rules) {
                         // FIXME: I'm ignoring this for the time being!
-                        // console.warn("state doesn't exist", currentState);
+                        console.warn("state doesn't exist", currentState);
                         currentState = "start";
                         rules = this.states[currentState];
                     }
@@ -341,19 +354,13 @@ export default class Tokenizer {
 
             if (matchAttempts++ > MAX_TOKEN_COUNT) {
                 if (matchAttempts > 2 * line.length) {
-                    console.warn("infinite loop with in ace tokenizer", {
-                        startState: startState,
-                        line: line
-                    });
+                    console.warn("infinite loop within tokenizer", { startState: startState, line: line });
                 }
                 // chrome doens't show contents of text nodes with very long text
                 while (lastIndex < line.length) {
                     if (token.type)
                         tokens.push(token);
-                    token = {
-                        value: line.substring(lastIndex, lastIndex += 2000),
-                        type: "overflow"
-                    };
+                    token = { value: line.substring(lastIndex, lastIndex += 2000), type: "overflow" };
                 }
                 currentState = "start";
                 stack = [];
@@ -361,12 +368,14 @@ export default class Tokenizer {
             }
         }
 
-        if (token.type)
+        if (token.type) {
             tokens.push(token);
+        }
 
         if (stack.length > 1) {
-            if (stack[0] !== currentState)
+            if (stack[0] !== currentState) {
                 stack.unshift("#tmp", currentState);
+            }
         }
 
         return {

@@ -16,7 +16,7 @@ export default class TranslateService implements ITranslateService {
     /**
      * 
      */
-    instant(translationId: string, interpolateParams?: any, interpolationId?: string, forceLanguage?: boolean): string {
+    instant(translationId: string /*, interpolateParams?: any, interpolationId?: string, forceLanguage?: boolean */): string {
         // Just a few to prove that it all works.
         if (translationId === 'APP_NAME') {
             return 'STEMCstudio';
@@ -32,7 +32,7 @@ export default class TranslateService implements ITranslateService {
     /**
      * 
      */
-    uses(langKey: string): void {
+    uses(/* langKey: string */): void {
         // TODO
     }
 }

@@ -2,7 +2,7 @@ import * as angular from 'angular';
 import AbstractPageController from './AbstractPageController';
 import DoodleScope from '../scopes/DoodleScope';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
-import {GITHUB_AUTH_MANAGER} from '../services/gham/IGitHubAuthManager';
+import { GITHUB_AUTH_MANAGER } from '../services/gham/IGitHubAuthManager';
 import ITemplate from '../services/templates/ITemplate';
 import ModalDialog from '../services/modalService/ModalDialog';
 import NavigationService from '../modules/navigation/NavigationService';
@@ -30,7 +30,7 @@ export default class DoodleController extends AbstractPageController {
         navigation: NavigationService,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string) {
 
-        super($scope, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'hidden');
+        super($window, authManager, modalDialog, 'hidden');
 
         // ExplorerMixin implementation.
         $scope.isExplorerVisible = true;

@@ -1,13 +1,11 @@
 import TextHighlightRules from "./TextHighlightRules";
 
 /**
- * @class JsonHighlightRules
- * @extends TextHighlightRules
+ *
  */
 export default class JsonHighlightRules extends TextHighlightRules {
     /**
-     * @class JsonHighlightRules
-     * @constructor
+     *
      */
     constructor() {
         super();

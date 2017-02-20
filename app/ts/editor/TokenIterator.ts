@@ -10,7 +10,7 @@ export default class TokenIterator {
     private session: EditSession;
     private $row: number;
     private $rowTokens: Token[];
-    private $tokenIndex: number;
+    private $tokenIndex: number | undefined;
 
     /**
      * Creates a new token iterator object. The inital token index is set to the provided row and column coordinates.
@@ -35,7 +35,7 @@ export default class TokenIterator {
      * @returns If the current point is not at the top of the file, this function returns `null`.
      *                 Otherwise, it returns an array of the tokenized strings.
      */
-    stepBackward(): Token {
+    stepBackward(): Token | null {
         this.$tokenIndex -= 1;
 
         while (this.$tokenIndex < 0) {
@@ -86,7 +86,7 @@ export default class TokenIterator {
     /** 
      * Returns the current token.
      */
-    getCurrentToken(): Token {
+    getCurrentToken(): Token | undefined {
         if (this.$rowTokens) {
             return this.$rowTokens[this.$tokenIndex];
         }

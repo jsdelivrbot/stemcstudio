@@ -9,7 +9,6 @@ import WsModel from '../../wsmodel/services/WsModel';
 
 export default class PropertiesFlow {
     constructor(
-        private owner: string,
         private options: IOptionManager,
         private olds: string[],
         private FILENAME_TYPESCRIPT_CURRENT_LIB_DTS: string,

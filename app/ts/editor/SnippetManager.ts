@@ -6,6 +6,7 @@ import EditSession from './EditSession';
 import EventBus from './EventBus';
 import Position from "./Position";
 import Range from "./Range";
+import Rule from './Rule';
 import Snippet from "./Snippet";
 import SnippetOptions from './SnippetOptions';
 import Tabstop from "./Tabstop";
@@ -160,13 +161,12 @@ export default class SnippetManager implements EventBus<any, SnippetManager> {
             },
             {
                 regex: "/(" + escape("/") + "+)/(?:(" + escape("/") + "*)/)(\\w*):?",
-                onMatch: function (value: string, state: string, stack: any[]) {
+                onMatch: function (this: Rule, fmtString: string, state: string, stack: any[]) {
                     // It would seem that we have a very decorated Range!
                     const ts = <Range>(<any>stack[0]);
-                    ts.fmtString = value;
+                    ts.fmtString = fmtString;
 
-                    // FIXME: What does his refer to? 
-                    value = this.splitRegex.exec(value);
+                    const value = this.splitRegex.exec(fmtString);
                     ts.guard = value[1];
                     ts.fmt = value[2];
                     ts.flag = value[3];

@@ -11,7 +11,7 @@ export default class GlslMode extends CppMode {
     $id = "ace/mode/glsl";
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
-        this.HighlightRules = GlslHighlightRules;
+        this.highlighter = GlslHighlightRules;
 
         this.$outdent = new MatchingBraceOutdent();
         this.$behaviour = new CstyleBehaviour();
@@ -22,7 +22,7 @@ export default class GlslMode extends CppMode {
 
         const worker = new WorkerClient(this.workerUrl);
 
-        worker.on('annotations', function(event: { data: Annotation[] }) {
+        worker.on('annotations', function (event: { data: Annotation[] }) {
             const annotations: Annotation[] = event.data;
             if (annotations.length > 0) {
                 session.setAnnotations(annotations);
@@ -33,7 +33,7 @@ export default class GlslMode extends CppMode {
             session._emit("annotations", { data: annotations });
         });
 
-        worker.on("terminate", function() {
+        worker.on("terminate", function () {
             worker.detachFromDocument();
             session.clearAnnotations();
         });
@@ -41,7 +41,7 @@ export default class GlslMode extends CppMode {
         // FIXME: Must be able to inject the module name.
         const moduleName = 'ace-workers.js';
         try {
-            worker.init(this.scriptImports, moduleName, 'GlslWorker', function(err: any) {
+            worker.init(this.scriptImports, moduleName, 'GlslWorker', function (err: any) {
                 if (!err) {
                     worker.attachToDocument(session.getDocument());
                     callback(void 0, worker);

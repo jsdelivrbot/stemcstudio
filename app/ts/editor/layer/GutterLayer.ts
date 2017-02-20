@@ -111,7 +111,7 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
         }
     }
 
-    private $updateAnnotations(delta: Delta, session: EditSession) {
+    private $updateAnnotations(delta: Delta) {
         if (!this.$annotations.length) {
             return;
         }
@@ -255,8 +255,8 @@ export default class GutterLayer extends AbstractLayer implements EventBus<numbe
      */
     setShowLineNumbers(show: boolean): void {
         this.$renderer = !show && {
-            getWidth: function (session: EditSession, row: number, config: GutterConfig) { return 0; },
-            getText: function (session: EditSession, row: number) { return ""; }
+            getWidth: function () { return 0; },
+            getText: function () { return ""; }
         };
     }
 

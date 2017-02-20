@@ -32,7 +32,7 @@ export default function createDelayedCall(fcn: () => any, defaultTimeout?: numbe
     _self.schedule = _self;
 
     _self.call = () => {
-        this.cancel();
+        _self.cancel();
         fcn();
     };
 

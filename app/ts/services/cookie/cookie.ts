@@ -3,12 +3,12 @@ import CookieService from './CookieService';
 
 app.factory('cookie', [
     function (): CookieService {
-        return {
-            getItem: function (name: string): string {
+        const that: CookieService = {
+            getItem(name: string): string {
                 const escapedName = encodeURI(name).replace(/[\-\.\+\*]/g, "\\$&");
                 return decodeURI(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + escapedName + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
             },
-            setItem: function (name: string, value: string, end?: String | Number | Date, path?: string, domain?: string, secure?: string): void {
+            setItem(name: string, value: string, end?: String | Number | Date, path?: string, domain?: string, secure?: string): void {
                 let expires: string;
                 if (!name || /^(?:expires|max\-age|path|domain|secure)$/i.test(name)) {
                     throw new Error("Illegal name");
@@ -36,15 +36,16 @@ app.factory('cookie', [
                 const cookie = "" + (encodeURI(name)) + "=" + (encodeURI(value)) + expires + domain + path + secure;
                 document.cookie = cookie;
             },
-            removeItem: function (name: string, path?) {
-                if (!name || !this.hasItem(name)) {
+            removeItem(name: string, path?) {
+                if (!name || !that.hasItem(name)) {
                     return false;
                 }
-                return this.setItem(name, "", new Date(0), path);
+                return that.setItem(name, "", new Date(0), path);
             },
-            hasItem: function (name: string): boolean {
+            hasItem(name: string): boolean {
                 return (new RegExp("(?:^|;\\s*)" + encodeURI(name).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie);
             }
         };
+        return that;
     }
 ]);

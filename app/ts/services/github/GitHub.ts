@@ -85,9 +85,9 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
                     method: HTTP_METHOD_GET,
                     url: "" + GITHUB_PROTOCOL + "://" + GITHUB_DOMAIN + "/user/repos",
                     headers: requestHeaders()
-                }).success(function (repos: Repo[], status, headers, config) {
+                }).success(function (repos: Repo[]) {
                     return done(null, repos);
-                }).error(function (response, status, headers, config) {
+                }).error(function (response) {
                     return done(new Error(response.message), response);
                 });
             },
@@ -113,10 +113,10 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
                 // TODO: The GitHUb v3 API lets us specify the name of the commit/branch/tag.
                 // The default is the repository default branch, usually master.
                 return $http({ method, url, headers: requestHeaders() })
-                    .success(function (contents: RepoElement[], status, headers, config) {
+                    .success(function (contents: RepoElement[]) {
                         return done(void 0, contents);
                     })
-                    .error(function (response, status, headers, config) {
+                    .error(function (response) {
                         return done(new Error(response.message), void 0);
                     });
             },
@@ -130,10 +130,10 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
                 // TODO: The GitHUb v3 API lets us specify the name of the commit/branch/tag.
                 // The default is the repository default branch, usually master.
                 $http({ method, url, headers: requestHeaders() })
-                    .success(function (response: PathContents, status, headers, config) {
+                    .success(function (response: PathContents) {
                         deferred.resolve(response);
                     })
-                    .error(function (response, status, headers, config) {
+                    .error(function (response) {
                         deferred.reject(new Error(response.message));
                     });
                 return deferred.promise;
@@ -163,9 +163,9 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
                     url: url,
                     data: data,
                     headers: requestHeaders()
-                }).success(function (file, status, headers, config) {
+                }).success(function (file) {
                     return done(null, file);
-                }).error(function (response, status, headers, config) {
+                }).error(function (response) {
                     return done(new Error(response.message), response);
                 });
             },
@@ -181,9 +181,9 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
                     method: HTTP_METHOD_DELETE,
                     url: url,
                     headers: requestHeaders()
-                }).success(function (repo, status, headers, config) {
+                }).success(function (repo) {
                     return done(null, repo);
-                }).error(function (response, status, headers, config) {
+                }).error(function (response) {
                     return done(new Error(response.message), response);
                 });
             },
@@ -210,10 +210,10 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
                 const method = HTTP_METHOD_DELETE;
                 const headers = requestHeaders();
                 return $http({ method, url, headers })
-                    .success(function (response, status, headers, config) {
+                    .success(function (response) {
                         return done(null, response);
                     })
-                    .error(function (response, status, headers, config) {
+                    .error(function (response) {
                         return done(new Error(response.message), response);
                     });
             },
@@ -228,13 +228,13 @@ app.factory('GitHub', ['$http', '$q', 'cookie', 'GITHUB_TOKEN_COOKIE_NAME',
                     method: HTTP_METHOD_GET,
                     url: "" + GITHUB_PROTOCOL + "://" + GITHUB_DOMAIN + "/users/" + user + "/gists",
                     headers: requestHeaders()
-                }).success(function (gists: any, status, headers, config) {
+                }).success(function (gists: any) {
                     gists = _.map(gists, function (gist: any) {
                         return gist;
                     });
-                    return done(null, gists/*, status, headers, config*/);
-                }).error(function (response, status, headers, config) {
-                    return done(new Error(response.message), response/*, status, headers, config*/);
+                    return done(null, gists);
+                }).error(function (response) {
+                    return done(new Error(response.message), response);
                 });
             },
             getGists: function () {

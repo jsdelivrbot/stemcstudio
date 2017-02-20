@@ -33,7 +33,7 @@ export default class CredentialsService {
             });
 
             // Listen for sign-in state changes.
-            auth2.isSignedIn.listen((direction: boolean) => {
+            auth2.isSignedIn.listen((/* direction: boolean */) => {
                 // console.lg('Signin state changed to ', direction);
             });
 

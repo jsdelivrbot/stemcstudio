@@ -11,7 +11,7 @@ const outdent = new MatchingParensOutdent();
 export default class ClojureMode extends TextMode {
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
-        this.HighlightRules = ClojureHighlightRules;
+        this.highlighter = ClojureHighlightRules;
         this.lineCommentStart = ";";
         this.$id = "ace/mode/clojure";
     }

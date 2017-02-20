@@ -1,17 +1,18 @@
-import {LANGUAGE_C} from '../languages/modes';
-import {LANGUAGE_CPP} from '../languages/modes';
-import {LANGUAGE_CSS} from '../languages/modes';
-import {LANGUAGE_GLSL} from '../languages/modes';
-import {LANGUAGE_HASKELL} from '../languages/modes';
-import {LANGUAGE_HTML} from '../languages/modes';
-import {LANGUAGE_JSON} from '../languages/modes';
-import {LANGUAGE_JAVA_SCRIPT} from '../languages/modes';
-import {LANGUAGE_LESS} from '../languages/modes';
-import {LANGUAGE_MARKDOWN} from '../languages/modes';
-import {LANGUAGE_PYTHON} from '../languages/modes';
-import {LANGUAGE_SCHEME} from '../languages/modes';
-import {LANGUAGE_TEXT} from '../languages/modes';
-import {LANGUAGE_TYPE_SCRIPT} from '../languages/modes';
+import { LANGUAGE_C } from '../languages/modes';
+import { LANGUAGE_CPP } from '../languages/modes';
+import { LANGUAGE_CSS } from '../languages/modes';
+import { LANGUAGE_GLSL } from '../languages/modes';
+import { LANGUAGE_HASKELL } from '../languages/modes';
+import { LANGUAGE_HTML } from '../languages/modes';
+import { LANGUAGE_JSON } from '../languages/modes';
+import { LANGUAGE_JAVA_SCRIPT } from '../languages/modes';
+import { LANGUAGE_LESS } from '../languages/modes';
+import { LANGUAGE_MARKDOWN } from '../languages/modes';
+import { LANGUAGE_PYTHON } from '../languages/modes';
+import { LANGUAGE_SCHEME } from '../languages/modes';
+import { LANGUAGE_TEXT } from '../languages/modes';
+import { LANGUAGE_TYPE_SCRIPT } from '../languages/modes';
+import { LANGUAGE_XML } from '../languages/modes';
 
 const extensionToMode: { [ext: string]: string } = {};
 const fileNameToMode: { [fileName: string]: string } = {};
@@ -33,6 +34,7 @@ extensionToMode['scm'] = LANGUAGE_SCHEME;
 // extensionToMode['sass'] = 'SASS'
 extensionToMode['ts'] = LANGUAGE_TYPE_SCRIPT;
 extensionToMode['txt'] = LANGUAGE_TEXT;
+extensionToMode['xml'] = LANGUAGE_XML;
 
 fileNameToMode['LICENSE'] = LANGUAGE_TEXT;
 fileNameToMode['.gitignore'] = LANGUAGE_TEXT;

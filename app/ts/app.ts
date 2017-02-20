@@ -47,7 +47,6 @@ import AppScope from './scopes/AppScope';
 import CookieService from './services/cookie/CookieService';
 import githubSignInButton from './directives/githubSignIn/githubSignInButton';
 import googleSignInButton from './directives/googleSignIn/googleSignInButton';
-import IUuidService from './services/uuid/IUuidService';
 import ITranslateProvider from './translate/ITranslateProvider';
 import BodyController from './controllers/BodyController';
 import AboutController from './controllers/AboutController';
@@ -140,7 +139,7 @@ function vendorPath(packageFolder: string, fileName: string): string {
 }
 
 // The application version.
-app.constant('version', '2.21.86');
+app.constant('version', '2.21.87');
 
 // Feature flags (boolean)
 app.constant('FEATURE_AWS_ENABLED', false);
@@ -280,7 +279,6 @@ app.config([
     'FEATURE_DASHBOARD_ENABLED',
     'FEATURE_EXAMPLES_ENABLED',
     'FEATURE_GIST_ENABLED',
-    'FEATURE_GOOGLE_SIGNIN_ENABLED',
     'FEATURE_REPO_ENABLED',
     'FEATURE_ROOM_ENABLED',
     'FEATURE_TUTORIALS_ENABLED',
@@ -292,7 +290,6 @@ app.config([
         FEATURE_DASHBOARD_ENABLED: boolean,
         FEATURE_EXAMPLES_ENABLED: boolean,
         FEATURE_GIST_ENABLED: boolean,
-        FEATURE_GOOGLE_SIGNIN_ENABLED: boolean,
         FEATURE_REPO_ENABLED: boolean,
         FEATURE_ROOM_ENABLED: boolean,
         FEATURE_TUTORIALS_ENABLED: boolean
@@ -439,38 +436,24 @@ app.run([
     '$rootScope',
     '$state',
     '$stateParams',
-    '$window',
     'credentials',
     'cookie',
-    'uuid4',
-    'ga',
-    'githubKey',
     'version',
-    'FEATURE_GIST_ENABLED',
     'FEATURE_GOOGLE_SIGNIN_ENABLED',
     'FEATURE_LOGIN_ENABLED',
-    'FEATURE_REPO_ENABLED',
     'GITHUB_LOGIN_COOKIE_NAME',
     'GITHUB_TOKEN_COOKIE_NAME',
-    'UNIVERSAL_ANALYTICS_TRACKING_ID',
     function (
         $rootScope: AppScope,
         $state: angular.ui.IStateService,
         $stateParams: angular.ui.IStateParamsService,
-        $window: Window,
         credentials: CredentialsService,
         cookie: CookieService,
-        uuid4: IUuidService,
-        ga: UniversalAnalytics.ga,
-        githubKey: string,
         version: string,
-        FEATURE_GIST_ENABLED: boolean,
         FEATURE_GOOGLE_SIGNIN_ENABLED: boolean,
         FEATURE_LOGIN_ENABLED: boolean,
-        FEATURE_REPO_ENABLED: boolean,
         GITHUB_LOGIN_COOKIE_NAME: string,
-        GITHUB_TOKEN_COOKIE_NAME: string,
-        UNIVERSAL_ANALYTICS_TRACKING_ID: string
+        GITHUB_TOKEN_COOKIE_NAME: string
     ) {
         // console.lg(`${app.name}.run(...)`);
 

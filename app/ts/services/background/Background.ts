@@ -4,10 +4,9 @@ interface Background {
      * @param repo
      * @param gistId
      * @param roomId
-     * @param monitor
      * @param callback
      */
-    loadWsModel(owner: string, repo: string, gistId: string, roomId: string, monitor: boolean, callback: (err: Error) => any): void;
+    loadWsModel(owner: string, repo: string, gistId: string, roomId: string, callback: (err: Error) => any): void;
 }
 
 export default Background;

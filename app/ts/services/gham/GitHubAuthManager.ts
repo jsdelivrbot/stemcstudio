@@ -1,4 +1,3 @@
-import * as ng from 'angular';
 import CookieService from '../cookie/CookieService';
 import GitHubService from '../github/GitHubService';
 import IGitHubAuthManager from './IGitHubAuthManager';
@@ -47,7 +46,7 @@ export default class GitHubAuthManager implements IGitHubAuthManager {
             this.$window.localStorage.removeItem(this.githubKey);
             const code = ghItem.oauth.code;
             this.$http.get<{ token: string }>(`${GATEKEEPER_DOMAIN}/authenticate/${code}`)
-                .success((data: { token: string }, status: number, headers: ng.IHttpHeadersGetter, config: ng.IRequestConfig) => {
+                .success((data: { token: string }) => {
                     const token = data.token;
                     this.cookie.setItem(GITHUB_TOKEN_COOKIE_NAME, token);
                     this.github.getUser().then((response) => {
@@ -55,10 +54,10 @@ export default class GitHubAuthManager implements IGitHubAuthManager {
                         this.cookie.setItem(GITHUB_LOGIN_COOKIE_NAME, user.login);
                         done(void 0, token);
                     }).catch((reason) => {
-                        done(new Error("Unable to retrieve your user information."), void 0);
+                        done(new Error(`Unable to retrieve your user information: ${reason}`), void 0);
                     });
                 })
-                .error((data, status, headers, config) => {
+                .error(() => {
                     done(new Error("Unable to retrieve your authentication token."), void 0);
                 });
         }
@@ -77,7 +76,7 @@ export default class GitHubAuthManager implements IGitHubAuthManager {
             this.$location.search({});
             const code = match[1];
             this.$http.get(`${GATEKEEPER_DOMAIN}/authenticate/${code}`)
-                .success((data: { token: string }, status, headers, config) => {
+                .success((data: { token: string }) => {
                     const token = data.token;
                     this.cookie.setItem(GITHUB_TOKEN_COOKIE_NAME, token);
                     this.github.getUser().then((response) => {
@@ -88,7 +87,7 @@ export default class GitHubAuthManager implements IGitHubAuthManager {
                         done(new Error(`Unable to retrieve your user information because ${JSON.stringify(reason)} .`), void 0);
                     });
                 })
-                .error((data, status, headers, config) => {
+                .error(() => {
                     done(new Error("Unable to retrieve your authentication token."), void 0);
                 });
         }

@@ -1,8 +1,7 @@
 import IGitHubAuthManager from '../../../services/gham/IGitHubAuthManager';
-import {GITHUB_AUTH_MANAGER} from '../../../services/gham/IGitHubAuthManager';
+import { GITHUB_AUTH_MANAGER } from '../../../services/gham/IGitHubAuthManager';
 import RoomAgent from '../services/RoomAgent';
 import RoomParams from '../services/RoomParams';
-import RoomScope from './RoomScope';
 import RoomsService from '../services/RoomsService';
 import ModalDialog from '../../../services/modalService/ModalDialog';
 import NavigationService from '../../../modules/navigation/NavigationService';
@@ -13,7 +12,6 @@ import WsModel from '../../../wsmodel/services/WsModel';
  */
 export default class RoomsController {
     public static $inject: string[] = [
-        '$scope',
         GITHUB_AUTH_MANAGER,
         'modalDialog',
         'navigation',
@@ -21,7 +19,6 @@ export default class RoomsController {
         'wsModel'
     ];
     constructor(
-        private $scope: RoomScope,
         private authManager: IGitHubAuthManager,
         private modalDialog: ModalDialog,
         private navigation: NavigationService,
@@ -88,7 +85,7 @@ export default class RoomsController {
                 this.wsModel.uploadToRoom(room);
                 room.release();
 
-            }).catch(function(reason) {
+            }).catch(function (reason) {
                 console.warn(`Sorry, we could not get you a room!`);
             });
         }
@@ -104,7 +101,7 @@ export default class RoomsController {
         if (this.isJoinRoomEnabled()) {
             this.modalDialog.prompt({ title: "Join Room", message: "Please enter the name of the room you would like to join.", text: "", placeholder: "r1234567" }).then((roomId) => {
                 this.navigation.gotoRoom(roomId);
-            }).catch(function(err) {
+            }).catch(function (err) {
                 switch (err) {
                     case 'cancel click':
                     case 'escape key press':

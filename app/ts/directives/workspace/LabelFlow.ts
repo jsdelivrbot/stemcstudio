@@ -6,7 +6,6 @@ import WsModel from '../../wsmodel/services/WsModel';
 
 export default class LabelFlow {
     constructor(
-        private owner: string,
         private flowService: FlowService,
         private labelDialog: LabelDialog,
         private wsModel: WsModel

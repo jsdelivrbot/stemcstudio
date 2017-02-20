@@ -1,6 +1,6 @@
 const NEWLINE = '\n';
 
-export default function (options: {}, tabString: string): string {
+export default function (tabString: string): string {
     const _ = tabString;
     const lines: string[] = [];
     lines.push("const e1 = EIGHT.Geometric3.e1(true)");

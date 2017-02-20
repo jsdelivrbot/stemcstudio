@@ -6,14 +6,14 @@ import {
     IComputedEvent,
     INPUT_END
 } from '../hammer';
-import { } from '../utils';
+
 /**
  * Swipe
  * Recognized when the pointer is moving fast enough in the allowed direction.
  */
 export class SwipeRecognizer extends ContinuousRecognizer {
-    private displacementThreshold: number = 10;
-    private speedThreshold: number = 0.65;
+    private displacementThreshold = 10;
+    private speedThreshold = 0.65;
     private direction: number = DIRECTION_HORIZONTAL | DIRECTION_VERTICAL;
 
     constructor(eventName: string, enabled: boolean) {

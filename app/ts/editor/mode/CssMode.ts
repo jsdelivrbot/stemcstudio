@@ -27,7 +27,7 @@ export default class CssMode extends TextMode {
      */
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
-        this.HighlightRules = CssHighlightRules;
+        this.highlighter = CssHighlightRules;
         this.$outdent = new MatchingBraceOutdent();
         this.$behaviour = new CssBehaviour();
         this.$completer = new CssCompletions();

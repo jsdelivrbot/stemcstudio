@@ -26,7 +26,7 @@ export default class PythonMode extends TextMode {
     $id = "ace/mode/python";
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
-        this.HighlightRules = PythonHighlightRules;
+        this.highlighter = PythonHighlightRules;
         this.foldingRules = new PythonFoldMode("\\:");
         this.$behaviour = this.$defaultBehaviour;
     }

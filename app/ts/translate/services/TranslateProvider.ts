@@ -1,5 +1,5 @@
 import ITranslateProvider from '../ITranslateProvider';
-import ITranslationTable from '../ITranslationTable';
+// import ITranslationTable from '../ITranslationTable';
 import TranslateService from './TranslateService';
 
 /**
@@ -20,7 +20,7 @@ export default class TranslateProvider implements ITranslateProvider {
         this._preferredLanguage = preferredLanguage;
     }
 
-    translations(key: string, translationTable: ITranslationTable): ITranslateProvider {
+    translations(/* key: string, translationTable: ITranslationTable */): ITranslateProvider {
         return this;
     }
 

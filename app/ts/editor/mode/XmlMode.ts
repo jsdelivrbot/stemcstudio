@@ -32,7 +32,7 @@ export default class XmlMode extends TextMode {
      */
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
-        this.HighlightRules = XmlHighlightRules;
+        this.highlighter = XmlHighlightRules;
         this.$behaviour = new XmlBehaviour();
         this.foldingRules = new XmlFoldMode();
         // What is the significance of the 1, if anything?

@@ -7,16 +7,18 @@
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "preserveConstEnums": true,
-        "pretty": true,
+        "pretty": false,
         "removeComments": true,
         "noImplicitAny": true,
         "noImplicitReturns": false,
         "noImplicitThis": true,
         "noLib": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": false,
         "outDir": "generated/js",
-        "strictNullChecks": true,
+        "strictNullChecks": false,
         "suppressImplicitAnyIndexErrors": true,
-        "traceResolution": true
+        "traceResolution": false
     },
     "exclude": [
         "./node_modules/@types/node/index.d.ts"

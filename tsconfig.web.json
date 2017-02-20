@@ -7,6 +7,8 @@
         "noImplicitAny": true,
         "noImplicitReturns": false,
         "noImplicitThis": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": false,
         "suppressImplicitAnyIndexErrors": true
     },
     "files": [

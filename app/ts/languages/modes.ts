@@ -12,3 +12,4 @@ export const LANGUAGE_PYTHON = 'Python';
 export const LANGUAGE_SCHEME = 'Scheme';
 export const LANGUAGE_TEXT = 'Text';
 export const LANGUAGE_TYPE_SCRIPT = 'TypeScript';
+export const LANGUAGE_XML = 'XML';

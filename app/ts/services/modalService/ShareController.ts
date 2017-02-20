@@ -13,15 +13,15 @@ export default class ShareController {
             // options here: action, target, text.
         });
 
-        clipboard.on('success', function(e: ClipboardEvent) {
+        clipboard.on('success', function (e: ClipboardEvent) {
             e.clearSelection();
         });
 
-        clipboard.on('error', function(e: ClipboardEvent) {
+        clipboard.on('error', function (/* e: ClipboardEvent */) {
             console.warn("The text could not be copied to the clipboard.");
         });
 
-        $scope.close = function() {
+        $scope.close = function () {
             clipboard.destroy();
             $uibModalInstance.close($scope.options.text);
         };

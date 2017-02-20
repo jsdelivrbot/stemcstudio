@@ -5,7 +5,7 @@
  * Take copy as an example, Mac people expect to use CMD or APPLE + C
  * Windows folks expect to use CTRL + C
  */
-export var OS = {
+export const OS = {
   LINUX: "LINUX",
   MAC: "MAC",
   WINDOWS: "WINDOWS"

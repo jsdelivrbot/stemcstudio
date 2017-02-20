@@ -17,12 +17,18 @@ interface Rule {
     /**
      * FIXME: Is this too general?
      */
-    defaultToken?: string | string[] | ((value: any, state: string, stack: string[]) => any);
+    // defaultToken?: string | string[] | ((value: any, state: string, stack: string[]) => any);
+    defaultToken?: string;
 
     /**
      *
      */
     include?: string;
+
+    /**
+     * 
+     */
+    keywordMap?: { [key: string]: string };
 
     /**
      * FIXME: It could be that next and nextState are the same thing?
@@ -56,6 +62,11 @@ interface Rule {
     regex?: string | RegExp;
 
     /**
+     * 
+     */
+    rules?: { [stateName: string]: Rule[] };
+
+    /**
      *
      */
     splitRegex?: RegExp;
@@ -68,13 +79,13 @@ interface Rule {
     /**
      *
      */
-    tokenArray?: any;
+    tokenArray?: string[];
 
     /**
      * The Tokenizer believes that this is either a string or a function.
      * I think the stack should be a string[]
      */
-    next?: string | ((currentState: string, stack: string[]) => string);
+    next?: string | Rule[] | ((currentState: string, stack: string[]) => string);
 
     /**
      *

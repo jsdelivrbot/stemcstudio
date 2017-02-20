@@ -21,7 +21,7 @@ export default class CursorLayer extends AbstractLayer implements Disposable {
     private timeoutId: number;
     private cursors: HTMLDivElement[] = [];
     private cursor: HTMLDivElement;
-    private $padding: number = 0;
+    private $padding = 0;
     private overwrite: boolean;
     private $updateCursors: (doIt: boolean) => void;
     public config: CursorConfig;

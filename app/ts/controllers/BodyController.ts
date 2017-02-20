@@ -10,23 +10,23 @@ import NavigationService from '../modules/navigation/NavigationService';
  */
 export default class BodyController {
     public static $inject: string[] = ['$scope', 'GitHub', 'navigation'];
-    constructor(private $scope: BodyScope, github: GitHubService, navigation: NavigationService) {
+    constructor($scope: BodyScope, github: GitHubService, navigation: NavigationService) {
 
         $scope.goHome = (label?: string, value?: number) => {
-            navigation.gotoHome(label, value).then(function(promiseValue: any) {
+            navigation.gotoHome(label, value).then(function () {
                 // console.lg(`gotoHome() completed.`);
-            }).catch(function(reason: any) {
+            }).catch(function (reason: any) {
                 console.warn(`gotoHome() failed: ${JSON.stringify(reason, null, 2)}`);
             });
         };
 
-        $scope.clickDownload = function(label?: string, value?: number) {
+        $scope.clickDownload = function (label?: string, value?: number) {
             ga('send', 'event', 'doodle', 'download', label, value);
-            github.getGists().then(function(promiseValue) {
+            github.getGists().then(function (promiseValue) {
                 $scope.gists = promiseValue.data;
                 $scope.links = linkToMap(promiseValue.headers('link'));
                 navigation.gotoDownload(label, value);
-            }).catch(function(reason) {
+            }).catch(function (reason) {
                 BootstrapDialog.show({
                     type: BootstrapDialog.TYPE_DANGER,
                     // FIXME: Why does jQuery get defined globally and does a module import fail?
@@ -35,7 +35,7 @@ export default class BodyController {
                     buttons: [{
                         label: "Close",
                         cssClass: 'btn btn-primary',
-                        action: function(dialog: IBootstrapDialog) {
+                        action: function (dialog: IBootstrapDialog) {
                             dialog.close();
                         }
                     }]

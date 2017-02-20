@@ -1,13 +1,26 @@
 import { deepCopy } from "../lib/lang";
 import Rule from '../Rule';
-import HighlightRules from './HighlightRules';
+import Highlighter from './Highlighter';
+import HighlighterFactory from './HighlighterFactory';
+
+const pushState = function (this: Rule, currentState: string, stack: string[]): string {
+    if (currentState !== "start" || stack.length) {
+        stack.unshift(this.nextState, currentState);
+    }
+    return this.nextState;
+};
+
+const popState = function (this: Rule, currentState: string, stack: string[]): string {
+    stack.shift();
+    return stack.shift() || "start";
+};
 
 /**
  *
  */
-export default class TextHighlightRules implements HighlightRules {
+export default class TextHighlightRules implements Highlighter {
     /**
-     * FIXME: This should be called rulesByState.
+     * FIXME: This should be called rulesByStateName.
      */
     $rules: { [stateName: string]: Rule[] };
 
@@ -37,45 +50,39 @@ export default class TextHighlightRules implements HighlightRules {
     }
 
     /**
-     * @param rulesByState
+     * @param rules
      * @param prefix
      */
-    addRules(rulesByState: { [name: string]: Rule[] }, prefix?: string) {
-        const stateNames = Object.keys(rulesByState);
-        const sLen = stateNames.length;
+    addRules(rules: { [name: string]: Rule[] }, prefix?: string): void {
         if (!prefix) {
-            for (let s = 0; s < sLen; s++) {
-                const stateName = stateNames[s];
-                this.$rules[stateName] = rulesByState[stateName];
+            for (const key in rules) {
+                if (rules.hasOwnProperty(key)) {
+                    this.$rules[key] = rules[key];
+                }
             }
             return;
         }
-        for (let s = 0; s < sLen; s++) {
-            const stateName = stateNames[s];
-            const rules: Rule[] = rulesByState[stateName];
-            for (let i = 0; i < rules.length; i++) {
-                const rule = rules[i];
-                if (rule.next || rule.onMatch) {
-                    if (typeof rule.next !== "string") {
-                        if (rule.nextState && rule.nextState.indexOf(prefix) !== 0) {
+        for (const key in rules) {
+            if (rules.hasOwnProperty(key)) {
+                const state = rules[key];
+                for (let i = 0; i < state.length; i++) {
+                    const rule = state[i];
+                    if (rule.next || rule.onMatch) {
+                        if (typeof rule.next === "string") {
+                            if (rule.next.indexOf(prefix) !== 0)
+                                rule.next = prefix + rule.next;
+                        }
+                        if (rule.nextState && rule.nextState.indexOf(prefix) !== 0)
                             rule.nextState = prefix + rule.nextState;
-                        }
-                    }
-                    else {
-                        // Because the typeof check earlier...
-                        const next: string = <string>rule.next;
-                        if (next.indexOf(prefix) !== 0) {
-                            rule.next = prefix + rule.next;
-                        }
                     }
                 }
+                this.$rules[prefix + key] = state;
             }
-            this.$rules[prefix + stateName] = rules;
         }
     }
 
     /**
-     * FIXME: Rename getRulesByState
+     *
      */
     getRules(): { [name: string]: Rule[] } {
         return this.$rules;
@@ -84,8 +91,10 @@ export default class TextHighlightRules implements HighlightRules {
     /**
      * FIXME: typing of 1st parameter.
      */
-    embedRules(HighlightRules: any, prefix: string, escapeRules: Rule[], states?: string[], append?: boolean) {
-        const embedRules: { [name: string]: Rule[] } = (typeof HighlightRules === "function") ? new HighlightRules().getRules() : HighlightRules;
+    embedRules(highlightRules: HighlighterFactory | { [stateName: string]: Rule[] }, prefix: string, escapeRules: Rule[], states?: string[], append?: boolean): void {
+        const embedRules = typeof highlightRules === "function"
+            ? new highlightRules().getRules()
+            : highlightRules;
         if (states) {
             for (let i = 0; i < states.length; i++) {
                 states[i] = prefix + states[i];
@@ -93,11 +102,10 @@ export default class TextHighlightRules implements HighlightRules {
         }
         else {
             states = [];
-            const stateNames = Object.keys(embedRules);
-            const sLen = stateNames.length;
-            for (let s = 0; s < sLen; s++) {
-                const stateName = stateNames[s];
-                states.push(prefix + stateName);
+            for (const key in embedRules) {
+                if (embedRules.hasOwnProperty(key)) {
+                    states.push(prefix + key);
+                }
             }
         }
 
@@ -127,41 +135,26 @@ export default class TextHighlightRules implements HighlightRules {
      * WARNING: This is a very tricky bit of code because of the typing.
      * Get some tests going before mucking with it.
      */
-    normalizeRules() {
-        // WARNING: The following functions are intended to be executed with a Rule object
-        // as the `this` reference. They cannot be type checked here.
-        // DO NOT USE A FAT ARROW.
-        const pushState = function (currentState: string, stack: string[]): string {
-            // FIXME: Could be a bug here because nextState is untyped.
-            // Fix by using => ?
-            if (currentState !== "start" || stack.length) {
-                stack.unshift(this.nextState, currentState);
-            }
-            return this.nextState;
-        };
-        const popState = function (currentState: string, stack: string[]): string {
-            // if (stack[0] === currentState)
-            stack.shift();
-            return stack.shift() || "start";
-        };
-
+    normalizeRules(): void {
         let id = 0;
         const rules = this.$rules;
-        function processState(key: string) {
+        const processState = (key: string) => {
             const state = rules[key];
+            // Possible dead code...
             state['processed'] = true;
             for (let i = 0; i < state.length; i++) {
                 let rule = state[i];
-                let toInsert = null;
+                let toInsert: Rule[] = null;
                 if (Array.isArray(rule)) {
                     toInsert = rule;
                     rule = {};
                 }
+                // Possibly dead code...
                 if (!rule.regex && rule['start']) {
                     rule.regex = rule['start'];
                     if (!rule.next)
-                        (<any>rule)['next'] = [];
-                    rule.next['push']({
+                        rule.next = [];
+                    (<any>rule.next).push({
                         defaultToken: rule.token
                     }, {
                             token: rule.token + ".end",
@@ -169,7 +162,7 @@ export default class TextHighlightRules implements HighlightRules {
                             next: "pop"
                         });
                     rule.token = rule.token + ".start";
-                    (<any>rule)['push'] = true;
+                    rule['push'] = <any>true;
                 }
                 const next = rule.next || rule.push;
                 if (next && Array.isArray(next)) {
@@ -189,49 +182,64 @@ export default class TextHighlightRules implements HighlightRules {
                 }
 
                 if (rule.push) {
-                    (<any>rule)['nextState'] = rule.next || rule.push;
+                    const nextState = rule.next || rule.push;
+                    if (typeof nextState === 'string') {
+                        rule.nextState = nextState;
+                    }
+                    else {
+                        console.warn(`nextState is not a string!`);
+                    }
                     rule.next = pushState;
                     delete rule.push;
                 }
 
-                if (rule['rules']) {
-                    for (const r in rule['rules']) {
+                if (rule.rules) {
+                    for (const r in rule.rules) {
                         if (rules[r]) {
                             if (rules[r].push)
-                                rules[r].push.apply(rules[r], rule['rules'][r]);
+                                rules[r].push.apply(rules[r], rule.rules[r]);
                         } else {
-                            rules[r] = rule['rules'][r];
+                            rules[r] = rule.rules[r];
                         }
                     }
                 }
+
+                // FIXME: Purge the never case?
                 const includeName = typeof rule === "string"
                     ? rule
                     : typeof rule.include === "string"
                         ? rule.include
                         : "";
                 if (includeName) {
-                    toInsert = rules[<any>includeName];
+                    toInsert = rules[includeName];
                 }
 
                 if (toInsert) {
-                    let args: any[] = [i, 1];
-                    args.concat(toInsert);
+                    let args: (number | Rule)[] = [i, 1];
+                    args = args.concat(toInsert);
                     if (rule.noEscape)
-                        args = args.filter(function (x) { return !x['next']; });
+                        args = args.filter(function (x) {
+                            if (typeof x === 'number') {
+                                return true;
+                            }
+                            else {
+                                return !x.next;
+                            }
+                        });
                     state.splice.apply(state, args);
                     // skip included rules since they are already processed
                     // i += args.length - 3;
                     i--;
                 }
 
-                if (rule['keywordMap']) {
+                if (rule.keywordMap) {
                     rule.token = this.createKeywordMapper(
-                        rule['keywordMap'], rule.defaultToken || "text", rule.caseInsensitive
+                        rule.keywordMap, rule.defaultToken || "text", rule.caseInsensitive
                     );
                     delete rule.defaultToken;
                 }
             }
-        }
+        };
         Object.keys(rules).forEach(processState, this);
     }
 

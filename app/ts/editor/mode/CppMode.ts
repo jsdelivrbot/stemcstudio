@@ -13,7 +13,7 @@ export default class CppMode extends TextMode {
 
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
-        this.HighlightRules = CppHighlightRules;
+        this.highlighter = CppHighlightRules;
         this.$outdent = new MatchingBraceOutdent();
         this.$behaviour = new CstyleBehaviour();
         // No completer available yet.

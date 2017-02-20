@@ -218,7 +218,8 @@ export default class ListViewPopup implements ListView {
             return this.screenWidth = 0;
         };
 
-        this.editor.on("changeSelection", function () {
+        // FIXME: Typing.
+        this.editor.on("changeSelection", function (this: any) {
             if (this.isOpen) {
                 this.setRow(this.popup.selection.lead.row);
             }

@@ -11,7 +11,7 @@ export default class HaskellMode extends TextMode {
     $id = "ace/mode/haskell";
     constructor(workerUrl: string, scriptImports: string[]) {
         super(workerUrl, scriptImports);
-        this.HighlightRules = HaskellHighlightRules;
+        this.highlighter = HaskellHighlightRules;
         this.foldingRules = new CstyleFoldMode();
     }
     createWorker(session: EditSession, callback: (err: any, worker: WorkerClient) => any): void {

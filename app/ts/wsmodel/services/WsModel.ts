@@ -111,16 +111,6 @@ function stringifyInfo(metaInfo: IDoodleConfig): string {
     return JSON.stringify(metaInfo, null, 2) + '\n';
 }
 
-enum WorkspaceState {
-    CONSTRUCTED,
-    INIT_PENDING,
-    INIT_FAILED,
-    OPERATIONAL,
-    TERM_PENDING,
-    TERM_FAILED,
-    TERMINATED
-}
-
 /**
  * Determines whether the file is appropriate for the language service.
  * All editors (files) are loaded in the workspace but only TypeScript
@@ -160,7 +150,7 @@ function debounce(next: () => any, delay: number) {
      */
     let timer: number | undefined;
 
-    return function (delta: Delta, doc: Document) {
+    return function () {
         if (timer) {
             window.clearTimeout(timer);
         }
@@ -241,7 +231,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
      * Increment before an asynchronous call is made.
      * Decrement when the response is received.
      */
-    private inFlight: number = 0;
+    private inFlight = 0;
 
     private quickin: { [path: string]: QuickInfoTooltip } = {};
     private annotationHandlers: { [path: string]: (event: any) => any } = {};
@@ -530,7 +520,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         throw new Error("TODO: createEditor");
     }
 
-    deleteEditor(editor: MwEditor): void {
+    deleteEditor(): void {
         throw new Error("TODO: deleteEditor");
     }
 
@@ -622,10 +612,10 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             if (!this.annotationHandlers[path]) {
                 // When the LanguageMode has completed syntax analysis, it emits annotations.
                 // This is our cue to begin semantic analysis and make use of transpiled files.
-                const annotationsHandler = (event: { data: Annotation[]; type: string }) => {
+                const annotationsHandler = () => {
                     if (this.inFlight === 0) {
                         // A change in a single file triggers analysis of all files.
-                        this.semanticDiagnostics(function (err) {
+                        this.semanticDiagnostics(function () {
                             // Nothing to see.
                         });
                     }
@@ -676,7 +666,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             // Monitoring for Language Analysis.
             if (isTypeScript(path)) {
                 if (!this.langDocumentChangeListenerRemovers[path]) {
-                    const changeHandler = (delta: Delta, source: Document) => {
+                    const changeHandler = (delta: Delta) => {
                         this.inFlight++;
                         this.languageServiceProxy.applyDelta(path, delta, (err: any) => {
                             this.inFlight--;
@@ -840,7 +830,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
             const tsPath = tsPaths[i];
             const session = this.getFileSession(tsPath);
             try {
-                this.diagnosticsForSession(tsPath, session, function (err) {
+                this.diagnosticsForSession(tsPath, session, function () {
                     tsRemaining--;
                     if (tsRemaining === 0) {
                         callback(void 0);
@@ -1213,7 +1203,7 @@ export default class WsModel implements Disposable, MwWorkspace, QuickInfoToolti
         if (file) {
             // Determine whether the file exists in GitHub so that we can DELETE it upon upload.
             // Use the raw_url as the sentinel. Keep it in trash for later deletion.
-            this.endDocumentMonitoring(path, (err) => {
+            this.endDocumentMonitoring(path, () => {
                 if (file.existsInGitHub) {
                     // It's a file that DOES exist on GitHub. Move it to trash so that it gets synchronized properly.
                     this.moveFileToTrash(path);

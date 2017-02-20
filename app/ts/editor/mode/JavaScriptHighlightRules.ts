@@ -1,4 +1,5 @@
 import DocCommentHighlightRules from "./DocCommentHighlightRules";
+import Rule from '../Rule';
 import TextHighlightRules from "./TextHighlightRules";
 
 export default class JavaScriptHighlightRules extends TextHighlightRules {
@@ -340,8 +341,7 @@ export default class JavaScriptHighlightRules extends TextHighlightRules {
       this.$rules['no_regex'].unshift(
         {
           regex: "[{}]",
-          onMatch: function (val: string, state: string, stack: string[]) {
-            // FIXME: typing is absent.
+          onMatch: function (this: Rule, val: string, state: string, stack: string[]) {
             this.next = val === "{" ? this.nextState : "";
             if (val === "{" && stack.length) {
               stack.unshift("start", state);

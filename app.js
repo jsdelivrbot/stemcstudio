@@ -2,18 +2,21 @@
 var cookieParser = require("cookie-parser");
 var express = require("express");
 var path = require("path");
+require('jade');
 var lactate = require('lactate');
 var logger = require("morgan");
 var methodOverride = require("method-override");
 var nconf = require("nconf");
 var https = require("https");
 var qs = require("querystring");
+require('express-session');
 var bodyParser = require("body-parser");
+require('multer');
 var errorHandler = require("errorhandler");
 var rooms = require("./server/routes/rooms/index");
 var stemcArXiv = require("./server/routes/stemcArXiv/index");
 var npm = require('./package.json');
-var cfg = require('./configure');
+require('./configure');
 var GITHUB_APPLICATION_CLIENT_ID_KEY = 'GITHUB_APPLICATION_CLIENT_ID';
 var clientId = nconf.get(GITHUB_APPLICATION_CLIENT_ID_KEY);
 var isProductionMode = function () {

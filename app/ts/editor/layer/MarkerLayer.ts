@@ -13,7 +13,7 @@ export default class MarkerLayer extends AbstractLayer {
     private session: EditSession;
     private markers: { [id: number]: Marker };
     private config: MarkerConfig;
-    private $padding: number = 0;
+    private $padding = 0;
 
     /**
      *

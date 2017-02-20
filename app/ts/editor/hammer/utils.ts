@@ -1,15 +1,14 @@
 const VENDOR_PREFIXES = ['', 'webkit', 'moz', 'MS', 'ms', 'o'];
-export var TEST_ELEMENT = document.createElement('div');
+export const TEST_ELEMENT = document.createElement('div');
 
 /**
  * set a timeout with a given `this` scope.
  * param {Function} fn
  * param {Number} timeout
  * param {Object} context
- * return {number}
  */
-export function setTimeoutContext(fn, timeout: number, context) {
-    return setTimeout(bindFn(fn, context), timeout);
+export function setTimeoutContext(fn, timeout: number, context): number {
+    return window.setTimeout(bindFn(fn, context), timeout);
 }
 
 /**
@@ -125,8 +124,8 @@ export function bindFn(fn, context) {
  * param {*} val2
  * return {*}
  */
-export function ifUndefined(val1, val2) {
-    return (val1 === undefined) ? val2 : val1;
+export function ifUndefined<T>(val1: T, val2: T): T {
+    return (val1 === void 0) ? val2 : val1;
 }
 
 /**

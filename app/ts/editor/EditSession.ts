@@ -258,7 +258,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
         this.$foldData = [];
         // FIXME: What is this used for?
         // this.id = "session" + (++EditSession.$uid);
-        this.$foldData.toString = function () {
+        this.$foldData.toString = function (this: FoldLine[]) {
             return this.join("\n");
         };
 
@@ -331,7 +331,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     /**
      * Sets the `EditSession` to point to a new `Document`.
-     * If a `BackgroundTokenizer` exists, it also points to `doc`.
+     * If a background tokenizer exists, it also points to `doc`.
      *
      * @param doc The new `Document` to use.
      */
@@ -1192,7 +1192,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
     /**
      * Reloads all the tokens on the current session.
-     * This function calls [[BackgroundTokenizer.start `BackgroundTokenizer.start ()`]] to all the rows; it also emits the `'tokenizerUpdate'` event.
+     * This function calls background tokenizer to start to all the rows; it also emits the `'tokenizerUpdate'` event.
      */
     // TODO: strongtype the event.
     private onReloadTokenizer(e: any) {
@@ -1207,7 +1207,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     /**
      * Sets a new langauge mode for the `EditSession`.
      * This method also emits the `'changeMode'` event.
-     * If a [[BackgroundTokenizer `BackgroundTokenizer`]] is set, the `'tokenizerUpdate'` event is also emitted.
+     * If a background tokenizer is set, the `'tokenizerUpdate'` event is also emitted.
      *
      * @param mode Set a new language mode instance or module name.
      * @param callback
@@ -1223,7 +1223,9 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
 
         this.$stopWorker();
 
-        // The BackgroundTokenizer for highlighting, and behaviours runs independently of the worker thread.
+        /**
+         * The tokenizer for highlighting, and behaviours runs independently of the worker thread.
+         */
         const tokenizer: Tokenizer = mode.getTokenizer();
 
         if (tokenizer['addEventListener'] !== undefined) {
@@ -1275,9 +1277,7 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     }
 
     /**
-     * @method $stopWorker
-     * @return {void}
-     * @private
+     *
      */
     private $stopWorker(): void {
         if (this.$worker) {
@@ -3139,17 +3139,18 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     /**
      * Adds a new fold.
      *
-     * @return
+     * @returns
      *      The new created Fold object or an existing fold object in case the
      *      passed in range fits an existing fold exactly.
      */
-    addFold(placeholder: string | Fold, range: Range): Fold {
+    addFold(placeholder: string | Fold, range?: Range): Fold {
         const foldData = this.$foldData;
         let added = false;
         let fold: Fold;
 
-        if (placeholder instanceof Fold)
+        if (placeholder instanceof Fold) {
             fold = placeholder;
+        }
         else if (typeof placeholder === 'string') {
             fold = new Fold(range, placeholder);
             fold.collapseChildren = range.collapseChildren;
@@ -3250,9 +3251,9 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     }
 
     addFolds(folds: Fold[]) {
-        folds.forEach(function (fold) {
+        folds.forEach((fold) => {
             this.addFold(fold);
-        }, this);
+        });
     }
 
     removeFold(fold: Fold): void {
@@ -3324,18 +3325,18 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
             cloneFolds.push(folds[i]);
         }
 
-        cloneFolds.forEach(function (fold) {
+        cloneFolds.forEach((fold) => {
             this.removeFold(fold);
-        }, this);
+        });
         this.setModified(true);
     }
 
     expandFold(fold: Fold): void {
         this.removeFold(fold);
-        fold.subFolds.forEach(function (subFold) {
+        fold.subFolds.forEach((subFold) => {
             fold.restoreRange(subFold);
             this.addFold(subFold);
-        }, this);
+        });
         if (fold.collapseChildren > 0) {
             this.foldAll(fold.start.row + 1, fold.end.row, fold.collapseChildren - 1);
         }
@@ -3343,9 +3344,9 @@ export default class EditSession implements EventBus<any, EditSession>, Shareabl
     }
 
     expandFolds(folds: Fold[]) {
-        folds.forEach(function (fold) {
+        folds.forEach((fold) => {
             this.expandFold(fold);
-        }, this);
+        });
     }
 
     getFirstLineNumber(): number {

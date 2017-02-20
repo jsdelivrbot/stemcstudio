@@ -1,6 +1,5 @@
 import CredentialsService from '../../services/credentials/CredentialsService';
 import FlowService from '../../services/flow/FlowService';
-import PublishDialog from '../../modules/publish/PublishDialog';
 import PublishFacts from './PublishFacts';
 import ModalDialog from '../../services/modalService/ModalDialog';
 import StemcArXiv from '../../stemcArXiv/StemcArXiv';
@@ -8,7 +7,7 @@ import SubmitParams from '../../stemcArXiv/SubmitParams';
 import WsModel from '../../wsmodel/services/WsModel';
 
 /**
- * @class PublishFlow
+ *
  */
 export default class PublishFlow {
     constructor(
@@ -16,7 +15,6 @@ export default class PublishFlow {
         private owner: string,
         private flowService: FlowService,
         private modalDialog: ModalDialog,
-        private publishDialog: PublishDialog,
         private credentialsService: CredentialsService,
         private stemcArXiv: StemcArXiv,
         private wsModel: WsModel

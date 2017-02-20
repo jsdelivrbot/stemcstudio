@@ -4,16 +4,16 @@ import * as path from 'path';
 // Uncomment after placing favicon in /public
 // import favicon = require('serve-favicon');
 // Do we need to require jade for a side-effect?
-import jade = require('jade');
+require('jade');
 const lactate = require('lactate');
 import logger = require('morgan');
 import methodOverride = require('method-override');
 import nconf = require('nconf');
 import https = require('https');
 import qs = require('querystring');
-import session = require('express-session');
+require('express-session');
 import * as bodyParser from 'body-parser';
-import multer = require('multer');
+require('multer');
 import errorHandler = require('errorhandler');
 
 // Temporary disable rooms to prevent Redis from loading.
@@ -21,7 +21,7 @@ import * as rooms from './server/routes/rooms/index';
 import * as stemcArXiv from './server/routes/stemcArXiv/index';
 
 const npm = require('./package.json');
-const cfg = require('./configure');
+require('./configure');
 
 const GITHUB_APPLICATION_CLIENT_ID_KEY = 'GITHUB_APPLICATION_CLIENT_ID';
 const clientId = nconf.get(GITHUB_APPLICATION_CLIENT_ID_KEY);

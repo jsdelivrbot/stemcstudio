@@ -1,6 +1,5 @@
 import app from '../app';
 import BootstrapDialog from 'bootstrap-dialog';
-import IDoodleManager from '../services/doodles/IDoodleManager';
 import DownloadScope from '../scopes/DownloadScope';
 import GitHubService from '../services/github/GitHubService';
 import linkToMap from '../utils/linkToMap';
@@ -14,14 +13,10 @@ const PAGE_L = 'last';
 
 app.controller('download-controller', [
     '$scope',
-    'doodles',
-    'ga',
     'GitHub',
     'navigation',
-    function(
+    function (
         $scope: DownloadScope,
-        doodles: IDoodleManager,
-        ga: UniversalAnalytics.ga,
         github: GitHubService,
         navigation: NavigationService
     ) {
@@ -30,16 +25,16 @@ app.controller('download-controller', [
             return typeof $scope.links[rel] === 'string';
         }
 
-        $scope.isPageF = function(): boolean {
+        $scope.isPageF = function (): boolean {
             return isPage(PAGE_F);
         };
-        $scope.isPageP = function(): boolean {
+        $scope.isPageP = function (): boolean {
             return isPage(PAGE_P);
         };
-        $scope.isPageN = function(): boolean {
+        $scope.isPageN = function (): boolean {
             return isPage(PAGE_N);
         };
-        $scope.isPageL = function(): boolean {
+        $scope.isPageL = function (): boolean {
             return isPage(PAGE_L);
         };
 
@@ -49,7 +44,7 @@ app.controller('download-controller', [
             }
             const href = $scope.links[rel];
             github.getGistsPage(href)
-                .then(function(promiseValue) {
+                .then(function (promiseValue) {
                     const gists = promiseValue.data;
                     const headers = promiseValue.headers;
                     $scope.gists = gists;
@@ -61,7 +56,7 @@ app.controller('download-controller', [
                     }
                     navigation.gotoDownload();
                 })
-                .catch(function(reason: any) {
+                .catch(function (reason: any) {
                     BootstrapDialog.show({
                         type: BootstrapDialog.TYPE_DANGER,
                         // FIXME: Why does jQuery get defined globally and does a module import fail?
@@ -70,7 +65,7 @@ app.controller('download-controller', [
                         buttons: [{
                             label: "Close",
                             cssClass: 'btn btn-primary',
-                            action: function(dialog: IBootstrapDialog) {
+                            action: function (dialog: IBootstrapDialog) {
                                 dialog.close();
                             }
                         }]
@@ -78,23 +73,23 @@ app.controller('download-controller', [
                 });
         }
 
-        $scope.doPageF = function(): void {
+        $scope.doPageF = function (): void {
             doPage(PAGE_F);
         };
 
-        $scope.doPageP = function(): void {
+        $scope.doPageP = function (): void {
             doPage(PAGE_P);
         };
 
-        $scope.doPageL = function(): void {
+        $scope.doPageL = function (): void {
             doPage(PAGE_L);
         };
 
-        $scope.doPageN = function(): void {
+        $scope.doPageN = function (): void {
             doPage(PAGE_N);
         };
 
-        $scope.doCancel = function() {
+        $scope.doCancel = function () {
             navigation.gotoDoodle();
         };
     }

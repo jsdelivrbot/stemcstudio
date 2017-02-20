@@ -1,9 +1,8 @@
 import GistData from '../github/GistData';
-import IOptionManager from '../options/IOptionManager';
 import doodleFilesToGistFiles from './doodleFilesToGistFiles';
 import WsModel from '../../wsmodel/services/WsModel';
 
-export default function(workspace: WsModel, options: IOptionManager): GistData {
+export default function (workspace: WsModel): GistData {
     const gist: GistData = {
         description: workspace.description,
         public: true,

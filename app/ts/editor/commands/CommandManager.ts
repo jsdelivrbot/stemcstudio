@@ -181,12 +181,17 @@ export default class CommandManager implements EventBus<any, CommandManager> {
 
         try {
             this.$inReplay = true;
-            this.macro.forEach(function (x) {
+            this.macro.forEach((x) => {
                 if (typeof x === "string")
+                    // FIXME: This never happens?
                     this.exec(x, editor);
-                else
-                    this.exec(x[0], editor, x[1]);
-            }, this);
+                else {
+                    for (let i = 0; i < x.length; i++) {
+                        const macro = x[i];
+                        this.exec(macro.command, editor, macro.args);
+                    }
+                }
+            });
         } finally {
             this.$inReplay = false;
         }

@@ -2,14 +2,13 @@ import AbstractPageController from './AbstractPageController';
 import Doodle from '../services/doodles/Doodle';
 import IDoodleManager from '../services/doodles/IDoodleManager';
 import IGitHubAuthManager from '../services/gham/IGitHubAuthManager';
-import {GITHUB_AUTH_MANAGER} from '../services/gham/IGitHubAuthManager';
+import { GITHUB_AUTH_MANAGER } from '../services/gham/IGitHubAuthManager';
 import OpenScope from '../scopes/OpenScope';
 import ModalDialog from '../services/modalService/ModalDialog';
 import NavigationService from '../modules/navigation/NavigationService';
 
 /**
- * @class OpenController
- * @extends AbstractPageController
+ *
  */
 export default class OpenController extends AbstractPageController {
     public static $inject: string[] = [
@@ -32,10 +31,10 @@ export default class OpenController extends AbstractPageController {
         navigation: NavigationService,
         UNIVERSAL_ANALYTICS_TRACKING_ID: string
     ) {
-        super($scope, $window, authManager, ga, modalDialog, UNIVERSAL_ANALYTICS_TRACKING_ID, 'auto');
+        super($window, authManager, modalDialog, 'auto');
 
-        $scope.doodles = function() {
-            return doodles.filter(function() { return true; });
+        $scope.doodles = function () {
+            return doodles.filter(function () { return true; });
         };
 
         /**
@@ -57,12 +56,12 @@ export default class OpenController extends AbstractPageController {
             }
         };
 
-        $scope.doDelete = function(doodle: Doodle) {
+        $scope.doDelete = function (doodle: Doodle) {
             // TODO: DRY. This code also exists in the HomeController.
-            modalDialog.confirm({ title: 'Delete', message: `Are you sure you want to delete '${doodle.description}' from your Local Storage?` }).then(function(promiseValue) {
+            modalDialog.confirm({ title: 'Delete', message: `Are you sure you want to delete '${doodle.description}' from your Local Storage?` }).then(function (promiseValue) {
                 doodles.deleteDoodle(doodle);
                 doodles.updateStorage();
-            }).catch(function(reason) {
+            }).catch(function (reason) {
                 switch (reason) {
                     case 'cancel click':
                     case 'escape key press': {
@@ -76,7 +75,7 @@ export default class OpenController extends AbstractPageController {
             });
         };
 
-        $scope.doClose = function() {
+        $scope.doClose = function () {
             navigation.gotoDoodle();
         };
     }

@@ -38,15 +38,16 @@ import ITranslateService from '../ITranslateService';
  */
 function translateFilterFactory($parse: angular.IParseService, $translate: ITranslateService) {
 
-    const translateFilter = function(translationId: string, interpolateParams: any, interpolation: string, forceLanguage: boolean) {
-        if (!angular.isObject(interpolateParams)) {
-            interpolateParams = $parse(interpolateParams)(this);
-        }
+  // FIXME: Typing
+  const translateFilter = function (this: any, translationId: string, interpolateParams: any, interpolation: string, forceLanguage: boolean) {
+    if (!angular.isObject(interpolateParams)) {
+      interpolateParams = $parse(interpolateParams)(this);
+    }
 
-        return $translate.instant(translationId, interpolateParams, interpolation, forceLanguage);
-    };
+    return $translate.instant(translationId, interpolateParams, interpolation, forceLanguage);
+  };
 
-    return translateFilter;
+  return translateFilter;
 }
 
 translateFilterFactory['$inject'] = ['$parse', '$translate'];

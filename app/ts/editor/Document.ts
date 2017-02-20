@@ -57,18 +57,14 @@ export default class Document implements Shareable {
     private _lines: string[] = [];
 
     /**
-     * @propert _autoNewLine
-     * @type string
-     * @private
+     *
      */
-    private _autoNewLine: string = "";
+    private _autoNewLine = "";
 
     /**
-     * @property _newLineMode
-     * @type string
-     * @private
+     *
      */
-    private _newLineMode: string = "auto";
+    private _newLineMode = "auto";
 
     /**
      * @property _eventBus
