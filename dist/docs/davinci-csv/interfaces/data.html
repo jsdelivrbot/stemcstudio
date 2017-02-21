@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Dialect | CSV 0.9.1</title>
+	<title>Data | CSV 0.9.1</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,10 +54,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="dialect.html">Dialect</a>
+					<a href="data.html">Data</a>
 				</li>
 			</ul>
-			<h1>Interface Dialect</h1>
+			<h1>Interface Data</h1>
 		</div>
 	</div>
 </header>
@@ -67,7 +67,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The (options) dialect is camelCase and everything is optional.</p>
+						<p>A format for relational data.</p>
 					</div>
 				</div>
 			</section>
@@ -75,7 +75,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">Dialect</span>
+						<span class="target">Data</span>
 					</li>
 				</ul>
 			</section>
@@ -86,12 +86,8 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="dialect.html#escapeembeddedquotes" class="tsd-kind-icon">escape<wbr>Embedded<wbr>Quotes</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="dialect.html#fielddelimiter" class="tsd-kind-icon">field<wbr>Delimiter</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="dialect.html#lineterminator" class="tsd-kind-icon">line<wbr>Terminator</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="dialect.html#quotechar" class="tsd-kind-icon">quote<wbr>Char</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="dialect.html#skipinitialrows" class="tsd-kind-icon">skip<wbr>Initial<wbr>Rows</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="dialect.html#trimfields" class="tsd-kind-icon">trim<wbr>Fields</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="data.html#fields" class="tsd-kind-icon">fields</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="data.html#records" class="tsd-kind-icon">records</a></li>
 							</ul>
 						</section>
 					</div>
@@ -100,102 +96,36 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-					<a name="escapeembeddedquotes" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> escape<wbr>Embedded<wbr>Quotes</h3>
-					<div class="tsd-signature tsd-kind-icon">escape<wbr>Embedded<wbr>Quotes<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span></div>
+					<a name="fields" class="tsd-anchor"></a>
+					<h3>fields</h3>
+					<div class="tsd-signature tsd-kind-icon">fields<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-csv/blob/baf9130/src/davinci-csv/core/Dialect.ts#L16">davinci-csv/core/Dialect.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-csv/blob/baf9130/src/davinci-csv/core/Data.ts#L5">davinci-csv/core/Data.ts:5</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Determines whether embedded quotation marks in strings are escaped during <em>serialization</em> by doubling them.
-							Default is <code>true</code>.</p>
-						</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+						</ul>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-					<a name="fielddelimiter" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> field<wbr>Delimiter</h3>
-					<div class="tsd-signature tsd-kind-icon">field<wbr>Delimiter<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
+					<a name="records" class="tsd-anchor"></a>
+					<h3>records</h3>
+					<div class="tsd-signature tsd-kind-icon">records<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-csv/blob/baf9130/src/davinci-csv/core/Dialect.ts#L10">davinci-csv/core/Dialect.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/geometryzen/davinci-csv/blob/baf9130/src/davinci-csv/core/Data.ts#L6">davinci-csv/core/Data.ts:6</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies the delimiter between fields.
-								Default is the comma, </code>&#39;,&#39;</code>.
-							Used for parsing and serialization.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-					<a name="lineterminator" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> line<wbr>Terminator</h3>
-					<div class="tsd-signature tsd-kind-icon">line<wbr>Terminator<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-csv/blob/baf9130/src/davinci-csv/core/Dialect.ts#L23">davinci-csv/core/Dialect.ts:23</a></li>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-index-signature">
+								<h5><span class="tsd-signature-symbol">[</span>fieldId: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h5>
+							</li>
 						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Specifies the character used to terminate a line.
-								Default is a single newline character, <code>&#39;\n&#39;</code>.
-							Used for parsing and serialization.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-					<a name="quotechar" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> quote<wbr>Char</h3>
-					<div class="tsd-signature tsd-kind-icon">quote<wbr>Char<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-csv/blob/baf9130/src/davinci-csv/core/Dialect.ts#L30">davinci-csv/core/Dialect.ts:30</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The character used for quoting string fields.
-								Default is the double quote, <code>&#39;&quot;&#39;</code>.
-							Used for parsing and serialization.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-					<a name="skipinitialrows" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> skip<wbr>Initial<wbr>Rows</h3>
-					<div class="tsd-signature tsd-kind-icon">skip<wbr>Initial<wbr>Rows<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-csv/blob/baf9130/src/davinci-csv/core/Dialect.ts#L36">davinci-csv/core/Dialect.ts:36</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Skips the specified number of initial rows during <em>parsing</em>.
-							Default is zero, <code>0</code>.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-					<a name="trimfields" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> trim<wbr>Fields</h3>
-					<div class="tsd-signature tsd-kind-icon">trim<wbr>Fields<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">false</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/geometryzen/davinci-csv/blob/baf9130/src/davinci-csv/core/Dialect.ts#L42">davinci-csv/core/Dialect.ts:42</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Determines whether fields are trimmed during <em>parsing</em>.
-							Default is <code>true</code>.</p>
-						</div>
 					</div>
 				</section>
 			</section>
@@ -210,36 +140,24 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-interface tsd-is-external">
-						<a href="data.html" class="tsd-kind-icon">Data</a>
-					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-is-external">
-						<a href="dialect.html" class="tsd-kind-icon">Dialect</a>
+						<a href="data.html" class="tsd-kind-icon">Data</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-								<a href="dialect.html#escapeembeddedquotes" class="tsd-kind-icon">escape<wbr>Embedded<wbr>Quotes</a>
+								<a href="data.html#fields" class="tsd-kind-icon">fields</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-								<a href="dialect.html#fielddelimiter" class="tsd-kind-icon">field<wbr>Delimiter</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-								<a href="dialect.html#lineterminator" class="tsd-kind-icon">line<wbr>Terminator</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-								<a href="dialect.html#quotechar" class="tsd-kind-icon">quote<wbr>Char</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-								<a href="dialect.html#skipinitialrows" class="tsd-kind-icon">skip<wbr>Initial<wbr>Rows</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-								<a href="dialect.html#trimfields" class="tsd-kind-icon">trim<wbr>Fields</a>
+								<a href="data.html#records" class="tsd-kind-icon">records</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="dialect.html" class="tsd-kind-icon">Dialect</a>
+					</li>
 					<li class=" tsd-kind-function tsd-is-external">
 						<a href="../globals.html#datatoarrays" class="tsd-kind-icon">data<wbr>ToArrays</a>
 					</li>

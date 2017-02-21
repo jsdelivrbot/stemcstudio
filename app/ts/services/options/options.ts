@@ -12,7 +12,7 @@ app.factory('options', [
         // const VERSION_ASYNC = '1.4.2';
         const VERSION_BACONJS = '0.7.89';
         const VERSION_BIWASCHEME = '0.6.6';
-        const VERSION_CSV = '0.0.1';
+        const VERSION_CSV = '0.9.1';
         const VERSION_DAT_GUI = '0.5.0';
         const VERSION_DECKJS = '1.1.0';
         const VERSION_DOMREADY = '1.0.0';

@@ -442,9 +442,9 @@ define('davinci-csv/config',["require", "exports"], function (require, exports) 
     var Config = (function () {
         function Config() {
             this.GITHUB = 'https://github.com/geometryzen/davinci-csv';
-            this.LAST_MODIFIED = '2017-02-20';
+            this.LAST_MODIFIED = '2017-02-21';
             this.NAMESPACE = 'CSV';
-            this.VERSION = '0.0.1';
+            this.VERSION = '0.9.1';
         }
         return Config;
     }());
@@ -456,7 +456,7 @@ define('davinci-csv/config',["require", "exports"], function (require, exports) 
 define('davinci-csv/core/CSV',["require", "exports"], function (require, exports) {
     "use strict";
     var rxIsInt = /^\d+$/;
-    var rxIsFloat = /^\d*\.\d+$|^\d+\.\d*$/;
+    var rxIsFloat = /^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$/;
     var rxNeedsQuoting = /^\s|\s$|,|"|\n/;
     var trim = (function () {
         if (String.prototype.trim) {
@@ -503,116 +503,127 @@ define('davinci-csv/core/CSV',["require", "exports"], function (require, exports
         return arrays;
     }
     exports.dataToArrays = dataToArrays;
-    function normalizeDialectOptions(options) {
-        var out = {
-            delimiter: ',',
-            doublequote: true,
-            lineterminator: '\n',
-            quotechar: '"',
-            skipinitialspace: true,
-            skipinitialrows: 0
+    function normalizeDialectOptions(dialect) {
+        var options = {
+            delim: ',',
+            escape: true,
+            lineTerm: '\n',
+            quoteChar: '"',
+            skipRows: 0,
+            trim: true
         };
-        if (options) {
-            for (var key in options) {
-                if (key === 'trim') {
-                    out.skipinitialspace = options.trim ? options.trim : false;
-                }
-                else {
-                    out[key.toLowerCase()] = options[key];
-                }
+        if (dialect) {
+            if (typeof dialect.fieldDelimiter === 'string') {
+                options.delim = dialect.fieldDelimiter;
+            }
+            if (typeof dialect.escapeEmbeddedQuotes === 'boolean') {
+                options.escape = dialect.escapeEmbeddedQuotes;
+            }
+            if (typeof dialect.lineTerminator === 'string') {
+                options.lineTerm = dialect.lineTerminator;
+            }
+            if (typeof dialect.quoteChar === 'string') {
+                options.quoteChar = dialect.quoteChar;
+            }
+            if (typeof dialect.skipInitialRows === 'number') {
+                options.skipRows = dialect.skipInitialRows;
+            }
+            if (typeof dialect.trimFields === 'boolean') {
+                options.trim = dialect.trimFields;
             }
         }
-        return out;
+        return options;
     }
     function serialize(data, dialect) {
         var a = (data instanceof Array) ? data : dataToArrays(data);
         var options = normalizeDialectOptions(dialect);
-        var fields = [];
-        var fieldBuffer = '';
-        var rowBuffer = '';
-        var outBuffer = '';
-        var processField = function processedField(field) {
+        var fieldToString = function fieldToString(field) {
             if (field === null) {
                 field = '';
             }
             else if (typeof field === "string" && rxNeedsQuoting.test(field)) {
-                if (options.doublequote) {
+                if (options.escape) {
                     field = field.replace(/"/g, '""');
                 }
-                field = options.quotechar + field + options.quotechar;
+                field = options.quoteChar + field + options.quoteChar;
             }
             else if (typeof field === "number") {
                 field = field.toString(10);
             }
             return field;
         };
+        var outBuffer = '';
         for (var i = 0; i < a.length; i += 1) {
-            fields = a[i];
+            var fields = a[i];
+            var rowBuffer = '';
             for (var j = 0; j < fields.length; j += 1) {
-                fieldBuffer = processField(fields[j]);
+                var fieldBuffer = fieldToString(fields[j]);
                 if (j === (fields.length - 1)) {
                     rowBuffer += fieldBuffer;
-                    outBuffer += rowBuffer + options.lineterminator;
+                    outBuffer += rowBuffer + options.lineTerm;
                     rowBuffer = '';
                 }
                 else {
-                    rowBuffer += fieldBuffer + options.delimiter;
+                    rowBuffer += fieldBuffer + options.delim;
                 }
-                fieldBuffer = '';
             }
         }
         return outBuffer;
     }
     exports.serialize = serialize;
-    function parse(s, dialect) {
+    function normalizeInputString(csvText, dialect) {
         if (!dialect || (dialect && !dialect.lineTerminator)) {
-            s = normalizeLineTerminator(s, dialect);
+            csvText = normalizeLineTerminator(csvText, dialect);
         }
         var options = normalizeDialectOptions(dialect);
-        s = chomp(s, options.lineterminator);
-        var cur = '';
+        return { s: chomp(csvText, options.lineTerm), options: options };
+    }
+    function parse(csvText, dialect) {
+        var _a = normalizeInputString(csvText, dialect), s = _a.s, options = _a.options;
+        var sLength = s.length;
+        var ch = '';
         var inQuote = false;
         var fieldQuoted = false;
-        var fieldX = '';
+        var field = '';
         var row = [];
         var out = [];
-        var processField = function processField(field) {
-            if (fieldQuoted !== true) {
-                if (field === '') {
-                    return null;
-                }
-                else if (options.skipinitialspace === true) {
-                    field = trim(field);
-                }
-                if (rxIsInt.test(field)) {
-                    return parseInt(field, 10);
-                }
-                else if (rxIsFloat.test(field)) {
-                    return parseFloat(field);
-                }
-                else {
-                    return field;
-                }
+        var parseField = function parseField(fieldAsString) {
+            if (fieldQuoted) {
+                return fieldAsString;
             }
             else {
-                return field;
+                if (fieldAsString === '') {
+                    return null;
+                }
+                else if (options.trim) {
+                    fieldAsString = trim(fieldAsString);
+                }
+                if (rxIsInt.test(fieldAsString)) {
+                    return parseInt(fieldAsString, 10);
+                }
+                else if (rxIsFloat.test(fieldAsString)) {
+                    return parseFloat(fieldAsString);
+                }
+                else {
+                    return fieldAsString;
+                }
             }
         };
-        for (var i = 0; i < s.length; i += 1) {
-            cur = s.charAt(i);
-            if (inQuote === false && (cur === options.delimiter || cur === options.lineterminator)) {
-                fieldX = processField(fieldX);
-                row.push(fieldX);
-                if (cur === options.lineterminator) {
+        for (var i = 0; i < sLength; i += 1) {
+            ch = s.charAt(i);
+            if (inQuote === false && (ch === options.delim || ch === options.lineTerm)) {
+                field = parseField(field);
+                row.push(field);
+                if (ch === options.lineTerm) {
                     out.push(row);
                     row = [];
                 }
-                fieldX = '';
+                field = '';
                 fieldQuoted = false;
             }
             else {
-                if (cur !== options.quotechar) {
-                    fieldX += cur;
+                if (ch !== options.quoteChar) {
+                    field += ch;
                 }
                 else {
                     if (!inQuote) {
@@ -620,8 +631,8 @@ define('davinci-csv/core/CSV',["require", "exports"], function (require, exports
                         fieldQuoted = true;
                     }
                     else {
-                        if (s.charAt(i + 1) === options.quotechar) {
-                            fieldX += options.quotechar;
+                        if (s.charAt(i + 1) === options.quoteChar) {
+                            field += options.quoteChar;
                             i += 1;
                         }
                         else {
@@ -631,11 +642,11 @@ define('davinci-csv/core/CSV',["require", "exports"], function (require, exports
                 }
             }
         }
-        fieldX = processField(fieldX);
-        row.push(fieldX);
+        field = parseField(field);
+        row.push(field);
         out.push(row);
-        if (options.skipinitialrows)
-            out = out.slice(options.skipinitialrows);
+        if (options.skipRows)
+            out = out.slice(options.skipRows);
         return out;
     }
     exports.parse = parse;
