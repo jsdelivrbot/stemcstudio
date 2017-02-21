@@ -190,6 +190,14 @@ export default class ExamplesController extends AbstractPageController {
                 category: 'Physics'
             },
             {
+                gistId: '723698aac86c1671a94b8fc5c1334025',
+                title: "Processing CSV Text Files",
+                description: "Describes how to parse CSV data from a text file and render it using Plotly",
+                imageSrc: '/img/examples/processing-csv-text-files.png',
+                imageAlt: 'A bar chart rendered using Plotly from parsed CSV data',
+                category: 'Physics'
+            },
+            {
                 gistId: '54644519dcd556bf8bf779bfa084ced3',
                 title: "EIGHT Getting Started",
                 description: "An example that you can copy to create your own 3D graphics programs using the EIGHT library.",
