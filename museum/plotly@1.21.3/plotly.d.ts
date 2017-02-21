@@ -39,9 +39,13 @@ declare module Plotly {
         rangemode?: 'nonnegative' | 'tozero' | 'normal';
         tick0?: number;
         tickangle?: number;
+        tickfont?: Font;
         ticklen?: number;
         tickwidth?: number;
         title?: string;
+        /**
+         * The font used for the axis title.
+         */
         titlefont?: Font;
         type?: 'log';
         showgrid?: boolean;
@@ -123,9 +127,14 @@ declare module Plotly {
         font?: Font;
         hovermode?: 'closest';
         legend?: {
-            x: number;
-            y: number;
-            orientation: 'h';
+            bgcolor?: string;
+            bordercolor?: string;
+            borderwidth?: number;
+            x?: number;
+            y?: number;
+            orientation?: 'h' | 'v';
+            traceorder?: 'normal';
+            font?: Font;
         };
         showlegend?: boolean;
         title?: string;
