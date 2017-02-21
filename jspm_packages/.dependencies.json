@@ -818,11 +818,6 @@
     "tiny-emitter": "npm:tiny-emitter@^1.0.0"
   },
   "github:ace2ts/ace-workers@2.0.7": {},
-  "npm:rxjs@5.1.1": {
-    "symbol-observable": "npm:symbol-observable@^1.0.1",
-    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
-    "process": "github:jspm/nodelibs-process@^0.1.0"
-  },
   "npm:engine.io-client@1.8.3": {
     "component-emitter": "npm:component-emitter@1.2.1",
     "component-inherit": "npm:component-inherit@0.0.3",
@@ -849,6 +844,11 @@
     "parseuri": "npm:parseuri@0.0.5",
     "socket.io-parser": "npm:socket.io-parser@2.3.1",
     "to-array": "npm:to-array@0.1.4",
+    "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
+    "process": "github:jspm/nodelibs-process@^0.1.0"
+  },
+  "npm:rxjs@5.2.0": {
+    "symbol-observable": "npm:symbol-observable@^1.0.1",
     "buffer": "github:jspm/nodelibs-buffer@^0.1.0",
     "process": "github:jspm/nodelibs-process@^0.1.0"
   }

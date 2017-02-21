@@ -1,6 +1,7 @@
 import { LANGUAGE_C } from '../languages/modes';
 import { LANGUAGE_CPP } from '../languages/modes';
 import { LANGUAGE_CSS } from '../languages/modes';
+import { LANGUAGE_CSV } from '../languages/modes';
 import { LANGUAGE_GLSL } from '../languages/modes';
 import { LANGUAGE_HASKELL } from '../languages/modes';
 import { LANGUAGE_HTML } from '../languages/modes';
@@ -21,6 +22,7 @@ const fileNameToMode: { [fileName: string]: string } = {};
 extensionToMode['c'] = LANGUAGE_C;
 extensionToMode['cpp'] = LANGUAGE_CPP;
 extensionToMode['css'] = LANGUAGE_CSS;
+extensionToMode['csv'] = LANGUAGE_CSV;
 extensionToMode['gitignore'] = LANGUAGE_TEXT;
 extensionToMode['glsl'] = LANGUAGE_GLSL;
 extensionToMode['hs'] = LANGUAGE_HASKELL;

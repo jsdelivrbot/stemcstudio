@@ -500,6 +500,28 @@ function copies(target) {
         },
         {
             expand: true,
+            cwd: "../davinci-csv/documentation",
+            src: ["**"],
+            dest: prepend(target, 'docs/davinci-csv')
+        },
+        {
+            src: "bower_components/davinci-csv/dist/davinci-csv.d.ts",
+            dest: prepend(target, 'vendor/davinci-csv@0.0.1/dist/davinci-csv.d.ts')
+        },
+        {
+            src: "bower_components/davinci-csv/dist/davinci-csv.js",
+            dest: prepend(target, 'vendor/davinci-csv@0.0.1/dist/davinci-csv.js')
+        },
+        {
+            src: "../davinci-csv/dist/davinci-csv.d.ts",
+            dest: prepend(target, 'vendor/davinci-csv@0.0.1/dist/davinci-csv.d.ts')
+        },
+        {
+            src: "../davinci-csv/dist/davinci-csv.js",
+            dest: prepend(target, 'vendor/davinci-csv@0.0.1/dist/davinci-csv.js')
+        },
+        {
+            expand: true,
             cwd: "../davinci-eight/documentation",
             src: ["**"],
             dest: prepend(target, 'docs/davinci-eight')

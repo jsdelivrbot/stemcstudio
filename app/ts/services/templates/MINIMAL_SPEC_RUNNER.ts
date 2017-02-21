@@ -73,7 +73,9 @@ export default function (tabString: string): string {
     lines.push(" */");
     lines.push("export default function extend<T>(destination: T, source: any): T {");
     lines.push(_ + "for (let property in source) {");
-    lines.push(_ + _ + "(<any>destination)[property] = source[property]");
+    lines.push(_ + _ + "if (source.hasOwnProperty(property)) {");
+    lines.push(_ + _ + _ + "(<any>destination)[property] = source[property]");
+    lines.push(_ + _ + "}");
     lines.push(_ + "}");
     lines.push(_ + "return destination");
     lines.push("}");

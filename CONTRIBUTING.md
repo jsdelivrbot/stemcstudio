@@ -102,7 +102,8 @@ Make sure that the version references are correct in the following files:
 
 |TypeScript|ace-workers|
 ------------------------
-|1.8.0     |1.0.4      |
+|1.8.0     |1.x        |
+|2.2.0     |2.x        |
 
 ```
 npm install
@@ -119,6 +120,16 @@ jspm update
 3. jspm.config.js
 
 git push origin master
+
+### Upgrading Jasmine Testing Framework
+
+1. Download latest stable release from https://jasmine.github.io
+2. Unpack into museum/jasmine@major.minor.patch.
+3. Copy and (if required) update jasmine.d.ts from previous version.
+4. Create a package.json in the root (use existing as guide).
+5. Verify structure similar to previous versions.
+6. Upgrade STEMCstudio Gruntfile.js to copy the appropriate version.
+7. Update STEMCstudio VERSION_JASMINE variable in options.ts to reflect the correct version.
 
 ## Upload to Heroku
 

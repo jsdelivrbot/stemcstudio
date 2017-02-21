@@ -27,6 +27,7 @@ import EditorPreferencesEvent from '../../modules/editors/EditorPreferencesEvent
 import { currentTheme } from '../../modules/editors/EditorPreferencesEvent';
 import WorkspaceMixin from '../../directives/editor/WorkspaceMixin';
 import { LANGUAGE_CSS } from '../../languages/modes';
+import { LANGUAGE_CSV } from '../../languages/modes';
 import { LANGUAGE_GLSL } from '../../languages/modes';
 import { LANGUAGE_HASKELL } from '../../languages/modes';
 import { LANGUAGE_HTML } from '../../languages/modes';
@@ -298,6 +299,7 @@ function factory(
                                 });
                                 break;
                             }
+                            case LANGUAGE_CSV:
                             case LANGUAGE_TEXT: {
                                 session.setLanguageMode(new TextMode('/js/worker.js', workerImports), function (err: any) {
                                     if (err) {

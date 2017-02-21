@@ -1,6 +1,7 @@
 import * as angular from 'angular';
 import bubbleIframeMouseMove from './bubbleIframeMouseMove';
 import closure from './closure';
+import csvTypeFromContent from './csvTypeFromContent';
 import fileContent from './fileContent';
 import fileExists from './fileExists';
 import isString from '../../utils/isString';
@@ -9,6 +10,7 @@ import IOptionManager from '../../services/options/IOptionManager';
 import currentJavaScript from './currentJavaScript';
 import detect1x from './detect1x';
 import detectMarker from './detectMarker';
+import { LANGUAGE_CSV } from '../../languages/modes';
 import { LANGUAGE_GLSL } from '../../languages/modes';
 import { LANGUAGE_SCHEME } from '../../languages/modes';
 import replaceMarker from './replaceMarker';
@@ -18,7 +20,7 @@ import shaderTypeFromContent from './shaderTypeFromContent';
 import WorkspaceScope from '../../scopes/WorkspaceScope';
 import WsModel from '../../wsmodel/services/WsModel';
 import mathscript from 'davinci-mathscript';
-import { CODE_MARKER, SCHEMES_MARKER, SCRIPTS_MARKER, SHADERS_MARKER, STYLE_MARKER } from '../../features/preview/index';
+import { CODE_MARKER, CSV_FILES_MARKER, SCHEMES_MARKER, SCRIPTS_MARKER, SHADERS_MARKER, STYLE_MARKER } from '../../features/preview/index';
 
 export default function rebuildPreview(
     workspace: WsModel,
@@ -52,6 +54,9 @@ export default function rebuildPreview(
                 preview.removeChild(preview.firstChild);
             }
             if (workspace && !workspace.isZombie()) {
+                /**
+                 * The HTML file that will be used for insertion.
+                 */
                 const bestFile: string = workspace.getHtmlFileChoiceOrBestAvailable();
                 if (bestFile && $scope.isViewVisible) {
 
@@ -66,6 +71,9 @@ export default function rebuildPreview(
 
                     const content: Document = $scope.previewIFrame.contentDocument || $scope.previewIFrame.contentWindow.document;
 
+                    /**
+                     * The string that becomes the content of the IFrame's HTML file.
+                     */
                     let html: string = fileContent(bestFile, workspace);
                     if (isString(html)) {
 
@@ -107,6 +115,7 @@ export default function rebuildPreview(
                             }
                         }
 
+                        html = replaceMarker(CSV_FILES_MARKER, LANGUAGE_CSV, csvTypeFromContent, html, workspace, bestFile);
                         html = replaceMarker(SHADERS_MARKER, LANGUAGE_GLSL, shaderTypeFromContent, html, workspace, bestFile);
                         html = replaceMarker(SCHEMES_MARKER, LANGUAGE_SCHEME, schemeTypeFromContent, html, workspace, bestFile);
 

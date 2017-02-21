@@ -12,6 +12,7 @@ app.factory('options', [
         // const VERSION_ASYNC = '1.4.2';
         const VERSION_BACONJS = '0.7.89';
         const VERSION_BIWASCHEME = '0.6.6';
+        const VERSION_CSV = '0.0.1';
         const VERSION_DAT_GUI = '0.5.0';
         const VERSION_DECKJS = '1.1.0';
         const VERSION_DOMREADY = '1.0.0';
@@ -64,6 +65,9 @@ app.factory('options', [
         }
         function biwascheme(fileName: string): string {
             return vendorFolder('biwascheme', VERSION_BIWASCHEME, void 0, fileName);
+        }
+        function csv(subFolder: string, fileName: string): string {
+            return vendorFolder('davinci-csv', VERSION_CSV, subFolder, fileName);
         }
         function datGUI(fileName: string): string {
             return vendorFolder('dat-gui', VERSION_DAT_GUI, void 0, fileName);
@@ -164,6 +168,19 @@ app.factory('options', [
                 dts: biwascheme('biwascheme.d.ts'),
                 js: [biwascheme('biwascheme.js')],
                 minJs: [biwascheme('biwascheme.min.js')],
+                dependencies: {}
+            },
+            {
+                name: 'davinci-csv',
+                moniker: 'CSV',
+                description: "Comma Separated Value (CSV) Library",
+                homepage: 'https://www.stemcstudio.com/docs/davinci-csv/index.html',
+                version: VERSION_CSV,
+                visible: true,
+                css: [],
+                dts: csv('dist', 'davinci-csv.d.ts'),
+                js: [csv('dist', 'davinci-csv.js')],
+                minJs: [csv('dist', 'davinci-csv.js')],
                 dependencies: {}
             },
             {
